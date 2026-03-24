@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <AssetObjects:GeometryInstance>
 <m_CookParams>
 <m_Values/>
@@ -16,12 +16,12 @@
 <Element>
 <m_Name text="CSC_Storage_L_PIL_Bldg"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>783</m_nPrims>
+<m_nPrims>786</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>2</m_nBoundBoneCount>
-<m_nPrimitiveCount>783</m_nPrimitiveCount>
-<m_nVertexCount>1108</m_nVertexCount>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nPrimitiveCount>786</m_nPrimitiveCount>
+<m_nVertexCount>1168</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
