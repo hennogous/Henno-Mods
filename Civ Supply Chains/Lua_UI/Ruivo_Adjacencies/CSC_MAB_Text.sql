@@ -31,5 +31,9 @@ VALUES	('LOC_RUIVO_FROM_RINGS_TYPETAG_RESOURCE',		'en_US',			'{1_iBonus} {2_Yiel
 		('LOC_ZEGA_ADJACENCY_ADJACENT',					'en_US',			'adjacent'),
 		('LOC_ZEGA_ADJACENCY_NEARBY',					'en_US',			'nearby'),
 		
-		('LOC_ZEGA_FROM_DISTRICT_ABILITY',				'en_US',			' (from district ability)');
+		('LOC_ZEGA_FROM_DISTRICT_ABILITY',				'en_US',			' (from district ability)'),
+
+		-- CSC resource class names for adjacency tooltips
+		('LOC_CLASS_CSC_BAKERS_BASE_NAME',				'en_US',			'Base materials'),
+		('LOC_CLASS_CSC_BAKERS_SPEC_NAME',				'en_US',			'Specialty materials');
 		
