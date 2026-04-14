@@ -239,15 +239,17 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
     AdjacencyType,
     CustomAdjacentObject,
     Rings,
+	MustOwn,
     DistrictModifiers	) VALUES
 
 (	'CSC_BAKERS_PRODUCTION_FROM_BASE',
 	'DISTRICT_CSC_BAKERS_QUARTER',
-	'SelfBonus',
-	'YIELD_PRODUCTION',
-	1,
+	'SelfLoyalty',
+	'YIELD_LOYALTY',
+	-10,
 	'FROM_RINGS_TYPETAG_RESOURCE',
 	'CLASS_CSC_BAKERS_BASE',
+	1,
 	1,
 	1
 ),
@@ -255,19 +257,36 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	'DISTRICT_CSC_BAKERS_QUARTER',
 	'SelfBonus',
 	'YIELD_PRODUCTION',
-	1,
+	50,
 	'FROM_RINGS_TYPETAG_RESOURCE',
 	'CLASS_CSC_BAKERS_SPEC',
 	1,
+	1,
 	1
-),
-(	'CSC_BAKERS_GOLD_FROM_GREAT_BATH',
+);
+
+INSERT OR IGNORE INTO Ruivo_New_Adjacency (
+    ID,
+    DistrictType,
+    ProvideType,
+    YieldType,
+    YieldChange,
+    AdjacencyType,
+    CustomAdjacentObject,
+    MinRings,
+	MaxRings,
+	MustOwn,
+    DistrictModifiers	) VALUES
+
+(	'CSC_BAKERS_PRODUCTION_FROM_BASE_2',
 	'DISTRICT_CSC_BAKERS_QUARTER',
-	'SelfBonus',
-	'YIELD_GOLD',
-	3,
-	'FROM_RINGS_SPECIFIC_WONDER',
-	'BUILDING_GREAT_BATH',
+	'SelfLoyalty',
+	'YIELD_LOYALTY',
+	5,
+	'FROM_RINGS_TYPETAG_RESOURCE',
+	'CLASS_CSC_BAKERS_BASE',
+	2,
+	2,
 	1,
 	1
 );
@@ -280,8 +299,8 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	YieldChange,
 	AdjacencyType,
 	CustomAdjacentObject,
-	Rings,
 	MinRings,
+	Rings,
 	DistrictModifiers,
 	ModifierOwner,
 	WhoIsTheOwner	) VALUES
@@ -323,7 +342,7 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	'BuildingModifiers',
 	'BUILDING_CSC_BAKERS_WATER_MILL'
 );
-	
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	DistrictModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
