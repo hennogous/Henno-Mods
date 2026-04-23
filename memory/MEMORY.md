@@ -1,5 +1,5 @@
 - [Project notes location](project_notes_location.md) — to-do lists and working docs live in `project/` at repo root
 - [Skill inaccuracy: decal visibility](feedback_skill_decal_visibility.md) — "DecalGeometry added directly = always visible" only applies to reveal animation, not GroupStates
-- [Q2 2026 Quarter roadmap](project_roadmap_q2_2026.md) — Bakers' art tweaks now; Tailors' SQL + art starts May 2026
+- [Q2 2026 Quarter roadmap](project_roadmap_q2_2026.md) — CivAssetForge prototype done (Apr 2026); Bakers' art tweaks still pending; Tailors' starts May 2026
 - [CivAssetForge viewer prototype learnings](project_civassetforge_viewer_learnings.md) — FGX pipeline, DDS formats, UV conventions, tile offset fix, attachment extraction, Wind Mill scene confirmed working
 - [Write to memory proactively](feedback_memory_discipline.md) — write as things happen, not batched; project memory is primary for CSC/CivAssetForge work
