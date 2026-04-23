@@ -135,6 +135,10 @@ Defined in `Settings/Settings.xml`. Current toggles:
 - `CSC_INCLUDE_ANIMAL_RESOURCES` — animal resource support (default: Off)
 - `CSC_REMOVE_UNUSED_MODDED_RESOURCES` — clean unused modded resources (default: On)
 
+## Claude Memory
+
+Session memory for this project lives in `memory/` at the repo root — versioned with the code, not in Claude's default projects folder. Read `memory/MEMORY.md` at session start. Write to the typed files there (`project_*.md`, `feedback_*.md`, etc.) as things happen during a session.
+
 ## Project Notes
 
 Working docs, tools, and reference material live in `project/` at the repo root. See `project/README.md` for the full index. Key subdirs:
