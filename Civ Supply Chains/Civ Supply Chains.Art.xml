@@ -185,6 +185,7 @@
 		<Element>
 			<consumerName text="UILensAsset"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_Overlay.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="OverlayTexture"/>
@@ -195,6 +196,7 @@
 		<Element>
 			<consumerName text="Overlay"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_Overlay.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="OverlayTexture"/>
@@ -443,6 +445,7 @@
 		<Element>
 			<consumerName text="RangeArrows"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_Overlay.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="OverlayTexture"/>
@@ -584,6 +587,7 @@
 		<Element>
 			<libraryName text="UILensAsset"/>
 			<relativePackagePaths>
+				<Element text="UILensAsset/CSC_UILensAssets"/>
 			</relativePackagePaths>
 		</Element>
 		<Element>
@@ -600,6 +604,7 @@
 		<Element>
 			<libraryName text="VFX"/>
 			<relativePackagePaths>
+				<Element text="CSC_VFX"/>
 			</relativePackagePaths>
 		</Element>
 		<Element>
@@ -620,12 +625,8 @@
 	</gameLibraries>
 	<requiredGameArtIDs>
 		<Element>
-			<name text="Expansion1"/>
-			<id text="7446c8fe-29eb-44f8-801f-098f681cc5c5"/>
-		</Element>
-		<Element>
-			<name text="Expansion2"/>
-			<id text="b1b63999-6b16-4dd2-a5b6-eb19794aa8ca"/>
+			<name text="Shared"/>
+			<id text="725760e3-7fc0-4be7-abf1-17bc756d5436"/>
 		</Element>
 	</requiredGameArtIDs>
 </AssetObjects::GameArtSpecification>

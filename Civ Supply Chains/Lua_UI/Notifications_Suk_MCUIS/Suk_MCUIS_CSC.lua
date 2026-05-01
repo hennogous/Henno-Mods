@@ -1,9 +1,8 @@
---==========================================================================================================================
+﻿--==========================================================================================================================
 --<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 --==========================================================================================================================
 -- Suk_MCUIS_CSC UI Script
 --==========================================================================================================================
-print('Suk_MCUIS_CSC UI Script Loaded!!!')
 
 --==========================================================================================================================
 -- CONSTANTS
@@ -22,19 +21,19 @@ end
 -- we also add each individual AttachedModifierId found in mCSC_AbilityAttachModifiers to mCSC_AbilityEffectModifiers, for easy fetching later in the script
 local mCSC_AbilityEffectModifiers = {}
 for i,v in pairs(mCSC_AbilityAttachModifiers) do
+	if v.AbilityEffectModifierId == nil then
+	end
 	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId] = {};
 	if v.ArgumentAmount == nil then
 		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Amount = 0
 	else
 		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Amount = v.ArgumentAmount
 	end
-	
 	if v.Desc == nil then
 		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Desc = ''
 	else
 		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Desc = v.Desc
 	end
-	
 	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Icon = v.Icon
 	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].IconTarget = v.IconTarget
 end
@@ -50,10 +49,12 @@ end
 -- if the local player leads a different civilization
 --=================================================================================================================
 function OnSuk_MCUIS_RequestRegistration(pRegistration)
+	local iRegistered = 0
 	-- we want to create/preserve a City Icon for each AbilityEffectModifierId in mCSC_AbilityEffectModifiers
 	for sModifier,v in pairs(mCSC_AbilityEffectModifiers) do
 		local sIconName = 'CSC_ActiveModifiers_'..sModifier
 		pRegistration:RegisterCityIcon(sIconName)
+		iRegistered = iRegistered + 1
 	end
 end
 LuaEvents.Suk_MCUIS_RequestRegistration.Add(OnSuk_MCUIS_RequestRegistration)
@@ -78,11 +79,14 @@ function OnSuk_MCUIS_QueryIcon(sContext, sName, pIcon)
 	
 	-- we check if this Icon is one we preserved earlier, by checking if its sName contains 'CSC_ActiveModifiers_'
 	local bIconExists = string.find(sName, "CSC_ActiveModifiers_")
+	if bIconExists then
+	end
 	if sContext == "City" and bIconExists then
 		
 		-- Checking if we actual have a selected City
 		pCity = UI.GetHeadSelectedCity()
 		if not pCity then return end
+		
 		
 		-- let's hide this Icon for the moment, and only allow script to show it if we can
 		pIcon:SetIconData(false, false, '', "ICON_BUILDING_MONUMENT", nil, nil, 20)
@@ -116,7 +120,7 @@ function OnSuk_MCUIS_QueryIcon(sContext, sName, pIcon)
 							for key, value in string.gmatch(sString, "(%w+):%s*(-?%d+)") do
 								info[key] = tonumber(value)
 							end
-							
+						
 							-- Since the attached modifers we're looking after are applied to Districts, we only cehck for those
 							-- And we also check if this Subject's CityID and OwnerID are the same as the current City's
 							if sObjectTypeName == 'District' and info.City == pCity:GetID() and info.Owner == iPlayer  then
@@ -138,6 +142,7 @@ function OnSuk_MCUIS_QueryIcon(sContext, sName, pIcon)
 				end
 			end
 		end
+		
 		
 		-- Now we iterate through each City-Attached-Modifier in tCityModifiers, and check if the modifier matches this refreshing Icon
 		-- If it does, we customzie its ToolTip Text and make its Icon visible
@@ -179,7 +184,6 @@ function OnSuk_MCUIS_QueryIcon(sContext, sName, pIcon)
 
 			end
 		end
-		
 	end
 end
 
@@ -199,6 +203,13 @@ function OnSuk_MCUIS_RequestedIcon(sContext, sName, tInstance)
             tSelf.OnResetting = nil
         end
     end
+end
+
+-- Helper for table counting
+function table_count(t)
+	local c = 0
+	for _ in pairs(t) do c = c + 1 end
+	return c
 end
 
 LuaEvents.Suk_MCUIS_RequestedIcon.Add(OnSuk_MCUIS_RequestedIcon)

@@ -4,16 +4,7 @@
 		<name text="Civ_Supply_Chains"/>
 		<id text="c5e66bd1-d804-443b-ac3d-1917a20dba3c"/>
 	</ID>
-	<RequiredGameArtIDs>
-		<Element>
-			<name text="Expansion1"/>
-			<id text="7446c8fe-29eb-44f8-801f-098f681cc5c5"/>
-		</Element>
-		<Element>
-			<name text="Expansion2"/>
-			<id text="b1b63999-6b16-4dd2-a5b6-eb19794aa8ca"/>
-		</Element>
-	</RequiredGameArtIDs>
+	<RequiredGameArtIDs/>
 	<SystemDependencies>
 		<Element>
 			<ConsumerName text="Units"/>
@@ -208,7 +199,9 @@
 		</Element>
 		<Element>
 			<ConsumerName text="UILensAsset"/>
-			<ArtDefDependencyPaths/>
+			<ArtDefDependencyPaths>
+				<Element text="CSC_Overlay.artdef"/>
+			</ArtDefDependencyPaths>
 			<LibraryDependencies>
 				<Element text="OverlayTexture"/>
 				<Element text="UILensAsset"/>
@@ -217,7 +210,9 @@
 		</Element>
 		<Element>
 			<ConsumerName text="Overlay"/>
-			<ArtDefDependencyPaths/>
+			<ArtDefDependencyPaths>
+				<Element text="CSC_Overlay.artdef"/>
+			</ArtDefDependencyPaths>
 			<LibraryDependencies>
 				<Element text="OverlayTexture"/>
 				<Element text="UILensAsset"/>
@@ -434,7 +429,9 @@
 		</Element>
 		<Element>
 			<ConsumerName text="RangeArrows"/>
-			<ArtDefDependencyPaths/>
+			<ArtDefDependencyPaths>
+				<Element text="CSC_Overlay.artdef"/>
+			</ArtDefDependencyPaths>
 			<LibraryDependencies>
 				<Element text="OverlayTexture"/>
 				<Element text="UILensAsset"/>
@@ -494,6 +491,10 @@
 		</Element>
 		<Element>
 			<ArtDefPath text="CSC_Icons.artdef"/>
+			<ArtDefDependencyPaths/>
+		</Element>
+		<Element>
+			<ArtDefPath text="CSC_Overlay.artdef"/>
 			<ArtDefDependencyPaths/>
 		</Element>
 	</ArtDefDependencies>
@@ -608,7 +609,9 @@
 		</Element>
 		<Element>
 			<LibraryName text="UILensAsset"/>
-			<PackageDependencies/>
+			<PackageDependencies>
+				<Element text="UILensAsset/CSC_UILensAssets.blp"/>
+			</PackageDependencies>
 		</Element>
 		<Element>
 			<LibraryName text="UITexture"/>
@@ -622,7 +625,9 @@
 		</Element>
 		<Element>
 			<LibraryName text="VFX"/>
-			<PackageDependencies/>
+			<PackageDependencies>
+				<Element text="CSC_VFX.blp"/>
+			</PackageDependencies>
 		</Element>
 		<Element>
 			<LibraryName text="Water"/>

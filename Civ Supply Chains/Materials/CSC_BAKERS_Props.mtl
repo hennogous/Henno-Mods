@@ -3,22 +3,22 @@
 	<m_CookParams>
 		<m_Values>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BAKERS_Props_B_1k"/>
+				<m_ObjectName text="CSC_BAKERS_Props_B"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="BaseColor"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BAKERS_Props_N_1k"/>
+				<m_ObjectName text="CSC_BAKERS_Props_N"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Normal"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BAKERS_Props_AO_1k"/>
+				<m_ObjectName text="CSC_BAKERS_Props_AO"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="AO"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text=""/>
+				<m_ObjectName text="CSC_BAKERS_Props_M"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Metalness"/>
 			</Element>
@@ -28,7 +28,7 @@
 				<m_ParamName text="Opacity"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BAKERS_Props_G_1k"/>
+				<m_ObjectName text="CSC_BAKERS_Props_G"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Gloss"/>
 			</Element>
@@ -38,7 +38,7 @@
 				<m_ParamName text="LightMap"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text=""/>
+				<m_ObjectName text="CSC_Atlas_E"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Emissive"/>
 			</Element>

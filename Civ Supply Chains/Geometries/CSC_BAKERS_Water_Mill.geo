@@ -146,12 +146,12 @@
 <Element>
 <m_Name text="CSC_BAKERS"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>620</m_nPrims>
+<m_nPrims>652</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>620</m_nPrimitiveCount>
-<m_nVertexCount>843</m_nVertexCount>
+<m_nBoundBoneCount>2</m_nBoundBoneCount>
+<m_nPrimitiveCount>652</m_nPrimitiveCount>
+<m_nVertexCount>879</m_nVertexCount>
 </Element>
 <Element>
 <m_Name text="DIS_CTY_Watermill_AN_Base"/>

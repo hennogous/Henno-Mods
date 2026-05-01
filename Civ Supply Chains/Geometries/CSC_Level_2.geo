@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <AssetObjects:GeometryInstance>
 <m_CookParams>
 <m_Values/>
@@ -11,24 +11,24 @@
 </m_Version>
 <m_Meshes>
 <Element>
-<m_Name text="CSC_Level_2_Low_Bldg"/>
+<m_Name text="CSC_Level_2_Bldg"/>
 <m_Groups>
 <Element>
-<m_Name text="CSC_Level_2_Low_Bldg"/>
+<m_Name text="CSC_Level_2_Bldg"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>837</m_nPrims>
+<m_nPrims>863</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>837</m_nPrimitiveCount>
-<m_nVertexCount>908</m_nVertexCount>
+<m_nPrimitiveCount>863</m_nPrimitiveCount>
+<m_nVertexCount>1013</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
-<Element text="CSC_Level_2_Low"/>
+<Element text="CSC_Level_2"/>
 <Element text="Bone"/>
 </m_Bones>
-<m_ModelName text="CSC_Level_2_Low"/>
+<m_ModelName text="CSC_Level_2"/>
 <m_SourceFilePath text=""/>
 <m_SourceObjectName text=""/>
 <m_ImportedTime>0</m_ImportedTime>

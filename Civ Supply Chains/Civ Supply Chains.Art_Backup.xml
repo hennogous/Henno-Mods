@@ -64,6 +64,7 @@
 		<Element>
 			<consumerName text="StrategicView_Properties"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_StrategicView.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 			</libraryDependencies>
@@ -74,6 +75,7 @@
 			<relativeArtDefPaths>
 				<Element text="CSC_Buildings.artdef"/>
 				<Element text="CSC_Districts.artdef"/>
+				<Element text="CSC_StrategicView.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="StrategicView_Sprite"/>
@@ -84,6 +86,7 @@
 		<Element>
 			<consumerName text="StrategicView_Route"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_StrategicView.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="StrategicView_Route"/>
@@ -94,6 +97,7 @@
 		<Element>
 			<consumerName text="StrategicView_TerrainType"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_StrategicView.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="StrategicView_TerrainBlend"/>
@@ -106,6 +110,7 @@
 		<Element>
 			<consumerName text="StrategicView_TerrainBlendCorners"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_StrategicView.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="StrategicView_TerrainBlendCorners"/>
@@ -116,6 +121,7 @@
 		<Element>
 			<consumerName text="StrategicView_TerrainBlend"/>
 			<relativeArtDefPaths>
+				<Element text="CSC_StrategicView.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 				<Element text="StrategicView_TerrainBlend"/>
@@ -536,6 +542,7 @@
 		<Element>
 			<libraryName text="StrategicView_Sprite"/>
 			<relativePackagePaths>
+				<Element text="StrategicView/CSC_StrategicView"/>
 			</relativePackagePaths>
 		</Element>
 		<Element>

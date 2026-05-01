@@ -258,6 +258,10 @@
     <Content Include="XLPs\CSC_Tilebases.xlp">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="XLPs\CSC_VFX.xlp">
+      <SubType>Content</SubType>
+    </Content>
+
   </ItemGroup>
   <Import Project="$(MSBuildLocalExtensionPath)Civ6.targets" />
 </Project>

@@ -244,9 +244,9 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 
 (	'CSC_BAKERS_PRODUCTION_FROM_BASE',
 	'DISTRICT_CSC_BAKERS_QUARTER',
-	'SelfLoyalty',
-	'YIELD_LOYALTY',
-	-10,
+	'SelfBonus',
+	'YIELD_PRODUCTION',
+	1,
 	'FROM_RINGS_TYPETAG_RESOURCE',
 	'CLASS_CSC_BAKERS_BASE',
 	1,
@@ -257,36 +257,10 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	'DISTRICT_CSC_BAKERS_QUARTER',
 	'SelfBonus',
 	'YIELD_PRODUCTION',
-	50,
+	1,
 	'FROM_RINGS_TYPETAG_RESOURCE',
 	'CLASS_CSC_BAKERS_SPEC',
 	1,
-	1,
-	1
-);
-
-INSERT OR IGNORE INTO Ruivo_New_Adjacency (
-    ID,
-    DistrictType,
-    ProvideType,
-    YieldType,
-    YieldChange,
-    AdjacencyType,
-    CustomAdjacentObject,
-    MinRings,
-	MaxRings,
-	MustOwn,
-    DistrictModifiers	) VALUES
-
-(	'CSC_BAKERS_PRODUCTION_FROM_BASE_2',
-	'DISTRICT_CSC_BAKERS_QUARTER',
-	'SelfLoyalty',
-	'YIELD_LOYALTY',
-	5,
-	'FROM_RINGS_TYPETAG_RESOURCE',
-	'CLASS_CSC_BAKERS_BASE',
-	2,
-	2,
 	1,
 	1
 );
@@ -356,7 +330,7 @@ INSERT OR IGNORE INTO DistrictModifiers
 		(	'DISTRICT_CSC_BAKERS_QUARTER',			'MOD_CSC_BAKERS_NO_RIVER_ACCESS_FLAG'			),
 
 --  +1 Gold to each adjacent base or specialty materials resource from this supply chain
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'MOD_CSC_BAKERS_GOLD_TO_ADJ_BASE_MATERIAL'		);
+		(	'DISTRICT_CSC_BAKERS_QUARTER',			'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY'		);
 
 
 
@@ -520,7 +494,6 @@ VALUES	(
 									);
 
 UPDATE Buildings SET RegionalRange=6 WHERE BuildingType='BUILDING_CSC_BAKERS_CAFE';
-UPDATE Buildings SET InternalOnly='1' WHERE BuildingType='BUILDING_CSC_BAKERS_RIVER_ACCESS';
 
 UPDATE Buildings
 SET MustPurchase = 1
@@ -745,7 +718,7 @@ INSERT OR IGNORE INTO Modifiers
 -- 	BAKERS QUARTER ----------------------------------------------------------------------
 
 --  +1 Gold to each adjacent base or specialty materials resource from this supply chain
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_BASE_MATERIAL',							'MODIFIER_PLAYER_ADJUST_PLOT_YIELD',							NULL,										'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_MATERIAL_ANY'		),
+		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY',							'MODIFIER_PLAYER_ADJUST_PLOT_YIELD',							NULL,										'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_MATERIAL_ANY'		),
 
 --	FLOUR MILL --------------------------------------------------------------------------
 
@@ -865,8 +838,8 @@ INSERT OR IGNORE INTO ModifierArguments
 -- 	BAKERS QUARTER ----------------------------------------------------------------------
 
 --  +1 Gold to each adjacent base or specialty materials resource from this supply chain
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_BASE_MATERIAL',							'YieldType',				'YIELD_GOLD'													),
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_BASE_MATERIAL',							'Amount',					1																),
+		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY',							'YieldType',				'YIELD_GOLD'													),
+		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY',							'Amount',					1																),
 
 -- 	FLOUR MILL --------------------------------------------------------------------------
 

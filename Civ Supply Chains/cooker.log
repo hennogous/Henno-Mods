@@ -1,136 +1,88 @@
 Starting AssetCooker...
 Argument '--shaders' has been deprecated and is no longer used.
 XLP cook starting...
-C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\CivSupplyChains\Civ Supply Chains\XLPs\CSC_Tilebases.xlp
-Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/Landmarks/CSC_Tilebases.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\CivSupplyChains\Civ Supply Chains\XLPs\CSC_Tilebases.xlp'
+C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\CivSupplyChains\Civ Supply Chains\XLPs\CSC_VFX.xlp
+Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/CSC_VFX.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\CivSupplyChains\Civ Supply Chains\XLPs\CSC_VFX.xlp'
 Could not load digest key: ''.  Using mod key to sign BLP.
-Starting 'Landmarks/CSC_Tilebases'
-
-****** Log from Geometry: 'DIS_PRD_Classical_Base_01_Decals' ********
---------------
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow001 : 2 vertices removed by tangent merger.
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow003 : 2 vertices removed by tangent merger.
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow004 : 2 vertices removed by tangent merger.
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow006 : 2 vertices removed by tangent merger.
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow008 : 2 vertices removed by tangent merger.
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow009 : 2 vertices removed by tangent merger.
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow010 : 2 vertices removed by tangent merger.
-Geo DIS_PRD_Classical_Base_01_Decals Mesh Decal_CLA_Elbow011 : 2 vertices removed by tangent merger.
-
-****** Log from Geometry: 'DIS_CTY_Foundation_WR_LgGrayBlock' ********
---------------
-Geo DIS_CTY_Foundation_WR_LgGrayBlock Mesh WR_Base : 1 vertices removed by tangent merger.
-
-****** Log from Geometry: 'IMP_Farm_IND_Bld_Well_PIL' ********
---------------
-Geo IMP_Farm_IND_Bld_Well_PIL Mesh IMP_Farm_IND_Bld_Well_PIL : 6 vertices removed by tangent merger.
-Geo IMP_Farm_IND_Bld_Well_PIL mesh IMP_Farm_IND_Bld_Well_PIL flagged for possible vertex duplication. Vertex Count: 270, Index Count: 450, Tri Count 150, Reused Vertices: 147, Duplicate Vertices: 0, Duplicate Positions: 94, Vertex:Tri Ratio: 1.80
-
-****** Log from Geometry: 'Storage_L_20k' ********
---------------
-Geo Storage_L_20k Mesh Storage_L_20k : 211 vertices removed by tangent merger.
-
-****** Log from Geometry: 'IMP_Fishery_ANC_Crane_PIL' ********
---------------
-Geo IMP_Fishery_ANC_Crane_PIL mesh IMP_Fishery_ANC_Crane_PIL flagged for possible vertex duplication. Vertex Count: 242, Index Count: 384, Tri Count 128, Reused Vertices: 116, Duplicate Vertices: 0, Duplicate Positions: 92, Vertex:Tri Ratio: 1.89
-
-****** Log from Geometry: 'IMP_Fishery_ANC_Crane' ********
---------------
-Geo IMP_Fishery_ANC_Crane Mesh IMP_Fishery_ANC_Crane_Mesh : 2 vertices removed by tangent merger.
-Geo IMP_Fishery_ANC_Crane mesh IMP_Fishery_ANC_Crane_Mesh flagged for possible vertex duplication. Vertex Count: 306, Index Count: 564, Tri Count 188, Reused Vertices: 178, Duplicate Vertices: 0, Duplicate Positions: 114, Vertex:Tri Ratio: 1.63
-
-****** Log from Geometry: 'Level_3_20k' ********
---------------
-Geo Level_3_20k Mesh Level_3_20k : 1 vertices removed by tangent merger.
-
-****** Log from Geometry: 'CSC_BAKERS_Wind_Mill_Tower' ********
---------------
-Geo CSC_BAKERS_Wind_Mill_Tower Mesh IMP_Lumbermill_Medieval_Mill_Mesh#M : 21 vertices removed by tangent merger.
-Geo CSC_BAKERS_Wind_Mill_Tower mesh IMP_Lumbermill_Medieval_Mill_Mesh#M flagged for possible vertex duplication. Vertex Count: 366, Index Count: 627, Tri Count 209, Reused Vertices: 167, Duplicate Vertices: 0, Duplicate Positions: 110, Vertex:Tri Ratio: 1.75
-
-****** Log from Geometry: 'CSC_BAKERS_Wind_Mill_Tower_CON' ********
---------------
-Geo CSC_BAKERS_Wind_Mill_Tower_CON Mesh CSC_BAKERS_Wind_Mill_Tower_CON : 21 vertices removed by tangent merger.
-Geo CSC_BAKERS_Wind_Mill_Tower_CON mesh CSC_BAKERS_Wind_Mill_Tower_CON flagged for possible vertex duplication. Vertex Count: 366, Index Count: 627, Tri Count 209, Reused Vertices: 167, Duplicate Vertices: 0, Duplicate Positions: 110, Vertex:Tri Ratio: 1.75
-
-****** Log from Geometry: 'DIS_CTY_Watermill_AN' ********
---------------
-Geo DIS_CTY_Watermill_AN Mesh DIS_CTY_Watermill_AN_Bldg_PIL : 24 vertices removed by tangent merger.
-Geo DIS_CTY_Watermill_AN Mesh Grass : 2 vertices removed by tangent merger.
-Geo DIS_CTY_Watermill_AN Mesh Wheel : 1 vertices removed by tangent merger.
-Geo DIS_CTY_Watermill_AN mesh DIS_CTY_Watermill_AN_Bldg flagged for possible vertex duplication. Vertex Count: 203, Index Count: 336, Tri Count 112, Reused Vertices: 111, Duplicate Vertices: 0, Duplicate Positions: 82, Vertex:Tri Ratio: 1.81
-Geo DIS_CTY_Watermill_AN mesh DIS_CTY_Watermill_AN_Bldg_PIL flagged for possible vertex duplication. Vertex Count: 2602, Index Count: 4548, Tri Count 1516, Reused Vertices: 1414, Duplicate Vertices: 0, Duplicate Positions: 926, Vertex:Tri Ratio: 1.72
-
-****** Log from Geometry: 'CSC_Level_1_PIL' ********
---------------
-Geo CSC_Level_1_PIL Mesh CSC_Level_1_Bld_PIL : 2 vertices removed by tangent merger.
-
-****** Log from Geometry: 'CSC_Level_1_CON' ********
---------------
-Geo CSC_Level_1_CON Mesh CSC_Level_1_CON.001 : 2 vertices removed by tangent merger.
-Geo CSC_Level_1_CON mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
-
-****** Log from Geometry: 'CSC_BAKERS_Water_Mill_CON' ********
---------------
-Geo CSC_BAKERS_Water_Mill_CON Mesh CSC_Level_1_CON : 2 vertices removed by tangent merger.
-Geo CSC_BAKERS_Water_Mill_CON mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 319, Index Count: 441, Tri Count 147, Reused Vertices: 122, Duplicate Vertices: 0, Duplicate Positions: 105, Vertex:Tri Ratio: 2.17
-
-****** Log from Geometry: 'CSC_BAKERS_Water_Mill_PIL' ********
---------------
-Geo CSC_BAKERS_Water_Mill_PIL Mesh CSC_BAKERS_Water_Mill_PIL : 2 vertices removed by tangent merger.
-
-****** Log from Geometry: 'CSC_Storage_S' ********
---------------
-Geo CSC_Storage_S Mesh CSC_Storage_S_Bdg : 2 vertices removed by tangent merger.
-
-****** Log from Geometry: 'CSC_Storage_S_CON' ********
---------------
-Geo CSC_Storage_S_CON Mesh CSC_Storage_S_Bdg : 2 vertices removed by tangent merger.
-Geo CSC_Storage_S_CON mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 319, Index Count: 441, Tri Count 147, Reused Vertices: 122, Duplicate Vertices: 0, Duplicate Positions: 105, Vertex:Tri Ratio: 2.17
-
-****** Log from Geometry: 'CSC_Storage_S_PIL' ********
---------------
-Geo CSC_Storage_S_PIL Mesh CSC_Storage_S_Bdg : 2 vertices removed by tangent merger.
-
-****** Log from Geometry: 'CSC_Storage_M_CON' ********
---------------
-Geo CSC_Storage_M_CON mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 269, Index Count: 375, Tri Count 125, Reused Vertices: 106, Duplicate Vertices: 0, Duplicate Positions: 85, Vertex:Tri Ratio: 2.15
-
-****** Log from Texture: 'Level_2_20k_E2' ********
---------------
-Texture 'Level_2_20k_E2' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
-
-****** Log from Texture: 'Oven2_20k_E' ********
---------------
-Texture 'Oven2_20k_E' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
-
-****** Log from Texture: 'Level_3_20k_E' ********
---------------
-Texture 'Level_3_20k_E' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
-
-****** Log from Texture: 'CSC_Atlas_E' ********
---------------
-Texture 'CSC_Atlas_E' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
-Load finished for: 'Landmarks/CSC_Tilebases' in 3.582 seconds
-CSC_Level_1_CON:CSC_Level_1_CON has 2 degenerate triangles
-CSC_BAKERS_Water_Mill_PIL:CSC_BAKERS_Water_Mill_PIL has 2 degenerate triangles
-CSC_Level_1_CON.001:CSC_Level_1_CON has 2 degenerate triangles
-CSC_Level_1_Bld_PIL:CSC_Level_1 has 2 degenerate triangles
-CSC_Storage_S_Bdg:CSC_Storage_S has 2 degenerate triangles
-CSC_Storage_S_Bdg:CSC_Storage_S has 58 zero area triangles (example position: 28.898, -3.094, 0.074 )
-CSC_Storage_S_Bdg:CSC_Storage_S has 2 degenerate triangles
-CSC_Storage_S_Bdg:CSC_Storage_S has 68 zero area triangles (example position: -3.930, -16.849, 35.300 )
-CSC_Storage_S_Bdg:CSC_Storage_S has 2 degenerate triangles
-CSC_Storage_S_Bdg:CSC_Storage_S has 68 zero area triangles (example position: -3.930, -16.849, 35.300 )
-Geometry is required to autogenerate an OB for asset "Bakery_NanoBanana_Wrapper".
-			An empty OB will be used for this asset.
-Geometry is required to autogenerate an OB for asset "CSC_QUARTERS_Plaza_Inner".
-			An empty OB will be used for this asset.
-Profile AABB exceeds hex AABB in geo "IMP_Farm_Decal_Transition_08_OB"
-			Make sure model is correctly transformed, then reset and collapse the transform.
-			If everything is working as intended, ignore this message.
-Cook finished for: 'Landmarks/CSC_Tilebases' in 0.322 seconds
-Disk write finished for: 'Landmarks/CSC_Tilebases' in 0.410 seconds
-Cleanup finished for: 'Landmarks/CSC_Tilebases' in 0.031 seconds
+Starting 'CSC_VFX'
+Load finished for: 'CSC_VFX' in 0.027 seconds
+Cook finished for: 'CSC_VFX' in 0.001 seconds
+Disk write finished for: 'CSC_VFX' in 0.080 seconds
+Cleanup finished for: 'CSC_VFX' in 0.000 seconds
 XLP cook completed with success.
-Cook completed in 4.362 seconds
+Cook completed in 0.121 seconds
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

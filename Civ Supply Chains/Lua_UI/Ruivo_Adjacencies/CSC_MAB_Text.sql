@@ -15,7 +15,9 @@
 
 INSERT OR REPLACE INTO LocalizedText	
 		(Tag,											Language,			Text)
-VALUES	('LOC_RUIVO_FROM_RINGS_TYPETAG_RESOURCE',		'en_US',			'{1_iBonus} {2_YieldIcon} from {3_AdjacentSubjectNum} {5_sAdjacency} {4_CAO} {3_Num : plural 1?resource; other?resources;}.'),
+VALUES
+/*
+		('LOC_RUIVO_FROM_RINGS_TYPETAG_RESOURCE',		'en_US',			'{1_iBonus} {2_YieldIcon} from {3_AdjacentSubjectNum} {5_sAdjacency} {4_CAO} {3_Num : plural 1?resource; other?resources;}.'),
 		('LOC_RUIVO_FROM_RINGS_CAO_RESOURCE',			'en_US',			'{1_iBonus} {2_YieldIcon} from {3_AdjacentSubjectNum} {5_sAdjacency} {4_CAO} {3_Num : plural 1?resource; other?resources;}.'),
 		('LOC_RUIVO_FROM_RINGS_SPECIFIC_WONDER',		'en_US',			'{1_iBonus} {2_YieldIcon} from the {5_sAdjacency} {4_CAO} Wonder.'),
 		('LOC_RUIVO_FROM_RINGS_CAO_TERRAIN_SETS',		'en_US',			'{1_iBonus} {2_YieldIcon} from {3_AdjacentSubjectNum} {5_sAdjacency} {4_CAO} terrain.'),
@@ -32,7 +34,7 @@ VALUES	('LOC_RUIVO_FROM_RINGS_TYPETAG_RESOURCE',		'en_US',			'{1_iBonus} {2_Yiel
 		('LOC_ZEGA_ADJACENCY_NEARBY',					'en_US',			'nearby'),
 		
 		('LOC_ZEGA_FROM_DISTRICT_ABILITY',				'en_US',			' (from district ability)'),
-
+*/
 		-- CSC resource class names for adjacency tooltips
 		('LOC_CLASS_CSC_BAKERS_BASE_NAME',				'en_US',			'Base materials'),
 		('LOC_CLASS_CSC_BAKERS_SPEC_NAME',				'en_US',			'Specialty materials');

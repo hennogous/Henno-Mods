@@ -11,24 +11,24 @@
 </m_Version>
 <m_Meshes>
 <Element>
-<m_Name text="CSC_Storage_L_PIL_Bldg"/>
+<m_Name text="CSC_Storage_L_CON+PIL_Bldg"/>
 <m_Groups>
 <Element>
-<m_Name text="CSC_Storage_L_PIL_Bldg"/>
+<m_Name text="CSC_Storage_L_CON+PIL_Bldg"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>786</m_nPrims>
+<m_nPrims>772</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>786</m_nPrimitiveCount>
-<m_nVertexCount>1168</m_nVertexCount>
+<m_nPrimitiveCount>772</m_nPrimitiveCount>
+<m_nVertexCount>1144</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
-<Element text="CSC_Storage_L_PIL"/>
+<Element text="CSC_Storage_L_CON+PIL"/>
 <Element text="Bone"/>
 </m_Bones>
-<m_ModelName text="CSC_Storage_L_PIL"/>
+<m_ModelName text="CSC_Storage_L_CON+PIL"/>
 <m_SourceFilePath text=""/>
 <m_SourceObjectName text=""/>
 <m_ImportedTime>0</m_ImportedTime>

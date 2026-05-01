@@ -10,34 +10,6 @@
 	<m_PackageName text="UI/CSC_Icons"/>
 	<m_Entries>
 		<Element>
-			<m_EntryID text="CSC_Quarters_128"/>
-			<m_ObjectName text="CSC_Quarters_128"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Quarters_256"/>
-			<m_ObjectName text="CSC_Quarters_256"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Quarters_256_FOW"/>
-			<m_ObjectName text="CSC_Quarters_256_FOW"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Quarters_32"/>
-			<m_ObjectName text="CSC_Quarters_32"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Quarters_38"/>
-			<m_ObjectName text="CSC_Quarters_38"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Quarters_50"/>
-			<m_ObjectName text="CSC_Quarters_50"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Quarters_80"/>
-			<m_ObjectName text="CSC_Quarters_80"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_Resources_256"/>
 			<m_ObjectName text="CSC_Resources_256"/>
 		</Element>
@@ -68,30 +40,6 @@
 		<Element>
 			<m_EntryID text="CSC_Resources_64_FOW"/>
 			<m_ObjectName text="CSC_Resources_64_FOW"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Buildings_256"/>
-			<m_ObjectName text="CSC_Buildings_256"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Buildings_128"/>
-			<m_ObjectName text="CSC_Buildings_128"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Buildings_80"/>
-			<m_ObjectName text="CSC_Buildings_80"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Buildings_50"/>
-			<m_ObjectName text="CSC_Buildings_50"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Buildings_38"/>
-			<m_ObjectName text="CSC_Buildings_38"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Buildings_32"/>
-			<m_ObjectName text="CSC_Buildings_32"/>
 		</Element>
 		<Element>
 			<m_EntryID text="CSC_BAKERS_128"/>

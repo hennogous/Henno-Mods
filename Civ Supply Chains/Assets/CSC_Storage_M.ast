@@ -134,7 +134,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Storage_1k"/>
+									<m_ObjectName text="CSC_BAKERS_NE"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -175,7 +175,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Storage_1k"/>
+									<m_ObjectName text="CSC_BAKERS_NE"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -298,7 +298,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Storage_1k"/>
+									<m_ObjectName text="CSC_BAKERS_NE"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -338,8 +338,8 @@
 				</m_GroupStates>
 			</Element>
 			<Element>
-				<m_Name text="CSC_Storage_M_CON"/>
-				<m_GeoName text="CSC_Storage_M_CON"/>
+				<m_Name text="CSC_Storage_M_CON+PIL"/>
+				<m_GeoName text="CSC_Storage_M_CON+PIL"/>
 				<m_GroupStates>
 					<Element>
 						<m_Values>
@@ -378,8 +378,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_CON_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_CON_Bldg"/>
+						<m_GroupName text="CSC_Storage_M_CON+PIL_Bldg"/>
+						<m_MeshName text="CSC_Storage_M_CON+PIL_Bldg"/>
 						<m_StateName text="Worked"/>
 					</Element>
 					<Element>
@@ -419,20 +419,20 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_CON_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_CON_Bldg"/>
+						<m_GroupName text="CSC_Storage_M_CON+PIL_Bldg"/>
+						<m_MeshName text="CSC_Storage_M_CON+PIL_Bldg"/>
 						<m_StateName text="Unworked"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
+									<m_ObjectName text="CSC_BAKERS_NE"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -460,15 +460,15 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_CON_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_CON_Bldg"/>
+						<m_GroupName text="CSC_Storage_M_CON+PIL_Bldg"/>
+						<m_MeshName text="CSC_Storage_M_CON+PIL_Bldg"/>
 						<m_StateName text="Pillaged"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Storage_1k"/>
+									<m_ObjectName text="CSC_BAKERS_NE"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -501,8 +501,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_CON_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_CON_Bldg"/>
+						<m_GroupName text="CSC_Storage_M_CON+PIL_Bldg"/>
+						<m_MeshName text="CSC_Storage_M_CON+PIL_Bldg"/>
 						<m_StateName text="Construction"/>
 					</Element>
 					<Element>
@@ -542,8 +542,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_CON_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_CON_Bldg"/>
+						<m_GroupName text="CSC_Storage_M_CON+PIL_Bldg"/>
+						<m_MeshName text="CSC_Storage_M_CON+PIL_Bldg"/>
 						<m_StateName text="Unbuilt"/>
 					</Element>
 					<Element>
@@ -754,14 +754,14 @@
 				</m_GroupStates>
 			</Element>
 			<Element>
-				<m_Name text="CSC_Storage_M_PIL"/>
-				<m_GeoName text="CSC_Storage_M_PIL"/>
+				<m_Name text="CSC_Storage_M_PIL_Decals"/>
+				<m_GeoName text="CSC_Storage_M_PIL_Decals"/>
 				<m_GroupStates>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
+									<m_ObjectName text="Ruin_Debris_Decal"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -769,40 +769,17 @@
 									<m_bValue>false</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_PIL_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_PIL_Bldg"/>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11011"/>
 						<m_StateName text="Worked"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
+									<m_ObjectName text="Ruin_Debris_Decal"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -810,40 +787,17 @@
 									<m_bValue>false</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_PIL_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_PIL_Bldg"/>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11011"/>
 						<m_StateName text="Unworked"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Storage_1k"/>
+									<m_ObjectName text="Ruin_Debris_Decal"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -851,40 +805,17 @@
 									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultBurnMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_PIL_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_PIL_Bldg"/>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11011"/>
 						<m_StateName text="Pillaged"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
+									<m_ObjectName text="Ruin_Debris_Decal"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -892,40 +823,17 @@
 									<m_bValue>false</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_PIL_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_PIL_Bldg"/>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11011"/>
 						<m_StateName text="Construction"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
+									<m_ObjectName text="Ruin_Debris_Decal"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -933,33 +841,100 @@
 									<m_bValue>false</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
+							</m_Values>
+						</m_Values>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11011"/>
+						<m_StateName text="Unbuilt"/>
+					</Element>
+					<Element>
+						<m_Values>
+							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
+									<m_ObjectName text="Ruin_Debris_Decal"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
+									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
 									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
+									<m_ParamName text="Visible"/>
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Storage_M_PIL_Bldg"/>
-						<m_MeshName text="CSC_Storage_M_PIL_Bldg"/>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11020"/>
+						<m_StateName text="Worked"/>
+					</Element>
+					<Element>
+						<m_Values>
+							<m_Values>
+								<Element class="AssetObjects..ObjectValue">
+									<m_ObjectName text="Ruin_Debris_Decal"/>
+									<m_eObjectType>MATERIAL</m_eObjectType>
+									<m_ParamName text="Material"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>false</m_bValue>
+									<m_ParamName text="Visible"/>
+								</Element>
+							</m_Values>
+						</m_Values>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11020"/>
+						<m_StateName text="Unworked"/>
+					</Element>
+					<Element>
+						<m_Values>
+							<m_Values>
+								<Element class="AssetObjects..ObjectValue">
+									<m_ObjectName text="Ruin_Debris_Decal"/>
+									<m_eObjectType>MATERIAL</m_eObjectType>
+									<m_ParamName text="Material"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="Visible"/>
+								</Element>
+							</m_Values>
+						</m_Values>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11020"/>
+						<m_StateName text="Pillaged"/>
+					</Element>
+					<Element>
+						<m_Values>
+							<m_Values>
+								<Element class="AssetObjects..ObjectValue">
+									<m_ObjectName text="Ruin_Debris_Decal"/>
+									<m_eObjectType>MATERIAL</m_eObjectType>
+									<m_ParamName text="Material"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>false</m_bValue>
+									<m_ParamName text="Visible"/>
+								</Element>
+							</m_Values>
+						</m_Values>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11020"/>
+						<m_StateName text="Construction"/>
+					</Element>
+					<Element>
+						<m_Values>
+							<m_Values>
+								<Element class="AssetObjects..ObjectValue">
+									<m_ObjectName text="Ruin_Debris_Decal"/>
+									<m_eObjectType>MATERIAL</m_eObjectType>
+									<m_ParamName text="Material"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>false</m_bValue>
+									<m_ParamName text="Visible"/>
+								</Element>
+							</m_Values>
+						</m_Values>
+						<m_GroupName text="Ruin_Debris_Decal"/>
+						<m_MeshName text="Plane11020"/>
 						<m_StateName text="Unbuilt"/>
 					</Element>
 				</m_GroupStates>
