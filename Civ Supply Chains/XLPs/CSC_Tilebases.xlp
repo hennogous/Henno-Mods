@@ -126,10 +126,6 @@
 			<m_ObjectName text="CSC_BAKERS_Well"/>
 		</Element>
 		<Element>
-			<m_EntryID text="_CSC_Temp_Crane"/>
-			<m_ObjectName text="_CSC_Temp_Crane"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_BAKERS_Wind_Mill_Tower"/>
 			<m_ObjectName text="CSC_BAKERS_Wind_Mill_Tower"/>
 		</Element>
@@ -234,12 +230,32 @@
 			<m_ObjectName text="CSC_BAKERS_Storage_S"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_ALL_Ancient_Base_Storage"/>
-			<m_ObjectName text="CSC_ALL_Ancient_Base_Storage"/>
+			<m_EntryID text="CSC_ALL_Storage_S_Ext"/>
+			<m_ObjectName text="CSC_ALL_Storage_S_Ext"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_Stadium_Test"/>
-			<m_ObjectName text="CSC_Stadium_Test"/>
+			<m_EntryID text="CSC_ALL_Storage_M_Ext"/>
+			<m_ObjectName text="CSC_ALL_Storage_M_Ext"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_Storage_L_Crane"/>
+			<m_ObjectName text="CSC_Storage_L_Crane"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Stand"/>
+			<m_ObjectName text="CSC_ALL_Stand"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Bread"/>
+			<m_ObjectName text="CSC_BAKERS_Bread"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Classical_Base_09"/>
+			<m_ObjectName text="CSC_BAKERS_Classical_Base_09"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Ancient_Base_03"/>
+			<m_ObjectName text="CSC_BAKERS_Ancient_Base_03"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>

@@ -79,3 +79,9 @@ Lives at `C:\Users\Shadow\Desktop\Working Files\Tools\CivAssetForge` — its own
 - `viewer.html` — Three.js r163, OrbitControls, GLTFLoader, custom DDS loader
 
 **Why:** Direct FGX parsing via FGXToCN6.exe is Plan A for CivAssetForge. Full Wind Mill scene confirmed: base + tower + 11× Flour_Closed + 3× Flour_Open + cart + haypile, all correctly positioned.
+## Obstruction profile findings (May 2026)
+- CSC `CSC_BAKERS_Water_Mill.ast` currently leaves `Obstruction Profile` blank and uses `Obstruction Profile AutoGenerate = true`.
+- Local art docs describe obstruction blockers as static 2D shapes that block city-building spawn and bend roads; they do not mention dynamic repositioning of attachments.
+- Local art docs describe attachment `CullMode=Optional` as removable by city buildings, roads, or water. This appears to be culling-only, not "budge to a nearby slot" behavior.
+- Firaxis pantry assets do use explicit named obstruction meshes on many district bases and monuments, so a hand-authored asymmetric `LandmarkObstructionProfile` is a real supported knob.
+- Vanilla `DIS_PRD_Watermill.ast` also uses auto-generated obstruction and is attached to the district base as `OPTIONAL`, which suggests Firaxis solved Water Mill fit mostly by reserving space in the host base layout rather than runtime shuffling.

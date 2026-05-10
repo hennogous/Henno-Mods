@@ -9,7 +9,10 @@
       "WebSearch(*)",
       "Glob(*)",
       "Grep(*)",
-      "Skill(*)"
+      "Skill(*)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Shadow\\\\Documents\\\\Firaxis ModBuddy\\\\Civilization VI\\\\CivSupplyChains\\\\project\\\\\" -Recurse | Select-Object FullName | Where-Object { $_.FullName -match \"curry|peaceful|gold|plan\" })",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Shadow\\\\Desktop\\\\\" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"curry|peaceful|gold|csc\" -and !$_.PSIsContainer } | Select-Object FullName | Select-Object -First 20)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Shadow\\\\.claude\\\\\" -Recurse | Where-Object { $_.Name -match \"curry|peaceful|gold|plan\" } | Select-Object FullName)"
     ]
   }
 }
