@@ -3,3 +3,4 @@
 - [Q2 2026 Quarter roadmap](project_roadmap_q2_2026.md) — CivAssetForge prototype done (Apr 2026); Bakers' art tweaks still pending; Tailors' starts May 2026
 - [CivAssetForge viewer prototype learnings](project_civassetforge_viewer_learnings.md) — FGX pipeline, DDS formats, UV conventions, tile offset fix, attachment extraction, Wind Mill scene confirmed working
 - [Write to memory proactively](feedback_memory_discipline.md) — write as things happen, not batched; project memory is primary for CSC/CivAssetForge work
+- [ComfyUI icon pipeline notes](project_comfyui_icon_pipeline.md) — Dropzone output path, rembg CPU provider, optional SAM fallback

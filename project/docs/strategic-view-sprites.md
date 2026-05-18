@@ -1,6 +1,6 @@
 # Strategic View Sprites Reference
 
-The pipeline for generating 256×256 strategic view sprites from 3D building models using Blender renders + AI-assisted stylisation via ComfyUI.
+The pipeline for generating 256×256 strategic view sprites from source/reference images using AI-assisted stylisation via ComfyUI. Blender renders are still fine as inputs, but no longer required.
 
 ---
 
@@ -70,7 +70,7 @@ photorealistic, 3d render, complex shadows, noisy, blurry, text, watermark
 ```
 
 ### Script
-`csc/blender/render_to_sv_img2img.py` — sends the Blender render to ComfyUI API, applies ControlNet + LoRA, returns stylised output.
+`project/tools/blender/render_to_sv_img2img.py <source-image>` — sends any source/reference image to the ComfyUI API, applies the SV LoRA, and writes the post-processed output to `C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\ComfyUI output`.
 
 ---
 
@@ -78,8 +78,8 @@ photorealistic, 3d render, complex shadows, noisy, blurry, text, watermark
 
 ### Operations (in order)
 
-1. **Background removal:** Threshold-based (threshold=15 against white)
-   - All pixels within 15 brightness of pure white → transparent
+1. **Background removal:** Threshold-based (default threshold=15 against black)
+   - All near-black pixels become transparent
    
 2. **Brightness adjustment:** Multiply by 1.35×
    - SV sprites are slightly washed out / bright compared to the 3D render
@@ -90,15 +90,52 @@ photorealistic, 3d render, complex shadows, noisy, blurry, text, watermark
    - Applied to the alpha edge of the building shape
    - This is a defining feature of the Civ 6 SV style
 
-4. **Hard shadow ellipse:** 35% opacity
-   - Flat ellipse beneath the building
-   - No soft falloff — hard-edged shadow blob
-   - Matches the SDK pantry shadow style
-
-5. **Final resize:** To 256×256 PNG
+4. **Final resize:** To 256×256 PNG
 
 ### Script
-`csc/blender/add_sv_shadow.py` — applies shadow ellipse, outline, and finalises the sprite.
+`project/tools/blender/add_sv_shadow.py` — applies background removal, brightness, outline, and finalises the sprite. The old hard-edged shadow ellipse is intentionally removed.
+
+### Post-Processing Toggles / Knobs
+
+Every post-processing stage can be toggled from either CLI flags or `CSC_SV_*` environment variables. The same flags work when calling `render_to_sv_img2img.py`, because it forwards them into the post-process pass.
+
+```powershell
+py -3.12 project/tools/blender/add_sv_shadow.py "raw.png" "final.png" --no-brightness --outer-outline-px 6 --inner-edge-px 0 --sprite-size 118
+py -3.12 project/tools/blender/render_to_sv_img2img.py "source.png" --no-outlines --brightness-factor 1.15
+```
+
+| Stage | CLI | Environment variable | Default |
+|---|---|---|---|
+| Background removal | `--background-removal` / `--no-background-removal` | `CSC_SV_ENABLE_BACKGROUND_REMOVAL` | On |
+| Background threshold | `--threshold` | `CSC_SV_BG_THRESHOLD` | `15` |
+| Brightness | `--brightness` / `--no-brightness` | `CSC_SV_ENABLE_BRIGHTNESS` | On |
+| Brightness factor | `--brightness-factor` | `CSC_SV_BRIGHTNESS_FACTOR` | `1.35` |
+| Outlines | `--outlines` / `--no-outlines` | `CSC_SV_ENABLE_OUTLINES` | On |
+| Alpha mask threshold | `--mask-alpha-threshold` | `CSC_SV_MASK_ALPHA_THRESHOLD` | `10` |
+| Outer outline thickness | `--outer-outline-px` | `CSC_SV_OUTER_OUTLINE_PX` | `10` |
+| Inner edge thickness | `--inner-edge-px` | `CSC_SV_INNER_EDGE_PX` | `4` |
+| Outline color | `--outline-color` | `CSC_SV_OUTLINE_COLOR` | `#3A3A3A` |
+| Outer outline alpha | `--outer-outline-alpha` | `CSC_SV_OUTER_OUTLINE_ALPHA` | `255` |
+| Inner edge alpha | `--inner-edge-alpha` | `CSC_SV_INNER_EDGE_ALPHA` | `200` |
+| Resize/canvas pass | `--resize-canvas` / `--no-resize-canvas` | `CSC_SV_ENABLE_RESIZE_CANVAS` | On |
+| Canvas size | `--canvas-size` | `CSC_SV_CANVAS_SIZE` | `256` |
+| Sprite size | `--sprite-size` | `CSC_SV_SPRITE_SIZE` | `110` |
+| Paste offset | `--offset-x`, `--offset-y` | `CSC_SV_OFFSET_X`, `CSC_SV_OFFSET_Y` | centered |
+
+`render_to_sv_img2img.py` also mirrors the icon pipeline convention of top-of-file generation knobs with comments and env overrides:
+
+| Generation setting | Environment variable | Default |
+|---|---|---|
+| ComfyUI URL | `CSC_COMFYUI_URL` | `http://127.0.0.1:8188` |
+| Output directory | `CSC_COMFYUI_OUTPUT_DIR` | `C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\ComfyUI output` |
+| Denoise | `CSC_SV_DENOISE` | `0.55` |
+| LoRA strength | `CSC_SV_LORA_STR` | `0.6` |
+| CFG variants | `CSC_SV_CFG_VALUES` | `8` |
+| Steps | `CSC_SV_STEPS` | `25` |
+| Seed | `CSC_SV_SEED` | `42` |
+| Sampler / scheduler | `CSC_SV_SAMPLER`, `CSC_SV_SCHEDULER` | `dpmpp_2m`, `karras` |
+| Checkpoint / LoRA | `CSC_SV_CHECKPOINT`, `CSC_SV_LORA_NAME` | `sd_xl_base_1.0.safetensors`, `civ6_strategic_view.safetensors` |
+| Prompts | `CSC_SV_PROMPT`, `CSC_SV_NEGATIVE` | tuned defaults |
 
 ---
 

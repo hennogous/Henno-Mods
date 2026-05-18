@@ -10,32 +10,64 @@
 	<m_PackageName text="UI/CSC_Icons"/>
 	<m_Entries>
 		<Element>
-			<m_EntryID text="CSC_Resources_256"/>
-			<m_ObjectName text="CSC_Resources_256"/>
+			<m_EntryID text="CSC_Effect_Notifications_100"/>
+			<m_ObjectName text="CSC_Effect_Notifications_100"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_Resources_64"/>
-			<m_ObjectName text="CSC_Resources_64"/>
+			<m_EntryID text="CSC_Effect_Notifications_40"/>
+			<m_ObjectName text="CSC_Effect_Notifications_40"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_Resources_50"/>
-			<m_ObjectName text="CSC_Resources_50"/>
+			<m_EntryID text="CSC_GreatWorks_22"/>
+			<m_ObjectName text="CSC_GreatWorks_22"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_Resources_38"/>
-			<m_ObjectName text="CSC_Resources_38"/>
+			<m_EntryID text="CSC_GreatWorks_256"/>
+			<m_ObjectName text="CSC_GreatWorks_256"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_Resources_32"/>
-			<m_ObjectName text="CSC_Resources_32"/>
+			<m_EntryID text="CSC_GreatWorks_32"/>
+			<m_ObjectName text="CSC_GreatWorks_32"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_GreatWorks_38"/>
+			<m_ObjectName text="CSC_GreatWorks_38"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_GreatWorks_50"/>
+			<m_ObjectName text="CSC_GreatWorks_50"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_GreatWorks_64"/>
+			<m_ObjectName text="CSC_GreatWorks_64"/>
 		</Element>
 		<Element>
 			<m_EntryID text="CSC_Resources_22"/>
 			<m_ObjectName text="CSC_Resources_22"/>
 		</Element>
 		<Element>
+			<m_EntryID text="CSC_Resources_256"/>
+			<m_ObjectName text="CSC_Resources_256"/>
+		</Element>
+		<Element>
 			<m_EntryID text="CSC_Resources_256_FOW"/>
 			<m_ObjectName text="CSC_Resources_256_FOW"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_Resources_32"/>
+			<m_ObjectName text="CSC_Resources_32"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_Resources_38"/>
+			<m_ObjectName text="CSC_Resources_38"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_Resources_50"/>
+			<m_ObjectName text="CSC_Resources_50"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_Resources_64"/>
+			<m_ObjectName text="CSC_Resources_64"/>
 		</Element>
 		<Element>
 			<m_EntryID text="CSC_Resources_64_FOW"/>
@@ -72,38 +104,6 @@
 		<Element>
 			<m_EntryID text="CSC_BAKERS_80"/>
 			<m_ObjectName text="CSC_BAKERS_80"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_GreatWorks_256"/>
-			<m_ObjectName text="CSC_GreatWorks_256"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_GreatWorks_64"/>
-			<m_ObjectName text="CSC_GreatWorks_64"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_GreatWorks_50"/>
-			<m_ObjectName text="CSC_GreatWorks_50"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_GreatWorks_38"/>
-			<m_ObjectName text="CSC_GreatWorks_38"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_GreatWorks_32"/>
-			<m_ObjectName text="CSC_GreatWorks_32"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_GreatWorks_22"/>
-			<m_ObjectName text="CSC_GreatWorks_22"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Effect_Notifications_100"/>
-			<m_ObjectName text="CSC_Effect_Notifications_100"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_Effect_Notifications_40"/>
-			<m_ObjectName text="CSC_Effect_Notifications_40"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>

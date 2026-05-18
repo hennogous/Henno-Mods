@@ -75,7 +75,7 @@ thin lines, sketch, watermark, text
 ```
 
 ### Script
-`csc/comfyui/icon_img2img.py` — sends render to ComfyUI with ControlNet + LoRA, returns stylised output.
+`csc/comfyui/icon_pipeline/icon_img2img.py` — sends render to ComfyUI with ControlNet + LoRA, returns stylised output.
 
 ---
 
@@ -115,7 +115,7 @@ Icons are needed at multiple sizes for different UI contexts:
 Generate at 256 first, then downsample. The 28px outline was calibrated for 256 — it scales proportionally.
 
 ### Script
-`csc/comfyui/icon_postprocess.py` — SAM extraction, outline application, and multi-size output.
+`csc/comfyui/icon_pipeline/icon_postprocess.py` — SAM extraction, outline application, and multi-size output.
 
 ---
 

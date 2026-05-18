@@ -22,8 +22,22 @@ Open a PowerShell terminal and run:
 
 ```powershell
 cd C:\Users\Shadow\ComfyUI
-python main.py --listen 127.0.0.1 --port 8188
+py -3.12 main.py --listen 127.0.0.1 --port 8188
 ```
+
+If `py -3.12` is not available, use the full Python path instead:
+
+```powershell
+C:\Users\Shadow\AppData\Local\Programs\Python\Python312\python.exe main.py --listen 127.0.0.1 --port 8188
+```
+
+Do **not** use plain `python` unless you've verified it points to the normal Python 3.12 install. On this machine, `python` can resolve to the Hermes Agent virtual environment first:
+
+```text
+C:\Users\Shadow\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe
+```
+
+That environment is for Hermes, not ComfyUI, and may be missing ComfyUI dependencies such as `SQLAlchemy`.
 
 Wait for the line:
 
@@ -73,8 +87,8 @@ A reference image of the building — a screenshot, a concept sketch, a render f
 ### Running the Script
 
 ```powershell
-cd C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\CivSupplyChains
-python project/tools/comfyui/icon_img2img.py "C:\path\to\your\source_image.png"
+cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\CivSupplyChains"
+py -3.12 project/tools/comfyui/icon_pipeline/icon_img2img.py "C:\path\to\your\source_image.png"
 ```
 
 The script:
@@ -141,7 +155,7 @@ After generation, `icon_postprocess.py` runs automatically:
 To run post-processing on an existing raw file manually:
 
 ```powershell
-python project/tools/comfyui/icon_postprocess.py "path\to\raw.png" "path\to\output.png"
+py -3.12 project/tools/comfyui/icon_pipeline/icon_postprocess.py "path\to\raw.png" "path\to\output.png"
 ```
 
 ### Getting Multiple Variants
@@ -164,9 +178,9 @@ Each seed produces a different composition. Generate 4–6 and pick the best one
 
 ### What You Need
 
-A Blender render of the 3D building model at the correct SV camera angle.
+A source/reference image of the building — a sketch, screenshot, Blender render, or photo. A Blender render is optional now, not a prerequisite.
 
-### Step 2a: Blender Render
+### Optional: Blender Render
 
 Camera setup (must match Civ 6 SV orientation):
 - Building front face pointing **-X, -Y** (front-left corner faces the camera)
@@ -186,13 +200,13 @@ Output: a PNG render at the configured path.
 ### Step 2b: img2img via Script
 
 ```powershell
-python project/tools/blender/render_to_sv_img2img.py "C:\path\to\render.png"
+py -3.12 project/tools/blender/render_to_sv_img2img.py "C:\path\to\source_image.png"
 ```
 
 This script:
-1. Uploads the Blender render to ComfyUI
-2. Runs SDXL with `civ6_strategic_view.safetensors` + ControlNet Canny
-3. Returns a stylised SV-look PNG
+1. Uploads the source/reference image to ComfyUI
+2. Runs SDXL with `civ6_strategic_view.safetensors`
+3. Writes the post-processed SV PNG to `C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\ComfyUI output`
 
 | Setting | Value |
 |---|---|
@@ -206,15 +220,41 @@ This script:
 ### Step 2c: Post-Processing
 
 ```powershell
-python project/tools/blender/add_sv_shadow.py "path\to\sv_output.png" "path\to\final.png"
+py -3.12 project/tools/blender/add_sv_shadow.py "path\to\sv_output.png" "path\to\final.png"
 ```
 
 This applies in order:
-1. **Background removal** — threshold 15 against white (fails on green roofs — see Gotchas)
+1. **Background removal** — threshold 15 against black
 2. **Brightness boost** — 1.35× to match the washed-out SDK pantry palette
 3. **Charcoal outline** — 10px border (defining SV style feature)
-4. **Shadow ellipse** — hard-edged flat ellipse at 35% opacity beneath the building
-5. **Resize** — to 256×256 PNG
+4. **Resize** — to 256×256 PNG
+
+If no output path is supplied, the default output directory is `C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\ComfyUI output`.
+
+All post-processing stages have CLI toggles and knobs. These flags work on both `add_sv_shadow.py` and the end-to-end `render_to_sv_img2img.py` script:
+
+```powershell
+py -3.12 project/tools/blender/add_sv_shadow.py "raw.png" "final.png" --no-brightness --outer-outline-px 6 --inner-edge-px 0 --sprite-size 118
+py -3.12 project/tools/blender/render_to_sv_img2img.py "source.png" --no-outlines --brightness-factor 1.15
+```
+
+| Stage | CLI | Environment variable | Default |
+|---|---|---|---|
+| Background removal | `--background-removal` / `--no-background-removal` | `CSC_SV_ENABLE_BACKGROUND_REMOVAL` | On |
+| Background threshold | `--threshold` | `CSC_SV_BG_THRESHOLD` | `15` |
+| Brightness | `--brightness` / `--no-brightness` | `CSC_SV_ENABLE_BRIGHTNESS` | On |
+| Brightness factor | `--brightness-factor` | `CSC_SV_BRIGHTNESS_FACTOR` | `1.35` |
+| Outlines | `--outlines` / `--no-outlines` | `CSC_SV_ENABLE_OUTLINES` | On |
+| Alpha mask threshold | `--mask-alpha-threshold` | `CSC_SV_MASK_ALPHA_THRESHOLD` | `10` |
+| Outer outline thickness | `--outer-outline-px` | `CSC_SV_OUTER_OUTLINE_PX` | `10` |
+| Inner edge thickness | `--inner-edge-px` | `CSC_SV_INNER_EDGE_PX` | `4` |
+| Outline color | `--outline-color` | `CSC_SV_OUTLINE_COLOR` | `#3A3A3A` |
+| Outer outline alpha | `--outer-outline-alpha` | `CSC_SV_OUTER_OUTLINE_ALPHA` | `255` |
+| Inner edge alpha | `--inner-edge-alpha` | `CSC_SV_INNER_EDGE_ALPHA` | `200` |
+| Resize/canvas pass | `--resize-canvas` / `--no-resize-canvas` | `CSC_SV_ENABLE_RESIZE_CANVAS` | On |
+| Canvas size | `--canvas-size` | `CSC_SV_CANVAS_SIZE` | `256` |
+| Sprite size | `--sprite-size` | `CSC_SV_SPRITE_SIZE` | `110` |
+| Paste offset | `--offset-x`, `--offset-y` | `CSC_SV_OFFSET_X`, `CSC_SV_OFFSET_Y` | centered |
 
 ### Step 2d: FOW Variant
 
@@ -276,10 +316,10 @@ Icon_BUILDING_CSC_BAKERS_OVEN_FOW_256.dds   ← SV sprites only
 
 | Task | Script | Input | Output |
 |---|---|---|---|
-| Generate building icon from reference image | `project/tools/comfyui/icon_img2img.py <image>` | Any PNG/JPG | 1024×1024 RGBA PNG |
-| Post-process a raw icon manually | `project/tools/comfyui/icon_postprocess.py <raw> <out>` | Raw ComfyUI PNG | Cleaned 1024×1024 RGBA PNG |
-| Generate SV sprite from Blender render | `project/tools/blender/render_to_sv_img2img.py <render>` | Blender PNG render | Stylised SV PNG |
-| Apply shadow/outline/resize to SV sprite | `project/tools/blender/add_sv_shadow.py <in> <out>` | SV PNG | 256×256 PNG |
+| Generate building icon from reference image | `project/tools/comfyui/icon_pipeline/icon_img2img.py <image>` | Any PNG/JPG | 1024×1024 RGBA PNG |
+| Post-process a raw icon manually | `project/tools/comfyui/icon_pipeline/icon_postprocess.py <raw> <out>` | Raw ComfyUI PNG | Cleaned 1024×1024 RGBA PNG |
+| Generate SV sprite from source image | `project/tools/blender/render_to_sv_img2img.py <source-image>` | Any PNG/JPG reference image | 256×256 SV PNG in ComfyUI output folder |
+| Apply outline/resize to SV sprite | `project/tools/blender/add_sv_shadow.py <in> [out]` | SV PNG | 256×256 PNG |
 | Automated Blender camera + render | `project/tools/blender/blend_render_sv.py` | .blend file | 512×512 render PNG |
 
 ---
@@ -400,6 +440,40 @@ Add more explicit style keywords to the prompt: `bold outlines, cel shaded, thic
 
 ### If background removal (rembg) is cutting into the building
 The subject boundary is ambiguous. Either: increase the `pad=` value in `pad_image()` (try `pad=200`), or use a plain neutral background in your source image instead of a complex scene.
+
+### If ComfyUI fails with `ModuleNotFoundError: No module named 'sqlalchemy'`
+You're almost certainly launching ComfyUI with the wrong Python interpreter.
+
+Check what `python` points to:
+
+```powershell
+where.exe python
+```
+
+If the first result is:
+
+```text
+C:\Users\Shadow\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe
+```
+
+then PowerShell is picking up the Hermes Agent virtual environment. Launch ComfyUI with the explicit Python 3.12 command instead:
+
+```powershell
+cd C:\Users\Shadow\ComfyUI
+py -3.12 main.py --listen 127.0.0.1 --port 8188
+```
+
+or:
+
+```powershell
+C:\Users\Shadow\AppData\Local\Programs\Python\Python312\python.exe main.py --listen 127.0.0.1 --port 8188
+```
+
+Known-good local setup as of 2026-05-10:
+- ComfyUI: `0.18.1`
+- Python: `3.12.10`
+- PyTorch: `2.5.1+cu121`
+- GPU: `NVIDIA RTX 2000 Ada Generation`, ~16 GB VRAM
 
 ---
 

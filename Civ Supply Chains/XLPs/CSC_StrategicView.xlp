@@ -10,76 +10,28 @@
 	<m_PackageName text="StrategicView/CSC_StrategicView"/>
 	<m_Entries>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Visible"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Visible"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Visible_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Visible_Pillaged"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Quarter_Visible"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Visible"/>
+			<m_EntryID text="CSC_BAKERS_SV_Quarter_Visible_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Visible_UnderConstruction"/>
 		</Element>
 		<Element>
 			<m_EntryID text="CSC_BAKERS_SV_Quarter_Visible_Pillaged"/>
 			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Visible_Pillaged"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Quarter_Visible_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Visible_UnderConstruction"/>
+			<m_EntryID text="CSC_BAKERS_SV_Quarter_Visible"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Visible"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Bakery_Visible_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Bakery_Visible_Pillaged"/>
+			<m_EntryID text="CSC_BAKERS_SV_Quarter_Revealed_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Revealed_UnderConstruction"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Bakery_Visible_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Bakery_Visible_UnderConstruction"/>
+			<m_EntryID text="CSC_BAKERS_SV_Quarter_Revealed_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Revealed_Pillaged"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Bakery_Visible"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Bakery_Visible"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Revealed"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Revealed"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Revealed_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Revealed_UnderConstruction"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Revealed_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Revealed_Pillaged"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Cafe_Visible"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Visible"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Cafe_Visible_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Visible_UnderConstruction"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Cafe_Visible_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Visible_Pillaged"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Cafe_Revealed"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Revealed"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Cafe_Revealed_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Revealed_UnderConstruction"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Cafe_Revealed_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Revealed_Pillaged"/>
+			<m_EntryID text="CSC_BAKERS_SV_Quarter_Revealed"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Revealed"/>
 		</Element>
 		<Element>
 			<m_EntryID text="CSC_BAKERS_SV_Bakery_Revealed"/>
@@ -94,16 +46,64 @@
 			<m_ObjectName text="CSC_BAKERS_SV_Bakery_Revealed_UnderConstruction"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Quarter_Revealed"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Revealed"/>
+			<m_EntryID text="CSC_BAKERS_SV_Bakery_Visible"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Bakery_Visible"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Quarter_Revealed_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Revealed_Pillaged"/>
+			<m_EntryID text="CSC_BAKERS_SV_Bakery_Visible_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Bakery_Visible_Pillaged"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Quarter_Revealed_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Quarter_Revealed_UnderConstruction"/>
+			<m_EntryID text="CSC_BAKERS_SV_Bakery_Visible_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Bakery_Visible_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Cafe_Revealed"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Revealed"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Cafe_Revealed_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Revealed_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Cafe_Revealed_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Revealed_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Cafe_Visible"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Visible"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Cafe_Visible_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Visible_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Cafe_Visible_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Cafe_Visible_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Revealed"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Revealed"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Revealed_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Revealed_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Revealed_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Revealed_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Visible"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Visible"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Visible_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Visible_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>

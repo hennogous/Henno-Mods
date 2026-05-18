@@ -67,7 +67,7 @@ Scripts accumulated during development. Paths may need updating if the source da
 ### Key scripts
 
 - `blender/render_to_sv_sprite.py` — Full Blender → ControlNet → SV sprite pipeline
-- `comfyui/icon_postprocess.py` — rembg + canny + outline post-processing for icons
+- `comfyui/icon_pipeline/icon_postprocess.py` — rembg + canny + outline post-processing for icons
 - `scripts/csc_export_pipeline.ps1` — Main asset export: Blender → FGX/GEO
 - `scripts/io_import_cn6_b4.py` / `io_export_cn6_b4.py` — CN6 binary format I/O
 - `training/prepare_sv_training.py` — Extract SV sprites from SDK pantry for LoRA training
