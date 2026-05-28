@@ -17,12 +17,12 @@ from __future__ import annotations
 
 import argparse
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Optional, Tuple
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 OUTPUT_DIR = Path(os.environ.get(
     "CSC_COMFYUI_OUTPUT_DIR",
@@ -95,7 +95,7 @@ BRIGHTNESS_FACTOR = env_float("CSC_SV_BRIGHTNESS_FACTOR", 1.35)
 MASK_ALPHA_THRESHOLD = env_int("CSC_SV_MASK_ALPHA_THRESHOLD", 10)
 # Higher = outlines only solid pixels; lower = includes soft alpha fringes. (0-255; 8-32 useful, sensitive)
 
-OUTER_OUTLINE_PX = env_int("CSC_SV_OUTER_OUTLINE_PX", 4)
+OUTER_OUTLINE_PX = env_int("CSC_SV_OUTER_OUTLINE_PX", 6)
 # Higher = thicker charcoal silhouette; lower = subtler outline. 0 disables outer outline. (0-20 px; 6-12 useful, very sensitive)
 
 INNER_EDGE_PX = env_int("CSC_SV_INNER_EDGE_PX", 4)
@@ -134,7 +134,7 @@ REVEALED_SHADOW_PATH = os.environ.get(
     r"images\sv_revealed_shadow.png",
 )
 
-REVEALED_NOISE_STRENGTH  = env_float("CSC_SV_REVEALED_NOISE_STRENGTH", 1)
+REVEALED_NOISE_STRENGTH  = env_float("CSC_SV_REVEALED_NOISE_STRENGTH", 10)
 # Optional pre-shadow grain. Default 0 because the reference XCF uses only
 # Desaturate → Brightness/Contrast → Colorize adjustment filters.
 
@@ -153,11 +153,29 @@ REVEALED_DESATURATE_MODE   = env_int("CSC_SV_REVEALED_DESATURATE_MODE", 3)
 REVEALED_DESATURATE_AMOUNT = env_float("CSC_SV_REVEALED_DESATURATE_AMOUNT", 1.0)
 # GIMP's desaturate filter is a full greyscale conversion with no amount slider;
 # this extra pipeline knob blends original→desaturated for tuning convenience.
-REVEALED_BRIGHTNESS        = env_float("CSC_SV_REVEALED_BRIGHTNESS", -0.25)
-REVEALED_CONTRAST       = env_float("CSC_SV_REVEALED_CONTRAST", 0.0)
+REVEALED_BRIGHTNESS        = env_float("CSC_SV_REVEALED_BRIGHTNESS", -0.05)
+REVEALED_CONTRAST       = env_float("CSC_SV_REVEALED_CONTRAST", -0.2)
 REVEALED_COLORIZE_HUE   = env_float("CSC_SV_REVEALED_COLORIZE_HUE", 0.11)
-REVEALED_COLORIZE_SAT   = env_float("CSC_SV_REVEALED_COLORIZE_SATURATION", 0.45)
-REVEALED_COLORIZE_LIGHT = env_float("CSC_SV_REVEALED_COLORIZE_LIGHTNESS", -0.231)
+REVEALED_COLORIZE_SAT   = env_float("CSC_SV_REVEALED_COLORIZE_SATURATION", 0.425)
+REVEALED_COLORIZE_LIGHT = env_float("CSC_SV_REVEALED_COLORIZE_LIGHTNESS", -0.25)
+
+REVEALED_DARK_LIGHTEN_THRESHOLD = env_float("CSC_SV_REVEALED_DARK_LIGHTEN_THRESHOLD", 0.5)
+# Luminance threshold for optional dark-tone lift in the Revealed series (0..1).
+# Pixels darker than this, but at/above the minimum threshold, are lightened;
+# pixels at/above it are untouched.
+REVEALED_DARK_LIGHTEN_MIN_THRESHOLD = env_float("CSC_SV_REVEALED_DARK_LIGHTEN_MIN_THRESHOLD", 0.35)
+# Lower luminance threshold for dark-tone lift (0..1). Pixels darker than this
+# are left untouched so true blacks / deepest shadows can remain anchored.
+REVEALED_DARK_LIGHTEN_AMOUNT = env_float("CSC_SV_REVEALED_DARK_LIGHTEN_AMOUNT", 0)
+# Strength of proportional dark-tone lift. 0 disables; 0.4 makes affected
+# pixels 40% brighter, preserving local contrast better than threshold blending.
+
+REVEALED_SHARPEN_AMOUNT = env_float("CSC_SV_REVEALED_SHARPEN_AMOUNT", 0.5)
+# Revealed-only unsharp mask strength. 0 disables; 1 is a useful mild sharpen.
+REVEALED_SHARPEN_RADIUS = env_float("CSC_SV_REVEALED_SHARPEN_RADIUS", 1.0)
+# Radius in pixels for the Revealed unsharp mask.
+REVEALED_SHARPEN_THRESHOLD = env_int("CSC_SV_REVEALED_SHARPEN_THRESHOLD", 0)
+# Minimum tonal difference for sharpening; higher avoids amplifying flat noise.
 
 OFFSET_X = env_optional_int("CSC_SV_OFFSET_X", None)
 OFFSET_Y = env_optional_int("CSC_SV_OFFSET_Y", None)
@@ -241,6 +259,12 @@ class RevealedPostProcessConfig:
     colorize_hue: float = REVEALED_COLORIZE_HUE
     colorize_saturation: float = REVEALED_COLORIZE_SAT
     colorize_lightness: float = REVEALED_COLORIZE_LIGHT
+    dark_lighten_threshold: float = REVEALED_DARK_LIGHTEN_THRESHOLD
+    dark_lighten_min_threshold: float = REVEALED_DARK_LIGHTEN_MIN_THRESHOLD
+    dark_lighten_amount: float = REVEALED_DARK_LIGHTEN_AMOUNT
+    sharpen_amount: float = REVEALED_SHARPEN_AMOUNT
+    sharpen_radius: float = REVEALED_SHARPEN_RADIUS
+    sharpen_threshold: int = REVEALED_SHARPEN_THRESHOLD
     shadow_path: str | None = REVEALED_SHADOW_PATH
     canvas_size: int = CANVAS_SIZE
     sprite_size: int = SPRITE_SIZE
@@ -258,6 +282,12 @@ class RevealedPostProcessConfig:
             colorize_hue=REVEALED_COLORIZE_HUE,
             colorize_saturation=REVEALED_COLORIZE_SAT,
             colorize_lightness=REVEALED_COLORIZE_LIGHT,
+            dark_lighten_threshold=REVEALED_DARK_LIGHTEN_THRESHOLD,
+            dark_lighten_min_threshold=REVEALED_DARK_LIGHTEN_MIN_THRESHOLD,
+            dark_lighten_amount=REVEALED_DARK_LIGHTEN_AMOUNT,
+            sharpen_amount=REVEALED_SHARPEN_AMOUNT,
+            sharpen_radius=REVEALED_SHARPEN_RADIUS,
+            sharpen_threshold=REVEALED_SHARPEN_THRESHOLD,
             shadow_path=REVEALED_SHADOW_PATH,
             canvas_size=CANVAS_SIZE,
             sprite_size=SPRITE_SIZE,
@@ -479,6 +509,66 @@ def gimp_colorize_xcf(
     return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
 
 
+def lighten_revealed_dark_tones(
+    img: Image.Image,
+    threshold: float = REVEALED_DARK_LIGHTEN_THRESHOLD,
+    min_threshold: float = REVEALED_DARK_LIGHTEN_MIN_THRESHOLD,
+    amount: float = REVEALED_DARK_LIGHTEN_AMOUNT,
+) -> Image.Image:
+    """Lift only a dark Revealed luminance band.
+
+    ``min_threshold`` and ``threshold`` are normalized luminance values (0..1).
+    Pixels below the minimum stay untouched so true black / deep shadows remain
+    anchored. Pixels at or above the upper threshold are also untouched. Pixels
+    inside the band receive a proportional lift: ``amount`` is the fraction of
+    each pixel's current RGB value added back on top. For example, ``0.4`` makes
+    affected pixels 40% brighter. Alpha is preserved.
+    """
+    threshold = float(np.clip(threshold, 0.0, 1.0))
+    min_threshold = float(np.clip(min_threshold, 0.0, 1.0))
+    amount = float(max(0.0, amount))
+    if threshold <= 0.0 or amount <= 0.0 or min_threshold >= threshold:
+        return img.convert("RGBA")
+
+    arr = np.array(img.convert("RGBA"), dtype=np.float32)
+    rgb = arr[:, :, :3]
+    alpha = arr[:, :, 3]
+    lum = (rgb[:, :, 0] * 0.2126 + rgb[:, :, 1] * 0.7152 + rgb[:, :, 2] * 0.0722) / 255.0
+    mask = (alpha > 0) & (lum >= min_threshold) & (lum < threshold)
+    if not mask.any():
+        return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
+
+    lift = rgb * amount
+    arr[:, :, :3] = np.where(mask[:, :, None], rgb + lift, rgb)
+    return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
+
+
+def sharpen_revealed(
+    img: Image.Image,
+    amount: float = REVEALED_SHARPEN_AMOUNT,
+    radius: float = REVEALED_SHARPEN_RADIUS,
+    threshold: int = REVEALED_SHARPEN_THRESHOLD,
+) -> Image.Image:
+    """Apply a Revealed-only unsharp mask while preserving alpha."""
+    amount = float(max(0.0, amount))
+    radius = float(max(0.0, radius))
+    threshold = int(max(0, threshold))
+    if amount <= 0.0 or radius <= 0.0:
+        return img.convert("RGBA")
+
+    rgba = img.convert("RGBA")
+    alpha = rgba.getchannel("A")
+    # Pillow's UnsharpMask percent is relative; 100 is a normal pass. Keep the
+    # knob as a small art-friendly scalar instead of exposing 0..500 directly.
+    sharpened = rgba.filter(ImageFilter.UnsharpMask(
+        radius=radius,
+        percent=int(round(amount * 100)),
+        threshold=threshold,
+    ))
+    sharpened.putalpha(alpha)
+    return sharpened
+
+
 def apply_revealed_xcf_effects(img: Image.Image, config: RevealedPostProcessConfig) -> Image.Image:
     """Apply the Revealed effect stack copied from ``CSC_BAKERS_SV_Revealed.xcf``."""
     img = revealed_desaturate_xcf(img, config.desaturate_mode, config.desaturate_amount)
@@ -486,6 +576,13 @@ def apply_revealed_xcf_effects(img: Image.Image, config: RevealedPostProcessConf
     if config.noise_strength > 0:
         img = add_revealed_noise(img, config.noise_strength)
     img = gimp_colorize_xcf(img, config.colorize_hue, config.colorize_saturation, config.colorize_lightness)
+    img = lighten_revealed_dark_tones(
+        img,
+        config.dark_lighten_threshold,
+        config.dark_lighten_min_threshold,
+        config.dark_lighten_amount,
+    )
+    img = sharpen_revealed(img, config.sharpen_amount, config.sharpen_radius, config.sharpen_threshold)
     return img
 
 
@@ -505,6 +602,38 @@ def composite_overlay(img: Image.Image, overlay_path: str | Path) -> Image.Image
     result = img.copy()
     result.alpha_composite(overlay)
     return result
+
+
+def underlay_shadow_canvas(img: Image.Image, config: PostProcessConfig) -> Image.Image:
+    """Composite a full-canvas pre-shadow sprite over the Visible shadow plate."""
+    img = img.convert("RGBA")
+    if img.size != (config.canvas_size, config.canvas_size):
+        raise ValueError(
+            f"Expected pre-shadow canvas {config.canvas_size}x{config.canvas_size}, got {img.size}"
+        )
+    shadow_abs = resolve_pipeline_asset(config.shadow_path)
+    if config.enable_base_shadow and shadow_abs and shadow_abs.exists():
+        canvas = Image.open(shadow_abs).convert("RGBA")
+        canvas = canvas.resize((config.canvas_size, config.canvas_size), Image.LANCZOS)
+        canvas.alpha_composite(img)
+        return canvas
+    return img.copy()
+
+
+def underlay_revealed_shadow_canvas(img: Image.Image, config: PostProcessConfig, revealed_config: RevealedPostProcessConfig) -> Image.Image:
+    """Composite a full-canvas Revealed-treated sprite over the Revealed shadow plate."""
+    img = img.convert("RGBA")
+    if img.size != (config.canvas_size, config.canvas_size):
+        raise ValueError(
+            f"Expected revealed canvas {config.canvas_size}x{config.canvas_size}, got {img.size}"
+        )
+    shadow_abs = resolve_pipeline_asset(revealed_config.shadow_path)
+    if shadow_abs and shadow_abs.exists():
+        canvas = Image.open(shadow_abs).convert("RGBA")
+        canvas = canvas.resize((config.canvas_size, config.canvas_size), Image.LANCZOS)
+        canvas.alpha_composite(img)
+        return canvas
+    return img.copy()
 
 
 def resize_to_canvas(img: Image.Image, config: PostProcessConfig) -> Image.Image:
@@ -635,15 +764,30 @@ def process_revealed(
     return results
 
 
+_VISIBLE_STATE_OVERLAYS: list[tuple[str, str]] = [
+    ("UnderConstruction", "images/sv_visible_construction.png"),
+    ("Pillaged",          "images/sv_visible_pillaged.png"),
+]
+
+
 _REVEALED_STATE_OVERLAYS: list[tuple[str, str]] = [
     ("UnderConstruction", "images/sv_revealed_construction.png"),
     ("Pillaged",          "images/sv_revealed_pillaged.png"),
 ]
 
 
+def strip_pipeline_suffix(stem: str) -> str:
+    """Strip one terminal SV pipeline suffix from a filename stem."""
+    for suffix in ("_Visible_PreShadow", "_PreShadow", "_Visible", "_Revealed", "_UnderConstruction", "_Pillaged", "_Raw"):
+        if stem.endswith(suffix):
+            return stem[: -len(suffix)]
+    return stem
+
+
 def default_output_path(input_path: str) -> Path:
     input_file = Path(input_path)
-    return input_file.parent / f"{input_file.stem}_Visible.png"
+    stem = strip_pipeline_suffix(input_file.stem)
+    return input_file.parent / f"{stem}_Visible.png"
 
 
 def default_revealed_output_path(input_path: str) -> Path:
@@ -653,12 +797,86 @@ def default_revealed_output_path(input_path: str) -> Path:
     conservative ``<stem>_Revealed.png`` suffix.
     """
     input_file = Path(input_path)
-    stem = input_file.stem
-    for suffix in ("_Visible_PreShadow", "_Visible", "_Revealed", "_UnderConstruction", "_Pillaged", "_Raw"):
-        if stem.endswith(suffix):
-            stem = stem[: -len(suffix)]
-            break
+    stem = strip_pipeline_suffix(input_file.stem)
     return input_file.parent / f"{stem}_Revealed.png"
+
+
+def process_from_preshadow(
+    input_path: str,
+    output_path: str | Path | None = None,
+    base_config: PostProcessConfig | None = None,
+    revealed_config: RevealedPostProcessConfig | None = None,
+    *,
+    state_overlays: list[tuple[str, str]] | None = None,
+) -> list[str]:
+    """Build all final SV variants from a hand-edited _Visible_PreShadow image.
+
+    This is the manual-shadow workflow:
+      1. sv_img2img.py writes a large *_Visible_PreShadow.png editing image
+      2. Henno paints directional/self-shadowing into that larger image
+      3. this function first scales/places it onto the final 256px canvas, then
+         underlays the Visible shadow plate, adds Visible state overlays, and
+         builds Revealed + Revealed state overlays from that same placed canvas.
+
+    Brightness/outlines/SAM are not repeated here; only final placement/scaling,
+    shadow plates, color treatment, and state overlays happen in this stage.
+    """
+    config = base_config or PostProcessConfig.from_env()
+    revealed_config = revealed_config or RevealedPostProcessConfig.from_env()
+    overlays = state_overlays if state_overlays is not None else _VISIBLE_STATE_OVERLAYS
+
+    edited_pre_shadow = Image.open(input_path).convert("RGBA")
+    if edited_pre_shadow.size == (config.canvas_size, config.canvas_size):
+        pre_shadow_canvas = edited_pre_shadow
+    else:
+        # First finalization step: scale/place the larger edited sprite onto the
+        # target transparent canvas, but do not add the Visible shadow yet.
+        placement_config = replace(config, enable_base_shadow=False, enable_resize_canvas=True)
+        pre_shadow_canvas = resize_to_canvas(edited_pre_shadow, placement_config)
+
+    visible = underlay_shadow_canvas(pre_shadow_canvas, config)
+
+    src_dir = Path(input_path).parent
+    visible_path = Path(output_path) if output_path else default_output_path(input_path)
+    if not visible_path.is_absolute():
+        visible_path = src_dir / visible_path
+    visible_path.parent.mkdir(parents=True, exist_ok=True)
+    visible.save(visible_path)
+    results = [str(visible_path)]
+
+    for tag, rel_path in overlays:
+        overlay_abs = Path(__file__).resolve().parent / rel_path
+        if not overlay_abs.exists():
+            print(f"  Visible overlay {tag}: not found ({rel_path}); skipping.")
+            continue
+        state_path = visible_path.parent / f"{visible_path.stem}_{tag}{visible_path.suffix}"
+        composited = composite_overlay(visible, str(overlay_abs))
+        composited.save(state_path)
+        results.append(str(state_path))
+
+    revealed_path = default_revealed_output_path(input_path)
+    if output_path is not None:
+        # Keep custom output directories coherent: if the Visible output was
+        # explicitly directed somewhere, place Revealed siblings beside it.
+        revealed_path = visible_path.parent / f"{strip_pipeline_suffix(visible_path.stem)}_Revealed{visible_path.suffix}"
+    revealed_path.parent.mkdir(parents=True, exist_ok=True)
+
+    revealed = apply_revealed_xcf_effects(pre_shadow_canvas, revealed_config)
+    revealed = underlay_revealed_shadow_canvas(revealed, config, revealed_config)
+    revealed.save(revealed_path)
+    results.append(str(revealed_path))
+
+    for tag, rel_path in _REVEALED_STATE_OVERLAYS:
+        overlay_abs = Path(__file__).resolve().parent / rel_path
+        if not overlay_abs.exists():
+            print(f"  Revealed overlay {tag}: not found ({rel_path}); skipping.")
+            continue
+        state_path = revealed_path.parent / f"{revealed_path.stem}_{tag}{revealed_path.suffix}"
+        composited = composite_overlay(revealed, str(overlay_abs))
+        composited.save(state_path)
+        results.append(str(state_path))
+
+    return results
 
 
 def process(
@@ -718,6 +936,8 @@ def add_processing_options(parser: argparse.ArgumentParser) -> None:
     """Add post-processing knobs to a CLI parser."""
     parser.add_argument("--revealed-from-visible", action="store_true",
                         help="Treat input as a pre-shadow 256px Visible canvas and rebuild _Revealed + state overlays only (no ComfyUI).")
+    parser.add_argument("--from-preshadow", action="store_true",
+                        help="Treat input as a hand-edited _Visible_PreShadow canvas and build _Visible, Visible states, _Revealed, and Revealed states. Auto-enabled for *_PreShadow.png inputs.")
     parser.add_argument("--background-removal", dest="enable_background_removal", action=argparse.BooleanOptionalAction, default=None)
     parser.add_argument("--padding-before-rembg", dest="enable_padding_before_rembg", action=argparse.BooleanOptionalAction, default=None,
                         help="Add gray padding before rembg for better edge detection. Default/env: on.")
@@ -766,6 +986,18 @@ def add_processing_options(parser: argparse.ArgumentParser) -> None:
                         help="Revealed colorize saturation, 0..1. Default/env: 0.45.")
     parser.add_argument("--revealed-lightness", dest="colorize_lightness", type=float, default=None,
                         help="Revealed colorize lightness, -1..1. Default/env: -0.231.")
+    parser.add_argument("--revealed-dark-lighten-threshold", dest="dark_lighten_threshold", type=float, default=None,
+                        help="Upper luminance bound for the Revealed dark-tone lift band (0..1). Pixels at/above this are untouched. Default/env: 0.25.")
+    parser.add_argument("--revealed-dark-lighten-min-threshold", dest="dark_lighten_min_threshold", type=float, default=None,
+                        help="Lower luminance bound for the Revealed dark-tone lift band (0..1). Pixels below this are untouched. Default/env: 0.0.")
+    parser.add_argument("--revealed-dark-lighten-amount", dest="dark_lighten_amount", type=float, default=None,
+                        help="Strength of the Revealed dark-tone lift. 0 disables; 1 lifts black toward the threshold. Default/env: 0.0.")
+    parser.add_argument("--revealed-sharpen-amount", dest="sharpen_amount", type=float, default=None,
+                        help="Revealed-only unsharp mask strength. 0 disables; 1 is a mild normal pass. Default/env: 0.0.")
+    parser.add_argument("--revealed-sharpen-radius", dest="sharpen_radius", type=float, default=None,
+                        help="Radius in pixels for Revealed sharpening. Default/env: 1.0.")
+    parser.add_argument("--revealed-sharpen-threshold", dest="sharpen_threshold", type=int, default=None,
+                        help="Minimum tonal difference for Revealed sharpening. Higher avoids amplifying flat noise. Default/env: 3.")
     parser.add_argument("--revealed-noise-strength", dest="noise_strength", type=float, default=None,
                         help="Optional Revealed grain/noise strength. Default/env: 0.0.")
     parser.add_argument("--revealed-shadow-path", dest="revealed_shadow_path", type=str, default=None,
@@ -804,18 +1036,31 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Post-process a Civ 6 strategic-view sprite.")
     add_cli_options(parser)
     args = parser.parse_args()
-    if args.revealed_from_visible:
+    base_config = config_from_args(args)
+    input_stem = Path(args.input).stem
+    from_preshadow = args.from_preshadow or input_stem.endswith("_Visible_PreShadow") or input_stem.endswith("_PreShadow")
+    if from_preshadow:
+        saved = process_from_preshadow(
+            args.input,
+            args.output,
+            base_config=base_config,
+            revealed_config=revealed_config_from_args(args),
+        )
+        print("Saved:")
+        for path in saved:
+            print(f"  {path}")
+    elif args.revealed_from_visible:
         saved = process_revealed(
             args.input,
             args.output,
-            base_config=config_from_args(args),
+            base_config=base_config,
             revealed_config=revealed_config_from_args(args),
         )
         print("Saved:")
         for path in saved:
             print(f"  {path}")
     else:
-        saved = process(args.input, args.output, config=config_from_args(args))
+        saved = process(args.input, args.output, config=base_config)
         print(f"Saved: {saved}")
 
 

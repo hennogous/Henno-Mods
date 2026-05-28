@@ -9,10 +9,10 @@ local IncreasedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EF
 local DecreasedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED")
 local RemovedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED")
 
-local NewBakersStage3SpecialistNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_3_SPECIALIST_GRANT")
-local NewBakersStage4SpecialistEnterNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_ENTER")
-local NewBakersStage4SpecialistWaterNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_WATER")
-local NewBakersStage4SpecialistGardenNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_GARDEN")
+-- local NewBakersStage3SpecialistNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_3_SERVICE_GRANT")
+-- local NewBakersStage4SpecialistEnterNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER")
+-- local NewBakersStage4SpecialistWaterNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER")
+-- local NewBakersStage4SpecialistGardenNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN")
 
 local NewAristocratNotifcation = DB.MakeHash("NOTIFICATION_CSC_NEW_ARISTOCRAT")
 
@@ -33,17 +33,17 @@ function RegisterHandlers()
 	g_notificationHandlers[RemovedBakersEffectNotifcation]			= MakeDefaultHandlers();
 	g_notificationHandlers[RemovedBakersEffectNotifcation].AddSound	= "ALERT_NEGATIVE";
 
-	g_notificationHandlers[NewBakersStage3SpecialistNotifcation]			= MakeDefaultHandlers();
-	g_notificationHandlers[NewBakersStage3SpecialistNotifcation].AddSound	= "ALERT_POSITIVE";
+	-- g_notificationHandlers[NewBakersStage3SpecialistNotifcation]			= MakeDefaultHandlers();
+	-- g_notificationHandlers[NewBakersStage3SpecialistNotifcation].AddSound	= "ALERT_POSITIVE";
 
-	g_notificationHandlers[NewBakersStage4SpecialistEnterNotifcation]			= MakeDefaultHandlers();
-	g_notificationHandlers[NewBakersStage4SpecialistEnterNotifcation].AddSound	= "ALERT_POSITIVE";
+	-- g_notificationHandlers[NewBakersStage4SpecialistEnterNotifcation]			= MakeDefaultHandlers();
+	-- g_notificationHandlers[NewBakersStage4SpecialistEnterNotifcation].AddSound	= "ALERT_POSITIVE";
 
-	g_notificationHandlers[NewBakersStage4SpecialistWaterNotifcation]			= MakeDefaultHandlers();
-	g_notificationHandlers[NewBakersStage4SpecialistWaterNotifcation].AddSound	= "ALERT_POSITIVE";
+	-- g_notificationHandlers[NewBakersStage4SpecialistWaterNotifcation]			= MakeDefaultHandlers();
+	-- g_notificationHandlers[NewBakersStage4SpecialistWaterNotifcation].AddSound	= "ALERT_POSITIVE";
 
-	g_notificationHandlers[NewBakersStage4SpecialistGardenNotifcation]			= MakeDefaultHandlers();
-	g_notificationHandlers[NewBakersStage4SpecialistGardenNotifcation].AddSound	= "ALERT_POSITIVE";
+	-- g_notificationHandlers[NewBakersStage4SpecialistGardenNotifcation]			= MakeDefaultHandlers();
+	-- g_notificationHandlers[NewBakersStage4SpecialistGardenNotifcation].AddSound	= "ALERT_POSITIVE";
 
 	g_notificationHandlers[NewAristocratNotifcation]			= MakeDefaultHandlers();
 	g_notificationHandlers[NewAristocratNotifcation].AddSound	= "ALERT_POSITIVE";

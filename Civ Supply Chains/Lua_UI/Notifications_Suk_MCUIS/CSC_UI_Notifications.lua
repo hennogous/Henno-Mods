@@ -75,7 +75,10 @@ for i,v in pairs(mCSC_AbilityAttachModifiers) do
 
 end
 
+--[[
 ----------
+-- Specialist-slot grant notifications are currently folded into the main
+-- Quarter effect notification text instead.
 local mCSC_SpecialistAttachModifiers = {};
 for row in GameInfo.CSC_SpecialistAttachModifiers() do
 	mCSC_SpecialistAttachModifiers[row.ModifierId] = {};
@@ -94,6 +97,7 @@ for i,v in pairs(mCSC_SpecialistAttachModifiers) do
 	end
 	
 end
+]]
 
 --===========================================================================================
 -- UTILITY FUNCTIONS
@@ -127,6 +131,13 @@ function tableLength(t)
     return count
 end
 
+local function GetSignedAmountText(iAmount)
+	if iAmount > 0 then
+		return '+' .. tostring(iAmount)
+	end
+	return tostring(iAmount)
+end
+
 --==========================================================================================================================
 -- OnRefreshCityQuarters
 --==========================================================================================================================
@@ -143,10 +154,10 @@ function OnRefreshCityQuarters()
 		local tCSC_CitiesAbilitiesCurrent = {} -- holds data for all Cities of the Player. Later cached in sCSC_CitiesAbilitiesStringKey custom data.
 		local bCSC_AbilitiesHaveChanged = false -- if we notice any changes compared to last cached state then we cache the new changes.
 	
-		local sCSC_CitiesSpecialistsStringKey = 'CSC_SpecialistsCaching_Player'..tostring(iPlayerID);
+--[[		local sCSC_CitiesSpecialistsStringKey = 'CSC_SpecialistsCaching_Player'..tostring(iPlayerID);
 		local tCSC_CitiesSpecialistsCache = ReadCustomData(sCSC_CitiesSpecialistsStringKey);
 		local tCSC_CitiesSpecialistsCurrent = {}
-		local bCSC_SpecialistsHaveChanged = false
+		local bCSC_SpecialistsHaveChanged = false ]]
 
 		-- we iterate through each City of the Player to check for their individual City Modifiers
 		local playerCities = Players[iPlayerID]:GetCities();
@@ -157,14 +168,14 @@ function OnRefreshCityQuarters()
 				local iCityY		:number = pCity:GetY();
 				local sCityName		:string = Locale.Lookup(pCity:GetName());
 				local tCityCurrentAbilityModifiers = {}; -- holds all current Ability modifiers in this city
-				local tCityCurrentSpecialistModifiers = {}; -- holds all current Specialist modifiers in this city
+--				local tCityCurrentSpecialistModifiers = {}; -- holds all current Specialist modifiers in this city
 				
 				-- we iterate through all modifiers in the Game, and collect all 'active and henno-valid' ones in the city
 				local tModifiers = GameEffects.GetModifiers()
 				for _, iModifier in pairs(tModifiers) do
 					local sModifier = GameEffects.GetModifierDefinition(iModifier).Id
 					-- Now we check if the ModifierId is also listed as a City Modifier in 'mCSC_AbilityAttachModifiers' or 'mCSC_SpecialistAttachModifiers'
-					if mCSC_AbilityAttachModifiers[sModifier] or mCSC_SpecialistAttachModifiers[sModifier] then
+					if mCSC_AbilityAttachModifiers[sModifier] then
 						
 						-- Is this Modifer Active and has Subjects?
 						if (GameEffects.GetModifierActive(iModifier)) and (GameEffects.GetModifierSubjectCount(iModifier) > 0) then
@@ -201,11 +212,11 @@ function OnRefreshCityQuarters()
 													tCityCurrentAbilityModifiers[sAbilityEffectModifierId].StackAmount = tCityCurrentAbilityModifiers[sAbilityEffectModifierId].StackAmount + 1
 												end
 											end
-										elseif mCSC_SpecialistAttachModifiers[sModifier] then
+--[[										elseif mCSC_SpecialistAttachModifiers[sModifier] then
 											local sSpecialistGrantModifierId = mCSC_SpecialistAttachModifiers[sModifier].SpecialistGrantModifierId
 											if mCSC_SpecialistGrantModifiers[sSpecialistGrantModifierId] then
 												tCityCurrentSpecialistModifiers[sSpecialistGrantModifierId] = true										
-											end
+											end ]]
 										end
 									end
 								end
@@ -216,7 +227,7 @@ function OnRefreshCityQuarters()
 				
 				-- Add a new Table to tCSC_CitiesAbilitiesCurrent with same key as this City's ID and assign tCityCurrentAbilityModifiers as its value
 				tCSC_CitiesAbilitiesCurrent[iCityID] = tCityCurrentAbilityModifiers
-				tCSC_CitiesSpecialistsCurrent[iCityID] = tCityCurrentSpecialistModifiers
+--				tCSC_CitiesSpecialistsCurrent[iCityID] = tCityCurrentSpecialistModifiers
 				
 				-- If we have cached data for this Player's Cities, we iterate over them
 				-- For each cached City's modifier, we check if it's still active in the City
@@ -228,15 +239,7 @@ function OnRefreshCityQuarters()
 						-- if tCurrentModifier is nil then it means it's no longer active in this city (iCityID)
 						if tCurrentModifier == nil then
 							local iAmount = mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Amount * -v.StackAmount; -- we multiply this modifier's DB yield value by the -1*StackAmount in this city to get the exact yield loss
-							local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].RemovedDesc, iAmount, v.StackAmount); -- string for this modifier's Ability
-							
-							local sMainString = ''
-							-- If iAmount is positive then we add a '+' sign at start of the string (bc it's not shown automatically), negative values will always have the '-' sign show up. 
-							if iAmount > 0 then
-								sMainString = '+'..sString
-							else
-								sMainString = sString
-							end
+							local sMainString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].RemovedDesc, GetSignedAmountText(iAmount), v.StackAmount); -- string for this modifier's Ability
 							
 							bCSC_AbilitiesHaveChanged = true
 							
@@ -288,19 +291,13 @@ function OnRefreshCityQuarters()
 					end
 					
 					local iAmount = mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Amount * iStackAmountChange;
-					
-					local sMainString = ''
-					-- If iAmount is positive then we add a '+' sign at start of the string (bc it's not shown automatically), negative values will always have the '-' sign show up. 
-					if iAmount > 0 then
-						sMainString = '+'
-					end
+					local sAmountText = GetSignedAmountText(iAmount)
 					
 					if bIsNewModifier == true then
 						--local sStackString = Locale.Lookup('LOC_ZEGA_STACK_AMOUNT_DESC', iStackAmountChange);
 						--sMainString = sMainString..sStackString
 
-						local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].NewDesc, iAmount, iStackAmountChange);
-						sMainString = sMainString..sString
+						local sMainString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].NewDesc, sAmountText, iStackAmountChange);
 						
 						local notificationData = {}
 						notificationData[ParameterTypes.MESSAGE] = Locale.Lookup("LOC_NOTIFICATION_HENNO_NEW_CITY_QUARTER_ABILITY_MESSAGE");
@@ -317,8 +314,7 @@ function OnRefreshCityQuarters()
 						--local sStackString = Locale.Lookup('LOC_ZEGA_STACK_AMOUNT_CHANGE_DESC', iStackAmountChange, 'LOC_HENNO_CITY_ABILITY_SOURCE_INCREASE');
 						--sMainString = sMainString..sStackString
 
-						local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].IncreasedDesc, iAmount, iStackAmountChange);
-						sMainString = sMainString..sString
+						local sMainString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].IncreasedDesc, sAmountText, iStackAmountChange);
 						
 						--local sIncreaseString = Locale.Lookup("LOC_HENNO_CITY_ABILITY_CHANGE_INCREASE")
 						local notificationData = {}
@@ -337,8 +333,7 @@ function OnRefreshCityQuarters()
 						--local sStackString = Locale.Lookup('LOC_ZEGA_STACK_AMOUNT_CHANGE_DESC', iStackAmountChange, 'LOC_HENNO_CITY_ABILITY_SOURCE_DECREASE');
 						--sMainString = sMainString..sStackString
 
-						local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].DecreasedDesc, iAmount, iStackAmountChange);
-						sMainString = sMainString..sString
+						local sMainString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].DecreasedDesc, sAmountText, iStackAmountChange);
 						
 						--local sDecreaseString = Locale.Lookup("LOC_HENNO_CITY_ABILITY_CHANGE_DECREASE")
 						local notificationData = {}
@@ -355,7 +350,7 @@ function OnRefreshCityQuarters()
 					end
 				end
 
-				local iCityCurrentSpecialistModifiers = tableLength(tCityCurrentSpecialistModifiers)
+--[[				local iCityCurrentSpecialistModifiers = tableLength(tCityCurrentSpecialistModifiers)
 
 				for sSpecialistGrantModifierId,v in pairs(tCityCurrentSpecialistModifiers) do
 					local bIsNewSpecialistModifier = false
@@ -405,7 +400,7 @@ function OnRefreshCityQuarters()
 							NotificationManager.SendNotification(iPlayerID, DB.MakeHash("NOTIFICATION_CSC_NEW_ARISTOCRAT"), notificationData, iCityX, iCityY)
 						end
 					end
-				end
+				end ]]
 			end
 		end
 		
@@ -416,9 +411,9 @@ function OnRefreshCityQuarters()
 			WriteCustomData(sCSC_CitiesAbilitiesStringKey, tCSC_CitiesAbilitiesCurrent);
 		end
 
-		if bCSC_SpecialistsHaveChanged == true then
+--[[		if bCSC_SpecialistsHaveChanged == true then
 			WriteCustomData(sCSC_CitiesSpecialistsStringKey, tCSC_CitiesSpecialistsCurrent);
-		end
+		end ]]
 	end
 end
 

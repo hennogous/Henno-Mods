@@ -46,7 +46,7 @@ INSERT OR IGNORE INTO Modifiers
 		(  	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
 		(  	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WATER_MILL',    				'MODIFIER_BUILDING_YIELD_CHANGE',  								NULL,                           			NULL												),
 		(  	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
-		(  	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',    				'MODIFIER_BUILDING_YIELD_CHANGE',  								NULL,                           			NULL												),
+		(  	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',    					'MODIFIER_BUILDING_YIELD_CHANGE',  								NULL,                           			NULL												),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -99,9 +99,9 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WATER_MILL',					'YieldType',				'YIELD_GOLD'													),
 		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WATER_MILL',					'Amount',					1																),
 		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND',						'ModifierId',				'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL'					),
-		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',					'BuildingType',				'BUILDING_CSC_BAKERS_WIND_MILL'									),
-		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',					'YieldType',				'YIELD_GOLD'													),
-		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',					'Amount',					1																),
+		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',						'BuildingType',				'BUILDING_CSC_BAKERS_WIND_MILL'									),
+		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',						'YieldType',				'YIELD_GOLD'													),
+		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',						'Amount',					1																),
 
 --  +0.2 Gold per Citizen to the city for each adjacent Market
 		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER',						'ModifierId',				'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY'							),

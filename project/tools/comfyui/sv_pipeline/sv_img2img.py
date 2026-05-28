@@ -7,7 +7,13 @@ Workflow:
   3. Upload prepped input to ComfyUI
   4. Generate (img2img, no ControlNet)
   5. Apply input alpha mask to raw output -> crops any model-invented background
-  6. Post-process: brighten -> add charcoal outlines -> resize onto canvas
+  6. Post-process only to the large pre-shadow editing image (_Visible_PreShadow)
+
+The final 256px placement/scaling and Visible/Revealed game assets are
+intentionally not produced here. Paint directional/self-shadowing manually on
+the larger _Visible_PreShadow image, then run sv_postprocess.py on that
+hand-edited file to scale/place onto the 256px canvas, add shadow plates, and
+add state variants.
 
 An Asset Editor screenshot is RGBA with a coloured backplate (green at
 alpha=0). ComfyUI's VAEEncode discards alpha, so those RGB pixels would
@@ -15,7 +21,6 @@ leak into the latent. prepare_upload_image() neutralises them before
 upload; apply_alpha_mask() restores the correct silhouette after.
 """
 import argparse
-from dataclasses import replace
 import hashlib
 
 import io
@@ -41,8 +46,6 @@ from sv_postprocess import (
     add_processing_options,
     config_from_args,
     process as sv_process,
-    composite_overlay,
-    process_revealed,
 )
 
 COMFYUI_URL = os.environ.get("CSC_COMFYUI_URL", "http://127.0.0.1:8188")
@@ -104,8 +107,9 @@ MASK_ALPHA_CUTOFF = int(os.environ.get("CSC_SV_MASK_ALPHA_CUTOFF", "8"))
 # Hardens faint background residue on the input alpha mask. (0-255; 4-24 useful, sensitive)
 
 KEEP_INTERMEDIATES = os.environ.get("CSC_SV_KEEP_INTERMEDIATES", "0").strip().lower() in {"1", "true", "yes", "on", "y"}
-# Debug switch: keep _Visible_Raw and _Visible_PreShadow beside final outputs.
-# Default off; they are intermediate inputs, not game assets.
+# Debug switch: keep _Visible_Raw beside the exported large _Visible_PreShadow.
+# Default off; _Visible_PreShadow is always exported because it is the manual
+# shadow-painting handoff point.
 
 
 # -----------------------------------------------------------------------------
@@ -444,56 +448,18 @@ def run_variant(image_name: str, source_path: Path, cfg: float,
     masked_img.save(raw_path)
     print(f"  Raw intermediate: {raw_path}")
 
-    # Step 5: post-process — brighten → outlines → canvas
-    out_path = src_dir / f"{output_stem_for_source(source_path, cfg)}.png"
-    sv_path = sv_process(str(raw_path), str(out_path), config=postprocess_config)
-    print(f"  SV: {sv_path}")
+    # Step 5: post-process only to the large pre-shadow handoff image. This is
+    # the file to paint manually before sv_postprocess.py scales/places it onto
+    # the final 256px canvas and adds shadow plates / state variants.
+    postprocess_config.enable_base_shadow = False
+    postprocess_config.enable_resize_canvas = False
+    pre_shadow_path = src_dir / f"{output_stem_for_source(source_path, cfg)}_PreShadow.png"
+    pre_shadow_result = sv_process(str(raw_path), str(pre_shadow_path), config=postprocess_config)
+    print(f"  PreShadow handoff: {pre_shadow_result}")
 
-    # Step 5b: state overlays
-    _STATE_OVERLAYS = [
-        ("UnderConstruction", "images/sv_visible_construction.png"),
-        ("Pillaged",          "images/sv_visible_pillaged.png"),
-    ]
-    base_visible = Image.open(sv_path).convert("RGBA")
-    produced: list[str] = [sv_path]
-    # Visible state-stem: keep the _Visible type marker, skip only a trailing _Raw if present
-    vis_stem = output_stem_for_source(source_path, cfg)
-    if vis_stem.endswith("_Raw"):
-        vis_stem = vis_stem[:-len("_Raw")]
-    for tag, rel_path in _STATE_OVERLAYS:
-        overlay_abs = SCRIPT_DIR / rel_path
-        if not overlay_abs.exists():
-            print(f"  Overlay {tag}: not found ({rel_path}); skipping.")
-            continue
-        state_path = src_dir / f"{vis_stem}_{tag}.png"
-        composited = composite_overlay(base_visible, str(overlay_abs))
-        composited.save(state_path)
-        print(f"  {tag}: {state_path}")
-        produced.append(str(state_path))
-
-    # Step 5c: Revealed variant — build from the pre-shadow Visible canvas.
-    # Visible and Revealed use different shadow plates, so if the exported
-    # Visible sprite has its base shadow baked in, create a no-shadow canvas as
-    # the Revealed source and let process_revealed() add the lighter FOW shadow.
-    revealed_out = src_dir / f"{revealed_stem_for_source(source_path, cfg)}.png"
-    revealed_input_path = Path(sv_path)
-    if postprocess_config.enable_base_shadow:
-        pre_shadow_config = replace(postprocess_config, enable_base_shadow=False)
-        if keep_intermediates:
-            pre_shadow_path = src_dir / f"{output_stem_for_source(source_path, cfg)}_PreShadow.png"
-        else:
-            pre_shadow_path = intermediate_dir / f"{output_stem_for_source(source_path, cfg)}_PreShadow_{RUN_ID}.png"
-            intermediate_paths.append(pre_shadow_path)
-        revealed_input_path = Path(sv_process(str(raw_path), str(pre_shadow_path), config=pre_shadow_config))
-        print(f"  Revealed input intermediate (pre-shadow): {revealed_input_path}")
-
-    print(f"\n  Revealed: generating from {revealed_input_path.name} ...")
-    revealed_files = process_revealed(
-        input_path=str(revealed_input_path),
-        output_path=str(revealed_out),
-        base_config=postprocess_config,
-    )
-    produced.extend(revealed_files)
+    produced = [pre_shadow_result]
+    if keep_intermediates:
+        produced.insert(0, str(raw_path))
 
     if not keep_intermediates:
         for path in intermediate_paths:
@@ -510,7 +476,7 @@ def main() -> None:
     parser.add_argument("source_image", help="Source/reference image to upload to ComfyUI for img2img.")
     parser.add_argument("--keep-intermediates", dest="keep_intermediates",
                         action=argparse.BooleanOptionalAction, default=None,
-                        help="Keep _Visible_Raw and _Visible_PreShadow beside outputs. Default/env: off.")
+                        help="Keep _Visible_Raw beside the exported large _Visible_PreShadow. Default/env: off.")
     add_processing_options(parser)
     args = parser.parse_args()
 
@@ -563,9 +529,11 @@ def main() -> None:
         keep_intermediates=keep_intermediates,
     )
 
-    print(f"\nDone! {len(results)} variants.")
+    print(f"\nDone! {len(results)} file(s).")
     for result in results:
         print(result)
+    print("\nNext: paint directional shading on the _Visible_PreShadow file, then run:")
+    print(f"  python {SCRIPT_DIR / 'sv_postprocess.py'} {results[-1]}")
 
 
 if __name__ == "__main__":

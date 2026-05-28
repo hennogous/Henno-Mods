@@ -105,6 +105,10 @@
 			<m_EntryID text="CSC_BAKERS_80"/>
 			<m_ObjectName text="CSC_BAKERS_80"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_Tooltip_Arrow"/>
+			<m_ObjectName text="CSC_Tooltip_Arrow"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

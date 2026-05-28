@@ -700,11 +700,6 @@
 	<m_GeometrySet>
 		<m_ModelInstances>
 			<Element>
-				<m_Name text="DIS_PRD_Classical_Base_01"/>
-				<m_GeoName text="DIS_PRD_Classical_Base_01"/>
-				<m_GroupStates/>
-			</Element>
-			<Element>
 				<m_Name text="CSC_ALL_District_Base"/>
 				<m_GeoName text="CSC_ALL_District_Base"/>
 				<m_GroupStates/>

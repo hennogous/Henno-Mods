@@ -4,3 +4,5 @@
 - [CivAssetForge viewer prototype learnings](project_civassetforge_viewer_learnings.md) — FGX pipeline, DDS formats, UV conventions, tile offset fix, attachment extraction, Wind Mill scene confirmed working
 - [Write to memory proactively](feedback_memory_discipline.md) — write as things happen, not batched; project memory is primary for CSC/CivAssetForge work
 - [ComfyUI icon pipeline notes](project_comfyui_icon_pipeline.md) — Dropzone output path, rembg CPU provider, optional SAM fallback
+- [Dynamic art properties](project_dynamic_art_properties.md) — Bakers' Stage 2 Granary growth city property and GamePropertyRanges SelectionRule hook
+- [Notification UI notes](project_notification_ui.md) — specialist-slot grant notifications are currently folded into the main Quarter effect notification text

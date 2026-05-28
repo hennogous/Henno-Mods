@@ -72,7 +72,7 @@ SET AbilityRemovedDesc = (
 --===========================================================================================================================================================================--
 /*	CITY SPECIALIST MODIFIERS */
 --===========================================================================================================================================================================--
-
+/*
 -- Step 1: Fill SpecialistGrantModifierId from ModifierArguments.Value
 UPDATE CSC_SpecialistAttachModifiers
 SET SpecialistGrantModifierId = (
@@ -88,7 +88,7 @@ SET SpecialistGrantDesc = (
     FROM ModifierStrings b
     WHERE b.ModifierId = CSC_SpecialistAttachModifiers.SpecialistGrantModifierId
 		AND b.Context = 'Preview'
-);
+); */
 
 
 

@@ -60,58 +60,66 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION',           '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+2 [ICON_Food] Food, with a -2 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+0.2 [ICON_Food] Food and +0.2 [ICON_Gold] Gold per [ICON_Citizen] Citizen to the city for each adjacent Market.[NEWLINE][NEWLINE]At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks additional bonuses to each adjacent Market.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_NAME',                    'Café'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',             '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE][ICON_BULLET]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo and Ferris Wheel, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to an improved base and specialty materials resource unlocks additional bonuses to each adjacent Entertainment Complex and Water Park.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',             '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE][ICON_BULLET]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo and Ferris Wheel, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and specialty materials resources establishes a service in each adjacent Entertainment Complex with a Zoo and Water Park with a Ferris Wheel.'   ),
 
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_NAME',              'Town Crier'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_DESCRIPTION',       'Hear ye, hear ye! With such a growing population, someone is needed to spread news, laws, or proclamations aloud in public spaces.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME',              'Storekeeper'     ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',       'Reliable flour stores need someone to keep them measured, fresh, and ready for distribution as the city grows.'    ),
 
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME',              'Groundskeeper'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_DESCRIPTION',       'Growing visitor numbers, in no small part driven by the proximity of the adjacent Café, has created the need for someone to perform some much-needed maintenance on the district''s attractions.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME',              'Innkeeper'     ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_DESCRIPTION',       'A steady trade in fresh bread draws merchants, teamsters, and travellers to the Market, creating demand for lodging, meals, and hospitality nearby.'    ),
 
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME',              'Ride Technician'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_DESCRIPTION',       'Growing visitor numbers, in no small part driven by the proximity of the adjacent Café, has created the need for someone to perform some much-needed maintenance on the district''s attractions.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME',              'Groundskeeper'     ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_DESCRIPTION',       'Growing visitor numbers, in no small part driven by the proximity of the adjacent Café, has created the need for someone to perform some much-needed maintenance on the district''s attractions.'    ),
+
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME',              'Ride Technician'     ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_DESCRIPTION',       'Growing visitor numbers, in no small part driven by the proximity of the adjacent Café, has created the need for someone to perform some much-needed maintenance on the district''s attractions.'    ),
 
 -- EFFECT DESCRIPTIONS
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER',              '{1_iBonus}% growth, as the local Granary has access to an adjacent Water Mill.'        ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_NEW',          '{1_iBonus}% growth, as the local Granary now has access to an adjacent Water Mill.'    ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_REMOVED',      '{1_iBonus}% growth, as the local Granary has lost access to the adjacent Water Mill.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT',                                '[NEWLINE][NEWLINE]At Feudalism, a Granary adjacent to a supplied Water Mill or Wind Mill establishes a Storekeeper service: +10% growth from each adjacent supplied mill and +1 [ICON_Citizen] Citizen slot in the City Center.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER',              'Storekeeper: {1_iBonus}% growth.[NEWLINE]Supply Chain: adjacent supplied Water Mill [ICON_ARROW] Granary.'        ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_NEW',          '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth and +1 [ICON_Citizen] Citizen slot in the City Center'    ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_INCREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'    ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_DECREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'    ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_REMOVED',      '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'  ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND',               '{1_iBonus}% growth, as the local Granary has access to an adjacent Wind Mill.'         ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_NEW',           '{1_iBonus}% growth, as the local Granary now has access to an adjacent Wind Mill.'     ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_REMOVED',       '{1_iBonus}% growth, as the local Granary has lost access to the adjacent Wind Mill.'   ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND',               'Storekeeper: {1_iBonus}% growth.[NEWLINE]Supply Chain: adjacent supplied Wind Mill [ICON_ARROW] Granary.'         ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_NEW',           '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth and +1 [ICON_Citizen] Citizen slot in the City Center'     ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_INCREASED',     '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'     ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_DECREASED',     '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'     ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_REMOVED',       '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'   ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_CIVIC',                         '[NEWLINE][NEWLINE]Growth bonus from a Granary adjacent to a Water Mill or Wind Mill.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_CIVIC',                         '[NEWLINE][NEWLINE]A Granary adjacent to a supplied Water Mill or Wind Mill establishes a Storekeeper service: +10% growth from each adjacent supplied mill and +1 [ICON_Citizen] Citizen slot in the City Center.'  ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT',                        '[NEWLINE][NEWLINE]At Medieval Faires, the Market provides +2 [ICON_Housing] Housing, if adjacent to a Bakery that is in turn adjacent to an improved Bakers'' Quarter base materials resource.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION',            '{1_iBonus} [ICON_Housing] Housing, as the local Market has access to {2_Num : plural 1?an adjacent Bakery; other?{2_StackAmount} adjacent Bakeries;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_NEW',        '{1_iBonus} [ICON_Housing] Housing, as the local Market now has access to {2_Num : plural 1?an adjacent Bakery; other?{2_StackAmount} adjacent Bakeries;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_INCREASED',  '{1_iBonus} [ICON_Housing] Housing, as the local Market now has access to {2_StackAmount} more adjacent {2_Num : plural 1?Bakery; other?Bakeries;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_DECREASED',  '{1_iBonus} [ICON_Housing] Housing, as the local Market now has access to {2_StackAmount} fewer adjacent {2_Num : plural 1?Bakery; other?Bakeries;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_REMOVED',    '{1_iBonus} [ICON_Housing] Housing, as the local Market has lost access to {2_Num : plural 1?the adjacent Bakery; other?all adjacent Bakeries;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_SPECIALIST',                    '[NEWLINE][NEWLINE]At Medieval Faires, +1 [ICON_Citizen] Citizen slot ({LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_NAME}) is granted to a Commercial Hub with a Market, if adjacent to a Water Mill or Wind Mill that is in turn adjacent to an improved Bakers'' Quarter base materials resource.'    ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_SPECIALIST_GRANT_NEW',          'A {LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_NAME} has been appointed.'		),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_CIVIC',                         '[ICON_Housing] Housing bonus and a [ICON_Citizen] Citizen slot from a Market adjacent to a Bakery.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT',                        '[NEWLINE][NEWLINE]At Medieval Faires, a Market adjacent to a supplied Bakery establishes an Innkeeper service: +2 [ICON_Housing] Housing from each adjacent supplied Bakery and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION',            'Innkeeper: {1_iBonus} [ICON_Housing] Housing.[NEWLINE]Supply Chain: {2_StackAmount} supplied {2_Num : plural 1?Bakery; other?Bakeries;} [ICON_ARROW] adjacent Market.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_NEW',        '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service:[NEWLINE]{1_iBonus} [ICON_Housing] Housing and +1 [ICON_Citizen] Citizen slot in the Commercial Hub'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_INCREASED',  '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: {1_iBonus} [ICON_Housing] Housing'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_DECREASED',  '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: {1_iBonus} [ICON_Housing] Housing'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_REMOVED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: {1_iBonus} [ICON_Housing] Housing'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_SERVICE',                       '[NEWLINE][NEWLINE]At Medieval Faires, +1 [ICON_Citizen] Citizen slot ({LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME}) is granted to a Commercial Hub with a Market, if adjacent to a Water Mill or Wind Mill that is in turn adjacent to an improved Bakers'' Quarter base materials resource.'    ),
+--(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_SERVICE_GRANT_NEW',           'A {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} has been appointed.'		),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_CIVIC',                         'A Market adjacent to a supplied Bakery establishes an Innkeeper service: +2 [ICON_Housing] Housing from each adjacent supplied Bakery and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.'  ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_REQUIREMENT',                           '[NEWLINE][NEWLINE]At Urbanization, if adjacent to a Café that is in turn adjacent to both improved Bakers'' Quarter base and speciality materials resources:'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_REQUIREMENT',                           '[NEWLINE][NEWLINE]At Urbanization, a district adjacent to a supplied Café establishes a local service:'  ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER',              '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Zoo also have access to {2_Num : plural 1?an adjacent Café; other?{2_StackAmount} adjacent Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_NEW',          '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Zoo now also have access to {2_Num : plural 1?an adjacent Café; other?{2_StackAmount} adjacent Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_INCREASED',    '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Zoo now also have access to {2_StackAmount} more adjacent {2_Num : plural 1?Café; other?Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_DECREASED',    '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Zoo now have access to {2_StackAmount} fewer adjacent {2_Num : plural 1?Café; other?Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_REMOVED',      '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Zoo have lost access to {2_Num : plural 1?the adjacent Café; other?all adjacent Cafés;}.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER',              '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME}: {1_iBonus} [ICON_Tourism] Tourism.[NEWLINE]Supply Chain: {2_StackAmount} supplied {2_Num : plural 1?Café; other?Cafés;} [ICON_ARROW] adjacent Zoo.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_NEW',          '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service:[NEWLINE]{1_iBonus} [ICON_Tourism] Tourism and +1 [ICON_Citizen] Citizen slot in the Entertainment Complex'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_INCREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_DECREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER_REMOVED',      '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER',              '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Ferris Wheel also have access to {2_Num : plural 1?an adjacent Café; other?{2_StackAmount} adjacent Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_NEW',          '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Ferris Wheel now also have access to {2_Num : plural 1?an adjacent Café; other?{2_StackAmount} adjacent Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_INCREASED',    '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Ferris Wheel now also have access to {2_StackAmount} more adjacent {2_Num : plural 1?Café; other?Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_DECREASED',    '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Ferris Wheel now have access to {2_StackAmount} fewer adjacent {2_Num : plural 1?Café; other?Cafés;}.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_REMOVED',      '{1_iBonus} [ICON_Tourism] Tourism, as visitors to the local Ferris Wheel have lost access to {2_Num : plural 1?the adjacent Café; other?all adjacent Cafés;}.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER',              '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME}: {1_iBonus} [ICON_Tourism] Tourism.[NEWLINE]Supply Chain: {2_StackAmount} supplied {2_Num : plural 1?Café; other?Cafés;} [ICON_ARROW] adjacent Ferris Wheel.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_NEW',          '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service:[NEWLINE]{1_iBonus} [ICON_Tourism] Tourism and +1 [ICON_Citizen] Citizen slot in the Water Park'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_INCREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_DECREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_REMOVED',      '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER',              '[NEWLINE]+2 [ICON_Tourism] Tourism to the district, and +1 [ICON_Citizen] Citizen slot ({LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME}) if the district has a Zoo.'),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_ENTER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME} has been appointed.'	),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SPECIALIST_WATER',              '[NEWLINE]+2 [ICON_Tourism] Tourism to the district, and +1 [ICON_Citizen] Citizen slot ({LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME}) if the district has a Ferris Wheel.'),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_WATER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME} has been appointed.'	),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_CIVIC',                         '[ICON_Tourism] Tourism bonus and a [ICON_Citizen] Citizen slot from a Zoo or Ferris Wheel adjacent to a Café.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_ENTER',              '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Zoo.'),
+--(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} has been appointed.'	),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_WATER',              '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Ferris Wheel.'),
+--(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} has been appointed.'	),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_CIVIC',                      'A Zoo adjacent to a supplied Café establishes a Groundskeeper service, and a Ferris Wheel adjacent to a supplied Café establishes a Ride Technician service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot in the district.'  ),
 
 -- PEDIA: SUPPLY CHAINS OVERVIEW SECTION
 
@@ -237,7 +245,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_GRANARY_CHAPTER_CSCHAIN_PARA_1',
-    'The Granary stands as the final stop for flour before it reaches the city’s bakers. A bustling storehouse of grain and flour, it purchases the milled output from an adjacent Water Mill or Wind Mill, ensuring a constant supply of the raw materials needed to feed your populace.[NEWLINE][NEWLINE]At Feudalism, the Granary provides +10% growth in the city, if adjacent to a Water Mill or Wind Mill that is in turn adjacent to an improved Bakers'' Quarter base materials resource.'   ),
+    'The Granary stands as the final stop for flour before it reaches the city''s bakers. A bustling storehouse of grain and flour, it purchases the milled output from an adjacent Water Mill or Wind Mill, ensuring a constant supply of the raw materials needed to feed your populace.[NEWLINE][NEWLINE]At Feudalism, each supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary: +10% growth from each adjacent supplied mill and +1 [ICON_CITIZEN] Citizen slot in the City Center.'   ),
 
 -- PEDIA: BAKERY
 
@@ -269,7 +277,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_MARKET_CHAPTER_CSCHAIN_PARA_1',
-    'The Market is where the general population can purchase freshly baked goods from the Bakery every day, ensuring that the economic chain is completed and your citizens are well-fed.[NEWLINE][NEWLINE]At Medieval Faires, the Market provides +1 [ICON_Housing] Housing for each adjacent Bakery that is in turn adjacent to an improved base materials resource. This also grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_NAME}) to the Commercial Hub.'   ),
+    'The Market is where the general population can purchase freshly baked goods from the Bakery every day, ensuring that the economic chain is completed and your citizens are well-fed.[NEWLINE][NEWLINE]At Medieval Faires, each supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Commercial Hub with a Market: +2 [ICON_Housing] Housing from each adjacent supplied Bakery and +1 [ICON_CITIZEN] Citizen slot in the Commercial Hub.'   ),
 
 -- PEDIA: CAFÉ
 
@@ -305,7 +313,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Entertainment Complex also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each Café adjacent to improved base and speciality materials resources unlocks +2 [ICON_TOURISM] Tourism to the Entertainment Complex. This also grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME}) to the Entertainment Complex if it has a Zoo.'   ),
+    'Some visitors to the Entertainment Complex also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Entertainment Complex with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Entertainment Complex.'   ),
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_STREET_CARNIVAL_CHAPTER_CSCHAIN_TITLE',
@@ -313,7 +321,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_STREET_CARNIVAL_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Street Carnival also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each Café adjacent to improved base and speciality materials resources unlocks +2 [ICON_TOURISM] Tourism to the Street Carnical. This also grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME}) to the Street Carnival if it has a Zoo.'   ),
+    'Some visitors to the Street Carnival also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Street Carnival with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Street Carnival.'   ),
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_HIPPODROME_CHAPTER_CSCHAIN_TITLE',
@@ -321,7 +329,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_HIPPODROME_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Hippodrome also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each Café adjacent to improved base and speciality materials resources unlocks +2 [ICON_TOURISM] Tourism to the Hippodrome. This also grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME}) to the Hippodrome if it has a Zoo.'   ),
+    'Some visitors to the Hippodrome also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Hippodrome with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Hippodrome.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_ZOO_CHAPTER_CSCHAIN_TITLE',
@@ -329,7 +337,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_ZOO_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Zoo also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and speciality materials resources grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME}) to an adjacent Entertainment Complex, Street Carnival or Hippodrome if it has a Zoo.'   ),
+    'Some visitors to the Zoo also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Entertainment Complex, Street Carnival or Hippodrome with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the district.'   ),
 
 -- PEDIA: WATER PARK
 
@@ -339,7 +347,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Water Park also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each Café adjacent to improved base and speciality materials resources unlocks +2 [ICON_TOURISM] Tourism to the Water Park. This also grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME}) to the Water Park if it has a Ferris Wheel.'   ),
+    'Some visitors to the Water Park also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in an adjacent Water Park with a Ferris Wheel: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Water Park.'   ),
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_STREET_CARNIVAL_CHAPTER_CSCHAIN_TITLE',
@@ -347,7 +355,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_STREET_CARNIVAL_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Copacabana also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each Café adjacent to improved base and speciality materials resources unlocks +2 [ICON_TOURISM] Tourism to the Copacabana. This also grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME}) to the Copacabana if it has a Ferris Wheel.'   ),
+    'Some visitors to the Copacabana also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in an adjacent Copacabana with a Ferris Wheel: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Copacabana.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_FERRIS_WHEEL_CHAPTER_CSCHAIN_TITLE',
@@ -355,7 +363,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_FERRIS_WHEEL_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Ferris Wheel also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and speciality materials resources grants +1 [ICON_CITIZEN] Citizen slot (the appointment of a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME}) to an adjacent Water Park or Copacabana if it has a Ferris Wheel.'   );
+    'Some visitors to the Ferris Wheel also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in an adjacent Water Park or Copacabana with a Ferris Wheel: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the district.'   );
 
 -- PEDIA: RESOURCES
 

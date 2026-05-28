@@ -303,7 +303,10 @@
 			<relativeArtDefPaths>
 				<Element text="CSC_Buildings.artdef"/>
 				<Element text="CSC_Districts.artdef"/>
+				<Element text="CSC_GamePropertyRanges.artdef"/>
+				<Element text="CSC_Landmarks.artdef"/>
 				<Element text="CSC_Resources.artdef"/>
+				<Element text="CSC_StrategicView.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 			</libraryDependencies>

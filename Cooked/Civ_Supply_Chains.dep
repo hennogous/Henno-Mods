@@ -315,9 +315,10 @@
 			<ArtDefDependencyPaths>
 				<Element text="CSC_Buildings.artdef"/>
 				<Element text="CSC_Districts.artdef"/>
+				<Element text="CSC_GamePropertyRanges.artdef"/>
+				<Element text="CSC_Landmarks.artdef"/>
 				<Element text="CSC_Resources.artdef"/>
 				<Element text="CSC_StrategicView.artdef"/>
-				<Element text="CSC_Landmarks.artdef"/>
 				<Element text="CSC_Clutter.artdef"/>
 			</ArtDefDependencyPaths>
 			<LibraryDependencies/>
@@ -508,6 +509,10 @@
 		</Element>
 		<Element>
 			<ArtDefPath text="CSC_Overlay.artdef"/>
+			<ArtDefDependencyPaths/>
+		</Element>
+		<Element>
+			<ArtDefPath text="CSC_GamePropertyRanges.artdef"/>
 			<ArtDefDependencyPaths/>
 		</Element>
 	</ArtDefDependencies>

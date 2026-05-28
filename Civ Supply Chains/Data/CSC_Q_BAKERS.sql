@@ -20,9 +20,10 @@ VALUES	( 	'DISTRICT_CSC_BAKERS_QUARTER',                              		'KIND_DI
 		(	'BUILDING_CSC_BAKERS_BAKERY',										'KIND_BUILDING'			),
 		(	'BUILDING_CSC_BAKERS_CAFE',											'KIND_BUILDING'			),
 
-		(	'BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST',							'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER',						'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER',						'KIND_BUILDING'			),
+		(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',								'KIND_BUILDING'			),
+		(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',								'KIND_BUILDING'			),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',						'KIND_BUILDING'			),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',						'KIND_BUILDING'			),
 
 		(	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',					'KIND_MODIFIER'			),
 		(	'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',					'KIND_MODIFIER'			);
@@ -163,12 +164,12 @@ VALUES	(
 		/*  AdvisorType */							'ADVISOR_GENERIC'
 													);
 
-UPDATE Districts SET Description = '{LOC_DISTRICT_COMMERCIAL_HUB_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_SPECIALIST}' WHERE DistrictType='DISTRICT_COMMERCIAL_HUB';
-UPDATE Districts SET Description = '{LOC_DISTRICT_ENTERTAINMENT_COMPLEX_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SPECIALIST_LAND}' WHERE DistrictType='DISTRICT_ENTERTAINMENT_COMPLEX';
-UPDATE Districts SET Description = '{LOC_DISTRICT_STREET_CARNIVAL_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SPECIALIST_LAND}' WHERE DistrictType='DISTRICT_STREET_CARNIVAL';
-UPDATE Districts SET Description = '{LOC_DISTRICT_HIPPODROME_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SPECIALIST_LAND}' WHERE DistrictType='DISTRICT_HIPPODROME';
-UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SPECIALIST_WATER}' WHERE DistrictType='DISTRICT_WATER_ENTERTAINMENT_COMPLEX';
-UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SPECIALIST_WATER}' WHERE DistrictType='DISTRICT_WATER_STREET_CARNIVAL';
+UPDATE Districts SET Description = '{LOC_DISTRICT_COMMERCIAL_HUB_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_SERVICE}' WHERE DistrictType='DISTRICT_COMMERCIAL_HUB';
+UPDATE Districts SET Description = '{LOC_DISTRICT_ENTERTAINMENT_COMPLEX_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND}' WHERE DistrictType='DISTRICT_ENTERTAINMENT_COMPLEX';
+UPDATE Districts SET Description = '{LOC_DISTRICT_STREET_CARNIVAL_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND}' WHERE DistrictType='DISTRICT_STREET_CARNIVAL';
+UPDATE Districts SET Description = '{LOC_DISTRICT_HIPPODROME_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND}' WHERE DistrictType='DISTRICT_HIPPODROME';
+UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_WATER}' WHERE DistrictType='DISTRICT_WATER_ENTERTAINMENT_COMPLEX';
+UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_WATER}' WHERE DistrictType='DISTRICT_WATER_STREET_CARNIVAL';
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -450,9 +451,23 @@ VALUES	(
 		/*  AdvisorType */			'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_DESCRIPTION',
+		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',
+		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME',
+		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',
+		/*  PrereqTech, */			NULL,
+		/*  PrereqCivic, */			NULL,
+		/*  Cost, */				0,
+		/*  PrereqDistrict, */		'DISTRICT_CITY_CENTER',
+		/*  PurchaseYield, */		NULL,
+		/*  Maintenance, */			0,
+		/*	CitizenSlots */			1,
+		/*  Entertainment */		0,
+		/*  AdvisorType */			'ADVISOR_GENERIC'
+									),
+		(
+		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',
+		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME',
+		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_DESCRIPTION',
 		/*  PrereqTech, */			NULL,
 		/*  PrereqCivic, */			NULL,
 		/*  Cost, */				0,
@@ -464,9 +479,9 @@ VALUES	(
 		/*  AdvisorType */			'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_DESCRIPTION',
+		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',
+		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME',
+		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_DESCRIPTION',
 		/*  PrereqTech, */			NULL,
 		/*  PrereqCivic, */			NULL,
 		/*  Cost, */				0,
@@ -478,9 +493,9 @@ VALUES	(
 		/*  AdvisorType */			'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_DESCRIPTION',
+		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',
+		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME',
+		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_DESCRIPTION',
 		/*  PrereqTech, */			NULL,
 		/*  PrereqCivic, */			NULL,
 		/*  Cost, */				0,
@@ -499,21 +514,23 @@ SET MustPurchase = 1
 WHERE BuildingType IN (
     'BUILDING_CSC_BAKERS_RIVER_ACCESS',
     'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',
-    'BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST',
-    'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER',
-    'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER'
+	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',
+    'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',
+    'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',
+    'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'
 );
 
 INSERT INTO CivilopediaPageExcludes
 		(	SectionId,			PageId	) VALUES	
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_RIVER_ACCESS'				),
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'			),
-		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST'		),
-		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER'	),
-		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER'	);
+		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'			),
+		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'			),
+		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'		),
+		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'		);
 
--- UPDATE Buildings SET Description = 'LOC_CSC_BAKERS_STAGE_2_EFFECT' WHERE BuildingType='BUILDING_GRANARY';
--- UPDATE Buildings SET Description = '{LOC_BUILDING_MARKET_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_EFFECT}' WHERE BuildingType='BUILDING_MARKET';
+UPDATE Buildings SET Description = '{LOC_BUILDING_GRANARY_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_2_EFFECT}' WHERE BuildingType='BUILDING_GRANARY';
+UPDATE Buildings SET Description = '{LOC_BUILDING_MARKET_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_EFFECT}' WHERE BuildingType='BUILDING_MARKET';
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings_XP2
@@ -524,9 +541,10 @@ INSERT OR IGNORE INTO Buildings_XP2
 		(	BuildingType,										Pillage		)
 VALUES	(	'BUILDING_CSC_BAKERS_RIVER_ACCESS',					0			),
 		(	'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',				0			),
-		(	'BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST',			0			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER',		0			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER',		0			);
+		(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',				0			),
+		(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',				0			),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		0			),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		0			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingPrereqs
@@ -577,11 +595,11 @@ VALUES  (	'BUILDING_CSC_BAKERS_BAKERY',       				'YIELD_FOOD',	        				2		 
 		(	'BUILDING_CSC_BAKERS_CAFE',       					'YIELD_FOOD',	        				1		        	),
 		(	'BUILDING_CSC_BAKERS_CAFE',       					'YIELD_GOLD',	        				2		        	),
 
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER',		'YIELD_CULTURE',	        			2		        	),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER',		'YIELD_GOLD',	        				2		        	),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		'YIELD_CULTURE',	        			2		        	),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		'YIELD_GOLD',	        				2		        	),
 
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER',		'YIELD_CULTURE',	        			2		        	),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER',		'YIELD_GOLD',	        				2		        	);
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		'YIELD_CULTURE',	        			2		        	),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		'YIELD_GOLD',	        				2		        	);
 		
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingModifiers
@@ -603,10 +621,16 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER'		),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER'		),
 
+--  Mirror the adjacent Granary transaction back onto Mill cities for alternate mill art
+		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER'	),
+		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND'	),
+
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
---  An adjacent Granary provides +10% growth in the city
+--  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER'	),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND'	),
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER'	),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND'	),
 
 --	BAKERY ------------------------------------------------------------------------------
 
@@ -622,25 +646,28 @@ INSERT INTO BuildingModifiers
 --  +0.2 Food per Citizen to the city for each adjacent Market (+0.2 Gold moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB'		),
 
---  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
---  An adjacent Market provides +2 Housing
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB'		),
+--  Mirror the adjacent Market transaction back onto the City of adjacent Bakeries for alternate Bakery art
+		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'	),
+		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'	),
 
--- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_SPECIALIST_ATTACH_COMHUB'	),
+--  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
+-- 	Grant the Stage 3 Service to a Commercial Hub with a Market
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_SERVICE_ATTACH_COMHUB'		),
+--  Each adjacent Bakery grants the Stage 3 Service +2 Housing
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB'		),
 
 --	CAFE --------------------------------------------------------------------------
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent specialty materials improvements
 
 --  +1 Production from the local Flour Mill
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE'		),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE'		),
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE'			),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE'			),
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to the Flour Mill in the Quarter
 
 --  +3 Food (with a -3 Gold maintenance cost)
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_SELF_FOOD'				),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_SELF_FOOD'						),
 
 --  See end of file for: +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel
 
@@ -649,9 +676,13 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT'),
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK'	),
 
+--  Mirror the adjacent Zoo/Ferris Wheel transactions back onto Cafe cities for alternate Cafe art
+		(	'BUILDING_ZOO',								'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_ENTER'	),
+		(	'BUILDING_FERRIS_WHEEL',					'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_WATER'	),
+
 -- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_ATTACH_ENTER'	),
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_ATTACH_WATER'	),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER'		),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER'		),
 
 --	SHARED ------------------------------------------------------------------------------
 
@@ -726,13 +757,22 @@ INSERT OR IGNORE INTO Modifiers
 -- 	+1 Food to an adjacent Granary (+1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
         (  	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL, 										'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
         (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',    				'MODIFIER_BUILDING_YIELD_CHANGE',  								NULL,                           			NULL												),
+--  Art bridge: Granaries set the source property on adjacent Water/Wind Mill transaction cities
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER'			),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WATER',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND'			),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
---  An adjacent Granary provides +10% growth in the city
+--  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
+
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',								'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
 
 --	BAKERY ------------------------------------------------------------------------------
 
@@ -745,16 +785,18 @@ INSERT OR IGNORE INTO Modifiers
 --  +0.2 Food per Citizen to the city for each adjacent Market (+0.2 Gold moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
+--  Art bridge: Markets set the source property on adjacent Bakery transaction cities
+		(	'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART'					),
+		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
---  An adjacent Market provides +2 Housing
 
+-- 	Grant the Stage 3 Service to a Commercial Hub with a Market
+		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_ATTACH_COMHUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_3_EFFECT_PREREQ',			'REQSET_CSC_ADJ_MARKET'								),
+		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT',								'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
+--  An adjacent Stage 3 Service provides +2 Housing
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_3_EFFECT_PREREQ',			'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',							'MODIFIER_SINGLE_CITY_ADJUST_BUILDING_HOUSING',					NULL,										NULL												),
-
--- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
-		(	'MOD_CSC_BAKERS_STAGE_3_SPECIALIST_ATTACH_COMHUB',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_3_EFFECT_PREREQ',			'REQSET_CSC_ADJ_MARKET'								),
-		(	'MOD_CSC_BAKERS_STAGE_3_SPECIALIST_GRANT',							'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
 		
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -773,6 +815,11 @@ INSERT OR IGNORE INTO Modifiers
 --  +1 Culture for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel (+1 Gold moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+--  Art bridge: Zoos and Ferris Wheels set the source property on adjacent Cafe transaction cities
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_ENTER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_CAFE_STAGE_4_ART'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_ENTER',						'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_WATER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_CAFE_STAGE_4_ART'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_WATER',						'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
 
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
@@ -782,10 +829,10 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',						'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',				NULL,										NULL												),
 
 -- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_ATTACH_ENTER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'			),
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_ENTER',					'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_ATTACH_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_WATER',					'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'			),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',					'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',					'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
 
 -- 	SHARED ------------------------------------------------------------------------------
 
@@ -843,11 +890,23 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',					'Amount',					1																),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
---  An adjacent Granary provides +10% growth in the city
+--  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER'					),
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',						'Amount',					10																),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT'							),
+--  Source property consumed by Lua, then exposed to GamePropertyRanges for mill SelectionRules
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP_WATER'								),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WATER',								'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WATER',								'Amount',					1																),
+
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND'						),
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'Amount',					10																),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT'							),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',								'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'							),
+--  Same source property as Water Mill; these buildings are mutually exclusive in the Quarter
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP_WIND'								),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Amount',					1																),
 
 --	BAKERY ------------------------------------------------------------------------------
 
@@ -864,16 +923,19 @@ INSERT OR IGNORE INTO ModifierArguments
 --  +0.2 Food per Citizen to the city for each adjacent Market (+0.2 Gold moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'ModifierId',				'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET'							),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'YieldType',				'YIELD_FOOD'													),
-		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'Amount',					0.21															),
+		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'Amount',					0.2																),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
+-- 	Grant the Stage 3 Service to a Commercial Hub with a Market
+		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_ATTACH_COMHUB',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT'							),
+		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT',								'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'							),
 --  An adjacent Market provides +2 Housing
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING'							),
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',							'Amount',					2																),
-
--- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
-		(	'MOD_CSC_BAKERS_STAGE_3_SPECIALIST_ATTACH_COMHUB',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_SPECIALIST_GRANT'						),
-		(	'MOD_CSC_BAKERS_STAGE_3_SPECIALIST_GRANT',							'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST'						),
+--  Source property consumed by Lua, then exposed to GamePropertyRanges for Bakery SelectionRules
+		(	'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER',				'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING'							),
+		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'Key',						'CSC_BAKERS_STAGE_3_EFFECT_HOUSING'								),
+		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'Amount',					1																),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -910,12 +972,19 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ENTER',						'Amount',					2																),
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',						'Amount',					2																),
+--  Source property consumed by Lua, then exposed to GamePropertyRanges for Cafe SelectionRules
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_ENTER',				'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_ENTER'						),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_ENTER',						'Key',						'CSC_BAKERS_STAGE_4_EFFECT_TOURISM'								),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_ENTER',						'Amount',					1																),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_WATER',				'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_WATER'						),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_WATER',						'Key',						'CSC_BAKERS_STAGE_4_EFFECT_TOURISM'								),
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_WATER',						'Amount',					1																),
 
 -- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_ATTACH_ENTER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_ENTER'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_ENTER',					'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_ATTACH_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_WATER'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_WATER',					'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',					'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',					'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'					),
 
 -- 	SHARED ------------------------------------------------------------------------------
 
@@ -963,6 +1032,8 @@ INSERT OR IGNORE INTO RequirementSets
 --  An adjacent Granary provides +10% growth in the city
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQUIREMENTSET_TEST_ALL'		),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -970,8 +1041,10 @@ INSERT OR IGNORE INTO RequirementSets
 		(	'REQSET_CSC_ADJ_MARKET',								'REQUIREMENTSET_TEST_ALL'		),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQUIREMENTSET_TEST_ALL'		),
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQUIREMENTSET_TEST_ALL'		),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -988,6 +1061,7 @@ INSERT OR IGNORE INTO RequirementSets
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQUIREMENTSET_TEST_ALL'		),
 
 -- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
 		(	'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO',				'REQUIREMENTSET_TEST_ALL'		),
@@ -1031,6 +1105,12 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_CITY_HAS_WATER_MILL'					),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_CITY_HAS_WIND_MILL'					),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1039,12 +1119,18 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'			),
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_CITY_HAS_MARKET'						),
 
--- Moved to CSC_Q_BAKERS_GOLD.sql: REQSET_CSC_ADJ_BAKERY requirements
+-- Shared with CSC_Q_BAKERS_GOLD.sql: inverse Market-to-Bakery adjacency requirements
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'			),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE'		),
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_CITY_HAS_BAKERY'						),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -1066,6 +1152,9 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC'		),
+		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_CITY_HAS_CAFE'							),
 
 -- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
 		(	'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO',				'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX'				),
@@ -1109,15 +1198,18 @@ INSERT OR IGNORE INTO Requirements
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth in the city
 		(	'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
+		(	'REQ_CSC_CITY_HAS_WATER_MILL',							'REQUIREMENT_CITY_HAS_BUILDING',					0				),
+		(	'REQ_CSC_CITY_HAS_WIND_MILL',							'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
 --  +0.2 Food and +0.2 Gold per Citizen to the city for each adjacent Market
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',			0				),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
--- Moved to CSC_Q_BAKERS_GOLD.sql: REQ_CSC_CITY_HAS_BAKERY
+		(	'REQ_CSC_CITY_HAS_BAKERY',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
+		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 --  An adjacent Market provides +2 Housing
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
@@ -1131,6 +1223,7 @@ INSERT OR IGNORE INTO Requirements
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
+		(	'REQ_CSC_CITY_HAS_CAFE',									'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 
 -- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),
@@ -1167,15 +1260,18 @@ INSERT OR IGNORE INTO RequirementArguments
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth in the city
 		(	'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_FEUDALISM'								),
+		(	'REQ_CSC_CITY_HAS_WATER_MILL',							'BuildingType',					'BUILDING_CSC_BAKERS_WATER_MILL'					),
+		(	'REQ_CSC_CITY_HAS_WIND_MILL',							'BuildingType',					'BUILDING_CSC_BAKERS_WIND_MILL'					),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
 --  +0.2 Food and +0.2 Gold per Citizen to the city for each adjacent Market
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'DistrictType',					'DISTRICT_COMMERCIAL_HUB'						),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'BuildingType',					'BUILDING_MARKET'								),
--- Moved to CSC_Q_BAKERS_GOLD.sql: REQ_CSC_CITY_HAS_BAKERY arg
+		(	'REQ_CSC_CITY_HAS_BAKERY',								'BuildingType',					'BUILDING_CSC_BAKERS_BAKERY'					),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
+		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'BuildingType',					'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'			),
 --  An adjacent Market provides +2 Housing
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_MEDIEVAL_FAIRES'							),
@@ -1189,6 +1285,7 @@ INSERT OR IGNORE INTO RequirementArguments
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_URBANIZATION'							),
+		(	'REQ_CSC_CITY_HAS_CAFE',									'BuildingType',					'BUILDING_CSC_BAKERS_CAFE'						),
 
 -- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'RequirementSetId',				'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX'			),
@@ -1378,6 +1475,7 @@ INSERT INTO ModifierStrings
 	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ENTER',		'Preview',			'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER'	),
 	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',		'Preview',			'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER'	),
 
-	(	'MOD_CSC_BAKERS_STAGE_3_SPECIALIST_GRANT',			'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_3_SPECIALIST_NAME'		),
-	(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_ENTER',	'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_ENTER_NAME'	),
-	(	'MOD_CSC_BAKERS_STAGE_4_SPECIALIST_GRANT_WATER',	'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SPECIALIST_WATER_NAME'	);
+	(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',			'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME'		),
+	(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT',			'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME'		),
+	(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',	'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME'	),
+	(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',	'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME'	);

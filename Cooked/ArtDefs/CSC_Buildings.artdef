@@ -419,9 +419,9 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="Watermill"/>
+										<m_ElementName text="CSC_BAKERS_Water_Mill"/>
 										<m_RootCollectionName text="Buildings"/>
-										<m_ArtDefPath text="StrategicView.artdef"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
 										<m_TemplateName text="StrategicView"/>
 										<m_ParamName text="XrefName"/>
@@ -444,9 +444,9 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="Watermill_Pillaged"/>
+										<m_ElementName text="CSC_BAKERS_Water_Mill_Pillaged"/>
 										<m_RootCollectionName text="Buildings"/>
-										<m_ArtDefPath text="StrategicView.artdef"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
 										<m_TemplateName text="StrategicView"/>
 										<m_ParamName text="XrefName"/>
@@ -469,9 +469,9 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="Watermill_UnderConstruction"/>
+										<m_ElementName text="CSC_BAKERS_Water_Mill_UnderConstruction"/>
 										<m_RootCollectionName text="Buildings"/>
-										<m_ArtDefPath text="StrategicView.artdef"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
 										<m_TemplateName text="StrategicView"/>
 										<m_ParamName text="XrefName"/>
@@ -560,23 +560,6 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="BUILDING_CSC_BAKERS_WATER_MILL"/>
-										<m_RootCollectionName text="Building"/>
-										<m_ArtDefPath text="CSC_Buildings.artdef"/>
-										<m_CollectionIsLocked>true</m_CollectionIsLocked>
-										<m_TemplateName text="Buildings"/>
-										<m_ParamName text="Building"/>
-									</Element>
-								</m_Values>
-							</m_Fields>
-							<m_ChildCollections/>
-							<m_Name text="1_Water_Mill"/>
-							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
-						</Element>
-						<Element>
-							<m_Fields>
-								<m_Values>
-									<Element class="AssetObjects..ArtDefReferenceValue">
 										<m_ElementName text="BUILDING_CSC_BAKERS_WIND_MILL"/>
 										<m_RootCollectionName text="Building"/>
 										<m_ArtDefPath text="CSC_Buildings.artdef"/>
@@ -587,7 +570,7 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="2_Wind_Mill"/>
+							<m_Name text="1_Wind_Mill"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>

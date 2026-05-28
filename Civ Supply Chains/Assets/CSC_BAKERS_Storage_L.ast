@@ -144,7 +144,7 @@
 									<m_ParamName text="TerrainFollowMode"/>
 								</Element>
 								<Element class="AssetObjects..StringValue">
-									<m_Value text="OPTIONAL"/>
+									<m_Value text="PERMANENT"/>
 									<m_ParamName text="Cull Mode"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
@@ -1350,9 +1350,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>0.928063</x>
-							<y>-6.757689</y>
-							<z>0.266357</z>
+							<x>0.960893</x>
+							<y>-6.741251</y>
+							<z>0.103096</z>
 						</m_position>
 						<m_orientation>
 							<x>0.216561</x>

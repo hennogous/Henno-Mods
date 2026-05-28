@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects..ArtDefSet>
+	<m_Version>
+		<major>1</major>
+		<minor>0</minor>
+		<build>0</build>
+		<revision>0</revision>
+	</m_Version>
+	<m_TemplateName text="GamePropertyRanges"/>
+	<m_RootCollections>
+		<Element>
+			<m_CollectionName text="Classifier"/>
+			<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..StringValue">
+							<m_Value text="CITY"/>
+							<m_ParamName text="Property Source"/>
+						</Element>
+						<Element class="AssetObjects..StringValue">
+							<m_Value text="CSC_BAKERS_STAGE_2_EFFECT_GROWTH_ART"/>
+							<m_ParamName text="Property Name"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Intervals"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..Coord2DValue">
+										<m_x>1.000000</m_x>
+										<m_y>2.000000</m_y>
+										<m_ParamName text="Range"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_BAKERS_STAGE_2_EFFECT_GROWTH_ACTIVE"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_BAKERS_STAGE_2_EFFECT_GROWTH_ART"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..StringValue">
+							<m_Value text="CITY"/>
+							<m_ParamName text="Property Source"/>
+						</Element>
+						<Element class="AssetObjects..StringValue">
+							<m_Value text="CSC_BAKERS_STAGE_3_EFFECT_HOUSING_ART"/>
+							<m_ParamName text="Property Name"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Intervals"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..Coord2DValue">
+										<m_x>1.000000</m_x>
+										<m_y>100.000000</m_y>
+										<m_ParamName text="Range"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_BAKERS_STAGE_3_EFFECT_HOUSING_ACTIVE"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_BAKERS_STAGE_3_EFFECT_HOUSING_ART"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..StringValue">
+							<m_Value text="CITY"/>
+							<m_ParamName text="Property Source"/>
+						</Element>
+						<Element class="AssetObjects..StringValue">
+							<m_Value text="CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ART"/>
+							<m_ParamName text="Property Name"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Intervals"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..Coord2DValue">
+										<m_x>1.000000</m_x>
+										<m_y>100.000000</m_y>
+										<m_ParamName text="Range"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ACTIVE"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ART"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+		</Element>
+	</m_RootCollections>
+</AssetObjects..ArtDefSet>
+

@@ -158,10 +158,6 @@
 			<m_ObjectName text="CSC_BAKERS_Cafe"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_Wind_Mill"/>
-			<m_ObjectName text="CSC_BAKERS_Wind_Mill"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_ALL_Curved_Path"/>
 			<m_ObjectName text="CSC_ALL_Curved_Path"/>
 		</Element>
@@ -256,6 +252,26 @@
 		<Element>
 			<m_EntryID text="CSC_BAKERS_Ancient_Base_03"/>
 			<m_ObjectName text="CSC_BAKERS_Ancient_Base_03"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Wind_Mill_2"/>
+			<m_ObjectName text="CSC_BAKERS_Wind_Mill_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Wind_Mill"/>
+			<m_ObjectName text="CSC_BAKERS_Wind_Mill"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Bakery_2"/>
+			<m_ObjectName text="CSC_BAKERS_Bakery_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Cafe_2"/>
+			<m_ObjectName text="CSC_BAKERS_Cafe_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Water_Mill_2"/>
+			<m_ObjectName text="CSC_BAKERS_Water_Mill_2"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>

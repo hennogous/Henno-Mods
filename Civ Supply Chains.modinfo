@@ -463,12 +463,19 @@
       </Properties>
       <File>Lua_UI/Aristocrat/CSC_Aristocrat.lua</File>
     </AddGameplayScripts>
+    <AddGameplayScripts id="CSC_ArtProperties">
+      <Properties>
+        <LoadOrder>501</LoadOrder>
+      </Properties>
+      <File>Lua_UI/ArtProperties/CSC_ArtProperties.lua</File>
+    </AddGameplayScripts>
   </InGameActions>
   <Files>
     <File>ArtDefs/CSC_Buildings.artdef</File>
     <File>ArtDefs/CSC_Clutter.artdef</File>
     <File>ArtDefs/CSC_Districts.artdef</File>
     <File>ArtDefs/CSC_Farms.artdef</File>
+    <File>ArtDefs/CSC_GamePropertyRanges.artdef</File>
     <File>ArtDefs/CSC_Icons.artdef</File>
     <File>ArtDefs/CSC_Landmarks.artdef</File>
     <File>ArtDefs/CSC_Resources.artdef</File>
@@ -491,6 +498,7 @@
     <File>Data/CSC_Q__TEMPLATE.sql</File>
     <File>Data/CSC_RESOURCES.sql</File>
     <File>Icons/CSC_BAKERS_ICONS.sql</File>
+    <File>Lua_UI/ArtProperties/CSC_ArtProperties.lua</File>
     <File>Lua_UI/Aristocrat/CSC_Aristocrat.lua</File>
     <File>Lua_UI/Lenses/CSC_Lens_Colors.sql</File>
     <File>Lua_UI/Lenses/CSC_Lens_Text.sql</File>

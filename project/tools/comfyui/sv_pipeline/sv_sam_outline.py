@@ -30,17 +30,17 @@ SAM_CHECKPOINT = os.environ.get(
 )
 SAM_DEVICE = os.environ.get("CSC_SV_SAM_DEVICE", "cuda")  # cuda / cpu
 
-SAM_LINE_WIDTH = int(os.environ.get("CSC_SV_SAM_LINE_WIDTH", "8"))
+SAM_LINE_WIDTH = int(os.environ.get("CSC_SV_SAM_LINE_WIDTH", "16"))
 # Higher = thicker SAM interior boundary lines. (1-25 px; 2-6 useful for 1024px sprites, very sensitive)
 
-SAM_MIN_AREA = int(os.environ.get("CSC_SV_SAM_MIN_AREA", "500"))
+SAM_MIN_AREA = int(os.environ.get("CSC_SV_SAM_MIN_AREA", "4000"))
 # Higher = ignores tiny details/speckles; lower = keeps more small segmented parts.
 # Adjusted for 1024×1024 workflow scale. (50-20000 px area; 200-800 useful, medium sensitivity)
 
 SAM_MAX_AREA_FRACTION = float(os.environ.get("CSC_SV_SAM_MAX_AREA_FRACTION", "0.85"))
 # Higher = lets broad near-full-sprite masks pass; lower = keeps mask count focused on details. (0-1; 0.70-0.90 useful)
 
-SAM_MAX_MASKS = int(os.environ.get("CSC_SV_SAM_MAX_MASKS", "40"))
+SAM_MAX_MASKS = int(os.environ.get("CSC_SV_SAM_MAX_MASKS", "20"))
 # Higher = more region outlines; lower = fewer broader regions. (5-200; 30-70 useful)
 
 SAM_COLOR = tuple(int(x) for x in os.environ.get("CSC_SV_SAM_COLOR", "58,58,58,255").split(","))
@@ -49,13 +49,13 @@ SAM_COLOR = tuple(int(x) for x in os.environ.get("CSC_SV_SAM_COLOR", "58,58,58,2
 SAM_POINTS_PER_SIDE = int(os.environ.get("CSC_SV_SAM_POINTS_PER_SIDE", "24"))
 # Higher = more masks/detail but slower; lower = faster/broader masks. (8-64; 16-48 useful, expensive)
 
-SAM_PRED_IOU_THRESH = float(os.environ.get("CSC_SV_SAM_PRED_IOU_THRESH", "0.80"))
+SAM_PRED_IOU_THRESH = float(os.environ.get("CSC_SV_SAM_PRED_IOU_THRESH", "0.90"))
 # Higher = only confident masks; lower = more masks including messy fragments. (0-1; 0.7-0.88 useful, sensitive)
 
-SAM_STABILITY_THRESH = float(os.environ.get("CSC_SV_SAM_STABILITY_THRESH", "0.90"))
+SAM_STABILITY_THRESH = float(os.environ.get("CSC_SV_SAM_STABILITY_THRESH", "0.95"))
 # Higher = stable/clean masks only; lower = more fragile fine details. (0-1; 0.82-0.96 useful, sensitive)
 
-SAM_CROP_LAYERS = int(os.environ.get("CSC_SV_SAM_CROP_LAYERS", "0"))
+SAM_CROP_LAYERS = int(os.environ.get("CSC_SV_SAM_CROP_LAYERS", "1"))
 # Higher = searches crops for small details but much slower; lower = faster/broader masks. (0-2 practical; 0 for SV)
 
 SAM_INTERIOR_ERODE = int(os.environ.get("CSC_SV_SAM_INTERIOR_ERODE", "1"))

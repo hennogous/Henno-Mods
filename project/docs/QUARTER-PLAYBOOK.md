@@ -16,7 +16,7 @@ Standard checklist for implementing each new Quarter after Bakers'. Use Bakers' 
     - Stage 3 customer district + building (Bakers' → Commercial Hub / Market)
     - Stage 4 customer district + building (Bakers' → Entertainment Complex / Zoo)
     - Stage effect details per civic unlock
-    - Specialist building placement (which external district?)
+    - Service building placement (which external district?)
     - Trade route yield type
   - Note any unique mechanics not in the framework (e.g. Tailors' naval production bonus)
 - [ ] **Update design doc** if needed — resolve any TBDs before coding
@@ -40,7 +40,7 @@ All files in `Civ Supply Chains\Data\`.
     - Customer district unique replacers (e.g. Suguba for Commercial Hub)
     - Stage effect modifier details (growth/housing/tourism → whatever this Quarter does)
     - Stage effect prereq civics
-    - Specialist building types + target districts
+    - Service building types + target districts
     - Trade route yield types
     - Population scaling customer buildings (Zoo/Ferris → this Quarter's equivalent)
     - Building costs, maintenance, citizen slots, entertainment values
@@ -57,10 +57,10 @@ Files in `Civ Supply Chains\Text\`.
 
 - [ ] **Add entries to `CSC_QUARTERS_TEXT.sql`**
   - District name + description
-  - Building names + descriptions (all stages + specialists)
+  - Building names + descriptions (all stages + services)
   - Adjacency descriptions
   - Stage effect descriptions
-  - Specialist building names
+  - Service building names
   - Civic unlock text
 - [ ] **Add entries to `CSC_QUARTERS_PEDIA.sql`** — civilopedia pages
 - [ ] **Update `CSC_RESOURCES_TEXT.sql`** if new custom resources are introduced
@@ -108,7 +108,7 @@ Files in `Civ Supply Chains\Text\`.
 - [ ] **Build stage 3** — verify citizen scaling, Market interaction
 - [ ] **Build stage 4** — verify specialty materials interaction, regional amenity
 - [ ] **Civic unlocks** — verify stage effects appear at correct civic
-- [ ] **Specialist buildings** — verify they spawn in correct external districts
+- [ ] **Service buildings** — verify they spawn in correct external districts as services
 - [ ] **Trade routes** — verify yield bonuses
 - [ ] **Icons** — verify all sizes display correctly in all UI contexts
 - [ ] **Civilopedia** — verify entries are correct and formatted

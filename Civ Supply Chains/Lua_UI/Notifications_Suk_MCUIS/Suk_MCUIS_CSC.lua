@@ -4,6 +4,8 @@
 -- Suk_MCUIS_CSC UI Script
 --==========================================================================================================================
 
+print('Suk_MCUIS_CSC UI Script loaded!!!')
+
 --==========================================================================================================================
 -- CONSTANTS
 --==========================================================================================================================
@@ -36,6 +38,13 @@ for i,v in pairs(mCSC_AbilityAttachModifiers) do
 	end
 	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Icon = v.Icon
 	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].IconTarget = v.IconTarget
+end
+
+local function GetSignedAmountText(iAmount)
+	if iAmount > 0 then
+		return '+' .. tostring(iAmount)
+	end
+	return tostring(iAmount)
 end
 
 --==========================================================================================================================
@@ -152,7 +161,7 @@ function OnSuk_MCUIS_QueryIcon(sContext, sName, pIcon)
 			local sTempIconName = 'CSC_ActiveModifiers_'..sAbilityEffectModifierId
 			if sTempIconName == sName then
 				local iAmount = mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Amount * v.StackAmount; -- we multiply this modifier's DB yield value by the StackAmount in this city to get the exact yield gain
-				local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Desc, iAmount, v.StackAmount); -- string for this modifier's Ability
+				local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Desc, GetSignedAmountText(iAmount), v.StackAmount); -- string for this modifier's Ability
 				-- local sStackString = Locale.Lookup('LOC_ZEGA_STACK_AMOUNT_DESC', v.StackAmount); -- string for the Stack Source Amount
 				local sIcon = mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Icon -- Icon to use for this modifier
 				-- if Icon is nil then we use this Player's Civilization Icon instead, if we can't for some reason then we use the Monument Icon.
@@ -173,12 +182,7 @@ function OnSuk_MCUIS_QueryIcon(sContext, sName, pIcon)
 				end
 				bEmptyString = false
 				
-				-- If iAmount is positive then we add a '+' sign at start of sString (bc it's not shown automatically), negative values will always have the '-' sign show up. 
-				if iAmount > 0 then
-					sMainString = sMainString..sNewLine..'+'..sString --..sStackString
-				else
-					sMainString = sMainString..sNewLine..sString --..sStackString
-				end
+				sMainString = sMainString..sNewLine..sString --..sStackString
 
 				pIcon:SetIconData(true, true, sMainString, sIcon, nil, nil, 10)
 
