@@ -93,6 +93,19 @@ Get-ChildItem -Path "training_data" -Filter "*.npz" -Recurse | Remove-Item
 
 **Use case:** Generating new building atlas textures in Firaxis's hand-painted style. Lower denoise (0.50) preserves more structural detail from the source texture layout.
 
+### 4. Unit Icon LoRA
+
+| Setting | Value |
+|---------|-------|
+| **Training data** | 96 PNG unit icons sliced from SDK pantry `Units256.dds` using game `IconDefinitions` metadata |
+| **Steps** | 1,000 |
+| **Final loss** | ~0.0435 |
+| **Trigger** | `civ 6 unit icon` |
+| **Base model** | SDXL 1.0 |
+| **Output** | `C:\Users\Shadow\ComfyUI\models\loras\civ6_unit_icons.safetensors` |
+
+**Training data source:** `C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VI SDK Assets\Civ6\pantry\Textures\Units256.dds`, sliced by `project/tools/training/extract_unit_icon_training_data.py`. Captions/provenance are recorded in `C:\Users\Shadow\ComfyUI\training_data\civ6_unit_icons_lora\1_civ6unit\manifest.csv`.
+
 ---
 
 ## Training Data Extraction

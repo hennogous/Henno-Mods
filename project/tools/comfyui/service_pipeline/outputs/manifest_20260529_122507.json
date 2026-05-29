@@ -1,0 +1,52 @@
+[
+  {
+    "slug": "storekeeper",
+    "symbol": "wooden storage crate",
+    "prompt": "civ 6 unit icon, storekeeper, solid filled white silhouette of wooden storage crate, no outlines, no hollow line art, no border, no frame, solid black background, centered flat vector stencil, minimal geometric shape, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
+    "seed": 629001,
+    "prompt_id": "746230bb-abc9-43ae-8c91-1da7e628710c",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\01_storekeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\01_storekeeper.png"
+  },
+  {
+    "slug": "innkeeper",
+    "symbol": "beer mug and key",
+    "prompt": "civ 6 unit icon, innkeeper, solid filled white silhouette of beer mug and key, no outlines, no hollow line art, no border, no frame, solid black background, centered flat vector stencil, minimal geometric shape, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
+    "seed": 629002,
+    "prompt_id": "86f62c8e-4b69-4783-8ae8-7cfb697028a5",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\02_innkeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\02_innkeeper.png"
+  },
+  {
+    "slug": "horticulturist",
+    "symbol": "single sprouting leaf",
+    "prompt": "civ 6 unit icon, horticulturist, solid filled white silhouette of single sprouting leaf, no outlines, no hollow line art, no border, no frame, solid black background, centered flat vector stencil, minimal geometric shape, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
+    "seed": 629003,
+    "prompt_id": "77d73cc4-232a-4a65-a05e-c8b3ae9123a9",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\03_horticulturist_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\03_horticulturist.png"
+  },
+  {
+    "slug": "ride_technician",
+    "symbol": "gear and wrench",
+    "prompt": "civ 6 unit icon, ride technician, solid filled white silhouette of gear and wrench, no outlines, no hollow line art, no border, no frame, solid black background, centered flat vector stencil, minimal geometric shape, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
+    "seed": 629004,
+    "prompt_id": "195773df-9d92-4233-aac0-f2896ad002a6",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\04_ride_technician_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\04_ride_technician.png"
+  },
+  {
+    "slug": "groundskeeper",
+    "symbol": "garden rake",
+    "prompt": "civ 6 unit icon, groundskeeper, solid filled white silhouette of garden rake, no outlines, no hollow line art, no border, no frame, solid black background, centered flat vector stencil, minimal geometric shape, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
+    "seed": 629005,
+    "prompt_id": "d405c61f-5c22-43c6-a95c-3948cb355aeb",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\05_groundskeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\05_groundskeeper.png"
+  }
+]

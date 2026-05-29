@@ -1,3 +1,7 @@
 docs/node_modules/
 docs/public/
 docs/.quartz-cache/
+
+# Python/tooling cache
+__pycache__/
+*.py[cod]

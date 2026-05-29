@@ -77,13 +77,13 @@ INSERT OR REPLACE INTO LocalizedText
 -- EFFECT DESCRIPTIONS
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT',                                '[NEWLINE][NEWLINE]At Feudalism, a Granary adjacent to a supplied Water Mill or Wind Mill establishes a Storekeeper service: +10% growth from each adjacent supplied mill and +1 [ICON_Citizen] Citizen slot in the City Center.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER',              'Storekeeper: {1_iBonus}% growth.[NEWLINE]Supply Chain: adjacent supplied Water Mill [ICON_ARROW] Granary.'        ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER',              'Storekeeper: {1_iBonus}% growth.[NEWLINE]Supply Chain: supplied Water Mill [ICON_ARROW] adjacent Granary.'        ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_NEW',          '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth and +1 [ICON_Citizen] Citizen slot in the City Center'    ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_INCREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'    ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_DECREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'    ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_REMOVED',      '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'  ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND',               'Storekeeper: {1_iBonus}% growth.[NEWLINE]Supply Chain: adjacent supplied Wind Mill [ICON_ARROW] Granary.'         ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND',               'Storekeeper: {1_iBonus}% growth.[NEWLINE]Supply Chain: supplied Wind Mill [ICON_ARROW] adjacent Granary.'         ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_NEW',           '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth and +1 [ICON_Citizen] Citizen slot in the City Center'     ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_INCREASED',     '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'     ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_DECREASED',     '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'     ),

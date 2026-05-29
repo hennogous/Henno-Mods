@@ -1,0 +1,52 @@
+[
+  {
+    "slug": "storekeeper",
+    "symbol": "single crate and small ledger",
+    "prompt": "civ 6 unit icon, storekeeper, flat filled white stencil symbol of single crate and small ledger, solid black background, transparent background style, centered vector silhouette, minimal geometric shapes, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, thin line drawing, sketch, hatching, shading, grey background",
+    "seed": 629001,
+    "prompt_id": "53b9711d-920e-43bb-9467-4343da2c1bc8",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\01_storekeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\01_storekeeper.png"
+  },
+  {
+    "slug": "innkeeper",
+    "symbol": "beer mug and key",
+    "prompt": "civ 6 unit icon, innkeeper, flat filled white stencil symbol of beer mug and key, solid black background, transparent background style, centered vector silhouette, minimal geometric shapes, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, thin line drawing, sketch, hatching, shading, grey background",
+    "seed": 629002,
+    "prompt_id": "99a5e071-daa2-4e3e-a3ab-c6db601216e3",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\02_innkeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\02_innkeeper.png"
+  },
+  {
+    "slug": "horticulturist",
+    "symbol": "pruning shears and leaf",
+    "prompt": "civ 6 unit icon, horticulturist, flat filled white stencil symbol of pruning shears and leaf, solid black background, transparent background style, centered vector silhouette, minimal geometric shapes, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, thin line drawing, sketch, hatching, shading, grey background",
+    "seed": 629003,
+    "prompt_id": "f89f8a9c-cfb2-4b4f-8598-d65f7ead0a4e",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\03_horticulturist_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\03_horticulturist.png"
+  },
+  {
+    "slug": "ride_technician",
+    "symbol": "wrench and gear",
+    "prompt": "civ 6 unit icon, ride technician, flat filled white stencil symbol of wrench and gear, solid black background, transparent background style, centered vector silhouette, minimal geometric shapes, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, thin line drawing, sketch, hatching, shading, grey background",
+    "seed": 629004,
+    "prompt_id": "137047b7-ca19-4805-8219-62a9ca17bbfc",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\04_ride_technician_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\04_ride_technician.png"
+  },
+  {
+    "slug": "groundskeeper",
+    "symbol": "rake and leaf",
+    "prompt": "civ 6 unit icon, groundskeeper, flat filled white stencil symbol of rake and leaf, solid black background, transparent background style, centered vector silhouette, minimal geometric shapes, abstract symbolic icon, no person, no face, no body, no scene, no text, readable at 32 pixels",
+    "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, thin line drawing, sketch, hatching, shading, grey background",
+    "seed": 629005,
+    "prompt_id": "9846fe5c-1a60-4db5-8792-9063c9f92ce4",
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\05_groundskeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\05_groundskeeper.png"
+  }
+]
