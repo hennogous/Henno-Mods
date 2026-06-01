@@ -109,6 +109,38 @@
 			<m_EntryID text="CSC_Tooltip_Arrow"/>
 			<m_ObjectName text="CSC_Tooltip_Arrow"/>
 		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_128"/>
+			<m_ObjectName text="Aristocrat_128"/>
+		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_22"/>
+			<m_ObjectName text="Aristocrat_22"/>
+		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_256"/>
+			<m_ObjectName text="Aristocrat_256"/>
+		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_32"/>
+			<m_ObjectName text="Aristocrat_32"/>
+		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_38"/>
+			<m_ObjectName text="Aristocrat_38"/>
+		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_50"/>
+			<m_ObjectName text="Aristocrat_50"/>
+		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_70"/>
+			<m_ObjectName text="Aristocrat_70"/>
+		</Element>
+		<Element>
+			<m_EntryID text="Aristocrat_80"/>
+			<m_ObjectName text="Aristocrat_80"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

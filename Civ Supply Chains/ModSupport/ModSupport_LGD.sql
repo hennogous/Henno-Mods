@@ -85,9 +85,11 @@ VALUES	(
 
 UPDATE Buildings SET Description='LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION_GARDEN' WHERE BuildingType='BUILDING_CSC_BAKERS_CAFE';
 
+/*
 INSERT INTO CivilopediaPageExcludes
 		(	SectionId,			PageId	) VALUES	
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'				);
+*/
 		
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings_XP2
@@ -310,8 +312,8 @@ CREATE TABLE IF NOT EXISTS CSC_AbilityAttachModifiers(
 );
 
 INSERT INTO CSC_AbilityAttachModifiers
-		(	ModifierId,													AbilityIcon,						AbilityIconTarget		)
-VALUES	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN',				'ICON_EFFECT_CSC_BAKERS_STAGE_4',	'BUILDING_LEU_CONSERVATORY'	);
+		(	ModifierId,											AbilityIcon,										AbilityIconTarget		)
+VALUES	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN',		'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'	);
 
 ----------------------
 -- CSC_SpecialistAttachModifiers
@@ -330,6 +332,6 @@ VALUES	(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN'		);
 INSERT INTO ModifierStrings
 	(	ModifierId,                                			Context,			'Text'			)	VALUES
 	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_GARDEN',		'Preview',			'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN'		),
-	(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',	'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME'	);
+	(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',		'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME'	);
 
 -- Garden service messaging is folded into the main Stage 4 effect notification.

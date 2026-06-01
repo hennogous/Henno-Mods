@@ -14,10 +14,10 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_DESCRIPTION',       'Growing visitor numbers, in no small part driven by the proximity of the adjacent Café, has created the need for someone to perform some much-needed maintenance on the district''s attractions.'),
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',                            '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Conservatory.'),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_CIVIC',                                     'A Zoo adjacent to a supplied Café establishes a Groundskeeper service, a Ferris Wheel adjacent to a supplied Café establishes a Ride Technician service, and a Conservatory adjacent to a supplied Café establishes a Horticulturist service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot in the district.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_CIVIC',                                     'A Zoo adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service, a Ferris Wheel adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service, and a Conservatory adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot in the district.'  ),
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN',                 '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME}: {1_iBonus} [ICON_Tourism] Tourism.[NEWLINE]Supply Chain: {2_StackAmount} supplied {2_Num : plural 1?Café; other?Cafés;} [ICON_ARROW] adjacent Conservatory.'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN_NEW',             '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service:[NEWLINE]{1_iBonus} [ICON_Tourism] Tourism and +1 [ICON_Citizen] Citizen slot in the Garden'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN_NEW',             'a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service:[NEWLINE]{1_iBonus} [ICON_Tourism] Tourism and +1 [ICON_Citizen] Citizen slot in the Garden'  ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN_INCREASED',       '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN_DECREASED',       '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN_REMOVED',         '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
@@ -38,7 +38,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_LEU_GARDEN_CHAPTER_CSCHAIN_PARA_1',
-    'The Garden offers a point of sale for an adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a Horticulturist service in an adjacent Garden with a Conservatory: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Garden.'   ),
+    'The Garden offers a point of sale for an adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Garden with a Conservatory: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Garden.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_LEU_CONSERVATORY_CHAPTER_CSCHAIN_TITLE',
@@ -46,4 +46,4 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_LEU_CONSERVATORY_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Conservatory also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, a supplied Café establishes a Horticulturist service in an adjacent Garden with a Conservatory: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Garden.'   );
+    'Some visitors to the Conservatory also enjoy some refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Garden with a Conservatory: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Garden.'   );

@@ -2,6 +2,15 @@
 
 Working docs, reference material, and tools that don't belong in the mod source tree.
 
+## Documentation split
+
+| Location | Audience / purpose |
+|---|---|
+| `../docs/` | Public-facing Quartz site: player-facing design docs, Quarter explanations, mechanics, concepts, screenshots, and polished narrative documentation. |
+| `docs/` | Internal/project documentation: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. |
+| Hermes `civ-supply-chains` skill | Agent operational context only: local paths, workspace rules, what Bill should read first, and stable CSC gotchas. Do not use it as the only home for collaborator-facing project truth. |
+| Hermes `civ6-modding` skill | Generic reusable Civ VI modding knowledge. Do not put CSC-specific notes there. |
+
 ## docs/
 
 | File | What it is |

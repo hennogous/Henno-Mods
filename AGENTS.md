@@ -22,6 +22,7 @@ Quarters: Bakers, Tailors, Apothecaries, Stonemasons, Carpenters, Blacksmiths, G
 All mod content lives under `Civ Supply Chains/`:
 
 | Folder | Contents |
+|---|---|
 | `Data/` | Core SQL — one `CSC_Q_*.sql` per Quarter, plus resources and M&C mode support |
 | `Text/` | Localization SQL/XML — names, descriptions, Pedia entries |
 | `Lua_UI/` | UI scripts: notifications (Suk MCUIS), adjacency (Ruivo), lenses |
@@ -32,8 +33,15 @@ All mod content lives under `Civ Supply Chains/`:
 | `Icons/` | Icon SQL definitions |
 | `Settings/` | Player-facing game options (XML) |
 | `XLPs/` | Xlayer project files for clutter, icons, tilebases |
-| `docs/` | Quartz static site — design docs for quarters and framework |
 | `Archive/` | Superseded earlier implementations (do not use) |
+
+Documentation outside the mod content tree is split by audience:
+
+| Folder | Purpose |
+|---|---|
+| `docs/` | Public-facing Quartz site: player-facing design docs, Quarter explanations, mechanics, concepts, screenshots, and polished narrative documentation. |
+| `project/docs/` | Internal/project docs: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. |
+| `memory/` | Versioned agent/project memory carried from earlier workflows. Treat as historical context; promote durable human-facing truth to `project/docs/` or `docs/` when it matters. |
 
 ## Naming Conventions
 
@@ -169,6 +177,15 @@ ComfyUI is at `C:\Users\Shadow\ComfyUI`, API on `http://127.0.0.1:8188`.
 - **Isometric LoRA** (`cartoon_3d_isometric`): trigger `j_game_background`
 - Full setup + prompt templates in `project/docs/COMFYUI-SETUP.md`
 
-## Skills Available
+## Skill / Documentation Boundaries
 
-- `/civ6-modding` — SQL schema, modifiers, Lua scripting, .modinfo/.civ6proj structure, Blender → FGX/GEO pipeline, ArtDefs, textures, strategic view sprites, icons
+Use the skills and docs according to audience:
+
+| Location | Belongs there |
+|---|---|
+| `civ6-modding` skill | Generic, reusable Civ VI modding knowledge: SQL schema, modifiers, Lua scripting, `.modinfo` / `.civ6proj`, ArtDefs, icons, strategic view sprites, SDK workflows, and engine gotchas. Keep this shareable; do not add CSC-specific notes. |
+| `civ-supply-chains` skill | Bill/Hermes operational context for CSC: local paths, workspace rules, what to read first, stable CSC gotchas, and pointers to canonical repo docs. |
+| `docs/` | Public-facing docs site for players/readers. |
+| `project/docs/` | Internal human-readable project documentation for collaborators and future maintainers. |
+
+Rule of thumb: if another Civ VI modder could use it on a different mod, put it in `civ6-modding`; if CSC collaborators need it without Hermes, put it in the repo docs; if it tells Bill/Hermes how to work correctly on Shadow/CSC, put it in `civ-supply-chains`.

@@ -6,7 +6,7 @@ INSERT OR IGNORE  INTO LocalizedText
 VALUES	('LOC_ZEGA_STACK_AMOUNT_DESC',										'en_US',		" (combined from {1_iStackAmount} {1_Num : plural 1?Source; other?Sources;})."),
 		
 		('LOC_NOTIFICATION_HENNO_NEW_CITY_QUARTER_ABILITY_MESSAGE',			'en_US',		"Service Established"),
-		('LOC_NOTIFICATION_HENNO_NEW_CITY_QUARTER_ABILITY_SUMMARY',			'en_US',		'A supply chain ending in {1_CityName} has completed, establishing an {2_Ability}. '),
+		('LOC_NOTIFICATION_HENNO_NEW_CITY_QUARTER_ABILITY_SUMMARY',			'en_US',		'A supply chain ending in {1_CityName} has completed, establishing {2_Ability}. '),
 		
 		('LOC_NOTIFICATION_HENNO_INCREASED_CITY_QUARTER_ABILITY_MESSAGE',	'en_US',		"Service Level Increased"),
 		('LOC_NOTIFICATION_HENNO_INCREASED_CITY_QUARTER_ABILITY_SUMMARY',	'en_US',		'A supply chain ending in {1_CityName} has been strengthened,[NEWLINE]expanding the local {2_Ability}. '),
