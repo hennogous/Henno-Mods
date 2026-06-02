@@ -51,28 +51,28 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS_DESCRIPTION',  'This quarter is not adjacent to a river.'  ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_WATER_MILL_NAME',              'Water Mill'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION',       '[ICON_BULLET]+1 [ICON_Production] Production from each adjacent base materials improvement.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Water Mill adjacent to an improved base materials resource unlocks an additional bonus to an adjacent Granary.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION',       '[ICON_BULLET]+1 [ICON_Production] Production from each adjacent base materials improvement.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Water Mill adjacent to an improved base materials resource can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_WIND_MILL_NAME',               'Wind Mill'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION',        '[ICON_BULLET]+1 [ICON_Production] Production from each adjacent base materials improvement.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Wind Mill adjacent to an improved base materials resource unlocks an additional bonus to an adjacent Granary.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION',        '[ICON_BULLET]+1 [ICON_Production] Production from each adjacent base materials improvement.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Wind Mill adjacent to an improved base materials resource can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_BAKERY_NAME',                  'Bakery'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION',           '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+2 [ICON_Food] Food, with a -2 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+0.2 [ICON_Food] Food and +0.2 [ICON_Gold] Gold per [ICON_Citizen] Citizen to the city for each adjacent Market.[NEWLINE][NEWLINE]At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks additional bonuses to each adjacent Market.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION',           '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+2 [ICON_Food] Food, with a -2 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+0.2 [ICON_Food] Food and +0.2 [ICON_Gold] Gold per [ICON_Citizen] Citizen to the city for each adjacent Market.[NEWLINE][NEWLINE]At Medieval Faires, a Bakery adjacent to an improved base materials resource can establish an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Commercial Hub with a Market.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_NAME',                    'Café'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',             '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE][ICON_BULLET]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo and Ferris Wheel, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and specialty materials resources establishes a service in each adjacent Entertainment Complex with a Zoo and Water Park with a Ferris Wheel.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',             '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE][ICON_BULLET]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo and Ferris Wheel, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and specialty materials resources can establish services in adjacent Entertainment districts with Zoos and Water Parks with Ferris Wheels.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME',              'Storekeeper'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',       'Reliable flour stores need someone to keep them measured, fresh, and ready for distribution as the city grows.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',       'A Bakers'' Quarter service established when a supplied Water Mill or Wind Mill supports an adjacent Granary, increasing growth and staffing the City Center.'    ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME',              'Innkeeper'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_DESCRIPTION',       'A steady trade in fresh bread draws merchants, teamsters, and travellers to the Market, creating demand for lodging, meals, and hospitality nearby.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_DESCRIPTION',       'A Bakers'' Quarter service established when a supplied Bakery serves an adjacent Market, adding housing and staffing the Commercial Hub.'    ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME',              'Groundskeeper'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_DESCRIPTION',       'Growing visitor numbers, in no small part driven by the proximity of the adjacent Café, has created the need for someone to perform some much-needed maintenance on the district''s attractions.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_DESCRIPTION',       'A Bakers'' Quarter service established when a supplied Café serves an adjacent Zoo, adding tourism and staffing the Entertainment district.'    ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME',              'Ride Technician'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_DESCRIPTION',       'Growing visitor numbers, in no small part driven by the proximity of the adjacent Café, has created the need for someone to perform some much-needed maintenance on the district''s attractions.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_DESCRIPTION',       'A Bakers'' Quarter service established when a supplied Café serves an adjacent Ferris Wheel, adding tourism and staffing the Water Park.'    ),
 
 -- EFFECT DESCRIPTIONS
 
@@ -97,7 +97,7 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_INCREASED',  '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: {1_iBonus} [ICON_Housing] Housing'  ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_DECREASED',  '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: {1_iBonus} [ICON_Housing] Housing'  ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_REMOVED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: {1_iBonus} [ICON_Housing] Housing'  ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_SERVICE',                       '[NEWLINE][NEWLINE]At Medieval Faires, +1 [ICON_Citizen] Citizen slot ({LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME}) is granted to a Commercial Hub with a Market, if adjacent to a Water Mill or Wind Mill that is in turn adjacent to an improved Bakers'' Quarter base materials resource.'    ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_SERVICE',                       '[NEWLINE][NEWLINE]At Medieval Faires, a Market adjacent to a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: +2 [ICON_Housing] Housing from each adjacent supplied Bakery and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.'    ),
 --(   'en_US',    'LOC_CSC_BAKERS_STAGE_3_SERVICE_GRANT_NEW',           'A {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} has been appointed.'		),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_3_CIVIC',                         'A Market adjacent to a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: +2 [ICON_Housing] Housing from each adjacent supplied Bakery and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.'  ),
 
@@ -116,6 +116,7 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER_REMOVED',      '{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: {1_iBonus} [ICON_Tourism] Tourism'  ),
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_ENTER',              '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Zoo.'),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND',               '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Zoo.'),
 --(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} has been appointed.'	),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_WATER',              '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Ferris Wheel.'),
 --(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} has been appointed.'	),
@@ -245,7 +246,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_GRANARY_CHAPTER_CSCHAIN_PARA_1',
-    'The Granary stands as the final stop for flour before it reaches the city''s bakers. A bustling storehouse of grain and flour, it purchases the milled output from an adjacent Water Mill or Wind Mill, ensuring a constant supply of the raw materials needed to feed your populace.[NEWLINE][NEWLINE]At Feudalism, each supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary: +10% growth from each adjacent supplied mill and +1 [ICON_CITIZEN] Citizen slot in the City Center.'   ),
+    'The Granary stands as the final stop for flour before it reaches the city''s bakers. A bustling storehouse of grain and flour, it purchases the milled output from an adjacent Water Mill or Wind Mill, ensuring a constant supply of the raw materials needed to feed your populace.[NEWLINE][NEWLINE]At Feudalism, an adjacent supplied Water Mill or Wind Mill can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service here. See the {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} Civilopedia page for full requirements and effects.'   ),
 
 -- PEDIA: BAKERY
 
@@ -277,7 +278,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_MARKET_CHAPTER_CSCHAIN_PARA_1',
-    'The Market is where the general population can purchase freshly baked goods from the Bakery every day, ensuring that the economic chain is completed and your citizens are well-fed.[NEWLINE][NEWLINE]At Medieval Faires, each supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Commercial Hub with a Market: +2 [ICON_Housing] Housing from each adjacent supplied Bakery and +1 [ICON_CITIZEN] Citizen slot in the Commercial Hub.'   ),
+    'The Market is where the general population can purchase freshly baked goods from the Bakery every day, ensuring that the economic chain is completed and your citizens are well-fed.[NEWLINE][NEWLINE]At Medieval Faires, an adjacent supplied Bakery can establish an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service here. See the {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} Civilopedia page for full requirements and effects.'   ),
 
 -- PEDIA: CAFÉ
 
@@ -313,7 +314,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Entertainment Complex also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Entertainment Complex with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Entertainment Complex.'   ),
+    'Some visitors to the Entertainment Complex also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.'   ),
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_STREET_CARNIVAL_CHAPTER_CSCHAIN_TITLE',
@@ -321,7 +322,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_STREET_CARNIVAL_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Street Carnival also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Street Carnival with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Street Carnival.'   ),
+    'Some visitors to the Street Carnival also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.'   ),
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_HIPPODROME_CHAPTER_CSCHAIN_TITLE',
@@ -329,7 +330,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_HIPPODROME_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Hippodrome also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Hippodrome with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Hippodrome.'   ),
+    'Some visitors to the Hippodrome also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_ZOO_CHAPTER_CSCHAIN_TITLE',
@@ -337,7 +338,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_ZOO_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Zoo also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in an adjacent Entertainment Complex, Street Carnival or Hippodrome with a Zoo: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the district.'   ),
+    'Some visitors to the Zoo also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in this district. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.'   ),
 
 -- PEDIA: WATER PARK
 
@@ -347,7 +348,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Water Park also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in an adjacent Water Park with a Ferris Wheel: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Water Park.'   ),
+    'Some visitors to the Water Park also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service if this district has a Ferris Wheel. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} Civilopedia page for full requirements and effects.'   ),
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_STREET_CARNIVAL_CHAPTER_CSCHAIN_TITLE',
@@ -355,7 +356,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_STREET_CARNIVAL_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Copacabana also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in an adjacent Copacabana with a Ferris Wheel: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the Copacabana.'   ),
+    'Some visitors to the Copacabana also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service if this district has a Ferris Wheel. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} Civilopedia page for full requirements and effects.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_FERRIS_WHEEL_CHAPTER_CSCHAIN_TITLE',
@@ -363,7 +364,105 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_FERRIS_WHEEL_CHAPTER_CSCHAIN_PARA_1',
-    'Some visitors to the Ferris Wheel also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, each supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in an adjacent Water Park or Copacabana with a Ferris Wheel: +2 [ICON_TOURISM] Tourism from each adjacent supplied Café and +1 [ICON_CITIZEN] Citizen slot in the district.'   );
+    'Some visitors to the Ferris Wheel also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in this district. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} Civilopedia page for full requirements and effects.'   ),
+
+-- PEDIA: BAKERS' SERVICES
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCDESC_TITLE',
+    'Description'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCDESC_PARA_1',
+    'A {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service represents the clerks, weighers, and storeroom managers who turn flour supply into reliable urban provisioning. In game terms, it is established in a City Center with a Granary when an adjacent supplied mill can support that storehouse.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_TITLE',
+    'Supply Chains'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_PARA_1',
+    '[ICON_BULLET]Unlocks at Feudalism.[NEWLINE][ICON_BULLET]Requires a Water Mill or Wind Mill in a Bakers'' Quarter.[NEWLINE][ICON_BULLET]That mill must be supplied: the Bakers'' Quarter must be adjacent to an improved Bakers'' base materials resource.[NEWLINE][ICON_BULLET]Requires an adjacent City Center with a Granary.[NEWLINE][NEWLINE]Effect: +10% growth from each adjacent supplied Water Mill or Wind Mill, and +1 [ICON_Citizen] Citizen slot in the City Center.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_HISTORY_TITLE',
+    'Historical Context'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_HISTORY_PARA_1',
+    'As milling and storage became regular institutions rather than seasonal improvisations, cities needed people to measure, record, preserve, and distribute grain and flour. Storekeepers rarely changed history by themselves, but their quiet competence made larger populations possible: fewer spoiled stores, fewer missing sacks, and fewer hungry days between harvests. In that sense, the growth of the city was not only a matter of producing more food, but of making food dependable enough that more people could plan their lives around it.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_CSCDESC_TITLE',
+    'Description'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_CSCDESC_PARA_1',
+    'An {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service represents the lodging, meals, stabling, and hospitality that grow up around a reliable trade in bread and baked goods. In game terms, it is established in a Commercial Hub with a Market when an adjacent supplied Bakery draws enough regular traffic to support the service.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_CSCHAIN_TITLE',
+    'Supply Chains'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_CSCHAIN_PARA_1',
+    '[ICON_BULLET]Unlocks at Medieval Faires.[NEWLINE][ICON_BULLET]Requires a Bakery in a Bakers'' Quarter.[NEWLINE][ICON_BULLET]The Bakery must be supplied: the Bakers'' Quarter must be adjacent to an improved Bakers'' base materials resource.[NEWLINE][ICON_BULLET]Requires an adjacent Commercial Hub with a Market.[NEWLINE][NEWLINE]Effect: +2 [ICON_Housing] Housing from each adjacent supplied Bakery, and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_HISTORY_TITLE',
+    'Historical Context'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_HISTORY_PARA_1',
+    'Markets and fairs did more than exchange goods; they concentrated people. Merchants, teamsters, pilgrims, laborers, and customers all needed food, lodging, animals tended, and disputes settled before the road called again. Bread was a humble anchor for that world because it made daily crowds possible. Where food supply became steady, towns could host strangers as well as residents, and hospitality became a profession rather than an occasional courtesy.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_CSCDESC_TITLE',
+    'Description'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_CSCDESC_PARA_1',
+    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service represents the maintenance crews, attendants, and caretakers needed when cafés help turn urban leisure into regular public activity. In game terms, it is established in an Entertainment district with a Zoo when an adjacent supplied Café serves its visitors.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_CSCHAIN_TITLE',
+    'Supply Chains'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_CSCHAIN_PARA_1',
+    '[ICON_BULLET]Unlocks at Urbanization.[NEWLINE][ICON_BULLET]Requires a Café in a Bakers'' Quarter.[NEWLINE][ICON_BULLET]The Café must be supplied: the Bakers'' Quarter must be adjacent to improved Bakers'' base and specialty materials resources.[NEWLINE][ICON_BULLET]Requires an adjacent Entertainment Complex, Street Carnival, or Hippodrome with a Zoo.[NEWLINE][NEWLINE]Effect: +2 [ICON_Tourism] Tourism from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the district.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_HISTORY_TITLE',
+    'Historical Context'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_HISTORY_PARA_1',
+    'Public attractions became more complex as cities became larger, wealthier, and more accustomed to leisure outside the home. Cafés, refreshment stalls, and nearby bakeries helped extend a visit from a brief spectacle into a day out, which in turn meant more paths to sweep, benches to mend, cages to tend, crowds to guide, and small disasters to prevent. The groundskeeper is the unglamorous consequence of a city large enough to feed itself and then ask what it might do after lunch.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_CSCDESC_TITLE',
+    'Description'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_CSCDESC_PARA_1',
+    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service represents the mechanics, operators, and safety workers required when waterfront amusements become busy destinations. In game terms, it is established in a Water Park with a Ferris Wheel when an adjacent supplied Café serves its visitors.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_CSCHAIN_TITLE',
+    'Supply Chains'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_CSCHAIN_PARA_1',
+    '[ICON_BULLET]Unlocks at Urbanization.[NEWLINE][ICON_BULLET]Requires a Café in a Bakers'' Quarter.[NEWLINE][ICON_BULLET]The Café must be supplied: the Bakers'' Quarter must be adjacent to improved Bakers'' base and specialty materials resources.[NEWLINE][ICON_BULLET]Requires an adjacent Water Park or Copacabana with a Ferris Wheel.[NEWLINE][NEWLINE]Effect: +2 [ICON_Tourism] Tourism from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the district.'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_HISTORY_TITLE',
+    'Historical Context'   ),
+
+(   'en_US',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_HISTORY_PARA_1',
+    'Mechanical rides and waterfront amusements turned leisure into infrastructure. They needed operators, inspectors, repair crews, ticket sellers, and a nearby flow of food and drink to keep crowds lingering. Such services followed population growth in the most literal way: once enough people could be fed reliably, cities could sustain places where those same people gathered simply to enjoy themselves. The ride technician is what happens when bread, sugar, machinery, and free time all arrive in the same neighborhood.'   );
 
 -- PEDIA: RESOURCES
 
