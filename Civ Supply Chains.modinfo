@@ -93,6 +93,13 @@
         <Value>0</Value>
       </ConfigurationValueMatches>
     </Criteria>
+    <Criteria id="CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED">
+      <ConfigurationValueMatches>
+        <ConfigurationId>CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS</ConfigurationId>
+        <Group>Game</Group>
+        <Value>0</Value>
+      </ConfigurationValueMatches>
+    </Criteria>
     <Criteria id="Expansion1or2">
       <RuleSetInUse>RULESET_EXPANSION_1,RULESET_EXPANSION_2</RuleSetInUse>
     </Criteria>
@@ -455,6 +462,7 @@
         <Context>InGame</Context>
         <LoadOrder>500</LoadOrder>
       </Properties>
+      <Criteria>CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED</Criteria>
       <File>Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications.xml</File>
     </AddUserInterfaces>
     <AddGameplayScripts id="CSC_Aristocrat">

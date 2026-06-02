@@ -46,6 +46,14 @@
             <Text>Declutter the map by removing modded resources that are not used in supply chains.</Text>
         </Replace>
 
+        <Replace Tag="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_NAME" Language="en_US">
+            <Text>Suppress supply chain notifications</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_DESCRIPTION" Language="en_US">
+            <Text>Disable pop-up notifications when supply chain effects are added, increased, decreased, or removed. City-panel integration remains available when the MCUIS mod is active.</Text>
+        </Replace>
+
         <Replace Tag="LOC_CSC_FOOTER_INTERNAL_NAME" Language="en_US">
             <Text>[COLOR:ResProductionLabelCS]CIV SUPPLY CHAINS: SETTINGS[ENDCOLOR]</Text>
         </Replace>
