@@ -1,0 +1,1533 @@
+{
+  "active_asset_local_material_refs": {
+    "CSC_BAKERS_Bakery": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Bakery_2": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Base_Materials_Box": [
+      "CSC_BAKERS_Base_Materials_Icon"
+    ],
+    "CSC_BAKERS_Cafe": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Cafe_2": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Flour": [
+      "CSC_BAKERS_Storage_Barn"
+    ],
+    "CSC_BAKERS_Flour_Closed": [
+      "CSC_BAKERS_Props"
+    ],
+    "CSC_BAKERS_Flour_Open": [
+      "CSC_BAKERS_Props"
+    ],
+    "CSC_BAKERS_Oven": [
+      "CSC_BAKERS_Props"
+    ],
+    "CSC_BAKERS_Spec_Materials_Box": [
+      "CSC_BAKERS_Spec_Materials_Icon"
+    ],
+    "CSC_BAKERS_Storage_L": [
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Storage_M": [
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Storage_S": [
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Water_Mill": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE",
+      "CSC_BAKERS_Props"
+    ],
+    "CSC_BAKERS_Water_Mill_2": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE",
+      "CSC_BAKERS_Props"
+    ],
+    "CSC_BAKERS_Well": [
+      "CSC_BAKERS_Well"
+    ],
+    "CSC_BAKERS_Wind_Mill": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Wind_Mill_2": [
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE"
+    ],
+    "CSC_BAKERS_Wind_Mill_Tower": [
+      "CSC_BAKERS_Wind_Mill_Tower",
+      "CSC_BAKERS_Wind_Mill_Tower_CON_PIL"
+    ],
+    "CSC_Sales_Box": [
+      "CSC_Sales_Icon"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Angled_01": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Angled_02": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Angled_03": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Angled_04": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_01": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_02": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_03": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_04": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_05": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_06": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_07": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Square_08": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_01": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_02": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_03": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_04": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_05": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_06": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_07": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_08": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_09": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_10": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_11": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "IMP_Farm_CSC_Flax_Decal_Transition_12": [
+      "IMP_Farm_CSC_Flax_Decals"
+    ],
+    "RES_CSC_Flax_Tuft01": [
+      "RES_CSC_FLAX"
+    ],
+    "RES_CSC_Flax_Tuft02": [
+      "RES_CSC_FLAX"
+    ],
+    "RES_CSC_Flax_Tuft03": [
+      "RES_CSC_FLAX"
+    ],
+    "RES_CSC_Flax_Tuft04": [
+      "RES_CSC_FLAX"
+    ]
+  },
+  "active_material_local_texture_refs": {
+    "CSC_BAKERS_Base_Materials_Icon": [
+      "CSC_BAKERS_Base_Materials"
+    ],
+    "CSC_BAKERS_E": [
+      "CSC_Atlas_AO",
+      "CSC_Atlas_B_BAKERS",
+      "CSC_Atlas_E",
+      "CSC_Atlas_G",
+      "CSC_Atlas_M",
+      "CSC_Atlas_N",
+      "CSC_Atlas_O"
+    ],
+    "CSC_BAKERS_NE": [
+      "CSC_Atlas_AO",
+      "CSC_Atlas_B_BAKERS",
+      "CSC_Atlas_G",
+      "CSC_Atlas_M",
+      "CSC_Atlas_N",
+      "CSC_Atlas_O"
+    ],
+    "CSC_BAKERS_Props": [
+      "CSC_Atlas_E",
+      "CSC_BAKERS_Props_AO",
+      "CSC_BAKERS_Props_B",
+      "CSC_BAKERS_Props_G",
+      "CSC_BAKERS_Props_M",
+      "CSC_BAKERS_Props_N"
+    ],
+    "CSC_BAKERS_Spec_Materials_Icon": [
+      "CSC_BAKERS_Spec_Materials"
+    ],
+    "CSC_BAKERS_Storage_Barn": [
+      "CSC_BAKERS_Storage_Barn"
+    ],
+    "CSC_BAKERS_Well": [
+      "CSC_BAKERS_Well"
+    ],
+    "CSC_BAKERS_Wind_Mill_Tower": [
+      "CSC_BAKERS_Wind_Mill_Tower"
+    ],
+    "CSC_BAKERS_Wind_Mill_Tower_CON_PIL": [
+      "CSC_BAKERS_Wind_Mill_Tower",
+      "CSC_BAKERS_Wind_Mill_Tower_O"
+    ],
+    "CSC_Sales_Icon": [
+      "CSC_Sales"
+    ],
+    "IMP_Farm_CSC_Flax_Decals": [
+      "IMP_Farm_CSC_Flax_Decals_B"
+    ],
+    "RES_CSC_FLAX": [
+      "RES_CSC_Flax_B"
+    ]
+  },
+  "archive_root": "Archive",
+  "archived": {
+    "assets": [
+      "CSC_BAKERS_Base_Materials_Icon",
+      "CSC_BAKERS_Storage_M_Ext",
+      "CSC_BAKERS_Storage_S_Ext",
+      "CSC_BAKERS_Water_Mill_Original",
+      "CSC_BAKERS_Wind_Mill++",
+      "CSC_Storage_L",
+      "CSC_Storage_LeanTo",
+      "CSC_Storage_M",
+      "CSC_Storage_S"
+    ],
+    "materials": [
+      "CSC_BAKERS",
+      "CSC_BAKERS_Bakery",
+      "CSC_BAKERS_Cafe",
+      "CSC_BAKERS_NonE",
+      "CSC_BAKERS_Storage_1k",
+      "CSC_BAKERS_Water_Mill",
+      "CSC_BAKERS_Water_Mill_Floor",
+      "CSC_BAKERS_Water_Mill_NE",
+      "CSC_Storage_S_1k",
+      "Level_2_20k",
+      "Level_3_20k",
+      "Oven2_20k",
+      "Storage_L_20k",
+      "Storage_M_20k"
+    ],
+    "texture_stems": [
+      "CSC_Atlas_B",
+      "CSC_BAKERS_FireFX_Flag",
+      "CSC_BAKERS_Props_AO_1k",
+      "CSC_BAKERS_Props_B_1k",
+      "CSC_BAKERS_Props_G_1k",
+      "CSC_BAKERS_Props_N_1k",
+      "CSC_BAKERS_Water_Mill",
+      "CSC_BAKERS_Water_Mill_Floor",
+      "CSC_BAKERS_Water_Mill_Wheel_O",
+      "CSC_Level_2_AO_1k",
+      "CSC_Level_2_B_1k",
+      "CSC_Level_2_G_1k",
+      "CSC_Level_2_M_1k",
+      "CSC_Level_2_N_1k",
+      "CSC_Level_3_AO_1k",
+      "CSC_Level_3_B_1k",
+      "CSC_Level_3_G_1k",
+      "CSC_Level_3_M_1k",
+      "CSC_Level_3_N_1k",
+      "CSC_Quarters_Scaffold",
+      "CSC_Storage_AO_1k",
+      "CSC_Storage_B_BAKERS_1k",
+      "CSC_Storage_G_1k",
+      "CSC_Storage_M_1k",
+      "CSC_Storage_N_1k",
+      "CSC_Storage_S_AO_1k",
+      "CSC_Storage_S_B_1k",
+      "CSC_Storage_S_G_1k",
+      "CSC_Storage_S_M_1k",
+      "CSC_Storage_S_N_1k",
+      "FXt_Zega_Ballpark_Scoreboard",
+      "Icon",
+      "Level_2_20k_AO",
+      "Level_2_20k_B",
+      "Level_2_20k_E",
+      "Level_2_20k_E2",
+      "Level_2_20k_G",
+      "Level_2_20k_M",
+      "Level_2_20k_N",
+      "Level_3_20k_AO",
+      "Level_3_20k_B",
+      "Level_3_20k_E",
+      "Level_3_20k_G",
+      "Level_3_20k_M",
+      "Level_3_20k_N",
+      "Level_3_20k_O",
+      "Oven2_20k_AO",
+      "Oven2_20k_B",
+      "Oven2_20k_E",
+      "Oven2_20k_G",
+      "Oven2_20k_M",
+      "Oven2_20k_N",
+      "Storage_L_20k_AO",
+      "Storage_L_20k_B",
+      "Storage_L_20k_G",
+      "Storage_L_20k_M",
+      "Storage_L_20k_N",
+      "Storage_M_20k_AO",
+      "Storage_M_20k_B",
+      "Storage_M_20k_G",
+      "Storage_M_20k_M",
+      "Storage_M_20k_N"
+    ]
+  },
+  "counts": {
+    "assets_archived": 9,
+    "assets_kept": 73,
+    "assets_total": 82,
+    "files_moved_total": 146,
+    "materials_archived": 14,
+    "materials_kept": 12,
+    "materials_total": 26,
+    "texture_files_archived": 123,
+    "texture_stems_archived": 62,
+    "texture_stems_kept": 84,
+    "texture_stems_total": 146,
+    "xlp_object_names": 138
+  },
+  "created_at": "2026-06-02T05:56:08.493896+00:00",
+  "kept": {
+    "assets": [
+      "CSC_ALL_Circle_Patch",
+      "CSC_ALL_Curved_Path",
+      "CSC_ALL_Organic_Patch_L",
+      "CSC_ALL_Organic_Patch_M",
+      "CSC_ALL_Organic_Patch_S",
+      "CSC_ALL_Plaza_Inner",
+      "CSC_ALL_Plaza_Outer",
+      "CSC_ALL_Stand",
+      "CSC_ALL_Storage_M_Ext",
+      "CSC_ALL_Storage_S_Ext",
+      "CSC_BAKERS_Ancient_Base_01",
+      "CSC_BAKERS_Ancient_Base_02",
+      "CSC_BAKERS_Ancient_Base_03",
+      "CSC_BAKERS_Bakery",
+      "CSC_BAKERS_Bakery_2",
+      "CSC_BAKERS_Base_Materials_Box",
+      "CSC_BAKERS_Bread",
+      "CSC_BAKERS_Cafe",
+      "CSC_BAKERS_Cafe_2",
+      "CSC_BAKERS_Classical_Base_01",
+      "CSC_BAKERS_Classical_Base_02",
+      "CSC_BAKERS_Classical_Base_03",
+      "CSC_BAKERS_Classical_Base_04",
+      "CSC_BAKERS_Classical_Base_05",
+      "CSC_BAKERS_Classical_Base_06",
+      "CSC_BAKERS_Classical_Base_07",
+      "CSC_BAKERS_Classical_Base_08",
+      "CSC_BAKERS_Classical_Base_09",
+      "CSC_BAKERS_Flour",
+      "CSC_BAKERS_Flour_Closed",
+      "CSC_BAKERS_Flour_Open",
+      "CSC_BAKERS_Oven",
+      "CSC_BAKERS_Spec_Materials_Box",
+      "CSC_BAKERS_Storage_L",
+      "CSC_BAKERS_Storage_M",
+      "CSC_BAKERS_Storage_S",
+      "CSC_BAKERS_Water_Mill",
+      "CSC_BAKERS_Water_Mill_2",
+      "CSC_BAKERS_Water_Mill_Wheel",
+      "CSC_BAKERS_Well",
+      "CSC_BAKERS_Wind_Mill",
+      "CSC_BAKERS_Wind_Mill_2",
+      "CSC_BAKERS_Wind_Mill_Tower",
+      "CSC_Sales_Box",
+      "CSC_Storage_L_Crane",
+      "IMP_Farm_CSC_Flax_Decal_Angled_01",
+      "IMP_Farm_CSC_Flax_Decal_Angled_02",
+      "IMP_Farm_CSC_Flax_Decal_Angled_03",
+      "IMP_Farm_CSC_Flax_Decal_Angled_04",
+      "IMP_Farm_CSC_Flax_Decal_Square_01",
+      "IMP_Farm_CSC_Flax_Decal_Square_02",
+      "IMP_Farm_CSC_Flax_Decal_Square_03",
+      "IMP_Farm_CSC_Flax_Decal_Square_04",
+      "IMP_Farm_CSC_Flax_Decal_Square_05",
+      "IMP_Farm_CSC_Flax_Decal_Square_06",
+      "IMP_Farm_CSC_Flax_Decal_Square_07",
+      "IMP_Farm_CSC_Flax_Decal_Square_08",
+      "IMP_Farm_CSC_Flax_Decal_Transition_01",
+      "IMP_Farm_CSC_Flax_Decal_Transition_02",
+      "IMP_Farm_CSC_Flax_Decal_Transition_03",
+      "IMP_Farm_CSC_Flax_Decal_Transition_04",
+      "IMP_Farm_CSC_Flax_Decal_Transition_05",
+      "IMP_Farm_CSC_Flax_Decal_Transition_06",
+      "IMP_Farm_CSC_Flax_Decal_Transition_07",
+      "IMP_Farm_CSC_Flax_Decal_Transition_08",
+      "IMP_Farm_CSC_Flax_Decal_Transition_09",
+      "IMP_Farm_CSC_Flax_Decal_Transition_10",
+      "IMP_Farm_CSC_Flax_Decal_Transition_11",
+      "IMP_Farm_CSC_Flax_Decal_Transition_12",
+      "RES_CSC_Flax_Tuft01",
+      "RES_CSC_Flax_Tuft02",
+      "RES_CSC_Flax_Tuft03",
+      "RES_CSC_Flax_Tuft04"
+    ],
+    "materials": [
+      "CSC_BAKERS_Base_Materials_Icon",
+      "CSC_BAKERS_E",
+      "CSC_BAKERS_NE",
+      "CSC_BAKERS_Props",
+      "CSC_BAKERS_Spec_Materials_Icon",
+      "CSC_BAKERS_Storage_Barn",
+      "CSC_BAKERS_Well",
+      "CSC_BAKERS_Wind_Mill_Tower",
+      "CSC_BAKERS_Wind_Mill_Tower_CON_PIL",
+      "CSC_Sales_Icon",
+      "IMP_Farm_CSC_Flax_Decals",
+      "RES_CSC_FLAX"
+    ],
+    "texture_stems": [
+      "Aristocrat_128",
+      "Aristocrat_22",
+      "Aristocrat_256",
+      "Aristocrat_32",
+      "Aristocrat_38",
+      "Aristocrat_50",
+      "Aristocrat_70",
+      "Aristocrat_80",
+      "CSC_Atlas_AO",
+      "CSC_Atlas_B_BAKERS",
+      "CSC_Atlas_E",
+      "CSC_Atlas_G",
+      "CSC_Atlas_M",
+      "CSC_Atlas_N",
+      "CSC_Atlas_O",
+      "CSC_BAKERS_128",
+      "CSC_BAKERS_22",
+      "CSC_BAKERS_256",
+      "CSC_BAKERS_32",
+      "CSC_BAKERS_38",
+      "CSC_BAKERS_50",
+      "CSC_BAKERS_70",
+      "CSC_BAKERS_80",
+      "CSC_BAKERS_Base_Materials",
+      "CSC_BAKERS_Props_AO",
+      "CSC_BAKERS_Props_B",
+      "CSC_BAKERS_Props_G",
+      "CSC_BAKERS_Props_M",
+      "CSC_BAKERS_Props_N",
+      "CSC_BAKERS_SV_Bakery_Revealed",
+      "CSC_BAKERS_SV_Bakery_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Bakery_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Bakery_Visible",
+      "CSC_BAKERS_SV_Bakery_Visible_Pillaged",
+      "CSC_BAKERS_SV_Bakery_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Cafe_Revealed",
+      "CSC_BAKERS_SV_Cafe_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Cafe_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Cafe_Visible",
+      "CSC_BAKERS_SV_Cafe_Visible_Pillaged",
+      "CSC_BAKERS_SV_Cafe_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Quarter_Revealed",
+      "CSC_BAKERS_SV_Quarter_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Quarter_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Quarter_Visible",
+      "CSC_BAKERS_SV_Quarter_Visible_Pillaged",
+      "CSC_BAKERS_SV_Quarter_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Water_Mill_Revealed",
+      "CSC_BAKERS_SV_Water_Mill_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Water_Mill_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Water_Mill_Visible",
+      "CSC_BAKERS_SV_Water_Mill_Visible_Pillaged",
+      "CSC_BAKERS_SV_Water_Mill_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Wind_Mill_Revealed",
+      "CSC_BAKERS_SV_Wind_Mill_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Wind_Mill_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Wind_Mill_Visible",
+      "CSC_BAKERS_SV_Wind_Mill_Visible_Pillaged",
+      "CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction",
+      "CSC_BAKERS_Spec_Materials",
+      "CSC_BAKERS_Storage_Barn",
+      "CSC_BAKERS_Well",
+      "CSC_BAKERS_Wind_Mill_Tower",
+      "CSC_BAKERS_Wind_Mill_Tower_O",
+      "CSC_Effect_Notifications_100",
+      "CSC_Effect_Notifications_40",
+      "CSC_GreatWorks_22",
+      "CSC_GreatWorks_256",
+      "CSC_GreatWorks_32",
+      "CSC_GreatWorks_38",
+      "CSC_GreatWorks_50",
+      "CSC_GreatWorks_64",
+      "CSC_Resources_22",
+      "CSC_Resources_256",
+      "CSC_Resources_256_FOW",
+      "CSC_Resources_32",
+      "CSC_Resources_38",
+      "CSC_Resources_50",
+      "CSC_Resources_64",
+      "CSC_Resources_64_FOW",
+      "CSC_Sales",
+      "CSC_Tooltip_Arrow",
+      "IMP_Farm_CSC_Flax_Decals_B",
+      "RES_CSC_Flax_B"
+    ]
+  },
+  "moves": [
+    {
+      "from": "Civ Supply Chains/Assets/CSC_BAKERS_Base_Materials_Icon.ast",
+      "kind": "Assets",
+      "stem": "CSC_BAKERS_Base_Materials_Icon",
+      "to": "Archive/Assets/CSC_BAKERS_Base_Materials_Icon.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_BAKERS_Storage_M_Ext.ast",
+      "kind": "Assets",
+      "stem": "CSC_BAKERS_Storage_M_Ext",
+      "to": "Archive/Assets/CSC_BAKERS_Storage_M_Ext.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_BAKERS_Storage_S_Ext.ast",
+      "kind": "Assets",
+      "stem": "CSC_BAKERS_Storage_S_Ext",
+      "to": "Archive/Assets/CSC_BAKERS_Storage_S_Ext.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_BAKERS_Water_Mill_Original.ast",
+      "kind": "Assets",
+      "stem": "CSC_BAKERS_Water_Mill_Original",
+      "to": "Archive/Assets/CSC_BAKERS_Water_Mill_Original.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_BAKERS_Wind_Mill++.ast",
+      "kind": "Assets",
+      "stem": "CSC_BAKERS_Wind_Mill++",
+      "to": "Archive/Assets/CSC_BAKERS_Wind_Mill++.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_Storage_L.ast",
+      "kind": "Assets",
+      "stem": "CSC_Storage_L",
+      "to": "Archive/Assets/CSC_Storage_L.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_Storage_LeanTo.ast",
+      "kind": "Assets",
+      "stem": "CSC_Storage_LeanTo",
+      "to": "Archive/Assets/CSC_Storage_LeanTo.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_Storage_M.ast",
+      "kind": "Assets",
+      "stem": "CSC_Storage_M",
+      "to": "Archive/Assets/CSC_Storage_M.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Assets/CSC_Storage_S.ast",
+      "kind": "Assets",
+      "stem": "CSC_Storage_S",
+      "to": "Archive/Assets/CSC_Storage_S.ast"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS",
+      "to": "Archive/Materials/CSC_BAKERS.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS_Bakery.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS_Bakery",
+      "to": "Archive/Materials/CSC_BAKERS_Bakery.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS_Cafe.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS_Cafe",
+      "to": "Archive/Materials/CSC_BAKERS_Cafe.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS_NonE.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS_NonE",
+      "to": "Archive/Materials/CSC_BAKERS_NonE.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS_Storage_1k.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS_Storage_1k",
+      "to": "Archive/Materials/CSC_BAKERS_Storage_1k.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS_Water_Mill.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS_Water_Mill",
+      "to": "Archive/Materials/CSC_BAKERS_Water_Mill.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS_Water_Mill_Floor.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS_Water_Mill_Floor",
+      "to": "Archive/Materials/CSC_BAKERS_Water_Mill_Floor.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_BAKERS_Water_Mill_NE.mtl",
+      "kind": "Materials",
+      "stem": "CSC_BAKERS_Water_Mill_NE",
+      "to": "Archive/Materials/CSC_BAKERS_Water_Mill_NE.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/CSC_Storage_S_1k.mtl",
+      "kind": "Materials",
+      "stem": "CSC_Storage_S_1k",
+      "to": "Archive/Materials/CSC_Storage_S_1k.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/Level_2_20k.mtl",
+      "kind": "Materials",
+      "stem": "Level_2_20k",
+      "to": "Archive/Materials/Level_2_20k.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/Level_3_20k.mtl",
+      "kind": "Materials",
+      "stem": "Level_3_20k",
+      "to": "Archive/Materials/Level_3_20k.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/Oven2_20k.mtl",
+      "kind": "Materials",
+      "stem": "Oven2_20k",
+      "to": "Archive/Materials/Oven2_20k.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/Storage_L_20k.mtl",
+      "kind": "Materials",
+      "stem": "Storage_L_20k",
+      "to": "Archive/Materials/Storage_L_20k.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Materials/Storage_M_20k.mtl",
+      "kind": "Materials",
+      "stem": "Storage_M_20k",
+      "to": "Archive/Materials/Storage_M_20k.mtl"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Atlas_B.dds",
+      "kind": "Textures",
+      "stem": "CSC_Atlas_B",
+      "to": "Archive/Textures/CSC_Atlas_B.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Atlas_B.tex",
+      "kind": "Textures",
+      "stem": "CSC_Atlas_B",
+      "to": "Archive/Textures/CSC_Atlas_B.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_FireFX_Flag.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_FireFX_Flag",
+      "to": "Archive/Textures/CSC_BAKERS_FireFX_Flag.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_FireFX_Flag.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_FireFX_Flag",
+      "to": "Archive/Textures/CSC_BAKERS_FireFX_Flag.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_AO_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_AO_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_AO_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_AO_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_AO_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_AO_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_B_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_B_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_B_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_B_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_B_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_B_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_G_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_G_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_G_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_G_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_G_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_G_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_N_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_N_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_N_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Props_N_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Props_N_1k",
+      "to": "Archive/Textures/CSC_BAKERS_Props_N_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Water_Mill.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Water_Mill",
+      "to": "Archive/Textures/CSC_BAKERS_Water_Mill.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Water_Mill.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Water_Mill",
+      "to": "Archive/Textures/CSC_BAKERS_Water_Mill.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Water_Mill_Floor.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Water_Mill_Floor",
+      "to": "Archive/Textures/CSC_BAKERS_Water_Mill_Floor.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Water_Mill_Floor.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Water_Mill_Floor",
+      "to": "Archive/Textures/CSC_BAKERS_Water_Mill_Floor.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Water_Mill_Wheel_O.dds",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Water_Mill_Wheel_O",
+      "to": "Archive/Textures/CSC_BAKERS_Water_Mill_Wheel_O.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_BAKERS_Water_Mill_Wheel_O.tex",
+      "kind": "Textures",
+      "stem": "CSC_BAKERS_Water_Mill_Wheel_O",
+      "to": "Archive/Textures/CSC_BAKERS_Water_Mill_Wheel_O.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_AO_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_AO_1k",
+      "to": "Archive/Textures/CSC_Level_2_AO_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_AO_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_AO_1k",
+      "to": "Archive/Textures/CSC_Level_2_AO_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_B_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_B_1k",
+      "to": "Archive/Textures/CSC_Level_2_B_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_B_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_B_1k",
+      "to": "Archive/Textures/CSC_Level_2_B_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_G_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_G_1k",
+      "to": "Archive/Textures/CSC_Level_2_G_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_G_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_G_1k",
+      "to": "Archive/Textures/CSC_Level_2_G_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_M_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_M_1k",
+      "to": "Archive/Textures/CSC_Level_2_M_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_M_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_M_1k",
+      "to": "Archive/Textures/CSC_Level_2_M_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_N_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_N_1k",
+      "to": "Archive/Textures/CSC_Level_2_N_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_2_N_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_2_N_1k",
+      "to": "Archive/Textures/CSC_Level_2_N_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_AO_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_AO_1k",
+      "to": "Archive/Textures/CSC_Level_3_AO_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_AO_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_AO_1k",
+      "to": "Archive/Textures/CSC_Level_3_AO_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_B_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_B_1k",
+      "to": "Archive/Textures/CSC_Level_3_B_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_B_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_B_1k",
+      "to": "Archive/Textures/CSC_Level_3_B_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_G_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_G_1k",
+      "to": "Archive/Textures/CSC_Level_3_G_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_G_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_G_1k",
+      "to": "Archive/Textures/CSC_Level_3_G_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_M_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_M_1k",
+      "to": "Archive/Textures/CSC_Level_3_M_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_M_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_M_1k",
+      "to": "Archive/Textures/CSC_Level_3_M_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_N_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_N_1k",
+      "to": "Archive/Textures/CSC_Level_3_N_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Level_3_N_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Level_3_N_1k",
+      "to": "Archive/Textures/CSC_Level_3_N_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Quarters_Scaffold.tex",
+      "kind": "Textures",
+      "stem": "CSC_Quarters_Scaffold",
+      "to": "Archive/Textures/CSC_Quarters_Scaffold.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_AO_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_AO_1k",
+      "to": "Archive/Textures/CSC_Storage_AO_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_AO_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_AO_1k",
+      "to": "Archive/Textures/CSC_Storage_AO_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_B_BAKERS_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_B_BAKERS_1k",
+      "to": "Archive/Textures/CSC_Storage_B_BAKERS_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_B_BAKERS_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_B_BAKERS_1k",
+      "to": "Archive/Textures/CSC_Storage_B_BAKERS_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_G_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_G_1k",
+      "to": "Archive/Textures/CSC_Storage_G_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_G_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_G_1k",
+      "to": "Archive/Textures/CSC_Storage_G_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_M_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_M_1k",
+      "to": "Archive/Textures/CSC_Storage_M_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_M_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_M_1k",
+      "to": "Archive/Textures/CSC_Storage_M_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_N_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_N_1k",
+      "to": "Archive/Textures/CSC_Storage_N_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_N_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_N_1k",
+      "to": "Archive/Textures/CSC_Storage_N_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_AO_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_AO_1k",
+      "to": "Archive/Textures/CSC_Storage_S_AO_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_AO_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_AO_1k",
+      "to": "Archive/Textures/CSC_Storage_S_AO_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_B_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_B_1k",
+      "to": "Archive/Textures/CSC_Storage_S_B_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_B_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_B_1k",
+      "to": "Archive/Textures/CSC_Storage_S_B_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_G_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_G_1k",
+      "to": "Archive/Textures/CSC_Storage_S_G_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_G_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_G_1k",
+      "to": "Archive/Textures/CSC_Storage_S_G_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_M_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_M_1k",
+      "to": "Archive/Textures/CSC_Storage_S_M_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_M_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_M_1k",
+      "to": "Archive/Textures/CSC_Storage_S_M_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_N_1k.dds",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_N_1k",
+      "to": "Archive/Textures/CSC_Storage_S_N_1k.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/CSC_Storage_S_N_1k.tex",
+      "kind": "Textures",
+      "stem": "CSC_Storage_S_N_1k",
+      "to": "Archive/Textures/CSC_Storage_S_N_1k.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/FXt_Zega_Ballpark_Scoreboard.dds",
+      "kind": "Textures",
+      "stem": "FXt_Zega_Ballpark_Scoreboard",
+      "to": "Archive/Textures/FXt_Zega_Ballpark_Scoreboard.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/FXt_Zega_Ballpark_Scoreboard.tex",
+      "kind": "Textures",
+      "stem": "FXt_Zega_Ballpark_Scoreboard",
+      "to": "Archive/Textures/FXt_Zega_Ballpark_Scoreboard.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Icon.dds",
+      "kind": "Textures",
+      "stem": "Icon",
+      "to": "Archive/Textures/Icon.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Icon.tex",
+      "kind": "Textures",
+      "stem": "Icon",
+      "to": "Archive/Textures/Icon.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_AO.dds",
+      "kind": "Textures",
+      "stem": "Level_2_20k_AO",
+      "to": "Archive/Textures/Level_2_20k_AO.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_AO.tex",
+      "kind": "Textures",
+      "stem": "Level_2_20k_AO",
+      "to": "Archive/Textures/Level_2_20k_AO.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_B.dds",
+      "kind": "Textures",
+      "stem": "Level_2_20k_B",
+      "to": "Archive/Textures/Level_2_20k_B.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_B.tex",
+      "kind": "Textures",
+      "stem": "Level_2_20k_B",
+      "to": "Archive/Textures/Level_2_20k_B.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_E.dds",
+      "kind": "Textures",
+      "stem": "Level_2_20k_E",
+      "to": "Archive/Textures/Level_2_20k_E.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_E.tex",
+      "kind": "Textures",
+      "stem": "Level_2_20k_E",
+      "to": "Archive/Textures/Level_2_20k_E.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_E2.dds",
+      "kind": "Textures",
+      "stem": "Level_2_20k_E2",
+      "to": "Archive/Textures/Level_2_20k_E2.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_E2.tex",
+      "kind": "Textures",
+      "stem": "Level_2_20k_E2",
+      "to": "Archive/Textures/Level_2_20k_E2.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_G.dds",
+      "kind": "Textures",
+      "stem": "Level_2_20k_G",
+      "to": "Archive/Textures/Level_2_20k_G.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_G.tex",
+      "kind": "Textures",
+      "stem": "Level_2_20k_G",
+      "to": "Archive/Textures/Level_2_20k_G.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_M.dds",
+      "kind": "Textures",
+      "stem": "Level_2_20k_M",
+      "to": "Archive/Textures/Level_2_20k_M.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_M.tex",
+      "kind": "Textures",
+      "stem": "Level_2_20k_M",
+      "to": "Archive/Textures/Level_2_20k_M.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_N.dds",
+      "kind": "Textures",
+      "stem": "Level_2_20k_N",
+      "to": "Archive/Textures/Level_2_20k_N.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_2_20k_N.tex",
+      "kind": "Textures",
+      "stem": "Level_2_20k_N",
+      "to": "Archive/Textures/Level_2_20k_N.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_AO.dds",
+      "kind": "Textures",
+      "stem": "Level_3_20k_AO",
+      "to": "Archive/Textures/Level_3_20k_AO.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_AO.tex",
+      "kind": "Textures",
+      "stem": "Level_3_20k_AO",
+      "to": "Archive/Textures/Level_3_20k_AO.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_B.dds",
+      "kind": "Textures",
+      "stem": "Level_3_20k_B",
+      "to": "Archive/Textures/Level_3_20k_B.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_B.tex",
+      "kind": "Textures",
+      "stem": "Level_3_20k_B",
+      "to": "Archive/Textures/Level_3_20k_B.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_E.dds",
+      "kind": "Textures",
+      "stem": "Level_3_20k_E",
+      "to": "Archive/Textures/Level_3_20k_E.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_E.tex",
+      "kind": "Textures",
+      "stem": "Level_3_20k_E",
+      "to": "Archive/Textures/Level_3_20k_E.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_G.dds",
+      "kind": "Textures",
+      "stem": "Level_3_20k_G",
+      "to": "Archive/Textures/Level_3_20k_G.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_G.tex",
+      "kind": "Textures",
+      "stem": "Level_3_20k_G",
+      "to": "Archive/Textures/Level_3_20k_G.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_M.dds",
+      "kind": "Textures",
+      "stem": "Level_3_20k_M",
+      "to": "Archive/Textures/Level_3_20k_M.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_M.tex",
+      "kind": "Textures",
+      "stem": "Level_3_20k_M",
+      "to": "Archive/Textures/Level_3_20k_M.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_N.dds",
+      "kind": "Textures",
+      "stem": "Level_3_20k_N",
+      "to": "Archive/Textures/Level_3_20k_N.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_N.tex",
+      "kind": "Textures",
+      "stem": "Level_3_20k_N",
+      "to": "Archive/Textures/Level_3_20k_N.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_O.dds",
+      "kind": "Textures",
+      "stem": "Level_3_20k_O",
+      "to": "Archive/Textures/Level_3_20k_O.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Level_3_20k_O.tex",
+      "kind": "Textures",
+      "stem": "Level_3_20k_O",
+      "to": "Archive/Textures/Level_3_20k_O.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_AO.dds",
+      "kind": "Textures",
+      "stem": "Oven2_20k_AO",
+      "to": "Archive/Textures/Oven2_20k_AO.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_AO.tex",
+      "kind": "Textures",
+      "stem": "Oven2_20k_AO",
+      "to": "Archive/Textures/Oven2_20k_AO.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_B.dds",
+      "kind": "Textures",
+      "stem": "Oven2_20k_B",
+      "to": "Archive/Textures/Oven2_20k_B.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_B.tex",
+      "kind": "Textures",
+      "stem": "Oven2_20k_B",
+      "to": "Archive/Textures/Oven2_20k_B.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_E.dds",
+      "kind": "Textures",
+      "stem": "Oven2_20k_E",
+      "to": "Archive/Textures/Oven2_20k_E.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_E.tex",
+      "kind": "Textures",
+      "stem": "Oven2_20k_E",
+      "to": "Archive/Textures/Oven2_20k_E.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_G.dds",
+      "kind": "Textures",
+      "stem": "Oven2_20k_G",
+      "to": "Archive/Textures/Oven2_20k_G.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_G.tex",
+      "kind": "Textures",
+      "stem": "Oven2_20k_G",
+      "to": "Archive/Textures/Oven2_20k_G.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_M.dds",
+      "kind": "Textures",
+      "stem": "Oven2_20k_M",
+      "to": "Archive/Textures/Oven2_20k_M.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_M.tex",
+      "kind": "Textures",
+      "stem": "Oven2_20k_M",
+      "to": "Archive/Textures/Oven2_20k_M.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_N.dds",
+      "kind": "Textures",
+      "stem": "Oven2_20k_N",
+      "to": "Archive/Textures/Oven2_20k_N.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Oven2_20k_N.tex",
+      "kind": "Textures",
+      "stem": "Oven2_20k_N",
+      "to": "Archive/Textures/Oven2_20k_N.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_AO.dds",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_AO",
+      "to": "Archive/Textures/Storage_L_20k_AO.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_AO.tex",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_AO",
+      "to": "Archive/Textures/Storage_L_20k_AO.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_B.dds",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_B",
+      "to": "Archive/Textures/Storage_L_20k_B.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_B.tex",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_B",
+      "to": "Archive/Textures/Storage_L_20k_B.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_G.dds",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_G",
+      "to": "Archive/Textures/Storage_L_20k_G.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_G.tex",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_G",
+      "to": "Archive/Textures/Storage_L_20k_G.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_M.dds",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_M",
+      "to": "Archive/Textures/Storage_L_20k_M.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_M.tex",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_M",
+      "to": "Archive/Textures/Storage_L_20k_M.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_N.dds",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_N",
+      "to": "Archive/Textures/Storage_L_20k_N.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_L_20k_N.tex",
+      "kind": "Textures",
+      "stem": "Storage_L_20k_N",
+      "to": "Archive/Textures/Storage_L_20k_N.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_AO.dds",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_AO",
+      "to": "Archive/Textures/Storage_M_20k_AO.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_AO.tex",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_AO",
+      "to": "Archive/Textures/Storage_M_20k_AO.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_B.dds",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_B",
+      "to": "Archive/Textures/Storage_M_20k_B.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_B.tex",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_B",
+      "to": "Archive/Textures/Storage_M_20k_B.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_G.dds",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_G",
+      "to": "Archive/Textures/Storage_M_20k_G.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_G.tex",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_G",
+      "to": "Archive/Textures/Storage_M_20k_G.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_M.dds",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_M",
+      "to": "Archive/Textures/Storage_M_20k_M.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_M.tex",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_M",
+      "to": "Archive/Textures/Storage_M_20k_M.tex"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_N.dds",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_N",
+      "to": "Archive/Textures/Storage_M_20k_N.dds"
+    },
+    {
+      "from": "Civ Supply Chains/Textures/Storage_M_20k_N.tex",
+      "kind": "Textures",
+      "stem": "Storage_M_20k_N",
+      "to": "Archive/Textures/Storage_M_20k_N.tex"
+    }
+  ],
+  "rule": "Keep .ast assets whose stem appears in any XLP m_ObjectName; keep local .mtl files referenced by those active assets; keep texture files referenced by active local materials, active assets, or direct UITexture/StrategicView_Sprite XLP entries. Move the rest to repo-root Archive/{Assets,Materials,Textures}.",
+  "source_root": "Civ Supply Chains",
+  "xlp_classes": {
+    "Landmark": [
+      "RES_CSC_Flax_Tuft01",
+      "RES_CSC_Flax_Tuft02",
+      "RES_CSC_Flax_Tuft03",
+      "RES_CSC_Flax_Tuft04"
+    ],
+    "Light": [
+      "CSC_BAKERS_Stand_Light",
+      "CSC_BAKERS_Stand_Light_Negative"
+    ],
+    "StrategicView_Sprite": [
+      "CSC_BAKERS_SV_Bakery_Revealed",
+      "CSC_BAKERS_SV_Bakery_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Bakery_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Bakery_Visible",
+      "CSC_BAKERS_SV_Bakery_Visible_Pillaged",
+      "CSC_BAKERS_SV_Bakery_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Cafe_Revealed",
+      "CSC_BAKERS_SV_Cafe_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Cafe_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Cafe_Visible",
+      "CSC_BAKERS_SV_Cafe_Visible_Pillaged",
+      "CSC_BAKERS_SV_Cafe_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Quarter_Revealed",
+      "CSC_BAKERS_SV_Quarter_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Quarter_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Quarter_Visible",
+      "CSC_BAKERS_SV_Quarter_Visible_Pillaged",
+      "CSC_BAKERS_SV_Quarter_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Water_Mill_Revealed",
+      "CSC_BAKERS_SV_Water_Mill_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Water_Mill_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Water_Mill_Visible",
+      "CSC_BAKERS_SV_Water_Mill_Visible_Pillaged",
+      "CSC_BAKERS_SV_Water_Mill_Visible_UnderConstruction",
+      "CSC_BAKERS_SV_Wind_Mill_Revealed",
+      "CSC_BAKERS_SV_Wind_Mill_Revealed_Pillaged",
+      "CSC_BAKERS_SV_Wind_Mill_Revealed_UnderConstruction",
+      "CSC_BAKERS_SV_Wind_Mill_Visible",
+      "CSC_BAKERS_SV_Wind_Mill_Visible_Pillaged",
+      "CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction"
+    ],
+    "TileBase": [
+      "CSC_ALL_Circle_Patch",
+      "CSC_ALL_Curved_Path",
+      "CSC_ALL_Organic_Patch_L",
+      "CSC_ALL_Organic_Patch_M",
+      "CSC_ALL_Organic_Patch_S",
+      "CSC_ALL_Plaza_Inner",
+      "CSC_ALL_Plaza_Outer",
+      "CSC_ALL_Stand",
+      "CSC_ALL_Storage_M_Ext",
+      "CSC_ALL_Storage_S_Ext",
+      "CSC_BAKERS_Ancient_Base_01",
+      "CSC_BAKERS_Ancient_Base_02",
+      "CSC_BAKERS_Ancient_Base_03",
+      "CSC_BAKERS_Bakery",
+      "CSC_BAKERS_Bakery_2",
+      "CSC_BAKERS_Bread",
+      "CSC_BAKERS_Cafe",
+      "CSC_BAKERS_Cafe_2",
+      "CSC_BAKERS_Classical_Base_01",
+      "CSC_BAKERS_Classical_Base_02",
+      "CSC_BAKERS_Classical_Base_03",
+      "CSC_BAKERS_Classical_Base_04",
+      "CSC_BAKERS_Classical_Base_05",
+      "CSC_BAKERS_Classical_Base_06",
+      "CSC_BAKERS_Classical_Base_07",
+      "CSC_BAKERS_Classical_Base_08",
+      "CSC_BAKERS_Classical_Base_09",
+      "CSC_BAKERS_Flour",
+      "CSC_BAKERS_Flour_Closed",
+      "CSC_BAKERS_Flour_Open",
+      "CSC_BAKERS_Oven",
+      "CSC_BAKERS_Storage_L",
+      "CSC_BAKERS_Storage_M",
+      "CSC_BAKERS_Storage_S",
+      "CSC_BAKERS_Water_Mill",
+      "CSC_BAKERS_Water_Mill_2",
+      "CSC_BAKERS_Water_Mill_Wheel",
+      "CSC_BAKERS_Well",
+      "CSC_BAKERS_Wind_Mill",
+      "CSC_BAKERS_Wind_Mill_2",
+      "CSC_BAKERS_Wind_Mill_Tower",
+      "CSC_Storage_L_Crane",
+      "IMP_Farm_CSC_Flax_Decal_Angled_01",
+      "IMP_Farm_CSC_Flax_Decal_Angled_02",
+      "IMP_Farm_CSC_Flax_Decal_Angled_03",
+      "IMP_Farm_CSC_Flax_Decal_Angled_04",
+      "IMP_Farm_CSC_Flax_Decal_Square_01",
+      "IMP_Farm_CSC_Flax_Decal_Square_02",
+      "IMP_Farm_CSC_Flax_Decal_Square_03",
+      "IMP_Farm_CSC_Flax_Decal_Square_04",
+      "IMP_Farm_CSC_Flax_Decal_Square_05",
+      "IMP_Farm_CSC_Flax_Decal_Square_06",
+      "IMP_Farm_CSC_Flax_Decal_Square_07",
+      "IMP_Farm_CSC_Flax_Decal_Square_08",
+      "IMP_Farm_CSC_Flax_Decal_Transition_01",
+      "IMP_Farm_CSC_Flax_Decal_Transition_02",
+      "IMP_Farm_CSC_Flax_Decal_Transition_03",
+      "IMP_Farm_CSC_Flax_Decal_Transition_04",
+      "IMP_Farm_CSC_Flax_Decal_Transition_05",
+      "IMP_Farm_CSC_Flax_Decal_Transition_06",
+      "IMP_Farm_CSC_Flax_Decal_Transition_07",
+      "IMP_Farm_CSC_Flax_Decal_Transition_08",
+      "IMP_Farm_CSC_Flax_Decal_Transition_09",
+      "IMP_Farm_CSC_Flax_Decal_Transition_10",
+      "IMP_Farm_CSC_Flax_Decal_Transition_11",
+      "IMP_Farm_CSC_Flax_Decal_Transition_12"
+    ],
+    "UILensAsset": [
+      "CSC_BAKERS_Base_Materials_Box",
+      "CSC_BAKERS_Spec_Materials_Box",
+      "CSC_Sales_Box"
+    ],
+    "UITexture": [
+      "Aristocrat_128",
+      "Aristocrat_22",
+      "Aristocrat_256",
+      "Aristocrat_32",
+      "Aristocrat_38",
+      "Aristocrat_50",
+      "Aristocrat_70",
+      "Aristocrat_80",
+      "CSC_BAKERS_128",
+      "CSC_BAKERS_22",
+      "CSC_BAKERS_256",
+      "CSC_BAKERS_32",
+      "CSC_BAKERS_38",
+      "CSC_BAKERS_50",
+      "CSC_BAKERS_70",
+      "CSC_BAKERS_80",
+      "CSC_Effect_Notifications_100",
+      "CSC_Effect_Notifications_40",
+      "CSC_GreatWorks_22",
+      "CSC_GreatWorks_256",
+      "CSC_GreatWorks_32",
+      "CSC_GreatWorks_38",
+      "CSC_GreatWorks_50",
+      "CSC_GreatWorks_64",
+      "CSC_Resources_22",
+      "CSC_Resources_256",
+      "CSC_Resources_256_FOW",
+      "CSC_Resources_32",
+      "CSC_Resources_38",
+      "CSC_Resources_50",
+      "CSC_Resources_64",
+      "CSC_Resources_64_FOW",
+      "CSC_Tooltip_Arrow"
+    ],
+    "VFX": []
+  }
+}
