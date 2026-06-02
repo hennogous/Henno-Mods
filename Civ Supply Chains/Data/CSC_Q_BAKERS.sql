@@ -1022,7 +1022,7 @@ INSERT OR IGNORE INTO RequirementSets
 -- 	+1 Production from each adjacent base materials improvement
 		(	'REQSET_CSC_BAKERS_PLOT_HAS_BASE',						'REQUIREMENTSET_TEST_ALL'       ),
 
--- 	+1 Gold to adjacent base materials improvements
+--  Helper set for improved adjacent base materials prerequisite
         (	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',					'REQUIREMENTSET_TEST_ALL'       ),
 
 -- 	+1 Food to an adjacent Granary, and +1 Gold in return
@@ -1041,7 +1041,8 @@ INSERT OR IGNORE INTO RequirementSets
 		(	'REQSET_CSC_ADJ_MARKET',								'REQUIREMENTSET_TEST_ALL'		),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQUIREMENTSET_TEST_ALL'		),
+-- UNUSED: no live modifier references this stricter Stage 3 service adjacency set; Stage 3 service/effect modifiers use REQSET_CSC_ADJ_MARKET.
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQUIREMENTSET_TEST_ALL'		),
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQUIREMENTSET_TEST_ALL'		),
@@ -1051,7 +1052,7 @@ INSERT OR IGNORE INTO RequirementSets
 -- 	+1 Production from each adjacent speciality materials improvement
 		(	'REQSET_CSC_BAKERS_PLOT_HAS_SPEC',						'REQUIREMENTSET_TEST_ALL'       ),
 
--- 	+1 Gold to adjacent specialty materials improvements
+--  Helper set for improved adjacent specialty materials prerequisite
         (	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',					'REQUIREMENTSET_TEST_ALL'       ),
 
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel
@@ -1069,7 +1070,8 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- 	SHARED ------------------------------------------------------------------------------
 
-		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQUIREMENTSET_TEST_ALL'		),
+-- UNUSED: wrapper set is not referenced by any modifier/nested requirement; keep REQ_CSC_DISTRICT_IS_BAKERS_QUARTER itself because active adjacency/art sets use it.
+--		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQUIREMENTSET_TEST_ALL'		),
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',          				'REQUIREMENTSET_TEST_ALL'       ),
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQUIREMENTSET_TEST_ALL'		);
@@ -1091,7 +1093,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- 	+1 Production from each adjacent base materials improvement
 		(	'REQSET_CSC_BAKERS_PLOT_HAS_BASE',						'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE'			),
 
--- 	+1 Gold to adjacent base materials improvements
+--  Helper set for improved adjacent base materials prerequisite
         (	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
         (	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',					'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE'			),
 
@@ -1122,9 +1124,10 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- Shared with CSC_Q_BAKERS_GOLD.sql: inverse Market-to-Bakery adjacency requirements
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'			),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE'		),
+-- UNUSED: no live modifier references REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE.
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'			),
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE'		),
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
@@ -1137,7 +1140,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- 	+1 Production from each adjacent specialty materials improvement
 		(	'REQSET_CSC_BAKERS_PLOT_HAS_SPEC',						'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC'			),
 
--- 	+1 Gold to adjacent specialty materials improvements
+--  Helper set for improved adjacent specialty materials prerequisite
         (	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
         (	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',					'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC'			),
 
@@ -1163,9 +1166,9 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_ADJ_WATER_PARK_FERRIS',						'REQ_CSC_CITY_HAS_FERRIS'						),
 
 -- 	SHARED ------------------------------------------------------------------------------
-
 -- Moved to CSC_Q_BAKERS_GOLD.sql: REQSET_CSC_BAKERS_ADJ_PLOT_HAS_MATERIAL_ANY, REQSET_CSC_BAKERS_PLOT_HAS_MATERIAL_ANY requirements
-		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+-- UNUSED: no live modifier/nested requirement references REQSET_CSC_DISTRICT_IS_BAKERS.
+--		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
         ( 	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_PLOT_ADJ_TO_OWNER'              		),
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'           	),
 
@@ -1209,7 +1212,8 @@ INSERT OR IGNORE INTO Requirements
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
-		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'REQUIREMENT_CITY_HAS_BUILDING',					0				),
+-- UNUSED: only used by the orphan REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE chain.
+--		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 --  An adjacent Market provides +2 Housing
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
@@ -1271,7 +1275,8 @@ INSERT OR IGNORE INTO RequirementArguments
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'BuildingType',					'BUILDING_CSC_BAKERS_BAKERY'					),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
-		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'BuildingType',					'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'			),
+-- UNUSED: only used by the orphan REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE chain.
+--		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'BuildingType',					'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'			),
 --  An adjacent Market provides +2 Housing
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_MEDIEVAL_FAIRES'							),
