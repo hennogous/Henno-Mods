@@ -40,8 +40,8 @@ Documentation outside the mod content tree is split by audience:
 | Folder | Purpose |
 |---|---|
 | `docs/` | Public-facing Quartz site: player-facing design docs, Quarter explanations, mechanics, concepts, screenshots, and polished narrative documentation. |
-| `project/docs/` | Internal/project docs: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. |
-| `memory/` | Versioned agent/project memory carried from earlier workflows. Treat as historical context; promote durable human-facing truth to `project/docs/` or `docs/` when it matters. |
+| `project/docs/` | Internal/project docs: durable, human-readable reference for collaborators and future maintainers — implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. If a CSC collaborator should be able to use it without Hermes, it belongs here. |
+| `memory/` | Versioned agent/project memory: session carryover, working notes, feedback, local lessons, and historical context. Treat it as agent-facing scratch/reference; promote durable human-facing truth to `project/docs/` or public `docs/` when it matters. |
 
 ## Naming Conventions
 
@@ -186,6 +186,7 @@ Use the skills and docs according to audience:
 | `civ6-modding` skill | Generic, reusable Civ VI modding knowledge: SQL schema, modifiers, Lua scripting, `.modinfo` / `.civ6proj`, ArtDefs, icons, strategic view sprites, SDK workflows, and engine gotchas. Keep this shareable; do not add CSC-specific notes. |
 | `civ-supply-chains` skill | Bill/Hermes operational context for CSC: local paths, workspace rules, what to read first, stable CSC gotchas, and pointers to canonical repo docs. |
 | `docs/` | Public-facing docs site for players/readers. |
-| `project/docs/` | Internal human-readable project documentation for collaborators and future maintainers. |
+| `project/docs/` | Internal human-readable project documentation for collaborators and future maintainers; if it should survive beyond agent session context, put/promote it here. |
+| `memory/` | Agent-facing session carryover, working notes, feedback, local lessons, and historical context; not the final home for durable collaborator-facing truth. |
 
 Rule of thumb: if another Civ VI modder could use it on a different mod, put it in `civ6-modding`; if CSC collaborators need it without Hermes, put it in the repo docs; if it tells Bill/Hermes how to work correctly on Shadow/CSC, put it in `civ-supply-chains`.
