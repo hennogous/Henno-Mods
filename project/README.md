@@ -7,8 +7,9 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | Location | Audience / purpose |
 |---|---|
 | `../docs/` | Public-facing Quartz site: player-facing design docs, Quarter explanations, mechanics, concepts, screenshots, and polished narrative documentation. |
-| `docs/` | Internal/project documentation: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. |
-| Hermes `civ-supply-chains` skill | Agent operational context only: local paths, workspace rules, what Bill should read first, and stable CSC gotchas. Do not use it as the only home for collaborator-facing project truth. |
+| `docs/` | Internal/project documentation: durable, human-readable reference for collaborators and future maintainers: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. If a CSC collaborator should be able to use it without Hermes, it belongs here. |
+| `../memory/` | Versioned agent/project memory: session carryover, working notes, feedback, local lessons, and historical context. Treat it as agent-facing scratch/reference; promote durable human-facing truth to `docs/` or public `../docs/` when it matters. |
+| Hermes `civ-supply-chains` skill | Agent operational context only: local paths, workspace rules, what Bill/Garfield should read first, and stable CSC gotchas. Do not use it as the only home for collaborator-facing project truth. |
 | Hermes `civ6-modding` skill | Generic reusable Civ VI modding knowledge. Do not put CSC-specific notes there. |
 
 ## docs/
