@@ -13,7 +13,7 @@ Added May 22, 2026: Bakers' Stage 2 Granary growth now has a SQL-side source pro
 
 The SQL modifier property remains the source of truth, but `Lua_UI/ArtProperties/CSC_ArtProperties.lua` mirrors it into a direct `pCity:SetProperty(...)` value for `GamePropertyRanges`. This matches Sukritact's Posuban art-facing pattern while preserving SQL-driven gameplay logic.
 
-The Lua bridge must be present in both `Civ Supply Chains.modinfo` and the ModBuddy `InGameActionData` inside `Civ Supply Chains/Civ Supply Chains.civ6proj`; otherwise ModBuddy builds can omit the gameplay script even if the file is listed as content.
+The Lua bridge must be present in the ModBuddy `InGameActionData` inside `Civ Supply Chains/Civ Supply Chains.civ6proj`; otherwise ModBuddy builds can omit the gameplay script even if the file is listed as content. Do not maintain a tracked root `.modinfo` in this repo: the meaningful `.modinfo` is generated into the built mod output and is not versioned here.
 
 To avoid art only updating on the next turn, the bridge refreshes on immediate hooks for every moving part in `REQSET_CSC_STAGE_2_EFFECT_PREREQ` + `REQSET_CSC_ADJ_CITY_CENTER_GRANARY`: building changes/removal/construction, city production completion/update, district add/remove/pillage, improvement add/change/remove/pillage, resource add/change/remove, city tile ownership, city transfer/add/remove, civic completion, and unit operation completion/deactivation/clearing for builder repairs. Plot/building/improvement/resource events refresh all cities for the affected player because the affected Bakers' Quarter can be adjacent to the city or plot that changed.
 
