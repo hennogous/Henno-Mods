@@ -457,11 +457,12 @@
       <Criteria>Expansion1or2</Criteria>
       <File>Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons_XP1.sql</File>
     </UpdateIcons>
-    <AddUserInterfaces id="CSC_UI_Notifications" criteria="CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED">
+    <AddUserInterfaces id="CSC_UI_Notifications">
       <Properties>
         <Context>InGame</Context>
         <LoadOrder>500</LoadOrder>
       </Properties>
+      <Criteria>CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED</Criteria>
       <File>Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications.xml</File>
     </AddUserInterfaces>
     <AddGameplayScripts id="CSC_Aristocrat">
