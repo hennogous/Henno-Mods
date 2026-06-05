@@ -131,7 +131,7 @@ INSERT INTO BuildingModifiers
 --  Mirror the adjacent Conservatory transaction back onto Cafe cities for alternate Cafe art
 		(	'BUILDING_LEU_CONSERVATORY',		'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_GARDEN'	),
 
--- 	+1 Citizen slot (Groundskeeper) to a Garden with a Conservatory
+-- 	+1 Citizen slot (Horticulturist) to a Garden with a Conservatory
 		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -188,7 +188,7 @@ VALUES
 	NULL,
 	NULL		),
 
--- 	+1 Citizen slot (Groundskeeper) to a Garden with a Conservatory
+-- 	+1 Citizen slot (Horticulturist) to a Garden with a Conservatory
 (	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN',
     'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
     'REQSET_CSC_STAGE_4_EFFECT_PREREQ',

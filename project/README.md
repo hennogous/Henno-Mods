@@ -24,6 +24,9 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | `ART-KIT-3D-PASS.md` | Active TODO for the Bakers' art kit (GIMP/Blender/AE tasks) |
 | `COMFYUI-SETUP.md` | ComfyUI setup, LoRA models + trigger words, prompt templates, training status |
 | `COMFYUI-MANUAL.md` | Step-by-step manual for generating icons and SV sprites — start here if you haven't used ComfyUI before |
+| `icon-pipeline-implementation-notes.md` | Operational notes for the ComfyUI icon scripts: output paths, rembg/SAM behavior, cache handling, transparency semantics, postprocess knobs |
+| `dynamic-art-properties.md` | CSC dynamic art bridge pattern: SQL source properties, Lua mirroring, GamePropertyRanges intervals, event refresh and Bakers variants |
+| `bakers-service-notification-ui.md` | Bakers service notification convention: folded MCUIS text, service chains, and commented standalone notification path |
 | `MAB_MANUAL.md` | Full Ruivo MAB framework reference — `Ruivo_New_Adjacency` schema, AdjacencyTypes, ProvideTypes, examples |
 | `taxes+politics.md` | Full design doc for the political loyalty system (Guilds/Elite/Church/Monarchy) |
 | `all-buildings-list.md` | Vanilla Civ 6 buildings by era — quick lookup reference |
