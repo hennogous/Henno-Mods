@@ -21,7 +21,11 @@ The development of Quarters and their respective supply chains is a key enabler 
 * Increased capacity through buildings with Specialist slots, and then assigning Workers from tiles into districts.
 
 **4. Service Providers**
-* Implemented as buildings (that don't appear on the map) in Districts adjacent to Quarters, and are granted once a supply chain is completed.
+* The practical urban middle layer that appears once a supply chain is not merely producing goods, but supporting another district well enough for a new local occupation to emerge: Storekeepers in City Centers, Innkeepers in Commercial Hubs, Groundskeepers in Entertainment districts, Ride Technicians in Water Parks, Horticulturists in Gardens, and so on.
+* Implemented as buildings that do not appear on the map, granted in customer districts adjacent to supplied Quarters.
+* Services are supply chain capstones rather than standalone effects on the customer building. The customer building supplies the destination and theme — e.g. Granary, Market, Zoo, Ferris Wheel, Conservatory — but the Service represents the completed relationship between the supplied Quarter and that destination.
+* In gameplay terms, Services usually add a Citizen slot to the host district and provide the value created by the completed chain: growth, housing, tourism, or another appropriate yield/effect.
+* Conceptually, Service Providers sit between regular Specialists and elites. They are not simply assigned labour inside a district; they are durable professions created by recurring trade between districts.
 
 **3. Aristocrats**
 * The local nobility and upper class, acting as patrons and investors in local industries.

@@ -680,7 +680,7 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_ZOO',								'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_ENTER'	),
 		(	'BUILDING_FERRIS_WHEEL',					'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_WATER'	),
 
--- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
+-- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER'		),
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER'		),
 
@@ -828,7 +828,7 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',						'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',				NULL,										NULL												),
 
--- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
+-- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'			),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',					'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
@@ -980,7 +980,7 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_WATER',						'Key',						'CSC_BAKERS_STAGE_4_EFFECT_TOURISM'								),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_WATER',						'Amount',					1																),
 
--- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
+-- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',					'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER'					),
@@ -1064,7 +1064,7 @@ INSERT OR IGNORE INTO RequirementSets
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQUIREMENTSET_TEST_ALL'		),
 
--- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
+-- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO',				'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_ADJ_WATER_PARK_FERRIS',						'REQUIREMENTSET_TEST_ALL'		),
 
@@ -1159,7 +1159,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_CITY_HAS_CAFE'							),
 
--- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
+-- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO',				'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX'				),
 		(	'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO',				'REQ_CSC_CITY_HAS_ZOO'							),
 		(	'REQSET_CSC_ADJ_WATER_PARK_FERRIS',						'REQ_CSC_ADJ_WATER_PARK'						),
@@ -1229,7 +1229,7 @@ INSERT OR IGNORE INTO Requirements
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
 		(	'REQ_CSC_CITY_HAS_CAFE',									'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 
--- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
+-- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),
 		(	'REQ_CSC_CITY_HAS_ZOO',									'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 		(	'REQ_CSC_ADJ_WATER_PARK',								'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),
@@ -1292,7 +1292,7 @@ INSERT OR IGNORE INTO RequirementArguments
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_URBANIZATION'							),
 		(	'REQ_CSC_CITY_HAS_CAFE',									'BuildingType',					'BUILDING_CSC_BAKERS_CAFE'						),
 
--- 	+1 Citizen slot (Groundskeeper) to an Entertainment Complex with a Zoo, Water Park with a Ferris Wheel
+-- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'RequirementSetId',				'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX'			),
 		(	'REQ_CSC_CITY_HAS_ZOO',									'BuildingType',					'BUILDING_ZOO'									),
 		(	'REQ_CSC_ADJ_WATER_PARK',								'RequirementSetId',				'REQSET_CSC_ADJ_WATER_PARK'						),

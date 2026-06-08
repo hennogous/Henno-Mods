@@ -65,12 +65,13 @@ Files in `Civ Supply Chains\Text\`.
 - [ ] **Add entries to `CSC_QUARTERS_PEDIA.sql`** — civilopedia pages
 - [ ] **Update `CSC_RESOURCES_TEXT.sql`** if new custom resources are introduced
 
-## Phase 4: .modinfo
+## Phase 4: ModBuddy actions
 
-- [ ] **Add SQL file actions** to `Civ Supply Chains.civ6proj` / `.modinfo`
+- [ ] **Add SQL file actions** to `Civ Supply Chains/Civ Supply Chains.civ6proj`
   - Gameplay SQL → UpdateDatabase action
   - Text SQL → UpdateText action (or appropriate load order)
   - MC MODE SQL → conditional on game mode if applicable
+  - Do not maintain a tracked root `.modinfo`; ModBuddy generates the real `.modinfo` into the built mod output.
 
 ## Phase 5: Art
 

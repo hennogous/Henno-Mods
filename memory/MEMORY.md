@@ -1,8 +1,23 @@
-- [Project notes location](project_notes_location.md) — to-do lists and working docs live in `project/` at repo root
-- [Skill inaccuracy: decal visibility](feedback_skill_decal_visibility.md) — "DecalGeometry added directly = always visible" only applies to reveal animation, not GroupStates
-- [Q2 2026 Quarter roadmap](project_roadmap_q2_2026.md) — CivAssetForge prototype done (Apr 2026); Bakers' art tweaks still pending; Tailors' starts May 2026
-- [CivAssetForge viewer prototype learnings](project_civassetforge_viewer_learnings.md) — FGX pipeline, DDS formats, UV conventions, tile offset fix, attachment extraction, Wind Mill scene confirmed working
-- [Write to memory proactively](feedback_memory_discipline.md) — write as things happen, not batched; project memory is primary for CSC/CivAssetForge work
-- [ComfyUI icon pipeline notes](project_comfyui_icon_pipeline.md) — Dropzone output path, rembg CPU provider, optional SAM fallback
-- [Dynamic art properties](project_dynamic_art_properties.md) — Bakers' Stage 2 Granary growth city property and GamePropertyRanges SelectionRule hook
-- [Notification UI notes](project_notification_ui.md) — specialist-slot grant notifications are currently folded into the main Quarter effect notification text
+# CSC Memory Index
+
+`memory/` is agent-facing scratch/reference, not the durable home for collaborator-facing project truth. Durable notes should live in `project/docs/` or public `docs/`.
+
+This folder was cleaned in June 2026: stale session notes were removed, and reusable implementation notes were promoted into durable docs.
+
+## Promoted docs
+
+- Dynamic art properties → `project/docs/dynamic-art-properties.md`
+- Bakers service notification UI → `project/docs/bakers-service-notification-ui.md`
+- ComfyUI icon implementation notes → `project/docs/icon-pipeline-implementation-notes.md`
+
+## Resolved feedback
+
+- Decal geometry visibility feedback was applied to the generic `civ6-modding` skill: `DecalGeometry` supports normal `GroupStates`; the limitation is reveal-animation keying, not general visibility.
+
+## Removed stale notes
+
+- old session startup order;
+- obsolete project notes location pointer;
+- Q2 2026 roadmap snapshot;
+- old memory-discipline feedback now superseded by repo documentation boundaries;
+- CivAssetForge viewer prototype notes, which belong with the separate CivAssetForge repo rather than CSC memory.

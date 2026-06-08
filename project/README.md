@@ -7,8 +7,9 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | Location | Audience / purpose |
 |---|---|
 | `../docs/` | Public-facing Quartz site: player-facing design docs, Quarter explanations, mechanics, concepts, screenshots, and polished narrative documentation. |
-| `docs/` | Internal/project documentation: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. |
-| Hermes `civ-supply-chains` skill | Agent operational context only: local paths, workspace rules, what Bill should read first, and stable CSC gotchas. Do not use it as the only home for collaborator-facing project truth. |
+| `docs/` | Internal/project documentation: durable, human-readable reference for collaborators and future maintainers: implementation notes, MAB change logs, branch/PR notes, build/playtest procedures, art-pipeline notes, asset inventories, and non-public decisions. If a CSC collaborator should be able to use it without Hermes, it belongs here. |
+| `../memory/` | Versioned agent/project memory: session carryover, working notes, feedback, local lessons, and historical context. Treat it as agent-facing scratch/reference; promote durable human-facing truth to `docs/` or public `../docs/` when it matters. |
+| Hermes `civ-supply-chains` skill | Agent operational context only: local paths, workspace rules, what Bill/Garfield should read first, and stable CSC gotchas. Do not use it as the only home for collaborator-facing project truth. |
 | Hermes `civ6-modding` skill | Generic reusable Civ VI modding knowledge. Do not put CSC-specific notes there. |
 
 ## docs/
@@ -23,6 +24,9 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | `ART-KIT-3D-PASS.md` | Active TODO for the Bakers' art kit (GIMP/Blender/AE tasks) |
 | `COMFYUI-SETUP.md` | ComfyUI setup, LoRA models + trigger words, prompt templates, training status |
 | `COMFYUI-MANUAL.md` | Step-by-step manual for generating icons and SV sprites — start here if you haven't used ComfyUI before |
+| `icon-pipeline-implementation-notes.md` | Operational notes for the ComfyUI icon scripts: output paths, rembg/SAM behavior, cache handling, transparency semantics, postprocess knobs |
+| `dynamic-art-properties.md` | CSC dynamic art bridge pattern: SQL source properties, Lua mirroring, GamePropertyRanges intervals, event refresh and Bakers variants |
+| `bakers-service-notification-ui.md` | Bakers service notification convention: folded MCUIS text, service chains, and commented standalone notification path |
 | `MAB_MANUAL.md` | Full Ruivo MAB framework reference — `Ruivo_New_Adjacency` schema, AdjacencyTypes, ProvideTypes, examples |
 | `taxes+politics.md` | Full design doc for the political loyalty system (Guilds/Elite/Church/Monarchy) |
 | `all-buildings-list.md` | Vanilla Civ 6 buildings by era — quick lookup reference |
