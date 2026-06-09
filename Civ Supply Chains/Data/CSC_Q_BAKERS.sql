@@ -42,7 +42,8 @@ INSERT OR IGNORE INTO Tags
 
 		(   Tag,							    Vocabulary			)
 VALUES	(	'CLASS_CSC_BAKERS_BASE',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BAKERS_SPEC',	        'RESOURCE_CLASS'	);
+        (	'CLASS_CSC_BAKERS_SPEC',	        'RESOURCE_CLASS'	),
+        (	'CLASS_CSC_BAKERS_SALES',	        'DISTRICT_CLASS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -66,7 +67,10 @@ INSERT OR IGNORE INTO TypeTags
 		(	'RESOURCE_SALT',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_SPICES',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_SUGAR',		'CLASS_CSC_BAKERS_SPEC'		),
-		(	'RESOURCE_TEA',			'CLASS_CSC_BAKERS_SPEC'		);
+		(	'RESOURCE_TEA',			'CLASS_CSC_BAKERS_SPEC'		),
+
+--	Bakers' Quarter sales districts
+		(	'DISTRICT_CITY_CENTER',	'CLASS_CSC_BAKERS_SALES'		);
 
 
 
@@ -270,8 +274,8 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	'SelfBonus',
 	'YIELD_GOLD',
 	1,
-	'FROM_RINGS_CAO_DISTRICT',
-	'DISTRICT_CITY_CENTER',
+	'FROM_RINGS_TYPETAG_DISTRICT',
+	'CLASS_CSC_BAKERS_SALES',
 	1,
 	1,
 	1

@@ -4,6 +4,6 @@
 --===========================================================================================================================
 INSERT OR IGNORE INTO Ruivo_CAO
     (CustomAdjacentObject,      Name,                           ArtdefOverlayEntry      )     VALUES
-    ('CLASS_CSC_BAKERS_BASE',   'LOC_CLASS_CSC_BASE_NAME',      'CSC_Base_Materials'    ),
-    ('CLASS_CSC_BAKERS_SPEC',   'LOC_CLASS_CSC_SPEC_NAME',      'CSC_Spec_Materials'    ),
-    ('DISTRICT_CITY_CENTER',    'LOC_CLASS_CSC_SALES_NAME',     'CSC_Sales'             );
+    ('CLASS_CSC_BAKERS_BASE',    'LOC_CLASS_CSC_BASE_NAME',      'CSC_Base_Materials'    ),
+    ('CLASS_CSC_BAKERS_SPEC',    'LOC_CLASS_CSC_SPEC_NAME',      'CSC_Spec_Materials'    ),
+    ('CLASS_CSC_BAKERS_SALES',   'LOC_CLASS_CSC_SALES_NAME',     'CSC_Sales'             );
