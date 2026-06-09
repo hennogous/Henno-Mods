@@ -10,16 +10,16 @@
 	<m_PackageName text="UILensAsset/CSC_UILensAssets"/>
 	<m_Entries>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_Base_Materials_Box"/>
-			<m_ObjectName text="CSC_BAKERS_Base_Materials_Box"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_Spec_Materials_Box"/>
-			<m_ObjectName text="CSC_BAKERS_Spec_Materials_Box"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_Sales_Box"/>
 			<m_ObjectName text="CSC_Sales_Box"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_Base_Materials_Box"/>
+			<m_ObjectName text="CSC_Base_Materials_Box"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_Spec_Materials_Box"/>
+			<m_ObjectName text="CSC_Spec_Materials_Box"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>

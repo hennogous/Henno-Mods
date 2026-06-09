@@ -36,6 +36,7 @@ VALUES
 		('LOC_ZEGA_FROM_DISTRICT_ABILITY',				'en_US',			' (from district ability)'),
 */
 		-- CSC resource class names for adjacency tooltips
-		('LOC_CLASS_CSC_BAKERS_BASE_NAME',				'en_US',			'Base materials'),
-		('LOC_CLASS_CSC_BAKERS_SPEC_NAME',				'en_US',			'Specialty materials');
+		('LOC_CLASS_CSC_BASE_NAME',						'en_US',			'Base materials'),
+		('LOC_CLASS_CSC_SPEC_NAME',						'en_US',			'Specialty materials'),
+		('LOC_CLASS_CSC_SALES_NAME',					'en_US',			'Sales');
 		

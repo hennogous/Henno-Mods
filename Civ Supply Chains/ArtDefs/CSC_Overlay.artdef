@@ -109,7 +109,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="CSC_BAKERS_Base_Materials_Box"/>
+										<m_EntryName text="CSC_Base_Materials_Box"/>
 										<m_XLPClass text="UILensAsset"/>
 										<m_XLPPath text="csc_uilensassets.xlp"/>
 										<m_BLPPackage text="UILensAsset/CSC_UILensAssets"/>
@@ -180,7 +180,7 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Base_Materials"/>
+							<m_Name text="CSC_Base_Materials"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
@@ -193,7 +193,7 @@
 						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Base_Materials"/>
+				<m_Name text="CSC_Base_Materials"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -216,7 +216,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="CSC_BAKERS_Spec_Materials_Box"/>
+										<m_EntryName text="CSC_Spec_Materials_Box"/>
 										<m_XLPClass text="UILensAsset"/>
 										<m_XLPPath text="csc_uilensassets.xlp"/>
 										<m_BLPPackage text="UILensAsset/CSC_UILensAssets"/>
@@ -287,7 +287,7 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Spec_Materials"/>
+							<m_Name text="CSC_Spec_Materials"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 						<Element>
@@ -378,7 +378,7 @@
 						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Spec_Materials"/>
+				<m_Name text="CSC_Spec_Materials"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>

@@ -262,6 +262,9 @@
     <Content Include="Lua_UI\Ruivo_Adjacencies\CSC_MAB_Text.sql">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Text\CSC_UI_CITY_PANEL_TEXT.sql">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="XLPs\CSC_Clutter.xlp">
       <SubType>Content</SubType>
     </Content>

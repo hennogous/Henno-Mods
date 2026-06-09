@@ -11,7 +11,7 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION_GARDEN',                  '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE][ICON_BULLET]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo, Ferris Wheel, or Conservatory, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and specialty materials resources can establish services in adjacent Entertainment districts with Zoos, Water Parks with Ferris Wheels, and Gardens with Conservatories.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME',              'Horticulturist'),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_DESCRIPTION',       'A Bakers'' Quarter service established when a supplied Café serves an adjacent Garden with a Conservatory, adding tourism and staffing the Garden.'),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_DESCRIPTION',       'A Service established in the Garden at Urbanization when a supplied Café serves an adjacent Conservatory, adding tourism and staffing the Garden.[NEWLINE][NEWLINE]+2 [ICON_Tourism] Tourism from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the district.'),
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',                            '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the Garden has a Conservatory.'),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_CIVIC',                                     'A Zoo adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service, a Ferris Wheel adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service, and a Garden with a Conservatory adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot in the district.'  ),
@@ -41,13 +41,13 @@ INSERT OR REPLACE INTO LocalizedText
     'Some visitors to the Garden also enjoy refreshments from the adjacent Café.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service if this district has a Conservatory. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} Civilopedia page for full requirements and effects.'   ),
 
 (   'en_US',
-    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_LEU_CONSERVATORY_CHAPTER_CSCHAIN_TITLE',
+    'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_LEU_CONSERVATORY_CHAPTER_CSCHAIN_TITLE', 
     'Supply Chains'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_LEU_CONSERVATORY_CHAPTER_CSCHAIN_PARA_1',
     'The Conservatory completes the Garden side of the Bakers'' Quarter service chain, much as the Zoo and Ferris Wheel complete the Entertainment and Water Park sides.[NEWLINE][NEWLINE]At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service in this Garden: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot in the district.'   ),
-
+/*
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_CHAPTER_CSCDESC_TITLE',
     'Description'   ),
@@ -55,14 +55,14 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_CHAPTER_CSCDESC_PARA_1',
     'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service represents the gardeners, guides, glasshouse attendants, and plant specialists needed when cafés help turn public gardens into regular civic destinations. In game terms, it is established in a Garden with a Conservatory when an adjacent supplied Café serves its visitors.'   ),
-
+*/
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_CHAPTER_CSCHAIN_TITLE',
     'Supply Chains'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_CHAPTER_CSCHAIN_PARA_1',
-    '[ICON_BULLET]Unlocks at Urbanization.[NEWLINE][ICON_BULLET]Requires a Café in a Bakers'' Quarter.[NEWLINE][ICON_BULLET]The Café must be supplied: the Bakers'' Quarter must be adjacent to improved Bakers'' base and specialty materials resources.[NEWLINE][ICON_BULLET]Requires an adjacent Garden with a Conservatory.[NEWLINE][NEWLINE]Effect: +2 [ICON_Tourism] Tourism from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the district.'   ),
+    'The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers'' specialty materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Conservatory.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Horticulturist in the Garden, tending rare plants, guiding curious visitors, and keeping the living collection healthy enough to become part of the city''s public life.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_CHAPTER_HISTORY_TITLE',

@@ -31,7 +31,6 @@ INSERT OR REPLACE INTO CivilopediaPageLayoutChapters
 VALUES	('District',					'CSCBASE',					7),
 		('District',					'CSCSPEC',					8),
 		('District',					'CSCHAIN',					9),
-		('Building',					'CSCDESC',					8),
 		('Building',					'CSCHAIN',					9),
 		('Resource',					'CSCQUAR',					9),
 		('Project',						'CSCSPEC',					9);
