@@ -21,6 +21,10 @@
 			<m_EntryID text="CSC_Spec_Materials_Box"/>
 			<m_ObjectName text="CSC_Spec_Materials_Box"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_Goods_Box"/>
+			<m_ObjectName text="CSC_Goods_Box"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

@@ -35,6 +35,15 @@ VALUES	( 	'DISTRICT_CSC_BAKERS_QUARTER',                              		'KIND_DI
 --===========================================================================================================================================================================--
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	Vocabularies
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO Vocabularies
+
+		(    Vocabulary			)
+VALUES	(	'DISTRICT_CLASS'	);
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Tags
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -70,7 +79,20 @@ INSERT OR IGNORE INTO TypeTags
 		(	'RESOURCE_TEA',			'CLASS_CSC_BAKERS_SPEC'		),
 
 --	Bakers' Quarter sales districts
-		(	'DISTRICT_CITY_CENTER',	'CLASS_CSC_BAKERS_SALES'		);
+		(	'DISTRICT_CITY_CENTER',						'CLASS_CSC_BAKERS_SALES'	),
+		(	'DISTRICT_COMMERCIAL_HUB',					'CLASS_CSC_BAKERS_SALES'	),
+		(	'DISTRICT_ENTERTAINMENT_COMPLEX',			'CLASS_CSC_BAKERS_SALES'	),
+		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',		'CLASS_CSC_BAKERS_SALES'	);
+
+--	Bakers' Quarter sales district unique replacements
+INSERT OR IGNORE INTO TypeTags
+
+		(	Type,					Tag						)
+SELECT	DR.CivUniqueDistrictType,	'CLASS_CSC_BAKERS_SALES'
+FROM	DistrictReplaces AS DR
+JOIN	TypeTags AS TT
+		ON TT.Type = DR.ReplacesDistrictType
+WHERE	TT.Tag = 'CLASS_CSC_BAKERS_SALES';
 
 
 
@@ -213,19 +235,19 @@ VALUES	(	'DISTRICT_CITY_CENTER',					'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		),
 		
 		(	'DISTRICT_COMMERCIAL_HUB',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		),
 		(	'DISTRICT_SUGUBA',						'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS'			),
+--		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS'			),
 		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_SUGUBA_GOLD_TO_BAKERS'					),
 
 		(	'DISTRICT_ENTERTAINMENT_COMPLEX',		'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
 		(	'DISTRICT_STREET_CARNIVAL',				'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
 		(	'DISTRICT_HIPPODROME',					'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_ENTERTAINMENT_GOLD_TO_BAKERS'			),
+--		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_ENTERTAINMENT_GOLD_TO_BAKERS'			),
 		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_STREET_CARNIVAL_GOLD_TO_BAKERS'		),
 		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_HIPPODROME_GOLD_TO_BAKERS'				),
 
 		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',	'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
 		(	'DISTRICT_WATER_STREET_CARNIVAL',		'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_WATER_PARK_GOLD_TO_BAKERS'				),
+--		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_WATER_PARK_GOLD_TO_BAKERS'				),
 		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_WATER_STREET_CARNIVAL_GOLD_TO_BAKERS'	);
 
 --		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_BREWERS_PRODUCTION_TO_BAKERS'			),
@@ -269,7 +291,7 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	1,
 	1
 ),
-(	'CSC_CITY_CENTER_GOLD_TO_BAKERS',
+(	'CSC_CITY_ALL_SALES_GOLD_TO_BAKERS',
 	'DISTRICT_CSC_BAKERS_QUARTER',
 	'SelfBonus',
 	'YIELD_GOLD',
@@ -1087,9 +1109,9 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- UNUSED: wrapper set is not referenced by any modifier/nested requirement; keep REQ_CSC_DISTRICT_IS_BAKERS_QUARTER itself because active adjacency/art sets use it.
 --		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQUIREMENTSET_TEST_ALL'		),
-        (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',          				'REQUIREMENTSET_TEST_ALL'       ),
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQUIREMENTSET_TEST_ALL'		);
+        (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',          				'REQUIREMENTSET_TEST_ALL'       );
+--		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQUIREMENTSET_TEST_ALL'		),
+--		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQUIREMENTSET_TEST_ALL'		);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSetRequirements
@@ -1122,9 +1144,13 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC'			),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
 		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
 		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_CITY_HAS_WATER_MILL'					),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC'			),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
 		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
 		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_CITY_HAS_WIND_MILL'					),
@@ -1146,6 +1172,8 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC'			),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_CITY_HAS_BAKERY'						),
@@ -1170,6 +1198,9 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC'		),
+		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC'			),
+		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC'		),
 		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
 		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_CITY_HAS_CAFE'							),
@@ -1185,8 +1216,8 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- UNUSED: no live modifier/nested requirement references REQSET_CSC_DISTRICT_IS_BAKERS.
 --		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
         ( 	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_PLOT_ADJ_TO_OWNER'              		),
-        (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'           	),
-
+        (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'           	);
+/*
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE'			),
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQ_CSC_PLOT_HAS_ANY_IMPROVEMENT'				),
@@ -1194,7 +1225,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC'			),
 		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQ_CSC_PLOT_HAS_ANY_IMPROVEMENT'				);
-
+*/
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Requirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1242,7 +1273,7 @@ INSERT OR IGNORE INTO Requirements
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
-		(	'REQ_CSC_CITY_HAS_CAFE',									'REQUIREMENT_CITY_HAS_BUILDING',					0				),
+		(	'REQ_CSC_CITY_HAS_CAFE',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),

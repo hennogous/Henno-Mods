@@ -374,7 +374,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_PARA_1',
-    'The Water Mill or Wind Mill draws on improved Bakers'' base materials nearby, turns them into dependable flour, and sends that steady flow into the city''s Granary.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Storekeeper in the City Center, ensuring that hard-earned food stores are managed for the good of the growing population.'   ),
+    'The Water Mill or Wind Mill draws on improved Bakers'' base materials nearby, turns them into dependable flour, and transports that steady flow to the city''s Granary.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Storekeeper in the City Center, ensuring that hard-earned food stores are managed for the good of the growing population.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_HISTORY_TITLE',
@@ -390,7 +390,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_CSCHAIN_PARA_1',
-    'The Bakery draws on dependable flour from the local Water Mill or Wind Mill, turns it into bread and baked goods, and sends that steady flow into the adjacent Market.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as an Innkeeper in the Commercial Hub, turning market traffic into lodging, meals, and shelter for merchants and travelers passing through the city.'   ),
+    'The Bakery draws on dependable flour from the local Water Mill or Wind Mill, turns it into bread and baked goods, and offers that steady flow of goods to the growing number of visitors to the adjacent Market.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as an Innkeeper in the Commercial Hub, turning traffic to the Market into lodging, meals, and shelter for merchants and travelers passing through the city.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_CHAPTER_HISTORY_TITLE',
