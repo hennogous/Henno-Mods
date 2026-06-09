@@ -25,7 +25,6 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_CLASS_CSC_BAKERS_SPEC_NAME',                       'specialty materials'   ),
 
 (   'en_US',    'LOC_CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',             '+{1_num} [ICON_Food] Food from the adjacent Bakers'' {1_num : plural 1?Quarter; other?Quarters;}.'   ),
-(   'en_US',    'LOC_CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT',          '+{1_num} [ICON_Culture] Culture from the adjacent Bakers'' {1_num : plural 1?Quarter; other?Quarters;}.'   ),
 
 (   'en_US',    'LOC_CSC_CITY_CENTER_GOLD_TO_BAKERS',                   '+{1_num} [ICON_Gold] from the adjacent City Center.'    ),
 (   'en_US',    'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS',                '+{1_num} [ICON_Gold] from the adjacent Commercial {1_num : plural 1?Hub; other?Hubs;}.' ),

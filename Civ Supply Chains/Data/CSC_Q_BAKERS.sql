@@ -215,8 +215,7 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSIO
 INSERT OR IGNORE INTO Adjacency_YieldChanges
 
 		(	ID,											Description,									YieldType,				YieldChange,	AdjacentDistrict						)
-VALUES	(	'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',		'LOC_CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',		'YIELD_FOOD',			1,				'DISTRICT_CSC_BAKERS_QUARTER'			),
-		(	'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT',	'LOC_CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT',	'YIELD_CULTURE',		1,				'DISTRICT_CSC_BAKERS_QUARTER'			);
+VALUES	(	'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',		'LOC_CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',		'YIELD_FOOD',			1,				'DISTRICT_CSC_BAKERS_QUARTER'			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Ruivo_New_Adjacency

@@ -3,16 +3,15 @@
 -- DateCreated: 2025-08-09 09:41:30
 --------------------------------------------------------------
 
-
-
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Adjacency_YieldChanges
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
 
 INSERT OR IGNORE INTO Adjacency_YieldChanges
 
-		(	ID,										Description,                                YieldType,				YieldChange,	AdjacentDistrict						)
-VALUES	(	'CSC_GARDEN_GOLD_TO_BAKERS',			'LOC_CSC_GARDEN_GOLD_TO_BAKERS',			'YIELD_GOLD',			1,				'DISTRICT_LEU_GARDEN'					);
+		(	ID,											Description,                               		 YieldType,				YieldChange,	AdjacentDistrict						)
+VALUES	(	'CSC_GARDEN_GOLD_TO_BAKERS',				'LOC_CSC_GARDEN_GOLD_TO_BAKERS',				'YIELD_GOLD',			1,				'DISTRICT_LEU_GARDEN'					),
+		(	'CSC_BAKERS_CULTURE_TO_GARDEN',				'LOC_CSC_BAKERS_CULTURE_TO_GARDEN',				'YIELD_CULTURE',		1,				'DISTRICT_CSC_BAKERS_QUARTER'			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Districts
@@ -27,7 +26,7 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_LEU_GARDEN_DESC}' || '{LOC_CSC
 INSERT OR IGNORE INTO District_Adjacencies
 
 		(	DistrictType,							YieldChangeId								)
-VALUES	(	'DISTRICT_LEU_GARDEN',					'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
+VALUES	(	'DISTRICT_LEU_GARDEN',					'CSC_BAKERS_CULTURE_TO_GARDEN'				),
 		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_GARDEN_GOLD_TO_BAKERS'					);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

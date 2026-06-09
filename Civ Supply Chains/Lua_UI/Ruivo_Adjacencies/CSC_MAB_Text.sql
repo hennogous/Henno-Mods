@@ -39,4 +39,3 @@ VALUES
 		('LOC_CLASS_CSC_BASE_NAME',						'en_US',			'Base materials'),
 		('LOC_CLASS_CSC_SPEC_NAME',						'en_US',			'Specialty materials'),
 		('LOC_CLASS_CSC_SALES_NAME',					'en_US',			'Sales');
-		
