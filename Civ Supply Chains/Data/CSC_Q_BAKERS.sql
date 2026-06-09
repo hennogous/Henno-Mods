@@ -52,7 +52,9 @@ INSERT OR IGNORE INTO Tags
 		(   Tag,							    Vocabulary			)
 VALUES	(	'CLASS_CSC_BAKERS_BASE',	        'RESOURCE_CLASS'	),
         (	'CLASS_CSC_BAKERS_SPEC',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BAKERS_SALES',	        'DISTRICT_CLASS'	);
+        (	'CLASS_CSC_BAKERS_SALES',	        'DISTRICT_CLASS'	),
+        (	'CLASS_CSC_BAKERS_SALES_FOOD',		'DISTRICT_CLASS'	),
+        (	'CLASS_CSC_BAKERS_SALES_CULTURE',	'DISTRICT_CLASS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -79,12 +81,18 @@ INSERT OR IGNORE INTO TypeTags
 		(	'RESOURCE_TEA',			'CLASS_CSC_BAKERS_SPEC'		),
 
 --	Bakers' Quarter sales districts
-		(	'DISTRICT_CITY_CENTER',						'CLASS_CSC_BAKERS_SALES'	),
-		(	'DISTRICT_COMMERCIAL_HUB',					'CLASS_CSC_BAKERS_SALES'	),
-		(	'DISTRICT_ENTERTAINMENT_COMPLEX',			'CLASS_CSC_BAKERS_SALES'	),
-		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',		'CLASS_CSC_BAKERS_SALES'	);
+		(	'DISTRICT_CITY_CENTER',						'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_CITY_CENTER',						'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COMMERCIAL_HUB',					'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COMMERCIAL_HUB',					'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_ENTERTAINMENT_COMPLEX',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_ENTERTAINMENT_COMPLEX',			'CLASS_CSC_BAKERS_SALES_CULTURE'	),
+		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',		'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',		'CLASS_CSC_BAKERS_SALES_CULTURE'	);
 
 --	Bakers' Quarter sales district unique replacements
+--	The broad sales tag must be backfilled because FROM_RINGS_TYPETAG_DISTRICT matches TypeTags directly.
+--	Yield-specific customer-facing rows use Ruivo_New_Adjacency.ApplyForUniqueDistricts instead.
 INSERT OR IGNORE INTO TypeTags
 
 		(	Type,					Tag						)
@@ -202,56 +210,13 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSIO
 --	Adjacency_YieldChanges
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
 
+--	Core Bakers sales adjacencies are generated through Ruivo_New_Adjacency below so they can use custom overlay icons.
+--	These two vanilla IDs are retained for optional compatibility files that still attach Bakers' returns to non-core customer districts.
 INSERT OR IGNORE INTO Adjacency_YieldChanges
 
 		(	ID,											Description,									YieldType,				YieldChange,	AdjacentDistrict						)
 VALUES	(	'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',		'LOC_CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',		'YIELD_FOOD',			1,				'DISTRICT_CSC_BAKERS_QUARTER'			),
-		(	'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT',	'LOC_CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT',	'YIELD_CULTURE',		1,				'DISTRICT_CSC_BAKERS_QUARTER'			),
-		
-		(	'CSC_CITY_CENTER_GOLD_TO_BAKERS',			'LOC_CSC_CITY_CENTER_GOLD_TO_BAKERS',			'YIELD_GOLD',			1,				'DISTRICT_CITY_CENTER'					),
-
-		(	'CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS',		'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS',		'YIELD_GOLD',			1,				'DISTRICT_COMMERCIAL_HUB'				),		
-		(	'CSC_SUGUBA_GOLD_TO_BAKERS',				'LOC_CSC_SUGUBA_GOLD_TO_BAKERS',				'YIELD_GOLD',			1,				'DISTRICT_SUGUBA'						),
-
-		(	'CSC_ENTERTAINMENT_GOLD_TO_BAKERS',			'LOC_CSC_ENTERTAINMENT_GOLD_TO_BAKERS',			'YIELD_GOLD',			1,				'DISTRICT_ENTERTAINMENT_COMPLEX'		),
-		(	'CSC_STREET_CARNIVAL_GOLD_TO_BAKERS',		'LOC_CSC_STREET_CARNIVAL_GOLD_TO_BAKERS',		'YIELD_GOLD',			1,				'DISTRICT_STREET_CARNIVAL'				),
-		(	'CSC_HIPPODROME_GOLD_TO_BAKERS',			'LOC_CSC_HIPPODROME_GOLD_TO_BAKERS',			'YIELD_GOLD',			1,				'DISTRICT_HIPPODROME'					),
-
-		(	'CSC_WATER_PARK_GOLD_TO_BAKERS',			'LOC_CSC_WATER_PARK_GOLD_TO_BAKERS',			'YIELD_GOLD',			1,				'DISTRICT_WATER_ENTERTAINMENT_COMPLEX'	),
-		(	'CSC_WATER_STREET_CARNIVAL_GOLD_TO_BAKERS',	'LOC_CSC_WATER_STREET_CARNIVAL_GOLD_TO_BAKERS',	'YIELD_GOLD',			1,				'DISTRICT_WATER_STREET_CARNIVAL'		);
-
---		(	'CSC_BREWERS_PRODUCTION_TO_BAKERS',			'LOC_CSC_BREWERS_PRODUCTION_TO_BAKERS',			'YIELD_PRODUCTION',		1,				'DISTRICT_CSC_BREWERS_QUARTER'			),
---		(	'CSC_BAKERS_GOLD_TO_BREWERS',				'LOC_CSC_BAKERS_GOLD_TO_BREWERS',				'YIELD_GOLD',			1,				'DISTRICT_CSC_BAKERS_QUARTER'			);
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	District_Adjacencies
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
-
-INSERT OR IGNORE INTO District_Adjacencies
-
-		(	DistrictType,							YieldChangeId								)
-VALUES	(	'DISTRICT_CITY_CENTER',					'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		),
---		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_CITY_CENTER_GOLD_TO_BAKERS'			),
-		
-		(	'DISTRICT_COMMERCIAL_HUB',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		),
-		(	'DISTRICT_SUGUBA',						'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		),
---		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS'			),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_SUGUBA_GOLD_TO_BAKERS'					),
-
-		(	'DISTRICT_ENTERTAINMENT_COMPLEX',		'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
-		(	'DISTRICT_STREET_CARNIVAL',				'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
-		(	'DISTRICT_HIPPODROME',					'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
---		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_ENTERTAINMENT_GOLD_TO_BAKERS'			),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_STREET_CARNIVAL_GOLD_TO_BAKERS'		),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_HIPPODROME_GOLD_TO_BAKERS'				),
-
-		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',	'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
-		(	'DISTRICT_WATER_STREET_CARNIVAL',		'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT'	),
---		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_WATER_PARK_GOLD_TO_BAKERS'				),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_WATER_STREET_CARNIVAL_GOLD_TO_BAKERS'	);
-
---		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_BREWERS_PRODUCTION_TO_BAKERS'			),
---		(	'DISTRICT_CSC_BREWERS_QUARTER',			'CSC_BAKERS_GOLD_TO_BREWERS'				);
+		(	'CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT',	'LOC_CSC_BAKERS_CULTURE_TO_ADJACENT_DISTRICT',	'YIELD_CULTURE',		1,				'DISTRICT_CSC_BAKERS_QUARTER'			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Ruivo_New_Adjacency
@@ -302,6 +267,49 @@ INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	1,
 	1
 );
+
+CREATE TABLE IF NOT EXISTS CSC_BakersSalesAdjacencyConfig (
+	Tag TEXT PRIMARY KEY,
+	YieldType TEXT NOT NULL
+);
+
+INSERT OR IGNORE INTO CSC_BakersSalesAdjacencyConfig
+
+		(	Tag,								YieldType		) VALUES
+		(	'CLASS_CSC_BAKERS_SALES_FOOD',		'YIELD_FOOD'	),
+		(	'CLASS_CSC_BAKERS_SALES_CULTURE',	'YIELD_CULTURE'	);
+
+--	Customer districts receive the appropriate return yield from adjacent Bakers' Quarters.
+--	Targets are derived from the sales return sub-tags; MAB applies these rows to unique replacement districts.
+INSERT OR IGNORE INTO Ruivo_New_Adjacency (
+	ID,
+	DistrictType,
+	ProvideType,
+	YieldType,
+	YieldChange,
+	AdjacencyType,
+	CustomAdjacentObject,
+	Rings,
+	MustOwn,
+	DistrictModifiers,
+	ApplyForUniqueDistricts	)
+SELECT	'CSC_BAKERS_' || REPLACE(TT.Type, 'DISTRICT_', '') || '_' || REPLACE(C.YieldType, 'YIELD_', '') || '_FROM_QUARTER',
+		TT.Type,
+		'SelfBonus',
+		C.YieldType,
+		1,
+		'FROM_RINGS_CAO_DISTRICT',
+		'DISTRICT_CSC_BAKERS_QUARTER',
+		1,
+		1,
+		1,
+		1
+FROM	TypeTags AS TT
+JOIN	CSC_BakersSalesAdjacencyConfig AS C
+		ON C.Tag = TT.Tag
+ORDER BY TT.Type, C.YieldType;
+
+DROP TABLE CSC_BakersSalesAdjacencyConfig;
 
 INSERT OR IGNORE INTO Ruivo_New_Adjacency (
 	ID,
