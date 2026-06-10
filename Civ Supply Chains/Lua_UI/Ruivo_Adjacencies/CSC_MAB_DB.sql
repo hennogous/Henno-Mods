@@ -1,4 +1,0 @@
---==========================================================================================================================
--- CSC: Register custom adjacent object names and overlay art for MAB tooltips/icons.
--- Material classes use material icons; sales classes use sales icons; the Quarter district itself uses the goods icon for customer-facing return yields.
---===========================================================================================================================

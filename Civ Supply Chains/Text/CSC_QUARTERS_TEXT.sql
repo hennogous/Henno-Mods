@@ -7,13 +7,18 @@
 /*	ENGLISH */
 --===========================================================================================================================================================================--
 
+INSERT OR REPLACE INTO LocalizedText
+
+(   Language,   Tag,                                                    Text    )   VALUES
+
+(   'en_US',    'LOC_CLASS_CSC_BASE_NAME',						        'Base materials'    ),
+(   'en_US',    'LOC_CLASS_CSC_SPEC_NAME',						        'Specialty materials'   ),
+(   'en_US',    'LOC_CLASS_CSC_SALES_NAME',					            'Sales' ),
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Bakers' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR REPLACE INTO LocalizedText
-
-(   Language,   Tag,                                                    Text    )   VALUES
 (   'en_US',    'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',                 'Bakers'' Quarter'  ),
 (   'en_US',    'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION',          'A district in your city specializing in baking.[NEWLINE][NEWLINE]+1 [ICON_PRODUCTION] Production from each adjacent base or specialty materials resource from this supply chain, and +1 [ICON_GOLD] Gold in return. +1 [ICON_GOLD] Gold from each adjacent City Center and Commercial Hub, and +1 [ICON_FOOD] Food in return. +1 [ICON_GOLD] Gold from each adjacent Entertainment Complex, Water Park and Garden district (Leugi), and +1 [ICON_CULTURE] Culture in return. +1 [ICON_PRODUCTION] Production from every 2 adjacent river segments.'   ),
 
@@ -21,9 +26,8 @@ INSERT OR REPLACE INTO LocalizedText
 
 -- ADJACENCIES
 
-(   'en_US',    'LOC_CLASS_CSC_BAKERS_BASE_NAME',                       'base materials'   ),
-(   'en_US',    'LOC_CLASS_CSC_BAKERS_SPEC_NAME',                       'specialty materials'   ),
-
+--  (   'en_US',    'LOC_CLASS_CSC_BAKERS_BASE_NAME',                       'base materials'   ),
+--  (   'en_US',    'LOC_CLASS_CSC_BAKERS_SPEC_NAME',                       'specialty materials'   ),
 
 (   'en_US',    'LOC_CSC_CITY_CENTER_GOLD_TO_BAKERS',                   '+{1_num} [ICON_Gold] from the adjacent City Center.'    ),
 (   'en_US',    'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS',                '+{1_num} [ICON_Gold] from the adjacent Commercial {1_num : plural 1?Hub; other?Hubs;}.' ),
@@ -115,9 +119,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_ENTER',              '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Zoo.'),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND',               '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Zoo.'),
---(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} has been appointed.'	),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_WATER',              '[NEWLINE]{LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot if the district has a Ferris Wheel.'),
---(   'en_US',    'LOC_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER_NEW',    'A {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} has been appointed.'	),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_4_CIVIC',                      'A Zoo adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service, and a Ferris Wheel adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café and +1 [ICON_Citizen] Citizen slot in the district.'  ),
 
 -- PEDIA: SUPPLY CHAINS OVERVIEW SECTION
