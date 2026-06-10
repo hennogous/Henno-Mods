@@ -308,44 +308,10 @@ WHERE EXISTS
 
 INSERT OR IGNORE INTO Ruivo_CAO
     (CustomAdjacentObject,                      Name,                                       ArtdefOverlayEntry      )     VALUES
+    
+--  Bakers' Quarter
     ('CLASS_CSC_BAKERS_BASE',                   'LOC_CLASS_CSC_BASE_NAME',                  'CSC_Base_Materials'    ),
     ('CLASS_CSC_BAKERS_SPEC',                   'LOC_CLASS_CSC_SPEC_NAME',                  'CSC_Spec_Materials'    ),
     ('CLASS_CSC_BAKERS_SALES',                  'LOC_CLASS_CSC_SALES_NAME',                 'CSC_Sales'             ),
     ('DISTRICT_CSC_BAKERS_QUARTER',             'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',     'CSC_Goods'             ),
     ('CLASS_CSC_BAKERS_INCOMING_GOODS',		    'LOC_CLASS_CSC_INCOMING_GOODS_NAME',		'CSC_Goods'			    );
-
-
-INSERT OR IGNORE INTO Ruivo_New_Adjacency
-    (
-    ID,
-    DistrictType,
-    ProvideType,
-    YieldType,
-    YieldChange,
-    AdjacencyType,
-    CustomAdjacentObject,
-    Rings,
-    MustOwn,
-    DistrictModifiers
-    ) VALUES
-
-    ('CSC_TEST_TEST',
-    'DISTRICT_CSC_BAKERS_QUARTER',
-    'SelfBonus',
-    'YIELD_FAITH',
-    10,
-    'FROM_RINGS_CAO_DISTRICT',
-    'DISTRICT_COMMERCIAL_HUB',
-    1,
-    1,
-    1),
-    ('CSC_TEST_TEST_2',
-    'DISTRICT_CSC_BAKERS_QUARTER',
-    'SelfBonus',
-    'YIELD_FAITH',
-    10,
-    'FROM_RINGS_CAO_DISTRICT',
-    'DISTRICT_LEU_GARDEN',
-    1,
-    1,
-    1);
