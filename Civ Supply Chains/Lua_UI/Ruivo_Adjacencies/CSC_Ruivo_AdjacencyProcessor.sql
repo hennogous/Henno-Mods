@@ -7,44 +7,6 @@
 --	Quarter material adjacencies
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-WITH QuarterMaterialAdjacencyConfig
-    (
-    QuarterKey,
-    SourceTag,
-    SourceFilter,
-    YieldChange,
-    AdjacencyType
-    )
-AS
-    (
-    VALUES
-        -- Active/reference Quarter: broad material class rows use MAB typetag matching.
-        ('BAKERS',       'CLASS_CSC_BAKERS_BASE',       NULL,         1,   'FROM_RINGS_TYPETAG_RESOURCE'),
-        ('BAKERS',       'CLASS_CSC_BAKERS_SPEC',       NULL,         1,   'FROM_RINGS_TYPETAG_RESOURCE')
-
-/*      -- Stub Quarter material adjacency config is parked until those Quarters are active.      
-        
-        -- Stub/disabled Quarters preserve their previous CAO-by-object behavior when enabled.
-        
-        ('TAILORS',      'CLASS_CSC_TAILORS_BASE',      NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('TAILORS',      'CLASS_CSC_TAILORS_SPEC',      NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('APOTHECARIES', 'CLASS_CSC_APOTHECARIES_BASE', 'RESOURCE_%', 1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('APOTHECARIES', 'CLASS_CSC_APOTHECARIES_BASE', 'FEATURE_%',  1,   'FROM_RINGS_CAO_FEATURE'),
-        ('APOTHECARIES', 'CLASS_CSC_APOTHECARIES_SPEC', NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('STONEMASONS',  'CLASS_CSC_STONEMASONS_BASE',  'RESOURCE_%', 1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('STONEMASONS',  'CLASS_CSC_STONEMASONS_BASE',  'TERRAIN_%',  0.5, 'FROM_RINGS_CAO_TERRAIN'),
-        ('STONEMASONS',  'CLASS_CSC_STONEMASONS_SPEC',  NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('CARPENTERS',   'CLASS_CSC_CARPENTERS_BASE',   'RESOURCE_%', 1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('CARPENTERS',   'CLASS_CSC_CARPENTERS_BASE',   'FEATURE_%',  0.5, 'FROM_RINGS_CAO_FEATURE'),
-        ('CARPENTERS',   'CLASS_CSC_CARPENTERS_SPEC',   NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('BLACKSMITHS',  'CLASS_CSC_BLACKSMITHS_BASE',  'RESOURCE_%', 1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('BLACKSMITHS',  'CLASS_CSC_BLACKSMITHS_BASE',  'TERRAIN_%',  0.5, 'FROM_RINGS_CAO_TERRAIN'),
-        ('BLACKSMITHS',  'CLASS_CSC_BLACKSMITHS_SPEC',  NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('GOLDSMITHS',   'CLASS_CSC_GOLDSMITHS_BASE',   NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('GOLDSMITHS',   'CLASS_CSC_GOLDSMITHS_SPEC',   NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('BREWERS',      'CLASS_CSC_BREWERS_BASE',      NULL,         1,   'FROM_RINGS_CAO_RESOURCE'),
-        ('BREWERS',      'CLASS_CSC_BREWERS_SPEC',      NULL,         1,   'FROM_RINGS_CAO_RESOURCE')*/
-    )
 INSERT OR IGNORE INTO Ruivo_New_Adjacency
     (
     ID,
@@ -71,7 +33,7 @@ SELECT
         END,
     'DISTRICT_CSC_' || C.QuarterKey || '_QUARTER',
     'SelfBonus',
-    'YIELD_PRODUCTION',
+    C.YieldType,
     C.YieldChange,
     C.AdjacencyType,
     CASE
@@ -81,15 +43,16 @@ SELECT
     1,
     1,
     1
-FROM QuarterMaterialAdjacencyConfig AS C
+FROM CSC_QuarterMaterialAdjacencyConfig AS C
 JOIN TypeTags AS TT
     ON TT.Tag = C.SourceTag
-WHERE C.SourceFilter IS NULL
+WHERE C.SourceFilter = ''
     OR TT.Type LIKE C.SourceFilter
 GROUP BY
     C.QuarterKey,
     C.SourceTag,
     C.SourceFilter,
+    C.YieldType,
     C.YieldChange,
     C.AdjacencyType,
     CASE
@@ -100,6 +63,24 @@ GROUP BY
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Sales/customer adjacencies
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--  Base district tags propagate to unique replacement districts before typetag-driven rows are generated.
+--  Keep this limited to district-facing CSC adjacency tags; material/resource tags are handled separately above.
+INSERT OR IGNORE INTO TypeTags
+    (
+    Type,
+    Tag
+    )
+SELECT DISTINCT
+    DR.CivUniqueDistrictType,
+    TT.Tag
+FROM TypeTags AS TT
+JOIN DistrictReplaces AS DR
+    ON DR.ReplacesDistrictType = TT.Type
+WHERE TT.Tag LIKE 'CLASS_CSC_%_SALES'
+    OR TT.Tag LIKE 'CLASS_CSC_%_SALES_%'
+    OR TT.Tag LIKE 'CLASS_CSC_%_INCOMING_GOODS'
+    OR TT.Tag LIKE 'CLASS_CSC_%_TO_QUARTER_%';
 
 --  Quarters receive yields from adjacent districts tagged as quarter-facing source classes.
 --  Supported tag shapes:
