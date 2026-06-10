@@ -30,17 +30,10 @@ INSERT INTO ImprovementModifiers
 --	Tags
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO Vocabularies
-
-		(	Vocabulary			)
-VALUES	(	'DISTRICT_CLASS'	);
-
 INSERT OR IGNORE INTO Tags
 
 		(	Tag,								Vocabulary			)
-VALUES	(	'CLASS_CSC_BAKERS_INCOMING_GOODS',	'DISTRICT_CLASS'	),
-		(	'CLASS_CSC_BAKERS_SALES',			'DISTRICT_CLASS'	),
-		(	'CLASS_CSC_BAKERS_SALES_FOOD',		'DISTRICT_CLASS'	);
+VALUES	(	'CLASS_CSC_BAKERS_INCOMING_GOODS',	'DISTRICT_CLASS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags

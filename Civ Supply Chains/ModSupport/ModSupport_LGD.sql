@@ -9,22 +9,6 @@
 
 UPDATE Districts SET Description = '{LOC_DISTRICT_LEU_GARDEN_DESC}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_GARDEN}' WHERE DistrictType='DISTRICT_LEU_GARDEN';
 
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	Tags
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT OR IGNORE INTO Vocabularies
-
-		(	Vocabulary			)
-VALUES	(	'DISTRICT_CLASS'	);
-
-INSERT OR IGNORE INTO Tags
-
-		(	Tag,								Vocabulary			)
-VALUES	(	'CLASS_CSC_BAKERS_SALES',			'DISTRICT_CLASS'	),
-		(	'CLASS_CSC_BAKERS_SALES_CULTURE',	'DISTRICT_CLASS'	);
-
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,7 +19,6 @@ INSERT OR IGNORE INTO TypeTags
 		(	Type,					Tag							) VALUES
 		(	'DISTRICT_LEU_GARDEN',	'CLASS_CSC_BAKERS_SALES'			),
 		(	'DISTRICT_LEU_GARDEN',	'CLASS_CSC_BAKERS_SALES_CULTURE'	);
-
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	CSC_PopulationLevels
