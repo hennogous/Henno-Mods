@@ -6,7 +6,7 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ImprovementModifiers
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO ImprovementModifiers
 
@@ -27,92 +27,63 @@ INSERT INTO ImprovementModifiers
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	Adjacency_YieldChanges
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+--	Tags
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---  Bakers' Quarter
+INSERT OR IGNORE INTO Vocabularies
 
-INSERT OR IGNORE INTO Adjacency_YieldChanges
+		(	Vocabulary			)
+VALUES	(	'DISTRICT_CLASS'	);
 
-		(	ID,											    Description,									    YieldType,				YieldChange,	AdjacentDistrict                    )
-VALUES	(	'CSC_FARMING_TOWN_PRODUCTION_TO_QUARTER',       'LOC_CSC_FARMING_TOWN_PRODUCTION_TO_QUARTER',       'YIELD_PRODUCTION',     1,				'DISTRICT_RURALCOMMUNITYA'          ),
-        (	'CSC_FRONTIER_TOWN_PRODUCTION_TO_QUARTER',      'LOC_CSC_FRONTIER_TOWN_PRODUCTION_TO_QUARTER',      'YIELD_PRODUCTION',     1,				'DISTRICT_COREX_FRONTIER_TOWN'      ),
+INSERT OR IGNORE INTO Tags
 
-        (	'CSC_MINING_COLONY_PRODUCTION_TO_QUARTER',      'LOC_CSC_MINING_COLONY_PRODUCTION_TO_QUARTER',      'YIELD_PRODUCTION',     1,				'DISTRICT_RURALCOMMUNITYB'          ),
-        (	'CSC_TROYU_PRODUCTION_TO_QUARTER',              'LOC_CSC_TROYU_PRODUCTION_TO_QUARTER',              'YIELD_PRODUCTION',     1,				'DISTRICT_COREX_TROYU'              ),
-        (	'CSC_TSIKHE_PRODUCTION_TO_QUARTER',             'LOC_CSC_TSIKHE_PRODUCTION_TO_QUARTER',             'YIELD_PRODUCTION',     1,				'DISTRICT_COREX_TSIKHE'             ),
-
-        (	'CSC_FISHING_VILLAGE_PRODUCTION_TO_QUARTER',    'LOC_CSC_FISHING_VILLAGE_PRODUCTION_TO_QUARTER',    'YIELD_PRODUCTION',     1,				'DISTRICT_RURALCOMMUNITYC'          ),
-        (	'CSC_GYOSON_PRODUCTION_TO_QUARTER',             'LOC_CSC_GYOSON_PRODUCTION_TO_QUARTER',             'YIELD_PRODUCTION',     1,				'DISTRICT_COREX_GYOSON'             ),
-
-        (	'CSC_CLASSICAL_BOROUGH_GOLD_TO_QUARTER',        'LOC_CSC_CLASSICAL_BOROUGH_GOLD_TO_QUARTER',        'YIELD_GOLD',           1,				'DISTRICT_COREEXPANSIONA'           ),
-        (	'CSC_XIAN_GOLD_TO_QUARTER',                     'LOC_CSC_XIAN_GOLD_TO_QUARTER',                     'YIELD_GOLD',           1,				'DISTRICT_COREX_XIAN'               ),
-        (	'CSC_UPAPITHA_GOLD_TO_QUARTER',                 'LOC_CSC_UPAPITHA_GOLD_TO_QUARTER',                 'YIELD_GOLD',           1,				'DISTRICT_COREX_UPAPITHA'           ),
-        (	'CSC_CLASSICAL_SESTIERE_GOLD_TO_QUARTER',       'LOC_CSC_CLASSICAL_SESTIERE_GOLD_TO_QUARTER',       'YIELD_GOLD',           1,				'DISTRICT_COREX_VENICE_01'          ),
-
-        (	'CSC_RENAISSANCE_BOROUGH_GOLD_TO_QUARTER',      'LOC_CSC_RENAISSANCE_BOROUGH_GOLD_TO_QUARTER',      'YIELD_GOLD',           1,				'DISTRICT_COREEXPANSIONB'           ),
-        (	'CSC_RENAISSANCE_SESTIERE_GOLD_TO_QUARTER',     'LOC_CSC_RENAISSANCE_SESTIERE_GOLD_TO_QUARTER',     'YIELD_GOLD',           1,				'DISTRICT_COREX_VENICE_02'          ),
-        (	'CSC_FUERTE_GOLD_TO_QUARTER',                   'LOC_CSC_FUERTE_GOLD_TO_QUARTER',                   'YIELD_GOLD',           1,				'DISTRICT_COREX_FUERTE'             ),
-
-        (	'CSC_MODERN_BOROUGH_GOLD_TO_QUARTER',           'LOC_CSC_MODERN_BOROUGH_GOLD_TO_QUARTER',           'YIELD_GOLD',           1,				'DISTRICT_COREEXPANSIONC'           ),
-        (	'CSC_ELYSEE_GOLD_TO_QUARTER',                   'LOC_CSC_ELYSEE_GOLD_TO_QUARTER',                   'YIELD_GOLD',           1,				'DISTRICT_COREX_ELYSEE'             );
+		(	Tag,								Vocabulary			)
+VALUES	(	'CLASS_CSC_BAKERS_INCOMING_GOODS',	'DISTRICT_CLASS'	),
+		(	'CLASS_CSC_BAKERS_SALES',			'DISTRICT_CLASS'	),
+		(	'CLASS_CSC_BAKERS_SALES_FOOD',		'DISTRICT_CLASS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	District_Adjacencies
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+--	TypeTags
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO District_Adjacencies
+--  CL Rural Communities provide incoming goods/production to Bakers' Quarters.
+INSERT OR IGNORE INTO TypeTags
 
-		(	DistrictType,							YieldChangeId								    )
-VALUES
+		(	Type,								Tag											) VALUES
+		(	'DISTRICT_RURALCOMMUNITYA',			'CLASS_CSC_BAKERS_INCOMING_GOODS'			),
+		(	'DISTRICT_COREX_FRONTIER_TOWN',		'CLASS_CSC_BAKERS_INCOMING_GOODS'			),
+		(	'DISTRICT_RURALCOMMUNITYB',			'CLASS_CSC_BAKERS_INCOMING_GOODS'			),
+		(	'DISTRICT_COREX_TROYU',				'CLASS_CSC_BAKERS_INCOMING_GOODS'			),
+		(	'DISTRICT_COREX_TSIKHE',			'CLASS_CSC_BAKERS_INCOMING_GOODS'			),
+		(	'DISTRICT_RURALCOMMUNITYC',			'CLASS_CSC_BAKERS_INCOMING_GOODS'			),
+		(	'DISTRICT_COREX_GYOSON',			'CLASS_CSC_BAKERS_INCOMING_GOODS'			);
 
---  +1 Production from each adjacent Rural Community, and +1 Food in return
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_FARMING_TOWN_PRODUCTION_TO_QUARTER'        ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_FRONTIER_TOWN_PRODUCTION_TO_QUARTER'       ),
+--  CL districts receive Bakers' Food return yields through the same Bakers sales-return tag used by core Bakers SQL.
+INSERT OR IGNORE INTO TypeTags
 
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_MINING_COLONY_PRODUCTION_TO_QUARTER'       ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_TROYU_PRODUCTION_TO_QUARTER'               ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_TSIKHE_PRODUCTION_TO_QUARTER'              ),
-
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_FISHING_VILLAGE_PRODUCTION_TO_QUARTER'     ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_GYOSON_PRODUCTION_TO_QUARTER'              ),
-
-        (	'DISTRICT_RURALCOMMUNITYA',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_FRONTIER_TOWN',         'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-
-        (	'DISTRICT_RURALCOMMUNITYB',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_TROYU',				    'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_TSIKHE',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-
-        (	'DISTRICT_RURALCOMMUNITYC',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_GYOSON',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-
---  +1 Gold from each adjacent Urban Borough, and +1 Food in return
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_CLASSICAL_BOROUGH_GOLD_TO_QUARTER'         ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_XIAN_GOLD_TO_QUARTER'                      ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_UPAPITHA_GOLD_TO_QUARTER'                  ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_CLASSICAL_SESTIERE_GOLD_TO_QUARTER'        ),
-
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_RENAISSANCE_BOROUGH_GOLD_TO_QUARTER'       ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_RENAISSANCE_SESTIERE_GOLD_TO_QUARTER'      ),
-        (	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_FUERTE_GOLD_TO_QUARTER'                    ),
-
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_MODERN_BOROUGH_GOLD_TO_QUARTER'            ),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_ELYSEE_GOLD_TO_QUARTER'                    ),
-        
-        (	'DISTRICT_COREEXPANSIONA',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_XIAN',				    'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_UPAPITHA',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_VENICE_01',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-
-        (	'DISTRICT_COREEXPANSIONB',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_VENICE_02',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-        (	'DISTRICT_COREX_FUERTE',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'		    ),
-
-        (	'DISTRICT_COREEXPANSIONC',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'          ),
-        (	'DISTRICT_COREX_ELYSEE',				'CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT'          );
-
-
-
-
-
+		(	Type,								Tag							) VALUES
+		(	'DISTRICT_RURALCOMMUNITYA',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_FRONTIER_TOWN',		'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_RURALCOMMUNITYB',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_TROYU',				'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_TSIKHE',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_RURALCOMMUNITYC',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_GYOSON',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREEXPANSIONA',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREEXPANSIONA',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_XIAN',				'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREX_XIAN',				'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_UPAPITHA',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREX_UPAPITHA',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_VENICE_01',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREX_VENICE_01',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREEXPANSIONB',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREEXPANSIONB',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_VENICE_02',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREX_VENICE_02',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_FUERTE',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREX_FUERTE',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREEXPANSIONC',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREEXPANSIONC',			'CLASS_CSC_BAKERS_SALES_FOOD'		),
+		(	'DISTRICT_COREX_ELYSEE',			'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_COREX_ELYSEE',			'CLASS_CSC_BAKERS_SALES_FOOD'		);

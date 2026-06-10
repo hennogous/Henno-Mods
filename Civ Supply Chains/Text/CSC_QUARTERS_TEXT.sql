@@ -24,7 +24,6 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_CLASS_CSC_BAKERS_BASE_NAME',                       'base materials'   ),
 (   'en_US',    'LOC_CLASS_CSC_BAKERS_SPEC_NAME',                       'specialty materials'   ),
 
-(   'en_US',    'LOC_CSC_BAKERS_FOOD_TO_ADJACENT_DISTRICT',             '+{1_num} [ICON_Food] Food from the adjacent Bakers'' {1_num : plural 1?Quarter; other?Quarters;}.'   ),
 
 (   'en_US',    'LOC_CSC_CITY_CENTER_GOLD_TO_BAKERS',                   '+{1_num} [ICON_Gold] from the adjacent City Center.'    ),
 (   'en_US',    'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS',                '+{1_num} [ICON_Gold] from the adjacent Commercial {1_num : plural 1?Hub; other?Hubs;}.' ),
@@ -62,7 +61,7 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',             '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE][ICON_BULLET]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo and Ferris Wheel, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and specialty materials resources can establish services in adjacent Entertainment districts with Zoos and Water Parks with Ferris Wheels.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME',              'Storekeeper'     ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',       'A Service established in the City Center at Feudalism when a supplied Water Mill or Wind Mill supports an adjacent Granary.[NEWLINE][NEWLINE]+10% growth from each adjacent supplied Water Mill or Wind Mill, and +1 [ICON_Citizen] Citizen slot.'    ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',       'A Service established in the City Center at Feudalism when a supplied Water Mill or Wind Mill supports an adjacent Granary.[NEWLINE][NEWLINE]+10% growth from each adjacent supplied Water Mill or Wind Mill.'    ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME',              'Innkeeper'         ),
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_DESCRIPTION',       'A Service established in the Commercial Hub at Medieval Faires when a supplied Bakery serves an adjacent Market.[NEWLINE][NEWLINE]+2 [ICON_Housing] Housing from each adjacent supplied Bakery, and +1 [ICON_Citizen] Citizen slot.'    ),
@@ -75,20 +74,20 @@ INSERT OR REPLACE INTO LocalizedText
 
 -- EFFECT DESCRIPTIONS
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT',                                '[NEWLINE][NEWLINE]At Feudalism, a Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth from each adjacent supplied mill and +1 [ICON_Citizen] Citizen slot in the City Center.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT',                                '[NEWLINE][NEWLINE]At Feudalism, a Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth from each adjacent supplied mill.'  ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER',              '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME}: {1_iBonus}% growth.[NEWLINE]Supply Chain: supplied Water Mill [ICON_ARROW] adjacent Granary.'        ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_NEW',          'a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth and +1 [ICON_Citizen] Citizen slot in the City Center'    ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_NEW',          'a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth'    ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_INCREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'    ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_DECREASED',    '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'    ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER_REMOVED',      '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'  ),
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND',               '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME}: {1_iBonus}% growth.[NEWLINE]Supply Chain: supplied Wind Mill [ICON_ARROW] adjacent Granary.'         ),
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_NEW',           'a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth and +1 [ICON_Citizen] Citizen slot in the City Center'     ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_NEW',           'a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service:[NEWLINE]{1_iBonus}% growth'     ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_INCREASED',     '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'     ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_DECREASED',     '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'     ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND_REMOVED',       '{LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_iBonus}% growth'   ),
 
-(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_CIVIC',                         '[NEWLINE][NEWLINE]A Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth from each adjacent supplied mill and +1 [ICON_Citizen] Citizen slot in the City Center.'  ),
+(   'en_US',    'LOC_CSC_BAKERS_STAGE_2_CIVIC',                         '[NEWLINE][NEWLINE]A Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth from each adjacent supplied mill.'  ),
 
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT',                        '[NEWLINE][NEWLINE]At Medieval Faires, a Market adjacent to a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: +2 [ICON_Housing] Housing from each adjacent supplied Bakery and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.'  ),
 (   'en_US',    'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION',            '{LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME}: {1_iBonus} [ICON_Housing] Housing.[NEWLINE]Supply Chain: {2_StackAmount} supplied {2_Num : plural 1?Bakery; other?Bakeries;} [ICON_ARROW] adjacent Market.'  ),
@@ -373,7 +372,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_PARA_1',
-    'The Water Mill or Wind Mill draws on improved Bakers'' base materials nearby, turns them into dependable flour, and transports that steady flow to the city''s Granary.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Storekeeper in the City Center, ensuring that hard-earned food stores are managed for the good of the growing population.'   ),
+    'The Water Mill or Wind Mill draws on improved Bakers'' base materials nearby, turns them into dependable flour, and transports that steady flow to the city''s Granary.[NEWLINE][NEWLINE]This establishes a Storekeeper service in the City Center, ensuring that hard-earned food stores are managed for the good of the growing population.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_HISTORY_TITLE',

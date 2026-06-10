@@ -50,7 +50,7 @@ The customer building defines the destination and theme of the Service, while th
 
 In each case the Zoo, Ferris Wheel, or Conservatory is the capstone destination for that branch of the chain. The ongoing effect belongs to the Service profession created by the completed relationship, not to the capstone building as if it had independently acquired a Bakers' Quarter bonus.
 
-Gameplay-wise, Services normally grant a Citizen slot in the host district and apply the value created by the completed supply chain: growth, housing, tourism, or another thematic effect. This keeps the chain readable: goods create recurring customers, recurring customers create local occupations, and those occupations expand the city's specialist capacity.
+Gameplay-wise, Services normally grant a Citizen slot in specialist-capable host districts and apply the value created by the completed supply chain: growth, housing, tourism, or another thematic effect. City Center services are an exception: the Storekeeper applies growth but does not add a citizen slot, because City Center specialist slots are not reliably exposed by the citizen-management UI. This keeps the chain readable: goods create recurring customers, recurring customers create local occupations, and those occupations expand the city's specialist capacity where the game supports it.
 
 ## Stage 1: Materials extraction
 

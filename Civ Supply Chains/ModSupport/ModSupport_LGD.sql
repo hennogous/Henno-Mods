@@ -4,30 +4,38 @@
 --------------------------------------------------------------
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	Adjacency_YieldChanges
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
-
-INSERT OR IGNORE INTO Adjacency_YieldChanges
-
-		(	ID,											Description,                               		 YieldType,				YieldChange,	AdjacentDistrict						)
-VALUES	(	'CSC_GARDEN_GOLD_TO_BAKERS',				'LOC_CSC_GARDEN_GOLD_TO_BAKERS',				'YIELD_GOLD',			1,				'DISTRICT_LEU_GARDEN'					),
-		(	'CSC_BAKERS_CULTURE_TO_GARDEN',				'LOC_CSC_BAKERS_CULTURE_TO_GARDEN',				'YIELD_CULTURE',		1,				'DISTRICT_CSC_BAKERS_QUARTER'			);
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Districts
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 UPDATE Districts SET Description = '{LOC_DISTRICT_LEU_GARDEN_DESC}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_GARDEN}' WHERE DistrictType='DISTRICT_LEU_GARDEN';
 
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	District_Adjacencies
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+--	Tags
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO District_Adjacencies
+INSERT OR IGNORE INTO Vocabularies
 
-		(	DistrictType,							YieldChangeId								)
-VALUES	(	'DISTRICT_LEU_GARDEN',					'CSC_BAKERS_CULTURE_TO_GARDEN'				),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'CSC_GARDEN_GOLD_TO_BAKERS'					);
+		(	Vocabulary			)
+VALUES	(	'DISTRICT_CLASS'	);
+
+INSERT OR IGNORE INTO Tags
+
+		(	Tag,								Vocabulary			)
+VALUES	(	'CLASS_CSC_BAKERS_SALES',			'DISTRICT_CLASS'	),
+		(	'CLASS_CSC_BAKERS_SALES_CULTURE',	'DISTRICT_CLASS'	);
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	TypeTags
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--  Garden acts as a Bakers sales/customer district and receives Culture in return.
+INSERT OR IGNORE INTO TypeTags
+
+		(	Type,					Tag							) VALUES
+		(	'DISTRICT_LEU_GARDEN',	'CLASS_CSC_BAKERS_SALES'			),
+		(	'DISTRICT_LEU_GARDEN',	'CLASS_CSC_BAKERS_SALES_CULTURE'	);
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	CSC_PopulationLevels
@@ -37,14 +45,14 @@ CREATE TABLE IF NOT EXISTS CSC_PopulationLevels
     (
     Pop TEXT
     );
- 
+
 INSERT OR IGNORE INTO CSC_PopulationLevels
 		(Pop)
 VALUES	('5'), ('10'), ('15'), ('20'), ('25'), ('30'), ('35'), ('40'), ('45'), ('50');
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Types
 
@@ -86,13 +94,13 @@ UPDATE Buildings SET Description='LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION_GARDE
 
 /*
 INSERT INTO CivilopediaPageExcludes
-		(	SectionId,			PageId	) VALUES	
+		(	SectionId,			PageId	) VALUES
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'				);
 */
-		
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings_XP2
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Buildings_XP2
 
@@ -101,7 +109,7 @@ VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	0			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Building_CitizenYieldChanges
 
@@ -240,8 +248,8 @@ INSERT OR IGNORE INTO ModifierArguments
 
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Conservatory
 
-INSERT OR IGNORE INTO RequirementSets 
-		
+INSERT OR IGNORE INTO RequirementSets
+
         (	RequirementSetId,					RequirementSetType              )	VALUES
 		(	'REQSET_CSC_ADJ_GARDEN',			'REQUIREMENTSET_TEST_ALL'		),
         (   'REQSET_CSC_ADJ_CONSERVATORY',      'REQUIREMENTSET_TEST_ALL'       );
@@ -253,7 +261,7 @@ INSERT OR IGNORE INTO RequirementSets
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Conservatory
 
 INSERT OR IGNORE INTO RequirementSetRequirements
-		
+
         (	RequirementSetId,					RequirementId					)	VALUES
 		(	'REQSET_CSC_ADJ_GARDEN',			'REQ_CSC_PLOT_ADJ_TO_OWNER'		),
 		(	'REQSET_CSC_ADJ_GARDEN',			'REQ_CSC_DISTRICT_IS_GARDEN'	),
@@ -270,7 +278,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Conservatory
 
 INSERT OR IGNORE INTO Requirements
-        
+
         (	RequirementId,						RequirementType									)	VALUES
 		(	'REQ_CSC_DISTRICT_IS_GARDEN',		'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES'		),
         (   'REQ_CSC_CITY_HAS_CONSERVATORY',    'REQUIREMENT_CITY_HAS_BUILDING'                 );
@@ -281,7 +289,7 @@ INSERT OR IGNORE INTO Requirements
 
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Conservatory
 
-INSERT OR IGNORE INTO RequirementArguments 
+INSERT OR IGNORE INTO RequirementArguments
 
         (	RequirementId,						Name,					Value					)	VALUES
 		(	'REQ_CSC_DISTRICT_IS_GARDEN',		'DistrictType',			'DISTRICT_LEU_GARDEN'	),
@@ -298,7 +306,7 @@ DROP TABLE CSC_PopulationLevels;
 ----------------------
 
 CREATE TABLE IF NOT EXISTS CSC_AbilityAttachModifiers(
-		ModifierId TEXT PRIMARY KEY NOT NULL, 
+		ModifierId TEXT PRIMARY KEY NOT NULL,
 		AbilityEffectModifierId TEXT DEFAULT NULL,
 		AbilityArgumentAmount INTEGER DEFAULT 0,
 		AbilityDesc TEXT DEFAULT NULL,
@@ -319,7 +327,7 @@ VALUES	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN',		'ICON_BUILDING_CSC_BAKE
 ----------------------
 
 CREATE TABLE IF NOT EXISTS CSC_SpecialistAttachModifiers(
-		ModifierId TEXT PRIMARY KEY NOT NULL, 
+		ModifierId TEXT PRIMARY KEY NOT NULL,
 		SpecialistGrantModifierId TEXT DEFAULT NULL,
 		ModifierNewDesc TEXT DEFAULT NULL
 );

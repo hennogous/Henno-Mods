@@ -4,7 +4,7 @@ Bakers' service notifications are folded into the main Quarter effect notificati
 
 ## Design rule
 
-Services are the named socio-economic capstones of completed supply chains. They are represented as hidden service buildings that add a citizen slot in the external customer district or City Center once goods are reliably available there.
+Services are the named socio-economic capstones of completed supply chains. They are represented as hidden service buildings in the external customer district or City Center once goods are reliably available there. Most Services add a citizen slot in specialist-capable host districts; Storekeeper instead applies growth in the City Center because City Center specialist slots are not reliably exposed by the citizen-management UI.
 
 For UI, the service name should appear first, followed by the effect amount and a concise supply-chain line.
 
@@ -24,7 +24,7 @@ Avoid standalone `*_SERVICE_GRANT_*` notifications unless the notification Lua p
 
 - Separate specialist-slot grant notification logic in `Civ Supply Chains/Lua_UI/Notifications_Suk_MCUIS` is commented out.
 - Bakers' Stage 3 citizen-slot messaging is folded into `LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION_NEW`.
-- Bakers' Stage 2 Storekeeper messaging follows the same folded-notification pattern: the grant is a SQL modifier chain on the Water/Wind Mill Feudalism effect, while MCUIS notification text lives on `LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_*`.
+- Bakers' Stage 2 Storekeeper messaging follows the same folded-notification pattern: the growth effect is a SQL modifier chain on the Water/Wind Mill Feudalism effect, while MCUIS notification text lives on `LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_*`.
 - Bakers' Stage 4 service text follows the same standard for core Zoo/Ferris Wheel and LGD Conservatory support: named service first, supply-chain line in MCUIS, and no standalone service-grant notification text.
 
 ## Aristocrat helper warning

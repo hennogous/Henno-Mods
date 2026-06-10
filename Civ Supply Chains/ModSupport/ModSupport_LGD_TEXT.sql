@@ -7,7 +7,6 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   Language,   Tag,                                                                Text    )   VALUES
 (   'en_US',    'LOC_CSC_GARDEN_GOLD_TO_BAKERS',                                    '+{1_num} [ICON_Gold] from the adjacent {1_num : plural 1?Garden; other?Gardens;}.' ),
-(   'en_US',    'LOC_CSC_BAKERS_CULTURE_TO_GARDEN',                                 '+{1_num} [ICON_Culture] Culture from the adjacent Bakers'' {1_num : plural 1?Quarter; other?Quarters;}.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION_GARDEN',                  '[ICON_BULLET]+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE][ICON_BULLET]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE][ICON_BULLET]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE][ICON_BULLET]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE][ICON_BULLET]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo, Ferris Wheel, or Conservatory, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and specialty materials resources can establish services in adjacent Entertainment districts with Zoos, Water Parks with Ferris Wheels, and Gardens with Conservatories.'   ),
 
