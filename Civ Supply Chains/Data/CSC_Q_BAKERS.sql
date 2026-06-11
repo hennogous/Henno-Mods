@@ -48,24 +48,6 @@ VALUES	(	'CLASS_CSC_BAKERS_BASE',	        'RESOURCE_CLASS'	),
         (	'CLASS_CSC_BAKERS_SALES_CULTURE',	'DISTRICT_CLASS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	CSC_QuarterMaterialAdjacencyConfig
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT OR IGNORE INTO CSC_QuarterMaterialAdjacencyConfig
-    (
-    QuarterKey,
-    SourceTag,
-    SourceFilter,
-    YieldType,
-    YieldChange,
-    AdjacencyType
-    )
-VALUES
---  Broad Bakers material classes use MAB typetag matching so resources added by ModSupport files inherit automatically.
-    ('BAKERS',       'CLASS_CSC_BAKERS_BASE',       '',           'YIELD_PRODUCTION', 1,   'FROM_RINGS_TYPETAG_RESOURCE'),
-    ('BAKERS',       'CLASS_CSC_BAKERS_SPEC',       '',           'YIELD_PRODUCTION', 1,   'FROM_RINGS_TYPETAG_RESOURCE');
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -98,6 +80,24 @@ INSERT OR IGNORE INTO TypeTags
 		(	'DISTRICT_ENTERTAINMENT_COMPLEX',			'CLASS_CSC_BAKERS_SALES_CULTURE'	),
 		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',		'CLASS_CSC_BAKERS_SALES'			),
 		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',		'CLASS_CSC_BAKERS_SALES_CULTURE'	);
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	CSC_QuarterMaterialAdjacencyConfig
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO CSC_QuarterMaterialAdjacencyConfig
+    (
+    QuarterKey,
+    SourceTag,
+    SourceFilter,
+    YieldType,
+    YieldChange,
+    AdjacencyType
+    )
+VALUES
+--  Broad Bakers material classes use MAB typetag matching so resources added by ModSupport files inherit automatically.
+    ('BAKERS',       'CLASS_CSC_BAKERS_BASE',       '',           'YIELD_PRODUCTION', 1,   'FROM_RINGS_TYPETAG_RESOURCE'),
+    ('BAKERS',       'CLASS_CSC_BAKERS_SPEC',       '',           'YIELD_PRODUCTION', 1,   'FROM_RINGS_TYPETAG_RESOURCE');
 
 
 
