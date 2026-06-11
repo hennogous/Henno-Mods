@@ -23,10 +23,7 @@ VALUES	( 	'DISTRICT_CSC_BAKERS_QUARTER',                              		'KIND_DI
 		(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',								'KIND_BUILDING'			),
 		(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',								'KIND_BUILDING'			),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',						'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',						'KIND_BUILDING'			),
-
-		(	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',					'KIND_MODIFIER'			),
-		(	'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',					'KIND_MODIFIER'			);
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',						'KIND_BUILDING'			);
 
 
 
@@ -54,7 +51,7 @@ VALUES	(	'CLASS_CSC_BAKERS_BASE',	        'RESOURCE_CLASS'	),
 INSERT OR IGNORE INTO TypeTags
 
 		(	Type, 					Tag							)	VALUES
-		
+
 --	Bakers' Quarter base materials
 		(	'RESOURCE_BANANAS',		'CLASS_CSC_BAKERS_BASE'		),
 		(	'RESOURCE_MAIZE',		'CLASS_CSC_BAKERS_BASE'		),
@@ -107,7 +104,7 @@ VALUES
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ImprovementModifiers
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO ImprovementModifiers
 
@@ -204,7 +201,7 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSIO
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	DistrictModifiers
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO DistrictModifiers
 
@@ -234,7 +231,7 @@ DELETE FROM BuildingReplaces WHERE CivUniqueBuildingType='BUILDING_PALGUM';
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Buildings
 
@@ -405,7 +402,7 @@ WHERE BuildingType IN (
 );
 
 INSERT INTO CivilopediaPageExcludes
-		(	SectionId,			PageId	) VALUES	
+		(	SectionId,			PageId	) VALUES
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_RIVER_ACCESS'				),
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'			);
 
@@ -414,7 +411,7 @@ UPDATE Buildings SET Description = '{LOC_BUILDING_MARKET_EXPANSION1_DESCRIPTION}
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings_XP2
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Buildings_XP2
 
@@ -428,13 +425,13 @@ VALUES	(	'BUILDING_CSC_BAKERS_RIVER_ACCESS',					0			),
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingPrereqs
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO BuildingPrereqs
 
         (	Building,      		        				PrereqBuilding										)
 VALUES	(	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_RIVER_ACCESS'					),
-		
+
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'BUILDING_CSC_BAKERS_WIND_MILL'						),
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'BUILDING_CSC_BAKERS_WATER_MILL'					),
 
@@ -443,7 +440,7 @@ VALUES	(	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_RIVER_ACCESS'	
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	MutuallyExclusiveBuildings
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO MutuallyExclusiveBuildings
 
@@ -454,7 +451,7 @@ VALUES  (	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_NO_RIVER_ACCE
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_GreatPersonPoints
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO Building_GreatPersonPoints
 
@@ -464,7 +461,7 @@ VALUES  (	'BUILDING_CSC_BAKERS_BAKERY',       		'GREAT_PERSON_CLASS_MERCHANT',		
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO Building_CitizenYieldChanges
 
@@ -480,10 +477,10 @@ VALUES  (	'BUILDING_CSC_BAKERS_BAKERY',       				'YIELD_FOOD',	        				2		 
 
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		'YIELD_CULTURE',	        			2		        	),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		'YIELD_GOLD',	        				2		        	);
-		
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingModifiers
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO BuildingModifiers
 
@@ -593,22 +590,12 @@ UPDATE Civics SET Description = '{LOC_CSC_BAKERS_STAGE_4_CIVIC}' WHERE CivicType
 --===========================================================================================================================================================================--
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	DynamicModifiers
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT INTO DynamicModifiers
-
-        ( 	ModifierType,                                                   	CollectionType,                         EffectType	                        			)	VALUES
-		(	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',					'COLLECTION_PLAYER_DISTRICTS',			'EFFECT_ATTACH_MODIFIER'						),
-		(	'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',					'COLLECTION_PLAYER_IMPROVEMENTS',		'EFFECT_ATTACH_MODIFIER'						);
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Modifiers
 
-		(	ModifierId,															ModifierType,													OwnerRequirementSetId,						SubjectRequirementSetId								)	VALUES	
+		(	ModifierId,															ModifierType,													OwnerRequirementSetId,						SubjectRequirementSetId								)	VALUES
 
 -- 	BAKERS QUARTER ----------------------------------------------------------------------
 
@@ -677,7 +664,7 @@ INSERT OR IGNORE INTO Modifiers
 --  An adjacent Stage 3 Service provides +2 Housing
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_3_EFFECT_PREREQ',			'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',							'MODIFIER_SINGLE_CITY_ADJUST_BUILDING_HOUSING',					NULL,										NULL												),
-		
+
 -- 	CAFE --------------------------------------------------------------------------
 
 --  +1 Production to the Café from improved specialty materials
@@ -726,9 +713,9 @@ INSERT OR IGNORE INTO Modifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ModifierArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
+
 INSERT OR IGNORE INTO ModifierArguments
-		
+
         (	ModifierId,			                      							Name,                       Value		                									)	VALUES
 
 -- 	BAKERS QUARTER ----------------------------------------------------------------------
@@ -742,13 +729,13 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_NO_RIVER_ACCESS_FLAG',								'BuildingType',				'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'							),
 
 --  +1 Production to the Water Mill from improved base materials
-		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL'     		),    
+		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL'     		),
         (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL',				'BuildingType',           	'BUILDING_CSC_BAKERS_WATER_MILL'								),
         (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL',				'YieldType',           		'YIELD_PRODUCTION'                                              ),
         ( 	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL',				'Amount',             		1                                                               ),
 
 --  +1 Production to the Wind Mill from improved base materials
-		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL'     			),    
+		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL'     			),
         (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL',					'BuildingType',           	'BUILDING_CSC_BAKERS_WIND_MILL'									),
         (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL',					'YieldType',           		'YIELD_PRODUCTION'                                              ),
         ( 	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL',					'Amount',             		1                                                               ),
@@ -820,7 +807,7 @@ INSERT OR IGNORE INTO ModifierArguments
 -- 	CAFE --------------------------------------------------------------------------
 
 --  +1 Production to the Café from improved specialty materials
-		(  	'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER',					'ModifierId',         		'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE'     				),    
+		(  	'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER',					'ModifierId',         		'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE'     				),
         (  	'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE',						'BuildingType',           	'BUILDING_CSC_BAKERS_CAFE'										),
         (  	'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE',						'YieldType',           		'YIELD_PRODUCTION'                                              ),
         ( 	'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE',						'Amount',             		1                                                               ),
@@ -884,9 +871,9 @@ INSERT OR IGNORE INTO ModifierArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
-INSERT OR IGNORE INTO RequirementSets 
-		
+
+INSERT OR IGNORE INTO RequirementSets
+
         (	RequirementSetId,                              			RequirementSetType              )	VALUES
 
 -- 	BAKERS QUARTER ----------------------------------------------------------------------
@@ -959,9 +946,9 @@ INSERT OR IGNORE INTO RequirementSets
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSetRequirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-				
+
 INSERT OR IGNORE INTO RequirementSetRequirements
-		
+
         (	RequirementSetId,		                      			RequirementId	                               	)	VALUES
 
 -- 	FLOUR MILL --------------------------------------------------------------------------
@@ -1074,7 +1061,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Requirements
-        
+
         (	RequirementId,		                          			RequirementType,	                                Inverse         )	VALUES
 
 -- 	FLOUR MILL --------------------------------------------------------------------------
@@ -1139,7 +1126,7 @@ INSERT OR IGNORE INTO Requirements
 --	RequirementArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO RequirementArguments 
+INSERT OR IGNORE INTO RequirementArguments
 
         (	RequirementId,				               				Name,                           Value		                    				)	VALUES
 
@@ -1208,19 +1195,6 @@ INSERT OR IGNORE INTO RequirementArguments
 --===========================================================================================================================================================================--
 
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	CSC_PopulationLevels
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS CSC_PopulationLevels
-    (
-    Pop TEXT
-    );
- 
-INSERT OR IGNORE INTO CSC_PopulationLevels
-		(Pop)
-VALUES	('5'), ('10'), ('15'), ('20'), ('25'), ('30'), ('35'), ('40'), ('45'), ('50');
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingModifiers
@@ -1294,72 +1268,46 @@ WHERE Pop > 0;
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_* modifier arguments
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	RequirementSets
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO RequirementSets (
-	RequirementSetId,
-	RequirementSetType
-)
-SELECT
-	'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
-	'REQUIREMENTSET_TEST_ALL'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+
+--===========================================================================================================================================================================--
+/*	UI */
+--===========================================================================================================================================================================--
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	RequirementSetRequirements
+-- Notifications
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO RequirementSetRequirements (
-	RequirementSetId,
-	RequirementId
-)
-SELECT
-	'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
-	'REQ_CSC_CITY_HAS_POPULATION_' || Pop
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+INSERT INTO Types
+		(	Type,														Kind)
+VALUES	(	'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',						'KIND_NOTIFICATION'	),
+		(	'NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED',					'KIND_NOTIFICATION'	),
+		(	'NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED',					'KIND_NOTIFICATION'	),
+		(	'NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED',					'KIND_NOTIFICATION'	);
+
+INSERT INTO Notifications
+		(	NotificationType,											SeverityType,	ExpiresEndOfTurn,		AutoNotify	)
+VALUES	(	'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',						'HIGH',			0,						0			),
+		(	'NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED',					'HIGH',			0,						0			),
+		(	'NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED',					'HIGH',			0,						0			),
+		(	'NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED',					'HIGH',			0,						0			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	Requirements
+-- CSC_AbilityAttachModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO Requirements (
-	RequirementId,
-	RequirementType
-)
-SELECT
-	'REQ_CSC_CITY_HAS_POPULATION_' || Pop,
-	'REQUIREMENT_CITY_HAS_X_POPULATION'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	RequirementArguments
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT OR IGNORE INTO RequirementArguments (
-	RequirementId,
-	Name,
-	Value
-)
-SELECT
-	'REQ_CSC_CITY_HAS_POPULATION_' || Pop,
-	'Amount',
-	Pop
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
-
+INSERT INTO CSC_AbilityAttachModifiers
+		(	ModifierId,													AbilityIcon,										AbilityIconTarget							)
+VALUES	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',			'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
+		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',			'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
+		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',				'ICON_BUILDING_CSC_BAKERS_STAGE_3_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'		),
+		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT',		'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'	),
+		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK',			'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'	);
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	CSC_PopulationLevels
+--	ModifierStrings
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-DROP TABLE CSC_PopulationLevels;
-
 
 INSERT INTO ModifierStrings
 	(	ModifierId,                                			Context,			'Text'			)	VALUES

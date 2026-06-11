@@ -21,19 +21,6 @@ INSERT OR IGNORE INTO TypeTags
 		(	'DISTRICT_LEU_GARDEN',	'CLASS_CSC_BAKERS_SALES_CULTURE'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	CSC_PopulationLevels
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS CSC_PopulationLevels
-    (
-    Pop TEXT
-    );
-
-INSERT OR IGNORE INTO CSC_PopulationLevels
-		(Pop)
-VALUES	('5'), ('10'), ('15'), ('20'), ('25'), ('30'), ('35'), ('40'), ('45'), ('50');
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -279,45 +266,24 @@ INSERT OR IGNORE INTO RequirementArguments
         (   'REQ_CSC_CITY_HAS_CONSERVATORY',    'BuildingType',         'BUILDING_LEU_CONSERVATORY' );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	CSC_PopulationLevels
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-DROP TABLE CSC_PopulationLevels;
-
-----------------------
 -- CSC_AbilityAttachModifiers
-----------------------
-
-CREATE TABLE IF NOT EXISTS CSC_AbilityAttachModifiers(
-		ModifierId TEXT PRIMARY KEY NOT NULL,
-		AbilityEffectModifierId TEXT DEFAULT NULL,
-		AbilityArgumentAmount INTEGER DEFAULT 0,
-		AbilityDesc TEXT DEFAULT NULL,
-		AbilityNewDesc TEXT DEFAULT NULL,
-		AbilityIncreasedDesc TEXT DEFAULT NULL,
-		AbilityDecreasedDesc TEXT DEFAULT NULL,
-		AbilityRemovedDesc TEXT DEFAULT NULL,
-		AbilityIcon TEXT DEFAULT NULL,
-		AbilityIconTarget TEXT DEFAULT NULL
-);
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO CSC_AbilityAttachModifiers
 		(	ModifierId,											AbilityIcon,										AbilityIconTarget		)
 VALUES	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN',		'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'	);
 
-----------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CSC_SpecialistAttachModifiers
-----------------------
-
-CREATE TABLE IF NOT EXISTS CSC_SpecialistAttachModifiers(
-		ModifierId TEXT PRIMARY KEY NOT NULL,
-		SpecialistGrantModifierId TEXT DEFAULT NULL,
-		ModifierNewDesc TEXT DEFAULT NULL
-);
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO CSC_SpecialistAttachModifiers
 		(	ModifierId		)
 VALUES	(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN'		);
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- ModifierStrings
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO ModifierStrings
 	(	ModifierId,                                			Context,			'Text'			)	VALUES
