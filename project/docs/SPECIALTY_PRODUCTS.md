@@ -7,7 +7,7 @@ Last updated: 2026-06-13
 Specialty Products are **not active CSC functionality**. The prototype has been moved out of **Civ Supply Chains** and parked in the sibling ModBuddy project **Taxes And Politics** under the local solution workspace:
 
 ```text
-C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods
+C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods
 ├─ Civ Supply Chains/
 └─ TaxesPolitics/
 ```

@@ -16,7 +16,7 @@ Generates abstract service/unit icons using `civ6_unit_icons.safetensors`, then 
 Start ComfyUI on `127.0.0.1:8188`, then:
 
 ```powershell
-cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods"
+cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods"
 py -3.12 project\tools\comfyui\service_pipeline\service_icon_generate.py
 ```
 

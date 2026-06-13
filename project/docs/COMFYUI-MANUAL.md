@@ -87,7 +87,7 @@ A reference image of the building — a screenshot, a concept sketch, a render f
 ### Running the Script
 
 ```powershell
-cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods"
+cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods"
 py -3.12 project/tools/comfyui/icon_pipeline/icon_img2img.py "C:\path\to\your\source_image.png"
 ```
 

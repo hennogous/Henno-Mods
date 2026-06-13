@@ -24,7 +24,7 @@ The automated pipeline script handles steps 1–4. Asset Editor wiring and cooki
 | Blender addon | `csc/scripts/csc_asset_editor_export.py` |
 | Mesh inspector | `csc/scripts/inspect_building_mesh.py` |
 | CN6 export addon | `%APPDATA%\Blender Foundation\Blender\3.1\scripts\addons\io_export_cn6\` |
-| Output (Geometries) | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods\Civ Supply Chains\Geometries` |
+| Output (Geometries) | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\Geometries` |
 
 ---
 

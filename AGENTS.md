@@ -19,7 +19,7 @@ Quarters: Bakers, Tailors, Apothecaries, Stonemasons, Carpenters, Blacksmiths, G
 
 ## Directory Structure
 
-The local ModBuddy solution workspace is `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods`. It currently contains sibling ModBuddy projects:
+The local ModBuddy solution workspace is `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods`. It currently contains sibling ModBuddy projects:
 
 | Folder | Project | Purpose |
 |---|---|---|
@@ -80,7 +80,7 @@ Documentation outside the mod content tree is split by audience:
 | **Pantry** (SDK source assets) | `C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VI SDK Assets\Civ6\` |
 | SDK Assets root | `C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VI SDK Assets\` |
 | Game root | `C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VI\` |
-| ModBuddy solution workspace | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods` |
+| ModBuddy solution workspace | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods` |
 | ModBuddy projects parent | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\` |
 
 ## Desktop Working Locations

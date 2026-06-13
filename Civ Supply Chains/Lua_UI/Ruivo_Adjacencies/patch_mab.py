@@ -5,7 +5,7 @@ Usage:
     python patch_mab.py [--dry-run] [--src <vanilla_dir>]
 
 By default the script patches in-place the CSC copies in:
-    .../Henno's Mods/Civ Supply Chains/Lua_UI/Ruivo_Adjacencies/
+    .../Henno Mods/Civ Supply Chains/Lua_UI/Ruivo_Adjacencies/
 
 Use --src <dir> to point at a fresh Ruivo workshop copy, then copy the
 patched results back into your CSC project directory.
@@ -43,7 +43,7 @@ MAB_DEFAULT = pathlib.Path(
 )
 CSC_DEFAULT = pathlib.Path(
     r"C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI"
-    r"\Henno's Mods\Civ Supply Chains\Lua_UI\Ruivo_Adjacencies"
+    r"\Henno Mods\Civ Supply Chains\Lua_UI\Ruivo_Adjacencies"
 )
 
 src_flag = None
