@@ -2,9 +2,9 @@
 
 **MAB local repo:** `C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\NEW_ADJACENCY_BONUS_BY_RUIVO`  
 **Fork remote:** `fork` (Henno's GitHub fork — PRs submitted there)  
-**Currently running:** `test/all-features` branch (all features merged)
+**Currently running:** local `test/all-features` branch (all features merged, plus current CSC-only integration commits)
 
-_Last updated: 2026-04-17_
+_Last updated: 2026-06-13_
 
 ---
 
@@ -16,10 +16,20 @@ main                  ← upstream Ruivo (no CSC changes)
   ├── feature/must-own            ← MustOwn ownership filter
   ├── feature/adjacent-edge-icons ← tile-edge icons during placement
   ├── feature/negative-adjacency  ← negative yield support
-  └── test/all-features           ← all four merged (what CSC uses)
+  ├── origin/pr_combined_5        ← upstream combined PR branch containing all four features + Ruivo optimization commit
+  └── test/all-features           ← local integration branch used by CSC; currently has four extra local commits
 ```
 
 Each feature branch has a matching `fork/` remote for the PR.
+
+As of 2026-06-13, local `test/all-features` is clean and contains all four feature branch tips. It also has four newer commits that are **not** on `fork/test/all-features` and are not on any named `feature/*` branch yet:
+
+- `63734e7` Add district typetag adjacency support
+- `3d2c744` Preserve adjacency clone options for unique districts
+- `6769da8` Preserve district modifier flag for unique adjacencies
+- `fead90f` Fix signs in district adjacency tooltip text
+
+Those four commits cherry-pick cleanly onto `origin/pr_combined_5`, but not directly onto `origin/main` without resolving conflicts in `UI/Common/AdjacencyBonusSupport.lua`. If submitting them as another PR before Ruivo merges the combined branch, create a stacked branch based on `origin/pr_combined_5` or a branch whose PR explicitly targets the combined PR branch. If the combined branch lands first, rebase/cherry-pick the four-commit slice onto the updated `main` and submit normally.
 
 ---
 
