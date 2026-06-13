@@ -41,7 +41,7 @@ param(
     [string]$BlendFile,
     [string]$GeoClass = "LandmarkModel",
     [int]$VertexFormat = 2,
-    [string]$OutputDir = "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\CivSupplyChains\Civ Supply Chains\Geometries",
+    [string]$OutputDir = "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods\Civ Supply Chains\Geometries",
     [switch]$AddToAsset,
     [string]$Asset = ""
 )

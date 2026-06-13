@@ -6,8 +6,8 @@
     "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
     "seed": 629001,
     "prompt_id": "746230bb-abc9-43ae-8c91-1da7e628710c",
-    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\01_storekeeper_raw.png",
-    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\01_storekeeper.png"
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\01_storekeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\01_storekeeper.png"
   },
   {
     "slug": "innkeeper",
@@ -16,8 +16,8 @@
     "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
     "seed": 629002,
     "prompt_id": "86f62c8e-4b69-4783-8ae8-7cfb697028a5",
-    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\02_innkeeper_raw.png",
-    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\02_innkeeper.png"
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\02_innkeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\02_innkeeper.png"
   },
   {
     "slug": "horticulturist",
@@ -26,8 +26,8 @@
     "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
     "seed": 629003,
     "prompt_id": "77d73cc4-232a-4a65-a05e-c8b3ae9123a9",
-    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\03_horticulturist_raw.png",
-    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\03_horticulturist.png"
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\03_horticulturist_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\03_horticulturist.png"
   },
   {
     "slug": "ride_technician",
@@ -36,8 +36,8 @@
     "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
     "seed": 629004,
     "prompt_id": "195773df-9d92-4233-aac0-f2896ad002a6",
-    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\04_ride_technician_raw.png",
-    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\04_ride_technician.png"
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\04_ride_technician_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\04_ride_technician.png"
   },
   {
     "slug": "groundskeeper",
@@ -46,7 +46,7 @@
     "negative": "person, human, face, portrait, body, hands, character, worker, man, woman, people, photo, realistic, 3d render, colorful, gradients, complex scene, environment, landscape, text, letters, numbers, watermark, logo, label, sign text, noisy, deformed, cluttered, detailed background, outline, line art, hollow shape, thin strokes, sketch, hatching, shading, grey background, border, frame, square border, rectangular frame, box outline",
     "seed": 629005,
     "prompt_id": "d405c61f-5c22-43c6-a95c-3948cb355aeb",
-    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\05_groundskeeper_raw.png",
-    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\CivSupplyChains\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\05_groundskeeper.png"
+    "raw": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\raw\\05_groundskeeper_raw.png",
+    "final": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno's Mods\\project\\tools\\comfyui\\service_pipeline\\outputs\\final\\05_groundskeeper.png"
   }
 ]

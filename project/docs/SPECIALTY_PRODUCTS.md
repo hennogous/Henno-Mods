@@ -1,63 +1,85 @@
-# CSC Specialty Products Implementation Notes
+# Specialty Products / Product GreatWorks Notes
 
-Last updated: 2026-06-12
+Last updated: 2026-06-13
 
-## Current decision
+## Current project boundary
 
-CSC Specialty Products should use Civ VI's vanilla Product Great Work identity instead of custom Product-like object/slot types.
+Specialty Products are **not active CSC functionality**. The prototype has been moved out of **Civ Supply Chains** and parked in the sibling ModBuddy project **Taxes And Politics** under the local solution workspace:
 
-Use:
+```text
+C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods
+├─ Civ Supply Chains/
+└─ TaxesPolitics/
+```
 
-- `GREATWORKOBJECT_PRODUCT`
-- `GREATWORKSLOT_PRODUCT`
+CSC should retain only its Monopolies & Corporations support for:
 
-Do **not** use custom Product identities such as:
+- Industry / Corporation improvements acting as stronger material providers to Quarters.
+- Settings/options that remove vanilla M&C projects and passive bonuses.
 
-- `GREATWORKOBJECT_CSC_SPECIALTY_PRODUCT`
-- `GREATWORKSLOT_CSC_SPECIALTY_PRODUCT`
+Taxes And Politics owns the parked Specialty Products slice:
 
-The custom rows can be valid SQL and can even be created through Community Extension probes, but they crashed or behaved unsafely during later game/UI processing. The vanilla Product identity is what Firaxis's Product handling expects.
+- Product GreatWork substrate/shims.
+- Bakers Specialty Product resource/GreatWorks/project rows.
+- Aristocrat hidden building / Product slots / grant script.
+- Product GreatWorks UI handlers.
+- Product/Aristocrat icon definitions, textures, and localization.
 
-## Design ownership
+## Parked files
 
-Specialty Products are technically viable in CSC, but the fuller version of this functionality probably belongs in the future Taxes & Politics mod rather than in Civ Supply Chains.
+The June 2026 split parked the implementation as:
 
-Reasoning:
+- `TaxesPolitics/Data/TAP_PRODUCT_SUBSTRATE.sql`
+- `TaxesPolitics/Data/TAP_ARISTOCRAT.sql`
+- `TaxesPolitics/Data/TAP_BAKERS_SPECIALTY_PRODUCTS.sql`
+- `TaxesPolitics/Text/TAP_SPECIALTY_PRODUCTS_TEXT.sql`
+- `TaxesPolitics/Icons/TAP_SPECIALTY_PRODUCTS_ICONS.sql`
+- `TaxesPolitics/Lua_UI/GreatWorks/GreatWorksOverview_CSC_Products.lua`
+- `TaxesPolitics/Lua_UI/GreatWorks/GreatWorkShowcase_CSC_Products.lua`
+- `TaxesPolitics/Lua_UI/Aristocrat/CSC_Aristocrat.lua`
+- `TaxesPolitics/Textures/Aristocrat_*`
+- `TaxesPolitics/Textures/CSC_GreatWorks_*`
 
-- The Aristocrat is a proto-version of the Landed Elite concept.
-- Taxes & Politics introduces the Landed Elite and their Estate district, which is a stronger thematic and mechanical home for elite-owned specialty goods.
-- CSC can still keep the current implementation as a working prototype or compatibility bridge.
-- If migrated later, CSC should likely remain focused on industry/material flows while Taxes & Politics owns the political/economic elite layer around estates, prestige goods, and Product storage/commissioning.
+The active CSC project should not contain Product/Aristocrat identifiers such as:
 
-## Confirmed test result
+- `GREATWORKOBJECT_PRODUCT` / `GREATWORKSLOT_PRODUCT` when used only for Specialty Products.
+- `GREATWORK_PRODUCT_CSC_*`.
+- `PROJECT_CREATE_PRODUCT_CSC_*`.
+- `BUILDING_CSC_ARISTOCRAT`.
+- `NOTIFICATION_CSC_NEW_ARISTOCRAT`.
 
-A 2026-06-12 probe confirmed the lean CSC Product path works without enabling the full Monopolies & Corporations game mode:
+## Historical test result
 
-- CSC defines the minimal Product object/slot substrate itself.
-- Bakers Specialty Products use `GREATWORKOBJECT_PRODUCT`.
-- The Aristocrat building provides `GREATWORKSLOT_PRODUCT` slots.
-- A CE probe created and assigned a Bakers Specialty Product.
+A 2026-06-12 probe confirmed that a lean Product path can work without enabling the full Monopolies & Corporations game mode:
+
+- The mod defined the minimal Product object/slot substrate itself.
+- Bakers Specialty Products used `GREATWORKOBJECT_PRODUCT`.
+- The Aristocrat building provided `GREATWORKSLOT_PRODUCT` slots.
+- A Community Extension probe created and assigned a Bakers Specialty Product.
 - The Great Works screen opened.
 - The granted Product appeared in the Aristocrat building in the capital.
 - The Product counted in the Great Works/display-space summary.
 - No crash package was produced after placement.
 
-## Database substrate
+This remains useful evidence for the future Taxes And Politics implementation, not a reason to reintroduce the feature into CSC.
 
-`Data/CSC_Q_SETUP.sql` provides the minimal Product substrate with `INSERT OR IGNORE` so it coexists with M&C if present:
+## Product identity finding
 
-- `PSEUDOYIELD_GREATWORK_PRODUCT`
+Use Civ VI's vanilla Product Great Work identity if this feature is revisited:
+
 - `GREATWORKOBJECT_PRODUCT`
 - `GREATWORKSLOT_PRODUCT`
-- `GreatWork_ValidSubTypes` mapping from `GREATWORKSLOT_PRODUCT` to `GREATWORKOBJECT_PRODUCT`
 
-`Data/CSC_Q_BAKERS_SPECIALTY_PRODUCTS.sql` defines the Bakers Specialty Product GreatWorks using:
+Do **not** use custom Product-like identities such as:
 
-```sql
-GreatWorkObjectType = 'GREATWORKOBJECT_PRODUCT'
-```
+- `GREATWORKOBJECT_CSC_SPECIALTY_PRODUCT`
+- `GREATWORKSLOT_CSC_SPECIALTY_PRODUCT`
 
-The naming convention matters:
+The custom rows can be valid SQL and could be created through Community Extension probes, but they crashed or behaved unsafely during later game/UI processing. Firaxis Product handling expects the vanilla Product identity.
+
+## Naming convention finding
+
+Firaxis Product UI logic derives resource/icon names from the Product GreatWork pattern:
 
 ```text
 GREATWORK_PRODUCT_CSC_BAKERS_SPECIALTY_1
@@ -65,43 +87,4 @@ GREATWORK_PRODUCT_CSC_BAKERS_SPECIALTY_1
 → ICON_MONOPOLIES_AND_CORPS_RESOURCE_CSC_BAKERS_SPECIALTY
 ```
 
-Firaxis Product UI logic derives resource/icon names from this pattern.
-
-## UI substrate
-
-When the M&C game mode is off, Firaxis does not import its Product-specific Great Works UI handlers. CSC therefore imports its own wildcard handlers:
-
-- `Lua_UI/GreatWorks/GreatWorksOverview_CSC_Products.lua`
-- `Lua_UI/GreatWorks/GreatWorkShowcase_CSC_Products.lua`
-
-These are loaded via the base game wildcard includes:
-
-```lua
-include("GreatWorksOverview_", true)
-include("GreatWorkShowcase_", true)
-```
-
-Project wiring:
-
-```xml
-<ImportFiles id="CSC_Product_GreatWorks_UI">
-  <Properties><LoadOrder>500</LoadOrder></Properties>
-  <File>Lua_UI/GreatWorks/GreatWorksOverview_CSC_Products.lua</File>
-  <File>Lua_UI/GreatWorks/GreatWorkShowcase_CSC_Products.lua</File>
-</ImportFiles>
-```
-
-## Icons
-
-`Icons/CSC_BAKERS_ICONS.sql` must provide Product/resource aliases used by the UI:
-
-- `ICON_MONOPOLIES_AND_CORPS_RESOURCE_CSC_BAKERS_SPECIALTY`
-- `ICON_RESOURCE_CSC_BAKERS_SPECIALTY`
-- `RESOURCE_CSC_BAKERS_SPECIALTY`
-- `ICON_GREATWORKOBJECT_PRODUCT` fallback
-
-The fallback avoids relying on M&C icon data when the game mode is disabled.
-
-## Compatibility stance
-
-If a player runs CSC and M&C together, CSC Products may also be movable to vanilla Product slots such as Stock Exchanges and Seaports. This is acceptable. The recommendation remains that CSC does not require M&C and is not balanced around running both systems together.
+Keep that pattern in mind if Taxes And Politics resumes this implementation.

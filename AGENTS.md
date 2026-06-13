@@ -19,7 +19,14 @@ Quarters: Bakers, Tailors, Apothecaries, Stonemasons, Carpenters, Blacksmiths, G
 
 ## Directory Structure
 
-All mod content lives under `Civ Supply Chains/`:
+The local ModBuddy solution workspace is `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods`. It currently contains sibling ModBuddy projects:
+
+| Folder | Project | Purpose |
+|---|---|---|
+| `Civ Supply Chains/` | Civ Supply Chains | Active CSC mod content. |
+| `TaxesPolitics/` | Taxes And Politics | Parked/future Taxes & Politics work, including the Specialty Products/Aristocrat prototype moved out of CSC. |
+
+CSC mod content lives under `Civ Supply Chains/`:
 
 | Folder | Contents |
 |---|---|
@@ -73,7 +80,8 @@ Documentation outside the mod content tree is split by audience:
 | **Pantry** (SDK source assets) | `C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VI SDK Assets\Civ6\` |
 | SDK Assets root | `C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VI SDK Assets\` |
 | Game root | `C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization VI\` |
-| ModBuddy projects | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\` |
+| ModBuddy solution workspace | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno's Mods` |
+| ModBuddy projects parent | `C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\` |
 
 ## Desktop Working Locations
 
@@ -91,6 +99,7 @@ Documentation outside the mod content tree is split by audience:
 - **Art pipeline**: geometry goes through Blender → `.cn6` export → CivNexus6 (→ `.fgx`/`.geo`) → Asset Editor (`.ast`/`.mat`/`.tex`) → ArtDefs → cook. See the `civ6-modding` skill (`art-pipeline.md` and `art-export-pipeline.md`) for the full workflow.
 - **Reusable art kit**: 6 building geometries shared across all Quarters; differentiated via per-Quarter materials/textures (roof recoloring) + manual props.
 - **M&C integration file**: `Data/CSC_Q_BAKERS_MC_MODE.sql` — separate file, loaded only when M&C mode is active.
+- **Specialty Products boundary**: Product substrate/shims, Aristocrat hidden building/slots/grant scripts, Product GreatWorks UI handlers, Product icons/text, and Specialty Product project rows are parked in the sibling `TaxesPolitics/` project. CSC keeps only Industry/Corporation improvement interactions plus M&C remove-projects/remove-bonuses options.
 - **Human-only tasks**: Blender retopo, texture creation, prop placement, in-game feel tuning.
 
 ## Quarters Status
