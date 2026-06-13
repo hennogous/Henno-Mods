@@ -8,3 +8,8 @@ docs/.quartz-cache/
 # Python/tooling cache
 __pycache__/
 *.py[cod]
+# ModBuddy user/session files and logs
+*.civ6suo
+*.suo
+cooker.log
+**/cooker.log

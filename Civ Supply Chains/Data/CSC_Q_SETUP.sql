@@ -28,6 +28,7 @@ INSERT OR IGNORE INTO DynamicModifiers
 VALUES	(	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',		'COLLECTION_PLAYER_DISTRICTS',		'EFFECT_ATTACH_MODIFIER'	),
 		(	'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',		'COLLECTION_PLAYER_IMPROVEMENTS',	'EFFECT_ATTACH_MODIFIER'	);
 
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	CSC processor config tables
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

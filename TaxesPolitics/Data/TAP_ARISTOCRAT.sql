@@ -54,12 +54,12 @@ INSERT INTO CivilopediaPageExcludes
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TraitModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
+
 INSERT INTO TraitModifiers
 
 		(	TraitType,								    ModifierId                              )	VALUES
 		(	'TRAIT_LEADER_MAJOR_CIV', 				    'MOD_CSC_GRANT_ARISTOCRAT_ATTACH'		);
-*/
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ INSERT INTO TraitModifiers
 INSERT OR IGNORE INTO Modifiers
 
 		(	ModifierId,									ModifierType,												SubjectRequirementSetId       	)
-VALUES	(	'MOD_CSC_GRANT_ARISTOCRAT_ATTACH',          'MODIFIER_SINGLE_CITY_ATTACH_MODIFIER',						NULL /*'REQSET_PLAYER_HAS_HUMANISM'*/	),
+VALUES	(	'MOD_CSC_GRANT_ARISTOCRAT_ATTACH',          'MODIFIER_PLAYER_CITIES_ATTACH_MODIFIER',						NULL /*'REQSET_PLAYER_HAS_HUMANISM'*/	),
 		(	'MOD_CSC_GRANT_ARISTOCRAT_GRANT',		    'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',		NULL /*'REQSET_PLAYER_HAS_HUMANISM'*/	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -27,6 +27,7 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | `icon-pipeline-implementation-notes.md` | Operational notes for the ComfyUI icon scripts: output paths, rembg/SAM behavior, cache handling, transparency semantics, postprocess knobs |
 | `dynamic-art-properties.md` | CSC dynamic art bridge pattern: SQL source properties, Lua mirroring, GamePropertyRanges intervals, event refresh and Bakers variants |
 | `bakers-service-notification-ui.md` | Bakers service notification convention: folded MCUIS text, service chains, and commented standalone notification path |
+| `SPECIALTY_PRODUCTS.md` | Specialty Products implementation notes: lean Product substrate, Great Works UI overrides, and M&C compatibility stance |
 | `MAB_MANUAL.md` | Full Ruivo MAB framework reference — `Ruivo_New_Adjacency` schema, AdjacencyTypes, ProvideTypes, examples |
 | `taxes+politics.md` | Full design doc for the political loyalty system (Guilds/Elite/Church/Monarchy) |
 | `all-buildings-list.md` | Vanilla Civ 6 buildings by era — quick lookup reference |

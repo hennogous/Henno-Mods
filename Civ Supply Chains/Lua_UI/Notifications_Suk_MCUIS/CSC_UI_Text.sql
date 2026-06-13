@@ -19,9 +19,7 @@ VALUES	('LOC_ZEGA_STACK_AMOUNT_DESC',										'en_US',		" (combined from {1_iSt
 
 --		('LOC_NOTIFICATION_HENNO_NEW_CITY_SPECIALIST_MESSAGE',				'en_US',		'New Specialist Slot'	),
 --		('LOC_NOTIFICATION_HENNO_NEW_CITY_SPECIALIST_SUMMARY',				'en_US',		'With the appointment of a local {2_Specialist}, the City of {1_CityName} has now gained {3_SpecialistAmount} additional specialist {3_Num : plural 1?slot; other?slots;}.'),
-		
-		('LOC_NOTIFICATION_HENNO_NEW_CITY_ARISTOCRAT_MESSAGE',				'en_US',		'Aristocrat Established'	),
-		('LOC_NOTIFICATION_HENNO_NEW_CITY_ARISTOCRAT_SUMMARY',				'en_US',		'The City of {1_CityName} now has a resident Aristocrat.'	),
+
 
 		('LOC_HENNO_CITY_ABILITY_CHANGE_INCREASE',							'en_US',		"more"),
 		('LOC_HENNO_CITY_ABILITY_CHANGE_DECREASE',							'en_US',		"fewer"),

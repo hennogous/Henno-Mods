@@ -14,7 +14,6 @@ local RemovedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFE
 -- local NewBakersStage4SpecialistWaterNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER")
 -- local NewBakersStage4SpecialistGardenNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN")
 
-local NewAristocratNotifcation = DB.MakeHash("NOTIFICATION_CSC_NEW_ARISTOCRAT")
 
 
 -- ===========================================================================
@@ -44,9 +43,6 @@ function RegisterHandlers()
 
 	-- g_notificationHandlers[NewBakersStage4SpecialistGardenNotifcation]			= MakeDefaultHandlers();
 	-- g_notificationHandlers[NewBakersStage4SpecialistGardenNotifcation].AddSound	= "ALERT_POSITIVE";
-
-	g_notificationHandlers[NewAristocratNotifcation]			= MakeDefaultHandlers();
-	g_notificationHandlers[NewAristocratNotifcation].AddSound	= "ALERT_POSITIVE";
 
 	-- Sounds
 	----- ALERT_NEGATIVE

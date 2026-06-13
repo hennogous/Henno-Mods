@@ -14,9 +14,7 @@ VALUES  ('ICON_NOTIFICATION_CSC_BAKERS_EFFECT_NEW',							'ICON_ATLAS_CSC_EFFECT
 --		('ICON_NOTIFICATION_CSC_BAKERS_STAGE_3_SERVICE_GRANT',				'ICON_ATLAS_NOTIFICATIONS',						11		),
 --		('ICON_NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',		'ICON_ATLAS_NOTIFICATIONS',						11		),
 --		('ICON_NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',		'ICON_ATLAS_NOTIFICATIONS',						11		),
---		('ICON_NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',		'ICON_ATLAS_NOTIFICATIONS',						11		),
-
-		('ICON_NOTIFICATION_CSC_NEW_ARISTOCRAT',							'ICON_ATLAS_NOTIFICATIONS',						95		);
+--		('ICON_NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',		'ICON_ATLAS_NOTIFICATIONS',						11		);
 
 --==========================================================================================================================
 --==========================================================================================================================

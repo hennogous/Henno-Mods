@@ -380,25 +380,6 @@ function OnRefreshCityQuarters()
 						sNotificationType = string.gsub(sSpecialistGrantModifierId, "^MOD_", "NOTIFICATION_")
 						NotificationManager.SendNotification(iPlayerID, DB.MakeHash(sNotificationType), notificationData, iCityX, iCityY)
 						bCSC_SpecialistsHaveChanged = true
-
-						-- Grant an Aristocrat in cities that have earnt 3 additional specialist slots
-						if iCityCurrentSpecialistModifiers == 3 then
-							-- Send the data for granting the Aristocrat to the Gameplay context
-							local tParams = {}
-							tParams.iPlayerID = iPlayerID;
-							tParams.iCityID = iCityID;
-							tParams.OnStart = "CSC_GrantAristocrat";
-							UI.RequestPlayerOperation(iPlayerID, PlayerOperations.EXECUTE_SCRIPT, tParams);
-							
-							-- Generate a notification informing the player about the granted Aristocrat
-							local notificationData = {}
-							notificationData[ParameterTypes.MESSAGE] = Locale.Lookup("LOC_NOTIFICATION_HENNO_NEW_CITY_ARISTOCRAT_MESSAGE");
-							notificationData[ParameterTypes.SUMMARY] = Locale.Lookup("LOC_NOTIFICATION_HENNO_NEW_CITY_ARISTOCRAT_SUMMARY", sCityName);
-							notificationData[ParameterTypes.LOCATION] = { x = iCityX, y = iCityY };
-							notificationData.AlwaysUnique = true;
-							
-							NotificationManager.SendNotification(iPlayerID, DB.MakeHash("NOTIFICATION_CSC_NEW_ARISTOCRAT"), notificationData, iCityX, iCityY)
-						end
 					end
 				end ]]
 			end
