@@ -22,8 +22,7 @@ title: Bakers' Quarter
 * +1 {{gold}} Gold from each adjacent City Center and Commercial Hub, and +1 {{food}} Food in return
 * +1 {{gold}} Gold from each adjacent Entertainment Complex, Water Park and Garden district (Leugi), and +1 {{culture}} Culture in return
 * +1 {{production}} Production from each adjacent Brewers' Quarter, and +1 {{gold}} Gold in return
-* +1 {{production}} Production from every 2 adjacent river segments
-* City Lights:
+* with City Lights:
    * +1 {{production}} Production from each adjacent Rural Community, and +1 {{food}} Food in return
    * +1 {{gold}} Gold from each adjacent Urban Borough, and +1 {{food}} Food in return
 

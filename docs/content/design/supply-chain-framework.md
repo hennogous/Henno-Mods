@@ -82,6 +82,7 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
       * This adjacency is from both unimproved and improved resources, mostly to help the AI evaluate placement decisions.
    * +1 {{gold}} Gold from each adjacent Commercial Hub and any other districts (or their unique replacers) where the Quarter's products will later be sold (stage 5), representing the charter fees that Guilds historically paid to establish their presence in a city. Each of these adjacent districts receive +1 of the main yield of the Quarter in return, represents the provisions received from having such an established source of goods nearby.
       * An exception to this is the district where intermediary goods will later be sold, which receives a more thematic yield in return, as intermediary goods often have a different secondary use and narrative from how they are used by later stages in the Quarter supply chain.
+      * The Commercial Hub provides an adjacency to all Quarters, as the Market is a valid customer for all stage 3 buildings, regardless of the Quarter's industry.
       * For players using Albro's excellent City Lights mod, the supply chain system integrates with the urban vs. rural mechanics, as follows:
          * Rural Communities provide a +1 {{production}} Production adjacency bonus to Quarters instead of +1 {{gold}} Gold in exchange for +1 of the main yield of the Quarter, representing availability of a rural workforce.
          * Urban Boroughs are treated as a point of sale (stage 5) for all Quarters, and hence provide an adjacency bonus of +1 {{gold}} Gold, in exchange for +1 of the main yield of the Quarter in return.
@@ -132,15 +133,20 @@ Procures intermediary goods from a stage 2 supplier in the Quarter, and processe
    * Adding +1 Citizen slot, and granting +2 of the main yield of the Quarter (supply) to Citizens in the Quarter.
 
 * Sales transactions of consumer goods to the city population is represented by:
+
    * A scaling yield of +0.1 {{production}} Production (demand) and +0.1 {{gold}} Gold (payment) per Citizen in the City to the stage 3 building, in return for +0.1 of the main yield of the Quarter (supply) to an adjacent Market.
+      * The Market is always a valid buyer for any stage 3 building, regardless of which Quarter they belong to, and hence this transaction is relevant to all Quarters.
       * Whenever there is a scaling yield based on city population from a transaction between adjacent buildings from different cities, it is the customer's city population that is used as the multiplier, since that determines the market size and hence the value of the transaction.
-      * At the moment, both the main yield and the {{gold}} Gold yield will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city.
+      * *At the moment, both the main yield (supply) and the {{gold}} Gold yield (payment) will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city so that it follows the standard transaction pattern of payment belonging to the seller.*
+
    * A scaling yield of +0.1 {{production}} Production (demand) and +0.1 {{gold}} Gold (payment) per Citizen in the City to the stage 3 building, in return for +0.1 of the main yield of the Quarter (supply) to an adjacent building (or its unique replacers) that has a relationship with the industry's consumer goods during that era.
-      * With an appropriate Renaissance Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent district, if the Quarter has an adjacent source of Base Materials.
-      * This Service is the capstone of that consumer-goods relationship. It grants a Citizen slot in the customer district and applies an appropriate effect representing the value created by recurring sales to that destination.
-   * +1 bonus of the main yield of the Quarter to trade routes with the City as destination, and +1 {{gold}} Gold to the City in return, if the Quarter has an adjacent source of Base Materials and the origin City does not have a similar Quarter.
+      * As each Quarter has their own specific set of customer districts and building over and above the Commercial Hub, this transaction is different for each stage 3 building, depending on the Quarter.
+      * With an appropriate Renaissance Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent district, if the Quarter has an adjacent improved source of Base Materials.
+      * This Service is the capstone of the consumer-goods relationship and represents how a stable goods economy enables a service economy. The Service grants a Citizen slot in the customer district and applies an appropriate effect representing the value created by recurring sales to that destination.
+
+   * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has an adjacent source of Base Materials and the origin City does not have a similar Quarter.
       * This ensures that there is always a way to sell the Quarter's consumer goods, even if it's not located adjacent to a Market or other customer building.
-      * Access to consumer goods provides +1 {{amenity}} Amenity in the city.
+      * This acquired access to consumer goods provides +1 {{amenity}} Amenity in the origin city.
 
 ### Stage 4 - Specialty goods building
 
@@ -151,7 +157,6 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
 * This means that there is a fork in the progression tree for supply chain stages, with a stage 3 building not being required for a stage 4 building.
 * Scaling yields that support tall play and large cities.
 * High construction and maintenance cost.
-* Single-resource Products from M&C are handled by the companion Taxes & Politics project, where they can be replaced by specialty goods commissioned through its project system.
 
 ![Stage 4](../images/Civ%20Modding%20Projects%20-%20Stage%204.jpg)
 
@@ -164,19 +169,21 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
    * Generating +1 main yield of the Quarter (supply), at a maintenance cost of -3 {{gold}} Gold.
    * Adding +1 Citizen slot, and granting +1 of the main yield of the Quarter and +1 of another thematic yield (supply) to Citizens in the Quarter.
 
-* Sales transactions of Specialty goods to select customers is represented by:
+* Sales transactions of Specialty goods to select customers are represented by:
+
    * A scaling yield of +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) for every 5 Citizens in the City, in return for +1 of the main yield of the Quarter (supply) to an adjacent customer building (or its unique replacers) that has a relationship with the industry's Specialty goods during that era.
       * Whenever there is a scaling yield based on city population from a transaction between adjacent buildings from different cities, it is the customer's city population that is used as the multiplier, since that determines the market size and hence the value of the transaction.
-      * At the moment, both the main yield and the {{gold}} Gold yield will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city.
+      * *At the moment, both the main yield and the {{gold}} Gold yield will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city.*
       * With an appropriate Industrial Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has adjacent sources of both Base and Specialty Materials.
-      * This Service is the capstone of that specialty-goods relationship. It grants a Citizen slot in the customer district and applies the final value created by the completed chain, such as tourism from leisure destinations served by a supplied Café.
-   * +1 bonus of the main yield of the Quarter to trade routes with the City as destination, and +1 {{gold}} Gold to the City in return, if the Quarter has adjacent sources of both Base and Specialty Materials and the origin City does not have a similar Quarter.
+      * This Service is the capstone of the consumer-goods relationship and represents how a stable goods economy enables a service economy. The service grants a Citizen slot in the customer district and applies the final value created by the completed chain, such as tourism from leisure destinations served by a supplied Café.
+
+   * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has adjacent sources of both Base and Specialty Materials and the origin City does not have a similar Quarter.
       * This ensures that there is always a way to sell the Quarter's specialty goods, even if it's not located adjacent to a Market or other customer building.
-      * Access to specialty goods for the upper class provides +1 {{amenity}} Amenity in all cities within 6 tiles.
+      * This acquired access to specialty goods for the upper class provides +1 {{amenity}} Amenity in all cities within 6 tiles of the origin city.
 
 ## Services
 
-Services are the capstone form of a successful supply chain transaction. They are not a separate sixth stage, and they are not simply extra text or effects attached to the destination building. A Service is an invisible building granted in the adjacent customer district once the appropriate supplier, customer, era unlock, and material-supply requirements are all met.
+The Services mentioned above are the capstone of a constructed supply chain, and are implemented as an invisible building granted in the adjacent customer district once the appropriate supplier, customer, era unlock, and material-supply requirements are all met.
 
 The customer building defines the destination and theme of the Service, while the supplied Quarter defines the industry that makes it viable. For example, a supplied Café can support:
 
@@ -184,41 +191,7 @@ The customer building defines the destination and theme of the Service, while th
 * a Ride Technician in an adjacent Water Park with a Ferris Wheel;
 * a Horticulturist in an adjacent Garden with a Conservatory.
 
-In each case the Zoo, Ferris Wheel, or Conservatory is the capstone destination for that branch of the chain. The ongoing effect belongs to the Service profession created by the completed relationship, not to the capstone building as if it had independently acquired a Bakers' Quarter bonus.
-
-Gameplay-wise, Services normally grant a Citizen slot in specialist-capable host districts and apply the value created by the completed supply chain: growth, housing, tourism, or another thematic effect. City Center services are an exception: the Storekeeper applies growth but does not add a citizen slot, because City Center specialist slots are not reliably exposed by the citizen-management UI. This keeps the chain readable: goods create recurring customers, recurring customers create local occupations, and those occupations expand the city's specialist capacity where the game supports it.
-
-## Stage 5: Goods sales
-
-For the most part, sales of different types of goods to buyers (stage 5) were described in the sections above along with the building that produced the goods. There is however one additional exclusive customer and a related new type of governor: The Aristocrat and The Commissioner.
-
-* The Aristocrat: Acts as a local investor and patron for Quarters in the city, commissioning and displaying specialty goods in its private collection.
-
-   * Once a specialty goods building (stage 4) has been constructed in the Quarter, a suitable technology / civic enables a Commissioner governor (see below) with a Local Lords promotion to grant an Aristocrat in the city.
-   * Aristocrats are implemented as buildings in the city center, but don't appear on the map(???).
-   * Provide loyalty equal to double the {{amenity}} Amenity surplus / deficit of the city, representing the role that local nobility played in the unity or fragmentation of empires.
-   * Increase the combat strength of the city, representing the military burden of Aristocrats and the resources they command.
-
-   * Each local Aristocrat gives the city access to a Commission New Specialty Item project in the city, which can be completed twice.
-   * This project produces a Specialty Item fitting the Quarter.
-   * Aristocrats have 3 slots to display commissioned specialty items in their private collections.
-      * Commissioned specialty goods have local effects and can be traded between Aristocrats, as well as other players.
-      * Private collections have theming bonuses for specialty goods from the same Quarter, but different civilizations.
-
-   * In the future, having a certain number of Aristocrats will grant additional governor titles, representing the ascension of an Aristocrat into central government.
-
-* The Commissioner: A new governor, with a promotion tree focused on Quarters, Burghers and Aristocrats.
-* Might add one or two titles along the civic tree to make it easier to appoint / promote a governor
-
-* Base ability:
-   * Master of Guilds (base ability): +20% {{production}} Production towards Quarters in the city
-
-* Promotions:
-   * Guardian of the Peasants: +10% growth in the city
-   * Middle Class Hero: Grant specialist slots to districts adjacent to Quarters that don't already have them
-   * Local Lords: Grant Aristocrats to Quarters with specialty goods buildings.
-   * Land Ownership: {{culture}} Culture bomb tiles around Quarters in cities with Aristocrats.
-   * Patronage: +100% Great Person Points from specialists in the city
+Gameplay-wise, Services normally grant a Citizen slot in specialist-capable host districts and apply the value created by the completed supply chain: growth, housing, tourism, or another thematic effect. This keeps the chain readable: goods create recurring customers, recurring customers create local occupations, and those occupations expand the city's specialist capacity where the game supports it.
 
 ---
 
