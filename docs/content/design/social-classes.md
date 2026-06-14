@@ -6,7 +6,7 @@ title: Social Classes
 
 The main value of the supply chains introduced by this mod lies in their direct yields and the bonuses they impart on adjacent game elements. Just a quick word, however, on their impact on social mobility in the empire as a way to establish some concepts and terms that are used later.
 
-The mod reuses some non-unit base game concepts and introduces some new ones to imagine a society with 5 social classes with progressively increasing power, influence and wealth. Upward mobility of citizens along this social ladder is represented by the way these social classes are constructed and increased in size as the empire grows.
+The mod reuses some non-unit base game concepts and introduces some new ones to imagine a society with a number of social classes with progressively increasing power, influence and wealth. Upward mobility of citizens along this social ladder is represented by the way these social classes are constructed and increased in size as the empire grows.
 
 The development of Quarters and their respective supply chains is a key enabler of this social mobility.
 
@@ -27,9 +27,9 @@ The development of Quarters and their respective supply chains is a key enabler 
 * In gameplay terms, Services usually add a Citizen slot to the host district and provide the value created by the completed chain: growth, housing, tourism, or another appropriate yield/effect.
 * Conceptually, Service Providers sit between regular Specialists and elites. They are not simply assigned labour inside a district; they are durable professions created by recurring trade between districts.
 
-**3. Aristocrats**
+**3. Nobility**
 * The local nobility and upper class, acting as patrons and investors in local industries.
-* Implemented as buildings (that don't appear on the map) in the City Center, and are granted through a Commissioner governor (more on them later) with a Local Lords promotion.
+* Keep an eye out for the upcoming Taxes And Politics mod that will implement this social class and much more!
 
 **2. Governors**
 * Emissaries of the king / emperor

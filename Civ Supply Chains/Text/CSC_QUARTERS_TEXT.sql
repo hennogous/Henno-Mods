@@ -11,8 +11,8 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   Language,   Tag,                                                    Text    )   VALUES
 
-(   'en_US',    'LOC_CLASS_CSC_BASE_NAME',						        'Base materials'    ),
-(   'en_US',    'LOC_CLASS_CSC_SPEC_NAME',						        'Specialty materials'   ),
+(   'en_US',    'LOC_CLASS_CSC_BASE_NAME',						        'Base Materials'    ),
+(   'en_US',    'LOC_CLASS_CSC_SPEC_NAME',						        'Specialty Materials'   ),
 (   'en_US',    'LOC_CLASS_CSC_SALES_NAME',					            'Sales' ),
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,9 +25,6 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_RESOURCE_WINE_NAME',                               'Grapes'    ),
 
 -- ADJACENCIES
-
---  (   'en_US',    'LOC_CLASS_CSC_BAKERS_BASE_NAME',                       'base materials'   ),
---  (   'en_US',    'LOC_CLASS_CSC_BAKERS_SPEC_NAME',                       'specialty materials'   ),
 
 (   'en_US',    'LOC_CSC_CITY_CENTER_GOLD_TO_BAKERS',                   '+{1_num} [ICON_Gold] from the adjacent City Center.'    ),
 (   'en_US',    'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS',                '+{1_num} [ICON_Gold] from the adjacent Commercial {1_num : plural 1?Hub; other?Hubs;}.' ),
@@ -53,16 +50,16 @@ INSERT OR REPLACE INTO LocalizedText
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS_DESCRIPTION',  'This quarter is not adjacent to a river.'  ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_WATER_MILL_NAME',              'Water Mill'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION',       '+1 [ICON_Production] Production from each adjacent base materials improvement.[NEWLINE]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Water Mill adjacent to an improved base materials resource can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION',       '+1 [ICON_Production] Production from each adjacent Base Materials improvement.[NEWLINE]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Water Mill adjacent to an improved Base Materials resource can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_WIND_MILL_NAME',               'Wind Mill'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION',        '+1 [ICON_Production] Production from each adjacent base materials improvement.[NEWLINE]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Wind Mill adjacent to an improved base materials resource can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION',        '+1 [ICON_Production] Production from each adjacent Base Materials improvement.[NEWLINE]+1 [ICON_Food] Food, with a -1 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Gold] Gold from the local Bakery and Café.[NEWLINE]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE]+1 [ICON_Food] Food to an adjacent Granary, and receive +1 [ICON_Gold] Gold in return.[NEWLINE][NEWLINE]At Feudalism, a Wind Mill adjacent to an improved Base Materials resource can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_BAKERY_NAME',                  'Bakery'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION',           '+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE]+2 [ICON_Food] Food, with a -2 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE]+0.2 [ICON_Food] Food and +0.2 [ICON_Gold] Gold per [ICON_Citizen] Citizen to the city for each adjacent Market.[NEWLINE][NEWLINE]At Medieval Faires, a Bakery adjacent to an improved base materials resource can establish an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Commercial Hub with a Market.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION',           '+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE]+2 [ICON_Food] Food, with a -2 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +1 [ICON_Gold] Gold in return from international routes.[NEWLINE]+0.2 [ICON_Food] Food and +0.2 [ICON_Gold] Gold per [ICON_Citizen] Citizen to the city for each adjacent Market.[NEWLINE][NEWLINE]At Medieval Faires, a Bakery adjacent to an improved Base Materials resource can establish an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Commercial Hub with a Market.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_NAME',                    'Café'    ),
-(   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',             '+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE]+1 [ICON_Production] Production from each adjacent specialty materials improvement.[NEWLINE]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo and Ferris Wheel, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and specialty materials resources can establish services in adjacent Entertainment districts with Zoos and Water Parks with Ferris Wheels.'   ),
+(   'en_US',    'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',             '+1 [ICON_Production] Production from the local Flour Mill.[NEWLINE]+1 [ICON_Production] Production from each adjacent Specialty Materials improvement.[NEWLINE]+3 [ICON_Food] Food, with a -3 [ICON_Gold] Gold maintenance cost.[NEWLINE]+1 [ICON_Food] Food bonus to all [ICON_TradeRoute] trade routes to the city, and +2 [ICON_Gold] Gold in return from international routes.[NEWLINE]+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city to each adjacent Zoo and Ferris Wheel, and +1 [ICON_Gold] Gold to the Café in return.[NEWLINE][NEWLINE]At Urbanization, a Café adjacent to improved base and Specialty Materials resources can establish services in adjacent Entertainment districts with Zoos and Water Parks with Ferris Wheels.'   ),
 
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME',              'Storekeeper'     ),
 (   'en_US',    'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',       'A Service established in the City Center at Feudalism when a supplied Water Mill or Wind Mill supports an adjacent Granary.[NEWLINE][NEWLINE]+10% growth from each adjacent supplied Water Mill or Wind Mill.'    ),
@@ -142,7 +139,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_CONCEPTS_PAGE_CSC_MATERIALS_CHAPTER_CONTENT_PARA_1',
-    '- Stage 1 of supply chains consist of standard game improvements (e.g. wheat farms, cotton plantations and lumber mills) that extract materials from resources on the map, and sell them as inputs to stage 2 and 4 buildings.[NEWLINE]- Materials mapped to supply chains are classified as either base materials or specialty materials.'    ),
+    '- Stage 1 of supply chains consist of standard game improvements (e.g. wheat farms, cotton plantations and lumber mills) that extract materials from resources on the map, and sell them as inputs to stage 2 and 4 buildings.[NEWLINE]- Materials mapped to supply chains are classified as either Base Materials or Specialty Materials.'    ),
 
 (   'en_US',
     'LOC_PEDIA_CONCEPTS_PAGE_CSC_QUARTERS_CHAPTER_CONTENT_TITLE',
@@ -158,7 +155,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_CONCEPTS_PAGE_CSC_INTERMEDIARY_CHAPTER_CONTENT_PARA_1',
-    'Intermediary goods buildings purchase various base materials from stage 1 suppliers and processes those into intermediary goods (e.g. flour, textiles) to sell to customers. These customers could be both downstream actors in its supply chain for further processing, as well as outside of the supply chain for direct use.'    ),
+    'Intermediary goods buildings purchase various Base Materials from stage 1 suppliers and processes those into intermediary goods (e.g. flour, textiles) to sell to customers. These customers could be both downstream actors in its supply chain for further processing, as well as outside of the supply chain for direct use.'    ),
 
 (   'en_US',
     'LOC_PEDIA_CONCEPTS_PAGE_CSC_CONSUMER_CHAPTER_CONTENT_TITLE',
@@ -174,7 +171,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_CONCEPTS_PAGE_CSC_SPECIALTY_CHAPTER_CONTENT_PARA_1',
-    'Specialty goods buildings procure intermediary goods from a stage 2 supplier in the Quarter and various specialty materials from stage 1 suppliers, and transforms them into specialty goods (e.g. Café, Fashion House, Sculptor) for sale to select customers.'    ),
+    'Specialty goods buildings procure intermediary goods from a stage 2 supplier in the Quarter and various Specialty Materials from stage 1 suppliers, and transforms them into specialty goods (e.g. Café, Fashion House, Sculptor) for sale to select customers.'    ),
 
 (   'en_US',
     'LOC_PEDIA_CONCEPTS_PAGE_CSC_SALES_CHAPTER_CONTENT_TITLE',
@@ -288,7 +285,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_CSCHAIN_PARA_1',
-    'The Café is the final, exclusive step in the Bakers'' Quarter supply chain. It procures its flour from the local Water Mill or Wind Mill, but its true distinction comes from its use of rare specialty materials like coffee, sugar, cocoa, and spices. These are sourced from adjacent improvements and transformed into fine baked goods and rich drinks for the select customers who also frequent an adjacent Entertainment Complex or Water Park.'   ),
+    'The Café is the final, exclusive step in the Bakers'' Quarter supply chain. It procures its flour from the local Water Mill or Wind Mill, but its true distinction comes from its use of rare Specialty Materials like coffee, sugar, cocoa, and spices. These are sourced from adjacent improvements and transformed into fine baked goods and rich drinks for the select customers who also frequent an adjacent Entertainment Complex or Water Park.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_TITLE',
@@ -296,7 +293,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_PARA_1',
-    'The Café is an establishment that reflects the rise of a new kind of social and intellectual life, particularly with the advent of the Enlightenment. Its roots can be traced to the coffee houses that emerged in the Ottoman Empire and spread throughout Europe via trade routes. Its reliance on a local mill is a nod to a key supply chain, as it needs finely milled ingredients for its pastries and beverages. As society became more urbanized, cafes became vibrant social spaces, a departure from the traditional tavern or alehouse. They also had a crucial dependency on specialty materials like coffee, tea, and cocoa, which were increasingly imported as a result of global trade networks.'   ),
+    'The Café is an establishment that reflects the rise of a new kind of social and intellectual life, particularly with the advent of the Enlightenment. Its roots can be traced to the coffee houses that emerged in the Ottoman Empire and spread throughout Europe via trade routes. Its reliance on a local mill is a nod to a key supply chain, as it needs finely milled ingredients for its pastries and beverages. As society became more urbanized, cafes became vibrant social spaces, a departure from the traditional tavern or alehouse. They also had a crucial dependency on Specialty Materials like coffee, tea, and cocoa, which were increasingly imported as a result of global trade networks.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_PARA_2',
@@ -374,7 +371,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_PARA_1',
-    'The Water Mill or Wind Mill draws on improved Bakers'' base materials nearby, turns them into dependable flour, and transports that steady flow to the city''s Granary.[NEWLINE][NEWLINE]This establishes a Storekeeper service in the City Center, ensuring that hard-earned food stores are managed for the good of the growing population.'   ),
+    'The Water Mill or Wind Mill draws on improved Bakers'' Base Materials nearby, turns them into dependable flour, and transports that steady flow to the city''s Granary.[NEWLINE][NEWLINE]This establishes a Storekeeper service in the City Center, ensuring that hard-earned food stores are managed for the good of the growing population.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_HISTORY_TITLE',
@@ -406,7 +403,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_CSCHAIN_PARA_1',
-    'The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers'' specialty materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Zoo.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Groundskeeper in the Entertainment Complex, keeping paths, enclosures, and gathering places ready for visitors who now have reason to linger.'   ),
+    'The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers'' Specialty Materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Zoo.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Groundskeeper in the Entertainment Complex, keeping paths, enclosures, and gathering places ready for visitors who now have reason to linger.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_HISTORY_TITLE',
@@ -422,7 +419,7 @@ INSERT OR REPLACE INTO LocalizedText
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_CSCHAIN_PARA_1',
-    'The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers'' specialty materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Ferris Wheel.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Ride Technician in the Water Park, keeping the machinery, queues, and waterfront crowds moving safely through a longer day out.'   ),
+    'The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers'' Specialty Materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Ferris Wheel.[NEWLINE][NEWLINE]This gives a Citizen the opportunity to take up employment as a Ride Technician in the Water Park, keeping the machinery, queues, and waterfront crowds moving safely through a longer day out.'   ),
 
 (   'en_US',
     'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_HISTORY_TITLE',
@@ -441,14 +438,14 @@ CREATE TEMP TABLE BAKERS_RESOURCES (
 
 INSERT INTO BAKERS_RESOURCES (ResourceName, ResourceCategory) VALUES
 
---	Bakers' Quarter base materials
+--	Bakers' Quarter Base Materials
 		(	'RESOURCE_BANANAS',		'CLASS_CSC_BAKERS_BASE'		),
 		(	'RESOURCE_MAIZE',		'CLASS_CSC_BAKERS_BASE'		),
 		(	'RESOURCE_RICE',		'CLASS_CSC_BAKERS_BASE'		),
 		(	'RESOURCE_WHEAT',		'CLASS_CSC_BAKERS_BASE'		),
         (   'RESOURCE_CSC_FLAX',    'CLASS_CSC_BAKERS_BASE'     ),
 
---	Bakers' Quarter specialty materials
+--	Bakers' Quarter Specialty Materials
 		(	'RESOURCE_COCOA',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_COFFEE',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_WINE',		'CLASS_CSC_BAKERS_SPEC'		),

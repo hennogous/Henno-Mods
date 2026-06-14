@@ -1,0 +1,2 @@
+* Once specialty products are produced through elective projects and placed into cities across the empire (stage 5), a new phase of strategic complexity enters the gameplay.
+   * Specialty products replace the single-resource Products from M&C (optional via a setting, but recommended to avoid bloated gameplay with two types of Products), and leverages the in-game mechanics around Great Works in the same way. It's therefore strongly recommended to enable the M&C game mode when playing with this mod.
