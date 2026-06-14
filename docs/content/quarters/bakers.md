@@ -40,6 +40,7 @@ The Water Mill has moved from the City Center to the Bakers' Quarter, and is onl
 * Unlocks at Wheel
 * Costs 80 {{production}} Production
 
+* +1 {{production}} Production from every 2 adjacent river edges to the Water Mill, and +1 {{production}} Production from being built on a Hills terrain to the Wind Mill
 * +1 {{production}} Production from each adjacent base materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +1 {{food}} Food, with a -1 {{gold}} Gold maintenance cost
@@ -47,8 +48,7 @@ The Water Mill has moved from the City Center to the Bakers' Quarter, and is onl
 * +1 {{food}} Food bonus to trade routes to the city, and +1 {{gold}} Gold in return from international routes
 * +1 {{food}} Food to an adjacent Granary, and receive +1 {{gold}} Gold in return
 * At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
-   * A Town Crier can be established in the adjacent City Center, if it has a Granary.
-   * The Town Crier provides the city with +3 Loyalty and +1 Influence point per turn.
+   * A Storekeeper is established in the adjacent City Center, if it has a Granary, and provides the city with +10% growth and +1 Great Engineer point per turn.
 
 ## 3. Bakery
 
@@ -82,7 +82,5 @@ The Water Mill has moved from the City Center to the Bakers' Quarter, and is onl
 * +1 {{culture}} Culture for every 5 Citizens in the city to each adjacent Zoo, Ferris Wheel or Conservatory (Leugi's Garden District), and +1 {{gold}} Gold to the Café in return
 * At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
    * A Groundskeeper can be established in an adjacent Entertainment Complex with a Zoo, a Ride Technician in a Water Park with a Ferris Wheel, and a Horticulturist in a Garden district with a Conservatory (Leugi).
-   * All three these services provides the city with +2 {{tourism}} Tourism, +1 Citizen slot and +1 Great … point per turn.
-   * With Monopolies & Corporations:
-      * Unlocks the Commission Fine Pastries project in cities with a Café, which produces a Fine Pastries product.
-      * Fine Pastries can be placed in the private collection of an Aristocrat or traded with other players, and grant +2 {{housing}} Housing.
+   * All three these services provides the city with +2 {{tourism}} Tourism and +1 Citizen slot.
+   * The Groundskeeper and Ride Technician provides +1 Great Engineer point per turn, while the Horticulturist provides +1 Great Artist point per turn.

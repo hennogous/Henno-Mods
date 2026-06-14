@@ -113,7 +113,8 @@ Procures various Base Materials from stage 1 suppliers and processes those into 
    * +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to the stage 2 building, in return for +1 main yield of the Quarter (supply) to the local stage 3 and stage 4 buildings in the Quarter.
    * +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to the stage 2 building, in return for +1 of a thematic yield (supply) to an adjacent building (or its unique replacers) that has a relationship with the industry's intermediary goods during that era.
       * With an appropriate Medieval Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has an adjacent source of Base Materials.
-      * This Service is the capstone of that intermediary-goods relationship. It grants a Citizen slot in the customer district and applies an appropriate local or city-wide effect representing the value created by the supplied goods.
+      * The Service grants a Citizen slot in the customer district and applies an appropriate local or city-wide effect representing the value created by the supplied goods.
+      * The Service also provides +1 of an appropriate Great Person point per turn.
 
 ### Stage 3 – Consumer goods building
 
@@ -142,7 +143,8 @@ Procures intermediary goods from a stage 2 supplier in the Quarter, and processe
    * A scaling yield of +0.1 {{production}} Production (demand) and +0.1 {{gold}} Gold (payment) per Citizen in the City to the stage 3 building, in return for +0.1 of the main yield of the Quarter (supply) to an adjacent building (or its unique replacers) that has a relationship with the industry's consumer goods during that era.
       * As each Quarter has their own specific set of customer districts and building over and above the Commercial Hub, this transaction is different for each stage 3 building, depending on the Quarter.
       * With an appropriate Renaissance Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent district, if the Quarter has an adjacent improved source of Base Materials.
-      * This Service is the capstone of the consumer-goods relationship and represents how a stable goods economy enables a service economy. The Service grants a Citizen slot in the customer district and applies an appropriate effect representing the value created by recurring sales to that destination.
+      * The Service grants a Citizen slot in the customer district and applies an appropriate effect representing the value created by recurring sales to that destination.
+      * The Service also provides +1 of an appropriate Great Person point per turn.
 
    * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has an adjacent source of Base Materials and the origin City does not have a similar Quarter.
       * This ensures that there is always a way to sell the Quarter's consumer goods, even if it's not located adjacent to a Market or other customer building.
@@ -175,7 +177,8 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
       * Whenever there is a scaling yield based on city population from a transaction between adjacent buildings from different cities, it is the customer's city population that is used as the multiplier, since that determines the market size and hence the value of the transaction.
       * *At the moment, both the main yield and the {{gold}} Gold yield will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city.*
       * With an appropriate Industrial Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has adjacent sources of both Base and Specialty Materials.
-      * This Service is the capstone of the consumer-goods relationship and represents how a stable goods economy enables a service economy. The service grants a Citizen slot in the customer district and applies the final value created by the completed chain, such as tourism from leisure destinations served by a supplied Café.
+      * The service grants a Citizen slot in the customer district and applies the final value created by the completed chain, such as tourism from leisure destinations served by a supplied Café.
+      * The Service also provides +1 of an appropriate Great Person point per turn.
 
    * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has adjacent sources of both Base and Specialty Materials and the origin City does not have a similar Quarter.
       * This ensures that there is always a way to sell the Quarter's specialty goods, even if it's not located adjacent to a Market or other customer building.
@@ -183,7 +186,7 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
 
 ## Services
 
-The Services mentioned above are the capstone of a constructed supply chain, and are implemented as an invisible building granted in the adjacent customer district once the appropriate supplier, customer, era unlock, and material-supply requirements are all met.
+The Services mentioned above are the capstones of well-planned supply chains and represent how a stable goods economy enables a service economy. Services are implemented as an invisible building granted in the adjacent customer district once the appropriate supplier, customer, era unlock, and material-supply requirements are all met.
 
 The customer building defines the destination and theme of the Service, while the supplied Quarter defines the industry that makes it viable. For example, a supplied Café can support:
 

@@ -34,3 +34,8 @@ For the most part, sales of different types of goods to buyers (stage 5) were de
    * Local Lords: Grant Aristocrats to Quarters with specialty goods buildings.
    * Land Ownership: {{culture}} Culture bomb tiles around Quarters in cities with Aristocrats.
    * Patronage: +100% Great Person Points from specialists in the city
+
+# BAKERS
+   * With Monopolies & Corporations:
+      * Unlocks the Commission Fine Pastries project in cities with a Café, which produces a Fine Pastries product.
+      * Fine Pastries can be placed in the private collection of an Aristocrat or traded with other players, and grant +2 {{housing}} Housing.
