@@ -26,10 +26,9 @@ title: Compatibility & Optional Integrations
 
 The mod is designed to work with the M&C game mode, which is optional but recommended. When M&C is active:
 
-- Supply chain Quarters optionally replace the passive city-wide resource bonuses and single-resource Products
+- Supply chain Quarters optionally replace the passive city-wide resource bonuses
 - Material demand transactions from Quarters are increased to M&C Industry/Corporation levels
-- Specialty goods buildings unlock product projects (Fine Pastries, Haute Couture, etc.) that replace M&C single-resource Products
-- A setting allows all other M&C Products to be hidden/removed to avoid bloated gameplay
+- The companion Taxes & Politics project owns specialty commissioning projects that can replace M&C single-resource Products
 
 ## Taxes & Politics
 

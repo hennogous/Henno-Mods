@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Settings -->
+<!-- Author: Henno -->
+
+<GameData>
+    <Parameters>
+        <Row ConfigurationGroup="Game" ConfigurationId="TAP_HEADER_INTERNAL" DefaultValue="1" Description="LOC_TAP_HEADER_INTERNAL_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_TAP_HEADER_INTERNAL_NAME" ParameterId="TAPHeader" ReadOnly="1" SortIndex="320"/>
+        <Row ConfigurationGroup="Game" ConfigurationId="TAP_MC_REMOVE_PROJECTS" DefaultValue="1" Description="LOC_TAP_MC_REMOVE_PROJECTS_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_TAP_MC_REMOVE_PROJECTS_NAME" ParameterId="TAP_MC_Remove_Projects" SortIndex="321"/>
+        <Row ConfigurationGroup="Game" ConfigurationId="TAP_FOOTER_INTERNAL" DefaultValue="1" Description="LOC_TAP_FOOTER_INTERNAL_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_TAP_FOOTER_INTERNAL_NAME" ParameterId="TAPFooter" ReadOnly="1" SortIndex="329"/>
+    </Parameters>
+
+    <ParameterDependencies>
+        <Row ParameterId="TAP_MC_Remove_Projects" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_MONOPOLIES" Operator="Equals" ConfigurationValue="1"/>
+    </ParameterDependencies>
+    
+    <ParameterCriteria>
+        <Row ParameterId="TAP_MC_Remove_Projects" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_MONOPOLIES" Operator="Equals" ConfigurationValue="1"/>
+    </ParameterCriteria>
+</GameData>

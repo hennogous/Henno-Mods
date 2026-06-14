@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Settings_Text -->
+<!-- Author: Henno -->
+
+<GameData>
+    <LocalizedText>
+        <Replace Tag="LOC_TAP_HEADER_INTERNAL_NAME" Language="en_US">
+            <Text>[COLOR:ResProductionLabelCS]TAXES AND POLITICS: SETTINGS[ENDCOLOR]</Text>
+        </Replace>
+        <Replace Tag="LOC_TAP_HEADER_INTERNAL_DESCRIPTION" Language="en_US">
+            <Text></Text>
+        </Replace>
+
+        <Replace Tag="LOC_TAP_MC_REMOVE_PROJECTS_NAME" Language="en_US">
+            <Text>Remove M&amp;C Projects</Text>
+        </Replace>
+        <Replace Tag="LOC_TAP_MC_REMOVE_PROJECTS_DESCRIPTION" Language="en_US">
+            <Text>Streamline gameplay by limiting Products to specialty goods commissioned through Taxes And Politics.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_TAP_FOOTER_INTERNAL_NAME" Language="en_US">
+            <Text>[COLOR:ResProductionLabelCS]TAXES AND POLITICS: SETTINGS[ENDCOLOR]</Text>
+        </Replace>
+        <Replace Tag="LOC_TAP_FOOTER_INTERNAL_DESCRIPTION" Language="en_US">
+            <Text></Text>
+        </Replace>
+    </LocalizedText>
+</GameData>

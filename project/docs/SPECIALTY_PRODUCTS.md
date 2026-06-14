@@ -1,6 +1,6 @@
 # Specialty Products / Product GreatWorks Notes
 
-Last updated: 2026-06-13
+Last updated: 2026-06-14
 
 ## Current project boundary
 
@@ -15,10 +15,11 @@ C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods
 CSC should retain only its Monopolies & Corporations support for:
 
 - Industry / Corporation improvements acting as stronger material providers to Quarters.
-- Settings/options that remove vanilla M&C projects and passive bonuses.
+- Settings/options that remove passive M&C city bonuses.
 
 Taxes And Politics owns the parked Specialty Products slice:
 
+- Setting/action that removes vanilla M&C Product projects when T&P's commissioning projects are used.
 - Product GreatWork substrate/shims.
 - Bakers Specialty Product resource/GreatWorks/project rows.
 - Aristocrat hidden building / Product slots / grant script.

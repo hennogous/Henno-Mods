@@ -20,14 +20,6 @@
 
         <Replace Tag="LOC_CSC_MC_REMOVE_BONUSES_DESCRIPTION" Language="en_US">
             <Text>Streamline gameplay by reducing the sources of city bonuses, which can otherwise become hard to keep track of.</Text>
-        </Replace>       
-
-        <Replace Tag="LOC_CSC_MC_REMOVE_PROJECTS_NAME" Language="en_US">
-            <Text>Remove M&amp;C Projects</Text>
-        </Replace>
-
-        <Replace Tag="LOC_CSC_MC_REMOVE_PROJECTS_DESCRIPTION" Language="en_US">
-            <Text>Streamline gameplay by limiting Products to specialty goods produced by supply chains.</Text>
         </Replace>
 
         <Replace Tag="LOC_CSC_INCLUDE_ANIMAL_RESOURCES_NAME" Language="en_US">

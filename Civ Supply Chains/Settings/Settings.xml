@@ -10,7 +10,6 @@
         <Row ConfigurationGroup="Game" ConfigurationId="CSC_HEADER_INTERNAL" DefaultValue="1" Description="LOC_CSC_HEADER_INTERNAL_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_HEADER_INTERNAL_NAME" ParameterId="CSCHeader" ReadOnly="1" SortIndex="300"/>
 
             <Row ConfigurationGroup="Game" ConfigurationId="CSC_MC_REMOVE_BONUSES" DefaultValue="1" Description="LOC_CSC_MC_REMOVE_BONUSES_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_MC_REMOVE_BONUSES_NAME" ParameterId="CSC_MC_Remove_Bonuses" SortIndex="301"/>
-            <Row ConfigurationGroup="Game" ConfigurationId="CSC_MC_REMOVE_PROJECTS" DefaultValue="1" Description="LOC_CSC_MC_REMOVE_PROJECTS_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_MC_REMOVE_PROJECTS_NAME" ParameterId="CSC_MC_Remove_Projects" SortIndex="302"/>
             <Row ConfigurationGroup="Game" ConfigurationId="CSC_INCLUDE_ANIMAL_RESOURCES" DefaultValue="0" Description="LOC_CSC_INCLUDE_ANIMAL_RESOURCES_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_INCLUDE_ANIMAL_RESOURCES_NAME" ParameterId="CSC_Exclude_Animal_Resources" SortIndex="303"/>
             <Row ConfigurationGroup="Game" ConfigurationId="CSC_REMOVE_UNUSED_MODDED_RESOURCES" DefaultValue="1" Description="LOC_CSC_REMOVE_UNUSED_MODDED_RESOURCES_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_REMOVE_UNUSED_MODDED_RESOURCES_NAME" ParameterId="CSC_Remove_Unused_Modded_Resources" SortIndex="304"/>
             <Row ConfigurationGroup="Game" ConfigurationId="CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS" DefaultValue="0" Description="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_NAME" ParameterId="CSC_Suppress_Supply_Chain_Notifications" SortIndex="305"/>
@@ -20,12 +19,10 @@
 
     <ParameterDependencies>
             <Row ParameterId="CSC_MC_Remove_Bonuses" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_MONOPOLIES" Operator="Equals" ConfigurationValue="1"/>
-            <Row ParameterId="CSC_MC_Remove_Projects" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_MONOPOLIES" Operator="Equals" ConfigurationValue="1"/>
     </ParameterDependencies>
     
     <ParameterCriteria>
             <Row ParameterId="CSC_MC_Remove_Bonuses" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_MONOPOLIES" Operator="Equals" ConfigurationValue="1"/>
-            <Row ParameterId="CSC_MC_Remove_Projects" ConfigurationGroup="Game" ConfigurationId="GAMEMODE_MONOPOLIES" Operator="Equals" ConfigurationValue="1"/>
     </ParameterCriteria>
 
 </GameData>

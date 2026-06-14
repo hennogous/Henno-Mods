@@ -99,7 +99,7 @@ Documentation outside the mod content tree is split by audience:
 - **Art pipeline**: geometry goes through Blender → `.cn6` export → CivNexus6 (→ `.fgx`/`.geo`) → Asset Editor (`.ast`/`.mat`/`.tex`) → ArtDefs → cook. See the `civ6-modding` skill (`art-pipeline.md` and `art-export-pipeline.md`) for the full workflow.
 - **Reusable art kit**: 6 building geometries shared across all Quarters; differentiated via per-Quarter materials/textures (roof recoloring) + manual props.
 - **M&C integration file**: `Data/CSC_Q_BAKERS_MC_MODE.sql` — separate file, loaded only when M&C mode is active.
-- **Specialty Products boundary**: Product substrate/shims, Aristocrat hidden building/slots/grant scripts, Product GreatWorks UI handlers, Product icons/text, and Specialty Product project rows are parked in the sibling `TaxesPolitics/` project. CSC keeps only Industry/Corporation improvement interactions plus M&C remove-projects/remove-bonuses options.
+- **Specialty Products boundary**: Product substrate/shims, Aristocrat hidden building/slots/grant scripts, Product GreatWorks UI handlers, Product icons/text, Specialty Product project rows, and the option that removes vanilla M&C Product projects are parked in the sibling `TaxesPolitics/` project. CSC keeps only Industry/Corporation improvement interactions plus the M&C remove-city-bonuses option.
 - **Human-only tasks**: Blender retopo, texture creation, prop placement, in-game feel tuning.
 
 ## Quarters Status
@@ -148,7 +148,6 @@ Each Quarter SQL follows this 9-section pattern (reference: `CSC_Q_BAKERS.sql`, 
 
 Defined in `Settings/Settings.xml`. Current toggles:
 - `CSC_MC_REMOVE_BONUSES` — strip M&C resource bonuses (default: On)
-- `CSC_MC_REMOVE_PROJECTS` — strip M&C projects (default: On)
 - `CSC_INCLUDE_ANIMAL_RESOURCES` — animal resource support (default: Off)
 - `CSC_REMOVE_UNUSED_MODDED_RESOURCES` — clean unused modded resources (default: On)
 

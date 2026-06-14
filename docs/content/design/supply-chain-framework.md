@@ -151,7 +151,7 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
 * This means that there is a fork in the progression tree for supply chain stages, with a stage 3 building not being required for a stage 4 building.
 * Scaling yields that support tall play and large cities.
 * High construction and maintenance cost.
-* Single-resource Products from M&C are optionally completely removed from the game, and replaced by specialty products produced in specialty goods buildings.
+* Single-resource Products from M&C are handled by the companion Taxes & Politics project, where they can be replaced by specialty goods commissioned through its project system.
 
 ![Stage 4](../images/Civ%20Modding%20Projects%20-%20Stage%204.jpg)
 

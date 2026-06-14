@@ -6,7 +6,7 @@ title: Design Goals & Tenets
 
 ## Core Concept & Immersion
 
-* Economic Depth: Introduce structured supply chains with engaging mechanics for various distinct industries, which optionally replace the passive city-wide resource bonuses and single-resource Products in the M&C game mode (when active).
+* Economic Depth: Introduce structured supply chains with engaging mechanics for various distinct industries, which optionally replace the passive city-wide resource bonuses in the M&C game mode (when active). Specialty Product replacements now belong to the companion Taxes & Politics project.
 * Thematic Resonance: Design the Quarter mechanics in such a way that it represents the high-level stepwise flow of each industry's supply chain, some highlights of the industry's historical evolution and relevance, as well as a sense of social mobility driven by availability of goods.
 * Social Mobility: Use the production of goods through supply chains as an enabler for the progression of the population through a number of distinct social classes.
 * Resource Reimagining: Use the supply chain context to reclassify some standard game resources as either base materials or specialty materials. Resources directly linked to animal exploitation can optionally be included in supply chains.
