@@ -64,7 +64,7 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
 
 ## Stage 2-4: Quarters
 
-* Stages 2, 3 and 4 of supply chains are implemented as buildings inside of each of 8 new districts called Quarters, each dedicated to the goods supply chain of a specific industry, e.g. Baking or Textiles.
+* Stages 2, 3 and 4 of supply chains are implemented as buildings inside of 8 new districts called Quarters, each dedicated to the goods supply chain of a specific industry, e.g. Baking or Textiles.
 * All Quarters unlock at Craftsmanship.
 * Each Quarter can only be constructed once per city, and count toward district slots.
 
@@ -80,11 +80,11 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
 
    * +1 {{production}} Production to Quarters from each adjacent Base Materials and Specialty Materials resource (stage 1) in their supply chain.
       * This adjacency is from both unimproved and improved resources, mostly to help the AI evaluate placement decisions.
-   * +1 {{gold}} Gold from each adjacent Commercial Hub and any other districts (or their unique replacers) where the Quarter's products will later be sold (stage 5), in exchange for +1 of the main yield of the Quarter in return.
+   * +1 {{gold}} Gold from each adjacent Commercial Hub and any other districts (or their unique replacers) where the Quarter's products will later be sold (stage 5), representing the charter fees that Guilds historically paid to establish their presence in a city. Each of these adjacent districts receive +1 of the main yield of the Quarter in return, represents the provisions received from having such an established source of goods nearby.
       * An exception to this is the district where intermediary goods will later be sold, which receives a more thematic yield in return, as intermediary goods often have a different secondary use and narrative from how they are used by later stages in the Quarter supply chain.
       * For players using Albro's excellent City Lights mod, the supply chain system integrates with the urban vs. rural mechanics, as follows:
-      * Rural Communities provide a +1 {{production}} Production adjacency bonus to Quarters instead of +1 {{gold}} Gold in exchange for +1 of the main yield of the Quarter, representing availability of a rural workforce.
-      * Urban Boroughs are treated as a point of sale (stage 5) for all Quarters, and hence provide an adjacency bonus of +1 {{gold}} Gold, in exchange for +1 of the main yield of the Quarter in return.
+         * Rural Communities provide a +1 {{production}} Production adjacency bonus to Quarters instead of +1 {{gold}} Gold in exchange for +1 of the main yield of the Quarter, representing availability of a rural workforce.
+         * Urban Boroughs are treated as a point of sale (stage 5) for all Quarters, and hence provide an adjacency bonus of +1 {{gold}} Gold, in exchange for +1 of the main yield of the Quarter in return.
    * +1 {{production}} Production from an adjacent Quarter that produces goods that are required by the industry in the Quarter, in exchange for a +1 {{gold}} Gold adjacency bonus in return.
    * +1 {{production}} Production bonus from every 2 adjacent river segments, representing improved logistics.
 
