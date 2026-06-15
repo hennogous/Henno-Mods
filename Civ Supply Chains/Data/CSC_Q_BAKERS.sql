@@ -457,7 +457,7 @@ INSERT INTO Building_GreatPersonPoints
 
         (	BuildingType,      		        				GreatPersonClassType,				PointsPerTurn	)
 VALUES  --(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'GREAT_PERSON_CLASS_ENGINEER',		1				),
-		(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',      	'GREAT_PERSON_CLASS_MERCHANT',		1				),
+		--(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',      	'GREAT_PERSON_CLASS_MERCHANT',		1				),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',    'GREAT_PERSON_CLASS_ENGINEER',		1				),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',    'GREAT_PERSON_CLASS_ENGINEER',		1				);
 
@@ -509,12 +509,12 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND'	),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
---  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
+--  An adjacent Granary provides +10% growth, gains a Storekeeper service and sets a city property for art selection
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER'	),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND'	),
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER'	),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND'	),
-
+--  +1 Great Engineer point
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY'			),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY'			),
 
@@ -546,6 +546,8 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_SERVICE_ATTACH_COMHUB'		),
 --  Each adjacent Bakery grants the Stage 3 Service +2 Housing
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB'		),
+--  +1 Great Merchant point
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_GPP_ATTACH_COMHUB'			),
 
 --	CAFE --------------------------------------------------------------------------
 
@@ -578,6 +580,10 @@ INSERT INTO BuildingModifiers
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER'		),
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER'		),
+
+--  +1 Great Engineer point
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_ENTER'			),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_WATER'			),
 
 --	SHARED ------------------------------------------------------------------------------
 
@@ -661,9 +667,9 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',								'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
-
+--  +1 Great Engineer point
 		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
-		(	'MOD_CSC_BAKERS_STAGE_2_GPP',										'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',			NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_2+4_GPP',										'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',			NULL,										NULL												),
 
 --	BAKERY ------------------------------------------------------------------------------
 
@@ -693,6 +699,9 @@ INSERT OR IGNORE INTO Modifiers
 --  An adjacent Stage 3 Service provides +2 Housing
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_3_EFFECT_PREREQ',			'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',							'MODIFIER_SINGLE_CITY_ADJUST_BUILDING_HOUSING',					NULL,										NULL												),
+--  +1 Great Merchant point
+		(	'MOD_CSC_BAKERS_STAGE_3_GPP_ATTACH_COMHUB',							'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_3_EFFECT_PREREQ',			'REQSET_CSC_ADJ_MARKET'								),
+		(	'MOD_CSC_BAKERS_STAGE_3_GPP',										'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',			NULL,										NULL												),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -731,6 +740,10 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',						'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',						'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
+
+--  +1 Great Engineer point
+		(	'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_ENTER',							'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'			),
+		(	'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_WATER',							'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
 
 -- 	SHARED ------------------------------------------------------------------------------
 
@@ -810,10 +823,10 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP_WIND'								),
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Amount',					1																),
-
-		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_GPP'									),
-		(	'MOD_CSC_BAKERS_STAGE_2_GPP',										'GreatPersonClassType',		'GREAT_PERSON_CLASS_ENGINEER'									),
-		(	'MOD_CSC_BAKERS_STAGE_2_GPP',										'Amount',					'1'																),
+--  +1 Great Engineer point
+		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_2+4_GPP'									),
+		(	'MOD_CSC_BAKERS_STAGE_2+4_GPP',										'GreatPersonClassType',		'GREAT_PERSON_CLASS_ENGINEER'									),
+		(	'MOD_CSC_BAKERS_STAGE_2+4_GPP',										'Amount',					'1'																),
 		
 
 --	BAKERY ------------------------------------------------------------------------------
@@ -852,6 +865,10 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER',				'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING'							),
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'Key',						'CSC_BAKERS_STAGE_3_EFFECT_HOUSING'								),
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'Amount',					1																),
+--  +1 Great Merchant point
+		(	'MOD_CSC_BAKERS_STAGE_3_GPP_ATTACH_COMHUB',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_GPP'									),
+		(	'MOD_CSC_BAKERS_STAGE_3_GPP',										'GreatPersonClassType',		'GREAT_PERSON_CLASS_MERCHANT'									),
+		(	'MOD_CSC_BAKERS_STAGE_3_GPP',										'Amount',					'1'																),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -901,10 +918,14 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_WATER',						'Amount',					1																),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',					'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',					'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',						'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'						),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',						'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'						),
+
+--  +1 Great Engineer point
+		(	'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_ENTER',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_2+4_GPP'									),
+		(	'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_WATER',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_2+4_GPP'									),
 
 -- 	SHARED ------------------------------------------------------------------------------
 

@@ -78,15 +78,6 @@ INSERT OR IGNORE INTO Buildings_XP2
 VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',		0			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	Building_GreatPersonPoints
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT INTO Building_GreatPersonPoints
-
-        (	BuildingType,      		        				GreatPersonClassType,				PointsPerTurn	)
-VALUES  (	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	'GREAT_PERSON_CLASS_ARTIST',		1				);
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -118,13 +109,16 @@ WHERE Pop > 0;
 INSERT INTO BuildingModifiers
 
 --  With Urbanization, +2 Tourism to a Garden for each adjacent Cafe
-        (	BuildingType,						ModifierId										    )	VALUES
-		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN'	    ),
+        (	BuildingType,						ModifierId										    	)	VALUES
+		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN'	    	),
 --  Mirror the adjacent Conservatory transaction back onto Cafe cities for alternate Cafe art
 		(	'BUILDING_LEU_CONSERVATORY',		'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_GARDEN'	),
 
 -- 	+1 Citizen slot (Horticulturist) to a Garden with a Conservatory
-		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN'	);
+		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN'			),
+
+--  +1 Great Engineer point
+		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_GARDEN'				);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
@@ -189,7 +183,20 @@ VALUES
 (	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',
     'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',
     NULL,
-    NULL    );
+    NULL    ),
+
+--  +1 Great Engineer point
+(	'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_GARDEN',
+	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
+	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',
+	'REQSET_CSC_ADJ_CONSERVATORY'			),
+
+(	'MOD_CSC_BAKERS_STAGE_4_GPP_GARDEN',
+	'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',
+	NULL,
+	NULL			);
+
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ModifierArguments
@@ -223,8 +230,14 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_GARDEN',	'ModifierId',			'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_GARDEN'		),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_GARDEN',				'Key',					'CSC_BAKERS_STAGE_4_EFFECT_TOURISM'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_GARDEN',				'Amount',				1													),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN',          'ModifierId',           'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN'	),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',           'BuildingType',         'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'		);
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN',          	'ModifierId',           'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN'		),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',           	'BuildingType',         'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'		),
+
+--  +1 Great Artist point
+		(	'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_GARDEN',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_GPP_GARDEN'				),
+		(	'MOD_CSC_BAKERS_STAGE_4_GPP_GARDEN',						'GreatPersonClassType',		'GREAT_PERSON_CLASS_ARTIST'						),
+		(	'MOD_CSC_BAKERS_STAGE_4_GPP_GARDEN',						'Amount',					'1'												);
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
