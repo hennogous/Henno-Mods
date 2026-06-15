@@ -11,17 +11,49 @@
 --===========================================================================================================================================================================--
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	DistrictModifiers
+--	BuildingModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO DistrictModifiers
+INSERT OR IGNORE INTO BuildingModifiers
 
-		(	DistrictType,							ModifierId										)	VALUES
+		(	BuildingType,		            			ModifierId											)	VALUES
 
---  +1 Gold to each adjacent base or specialty materials resource from this supply chain
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY'		);
+--	WIND / WATER MILL -------------------------------------------------------------------
 
+--	+1 Gold to adjacent base materials improvements
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE'		),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE'		),
 
+-- 	+1 Gold return from an adjacent Granary
+		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER'		),
+		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND'			),
+
+--	BAKERY ------------------------------------------------------------------------------
+
+-- 	+1 Gold to the Flour Mill in the Quarter
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WATER_MILL'		),
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WIND_MILL'			),
+
+--  +0.1 Gold per Citizen to the city for each adjacent Market
+		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER'		),
+		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER'		),
+
+--	CAFE --------------------------------------------------------------------------
+
+--	+1 Gold to adjacent specialty materials improvements
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC'			),
+
+-- 	+1 Gold to the Flour Mill in the Quarter
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WATER_MILL'		),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WIND_MILL'			),
+
+--	SHARED ------------------------------------------------------------------------------
+
+-- 	+1 Gold from trade routes
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD_EXTRA'			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
@@ -30,11 +62,6 @@ INSERT OR IGNORE INTO DistrictModifiers
 INSERT OR IGNORE INTO Modifiers
 
 		(	ModifierId,															ModifierType,													OwnerRequirementSetId,						SubjectRequirementSetId								)	VALUES
-
--- 	BAKERS QUARTER ----------------------------------------------------------------------
-
---  +1 Gold to each adjacent base or specialty materials resource from this supply chain
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY',							'MODIFIER_PLAYER_ADJUST_PLOT_YIELD',							NULL,										'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_MATERIAL_ANY'		),
 
 -- 	FLOUR MILL --------------------------------------------------------------------------
 
@@ -50,7 +77,7 @@ INSERT OR IGNORE INTO Modifiers
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.2 Gold per Citizen to the city for each adjacent Market
+--  +0.1 Gold per Citizen to the city for each adjacent Market
 		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY'								),
 		(	'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
 
@@ -84,10 +111,6 @@ INSERT OR IGNORE INTO ModifierArguments
 
 -- 	BAKERS QUARTER ----------------------------------------------------------------------
 
---  +1 Gold to each adjacent base or specialty materials resource from this supply chain
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY',							'YieldType',				'YIELD_GOLD'													),
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_MATERIAL_ANY',							'Amount',					1																),
-
 -- 	+1 Gold to adjacent base materials improvements
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE',					'ModifierId',				'MOD_CSC_BAKERS_FLOUR_MILL_GOLD_TO_ADJ_IMP_BASE'				),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_GOLD_TO_ADJ_IMP_BASE',    				'YieldType',	            'YIELD_GOLD'                									),
@@ -103,10 +126,10 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',						'YieldType',				'YIELD_GOLD'													),
 		(	'MOD_CSC_BAKERS_GRANARY_GOLD_TO_ADJ_WIND_MILL',						'Amount',					1																),
 
---  +0.2 Gold per Citizen to the city for each adjacent Market
+--  +0.1 Gold per Citizen to the city for each adjacent Market
 		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER',						'ModifierId',				'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY'							),
 		(	'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY',								'YieldType',				'YIELD_GOLD'													),
-		(	'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY',								'Amount',					0.21															),
+		(	'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY',								'Amount',					0.1																),
 
 --	+1 Gold to adjacent specialty materials improvements
 		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC',							'ModifierId',				'MOD_CSC_BAKERS_FLOUR_MILL_GOLD_TO_ADJ_IMP_BASE'				),
@@ -136,53 +159,6 @@ INSERT OR IGNORE INTO ModifierArguments
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	BuildingModifiers
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT OR IGNORE INTO BuildingModifiers
-
-		(	BuildingType,		            			ModifierId											)	VALUES
-
---	WIND / WATER MILL -------------------------------------------------------------------
-
---	+1 Gold to adjacent base materials improvements
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE'		),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE'		),
-
--- 	+1 Gold return from an adjacent Granary
-		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER'		),
-		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND'			),
-
---	BAKERY ------------------------------------------------------------------------------
-
--- 	+1 Gold to the Flour Mill in the Quarter
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WATER_MILL'		),
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WIND_MILL'			),
-
---  +0.2 Gold per Citizen to the city for each adjacent Market
-		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER'		),
-		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER'		),
-
---	CAFE --------------------------------------------------------------------------
-
---	+1 Gold to adjacent specialty materials improvements
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC'			),
-
--- 	+1 Gold to the Flour Mill in the Quarter
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WATER_MILL'		),
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_INTERNAL_GOLD_TO_WIND_MILL'			),
-
---	SHARED ------------------------------------------------------------------------------
-
--- 	+1 Gold from trade routes
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD_EXTRA'			);
-
-
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -200,7 +176,7 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.2 Gold per Citizen to the city for each adjacent Market
+--  +0.1 Production and +0.1 Gold per Citizen to the city for each adjacent Market
 		(	'REQSET_CSC_ADJ_BAKERY',								'REQUIREMENTSET_TEST_ALL'		);
 
 
@@ -269,7 +245,7 @@ INSERT OR IGNORE INTO RequirementArguments
 
 
 --===========================================================================================================================================================================--
-/*	POPULATION-SCALING GOLD */
+/*	POPULATION-SCALING RETURNS */
 --===========================================================================================================================================================================--
 
 --  +1 Gold for every 5 Citizens in the city for each adjacent Zoo, Thermal Bath, or Ferris Wheel

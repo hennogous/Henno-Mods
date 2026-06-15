@@ -15,18 +15,19 @@ const ICONS: Record<string, { url: string; alt: string }> = {
   housing:    { url: `${BASE}/a/ae/Housing6.png/revision/latest/scale-to-width-down/18?cb=20200428064015`, alt: "Housing" },
   amenity:    { url: `${BASE}/6/65/Amenities6.png/revision/latest/scale-to-width-down/18?cb=20200427170306`, alt: "Amenity" },
   amenities:  { url: `${BASE}/6/65/Amenities6.png/revision/latest/scale-to-width-down/18?cb=20200427170306`, alt: "Amenities" },
-  citizen:    { url: `${BASE}/8/87/Citizen6.png/revision/latest/scale-to-width-down/18?cb=20200427170306`, alt: "Citizen" },
+  citizen:    { url: `${BASE}/f/f8/Citizen6.png/revision/latest/scale-to-width-down/18?cb=20200427170416`, alt: "Citizen" },
   loyalty:    { url: `${BASE}/d/dd/Loyalty_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20190228082016`, alt: "Loyalty" },
   influence:  { url: `${BASE}/c/c4/Influence_point_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140613`, alt: "Influence" },
-  "great-merchant": { url: `${BASE}/9/90/Great_Merchant_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140702`, alt: "Great Merchant" },
-  "great-scientist": { url: `${BASE}/b/b0/Great_Scientist_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140723`, alt: "Great Scientist" },
-  "great-artist":    { url: `${BASE}/b/b3/Great_Artist_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140657`, alt: "Great Artist" },
-  "great-engineer":  { url: `${BASE}/d/d5/Great_Engineer_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140701`, alt: "Great Engineer" },
-  "great-general":   { url: `${BASE}/b/bc/Great_General_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140706`, alt: "Great General" },
-  "great-admiral":   { url: `${BASE}/0/09/Great_Admiral_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140655`, alt: "Great Admiral" },
-  "great-prophet":   { url: `${BASE}/4/4d/Great_Prophet_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140720`, alt: "Great Prophet" },
-  "great-musician":  { url: `${BASE}/e/e3/Great_Musician_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140715`, alt: "Great Musician" },
-  "great-writer":    { url: `${BASE}/f/f2/Great_Writer_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140728`, alt: "Great Writer" },
+  "person":   { url: `${BASE}/9/9a/GreatPerson6.png/revision/latest/scale-to-width-down/18?cb=20200427172032`, alt: "Great Person" },
+  "merchant": { url: `${BASE}/9/90/Great_Merchant_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140702`, alt: "Great Merchant" },
+  "scientist": { url: `${BASE}/b/b0/Great_Scientist_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140723`, alt: "Great Scientist" },
+  "artist":    { url: `${BASE}/7/75/Artist6.png/revision/latest/scale-to-width-down/18?cb=20200505091452`, alt: "Great Artist" },
+  "engineer":  { url: `${BASE}/8/8b/Engineer6.png/revision/latest/scale-to-width-down/18?cb=20200505091458`, alt: "Great Engineer" },
+  "general":   { url: `${BASE}/b/bc/Great_General_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140706`, alt: "Great General" },
+  "admiral":   { url: `${BASE}/0/09/Great_Admiral_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140655`, alt: "Great Admiral" },
+  "prophet":   { url: `${BASE}/4/4d/Great_Prophet_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140720`, alt: "Great Prophet" },
+  "musician":  { url: `${BASE}/e/e3/Great_Musician_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140715`, alt: "Great Musician" },
+  "writer":    { url: `${BASE}/f/f2/Great_Writer_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140728`, alt: "Great Writer" },
 }
 
 const SHORTHAND_REGEX = /\{\{([a-z-]+)\}\}/g
@@ -37,7 +38,7 @@ export const YieldIcons: QuartzTransformerPlugin = () => {
     markdownPlugins() {
       return [
         () => (tree: Root) => {
-          visit(tree, "text", (node: Text, index: number | null, parent: Parent | null) => {
+          visit(tree, "text", (node: Text, index: number | undefined, parent: Parent | undefined) => {
             if (!SHORTHAND_REGEX.test(node.value)) return
             SHORTHAND_REGEX.lastIndex = 0
 
@@ -69,7 +70,7 @@ export const YieldIcons: QuartzTransformerPlugin = () => {
               newNodes.push({ type: "text", value: node.value.slice(lastIndex) })
             }
 
-            if (parent && index !== null && newNodes.length > 0) {
+            if (parent && index !== undefined && newNodes.length > 0) {
               parent.children.splice(index, 1, ...newNodes)
             }
           })

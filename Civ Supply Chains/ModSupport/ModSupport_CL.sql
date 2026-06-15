@@ -12,14 +12,6 @@ INSERT INTO ImprovementModifiers
 
         (	ImprovementType,				ModifierId												)	VALUES
 
--- 	FLOUR MILL --------------------------------------------------------------------------
-
---  +1 Production to the Water Mill from improved base materials
-		(	'IMP_CL_TRADING_POST',			'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER'	),
-
---  +1 Production to the Wind Mill from improved base materials
-		(	'IMP_CL_TRADING_POST',			'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND'	),
-
 -- 	CAFE --------------------------------------------------------------------------
 
 --  +1 Production to the Cafe from improved specialty materials

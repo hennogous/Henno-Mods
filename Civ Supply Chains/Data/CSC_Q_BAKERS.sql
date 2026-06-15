@@ -112,19 +112,19 @@ INSERT INTO ImprovementModifiers
 
 -- 	FLOUR MILL --------------------------------------------------------------------------
 
---  +1 Production to the Water Mill from improved base materials
+--  +1 Food to the Water Mill from adjacent improved base materials
 		(	'IMPROVEMENT_FARM',				'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER'	),
         (	'IMPROVEMENT_PLANTATION',		'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER'	),
 		(	'IMPROVEMENT_PASTURE',			'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER'	),
 
---  +1 Production to the Wind Mill from improved base materials
+--  +1 Food to the Wind Mill from adjacent improved base materials
 		(	'IMPROVEMENT_FARM',				'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND'	),
         (	'IMPROVEMENT_PLANTATION',		'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND'	),
 		(	'IMPROVEMENT_PASTURE',			'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND'	),
 
 -- 	CAFE --------------------------------------------------------------------------
 
---  +1 Production to the Café from improved specialty materials
+--  +1 Food to the Café from each adjacent improved specialty materials
         (	'IMPROVEMENT_CAMP',				'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER'		),
 		(	'IMPROVEMENT_MINE',				'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER'		),
         (	'IMPROVEMENT_PLANTATION',		'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER'		);
@@ -284,7 +284,7 @@ VALUES	(
 		/*  Cost, */				80,
 		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
 		/*  PurchaseYield, */		'YIELD_GOLD',
-		/*  Maintenance, */			1,
+		/*  Maintenance, */			2,
 		/*	CitizenSlots */			0,
 		/*  Entertainment */		0,
 		/*  AdvisorType */			'ADVISOR_GENERIC'
@@ -298,7 +298,7 @@ VALUES	(
 		/*  Cost, */				80,
 		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
 		/*  PurchaseYield, */		'YIELD_GOLD',
-		/*  Maintenance, */			1,
+		/*  Maintenance, */			2,
 		/*	CitizenSlots */			0,
 		/*  Entertainment */		0,
 		/*  AdvisorType */			'ADVISOR_GENERIC'
@@ -341,7 +341,7 @@ VALUES	(
 		/*  PrereqDistrict, */		'DISTRICT_CITY_CENTER',
 		/*  PurchaseYield, */		NULL,
 		/*  Maintenance, */			0,
-		/*	CitizenSlots */			0,
+		/*	CitizenSlots */			1,
 		/*  Entertainment */		0,
 		/*  AdvisorType */			'ADVISOR_GENERIC'
 									),
@@ -455,9 +455,12 @@ VALUES  (	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_NO_RIVER_ACCE
 
 INSERT INTO Building_GreatPersonPoints
 
-        (	BuildingType,      		        			GreatPersonClassType,				PointsPerTurn	)
-VALUES  (	'BUILDING_CSC_BAKERS_BAKERY',       		'GREAT_PERSON_CLASS_MERCHANT',		1				),
-		(	'BUILDING_CSC_BAKERS_CAFE',       			'GREAT_PERSON_CLASS_MERCHANT',		1				);
+        (	BuildingType,      		        				GreatPersonClassType,				PointsPerTurn	)
+VALUES  --(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'GREAT_PERSON_CLASS_ENGINEER',		1				),
+		(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',      	'GREAT_PERSON_CLASS_MERCHANT',		1				),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',    'GREAT_PERSON_CLASS_ENGINEER',		1				),
+		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',    'GREAT_PERSON_CLASS_ENGINEER',		1				);
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
@@ -467,10 +470,9 @@ INSERT INTO Building_CitizenYieldChanges
 
         (	BuildingType,      		        					YieldType,       						YieldChange	        )
 VALUES  (	'BUILDING_CSC_BAKERS_BAKERY',       				'YIELD_FOOD',	        				2		        	),
-		(	'BUILDING_CSC_BAKERS_BAKERY',       				'YIELD_GOLD',	        				1		        	),
 
 		(	'BUILDING_CSC_BAKERS_CAFE',       					'YIELD_FOOD',	        				1		        	),
-		(	'BUILDING_CSC_BAKERS_CAFE',       					'YIELD_GOLD',	        				2		        	),
+		(	'BUILDING_CSC_BAKERS_CAFE',       					'YIELD_CULTURE',	        			1		        	),
 
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		'YIELD_CULTURE',	        			2		        	),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		'YIELD_GOLD',	        				2		        	),
@@ -490,13 +492,17 @@ INSERT INTO BuildingModifiers
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent base materials improvements
 
---  +1 Food (with a -1 Gold maintenance cost)
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_WATER_MILL_SELF_FOOD'				),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_WIND_MILL_SELF_FOOD'				),
+--  +1 Production to adjacent base materials improvements
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD'		),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD'		),
 
--- 	+1 Food to an adjacent Granary (+1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
+--  +1 Food to the Water/Wind Mill from each adjacent base materials improvement handled by ImprovementModifiers above
+
+-- 	+1 Food to an adjacent Granary (+1 Production return here, +1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER'		),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER'		),
+		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD'	),
+		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD'	),
 
 --  Mirror the adjacent Granary transaction back onto Mill cities for alternate mill art
 		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER'	),
@@ -509,19 +515,27 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER'	),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND'	),
 
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY'			),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY'			),
+
 --	BAKERY ------------------------------------------------------------------------------
 
---  +1 Production from the local Flour Mill
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_BAKERY'			),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_BAKERY'			),
+--  +1 Production to the local Flour Mill
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WATER_MILL'		),
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WIND_MILL'			),
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to the Flour Mill in the Quarter
 
---  +2 Food (with a -2 Gold maintenance cost)
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_BAKERY_SELF_FOOD'					),
+--  +1 Food from the local Flour Mill
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY'			),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY'			),
 
---  +0.2 Food per Citizen to the city for each adjacent Market (+0.2 Gold moved to CSC_Q_BAKERS_GOLD.sql)
+--  +0.1 Food per Citizen to adjacent Market cities (+0.1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB'		),
+
+--  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
+		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD'	),
+		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD'	),
 
 --  Mirror the adjacent Market transaction back onto the City of adjacent Bakeries for alternate Bakery art
 		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'	),
@@ -537,16 +551,20 @@ INSERT INTO BuildingModifiers
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent specialty materials improvements
 
---  +1 Production from the local Flour Mill
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE'			),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE'			),
+--  +1 Production to adjacent specialty materials improvements
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC_PROD'		),
+
+--  +1 Production to the local Flour Mill
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WATER_MILL'		),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WIND_MILL'			),
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to the Flour Mill in the Quarter
 
---  +3 Food (with a -3 Gold maintenance cost)
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_SELF_FOOD'						),
+--  +1 Food from the local Flour Mill
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_CAFE'			),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_CAFE'			),
 
---  See end of file for: +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel
+--  See end of file for: +1 Culture and +1 Production for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel (+1 Gold return in CSC_Q_BAKERS_GOLD.sql)
 
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2 Tourism to an Entertainment Complex, Water Park
@@ -607,23 +625,27 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_RIVER_ACCESS_FLAG',									'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										'REQSET_CSC_PLOT_ADJ_TO_RIVER'						),
 		(	'MOD_CSC_BAKERS_NO_RIVER_ACCESS_FLAG',								'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										'REQSET_CSC_PLOT_NOT_ADJ_TO_RIVER'					),
 
---  +1 Production to the Water Mill from improved base materials
+--  +1 Food to the Water Mill from adjacent improved base materials
 		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_BAKERS_PLOT_HAS_BASE', 			'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
-        (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL',    			'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,                           			NULL												),
+        (  	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL',    			'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,                           			NULL												),
 
---  +1 Production to the Wind Mill from improved base materials
+--  +1 Food to the Wind Mill from adjacent improved base materials
 		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_BAKERS_PLOT_HAS_BASE', 			'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
-        (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL',    				'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,                           			NULL												),
+        (  	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL',    				'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,                           			NULL												),
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent base materials improvements
 
---  +1 Food (with a -1 Gold maintenance cost)
-		(	'MOD_CSC_BAKERS_WATER_MILL_SELF_FOOD',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
-		(	'MOD_CSC_BAKERS_WIND_MILL_SELF_FOOD',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+--  +1 Production to adjacent base materials improvements
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD',				'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE'		),
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',					'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',						NULL,										NULL											),
 
--- 	+1 Food to an adjacent Granary (+1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
+-- 	+1 Food to an adjacent Granary (+1 Production return here, +1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
         (  	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL, 										'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
         (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',    				'MODIFIER_BUILDING_YIELD_CHANGE',  								NULL,                           			NULL												),
+		(  	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
+		(  	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+		(  	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
+		(  	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 --  Art bridge: Granaries set the source property on adjacent Water/Wind Mill transaction cities
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER'			),
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WATER',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
@@ -635,23 +657,30 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
-
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',								'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
 
+		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
+		(	'MOD_CSC_BAKERS_STAGE_2_GPP',										'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',			NULL,										NULL												),
+
 --	BAKERY ------------------------------------------------------------------------------
 
---  +1 Production from the local Flour Mill
-		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_BAKERY',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+--  +1 Production to the local Flour Mill
+		(	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WATER_MILL',						'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WIND_MILL',						'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 
---  +2 Food (with a -2 Gold maintenance cost)
-		(	'MOD_CSC_BAKERS_BAKERY_SELF_FOOD',									'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+--  +1 Food from the local Flour Mill
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 
---  +0.2 Food per Citizen to the city for each adjacent Market (+0.2 Gold moved to CSC_Q_BAKERS_GOLD.sql)
+--  +0.1 Food per Citizen to adjacent Market cities (+0.1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
+
+--  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
+		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN'			),
+		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
 --  Art bridge: Markets set the source property on adjacent Bakery transaction cities
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART'					),
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
@@ -667,21 +696,23 @@ INSERT OR IGNORE INTO Modifiers
 
 -- 	CAFE --------------------------------------------------------------------------
 
---  +1 Production to the Café from improved specialty materials
+--  +1 Food to the Café from each adjacent improved specialty materials
         (	'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_BAKERS_PLOT_HAS_SPEC',			'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
-        (  	'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE',    					'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,                           			NULL												),
+        (  	'MOD_CSC_BAKERS_SPEC_IMPROV_FOOD_TO_ADJ_CAFE',    					'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,                           			NULL												),
+
+--  +1 Production to adjacent specialty materials improvements
+		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC_PROD',						'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC'		),
+		(	'MOD_CSC_BAKERS_CAFE_PROD_TO_ADJ_IMP_SPEC',							'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',						NULL,										NULL											),
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent specialty materials improvements
 
---  +1 Production from the local Flour Mill
-		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+--  +1 Food from the local Flour Mill
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_CAFE',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 
---  +3 Food (with a -3 Gold maintenance cost)
-		(	'MOD_CSC_BAKERS_CAFE_SELF_FOOD',									'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
-
---  +1 Culture for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel (+1 Gold moved to CSC_Q_BAKERS_GOLD.sql)
+--  +1 Culture and +1 Production for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel (+1 Gold moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 --  Art bridge: Zoos and Ferris Wheels set the source property on adjacent Cafe transaction cities
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_ENTER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_CAFE_STAGE_4_ART'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_ENTER',						'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
@@ -696,10 +727,10 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',						'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',				NULL,										NULL												),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'			),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',					'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',					'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'			),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',						'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_WATER_PARK_FERRIS'					),
+		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',						'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
 
 -- 	SHARED ------------------------------------------------------------------------------
 
@@ -728,33 +759,38 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_RIVER_ACCESS_FLAG',									'BuildingType',				'BUILDING_CSC_BAKERS_RIVER_ACCESS'								),
 		(	'MOD_CSC_BAKERS_NO_RIVER_ACCESS_FLAG',								'BuildingType',				'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'							),
 
---  +1 Production to the Water Mill from improved base materials
-		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL'     		),
-        (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL',				'BuildingType',           	'BUILDING_CSC_BAKERS_WATER_MILL'								),
-        (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL',				'YieldType',           		'YIELD_PRODUCTION'                                              ),
-        ( 	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WATER_MILL',				'Amount',             		1                                                               ),
+--  +1 Food to the Water Mill from adjacent improved base materials
+		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL'     		),
+        (  	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL',				'BuildingType',           	'BUILDING_CSC_BAKERS_WATER_MILL'								),
+        (  	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL',				'YieldType',           		'YIELD_FOOD'                                                    ),
+        ( 	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL',				'Amount',             		1                                                               ),
 
---  +1 Production to the Wind Mill from improved base materials
-		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL'     			),
-        (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL',					'BuildingType',           	'BUILDING_CSC_BAKERS_WIND_MILL'									),
-        (  	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL',					'YieldType',           		'YIELD_PRODUCTION'                                              ),
-        ( 	'MOD_CSC_BAKERS_BASE_IMPROV_PROD_TO_ADJ_WIND_MILL',					'Amount',             		1                                                               ),
+--  +1 Food to the Wind Mill from adjacent improved base materials
+		(  	'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND',				'ModifierId',         		'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL'     			),
+        (  	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL',					'BuildingType',           	'BUILDING_CSC_BAKERS_WIND_MILL'									),
+        (  	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL',					'YieldType',           		'YIELD_FOOD'                                                    ),
+        ( 	'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL',					'Amount',             		1                                                               ),
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent base materials improvements
 
---  +1 Food (with a -1 Gold maintenance cost)
-        (  	'MOD_CSC_BAKERS_WATER_MILL_SELF_FOOD',								'BuildingType',           	'BUILDING_CSC_BAKERS_WATER_MILL'								),
-        (  	'MOD_CSC_BAKERS_WATER_MILL_SELF_FOOD',								'YieldType',           		'YIELD_FOOD'                                             		),
-        ( 	'MOD_CSC_BAKERS_WATER_MILL_SELF_FOOD',								'Amount',             		1                                                               ),
-        (  	'MOD_CSC_BAKERS_WIND_MILL_SELF_FOOD',								'BuildingType',           	'BUILDING_CSC_BAKERS_WIND_MILL'									),
-        (  	'MOD_CSC_BAKERS_WIND_MILL_SELF_FOOD',								'YieldType',           		'YIELD_FOOD'                                              		),
-        ( 	'MOD_CSC_BAKERS_WIND_MILL_SELF_FOOD',								'Amount',             		1                                                               ),
+--  +1 Production to adjacent base materials improvements
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD',				'ModifierId',				'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE'				),
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',    				'YieldType',	            'YIELD_PRODUCTION'                							),
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',    				'Amount',		            1		                    									),
 
--- 	+1 Food to an adjacent Granary (+1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
+-- 	+1 Food to an adjacent Granary (+1 Production return here, +1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER',						'ModifierId',				'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY'					),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',					'BuildingType',				'BUILDING_GRANARY'												),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',					'YieldType',				'YIELD_FOOD'													),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',					'Amount',					1																),
+		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD',					'ModifierId',				'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL'				),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'BuildingType',				'BUILDING_CSC_BAKERS_WATER_MILL'								),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'YieldType',				'YIELD_PRODUCTION'											),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'Amount',					1																),
+		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD',					'ModifierId',				'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL'				),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'BuildingType',				'BUILDING_CSC_BAKERS_WIND_MILL'								),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'YieldType',				'YIELD_PRODUCTION'											),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'Amount',					1																),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
@@ -775,22 +811,35 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Amount',					1																),
 
+		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_GPP'									),
+		(	'MOD_CSC_BAKERS_STAGE_2_GPP',										'GreatPersonClassType',		'GREAT_PERSON_CLASS_ENGINEER'									),
+		(	'MOD_CSC_BAKERS_STAGE_2_GPP',										'Amount',					'1'																),
+		
+
 --	BAKERY ------------------------------------------------------------------------------
 
---  +1 Production from the local Flour Mill
-        (  	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_BAKERY',							'BuildingType',           	'BUILDING_CSC_BAKERS_BAKERY'									),
-        (  	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_BAKERY',							'YieldType',           		'YIELD_PRODUCTION'                                             	),
-        ( 	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_BAKERY',							'Amount',             		1                                                               ),
+--  +1 Production to the local Flour Mill
+        (  	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WATER_MILL',						'BuildingType',				'BUILDING_CSC_BAKERS_WATER_MILL'								),
+        (  	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WATER_MILL',						'YieldType',           		'YIELD_PRODUCTION'                                             	),
+        ( 	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WATER_MILL',						'Amount',             		1                                                               ),
+        (  	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WIND_MILL',						'BuildingType',				'BUILDING_CSC_BAKERS_WIND_MILL'									),
+        (  	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WIND_MILL',						'YieldType',           		'YIELD_PRODUCTION'                                             	),
+        ( 	'MOD_CSC_BAKERS_INTERNAL_PROD_TO_WIND_MILL',						'Amount',             		1                                                               ),
 
---  +2 Food (with a -2 Gold maintenance cost)
-        (  	'MOD_CSC_BAKERS_BAKERY_SELF_FOOD',									'BuildingType',           	'BUILDING_CSC_BAKERS_BAKERY'									),
-        (  	'MOD_CSC_BAKERS_BAKERY_SELF_FOOD',									'YieldType',           		'YIELD_FOOD'                                             		),
-        ( 	'MOD_CSC_BAKERS_BAKERY_SELF_FOOD',									'Amount',             		2                                                               ),
+--  +1 Food from the local Flour Mill
+        (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'BuildingType',           	'BUILDING_CSC_BAKERS_BAKERY'									),
+        (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'YieldType',           		'YIELD_FOOD'                                             		),
+        ( 	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'Amount',             		1                                                               ),
 
---  +0.2 Food per Citizen to the city for each adjacent Market (+0.2 Gold moved to CSC_Q_BAKERS_GOLD.sql)
+--  +0.1 Food per Citizen to adjacent Market cities (+0.1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'ModifierId',				'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET'							),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'YieldType',				'YIELD_FOOD'													),
-		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'Amount',					0.2																),
+		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'Amount',					0.1																),
+
+--  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
+		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD',				'ModifierId',				'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY'				),
+		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'YieldType',				'YIELD_PRODUCTION'										),
+		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'Amount',					0.1																),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
 -- 	Grant the Stage 3 Service to a Commercial Hub with a Market
@@ -806,23 +855,23 @@ INSERT OR IGNORE INTO ModifierArguments
 
 -- 	CAFE --------------------------------------------------------------------------
 
---  +1 Production to the Café from improved specialty materials
-		(  	'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER',					'ModifierId',         		'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE'     				),
-        (  	'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE',						'BuildingType',           	'BUILDING_CSC_BAKERS_CAFE'										),
-        (  	'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE',						'YieldType',           		'YIELD_PRODUCTION'                                              ),
-        ( 	'MOD_CSC_BAKERS_SPEC_IMPROV_PROD_TO_ADJ_CAFE',						'Amount',             		1                                                               ),
+--  +1 Food to the Café from each adjacent improved specialty materials
+		(  	'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER',					'ModifierId',         		'MOD_CSC_BAKERS_SPEC_IMPROV_FOOD_TO_ADJ_CAFE'     				),
+        (  	'MOD_CSC_BAKERS_SPEC_IMPROV_FOOD_TO_ADJ_CAFE',						'BuildingType',           	'BUILDING_CSC_BAKERS_CAFE'										),
+        (  	'MOD_CSC_BAKERS_SPEC_IMPROV_FOOD_TO_ADJ_CAFE',						'YieldType',           		'YIELD_FOOD'                                                    ),
+        ( 	'MOD_CSC_BAKERS_SPEC_IMPROV_FOOD_TO_ADJ_CAFE',						'Amount',             		1                                                               ),
+
+--  +1 Production to adjacent specialty materials improvements
+		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC_PROD',						'ModifierId',				'MOD_CSC_BAKERS_CAFE_PROD_TO_ADJ_IMP_SPEC'				),
+		(	'MOD_CSC_BAKERS_CAFE_PROD_TO_ADJ_IMP_SPEC',    						'YieldType',	            'YIELD_PRODUCTION'                							),
+		(	'MOD_CSC_BAKERS_CAFE_PROD_TO_ADJ_IMP_SPEC',    						'Amount',		            1		                    									),
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent specialty materials improvements
 
---  +1 Production from the local Flour Mill
-        (  	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE',							'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'										),
-        (  	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE',							'YieldType',           		'YIELD_PRODUCTION'                                             	),
-        ( 	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_CAFE',							'Amount',             		1                                                               ),
-
---  +3 Food (with a -3 Gold maintenance cost)
-        (  	'MOD_CSC_BAKERS_CAFE_SELF_FOOD',									'BuildingType',           	'BUILDING_CSC_BAKERS_CAFE'										),
-        (  	'MOD_CSC_BAKERS_CAFE_SELF_FOOD',									'YieldType',           		'YIELD_FOOD'                                             		),
-        ( 	'MOD_CSC_BAKERS_CAFE_SELF_FOOD',									'Amount',             		3                                                               ),
+--  +1 Food from the local Flour Mill
+        (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_CAFE',							'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'										),
+        (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_CAFE',							'YieldType',           		'YIELD_FOOD'                                             		),
+        ( 	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_CAFE',							'Amount',             		1                                                               ),
 
 --  +1 Culture for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel (+1 Gold moved to CSC_Q_BAKERS_GOLD.sql)
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO',								'BuildingType',				'BUILDING_ZOO'													),
@@ -832,6 +881,10 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS',							'BuildingType',				'BUILDING_FERRIS_WHEEL'											),
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS',							'YieldType',				'YIELD_CULTURE'													),
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS',							'Amount',					1																),
+
+		(	'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE',								'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'										),
+		(	'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE',								'YieldType',				'YIELD_PRODUCTION'												),
+		(	'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE',								'Amount',					1																),
 
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
@@ -904,22 +957,21 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.2 Food per Citizen to the city for each adjacent Market (REQSET_CSC_ADJ_BAKERY moved to CSC_Q_BAKERS_GOLD.sql)
+--  +0.1 Food per Citizen to adjacent Market cities (+0.1 Production return here, +0.1 Gold return in CSC_Q_BAKERS_GOLD.sql)
 		(	'REQSET_CSC_ADJ_MARKET',								'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',				'REQUIREMENTSET_TEST_ALL'		),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
--- UNUSED: no live modifier references this stricter Stage 3 service adjacency set; Stage 3 service/effect modifiers use REQSET_CSC_ADJ_MARKET.
---		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQUIREMENTSET_TEST_ALL'		),
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQUIREMENTSET_TEST_ALL'		),
 
 -- 	CAFE --------------------------------------------------------------------------
 
--- 	+1 Production from each adjacent speciality materials improvement
+-- 	+1 Food to the Café from each adjacent specialty materials improvement
 		(	'REQSET_CSC_BAKERS_PLOT_HAS_SPEC',						'REQUIREMENTSET_TEST_ALL'       ),
 
---  Helper set for improved adjacent specialty materials prerequisite
+--  Helper set for adjacent specialty material improvement yields from the Café
         (	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',					'REQUIREMENTSET_TEST_ALL'       ),
 
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel
@@ -937,11 +989,7 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- 	SHARED ------------------------------------------------------------------------------
 
--- UNUSED: wrapper set is not referenced by any modifier/nested requirement; keep REQ_CSC_DISTRICT_IS_BAKERS_QUARTER itself because active adjacency/art sets use it.
---		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQUIREMENTSET_TEST_ALL'		),
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',          				'REQUIREMENTSET_TEST_ALL'       );
---		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQUIREMENTSET_TEST_ALL'		),
---		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQUIREMENTSET_TEST_ALL'		);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSetRequirements
@@ -985,7 +1033,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.2 Food and +0.2 Gold per Citizen to the city for each adjacent Market
+--  +0.1 Food to adjacent Market cities; +0.1 Production and +0.1 Gold returns to Bakery city per Citizen
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'			),
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_CITY_HAS_MARKET'						),
@@ -993,10 +1041,6 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- Shared with CSC_Q_BAKERS_GOLD.sql: inverse Market-to-Bakery adjacency requirements
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
--- UNUSED: no live modifier references REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE.
---		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
---		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'			),
---		(	'REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE',				'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE'		),
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
@@ -1004,6 +1048,10 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_CITY_HAS_BAKERY'						),
+
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQ_CSC_CITY_HAS_BAKERY'						),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -1039,19 +1087,10 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 
 -- 	SHARED ------------------------------------------------------------------------------
 -- Moved to CSC_Q_BAKERS_GOLD.sql: REQSET_CSC_BAKERS_ADJ_PLOT_HAS_MATERIAL_ANY, REQSET_CSC_BAKERS_PLOT_HAS_MATERIAL_ANY requirements
--- UNUSED: no live modifier/nested requirement references REQSET_CSC_DISTRICT_IS_BAKERS.
---		(	'REQSET_CSC_DISTRICT_IS_BAKERS',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+
         ( 	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_PLOT_ADJ_TO_OWNER'              		),
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'           	);
-/*
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE'			),
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQ_CSC_PLOT_HAS_ANY_IMPROVEMENT'				),
 
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC'			),
-		(	'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQ_CSC_PLOT_HAS_ANY_IMPROVEMENT'				);
-*/
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Requirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1078,16 +1117,14 @@ INSERT OR IGNORE INTO Requirements
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.2 Food and +0.2 Gold per Citizen to the city for each adjacent Market
+--  +0.1 Food to adjacent Market cities; +0.1 Production and +0.1 Gold returns to Bakery city per Citizen
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',			0				),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
--- UNUSED: only used by the orphan REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE chain.
---		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 --  An adjacent Market provides +2 Housing
--- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
+-- 	+1 Citizen slot (Innkeeper) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
 
 -- 	CAFE --------------------------------------------------------------------------
@@ -1141,14 +1178,12 @@ INSERT OR IGNORE INTO RequirementArguments
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.2 Food and +0.2 Gold per Citizen to the city for each adjacent Market
+--  +0.1 Food to adjacent Market cities; +0.1 Production and +0.1 Gold returns to Bakery city per Citizen
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'DistrictType',					'DISTRICT_COMMERCIAL_HUB'						),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'BuildingType',					'BUILDING_MARKET'								),
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'BuildingType',					'BUILDING_CSC_BAKERS_BAKERY'					),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
--- UNUSED: only used by the orphan REQSET_CSC_ADJ_BAKERS_STAGE_3_SERVICE chain.
---		(	'REQ_CSC_CITY_HAS_BAKERS_STAGE_3_SERVICE',				'BuildingType',					'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'			),
 --  An adjacent Market provides +2 Housing
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_MEDIEVAL_FAIRES'							),
@@ -1209,6 +1244,25 @@ SELECT
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
 
+INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
+SELECT
+    'BUILDING_ZOO',
+    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
+FROM CSC_PopulationLevels
+WHERE Pop > 0
+UNION ALL
+SELECT
+    'BUILDING_THERMAL_BATH',
+    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
+FROM CSC_PopulationLevels
+WHERE Pop > 0
+UNION ALL
+SELECT
+    'BUILDING_FERRIS_WHEEL',
+    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
+FROM CSC_PopulationLevels
+WHERE Pop > 0;
+
 -- Moved to CSC_Q_BAKERS_GOLD.sql: BUILDING_ZOO/THERMAL_BATH/FERRIS_WHEEL → MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_*
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1237,6 +1291,20 @@ SELECT
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
 
+INSERT OR IGNORE INTO Modifiers (
+    ModifierId,
+    ModifierType,
+    OwnerRequirementSetId,
+    SubjectRequirementSetId
+)
+SELECT
+    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH',
+    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
+    'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
+    'REQSET_CSC_ADJ_BAKERS_QUARTER'
+FROM CSC_PopulationLevels
+WHERE Pop > 0;
+
 -- Moved to CSC_Q_BAKERS_GOLD.sql: MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_* modifiers
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1259,6 +1327,18 @@ SELECT
     'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS_AT_POP_' || Pop || '_ATTACH',
     'ModifierId',
     'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS'
+FROM CSC_PopulationLevels
+WHERE Pop > 0;
+
+INSERT OR IGNORE INTO ModifierArguments (
+    ModifierId,
+    Name,
+    Value
+)
+SELECT
+    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH',
+    'ModifierId',
+    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE'
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
 

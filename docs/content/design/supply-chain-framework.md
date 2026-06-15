@@ -168,12 +168,12 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
       * M&C: Increased to +2 {{production}} Production and +2 {{gold}} Gold to an Industry improvement, and +3 {{production}} Production and +3 {{gold}} Gold to a Corporation.
 
 * Processes intermediary goods and Specialty Materials into Specialty goods by:
-   * Generating +1 main yield of the Quarter (supply), at a maintenance cost of -3 {{gold}} Gold.
+   * Generating +1 main yield of the Quarter (supply) for each adjacent Specialty Materials improvement, with a fixed maintenance cost of -3 {{gold}} Gold.
    * Adding +1 Citizen slot, and granting +1 of the main yield of the Quarter and +1 of another thematic yield (supply) to Citizens in the Quarter.
 
 * Sales transactions of Specialty goods to select customers are represented by:
 
-   * A scaling yield of +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) for every 5 Citizens in the City, in return for +1 of the main yield of the Quarter (supply) to an adjacent customer building (or its unique replacers) that has a relationship with the industry's Specialty goods during that era.
+   * A scaling yield of +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) for every 5 Citizens in the City, in return for +1 of the main yield of the Quarter or an appropriate thematic yield (supply) to an adjacent customer building (or its unique replacers) that has a relationship with the industry's Specialty goods during that era.
       * Whenever there is a scaling yield based on city population from a transaction between adjacent buildings from different cities, it is the customer's city population that is used as the multiplier, since that determines the market size and hence the value of the transaction.
       * *At the moment, both the main yield and the {{gold}} Gold yield will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city.*
       * With an appropriate Industrial Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has adjacent sources of both Base and Specialty Materials.

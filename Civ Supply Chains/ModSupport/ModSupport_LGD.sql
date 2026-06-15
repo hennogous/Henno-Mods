@@ -75,7 +75,16 @@ INSERT INTO CivilopediaPageExcludes
 INSERT OR IGNORE INTO Buildings_XP2
 
 		(	BuildingType,									    Pillage		)
-VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	0			);
+VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',		0			);
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	Building_GreatPersonPoints
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO Building_GreatPersonPoints
+
+        (	BuildingType,      		        				GreatPersonClassType,				PointsPerTurn	)
+VALUES  (	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	'GREAT_PERSON_CLASS_ARTIST',		1				);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
@@ -83,7 +92,7 @@ VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	0			);
 
 INSERT OR IGNORE INTO Building_CitizenYieldChanges
 
-		(	BuildingType,								                YieldType,							YieldChange		)
+		(	BuildingType,								            YieldType,							YieldChange		)
 VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',			'YIELD_CULTURE',					2				),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',			'YIELD_GOLD',						2				);
 
@@ -91,12 +100,18 @@ VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',			'YIELD_CULTURE',					2	
 --	BuildingModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Conservatory
+--  +1 Culture and +1 Production for every 5 Citizens in the city for each adjacent Conservatory (+1 Gold return in ModSupport_LGD_GOLD.sql)
 
 INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
 SELECT
     'BUILDING_CSC_BAKERS_CAFE',
     'MOD_CSC_BAKERS_CAFE_CULTURE_TO_CONSERVATORY_AT_POP_' || Pop || '_ATTACH'
+FROM CSC_PopulationLevels
+WHERE Pop > 0
+UNION ALL
+SELECT
+    'BUILDING_LEU_CONSERVATORY',
+    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
 
@@ -115,7 +130,7 @@ INSERT INTO BuildingModifiers
 --	Modifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Conservatory
+--  +1 Culture and +1 Production for every 5 Citizens in the city for each adjacent Conservatory (+1 Gold return in ModSupport_LGD_GOLD.sql)
 
 INSERT OR IGNORE INTO Modifiers (
     ModifierId,
