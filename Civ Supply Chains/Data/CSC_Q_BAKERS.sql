@@ -452,7 +452,7 @@ VALUES  (	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_NO_RIVER_ACCE
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_GreatPersonPoints
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+/*
 INSERT INTO Building_GreatPersonPoints
 
         (	BuildingType,      		        				GreatPersonClassType,				PointsPerTurn	)
@@ -460,7 +460,7 @@ VALUES  --(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'GREAT_PERSON_CLASS_ENGINEE
 		--(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',      	'GREAT_PERSON_CLASS_MERCHANT',		1				),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',    'GREAT_PERSON_CLASS_ENGINEER',		1				),
 		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',    'GREAT_PERSON_CLASS_ENGINEER',		1				);
-
+*/
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
@@ -505,13 +505,13 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD'	),
 
 --  Mirror the adjacent Granary transaction back onto Mill cities for alternate mill art
-		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER'	),
-		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND'	),
+		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS'			),
+--		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND'	),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth, gains a Storekeeper service and sets a city property for art selection
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER'	),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND'	),
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY'			),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY'			),
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER'	),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND'	),
 --  +1 Great Engineer point
@@ -642,8 +642,8 @@ INSERT OR IGNORE INTO Modifiers
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to adjacent base materials improvements
 
 --  +1 Production to adjacent base materials improvements
-		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD',				'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE'		),
-		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',					'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',						NULL,										NULL											),
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD',				'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE'				),
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',					'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',						NULL,										NULL												),
 
 -- 	+1 Food to an adjacent Granary (+1 Production return here, +1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
         (  	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL, 										'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
@@ -653,20 +653,22 @@ INSERT OR IGNORE INTO Modifiers
 		(  	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
 		(  	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 --  Art bridge: Granaries set the source property on adjacent Water/Wind Mill transaction cities
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER'			),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WATER',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND'			),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART'					),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP',										'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
+--		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART'					),
+--		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
-		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
-		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
+		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
+		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',								'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
+
+--		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
+--		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_GROWTH',						NULL,										NULL												),
+--		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
+
 --  +1 Great Engineer point
 		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_2_EFFECT_PREREQ',			'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'				),
 		(	'MOD_CSC_BAKERS_STAGE_2+4_GPP',										'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',			NULL,										NULL												),
@@ -788,7 +790,7 @@ INSERT OR IGNORE INTO ModifierArguments
 
 --  +1 Production to adjacent base materials improvements
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD',				'ModifierId',				'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE'				),
-		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',    				'YieldType',	            'YIELD_PRODUCTION'                							),
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',    				'YieldType',	            'YIELD_PRODUCTION'                								),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE',    				'Amount',		            1		                    									),
 
 -- 	+1 Food to an adjacent Granary (+1 Production return here, +1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
@@ -796,33 +798,36 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',					'BuildingType',				'BUILDING_GRANARY'												),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',					'YieldType',				'YIELD_FOOD'													),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_ADJ_GRANARY',					'Amount',					1																),
-		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD',					'ModifierId',				'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL'				),
+		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD',					'ModifierId',				'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL'					),
 		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'BuildingType',				'BUILDING_CSC_BAKERS_WATER_MILL'								),
-		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'YieldType',				'YIELD_PRODUCTION'											),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'YieldType',				'YIELD_PRODUCTION'												),
 		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WATER_MILL',					'Amount',					1																),
-		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD',					'ModifierId',				'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL'				),
-		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'BuildingType',				'BUILDING_CSC_BAKERS_WIND_MILL'								),
-		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'YieldType',				'YIELD_PRODUCTION'											),
+		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD',					'ModifierId',				'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL'					),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'BuildingType',				'BUILDING_CSC_BAKERS_WIND_MILL'									),
+		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'YieldType',				'YIELD_PRODUCTION'												),
 		(	'MOD_CSC_BAKERS_GRANARY_PROD_TO_ADJ_WIND_MILL',						'Amount',					1																),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER'					),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',						'Amount',					10																),
-		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT'							),
---  Source property consumed by Lua, then exposed to GamePropertyRanges for mill SelectionRules
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP_WATER'								),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WATER',								'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WATER',								'Amount',					1																),
-
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND'						),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'Amount',					10																),
-		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT'							),
+		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH'							),
+		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH',								'Amount',					10																),
+		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT'							),
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',								'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'							),
+
+--  Source property consumed by Lua, then exposed to GamePropertyRanges for mill SelectionRules
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP'									),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP',										'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP',										'Amount',					1																),
+
+--		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND'						),
+--		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',						'Amount',					10																),
+--		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT'							),
+
 --  Same source property as Water Mill; these buildings are mutually exclusive in the Quarter
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP_WIND'								),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Amount',					1																),
+--		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP_WIND'								),
+--		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
+--		(	'MOD_CSC_BAKERS_STAGE_2_PROP_WIND',									'Amount',					1																),
+
 --  +1 Great Engineer point
 		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_2+4_GPP'									),
 		(	'MOD_CSC_BAKERS_STAGE_2+4_GPP',										'GreatPersonClassType',		'GREAT_PERSON_CLASS_ENGINEER'									),
@@ -973,14 +978,15 @@ INSERT OR IGNORE INTO RequirementSets
 --  An adjacent Granary provides +10% growth in the city
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_CITY_HAS_MILL',								'REQUIREMENTSET_TEST_ANY'		),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQUIREMENTSET_TEST_ALL'		),
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQUIREMENTSET_TEST_ALL'		),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
 --  +0.1 Food per Citizen to adjacent Market cities (+0.1 Production return here, +0.1 Gold return in CSC_Q_BAKERS_GOLD.sql)
 		(	'REQSET_CSC_ADJ_MARKET',								'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',				'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQUIREMENTSET_TEST_ALL'		),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
 --  An adjacent Market provides +2 Housing
@@ -1043,14 +1049,16 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WATER',				'REQ_CSC_CITY_HAS_WATER_MILL'					),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_CITY_HAS_WIND_MILL'					),
+		(	'REQSET_CSC_CITY_HAS_MILL',								'REQ_CSC_CITY_HAS_WATER_MILL'					),
+		(	'REQSET_CSC_CITY_HAS_MILL',								'REQ_CSC_CITY_HAS_WIND_MILL'					),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_CITY_HAS_MILL'							),
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
+--		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART_WIND',				'REQ_CSC_CITY_HAS_WIND_MILL'					),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1135,6 +1143,7 @@ INSERT OR IGNORE INTO Requirements
 		(	'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
 		(	'REQ_CSC_CITY_HAS_WATER_MILL',							'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 		(	'REQ_CSC_CITY_HAS_WIND_MILL',							'REQUIREMENT_CITY_HAS_BUILDING',					0				),
+		(	'REQ_CSC_CITY_HAS_MILL',								'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1194,8 +1203,9 @@ INSERT OR IGNORE INTO RequirementArguments
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth in the city
 		(	'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_FEUDALISM'								),
-		(	'REQ_CSC_CITY_HAS_WATER_MILL',							'BuildingType',					'BUILDING_CSC_BAKERS_WATER_MILL'					),
+		(	'REQ_CSC_CITY_HAS_WATER_MILL',							'BuildingType',					'BUILDING_CSC_BAKERS_WATER_MILL'				),
 		(	'REQ_CSC_CITY_HAS_WIND_MILL',							'BuildingType',					'BUILDING_CSC_BAKERS_WIND_MILL'					),
+		(	'REQ_CSC_CITY_HAS_MILL',								'RequirementSetId',				'REQSET_CSC_CITY_HAS_MILL'						),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1218,7 +1228,7 @@ INSERT OR IGNORE INTO RequirementArguments
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_URBANIZATION'							),
-		(	'REQ_CSC_CITY_HAS_CAFE',									'BuildingType',					'BUILDING_CSC_BAKERS_CAFE'						),
+		(	'REQ_CSC_CITY_HAS_CAFE',								'BuildingType',					'BUILDING_CSC_BAKERS_CAFE'						),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'RequirementSetId',				'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX'			),
@@ -1395,8 +1405,8 @@ VALUES	(	'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',						'HIGH',			0,						0			),
 
 INSERT INTO CSC_AbilityAttachModifiers
 		(	ModifierId,													AbilityIcon,										AbilityIconTarget							)
-VALUES	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',			'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',			'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
+VALUES	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY',				'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
+--		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',			'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',				'ICON_BUILDING_CSC_BAKERS_STAGE_3_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'		),
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT',		'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'	),
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK',			'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'	);
@@ -1408,8 +1418,8 @@ VALUES	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',			'ICON_BUILDING_CSC
 
 INSERT INTO ModifierStrings
 	(	ModifierId,                                			Context,			'Text'			)	VALUES
-	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',		'Preview',			'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER'	),
-	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',		'Preview',			'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND'	),
+	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH',				'Preview',			'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER'	),
+--	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',		'Preview',			'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND'	),
 	(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',			'Preview',			'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION'			),
 	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ENTER',		'Preview',			'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER'	),
 	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',		'Preview',			'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER'	),
