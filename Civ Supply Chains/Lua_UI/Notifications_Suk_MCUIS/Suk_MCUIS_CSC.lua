@@ -24,20 +24,22 @@ end
 local mCSC_AbilityEffectModifiers = {}
 for i,v in pairs(mCSC_AbilityAttachModifiers) do
 	if v.AbilityEffectModifierId == nil then
-	end
-	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId] = {};
-	if v.ArgumentAmount == nil then
-		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Amount = 0
+		print('CSC MCUIS: Skipping unresolved CSC_AbilityAttachModifiers row:', i)
 	else
-		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Amount = v.ArgumentAmount
+		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId] = {};
+		if v.ArgumentAmount == nil then
+			mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Amount = 0
+		else
+			mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Amount = v.ArgumentAmount
+		end
+		if v.Desc == nil then
+			mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Desc = ''
+		else
+			mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Desc = v.Desc
+		end
+		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Icon = v.Icon
+		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].IconTarget = v.IconTarget
 	end
-	if v.Desc == nil then
-		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Desc = ''
-	else
-		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Desc = v.Desc
-	end
-	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Icon = v.Icon
-	mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].IconTarget = v.IconTarget
 end
 
 local function GetSignedAmountText(iAmount)
@@ -161,7 +163,12 @@ function OnSuk_MCUIS_QueryIcon(sContext, sName, pIcon)
 			local sTempIconName = 'CSC_ActiveModifiers_'..sAbilityEffectModifierId
 			if sTempIconName == sName then
 				local iAmount = mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Amount * v.StackAmount; -- we multiply this modifier's DB yield value by the StackAmount in this city to get the exact yield gain
-				local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Desc, GetSignedAmountText(iAmount), v.StackAmount); -- string for this modifier's Ability
+
+				local sAmount = GetSignedAmountText(iAmount)
+				local sStackAmount = GetSignedAmountText(v.StackAmount)
+				local iStackAmount = v.StackAmount
+
+				local sString = Locale.Lookup(mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Desc, sAmount, sStackAmount, iStackAmount); -- string for this modifier's Ability
 				-- local sStackString = Locale.Lookup('LOC_ZEGA_STACK_AMOUNT_DESC', v.StackAmount); -- string for the Stack Source Amount
 				local sIcon = mCSC_AbilityEffectModifiers[sAbilityEffectModifierId].Icon -- Icon to use for this modifier
 				-- if Icon is nil then we use this Player's Civilization Icon instead, if we can't for some reason then we use the Monument Icon.

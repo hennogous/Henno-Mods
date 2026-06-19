@@ -43,7 +43,7 @@ INSERT OR IGNORE INTO Modifiers
 
 -- 	+2 Gold to adjacent base materials Industries
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE',		'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',	NULL,					'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',	NULL				),
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',						'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',			NULL,					NULL,										NULL      			),
+-- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',						'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',			NULL,					NULL,										NULL      			),
 
 -- 	+3 Gold to adjacent base materials Corporations
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE',		'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',	NULL,					'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',	NULL				),
@@ -66,9 +66,9 @@ INSERT OR IGNORE INTO ModifierArguments
         (	ModifierId,											Name,					Value									)	VALUES
 
 -- 	+2 Gold to adjacent base materials Industries (already at +1 from base Quarter)
-		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE',	'ModifierId',			'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND'		),
-		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',    				'YieldType',	        'YIELD_GOLD'                			),
-        (	'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',    				'Amount',		        1		                    			),
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE',	'ModifierId',			'MOD_CSC_BAKERS_FLOUR_MILL_GOLD_TO_ADJ_IMP_BASE'		),
+-- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',    				'YieldType',	        'YIELD_GOLD'                			),
+-- CONSOLIDATED:         (	'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',    				'Amount',		        1		                    			),
 
 -- 	+3 Gold to adjacent base materials Corporations (already at +1 from base Quarter)
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE',	'ModifierId',			'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP'		),
@@ -78,7 +78,7 @@ INSERT OR IGNORE INTO ModifierArguments
 -- 	CAFE --------------------------------------------------------------------------
 
 -- 	+2 Gold to adjacent specialty materials Industries (already at +1 from base Quarter)
-		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC',			'ModifierId',			'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND'		),
+		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC',			'ModifierId',			'MOD_CSC_BAKERS_FLOUR_MILL_GOLD_TO_ADJ_IMP_BASE'		),
 
 -- 	+3 Gold to adjacent specialty materials Corporations (already at +1 from base Quarter)
 		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_CORP_SPEC',			'ModifierId',			'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP'		);
