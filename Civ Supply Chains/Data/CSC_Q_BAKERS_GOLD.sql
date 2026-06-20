@@ -44,15 +44,40 @@ INSERT OR IGNORE INTO BuildingModifiers
 
 -- 	+1 Gold to the Flour Mill in the Quarter
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL'					),
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'					),
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'					);
 
---	SHARED ------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	DistrictModifiers
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- 	+1 Gold from trade routes
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD'					),
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD_EXTRA'			);
+DROP TABLE IF EXISTS CSC_BakersRouteStackBits;
+
+CREATE TEMPORARY TABLE CSC_BakersRouteStackBits
+		(	Bit INTEGER PRIMARY KEY	);
+
+INSERT INTO CSC_BakersRouteStackBits
+		(	Bit	)
+VALUES	(	2	), (	4	), (	8	), (	16	);
+
+INSERT OR IGNORE INTO DistrictModifiers
+
+		(	DistrictType,							ModifierId										)	VALUES
+
+--  +1 Gold return from eligible import routes to supplied Bakers buildings
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD'				),
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD'				);
+
+--  Extra export-return stacks. The base modifier handles the +1 bit; these generated
+--  rows add +2, +4, +8, and +16 when Lua sets the matching route-count bit.
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
@@ -92,9 +117,19 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',									'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 
--- 	+1 Gold from trade routes
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD',									'MODIFIER_SINGLE_CITY_ADJUST_TRADE_ROUTE_YIELD_FROM_OTHERS',	NULL,										NULL												),
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD_EXTRA',							'MODIFIER_SINGLE_CITY_ADJUST_TRADE_ROUTE_YIELD_FROM_OTHERS',	NULL,										NULL												);
+--  +1 Gold return from eligible import routes to supplied Bakers buildings
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1'		),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',									'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1'			);
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
 
 
 
@@ -138,14 +173,43 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',									'YieldType',				'YIELD_GOLD'													),
 		(	'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL',									'Amount',					1																),
 
--- 	+1 Gold from trade routes
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD',									'YieldType',				'YIELD_GOLD'													),
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD',									'Amount',					1																),
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD',									'Domestic',					1																),
+--  +1 Gold return from eligible import routes to supplied Bakers buildings
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',								'BuildingType',				'BUILDING_CSC_BAKERS_BAKERY'									),
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',								'YieldType',				'YIELD_GOLD'													),
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',								'Amount',					1																),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',									'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'										),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',									'YieldType',				'YIELD_GOLD'													),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',									'Amount',					1																);
 
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD_EXTRA',							'YieldType',				'YIELD_GOLD'													),
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD_EXTRA',							'Amount',					2																),
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_GOLD_EXTRA',							'Domestic',					1																);
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'BuildingType',				'BUILDING_CSC_BAKERS_BAKERY'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'YieldType',				'YIELD_GOLD'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'Amount',					Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'YieldType',				'YIELD_GOLD'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'Amount',					Bit
+FROM CSC_BakersRouteStackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets

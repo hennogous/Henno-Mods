@@ -203,13 +203,43 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSIO
 --	DistrictModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+DROP TABLE IF EXISTS CSC_BakersRouteStackBits;
+
+CREATE TEMPORARY TABLE CSC_BakersRouteStackBits
+		(	Bit INTEGER PRIMARY KEY	);
+
+INSERT INTO CSC_BakersRouteStackBits
+		(	Bit	)
+VALUES	(	2	), (	4	), (	8	), (	16	);
+
 INSERT OR IGNORE INTO DistrictModifiers
 
 		(	DistrictType,							ModifierId										)	VALUES
 
 --  Set flags for river access, used by Water Mill and Wind Mill variants
 		(	'DISTRICT_CSC_BAKERS_QUARTER',			'MOD_CSC_BAKERS_RIVER_ACCESS_FLAG'				),
-		(	'DISTRICT_CSC_BAKERS_QUARTER',			'MOD_CSC_BAKERS_NO_RIVER_ACCESS_FLAG'			);
+		(	'DISTRICT_CSC_BAKERS_QUARTER',			'MOD_CSC_BAKERS_NO_RIVER_ACCESS_FLAG'			),
+
+--  Import/export route properties are set on city-center plots by Lua.
+--  These city-center modifiers apply the resulting exact trade-route transaction effects.
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD'			),
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_IMPORT_CONSUMER_AMENITY'			),
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD'			),
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_IMPORT_SPECIALTY_AMENITY'		),
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION'		),
+		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION'			);
+
+--  Extra export-return stacks. The base modifier handles the +1 bit; these generated
+--  rows add +2, +4, +8, and +16 when Lua sets the matching route-count bit.
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
 
 
 
@@ -520,6 +550,9 @@ INSERT INTO BuildingModifiers
 
 --  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
 		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD'	),
+
+--  Cache supplied Bakery status for route exports
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP'		),
 		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD'	),
 
 --  Mirror the adjacent Market transaction back onto the City of adjacent Bakeries for alternate Bakery art
@@ -570,13 +603,8 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_ENTER'			),
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_WATER'			),
 
---	SHARED ------------------------------------------------------------------------------
-
--- 	+1 Food bonus to trade routes to the city (+1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD'					),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD'					),
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD'					),
-		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD'					);
+--  Cache supplied Cafe status for route exports
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP'			);
 
 
 
@@ -662,6 +690,9 @@ INSERT OR IGNORE INTO Modifiers
 --  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
 		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN'				),
 		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
+
+--  Cache supplied Bakery status for route exports
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',						'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',	NULL										),
 --  Art bridge: Markets set the source property on adjacent Bakery transaction cities
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART'					),
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
@@ -697,6 +728,9 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_CAFE_STAGE_4_ART'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
 
+--  Cache supplied Cafe status for route exports
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP',							'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_BAKERS_EXPORT_CAFE_SUPPLY_PREREQ',		NULL										),
+
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_4_EFFECT_PREREQ',			'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'			),
@@ -718,8 +752,23 @@ INSERT OR IGNORE INTO Modifiers
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to the Flour Mill in the Quarter
 
--- 	+1 Food bonus to trade routes to the city (+1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD',									'MODIFIER_SINGLE_CITY_ADJUST_TRADE_ROUTE_YIELD_TO_OTHERS',		NULL,										NULL												);
+--  Import/export route effects. Lua sets the route properties on city-center plots.
+		(	'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',								'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',						NULL,										'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE'			),
+		(	'MOD_CSC_BAKERS_IMPORT_CONSUMER_AMENITY',							'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',				NULL,										'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE'			),
+		(	'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',								'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',						NULL,										'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE'			),
+		(	'MOD_CSC_BAKERS_IMPORT_SPECIALTY_AMENITY',							'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',				NULL,										'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE'			),
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1'		),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1'			);
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION_BIT_' || Bit,					'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
 
 
 
@@ -806,6 +855,10 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'YieldType',				'YIELD_PRODUCTION'												),
 		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'Amount',					0.1																),
 
+--  Cache supplied Bakery status for route exports
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',						'Key',						'CSC_BAKERS_BAKERY_SUPPLIED'									),
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',						'Amount',					1																),
+
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
 -- 	Grant the Stage 3 Service to a Commercial Hub with a Market
 		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_ATTACH_COMHUB',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT'							),
@@ -859,6 +912,10 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM',								'Key',						'CSC_BAKERS_STAGE_4_EFFECT_TOURISM'								),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM',								'Amount',					1																),
 
+--  Cache supplied Cafe status for route exports
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP',							'Key',						'CSC_BAKERS_CAFE_SUPPLIED'										),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP',							'Amount',					1																),
+
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',						'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'						),
@@ -873,10 +930,49 @@ INSERT OR IGNORE INTO ModifierArguments
 
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to the Flour Mill in the Quarter
 
--- 	+1 Food bonus to trade routes to the city (+1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD',									'YieldType',				'YIELD_FOOD'													),
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD',									'Amount',					1																),
-		(	'MOD_CSC_BAKERS_TRADE_ROUTES_FOOD',									'Domestic',					1																);
+--  Import/export route effects. Lua sets the route properties on city-center plots.
+		(	'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',								'YieldType',				'YIELD_FOOD'													),
+		(	'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',								'Amount',					1																),
+		(	'MOD_CSC_BAKERS_IMPORT_CONSUMER_AMENITY',							'Amount',					1																),
+		(	'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',								'YieldType',				'YIELD_FOOD'													),
+		(	'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',								'Amount',					1																),
+		(	'MOD_CSC_BAKERS_IMPORT_SPECIALTY_AMENITY',							'Amount',					1																),
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION',							'BuildingType',				'BUILDING_CSC_BAKERS_BAKERY'									),
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION',							'YieldType',				'YIELD_PRODUCTION'												),
+		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION',							'Amount',					1																),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION',							'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'										),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION',							'YieldType',				'YIELD_PRODUCTION'												),
+		(	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION',							'Amount',					1																);
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION_BIT_' || Bit,					'BuildingType',				'BUILDING_CSC_BAKERS_BAKERY'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION_BIT_' || Bit,					'YieldType',				'YIELD_PRODUCTION'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION_BIT_' || Bit,					'Amount',					Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'YieldType',				'YIELD_PRODUCTION'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'Amount',					Bit
+FROM CSC_BakersRouteStackBits;
 
 
 
@@ -948,7 +1044,27 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- 	SHARED ------------------------------------------------------------------------------
 
+--  Import/export route properties
+		(	'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',		'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_SUPPLY_PREREQ',			'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE',				'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',				'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE',					'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE',					'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1',			'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',				'REQUIREMENTSET_TEST_ALL'		),
+
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',          				'REQUIREMENTSET_TEST_ALL'       );
+
+INSERT OR IGNORE INTO RequirementSets
+		(	RequirementSetId,												RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,				'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO RequirementSets
+		(	RequirementSetId,												RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,					'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersRouteStackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSetRequirements
@@ -1045,8 +1161,29 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- 	SHARED ------------------------------------------------------------------------------
 -- Moved to CSC_Q_BAKERS_GOLD.sql: REQSET_CSC_BAKERS_ADJ_PLOT_HAS_MATERIAL_ANY, REQSET_CSC_BAKERS_PLOT_HAS_MATERIAL_ANY requirements
 
+--  Import/export route properties
+		(	'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',		'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_SUPPLY_PREREQ',			'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_SUPPLY_PREREQ',			'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC'		),
+		( 	'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE',				'REQ_CSC_BAKERS_IMPORT_CONSUMER_ROUTE'			),
+		( 	'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',				'REQ_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE'			),
+		( 	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE',					'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE'			),
+		( 	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE',					'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE'				),
+		( 	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1',			'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1'		),
+		( 	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',				'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1'			),
+
         ( 	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_PLOT_ADJ_TO_OWNER'              		),
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'           	);
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+		(	RequirementSetId,												RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,				'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+		(	RequirementSetId,												RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,					'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Requirements
@@ -1104,6 +1241,14 @@ INSERT OR IGNORE INTO Requirements
 
 -- 	SHARED ------------------------------------------------------------------------------
 
+--  Import/export route properties
+		(	'REQ_CSC_BAKERS_IMPORT_CONSUMER_ROUTE',					'REQUIREMENT_PLOT_PROPERTY_MATCHES',				0				),
+		(	'REQ_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',				'REQUIREMENT_PLOT_PROPERTY_MATCHES',				0				),
+		(	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE',					'REQUIREMENT_PLOT_PROPERTY_MATCHES',				0				),
+		(	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE',						'REQUIREMENT_PLOT_PROPERTY_MATCHES',				0				),
+		(	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1',				'REQUIREMENT_PLOT_PROPERTY_MATCHES',				0				),
+		(	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',				'REQUIREMENT_PLOT_PROPERTY_MATCHES',				0				),
+
 		(	'REQ_CSC_PLOT_ADJ_TO_OWNER',							'REQUIREMENT_PLOT_ADJACENT_TO_OWNER',              	0               ),
 		(	'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',				'REQUIREMENT_PLOT_RESOURCE_TAG_MATCHES',			0				),
 		(	'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',				'REQUIREMENT_PLOT_RESOURCE_TAG_MATCHES',			0				),
@@ -1111,6 +1256,16 @@ INSERT OR IGNORE INTO Requirements
 		(   'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER',					'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',          	0               ),
 		(	'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE',			'REQUIREMENT_COLLECTION_COUNT_ATLEAST',				0				),
 		(	'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'REQUIREMENT_COLLECTION_COUNT_ATLEAST',				0				);
+
+INSERT OR IGNORE INTO Requirements
+		(	RequirementId,													RequirementType,							Inverse		)
+SELECT	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,					'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO Requirements
+		(	RequirementId,													RequirementType,							Inverse		)
+SELECT	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,						'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
+FROM CSC_BakersRouteStackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementArguments
@@ -1165,6 +1320,20 @@ INSERT OR IGNORE INTO RequirementArguments
 
 -- 	SHARED ------------------------------------------------------------------------------
 
+--  Import/export route properties
+		(	'REQ_CSC_BAKERS_IMPORT_CONSUMER_ROUTE',					'PropertyName',					'CSC_BAKERS_IMPORT_CONSUMER_ROUTE'			),
+		(	'REQ_CSC_BAKERS_IMPORT_CONSUMER_ROUTE',					'PropertyMinimum',				1											),
+		(	'REQ_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',				'PropertyName',					'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE'			),
+		(	'REQ_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',				'PropertyMinimum',				1											),
+		(	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE',					'PropertyName',					'CSC_BAKERS_EXPORT_BAKERY_ROUTE'			),
+		(	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE',					'PropertyMinimum',				1											),
+		(	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE',						'PropertyName',					'CSC_BAKERS_EXPORT_CAFE_ROUTE'				),
+		(	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE',						'PropertyMinimum',				1											),
+		(	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1',				'PropertyName',					'CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1'		),
+		(	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1',				'PropertyMinimum',				1											),
+		(	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',				'PropertyName',					'CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1'		),
+		(	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',				'PropertyMinimum',				1											),
+
 -- Moved to CSC_Q_BAKERS_GOLD.sql: REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_ANY arg
 		(	'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',				'Tag',							'CLASS_CSC_BAKERS_BASE'							),
 		(	'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',				'Tag',							'CLASS_CSC_BAKERS_SPEC'							),
@@ -1177,6 +1346,26 @@ INSERT OR IGNORE INTO RequirementArguments
 		(	'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'CollectionType',				'COLLECTION_PLAYER_IMPROVEMENTS'				),
 		(	'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'Count',						1												),
 		(	'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC',			'RequirementSetId',				'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC'			);
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,					'PropertyMinimum',				1
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,						'PropertyName',					'CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
+FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,						'PropertyMinimum',				1
+FROM CSC_BakersRouteStackBits;
 
 
 --===========================================================================================================================================================================--
