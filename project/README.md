@@ -27,6 +27,7 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | `icon-pipeline-implementation-notes.md` | Operational notes for the ComfyUI icon scripts: output paths, rembg/SAM behavior, cache handling, transparency semantics, postprocess knobs |
 | `dynamic-art-properties.md` | CSC dynamic art bridge pattern: SQL source properties, Lua mirroring, GamePropertyRanges intervals, event refresh and Bakers variants |
 | `bakers-service-notification-ui.md` | Bakers service notification convention: folded MCUIS text, service chains, and commented standalone notification path |
+| `modbuddy-actions-json.md` | Workflow for editing ModBuddy `.civ6proj` action CDATA through `project/modbuddy/CivSupplyChains.actions.json` and the patch/export tool |
 | `SPECIALTY_PRODUCTS.md` | Specialty Products implementation notes: lean Product substrate, Great Works UI overrides, and M&C compatibility stance |
 | `MAB_MANUAL.md` | Full Ruivo MAB framework reference — `Ruivo_New_Adjacency` schema, AdjacencyTypes, ProvideTypes, examples |
 | `taxes+politics.md` | Full design doc for the political loyalty system (Guilds/Elite/Church/Monarchy) |
@@ -74,6 +75,7 @@ Scripts accumulated during development. Paths may need updating if the source da
 |--------|---------|
 | `blender/` | Blender scripts — SV sprite rendering pipeline, mesh inspection |
 | `comfyui/` | ComfyUI scripts — icon post-processing, img2img, bakery/SV generation |
+| `modbuddy/` | ModBuddy project helpers, including `.civ6proj` action CDATA export/check/patch |
 | `scripts/` | Pipeline scripts — CN6 I/O, bone fixing, export pipeline, geo parsing |
 | `training/` | LoRA training — data extraction, kohya-ss training launchers |
 | `firetuner/` | FireTuner/CE automation — proxy sniffer, game control, CE probing |

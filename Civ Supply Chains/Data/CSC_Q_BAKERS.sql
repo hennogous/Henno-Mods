@@ -192,12 +192,14 @@ VALUES	(
 		/*  AdvisorType */							'ADVISOR_GENERIC'
 													);
 
+/*
 UPDATE Districts SET Description = '{LOC_DISTRICT_COMMERCIAL_HUB_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_SERVICE}' WHERE DistrictType='DISTRICT_COMMERCIAL_HUB';
-UPDATE Districts SET Description = '{LOC_DISTRICT_ENTERTAINMENT_COMPLEX_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND}' WHERE DistrictType='DISTRICT_ENTERTAINMENT_COMPLEX';
-UPDATE Districts SET Description = '{LOC_DISTRICT_STREET_CARNIVAL_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND}' WHERE DistrictType='DISTRICT_STREET_CARNIVAL';
-UPDATE Districts SET Description = '{LOC_DISTRICT_HIPPODROME_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_LAND}' WHERE DistrictType='DISTRICT_HIPPODROME';
+UPDATE Districts SET Description = '{LOC_DISTRICT_ENTERTAINMENT_COMPLEX_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_ENTER}' WHERE DistrictType='DISTRICT_ENTERTAINMENT_COMPLEX';
+UPDATE Districts SET Description = '{LOC_DISTRICT_STREET_CARNIVAL_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_ENTER}' WHERE DistrictType='DISTRICT_STREET_CARNIVAL';
+UPDATE Districts SET Description = '{LOC_DISTRICT_HIPPODROME_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_ENTER}' WHERE DistrictType='DISTRICT_HIPPODROME';
 UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_WATER}' WHERE DistrictType='DISTRICT_WATER_ENTERTAINMENT_COMPLEX';
 UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSION2_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_REQUIREMENT}' || '{LOC_CSC_BAKERS_STAGE_4_SERVICE_WATER}' WHERE DistrictType='DISTRICT_WATER_STREET_CARNIVAL';
+*/
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	DistrictModifiers
@@ -211,6 +213,53 @@ CREATE TEMPORARY TABLE CSC_BakersRouteStackBits
 INSERT INTO CSC_BakersRouteStackBits
 		(	Bit	)
 VALUES	(	2	), (	4	), (	8	), (	16	);
+
+DROP TABLE IF EXISTS CSC_BakersScaledAmountBits;
+
+CREATE TEMPORARY TABLE CSC_BakersScaledAmountBits
+		(	Bit INTEGER PRIMARY KEY	);
+
+INSERT INTO CSC_BakersScaledAmountBits
+		(	Bit	)
+VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	),
+		(	256	), (	512	), (	1024	), (	2048	), (	4096	), (	8192	), (	16384	), (	32768	),
+		(	65536	), (	131072	), (	262144	), (	524288	);
+
+DROP TABLE IF EXISTS CSC_BakersStage4StackBits;
+
+CREATE TEMPORARY TABLE CSC_BakersStage4StackBits
+		(	Bit INTEGER PRIMARY KEY	);
+
+INSERT INTO CSC_BakersStage4StackBits
+		(	Bit	)
+VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	);
+
+DROP TABLE IF EXISTS CSC_BakersStage4CultureBuildings;
+
+CREATE TEMPORARY TABLE CSC_BakersStage4CultureBuildings
+		(	Branch TEXT NOT NULL,
+			BuildingType TEXT NOT NULL,
+			PRIMARY KEY (Branch, BuildingType)	);
+
+INSERT OR IGNORE INTO CSC_BakersStage4CultureBuildings
+		(	Branch,					BuildingType	)
+WITH RECURSIVE BuildingFamily(Branch, BuildingType) AS (
+	VALUES	(	'ZOO',				'BUILDING_ZOO'			),
+			(	'FERRIS',			'BUILDING_FERRIS_WHEEL'	)
+	UNION
+	SELECT	BuildingFamily.Branch,
+			BuildingReplaces.CivUniqueBuildingType
+	FROM BuildingFamily
+	JOIN BuildingReplaces ON BuildingReplaces.ReplacesBuildingType = BuildingFamily.BuildingType
+)
+SELECT	Branch, BuildingType
+FROM BuildingFamily
+WHERE EXISTS (SELECT 1 FROM Buildings WHERE Buildings.BuildingType = BuildingFamily.BuildingType);
+
+INSERT OR IGNORE INTO CSC_BakersStage4CultureBuildings
+		(	Branch,					BuildingType	)
+SELECT	'CONSERVATORY',				'BUILDING_LEU_CONSERVATORY'
+WHERE EXISTS (SELECT 1 FROM Buildings WHERE BuildingType = 'BUILDING_LEU_CONSERVATORY');
 
 INSERT OR IGNORE INTO DistrictModifiers
 
@@ -228,6 +277,33 @@ INSERT OR IGNORE INTO DistrictModifiers
 		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_IMPORT_SPECIALTY_AMENITY'		),
 		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION'		),
 		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION'			);
+
+--  Customer-population return stacks. Lua sums adjacent Market city population
+--  and writes scaled per-population amount bits on City Center plots. This
+--  preserves +0.1 yield per customer citizen while paying the current city.
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+--  Stage 4 customer-population returns. Lua sums +1 per 5 Citizens in
+--  adjacent Zoo/Ferris/Conservatory customer cities, then writes integer
+--  stack bits on the receiving City Center plot.
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
 
 --  Extra export-return stacks. The base modifier handles the +1 bit; these generated
 --  rows add +2, +4, +8, and +16 when Lua sets the matching route-count bit.
@@ -434,8 +510,10 @@ INSERT INTO CivilopediaPageExcludes
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_RIVER_ACCESS'				),
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'			);
 
-UPDATE Buildings SET Description = '{LOC_BUILDING_GRANARY_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_2_EFFECT}' WHERE BuildingType='BUILDING_GRANARY';
+UPDATE Buildings SET Description = 'LOC_CSC_BAKERS_STAGE_2_EFFECT' WHERE BuildingType='BUILDING_GRANARY';
 UPDATE Buildings SET Description = '{LOC_BUILDING_MARKET_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_EFFECT}' WHERE BuildingType='BUILDING_MARKET';
+UPDATE Buildings SET Description = '{LOC_BUILDING_ZOO_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_ENTER}' WHERE BuildingType='BUILDING_ZOO';
+UPDATE Buildings SET Description = 'LOC_CSC_BAKERS_STAGE_4_EFFECT_WATER' WHERE BuildingType='BUILDING_FERRIS_WHEEL';
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings_XP2
@@ -545,15 +623,8 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY'			),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY'			),
 
---  +0.1 Food per Citizen to adjacent Market cities (+0.1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB'		),
-
---  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
-		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD'	),
-
 --  Cache supplied Bakery status for route exports
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP'		),
-		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD'	),
 
 --  Mirror the adjacent Market transaction back onto the City of adjacent Bakeries for alternate Bakery art
 		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'	),
@@ -683,13 +754,9 @@ INSERT OR IGNORE INTO Modifiers
 --  +1 Food from the local Flour Mill
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 
---  +0.1 Food per Citizen to adjacent Market cities (+0.1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
-		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_MARKET'								),
+--  +0.1 Food per Citizen to adjacent Market cities
+		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',	'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
-
---  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
-		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN'				),
-		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
 
 --  Cache supplied Bakery status for route exports
 		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',						'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',	NULL										),
@@ -698,7 +765,6 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
-
 -- 	Grant the Stage 3 Service to a Commercial Hub with a Market
 		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_ATTACH_COMHUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_STAGE_3_EFFECT_PREREQ',			'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT',								'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',			NULL,										NULL												),
@@ -769,6 +835,30 @@ INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
 FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,						'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,			'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit,
+		'MODIFIER_BUILDING_YIELD_CHANGE',
+		NULL,
+		'REQSET_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
 
 
 
@@ -845,15 +935,10 @@ INSERT OR IGNORE INTO ModifierArguments
         (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'YieldType',           		'YIELD_FOOD'                                             		),
         ( 	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'Amount',             		1                                                               ),
 
---  +0.1 Food per Citizen to adjacent Market cities (+0.1 Gold return moved to CSC_Q_BAKERS_GOLD.sql)
+--  +0.1 Food per Citizen to adjacent Market cities
 		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'ModifierId',				'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET'							),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'YieldType',				'YIELD_FOOD'													),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'Amount',					0.1																),
-
---  +0.1 Production per Citizen return to the Bakery city from adjacent Markets
-		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER_PROD',					'ModifierId',				'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY'					),
-		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'YieldType',				'YIELD_PRODUCTION'												),
-		(	'MOD_CSC_BAKERS_MARKET_PRODUCTION_TO_BAKERY',						'Amount',					0.1																),
 
 --  Cache supplied Bakery status for route exports
 		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',						'Key',						'CSC_BAKERS_BAKERY_SUPPLIED'									),
@@ -974,6 +1059,65 @@ INSERT OR IGNORE INTO ModifierArguments
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'Amount',					Bit
 FROM CSC_BakersRouteStackBits;
 
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'YieldType',				'YIELD_PRODUCTION'
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 10000.0
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,							'YieldType',				'YIELD_FOOD'
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,							'Amount',					Bit / 10000.0
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,				'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,				'YieldType',				'YIELD_PRODUCTION'
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,				'Amount',					Bit
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit,
+		'BuildingType',
+		BuildingType
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit,
+		'YieldType',
+		'YIELD_CULTURE'
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit,
+		'Amount',
+		Bit
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
+
 
 
 --===========================================================================================================================================================================--
@@ -1012,7 +1156,7 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Food per Citizen to adjacent Market cities (+0.1 Production return here, +0.1 Gold return in CSC_Q_BAKERS_GOLD.sql)
+--  +0.1 Food per Citizen to adjacent Market cities
 		(	'REQSET_CSC_ADJ_MARKET',								'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQUIREMENTSET_TEST_ALL'		),
 
@@ -1049,21 +1193,42 @@ INSERT OR IGNORE INTO RequirementSets
 		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_SUPPLY_PREREQ',			'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE',				'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',				'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE',					'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE',				'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE',					'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1',			'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',				'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',			'REQUIREMENTSET_TEST_ALL'		),
 
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',          				'REQUIREMENTSET_TEST_ALL'       );
 
 INSERT OR IGNORE INTO RequirementSets
-		(	RequirementSetId,												RequirementSetType				)
-SELECT	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,				'REQUIREMENTSET_TEST_ALL'
+		(	RequirementSetId,										RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,		'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementSets
+		(	RequirementSetId,										RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,			'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementSets
+		(	RequirementSetId,										RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit,		'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSets
+		(	RequirementSetId,										RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit,	'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSets
+		(	RequirementSetId,										RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,		'REQUIREMENTSET_TEST_ALL'
 FROM CSC_BakersRouteStackBits;
 
 INSERT OR IGNORE INTO RequirementSets
-		(	RequirementSetId,												RequirementSetType				)
-SELECT	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,					'REQUIREMENTSET_TEST_ALL'
+		(	RequirementSetId,										RequirementSetType				)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,			'REQUIREMENTSET_TEST_ALL'
 FROM CSC_BakersRouteStackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1167,23 +1332,45 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_BAKERS_EXPORT_CAFE_SUPPLY_PREREQ',			'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC'		),
 		( 	'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE',				'REQ_CSC_BAKERS_IMPORT_CONSUMER_ROUTE'			),
 		( 	'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',				'REQ_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE'			),
-		( 	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE',					'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE'			),
+		( 	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE',				'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE'			),
 		( 	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE',					'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE'				),
 		( 	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1',			'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1'		),
-		( 	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',				'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1'			),
+		( 	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1',			'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1'		),
 
         ( 	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_PLOT_ADJ_TO_OWNER'              		),
         (  	'REQSET_CSC_ADJ_BAKERS_QUARTER',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'           	);
 
 INSERT OR IGNORE INTO RequirementSetRequirements
-		(	RequirementSetId,												RequirementId										)
-SELECT	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,				'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit
+		(	RequirementSetId,										RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit,		'REQ_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit
 FROM CSC_BakersRouteStackBits;
 
 INSERT OR IGNORE INTO RequirementSetRequirements
-		(	RequirementSetId,												RequirementId										)
-SELECT	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,					'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
+		(	RequirementSetId,										RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,			'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
 FROM CSC_BakersRouteStackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+		(	RequirementSetId,										RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,		'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+		(	RequirementSetId,										RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,			'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+		(	RequirementSetId,										RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit,		'REQ_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+		(	RequirementSetId,										RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit,
+		'REQ_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Requirements
@@ -1212,7 +1399,7 @@ INSERT OR IGNORE INTO Requirements
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Food to adjacent Market cities; +0.1 Production and +0.1 Gold returns to Bakery city per Citizen
+--  +0.1 Food to adjacent Market cities
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',			0				),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
@@ -1267,6 +1454,27 @@ INSERT OR IGNORE INTO Requirements
 SELECT	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,						'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
 FROM CSC_BakersRouteStackBits;
 
+INSERT OR IGNORE INTO Requirements
+		(	RequirementId,													RequirementType,							Inverse		)
+SELECT	'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,					'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO Requirements
+		(	RequirementId,													RequirementType,							Inverse		)
+SELECT	'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,					'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO Requirements
+		(	RequirementId,													RequirementType,							Inverse		)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit,					'REQUIREMENT_PLOT_PROPERTY_MATCHES',			0
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO Requirements
+		(	RequirementId,													RequirementType,							Inverse		)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit,	'REQUIREMENT_PLOT_PROPERTY_MATCHES',		0
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1291,7 +1499,7 @@ INSERT OR IGNORE INTO RequirementArguments
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Food to adjacent Market cities; +0.1 Production and +0.1 Gold returns to Bakery city per Citizen
+--  +0.1 Food to adjacent Market cities
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'DistrictType',					'DISTRICT_COMMERCIAL_HUB'						),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'BuildingType',					'BUILDING_MARKET'								),
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'BuildingType',					'BUILDING_CSC_BAKERS_BAKERY'					),
@@ -1367,6 +1575,52 @@ INSERT OR IGNORE INTO RequirementArguments
 SELECT	'REQ_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit,						'PropertyMinimum',				1
 FROM CSC_BakersRouteStackBits;
 
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit,					'PropertyMinimum',				1
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,					'PropertyMinimum',				1
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit,					'PropertyName',					'CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit,					'PropertyMinimum',				1
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit,
+		'PropertyName',
+		'CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,													Name,							Value										)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_BIT_' || Bit,
+		'PropertyMinimum',
+		1
+FROM CSC_BakersStage4CultureBuildings
+CROSS JOIN CSC_BakersStage4StackBits;
+
 
 --===========================================================================================================================================================================--
 /*	CAFE */
@@ -1378,118 +1632,25 @@ FROM CSC_BakersRouteStackBits;
 --	BuildingModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
-SELECT
-    'BUILDING_CSC_BAKERS_CAFE',
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'BUILDING_CSC_BAKERS_CAFE',
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Stage 4 threshold transaction yields now come from the customer-population Lua bridge.
 
-INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
-SELECT
-    'BUILDING_ZOO',
-    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'BUILDING_THERMAL_BATH',
-    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'BUILDING_FERRIS_WHEEL',
-    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
-
--- Moved to CSC_Q_BAKERS_GOLD.sql: BUILDING_ZOO/THERMAL_BATH/FERRIS_WHEEL → MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_*
+-- Gold handled in CSC_Q_BAKERS_GOLD.sql via the same Stage 4 Lua property bridge.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO Modifiers (
-    ModifierId,
-    ModifierType,
-    OwnerRequirementSetId,
-    SubjectRequirementSetId
-)
-SELECT
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO_AT_POP_' || Pop || '_ATTACH',
-    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
-    'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
-    'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS_AT_POP_' || Pop || '_ATTACH',
-    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
-    'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
-    'REQSET_CSC_ADJ_WATER_PARK'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Replaced by MOD_CSC_BAKERS_STAGE_4_*_BIT city-center property consumers.
 
-INSERT OR IGNORE INTO Modifiers (
-    ModifierId,
-    ModifierType,
-    OwnerRequirementSetId,
-    SubjectRequirementSetId
-)
-SELECT
-    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH',
-    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
-    'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
-    'REQSET_CSC_ADJ_BAKERS_QUARTER'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
-
--- Moved to CSC_Q_BAKERS_GOLD.sql: MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_* modifiers
+-- Gold handled in CSC_Q_BAKERS_GOLD.sql via the same Stage 4 Lua property bridge.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ModifierArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO ModifierArguments (
-    ModifierId,
-    Name,
-    Value
-)
-SELECT
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO_AT_POP_' || Pop || '_ATTACH',
-    'ModifierId',
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS_AT_POP_' || Pop || '_ATTACH',
-    'ModifierId',
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Replaced by MOD_CSC_BAKERS_STAGE_4_*_BIT city-center property consumers.
 
-INSERT OR IGNORE INTO ModifierArguments (
-    ModifierId,
-    Name,
-    Value
-)
-SELECT
-    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH',
-    'ModifierId',
-    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
-
--- Moved to CSC_Q_BAKERS_GOLD.sql: MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_* modifier arguments
+-- Gold handled in CSC_Q_BAKERS_GOLD.sql via the same Stage 4 Lua property bridge.
 
 
 

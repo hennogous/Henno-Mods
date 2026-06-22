@@ -61,6 +61,7 @@ VALUES	(
 									);
 
 UPDATE Buildings SET Description='LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION_GARDEN' WHERE BuildingType='BUILDING_CSC_BAKERS_CAFE';
+UPDATE Buildings SET Description = '{LOC_BUILDING_LEU_CONSERVATORY_DESC}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_GARDEN}' WHERE BuildingType='BUILDING_LEU_CONSERVATORY';
 
 /*
 INSERT INTO CivilopediaPageExcludes
@@ -93,18 +94,21 @@ VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',			'YIELD_CULTURE',					2	
 
 --  +1 Culture and +1 Production for every 5 Citizens in the city for each adjacent Conservatory (+1 Gold return in ModSupport_LGD_GOLD.sql)
 
-INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
-SELECT
-    'BUILDING_CSC_BAKERS_CAFE',
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_CONSERVATORY_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'BUILDING_LEU_CONSERVATORY',
-    'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Stage 4 Conservatory threshold yields are handled by the customer-population Lua bridge.
+
+DROP TABLE IF EXISTS CSC_BakersLGDStage4StackBits;
+
+CREATE TEMPORARY TABLE CSC_BakersLGDStage4StackBits
+		(	Bit INTEGER PRIMARY KEY	);
+
+INSERT INTO CSC_BakersLGDStage4StackBits
+		(	Bit	)
+VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	);
+
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,					ModifierId	)
+SELECT	'DISTRICT_CITY_CENTER',				'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit
+FROM CSC_BakersLGDStage4StackBits;
 
 INSERT INTO BuildingModifiers
 
@@ -126,19 +130,12 @@ INSERT INTO BuildingModifiers
 
 --  +1 Culture and +1 Production for every 5 Citizens in the city for each adjacent Conservatory (+1 Gold return in ModSupport_LGD_GOLD.sql)
 
-INSERT OR IGNORE INTO Modifiers (
-    ModifierId,
-    ModifierType,
-    OwnerRequirementSetId,
-    SubjectRequirementSetId
-)
-SELECT
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_CONSERVATORY_AT_POP_' || Pop || '_ATTACH',
-    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
-    'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
-    'REQSET_CSC_ADJ_GARDEN'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Replaced by Stage 4 customer-population city-center property consumers.
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,																			ModifierType,						OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'MODIFIER_BUILDING_YIELD_CHANGE',	NULL,					'REQSET_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_BakersLGDStage4StackBits;
 
 INSERT OR IGNORE INTO Modifiers	(
 	ModifierId,
@@ -204,17 +201,22 @@ VALUES
 
 --  +1 Food and +1 Gold for every 5 Citizens in the city for each adjacent Conservatory
 
-INSERT OR IGNORE INTO ModifierArguments (
-    ModifierId,
-    Name,
-    Value
-)
-SELECT
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_CONSERVATORY_AT_POP_' || Pop || '_ATTACH',
-    'ModifierId',
-    'MOD_CSC_BAKERS_CAFE_CULTURE_TO_CONSERVATORY'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Replaced by Stage 4 customer-population city-center property consumers.
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,																			Name,				Value							)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'BuildingType',		'BUILDING_LEU_CONSERVATORY'
+FROM CSC_BakersLGDStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,																			Name,				Value							)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'YieldType',		'YIELD_CULTURE'
+FROM CSC_BakersLGDStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,																			Name,				Value							)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'Amount',			Bit
+FROM CSC_BakersLGDStage4StackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 
@@ -252,6 +254,11 @@ INSERT OR IGNORE INTO RequirementSets
 		(	'REQSET_CSC_ADJ_GARDEN',			'REQUIREMENTSET_TEST_ALL'		),
         (   'REQSET_CSC_ADJ_CONSERVATORY',      'REQUIREMENTSET_TEST_ALL'       );
 
+INSERT OR IGNORE INTO RequirementSets
+		(	RequirementSetId,															RequirementSetType	)
+SELECT	'REQSET_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersLGDStage4StackBits;
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSetRequirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -268,6 +275,11 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_ADJ_CONSERVATORY',      'REQ_CSC_DISTRICT_IS_GARDEN'	),
         (   'REQSET_CSC_ADJ_CONSERVATORY',      'REQ_CSC_CITY_HAS_CONSERVATORY' );
 
+INSERT OR IGNORE INTO RequirementSetRequirements
+		(	RequirementSetId,															RequirementId										)
+SELECT	'REQSET_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_BakersLGDStage4StackBits;
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Requirements
@@ -281,6 +293,11 @@ INSERT OR IGNORE INTO Requirements
 		(	'REQ_CSC_DISTRICT_IS_GARDEN',		'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES'		),
         (   'REQ_CSC_CITY_HAS_CONSERVATORY',    'REQUIREMENT_CITY_HAS_BUILDING'                 );
 
+INSERT OR IGNORE INTO Requirements
+		(	RequirementId,															RequirementType,					Inverse	)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'REQUIREMENT_PLOT_PROPERTY_MATCHES',	0
+FROM CSC_BakersLGDStage4StackBits;
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -292,6 +309,16 @@ INSERT OR IGNORE INTO RequirementArguments
         (	RequirementId,						Name,					Value					)	VALUES
 		(	'REQ_CSC_DISTRICT_IS_GARDEN',		'DistrictType',			'DISTRICT_LEU_GARDEN'	),
         (   'REQ_CSC_CITY_HAS_CONSERVATORY',    'BuildingType',         'BUILDING_LEU_CONSERVATORY' );
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,															Name,				Value	)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'PropertyName',		'CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_BakersLGDStage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+		(	RequirementId,															Name,				Value	)
+SELECT	'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'PropertyMinimum',	1
+FROM CSC_BakersLGDStage4StackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CSC_AbilityAttachModifiers

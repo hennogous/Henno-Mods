@@ -1108,6 +1108,18 @@ function GetTradeRouteYieldString(routeInfo:table)
     return returnString;
 end
 
+function CSC_BTS_FormatSignedTooltipAmount(amount)
+    if amount == nil then
+        return "0";
+    end
+
+    if amount > 0 then
+        return "+" .. tostring(amount);
+    end
+
+    return tostring(amount);
+end
+
 -- Gets the number of trips a trader takes based on trader length, game speed and era
 function GetTripsRequiredFromTradePathLength(tradePathLength:number)
     local iSpeedCostMultiplier = GameInfo.GameSpeeds[1].CostMultiplier;
@@ -1240,19 +1252,19 @@ function GetYieldsForOriginCity(routeInfo:table, buildTooltip:boolean, checkCach
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", routeValue, kYieldInfo.IconString, kYieldInfo.Name, sDestinationCityName);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", CSC_BTS_FormatSignedTooltipAmount(routeValue), kYieldInfo.IconString, kYieldInfo.Name, sDestinationCityName);
                     end
                     if pathValue > 0 then
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", pathValue, kYieldInfo.IconString, kYieldInfo.Name);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", CSC_BTS_FormatSignedTooltipAmount(pathValue), kYieldInfo.IconString, kYieldInfo.Name);
                     end
                     if modifierValue > 0 then
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", modifierValue, kYieldInfo.IconString, kYieldInfo.Name);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", CSC_BTS_FormatSignedTooltipAmount(modifierValue), kYieldInfo.IconString, kYieldInfo.Name);
                     end
                 end
 
@@ -1267,7 +1279,7 @@ function GetYieldsForOriginCity(routeInfo:table, buildTooltip:boolean, checkCach
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", valueFromMultiplier, kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", CSC_BTS_FormatSignedTooltipAmount(valueFromMultiplier), kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
                     end
                 end
 
@@ -1339,19 +1351,19 @@ function GetYieldsForDestinationCity(routeInfo:table, buildTooltip:boolean, chec
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", routeValue, kYieldInfo.IconString, kYieldInfo.Name, sDestinationCityName);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", CSC_BTS_FormatSignedTooltipAmount(routeValue), kYieldInfo.IconString, kYieldInfo.Name, sDestinationCityName);
                     end
                     if pathValue > 0 then
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", pathValue, kYieldInfo.IconString, kYieldInfo.Name);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", CSC_BTS_FormatSignedTooltipAmount(pathValue), kYieldInfo.IconString, kYieldInfo.Name);
                     end
                     if modifierValue > 0 then
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", modifierValue, kYieldInfo.IconString, kYieldInfo.Name);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", CSC_BTS_FormatSignedTooltipAmount(modifierValue), kYieldInfo.IconString, kYieldInfo.Name);
                     end
                 end
 
@@ -1366,7 +1378,7 @@ function GetYieldsForDestinationCity(routeInfo:table, buildTooltip:boolean, chec
                         if tooltip ~= "" then
                             tooltip = tooltip .. "[NEWLINE]";
                         end
-                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", valueFromMultiplier, kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
+                        tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", CSC_BTS_FormatSignedTooltipAmount(valueFromMultiplier), kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
                     end
                 end
 
@@ -1429,20 +1441,20 @@ function GetYieldForOriginCity(routeInfo:table, yieldIndex:number, buildTooltip:
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", routeValue, kYieldInfo.IconString, kYieldInfo.Name, pDestinationCity:GetName());
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", CSC_BTS_FormatSignedTooltipAmount(routeValue), kYieldInfo.IconString, kYieldInfo.Name, pDestinationCity:GetName());
                 end
                 if pathValue > 0 then
                     kRouteInfo.HasPathBonus = true;
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", pathValue, kYieldInfo.IconString, kYieldInfo.Name);
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", CSC_BTS_FormatSignedTooltipAmount(pathValue), kYieldInfo.IconString, kYieldInfo.Name);
                 end
                 if modifierValue > 0 then
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", modifierValue, kYieldInfo.IconString, kYieldInfo.Name);
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", CSC_BTS_FormatSignedTooltipAmount(modifierValue), kYieldInfo.IconString, kYieldInfo.Name);
                 end
             end
 
@@ -1457,7 +1469,7 @@ function GetYieldForOriginCity(routeInfo:table, yieldIndex:number, buildTooltip:
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", valueFromMultiplier, kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", CSC_BTS_FormatSignedTooltipAmount(valueFromMultiplier), kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
                 end
             end
 
@@ -1512,20 +1524,20 @@ function GetYieldForDestinationCity(routeInfo:table, yieldIndex:number, buildToo
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", routeValue, kYieldInfo.IconString, kYieldInfo.Name, pDestinationCity:GetName());
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_DISTRICTS", CSC_BTS_FormatSignedTooltipAmount(routeValue), kYieldInfo.IconString, kYieldInfo.Name, pDestinationCity:GetName());
                 end
                 if pathValue > 0 then
                     kRouteInfo.HasPathBonus = true;
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", pathValue, kYieldInfo.IconString, kYieldInfo.Name);
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_TRADING_POSTS", CSC_BTS_FormatSignedTooltipAmount(pathValue), kYieldInfo.IconString, kYieldInfo.Name);
                 end
                 if modifierValue > 0 then
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", modifierValue, kYieldInfo.IconString, kYieldInfo.Name);
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", CSC_BTS_FormatSignedTooltipAmount(modifierValue), kYieldInfo.IconString, kYieldInfo.Name);
                 end
             end
 
@@ -1540,7 +1552,7 @@ function GetYieldForDestinationCity(routeInfo:table, yieldIndex:number, buildToo
                     if tooltip ~= "" then
                         tooltip = tooltip .. "[NEWLINE]";
                     end
-                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", valueFromMultiplier, kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
+                    tooltip = tooltip .. Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_MULTIPLIERS", CSC_BTS_FormatSignedTooltipAmount(valueFromMultiplier), kYieldInfo.IconString, kYieldInfo.Name, multiplierAsPercent);
                 end
             end
 

@@ -1,9 +1,11 @@
--- CSC_UI_Text
--- Generated from project\localization\CSC_UI_Text.md by project/tools/localization/loc_md_to_sql.py
--- Edit the Markdown source, then regenerate this file.
---------------------------------------------------------------
+# CSC_UI_Text
+output: Civ Supply Chains/Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Text.sql
+language: en_US
 
--- Raw SQL 1
+## Raw SQL 1
+mode: raw
+
+```sql
 INSERT OR IGNORE  INTO LocalizedText	
 		(Tag,																Language,		Text)
 VALUES	('LOC_NOTIFICATION_HENNO_NEW_CITY_QUARTER_ABILITY_MESSAGE',			'en_US',		"Service Established"),
@@ -24,3 +26,4 @@ VALUES	('LOC_NOTIFICATION_HENNO_NEW_CITY_QUARTER_ABILITY_MESSAGE',			'en_US',		"
 		('LOC_ZEGA_STACK_AMOUNT_CHANGE_DESC',								'en_US',		" (from {1_iStackAmount} {2_ChangeType} {1_Num : plural 1?Source; other?Sources;})."),
 		('LOC_HENNO_CITY_ABILITY_SOURCE_INCREASE',							'en_US',		"additional"),
 		('LOC_HENNO_CITY_ABILITY_SOURCE_DECREASE',							'en_US',		"removed");
+```

@@ -1,7 +1,12 @@
--- CSC_MC_MODE_TEXT
--- Generated from project\localization\CSC_MC_MODE_TEXT.md by project/tools/localization/loc_md_to_sql.py
+-- CSC_MC_MODE_TEXT Example
+-- Generated from project\localization\examples\CSC_MC_MODE_TEXT.md by project/tools/localization/loc_md_to_sql.py
 -- Edit the Markdown source, then regenerate this file.
 --------------------------------------------------------------
+
+INSERT OR REPLACE INTO LocalizedText
+    (Language, Tag, Text)
+VALUES
+    ('en_US', 'LOC_CSC_EXAMPLE_MARKDOWN_ONLY', 'This short row demonstrates INSERT OR REPLACE generation. It is only written to the example output file.');
 
 UPDATE LocalizedText
 SET Text = '+1 [ICON_Food] Food from each adjacent Base Materials improvement, increased to +2 [ICON_Food] Food from an Industry and +3 [ICON_Food] Food from a Corporation, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold, increased to +2 each for an Industry and +3 each for a Corporation.[NEWLINE]+1 [ICON_Production] Production and +1 [ICON_Gold] Gold from the local Bakery and Café, in exchange for +1 [ICON_Food] Food.[NEWLINE]+1 [ICON_Production] Production and +1 [ICON_Gold] Gold from an adjacent Granary, in exchange for +1 [ICON_Food] Food.[NEWLINE]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] Trade Routes to the city, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Quarter, if the origin city does not have a Bakers'' Quarter.[NEWLINE][NEWLINE]At Feudalism, a supplied Water Mill or Wind Mill can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service in an adjacent City Center with a Granary.'

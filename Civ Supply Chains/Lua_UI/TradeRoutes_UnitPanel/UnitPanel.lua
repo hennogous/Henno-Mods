@@ -28,6 +28,14 @@ end
 
 local CSC_PROP_BAKERY_SUPPLIED:string = "CSC_BAKERS_BAKERY_SUPPLIED";
 local CSC_PROP_CAFE_SUPPLIED:string = "CSC_BAKERS_CAFE_SUPPLIED";
+local CSC_UNIT_PANEL_YIELD_ORDER:table = {
+	"YIELD_FOOD",
+	"YIELD_PRODUCTION",
+	"YIELD_GOLD",
+	"YIELD_SCIENCE",
+	"YIELD_CULTURE",
+	"YIELD_FAITH",
+};
 
 function CSC_UnitPanel_IsPositiveProperty(owner:table, propertyName:string)
 	if owner == nil then return false; end
@@ -1679,19 +1687,23 @@ function TradeUnitView( viewData:table )
 			local outgoingRoutes:table = city:GetTrade():GetOutgoingRoutes();
 			for i,route in ipairs(outgoingRoutes) do
 				if viewData.UnitID == route.TraderUnitID then
-					-- Add Origin Yields
 					Controls.TradeResourceList:DestroyAllChildren();
+
+					-- Accumulate first, then render in the same broad order BTS uses:
+					-- Food, Production, Gold, Science, Culture, Faith. The base game used
+					-- pairs(route.OriginYields), which can produce odd ordering once CSC
+					-- injects Food after the vanilla loop.
+					local originYieldValues:table = {};
 					for j,yieldInfo in pairs(route.OriginYields) do
 						if yieldInfo.Amount > 0 then
-							local yieldDetails:table = GameInfo.Yields[yieldInfo.YieldIndex];
-							AddTradeResourceEntry(yieldDetails, Round(yieldInfo.Amount,1));
-							hideTradeYields = false;
+							originYieldValues[yieldInfo.YieldIndex] = (originYieldValues[yieldInfo.YieldIndex] or 0) + Round(yieldInfo.Amount,1);
 						end
 					end
 
 					-- CSC Bakers import routes give origin-side Food and Amenities after the
 					-- route exists. Add them here so the selected Trader panel matches the
 					-- actual city effects instead of only the vanilla route object's yields.
+					local cscAmenityAmount:number = 0;
 					local destinationPlayer:table = Players[route.DestinationCityPlayer];
 					if destinationPlayer ~= nil then
 						local destinationCities:table = destinationPlayer:GetCities();
@@ -1700,11 +1712,26 @@ function TradeUnitView( viewData:table )
 						if cscBakersRouteCount > 0 then
 							local foodYield:table = GameInfo.Yields["YIELD_FOOD"];
 							if foodYield ~= nil then
-								AddTradeResourceEntry(foodYield, cscBakersRouteCount);
+								originYieldValues[foodYield.Index] = (originYieldValues[foodYield.Index] or 0) + cscBakersRouteCount;
 							end
-							AddTradeIconEntry("[ICON_Amenities]", tostring(cscBakersRouteCount));
-							hideTradeYields = false;
+							cscAmenityAmount = cscBakersRouteCount;
 						end
+					end
+
+					for _, yieldType in ipairs(CSC_UNIT_PANEL_YIELD_ORDER) do
+						local yieldDetails:table = GameInfo.Yields[yieldType];
+						if yieldDetails ~= nil then
+							local yieldValue:number = originYieldValues[yieldDetails.Index] or 0;
+							if yieldValue > 0 then
+								AddTradeResourceEntry(yieldDetails, yieldValue);
+								hideTradeYields = false;
+							end
+						end
+					end
+
+					if cscAmenityAmount > 0 then
+						AddTradeIconEntry("[ICON_Amenities]", "+" .. tostring(cscAmenityAmount));
+						hideTradeYields = false;
 					end
 				end
 			end
@@ -1723,8 +1750,8 @@ function AddTradeResourceEntry(yieldInfo:table, yieldValue:number)
 	ContextPtr:BuildInstanceForControl( "TradeResourceyInstance", entryInstance, Controls.TradeResourceList );
 	
 	local icon:string, text:string = FormatTradeYieldText(yieldInfo, yieldValue);
-	entryInstance.ResourceEntryIcon:SetText(icon);
-	entryInstance.ResourceEntryText:SetText(text);
+	entryInstance.ResourceEntryIcon:SetText(text);
+	entryInstance.ResourceEntryText:SetText(icon);
 	entryInstance.ResourceEntryStack:CalculateSize();
 end
 
@@ -1733,8 +1760,8 @@ function AddTradeIconEntry(icon:string, text:string)
 	local entryInstance:table = {};
 	ContextPtr:BuildInstanceForControl( "TradeResourceyInstance", entryInstance, Controls.TradeResourceList );
 
-	entryInstance.ResourceEntryIcon:SetText(icon);
-	entryInstance.ResourceEntryText:SetText(text);
+	entryInstance.ResourceEntryIcon:SetText(text);
+	entryInstance.ResourceEntryText:SetText(icon);
 	entryInstance.ResourceEntryStack:CalculateSize();
 end
 

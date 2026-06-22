@@ -1,0 +1,1036 @@
+{
+  "schemaVersion": 1,
+  "sourceProject": "Civ Supply Chains/Civ Supply Chains.civ6proj",
+  "blocks": {
+    "actionCriteria": [
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "Monopolies_Mode"
+        },
+        "children": [
+          {
+            "tag": "ConfigurationValueMatches",
+            "children": [
+              {
+                "tag": "ConfigurationId",
+                "text": "GAMEMODE_MONOPOLIES"
+              },
+              {
+                "tag": "Group",
+                "text": "Game"
+              },
+              {
+                "tag": "Value",
+                "text": "1"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "CSC_MC_REMOVE_BONUSES"
+        },
+        "children": [
+          {
+            "tag": "ConfigurationValueMatches",
+            "children": [
+              {
+                "tag": "ConfigurationId",
+                "text": "CSC_MC_REMOVE_BONUSES"
+              },
+              {
+                "tag": "Group",
+                "text": "Game"
+              },
+              {
+                "tag": "Value",
+                "text": "1"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_CH"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "5a76eed0-18c0-4496-9944-f6f0f0e2553d"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_CR"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "664d17a5-f3be-493a-9332-8e20da1166fa"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_JNRW"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "73b1478a-73bf-4907-8914-b1b5acca388b"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_LAR"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "78aa4d0b-742a-4d7a-be7d-a8317d69fb30"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_R2"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "23879c66-7cbb-4320-a891-ad24026f1b6b"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_SO"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "4922ba47-61e1-4b15-9281-db996b14522d"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_SR"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "37fdca0b-9275-4235-9c18-c7ec348f930e"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_CL"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "95b955fc-2dd1-41c5-989e-0265d98a28bd"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_6T"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "3ec8a6fb-2a3f-425f-bff5-b00146b7d5b0"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_LGD"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "1bd6e042-25c3-4584-9bc3-66f1ce3bd249"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "BetterTradeScreenMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "8d4fa23a-ef43-440c-8422-2bec11f8f5d7"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "CSC_A_RESOURCES"
+        },
+        "children": [
+          {
+            "tag": "ConfigurationValueMatches",
+            "children": [
+              {
+                "tag": "ConfigurationId",
+                "text": "CSC_INCLUDE_ANIMAL_RESOURCES"
+              },
+              {
+                "tag": "Group",
+                "text": "Game"
+              },
+              {
+                "tag": "Value",
+                "text": "1"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_REMOVE_UNUSED"
+        },
+        "children": [
+          {
+            "tag": "ConfigurationValueMatches",
+            "children": [
+              {
+                "tag": "ConfigurationId",
+                "text": "CSC_REMOVE_UNUSED_MODDED_RESOURCES"
+              },
+              {
+                "tag": "Group",
+                "text": "Game"
+              },
+              {
+                "tag": "Value",
+                "text": "1"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "CSC_NO_A_RESOURCES"
+        },
+        "children": [
+          {
+            "tag": "ConfigurationValueMatches",
+            "children": [
+              {
+                "tag": "ConfigurationId",
+                "text": "CSC_INCLUDE_ANIMAL_RESOURCES"
+              },
+              {
+                "tag": "Group",
+                "text": "Game"
+              },
+              {
+                "tag": "Value",
+                "text": "0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "Expansion1or2"
+        },
+        "children": [
+          {
+            "tag": "RuleSetInUse",
+            "text": "RULESET_EXPANSION_1,RULESET_EXPANSION_2"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED"
+        },
+        "children": [
+          {
+            "tag": "ConfigurationValueMatches",
+            "children": [
+              {
+                "tag": "ConfigurationId",
+                "text": "CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS"
+              },
+              {
+                "tag": "Group",
+                "text": "Game"
+              },
+              {
+                "tag": "Value",
+                "text": "0"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "frontEndActions": [
+      {
+        "type": "UpdateDatabase",
+        "id": "Settings",
+        "files": [
+          "Settings/Settings.xml"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "Settings_Text",
+        "files": [
+          "Settings/Settings_Text.xml"
+        ]
+      }
+    ],
+    "inGameActions": [
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_SETUP",
+        "properties": {
+          "LoadOrder": "95"
+        },
+        "files": [
+          "Data/CSC_Q_SETUP.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_BAKERS",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_BAKERS.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_BAKERS_GOLD",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "files": [
+          "Data/CSC_Q_BAKERS_GOLD.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_QUARTERS_TEXT",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "files": [
+          "Text/CSC_QUARTERS_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_UI_CITY_PANEL_TEXT",
+        "properties": {
+          "LoadOrder": "9999999"
+        },
+        "files": [
+          "Text/CSC_UI_CITY_PANEL_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_BAKERS_MC_MODE",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Data/CSC_Q_BAKERS_MC_MODE.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_BAKERS_MC_MODE_GOLD",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_MC_MODE_REMOVE_BONUSES",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "criteria": [
+          "CSC_MC_REMOVE_BONUSES",
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Data/CSC_MC_MODE_REMOVE_BONUSES.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_MC_MODE_REMOVE_BONUSES_TEXT",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "criteria": [
+          "CSC_MC_REMOVE_BONUSES",
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Text/CSC_MC_MODE_REMOVE_BONUSES_TEXT.xml"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_MC_MODE_TEXT",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Text/CSC_MC_MODE_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_CH",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_CH"
+        ],
+        "files": [
+          "ModSupport/ModSupport_CH.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_LAR",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_LAR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LAR.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_R2"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_SR",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_SR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_SR.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_CR",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_CR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_CR.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_SO",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_SO"
+        ],
+        "files": [
+          "ModSupport/ModSupport_SO.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2_LAR",
+        "properties": {
+          "LoadOrder": "99"
+        },
+        "criteria": [
+          "ModSupport_R2",
+          "ModSupport_LAR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_LAR.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2_SO",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_R2",
+          "ModSupport_SO"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_SO.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_JNRW",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "ModSupport_JNRW"
+        ],
+        "files": [
+          "ModSupport/ModSupport_JNRW.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_A_RESOURCES",
+        "properties": {
+          "LoadOrder": "50"
+        },
+        "criteria": [
+          "CSC_A_RESOURCES"
+        ],
+        "files": [
+          "Data/CSC_A_RESOURCES.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_LAR_A",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "CSC_A_RESOURCES",
+          "ModSupport_LAR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LAR_A.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2_A",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "CSC_A_RESOURCES",
+          "ModSupport_R2"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_A.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_SO_A",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "criteria": [
+          "CSC_A_RESOURCES",
+          "ModSupport_SO"
+        ],
+        "files": [
+          "ModSupport/ModSupport_SO_A.sql"
+        ]
+      },
+      {
+        "type": "DoNothing",
+        "id": "CSC_Q_TAILORS",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_TAILORS.sql"
+        ]
+      },
+      {
+        "type": "DoNothing",
+        "id": "CSC_Q_APOTHECARIES",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_APOTHECARIES.sql"
+        ]
+      },
+      {
+        "type": "DoNothing",
+        "id": "CSC_Q_STONEMASONS",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_STONEMASONS.sql"
+        ]
+      },
+      {
+        "type": "DoNothing",
+        "id": "CSC_Q_CARPENTERS",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_CARPENTERS.sql"
+        ]
+      },
+      {
+        "type": "DoNothing",
+        "id": "CSC_Q_BLACKSMITHS",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_BLACKSMITHS.sql"
+        ]
+      },
+      {
+        "type": "DoNothing",
+        "id": "CSC_Q_GOLDSMITHS",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_GOLDSMITHS.sql"
+        ]
+      },
+      {
+        "type": "DoNothing",
+        "id": "CSC_Q_BREWERS",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_BREWERS.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_R2_SR",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_R2",
+          "ModSupport_SR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_SR.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_REMOVE_ALL_UNUSED",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_REMOVE_UNUSED",
+          "CSC_NO_A_RESOURCES"
+        ],
+        "files": [
+          "ModSupport/ModSupport_REMOVE_ALL_UNUSED.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_KEEP_A_REMOVE_UNUSED",
+        "properties": {
+          "LoadOrder": "99902"
+        },
+        "criteria": [
+          "ModSupport_REMOVE_UNUSED",
+          "CSC_A_RESOURCES"
+        ],
+        "files": [
+          "ModSupport/ModSupport_A_REMOVE_UNUSED.sql"
+        ]
+      },
+      {
+        "type": "UpdateArt",
+        "id": "UpdateArt",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "files": [
+          "(Mod Art Dependency File)"
+        ]
+      },
+      {
+        "type": "UpdateIcons",
+        "id": "UpdateIcons",
+        "files": [
+          "Icons/CSC_BAKERS_ICONS.sql",
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_RESOURCES",
+        "properties": {
+          "LoadOrder": "98"
+        },
+        "files": [
+          "Data/CSC_RESOURCES.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_RESOURCES_TEXT",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Text/CSC_RESOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_CL",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "criteria": [
+          "ModSupport_CL"
+        ],
+        "files": [
+          "ModSupport/ModSupport_CL.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_6T",
+        "properties": {
+          "LoadOrder": "102"
+        },
+        "criteria": [
+          "ModSupport_6T"
+        ],
+        "files": [
+          "ModSupport/ModSupport_6T.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Ruivo_AdjacencyProcessor",
+        "properties": {
+          "LoadOrder": "3000"
+        },
+        "files": [
+          "Lua_UI/Ruivo_Adjacencies/CSC_Ruivo_AdjacencyProcessor.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_LGD",
+        "properties": {
+          "LoadOrder": "2005"
+        },
+        "criteria": [
+          "ModSupport_LGD"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "ModSupport_LGD_GOLD",
+        "properties": {
+          "LoadOrder": "2006"
+        },
+        "criteria": [
+          "ModSupport_LGD"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD_GOLD.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_LGD_TEXT",
+        "properties": {
+          "LoadOrder": "2005"
+        },
+        "criteria": [
+          "ModSupport_LGD"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_CL_TEXT",
+        "properties": {
+          "LoadOrder": "1000"
+        },
+        "criteria": [
+          "ModSupport_CL"
+        ],
+        "files": [
+          "ModSupport/ModSupport_CL_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_QUARTERS_PEDIA",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "files": [
+          "Text/CSC_QUARTERS_PEDIA.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_A_RESOURCES_TEXT",
+        "properties": {
+          "LoadOrder": "102"
+        },
+        "criteria": [
+          "CSC_A_RESOURCES"
+        ],
+        "files": [
+          "Text/CSC_A_RESOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_LAR_Text",
+        "properties": {
+          "LoadOrder": "102"
+        },
+        "criteria": [
+          "ModSupport_LAR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LAR_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_R2_Text",
+        "properties": {
+          "LoadOrder": "102"
+        },
+        "criteria": [
+          "ModSupport_R2"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_MAB_DB_RingFix",
+        "properties": {
+          "LoadOrder": "9999999"
+        },
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_DB_Dynamic.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_UI_Text",
+        "properties": {
+          "LoadOrder": "9999999"
+        },
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Text.sql"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_UI_MCUIS",
+        "properties": {
+          "LoadOrder": "500"
+        },
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/Suk_MCUIS_CSC.lua",
+          "Lua_UI/Notifications_Suk_MCUIS/Suk_MCUIS_CityPanelFix.lua"
+        ]
+      },
+      {
+        "type": "UpdateIcons",
+        "id": "CSC_UI_Notifications_Icons_XP1",
+        "properties": {
+          "LoadOrder": "500"
+        },
+        "criteria": [
+          "Expansion1or2",
+          "CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED"
+        ],
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons_XP1.sql"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_UI_Notifications",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "500"
+        },
+        "criteria": [
+          "CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED"
+        ],
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications.xml"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_UI_NotificationPanel",
+        "properties": {
+          "LoadOrder": "500"
+        },
+        "criteria": [
+          "CSC_SUPPLY_CHAIN_NOTIFICATIONS_ENABLED"
+        ],
+        "files": [
+          "Lua_UI/Notifications_Suk_MCUIS/NotificationPanel_CSC_UI.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_ArtProperties",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/ArtProperties/CSC_ArtProperties.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_CustomerPopulationReturns",
+        "properties": {
+          "LoadOrder": "502"
+        },
+        "files": [
+          "Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_TradeRouteInteractions_Gameplay",
+        "properties": {
+          "LoadOrder": "503"
+        },
+        "files": [
+          "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions_Gameplay.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_TradeRouteInteractions",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "502"
+        },
+        "files": [
+          "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.xml"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_BTS_TradeRouteSupport",
+        "properties": {
+          "LoadOrder": "60000"
+        },
+        "criteria": [
+          "BetterTradeScreenMod"
+        ],
+        "files": [
+          "Lua_UI/TradeRoutes_BTS/CSC_BTS_TradeRoutePreviewSupport.lua",
+          "Lua_UI/TradeRoutes_BTS/TradeSupport.lua",
+          "Replacements/TradeRouteChooser.lua"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_UnitPanelTradeRouteSupport",
+        "properties": {
+          "LoadOrder": "50001"
+        },
+        "files": [
+          "Lua_UI/TradeRoutes_UnitPanel/UnitPanel.lua"
+        ]
+      }
+    ]
+  }
+}

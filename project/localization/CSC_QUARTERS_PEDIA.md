@@ -1,9 +1,11 @@
--- CSC_QUARTERS_PEDIA
--- Generated from project\localization\CSC_QUARTERS_PEDIA.md by project/tools/localization/loc_md_to_sql.py
--- Edit the Markdown source, then regenerate this file.
---------------------------------------------------------------
+# CSC_QUARTERS_PEDIA
+output: Civ Supply Chains/Text/CSC_QUARTERS_PEDIA.sql
+language: en_US
 
--- Raw SQL 1
+## Raw SQL 1
+mode: raw
+
+```sql
 INSERT OR REPLACE INTO CivilopediaPageGroups
 		(SectionID,		PageGroupId,			SortIndex,	VisibleIfEmpty,	Tooltip,	Name)
 VALUES	('CONCEPTS',	'CIV_SUPPLY_CHAINS',	4,			0,				'',			'LOC_PEDIA_CONCEPTS_PAGEGROUP_CSC_SUPPLY_CHAINS_NAME');
@@ -75,3 +77,4 @@ VALUES	('CSC_Quarters',                'CSCBAKERSBASE',            20);
 INSERT OR REPLACE INTO CivilopediaPageLayoutChapters
 		(PageLayoutId,					ChapterId,			        SortIndex)	
 VALUES	('CSC_Quarters',                'CSCBAKERSSPEC',            30); */
+```

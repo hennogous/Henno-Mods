@@ -33,10 +33,6 @@ INSERT OR IGNORE INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL'					),
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'					),
 
---  +0.1 Gold per Citizen to the city for each adjacent Market
-		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER'		),
-		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER'		),
-
 --	CAFE --------------------------------------------------------------------------
 
 --	+1 Gold to adjacent specialty materials improvements
@@ -59,6 +55,26 @@ INSERT INTO CSC_BakersRouteStackBits
 		(	Bit	)
 VALUES	(	2	), (	4	), (	8	), (	16	);
 
+DROP TABLE IF EXISTS CSC_BakersScaledAmountBits;
+
+CREATE TEMPORARY TABLE CSC_BakersScaledAmountBits
+		(	Bit INTEGER PRIMARY KEY	);
+
+INSERT INTO CSC_BakersScaledAmountBits
+		(	Bit	)
+VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	),
+		(	256	), (	512	), (	1024	), (	2048	), (	4096	), (	8192	), (	16384	), (	32768	),
+		(	65536	), (	131072	), (	262144	), (	524288	);
+
+DROP TABLE IF EXISTS CSC_BakersStage4StackBits;
+
+CREATE TEMPORARY TABLE CSC_BakersStage4StackBits
+		(	Bit INTEGER PRIMARY KEY	);
+
+INSERT INTO CSC_BakersStage4StackBits
+		(	Bit	)
+VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	);
+
 INSERT OR IGNORE INTO DistrictModifiers
 
 		(	DistrictType,							ModifierId										)	VALUES
@@ -66,6 +82,20 @@ INSERT OR IGNORE INTO DistrictModifiers
 --  +1 Gold return from eligible import routes to supplied Bakers buildings
 		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD'				),
 		(	'DISTRICT_CITY_CENTER',					'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD'				);
+
+--  Customer-population return stacks. Lua sums adjacent Market city population
+--  and writes scaled per-population amount bits on the seller city's City
+--  Center plot. This preserves +0.1 Gold per customer citizen while paying
+--  the seller city.
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO DistrictModifiers
+		(	DistrictType,							ModifierId										)
+SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit
+FROM CSC_BakersStage4StackBits;
 
 --  Extra export-return stacks. The base modifier handles the +1 bit; these generated
 --  rows add +2, +4, +8, and +16 when Lua sets the matching route-count bit.
@@ -99,10 +129,6 @@ INSERT OR IGNORE INTO Modifiers
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Gold per Citizen to the city for each adjacent Market
-		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN'				),
-		(	'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
-
 -- 	CAFE --------------------------------------------------------------------------
 
 --	+1 Gold to adjacent specialty materials improvements
@@ -131,6 +157,16 @@ INSERT OR IGNORE INTO Modifiers
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
 FROM CSC_BakersRouteStackBits;
 
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO Modifiers
+		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit
+FROM CSC_BakersStage4StackBits;
+
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -151,11 +187,6 @@ INSERT OR IGNORE INTO ModifierArguments
 -- 	+1 Gold return from an adjacent Granary
 		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER',						'ModifierId',				'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL'								),
 		(	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND',						'ModifierId',				'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'								),
-
---  +0.1 Gold per Citizen to the city for each adjacent Market
-		(	'MOD_CSC_BAKERS_MARKET_ATTACH_BAKERS_QUARTER',						'ModifierId',				'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY'							),
-		(	'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY',								'YieldType',				'YIELD_GOLD'													),
-		(	'MOD_CSC_BAKERS_MARKET_GOLD_TO_BAKERY',								'Amount',					0.1																),
 
 --	+1 Gold to adjacent specialty materials improvements
 		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC',							'ModifierId',				'MOD_CSC_ALL_GOLD_TO_PLOT'										),
@@ -211,6 +242,31 @@ INSERT OR IGNORE INTO ModifierArguments
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'Amount',					Bit
 FROM CSC_BakersRouteStackBits;
 
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'YieldType',				'YIELD_GOLD'
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 10000.0
+FROM CSC_BakersScaledAmountBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'YieldType',				'YIELD_GOLD'
+FROM CSC_BakersStage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+		(	ModifierId,															Name,						Value															)
+SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'Amount',					Bit
+FROM CSC_BakersStage4StackBits;
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -226,55 +282,16 @@ FROM CSC_BakersRouteStackBits;
 --	BuildingModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
-SELECT
-    'BUILDING_ZOO',
-    'MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'BUILDING_THERMAL_BATH',
-    'MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0
-UNION ALL
-SELECT
-    'BUILDING_FERRIS_WHEEL',
-    'MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_' || Pop || '_ATTACH'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Stage 4 Café Gold returns now come from the customer-population Lua bridge.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO Modifiers (
-    ModifierId,
-    ModifierType,
-    OwnerRequirementSetId,
-    SubjectRequirementSetId
-)
-SELECT
-    'MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_' || Pop || '_ATTACH',
-    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
-    'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
-    'REQSET_CSC_ADJ_BAKERS_QUARTER'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Replaced by MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_* city-center property consumers.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ModifierArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO ModifierArguments (
-    ModifierId,
-    Name,
-    Value
-)
-SELECT
-    'MOD_CSC_BAKERS_GOLD_TO_CAFE_AT_POP_' || Pop || '_ATTACH',
-    'ModifierId',
-    'MOD_CSC_BAKERS_GOLD_TO_CAFE'
-FROM CSC_PopulationLevels
-WHERE Pop > 0;
+-- Replaced by MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_* city-center property consumers.

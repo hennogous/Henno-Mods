@@ -99,26 +99,59 @@ local function CSC_BTS_AppendTooltip(existingTooltip, newLine)
 	return newLine;
 end
 
-local function CSC_BTS_FormatYieldTooltip(amount, iconString, yieldName, sourceName)
-	local tooltip = Locale.Lookup("LOC_ROUTECHOOSER_YIELD_SOURCE_BONUSES", amount, iconString, yieldName);
-	if sourceName ~= nil and sourceName ~= "" then
-		tooltip = tooltip .. " (" .. sourceName .. ")";
+local function CSC_BTS_PrependTooltip(existingTooltip, newLine)
+	if newLine == nil or newLine == "" then
+		return existingTooltip or "";
 	end
 
-	return tooltip;
+	if existingTooltip ~= nil and existingTooltip ~= "" then
+		return newLine .. "[NEWLINE]" .. existingTooltip;
+	end
+
+	return newLine;
 end
 
-local function CSC_BTS_FormatAmenityTooltip(amount)
+local function CSC_BTS_FormatSignedAmount(amount)
+	if amount == nil then
+		return "0";
+	end
+
+	if amount > 0 then
+		return "+" .. tostring(amount);
+	end
+
+	return tostring(amount);
+end
+
+local function CSC_BTS_FormatQuarterYieldTooltip(amount, iconString, yieldName, directionName)
+	return CSC_BTS_FormatSignedAmount(amount) .. " " .. iconString .. " " .. Locale.Lookup(yieldName)
+		.. " from Quarter " .. directionName .. ".";
+end
+
+local function CSC_BTS_FormatQuarterAmenityTooltip(amount)
 	local amenityText = "Amenity";
 	if amount ~= 1 then
 		amenityText = "Amenities";
 	end
 
-	return tostring(amount) .. " [ICON_Amenities] " .. amenityText .. " from imported Bakers goods.";
+	return CSC_BTS_FormatSignedAmount(amount) .. " [ICON_Amenities] " .. amenityText .. " from Quarter imports.";
+end
+
+local function CSC_BTS_GetLastPositiveYieldIndex(yieldValues)
+	if yieldValues == nil then return FOOD_INDEX; end
+
+	for yieldIndex = FAITH_INDEX, FOOD_INDEX, -1 do
+		if (yieldValues[yieldIndex] or 0) > 0 then
+			return yieldIndex;
+		end
+	end
+
+	return FOOD_INDEX;
 end
 
 -- Mutates BTS's normal yield arrays so its existing display, sorting, and overview logic can do the rest.
--- Amenities are not a BTS yield column, so the first implementation exposes them in the Food tooltip.
+-- Amenities are not a BTS yield column, so the first implementation adds them to the last positive yield
+-- tooltip. That keeps the aggregate tooltip ordered after yields without rewriting BTS' tooltip renderer.
 function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldTooltips, buildTooltip, target)
 	if yieldValues == nil then return; end
 
@@ -132,31 +165,29 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 		yieldValues[FOOD_INDEX] = (yieldValues[FOOD_INDEX] or 0) + routeCount;
 
 		if buildTooltip and yieldTooltips ~= nil then
-			local tooltip = CSC_BTS_FormatYieldTooltip(routeCount, "[ICON_Food]", "LOC_YIELD_FOOD_NAME");
-			tooltip = tooltip .. "[NEWLINE]" .. CSC_BTS_FormatAmenityTooltip(routeCount);
-			yieldTooltips[FOOD_INDEX] = CSC_BTS_AppendTooltip(yieldTooltips[FOOD_INDEX], tooltip);
+			yieldTooltips[FOOD_INDEX] = CSC_BTS_PrependTooltip(
+				yieldTooltips[FOOD_INDEX],
+				CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Food]", "LOC_YIELD_FOOD_NAME", "imports")
+			);
+
+			local amenityTooltipIndex = CSC_BTS_GetLastPositiveYieldIndex(yieldValues);
+			yieldTooltips[amenityTooltipIndex] = CSC_BTS_AppendTooltip(
+				yieldTooltips[amenityTooltipIndex],
+				CSC_BTS_FormatQuarterAmenityTooltip(routeCount)
+			);
 		end
 	elseif target == "Destination" then
 		yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + routeCount;
 		yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + routeCount;
 
 		if buildTooltip and yieldTooltips ~= nil then
-			local sourceText = "";
-			if bBakeryRoute and bCafeRoute then
-				sourceText = "supplied Bakery and Cafe exports";
-			elseif bBakeryRoute then
-				sourceText = "supplied Bakery export";
-			else
-				sourceText = "supplied Cafe export";
-			end
-
-			yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_AppendTooltip(
+			yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
 				yieldTooltips[PRODUCTION_INDEX],
-				CSC_BTS_FormatYieldTooltip(routeCount, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", sourceText)
+				CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
 			);
-			yieldTooltips[GOLD_INDEX] = CSC_BTS_AppendTooltip(
+			yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
 				yieldTooltips[GOLD_INDEX],
-				CSC_BTS_FormatYieldTooltip(routeCount, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", sourceText)
+				CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
 			);
 		end
 	end
