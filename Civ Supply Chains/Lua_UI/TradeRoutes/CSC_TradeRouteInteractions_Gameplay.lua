@@ -3,8 +3,6 @@
 --	Civ Supply Chains - Trade Route Interactions
 --=================================================================================================================
 --=================================================================================================================
-print("Henno's CSC Trade Route Interactions - Gameplay Script loaded!");
-
 -- This file runs as a gameplay script. It does not discover routes itself; the UI
 -- script does that, then calls this script through PlayerOperations.EXECUTE_SCRIPT.
 --
@@ -81,8 +79,6 @@ function CSC_SetBakersTradeRouteProperties(iPlayerID, parameters)
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 4), parameters.ExportCafeRouteBit4 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 8), parameters.ExportCafeRouteBit8 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 16), parameters.ExportCafeRouteBit16 or 0);
-
-	print("CSC Bakers route properties set at (" .. tostring(iX) .. "," .. tostring(iY) .. "): HasBQ=" .. tostring(parameters.HasBakersQuarter or 0) .. ", ImportBakery=" .. tostring(parameters.ImportConsumerRoute or 0) .. ", ImportCafe=" .. tostring(parameters.ImportSpecialtyRoute or 0) .. ", ExportBakery=" .. tostring(parameters.ExportBakeryRoute or 0) .. " [" .. tostring(parameters.ExportBakeryRouteBit1 or 0) .. "," .. tostring(parameters.ExportBakeryRouteBit2 or 0) .. "," .. tostring(parameters.ExportBakeryRouteBit4 or 0) .. "," .. tostring(parameters.ExportBakeryRouteBit8 or 0) .. "," .. tostring(parameters.ExportBakeryRouteBit16 or 0) .. "], ExportCafe=" .. tostring(parameters.ExportCafeRoute or 0) .. " [" .. tostring(parameters.ExportCafeRouteBit1 or 0) .. "," .. tostring(parameters.ExportCafeRouteBit2 or 0) .. "," .. tostring(parameters.ExportCafeRouteBit4 or 0) .. "," .. tostring(parameters.ExportCafeRouteBit8 or 0) .. "," .. tostring(parameters.ExportCafeRouteBit16 or 0) .. "]");
 end
 
 -- Register the function name used by parameters.OnStart in the UI script.

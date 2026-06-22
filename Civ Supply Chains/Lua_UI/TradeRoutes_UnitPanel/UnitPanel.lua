@@ -19,8 +19,6 @@ include("GameCapabilities");
 -- route is created, so the base route object does not know about them. Keep this
 -- block small and rule-focused: it mirrors the same eligibility gates used by
 -- CSC_TradeRouteInteractions.lua and the Better Trade Screen preview support.
-print("Henno's CSC unit-panel trade-route support loaded!");
-
 local CSC_DISTRICT_BAKERS_QUARTER:number = -1;
 if GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil then
 	CSC_DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index;

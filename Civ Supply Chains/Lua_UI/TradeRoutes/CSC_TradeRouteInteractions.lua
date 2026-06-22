@@ -3,8 +3,6 @@
 --	Civ Supply Chains - Trade Route Interactions
 --=================================================================================================================
 --=================================================================================================================
-print("Henno's CSC Trade Route Interactions UI loaded!");
-
 -- This file runs in the UI context. That matters because the UI context can inspect
 -- trade route objects, but it should not directly mutate gameplay state. When this
 -- script decides a city needs new route flags, it asks the gameplay script to write
@@ -32,9 +30,6 @@ local PROP_IMPORT_SPECIALTY_ROUTE		= "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE";
 local PROP_EXPORT_BAKERY_ROUTE			= "CSC_BAKERS_EXPORT_BAKERY_ROUTE";
 local PROP_EXPORT_CAFE_ROUTE				= "CSC_BAKERS_EXPORT_CAFE_ROUTE";
 local ROUTE_STACK_BITS					= { 1, 2, 4, 8, 16 };
-local m_LastDebugSummary					= "";
-local m_LastRouteDebugSummary				= "";
-
 local BUILDING_BAKERY = GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"].Index or -1;
 local BUILDING_CAFE = GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"].Index or -1;
 local CIVIC_MEDIEVAL_FAIRES = GameInfo.Civics["CIVIC_MEDIEVAL_FAIRES"] ~= nil and GameInfo.Civics["CIVIC_MEDIEVAL_FAIRES"].Index or -1;
@@ -329,19 +324,8 @@ end
 --   2. scan active outgoing trade routes
 --   3. write only changed city-center plot properties
 function CSC_RefreshBakersTradeRouteProperties()
-	local cityStates, iCitiesSeen, iCitiesWithBakersQuarter = CSC_CollectBakersCityStates();
-	local iRoutesSeen, iEligibleBakeryRoutes, iEligibleCafeRoutes, routeDebugSummary = CSC_ScanBakersTradeRoutes(cityStates);
-
-	local debugSummary = "Cities=" .. tostring(iCitiesSeen) .. ", HasBQ=" .. tostring(iCitiesWithBakersQuarter) .. ", RoutesSeen=" .. tostring(iRoutesSeen) .. ", BakeryEligible=" .. tostring(iEligibleBakeryRoutes) .. ", CafeEligible=" .. tostring(iEligibleCafeRoutes);
-	if debugSummary ~= m_LastDebugSummary then
-		print("CSC Bakers trade-route refresh: " .. debugSummary);
-		m_LastDebugSummary = debugSummary;
-	end
-
-	if routeDebugSummary ~= nil and routeDebugSummary ~= "" and routeDebugSummary ~= m_LastRouteDebugSummary then
-		print("CSC Bakers route gate details: " .. routeDebugSummary);
-		m_LastRouteDebugSummary = routeDebugSummary;
-	end
+	local cityStates = CSC_CollectBakersCityStates();
+	CSC_ScanBakersTradeRoutes(cityStates);
 
 	for _, cityState in pairs(cityStates) do
 		CSC_ApplyBakersRouteBitState(cityState);

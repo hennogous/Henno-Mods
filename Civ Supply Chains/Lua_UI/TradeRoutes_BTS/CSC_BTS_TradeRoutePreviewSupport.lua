@@ -10,8 +10,6 @@
 --  the route exists, because active-route city properties cannot include a not-yet-created route.
 --=================================================================================================================
 
-print("Henno's CSC BTS trade-route preview support loaded!");
-
 local DISTRICT_BAKERS_QUARTER = -1;
 if GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil then
 	DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index;

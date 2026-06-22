@@ -6,8 +6,6 @@ include("InstanceManager");
 include("SupportFunctions");
 include("TradeSupport");
 
-print("CSC BTS TradeRouteChooser override loaded");
-
 pPathSegment = { };
 
 local nDefaultPassingPressure = 24
