@@ -42,7 +42,7 @@ text-prefix: [NEWLINE]
 ## LOC_CSC_BAKERS_STAGE_4_EFFECT_GARDEN
 text-prefix: [NEWLINE][NEWLINE]
 
-+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city from each adjacent Café, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
++1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city from each adjacent Café, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Café.
 
 At Urbanization, a Conservatory adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism and +1 [ICON_GreatArtist] Great Artist point from each adjacent supplied Café, plus +1 [ICON_Citizen] Citizen slot in the Garden.
 

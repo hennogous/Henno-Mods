@@ -188,7 +188,7 @@ a new {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_NewAmount}% gro
 {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_LostAmount}% growth and {2_LostStack} [ICON_GreatEngineer] Great Engineer {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_BAKERS_STAGE_2_EFFECT
-+1 [ICON_Food] Food from an adjacent Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
++1 [ICON_Food] Food from an adjacent Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Water Mill or Wind Mill.
 
 At Feudalism, a Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth and +1 [ICON_GreatEngineer] Great Engineer point from each adjacent supplied mill.
 
@@ -266,12 +266,12 @@ a new {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: {1_NewAmount
 ## LOC_CSC_BAKERS_STAGE_4_EFFECT_ENTER
 text-prefix: [NEWLINE][NEWLINE]
 
-+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city from each adjacent Café, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
++1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city from each adjacent Café, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Café.
 
 At Urbanization, a Zoo adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism and +1 [ICON_GreatEngineer] Great Engineer point from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the Entertainment Complex.
 
 ## LOC_CSC_BAKERS_STAGE_4_EFFECT_WATER
-+1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city from each adjacent Café, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
++1 [ICON_Culture] Culture for every 5 [ICON_Citizen] Citizens in the city from each adjacent Café, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Café.
 
 At Urbanization, a Ferris Wheel adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: +2 [ICON_Tourism] Tourism and +1 [ICON_GreatEngineer] Great Engineer point from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the Water Park.
 
