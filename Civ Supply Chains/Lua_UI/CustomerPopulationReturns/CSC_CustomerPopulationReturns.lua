@@ -3,8 +3,6 @@
 --	Civ Supply Chains - Customer Population Returns
 --=================================================================================================================
 --=================================================================================================================
-print("Henno's CSC Customer Population Returns - Gameplay Script loaded!");
-
 local function CSC_AddDistrictIndex(districtIndexes, districtTypes, districtType)
 	if districtType == nil or districtTypes[districtType] then return false; end
 
@@ -113,7 +111,6 @@ local AMOUNT_STACK_BITS = {
 	65536, 131072, 262144, 524288
 };
 local NUM_DIRECTIONS = (DirectionTypes ~= nil and DirectionTypes.NUM_DIRECTION_TYPES) or 6;
-local m_LastRefreshSummary = "";
 
 local function CSC_GetCityStateKey(iPlayerID, iCityID)
 	return tostring(iPlayerID) .. ":" .. tostring(iCityID);
@@ -427,26 +424,8 @@ function CSC_RefreshCustomerPopulationReturns()
 	CSC_ScanBakeryMarketTransactions(cityStates, commercialHubCitiesByPlotKey);
 	CSC_ScanCafeStage4Transactions(cityStates, stage4CustomerCitiesByPlotKey);
 
-	local iCitiesSeen = 0;
-	local iSellerCities = 0;
-	local iCustomerPopulation = 0;
-	local iStage4CafeReturn = 0;
-	local iStage4CustomerCultureReturn = 0;
 	for _, cityState in pairs(cityStates) do
-		iCitiesSeen = iCitiesSeen + 1;
-		if cityState.CustomerPopulation > 0 then
-			iSellerCities = iSellerCities + 1;
-			iCustomerPopulation = iCustomerPopulation + cityState.CustomerPopulation;
-		end
-		iStage4CafeReturn = iStage4CafeReturn + cityState.Stage4CafeReturn;
-		iStage4CustomerCultureReturn = iStage4CustomerCultureReturn + cityState.Stage4ZooCultureReturn + cityState.Stage4FerrisCultureReturn + cityState.Stage4ConservatoryCultureReturn;
 		CSC_WriteReturnState(cityState.City, cityState.CustomerPopulation, cityState.FoodPopulation, cityState.Stage4CafeReturn, cityState.Stage4ZooCultureReturn, cityState.Stage4FerrisCultureReturn, cityState.Stage4ConservatoryCultureReturn);
-	end
-
-	local refreshSummary = "Cities=" .. tostring(iCitiesSeen) .. ", Sellers=" .. tostring(iSellerCities) .. ", CustomerPop=" .. tostring(iCustomerPopulation) .. ", Stage4CafeReturn=" .. tostring(iStage4CafeReturn) .. ", Stage4CustomerCulture=" .. tostring(iStage4CustomerCultureReturn);
-	if refreshSummary ~= m_LastRefreshSummary then
-		print("CSC customer-population return refresh: " .. refreshSummary);
-		m_LastRefreshSummary = refreshSummary;
 	end
 end
 

@@ -511,8 +511,11 @@ INSERT INTO CivilopediaPageExcludes
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'			);
 
 UPDATE Buildings SET Description = 'LOC_CSC_BAKERS_STAGE_2_EFFECT' WHERE BuildingType='BUILDING_GRANARY';
+
 UPDATE Buildings SET Description = '{LOC_BUILDING_MARKET_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_EFFECT}' WHERE BuildingType='BUILDING_MARKET';
+
 UPDATE Buildings SET Description = '{LOC_BUILDING_ZOO_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_ENTER}' WHERE BuildingType='BUILDING_ZOO';
+UPDATE Buildings SET Description = '{LOC_BUILDING_THERMAL_BATH_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_ENTER}' WHERE BuildingType='BUILDING_THERMAL_BATH';
 UPDATE Buildings SET Description = 'LOC_CSC_BAKERS_STAGE_4_EFFECT_WATER' WHERE BuildingType='BUILDING_FERRIS_WHEEL';
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
