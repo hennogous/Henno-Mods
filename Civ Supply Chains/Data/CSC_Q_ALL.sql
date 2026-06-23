@@ -1,4 +1,4 @@
--- CSC_Q_SETUP
+-- CSC_Q_ALL
 -- Author: Shadow
 -- DateCreated: 2026-06-10 16:57:32
 --------------------------------------------------------------
@@ -113,6 +113,42 @@ SELECT
 	Pop
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	Shared bit helper tables
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Route/export stack bits used when Lua writes route-count properties.
+CREATE TABLE IF NOT EXISTS CSC_RouteStackBits
+    (
+    Bit INTEGER PRIMARY KEY
+    );
+
+INSERT OR IGNORE INTO CSC_RouteStackBits
+        (   Bit )
+VALUES  (   2   ), (   4   ), (   8   ), (   16  );
+
+-- Scaled amount bits used for fractional per-population yields.
+CREATE TABLE IF NOT EXISTS CSC_ScaledAmountBits
+    (
+    Bit INTEGER PRIMARY KEY
+    );
+
+INSERT OR IGNORE INTO CSC_ScaledAmountBits
+        (   Bit )
+VALUES  (   1       ), (   2       ), (   4       ), (   8       ), (   16      ), (   32      ), (   64      ), (   128     ),
+        (   256     ), (   512     ), (   1024    ), (   2048    ), (   4096    ), (   8192    ), (   16384   ), (   32768   ),
+        (   65536   ), (   131072  ), (   262144  ), (   524288  );
+
+-- Stage/customer return stack bits used by thresholded customer-building effects.
+CREATE TABLE IF NOT EXISTS CSC_Stage4StackBits
+    (
+    Bit INTEGER PRIMARY KEY
+    );
+
+INSERT OR IGNORE INTO CSC_Stage4StackBits
+        (   Bit )
+VALUES  (   1   ), (   2   ), (   4   ), (   8   ), (   16  ), (   32  ), (   64  ), (   128 );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CSC_AbilityAttachModifiers

@@ -96,19 +96,10 @@ VALUES	(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',			'YIELD_CULTURE',					2	
 
 -- Stage 4 Conservatory threshold yields are handled by the customer-population Lua bridge.
 
-DROP TABLE IF EXISTS CSC_BakersLGDStage4StackBits;
-
-CREATE TEMPORARY TABLE CSC_BakersLGDStage4StackBits
-		(	Bit INTEGER PRIMARY KEY	);
-
-INSERT INTO CSC_BakersLGDStage4StackBits
-		(	Bit	)
-VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	);
-
 INSERT OR IGNORE INTO DistrictModifiers
 		(	DistrictType,					ModifierId	)
 SELECT	'DISTRICT_CITY_CENTER',				'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT INTO BuildingModifiers
 
@@ -135,7 +126,7 @@ INSERT INTO BuildingModifiers
 INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,																			ModifierType,						OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'MODIFIER_BUILDING_YIELD_CHANGE',	NULL,					'REQSET_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT OR IGNORE INTO Modifiers	(
 	ModifierId,
@@ -206,17 +197,17 @@ VALUES
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,																			Name,				Value							)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'BuildingType',		'BUILDING_LEU_CONSERVATORY'
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,																			Name,				Value							)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'YieldType',		'YIELD_CULTURE'
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,																			Name,				Value							)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BUILDING_LEU_CONSERVATORY_BIT_' || Bit,	'Amount',			Bit
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 
@@ -257,7 +248,7 @@ INSERT OR IGNORE INTO RequirementSets
 INSERT OR IGNORE INTO RequirementSets
 		(	RequirementSetId,															RequirementSetType	)
 SELECT	'REQSET_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'REQUIREMENTSET_TEST_ALL'
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSetRequirements
@@ -278,7 +269,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 INSERT OR IGNORE INTO RequirementSetRequirements
 		(	RequirementSetId,															RequirementId										)
 SELECT	'REQSET_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -296,7 +287,7 @@ INSERT OR IGNORE INTO Requirements
 INSERT OR IGNORE INTO Requirements
 		(	RequirementId,															RequirementType,					Inverse	)
 SELECT	'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'REQUIREMENT_PLOT_PROPERTY_MATCHES',	0
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementArguments
@@ -313,12 +304,12 @@ INSERT OR IGNORE INTO RequirementArguments
 INSERT OR IGNORE INTO RequirementArguments
 		(	RequirementId,															Name,				Value	)
 SELECT	'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'PropertyName',		'CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT OR IGNORE INTO RequirementArguments
 		(	RequirementId,															Name,				Value	)
 SELECT	'REQ_CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN_BIT_' || Bit,		'PropertyMinimum',	1
-FROM CSC_BakersLGDStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CSC_AbilityAttachModifiers

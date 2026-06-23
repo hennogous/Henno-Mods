@@ -58,35 +58,6 @@ WHERE ReplacesBuildingType='BUILDING_GRANARY';
 --	DistrictModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS CSC_BakersRouteStackBits;
-
-CREATE TEMPORARY TABLE CSC_BakersRouteStackBits
-		(	Bit INTEGER PRIMARY KEY	);
-
-INSERT INTO CSC_BakersRouteStackBits
-		(	Bit	)
-VALUES	(	2	), (	4	), (	8	), (	16	);
-
-DROP TABLE IF EXISTS CSC_BakersScaledAmountBits;
-
-CREATE TEMPORARY TABLE CSC_BakersScaledAmountBits
-		(	Bit INTEGER PRIMARY KEY	);
-
-INSERT INTO CSC_BakersScaledAmountBits
-		(	Bit	)
-VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	),
-		(	256	), (	512	), (	1024	), (	2048	), (	4096	), (	8192	), (	16384	), (	32768	),
-		(	65536	), (	131072	), (	262144	), (	524288	);
-
-DROP TABLE IF EXISTS CSC_BakersStage4StackBits;
-
-CREATE TEMPORARY TABLE CSC_BakersStage4StackBits
-		(	Bit INTEGER PRIMARY KEY	);
-
-INSERT INTO CSC_BakersStage4StackBits
-		(	Bit	)
-VALUES	(	1	), (	2	), (	4	), (	8	), (	16	), (	32	), (	64	), (	128	);
-
 INSERT OR IGNORE INTO DistrictModifiers
 
 		(	DistrictType,							ModifierId										)	VALUES
@@ -102,24 +73,24 @@ INSERT OR IGNORE INTO DistrictModifiers
 INSERT OR IGNORE INTO DistrictModifiers
 		(	DistrictType,							ModifierId										)
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit
-FROM CSC_BakersScaledAmountBits;
+FROM CSC_ScaledAmountBits;
 
 INSERT OR IGNORE INTO DistrictModifiers
 		(	DistrictType,							ModifierId										)
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit
-FROM CSC_BakersStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 --  Extra export-return stacks. The base modifier handles the +1 bit; these generated
 --  rows add +2, +4, +8, and +16 when Lua sets the matching route-count bit.
 INSERT OR IGNORE INTO DistrictModifiers
 		(	DistrictType,							ModifierId										)
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO DistrictModifiers
 		(	DistrictType,							ModifierId										)
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
@@ -162,22 +133,22 @@ INSERT OR IGNORE INTO Modifiers
 INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_' || Bit
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
-FROM CSC_BakersScaledAmountBits;
+FROM CSC_ScaledAmountBits;
 
 INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit
-FROM CSC_BakersStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 
 
@@ -227,57 +198,57 @@ INSERT OR IGNORE INTO ModifierArguments
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'BuildingType',				'BUILDING_CSC_BAKERS_BAKERY'
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'YieldType',				'YIELD_GOLD'
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD_BIT_' || Bit,						'Amount',					Bit
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'YieldType',				'YIELD_GOLD'
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD_BIT_' || Bit,							'Amount',					Bit
-FROM CSC_BakersRouteStackBits;
+FROM CSC_RouteStackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'YieldType',				'YIELD_GOLD'
-FROM CSC_BakersScaledAmountBits;
+FROM CSC_ScaledAmountBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_GOLD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 10000.0
-FROM CSC_BakersScaledAmountBits;
+FROM CSC_ScaledAmountBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'
-FROM CSC_BakersStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'YieldType',				'YIELD_GOLD'
-FROM CSC_BakersStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_GOLD_BIT_' || Bit,					'Amount',					Bit
-FROM CSC_BakersStage4StackBits;
+FROM CSC_Stage4StackBits;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets

@@ -317,12 +317,12 @@
     "inGameActions": [
       {
         "type": "UpdateDatabase",
-        "id": "CSC_Q_SETUP",
+        "id": "CSC_Q_ALL",
         "properties": {
           "LoadOrder": "95"
         },
         "files": [
-          "Data/CSC_Q_SETUP.sql"
+          "Data/CSC_Q_ALL.sql"
         ]
       },
       {

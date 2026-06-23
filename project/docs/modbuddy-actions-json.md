@@ -32,7 +32,7 @@ Default paths:
 ```json
 {
   "type": "UpdateDatabase",
-  "id": "CSC_Q_SETUP",
+  "id": "CSC_Q_ALL",
   "properties": {
     "LoadOrder": "95"
   },
@@ -40,7 +40,7 @@ Default paths:
     "SomeCriterion"
   ],
   "files": [
-    "Data/CSC_Q_SETUP.sql"
+    "Data/CSC_Q_ALL.sql"
   ]
 }
 ```

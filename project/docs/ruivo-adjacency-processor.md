@@ -14,7 +14,7 @@ This keeps Quarter files mostly declarative and avoids repeating Ruivo boilerpla
 
 The processor must run after all tag producers:
 
-- `CSC_Q_SETUP.sql` creates shared config tables.
+- `CSC_Q_ALL.sql` creates shared config tables.
 - Quarter and ModSupport SQL files insert `Tags`, `TypeTags`, and material config rows.
 - `CSC_Ruivo_AdjacencyProcessor.sql` runs late and generates Ruivo/MAB rows.
 
