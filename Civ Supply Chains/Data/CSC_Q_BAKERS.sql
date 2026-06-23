@@ -207,6 +207,10 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSIO
 
 DROP TABLE IF EXISTS CSC_BakersStage4CultureBuildings;
 
+-- This temp table is the source of truth for Stage 4 culture-return branches.
+-- Each branch pairs a customer/capstone building with the generated bit-stack
+-- modifiers below, so LGD Conservatory support can use the same pipeline without
+-- duplicating Zoo/Ferris rows by hand.
 CREATE TEMPORARY TABLE CSC_BakersStage4CultureBuildings
 		(	Branch TEXT NOT NULL,
 			BuildingType TEXT NOT NULL,
@@ -855,6 +859,10 @@ INSERT OR IGNORE INTO Modifiers
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_' || Bit
 FROM CSC_RouteStackBits;
 
+-- Customer population returns are too granular for direct integer yield rows:
+-- Lua calculates the target decimal amount, scales it by 10000, then writes
+-- active bit properties. These generated modifiers turn those bit properties
+-- back into per-population yield increments.
 INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_RETURN_AMOUNT_BIT_' || Bit
@@ -865,6 +873,9 @@ INSERT OR IGNORE INTO Modifiers
 SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,						'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',	NULL,					'REQSET_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit
 FROM CSC_ScaledAmountBits;
 
+-- Stage 4 returns are whole-number stacks (+1 per 5 Citizens in each eligible
+-- customer city). They use the same property-bit pattern, but BUILDING_YIELD_CHANGE
+-- targets the Bakery/Cafe or the relevant customer building directly.
 INSERT OR IGNORE INTO Modifiers
 		(	ModifierId,															ModifierType,												OwnerRequirementSetId,	SubjectRequirementSetId									)
 SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,			'MODIFIER_BUILDING_YIELD_CHANGE',							NULL,					'REQSET_CSC_BAKERS_STAGE_4_CAFE_RETURN_BIT_' || Bit
@@ -1078,6 +1089,9 @@ INSERT OR IGNORE INTO ModifierArguments
 SELECT	'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION_BIT_' || Bit,					'Amount',					Bit
 FROM CSC_RouteStackBits;
 
+-- The Amount values below divide by AMOUNT_SCALE from
+-- CSC_CustomerPopulationReturns.lua. For example, a stored bit of 256 becomes
+-- 0.0256 yield per population when this modifier is active.
 INSERT OR IGNORE INTO ModifierArguments
 		(	ModifierId,															Name,						Value															)
 SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'YieldType',				'YIELD_PRODUCTION'

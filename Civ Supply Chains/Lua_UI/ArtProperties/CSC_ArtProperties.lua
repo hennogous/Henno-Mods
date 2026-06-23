@@ -21,6 +21,9 @@ local m_CityArtProperties:table = {
 };
 
 -- Mirror modifier-adjusted gameplay properties into direct city properties for GamePropertyRanges/CITYPROP.
+-- Gameplay modifiers can increment/decrement the Source property, but art
+-- selection rules only need a stable binary "show the variant" flag. Keeping
+-- that conversion here avoids baking effect quantities into ArtDefs.
 function CSC_RefreshCityArtProperties(pCity)
 	if pCity == nil then return; end
 
@@ -91,6 +94,9 @@ function CSC_OnPlayerRefreshEvent(iPlayerID)
 end
 
 function CSC_OnPlotOwnerRefreshEvent(iX, iY, iFallbackPlayerID)
+	-- Some map events only provide a plot coordinate. Resolve the current owner
+	-- from the plot when possible so removed/changed improvements refresh the
+	-- correct city art without requiring the event to carry a city ID.
 	if iX ~= nil and iY ~= nil then
 		local pPlot = Map.GetPlot(iX, iY);
 		if pPlot ~= nil then
@@ -250,6 +256,9 @@ end
 if Events.UnitOperationsCleared ~= nil then
 	Events.UnitOperationsCleared.Add(CSC_OnUnitOperationEvent);
 end
+-- GameEvents are guarded because their availability differs between frontend,
+-- gameplay, and expansion contexts. When present, they catch completed builds
+-- sooner than the broader city/plot refresh events.
 if GameEvents ~= nil and GameEvents.BuildingConstructed ~= nil then
 	GameEvents.BuildingConstructed.Add(CSC_OnBuildingConstructed);
 end

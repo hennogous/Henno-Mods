@@ -59,6 +59,9 @@ CREATE TABLE IF NOT EXISTS CSC_QuarterMaterialAdjacencyConfig
 --	CSC_PopulationLevels
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+-- Shared ladder used to generate reusable city-population gates. Quarter files can
+-- reference REQSET_CSC_CITY_HAS_POPULATION_5, _10, etc. without rebuilding the
+-- same requirement boilerplate in every Quarter.
 CREATE TABLE IF NOT EXISTS CSC_PopulationLevels
     (
     Pop TEXT
@@ -118,7 +121,13 @@ WHERE Pop > 0;
 --	Shared bit helper tables
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Route/export stack bits used when Lua writes route-count properties.
+-- Civ SQL requirements cannot compare arbitrary numeric property values directly.
+-- Lua therefore decomposes a count/amount into binary property flags, and SQL
+-- creates one modifier per bit. Active bits add together into the final yield.
+
+-- Route/export stack bits used when Lua writes route-count properties. The +1
+-- route bit is handled by the base modifier in Quarter SQL; this table starts at
+-- +2 for the extra stack rows.
 CREATE TABLE IF NOT EXISTS CSC_RouteStackBits
     (
     Bit INTEGER PRIMARY KEY
@@ -128,7 +137,9 @@ INSERT OR IGNORE INTO CSC_RouteStackBits
         (   Bit )
 VALUES  (   2   ), (   4   ), (   8   ), (   16  );
 
--- Scaled amount bits used for fractional per-population yields.
+-- Scaled amount bits used for fractional per-population yields. Lua stores
+-- amount * 10000 as an integer so SQL can reconstruct small decimal values with
+-- deterministic bit modifiers.
 CREATE TABLE IF NOT EXISTS CSC_ScaledAmountBits
     (
     Bit INTEGER PRIMARY KEY
@@ -140,7 +151,8 @@ VALUES  (   1       ), (   2       ), (   4       ), (   8       ), (   16      
         (   256     ), (   512     ), (   1024    ), (   2048    ), (   4096    ), (   8192    ), (   16384   ), (   32768   ),
         (   65536   ), (   131072  ), (   262144  ), (   524288  );
 
--- Stage/customer return stack bits used by thresholded customer-building effects.
+-- Stage/customer return stack bits used by thresholded customer-building effects,
+-- where the game-facing amount is an integer such as +1 per 5 customer Citizens.
 CREATE TABLE IF NOT EXISTS CSC_Stage4StackBits
     (
     Bit INTEGER PRIMARY KEY

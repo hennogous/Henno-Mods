@@ -3,6 +3,15 @@
 --	Civ Supply Chains - Customer Population Returns
 --=================================================================================================================
 --=================================================================================================================
+-- This gameplay script handles Bakers returns that depend on another city's
+-- current population. SQL cannot ask "how many Citizens are in the adjacent
+-- customer city" directly, so Lua scans the map, computes the return amounts,
+-- and writes city-center plot properties that SQL requirements can read.
+--
+-- The SQL side turns those properties into modifiers in CSC_Q_BAKERS.sql.
+-- Fractional returns are scaled by AMOUNT_SCALE and decomposed into bit flags
+-- because Civ requirements can test exact property matches, but not numeric ranges.
+
 local function CSC_AddDistrictIndex(districtIndexes, districtTypes, districtType)
 	if districtType == nil or districtTypes[districtType] then return false; end
 
@@ -26,6 +35,9 @@ local function CSC_AddBuildingIndex(buildingIndexes, buildingTypes, buildingType
 end
 
 local function CSC_CreateDistrictReplacementFamily(baseDistrictType)
+	-- Build the vanilla district plus any unique replacements exposed by loaded mods.
+	-- The loop follows replacement chains defensively, so a replacement of a
+	-- replacement is still recognized if a compatibility mod introduces one.
 	local districtIndexes = {};
 	local districtTypes = {};
 	CSC_AddDistrictIndex(districtIndexes, districtTypes, baseDistrictType);
@@ -44,6 +56,8 @@ local function CSC_CreateDistrictReplacementFamily(baseDistrictType)
 end
 
 local function CSC_CreateBuildingReplacementFamily(baseBuildingType)
+	-- Same pattern as districts: keep gameplay scans in terms of live indices,
+	-- while callers can think in terms of base building types like BUILDING_MARKET.
 	local buildingIndexes = {};
 	local buildingTypes = {};
 	CSC_AddBuildingIndex(buildingIndexes, buildingTypes, baseBuildingType);
@@ -105,6 +119,9 @@ local PROP_BAKERS_STAGE_4_ZOO_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_ZOO_CULTURE_R
 local PROP_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN";
 local PROP_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN";
 local AMOUNT_SCALE = 10000;
+-- These bits mirror CSC_ScaledAmountBits and CSC_Stage4StackBits in CSC_Q_ALL.sql.
+-- For decimal per-population returns, Lua writes scaled integers such as 2500
+-- for 0.25; SQL activates the matching bit modifiers and sums their amounts.
 local AMOUNT_STACK_BITS = {
 	1, 2, 4, 8, 16, 32, 64, 128,
 	256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
@@ -232,6 +249,9 @@ local function CSC_AddStage4CustomerCity(stage4CustomerCitiesByPlotKey, pCity, d
 end
 
 local function CSC_CreateReturnStates()
+	-- First pass: cache every city and build lookup tables by district plot.
+	-- Later scans only walk the six plots around each Bakers' Quarter and use
+	-- these maps to find eligible customer cities quickly.
 	local cityStates = {};
 	local commercialHubCitiesByPlotKey = {};
 	local stage4CustomerCitiesByPlotKey = {};
@@ -280,6 +300,11 @@ local function CSC_CreateReturnStates()
 end
 
 local function CSC_MarkBakeryMarketTransaction(cityStates, pSellerCity, pCustomerCity)
+	-- Stage 3 Bakery -> Market relationship:
+	--   * the Bakery city receives per-population Production/Gold returns
+	--   * the Market city receives per-population Food
+	-- The Gold side lives in CSC_Q_BAKERS_GOLD.sql; this script only computes
+	-- shared population totals and writes neutral property names.
 	if pSellerCity == nil or pCustomerCity == nil then return; end
 	if pSellerCity:GetOwner() ~= pCustomerCity:GetOwner() then return; end
 	if not CSC_CityHasBakerySeller(pSellerCity) then return; end
@@ -302,6 +327,8 @@ local function CSC_MarkBakeryMarketTransaction(cityStates, pSellerCity, pCustome
 end
 
 local function CSC_MarkCafeStage4Transaction(cityStates, pSellerCity, customerRecord, customerPlotKey)
+	-- Stage 4 Cafe -> customer capstone relationship. Each eligible customer
+	-- city contributes floor(population / 5) stacks to both sides of the exchange.
 	local pCustomerCity = customerRecord ~= nil and customerRecord.City or nil;
 	if pSellerCity == nil or pCustomerCity == nil then return; end
 	if pSellerCity:GetOwner() ~= pCustomerCity:GetOwner() then return; end
@@ -370,6 +397,8 @@ local function CSC_ScanCafeStage4Transactions(cityStates, stage4CustomerCitiesBy
 end
 
 local function CSC_GetScaledPerPopulationAmount(targetYield, population)
+	-- Convert a city-total target into the per-population amount expected by
+	-- MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION.
 	targetYield = tonumber(targetYield) or 0;
 	population = tonumber(population) or 0;
 
@@ -381,6 +410,8 @@ local function CSC_GetScaledPerPopulationAmount(targetYield, population)
 end
 
 local function CSC_WriteAmountBits(pCity, pCityCenterPlot, propertyName, scaledAmount)
+	-- Write both the raw scaled amount for debugging and the decomposed bit
+	-- properties consumed by SQL requirement sets.
 	local plotCurrentValue = pCityCenterPlot ~= nil and (pCityCenterPlot:GetProperty(propertyName) or 0) or 0;
 	local cityCurrentValue = pCity ~= nil and (pCity:GetProperty(propertyName) or 0) or 0;
 	if plotCurrentValue == scaledAmount and cityCurrentValue == scaledAmount then
@@ -420,6 +451,9 @@ local function CSC_WriteReturnState(pCity, customerPopulation, foodPopulation, s
 end
 
 function CSC_RefreshCustomerPopulationReturns()
+	-- Full refreshes are intentionally idempotent. Every pass recomputes all
+	-- return properties from current game state, so removed buildings, pillage,
+	-- population changes, and ownership changes clear stale bonuses naturally.
 	local cityStates, commercialHubCitiesByPlotKey, stage4CustomerCitiesByPlotKey = CSC_CreateReturnStates();
 	CSC_ScanBakeryMarketTransactions(cityStates, commercialHubCitiesByPlotKey);
 	CSC_ScanCafeStage4Transactions(cityStates, stage4CustomerCitiesByPlotKey);
