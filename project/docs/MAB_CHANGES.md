@@ -4,32 +4,43 @@
 **Fork remote:** `fork` (Henno's GitHub fork — PRs submitted there)  
 **Currently running:** local `test/all-features` branch (all features merged, plus current CSC-only integration commits)
 
-_Last updated: 2026-06-13_
+_Last updated: 2026-06-23_
 
 ---
 
 ## Branch Structure
 
 ```
-main                  ← upstream Ruivo (no CSC changes)
-  ├── feature/ring-bands          ← MinRings/MaxRings support
-  ├── feature/must-own            ← MustOwn ownership filter
-  ├── feature/adjacent-edge-icons ← tile-edge icons during placement
-  ├── feature/negative-adjacency  ← negative yield support
-  ├── origin/pr_combined_5        ← upstream combined PR branch containing all four features + Ruivo optimization commit
-  └── test/all-features           ← local integration branch used by CSC; currently has four extra local commits
+main                  <- upstream Ruivo, no CSC changes
+  |-- feature/ring-bands          <- MinRings/MaxRings support
+  |-- feature/must-own            <- MustOwn ownership filter
+  |-- feature/adjacent-edge-icons <- tile-edge icons during placement
+  |-- feature/negative-adjacency  <- negative yield support
+  `-- test/all-features           <- CSC integration: all features + Ruivo optimization + CSC follow-up commits
 ```
 
-Each feature branch has a matching `fork/` remote for the PR.
+Each feature branch has a matching `fork/` remote for the PR. As of 2026-06-23, all five open PR branches were refreshed onto Ruivo's `origin/main` at `e978e6c` and force-pushed to Henno's fork with `--force-with-lease`.
 
-As of 2026-06-13, local `test/all-features` is clean and contains all four feature branch tips. It also has four newer commits that are **not** on `fork/test/all-features` and are not on any named `feature/*` branch yet:
+Current PR heads after the 2026-06-23 refresh:
+
+| PR | Branch | Head | Notes |
+|---|---|---|---|
+| #1 | `feature/adjacent-edge-icons` | `83b7592` | Rebased onto Ruivo's latest placement/detail-panel work. |
+| #2 | `feature/must-own` | `3d2d3cc` | Rebased; preserves Ruivo's nil-plot `pcall` guard in the new detail-panel display path. |
+| #3 | `feature/negative-adjacency` | `15843ed` | Replayed cleanly on latest `main`. |
+| #4 | `feature/ring-bands` | `70cf468` | Rebased; preserves Ruivo's nil-plot `pcall` guard and ring-band display args. |
+| #5 | `test/all-features` | `d852b84` | Integration branch, includes all feature work plus Ruivo's `88d1c32` optimization and CSC follow-up commits. |
+
+The four commits that were local-only on 2026-06-13 are now pushed on `fork/test/all-features`:
 
 - `63734e7` Add district typetag adjacency support
 - `3d2c744` Preserve adjacency clone options for unique districts
 - `6769da8` Preserve district modifier flag for unique adjacencies
 - `fead90f` Fix signs in district adjacency tooltip text
 
-Those four commits cherry-pick cleanly onto `origin/pr_combined_5`, but not directly onto `origin/main` without resolving conflicts in `UI/Common/AdjacencyBonusSupport.lua`. If submitting them as another PR before Ruivo merges the combined branch, create a stacked branch based on `origin/pr_combined_5` or a branch whose PR explicitly targets the combined PR branch. If the combined branch lands first, rebase/cherry-pick the four-commit slice onto the updated `main` and submit normally.
+They now sit on top of `test/all-features` after Ruivo's `88d1c32` commit (`chore: optimize BFS, fix rounding for negative yields, and improve placement icons`). If these follow-ups need to become a separate PR, branch from the refreshed `test/all-features` or from whatever combined branch Ruivo asks to use.
+
+Safety backups from before the refresh remain in the local MAB repo under `backup/2026-06-23/*`.
 
 ---
 

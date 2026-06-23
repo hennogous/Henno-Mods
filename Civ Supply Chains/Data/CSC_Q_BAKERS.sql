@@ -217,18 +217,8 @@ INSERT OR IGNORE INTO CSC_BakersStage4CultureBuildings
 VALUES	(	'ZOO',					'BUILDING_ZOO'			),
 		(	'FERRIS',				'BUILDING_FERRIS_WHEEL'	);
 
-INSERT OR IGNORE INTO CSC_BakersStage4CultureBuildings
-		(	Branch,					BuildingType	)
-SELECT	'ZOO',						CivUniqueBuildingType
-FROM BuildingReplaces
-WHERE ReplacesBuildingType='BUILDING_ZOO';
-
-INSERT OR IGNORE INTO CSC_BakersStage4CultureBuildings
-		(	Branch,					BuildingType	)
-SELECT	'FERRIS',					CivUniqueBuildingType
-FROM BuildingReplaces
-WHERE ReplacesBuildingType='BUILDING_FERRIS_WHEEL';
-
+-- Do not expand Zoo/Ferris unique replacements here: BUILDING_YIELD_CHANGE
+-- already applies through BuildingReplaces, and explicit rows double the yield.
 INSERT OR IGNORE INTO CSC_BakersStage4CultureBuildings
 		(	Branch,					BuildingType	)
 SELECT	'CONSERVATORY',				'BUILDING_LEU_CONSERVATORY'
