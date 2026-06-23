@@ -42,6 +42,18 @@ INSERT OR IGNORE INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL'					),
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_GOLD_TO_WIND_MILL'					);
 
+INSERT OR IGNORE INTO BuildingModifiers
+		(	BuildingType,								ModifierId											)
+SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER'
+FROM BuildingReplaces
+WHERE ReplacesBuildingType='BUILDING_GRANARY';
+
+INSERT OR IGNORE INTO BuildingModifiers
+		(	BuildingType,								ModifierId											)
+SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND'
+FROM BuildingReplaces
+WHERE ReplacesBuildingType='BUILDING_GRANARY';
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	DistrictModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

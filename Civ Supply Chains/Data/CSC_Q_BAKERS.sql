@@ -510,13 +510,25 @@ INSERT INTO CivilopediaPageExcludes
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_RIVER_ACCESS'				),
 		(	'BUILDINGS',		'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'			);
 
-UPDATE Buildings SET Description = 'LOC_CSC_BAKERS_STAGE_2_EFFECT' WHERE BuildingType='BUILDING_GRANARY';
+UPDATE Buildings
+SET Description = '{' || Description || '}' || '{LOC_CSC_BAKERS_STAGE_2_EFFECT}'
+WHERE BuildingType='BUILDING_GRANARY'
+OR BuildingType IN (SELECT CivUniqueBuildingType FROM BuildingReplaces WHERE ReplacesBuildingType='BUILDING_GRANARY');
 
-UPDATE Buildings SET Description = '{LOC_BUILDING_MARKET_EXPANSION1_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_3_EFFECT}' WHERE BuildingType='BUILDING_MARKET';
+UPDATE Buildings
+SET Description = '{' || Description || '}' || '{LOC_CSC_BAKERS_STAGE_3_EFFECT}'
+WHERE BuildingType='BUILDING_MARKET'
+OR BuildingType IN (SELECT CivUniqueBuildingType FROM BuildingReplaces WHERE ReplacesBuildingType='BUILDING_MARKET');
 
-UPDATE Buildings SET Description = '{LOC_BUILDING_ZOO_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_ENTER}' WHERE BuildingType='BUILDING_ZOO';
-UPDATE Buildings SET Description = '{LOC_BUILDING_THERMAL_BATH_DESCRIPTION}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_ENTER}' WHERE BuildingType='BUILDING_THERMAL_BATH';
-UPDATE Buildings SET Description = 'LOC_CSC_BAKERS_STAGE_4_EFFECT_WATER' WHERE BuildingType='BUILDING_FERRIS_WHEEL';
+UPDATE Buildings
+SET Description = '{' || Description || '}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_ENTER}'
+WHERE BuildingType='BUILDING_ZOO'
+OR BuildingType IN (SELECT CivUniqueBuildingType FROM BuildingReplaces WHERE ReplacesBuildingType='BUILDING_ZOO');
+
+UPDATE Buildings
+SET Description = '{' || Description || '}' || '{LOC_CSC_BAKERS_STAGE_4_EFFECT_WATER}'
+WHERE BuildingType='BUILDING_FERRIS_WHEEL'
+OR BuildingType IN (SELECT CivUniqueBuildingType FROM BuildingReplaces WHERE ReplacesBuildingType='BUILDING_FERRIS_WHEEL');
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings_XP2
@@ -631,7 +643,6 @@ INSERT INTO BuildingModifiers
 
 --  Mirror the adjacent Market transaction back onto the City of adjacent Bakeries for alternate Bakery art
 		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'	),
-		(	'BUILDING_SUKIENNICE',						'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'	),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
 -- 	Grant the Stage 3 Service to a Commercial Hub with a Market
@@ -679,6 +690,36 @@ INSERT INTO BuildingModifiers
 
 --  Cache supplied Cafe status for route exports
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP'			);
+
+INSERT OR IGNORE INTO BuildingModifiers
+		(	BuildingType,								ModifierId											)
+SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD'
+FROM BuildingReplaces
+WHERE ReplacesBuildingType='BUILDING_GRANARY';
+
+INSERT OR IGNORE INTO BuildingModifiers
+		(	BuildingType,								ModifierId											)
+SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD'
+FROM BuildingReplaces
+WHERE ReplacesBuildingType='BUILDING_GRANARY';
+
+INSERT OR IGNORE INTO BuildingModifiers
+		(	BuildingType,								ModifierId											)
+SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS'
+FROM BuildingReplaces
+WHERE ReplacesBuildingType='BUILDING_GRANARY';
+
+INSERT OR IGNORE INTO BuildingModifiers
+		(	BuildingType,								ModifierId											)
+SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'
+FROM BuildingReplaces
+WHERE ReplacesBuildingType='BUILDING_MARKET';
+
+INSERT OR IGNORE INTO BuildingModifiers
+		(	BuildingType,								ModifierId											)
+SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE'
+FROM BuildingReplaces
+WHERE ReplacesBuildingType IN ('BUILDING_ZOO', 'BUILDING_FERRIS_WHEEL');
 
 
 

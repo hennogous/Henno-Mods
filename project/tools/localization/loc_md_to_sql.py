@@ -65,6 +65,26 @@ def strip_comment(line: str) -> str:
     return re.sub(r"\s+<!--.*?-->\s*$", "", line).rstrip()
 
 
+def remove_comment_blocks(lines: list[str]) -> list[str]:
+    kept: list[str] = []
+    in_comment = False
+    for line in lines:
+        stripped = line.strip()
+        if in_comment:
+            if "-->" in stripped:
+                in_comment = False
+                remainder = stripped.split("-->", 1)[1].strip()
+                if remainder:
+                    kept.append(remainder)
+            continue
+        if stripped.startswith("<!--"):
+            if "-->" not in stripped:
+                in_comment = True
+            continue
+        kept.append(line)
+    return kept
+
+
 def markdown_to_civ_text(lines: list[str]) -> str:
     blocks: list[str] = []
     current: list[str] = []
@@ -115,7 +135,7 @@ def markdown_to_civ_text(lines: list[str]) -> str:
 
 
 def parse_source(path: Path) -> SourceFile:
-    lines = path.read_text(encoding="utf-8").splitlines()
+    lines = remove_comment_blocks(path.read_text(encoding="utf-8").splitlines())
     title = path.stem
     output: Path | None = None
     default_language = "en_US"
