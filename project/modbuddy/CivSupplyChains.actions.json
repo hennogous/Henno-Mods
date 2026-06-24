@@ -1016,8 +1016,8 @@
           "BetterTradeScreenMod"
         ],
         "files": [
-          "Lua_UI/TradeRoutes_BTS/CSC_BTS_TradeRoutePreviewSupport.lua",
-          "Lua_UI/TradeRoutes_BTS/TradeSupport.lua",
+          "Lua_UI/TradeRoutes/CSC_BTS_TradeRoutePreviewSupport.lua",
+          "Lua_UI/TradeRoutes/TradeSupport.lua",
           "Replacements/TradeRouteChooser.lua"
         ]
       },
@@ -1028,7 +1028,7 @@
           "LoadOrder": "50001"
         },
         "files": [
-          "Lua_UI/TradeRoutes_UnitPanel/UnitPanel.lua"
+          "Lua_UI/TradeRoutes/UnitPanel.lua"
         ]
       }
     ]
