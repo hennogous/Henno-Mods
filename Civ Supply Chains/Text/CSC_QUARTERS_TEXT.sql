@@ -10,7 +10,7 @@ VALUES
     ('en_US', 'LOC_CLASS_CSC_SPEC_NAME', 'Specialty Materials'),
     ('en_US', 'LOC_CLASS_CSC_SALES_NAME', 'Sales'),
     ('en_US', 'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME', 'Bakers'' Quarter'),
-    ('en_US', 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION', 'A district in your city specializing in baking.[NEWLINE][NEWLINE]Buildings in this Quarter create supply-chain transactions with adjacent material improvements, local Quarter buildings, customer districts, and Trade Routes.[NEWLINE][NEWLINE]Base Materials support Water Mills and Wind Mills; Specialty Materials support Cafés. Bakers buildings send [ICON_Food] Food through the chain while receiving [ICON_Production] Production and [ICON_Gold] Gold payments where implemented.[NEWLINE][NEWLINE]At Feudalism, Medieval Faires, and Urbanization, supplied Bakers buildings can establish Storekeeper, Innkeeper, Groundskeeper, and Ride Technician services in adjacent customer districts.[NEWLINE][NEWLINE]+1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.'),
+    ('en_US', 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION', 'A district in your city specializing in baking.[NEWLINE][NEWLINE]+1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.'),
     ('en_US', 'LOC_RESOURCE_WINE_NAME', 'Grapes'),
     ('en_US', 'LOC_CSC_CITY_CENTER_GOLD_TO_BAKERS', '+{1_num} [ICON_Gold] from the adjacent City Center.'),
     ('en_US', 'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_BAKERS', '+{1_num} [ICON_Gold] from the adjacent Commercial {1_num : plural 1?Hub; other?Hubs;}.'),
@@ -93,6 +93,8 @@ VALUES
     ('en_US', 'LOC_PEDIA_CONCEPTS_PAGE_CSC_SALES_CHAPTER_CONTENT_PARA_1', 'For the most part, sales of different types of goods to buyers (stage 5) were described in the sections above along with the building that produced the goods.'),
     ('en_US', 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCBASE_TITLE', 'Base Materials'),
     ('en_US', 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSPEC_TITLE', 'Specialty Materials'),
+    ('en_US', 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCGOODS_TITLE', 'Goods Providers'),
+    ('en_US', 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_TITLE', 'Sales Districts'),
     ('en_US', 'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_CSCHAIN_TITLE', 'Supply Chains'),
     ('en_US', 'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_CSCHAIN_PARA_1', 'By the flowing river, the Water Mill stands as a testament to the harnessing of natural power. Its massive wheel turns with an insistent groan, transforming the raw harvests of nearby Wheat, Rice, and other Farms into the finely ground flour that is the lifeblood of your city. This essential step in the Bakers'' Quarter''s supply chain delivers its milled bounty to the Bakery and Café, as well as to an adjacent Granary, helping to fill the city''s stores.'),
     ('en_US', 'LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_HISTORY_TITLE', 'Historical Context'),
@@ -175,6 +177,12 @@ CREATE TEMP TABLE BAKERS_RESOURCES (
     ResourceCategory TEXT
 );
 
+CREATE TEMP TABLE BAKERS_SALES_DISTRICTS (
+    DistrictType TEXT,
+    NameTag TEXT,
+    SortIndex INTEGER
+);
+
 INSERT INTO BAKERS_RESOURCES (ResourceName, ResourceCategory) VALUES
 
 --	Bakers' Quarter Base Materials
@@ -193,6 +201,12 @@ INSERT INTO BAKERS_RESOURCES (ResourceName, ResourceCategory) VALUES
 		(	'RESOURCE_SPICES',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_SUGAR',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_TEA',			'CLASS_CSC_BAKERS_SPEC'		);
+
+INSERT INTO BAKERS_SALES_DISTRICTS (DistrictType, NameTag, SortIndex) VALUES
+		(	'DISTRICT_CITY_CENTER',					'LOC_DISTRICT_CITY_CENTER_NAME',					10	),
+		(	'DISTRICT_COMMERCIAL_HUB',				'LOC_DISTRICT_COMMERCIAL_HUB_NAME',				20	),
+		(	'DISTRICT_ENTERTAINMENT_COMPLEX',		'LOC_DISTRICT_ENTERTAINMENT_COMPLEX_NAME',		30	),
+		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',	'LOC_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_NAME',	40	);
 
 -- Raw SQL 2
 INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
@@ -217,6 +231,22 @@ GROUP BY
 
 -- Raw SQL 3
 INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
+VALUES ('en_US', 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCGOODS_PARA_1', '');
+
+-- Raw SQL 4
+INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
+SELECT
+    'en_US',
+    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_PARA_1',
+    '[ICON_BULLET]' || GROUP_CONCAT('[ICON_' || DistrictType || '] {' || NameTag || '}', ' [NEWLINE][ICON_BULLET]')
+FROM (
+    SELECT DistrictType, NameTag
+    FROM BAKERS_SALES_DISTRICTS
+    ORDER BY SortIndex
+);
+
+-- Raw SQL 5
+INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
 SELECT 'en_US', 'LOC_PEDIA_RESOURCES_PAGE_' || ResourceName || '_CHAPTER_CSCQUAR_TITLE', 'Supply Chains'
 FROM BAKERS_RESOURCES
 UNION ALL
@@ -229,39 +259,40 @@ SELECT
     END
 FROM BAKERS_RESOURCES;
 
--- Raw SQL 4
+-- Raw SQL 6
 DROP TABLE BAKERS_RESOURCES;
+DROP TABLE BAKERS_SALES_DISTRICTS;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Tailors' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Raw SQL 5
+-- Raw SQL 7
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Apothecaries' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Raw SQL 6
+-- Raw SQL 8
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Stonemasons' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Raw SQL 7
+-- Raw SQL 9
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Carpenters' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Raw SQL 8
+-- Raw SQL 10
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Blacksmiths' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Raw SQL 9
+-- Raw SQL 11
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Goldsmiths' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Raw SQL 10
+-- Raw SQL 12
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Brewers' Quarter
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

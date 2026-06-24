@@ -21,12 +21,13 @@ Bakers' Quarter
 ## LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION
 A district in your city specializing in baking.
 
+<!--
 Buildings in this Quarter create supply-chain transactions with adjacent material improvements, local Quarter buildings, customer districts, and Trade Routes.
 
 Base Materials support Water Mills and Wind Mills; Specialty Materials support Cafés. Bakers buildings send [ICON_Food] Food through the chain while receiving [ICON_Production] Production and [ICON_Gold] Gold payments where implemented.
 
 At Feudalism, Medieval Faires, and Urbanization, supplied Bakers buildings can establish Storekeeper, Innkeeper, Groundskeeper, and Ride Technician services in adjacent customer districts.
-
+-->
 +1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.
 
 ## LOC_RESOURCE_WINE_NAME
@@ -352,6 +353,12 @@ Base Materials
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSPEC_TITLE
 Specialty Materials
 
+## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCGOODS_TITLE
+Goods Providers
+
+## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_TITLE
+Sales Districts
+
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_CSCHAIN_TITLE
 Supply Chains
 
@@ -554,6 +561,12 @@ CREATE TEMP TABLE BAKERS_RESOURCES (
     ResourceCategory TEXT
 );
 
+CREATE TEMP TABLE BAKERS_SALES_DISTRICTS (
+    DistrictType TEXT,
+    NameTag TEXT,
+    SortIndex INTEGER
+);
+
 INSERT INTO BAKERS_RESOURCES (ResourceName, ResourceCategory) VALUES
 
 --	Bakers' Quarter Base Materials
@@ -572,6 +585,12 @@ INSERT INTO BAKERS_RESOURCES (ResourceName, ResourceCategory) VALUES
 		(	'RESOURCE_SPICES',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_SUGAR',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_TEA',			'CLASS_CSC_BAKERS_SPEC'		);
+
+INSERT INTO BAKERS_SALES_DISTRICTS (DistrictType, NameTag, SortIndex) VALUES
+		(	'DISTRICT_CITY_CENTER',					'LOC_DISTRICT_CITY_CENTER_NAME',					10	),
+		(	'DISTRICT_COMMERCIAL_HUB',				'LOC_DISTRICT_COMMERCIAL_HUB_NAME',				20	),
+		(	'DISTRICT_ENTERTAINMENT_COMPLEX',		'LOC_DISTRICT_ENTERTAINMENT_COMPLEX_NAME',		30	),
+		(	'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',	'LOC_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_NAME',	40	);
 ```
 
 ## Raw SQL 2
@@ -604,6 +623,30 @@ mode: raw
 
 ```sql
 INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
+VALUES ('en_US', 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCGOODS_PARA_1', '');
+```
+
+## Raw SQL 4
+mode: raw
+
+```sql
+INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
+SELECT
+    'en_US',
+    'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_PARA_1',
+    '[ICON_BULLET]' || GROUP_CONCAT('[ICON_' || DistrictType || '] {' || NameTag || '}', ' [NEWLINE][ICON_BULLET]')
+FROM (
+    SELECT DistrictType, NameTag
+    FROM BAKERS_SALES_DISTRICTS
+    ORDER BY SortIndex
+);
+```
+
+## Raw SQL 5
+mode: raw
+
+```sql
+INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
 SELECT 'en_US', 'LOC_PEDIA_RESOURCES_PAGE_' || ResourceName || '_CHAPTER_CSCQUAR_TITLE', 'Supply Chains'
 FROM BAKERS_RESOURCES
 UNION ALL
@@ -617,11 +660,12 @@ SELECT
 FROM BAKERS_RESOURCES;
 ```
 
-## Raw SQL 4
+## Raw SQL 6
 mode: raw
 
 ```sql
 DROP TABLE BAKERS_RESOURCES;
+DROP TABLE BAKERS_SALES_DISTRICTS;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Tailors' Quarter
@@ -634,7 +678,7 @@ Tailors' Quarter
 ## LOC_DISTRICT_CSC_TAILORS_QUARTER_DESCRIPTION
 A district in your city specializing in textiles.
 
-## Raw SQL 5
+## Raw SQL 7
 mode: raw
 
 ```sql
@@ -649,7 +693,7 @@ Apothecaries' Quarter
 ## LOC_DISTRICT_CSC_APOTHECARIES_QUARTER_DESCRIPTION
 A district in your city specializing in medicine.
 
-## Raw SQL 6
+## Raw SQL 8
 mode: raw
 
 ```sql
@@ -664,7 +708,7 @@ Stonemasons' Quarter
 ## LOC_DISTRICT_CSC_STONEMASONS_QUARTER_DESCRIPTION
 A district in your city specializing in stoneworking.
 
-## Raw SQL 7
+## Raw SQL 9
 mode: raw
 
 ```sql
@@ -689,7 +733,7 @@ Build a Joinery.
 ## LOC_BOOST_TRIGGER_LONGDESC_CONSTRUCTION_CSC
 Work in the Joinery has taught your workers much about construction practices.
 
-## Raw SQL 8
+## Raw SQL 10
 mode: raw
 
 ```sql
@@ -704,7 +748,7 @@ Blacksmiths' Quarter
 ## LOC_DISTRICT_CSC_BLACKSMITHS_QUARTER_DESCRIPTION
 A district in your city specializing in metalworking.
 
-## Raw SQL 9
+## Raw SQL 11
 mode: raw
 
 ```sql
@@ -719,7 +763,7 @@ Goldsmiths' Quarter
 ## LOC_DISTRICT_CSC_GOLDSMITHS_QUARTER_DESCRIPTION
 A district in your city specializing in jewelry.
 
-## Raw SQL 10
+## Raw SQL 12
 mode: raw
 
 ```sql

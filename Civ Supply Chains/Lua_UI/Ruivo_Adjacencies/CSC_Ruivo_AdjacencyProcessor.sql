@@ -79,13 +79,13 @@ JOIN DistrictReplaces AS DR
     ON DR.ReplacesDistrictType = TT.Type
 WHERE TT.Tag LIKE 'CLASS_CSC_%_SALES'
     OR TT.Tag LIKE 'CLASS_CSC_%_SALES_%'
-    OR TT.Tag LIKE 'CLASS_CSC_%_INCOMING_GOODS'
+    OR TT.Tag LIKE 'CLASS_CSC_%_GOODS_PROVIDER'
     OR TT.Tag LIKE 'CLASS_CSC_%_TO_QUARTER_%';
 
 --  Quarters receive yields from adjacent districts tagged as quarter-facing source classes.
 --  Supported tag shapes:
 --      CLASS_CSC_<QUARTER>_SALES                              -> Gold to Quarter
---      CLASS_CSC_<QUARTER>_INCOMING_GOODS                     -> Production to Quarter
+--      CLASS_CSC_<QUARTER>_GOODS_PROVIDER                     -> Production to Quarter
 --      CLASS_CSC_<QUARTER>_<SOURCE>_TO_QUARTER_<YIELD>        -> Yield to Quarter
 WITH QuarterFacingAdjacencyTags AS
     (
@@ -102,11 +102,11 @@ WITH QuarterFacingAdjacencyTags AS
 
     SELECT DISTINCT
         Tag,
-        REPLACE(REPLACE(Tag, 'CLASS_CSC_', ''), '_INCOMING_GOODS', '') AS QuarterKey,
-        'INCOMING_GOODS' AS SourceKey,
+        REPLACE(REPLACE(Tag, 'CLASS_CSC_', ''), '_GOODS_PROVIDER', '') AS QuarterKey,
+        'GOODS_PROVIDER' AS SourceKey,
         'YIELD_PRODUCTION' AS YieldType
     FROM TypeTags
-    WHERE Tag LIKE 'CLASS_CSC_%_INCOMING_GOODS'
+    WHERE Tag LIKE 'CLASS_CSC_%_GOODS_PROVIDER'
 
     UNION
 
@@ -295,4 +295,4 @@ INSERT OR IGNORE INTO Ruivo_CAO
     ('CLASS_CSC_BAKERS_SPEC',                   'LOC_CLASS_CSC_SPEC_NAME',                  'CSC_Spec_Materials'    ),
     ('CLASS_CSC_BAKERS_SALES',                  'LOC_CLASS_CSC_SALES_NAME',                 'CSC_Sales'             ),
     ('DISTRICT_CSC_BAKERS_QUARTER',             'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',     'CSC_Goods'             ),
-    ('CLASS_CSC_BAKERS_INCOMING_GOODS',		    'LOC_CLASS_CSC_INCOMING_GOODS_NAME',		'CSC_Goods'			    );
+    ('CLASS_CSC_BAKERS_GOODS_PROVIDER',		    'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',		'CSC_Goods_Provider'    );

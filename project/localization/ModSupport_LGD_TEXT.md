@@ -5,12 +5,13 @@ language: en_US
 ## LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION
 A district in your city specializing in baking.
 
+<!--
 Buildings in this Quarter create supply-chain transactions with adjacent material improvements, local Quarter buildings, customer districts, and Trade Routes.
 
 Base Materials support Water Mills and Wind Mills; Specialty Materials support Cafés. Bakers buildings send [ICON_Food] Food through the chain while receiving [ICON_Production] Production and [ICON_Gold] Gold payments where implemented.
 
 At Feudalism, Medieval Faires, and Urbanization, supplied Bakers buildings can establish Storekeeper, Innkeeper, Groundskeeper, Ride Technician, and Horticulturist services in adjacent customer districts.
-
+-->
 +1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.
 
 ## LOC_CSC_GARDEN_GOLD_TO_BAKERS
@@ -71,6 +72,15 @@ The sales interaction of a Café with the local Zoo, Ferris Wheel, or Garden is 
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_CSCHAIN_PARA_1
 The Café procures flour from the Water Mill or Wind Mill in the Quarter, as well as various specialty materials from adjacent improvements on those specific resources, and transforms them into fine baked goods and drinks for sale to select customers visiting the adjacent Entertainment Complex, Water Park or Garden.
+
+## Raw SQL 1
+mode: raw
+
+```sql
+UPDATE LocalizedText
+SET Text = Text || '[NEWLINE][ICON_BULLET][ICON_DISTRICT_LEU_GARDEN] {LOC_DISTRICT_LEU_GARDEN_NAME}'
+WHERE Tag = 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_PARA_1';
+```
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_LEU_GARDEN_CHAPTER_CSCHAIN_TITLE
 Supply Chains
