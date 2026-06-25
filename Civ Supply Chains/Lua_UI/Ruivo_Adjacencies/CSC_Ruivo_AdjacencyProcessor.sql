@@ -286,7 +286,6 @@ WHERE EXISTS
     WHERE BuildingType = 'BUILDING_CSC_BAKERS_WATER_MILL'
     );
 
-
 INSERT OR IGNORE INTO Ruivo_CAO
     (CustomAdjacentObject,                      Name,                                       ArtdefOverlayEntry      )     VALUES
     
