@@ -359,6 +359,15 @@ Goods Providers
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_TITLE
 Sales Districts
 
+## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_HISTORY_TITLE
+Historical Context
+
+## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_HISTORY_PARA_1
+Baking is one of the oldest urban trades, emerging wherever grain cultivation, milling, and settled life made reliable bread possible. In many cities, bakers became more than individual craftsmen: they formed guilds, worked under civic regulation, and supplied a food so essential that its weight, price, and quality were often matters of public concern. A Bakers' Quarter represents this clustered institution of mills, ovens, stores, and sellers, where the practical work of turning harvests into daily nourishment became part of the city's basic stability.
+
+## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_HISTORY_PARA_2
+Over time, the same trade reached beyond subsistence. Bread and pastries moved from granaries and market stalls into inns, fairs, coffee houses, gardens, and places of public amusement, following the growth of urban hospitality and leisure. The baker's craft could feed a city, welcome travelers, sweeten public gatherings, and support the cafés where conversation, fashion, and culture gathered around a table. In that progression, the Bakers' Quarter becomes not only a safeguard against hunger, but a quiet measure of civic life becoming more social, comfortable, and expressive.
+
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_CSCHAIN_TITLE
 Supply Chains
 

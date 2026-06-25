@@ -33,6 +33,7 @@ VALUES	('District',					'CSCBASE',					7),
 		('District',					'CSCGOODS',				9),
 		('District',					'CSCSALES',				10),
 		('District',					'CSCHAIN',					11),
+		('District',					'HISTORY',					12),
 		('Building',					'CSCHAIN',					9),
 		('Resource',					'CSCQUAR',					9),
 		('Project',						'CSCSPEC',					9);
