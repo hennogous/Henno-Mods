@@ -48,7 +48,8 @@ The Water Mill has moved from the City Center to the Bakers' Quarter, and is onl
 * +1 {{production}} Production and +1 {{gold}} Gold from the local Bakery and Café, providing +1 {{food}} Food to each in return.
 * +1 {{food}} Food to an adjacent Granary, and +1 {{production}} Production and +1 {{gold}} Gold to the Water Mill or Wind Mill in return.
 * At Feudalism, a Water Mill or Wind Mill adjacent to an improved {{base}} Base Materials resource unlocks:
-   * A Storekeeper is established in the adjacent City Center if it has a Granary, and provides the city with +10% growth and +1 {{engineer}} Great Engineer point per turn.
+   * A Storekeeper is established in the adjacent City Center if it has a Granary.
+   * The Storekeeper provides the city with +10% growth and +1 {{engineer}} Great Engineer point per turn.
 
 ## 3. Bakery
 
@@ -83,4 +84,4 @@ The Water Mill has moved from the City Center to the Bakers' Quarter, and is onl
    * A Groundskeeper is established in an adjacent Entertainment Complex with a Zoo, a Ride Technician in a Water Park with a Ferris Wheel, and a Horticulturist in a Garden district with a Conservatory (Leugi).
    * All three services provide the city with +2 {{tourism}} Tourism and +1 {{citizen}} Citizen slot.
    * The Groundskeeper and Ride Technician provide +1 {{engineer}} Great Engineer point per turn, while the Horticulturist provides +1 {{artist}} Great Artist point per turn.
-* +1 {{food}} Food bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Bakers' Quarter. +1 {{amenity}} Amenity in all cities within 6 tiles of the origin city.
+* +1 {{food}} Food bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Bakers' Quarter. +1 {{amenity}} Amenity to the origin city.
