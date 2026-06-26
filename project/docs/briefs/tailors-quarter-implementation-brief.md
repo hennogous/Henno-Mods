@@ -13,15 +13,15 @@ Phase 1 draft, created before gameplay implementation.
 | Stage 2 building | Textile Workshop |
 | Stage 2 maintenance | -2 Gold |
 | Stage 2 customer | Lighthouse in Harbor |
-| Stage 2 service | Sailmaker in Harbor with Lighthouse |
+| Stage 2 service | Sailmaker in Harbor with Lighthouse; +20% Production toward Renaissance Era or earlier naval units and +1 Great Admiral point |
 | Stage 2 unlock gate | Naval Tradition; Textile Workshop supplied by improved Base Materials |
 | Stage 3 building | Tailor |
-| Stage 3 customers | Market in Commercial Hub; Chancery in Diplomatic Quarter |
-| Stage 3 service | Court Tailor in Diplomatic Quarter with Chancery |
-| Stage 3 unlock gate | The Enlightenment; Tailor supplied by improved Base Materials |
+| Stage 3 customers | Temple in Holy Site; Market in Commercial Hub |
+| Stage 3 service | Robemaker in Holy Site with Temple; +10% Faith and +1 Great Prophet point |
+| Stage 3 unlock gate | Divine Right; Tailor supplied by improved Base Materials |
 | Stage 4 building | Fashion House |
 | Stage 4 customers | Amphitheater in Theater Square; Bolshoi Theatre; Broadway; Sydney Opera House |
-| Stage 4 service | Couturier in Theater Square or Wonder destination |
+| Stage 4 service | Couturier serving Theater Square or Wonder destination; +10% Culture, +1 Citizen slot, and +1 Great Artist point when established in a Wonder |
 | Stage 4 unlock gate | Opera and Ballet; Fashion House supplied by improved Base and Specialty Materials |
 | Trade route behavior | Stage 2: +1 Production to routes to the city, +1 Gold return to Quarter. Stage 3: +1 Culture to routes, +1 Gold return. Stage 4: +1 Culture to routes, +2 Gold return. |
 | Art plan | Start with Quarter district art scaffolding in Phase 2; building kit assignments TBD per slice. |
@@ -43,11 +43,6 @@ Current producers found during Phase 1:
 
 ## Open Questions Before Later Phases
 
-- Confirm service names and Great Person classes:
-  - Sailmaker: Great Admiral
-  - Court Tailor: Great Merchant
-  - Couturier: Great Artist when established in a Wonder
-- Confirm whether the Chancery service should grant only Influence points, or also a citizen slot. The public doc currently lists Influence plus Great Merchant points.
 - Confirm the implementation host for Couturier service effects when the customer is a Wonder rather than a normal district building.
 
 ## Parked Taxes & Politics Notes

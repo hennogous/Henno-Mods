@@ -59,9 +59,9 @@ title: Tailors' Quarter
 * +2 {{culture}} Culture.
 * +1 {{citizen}} Citizen slot, and +2 {{culture}} Culture and +1 {{gold}} Gold to {{citizen}} Citizens in the Quarter.
 * +1 {{amenity}} Amenity in the city.
-* +0.1 {{culture}} Culture per {{citizen}} Citizen to the city of each adjacent Market or Chancery, and +0.1 {{production}} Production and +0.1 {{gold}} Gold per {{citizen}} Citizen to the Tailor's city in return.
-* At The Enlightenment, a Tailor adjacent to an improved {{base}} Base Materials resource unlocks:
-   * A Court Tailor is established in an adjacent Diplomatic Quarter if it has a Chancery, and provides the city with +3 Influence points and +1 {{merchant}} Great Merchant point per turn.
+* +0.1 {{culture}} Culture per {{citizen}} Citizen to the city of each adjacent Temple or Market, and +0.1 {{production}} Production and +0.1 {{gold}} Gold per {{citizen}} Citizen to the Tailor's city in return.
+* At Divine Right, a Tailor adjacent to an improved {{base}} Base Materials resource unlocks:
+   * A Robemaker is established in an adjacent Holy Site if it has a Temple, and provides the city with +10% {{faith}} Faith and +1 {{prophet}} Great Prophet point per turn.
 * +1 {{culture}} Culture bonus to trade routes to the city, and +1 {{gold}} Gold to the Quarter in return.
 
 ## 4. Fashion House

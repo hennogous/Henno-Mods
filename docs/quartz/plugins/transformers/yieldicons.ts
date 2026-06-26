@@ -25,7 +25,7 @@ const ICONS: Record<string, { url: string; alt: string }> = {
   "engineer":  { url: `${BASE}/8/8b/Engineer6.png/revision/latest/scale-to-width-down/18?cb=20200505091458`, alt: "Great Engineer" },
   "general":   { url: `${BASE}/b/bc/Great_General_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140706`, alt: "Great General" },
   "admiral":   { url: `${BASE}/0/09/Great_Admiral_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140655`, alt: "Great Admiral" },
-  "prophet":   { url: `${BASE}/4/4d/Great_Prophet_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140720`, alt: "Great Prophet" },
+  "prophet":   { url: `${BASE}/d/d3/Prophet6.png/revision/latest/scale-to-width-down/18?cb=20200505091537`, alt: "Great Prophet" },
   "musician":  { url: `${BASE}/e/e3/Great_Musician_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140715`, alt: "Great Musician" },
   "writer":    { url: `${BASE}/f/f2/Great_Writer_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140728`, alt: "Great Writer" },
   base:       { url: `/images/CSC_TextIcons_Base.png`, alt: "Base Materials" },
