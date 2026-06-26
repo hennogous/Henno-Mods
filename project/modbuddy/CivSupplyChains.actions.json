@@ -433,7 +433,7 @@
         "type": "UpdateText",
         "id": "CSC_MC_MODE_TEXT",
         "properties": {
-          "LoadOrder": "101"
+          "LoadOrder": "3000"
         },
         "criteria": [
           "Monopolies_Mode"
@@ -742,6 +742,7 @@
         "type": "UpdateIcons",
         "id": "UpdateIcons",
         "files": [
+          "Icons/CSC_ALL_ICONS.sql",
           "Icons/CSC_BAKERS_ICONS.sql",
           "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons.sql"
         ]

@@ -47,20 +47,20 @@ INSERT INTO BuildingModifiers
 
 --	WIND / WATER MILL -------------------------------------------------------------------
 
--- +2 Production to adjacent base materials Industries (includes +1 from the base file and +1 here)
+-- +2 Production to adjacent base materials Industries
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE_PROD'	),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE_PROD'	),
 
--- +3 Production to adjacent base materials Corporations (includes +1 from the base file and +2 here)
+-- +3 Production to adjacent base materials Corporations
 		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE_PROD'	),
 		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE_PROD'	),
 
 --	CAFE --------------------------------------------------------------------------
 
--- +2 Production to adjacent specialty materials Industries (includes +1 from the base file and +1 here)
+-- +2 Production to adjacent specialty materials Industries
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC_PROD'		),
 
--- +3 Production to adjacent specialty materials Corporations (includes +1 from the base file and +2 here)
+-- +3 Production to adjacent specialty materials Corporations
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_CORP_SPEC_PROD'		);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ INSERT OR IGNORE INTO Modifiers
 -- +2/+3 Production to adjacent base materials Industry/Corporation improvements
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE_PROD',			'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',	NULL,								'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',		NULL				),
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE_PROD',			'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',	NULL,								'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',	NULL				),
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',							'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',			NULL,								NULL,										NULL				),
+		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',							'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',			NULL,								NULL,										NULL				),
 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP',							'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',			NULL,								NULL,										NULL				),
 
 --  +2/+3 Production to adjacent specialty materials Industry/Corporation improvements
@@ -145,22 +145,20 @@ INSERT OR IGNORE INTO ModifierArguments
         (  	'MOD_CSC_BAKERS_BASE_CORPORATION_FOOD_TO_ADJ_WIND_MILL',			'YieldType',           		'YIELD_FOOD'                                                    ),
         ( 	'MOD_CSC_BAKERS_BASE_CORPORATION_FOOD_TO_ADJ_WIND_MILL',			'Amount',             		3                                                               ),
 
--- +2 Production to adjacent base materials Industries (already at +1 from base Quarter)
-		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE_PROD',			'ModifierId',				'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE'					),
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',    							'YieldType',	            'YIELD_PRODUCTION'                					),
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',    							'Amount',		            1		                    						),
+-- +2 Production to adjacent base materials Industries
+		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE_PROD',			'ModifierId',				'MOD_CSC_BAKERS_PROD_TO_ADJ_IND'					),
+		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',    							'YieldType',	            'YIELD_PRODUCTION'                					),
+		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',    							'Amount',		            2		                    						),
 
--- +3 Production to adjacent base materials Corporations (already at +1 from base Quarter)
+-- +3 Production to adjacent base materials Corporations
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE_PROD',		'ModifierId',				'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP'					),
 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP',    						'YieldType',	            'YIELD_PRODUCTION'                					),
-		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP',    						'Amount',		            2		                    						),
+		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP',    						'Amount',		            3		                    						),
 
--- +2 Production to adjacent specialty materials Industries (already at +1 from base Quarter)
-		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC_PROD',			'ModifierId',				'MOD_CSC_BAKERS_FLOUR_MILL_PROD_TO_ADJ_IMP_BASE'				),
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_SPEC_IND',    				'YieldType',	            'YIELD_PRODUCTION'                					),
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_SPEC_IND',    				'Amount',		            1		                    						),
+-- +2 Production to adjacent specialty materials Industries
+		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC_PROD',			'ModifierId',				'MOD_CSC_BAKERS_PROD_TO_ADJ_IND'				),
 
--- +3 Production to adjacent specialty materials Corporations (already at +1 from base Quarter)
+-- +3 Production to adjacent specialty materials Corporations
 		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_CORP_SPEC_PROD',		'ModifierId',				'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP'				),
 -- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_SPEC_CORP',    				'YieldType',	            'YIELD_PRODUCTION'                					),
 -- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_SPEC_CORP',    				'Amount',		            2		                    						),
