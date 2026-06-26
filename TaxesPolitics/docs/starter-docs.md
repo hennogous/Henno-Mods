@@ -35,7 +35,61 @@ For the most part, sales of different types of goods to buyers (stage 5) were de
    * Land Ownership: {{culture}} Culture bomb tiles around Quarters in cities with Aristocrats.
    * Patronage: +100% Great Person Points from specialists in the city
 
-# BAKERS
-   * With Monopolies & Corporations:
-      * Unlocks the Commission Fine Pastries project in cities with a Café, which produces a Fine Pastries product.
-      * Fine Pastries can be placed in the private collection of an Aristocrat or traded with other players, and grant +2 {{housing}} Housing.
+# Parked Quarter Specialty Commission Ideas
+
+These are the initial stage 4 Product / specialty commission concepts moved out of the CSC public Quarter docs. They are parked here until the Taxes & Politics commission system is designed.
+
+## Bakers
+
+* With Monopolies & Corporations:
+   * Unlocks the Commission Fine Pastries project in cities with a Cafe, which produces a Fine Pastries product.
+   * Fine Pastries can be placed in the private collection of an Aristocrat or traded with other players, and grant +2 {{housing}} Housing.
+
+## Tailors
+
+* With Opera and Ballet:
+   * Unlocks the Create Haute Couture project in the city.
+   * +1 Product slot for Haute Couture products to all Amphitheaters, Bolshoi Theatre, Broadway or Sydney Opera House in the empire.
+   * Haute Couture products grant +10% {{culture}} Culture in the city, increased to +20% if the Amphitheater or Wonder is adjacent to a Fashion House.
+
+## Apothecaries
+
+* With Scientific Theory:
+   * Unlocks the Create Pseudoscience project in the city.
+   * +1 Product slot for Pseudoscience products to all Universities in the empire.
+   * Pseudoscience products grant +10% {{science}} Science in the city, increased to +20% if the University is adjacent to an Alchemist.
+
+## Stonemasons
+
+* With Nationalism:
+   * Unlocks the Create Statue project in the city.
+   * +1 Product slot for Statue products to all Monuments in the empire.
+   * Statue products grant +5 Loyalty in the city, increased to +10 if the Monument is adjacent to a Sculptor's Studio.
+
+## Carpenters
+
+* With Opera and Ballet:
+   * Unlocks the Create String Instruments project in the city.
+   * +1 Product slot for String Instruments products to all Amphitheaters, Bolshoi Theatre, Broadway or Sydney Opera House in the empire.
+   * String Instruments products grant +10% {{tourism}} Tourism in the city, increased to +20% if the Amphitheater, Bolshoi Theatre, Broadway or Sydney Opera House is adjacent to a Luthier.
+
+## Blacksmiths
+
+* With Steel:
+   * Unlocks the Create Advanced Gearing project in the city.
+   * +1 Product slot for Advanced Gearing products to all Factories in the empire.
+   * Advanced Gearing products grant +10% {{production}} Production in the city, increased to +20% if the Factory is adjacent to a Foundry.
+
+## Goldsmiths
+
+* With Mercantilism:
+   * Unlocks the Create Crown Jewels project in the city.
+   * +1 Product slot for Crown Jewels products to the Palace, Big Ben, Casa de Contratacion, Colossus, Great Lighthouse, Great Zimbabwe and Torre de Belem.
+   * Crown Jewels products grant +10% {{gold}} Gold in the city, increased to +20% if the Palace or Wonder where the product is placed is adjacent to a Jeweler.
+
+## Brewers
+
+* With Cartography:
+   * Unlocks the Create Spirits project in the city.
+   * +1 Product slot for Spirits products to the Palace, Big Ben, Casa de Contratacion, Colossus, Great Lighthouse, Great Zimbabwe and Torre de Belem.
+   * Spirits products grant +4 {{gold}} Gold to international trade routes to and from the city, increased to +8 if the Palace or Wonder where the product is placed is adjacent to a Distillery.

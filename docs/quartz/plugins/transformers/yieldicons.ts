@@ -28,6 +28,10 @@ const ICONS: Record<string, { url: string; alt: string }> = {
   "prophet":   { url: `${BASE}/4/4d/Great_Prophet_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140720`, alt: "Great Prophet" },
   "musician":  { url: `${BASE}/e/e3/Great_Musician_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140715`, alt: "Great Musician" },
   "writer":    { url: `${BASE}/f/f2/Great_Writer_icon_%28Civ6%29.png/revision/latest/scale-to-width-down/18?cb=20200505140728`, alt: "Great Writer" },
+  base:       { url: `/images/CSC_TextIcons_Base.png`, alt: "Base Materials" },
+  spec:       { url: `/images/CSC_TextIcons_Spec.png`, alt: "Specialty Materials" },
+  sales:      { url: `/images/CSC_TextIcons_Sales.png`, alt: "Sales Districts" },
+  goods:      { url: `/images/CSC_TextIcons_Goods.png`, alt: "Goods Providers" },
 }
 
 const SHORTHAND_REGEX = /\{\{([a-z-]+)\}\}/g

@@ -8,28 +8,29 @@ title: Blacksmiths' Quarter
 
 | | Standard game | Mods |
 |---|---|---|
-| Base materials | Copper, Hills, Iron | Lead (R2), Tin (R2) |
+| {{base}} Base Materials | Copper, Hills, Iron | Lead (R2), Tin (R2) |
 | Luxury materials | Aluminium, Silver | {{gold}} Gold (R2), Platinum (R2) |
 
 * Main yield focus: {{production}} Production
 * Unlocks at Craftsmanship
 * Base cost: 60 {{production}} Production
+* Maintenance cost: 1 {{gold}} Gold
 
 ---
 
-* +1 {{production}} Production from each adjacent base or specialty materials resource from this supply chain
-* +2 {{gold}} Gold from each adjacent Encampment and +2 {{production}} Production in return
-* +1 {{gold}} Gold from each adjacent Commercial Hub and Industrial Zone, and +1 {{production}} Production in return
+* +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain
+* +2 {{gold}} Gold from each adjacent {{sales}} Encampment and +2 {{production}} Production in return
+* +1 {{gold}} Gold from each adjacent {{sales}} Commercial Hub and Industrial Zone, and +1 {{production}} Production in return
 * City Lights:
-   * +1 {{production}} Production from each adjacent Rural Community, and +1 {{production}} Production in return
-   * +1 {{gold}} Gold from each adjacent Urban Borough, and +1 {{production}} Production in return
+   * +1 {{production}} Production from each adjacent {{goods}} Rural Community, and +1 {{production}} Production in return
+   * +1 {{gold}} Gold from each adjacent {{sales}} Urban Borough, and +1 {{production}} Production in return
 * +1 {{production}} Production if the Quarter is built on Hills terrain
 
 ## 1. Materials
 
-* Base materials improvements: +1 {{gold}} Gold from each adjacent Smelter
+* {{base}} Base Materials improvements: +1 {{gold}} Gold from each adjacent Smelter
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
-* Specialty materials improvements: +1 {{gold}} Gold from each adjacent Foundry
+* {{spec}} Specialty Materials improvements: +1 {{gold}} Gold from each adjacent Foundry
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
 
 ## 2. Smelter
@@ -37,7 +38,7 @@ title: Blacksmiths' Quarter
 * Unlocks at Bronze Working
 * Costs {{production}} Production
 
-* +1 {{production}} Production from each adjacent base materials improvement
+* +1 {{production}} Production from each adjacent {{base}} Base Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +1 {{production}} Production, with a -1 {{gold}} Gold maintenance cost
 * +1 {{production}} Production to any adjacent Barracks or Stable, and receive +1 {{gold}} Gold in return
@@ -66,14 +67,10 @@ title: Blacksmiths' Quarter
 * Costs 250 {{production}} Production
 
 * +1 {{production}} Production from the local Smelter
-* +1 {{production}} Production from each adjacent specialty materials improvement
+* +1 {{production}} Production from each adjacent {{spec}} Specialty Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +3 {{production}} Production, with a -3 {{gold}} Gold maintenance cost
 * +1 {{production}} Production and +1 {{gold}} Gold for every 5 Citizens in the city for each adjacent Factory
-   * With Steel:
-   * Unlocks the Create Advanced Gearing project in the city
-   * +1 Product slot for Advanced Gearing products to all Factories in the empire
-   * Advanced Gearing products grant +10% {{production}} Production in the city, increased to +20% if the Factory is adjacent to a Foundry
 * +1 Citizen slot, and +1 {{production}} Production and +2 {{gold}} Gold to Citizens in the Quarter
 * +1 {{production}} Production bonus to all trade routes to the city, and +2 {{gold}} Gold in return from international routes
 * +1 {{amenity}} Amenity in all cities within 6 tiles

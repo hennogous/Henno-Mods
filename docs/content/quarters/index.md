@@ -8,7 +8,7 @@ That's enough abstract talk, let's take a look at how this supply chain framewor
 
 ## Materials
 
-Many resources from the standard game (including Rise & Fall, Gathering Storm and the New Frontier Pass) have been mapped as either base materials or specialty materials for use in supply chains. Resources directly linked to animals are marked in italics below, and can optionally be included.
+Many resources from the standard game (including Rise & Fall, Gathering Storm and the New Frontier Pass) have been mapped as either {{base}} Base Materials or {{spec}} Specialty Materials for use in supply chains. Resources directly linked to animals are marked in italics below, and can optionally be included.
 
 A number of resources from popular resource mods have also been mapped to supply chains, and there is a setting to hide all other resources from these resource mods if you want to add only the mapped resources to your game.
 
@@ -20,7 +20,7 @@ Compatible mods:
 * Sukritact's Resources (SR) by Sukritact
 * Wetlands (JNRW) by JNR
 
-| | Base materials (Standard) | Base materials (Mods) | Specialty materials (Standard) | Specialty materials (Mods) |
+| | {{base}} Base Materials (Standard) | {{base}} Base Materials (Mods) | {{spec}} Specialty Materials (Standard) | {{spec}} Specialty Materials (Mods) |
 |---|---|---|---|---|
 | **Bakers' Quarter** | Bananas, Cattle, Maize, Rice, Wheat | Barley (R2), Flax (CSC), Quinoa (LAR), Sorghum (R2) | Cocoa, Coffee, Grapes (Wine), Honey, Olives, Salt, Spices, Sugar, Tea | Berries (R2), Dates (R2), Poppies (R2), Saffron (R2), Strawberry (R2), Sugar Maple (R2), Tomato (R2) |
 | **Tailors' Quarter** | Cotton, Sheep | Bamboo (R2), Flax (CSC), Hemp (CH), Llamas (LAR) | Dyes, Silk, Silver | Cashmere (R2), Gold (R2 / SR) |

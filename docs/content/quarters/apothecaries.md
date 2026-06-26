@@ -8,28 +8,29 @@ title: Apothecaries' Quarter
 
 | | Standard game | Mods |
 |---|---|---|
-| Base materials | Cocoa, Coffee, Honey, Incense, Olives, Spices, Tea, Tobacco | Algae (R2), Aloe (R2), Cannabis (CH), Coca (LAR), Hemp (CH), Kelp (SO), Medicinal Herbs (R2), Mushrooms (R2), Poppies (R2), Sandalwood (R2), Yerba Mate (LAR) |
-| Specialty materials | Copper, Iron, Mercury, Silver | {{gold}} Gold (R2) |
+| {{base}} Base Materials | Cocoa, Coffee, Honey, Incense, Olives, Spices, Tea, Tobacco | Algae (R2), Aloe (R2), Cannabis (CH), Coca (LAR), Hemp (CH), Kelp (SO), Medicinal Herbs (R2), Mushrooms (R2), Poppies (R2), Sandalwood (R2), Yerba Mate (LAR) |
+| {{spec}} Specialty Materials | Copper, Iron, Mercury, Silver | {{gold}} Gold (R2) |
 
 * Main yield focus: {{science}} Science
 * Unlocks at Craftsmanship
 * Base cost: 60 {{production}} Production
+* Maintenance cost: 1 {{gold}} Gold
 
 ---
 
-* +1 {{production}} Production from each adjacent base or specialty materials resource from this supply chain, and +1 {{gold}} Gold in return
-* +1 {{gold}} Gold from each adjacent Holy Site, and +1 {{faith}} Faith in return
-* +1 {{gold}} Gold from each adjacent Commercial Hub, Encampment and Campus, and +1 {{science}} Science in return
+* +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain, and +1 {{gold}} Gold in return
+* +1 {{gold}} Gold from each adjacent {{sales}} Holy Site, and +1 {{faith}} Faith in return
+* +1 {{gold}} Gold from each adjacent {{sales}} Commercial Hub, Encampment and Campus, and +1 {{science}} Science in return
 * City Lights:
-   * +1 {{production}} Production from each adjacent Rural Community, and +1 {{science}} Science in return
-   * +1 {{gold}} Gold from each adjacent Urban Borough, and +1 {{science}} Science in return
+   * +1 {{production}} Production from each adjacent {{goods}} Rural Community, and +1 {{science}} Science in return
+   * +1 {{gold}} Gold from each adjacent {{sales}} Urban Borough, and +1 {{science}} Science in return
 * +1 {{production}} Production if the Quarter is built adjacent to Forest or Rainforest
 
 ## 1. Materials
 
-* Base materials improvements: +1 {{gold}} Gold from each adjacent Herbalist
+* {{base}} Base Materials improvements: +1 {{gold}} Gold from each adjacent Herbalist
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
-* Specialty materials improvements: +1 {{gold}} Gold from each adjacent Alchemist
+* {{spec}} Specialty Materials improvements: +1 {{gold}} Gold from each adjacent Alchemist
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
 
 ## 2. Herbalist
@@ -37,7 +38,7 @@ title: Apothecaries' Quarter
 * Unlocks at Irrigation
 * Costs 80 {{production}} Production
 
-* +1 {{production}} Production from each adjacent base materials improvement
+* +1 {{production}} Production from each adjacent {{base}} Base Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +1 {{science}} Science, with a -1 {{gold}} Gold maintenance cost
 * +1 {{faith}} Faith to each adjacent Shrine, and receive +1 {{gold}} Gold in return
@@ -66,14 +67,10 @@ title: Apothecaries' Quarter
 * Costs 250 {{production}} Production
 
 * +1 {{production}} Production from the local Herbalist
-* +1 {{production}} Production from each adjacent specialty materials improvement
+* +1 {{production}} Production from each adjacent {{spec}} Specialty Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +3 {{science}} Science, with a -3 {{gold}} Gold maintenance cost
 * +1 {{science}} Science and +1 {{gold}} Gold for every 5 Citizens in the city for each adjacent University
-   * With Scientific Theory:
-   * Unlocks the Create Pseudoscience project in the city
-   * +1 Product slot for Pseudoscience products to all Universities in the empire
-   * Pseudoscience products grant +10% {{science}} Science in the city, increased to +20% if the University is adjacent to an Alchemist
 * +1 Citizen slot, and +1 {{science}} Science and +2 {{gold}} Gold to Citizens in the Quarter
 * +1 {{science}} Science bonus to all trade routes to the city, and +2 {{gold}} Gold in return from international routes
 * +1 {{amenity}} Amenity in all cities within 6 tiles

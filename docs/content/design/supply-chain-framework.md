@@ -45,19 +45,19 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
 ## Stage 1: Materials extraction
 
 * Stage 1 of supply chains consist of standard game improvements (e.g. Wheat Farms, Cotton Plantations and Lumber Mills) that extract Materials from resources or features on the map, and sell them as inputs to stage 2 and 4 buildings.
-* Materials mapped to supply chains are classified as either Base Materials or Specialty Materials.
-* Standard game bonus resources in scope have mostly been classified as Base Materials, while standard game luxury resources can be either a Base Material or a Specialty Material, depending on their role in the specific supply chain (see the Materials table for a mapping of resources to industries later on).
-   * Some resources may be a Base Material in one supply chain, and a Specialty Material in another.
+* Materials mapped to supply chains are classified as either {{base}} Base Materials or {{spec}} Specialty Materials.
+* Standard game bonus resources in scope have mostly been classified as {{base}} Base Materials, while standard game luxury resources can be either a {{base}} Base Material or a {{spec}} Specialty Material, depending on their role in the specific supply chain (see the Materials table for a mapping of resources to industries later on).
+   * Some resources may be a {{base}} Base Material in one supply chain, and a {{spec}} Specialty Material in another.
    * Standard game luxuries retain their standard {{amenity}} Amenity effects, with Quarters offering supplementary local / regional amenities to provide further happiness management options.
 * When the Monopolies & Corporations game mode is enabled, a mod setting becomes available that removes city-wide bonuses from Industry and Corporations improvements, as these bonuses are replaced by the effects of the Quarters.
-   * With this setting enabled, Industries and Corporations now serve as highly productive and profitable sources of Base and Specialty Materials to Quarters instead.
+   * With this setting enabled, Industries and Corporations now serve as highly productive and profitable sources of {{base}} Base and {{spec}} Specialty Materials to Quarters instead.
    * {{tourism}} Tourism from resource Monopolies remains unchanged by this mod, regardless of whether the resource is used by a Quarter or not.
 * Some effects of this mod have a requirement for a building in a Quarter to be "supplied", which means having an adjacent improved copy of a resource that has been mapped to the required type of Materials for the Quarter.
    * E.g. a "supplied Bakery" is a Bakery that has an improved Wheat Farm adjacent to it. Since the Water Mill / Wind Mill is a prerequisite for constructing the Bakery, this will result in a fully functioning chain from Wheat Farm, to Mill, to Bakery.
 
-* Demand for Base Materials result in a +1 {{production}} Production and +1 {{gold}} Gold bonus from each adjacent stage 2 building to Base Materials improvements
+* Demand for {{base}} Base Materials result in a +1 {{production}} Production and +1 {{gold}} Gold bonus from each adjacent stage 2 building to {{base}} Base Materials improvements
    * M&C: +2 {{production}} Production and +2 {{gold}} Gold to an Industry, and +3 {{production}} Production and +3 {{gold}} Gold to a Corporation
-* Demand for Specialty Materials result in a +1 {{production}} Production and +1 {{gold}} Gold bonus from each adjacent stage 4 building to Specialty Materials improvements
+* Demand for {{spec}} Specialty Materials result in a +1 {{production}} Production and +1 {{gold}} Gold bonus from each adjacent stage 4 building to {{spec}} Specialty Materials improvements
    * M&C: +2 {{production}} Production and +2 {{gold}} Gold to an Industry, and +3 {{production}} Production and +3 {{gold}} Gold to a Corporation
 
 ![Stage 1](../images/Civ%20Modding%20Projects%20-%20Stage%201.jpg)
@@ -65,7 +65,7 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
 ## Stage 2-4: Quarters
 
 * Stages 2, 3 and 4 of supply chains are implemented as buildings inside of 8 new districts called Quarters, each dedicated to the goods supply chain of a specific industry, e.g. Baking or Textiles.
-* All Quarters unlock at Craftsmanship.
+* All Quarters unlock at Craftsmanship and have a maintenance cost of 1 {{gold}} Gold.
 * Each Quarter can only be constructed once per city, and count toward district slots.
 
 * While all Quarters gain {{production}} Production and {{gold}} Gold yields from their activities, each Quarter has a main yield focus, e.g. {{food}} Food for the Bakers' Quarter.
@@ -78,14 +78,14 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
    * The flat yields from these adjacencies are particularly helpful to small cities, and represents the production and commercial potential of the Quarter.
    * District adjacencies are bi-directional in order to guide the placement of both the Quarter and other districts, as adjacent districts are key to productive Quarters once the later stages of the supply chain are constructed.
 
-   * +1 {{production}} Production to Quarters from each adjacent Base Materials and Specialty Materials resource (stage 1) in their supply chain.
+   * +1 {{production}} Production to Quarters from each adjacent {{base}} Base Materials and {{spec}} Specialty Materials resource (stage 1) in their supply chain.
       * This adjacency is from both unimproved and improved resources, mostly to help the AI evaluate placement decisions.
-   * +1 {{gold}} Gold from each adjacent Commercial Hub and any other districts (or their unique replacers) where the Quarter's products will later be sold (stage 5), representing the charter fees that Guilds historically paid to establish their presence in a city. Each of these adjacent districts receive +1 of the main yield of the Quarter in return, represents the provisions received from having such an established source of goods nearby.
+   * +1 {{gold}} Gold from each adjacent {{sales}} Commercial Hub and any other districts (or their unique replacers) where the Quarter's products will later be sold (stage 5), representing the charter fees that Guilds historically paid to establish their presence in a city. Each of these adjacent districts receive +1 of the main yield of the Quarter in return, represents the provisions received from having such an established source of goods nearby.
       * An exception to this is the district where intermediary goods will later be sold, which receives a more thematic yield in return, as intermediary goods often have a different secondary use and narrative from how they are used by later stages in the Quarter supply chain.
       * The Commercial Hub provides an adjacency to all Quarters, as the Market is a valid customer for all stage 3 buildings, regardless of the Quarter's industry.
       * For players using Albro's excellent City Lights mod, the supply chain system integrates with the urban vs. rural mechanics, as follows:
-         * Rural Communities provide a +1 {{production}} Production adjacency bonus to Quarters instead of +1 {{gold}} Gold in exchange for +1 of the main yield of the Quarter, representing availability of a rural workforce.
-         * Urban Boroughs are treated as a point of sale (stage 5) for all Quarters, and hence provide an adjacency bonus of +1 {{gold}} Gold, in exchange for +1 of the main yield of the Quarter in return.
+         * {{goods}} Rural Communities provide a +1 {{production}} Production adjacency bonus to Quarters instead of +1 {{gold}} Gold in exchange for +1 of the main yield of the Quarter, representing availability of a rural workforce.
+         * {{sales}} Urban Boroughs are treated as a point of sale (stage 5) for all Quarters, and hence provide an adjacency bonus of +1 {{gold}} Gold, in exchange for +1 of the main yield of the Quarter in return.
    * +1 {{production}} Production from an adjacent Quarter that produces goods that are required by the industry in the Quarter, in exchange for a +1 {{gold}} Gold adjacency bonus in return.
    * +1 {{production}} Production bonus from every 2 adjacent river segments, representing improved logistics.
 
@@ -96,7 +96,7 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
 
 ### Stage 2 – Intermediary goods building
 
-Procures various Base Materials from stage 1 suppliers and processes those into intermediary goods (e.g. flour, textiles) to sell to customers. These customers could be both downstream actors in its supply chain for further processing (stages 3 and 4), as well as consumers for direct use.
+Procures various {{base}} Base Materials from stage 1 suppliers and processes those into intermediary goods (e.g. flour, textiles) to sell to customers. These customers could be both downstream actors in its supply chain for further processing (stages 3 and 4), as well as consumers for direct use.
 
 * Stage 2 buildings unlock with appropriate technologies or civics
 * Low construction and maintenance cost
@@ -104,15 +104,15 @@ Procures various Base Materials from stage 1 suppliers and processes those into 
 
 ![Stage 2](../images/Civ%20Modding%20Projects%20-%20Stage%202.jpg)
 
-* Procures Base Materials that belong to its supply chain as an input, by adding +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to each adjacent Base Materials improvement.
+* Procures {{base}} Base Materials that belong to its supply chain as an input, by adding +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to each adjacent {{base}} Base Materials improvement.
    * M&C: Increased to +2 {{production}} Production and +2 {{gold}} Gold to an Industry improvement, and +3 {{production}} Production and +3 {{gold}} Gold to a Corporation.
 
-* Processes the procured Base Materials into intermediary goods by generating +1 main yield of the Quarter (supply) for each adjacent Base Materials improvement, with a fixed maintenance cost of -2 {{gold}} Gold.
+* Processes the procured {{base}} Base Materials into intermediary goods by generating +1 main yield of the Quarter (supply) for each adjacent {{base}} Base Materials improvement, with a fixed maintenance cost of -2 {{gold}} Gold.
 
 * Sales transactions of intermediary goods are represented by:
    * +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to the stage 2 building, in return for +1 main yield of the Quarter (supply) to the local stage 3 and stage 4 buildings in the Quarter.
    * +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to the stage 2 building, in return for +1 of a thematic yield (supply) to an adjacent building (or its unique replacers) that has a relationship with the industry's intermediary goods during that era.
-      * With an appropriate Medieval Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has an adjacent source of Base Materials.
+      * With an appropriate Medieval Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has an adjacent source of {{base}} Base Materials.
       * The Service grants a Citizen slot in the customer district and applies an appropriate local or city-wide effect representing the value created by the supplied goods.
       * The Service also provides +1 of an appropriate Great Person point per turn.
 
@@ -142,17 +142,17 @@ Procures intermediary goods from a stage 2 supplier in the Quarter, and processe
 
    * A scaling yield of +0.1 {{production}} Production (demand) and +0.1 {{gold}} Gold (payment) per Citizen in the City to the stage 3 building, in return for +0.1 of the main yield of the Quarter (supply) to an adjacent building (or its unique replacers) that has a relationship with the industry's consumer goods during that era.
       * As each Quarter has their own specific set of customer districts and building over and above the Commercial Hub, this transaction is different for each stage 3 building, depending on the Quarter.
-      * With an appropriate Renaissance Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent district, if the Quarter has an adjacent improved source of Base Materials.
+      * With an appropriate Renaissance Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent district, if the Quarter has an adjacent improved source of {{base}} Base Materials.
       * The Service grants a Citizen slot in the customer district and applies an appropriate effect representing the value created by recurring sales to that destination.
       * The Service also provides +1 of an appropriate Great Person point per turn.
 
-   * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has an adjacent source of Base Materials and the origin City does not have a similar Quarter.
+   * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has an adjacent source of {{base}} Base Materials and the origin City does not have a similar Quarter.
       * This ensures that there is always a way to sell the Quarter's consumer goods, even if it's not located adjacent to a Market or other customer building.
       * This acquired access to consumer goods provides +1 {{amenity}} Amenity in the origin city.
 
 ### Stage 4 - Specialty goods building
 
-Procures intermediary goods from a stage 2 supplier in the Quarter and various Specialty Materials from stage 1 suppliers, and transforms them into specialty goods (e.g. Café, Fashion House, Luthier) for sale to select customers.
+Procures intermediary goods from a stage 2 supplier in the Quarter and various {{spec}} Specialty Materials from stage 1 suppliers, and transforms them into specialty goods (e.g. Café, Fashion House, Luthier) for sale to select customers.
 
 * Most stage 4 buildings unlock at Humanism, with some unlocking at more appropriate Renaissance techs or civics.
 * Requires a stage 2 (intermediary goods) building in the Quarter.
@@ -164,11 +164,11 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
 
 * Purchases inputs from two sources:
    * Purchases intermediary goods from its supply chain as an input, by adding +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to the local stage 2 building in the Quarter.
-   * Procures Specialty Materials that belong to its supply chain as an input, by adding +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to each adjacent Specialty Materials improvement.
+   * Procures {{spec}} Specialty Materials that belong to its supply chain as an input, by adding +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) to each adjacent {{spec}} Specialty Materials improvement.
       * M&C: Increased to +2 {{production}} Production and +2 {{gold}} Gold to an Industry improvement, and +3 {{production}} Production and +3 {{gold}} Gold to a Corporation.
 
-* Processes intermediary goods and Specialty Materials into Specialty goods by:
-   * Generating +1 main yield of the Quarter (supply) for each adjacent Specialty Materials improvement, with a fixed maintenance cost of -3 {{gold}} Gold.
+* Processes intermediary goods and {{spec}} Specialty Materials into Specialty goods by:
+   * Generating +1 main yield of the Quarter (supply) for each adjacent {{spec}} Specialty Materials improvement, with a fixed maintenance cost of -3 {{gold}} Gold.
    * Adding +1 Citizen slot, and granting +1 of the main yield of the Quarter and +1 of another thematic yield (supply) to Citizens in the Quarter.
 
 * Sales transactions of Specialty goods to select customers are represented by:
@@ -176,11 +176,11 @@ Procures intermediary goods from a stage 2 supplier in the Quarter and various S
    * A scaling yield of +1 {{production}} Production (demand) and +1 {{gold}} Gold (payment) for every 5 Citizens in the City, in return for +1 of the main yield of the Quarter or an appropriate thematic yield (supply) to an adjacent customer building (or its unique replacers) that has a relationship with the industry's Specialty goods during that era.
       * Whenever there is a scaling yield based on city population from a transaction between adjacent buildings from different cities, it is the customer's city population that is used as the multiplier, since that determines the market size and hence the value of the transaction.
       * *At the moment, both the main yield and the {{gold}} Gold yield will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city.*
-      * With an appropriate Industrial Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has adjacent sources of both Base and Specialty Materials.
+      * With an appropriate Industrial Era (or later) technology / civic, this transaction enables the establishment of a Service building in the adjacent customer district, if the Quarter has adjacent sources of both {{base}} Base and {{spec}} Specialty Materials.
       * The service grants a Citizen slot in the customer district and applies the final value created by the completed chain, such as tourism from leisure destinations served by a supplied Café.
       * The Service also provides +1 of an appropriate Great Person point per turn.
 
-   * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has adjacent sources of both Base and Specialty Materials and the origin City does not have a similar Quarter.
+   * +1 bonus of the main yield of the Quarter (supply) to trade routes with the City as destination. +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Quarter has adjacent sources of both {{base}} Base and {{spec}} Specialty Materials and the origin City does not have a similar Quarter.
       * This ensures that there is always a way to sell the Quarter's specialty goods, even if it's not located adjacent to a Market or other customer building.
       * This acquired access to specialty goods for the upper class provides +1 {{amenity}} Amenity in all cities within 6 tiles of the origin city.
 

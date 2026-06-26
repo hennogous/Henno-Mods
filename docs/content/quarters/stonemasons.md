@@ -8,28 +8,29 @@ title: Stonemasons' Quarter
 
 | | Standard game | Mods |
 |---|---|---|
-| Base materials | Hills, Stone | Granite (R2), Limestone (R2), Travertine (R2) |
-| Specialty materials | Gypsum, Marble | Alabaster (R2), Obsidian (SR), Quartz (RL) |
+| {{base}} Base Materials | Hills, Stone | Granite (R2), Limestone (R2), Travertine (R2) |
+| {{spec}} Specialty Materials | Gypsum, Marble | Alabaster (R2), Obsidian (SR), Quartz (RL) |
 
 * Main yield focus: {{production}} Production
 * Unlocks at Craftsmanship
 * Base cost: 60 {{production}} Production
+* Maintenance cost: 1 {{gold}} Gold
 
 ---
 
-* +1 {{production}} Production from each adjacent base or specialty materials resource from this supply chain
-* +1 {{gold}} Gold from each adjacent Government Plaza, Commercial Hub and City Center, and +1 {{production}} Production in return
+* +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain
+* +1 {{gold}} Gold from each adjacent {{sales}} Government Plaza, Commercial Hub and City Center, and +1 {{production}} Production in return
 * +1 {{faith}} Faith from each adjacent Renaissance Era (or earlier) Wonder
 * City Lights:
-   * +1 {{production}} Production from each adjacent Rural Community, and +1 {{production}} Production in return
-   * +1 {{gold}} Gold from each adjacent Urban Borough, and +1 {{production}} Production in return
+   * +1 {{production}} Production from each adjacent {{goods}} Rural Community, and +1 {{production}} Production in return
+   * +1 {{gold}} Gold from each adjacent {{sales}} Urban Borough, and +1 {{production}} Production in return
 * +1 {{production}} Production if the Quarter is built on Hills terrain
 
 ## 1. Materials
 
-* Base materials improvements: +1 {{gold}} Gold from each adjacent Stonecutter
+* {{base}} Base Materials improvements: +1 {{gold}} Gold from each adjacent Stonecutter
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
-* Specialty materials improvements: +1 {{gold}} Gold from each adjacent Stonemason
+* {{spec}} Specialty Materials improvements: +1 {{gold}} Gold from each adjacent Stonemason
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
 
 ## 2. Stonecutter
@@ -37,7 +38,7 @@ title: Stonemasons' Quarter
 * Unlocks at Masonry
 * Costs 80 {{production}} Production
 
-* +1 {{production}} Production from each adjacent base materials improvement
+* +1 {{production}} Production from each adjacent {{base}} Base Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +1 {{production}} Production, with a -1 {{gold}} Gold maintenance cost
 * +1 {{production}} Production to any adjacent Tier 1 Government Building, and receive +1 {{gold}} Gold in return
@@ -67,14 +68,10 @@ title: Stonemasons' Quarter
 * Costs 250 {{production}} Production
 
 * +1 {{production}} Production from the local Stonecutter
-* +1 {{production}} Production from each adjacent specialty materials improvement
+* +1 {{production}} Production from each adjacent {{spec}} Specialty Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +3 {{production}} Production, with a -3 {{gold}} Gold maintenance cost
 * +1 {{production}} Production and +1 {{gold}} Gold for every 5 Citizens in the city for an adjacent Monument
-   * With Nationalism:
-   * Unlocks the Create Statue project in the city
-   * +1 Product slot for Statue products to all Monuments in the empire
-   * Statue products grant +5 Loyalty in the city, increased to +10 if the Monument is adjacent to a Sculptor's Studio
 * +1 Citizen slot, and +1 {{production}} Production and +2 {{gold}} Gold to Citizens in the Quarter
 * +1 {{production}} Production bonus to all trade routes to the city, and +2 {{gold}} Gold in return from international routes
 * +1 {{amenity}} Amenity in all cities within 6 tiles

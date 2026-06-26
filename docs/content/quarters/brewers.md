@@ -8,29 +8,30 @@ title: Brewers' Quarter
 
 | | Standard game | Mods |
 |---|---|---|
-| Base materials | Bananas, Grapes (Wine), Maize, Rice, Wheat | Barley (R2), Potato (LAR), Sorghum (R2) |
+| {{base}} Base Materials | Bananas, Grapes (Wine), Maize, Rice, Wheat | Barley (R2), Potato (LAR), Sorghum (R2) |
 | Luxury materials | Citrus, Cocoa, Coffee, Honey, Spices, Sugar | Peat (JNRW), Plums (CR), Pomegranates (CR) |
 
 * Main yield focus: {{gold}} Gold
 * Unlocks at Craftsmanship
 * Base cost: 60 {{production}} Production
+* Maintenance cost: 1 {{gold}} Gold
 
 ---
 
-* +1 {{production}} Production from each adjacent base or specialty materials resource from this supply chain, and +1 {{gold}} Gold in return
-* +2 {{gold}} Gold from each adjacent City Center, and +1 {{food}} Food and +1 {{gold}} Gold in return
-* +1 {{gold}} Gold from each adjacent Commercial Hub, and +1 {{gold}} Gold in return
-* +1 {{gold}} Gold from each adjacent Holy Site, and +1 {{faith}} Faith in return
+* +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain, and +1 {{gold}} Gold in return
+* +2 {{gold}} Gold from each adjacent {{sales}} City Center, and +1 {{food}} Food and +1 {{gold}} Gold in return
+* +1 {{gold}} Gold from each adjacent {{sales}} Commercial Hub, and +1 {{gold}} Gold in return
+* +1 {{gold}} Gold from each adjacent {{sales}} Holy Site, and +1 {{faith}} Faith in return
 * City Lights:
-   * +1 {{production}} Production from each adjacent Rural Community, and +1 {{gold}} Gold in return
-   * +1 {{gold}} Gold from each adjacent Urban Borough, and +1 {{gold}} Gold in return
+   * +1 {{production}} Production from each adjacent {{goods}} Rural Community, and +1 {{gold}} Gold in return
+   * +1 {{gold}} Gold from each adjacent {{sales}} Urban Borough, and +1 {{gold}} Gold in return
 * +1 {{production}} Production if the Quarter is adjacent to a river
 
 ## 1. Materials
 
-* Base materials improvements: +1 {{gold}} Gold from each adjacent Malthouse
+* {{base}} Base Materials improvements: +1 {{gold}} Gold from each adjacent Malthouse
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
-* Specialty materials improvements: +1 {{gold}} Gold from each adjacent Distillery
+* {{spec}} Specialty Materials improvements: +1 {{gold}} Gold from each adjacent Distillery
    * +2 {{gold}} Gold to an Industry, and +3 {{gold}} Gold to a Corporation
 
 ## 2. Malthouse
@@ -38,7 +39,7 @@ title: Brewers' Quarter
 * Unlocks at Currency
 * Costs 80 {{production}} Production
 
-* +1 {{production}} Production from each adjacent base materials improvement
+* +1 {{production}} Production from each adjacent {{base}} Base Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +1 {{food}} Food to each adjacent Granary, and receive +1 {{gold}} Gold in return
    * With Feudalism, a Granary adjacent to a Malthouse provides +10% growth in the city
@@ -68,13 +69,9 @@ The Brewery and Winery are mutually exclusive buildings, but have the exact same
 * Costs 250 {{production}} Production
 
 * +1 {{production}} Production from the local Malthouse
-* +1 {{production}} Production from each adjacent specialty materials improvement
+* +1 {{production}} Production from each adjacent {{spec}} Specialty Materials improvement
    * +2 {{production}} Production from an Industry, and +3 {{production}} Production from a Corporation
 * +2 {{gold}} Gold for every 5 Citizens in the city for each adjacent Palace, Big Ben, Casa de Contratación, Colossus, Great Lighthouse, Great Zimbabwe and Torre de Belém
-   * With Cartography:
-   * Unlocks the Create Spirits project in the city
-   * +1 Product slot for Spirits products to the Palace, Big Ben, Casa de Contratación, Colossus, Great Lighthouse, Great Zimbabwe and Torre de Belém
-   * Spirits products grant +4 {{gold}} Gold to international trade routes to and from the city, increased to +8 if the Palace or Wonder where the product is placed is adjacent to a Distillery
 * +1 Citizen slot, and +3 {{gold}} Gold to Citizens in the Quarter
 * +1 {{gold}} Gold bonus to all trade routes to the city, and +2 {{gold}} Gold in return from international routes
 * +1 {{amenity}} Amenity in all cities within 6 tiles
