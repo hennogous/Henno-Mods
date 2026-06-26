@@ -148,12 +148,12 @@ INSERT OR IGNORE INTO ModifierArguments
 -- +2 Production to adjacent base materials Industries
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE_PROD',			'ModifierId',				'MOD_CSC_BAKERS_PROD_TO_ADJ_IND'					),
 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',    							'YieldType',	            'YIELD_PRODUCTION'                					),
-		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',    							'Amount',		            2		                    						),
+		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_IND',    							'Amount',		            1		                    						),
 
 -- +3 Production to adjacent base materials Corporations
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE_PROD',		'ModifierId',				'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP'					),
 		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP',    						'YieldType',	            'YIELD_PRODUCTION'                					),
-		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP',    						'Amount',		            3		                    						),
+		(	'MOD_CSC_BAKERS_PROD_TO_ADJ_CORP',    						'Amount',		            2		                    						),
 
 -- +2 Production to adjacent specialty materials Industries
 		(	'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC_PROD',			'ModifierId',				'MOD_CSC_BAKERS_PROD_TO_ADJ_IND'				),

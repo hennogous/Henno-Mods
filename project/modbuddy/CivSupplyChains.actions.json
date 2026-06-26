@@ -844,6 +844,20 @@
       },
       {
         "type": "UpdateText",
+        "id": "ModSupport_LGD_MC_MODE_TEXT",
+        "properties": {
+          "LoadOrder": "3001"
+        },
+        "criteria": [
+          "ModSupport_LGD",
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LGD_MC_MODE_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
         "id": "ModSupport_CL_TEXT",
         "properties": {
           "LoadOrder": "1000"

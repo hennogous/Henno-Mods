@@ -1,0 +1,8 @@
+-- ModSupport_LGD_MC_MODE_TEXT
+-- Generated from project\localization\ModSupport_LGD_MC_MODE_TEXT.md by project/tools/localization/loc_md_to_sql.py
+-- Edit the Markdown source, then regenerate this file.
+--------------------------------------------------------------
+
+UPDATE LocalizedText
+SET Text = '+1 [ICON_Food] Food from each adjacent [ICON_CSC_SPEC] Specialty Materials improvement, increased to +2 [ICON_Food] Food from an Industry and +3 [ICON_Food] Food from a Corporation, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold, increased to +2 each for an Industry and +3 each for a Corporation.[NEWLINE]+1 [ICON_Citizen] Citizen slot, +1 [ICON_Food] Food and +1 [ICON_Culture] Culture to [ICON_Citizen] Citizens in the Quarter.[NEWLINE]+1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.[NEWLINE]+1 [ICON_Culture] Culture to each adjacent Zoo, Ferris Wheel, and Conservatory for every 5 [ICON_Citizen] Citizens in the city, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Café for every 5 [ICON_Citizen] Citizens in each adjacent Zoo, Ferris Wheel, or Conservatory city.[NEWLINE]+1 [ICON_Food] Food bonus to [ICON_TradeRoute] Trade Routes to the city, in exchange for +1 [ICON_Production] Production and +2 [ICON_Gold] Gold to the Quarter, if the origin city does not have a Bakers'' Quarter.[NEWLINE][NEWLINE]At Urbanization, a supplied Café can establish services in adjacent Entertainment Complexes with Zoos, Water Parks with Ferris Wheels, and Gardens with Conservatories.'
+WHERE Tag = 'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION_GARDEN';
