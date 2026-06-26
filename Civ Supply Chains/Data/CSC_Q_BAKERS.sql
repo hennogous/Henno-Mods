@@ -672,31 +672,31 @@ INSERT INTO BuildingModifiers
 
 INSERT OR IGNORE INTO BuildingModifiers
 		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD'
+SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD'
 FROM BuildingReplaces
 WHERE ReplacesBuildingType='BUILDING_GRANARY';
 
 INSERT OR IGNORE INTO BuildingModifiers
 		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD'
+SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD'
 FROM BuildingReplaces
 WHERE ReplacesBuildingType='BUILDING_GRANARY';
 
 INSERT OR IGNORE INTO BuildingModifiers
 		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS'
+SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS'
 FROM BuildingReplaces
 WHERE ReplacesBuildingType='BUILDING_GRANARY';
 
 INSERT OR IGNORE INTO BuildingModifiers
 		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'
+SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'
 FROM BuildingReplaces
 WHERE ReplacesBuildingType='BUILDING_MARKET';
 
 INSERT OR IGNORE INTO BuildingModifiers
 		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,						'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE'
+SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE'
 FROM BuildingReplaces
 WHERE ReplacesBuildingType IN ('BUILDING_ZOO', 'BUILDING_FERRIS_WHEEL');
 
