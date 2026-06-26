@@ -22,7 +22,7 @@ title: Bakers' Quarter
 * +1 {{gold}} Gold from each adjacent City Center and Commercial Hub, and +1 {{food}} Food in return.
 * +1 {{gold}} Gold from each adjacent Entertainment Complex, Water Park and Garden district (Leugi), and +1 {{culture}} Culture in return.
 * +1 {{production}} Production from each adjacent Brewers' Quarter, and +1 {{gold}} Gold in return.
-* The river / terrain logistics bonus belongs to the Water Mill or Wind Mill building, not to the Bakers' Quarter district itself.
+* +1 {{production}} Production from every 2 adjacent river segments once the Water Mill is built, or +1 {{production}} Production if built on Hills terrain once the Wind Mill is built.
 * with City Lights:
    * +1 {{production}} Production from each adjacent Rural Community, and +1 {{food}} Food in return.
    * +1 {{gold}} Gold from each adjacent Urban Borough, and +1 {{food}} Food in return.

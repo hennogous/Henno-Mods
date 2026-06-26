@@ -1,9 +1,41 @@
-# ModSupport_CL_TEXT
+﻿# ModSupport_CL_TEXT
 output: Civ Supply Chains/ModSupport/ModSupport_CL_TEXT.sql
 language: en_US
 
 ## LOC_CLASS_CSC_GOODS_PROVIDER_NAME
-Rural Community
+[ICON_CSC_GOODS] Rural Community
+
+## Bakers Quarter district description patch
+mode: raw
+
+```sql
+UPDATE LocalizedText
+SET Text = REPLACE(REPLACE(
+    Text,
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center and Commercial Hub, and +1 [ICON_Food] Food in return.',
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center, Commercial Hub and Urban Borough, and +1 [ICON_Food] Food in return.'
+),
+    '+1 [ICON_Gold] Gold from each adjacent City Center and Commercial Hub, and +1 [ICON_Food] Food in return.',
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center, Commercial Hub and Urban Borough, and +1 [ICON_Food] Food in return.'
+)
+WHERE Tag = 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION'
+  AND Language = 'en_US'
+  AND instr(Text, 'City Center and Commercial Hub') > 0;
+
+UPDATE LocalizedText
+SET Text = REPLACE(REPLACE(
+    Text,
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center, Commercial Hub and Urban Borough, and +1 [ICON_Food] Food in return.',
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center, Commercial Hub and Urban Borough, and +1 [ICON_Food] Food in return.[NEWLINE]+1 [ICON_Production] Production from each adjacent [ICON_CSC_GOODS] Rural Community, and +1 [ICON_Food] Food in return.'
+),
+    '+1 [ICON_Gold] Gold from each adjacent City Center, Commercial Hub and Urban Borough, and +1 [ICON_Food] Food in return.',
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center, Commercial Hub and Urban Borough, and +1 [ICON_Food] Food in return.[NEWLINE]+1 [ICON_Production] Production from each adjacent [ICON_CSC_GOODS] Rural Community, and +1 [ICON_Food] Food in return.'
+)
+WHERE Tag = 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION'
+  AND Language = 'en_US'
+  AND instr(Text, 'City Center, Commercial Hub and Urban Borough') > 0
+  AND instr(Text, 'adjacent Rural Community') = 0;
+```
 
 ## Raw SQL 1
 mode: raw

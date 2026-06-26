@@ -1,27 +1,31 @@
-# ModSupport_LGD_TEXT
+﻿# ModSupport_LGD_TEXT
 output: Civ Supply Chains/ModSupport/ModSupport_LGD_TEXT.sql
 language: en_US
 
-## LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION
-A district in your city specializing in baking.
+## Bakers Quarter district description patch
+mode: raw
 
-<!--
-Buildings in this Quarter create supply-chain transactions with adjacent material improvements, local Quarter buildings, customer districts, and Trade Routes.
-
-Base Materials support Water Mills and Wind Mills; Specialty Materials support Cafés. Bakers buildings send [ICON_Food] Food through the chain while receiving [ICON_Production] Production and [ICON_Gold] Gold payments where implemented.
-
-At Feudalism, Medieval Faires, and Urbanization, supplied Bakers buildings can establish Storekeeper, Innkeeper, Groundskeeper, Ride Technician, and Horticulturist services in adjacent customer districts.
--->
-+1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.
+```sql
+UPDATE LocalizedText
+SET Text = REPLACE(REPLACE(
+    Text,
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] Entertainment Complex and Water Park, and +1 [ICON_Culture] Culture in return.',
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] Entertainment Complex, Water Park and Garden, and +1 [ICON_Culture] Culture in return.'
+),
+    '+1 [ICON_Gold] Gold from each adjacent Entertainment Complex and Water Park, and +1 [ICON_Culture] Culture in return.',
+    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] Entertainment Complex, Water Park and Garden, and +1 [ICON_Culture] Culture in return.'
+)
+WHERE Tag = 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION'
+  AND Language = 'en_US'
+  AND instr(Text, 'Entertainment Complex and Water Park') > 0;
+```
 
 ## LOC_CSC_GARDEN_GOLD_TO_BAKERS
 +{1_num} [ICON_Gold] from the adjacent {1_num : plural 1?Garden; other?Gardens;}.
 
 ## LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION_GARDEN
 - +1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
-- +1 [ICON_Food] Food from each adjacent Specialty Materials improvement, in exchange for +1 [ICON_Production] Production.
-- +1 [ICON_Citizen] Citizen slot, +1 [ICON_Food] Food and +1 [ICON_Culture] Culture to [ICON_Citizen] Citizens in the Quarter.
-- +1 [ICON_Amenities] Amenity to all cities within 6 tiles.
+- +1 [ICON_Food] Food from each adjacent [ICON_CSC_SPEC] Specialty Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold for every 5 [ICON_Citizen] Citizens in the city from each adjacent Zoo, Ferris Wheel and Garden, in exchange for +1 [ICON_Culture] Culture.
 - +1 [ICON_Food] Food bonus to [ICON_TradeRoute] Trade Routes to the city, in exchange for +2 [ICON_Gold] Gold to the Quarter, if the origin city does not have a Bakers' Quarter.
 
@@ -48,8 +52,7 @@ text-prefix: [NEWLINE][NEWLINE]
 At Urbanization, a Conservatory adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service: +2 [ICON_Tourism] Tourism and +1 [ICON_GreatArtist] Great Artist point from each adjacent supplied Café, plus +1 [ICON_Citizen] Citizen slot in the Garden.
 
 ## LOC_CSC_BAKERS_STAGE_4_CIVIC
-- A Zoo adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service, a Ferris Wheel adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service, and a Garden with a Conservatory adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service:
-- +2 [ICON_Tourism] Tourism from each adjacent supplied Café, plus +1 [ICON_Citizen] Citizen slot in the district. Zoo and Ferris Wheel services add +1 [ICON_GreatEngineer] Great Engineer point; Garden services add +1 [ICON_GreatArtist] Great Artist point.
+- If adjacent to a supplied Café, a Zoo  establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service, a Ferris Wheel establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service, and a Garden with a Conservatory establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: +2 [ICON_Tourism] Tourism from each adjacent supplied Café, plus +1 [ICON_Citizen] Citizen slot in the district. {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME}s and {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME}s gain +1 [ICON_GreatEngineer] Great Engineer point from each adjacent supplied Café, while {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME}s gain +1 [ICON_GreatArtist] Great Artist point.
 
 ## LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_GARDEN
 - {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME}: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatArtist] Great Artist {3_TotalStackCount : plural 1?point; other?points;}.
@@ -68,10 +71,10 @@ a new {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: {1_NewAmoun
 {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_PARA_3
-The sales interaction of a Café with the local Zoo, Ferris Wheel, or Garden is a reflection of the rise of leisure culture and the "day out." As cities grew and the middle class expanded, public entertainment venues became popular destinations. A café adjacent to these attractions would have been a natural fit, offering a place for people to relax and socialize as part of their visit. This connection demonstrates how the Café was not just a place for intellectual discussion, but a vital part of a burgeoning urban entertainment industry, catering to a public seeking new forms of recreation and social engagement.
+The sales interaction of a Café with the local Zoo, Ferris Wheel, or Garden is a reflection of the rise of leisure culture and the "day out." As cities grew and the middle class expanded, public entertainment venues became popular destinations. A Café adjacent to these attractions would have been a natural fit, offering a place for people to relax and socialize as part of their visit. This connection demonstrates how the Café was not just a place for intellectual discussion, but a vital part of a burgeoning urban entertainment industry, catering to a public seeking new forms of recreation and social engagement.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_CSCHAIN_PARA_1
-The Café procures flour from the Water Mill or Wind Mill in the Quarter, as well as various specialty materials from adjacent improvements on those specific resources, and transforms them into fine baked goods and drinks for sale to select customers visiting the adjacent Entertainment Complex, Water Park or Garden.
+The Café procures flour from the Water Mill or Wind Mill in the Quarter, as well as various [ICON_CSC_SPEC] Specialty Materials from adjacent improvements on those specific resources, and transforms them into fine baked goods and drinks for sale to select customers visiting the adjacent Entertainment Complex, Water Park or Garden.
 
 ## Raw SQL 1
 mode: raw
@@ -102,7 +105,7 @@ At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BA
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_CHAPTER_CSCHAIN_PARA_1
-The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers' specialty materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Conservatory.
+The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers' [ICON_CSC_SPEC] Specialty Materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Conservatory.
 
 This gives a Citizen the opportunity to take up employment as a Horticulturist in the Garden, tending rare plants, guiding curious visitors, and keeping the living collection healthy enough to become part of the city's public life.
 

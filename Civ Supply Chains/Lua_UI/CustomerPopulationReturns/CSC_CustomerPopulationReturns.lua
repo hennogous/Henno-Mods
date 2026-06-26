@@ -434,8 +434,8 @@ local function CSC_WriteReturnState(pCity, customerPopulation, foodPopulation, s
 
 	local pCityCenterPlot = Map.GetPlot(pCity:GetX(), pCity:GetY());
 	local sellerPopulation = pCity:GetPopulation() or 0;
-	local returnTargetYield = (tonumber(customerPopulation) or 0) / 10;
-	local foodTargetYield = (tonumber(foodPopulation) or 0) / 10;
+	local returnTargetYield = (tonumber(customerPopulation) or 0) * 0.105;
+	local foodTargetYield = (tonumber(foodPopulation) or 0) * 0.105;
 	local returnScaledAmount = CSC_GetScaledPerPopulationAmount(returnTargetYield, sellerPopulation);
 	local foodScaledAmount = CSC_GetScaledPerPopulationAmount(foodTargetYield, sellerPopulation);
 

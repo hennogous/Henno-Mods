@@ -347,12 +347,22 @@
       },
       {
         "type": "UpdateText",
-        "id": "CSC_QUARTERS_TEXT",
+        "id": "CSC_ALL_TEXT",
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Text/CSC_ALL_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_BAKERS_TEXT",
         "properties": {
           "LoadOrder": "101"
         },
         "files": [
-          "Text/CSC_QUARTERS_TEXT.sql"
+          "Text/CSC_BAKERS_TEXT.sql"
         ]
       },
       {

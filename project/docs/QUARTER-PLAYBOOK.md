@@ -55,7 +55,8 @@ All files in `Civ Supply Chains\Data\`.
 
 Files in `Civ Supply Chains\Text\`.
 
-- [ ] **Add entries to `CSC_QUARTERS_TEXT.sql`**
+- [ ] **Add shared class/framework entries to `CSC_ALL_TEXT.sql`** if needed
+- [ ] **Add Quarter entries to `CSC_<QUARTER>_TEXT.sql`**
   - District name + description
   - Building names + descriptions (all stages + services)
   - Adjacency descriptions

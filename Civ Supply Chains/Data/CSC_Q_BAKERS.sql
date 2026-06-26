@@ -247,7 +247,7 @@ INSERT OR IGNORE INTO DistrictModifiers
 
 --  Customer-population return stacks. Lua sums adjacent Market city population
 --  and writes scaled per-population amount bits on City Center plots. This
---  preserves +0.1 yield per customer citizen while paying the current city.
+--  preserves +0.105 yield per customer citizen while paying the current city.
 INSERT OR IGNORE INTO DistrictModifiers
 		(	DistrictType,							ModifierId										)
 SELECT	'DISTRICT_CITY_CENTER',						'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit
@@ -777,7 +777,7 @@ INSERT OR IGNORE INTO Modifiers
 --  +1 Food from the local Flour Mill
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 
---  +0.1 Food per Citizen to adjacent Market cities
+--  +0.105 Food per Citizen to adjacent Market cities
 		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',	'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
 
@@ -965,10 +965,10 @@ INSERT OR IGNORE INTO ModifierArguments
         (  	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'YieldType',           		'YIELD_FOOD'                                             		),
         ( 	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'Amount',             		1                                                               ),
 
---  +0.1 Food per Citizen to adjacent Market cities
+--  +0.105 Food per Citizen to adjacent Market cities
 		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'ModifierId',				'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET'							),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'YieldType',				'YIELD_FOOD'													),
-		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'Amount',					0.1																),
+		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'Amount',					0.105															),
 
 --  Cache supplied Bakery status for route exports
 		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',						'Key',						'CSC_BAKERS_BAKERY_SUPPLIED'									),
@@ -1189,7 +1189,7 @@ INSERT OR IGNORE INTO RequirementSets
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Food per Citizen to adjacent Market cities
+--  +0.105 Food per Citizen to adjacent Market cities
 		(	'REQSET_CSC_ADJ_MARKET',								'REQUIREMENTSET_TEST_ALL'		),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQUIREMENTSET_TEST_ALL'		),
 
@@ -1304,7 +1304,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Food to adjacent Market cities; +0.1 Production and +0.1 Gold returns to Bakery city per Citizen
+--  +0.105 Food to adjacent Market cities; +0.105 Production and +0.105 Gold returns to Bakery city per Citizen
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB'			),
 		(	'REQSET_CSC_ADJ_MARKET',								'REQ_CSC_CITY_HAS_MARKET'						),
@@ -1432,7 +1432,7 @@ INSERT OR IGNORE INTO Requirements
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Food to adjacent Market cities
+--  +0.105 Food to adjacent Market cities
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',			0				),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
@@ -1532,7 +1532,7 @@ INSERT OR IGNORE INTO RequirementArguments
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
---  +0.1 Food to adjacent Market cities
+--  +0.105 Food to adjacent Market cities
 		(	'REQ_CSC_DISTRICT_IS_COMMERCIAL_HUB',					'DistrictType',					'DISTRICT_COMMERCIAL_HUB'						),
 		(	'REQ_CSC_CITY_HAS_MARKET',								'BuildingType',					'BUILDING_MARKET'								),
 		(	'REQ_CSC_CITY_HAS_BAKERY',								'BuildingType',					'BUILDING_CSC_BAKERS_BAKERY'					),

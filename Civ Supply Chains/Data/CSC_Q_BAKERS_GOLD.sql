@@ -68,7 +68,7 @@ INSERT OR IGNORE INTO DistrictModifiers
 
 --  Customer-population return stacks. Lua sums adjacent Market city population
 --  and writes scaled per-population amount bits on the seller city's City
---  Center plot. This preserves +0.1 Gold per customer citizen while paying
+--  Center plot. This preserves +0.105 Gold per customer citizen while paying
 --  the seller city.
 INSERT OR IGNORE INTO DistrictModifiers
 		(	DistrictType,							ModifierId										)

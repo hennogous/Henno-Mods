@@ -34,5 +34,5 @@ The commented Lua block also contains the previous Aristocrat-on-3-specialist-sl
 ## Related documentation
 
 - `bakers-service-pedia-pages.md` in the `civ-supply-chains` skill documents the Civilopedia page pattern for Storekeeper, Innkeeper, Groundskeeper, and Ride Technician.
-- `Text/CSC_QUARTERS_TEXT.sql` contains the user-facing service descriptions and pedia chapters.
+- `Text/CSC_BAKERS_TEXT.sql` contains the user-facing Bakers service descriptions; `Text/CSC_QUARTERS_PEDIA.sql` contains the pedia chapters.
 - `Text/CSC_MC_MODE_TEXT.sql` can override Bakers building text in M&C mode; check it after changing service wording.

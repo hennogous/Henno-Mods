@@ -1,17 +1,6 @@
-# CSC_QUARTERS_TEXT
-output: Civ Supply Chains/Text/CSC_QUARTERS_TEXT.sql
+﻿# CSC_BAKERS_TEXT
+output: Civ Supply Chains/Text/CSC_BAKERS_TEXT.sql
 language: en_US
-
-### Shared Class Names
-
-## LOC_CLASS_CSC_BASE_NAME
-Base Materials
-
-## LOC_CLASS_CSC_SPEC_NAME
-Specialty Materials
-
-## LOC_CLASS_CSC_SALES_NAME
-Sales
 
 ### Bakers' Quarter
 
@@ -21,17 +10,10 @@ Bakers' Quarter
 ## LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION
 A district in your city specializing in baking.
 
-<!--
-Buildings in this Quarter create supply-chain transactions with adjacent material improvements, local Quarter buildings, customer districts, and Trade Routes.
-
-Base Materials support Water Mills and Wind Mills; Specialty Materials support Cafés. Bakers buildings send [ICON_Food] Food through the chain while receiving [ICON_Production] Production and [ICON_Gold] Gold payments where implemented.
-
-At Feudalism, Medieval Faires, and Urbanization, supplied Bakers buildings can establish Storekeeper, Innkeeper, Groundskeeper, and Ride Technician services in adjacent customer districts.
--->
-+1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.
-
-## LOC_RESOURCE_WINE_NAME
-Grapes
+- +1 [ICON_Production] Production from each adjacent [ICON_CSC_BASE] Base or [ICON_CSC_SPEC] Specialty Materials resource from this supply chain.
+- +1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center and Commercial Hub, and +1 [ICON_Food] Food in return.
+- +1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] Entertainment Complex and Water Park, and +1 [ICON_Culture] Culture in return.
+- +1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.
 
 ### Bakers' Adjacencies
 
@@ -87,7 +69,7 @@ This quarter is not adjacent to a river.
 Water Mill
 
 ## LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION
-- +1 [ICON_Food] Food from each adjacent Base Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
+- +1 [ICON_Food] Food from each adjacent [ICON_CSC_BASE] Base Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from the local Bakery and Café, in exchange for +1 [ICON_Food] Food.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from an adjacent Granary, in exchange for +1 [ICON_Food] Food.
 
@@ -97,7 +79,7 @@ At Feudalism, a supplied Water Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE
 Wind Mill
 
 ## LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION
-- +1 [ICON_Food] Food from each adjacent Base Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
+- +1 [ICON_Food] Food from each adjacent [ICON_CSC_BASE] Base Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from the local Bakery and Café, in exchange for +1 [ICON_Food] Food.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from an adjacent Granary, in exchange for +1 [ICON_Food] Food.
 
@@ -118,7 +100,7 @@ Café
 
 ## LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION
 - +1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
-- +1 [ICON_Food] Food from each adjacent Specialty Materials improvement, in exchange for +1 [ICON_Production] Production.
+- +1 [ICON_Food] Food from each adjacent [ICON_CSC_SPEC] Specialty Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold for every 5 [ICON_Citizen] Citizens in the city from each adjacent Zoo and Ferris Wheel, in exchange for +1 [ICON_Culture] Culture.
 - +1 [ICON_Food] Food bonus to [ICON_TradeRoute] Trade Routes to the city, in exchange for +2 [ICON_Gold] Gold to the Quarter, if the origin city does not have a Bakers' Quarter.
 
@@ -196,7 +178,7 @@ At Feudalism, a Granary adjacent to a supplied Water Mill or Wind Mill establish
 ## LOC_CSC_BAKERS_STAGE_2_CIVIC
 text-prefix: [NEWLINE][NEWLINE]
 
-- A Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth and +1 [ICON_GreatEngineer] Great Engineer point from an adjacent supplied mill.
+- A Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth and +1 [ICON_GreatEngineer] Great Engineer point from an adjacent supplied Water Mill or Wind Mill.
 
 ## LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION
 - {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME}: {1_TotalAmount} [ICON_Housing] Housing and {2_TotalStack} [ICON_GreatMerchant] Great Merchant {3_TotalStackCount : plural 1?point; other?points;}.
@@ -229,8 +211,7 @@ text-prefix: [NEWLINE][NEWLINE]
 At Medieval Faires, a Market adjacent to a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: +2 [ICON_Housing] Housing and +1 [ICON_GreatMerchant] Great Merchant point from each adjacent supplied Bakery, and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.
 
 ## LOC_CSC_BAKERS_STAGE_3_CIVIC
-- A Market adjacent to a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service:
-- +2 [ICON_Housing] Housing and +1 [ICON_GreatMerchant] Great Merchant point from each adjacent supplied Bakery, and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.
+- A Market adjacent to a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service: +2 [ICON_Housing] Housing and +1 [ICON_GreatMerchant] Great Merchant point from each adjacent supplied Bakery, and +1 [ICON_Citizen] Citizen slot in the Commercial Hub.
 
 ## LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER
 - {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME}: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatEngineer] Great Engineer {3_TotalStackCount : plural 1?point; other?points;}.
@@ -289,8 +270,7 @@ text-prefix: [NEWLINE]
 -->
 
 ## LOC_CSC_BAKERS_STAGE_4_CIVIC
-- A Zoo adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service, and a Ferris Wheel adjacent to a supplied Café establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service:
-- +2 [ICON_Tourism] Tourism and +1 [ICON_GreatEngineer] Great Engineer point from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the district.
+- If adjacent to a supplied Café, a Zoo a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service, and a Ferris Wheel establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service: +2 [ICON_Tourism] Tourism and +1 [ICON_GreatEngineer] Great Engineer point from each adjacent supplied Café, and +1 [ICON_Citizen] Citizen slot in the district.
 
 <!--
 ## LOC_CSC_BAKERS_STAGE_4_REQUIREMENT
@@ -313,7 +293,7 @@ Stage 1: Materials extraction
 
 ## LOC_PEDIA_CONCEPTS_PAGE_CSC_MATERIALS_CHAPTER_CONTENT_PARA_1
 - - Stage 1 of supply chains consist of standard game improvements (e.g. wheat farms, cotton plantations and lumber mills) that extract materials from resources on the map, and sell them as inputs to stage 2 and 4 buildings.
-- - Materials mapped to supply chains are classified as either Base Materials or Specialty Materials.
+- - Materials mapped to supply chains are classified as either [ICON_CSC_BASE] Base Materials or [ICON_CSC_SPEC] Specialty Materials.
 
 ## LOC_PEDIA_CONCEPTS_PAGE_CSC_QUARTERS_CHAPTER_CONTENT_TITLE
 Quarters
@@ -327,7 +307,7 @@ Quarters
 Stage 2: Intermediary goods
 
 ## LOC_PEDIA_CONCEPTS_PAGE_CSC_INTERMEDIARY_CHAPTER_CONTENT_PARA_1
-Intermediary goods buildings purchase various Base Materials from stage 1 suppliers and processes those into intermediary goods (e.g. flour, textiles) to sell to customers. These customers could be both downstream actors in its supply chain for further processing, as well as outside of the supply chain for direct use.
+Intermediary goods buildings purchase various [ICON_CSC_BASE] Base Materials from stage 1 suppliers and processes those into intermediary goods (e.g. flour, textiles) to sell to customers. These customers could be both downstream actors in its supply chain for further processing, as well as outside of the supply chain for direct use.
 
 ## LOC_PEDIA_CONCEPTS_PAGE_CSC_CONSUMER_CHAPTER_CONTENT_TITLE
 Stage 3: Consumer goods
@@ -339,7 +319,7 @@ Consumer goods buildings procure intermediary goods from a stage 2 supplier in t
 Stage 4: Specialty goods
 
 ## LOC_PEDIA_CONCEPTS_PAGE_CSC_SPECIALTY_CHAPTER_CONTENT_PARA_1
-Specialty goods buildings procure intermediary goods from a stage 2 supplier in the Quarter and various Specialty Materials from stage 1 suppliers, and transforms them into specialty goods (e.g. Café, Fashion House, Sculptor) for sale to select customers.
+Specialty goods buildings procure intermediary goods from a stage 2 supplier in the Quarter and various [ICON_CSC_SPEC] Specialty Materials from stage 1 suppliers, and transforms them into specialty goods (e.g. Café, Fashion House, Sculptor) for sale to select customers.
 
 ## LOC_PEDIA_CONCEPTS_PAGE_CSC_SALES_CHAPTER_CONTENT_TITLE
 Stage 5: Goods sales
@@ -348,16 +328,16 @@ Stage 5: Goods sales
 For the most part, sales of different types of goods to buyers (stage 5) were described in the sections above along with the building that produced the goods.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCBASE_TITLE
-Base Materials
+[ICON_CSC_BASE] Base Materials
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSPEC_TITLE
-Specialty Materials
+[ICON_CSC_SPEC] Specialty Materials
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCGOODS_TITLE
-Goods Providers
+[ICON_CSC_GOODS] Goods Providers
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_TITLE
-Sales Districts
+[ICON_CSC_SALES] Sales Districts
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_HISTORY_TITLE
 Historical Context
@@ -366,7 +346,7 @@ Historical Context
 Baking is one of the oldest urban trades, emerging wherever grain cultivation, milling, and settled life made reliable bread possible. In many cities, bakers became more than individual craftsmen: they formed guilds, worked under civic regulation, and supplied a food so essential that its weight, price, and quality were often matters of public concern. A Bakers' Quarter represents this clustered institution of mills, ovens, stores, and sellers, where the practical work of turning harvests into daily nourishment became part of the city's basic stability.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_HISTORY_PARA_2
-Over time, the same trade reached beyond subsistence. Bread and pastries moved from granaries and market stalls into inns, fairs, coffee houses, gardens, and places of public amusement, following the growth of urban hospitality and leisure. The baker's craft could feed a city, welcome travelers, sweeten public gatherings, and support the cafés where conversation, fashion, and culture gathered around a table. In that progression, the Bakers' Quarter becomes not only a safeguard against hunger, but a quiet measure of civic life becoming more social, comfortable, and expressive.
+Over time, the same trade reached beyond subsistence. Bread and pastries moved from granaries and market stalls into inns, fairs, coffee houses, gardens, and places of public amusement, following the growth of urban hospitality and leisure. The baker's craft could feed a city, welcome travelers, sweeten public gatherings, and support the Cafés where conversation, fashion, and culture gathered around a table. In that progression, the Bakers' Quarter becomes not only a safeguard against hunger, but a quiet measure of civic life becoming more social, comfortable, and expressive.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -378,10 +358,10 @@ By the flowing river, the Water Mill stands as a testament to the harnessing of 
 Historical Context
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_HISTORY_PARA_1
-Water Mills were a significant technological innovation, building on earlier inventions like the wheel, which was fundamental to harnessing mechanical energy. They have a long and ancient history, with some of the earliest known examples dating back to ancient Persia and the Hellenistic world. Unlike windmills, they were tied to specific geographic locations, relying on the power of rivers and streams, and their use made them focal points for communities and settlements throughout history.
+Water Mills were a significant technological innovation, building on earlier inventions like the wheel, which was fundamental to harnessing mechanical energy. They have a long and ancient history, with some of the earliest known examples dating back to ancient Persia and the Hellenistic world. Unlike Wind Mills, they were tied to specific geographic locations, relying on the power of rivers and streams, and their use made them focal points for communities and settlements throughout history.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WATER_MILL_CHAPTER_HISTORY_PARA_2
-The interaction between a water mill and a granary was central to the agrarian economy and became particularly significant during the feudal era. While the water mill itself was a powerful tool for processing grain, its value was tied directly to the ability to store the resulting product. The granary served as the secure, central repository for the milled grain, making it a critical component for managing food supplies. In many societies, this pairing of a powered mill and a central granary became a foundation of economic power, as it allowed landowners or authorities to control the processing, storage, and distribution of a community's most essential commodity.
+The interaction between a Water Mill and a granary was central to the agrarian economy and became particularly significant during the feudal era. While the Water Mill itself was a powerful tool for processing grain, its value was tied directly to the ability to store the resulting product. The granary served as the secure, central repository for the milled grain, making it a critical component for managing food supplies. In many societies, this pairing of a powered mill and a central granary became a foundation of economic power, as it allowed landowners or authorities to control the processing, storage, and distribution of a community's most essential commodity.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WIND_MILL_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -393,10 +373,10 @@ Perched on a hill or an open plain, the Wind Mill stands ready to capture the in
 Historical Context
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WIND_MILL_CHAPTER_HISTORY_PARA_1
-Windmills were a significant technological innovation with a long and ancient history, building upon earlier inventions like the wheel, which was fundamental to harnessing mechanical energy. While they played a pivotal role in medieval Europe, their origins are believed to be much older, with evidence suggesting that the earliest designs were developed in Persia (modern-day Iran and Afghanistan) as early as the 9th century. These early windmills were primarily used for tasks like grinding grain and pumping water, and their use meant that communities were no longer solely reliant on rivers and streams for a power source, allowing them to establish mills in a wider range of locations.
+Wind Mills were a significant technological innovation with a long and ancient history, building upon earlier inventions like the wheel, which was fundamental to harnessing mechanical energy. While they played a pivotal role in medieval Europe, their origins are believed to be much older, with evidence suggesting that the earliest designs were developed in Persia (modern-day Iran and Afghanistan) as early as the 9th century. These early Wind Mills were primarily used for tasks like grinding grain and pumping water, and their use meant that communities were no longer solely reliant on rivers and streams for a power source, allowing them to establish mills in a wider range of locations.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_WIND_MILL_CHAPTER_HISTORY_PARA_2
-The interaction between a windmill and a granary reflects a self-contained system of production and storage that was vital for agricultural societies across different cultures and eras. During the feudal era, this relationship was particularly significant. The windmill, regardless of its specific design or origin, provided a new source of power to process crops, while the granary served as the central hub for storing the milled grain. This pairing was fundamental to economic and social structures, enabling communities to manage food supplies more efficiently and consolidating the control of resources in the hands of a ruling class. This combination of a powered mill and a central storage facility represents a timeless agricultural advancement, independent of any single region's history.
+The interaction between a Wind Mill and a granary reflects a self-contained system of production and storage that was vital for agricultural societies across different cultures and eras. During the feudal era, this relationship was particularly significant. The Wind Mill, regardless of its specific design or origin, provided a new source of power to process crops, while the granary served as the central hub for storing the milled grain. This pairing was fundamental to economic and social structures, enabling communities to manage food supplies more efficiently and consolidating the control of resources in the hands of a ruling class. This combination of a powered mill and a central storage facility represents a timeless agricultural advancement, independent of any single region's history.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_GRANARY_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -416,7 +396,7 @@ The Bakery is where the smell of freshly baked bread fills the air from early in
 Historical Context
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_BAKERY_CHAPTER_HISTORY_PARA_1
-The Bakery is an institution with a rich history, deeply tied to the rise of urban centers and the specialization of labor. The professional baker emerged with the advent of guilds, which regulated the trade and ensured the quality of products. A baker's work was fundamentally dependent on the existence of a local Wind Mill or Water Mill, as these structures provided the milled flour essential for their craft. This relationship highlights a key supply chain, where the output of one industry—the milling of grain—becomes the primary input for another, the baking of bread. The presence of these mills allowed a baker to produce a consistent and reliable supply of bread, which was a dietary staple for a city's growing population.
+The Bakery is an institution with a rich history, deeply tied to the rise of urban centers and the specialization of labor. The professional baker emerged with the advent of guilds, which regulated the trade and ensured the quality of products. A baker's work was fundamentally dependent on the existence of a local Wind Mill or Water Mill, as these structures provided the milled flour essential for their craft. This relationship highlights a key supply chain, where the output of one industryâ€”the milling of grainâ€”becomes the primary input for another, the baking of bread. The presence of these mills allowed a baker to produce a consistent and reliable supply of bread, which was a dietary staple for a city's growing population.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_BAKERY_CHAPTER_HISTORY_PARA_2
 With the advent of the Market, the role of the Bakery expanded beyond simple production. The Market provided a dedicated space for commerce, allowing bakers to sell their goods directly to the public rather than just to their immediate neighbors. This commercial link became even more pronounced with the development of Medieval Faires, which were large, periodic gatherings that attracted merchants and customers from a wide area. For the baker, a fair was a prime opportunity to sell a variety of breads and other baked goods, and to engage in larger-scale trade. This connection between the Bakery and the Market, particularly during special events like fairs, demonstrates how specialized crafts integrated into and helped to fuel the broader medieval economy.
@@ -433,19 +413,19 @@ At Medieval Faires, an adjacent supplied Bakery can establish an {LOC_BUILDING_C
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_CSCHAIN_PARA_1
-The Café is the final, exclusive step in the Bakers' Quarter supply chain. It procures its flour from the local Water Mill or Wind Mill, but its true distinction comes from its use of rare Specialty Materials like coffee, sugar, cocoa, and spices. These are sourced from adjacent improvements and transformed into fine baked goods and rich drinks for the select customers who also frequent an adjacent Entertainment Complex or Water Park.
+The Café is the final, exclusive step in the Bakers' Quarter supply chain. It procures its flour from the local Water Mill or Wind Mill, but its true distinction comes from its use of rare [ICON_CSC_SPEC] Specialty Materials like coffee, sugar, cocoa, and spices. These are sourced from adjacent improvements and transformed into fine baked goods and rich drinks for the select customers who also frequent an adjacent Entertainment Complex or Water Park.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_TITLE
 Historical Context
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_PARA_1
-The Café is an establishment that reflects the rise of a new kind of social and intellectual life, particularly with the advent of the Enlightenment. Its roots can be traced to the coffee houses that emerged in the Ottoman Empire and spread throughout Europe via trade routes. Its reliance on a local mill is a nod to a key supply chain, as it needs finely milled ingredients for its pastries and beverages. As society became more urbanized, cafes became vibrant social spaces, a departure from the traditional tavern or alehouse. They also had a crucial dependency on Specialty Materials like coffee, tea, and cocoa, which were increasingly imported as a result of global trade networks.
+The Café is an establishment that reflects the rise of a new kind of social and intellectual life, particularly with the advent of the Enlightenment. Its roots can be traced to the coffee houses that emerged in the Ottoman Empire and spread throughout Europe via trade routes. Its reliance on a local mill is a nod to a key supply chain, as it needs finely milled ingredients for its pastries and beverages. As society became more urbanized, cafes became vibrant social spaces, a departure from the traditional tavern or alehouse. They also had a crucial dependency on [ICON_CSC_SPEC] Specialty Materials like coffee, tea, and cocoa, which were increasingly imported as a result of global trade networks.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_PARA_2
-During the Enlightenment, cafés evolved from simple establishments into crucial centers for the exchange of ideas. They became known as "penny universities" because for the price of a cup of coffee, anyone could sit, read the daily papers, and engage in conversation with others. They were a more accessible alternative to official salons or universities, and because they were not subject to the same strict censorship as printed materials, they became hotbeds for intellectual discourse. Thinkers such as Voltaire, Rousseau, and Diderot were known to frequent these establishments, and it was in this atmosphere of open debate that many of their revolutionary ideas were refined and disseminated.
+During the Enlightenment, Cafés evolved from simple establishments into crucial centers for the exchange of ideas. They became known as "penny universities" because for the price of a cup of coffee, anyone could sit, read the daily papers, and engage in conversation with others. They were a more accessible alternative to official salons or universities, and because they were not subject to the same strict censorship as printed materials, they became hotbeds for intellectual discourse. Thinkers such as Voltaire, Rousseau, and Diderot were known to frequent these establishments, and it was in this atmosphere of open debate that many of their revolutionary ideas were refined and disseminated.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_HISTORY_PARA_3
-The sales interaction of a Café with the local Zoo or Ferris Wheel is a reflection of the rise of leisure culture and the "day out." As cities grew and the middle class expanded, public entertainment venues became popular destinations. A café adjacent to these attractions would have been a natural fit, offering a place for people to relax and socialize as part of their visit. This connection demonstrates how the Café was not just a place for intellectual discussion, but a vital part of a burgeoning urban entertainment industry, catering to a public seeking new forms of recreation and social engagement.
+The sales interaction of a Café with the local Zoo or Ferris Wheel is a reflection of the rise of leisure culture and the "day out." As cities grew and the middle class expanded, public entertainment venues became popular destinations. A Café adjacent to these attractions would have been a natural fit, offering a place for people to relax and socialize as part of their visit. This connection demonstrates how the Café was not just a place for intellectual discussion, but a vital part of a burgeoning urban entertainment industry, catering to a public seeking new forms of recreation and social engagement.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -507,7 +487,7 @@ At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BA
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_PARA_1
-The Water Mill or Wind Mill draws on improved Bakers' Base Materials nearby, turns them into dependable flour, and transports that steady flow to the city's Granary.
+The Water Mill or Wind Mill draws on improved Bakers' [ICON_CSC_BASE] Base Materials nearby, turns them into dependable flour, and transports that steady flow to the city's Granary.
 
 This establishes a Storekeeper service in the City Center, ensuring that hard-earned food stores are managed for the good of the growing population.
 
@@ -535,7 +515,7 @@ Markets and fairs did more than exchange goods; they concentrated people. Mercha
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_CHAPTER_CSCHAIN_PARA_1
-The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers' Specialty Materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Zoo.
+The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers' [ICON_CSC_SPEC] Specialty Materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Zoo.
 
 This gives a Citizen the opportunity to take up employment as a Groundskeeper in the Entertainment Complex, keeping paths, enclosures, and gathering places ready for visitors who now have reason to linger.
 
@@ -549,7 +529,7 @@ Public attractions became more complex as cities became larger, wealthier, and m
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_CHAPTER_CSCHAIN_PARA_1
-The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers' Specialty Materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Ferris Wheel.
+The Café draws on dependable flour from the local Water Mill or Wind Mill and improved Bakers' [ICON_CSC_SPEC] Specialty Materials nearby, turns them into pastries and drinks, and offers that steady flow of refreshments to the growing numbers of visitors to the adjacent Ferris Wheel.
 
 This gives a Citizen the opportunity to take up employment as a Ride Technician in the Water Park, keeping the machinery, queues, and waterfront crowds moving safely through a longer day out.
 
@@ -578,14 +558,14 @@ CREATE TEMP TABLE BAKERS_SALES_DISTRICTS (
 
 INSERT INTO BAKERS_RESOURCES (ResourceName, ResourceCategory) VALUES
 
---	Bakers' Quarter Base Materials
+--	Bakers' Quarter [ICON_CSC_BASE] Base Materials
 		(	'RESOURCE_BANANAS',		'CLASS_CSC_BAKERS_BASE'		),
 		(	'RESOURCE_MAIZE',		'CLASS_CSC_BAKERS_BASE'		),
 		(	'RESOURCE_RICE',		'CLASS_CSC_BAKERS_BASE'		),
 		(	'RESOURCE_WHEAT',		'CLASS_CSC_BAKERS_BASE'		),
         (   'RESOURCE_CSC_FLAX',    'CLASS_CSC_BAKERS_BASE'     ),
 
---	Bakers' Quarter Specialty Materials
+--	Bakers' Quarter [ICON_CSC_SPEC] Specialty Materials
 		(	'RESOURCE_COCOA',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_COFFEE',		'CLASS_CSC_BAKERS_SPEC'		),
 		(	'RESOURCE_WINE',		'CLASS_CSC_BAKERS_SPEC'		),

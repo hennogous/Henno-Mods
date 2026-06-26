@@ -85,6 +85,10 @@
 			<m_EntryID text="CSC_Tooltip_Arrow"/>
 			<m_ObjectName text="CSC_Tooltip_Arrow"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_TextIcons"/>
+			<m_ObjectName text="CSC_TextIcons"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

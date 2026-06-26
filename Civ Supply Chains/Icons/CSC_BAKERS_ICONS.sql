@@ -20,17 +20,11 @@ VALUES  (   'ICON_ATLAS_CSC_BAKERS',				256,			4,				4,					'CSC_BAKERS_256'		),
 		(   'ICON_ATLAS_CSC_BAKERS',				70,				4,				4,					'CSC_BAKERS_70'			),
 		(   'ICON_ATLAS_CSC_BAKERS',				50,				4,				4,					'CSC_BAKERS_50'			),
 		(   'ICON_ATLAS_CSC_BAKERS',				38,				4,				4,					'CSC_BAKERS_38'			),
-		(   'ICON_ATLAS_CSC_BAKERS',				32,				4,				4,					'CSC_BAKERS_32'			),
-
-
-
-		(	'ICON_ATLAS_CSC_EFFECTS_NOTIFICATIONS',	100,	 		8,				8,					'CSC_Effect_Notifications_100'	),
-		(	'ICON_ATLAS_CSC_EFFECTS_NOTIFICATIONS',	40,	 			8,				8,					'CSC_Effect_Notifications_40'	);
+		(   'ICON_ATLAS_CSC_BAKERS',				32,				4,				4,					'CSC_BAKERS_32'			);
 
 INSERT OR IGNORE INTO IconTextureAtlases
 		(	Name,									IconSize,		IconsPerRow,	IconsPerColumn,		Filename,				Baseline	)
-VALUES  (	'ICON_ATLAS_CSC_BAKERS',				22,	 			4,				4,					'CSC_BAKERS_22',		6			),
-		(	'ICON_ATLAS_CSC_TOOLTIPS',				22,	 			1,				1,					'CSC_Tooltip_Arrow',	6			);
+VALUES  (	'ICON_ATLAS_CSC_BAKERS',				22,	 			4,				4,					'CSC_BAKERS_22',		6			);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	IconDefinitions
@@ -52,44 +46,4 @@ VALUES  (   'ICON_DISTRICT_CSC_BAKERS_QUARTER',								'ICON_ATLAS_CSC_BAKERS',	
 		(   'ICON_BUILDING_CSC_BAKERS_STAGE_3_SERVICE',						'ICON_ATLAS_CSC_BAKERS',				9			),
 		(   'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',				'ICON_ATLAS_CSC_BAKERS',				10			),
 		(   'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',				'ICON_ATLAS_CSC_BAKERS',				11			),
-		(	'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',				'ICON_ATLAS_CSC_BAKERS',				12			),	
-
-
-
-		(	'ARROW',														'ICON_ATLAS_CSC_TOOLTIPS',				0			);
-
-
-
---===========================================================================================================================================================================--
-/*	RESOURCES */
---===========================================================================================================================================================================--
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	IconTextureAtlases
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT INTO IconTextureAtlases
-
-		(	Name,									IconSize,	IconsPerRow,	IconsPerColumn,		Filename				)
-VALUES  (	'ICON_ATLAS_CSC_RESOURCES',				256,	 	2,				2,					'CSC_Resources_256'		),
-		(	'ICON_ATLAS_CSC_RESOURCES',				64,	 		2,				2,					'CSC_Resources_64'		),
-		(	'ICON_ATLAS_CSC_RESOURCES',				50,	 		2,				2,					'CSC_Resources_50'		),
-		(	'ICON_ATLAS_CSC_RESOURCES',				38,	 		2,				2,					'CSC_Resources_38'		),
-		(	'ICON_ATLAS_CSC_RESOURCES',				32,	 		2,				2,					'CSC_Resources_32'		),
-		(	'ICON_ATLAS_CSC_RESOURCES_FOW',			256,	 	2,				2,					'CSC_Resources_256_FOW'	),
-		(	'ICON_ATLAS_CSC_RESOURCES_FOW',			64,	 		2,				2,					'CSC_Resources_64_FOW'	);
-
-INSERT INTO IconTextureAtlases
-		(	Name,									Baseline,	IconSize,	IconsPerRow,	IconsPerColumn,		Filename			)
-VALUES  (	'ICON_ATLAS_CSC_RESOURCES',				6,			22,	 		2,				2,					'CSC_Resources_22'	);
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	IconDefinitions
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-INSERT OR REPLACE INTO IconDefinitions
-
-		(	Name,									Atlas, 									'Index'		)
-VALUES  (	'ICON_RESOURCE_CSC_FLAX',				'ICON_ATLAS_CSC_RESOURCES',				0			),
-		(	'RESOURCE_CSC_FLAX',					'ICON_ATLAS_CSC_RESOURCES',				0			),
-		(	'ICON_RESOURCE_CSC_FLAX_FOW',			'ICON_ATLAS_CSC_RESOURCES_FOW',			0			);
+		(	'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',				'ICON_ATLAS_CSC_BAKERS',				12			);
