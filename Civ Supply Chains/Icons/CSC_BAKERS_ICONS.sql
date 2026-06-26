@@ -35,6 +35,7 @@ INSERT OR IGNORE INTO IconDefinitions
 		(   Name,															Atlas, 									'Index'		)
 VALUES  (   'ICON_DISTRICT_CSC_BAKERS_QUARTER',								'ICON_ATLAS_CSC_BAKERS',				0			),
 		(   'DISTRICT_CSC_BAKERS_QUARTER',									'ICON_ATLAS_CSC_BAKERS',				0			),
+		(   'BAKERS',														'ICON_ATLAS_CSC_BAKERS',				0			),
 		(   'ICON_DISTRICT_CSC_BAKERS_QUARTER_FOW',							'ICON_ATLAS_CSC_BAKERS',				1			),
 		(	'ICON_BUILDING_CSC_BAKERS_RIVER_ACCESS',						'ICON_ATLAS_CSC_BAKERS',				2			),
 		(	'ICON_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',						'ICON_ATLAS_CSC_BAKERS',				3			),
