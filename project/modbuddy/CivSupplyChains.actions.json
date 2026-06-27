@@ -617,7 +617,7 @@
         ]
       },
       {
-        "type": "DoNothing",
+        "type": "UpdateDatabase",
         "id": "CSC_Q_TAILORS",
         "properties": {
           "LoadOrder": "100"
@@ -744,6 +744,7 @@
         "files": [
           "Icons/CSC_ALL_ICONS.sql",
           "Icons/CSC_BAKERS_ICONS.sql",
+          "Icons/CSC_TAILORS_ICONS.sql",
           "Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications_Icons.sql"
         ]
       },

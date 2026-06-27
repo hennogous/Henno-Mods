@@ -273,6 +273,58 @@
 			<m_EntryID text="CSC_BAKERS_Water_Mill_2"/>
 			<m_ObjectName text="CSC_BAKERS_Water_Mill_2"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Ancient_Base_01"/>
+			<m_ObjectName text="CSC_TAILORS_Ancient_Base_01"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_01"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_01"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_02"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_02"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_03"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_03"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_04"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_04"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_05"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_05"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Storage_S"/>
+			<m_ObjectName text="CSC_TAILORS_Storage_S"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Storage_M"/>
+			<m_ObjectName text="CSC_TAILORS_Storage_M"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Storage_L"/>
+			<m_ObjectName text="CSC_TAILORS_Storage_L"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Textile_Workshop"/>
+			<m_ObjectName text="CSC_TAILORS_Textile_Workshop"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Tailor"/>
+			<m_ObjectName text="CSC_TAILORS_Tailor"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Fashion_House"/>
+			<m_ObjectName text="CSC_TAILORS_Fashion_House"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Well"/>
+			<m_ObjectName text="CSC_TAILORS_Well"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

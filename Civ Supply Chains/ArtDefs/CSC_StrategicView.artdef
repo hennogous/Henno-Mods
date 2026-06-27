@@ -34,12 +34,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Water_Mill"/>
+							<m_Name text="CSC_TAILORS_Water_Mill"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Water_Mill"/>
+				<m_Name text="CSC_TAILORS_Water_Mill"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 		</Element>
@@ -94,7 +94,7 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Quarter_Visible"/>
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Visible"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -112,7 +112,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Quarter_Revealed"/>
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Revealed"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -132,14 +132,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS"/>
+				<m_Name text="CSC_TAILORS"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Quarter_Visible_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Visible_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -157,7 +157,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Quarter_Revealed_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Revealed_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -177,14 +177,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Quarter_Visible_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Visible_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -202,7 +202,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Quarter_Revealed_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Revealed_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -222,7 +222,142 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Visible"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Revealed"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Visible_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Revealed_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Visible_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Quarter_Revealed_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 		</Element>
@@ -257,7 +392,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -274,7 +409,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS"/>
+										<m_ElementName text="CSC_TAILORS"/>
 										<m_RootCollectionName text="DistrictEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -284,12 +419,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS"/>
+							<m_Name text="CSC_TAILORS"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS"/>
+				<m_Name text="CSC_TAILORS"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -320,7 +455,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -337,7 +472,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Pillaged"/>
+										<m_ElementName text="CSC_TAILORS_Pillaged"/>
 										<m_RootCollectionName text="DistrictEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -347,12 +482,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Pillaged"/>
+							<m_Name text="CSC_TAILORS_Pillaged"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -383,7 +518,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -400,7 +535,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_UnderConstruction"/>
+										<m_ElementName text="CSC_TAILORS_UnderConstruction"/>
 										<m_RootCollectionName text="DistrictEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -410,12 +545,201 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_UnderConstruction"/>
+							<m_Name text="CSC_TAILORS_UnderConstruction"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS"/>
+										<m_RootCollectionName text="DistrictEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Pillaged"/>
+										<m_RootCollectionName text="DistrictEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Pillaged"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_UnderConstruction"/>
+										<m_RootCollectionName text="DistrictEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_UnderConstruction"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 		</Element>
@@ -426,7 +750,7 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Wind_Mill_Visible"/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -444,7 +768,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Wind_Mill_Revealed"/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -464,14 +788,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Wind_Mill"/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Wind_Mill_Visible_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -489,7 +813,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Wind_Mill_Revealed_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -509,14 +833,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Wind_Mill_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -534,7 +858,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Wind_Mill_Revealed_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -554,14 +878,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Wind_Mill_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Bakery_Visible"/>
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Visible"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -579,7 +903,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Bakery_Revealed"/>
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Revealed"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -599,14 +923,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Bakery"/>
+				<m_Name text="CSC_TAILORS_Tailor"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Bakery_Visible_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Visible_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -624,7 +948,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Bakery_Revealed_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Revealed_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -644,14 +968,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Bakery_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Tailor_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Bakery_Visible_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Visible_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -669,7 +993,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Bakery_Revealed_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Revealed_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -689,14 +1013,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Bakery_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Tailor_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Cafe_Visible"/>
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Visible"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -714,7 +1038,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Cafe_Revealed"/>
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Revealed"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -734,14 +1058,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Cafe"/>
+				<m_Name text="CSC_TAILORS_Fashion_House"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Cafe_Visible_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Visible_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -759,7 +1083,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Cafe_Revealed_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -779,14 +1103,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Cafe_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Fashion_House_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Cafe_Visible_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -804,7 +1128,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Cafe_Revealed_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -824,14 +1148,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Cafe_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Water_Mill_Visible"/>
+							<m_EntryName text="CSC_TAILORS_SV_Water_Mill_Visible"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -849,7 +1173,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Water_Mill_Revealed"/>
+							<m_EntryName text="CSC_TAILORS_SV_Water_Mill_Revealed"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -869,14 +1193,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Water_Mill"/>
+				<m_Name text="CSC_TAILORS_Water_Mill"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Water_Mill_Visible_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Water_Mill_Visible_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -894,7 +1218,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Water_Mill_Revealed_Pillaged"/>
+							<m_EntryName text="CSC_TAILORS_SV_Water_Mill_Revealed_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -914,14 +1238,14 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Water_Mill_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Water_Mill_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Water_Mill_Visible_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Water_Mill_Visible_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -939,7 +1263,7 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text="CSC_BAKERS_SV_Water_Mill_Revealed_UnderConstruction"/>
+							<m_EntryName text="CSC_TAILORS_SV_Water_Mill_Revealed_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
 							<m_XLPPath text="csc_strategicview.xlp"/>
 							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
@@ -959,7 +1283,412 @@
 					</m_Values>
 				</m_Fields>
 				<m_ChildCollections/>
-				<m_Name text="CSC_BAKERS_Water_Mill_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Water_Mill_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Visible"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Revealed"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Tailor"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Visible_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Revealed_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Tailor_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Visible_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Tailor_Revealed_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Tailor_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Visible"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Revealed"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Fashion_House"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Visible_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Fashion_House_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Visible_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Visible_BottomRight"/>
+						</Element>
+						<Element class="AssetObjects..BLPEntryValue">
+							<m_EntryName text="CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction"/>
+							<m_XLPClass text="StrategicView_Sprite"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
+							<m_LibraryName text="StrategicView_Sprite"/>
+							<m_ParamName text="Revealed_XLPEntry"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_TopLeft"/>
+						</Element>
+						<Element class="AssetObjects..Coord2DValue">
+							<m_x>0.000000</m_x>
+							<m_y>0.000000</m_y>
+							<m_ParamName text="Revealed_BottomRight"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections/>
+				<m_Name text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 		</Element>
@@ -994,7 +1723,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1011,7 +1740,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Wind_Mill"/>
+										<m_ElementName text="CSC_TAILORS_Textile_Workshop"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1021,12 +1750,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Wind_Mill"/>
+							<m_Name text="CSC_TAILORS_Textile_Workshop"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Wind_Mill"/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1057,7 +1786,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1074,7 +1803,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Wind_Mill_Pillaged"/>
+										<m_ElementName text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1084,12 +1813,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Wind_Mill_Pillaged"/>
+							<m_Name text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Wind_Mill_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1120,7 +1849,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1137,7 +1866,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Wind_Mill_UnderConstruction"/>
+										<m_ElementName text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1147,12 +1876,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Wind_Mill_UnderConstruction"/>
+							<m_Name text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Wind_Mill_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1183,7 +1912,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1200,7 +1929,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Bakery"/>
+										<m_ElementName text="CSC_TAILORS_Tailor"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1210,12 +1939,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Bakery"/>
+							<m_Name text="CSC_TAILORS_Tailor"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Bakery"/>
+				<m_Name text="CSC_TAILORS_Tailor"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1246,7 +1975,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1263,7 +1992,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Bakery_Pillaged"/>
+										<m_ElementName text="CSC_TAILORS_Tailor_Pillaged"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1273,12 +2002,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Bakery_Pillaged"/>
+							<m_Name text="CSC_TAILORS_Tailor_Pillaged"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Bakery_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Tailor_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1309,7 +2038,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1326,7 +2055,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Bakery_UnderConstruction"/>
+										<m_ElementName text="CSC_TAILORS_Tailor_UnderConstruction"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1336,12 +2065,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Bakery_UnderConstruction"/>
+							<m_Name text="CSC_TAILORS_Tailor_UnderConstruction"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Bakery_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Tailor_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1372,7 +2101,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1389,7 +2118,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Cafe"/>
+										<m_ElementName text="CSC_TAILORS_Fashion_House"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1399,12 +2128,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Cafe"/>
+							<m_Name text="CSC_TAILORS_Fashion_House"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Cafe"/>
+				<m_Name text="CSC_TAILORS_Fashion_House"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1435,7 +2164,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1452,7 +2181,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Cafe_Pillaged"/>
+										<m_ElementName text="CSC_TAILORS_Fashion_House_Pillaged"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1462,12 +2191,12 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Cafe_Pillaged"/>
+							<m_Name text="CSC_TAILORS_Fashion_House_Pillaged"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Cafe_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Fashion_House_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
@@ -1498,7 +2227,7 @@
 							<m_ParamName text="TileCount"/>
 						</Element>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_BuildingChain"/>
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
 							<m_RootCollectionName text="BuildingChains"/>
 							<m_ArtDefPath text="CSC_Buildings.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1515,7 +2244,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Cafe_UnderConstruction"/>
+										<m_ElementName text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1525,19 +2254,19 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Cafe_UnderConstruction"/>
+							<m_Name text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Cafe_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_Water_Mill"/>
+							<m_ElementName text="CSC_TAILORS_Water_Mill"/>
 							<m_RootCollectionName text="PositionSets"/>
 							<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1578,7 +2307,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Water_Mill"/>
+										<m_ElementName text="CSC_TAILORS_Water_Mill"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1588,19 +2317,19 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Water_Mill"/>
+							<m_Name text="CSC_TAILORS_Water_Mill"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Water_Mill"/>
+				<m_Name text="CSC_TAILORS_Water_Mill"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_Water_Mill"/>
+							<m_ElementName text="CSC_TAILORS_Water_Mill"/>
 							<m_RootCollectionName text="PositionSets"/>
 							<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1641,7 +2370,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Water_Mill_Pillaged"/>
+										<m_ElementName text="CSC_TAILORS_Water_Mill_Pillaged"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1651,19 +2380,19 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Water_Mill_Pillaged"/>
+							<m_Name text="CSC_TAILORS_Water_Mill_Pillaged"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Water_Mill_Pillaged"/>
+				<m_Name text="CSC_TAILORS_Water_Mill_Pillaged"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 			<Element>
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..ArtDefReferenceValue">
-							<m_ElementName text="CSC_BAKERS_Water_Mill"/>
+							<m_ElementName text="CSC_TAILORS_Water_Mill"/>
 							<m_RootCollectionName text="PositionSets"/>
 							<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 							<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1704,7 +2433,7 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
-										<m_ElementName text="CSC_BAKERS_Water_Mill_UnderConstruction"/>
+										<m_ElementName text="CSC_TAILORS_Water_Mill_UnderConstruction"/>
 										<m_RootCollectionName text="BuildingEntries"/>
 										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
 										<m_CollectionIsLocked>true</m_CollectionIsLocked>
@@ -1714,12 +2443,579 @@
 								</m_Values>
 							</m_Fields>
 							<m_ChildCollections/>
-							<m_Name text="CSC_BAKERS_Water_Mill_UnderConstruction"/>
+							<m_Name text="CSC_TAILORS_Water_Mill_UnderConstruction"/>
 							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 						</Element>
 					</Element>
 				</m_ChildCollections>
-				<m_Name text="CSC_BAKERS_Water_Mill_UnderConstruction"/>
+				<m_Name text="CSC_TAILORS_Water_Mill_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Textile_Workshop"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Textile_Workshop"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Textile_Workshop"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Tailor"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Tailor"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Tailor"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Tailor_Pillaged"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Tailor_Pillaged"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Tailor_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Tailor_UnderConstruction"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Tailor_UnderConstruction"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Tailor_UnderConstruction"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Fashion_House"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Fashion_House"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Fashion_House"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Fashion_House_Pillaged"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Fashion_House_Pillaged"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Fashion_House_Pillaged"/>
+				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+			</Element>
+			<Element>
+				<m_Fields>
+					<m_Values>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="1_Center"/>
+							<m_RootCollectionName text="PositionSets"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PositionSet"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="Centered"/>
+							<m_RootCollectionName text="PlacementRules"/>
+							<m_ArtDefPath text="StrategicView.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="StrategicView"/>
+							<m_ParamName text="PlacementRule"/>
+						</Element>
+						<Element class="AssetObjects..BoolValue">
+							<m_bValue>true</m_bValue>
+							<m_ParamName text="Render"/>
+						</Element>
+						<Element class="AssetObjects..IntValue">
+							<m_nValue>1</m_nValue>
+							<m_ParamName text="TileCount"/>
+						</Element>
+						<Element class="AssetObjects..ArtDefReferenceValue">
+							<m_ElementName text="CSC_TAILORS_BuildingChain"/>
+							<m_RootCollectionName text="BuildingChains"/>
+							<m_ArtDefPath text="CSC_Buildings.artdef"/>
+							<m_CollectionIsLocked>true</m_CollectionIsLocked>
+							<m_TemplateName text="Buildings"/>
+							<m_ParamName text="BuildingChain"/>
+						</Element>
+					</m_Values>
+				</m_Fields>
+				<m_ChildCollections>
+					<Element>
+						<m_CollectionName text="Entries"/>
+						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
+										<m_RootCollectionName text="BuildingEntries"/>
+										<m_ArtDefPath text="CSC_StrategicView.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="StrategicView"/>
+										<m_ParamName text="ArtDefEntry"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+					</Element>
+				</m_ChildCollections>
+				<m_Name text="CSC_TAILORS_Fashion_House_UnderConstruction"/>
 				<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
 			</Element>
 		</Element>
