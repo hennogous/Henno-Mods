@@ -89,6 +89,38 @@
 			<m_EntryID text="CSC_TextIcons"/>
 			<m_ObjectName text="CSC_TextIcons"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_128"/>
+			<m_ObjectName text="CSC_TAILORS_128"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_22"/>
+			<m_ObjectName text="CSC_TAILORS_22"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_256"/>
+			<m_ObjectName text="CSC_TAILORS_256"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_32"/>
+			<m_ObjectName text="CSC_TAILORS_32"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_38"/>
+			<m_ObjectName text="CSC_TAILORS_38"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_50"/>
+			<m_ObjectName text="CSC_TAILORS_50"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_70"/>
+			<m_ObjectName text="CSC_TAILORS_70"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_80"/>
+			<m_ObjectName text="CSC_TAILORS_80"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>
