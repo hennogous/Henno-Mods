@@ -665,7 +665,7 @@ DROP TABLE BAKERS_SALES_DISTRICTS;
 Tailors' Quarter
 
 ## LOC_DISTRICT_CSC_TAILORS_QUARTER_DESCRIPTION
-A district in your city specializing in textiles.
+A district in your city specializing in textiles.[NEWLINE][NEWLINE]+1 [ICON_Production] Production from each adjacent [ICON_CSC_BASE] Base or [ICON_CSC_SPEC] Specialty Materials resource from this supply chain.[NEWLINE]+1 [ICON_Gold] Gold from each adjacent Harbor, and +1 [ICON_Production] Production in return.[NEWLINE]+1 [ICON_Gold] Gold from each adjacent Commercial Hub, Holy Site, and Theater Square, and +1 [ICON_Culture] Culture in return.[NEWLINE]+1 [ICON_Production] Production from every 2 adjacent river segments.
 
 ## Raw SQL 7
 mode: raw

@@ -21,7 +21,7 @@ title: Tailors' Quarter
 * +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain.
 * +1 {{gold}} Gold from each adjacent {{sales}} Harbor, and +1 {{production}} Production in return.
 * +1 {{gold}} Gold from each adjacent {{sales}} Commercial Hub, Holy Site and Theater Square, and +1 {{culture}} Culture in return.
-* +1 {{production}} Production if the Quarter has access to fresh water.
+* +1 {{production}} Production from every 2 adjacent river edges.
 * with City Lights:
    * +1 {{production}} Production from each adjacent {{goods}} Rural Community, and +1 {{culture}} Culture in return.
    * +1 {{gold}} Gold from each adjacent {{sales}} Urban Borough, and +1 {{culture}} Culture in return.

@@ -1,4 +1,4 @@
--- CSC_TAILORS
+-- CSC_Q_TAILORS
 -- Author: Henno
 -- DateCreated: 2025-06-20 13:17:53
 --------------------------------------------------------------
@@ -7,7 +7,7 @@
 /*	TYPES */
 --===========================================================================================================================================================================--
 
-INSERT INTO Types
+INSERT OR IGNORE INTO Types
 
 		(	Type,																Kind					)
 VALUES	( 	'DISTRICT_CSC_TAILORS_QUARTER',                              		'KIND_DISTRICT'         );
@@ -15,7 +15,7 @@ VALUES	( 	'DISTRICT_CSC_TAILORS_QUARTER',                              		'KIND_D
 
 
 --===========================================================================================================================================================================--
-/*	RESOURCES */
+/*	RESOURCES AND ADJACENCY TAGS */
 --===========================================================================================================================================================================--
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,32 +24,56 @@ VALUES	( 	'DISTRICT_CSC_TAILORS_QUARTER',                              		'KIND_D
 
 INSERT OR IGNORE INTO Tags
 
-		(   Tag,							    Vocabulary			)
-VALUES	(	'CLASS_CSC_TAILORS_BASE',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_TAILORS_SPEC',	        'RESOURCE_CLASS'	);
+		(   Tag,										Vocabulary			)
+VALUES	(	'CLASS_CSC_TAILORS_BASE',					'RESOURCE_CLASS'	),
+		(	'CLASS_CSC_TAILORS_SPEC',					'RESOURCE_CLASS'	),
+		(	'CLASS_CSC_TAILORS_HARBOR_TO_QUARTER_GOLD',	'DISTRICT_CLASS'	),
+		(	'CLASS_CSC_TAILORS_SALES',					'DISTRICT_CLASS'	),
+		(	'CLASS_CSC_TAILORS_SALES_PRODUCTION',		'DISTRICT_CLASS'	),
+		(	'CLASS_CSC_TAILORS_SALES_CULTURE',			'DISTRICT_CLASS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---	TAILORS' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
 
-	(	Type,						Tag			        )
-SELECT	ResourceType,				'CLASS_CSC_TAILORS_BASE'
-FROM	Resources
-WHERE	ResourceType 				IN
-	(	'RESOURCE_COTTON'       	);
+		(	Type,										Tag											)
+VALUES
+--	Tailors' Quarter base materials. Animal resources live in CSC_A_RESOURCES and related ModSupport_A files.
+		(	'RESOURCE_COTTON',							'CLASS_CSC_TAILORS_BASE'					),
 
---	TAILORS' Quarter specialty materials
-INSERT OR IGNORE INTO TypeTags
+--	Tailors' Quarter specialty materials. Silk is animal-gated in CSC_A_RESOURCES.
+		(	'RESOURCE_DYES',							'CLASS_CSC_TAILORS_SPEC'					),
+		(	'RESOURCE_SILVER',							'CLASS_CSC_TAILORS_SPEC'					),
 
-	(	Type,						Tag			        )
-SELECT	ResourceType,				'CLASS_CSC_TAILORS_SPEC'
-FROM	Resources
-WHERE	ResourceType 				IN
-	(	'RESOURCE_DYES',
-		'RESOURCE_SILVER'      		);
+--	Tailors' Quarter customer/sales districts.
+		(	'DISTRICT_HARBOR',							'CLASS_CSC_TAILORS_HARBOR_TO_QUARTER_GOLD'	),
+		(	'DISTRICT_HARBOR',							'CLASS_CSC_TAILORS_SALES_PRODUCTION'		),
+		(	'DISTRICT_COMMERCIAL_HUB',					'CLASS_CSC_TAILORS_SALES'					),
+		(	'DISTRICT_COMMERCIAL_HUB',					'CLASS_CSC_TAILORS_SALES_CULTURE'			),
+		(	'DISTRICT_HOLY_SITE',						'CLASS_CSC_TAILORS_SALES'					),
+		(	'DISTRICT_HOLY_SITE',						'CLASS_CSC_TAILORS_SALES_CULTURE'			),
+		(	'DISTRICT_THEATER',							'CLASS_CSC_TAILORS_SALES'					),
+		(	'DISTRICT_THEATER',							'CLASS_CSC_TAILORS_SALES_CULTURE'			);
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	CSC_QuarterMaterialAdjacencyConfig
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO CSC_QuarterMaterialAdjacencyConfig
+		(
+		QuarterKey,
+		SourceTag,
+		SourceFilter,
+		YieldType,
+		YieldChange,
+		AdjacencyType
+		)
+VALUES
+--	Broad Tailors material classes use MAB typetag matching so optional resource mappings inherit automatically.
+		(	'TAILORS',		'CLASS_CSC_TAILORS_BASE',		'',		'YIELD_PRODUCTION',		1,		'FROM_RINGS_TYPETAG_RESOURCE'	),
+		(	'TAILORS',		'CLASS_CSC_TAILORS_SPEC',		'',		'YIELD_PRODUCTION',		1,		'FROM_RINGS_TYPETAG_RESOURCE'	);
 
 
 
@@ -61,7 +85,7 @@ WHERE	ResourceType 				IN
 --	Districts
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT INTO Districts
+INSERT OR IGNORE INTO Districts
 
 		(  	DistrictType,
 			Name,
@@ -95,7 +119,7 @@ VALUES	(
 		/*  PrereqCivic, */							'CIVIC_CRAFTSMANSHIP',
 		/*  Cost, */								60,
 		/*  CostProgressionModel, */    			'COST_PROGRESSION_PREVIOUS_COPIES',
-		/*  CostProgressionParam1, */				100,
+		/*  CostProgressionParam1, */				10,
 		/*  MilitaryDomain, */						'NO_DOMAIN',
 		/*  RequiresPlacement, */					1,
 		/*  Coast, */								0,
@@ -109,27 +133,7 @@ VALUES	(
 		/*  OnePerCity, */							1,
 		/*  CaptureRemovesBuildings, */	   			0,
 		/*  CaptureRemovesCityDefenses, */			0,
-		/*  Maintenance, */							0,
+		/*  Maintenance, */							1,
 		/*  CityStrengthModifier */					2,
 		/*  AdvisorType */							'ADVISOR_GENERIC'
 													);
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	Adjacency_YieldChanges
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
-
-INSERT INTO Adjacency_YieldChanges
-
-		(	ID,											Description,									YieldType,				YieldChange,	AdjacentFeature,	AdjacentImprovement,	AdjacentDistrict,						AdjacentResourceClass,		PrereqTech			)
-VALUES	(	'CSC_COMMERCIAL_HUB_GOLD_TO_TAILORS',		'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_TAILORS',		'YIELD_GOLD',			1,				NULL,				NULL,					'DISTRICT_COMMERCIAL_HUB',				'NO_RESOURCECLASS',			NULL				),
-		(	'CSC_TAILORS_CULTURE_TO_COMMERCIAL_HUB',	'LOC_CSC_TAILORS_CULTURE_TO_COMMERCIAL_HUB',	'YIELD_CULTURE',		1,				NULL,				NULL,					'DISTRICT_CSC_TAILORS_QUARTER',			'NO_RESOURCECLASS',			NULL				);
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---	District_Adjacencies
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
-
-INSERT INTO District_Adjacencies
-
-		(	DistrictType,						YieldChangeId		)
-VALUES	(	'DISTRICT_CSC_TAILORS_QUARTER',		'CSC_COMMERCIAL_HUB_GOLD_TO_TAILORS'		),
-		(	'DISTRICT_COMMERCIAL_HUB',			'CSC_TAILORS_CULTURE_TO_COMMERCIAL_HUB'		);
