@@ -1,26 +1,30 @@
 """
-CN6 Export for Blender 4.x/5.x — ported from Deliverator/Sukritact's io_export_cn6.py
+CN6 Export for Blender 4.x/5.x â€” ported from Deliverator/Sukritact's io_export_cn6.py
 Changes from 3.x version:
   - mesh.use_auto_smooth removed (custom normals are implicit in 4.1+)
   - mesh.calc_tangents() still works in 4.x
   - StringProperty annotation style updated
   - bl_info blender version bumped
-  - unpack_list/unpack_face_list still exist in 4.x bpy_extras but may deprecate — kept for now
+  - unpack_list/unpack_face_list still exist in 4.x bpy_extras but may deprecate â€” kept for now
 """
 
 bl_info = {
 	"name": "Export CivNexus6 (.cn6)",
 	"author": "Deliverator, Sukritact (Blender 4+ port: Bill/CSC)",
-	"version": (2, 0),
+	"version": (2, 3),
 	"blender": (4, 0, 0),
 	"location": "File > Export > CivNexus6 (.cn6)",
-	"description": "Export CivNexus6 (.cn6)",
+	"description": "Export CivNexus6 (.cn6), with optional CSC FGX/GEO deployment",
 	"warning": "",
 	"wiki_url": "",
 	"category": "Import-Export"}
 
 import bpy
 import bmesh
+import os
+import shutil
+import subprocess
+import tempfile
 from mathutils import Vector, Quaternion, Matrix
 from bpy_extras.io_utils import ExportHelper
 import math
@@ -31,6 +35,13 @@ from bpy.props import (
 		StringProperty,
 		EnumProperty,
 		)
+
+CSC_REPO_ROOT = r"C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods"
+CSC_CN6_TO_FGX = os.path.join(CSC_REPO_ROOT, "project", "tools", "cn6libs", "CN6ToFGX.exe")
+CSC_CN6_LIBS_DIR = os.path.dirname(CSC_CN6_TO_FGX)
+CSC_GEOMETRIES_DIR = os.path.join(CSC_REPO_ROOT, "Civ Supply Chains", "Geometries")
+CSC_BAD_BONE_CHARS = ':/<>|'
+CSC_BAD_OBJECT_CHARS = ':/<>|#'
 
 def getTranslationOrientation(ob):
 	if isinstance(ob, bpy.types.Bone):
@@ -127,6 +138,328 @@ def getBoneWeights(boneName, weights):
 		vgroup_data = []
 
 	return vgroup_data
+
+def csc_find_export_armature():
+	armatures = [o for o in bpy.data.objects if o.type == 'ARMATURE' and not o.hide_get()]
+	if not armatures:
+		raise RuntimeError("No visible armature object found.")
+	if len(armatures) > 1:
+		raise RuntimeError("Expected one visible armature, found %d." % len(armatures))
+	return armatures[0]
+
+def csc_export_meshes(armature_object):
+	meshes = []
+	for object in bpy.data.objects:
+		if object.type != 'MESH' or object.hide_get():
+			continue
+		for modifier in object.modifiers:
+			if modifier.type == 'ARMATURE' and modifier.object == armature_object:
+				meshes.append(object)
+				break
+	if not meshes:
+		raise RuntimeError("No visible mesh objects attached to %s." % armature_object.name)
+	return meshes
+
+def csc_clean_bone_name(name):
+	cleaned = name
+	for char in CSC_BAD_BONE_CHARS:
+		cleaned = cleaned.replace(char, "_")
+	return cleaned
+
+def csc_clean_object_name(name):
+	cleaned = name
+	for char in CSC_BAD_OBJECT_CHARS:
+		cleaned = cleaned.replace(char, "_")
+	if cleaned.endswith("_M"):
+		cleaned = cleaned[:-2]
+	return cleaned
+
+def csc_validate_scene_for_export(uv_count):
+	if bpy.context.mode != 'OBJECT' and bpy.ops.object.mode_set.poll():
+		bpy.ops.object.mode_set(mode='OBJECT')
+
+	armature_object = csc_find_export_armature()
+	mesh_objects = csc_export_meshes(armature_object)
+	fixes = []
+
+	for mesh_object in mesh_objects:
+		mesh = mesh_object.data
+		while len(mesh.uv_layers) < uv_count:
+			mesh.uv_layers.new(name="UV%d" % (len(mesh.uv_layers) + 1))
+		fixes.append("%s UV layers ready (%d)" % (mesh_object.name, len(mesh.uv_layers)))
+
+	for bone in armature_object.data.bones:
+		cleaned = csc_clean_bone_name(bone.name)
+		if cleaned != bone.name:
+			old_name = bone.name
+			bone.name = cleaned
+			for object in bpy.data.objects:
+				if object.type == 'MESH':
+					for vertex_group in object.vertex_groups:
+						if vertex_group.name == old_name:
+							vertex_group.name = cleaned
+			fixes.append("Renamed bone %s -> %s" % (old_name, cleaned))
+
+	for mesh_object in mesh_objects:
+		cleaned = csc_clean_object_name(mesh_object.name)
+		if cleaned != mesh_object.name:
+			old_name = mesh_object.name
+			mesh_object.name = cleaned
+			mesh_object.data.name = cleaned
+			fixes.append("Renamed mesh %s -> %s" % (old_name, cleaned))
+
+		mesh = mesh_object.data
+		unweighted_vertices = [v.index for v in mesh.vertices if len(v.groups) == 0]
+		if unweighted_vertices:
+			vertex_group = mesh_object.vertex_groups.get("Bone")
+			if vertex_group is None and armature_object.data.bones:
+				root_bone = next((b for b in armature_object.data.bones if b.parent is None), armature_object.data.bones[0])
+				vertex_group = mesh_object.vertex_groups.get(root_bone.name)
+			if vertex_group is None:
+				vertex_group = mesh_object.vertex_groups.new(name="Bone")
+			vertex_group.add(unweighted_vertices, 1.0, 'ADD')
+			fixes.append("%s weighted %d unweighted vertices" % (mesh_object.name, len(unweighted_vertices)))
+		else:
+			fixes.append("%s weights OK" % mesh_object.name)
+
+	return fixes, armature_object, mesh_objects
+
+def csc_parse_cn6_metadata(cn6_path):
+	skeleton = []
+	meshes = []
+	current_mesh = None
+	in_materials = False
+	in_vertices = False
+	in_triangles = False
+
+	with open(cn6_path, "r", encoding="utf-8") as cn6_file:
+		for raw_line in cn6_file:
+			line = raw_line.strip()
+			if line.startswith("//") or not line:
+				continue
+			if line.startswith("mesh:"):
+				current_mesh = {
+					"name": line.split('"', 2)[1],
+					"vertex_count": 0,
+					"triangle_count": 0,
+					"bound_bone_ids": set(),
+					"materials": [],
+					"material_triangle_counts": {},
+				}
+				meshes.append(current_mesh)
+				in_materials = False
+				in_vertices = False
+				in_triangles = False
+			elif line == "materials":
+				in_materials = True
+				in_vertices = False
+				in_triangles = False
+				continue
+			elif line == "vertices":
+				in_materials = False
+				in_vertices = True
+				in_triangles = False
+				continue
+			elif line == "triangles":
+				in_materials = False
+				in_vertices = False
+				in_triangles = True
+				continue
+			elif line == "end":
+				in_materials = False
+				in_vertices = False
+				in_triangles = False
+			elif in_materials and current_mesh is not None:
+				if line.startswith('"') and line.endswith('"'):
+					current_mesh["materials"].append(line[1:-1])
+			elif in_vertices:
+				if current_mesh is not None:
+					current_mesh["vertex_count"] += 1
+					parts = line.split()
+					if len(parts) >= 34:
+						try:
+							bone_ids = [int(value) for value in parts[18:26]]
+							bone_weights = [int(value) for value in parts[26:34]]
+						except ValueError:
+							bone_ids = []
+							bone_weights = []
+						for bone_id, bone_weight in zip(bone_ids, bone_weights):
+							if bone_id >= 0 and bone_weight > 0:
+								current_mesh["bound_bone_ids"].add(bone_id)
+			elif in_triangles:
+				if current_mesh is not None:
+					current_mesh["triangle_count"] += 1
+					parts = line.split()
+					if len(parts) >= 4:
+						material_index = int(parts[3])
+						current_mesh["material_triangle_counts"][material_index] = current_mesh["material_triangle_counts"].get(material_index, 0) + 1
+			elif line[0].isdigit() and '"' in line:
+				try:
+					skeleton.append(line.split('"', 2)[1])
+				except IndexError:
+					pass
+
+	if not skeleton:
+		raise RuntimeError("Could not read skeleton from CN6.")
+	if not meshes:
+		raise RuntimeError("Could not read meshes from CN6.")
+
+	return skeleton, meshes
+
+def csc_geo_groups_xml(mesh):
+	materials = mesh["materials"] or [mesh["name"]]
+	material_triangle_counts = mesh["material_triangle_counts"]
+	groups = []
+	first_prim = 0
+	for material_index, material_name in enumerate(materials):
+		triangle_count = material_triangle_counts.get(material_index, 0)
+		if triangle_count == 0 and len(materials) == 1:
+			triangle_count = mesh["triangle_count"]
+		if triangle_count == 0:
+			continue
+		groups.append("""<Element>
+<m_Name text="{material_name}"/>
+<m_nFirstPrim>{first_prim}</m_nFirstPrim>
+<m_nPrims>{triangle_count}</m_nPrims>
+</Element>""".format(
+			material_name=material_name,
+			first_prim=first_prim,
+			triangle_count=triangle_count,
+		))
+		first_prim += triangle_count
+	return "\n".join(groups)
+
+def csc_write_geo(geo_path, base_name, cn6_path, geo_class):
+	skeleton, meshes = csc_parse_cn6_metadata(cn6_path)
+	bones_xml = "\n".join('<Element text="%s"/>' % bone for bone in skeleton)
+	meshes_xml = []
+	total_vertex_count = 0
+	total_triangle_count = 0
+	for mesh in meshes:
+		mesh_name = mesh["name"]
+		vertex_count = mesh["vertex_count"]
+		triangle_count = mesh["triangle_count"]
+		bound_bone_count = max(1, len(mesh["bound_bone_ids"]))
+		groups_xml = csc_geo_groups_xml(mesh)
+		total_vertex_count += vertex_count
+		total_triangle_count += triangle_count
+		meshes_xml.append("""<Element>
+<m_Name text="{mesh_name}"/>
+<m_Groups>
+{groups_xml}
+</m_Groups>
+<m_nBoundBoneCount>{bound_bone_count}</m_nBoundBoneCount>
+<m_nPrimitiveCount>{triangle_count}</m_nPrimitiveCount>
+<m_nVertexCount>{vertex_count}</m_nVertexCount>
+</Element>""".format(
+			mesh_name=mesh_name,
+			groups_xml=groups_xml,
+			bound_bone_count=bound_bone_count,
+			triangle_count=triangle_count,
+			vertex_count=vertex_count,
+		))
+	geo_xml = """<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects:GeometryInstance>
+<m_CookParams>
+<m_Values/>
+</m_CookParams>
+<m_Version>
+<major>0</major>
+<minor>0</minor>
+<build>0</build>
+<revision>0</revision>
+</m_Version>
+<m_Meshes>
+{meshes_xml}
+</m_Meshes>
+<m_Bones>
+{bones_xml}
+</m_Bones>
+<m_ModelName text="{model_name}"/>
+<m_SourceFilePath text=""/>
+<m_SourceObjectName text=""/>
+<m_ImportedTime>0</m_ImportedTime>
+<m_ExportedTime>0</m_ExportedTime>
+<m_ClassName text="{geo_class}"/>
+<m_DataFiles>
+<Element>
+<m_ID text="GR2"/>
+<m_RelativePath text="{base_name}.fgx"/>
+</Element>
+</m_DataFiles>
+<m_Name text="{base_name}"/>
+<m_Description text="{base_name}"/>
+<m_Tags>
+<Element text="{geo_class}"/>
+</m_Tags>
+<m_Groups/>
+</AssetObjects:GeometryInstance>
+""".format(
+		meshes_xml="\n".join(meshes_xml),
+		bones_xml=bones_xml,
+		model_name=skeleton[0],
+		geo_class=geo_class,
+		base_name=base_name,
+	)
+	with open(geo_path, "w", encoding="utf-8") as geo_file:
+		geo_file.write(geo_xml)
+	return meshes, total_vertex_count, total_triangle_count
+
+def csc_convert_cn6_to_fgx(cn6_path, fgx_path, vertex_format):
+	if not os.path.exists(CSC_CN6_TO_FGX):
+		raise RuntimeError("CN6ToFGX.exe not found: %s" % CSC_CN6_TO_FGX)
+
+	result = subprocess.run(
+		[CSC_CN6_TO_FGX, cn6_path, fgx_path, str(vertex_format)],
+		cwd=CSC_CN6_LIBS_DIR,
+		capture_output=True,
+		text=True,
+		creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+	)
+	if result.returncode != 0 or not os.path.exists(fgx_path) or os.path.getsize(fgx_path) == 0:
+		output = (result.stdout or "") + (result.stderr or "")
+		raise RuntimeError("CN6ToFGX failed: %s" % (output.strip() or "no output"))
+
+def csc_do_export_selected(cn6_path, export_objects):
+	previous_selection = list(bpy.context.selected_objects)
+	previous_active = bpy.context.view_layer.objects.active
+
+	try:
+		for object in bpy.context.selected_objects:
+			object.select_set(False)
+		for object in export_objects:
+			object.select_set(True)
+		bpy.context.view_layer.objects.active = export_objects[0]
+		do_export(cn6_path, triangulate=True, use_selection=True)
+	finally:
+		for object in bpy.context.selected_objects:
+			object.select_set(False)
+		for object in previous_selection:
+			if object.name in bpy.data.objects:
+				object.select_set(True)
+		if previous_active and previous_active.name in bpy.data.objects:
+			bpy.context.view_layer.objects.active = previous_active
+
+def csc_export_fgx_geo(base_name, output_dir, geo_class, uv_count, keep_cn6):
+	os.makedirs(output_dir, exist_ok=True)
+	fixes, armature_object, mesh_objects = csc_validate_scene_for_export(uv_count)
+	export_objects = [armature_object] + mesh_objects
+
+	with tempfile.TemporaryDirectory(prefix="csc_cn6_export_") as temp_dir:
+		cn6_path = os.path.join(temp_dir, base_name + ".cn6")
+		fgx_path = os.path.join(temp_dir, base_name + ".fgx")
+		geo_path = os.path.join(temp_dir, base_name + ".geo")
+
+		csc_do_export_selected(cn6_path, export_objects)
+		csc_convert_cn6_to_fgx(cn6_path, fgx_path, uv_count - 1)
+		mesh_summaries, vertex_count, triangle_count = csc_write_geo(geo_path, base_name, cn6_path, geo_class)
+
+		shutil.copy2(fgx_path, os.path.join(output_dir, base_name + ".fgx"))
+		shutil.copy2(geo_path, os.path.join(output_dir, base_name + ".geo"))
+		if keep_cn6:
+			shutil.copy2(cn6_path, os.path.join(output_dir, base_name + ".cn6"))
+
+	return fixes, mesh_summaries, vertex_count, triangle_count
 
 def do_export(filename, triangulate, use_selection):
 	print ("Start CN6 Export...")
@@ -494,18 +827,95 @@ class export_cn6(bpy.types.Operator, ExportHelper):
 			)
 		return {'FINISHED'}
 
+class export_csc_fgx_geo(bpy.types.Operator):
+
+	bl_idname = "export_shape.csc_fgx_geo"
+	bl_label = "CSC FGX/GEO via CN6"
+	bl_description = "Export current Blender scene to Civ VI .fgx + .geo and copy them to CSC Geometries"
+	bl_options = {'PRESET'}
+
+	output_dir: StringProperty(
+			name="Output Directory",
+			description="Folder where .fgx and .geo files will be copied",
+			default=CSC_GEOMETRIES_DIR,
+			subtype='DIR_PATH',
+			)
+	geo_class: EnumProperty(
+			name="Geometry Class",
+			description="Civ VI geometry class for the .geo file",
+			items=(
+				("LandmarkModel", "LandmarkModel", "Buildings, districts, city blocks, and clutter"),
+				("DecalGeometry", "DecalGeometry", "Terrain decals"),
+				("LandmarkObstructionProfile", "LandmarkObstructionProfile", "2D obstruction profiles"),
+				("Unit", "Unit", "Unit models"),
+				("VFXModel", "VFXModel", "VFX geometry"),
+				),
+			default="LandmarkModel",
+			)
+	uv_count: EnumProperty(
+			name="UV Maps",
+			description="Number of UV maps written to the FGX",
+			items=(
+				("1", "1 UV", "Position, normal, tangent, binormal, and UV0"),
+				("2", "2 UVs", "Position, normal, tangent, binormal, UV0, and UV1"),
+				("3", "3 UVs", "Position, normal, tangent, binormal, UV0, UV1, and UV2"),
+				),
+			default="2",
+			)
+	keep_cn6: BoolProperty(
+			name="Also copy CN6",
+			description="Copy the intermediate .cn6 into Geometries for inspection/debugging",
+			default=False,
+			)
+
+	def execute(self, context):
+		if not bpy.data.filepath:
+			self.report({'ERROR'}, "Save the .blend first so the exporter can infer the output name.")
+			return {'CANCELLED'}
+
+		base_name = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
+		try:
+			fixes, mesh_summaries, vertex_count, triangle_count = csc_export_fgx_geo(
+				base_name,
+				bpy.path.abspath(self.output_dir),
+				self.geo_class,
+				int(self.uv_count),
+				self.keep_cn6,
+			)
+		except Exception as exc:
+			self.report({'ERROR'}, str(exc))
+			print("CSC FGX/GEO export failed: %s" % exc)
+			return {'CANCELLED'}
+
+		print("CSC FGX/GEO export OK: %s" % base_name)
+		print("  Meshes: %s | %d verts, %d tris" % (", ".join(mesh["name"] for mesh in mesh_summaries), vertex_count, triangle_count))
+		for fix in fixes:
+			print("  %s" % fix)
+
+		self.report(
+			{'INFO'},
+			"Exported %s.fgx/.geo to Geometries (%d verts, %d tris)" % (base_name, vertex_count, triangle_count),
+		)
+		return {'FINISHED'}
+
+	def invoke(self, context, event):
+		return context.window_manager.invoke_props_dialog(self, width=520)
+
 def menu_func(self, context):
 	self.layout.operator(export_cn6.bl_idname, text="CivNexus6 (.cn6)")
+	self.layout.operator(export_csc_fgx_geo.bl_idname, text="CSC FGX/GEO via CN6 (.fgx/.geo)")
 
 def register():
 	from bpy.utils import register_class
 	register_class(export_cn6)
+	register_class(export_csc_fgx_geo)
 	bpy.types.TOPBAR_MT_file_export.append(menu_func)
 
 def unregister():
 	from bpy.utils import unregister_class
-	unregister_class(export_cn6)
 	bpy.types.TOPBAR_MT_file_export.remove(menu_func)
+	unregister_class(export_csc_fgx_geo)
+	unregister_class(export_cn6)
 
 if __name__ == "__main__":
 	register()

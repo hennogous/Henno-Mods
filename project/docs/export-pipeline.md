@@ -147,7 +147,7 @@ For quick Blender previews, temporary camera and light objects are fine, but rem
 |-----------|---------|-------------|
 | `-BlendFile` | (required) | Path to source .blend file |
 | `-GeoClass` | `LandmarkModel` | Geometry class for .geo |
-| `-VertexFormat` | `2` | 0=1UV, 1=2UV, **2=3UV No Bone Bindings** |
+| `-UVCount` | `2` | Number of exported UV maps: `1`, `2`, or `3` |
 | `-OutputDir` | CSC mod Geometries folder | Override output path |
 | `-AddToAsset` | (switch) | Inject geometry into matching .ast file |
 | `-Asset` | (auto from filename) | Override asset name for -AddToAsset |
@@ -309,13 +309,13 @@ The XLP class is typically `TileBase` for buildings. See the civ6-modding skill'
 
 ## CN6ToFGX Settings Reference
 
-| VertexFormat | Channels | Use Case |
+| UV maps | Channels | Use Case |
 |:---:|----------|----------|
-| 0 | Position, Normal, Tangent, Binormal, UV0 | 1 UV map only |
-| 1 | + UV1 | 2 UV maps |
-| **2** | + UV1 + UV2, No Bone Bindings | **Standard for buildings (3 UVs)** |
+| 1 | Position, Normal, Tangent, Binormal, UV0 | 1 UV map only |
+| **2** | + UV1 | **Standard export: 2 UV maps** |
+| 3 | + UV1 + UV2, No Bone Bindings | Assets that specifically use a third UV map |
 
-Always use **VertexFormat=2** for buildings. The "No Bone Bindings" is correct — building bones are hierarchy-only, not vertex-weighted in the FGX sense.
+Use `-UVCount 2` unless the asset deliberately uses a third UV map. The 3-UV template has no bone bindings; building bones are hierarchy-only, not vertex-weighted in the FGX sense.
 
 ## GeoClass Reference
 

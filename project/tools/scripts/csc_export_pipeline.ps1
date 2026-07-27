@@ -9,8 +9,8 @@
 .PARAMETER GeoClass
     Geometry class (default: LandmarkModel)
 
-.PARAMETER VertexFormat
-    0=1UV, 1=2UV, 2=3UV No Bone Bindings (default: 2)
+.PARAMETER UVCount
+    Number of UV maps in the exported FGX: 1, 2, or 3 (default: 2)
 
 .PARAMETER OutputDir
     Override output directory (default: mod Geometries folder)
@@ -40,7 +40,8 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$BlendFile,
     [string]$GeoClass = "LandmarkModel",
-    [int]$VertexFormat = 2,
+    [ValidateSet(1, 2, 3)]
+    [int]$UVCount = 2,
     [string]$OutputDir = "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\Geometries",
     [switch]$AddToAsset,
     [string]$Asset = ""
@@ -51,6 +52,7 @@ $CN6ToFGX = "C:\Users\Shadow\.openclaw\workspace\csc\cn6libs\CN6ToFGX.exe"
 $CN6LibsDir = "C:\Users\Shadow\.openclaw\workspace\csc\cn6libs"
 $TempDir = "C:\Users\Shadow\.openclaw\workspace\test_pipeline"
 $BaseName = [System.IO.Path]::GetFileNameWithoutExtension($BlendFile)
+$VertexFormat = $UVCount - 1
 
 New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
@@ -141,6 +143,7 @@ Write-Host "  CN6: OK ($nVerts verts)" -ForegroundColor Green
 # === Step 2: CN6 → FGX ===
 Write-Host "`n[2/4] CN6 → FGX..." -ForegroundColor Yellow
 
+Write-Host "  UV maps: $UVCount" -ForegroundColor Cyan
 $fgxOut = Join-Path $TempDir "$BaseName.fgx"
 if (Test-Path $fgxOut) { Remove-Item $fgxOut }
 

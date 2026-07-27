@@ -30,7 +30,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Props"/>
+									<m_ObjectName text="CSC_ALL_Props_E"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -71,7 +71,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Props"/>
+									<m_ObjectName text=""/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -194,7 +194,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Props"/>
+									<m_ObjectName text=""/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>

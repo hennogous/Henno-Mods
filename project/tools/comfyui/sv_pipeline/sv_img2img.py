@@ -142,12 +142,13 @@ import numpy as np
 
 
 def make_generation_mask(input_path: str, size: int = WORKFLOW_SIZE) -> Image.Image | None:
-    """Extract the input's alpha channel and scale to workflow size.
+    """Extract the input's alpha channel using the same framing as upload.
 
     Returns None if the input is fully opaque — in that case the generated
     output is left fully opaque too (nothing to crop).
     """
     src = Image.open(input_path).convert("RGBA")
+    src = resize_to_workflow(src, size)
     alpha = src.getchannel("A")
     if alpha.getextrema() == (255, 255):
         print("  Input has no transparency; output will remain opaque.")

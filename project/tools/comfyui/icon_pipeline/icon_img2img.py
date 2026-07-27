@@ -6,25 +6,31 @@ Post-processing: rembg background removal + outline/detail passes.
 """
 import argparse
 import json, urllib.request, urllib.parse, time, os, uuid, io
+import tempfile
 import numpy as np
 from PIL import Image
 
 from icon_utils import scale_like_comfy_center
 
 COMFYUI_URL = "http://127.0.0.1:8188"
-OUTPUT_DIR = os.environ.get(
-    "CSC_COMFYUI_OUTPUT_DIR",
-    r"C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\ComfyUI output"
-)
+OUTPUT_DIR = None
 RUN_ID = time.strftime("%Y%m%d_%H%M%S") + "_" + uuid.uuid4().hex[:8]
+
+
+def configure_output_dir(input_path):
+    """Write generated files beside the source icon."""
+    global OUTPUT_DIR
+    OUTPUT_DIR = os.path.dirname(os.path.abspath(input_path))
+
+
 def ensure_output_dir():
     """Create the configured output directory immediately before each local write."""
+    if OUTPUT_DIR is None:
+        raise RuntimeError("Output directory has not been configured.")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     if not os.path.isdir(OUTPUT_DIR):
         raise FileNotFoundError(f"Output directory does not exist and could not be created: {OUTPUT_DIR}")
 
-
-ensure_output_dir()
 
 DENOISE     = 0.4
 # Higher = more freedom/style drift from input; lower = preserves source image more tightly. (0-1; 0.35-0.55 useful, quite sensitive)
@@ -61,10 +67,6 @@ CANNY_DILATE_SIZE = 2
 
 MASK_ALPHA_CUTOFF = 8
 # Higher = removes more faint transparent residue; lower = preserves softer alpha edges. (0-255; 4-24 useful, sensitive)
-
-KEEP_RAW = os.environ.get("CSC_ICON_KEEP_RAW", "1").strip().lower() in {"1", "true", "yes", "on", "y"}
-# Keep the alpha-masked _Raw image beside the final output. Default on for
-# backwards compatibility with icon_postprocess.py's raw-file batch mode.
 
 PROMPT = (
     "civ 6 icon, cartoon isometric, bold black outlines, outlined illustration, "
@@ -120,7 +122,7 @@ def upload_image(filepath, name_override=None):
     return result["name"]
 
 
-def prepare_canny(input_path, low=CANNY_LOW, high=CANNY_HIGH):
+def prepare_canny(input_path, temp_dir, low=CANNY_LOW, high=CANNY_HIGH):
     """Extract alpha-aware Canny edges at the exact 1024x1024 workflow size."""
     import cv2
     pil = Image.open(input_path).convert("RGBA")
@@ -145,11 +147,10 @@ def prepare_canny(input_path, low=CANNY_LOW, high=CANNY_HIGH):
     edges = cv2.dilate(edges, kernel, iterations=1)
     # Convert to 3-channel RGB (CN expects colour image)
     edges_rgb = cv2.cvtColor(edges, cv2.COLOR_GRAY2RGB)
-    canny_path = os.path.join(OUTPUT_DIR, "canny_input.png")
-    ensure_output_dir()
+    canny_path = os.path.join(temp_dir, f"canny_input_{RUN_ID}.png")
     if not cv2.imwrite(canny_path, edges_rgb):
         raise IOError(f"Failed to write Canny image: {canny_path}")
-    print(f"  Canny saved: {canny_path}")
+    print("  Canny prepared.")
     return canny_path
 
 
@@ -371,57 +372,52 @@ def summarize_history_failure(history):
 def main():
     parser = argparse.ArgumentParser(description="Generate a Civ 6 icon from a source image via ComfyUI img2img.")
     parser.add_argument("source_image", help="Source/reference image to upload to ComfyUI.")
-    parser.add_argument("--keep-raw", dest="keep_raw", action=argparse.BooleanOptionalAction, default=None,
-                        help="Keep the alpha-masked _Raw intermediate. Default/env: on.")
     args = parser.parse_args()
 
     import icon_postprocess as pp
 
-    keep_raw = KEEP_RAW if args.keep_raw is None else args.keep_raw
     input_abs = os.path.abspath(args.source_image)
     if not os.path.exists(input_abs):
         raise FileNotFoundError(input_abs)
+    configure_output_dir(input_abs)
     print(f"Input image: {input_abs}")
+    print(f"Output directory: {OUTPUT_DIR}")
     print(f"Run id: {RUN_ID}")
     generation_mask = make_generation_mask(input_abs)
     if generation_mask is not None:
         print("Input transparency detected; raw LoRA output will be masked to the input silhouette.")
 
-    print("Preparing Canny edges...")
-    canny_path = prepare_canny(input_abs)
+    with tempfile.TemporaryDirectory(prefix=f"csc_icon_{RUN_ID}_") as temp_dir:
+        print("Preparing Canny edges...")
+        canny_path = prepare_canny(input_abs, temp_dir)
 
-    print("Uploading images...")
-    image_name = upload_image(input_abs)
-    canny_name = upload_image(canny_path, name_override=f"canny_input_{RUN_ID}.png")
+        print("Uploading images...")
+        image_name = upload_image(input_abs)
+        canny_name = upload_image(canny_path, name_override=f"canny_input_{RUN_ID}.png")
 
-    results = []
-    for i, seed in enumerate(SEEDS):
-        print(f"\nGenerating variant {i+1}/{len(SEEDS)} (seed={seed})...")
-        workflow = build_workflow(image_name, canny_name, seed, run_id=f"{RUN_ID}_{i+1}")
-        prompt_id = queue_prompt(workflow)
-        history = wait_for_completion(prompt_id)
-        img_data, filename = get_output_image(history)
-        if not img_data:
-            print(f"  {summarize_history_failure(history)}")
-            print("  Retrying once with a cache-busting save prefix...")
-            workflow = build_workflow(image_name, canny_name, seed, run_id=f"{RUN_ID}_{i+1}_retry")
+        results = []
+        for i, seed in enumerate(SEEDS):
+            print(f"\nGenerating variant {i+1}/{len(SEEDS)} (seed={seed})...")
+            workflow = build_workflow(image_name, canny_name, seed, run_id=f"{RUN_ID}_{i+1}")
             prompt_id = queue_prompt(workflow)
             history = wait_for_completion(prompt_id)
             img_data, filename = get_output_image(history)
             if not img_data:
-                raise RuntimeError(summarize_history_failure(history))
-        if img_data:
+                print(f"  {summarize_history_failure(history)}")
+                print("  Retrying once with a cache-busting save prefix...")
+                workflow = build_workflow(image_name, canny_name, seed, run_id=f"{RUN_ID}_{i+1}_retry")
+                prompt_id = queue_prompt(workflow)
+                history = wait_for_completion(prompt_id)
+                img_data, filename = get_output_image(history)
+                if not img_data:
+                    raise RuntimeError(summarize_history_failure(history))
+
             ensure_output_dir()
-            raw_path = os.path.join(OUTPUT_DIR, output_filename_for_input(input_abs, i+1, raw=True))
+            raw_path = os.path.join(temp_dir, output_filename_for_input(input_abs, i+1, raw=True))
             raw_img = apply_alpha_mask(img_data, generation_mask)
             raw_img.save(raw_path)
             out_path = os.path.join(OUTPUT_DIR, output_filename_for_input(input_abs, i+1))
             pp.process_icon(raw_path, out_path, canny_path)
-            if not keep_raw:
-                try:
-                    os.remove(raw_path)
-                except OSError as exc:
-                    print(f"  Could not remove raw intermediate {raw_path}: {exc}")
             results.append(out_path)
 
     print(f"\nDone! {len(results)} variants.")

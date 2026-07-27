@@ -4,13 +4,17 @@ Operational notes for CSC's ComfyUI-assisted building/resource icon scripts.
 
 ## Output paths
 
-`project/tools/comfyui/icon_img2img.py` and `icon_postprocess.py` default to:
+`project/tools/comfyui/icon_img2img.py` writes final outputs beside the input
+image. Its generated Canny guide and raw pre-postprocess image are temporary
+files and are cleaned up after the run.
+
+`project/tools/comfyui/icon_postprocess.py` defaults to:
 
 ```text
 C:\Users\Shadow\Desktop\Working Files\Icons\Buildings\ComfyUI output
 ```
 
-Override with:
+Override `icon_postprocess.py` with:
 
 ```text
 CSC_COMFYUI_OUTPUT_DIR
@@ -52,7 +56,7 @@ CSC_ICON_SAM_CHECKPOINT
 
 ComfyUI can report a fully cached successful run with an empty `outputs` block when the workflow is identical. `icon_img2img.py` avoids this by making `SaveImage.filename_prefix` unique per run and retrying once if history has no images.
 
-Input uploads use a unique run ID for the main source image to avoid stale/ambiguous uploads. The Canny guide is intentionally always written/uploaded as `canny_input.png` so the output folder does not accumulate one Canny file per run.
+Input uploads use a unique run ID for the main source image to avoid stale/ambiguous uploads. The Canny guide is written to a temporary file and uploaded as a run-specific `canny_input_*.png`, so source folders do not accumulate Canny files.
 
 ## Transparent input semantics
 

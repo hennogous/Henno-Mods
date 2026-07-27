@@ -155,6 +155,15 @@ stages:
       YIELD_GOLD: -2
     material_input:
       source: adjacent_improved_base_material
+      scope:
+        adjacency: adjacent
+        ownership: same_player
+        requires_resource_tag: CLASS_CSC_TAILORS_BASE
+        requires_improvement: true
+        replacement_policy: not_applicable
+      implementation_model:
+        standard_game: core_file_grants_improvement_tier
+        monopolies_and_corporations: conditional_support_file_adds_tier_delta
       building_receives:
         YIELD_CULTURE:
           improvement: 1
@@ -168,6 +177,11 @@ stages:
       - id: lighthouse
         destination_building: BUILDING_LIGHTHOUSE
         destination_district: DISTRICT_HARBOR
+        scope:
+          adjacency: adjacent
+          ownership: same_player
+          destination_requires_functioning: true
+          building_replacements: direct_one_level
         destination_receives: {YIELD_PRODUCTION: 1}
         source_receives: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
     local_exchange:
@@ -179,15 +193,41 @@ stages:
       downstream_receives: {YIELD_CULTURE: 1}
     service:
       key: sailmaker
+      hidden_building: BUILDING_CSC_TAILORS_SAILMAKER
       unlock_civic: CIVIC_NAVAL_TRADITION
-      destination: adjacent_harbor_with_lighthouse
-      source_requirements:
-        - textile_workshop
-        - adjacent_improved_base_material
+      grant:
+        destination_district: DISTRICT_HARBOR
+        destination_building: BUILDING_LIGHTHOUSE
+        scope:
+          adjacency: adjacent
+          ownership: same_player
+          destination_requires_functioning: true
+          building_replacements: direct_one_level
+        cardinality: one_persistent_service_per_eligible_destination
+        source_requires:
+          - textile_workshop
+          - adjacent_improved_base_material
       effects:
-        naval_unit_production_percent: 20
-        naval_unit_era_max: ERA_RENAISSANCE
+        naval_unit_production:
+          percent: 20
+          promotion_classes:
+            - PROMOTION_CLASS_NAVAL_MELEE
+            - PROMOTION_CLASS_NAVAL_RANGED
+            - PROMOTION_CLASS_NAVAL_RAIDER
+          eras:
+            - ERA_ANCIENT
+            - ERA_CLASSICAL
+            - ERA_MEDIEVAL
+            - ERA_RENAISSANCE
         great_person_points: {GREAT_PERSON_CLASS_ADMIRAL: 1}
+      player_facing_text:
+        - target: BUILDING_LIGHTHOUSE
+          include_direct_replacements: true
+          operation: append
+          loc_key: LOC_CSC_TAILORS_SAILMAKER_EFFECT
+        - target: CIVIC_NAVAL_TRADITION
+          operation: append_or_set_when_empty
+          loc_key: LOC_CSC_TAILORS_SAILMAKER_CIVIC
 
   stage_3:
     key: tailor

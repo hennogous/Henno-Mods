@@ -637,6 +637,26 @@
         ]
       },
       {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_TAILORS_GOLD",
+        "properties": { "LoadOrder": "101" },
+        "files": [ "Data/CSC_Q_TAILORS_GOLD.sql" ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_TAILORS_MC_MODE",
+        "properties": { "LoadOrder": "100" },
+        "criteria": [ "Monopolies_Mode" ],
+        "files": [ "Data/CSC_Q_TAILORS_MC_MODE.sql" ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_TAILORS_MC_MODE_GOLD",
+        "properties": { "LoadOrder": "101" },
+        "criteria": [ "Monopolies_Mode" ],
+        "files": [ "Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql" ]
+      },
+      {
         "type": "DoNothing",
         "id": "CSC_Q_APOTHECARIES",
         "properties": {

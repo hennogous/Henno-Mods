@@ -16,7 +16,7 @@ Working docs, reference material, and tools that don't belong in the mod source 
 
 | File | What it is |
 |------|-----------|
-| `QUARTER-PLAYBOOK.md` | 8-phase checklist for implementing a new Quarter — use this when starting Tailors' etc. |
+| `archive/QUARTER-PLAYBOOK-2026-06-26-outdated.md` | Archived, outdated 8-phase Quarter checklist retained for historical reference. Use `specs/<quarter>/` implementation contracts for current Quarter work. |
 | `BUILDING-SHAPES.md` | CSC art language — the Marble Rule, roof types, proportions, exaggeration guide |
 | `building_schema.md` | JSON spec for the procedural building generator (volumes, features, meta) |
 | `building-geometry-catalogue.md` | Vertex/tri/island counts for all vanilla Civ 6 district buildings (deep mesh analysis) |

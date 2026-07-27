@@ -2,12 +2,12 @@
 #
 # This file answers: "For a selected phase, what gameplay work is allowed,
 # what should be produced, and how do we know it is done?"
-# Quarter design values live in project/specs/tailors-design.yaml.
+# Quarter design values live in project/specs/tailors/tailors-design.yaml.
 
 schema_version: 1
 schema: csc-quarter-gameplay-implementation
 status: draft_standard
-design_spec: project/specs/tailors-design.yaml
+design_spec: project/specs/tailors/tailors-design.yaml
 
 metadata:
   quarter_key: TAILORS
@@ -22,6 +22,7 @@ metadata:
 status_legend:
   designed: Present in design spec only.
   scaffolded: Placeholder or non-final support exists.
+  partial: Some contract outputs exist, but one or more required slices are absent.
   implemented: SQL/data exists and parses.
   tested: Verified in game or with FireTuner/runtime DB.
   parked: Explicitly out of CSC scope.
@@ -68,9 +69,9 @@ phase_contracts:
     objective: Align the public design, Notion plan, and implementation intent before coding.
     allowed_files:
       - docs/content/quarters/tailors.md
-      - project/specs/tailors-design.yaml
-      - project/specs/tailors-gameplay.yaml
-      - project/specs/tailors-art.yaml
+      - project/specs/tailors/tailors-design.yaml
+      - project/specs/tailors/tailors-gameplay.yaml
+      - project/specs/tailors/tailors-art.yaml
       - TaxesPolitics/docs/starter-docs.md
     forbidden_files:
       - Civ Supply Chains/Data/CSC_Q_TAILORS.sql
@@ -152,13 +153,17 @@ phase_contracts:
         - Placement tooltip and adjacency preview show material, customer, and river bonuses.
 
   phase_3_textile_workshop:
-    status: designed
+    status: partial
     objective: Implement the stage-2 intermediary goods building and Sailmaker service.
     allowed_files:
       - Civ Supply Chains/Data/CSC_Q_TAILORS.sql
+      - Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql
       - Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql
+      - Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql
       - project/localization/**
+      - Civ Supply Chains/Text/CSC_QUARTERS_PEDIA.sql
       - Civ Supply Chains/Icons/CSC_TAILORS_ICONS.sql
+      - Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua
       - project/modbuddy/CivSupplyChains.actions.json
     allowed_with_art_phase:
       - Civ Supply Chains/ArtDefs/CSC_Buildings.artdef
@@ -169,6 +174,12 @@ phase_contracts:
     forbidden_files:
       - Civ Supply Chains/Data/CSC_Q_BAKERS*.sql
     produce:
+      vertical_slice:
+        reference: BUILDING_CSC_BAKERS_WIND_MILL
+        standard: Textile Workshop must be complete across gameplay, optional-mode support, player-facing discovery, dynamic art, project wiring, and runtime validation before Phase 3 is marked implemented.
+        intentional_non_parity:
+          - Textile Workshop is a single stage-2 building; it does not need Water Mill/Wind Mill terrain variants, river-access flags, or mutually-exclusive building rules.
+          - Sailmaker is a one-per-Harbor persistent service; it does not need the Storekeeper's stacking growth-effect notifications.
       building:
         type: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
         prereq_district: DISTRICT_CSC_TAILORS_QUARTER
@@ -179,34 +190,162 @@ phase_contracts:
         - id: base_material_to_textile_workshop
           source: adjacent_improved_base_material
           destination: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+          scope:
+            adjacency: adjacent
+            ownership: same_player
+            source_requires_resource_tag: CLASS_CSC_TAILORS_BASE
+            source_requires_improvement: true
           destination_receives: {YIELD_CULTURE: 1}
         - id: textile_workshop_pays_base_material
           source: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
           destination: adjacent_base_material_improvement
+          scope:
+            adjacency: adjacent
+            ownership: same_player
+            destination_requires_resource_tag: CLASS_CSC_TAILORS_BASE
+            destination_requires_improvement: true
           destination_receives: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
         - id: lighthouse_customer
           source: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
           destination: BUILDING_LIGHTHOUSE
+          destination_district: DISTRICT_HARBOR
+          scope:
+            adjacency: adjacent
+            ownership: same_player
+            destination_requires_functioning: true
+            building_replacements: direct_one_level
           destination_receives: {YIELD_PRODUCTION: 1}
           source_receives: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+      gold_economy:
+        required: true
+        file: Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql
+        action:
+          id: CSC_Q_TAILORS_GOLD
+          type: UpdateDatabase
+          load_order: 101
+        owns:
+          - YIELD_GOLD to adjacent Base Materials improvements.
+          - YIELD_GOLD return from adjacent Lighthouses to the Textile Workshop.
+        rule: The core Tailors file must contain no Gold-yield modifier/action rows. Keep the Gold layer independently swappable by Taxes & Politics.
+      monopolies_and_corporations:
+        required: true
+        core_file: Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql
+        gold_file: Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql
+        core_action:
+          id: CSC_Q_TAILORS_MC_MODE
+          type: UpdateDatabase
+          criteria: [Monopolies_Mode]
+        gold_action:
+          id: CSC_Q_TAILORS_MC_MODE_GOLD
+          type: UpdateDatabase
+          criteria: [Monopolies_Mode]
+        material_tiers:
+          source_resource_tag: CLASS_CSC_TAILORS_BASE
+          industry:
+            total_to_textile_workshop: {YIELD_CULTURE: 2}
+            total_to_material_owner: {YIELD_PRODUCTION: 2, YIELD_GOLD: 2}
+            increment_over_standard: {YIELD_CULTURE: 1, YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+          corporation:
+            total_to_textile_workshop: {YIELD_CULTURE: 3}
+            total_to_material_owner: {YIELD_PRODUCTION: 3, YIELD_GOLD: 3}
+            increment_over_standard: {YIELD_CULTURE: 2, YIELD_PRODUCTION: 2, YIELD_GOLD: 2}
+        rule: Core SQL owns the standard improvement tier only; M&C Culture/Production deltas belong in the core M&C file and M&C Gold deltas belong in the M&C Gold file. All M&C deltas must be absent unless Monopolies_Mode is active.
       service:
         key: sailmaker
         hidden_building: BUILDING_CSC_TAILORS_SAILMAKER
         unlock_civic: CIVIC_NAVAL_TRADITION
-        destination: adjacent_harbor_with_lighthouse
+        hidden_building_row:
+          prereq_district: DISTRICT_HARBOR
+          must_purchase: true
+          xp2_pillage: 0
+        grant:
+          destination_district: DISTRICT_HARBOR
+          destination_building: BUILDING_LIGHTHOUSE
+          scope:
+            adjacency: adjacent
+            ownership: same_player
+            destination_requires_functioning: true
+            building_replacements: direct_one_level
+          source_requires:
+            - BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+            - adjacent_improved_base_material
+          cardinality: one_persistent_service_per_eligible_destination
         effects:
-          naval_unit_production_percent: 20
+          naval_unit_production:
+            percent: 20
+            promotion_classes:
+              - PROMOTION_CLASS_NAVAL_MELEE
+              - PROMOTION_CLASS_NAVAL_RANGED
+              - PROMOTION_CLASS_NAVAL_RAIDER
+            eras:
+              - ERA_ANCIENT
+              - ERA_CLASSICAL
+              - ERA_MEDIEVAL
+              - ERA_RENAISSANCE
           great_person_points: {GREAT_PERSON_CLASS_ADMIRAL: 1}
+        ui:
+          grant_preview_loc: LOC_BUILDING_CSC_TAILORS_SAILMAKER_NAME
+          ability_attachment:
+            required: true
+            source_modifier: MOD_CSC_TAILORS_SAILMAKER_SERVICE_ATTACH_HARBOR
+            ability_icon: ICON_BUILDING_CSC_TAILORS_SAILMAKER
+            ability_icon_target: BUILDING_CSC_TAILORS_SAILMAKER
+          civilopedia:
+            required_pages:
+              - BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+              - BUILDING_LIGHTHOUSE
+              - BUILDING_CSC_TAILORS_SAILMAKER
+            required_chapters:
+              - Supply Chains
+              - Historical Context
+      player_facing_text:
+        - target_table: Buildings
+          target: BUILDING_LIGHTHOUSE
+          include_direct_replacements: true
+          operation: append
+          loc_key: LOC_CSC_TAILORS_SAILMAKER_EFFECT
+        - target_table: Civics
+          target: CIVIC_NAVAL_TRADITION
+          operation: append_or_set_when_empty
+          loc_key: LOC_CSC_TAILORS_SAILMAKER_CIVIC
+      art_bridge:
+        required: true
+        source: BUILDING_LIGHTHOUSE
+        destination: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+        scope:
+          adjacency: adjacent
+          ownership: same_player
+          destination_requires_functioning: true
+          building_replacements: direct_one_level
+        source_property: CSC_TAILORS_STAGE_2_LIGHTHOUSE
+        art_property: CSC_TAILORS_STAGE_2_LIGHTHOUSE_ART
+        implementation:
+          gameplay: A Lighthouse or direct replacement writes the source property to the adjacent Textile Workshop city when the customer transaction is active.
+          bridge: CSC_ArtProperties.lua maps source_property to art_property.
+          artdef: The Textile Workshop landmark SelectionRules consume art_property to reveal its active Lighthouse-customer state.
+        separation_rule: The art-property gate follows the customer transaction only; it must not depend on Naval Tradition or Sailmaker eligibility.
     verify:
       static:
         - Building type, row, prereqs, text, and icons exist.
-        - M&C industry/corporation scaling is isolated to M&C support file.
-        - Service grant chain has no null CSC_AbilityAttachModifiers rows.
+        - Core SQL grants only the standard Culture/Production improvement tier and contains no Gold-yield or M&C-only modifier/action rows.
+        - Gold support file exists, is wired as CSC_Q_TAILORS_GOLD at load order 101, and contains all standard Gold-yield rows for Phase 3.
+        - M&C core and Gold support files exist, are wired under Monopolies_Mode, and apply the declared Industry/Corporation deltas exactly once.
+        - Lighthouse customer and service requirements enforce same-player adjacency, a functioning Lighthouse, and direct one-level Lighthouse replacements in every requirement, attachment, action modifier, text patch, and art bridge.
+        - Sailmaker production modifiers cover exactly the declared promotion classes and eras.
+        - Sailmaker grant uses a one-per-destination persistent hidden-building grant, exposes a ModifierStrings preview, and registers a non-null CSC_AbilityAttachModifiers row for Harbor-side discovery.
+        - Lighthouse text appends its service note for the base building and direct replacements; Naval Tradition appends its note or initializes an empty Description without discarding a pre-existing one.
+        - Textile Workshop, Lighthouse, and Sailmaker Supply Chains and Historical Context Civilopedia chapters exist and are registered through CSC_QUARTERS_PEDIA.
+        - Lighthouse-to-Workshop gameplay property, CSC_ArtProperties Lua mapping, GamePropertyRanges/ArtDef property definition, and active-customer SelectionRule use the exact declared property names.
       runtime:
         - Textile Workshop appears only after Construction.
-        - Base material Culture input works.
-        - Lighthouse exchange works.
-        - Sailmaker grants once, at the right destination, after Naval Tradition.
+        - Standard improved Base Materials grant the declared Culture input and Production/Gold return only while adjacent and owned by the Textile Workshop player.
+        - Gold returns disappear when CSC_Q_TAILORS_GOLD is excluded and otherwise match the declared standard values.
+        - Industry and Corporation Base Materials grant the declared total tier values only when Monopolies_Mode is active.
+        - Lighthouse exchange works in both directions, including a direct Lighthouse replacement, and stops while the destination Lighthouse is pillaged.
+        - Each eligible adjacent Harbor receives one persistent Sailmaker after Naval Tradition; ineligible, foreign, non-adjacent, or no-Lighthouse Harbors receive none.
+        - Sailmaker grants exactly +20% Production to Ancient through Renaissance naval melee, ranged, and raider units, and does not affect units outside that set.
+        - Harbor-side Sailmaker ability feedback appears when the service is eligible, and the Sailmaker Civilopedia links resolve from the Workshop/Lighthouse service text.
+        - The Textile Workshop active-customer art state appears for an adjacent functioning Lighthouse or direct replacement, disappears when that customer transaction is unavailable, and remains independent of Naval Tradition/Sailmaker state.
 
   phase_4_tailor:
     status: designed

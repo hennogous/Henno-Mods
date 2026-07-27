@@ -1538,9 +1538,9 @@
 							<m_ParamName text="DistrictGenerator"/>
 						</Element>
 						<Element class="AssetObjects..RGBValue">
-							<m_r>183.000000</m_r>
-							<m_g>120.000000</m_g>
-							<m_b>206.000000</m_b>
+							<m_r>173.000000</m_r>
+							<m_g>78.000000</m_g>
+							<m_b>208.000000</m_b>
 							<m_ParamName text="TintColor"/>
 						</Element>
 						<Element class="AssetObjects..BoolValue">

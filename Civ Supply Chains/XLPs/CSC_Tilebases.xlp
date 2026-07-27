@@ -122,10 +122,6 @@
 			<m_ObjectName text="CSC_BAKERS_Classical_Base_08"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_Well"/>
-			<m_ObjectName text="CSC_BAKERS_Well"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_BAKERS_Wind_Mill_Tower"/>
 			<m_ObjectName text="CSC_BAKERS_Wind_Mill_Tower"/>
 		</Element>
@@ -298,6 +294,10 @@
 			<m_ObjectName text="CSC_TAILORS_Textile_Workshop"/>
 		</Element>
 		<Element>
+			<m_EntryID text="CSC_TAILORS_Textile_Workshop_2"/>
+			<m_ObjectName text="CSC_TAILORS_Textile_Workshop_2"/>
+		</Element>
+		<Element>
 			<m_EntryID text="CSC_TAILORS_Tailor"/>
 			<m_ObjectName text="CSC_TAILORS_Tailor"/>
 		</Element>
@@ -306,16 +306,36 @@
 			<m_ObjectName text="CSC_TAILORS_Fashion_House"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_TAILORS_Well"/>
-			<m_ObjectName text="CSC_TAILORS_Well"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_TAILORS_SpinningWheel"/>
 			<m_ObjectName text="CSC_TAILORS_SpinningWheel"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_TAILORS_SpinningWheel2"/>
-			<m_ObjectName text="CSC_TAILORS_SpinningWheel2"/>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_02"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_02"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Oven_v2"/>
+			<m_ObjectName text="CSC_BAKERS_Oven_v2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Workbench_M"/>
+			<m_ObjectName text="CSC_ALL_Workbench_M"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Basket"/>
+			<m_ObjectName text="CSC_TAILORS_Basket"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_is_Well"/>
+			<m_ObjectName text="CSC_ALL_is_Well"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SailRoll"/>
+			<m_ObjectName text="CSC_TAILORS_SailRoll"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SailRack"/>
+			<m_ObjectName text="CSC_TAILORS_SailRack"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
@@ -329,4 +349,3 @@
 		<Element>STADIA</Element>
 	</m_AllowedPlatforms>
 </AssetObjects..XLP>
-

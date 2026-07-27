@@ -4,7 +4,7 @@
  *
  * Intended CSC workflow:
  *   1. Create or generate the artistic *_B.png atlas.
- *   2. Run this script to derive *_AO.png, *_N.png, *_G.png, *_M.png.
+ *   2. Run this script to derive *_N.png, *_G.png, *_M.png.
  *   3. Reload the maps in Blender/Asset Editor.
  *
  * This intentionally does not use Blender for pixel writing. Blender is better
@@ -24,9 +24,10 @@ Usage:
 Options:
   --asset-name <name>       Asset prefix for output files. Default: basename with _B removed.
   --out-dir <dir>           Output directory. Default: same folder as --base.
-  --size <px>               Square output size. Default: 256.
+  --size <px>               Square output size. Default: source _B dimensions.
   --preset <name>           Region rules: auto, csc-textile-prop. Default: auto.
-  --normal-strength <num>   Multiplier for normal map relief. Default: 1.
+  --normal-strength <num>   Multiplier for normal map relief. Default: 2.25.
+  --ao                      Also write an ambient occlusion map.
   --ao-strength <num>       Multiplier for AO seam/recess contrast. Default: 1.
   --gloss-bias <num>        Additive gloss adjustment in -1..1. Default: 0.
   --copy-base               Also write a resized <Asset>_B.png beside derived maps.
@@ -47,9 +48,9 @@ Notes:
 
 function parseArgs(argv) {
   const args = {
-    size: 256,
     preset: "auto",
-    normalStrength: 1,
+    normalStrength: 2.25,
+    writeAo: false,
     aoStrength: 1,
     glossBias: 0,
     copyBase: false,
@@ -85,6 +86,9 @@ function parseArgs(argv) {
       case "--normal-strength":
         args.normalStrength = Number(readValue());
         break;
+      case "--ao":
+        args.writeAo = true;
+        break;
       case "--ao-strength":
         args.aoStrength = Number(readValue());
         break;
@@ -114,7 +118,7 @@ function parseArgs(argv) {
 
   if (args.help) return args;
   if (!args.base) throw new Error("Missing required --base <Asset_B.png>");
-  if (!Number.isInteger(args.size) || args.size < 16) {
+  if (args.size !== undefined && (!Number.isInteger(args.size) || args.size < 16)) {
     throw new Error("--size must be an integer >= 16");
   }
   if (!["auto", "csc-textile-prop"].includes(args.preset)) {
@@ -190,18 +194,18 @@ function makeRegionClassifier(preset, width, height, data) {
 function materialSettings(region) {
   switch (region) {
     case "wood":
-      return { normal: 0.75, aoFloor: 0.60, aoCeil: 0.96, gloss: 0.24 };
+      return { normal: 1.05, aoFloor: 0.60, aoCeil: 0.96, gloss: 0.24 };
     case "wool":
-      return { normal: 1.05, aoFloor: 0.74, aoCeil: 0.99, gloss: 0.08 };
+      return { normal: 1.30, aoFloor: 0.74, aoCeil: 0.99, gloss: 0.08 };
     case "thread":
-      return { normal: 0.85, aoFloor: 0.66, aoCeil: 0.96, gloss: 0.13 };
+      return { normal: 1.15, aoFloor: 0.66, aoCeil: 0.96, gloss: 0.13 };
     case "endgrain":
-      return { normal: 0.70, aoFloor: 0.60, aoCeil: 0.94, gloss: 0.20 };
+      return { normal: 1.00, aoFloor: 0.60, aoCeil: 0.94, gloss: 0.20 };
     case "dark":
-      return { normal: 0.45, aoFloor: 0.50, aoCeil: 0.90, gloss: 0.15 };
+      return { normal: 0.70, aoFloor: 0.50, aoCeil: 0.90, gloss: 0.15 };
     case "neutral":
     default:
-      return { normal: 0.55, aoFloor: 0.62, aoCeil: 0.95, gloss: 0.18 };
+      return { normal: 0.85, aoFloor: 0.62, aoCeil: 0.95, gloss: 0.18 };
   }
 }
 
@@ -282,11 +286,11 @@ async function main() {
 
   await fs.mkdir(outDir, { recursive: true });
 
-  const { data, info } = await sharp(basePath)
-    .resize(args.size, args.size, { fit: "fill" })
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
+  let baseImage = sharp(basePath);
+  if (args.size !== undefined) {
+    baseImage = baseImage.resize(args.size, args.size, { fit: "fill" });
+  }
+  const { data, info } = await baseImage.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
   const width = info.width;
   const height = info.height;
@@ -321,6 +325,17 @@ async function main() {
     const cy = Math.max(0, Math.min(height - 1, y));
     return heights[cy * width + cx];
   };
+  const heightGradient = (x, y) => {
+    const dx =
+      (heightAt(x + 1, y - 1) + 2 * heightAt(x + 1, y) + heightAt(x + 1, y + 1) -
+        (heightAt(x - 1, y - 1) + 2 * heightAt(x - 1, y) + heightAt(x - 1, y + 1))) *
+      0.25;
+    const dy =
+      (heightAt(x - 1, y + 1) + 2 * heightAt(x, y + 1) + heightAt(x + 1, y + 1) -
+        (heightAt(x - 1, y - 1) + 2 * heightAt(x, y - 1) + heightAt(x + 1, y - 1))) *
+      0.25;
+    return { dx, dy };
+  };
 
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
@@ -343,8 +358,9 @@ async function main() {
       ao[i + 2] = aoByte;
       ao[i + 3] = 255;
 
-      const dx = (heightAt(x + 1, y) - heightAt(x - 1, y)) * args.normalStrength;
-      const dy = (heightAt(x, y + 1) - heightAt(x, y - 1)) * args.normalStrength;
+      const { dx: rawDx, dy: rawDy } = heightGradient(x, y);
+      const dx = rawDx * args.normalStrength;
+      const dy = rawDy * args.normalStrength;
       let nx = -dx;
       let ny = -dy;
       let nz = 1;
@@ -373,7 +389,7 @@ async function main() {
 
   const writes = [
     ...(args.copyBase ? [["B", base]] : []),
-    ["AO", ao],
+    ...(args.writeAo ? [["AO", ao]] : []),
     ["N", normal],
     ["G", gloss],
     ["M", metal],

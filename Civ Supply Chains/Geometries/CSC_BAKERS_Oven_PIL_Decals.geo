@@ -29,18 +29,46 @@
 <Element>
 <m_Name text="Ruin_Debris_Decal"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>2</m_nPrims>
+<m_nPrims>4</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>2</m_nPrimitiveCount>
-<m_nVertexCount>4</m_nVertexCount>
+<m_nPrimitiveCount>4</m_nPrimitiveCount>
+<m_nVertexCount>8</m_nVertexCount>
+</Element>
+<Element>
+<m_Name text="Plane1"/>
+<m_Groups>
+<Element>
+<m_Name text="Ruin_Debris_Decal"/>
+<m_nFirstPrim>0</m_nFirstPrim>
+<m_nPrims>4</m_nPrims>
+</Element>
+</m_Groups>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nPrimitiveCount>4</m_nPrimitiveCount>
+<m_nVertexCount>8</m_nVertexCount>
+</Element>
+<Element>
+<m_Name text="Plane2"/>
+<m_Groups>
+<Element>
+<m_Name text="Ruin_Debris_Decal"/>
+<m_nFirstPrim>0</m_nFirstPrim>
+<m_nPrims>4</m_nPrims>
+</Element>
+</m_Groups>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nPrimitiveCount>4</m_nPrimitiveCount>
+<m_nVertexCount>8</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
 <Element text="CSC_BAKERS_Oven_PIL_Decals"/>
+<Element text="Plane1"/>
 <Element text="Plane11011"/>
 <Element text="Plane11020"/>
+<Element text="Plane2"/>
 </m_Bones>
 <m_ModelName text="CSC_BAKERS_Oven_PIL_Decals"/>
 <m_SourceFilePath text=""/>

@@ -2,12 +2,12 @@
 #
 # This file answers: "For a selected phase, what art/SV/icon scaffold is
 # allowed, what source entries are cloned, and how is the result validated?"
-# Quarter design values live in project/specs/tailors-design.yaml.
+# Quarter design values live in project/specs/tailors/tailors-design.yaml.
 
 schema_version: 1
 schema: csc-quarter-art-implementation
 status: draft_standard
-design_spec: project/specs/tailors-design.yaml
+design_spec: project/specs/tailors/tailors-design.yaml
 
 metadata:
   quarter_key: TAILORS
@@ -99,6 +99,7 @@ phase_contracts:
       - Civ Supply Chains/Assets/CSC_TAILORS_Classical_Base_05.ast
       - Civ Supply Chains/ArtDefs/CSC_Buildings.artdef
       - Civ Supply Chains/Assets/CSC_TAILORS_Textile_Workshop.ast
+      - Civ Supply Chains/Assets/CSC_TAILORS_Textile_Workshop_2.ast
       - Civ Supply Chains/Assets/CSC_TAILORS_Tailor.ast
       - Civ Supply Chains/Assets/CSC_TAILORS_Fashion_House.ast
     artdef_clones:
@@ -181,6 +182,7 @@ phase_contracts:
       - Civ Supply Chains/ArtDefs/CSC_StrategicView.artdef
       - Civ Supply Chains/Assets/CSC_TAILORS_Textile_Workshop.ast
       - Civ Supply Chains/XLPs/CSC_Tilebases.xlp
+      - Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua
       - "%APPDATA%/AssetCloud/mod-Civ Supply Chains-asset-deps.json"
     artdef_clones:
       building:
@@ -202,10 +204,19 @@ phase_contracts:
     manual_followup:
       - Confirm Textile Workshop geometry identity.
       - Add fabric/textile props after scaffold is stable.
+    customer_art_bridge:
+      required: true
+      source_property: CSC_TAILORS_STAGE_2_LIGHTHOUSE
+      art_property: CSC_TAILORS_STAGE_2_LIGHTHOUSE_ART
+      trigger: Adjacent same-player Harbor with a functioning Lighthouse or direct Lighthouse replacement.
+      display_requirement: Reveal an active-customer Textile Workshop landmark state that is visually distinct from the ordinary Textile Workshop-only state.
+      separation_rule: This state represents the Lighthouse customer transaction, not Naval Tradition or the Sailmaker service.
     verify:
       - Textile Workshop appears when built.
       - Base variant changes from empty state to Textile Workshop state.
       - Strategic View completed, pillaged, and under-construction states resolve.
+      - Active Lighthouse-customer state resolves in world view without requiring Naval Tradition.
+      - Removing or pillaging the qualifying Lighthouse removes the active-customer state.
 
   phase_4_tailor_art:
     status: prescaffolded
