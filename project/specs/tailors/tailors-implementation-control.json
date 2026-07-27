@@ -1,0 +1,57 @@
+{
+  "schema": "csc-quarter-implementation-control",
+  "schema_version": 1,
+  "quarter_key": "TAILORS",
+  "review_status": "draft",
+  "implementation_ready": false,
+  "current_phase": "phase_3_textile_workshop",
+  "approval": {
+    "approved_by": null,
+    "approved_at": null,
+    "notes": "First protocol version awaiting Henno review."
+  },
+  "authority": {
+    "design_doc": "docs/content/quarters/tailors.md",
+    "design_spec": "project/specs/tailors/tailors-design.yaml",
+    "gameplay_contract": "project/specs/tailors/tailors-gameplay.yaml",
+    "art_contract": "project/specs/tailors/tailors-art.yaml",
+    "localization_source": "project/localization/CSC_TAILORS_TEXT.md",
+    "localization_patterns": "project/specs/reference/bakers-localization-patterns.json",
+    "applicability_manifest": "project/specs/tailors/tailors-bakers-applicability.json",
+    "traceability_manifest": "project/specs/tailors/tailors-traceability.json"
+  },
+  "conflict_policy": "stop_and_request_henno_decision",
+  "reference_lock": {
+    "commit": "14f428db429e1a68afed707a10146f3ea390839c",
+    "files": [
+      {
+        "path": "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "sha256": "ead6c6a9e448e267702da9c677ff0711ea591b5b252fd3002d74b2bb717d3fc9"
+      },
+      {
+        "path": "Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql",
+        "sha256": "7abdbbca5ee4ea862a897dc38794436667a832009e033e5365b565b43c274114"
+      },
+      {
+        "path": "Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE.sql",
+        "sha256": "a73939837c97c69b0b02cc6b2911a6e780b855f1f657d5eac5e828c0450d5e59"
+      },
+      {
+        "path": "Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql",
+        "sha256": "8247353b8cfd5b4c0311844b0e921140c1eefa20c22b58cdb19d7ef7a4aed415"
+      },
+      {
+        "path": "project/localization/CSC_BAKERS_TEXT.md",
+        "sha256": "8037e7dfa729a7f6ebe0b9f89578dd3e7e5616d645695901ab2e57628e3580bc"
+      }
+    ]
+  },
+  "readiness_requirements": {
+    "require_approved_review": true,
+    "require_reference_lock": true,
+    "require_all_applicability_resolved": true,
+    "require_all_design_refs_resolve": true,
+    "require_zero_open_conflicts": true
+  },
+  "open_conflicts": []
+}

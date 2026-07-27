@@ -1,0 +1,73 @@
+{
+  "schema": "csc-bakers-localization-patterns",
+  "schema_version": 1,
+  "reference_source": "project/localization/CSC_BAKERS_TEXT.md",
+  "patterns": [
+    {
+      "id": "LOC-DISTRICT-BULLETS",
+      "reference_key": "LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION",
+      "rules": [
+        "Open with one concise district identity sentence.",
+        "Use one bullet per adjacency transaction family.",
+        "Place the Quarter receipt before the return yield.",
+        "Use exact CSC material and sales icons."
+      ]
+    },
+    {
+      "id": "LOC-BUILDING-TRANSACTION",
+      "reference_key": "LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION",
+      "required_literal": ", in exchange for ",
+      "rules": [
+        "Describe both halves of one bilateral transaction in one bullet.",
+        "Write from the described building's perspective.",
+        "Place the received effect before the counterparty effect."
+      ]
+    },
+    {
+      "id": "LOC-BUILDING-ORDER",
+      "reference_key": "LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION",
+      "ordered_categories": [
+        "material_input",
+        "citizen_processing",
+        "local_quarter",
+        "adjacent_customer",
+        "trade_route",
+        "service"
+      ]
+    },
+    {
+      "id": "LOC-STAGE2-SERVICE-PARAGRAPH",
+      "reference_key": "LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION",
+      "rules": [
+        "Separate the service paragraph from transaction bullets with a blank line.",
+        "Name the unlock, supplied source, destination, and required customer building.",
+        "Use a service LOC substitution when the named service is reusable."
+      ]
+    },
+    {
+      "id": "LOC-SERVICE-DESCRIPTION",
+      "reference_key": "LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION",
+      "rules": [
+        "First identify where, when, and why the service is established.",
+        "Then state all implemented effects with exact icons and Great Person class."
+      ]
+    },
+    {
+      "id": "LOC-UI-APPEND",
+      "reference_key": "LOC_CSC_BAKERS_STAGE_2_EFFECT",
+      "rules": [
+        "Describe the destination-facing transaction first.",
+        "State the service eligibility and complete effect after a paragraph break.",
+        "Preserve pre-existing destination descriptions when appending."
+      ]
+    },
+    {
+      "id": "LOC-CIVIC-APPEND",
+      "reference_key": "LOC_CSC_BAKERS_STAGE_2_CIVIC",
+      "rules": [
+        "Use append-safe text-prefix behavior where supported.",
+        "Summarize the unlock relationship without inventing implementation detail."
+      ]
+    }
+  ]
+}
