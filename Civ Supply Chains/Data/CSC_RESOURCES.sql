@@ -18,8 +18,7 @@ VALUES	(   'RESOURCE_CSC_FLAX',			'KIND_RESOURCE'     );
 INSERT OR IGNORE INTO Tags
 
 	    (   Tag,                                    Vocabulary          )
-VALUES	(	'CLASS_CSC_BAKERS_BASE',                'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_TAILORS_BASE',	            'RESOURCE_CLASS'	);
+VALUES	(	'CLASS_CSC_BAKERS_BASE',                'RESOURCE_CLASS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- TypeTags
@@ -31,8 +30,7 @@ INSERT INTO TypeTags
 VALUES  (   'RESOURCE_CSC_FLAX',			'CLASS_FOOD'                ),
         (   'RESOURCE_CSC_FLAX',			'CLASS_CULTURE'             ),
 
-        (   'RESOURCE_CSC_FLAX',            'CLASS_CSC_BAKERS_BASE'     ),
-        (   'RESOURCE_CSC_FLAX',            'CLASS_CSC_TAILORS_BASE'    );
+        (   'RESOURCE_CSC_FLAX',            'CLASS_CSC_BAKERS_BASE'     );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Resources

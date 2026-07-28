@@ -32,18 +32,6 @@ WHERE Tag = 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION'
   AND instr(Text, 'City Center and Commercial Hub') > 0
   AND instr(Text, 'adjacent Rural Community') = 0;
 
--- Tailors Quarter district description patch
-UPDATE LocalizedText
-SET Text = REPLACE(
-    Text,
-    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] Commercial Hub, Holy Site, and Theater Square, and +1 [ICON_Culture] Culture in return.',
-    '+1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] Commercial Hub, Holy Site, Theater Square, and Urban Borough, and +1 [ICON_Culture] Culture in return.[NEWLINE]+1 [ICON_Production] Production from each adjacent [ICON_CSC_GOODS] Rural Community, and +1 [ICON_Culture] Culture in return.'
-)
-WHERE Tag = 'LOC_DISTRICT_CSC_TAILORS_QUARTER_DESCRIPTION'
-  AND Language = 'en_US'
-  AND instr(Text, 'Commercial Hub, Holy Site, and Theater Square') > 0
-  AND instr(Text, 'adjacent Rural Community') = 0;
-
 -- Raw SQL 1
 UPDATE LocalizedText
 SET Text = CASE

@@ -367,16 +367,6 @@
       },
       {
         "type": "UpdateText",
-        "id": "CSC_TAILORS_TEXT",
-        "properties": {
-          "LoadOrder": "102"
-        },
-        "files": [
-          "Text/CSC_TAILORS_TEXT.sql"
-        ]
-      },
-      {
-        "type": "UpdateText",
         "id": "CSC_UI_CITY_PANEL_TEXT",
         "properties": {
           "LoadOrder": "9999999"
@@ -625,36 +615,6 @@
         "files": [
           "ModSupport/ModSupport_SO_A.sql"
         ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS",
-        "properties": {
-          "LoadOrder": "100"
-        },
-        "files": [
-          "Data/CSC_Q_TAILORS.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS_GOLD",
-        "properties": { "LoadOrder": "101" },
-        "files": [ "Data/CSC_Q_TAILORS_GOLD.sql" ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS_MC_MODE",
-        "properties": { "LoadOrder": "100" },
-        "criteria": [ "Monopolies_Mode" ],
-        "files": [ "Data/CSC_Q_TAILORS_MC_MODE.sql" ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_Q_TAILORS_MC_MODE_GOLD",
-        "properties": { "LoadOrder": "101" },
-        "criteria": [ "Monopolies_Mode" ],
-        "files": [ "Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql" ]
       },
       {
         "type": "DoNothing",

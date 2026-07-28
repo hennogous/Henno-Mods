@@ -30,17 +30,6 @@ local CSC_QUARTERS = {
         locLegendB  = "LOC_TOOLTIP_CSC_LENS_BAKERS_BASE",
         locLegendS  = "LOC_TOOLTIP_CSC_LENS_BAKERS_SPEC",
     },
-    -- Uncomment as Quarters are implemented:
-    -- {
-    --     id          = "TAILORS",
-    --     lensName    = "ML_CSC_TAILORS",
-    --     locName     = "LOC_HUD_CSC_TAILORS_LENS",
-    --     locTooltip  = "LOC_HUD_CSC_TAILORS_LENS_TOOLTIP",
-    --     colorPrefix = "COLOR_CSC_LENS_TAILORS",
-    --     locLegendQ  = "LOC_TOOLTIP_CSC_LENS_TAILORS_QUARTER",
-    --     locLegendB  = "LOC_TOOLTIP_CSC_LENS_TAILORS_BASE",
-    --     locLegendS  = "LOC_TOOLTIP_CSC_LENS_TAILORS_SPEC",
-    -- },
 }
 
 -- ===========================================================================
