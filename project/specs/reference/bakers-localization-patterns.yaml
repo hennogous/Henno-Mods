@@ -1,0 +1,152 @@
+schema_version: 1
+catalog_id: bakers-localization
+purpose: >
+  Exact structural and phrasing patterns extracted from the Bakers localization
+  source. Tailors substitutes its own design values but preserves these patterns.
+reference_file: project/localization/CSC_BAKERS_TEXT.md
+
+global_rules:
+  - "Markdown is the editable source; generated SQL is never edited by hand."
+  - "Descriptions state only implemented behavior."
+  - "Gameplay bullets follow design order."
+  - "District bilateral adjacency uses ', and ... in return'."
+  - "Building transactions use ', in exchange for ...'."
+  - "Gold-only generated rows remain in the Gold localization output when the generator supports a split."
+  - "Use existing icon tokens and Civ VI typography exactly."
+
+patterns:
+  - id: LP.DISTRICT.SUMMARY
+    classification: exact_bakers_parameterized
+    applies_to: district_description
+    source_anchor: LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION
+    template: "A district in your city specializing in {industry}."
+    required_slots: [industry]
+
+  - id: LP.DISTRICT.ADJACENCY_BULLET
+    classification: exact_bakers_parameterized
+    applies_to: district_description
+    template: "* +{amount} {yield_icon} {Yield} from each adjacent {target}."
+    required_slots: [amount, yield_icon, Yield, target]
+
+  - id: LP.DISTRICT.BILATERAL_BULLET
+    classification: exact_bakers_parameterized
+    applies_to: district_description
+    template: >
+      * +{source_amount} {source_icon} {SourceYield} from each adjacent {target},
+      and +{return_amount} {return_icon} {ReturnYield} in return.
+    required_slots: [source_amount, source_icon, SourceYield, target, return_amount, return_icon, ReturnYield]
+
+  - id: LP.MATERIAL.BULLET
+    classification: exact_bakers_parameterized
+    applies_to: building_description
+    template: >
+      * +{received} from each adjacent {material_class} Materials improvement,
+      in exchange for +{provided}.
+    required_slots: [received, material_class, provided]
+
+  - id: LP.MC.SUB_BULLET
+    classification: design_extension_no_bakers_analogue
+    applies_to: building_description
+    template: >
+      * +{industry_total} {yield_list} from an Industry, and +{corporation_total}
+      {yield_list} from a Corporation.
+    required_slots: [industry_total, corporation_total, yield_list]
+
+  - id: LP.LOCAL.EXCHANGE_BULLET
+    classification: exact_bakers_parameterized
+    applies_to: building_description
+    template: >
+      * +{received} from the local {target}, in exchange for +{provided}.
+    required_slots: [received, target, provided]
+
+  - id: LP.CUSTOMER.BILATERAL_BULLET
+    classification: exact_bakers_parameterized
+    applies_to: building_description
+    template: >
+      * +{received} from {customer_scope}, in exchange for +{provided} to the
+      {customer_city}.
+    required_slots: [received, customer_scope, provided, customer_city]
+
+  - id: LP.CITIZEN.BULLET
+    classification: design_extension_no_bakers_analogue
+    applies_to: building_description
+    template: >
+      * +{slots} [ICON_Citizen] Citizen slot, and {specialist_yields} to
+      [ICON_Citizen] Citizens in the Quarter.
+    required_slots: [slots, specialist_yields]
+
+  - id: LP.SERVICE.INTRO
+    classification: exact_bakers_parameterized
+    applies_to: building_description
+    template: >
+      At {unlock}, a supplied {source_building} establishes {service_article}
+      {service_name} in {destination_condition}.
+    required_slots: [unlock, source_building, service_article, service_name, destination_condition]
+    invariant:
+      - "Use 'supplied' only when the implemented material requirements are met."
+
+  - id: LP.SERVICE.EFFECT
+    classification: exact_bakers_parameterized
+    applies_to: service_description
+    template: >
+      A Service established in {destination} at {unlock} when a supplied
+      {source_building} {relationship} {customer_condition}. {effects}
+    required_slots: [destination, unlock, source_building, relationship, customer_condition, effects]
+
+  - id: LP.TRADE.DOMESTIC_BULLET
+    classification: exact_bakers_parameterized_with_tailors_amenity_suffix
+    applies_to: building_description
+    template: >
+      * +{destination_bonus} bonus to trade routes to the city,
+      in exchange for +{quarter_return} to the Quarter, if the origin city does not
+      have a {quarter_name}. +{origin_amenity} to the origin city.
+    required_slots: [destination_bonus, quarter_return, quarter_name, origin_amenity]
+
+  - id: LP.REGIONAL.BULLET
+    classification: design_extension_no_bakers_analogue
+    applies_to: building_description
+    template: "* +{effect} in all cities within {radius} tiles."
+    required_slots: [effect, radius]
+
+  - id: LP.PEDIA.DISTRICT_CHAPTERS
+    classification: exact_bakers_structure
+    applies_to: pedia
+    required_chapters: [CSCBASE, CSCSPEC, CSCGOODS, CSCSALES, HISTORY]
+    invariant:
+      - "Supply-chain chapters describe the implemented stage roles."
+
+  - id: LP.PEDIA.BUILDING_CHAPTERS
+    classification: exact_bakers_structure
+    applies_to: pedia
+    required_chapters: [CSCHAIN, HISTORY]
+
+  - id: LP.PEDIA.CUSTOMER_APPEND
+    classification: exact_bakers_structure
+    applies_to: pedia
+    invariant:
+      - "Patch every affected vanilla customer building or Wonder with its Tailors interaction."
+      - "The append text is generated from the same implementation requirement as gameplay."
+
+  - id: LP.CIVIC.APPEND
+    classification: exact_bakers_structure
+    applies_to: civic_description
+    invariant:
+      - "Append each service unlock to the prerequisite Civic description."
+      - "Use the shared text-prefix convention so multiple Quarter additions compose."
+
+  - id: LP.NOTIFICATION.SERVICE_STATE
+    classification: exact_bakers_structure_optional
+    applies_to: notification
+    variants: [NEW, INCREASED, DECREASED, REMOVED]
+    invariant:
+      - "Only include if the shared service notification subsystem will surface the service."
+      - "Every state names the source and destination unambiguously."
+
+  - id: LP.NAMES.COMPLETE
+    classification: exact_bakers_structure
+    applies_to: names
+    required:
+      - district name
+      - stage building names
+      - service names
+      - adjective or Quarter short name used by UI

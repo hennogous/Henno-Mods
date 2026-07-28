@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CSC Quarter Implementation Contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "quarter",
+    "status",
+    "design_contract",
+    "gameplay_catalog",
+    "localization_catalog",
+    "planned_outputs",
+    "implementation_rules",
+    "preserved_inputs",
+    "phases",
+    "open_engine_decisions"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "quarter": {"type": "string", "minLength": 1},
+    "status": {"enum": ["proposed", "approved", "implementing", "complete", "superseded"]},
+    "planned_outputs": {
+      "type": "object",
+      "required": ["core", "gold", "monopolies", "monopolies_gold", "localization_source", "localization_generated"],
+      "additionalProperties": {"type": "string", "minLength": 1}
+    },
+    "preserved_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "pattern", "file", "resource", "class"]
+      }
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "purpose", "requirements"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "requirements": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "design_refs",
+                "gameplay_patterns",
+                "localization_patterns",
+                "outputs",
+                "static_assertions",
+                "runtime_scenarios"
+              ],
+              "properties": {
+                "id": {"type": "string", "pattern": "^I\\."},
+                "design_refs": {"type": "array", "items": {"type": "string"}},
+                "gameplay_patterns": {"type": "array", "items": {"type": "string"}},
+                "localization_patterns": {"type": "array", "items": {"type": "string"}},
+                "outputs": {"type": "array", "items": {"type": "string"}},
+                "static_assertions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+                "runtime_scenarios": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "open_engine_decisions": {"type": "array"}
+  },
+  "additionalProperties": true
+}

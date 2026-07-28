@@ -1,0 +1,219 @@
+schema_version: 1
+quarter: tailors
+status: transcribed
+canonical_source: docs/content/quarters/tailors.md
+canonical_source_sha256: b71c14cfe5100bfb200c277089bf04d9af90ab3b17cb6309ffa33e2b010ae922
+transcription_rule: >
+  This file is a machine-readable transcription only. It must not resolve engine
+  questions, select Bakers patterns, add replacement support, or reinterpret prose.
+
+identity:
+  name: Tailors' Quarter
+  abbreviation: TAILORS
+  main_yield: YIELD_CULTURE
+
+materials:
+  base:
+    standard:
+      - {resource: RESOURCE_COTTON, source_label: Cotton}
+      - {resource: RESOURCE_SHEEP, source_label: Sheep, emphasized_in_source: true}
+    csc:
+      - {resource: RESOURCE_CSC_FLAX, source_label: Flax}
+    optional:
+      - {resource: RESOURCE_BAMBOO, source_label: Bamboo, mod: R2}
+      - {resource: RESOURCE_AOM_HEMP, source_label: Hemp, mod: CH}
+      - {resource: RESOURCE_LEU_P0K_LLAMAS, source_label: Llamas, mod: LAR, emphasized_in_source: true}
+  specialty:
+    standard:
+      - {resource: RESOURCE_DYES, source_label: Dyes}
+      - {resource: RESOURCE_SILK, source_label: Silk}
+      - {resource: RESOURCE_SILVER, source_label: Silver}
+    optional:
+      - {resource: RESOURCE_CASHMERE, source_label: Cashmere, mod: R2}
+      - {resource: RESOURCE_GOLD2, source_label: Gold, mod: R2}
+      - {resource: RESOURCE_GOLD, source_label: Gold, mod: SR}
+
+district:
+  id: D.DISTRICT
+  type: DISTRICT_CSC_TAILORS_QUARTER
+  prerequisite: CIVIC_CRAFTSMANSHIP
+  cost: 60
+  maintenance_gold: 1
+  effects:
+    - id: D.DISTRICT.MATERIALS
+      statement: "+1 Production from each adjacent Base or Specialty Material resource."
+      yield: YIELD_PRODUCTION
+      amount: 1
+      targets: [base_material_resource, specialty_material_resource]
+    - id: D.DISTRICT.HARBOR
+      statement: "+1 Gold from each adjacent Harbor, and +1 Production in return."
+      source_yield: {type: YIELD_GOLD, amount: 1}
+      target: DISTRICT_HARBOR
+      return_yield: {type: YIELD_PRODUCTION, amount: 1}
+    - id: D.DISTRICT.CULTURE_CUSTOMERS
+      statement: "+1 Gold from each adjacent Commercial Hub, Holy Site and Theater Square, and +1 Culture in return."
+      source_yield: {type: YIELD_GOLD, amount: 1}
+      targets: [DISTRICT_COMMERCIAL_HUB, DISTRICT_HOLY_SITE, DISTRICT_THEATER]
+      return_yield: {type: YIELD_CULTURE, amount: 1}
+    - id: D.DISTRICT.RIVER
+      statement: "+1 Production from every 2 adjacent river edges."
+      yield: YIELD_PRODUCTION
+      amount: 1
+      river_edges: 2
+    - id: D.DISTRICT.CL_RURAL
+      condition: City Lights
+      statement: "+1 Production from each adjacent Rural Community, and +1 Culture in return."
+      source_yield: {type: YIELD_PRODUCTION, amount: 1}
+      target_label: Rural Community
+      return_yield: {type: YIELD_CULTURE, amount: 1}
+    - id: D.DISTRICT.CL_URBAN
+      condition: City Lights
+      statement: "+1 Gold from each adjacent Urban Borough, and +1 Culture in return."
+      source_yield: {type: YIELD_GOLD, amount: 1}
+      target_label: Urban Borough
+      return_yield: {type: YIELD_CULTURE, amount: 1}
+
+material_improvements:
+  - id: D.MATERIAL.BASE
+    class: CLASS_CSC_TAILORS_BASE
+    adjacent_building: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+    standard: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+    industry_total: {YIELD_PRODUCTION: 2, YIELD_GOLD: 2}
+    corporation_total: {YIELD_PRODUCTION: 3, YIELD_GOLD: 3}
+  - id: D.MATERIAL.SPECIALTY
+    class: CLASS_CSC_TAILORS_SPEC
+    adjacent_building: BUILDING_CSC_TAILORS_FASHION_HOUSE
+    standard: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+    industry_total: {YIELD_PRODUCTION: 2, YIELD_GOLD: 2}
+    corporation_total: {YIELD_PRODUCTION: 3, YIELD_GOLD: 3}
+
+buildings:
+  - id: D.STAGE2
+    stage: 2
+    type: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+    name: Textile Workshop
+    prerequisite: TECH_CONSTRUCTION
+    cost: 80
+    maintenance_gold: 2
+    effects:
+      - id: D.STAGE2.BASE_INPUT
+        statement: "+1 Culture from each adjacent Base Materials improvement; Industry total 2, Corporation total 3."
+        material_class: CLASS_CSC_TAILORS_BASE
+        standard: {YIELD_CULTURE: 1}
+        industry_total: {YIELD_CULTURE: 2}
+        corporation_total: {YIELD_CULTURE: 3}
+      - id: D.STAGE2.LIGHTHOUSE
+        statement: "+1 Production to each adjacent Lighthouse, and +1 Production and +1 Gold to the Textile Workshop in return."
+        target: BUILDING_LIGHTHOUSE
+        target_yields: {YIELD_PRODUCTION: 1}
+        return_yields: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+      - id: D.STAGE2.LOCAL
+        statement: "+1 Production and +1 Gold from the local Tailor and Fashion House, providing +1 Culture to each in return."
+        targets: [BUILDING_CSC_TAILORS_TAILOR, BUILDING_CSC_TAILORS_FASHION_HOUSE]
+        source_yields: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+        return_yields: {YIELD_CULTURE: 1}
+      - id: D.STAGE2.SERVICE
+        unlock: CIVIC_NAVAL_TRADITION
+        supplied_by: [CLASS_CSC_TAILORS_BASE]
+        service: BUILDING_CSC_TAILORS_SAILMAKER
+        destination_district: DISTRICT_HARBOR
+        required_customer: BUILDING_LIGHTHOUSE
+        effects:
+          naval_unit_production_percent: 20
+          latest_era: ERA_RENAISSANCE
+          great_person_points: {GREAT_PERSON_CLASS_ADMIRAL: 1}
+
+  - id: D.STAGE3
+    stage: 3
+    type: BUILDING_CSC_TAILORS_TAILOR
+    name: Tailor
+    prerequisite: CIVIC_GUILDS
+    prerequisite_building: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+    cost: 160
+    maintenance_gold: 2
+    effects:
+      - id: D.STAGE3.LOCAL
+        target: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+        target_yields: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+        return_yields: {YIELD_CULTURE: 1}
+      - id: D.STAGE3.SPECIALISTS
+        citizen_slots: 1
+        citizen_yields: {YIELD_CULTURE: 2, YIELD_GOLD: 1}
+      - id: D.STAGE3.AMENITY
+        city_amenities: 1
+      - id: D.STAGE3.POP_CUSTOMERS
+        customer_buildings: [BUILDING_TEMPLE, BUILDING_MARKET]
+        per_citizen_customer_yields: {YIELD_CULTURE: 0.1}
+        per_citizen_return_yields: {YIELD_PRODUCTION: 0.1, YIELD_GOLD: 0.1}
+      - id: D.STAGE3.SERVICE
+        unlock: CIVIC_DIVINE_RIGHT
+        supplied_by: [CLASS_CSC_TAILORS_BASE]
+        service: BUILDING_CSC_TAILORS_ROBEMAKER
+        destination_district: DISTRICT_HOLY_SITE
+        required_customer: BUILDING_TEMPLE
+        effects:
+          city_faith_percent: 10
+          great_person_points: {GREAT_PERSON_CLASS_PROPHET: 1}
+      - id: D.STAGE3.TRADE
+        destination_yields: {YIELD_CULTURE: 1}
+        return_yields: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+        origin_requires_no_district: DISTRICT_CSC_TAILORS_QUARTER
+        origin_amenities: 1
+
+  - id: D.STAGE4
+    stage: 4
+    type: BUILDING_CSC_TAILORS_FASHION_HOUSE
+    name: Fashion House
+    prerequisite: CIVIC_HUMANISM
+    prerequisite_building: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+    cost: 250
+    maintenance_gold: 3
+    effects:
+      - id: D.STAGE4.LOCAL
+        target: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+        target_yields: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+        return_yields: {YIELD_CULTURE: 1}
+      - id: D.STAGE4.SPEC_INPUT
+        material_class: CLASS_CSC_TAILORS_SPEC
+        standard: {YIELD_CULTURE: 1}
+        industry_total: {YIELD_CULTURE: 2}
+        corporation_total: {YIELD_CULTURE: 3}
+      - id: D.STAGE4.INTRINSIC
+        building_yields: {YIELD_CULTURE: 3}
+      - id: D.STAGE4.SPECIALISTS
+        citizen_slots: 1
+        citizen_yields: {YIELD_CULTURE: 1, YIELD_GOLD: 2}
+      - id: D.STAGE4.REGIONAL_AMENITY
+        amenities: 1
+        radius: 6
+      - id: D.STAGE4.POP_CUSTOMERS
+        population_interval: 5
+        customer_buildings:
+          - BUILDING_AMPHITHEATER
+          - BUILDING_BOLSHOI_THEATRE
+          - BUILDING_BROADWAY
+          - BUILDING_SYDNEY_OPERA_HOUSE
+        customer_yields: {YIELD_CULTURE: 1}
+        return_yields: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+      - id: D.STAGE4.SERVICE
+        unlock: CIVIC_OPERA_BALLET
+        supplied_by: [CLASS_CSC_TAILORS_BASE, CLASS_CSC_TAILORS_SPEC]
+        service: BUILDING_CSC_TAILORS_COUTURIER
+        destinations:
+          - {district: DISTRICT_THEATER, required_customer: BUILDING_AMPHITHEATER}
+          - {wonder: BUILDING_BOLSHOI_THEATRE}
+          - {wonder: BUILDING_BROADWAY}
+          - {wonder: BUILDING_SYDNEY_OPERA_HOUSE}
+        effects:
+          city_culture_percent: 10
+          citizen_slots: 1
+          wonder_only_great_person_points: {GREAT_PERSON_CLASS_ARTIST: 1}
+      - id: D.STAGE4.TRADE
+        destination_yields: {YIELD_CULTURE: 1}
+        return_yields: {YIELD_PRODUCTION: 1, YIELD_GOLD: 1}
+        origin_requires_no_district: DISTRICT_CSC_TAILORS_QUARTER
+        origin_amenities: 1
+
+art:
+  status: preserved_deferred
+  rule: Existing Tailors art is retained, but gameplay-to-art scaffolding is not part of the first gameplay implementation.

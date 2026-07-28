@@ -17,6 +17,10 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | File | What it is |
 |------|-----------|
 | `archive/QUARTER-PLAYBOOK-2026-06-26-outdated.md` | Archived, outdated 8-phase Quarter checklist retained for historical reference. Use `specs/<quarter>/` implementation contracts for current Quarter work. |
+| `QUARTER-CONTRACT-WORKFLOW.md` | Current contract-first Quarter workflow, authority order, approvals, and Tailors restart sequence. |
+| `REFERENCE-PATTERN-CATALOG.md` | How Bakers gameplay patterns are classified and parameterized, including Bakers-only exclusions. |
+| `LOCALIZATION-PATTERNS.md` | Bakers-derived exact localization structures and required text surfaces. |
+| `QUARTER-VALIDATION.md` | Contract, SQL, localization, ModBuddy, and runtime validation layers. |
 | `BUILDING-SHAPES.md` | CSC art language — the Marble Rule, roof types, proportions, exaggeration guide |
 | `building_schema.md` | JSON spec for the procedural building generator (volumes, features, meta) |
 | `building-geometry-catalogue.md` | Vertex/tri/island counts for all vanilla Civ 6 district buildings (deep mesh analysis) |
@@ -81,6 +85,7 @@ Scripts accumulated during development. Paths may need updating if the source da
 | `scripts/` | Pipeline scripts — CN6 I/O, bone fixing, export pipeline, geo parsing |
 | `training/` | LoRA training — data extraction, kohya-ss training launchers |
 | `firetuner/` | FireTuner/CE automation — proxy sniffer, game control, CE probing |
+| `quarter_contracts/` | Quarter contract validator for schemas, locked sources, traceability, approvals, and preserved inputs. |
 
 ### Key scripts
 

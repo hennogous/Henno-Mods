@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CSC Quarter Control Contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "quarter",
+    "status",
+    "locked_sources",
+    "contract_approvals",
+    "phase_gates",
+    "exceptions",
+    "approval_rule"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "quarter": {"type": "string", "minLength": 1},
+    "status": {"enum": ["review_required", "approved", "implementing", "complete", "superseded"]},
+    "locked_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path", "role", "sha256"],
+        "properties": {
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "contract_approvals": {"type": "object", "minProperties": 4},
+    "phase_gates": {"type": "object", "minProperties": 1},
+    "exceptions": {"type": "array"}
+  },
+  "additionalProperties": true
+}

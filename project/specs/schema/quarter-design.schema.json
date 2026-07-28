@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CSC Quarter Design Contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "quarter",
+    "status",
+    "canonical_source",
+    "canonical_source_sha256",
+    "identity",
+    "materials",
+    "district",
+    "material_improvements",
+    "buildings",
+    "art"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "quarter": {"type": "string", "minLength": 1},
+    "status": {"enum": ["transcribed", "approved", "superseded"]},
+    "canonical_source": {"type": "string", "minLength": 1},
+    "canonical_source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identity": {
+      "type": "object",
+      "required": ["name", "abbreviation", "main_yield"]
+    },
+    "materials": {"type": "object", "required": ["base", "specialty"]},
+    "district": {"type": "object", "required": ["id", "type", "prerequisite", "cost", "maintenance_gold", "effects"]},
+    "material_improvements": {"type": "array", "minItems": 2},
+    "buildings": {"type": "array", "minItems": 3},
+    "art": {"type": "object", "required": ["status", "rule"]}
+  },
+  "additionalProperties": true
+}

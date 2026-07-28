@@ -1,0 +1,58 @@
+schema_version: 1
+quarter: tailors
+status: review_required
+
+locked_sources:
+  - path: docs/content/quarters/tailors.md
+    role: canonical_design
+    sha256: b71c14cfe5100bfb200c277089bf04d9af90ab3b17cb6309ffa33e2b010ae922
+  - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
+    role: gameplay_reference_core
+    sha256: ead6c6a9e448e267702da9c677ff0711ea591b5b252fd3002d74b2bb717d3fc9
+  - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
+    role: gameplay_reference_gold
+    sha256: 7abdbbca5ee4ea862a897dc38794436667a832009e033e5365b565b43c274114
+  - path: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE.sql
+    role: gameplay_reference_monopolies
+    sha256: a73939837c97c69b0b02cc6b2911a6e780b855f1f657d5eac5e828c0450d5e59
+  - path: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql
+    role: gameplay_reference_monopolies_gold
+    sha256: 8247353b8cfd5b4c0311844b0e921140c1eefa20c22b58cdb19d7ef7a4aed415
+  - path: project/localization/CSC_BAKERS_TEXT.md
+    role: localization_reference
+    sha256: 8037e7dfa729a7f6ebe0b9f89578dd3e7e5616d645695901ab2e57628e3580bc
+
+contract_approvals:
+  design_transcription:
+    status: pending
+    approved_by:
+    approved_at:
+  gameplay_pattern_catalog:
+    status: pending
+    approved_by:
+    approved_at:
+  localization_pattern_catalog:
+    status: pending
+    approved_by:
+    approved_at:
+  implementation_contract:
+    status: pending
+    approved_by:
+    approved_at:
+
+phase_gates:
+  foundation: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
+  materials_and_stage2: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
+  stage3: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
+  stage4: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
+  compatibility: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
+  localization_and_integration: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
+  art_integration: {status: deferred, approved_by: null, approved_at: null}
+
+exceptions: []
+
+approval_rule: >
+  A phase may change to approved only after all four contract approvals are
+  approved, its open engine decisions are resolved as approved exceptions or
+  contract amendments, and validation passes. Approval is explicit user review,
+  never inferred from code generation or a successful test.

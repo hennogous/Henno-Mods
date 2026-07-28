@@ -18,6 +18,10 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 - Shadow's normal Windows environment has Python installed at `C:\Users\Shadow\AppData\Local\Programs\Python\Python312\` with the launcher at `C:\Users\Shadow\AppData\Local\Programs\Python\Launcher\py.exe`. If Codex command execution cannot resolve or run `py`/`python`, describe it as a Codex sandbox/runtime limitation, not as "Python is not on PATH" for the user. For Codex-side tests, use the bundled runtime at `C:\Users\Shadow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe` unless the user's local Python environment is specifically required.
 
+## Active implementation reset
+
+- Tailors contract-first restart → `session_tailors_contract_restart.md`
+
 ## Removed stale notes
 
 - old session startup order;

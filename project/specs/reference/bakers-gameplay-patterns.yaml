@@ -1,0 +1,242 @@
+schema_version: 1
+catalog_id: bakers-gameplay
+purpose: >
+  Classified implementation patterns extracted from the finished Bakers' Quarter.
+  This is a reference library, not permission to copy every Bakers peculiarity.
+reference_files:
+  core: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
+  gold: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
+  monopolies: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE.sql
+  monopolies_gold: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql
+
+classifications:
+  reusable_invariant: Preserve the structure unless the design explicitly requires otherwise.
+  reusable_parameterized: Reuse with every listed parameter supplied by the Quarter contract.
+  specialized_optional: Use only when the design calls for this mechanic.
+  bakers_only: Do not inherit without an explicit design requirement.
+
+patterns:
+  - id: GP.FILE.SECTION_ORDER
+    classification: reusable_invariant
+    source_anchor: "CSC_Q_BAKERS.sql: numbered section headers"
+    invariant:
+      - "Quarter SQL is ordered: types, tags, material interactions, district, buildings, modifiers, requirements, scaling, strings."
+      - "Gold and Monopolies & Corporations deltas remain in companion files."
+
+  - id: GP.TYPE.QUARTER_OBJECTS
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: Types"
+    parameters: [district_type, building_types, hidden_service_types, custom_modifier_types]
+    invariant:
+      - "All identifiers use CSC naming conventions."
+      - "Hidden services are Buildings, not placeholder modifiers."
+
+  - id: GP.TAG.MATERIAL_CLASSES
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: Resource tags"
+    parameters: [quarter, base_resources, specialty_resources]
+    invariant:
+      - "Create CLASS_CSC_<Q>_BASE and CLASS_CSC_<Q>_SPEC as RESOURCE_CLASS tags."
+      - "Map core resources in the owning Quarter SQL; optional-mod mappings remain in ModSupport."
+
+  - id: GP.MATERIAL.IMPROVEMENT_FROM_BUILDING
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: ImprovementModifiers material transactions"
+    parameters: [material_class, source_building, yields, standard_amounts]
+    invariant:
+      - "Attach at the resource improvement."
+      - "Require adjacency to the source building, matching material tag, and same owner."
+
+  - id: GP.MATERIAL.BUILDING_FROM_IMPROVEMENT
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: Quarter building material transactions"
+    parameters: [material_class, destination_building, yields, standard_amounts]
+    invariant:
+      - "Attach at the Quarter building and affect adjacent player improvements."
+      - "Require matching material tag, an improvement, adjacency, and same owner."
+
+  - id: GP.MC.MATERIAL_TOTALS
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS_MC_MODE.sql and CSC_Q_BAKERS_MC_MODE_GOLD.sql"
+    parameters: [direction, material_class, source_building, standard_total, industry_total, corporation_total, yields]
+    invariant:
+      - "Industry and Corporation behavior loads only in M&C mode."
+      - "The contract states whether SQL amounts are totals or deltas."
+      - "Gold rows remain in the Gold companion."
+
+  - id: GP.DISTRICT.DEFINITION
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: Districts"
+    parameters: [district_type, name_key, description_key, prerequisite, cost, maintenance, citizen_yields]
+    invariant:
+      - "District is unique, specialty, and one per city."
+      - "Design values are copied exactly."
+
+  - id: GP.DISTRICT.MATERIAL_ADJACENCY
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: CSC_QuarterMaterialAdjacencyConfig"
+    parameters: [quarter, material_classes, yield, amount]
+    invariant:
+      - "Use the shared CSC material-adjacency configuration."
+      - "Do not hand-duplicate generated MAB material rows."
+
+  - id: GP.DISTRICT.BILATERAL_ADJACENCY
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: Ruivo_New_Adjacency district transactions"
+    parameters: [source_district, customer_districts_or_tags, source_yield, return_yield, amounts]
+    invariant:
+      - "Both sides of the exchange are specified and tested."
+      - "Use MAB tags where the design addresses a customer class."
+
+  - id: GP.DISTRICT.RIVER_EDGES
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql: river adjacency"
+    parameters: [yield, amount, tiles_required]
+    invariant:
+      - "Represent 'every N river edges' with the established river adjacency mechanism."
+
+  - id: GP.BUILDING.DEFINITION
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: Buildings, Buildings_XP2, BuildingPrereqs"
+    parameters: [building_type, prerequisite, prerequisite_building, cost, maintenance, citizen_slots, intrinsic_yields]
+    invariant:
+      - "Expansion fields and prerequisite rows are explicit."
+      - "Gold maintenance belongs to the core Buildings row; transactional Gold modifiers belong in the Gold companion."
+
+  - id: GP.BUILDING.LOCAL_EXCHANGE
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: local stage BuildingModifiers"
+    parameters: [source_building, destination_building, source_yields, return_yields]
+    invariant:
+      - "Local exchanges require both buildings to be present and functioning."
+      - "Every direction has a matching design and localization obligation."
+
+  - id: GP.BUILDING.CUSTOMER_TRANSACTION
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: customer BuildingModifiers and requirements"
+    parameters: [source_building, customer_buildings_or_districts, customer_yields, return_yields, scaling]
+    invariant:
+      - "Require adjacency, same owner, correct destination, and functioning required building."
+      - "Record both customer benefit and Quarter return."
+
+  - id: GP.BUILDING.CITIZEN_YIELDS
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: Building_CitizenYieldChanges"
+    parameters: [building_type, slots, specialist_yields]
+    invariant:
+      - "Citizen slots and every specialist yield are explicit contract values."
+
+  - id: GP.BUILDING.CITY_AMENITY
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql: city amenity modifiers"
+    parameters: [source_building, amount]
+    invariant:
+      - "Amenity is modeled as an amenity, not as a yield."
+
+  - id: GP.BUILDING.REGIONAL_AMENITY
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql: regional city modifiers"
+    parameters: [source_building, amount, radius]
+    invariant:
+      - "Radius and affected cities match the design exactly."
+
+  - id: GP.SCALING.PER_POPULATION_DECIMAL
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql: population-scaled property-bit modifiers"
+    parameters: [source_building, customer_targets, customer_yield, return_yields, amount_per_citizen]
+    invariant:
+      - "Gameplay amount, preview amount, and localization amount agree."
+      - "The implementing Lua/property-bit path is named in the implementation contract."
+    risk: high
+
+  - id: GP.SCALING.PER_N_POPULATION_INTEGER
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql: temporary customer table and population property bits"
+    parameters: [source_building, customer_targets, customer_yield, return_yields, population_interval]
+    invariant:
+      - "Threshold is floor(population / interval)."
+      - "All listed customer buildings and Wonders are covered without unintended recursive replacements."
+    risk: high
+
+  - id: GP.REPLACEMENT.DIRECT_ONE_LEVEL
+    classification: reusable_invariant
+    source_anchor: "CSC_Q_BAKERS.sql: customer replacement expansions"
+    invariant:
+      - "Include direct one-level replacements where a target vanilla building has replacements."
+      - "Do not recursively chase replacement chains."
+
+  - id: GP.SERVICE.HIDDEN_BUILDING
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: hidden service Buildings and grant modifiers"
+    parameters: [service_type, source_building, unlock, material_requirements, customer_requirement, destination]
+    invariant:
+      - "Service is a cost-zero MustPurchase hidden building granted persistently by modifiers."
+      - "Grant requires the source building, unlock, supplied materials, adjacency, destination, and same owner."
+      - "Buildings_XP2 Pillage is disabled."
+
+  - id: GP.SERVICE.EFFECTS
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: service effect modifiers and ModifierStrings"
+    parameters: [service_type, city_effects, great_person_points, discovery_text]
+    invariant:
+      - "Service effects attach at the service destination."
+      - "Ability discovery and preview strings describe the same live effects."
+
+  - id: GP.SERVICE.WONDER_VARIANTS
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql: stage-four service target expansion"
+    parameters: [service_type, normal_customer, wonder_customers, wonder_only_effects]
+    invariant:
+      - "Each Wonder target is explicit."
+      - "Wonder-only Great Person effects cannot leak to normal customers."
+
+  - id: GP.TRADE.DOMESTIC_SUPPLY
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql plus Quarter trade-route Lua/UI consumers"
+    parameters: [source_buildings, destination_yield, quarter_return_yields, origin_amenity, exclusion]
+    invariant:
+      - "Route is domestic and destination is supplied by the source building."
+      - "Quarter return applies only if the origin lacks the Quarter."
+      - "Amenity applies to the origin city."
+      - "Gameplay, route preview, and UnitPanel display use the same property-bit contract."
+    risk: high
+
+  - id: GP.GOLD.COMPANION_SPLIT
+    classification: reusable_invariant
+    source_anchor: "CSC_Q_BAKERS_GOLD.sql and CSC_Q_BAKERS_MC_MODE_GOLD.sql"
+    invariant:
+      - "Transactional Gold modifier attachments and Gold arguments live in Gold companion files."
+      - "Core files may still contain schema columns such as Maintenance."
+
+  - id: GP.MODSUPPORT.RESOURCE_CLASS_MAPPING
+    classification: reusable_parameterized
+    source_anchor: "Civ Supply Chains/ModSupport/ModSupport_*.sql"
+    parameters: [mod, resource_type, material_class, file]
+    invariant:
+      - "Optional resources are mapped only by their owning ModSupport file."
+      - "Preserved mappings are validated as inputs and are not regenerated by the Quarter build."
+
+  - id: GP.ART.PROPERTY_BRIDGE
+    classification: specialized_optional
+    source_anchor: "CSC_Q_BAKERS.sql and Lua_UI/CSC_ArtProperties.lua"
+    parameters: [source_properties, property_ranges, refresh_events]
+    invariant:
+      - "Art integration is a separate approved phase."
+
+  - id: GP.BAKERS.STAGE2_VARIANTS
+    classification: bakers_only
+    source_anchor: "CSC_Q_BAKERS.sql: Water/Wind Mill variants"
+    invariant:
+      - "Do not transfer Bakers mutually exclusive stage-two variants to another Quarter."
+
+  - id: GP.BAKERS.RIVER_FLAGS
+    classification: bakers_only
+    source_anchor: "CSC_Q_BAKERS.sql: river/no-river hidden flags"
+    invariant:
+      - "Do not transfer Bakers art/gameplay flag buildings unless separately designed."
+
+  - id: GP.BAKERS.VANILLA_REPLACEMENT_DELETE
+    classification: bakers_only
+    source_anchor: "CSC_Q_BAKERS.sql: Water Mill/Palgum handling"
+    invariant:
+      - "Do not delete or replace vanilla buildings without an explicit design requirement."
