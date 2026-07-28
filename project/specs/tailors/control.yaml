@@ -35,6 +35,10 @@ contract_approvals:
     status: pending
     approved_by:
     approved_at:
+  sql_style_catalog:
+    status: pending
+    approved_by:
+    approved_at:
   implementation_contract:
     status: pending
     approved_by:

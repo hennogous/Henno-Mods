@@ -10,5 +10,7 @@
 - Proposed contracts live in `project/specs/tailors/`.
 - Contract validation command:
   `py -3 project/tools/quarter_contracts/validate_quarter.py tailors`.
+- Existing Tailors SQL outputs are also checked against the Bakers-derived
+  visual/architectural profiles in `bakers-sql-style.yaml`.
 - Tailors is intended to become the normal Quarter reference after it passes
   static and runtime validation; Bakers then remains the specialized fallback.

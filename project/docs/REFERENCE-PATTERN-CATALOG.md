@@ -5,6 +5,11 @@ The gameplay catalog is
 implementation shapes from Bakers without making Bakers itself a universal
 template.
 
+The companion visual/architectural catalog is
+`project/specs/reference/bakers-sql-style.yaml`. It records the SQL presentation
+style demonstrated by Bakers and the CSC/Civ VI skill rules that should be
+machine-enforced rather than left to prose review.
+
 ## Classifications
 
 | Classification | Meaning |
@@ -16,6 +21,11 @@ template.
 
 The validator rejects any `bakers_only` pattern referenced by a Tailors
 requirement.
+
+The SQL style validator separately checks section hierarchy and order, subsection
+presentation, top-level keyword placement, wide-table value comments, new-file
+whitespace, Gold companion isolation, M&C Gold isolation, shared-table ownership,
+and accidental Bakers identifiers.
 
 ## What is parameterized
 

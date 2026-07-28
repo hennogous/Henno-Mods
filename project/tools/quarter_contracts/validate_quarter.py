@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import re
 import sys
@@ -17,6 +18,12 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
 SPEC_ROOT = ROOT / "project" / "specs"
+STYLE_MODULE_SPEC = importlib.util.spec_from_file_location(
+    "csc_validate_sql_style", Path(__file__).with_name("validate_sql_style.py")
+)
+assert STYLE_MODULE_SPEC and STYLE_MODULE_SPEC.loader
+SQL_STYLE = importlib.util.module_from_spec(STYLE_MODULE_SPEC)
+STYLE_MODULE_SPEC.loader.exec_module(SQL_STYLE)
 
 
 class Validation:
@@ -138,6 +145,7 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
         control = load_yaml(control_path)
         gameplay_catalog = load_yaml(ROOT / implementation["gameplay_catalog"])
         localization_catalog = load_yaml(ROOT / implementation["localization_catalog"])
+        load_yaml(ROOT / implementation["sql_style_catalog"])
     except (OSError, KeyError, ValueError, yaml.YAMLError) as failure:
         result.error(str(failure))
         return result
@@ -198,6 +206,13 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
     if len(requirement_ids) != len(requirements):
         result.error("implementation contains duplicate requirement IDs")
     output_keys = set(implementation.get("planned_outputs", {}))
+    style_profiles = implementation.get("sql_style_profiles", {})
+    unknown_style_outputs = set(style_profiles) - output_keys
+    if unknown_style_outputs:
+        result.error(
+            "SQL style profiles reference unknown outputs: "
+            + ", ".join(sorted(unknown_style_outputs))
+        )
     used_design_ids: set[str] = set()
 
     for rule in implementation.get("implementation_rules", []):
@@ -266,6 +281,15 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
                 f"{preserved.get('id')}: mapping {preserved['resource']} -> "
                 f"{preserved['class']} not found in {preserved['file']}"
             )
+
+    for output_key, profile in style_profiles.items():
+        output_path = ROOT / implementation["planned_outputs"][output_key]
+        if not output_path.exists():
+            continue
+        for failure in SQL_STYLE.validate_sql_style(
+            output_path, profile, quarter, strict_whitespace=True
+        ):
+            result.error(f"{output_key} SQL style: {failure}")
 
     if check_clean_start:
         approved_phases = {

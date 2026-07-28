@@ -1,0 +1,65 @@
+schema_version: 1
+catalog_id: bakers-sql-style
+reference_files:
+  - Civ Supply Chains/Data/CSC_Q_BAKERS.sql
+  - Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
+  - Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE.sql
+  - Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql
+
+purpose: >
+  Enforce the visual and architectural SQL house style demonstrated by Bakers
+  and required by the CSC/Civ VI skills. This is intentionally separate from
+  gameplay correctness validation.
+
+visual_rules:
+  - "File begins with a CSC_Q_<QUARTER> identity comment and Author: Henno."
+  - "Major headings use /* TAB TITLE */ between matching long equals delimiters; nested block headings may use matching hyphen delimiters as Bakers does."
+  - "Named table subsections use -- TAB Title between matching long hyphen delimiters."
+  - "Top-level SQL keywords begin in column 1 and are uppercase."
+  - "Districts and Buildings use per-value /* ColumnName, */ comments."
+  - "New Quarter files contain no trailing whitespace."
+
+architectural_rules:
+  - "Core section order follows Bakers: Types, Resources, Stage 1, Quarter, Stages 2-4, Civics when used, Modifiers, Requirements, UI."
+  - "Gold companions contain no non-Gold YieldType literal."
+  - "M&C non-Gold companions contain no Gold YieldType literal."
+  - "Shared CSC_Q_ALL infrastructure is referenced, not redefined."
+  - "Tailors files contain no Bakers identifiers."
+
+core_required_sections:
+  - TYPES
+  - RESOURCES
+  - STAGE 1 - MATERIALS IMPROVEMENTS
+  - "{QUARTER}' QUARTER"
+  - STAGES 2-4 - BUILDINGS
+  - MODIFIERS
+  - REQUIREMENTS
+  - UI
+
+core_required_subsections:
+  - Tags
+  - TypeTags
+  - CSC_QuarterMaterialAdjacencyConfig
+  - ImprovementModifiers
+  - Districts
+  - DistrictModifiers
+  - Buildings
+  - Buildings_XP2
+  - BuildingPrereqs
+  - Building_CitizenYieldChanges
+  - BuildingModifiers
+  - Modifiers
+  - ModifierArguments
+  - RequirementSets
+  - RequirementSetRequirements
+  - Requirements
+  - RequirementArguments
+  - ModifierStrings
+
+shared_definitions_forbidden_in_quarter:
+  - CSC_PopulationLevels
+  - CSC_RouteStackBits
+  - CSC_ScaledAmountBits
+  - CSC_Stage4StackBits
+  - CSC_AbilityAttachModifiers
+  - CSC_SpecialistAttachModifiers

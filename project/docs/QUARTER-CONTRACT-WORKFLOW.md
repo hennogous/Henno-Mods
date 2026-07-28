@@ -29,6 +29,18 @@ The result has one source for intent, one source for implementation obligations,
 and one source for change control. Traceability is embedded in each requirement
 instead of being copied into a separate matrix.
 
+## Is this TDD?
+
+The contract stage is acceptance-test-driven development: expected behavior,
+static assertions, runtime scenarios, localization obligations, and code style
+are written before gameplay code. Each implementation phase becomes conventional
+TDD when its validators are first run against the absent/incomplete output, fail
+for the expected reasons, and are then made to pass by the smallest compliant
+implementation.
+
+The contracts alone are not a substitute for TDD. A phase is not complete merely
+because its YAML validates; its SQL/text tests and runtime scenarios must pass.
+
 ## Authority and conflict handling
 
 1. The canonical Quarter design decides intended behavior.
@@ -77,13 +89,17 @@ First validate the proposed contracts:
 py -3 project/tools/quarter_contracts/validate_quarter.py tailors
 ```
 
+The same command automatically applies the Bakers-derived SQL style profile to
+each Tailors gameplay SQL file as soon as that output exists.
+
 Review these files in order:
 
 1. `project/specs/tailors/design.yaml`
 2. `project/specs/reference/bakers-gameplay-patterns.yaml`
 3. `project/specs/reference/bakers-localization-patterns.yaml`
-4. `project/specs/tailors/implementation.yaml`
-5. `project/specs/tailors/control.yaml`
+4. `project/specs/reference/bakers-sql-style.yaml`
+5. `project/specs/tailors/implementation.yaml`
+6. `project/specs/tailors/control.yaml`
 
 During review, change contract approval states only when the corresponding file
 is accepted. Resolve each `open_engine_decisions` entry before approving the

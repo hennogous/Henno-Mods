@@ -4,6 +4,7 @@ status: proposed
 design_contract: project/specs/tailors/design.yaml
 gameplay_catalog: project/specs/reference/bakers-gameplay-patterns.yaml
 localization_catalog: project/specs/reference/bakers-localization-patterns.yaml
+sql_style_catalog: project/specs/reference/bakers-sql-style.yaml
 
 authority_order:
   - "The canonical Tailors design Markdown decides intended behavior."
@@ -18,6 +19,12 @@ planned_outputs:
   monopolies_gold: Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql
   localization_source: project/localization/CSC_TAILORS_TEXT.md
   localization_generated: Civ Supply Chains/Text/CSC_TAILORS_TEXT.sql
+
+sql_style_profiles:
+  core: core
+  gold: gold
+  monopolies: monopolies
+  monopolies_gold: monopolies_gold
 
 implementation_rules:
   - GP.FILE.SECTION_ORDER

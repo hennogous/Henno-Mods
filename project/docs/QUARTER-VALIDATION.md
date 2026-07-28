@@ -29,6 +29,33 @@ It checks:
 Open engine decisions are warnings while the contracts are under review. They
 become phase blockers through `control.yaml`.
 
+## Visual and architectural SQL style
+
+`validate_quarter.py` automatically runs the profile declared for each existing
+Tailors SQL output. The standalone form is:
+
+```powershell
+py -3 project/tools/quarter_contracts/validate_sql_style.py `
+  "Civ Supply Chains/Data/CSC_Q_TAILORS.sql" `
+  --profile core --quarter tailors
+```
+
+The style test is Bakers-derived but does not compare raw whitespace or demand an
+identical file. It checks the reusable house structure:
+
+- CSC header and author;
+- major and subsection delimiter hierarchy;
+- canonical core section order;
+- uppercase, column-one SQL keywords;
+- per-value comments for wide Districts and Buildings rows;
+- no trailing whitespace in new Quarter files;
+- no Bakers identifiers in Tailors;
+- Gold-only and M&C companion boundaries;
+- no redefinition of infrastructure owned by `CSC_Q_ALL.sql`.
+
+This test improves reviewability and catches architectural drift, but it cannot
+prove modifier semantics or gameplay behavior.
+
 ## Static implementation validation
 
 The first approved phase must extend the validator to inspect generated SQL and

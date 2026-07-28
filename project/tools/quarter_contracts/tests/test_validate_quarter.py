@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -61,6 +62,52 @@ class TailorsContractTests(unittest.TestCase):
                 path, "RESOURCE_AOM_HEMP", "CLASS_CSC_TAILORS_SPEC"
             )
         )
+
+
+class SqlStyleTests(unittest.TestCase):
+    def test_bakers_reference_matches_all_style_profiles(self) -> None:
+        cases = [
+            ("CSC_Q_BAKERS.sql", "core"),
+            ("CSC_Q_BAKERS_GOLD.sql", "gold"),
+            ("CSC_Q_BAKERS_MC_MODE.sql", "monopolies"),
+            ("CSC_Q_BAKERS_MC_MODE_GOLD.sql", "monopolies_gold"),
+        ]
+        for filename, profile in cases:
+            with self.subTest(filename=filename):
+                failures = VALIDATOR.SQL_STYLE.validate_sql_style(
+                    VALIDATOR.ROOT / "Civ Supply Chains/Data" / filename,
+                    profile,
+                    "bakers",
+                    strict_whitespace=False,
+                )
+                self.assertEqual(failures, [])
+
+    def test_new_quarter_style_rejects_bad_header_and_whitespace(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bad.sql"
+            path.write_text("-- wrong  \n SELECT 1;\n", encoding="utf-8")
+            failures = VALIDATOR.SQL_STYLE.validate_sql_style(
+                path, "core", "tailors", strict_whitespace=True
+            )
+        self.assertTrue(any("line 1 must identify" in failure for failure in failures))
+        self.assertTrue(any("trailing whitespace" in failure for failure in failures))
+        self.assertTrue(any("keyword is indented" in failure for failure in failures))
+
+    def test_gold_companion_rejects_non_gold_yield(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bad_gold.sql"
+            path.write_text(
+                "-- CSC_Q_TAILORS_GOLD.sql\n"
+                "-- Author: Henno\n"
+                "INSERT INTO ModifierArguments\n"
+                "\t(ModifierId, Name, Value) VALUES\n"
+                "\t('M', 'YieldType', 'YIELD_CULTURE');\n",
+                encoding="utf-8",
+            )
+            failures = VALIDATOR.SQL_STYLE.validate_sql_style(
+                path, "gold", "tailors", strict_whitespace=True
+            )
+        self.assertTrue(any("non-Gold" in failure for failure in failures))
 
 
 if __name__ == "__main__":

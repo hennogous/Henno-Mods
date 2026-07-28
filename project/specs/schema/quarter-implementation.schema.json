@@ -9,7 +9,9 @@
     "design_contract",
     "gameplay_catalog",
     "localization_catalog",
+    "sql_style_catalog",
     "planned_outputs",
+    "sql_style_profiles",
     "implementation_rules",
     "preserved_inputs",
     "phases",
@@ -23,6 +25,13 @@
       "type": "object",
       "required": ["core", "gold", "monopolies", "monopolies_gold", "localization_source", "localization_generated"],
       "additionalProperties": {"type": "string", "minLength": 1}
+    },
+    "sql_style_profiles": {
+      "type": "object",
+      "required": ["core", "gold", "monopolies", "monopolies_gold"],
+      "additionalProperties": {
+        "enum": ["core", "gold", "monopolies", "monopolies_gold"]
+      }
     },
     "preserved_inputs": {
       "type": "array",
