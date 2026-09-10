@@ -1,9 +1,0 @@
-{
-  "source_vertices": 566,
-  "split_vertices": 1495,
-  "triangles": 783,
-  "primitive_objects": 56,
-  "note": "Preview materials; not texture-baked or FGX/cooked. CN6 measured separately.",
-  "cn6_vertices": 1495,
-  "cn6_triangles": 783
-}

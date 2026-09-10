@@ -16,6 +16,12 @@ Geometry/UVs unchanged: 1491 CN6 vertices, 781 triangles, one material. Reused v
 byte-identically. Blender N is OpenGL, node strength 1.0. Game conversion/cook and
 destination normal convention remain unvalidated on Windows.
 
+Subsequent user confirmation: Henno reported that **1,491 vertices in Blender also
+appeared as 1,491 in Asset Editor**. CN6 was already measured at 1,491. Count parity
+is therefore confirmed for the blacksmith; the destination figure is user-reported.
+He also supplied an in-game placement screenshot. This does not independently verify
+the full normal/tangent convention, exact destination triangle count or all states.
+
 Generator gained --height, --regions, --reference-size and --normal-y; broken AO
 flags replaced with a geometry-bake explanation. Four focused Node tests passed.
 Workflow/art findings promoted to `project/docs/textures-and-uvs.md`.

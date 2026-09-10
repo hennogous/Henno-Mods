@@ -1,5 +1,7 @@
 # Geometry Catalogue
 
+> **Evidence review (2026-09-10):** Before using UV utilization, shading classifications, island averages or inferred authoring rules as constraints, read [the measurement audit](art-performance-evidence-review.md). The available inspector has demonstrated metric/parser defects; some summaries mix asset and submesh scope. Reported geometry counts remain historical reference observations, not fresh measurements or performance profiles.
+
 > Complete building geometry stats from SDK pantry analysis. Base game + Rise & Fall + Gathering Storm.
 > Stats from .geo XML metadata + Blender mesh inspection of 34 key assets via CN6.
 

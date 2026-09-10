@@ -1,5 +1,7 @@
 # Civ 6 Building Geometry Patterns — Reference for 3D Modellers
 
+> **Evidence review (2026-09-10):** Before using UV utilization, shading classifications, island averages or inferred authoring rules as constraints, read [the measurement audit](art-performance-evidence-review.md). The available inspector has demonstrated metric/parser defects; some summaries mix asset and submesh scope. Reported geometry counts remain historical reference observations, not fresh measurements or performance profiles.
+
 > Generated 2026-03-30 from vertex-level analysis of 20 representative building meshes
 > spanning all districts and eras. Data extracted via FGX→CN6 conversion + Blender bmesh analysis.
 

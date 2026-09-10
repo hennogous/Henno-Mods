@@ -1,5 +1,7 @@
 # CSC Building Shape Dictionary
 
+> **Scope note (2026-09-10):** The numerical ratios and absolute placement/roof rules below are earlier CSC design heuristics, not empirically established universal Firaxis requirements. Calibrate by era, architectural family, game view and terrain; see [the evidence review](art-performance-evidence-review.md).
+
 ## The Marble Rule
 > "If you dropped a marble on it, would it rest or roll? **It should roll!**"
 — Official Civ 6 art guidelines

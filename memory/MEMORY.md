@@ -6,10 +6,12 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 ## Active notes
 
+- [Art Dropzone location and catalog intake](project_art-dropzone.md) — current Google Drive art/output root; research catalog scope and validation notes.
+- [Civ VI 3D art skill development](../project/docs/civ6-3d-art-development.md) — first portable skill draft, texture-generation directives, trial plan and tool assessment; blacksmith 1,491-vertex Asset Editor parity confirmed by Henno.
 - [Blacksmith v5 texture refinement](session_blacksmith_v5.md) — latest blend/package paths, authored relief, generator changes and validation.
 - [Civ VI shape hierarchy feedback](feedback_csc_shape_hierarchy.md) — chunky structural forms must read in clay; bargeboard thickness must be measured across the slope.
 - [Working Files reachable from Mac](project_working-files-mac-access.md) — Shadow's Working Files syncs via Google Drive `Other computers/My PC/`
-- [Art performance & material architecture](project_art-performance-and-materials.md) — verts are cheap; optimize draw-calls/materials/textures; E/NE is a state-swap (not concurrent), Props is the one extra material
+- [Art performance & material architecture](project_art-performance-and-materials.md) — revised evidence boundary: resource discipline and geometry budgets; no measured universal Civ VI bottleneck ranking.
 
 ## Promoted docs
 
