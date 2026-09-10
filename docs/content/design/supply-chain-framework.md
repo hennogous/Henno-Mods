@@ -30,11 +30,11 @@ The mod introduces the concept of a transaction as an atomic pattern for the yie
 
 **Seller** — A building or improvement that produces and sells goods or Materials.
 
-**Buyer** — A building that purchases goods or Materials, either as an end-consumer or to process them further before acting as a Seller of its output.
+**Customer** — A building that purchases goods or Materials, either as an end-consumer or to process them further before acting as a Seller of its output.
 
-**Demand** is driven by the Buyer, and flows backward in the supply chain. Implemented as a {{production}} Production yield bonus to the Seller, representing increased effort to meet demand.
+**Demand** is driven by the Customer, and flows backward in the supply chain. Implemented as a {{production}} Production yield bonus to the Seller, representing increased effort to meet demand.
 
-**Supply** is the output of the Seller's response to demand, i.e. the goods produced through that increased production, flowing forward in the supply chain. Implemented as a yield bonus to the Buyer — mostly the Quarter's main yield, representing the value created by the supplied goods, but sometimes a more appropriate thematic yield.
+**Supply** is the output of the Seller's response to demand, i.e. the goods produced through that increased production, flowing forward in the supply chain. Implemented as a yield bonus to the Customer — mostly the Quarter's main yield, representing the value created by the supplied goods, but sometimes a more appropriate thematic yield.
 
 **Payment** for provided Supply is implemented as a {{gold}} Gold yield bonus to the Seller.
 
@@ -136,7 +136,7 @@ Procures intermediary goods from a stage 2 supplier in the Quarter, and processe
 * Sales transactions of consumer goods to the city population is represented by:
 
    * A scaling yield of +0.1 {{production}} Production (demand) and +0.1 {{gold}} Gold (payment) per Citizen in the City to the stage 3 building, in return for +0.1 of the main yield of the Quarter (supply) to an adjacent Market.
-      * The Market is always a valid buyer for any stage 3 building, regardless of which Quarter they belong to, and hence this transaction is relevant to all Quarters.
+      * The Market is always a valid customer for any stage 3 building, regardless of which Quarter they belong to, and hence this transaction is relevant to all Quarters.
       * Whenever there is a scaling yield based on city population from a transaction between adjacent buildings from different cities, it is the customer's city population that is used as the multiplier, since that determines the market size and hence the value of the transaction.
       * *At the moment, both the main yield (supply) and the {{gold}} Gold yield (payment) will be given to the customer city, but in the future I want to change this to use the customer's city population to give {{gold}} Gold back to the seller's city so that it follows the standard transaction pattern of payment belonging to the seller.*
 

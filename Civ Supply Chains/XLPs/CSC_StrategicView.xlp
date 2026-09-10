@@ -177,6 +177,30 @@
 			<m_EntryID text="CSC_TAILORS_SV_Textile_Workshop_Visible_UnderConstruction"/>
 			<m_ObjectName text="CSC_TAILORS_SV_Textile_Workshop_Visible_UnderConstruction"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Tailor_Revealed"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Tailor_Revealed"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Tailor_Revealed_Pillaged"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Tailor_Revealed_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Tailor_Revealed_UnderConstruction"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Tailor_Revealed_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Tailor_Visible"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Tailor_Visible"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Tailor_Visible_Pillaged"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Tailor_Visible_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Tailor_Visible_UnderConstruction"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Tailor_Visible_UnderConstruction"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

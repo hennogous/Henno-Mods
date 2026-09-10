@@ -24,6 +24,35 @@ STYLE_MODULE_SPEC = importlib.util.spec_from_file_location(
 assert STYLE_MODULE_SPEC and STYLE_MODULE_SPEC.loader
 SQL_STYLE = importlib.util.module_from_spec(STYLE_MODULE_SPEC)
 STYLE_MODULE_SPEC.loader.exec_module(SQL_STYLE)
+LOCALIZATION_MODULE_SPEC = importlib.util.spec_from_file_location(
+    "csc_validate_localization_patterns",
+    Path(__file__).with_name("validate_localization_patterns.py"),
+)
+assert LOCALIZATION_MODULE_SPEC and LOCALIZATION_MODULE_SPEC.loader
+LOCALIZATION_PATTERNS = importlib.util.module_from_spec(LOCALIZATION_MODULE_SPEC)
+LOCALIZATION_MODULE_SPEC.loader.exec_module(LOCALIZATION_PATTERNS)
+
+QUARTER_ICON_ATLAS_LAYOUT = {
+    "district_normal": 0,
+    "district_fow": 1,
+    "stage2_building": 4,
+    "stage3_building": 5,
+    "stage4_building": 6,
+    "stage2_service": 8,
+    "stage3_service": 9,
+    "stage4_service": 10,
+}
+
+QUARTER_ICON_ATLAS_LAYOUT = {
+    "district_normal": 0,
+    "district_fow": 1,
+    "stage2_building": 4,
+    "stage3_building": 5,
+    "stage4_building": 6,
+    "stage2_service": 8,
+    "stage3_service": 9,
+    "stage4_service": 10,
+}
 
 
 class Validation:
@@ -57,10 +86,72 @@ def sha256(path: Path) -> str:
 def validate_schema(instance: dict[str, Any], schema_name: str, result: Validation) -> None:
     schema_path = SPEC_ROOT / "schema" / schema_name
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    validator = jsonschema.Draft202012Validator(schema)
+    validator = jsonschema.Draft202012Validator(
+        schema, format_checker=jsonschema.FormatChecker()
+    )
     for failure in sorted(validator.iter_errors(instance), key=lambda error: list(error.path)):
         location = ".".join(str(part) for part in failure.path) or "<root>"
         result.error(f"{schema_name} {location}: {failure.message}")
+
+
+def validate_icon_atlas_layout(
+    gameplay_catalog: dict[str, Any],
+    implementation: dict[str, Any],
+    result: Validation,
+) -> dict[str, int]:
+    catalog_layout = gameplay_catalog.get("quarter_icon_atlas_layout")
+    if catalog_layout != QUARTER_ICON_ATLAS_LAYOUT:
+        result.error(
+            "gameplay catalog quarter_icon_atlas_layout must match the shared "
+            "CSC district/building/service convention"
+        )
+        catalog_layout = QUARTER_ICON_ATLAS_LAYOUT
+
+    contract = implementation.get("icon_atlas_layout", {})
+    overrides = contract.get("overrides", {})
+    if not isinstance(overrides, dict):
+        return dict(catalog_layout)
+    effective = dict(catalog_layout)
+    effective.update(overrides)
+    duplicate_indices = sorted(
+        index for index in set(effective.values()) if list(effective.values()).count(index) > 1
+    )
+    if duplicate_indices:
+        result.error(
+            "icon_atlas_layout assigns multiple semantic roles to index(es): "
+            + ", ".join(str(index) for index in duplicate_indices)
+        )
+    return effective
+
+
+def validate_icon_atlas_layout(
+    gameplay_catalog: dict[str, Any],
+    implementation: dict[str, Any],
+    result: Validation,
+) -> dict[str, int]:
+    catalog_layout = gameplay_catalog.get("quarter_icon_atlas_layout")
+    if catalog_layout != QUARTER_ICON_ATLAS_LAYOUT:
+        result.error(
+            "gameplay catalog quarter_icon_atlas_layout must match the shared "
+            "CSC district/building/service convention"
+        )
+        catalog_layout = QUARTER_ICON_ATLAS_LAYOUT
+
+    contract = implementation.get("icon_atlas_layout", {})
+    overrides = contract.get("overrides", {})
+    if not isinstance(overrides, dict):
+        return dict(catalog_layout)
+    effective = dict(catalog_layout)
+    effective.update(overrides)
+    duplicate_indices = sorted(
+        index for index in set(effective.values()) if list(effective.values()).count(index) > 1
+    )
+    if duplicate_indices:
+        result.error(
+            "icon_atlas_layout assigns multiple semantic roles to index(es): "
+            + ", ".join(str(index) for index in duplicate_indices)
+        )
+    return effective
 
 
 def resolve_design_ref(document: Any, reference: str) -> tuple[bool, Any]:
@@ -95,6 +186,64 @@ def resolve_design_ref(document: Any, reference: str) -> tuple[bool, Any]:
         else:
             return False, None
     return True, current
+
+
+def phase_design_sha256(
+    design: dict[str, Any], implementation: dict[str, Any], phase_id: str
+) -> str:
+    """Hash only the canonical design subtrees consumed by one phase."""
+    phase = next(
+        (item for item in implementation.get("phases", []) if item.get("id") == phase_id),
+        None,
+    )
+    if phase is None:
+        raise ValueError(f"unknown phase {phase_id}")
+    references = sorted(
+        {
+            reference
+            for requirement in phase.get("requirements", [])
+            for reference in requirement.get("design_refs", [])
+        }
+    )
+    resolved: list[dict[str, Any]] = []
+    for reference in references:
+        found, value = resolve_design_ref(design, reference)
+        if not found:
+            raise ValueError(f"{phase_id}: unresolved design reference {reference}")
+        resolved.append({"reference": reference, "value": value})
+    payload = json.dumps(
+        resolved, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def phase_design_sha256(
+    design: dict[str, Any], implementation: dict[str, Any], phase_id: str
+) -> str:
+    """Hash only the canonical design subtrees consumed by one phase."""
+    phase = next(
+        (item for item in implementation.get("phases", []) if item.get("id") == phase_id),
+        None,
+    )
+    if phase is None:
+        raise ValueError(f"unknown phase {phase_id}")
+    references = sorted(
+        {
+            reference
+            for requirement in phase.get("requirements", [])
+            for reference in requirement.get("design_refs", [])
+        }
+    )
+    resolved: list[dict[str, Any]] = []
+    for reference in references:
+        found, value = resolve_design_ref(design, reference)
+        if not found:
+            raise ValueError(f"{phase_id}: unresolved design reference {reference}")
+        resolved.append({"reference": reference, "value": value})
+    payload = json.dumps(
+        resolved, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def collect_design_ids(value: Any) -> set[str]:
@@ -132,6 +281,9 @@ def flatten_requirements(implementation: dict[str, Any]) -> list[dict[str, Any]]
     ]
 
 
+ACTIVE_PHASE_STATUSES = {"approved", "implementing", "ready_for_review", "accepted"}
+
+
 def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
     result = Validation()
     quarter_dir = SPEC_ROOT / quarter
@@ -153,6 +305,13 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
     validate_schema(design, "quarter-design.schema.json", result)
     validate_schema(implementation, "quarter-implementation.schema.json", result)
     validate_schema(control, "quarter-control.schema.json", result)
+    localization_catalog_path = ROOT / implementation["localization_catalog"]
+    for failure in LOCALIZATION_PATTERNS.validate_catalog(
+        localization_catalog, localization_catalog_path
+    ):
+        result.error(f"localization catalog: {failure}")
+    validate_icon_atlas_layout(gameplay_catalog, implementation, result)
+    validate_icon_atlas_layout(gameplay_catalog, implementation, result)
 
     for name, document in (
         ("design", design),
@@ -257,7 +416,101 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
             f"missing={sorted(phase_ids - gate_ids)}, extra={sorted(gate_ids - phase_ids)}"
         )
 
-    for decision in implementation.get("open_engine_decisions", []):
+    phase_validation = implementation.get("phase_validation", {})
+    validation_phase_ids = set(phase_validation)
+    if phase_ids != validation_phase_ids:
+        result.error(
+            "phase validation entries do not match implementation phases; "
+            f"missing={sorted(phase_ids - validation_phase_ids)}, "
+            f"extra={sorted(validation_phase_ids - phase_ids)}"
+        )
+    for phase in implementation.get("phases", []):
+        phase_id = phase.get("id")
+        validation_contract = phase_validation.get(phase_id, {})
+        required_outputs = set(validation_contract.get("required_outputs", []))
+        required_suites = set(validation_contract.get("required_suites", []))
+        unknown_outputs = required_outputs - output_keys
+        if unknown_outputs:
+            result.error(
+                f"{phase_id}: phase validation references unknown outputs "
+                + ", ".join(sorted(unknown_outputs))
+            )
+        declared_outputs = {
+            output
+            for requirement in phase.get("requirements", [])
+            for output in requirement.get("outputs", [])
+        }
+        missing_outputs = declared_outputs - required_outputs
+        if missing_outputs:
+            result.error(
+                f"{phase_id}: phase validation omits requirement outputs "
+                + ", ".join(sorted(missing_outputs))
+            )
+        minimum_suites = {"contract"}
+        if phase_id != "art_integration":
+            minimum_suites.update({"output_completeness", "semantic_rows"})
+        if required_outputs & set(style_profiles):
+            minimum_suites.update({"sql_style", "sql_statement_boundaries"})
+        if "localization_generated" in required_outputs:
+            minimum_suites.update(
+                {"localization_generation", "localization_patterns"}
+            )
+        if required_outputs & set(implementation.get("build_wiring", {}).get("actions", {})):
+            minimum_suites.add("modbuddy_wiring")
+        if any(
+            requirement.get("replacement_binding")
+            for requirement in phase.get("requirements", [])
+        ):
+            minimum_suites.add("replacement_coverage")
+        if any(
+            any(pattern.startswith("GP.SERVICE.") for pattern in requirement.get("gameplay_patterns", []))
+            for requirement in phase.get("requirements", [])
+        ):
+            minimum_suites.add("modifier_graph")
+        missing_suites = minimum_suites - required_suites
+        if missing_suites:
+            result.error(
+                f"{phase_id}: phase validation omits required suites "
+                + ", ".join(sorted(missing_suites))
+            )
+        assertion_module = ROOT / str(validation_contract.get("assertion_module", ""))
+        if not assertion_module.is_file():
+            result.error(f"{phase_id}: missing assertion module {assertion_module}")
+
+    build_wiring = implementation.get("build_wiring", {})
+    action_manifest = ROOT / str(build_wiring.get("action_manifest", ""))
+    source_project = ROOT / str(build_wiring.get("source_project", ""))
+    if not action_manifest.is_file():
+        result.error(f"missing ModBuddy action manifest: {action_manifest}")
+    if not source_project.is_file():
+        result.error(f"missing ModBuddy source project: {source_project}")
+    for output_key, action in build_wiring.get("actions", {}).items():
+        if output_key not in output_keys:
+            result.error(f"build wiring references unknown output {output_key}")
+            continue
+        planned = Path(str(implementation["planned_outputs"][output_key])).as_posix()
+        expected_file = str(action.get("file", ""))
+        project_prefix = "Civ Supply Chains/"
+        planned_project_path = (
+            planned[len(project_prefix):]
+            if planned.startswith(project_prefix)
+            else planned
+        )
+        if expected_file != planned_project_path:
+            result.error(
+                f"{output_key}: build-wiring file {expected_file!r} does not match "
+                f"planned output {planned!r}"
+            )
+
+    open_decisions = implementation.get("open_engine_decisions", [])
+    resolved_decisions = implementation.get("resolved_engine_decisions", [])
+    open_decision_ids = [decision.get("id") for decision in open_decisions]
+    resolved_decision_ids = [decision.get("id") for decision in resolved_decisions]
+    all_decision_ids = open_decision_ids + resolved_decision_ids
+    if len(all_decision_ids) != len(set(all_decision_ids)):
+        result.error("engine decisions contain duplicate IDs across open/resolved lists")
+
+    for decision in open_decisions + resolved_decisions:
         affected = decision.get("affects", [])
         if isinstance(affected, str):
             affected = [affected]
@@ -266,8 +519,15 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
                 result.error(
                     f"{decision.get('id')}: unknown affected requirement {requirement_id}"
                 )
+
+    for decision in open_decisions:
         if decision.get("resolution_required_before_phase") not in phase_ids:
             result.error(f"{decision.get('id')}: unknown resolution phase")
+
+    for decision in resolved_decisions:
+        for evidence in decision.get("evidence", []):
+            if not (ROOT / evidence).is_file():
+                result.error(f"{decision.get('id')}: missing resolution evidence {evidence}")
 
     for preserved in implementation.get("preserved_inputs", []):
         pattern_id = preserved.get("pattern")
@@ -292,12 +552,12 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
             result.error(f"{output_key} SQL style: {failure}")
 
     if check_clean_start:
-        approved_phases = {
+        active_phases = {
             phase_id
             for phase_id, gate in control.get("phase_gates", {}).items()
-            if gate.get("status") == "approved"
+            if gate.get("status") in ACTIVE_PHASE_STATUSES
         }
-        if not approved_phases:
+        if not active_phases:
             for key, relative_path in implementation.get("planned_outputs", {}).items():
                 if (ROOT / relative_path).exists():
                     result.error(
@@ -305,22 +565,41 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
                     )
 
     approvals = control.get("contract_approvals", {})
-    all_contracts_approved = bool(approvals) and all(
-        approval.get("status") == "approved" for approval in approvals.values()
-    )
+    for approval_id, approval in approvals.items():
+        approval_path = ROOT / str(approval.get("path", ""))
+        if not approval_path.is_file():
+            result.error(f"{approval_id}: missing approval source {approval_path}")
+            continue
+        if approval.get("status") == "approved":
+            if approval.get("sha256") != sha256(approval_path):
+                result.error(f"{approval_id}: approved contract hash is stale")
     approved_exception_ids = {
         exception.get("id")
         for exception in control.get("exceptions", [])
         if exception.get("status") == "approved"
     }
     for phase_id, gate in control.get("phase_gates", {}).items():
-        if gate.get("status") != "approved":
+        gate_status = gate.get("status")
+        if gate_status not in ACTIVE_PHASE_STATUSES:
             continue
-        if not all_contracts_approved:
-            result.error(f"{phase_id}: phase approved before all contracts")
+        if not gate.get("approved_by") or not gate.get("approved_at"):
+            result.error(f"{phase_id}: active phase lacks explicit approval metadata")
+        try:
+            expected_design_hash = phase_design_sha256(design, implementation, phase_id)
+        except ValueError as failure:
+            result.error(str(failure))
+        else:
+            if gate.get("design_sha256") != expected_design_hash:
+                result.error(f"{phase_id}: approved design-slice hash is stale")
+        if gate_status in {"ready_for_review", "accepted"} and not gate.get("ready_at"):
+            result.error(f"{phase_id}: {gate_status} phase lacks ready_at")
+        if gate_status == "accepted" and (
+            not gate.get("accepted_by") or not gate.get("accepted_at")
+        ):
+            result.error(f"{phase_id}: accepted phase lacks acceptance metadata")
         unresolved = [
             decision.get("id")
-            for decision in implementation.get("open_engine_decisions", [])
+            for decision in open_decisions
             if decision.get("resolution_required_before_phase") == phase_id
             and decision.get("id") not in approved_exception_ids
         ]
@@ -331,9 +610,9 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
 
     if control.get("exceptions"):
         result.warn(f"{len(control['exceptions'])} approved/proposed exception(s) recorded")
-    if implementation.get("open_engine_decisions"):
+    if open_decisions:
         result.warn(
-            f"{len(implementation['open_engine_decisions'])} engine decision(s) remain open"
+            f"{len(open_decisions)} engine decision(s) remain open"
         )
     return result
 

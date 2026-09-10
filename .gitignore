@@ -8,6 +8,7 @@ docs/.quartz-cache/
 # Python/tooling cache
 __pycache__/
 *.py[cod]
+project/tools/blender/node_modules/
 # ModBuddy user/session files and logs
 *.civ6suo
 *.suo

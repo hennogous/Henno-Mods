@@ -17,13 +17,13 @@ no engine decisions.
 - one or more classified reference patterns;
 - the files that will implement it;
 - exact static assertions;
-- runtime scenarios;
+- user-owned, later in-game acceptance scenarios;
 - required localization structures;
 - unresolved engine decisions that must not be guessed.
 
-`project/specs/tailors/control.yaml` locks the hashes of the design and Bakers
-references, records contract approval, gates implementation phases, and records
-explicit exceptions.
+`project/specs/tailors/control.yaml` locks the hashes of the canonical and Bakers
+references, records an exact design-subtree hash for each approved phase, gates
+implementation and handoff states, and records exceptions.
 
 The result has one source for intent, one source for implementation obligations,
 and one source for change control. Traceability is embedded in each requirement
@@ -38,8 +38,12 @@ TDD when its validators are first run against the absent/incomplete output, fail
 for the expected reasons, and are then made to pass by the smallest compliant
 implementation.
 
-The contracts alone are not a substitute for TDD. A phase is not complete merely
-because its YAML validates; its SQL/text tests and runtime scenarios must pass.
+The contracts alone are not a substitute for TDD. Agent implementation handoff
+requires the contract, SQL, text, style, and other automated checks to pass. The
+listed `runtime_scenarios` are acceptance-test specifications for the user to run
+later; they do not require the implementation agent to launch Civ VI or block the
+current handoff. Final gameplay acceptance still requires the user to pass those
+scenarios.
 
 ## Authority and conflict handling
 
@@ -78,8 +82,11 @@ Implementation proceeds phase by phase:
 7. `art_integration` (deliberately deferred)
 
 Each phase is reviewed before its gate becomes `approved`. Only then are its
-outputs written. A phase ends with static validation and its listed FireTuner or
-in-game scenarios.
+outputs written. An approved phase moves through `implementing`,
+`ready_for_review`, and finally `accepted`; those states are never inferred.
+The implementation agent may use `ready_for_review` only after the phase
+validator passes. The user later closes gameplay acceptance by running the
+listed FireTuner or in-game scenarios and explicitly accepting the phase.
 
 ## How to use it
 
@@ -92,29 +99,34 @@ py -3 project/tools/quarter_contracts/validate_quarter.py tailors
 The same command automatically applies the Bakers-derived SQL style profile to
 each Tailors gameplay SQL file as soon as that output exists.
 
-Review these files in order:
-
-1. `project/specs/tailors/design.yaml`
-2. `project/specs/reference/bakers-gameplay-patterns.yaml`
-3. `project/specs/reference/bakers-localization-patterns.yaml`
-4. `project/specs/reference/bakers-sql-style.yaml`
-5. `project/specs/tailors/implementation.yaml`
-6. `project/specs/tailors/control.yaml`
-
-During review, change contract approval states only when the corresponding file
-is accepted. Resolve each `open_engine_decisions` entry before approving the
-phase named by `resolution_required_before_phase`.
+The user's approval surface is `project/specs/tailors/design.yaml`, reviewed one
+phase-sized subtree at a time. The implementation agent derives and maintains
+the pattern catalogs, implementation manifest, assertions, and control record.
+An approved phase stores a canonical hash of only its referenced design
+subtrees, so edits to later unapproved stages do not invalidate it. Resolve each
+`open_engine_decisions` entry before approving its named phase and record settled
+choices in `resolved_engine_decisions` so later agents do not reopen them.
 
 When a phase is approved, implement only the requirements listed under that
-phase. Use:
+phase. First run the phase validator to establish the expected red state:
 
 ```powershell
-py -3 project/tools/quarter_contracts/validate_quarter.py tailors --no-clean-start-check
+py -3 project/tools/quarter_contracts/validate_phase.py tailors foundation
 ```
 
-while approved outputs exist. The bootstrap switch is temporary; output-aware
-SQL and localization validators will be added alongside the first phase so later
-phases can verify exact row-level obligations.
+Replace that phase's red semantic sentinel in
+`project/tools/quarter_contracts/quarter_checks/tailors_assertions.py` with
+executable checks derived from every static assertion, then implement until the
+same command passes. Before handoff, move the gate to `ready_for_review` and run:
+
+```powershell
+py -3 project/tools/quarter_contracts/validate_phase.py tailors foundation --handoff
+```
+
+The phase validator checks cumulative output completeness, strict SQL structure
+and complete statement boundaries, executable semantic assertions, exact
+localization generation, and ModBuddy Content/action/load-order/criteria wiring.
+Later phases extend the same files while retaining all earlier checks.
 
 ## Promoting Tailors to the reference
 

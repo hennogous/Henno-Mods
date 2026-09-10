@@ -1,10 +1,14 @@
 schema_version: 1
 quarter: tailors
-status: proposed
+status: implementing
 design_contract: project/specs/tailors/design.yaml
 gameplay_catalog: project/specs/reference/bakers-gameplay-patterns.yaml
 localization_catalog: project/specs/reference/bakers-localization-patterns.yaml
 sql_style_catalog: project/specs/reference/bakers-sql-style.yaml
+
+icon_atlas_layout:
+  source: gameplay_catalog
+  overrides: {}
 
 authority_order:
   - "The canonical Tailors design Markdown decides intended behavior."
@@ -19,6 +23,156 @@ planned_outputs:
   monopolies_gold: Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql
   localization_source: project/localization/CSC_TAILORS_TEXT.md
   localization_generated: Civ Supply Chains/Text/CSC_TAILORS_TEXT.sql
+  monopolies_localization_generated: Civ Supply Chains/Text/CSC_TAILORS_MC_MODE_TEXT.sql
+  hemp_localization_source: project/localization/ModSupport_CH_TAILORS_TEXT.md
+  hemp_localization_generated: Civ Supply Chains/ModSupport/ModSupport_CH_TAILORS_TEXT.sql
+  llamas_localization_source: project/localization/ModSupport_LAR_A_TAILORS_TEXT.md
+  llamas_localization_generated: Civ Supply Chains/ModSupport/ModSupport_LAR_A_TAILORS_TEXT.sql
+  r2_localization_source: project/localization/ModSupport_R2_TEXT.md
+  r2_localization_generated: Civ Supply Chains/ModSupport/ModSupport_R2_TEXT.sql
+  cashmere_localization_source: project/localization/ModSupport_R2_A_TAILORS_TEXT.md
+  cashmere_localization_generated: Civ Supply Chains/ModSupport/ModSupport_R2_A_TAILORS_TEXT.sql
+  sukritact_gold_localization_source: project/localization/ModSupport_SR_TAILORS_TEXT.md
+  sukritact_gold_localization_generated: Civ Supply Chains/ModSupport/ModSupport_SR_TAILORS_TEXT.sql
+  city_lights_gameplay: Civ Supply Chains/ModSupport/ModSupport_CL.sql
+  city_lights_localization_source: project/localization/ModSupport_CL_TEXT.md
+  city_lights_localization_generated: Civ Supply Chains/ModSupport/ModSupport_CL_TEXT.sql
+  art_property_lua: Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua
+  icons: Civ Supply Chains/Icons/CSC_TAILORS_ICONS.sql
+  buildings_artdef: Civ Supply Chains/ArtDefs/CSC_Buildings.artdef
+  landmarks_artdef: Civ Supply Chains/ArtDefs/CSC_Landmarks.artdef
+  strategic_view_artdef: Civ Supply Chains/ArtDefs/CSC_StrategicView.artdef
+  property_ranges_artdef: Civ Supply Chains/ArtDefs/CSC_GamePropertyRanges.artdef
+  tilebase_xlp: Civ Supply Chains/XLPs/CSC_Tilebases.xlp
+
+build_wiring:
+  action_manifest: project/modbuddy/CivSupplyChains.actions.json
+  source_project: Civ Supply Chains/Civ Supply Chains.civ6proj
+  actions:
+    core:
+      id: CSC_Q_TAILORS
+      type: UpdateDatabase
+      file: Data/CSC_Q_TAILORS.sql
+      load_order: 100
+      criteria: []
+    gold:
+      id: CSC_Q_TAILORS_GOLD
+      type: UpdateDatabase
+      file: Data/CSC_Q_TAILORS_GOLD.sql
+      load_order: 101
+      criteria: []
+    monopolies:
+      id: CSC_Q_TAILORS_MC_MODE
+      type: UpdateDatabase
+      file: Data/CSC_Q_TAILORS_MC_MODE.sql
+      load_order: 100
+      criteria: [Monopolies_Mode]
+    monopolies_gold:
+      id: CSC_Q_TAILORS_MC_MODE_GOLD
+      type: UpdateDatabase
+      file: Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql
+      load_order: 101
+      criteria: [Monopolies_Mode]
+    localization_generated:
+      id: CSC_TAILORS_TEXT
+      type: UpdateText
+      file: Text/CSC_TAILORS_TEXT.sql
+      load_order: 102
+      criteria: []
+    monopolies_localization_generated:
+      id: CSC_TAILORS_MC_MODE_TEXT
+      type: UpdateText
+      file: Text/CSC_TAILORS_MC_MODE_TEXT.sql
+      load_order: 103
+      criteria: [Monopolies_Mode]
+    hemp_localization_generated:
+      id: ModSupport_CH_Tailors_Text
+      type: UpdateText
+      file: ModSupport/ModSupport_CH_TAILORS_TEXT.sql
+      load_order: 103
+      criteria: [ModSupport_CH]
+    llamas_localization_generated:
+      id: ModSupport_LAR_A_Tailors_Text
+      type: UpdateText
+      file: ModSupport/ModSupport_LAR_A_TAILORS_TEXT.sql
+      load_order: 103
+      criteria: [CSC_A_RESOURCES, ModSupport_LAR]
+    r2_localization_generated:
+      id: ModSupport_R2_Text
+      type: UpdateText
+      file: ModSupport/ModSupport_R2_TEXT.sql
+      load_order: 102
+      criteria: [ModSupport_R2]
+    cashmere_localization_generated:
+      id: ModSupport_R2_A_Tailors_Text
+      type: UpdateText
+      file: ModSupport/ModSupport_R2_A_TAILORS_TEXT.sql
+      load_order: 103
+      criteria: [CSC_A_RESOURCES, ModSupport_R2]
+    sukritact_gold_localization_generated:
+      id: ModSupport_SR_Tailors_Text
+      type: UpdateText
+      file: ModSupport/ModSupport_SR_TAILORS_TEXT.sql
+      load_order: 103
+      criteria: [ModSupport_SR]
+    city_lights_gameplay:
+      id: ModSupport_CL
+      type: UpdateDatabase
+      file: ModSupport/ModSupport_CL.sql
+      load_order: 101
+      criteria: [ModSupport_CL]
+    city_lights_localization_generated:
+      id: ModSupport_CL_TEXT
+      type: UpdateText
+      file: ModSupport/ModSupport_CL_TEXT.sql
+      load_order: 1000
+      criteria: [ModSupport_CL]
+    art_property_lua:
+      id: CSC_ArtProperties
+      type: AddGameplayScripts
+      file: Lua_UI/ArtProperties/CSC_ArtProperties.lua
+      load_order: 501
+      criteria: []
+phase_validation:
+  foundation:
+    required_outputs: [core, gold, localization_source, localization_generated]
+    required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring]
+    assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
+  materials_and_stage2:
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, monopolies_localization_generated]
+    required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries]
+    assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
+  stage3:
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, art_property_lua, icons, buildings_artdef, landmarks_artdef, strategic_view_artdef, property_ranges_artdef, tilebase_xlp]
+    required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract, art_contract]
+    assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
+  stage4:
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, art_property_lua, icons, buildings_artdef, landmarks_artdef, strategic_view_artdef, property_ranges_artdef, tilebase_xlp]
+    required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract, art_contract]
+    assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
+  compatibility:
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
+    required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
+    assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
+  localization_and_integration:
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
+    required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
+    assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
+  art_integration:
+    required_outputs: [core, art_property_lua]
+    required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, modbuddy_wiring, lua_contract, art_contract]
+    assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
+
+validation_ownership:
+  automated:
+    owner: implementation_agent
+    required_before_handoff: true
+    scope: [schema, contract, generated_output, SQL_style, localization_patterns, smoke_tests]
+  in_game:
+    owner: user
+    required_before_handoff: false
+    required_for_final_acceptance: true
+    scenarios_field: runtime_scenarios
 
 sql_style_profiles:
   core: core
@@ -30,9 +184,29 @@ implementation_rules:
   - GP.FILE.SECTION_ORDER
   - GP.REPLACEMENT.DIRECT_ONE_LEVEL
   - GP.GOLD.COMPANION_SPLIT
+  - "Every referenced LP.* pattern's authorship_mode is binding: strict_template wording is substituted, deterministic_composition is generated from implementation data, structured_original_prose preserves architecture but must be freshly written, and curated_integrated_prose requires editorial integration across all participating Quarters."
+  - "Never treat a Bakers source_anchor as prose to reskin when its authorship_mode requires original or curated writing."
   - "No Bakers-only pattern may be used."
   - "No Tailors gameplay output may be written until its phase is approved in control.yaml."
-  - "Art property scaffolding is deferred until the gameplay implementation is accepted."
+  - "Art bridge properties follow physical supply-chain state, independently of later service unlock civic/tech gates."
+  - "runtime_scenarios are user-owned later acceptance tests; the implementation agent records them but is not required to launch Civ VI or execute them before handoff."
+
+replacement_policy:
+  scope: direct_one_level
+  engine_inherited:
+    building_presence_requirements: REQUIREMENT_CITY_HAS_BUILDING
+    district_type_requirements: REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES
+    building_yield_effects: MODIFIER_BUILDING_YIELD_CHANGE
+  explicit_direct_expansion:
+    - BuildingModifiers
+    - building_and_district_description_appends
+    - MAB_TypeTags_and_generated_return_adjacencies
+    - Lua_building_and_district_type_lookups
+  never_expand: [named_wonders, CSC_owned_buildings_and_districts]
+  invariants:
+    - "Do not duplicate an engine-inherited effect for a unique replacement."
+    - "Do not recursively chase replacements of replacements."
+    - "Every replacement-sensitive requirement states which surface is inherited and which is explicitly expanded."
 
 preserved_inputs:
   - id: MS.CH.HEMP
@@ -40,31 +214,55 @@ preserved_inputs:
     file: Civ Supply Chains/ModSupport/ModSupport_CH.sql
     resource: RESOURCE_AOM_HEMP
     class: CLASS_CSC_TAILORS_BASE
+    localization_source: project/localization/ModSupport_CH_TAILORS_TEXT.md
+    localization_generated: Civ Supply Chains/ModSupport/ModSupport_CH_TAILORS_TEXT.sql
+    localization_action: ModSupport_CH_Tailors_Text
+    criteria: [ModSupport_CH]
   - id: MS.LAR.LLAMAS
     pattern: GP.MODSUPPORT.RESOURCE_CLASS_MAPPING
     file: Civ Supply Chains/ModSupport/ModSupport_LAR_A.sql
     resource: RESOURCE_LEU_P0K_LLAMAS
     class: CLASS_CSC_TAILORS_BASE
+    localization_source: project/localization/ModSupport_LAR_A_TAILORS_TEXT.md
+    localization_generated: Civ Supply Chains/ModSupport/ModSupport_LAR_A_TAILORS_TEXT.sql
+    localization_action: ModSupport_LAR_A_Tailors_Text
+    criteria: [CSC_A_RESOURCES, ModSupport_LAR]
   - id: MS.R2.BAMBOO
     pattern: GP.MODSUPPORT.RESOURCE_CLASS_MAPPING
     file: Civ Supply Chains/ModSupport/ModSupport_R2.sql
     resource: RESOURCE_BAMBOO
     class: CLASS_CSC_TAILORS_BASE
+    localization_source: project/localization/ModSupport_R2_TEXT.md
+    localization_generated: Civ Supply Chains/ModSupport/ModSupport_R2_TEXT.sql
+    localization_action: ModSupport_R2_Text
+    criteria: [ModSupport_R2]
   - id: MS.R2.GOLD
     pattern: GP.MODSUPPORT.RESOURCE_CLASS_MAPPING
     file: Civ Supply Chains/ModSupport/ModSupport_R2.sql
     resource: RESOURCE_GOLD2
     class: CLASS_CSC_TAILORS_SPEC
+    localization_source: project/localization/ModSupport_R2_TEXT.md
+    localization_generated: Civ Supply Chains/ModSupport/ModSupport_R2_TEXT.sql
+    localization_action: ModSupport_R2_Text
+    criteria: [ModSupport_R2]
   - id: MS.R2.CASHMERE
     pattern: GP.MODSUPPORT.RESOURCE_CLASS_MAPPING
     file: Civ Supply Chains/ModSupport/ModSupport_R2_A.sql
     resource: RESOURCE_CASHMERE
     class: CLASS_CSC_TAILORS_SPEC
+    localization_source: project/localization/ModSupport_R2_A_TAILORS_TEXT.md
+    localization_generated: Civ Supply Chains/ModSupport/ModSupport_R2_A_TAILORS_TEXT.sql
+    localization_action: ModSupport_R2_A_Tailors_Text
+    criteria: [CSC_A_RESOURCES, ModSupport_R2]
   - id: MS.SR.GOLD
     pattern: GP.MODSUPPORT.RESOURCE_CLASS_MAPPING
     file: Civ Supply Chains/ModSupport/ModSupport_SR.sql
     resource: RESOURCE_GOLD
     class: CLASS_CSC_TAILORS_SPEC
+    localization_source: project/localization/ModSupport_SR_TAILORS_TEXT.md
+    localization_generated: Civ Supply Chains/ModSupport/ModSupport_SR_TAILORS_TEXT.sql
+    localization_action: ModSupport_SR_Tailors_Text
+    criteria: [ModSupport_SR]
 
 phases:
   - id: foundation
@@ -105,7 +303,7 @@ phases:
           - "Tailors' Quarter becomes buildable at Craftsmanship at the specified cost."
 
       - id: I.DISTRICT_MATERIAL_ADJACENCY
-        design_refs: [district.effects.D.DISTRICT.MATERIALS]
+        design_refs: [district.effects.D.DISTRICT.MATERIAL_INPUTS]
         gameplay_patterns: [GP.DISTRICT.MATERIAL_ADJACENCY]
         localization_patterns: [LP.DISTRICT.ADJACENCY_BULLET]
         outputs: [core, localization_source]
@@ -116,19 +314,22 @@ phases:
 
       - id: I.DISTRICT_CUSTOMER_ADJACENCIES
         design_refs:
-          - district.effects.D.DISTRICT.HARBOR
-          - district.effects.D.DISTRICT.CULTURE_CUSTOMERS
-        gameplay_patterns: [GP.DISTRICT.BILATERAL_ADJACENCY]
+          - district.effects.D.DISTRICT.INTERMEDIARY_GOODS_CUSTOMERS
+          - district.effects.D.DISTRICT.GOODS_SALES_CUSTOMERS
+        gameplay_patterns: [GP.DISTRICT.BILATERAL_ADJACENCY, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns: [LP.DISTRICT.BILATERAL_BULLET]
         outputs: [core, gold, localization_source]
         static_assertions:
           - "Harbor: Tailors +1 Gold; Harbor +1 Production."
           - "Commercial Hub/Holy Site/Theater: Tailors +1 Gold; customer +1 Culture."
+          - "MAB customer tags and generated return adjacencies explicitly include each direct unique district replacement exactly once."
+        replacement_binding:
+          MAB_TypeTags_and_generated_return_adjacencies: explicit_direct_one_level
         runtime_scenarios:
           - "Test every customer district separately and verify both transaction directions."
 
       - id: I.DISTRICT_RIVER
-        design_refs: [district.effects.D.DISTRICT.RIVER]
+        design_refs: [district.effects.D.DISTRICT.LOGISTICS]
         gameplay_patterns: [GP.DISTRICT.RIVER_EDGES]
         localization_patterns: [LP.DISTRICT.ADJACENCY_BULLET]
         outputs: [core, localization_source]
@@ -138,16 +339,17 @@ phases:
           - "Compare placements with 0, 1, 2, 3, and 4 adjacent river edges."
 
   - id: materials_and_stage2
-    purpose: Material improvement exchanges, Textile Workshop, and Sailmaker.
+    purpose: Material improvement exchanges, Textile Workshop, and Dockmaster.
     requirements:
       - id: I.MATERIAL_IMPROVEMENT_EXCHANGES
-        design_refs: [material_improvements.D.MATERIAL.BASE, material_improvements.D.MATERIAL.SPECIALTY]
+        design_refs: [material_improvements.D.MATERIAL.BASE]
         gameplay_patterns: [GP.MATERIAL.IMPROVEMENT_FROM_BUILDING, GP.MC.MATERIAL_TOTALS]
         localization_patterns: [LP.MATERIAL.BULLET, LP.MC.SUB_BULLET]
-        outputs: [core, gold, monopolies, monopolies_gold, localization_source]
+        outputs: [core, gold, monopolies, monopolies_gold, localization_source, monopolies_localization_generated]
         static_assertions:
-          - "Standard totals are 1 Production and 1 Gold."
+          - "Base-material standard totals are 1 Production and 1 Gold."
           - "Industry totals are 2/2 and Corporation totals are 3/3."
+          - "Industry and Corporation wording is emitted only by a Monopolies_Mode-gated UpdateText action."
         runtime_scenarios:
           - "Test standard improvement, Industry, and Corporation adjacent to the correct stage building."
 
@@ -158,6 +360,8 @@ phases:
         outputs: [core, localization_source]
         static_assertions:
           - "Unlock=Construction, Cost=80, Maintenance=2."
+          - "ICON_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP uses the shared Quarter atlas stage-2-building index 4."
+          - "CSC_Buildings.artdef contains exactly one CSC_TAILORS_BuildingChain whose Districts collection references DISTRICT_CSC_TAILORS_QUARTER and whose Buildings (Level 1) collection contains exactly BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP."
         runtime_scenarios:
           - "Textile Workshop requires only its designed technology and Quarter."
 
@@ -165,37 +369,98 @@ phases:
         design_refs: [buildings.D.STAGE2.effects.D.STAGE2.BASE_INPUT]
         gameplay_patterns: [GP.MATERIAL.BUILDING_FROM_IMPROVEMENT, GP.MC.MATERIAL_TOTALS]
         localization_patterns: [LP.MATERIAL.BULLET, LP.MC.SUB_BULLET]
-        outputs: [core, monopolies, localization_source]
+        outputs: [core, monopolies, localization_source, monopolies_localization_generated]
         static_assertions:
           - "Culture totals are standard 1, Industry 2, Corporation 3."
+          - "The Textile Workshop base description contains no Industry or Corporation wording outside Monopolies_Mode."
         runtime_scenarios:
           - "Test Base standard improvement, Industry, and Corporation; Specialty gives no Culture."
 
       - id: I.STAGE2_CUSTOMER_AND_LOCAL
         design_refs:
-          - buildings.D.STAGE2.effects.D.STAGE2.LIGHTHOUSE
-          - buildings.D.STAGE2.effects.D.STAGE2.LOCAL
-        gameplay_patterns: [GP.BUILDING.CUSTOMER_TRANSACTION, GP.BUILDING.LOCAL_EXCHANGE]
-        localization_patterns: [LP.CUSTOMER.BILATERAL_BULLET, LP.LOCAL.EXCHANGE_BULLET, LP.PEDIA.CUSTOMER_APPEND]
+          - buildings.D.STAGE2.effects.D.STAGE2.INTERMEDIARY_GOODS_CUSTOMER
+          - buildings.D.STAGE2.effects.D.STAGE2.LOCAL_CUSTOMERS
+        gameplay_patterns: [GP.BUILDING.CUSTOMER_TRANSACTION, GP.BUILDING.LOCAL_EXCHANGE, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        localization_patterns: [LP.CUSTOMER.BILATERAL_BULLET, LP.STAGE2.CUSTOMER.NO_CITY_SUFFIX, LP.LOCAL.DOWNSTREAM_EXCHANGE_BULLET, LP.PEDIA.CUSTOMER_APPEND]
         outputs: [core, gold, localization_source]
         static_assertions:
           - "Lighthouse and local Stage 3/4 exchanges implement both directions."
+          - "Lighthouse replacements inherit building-yield effects, while direct BuildingModifiers and text append rows are expanded exactly once."
+          - "The Textile Workshop description lists the Lighthouse end-customer transaction before the downstream local Tailor and Fashion House transaction."
+          - "The Lighthouse line is exactly `+1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each adjacent Lighthouse, and +1 [ICON_Production] Production in return.` It uses `each adjacent` to make stacking explicit and has no redundant destination-city suffix."
+        replacement_binding:
+          lighthouse_presence_requirement: engine_inherited
+          lighthouse_building_yield_effect: engine_inherited
+          lighthouse_BuildingModifiers: explicit_direct_one_level
+          lighthouse_description_append: explicit_direct_one_level
+          local_CSC_buildings: never_expand
         runtime_scenarios:
           - "Test Lighthouse adjacency and each local building independently."
 
-      - id: I.SAILMAKER
+      - id: I.DOCKMASTER
         design_refs: [buildings.D.STAGE2.effects.D.STAGE2.SERVICE]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS]
-        localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.CIVIC.APPEND]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.SERVICE.STACKING_CIVIC, LP.PEDIA.SERVICE_CHAPTERS, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
         outputs: [core, localization_source]
         static_assertions:
           - "Requires Naval Tradition, supplied BASE, adjacent Harbor, functioning Lighthouse."
-          - "Effect is +20% Production to naval units through Renaissance and +1 Admiral point."
+          - "Effect is +20% Production to naval units through Renaissance, +1 slot, and +1 Admiral point."
+          - "ICON_BUILDING_CSC_TAILORS_STAGE_2_SERVICE uses the shared Quarter atlas stage-2-service index 8."
+          - "ICON_BUILDING_CSC_TAILORS_STAGE_2_SERVICE uses the shared Quarter atlas stage-2-service index 8."
+          - "Because Naval Tradition has no base description, its Tailors append has no text-prefix and begins with its first visible character; it says the Production and Great Admiral point are from each adjacent supplied Textile Workshop."
+          - "The Civic SQL nevertheless handles both states: NULL/empty uses the bare LOC_CSC_TAILORS_STAGE_2_CIVIC key, while an existing visible description composes the `[NEWLINE][NEWLINE]`-prefixed LOC_CSC_TAILORS_STAGE_2_CIVIC_APPEND key."
+          - "The naval production effect is generated as the 12-row cross product of four eras and three naval promotion classes."
+          - "Exactly one mechanically real Dockmaster attach/effect pair is the MCUIS presentation anchor."
+          - "Exactly one Dockmaster row exists in CSC_AbilityAttachModifiers and exactly one aggregate notification string family exists."
+          - "All non-anchor naval-production siblings share the anchor's gates and have no MCUIS helper row or notification strings."
+          - "Dockmaster MCUIS and notification strings render the pre-signed dynamic amount directly; they add no literal sign or directional qualifier."
+          - "Dockmaster NEW/INCREASED/DECREASED/REMOVED notification fragments have no terminal punctuation because LOC_NOTIFICATION_HENNO_*_CITY_QUARTER_ABILITY_SUMMARY supplies the single final period; the REMOVED fragment keeps its internal sentence break but ends with `remain`, not `remain.`."
+          - "MCUIS removal text deactivates the gated production and Admiral-point effects without claiming that the persistent Dockmaster building or Citizen slot was removed."
+          - "The Dockmaster Civilopedia page matches the Bakers Service-page scope exactly: one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
+          - "Its Supply Chains entry follows the Storekeeper/Innkeeper rhythm: Textile Workshop plus improved Base Materials to cloth and sail canvas to the Lighthouse, then one paragraph break and `This gives a Citizen the opportunity to take up employment as a Dockmaster in the Harbor...` expressing naval production and Great Admiral development in-world."
+          - "Its Historical Context entry explains dockmasters' coordination of berths, crews, stores, repairs, and naval logistics."
+        implementation_binding:
+          service_grant:
+            method: persistent_hidden_building
+            building_type: BUILDING_CSC_TAILORS_STAGE_2_SERVICE
+            citizen_slots: 1
+          naval_production:
+            amount_percent: 20
+            modifier_type: MODIFIER_CSC_TAILORS_SINGLE_CITY_ADJUST_UNIT_TAG_ERA_PRODUCTION
+            collection_type: COLLECTION_OWNER
+            effect_type: EFFECT_ADJUST_UNIT_TAG_ERA_PRODUCTION
+            eras: [ERA_ANCIENT, ERA_CLASSICAL, ERA_MEDIEVAL, ERA_RENAISSANCE]
+            promotion_classes: [PROMOTION_CLASS_NAVAL_MELEE, PROMOTION_CLASS_NAVAL_RANGED, PROMOTION_CLASS_NAVAL_RAIDER]
+            generation: era_by_promotion_class_cross_product
+            expected_mechanical_modifier_count: 12
+          gated_sibling_effects:
+            great_person_points: {GREAT_PERSON_CLASS_ADMIRAL: 1}
+          mcuis:
+            logical_ability_count: 1
+            presentation_anchor: exactly_one_mechanically_real_attach_effect_pair
+            helper_table: CSC_AbilityAttachModifiers
+            helper_row_count: 1
+            primary_amount: 20
+            modifier_string_context: Preview
+            notification_variants: [NEW, INCREASED, DECREASED, REMOVED]
+            ability_icon: ICON_BUILDING_CSC_TAILORS_STAGE_2_SERVICE
+            ability_icon_target: BUILDING_CSC_TAILORS_STAGE_2_SERVICE
+            non_anchor_policy: no_helper_row_or_notification_strings
+          activation_equivalence:
+            owner_requirements: identical_across_all_mechanical_siblings
+            subject_requirements: identical_across_all_mechanical_siblings
+          invariant: "The one MCUIS presentation anchor represents the complete live Dockmaster ability; it does not replace or multiply the mechanical modifier family."
+        replacement_binding:
+          harbor_destination_requirement: engine_inherited
+          lighthouse_presence_requirement: engine_inherited
+          service_and_CSC_source_buildings: never_expand
+          customer_description_append: explicit_direct_one_level
         runtime_scenarios:
-          - "Prove each prerequisite gate independently and verify the exact unit-era boundary."
+          - "Prove each prerequisite gate independently and verify Ancient through Renaissance naval melee, ranged, and raider units receive exactly +20%, while Industrial and later units receive none."
+          - "Verify one Dockmaster MCUIS icon and one notification transition, never one per era or promotion class."
 
   - id: stage3
-    purpose: Tailor, population transaction, Robemaker, and domestic trade.
+    purpose: Tailor, population transaction, Sacristan, and domestic trade.
     requirements:
       - id: I.STAGE3_DEFINITION_LOCAL_SPECIALISTS
         design_refs:
@@ -203,18 +468,28 @@ phases:
           - buildings.D.STAGE3.effects.D.STAGE3.LOCAL
           - buildings.D.STAGE3.effects.D.STAGE3.SPECIALISTS
           - buildings.D.STAGE3.effects.D.STAGE3.AMENITY
+          - art.properties.D.ART.STAGE3.CUSTOMERS
         gameplay_patterns:
           - GP.BUILDING.DEFINITION
+          - GP.BUILDING.PRESENTATION
           - GP.BUILDING.LOCAL_EXCHANGE
           - GP.BUILDING.CITIZEN_YIELDS
           - GP.BUILDING.CITY_AMENITY
-        localization_patterns: [LP.LOCAL.EXCHANGE_BULLET, LP.CITIZEN.BULLET, LP.PEDIA.BUILDING_CHAPTERS]
-        outputs: [core, gold, localization_source]
+          - GP.ART.PROPERTY_BRIDGE
+        localization_patterns: [LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED, LP.LOCAL.EXCHANGE_BULLET, LP.PEDIA.BUILDING_CHAPTERS]
+        outputs: [core, gold, localization_source, art_property_lua, icons, buildings_artdef, landmarks_artdef, strategic_view_artdef, property_ranges_artdef, tilebase_xlp]
         static_assertions:
           - "Unlock=Guilds, prerequisite Textile Workshop, Cost=160, Maintenance=2."
           - "One slot; specialists +2 Culture/+1 Gold; city +1 Amenity."
+          - "The completed Tailor description omits its Citizen slot, specialist yields, and intrinsic city Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 3 relationships in shared order: local Textile Workshop exchange; adjacent Temple/Market population exchange; domestic trade exchange; Sacristan establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
+          - "The Tailor Civilopedia page matches the Bakery's format: exactly one Supply Chains title/paragraph followed by one Historical Context title with two history paragraphs, and no Civilopedia Description chapter."
+          - "Tailor Supply Chains prose follows cloth from the local Textile Workshop into finished garments for adjacent Temples and Markets; its history covers the specialized urban tailoring trade and its expansion through guild, religious, and market demand."
+          - "ICON_BUILDING_CSC_TAILORS_TAILOR uses the Tailors atlas index 5, and Icons/CSC_TAILORS_ICONS.sql is Content loaded by the shared UpdateIcons action."
+          - "BUILDING_CSC_TAILORS_TAILOR is bound to CSC_TAILORS_Tailor in Buildings and Landmarks ArtDefs, CSC_Tilebases.xlp, and completed/pillaged/under-construction Strategic View states."
+          - "CSC_TAILORS_BuildingChain keeps the Quarter district at Districts, the Textile Workshop at Buildings (Level 1), and adds exactly BUILDING_CSC_TAILORS_TAILOR at Buildings (Level 2); Buildings (Level 3) remains present but empty until Stage 4."
+          - "The Stage 3 physical customer state writes CSC_TAILORS_STAGE_3_CUSTOMERS and mirrors CSC_TAILORS_STAGE_3_CUSTOMERS_ART for art selection when an adjacent same-owner Temple or Market serves a functioning Tailor; Divine Right and Sacristan state are excluded from the art gate."
         runtime_scenarios:
-          - "Verify local exchange, specialist yields, and amenity independently."
+          - "Verify local exchange, specialist yields, and amenity independently; inspect the Tailor icon, 3D/SV states, complete description, and both Civilopedia chapters."
 
       - id: I.STAGE3_POP_CUSTOMERS
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.POP_CUSTOMERS]
@@ -224,19 +499,53 @@ phases:
         static_assertions:
           - "Temple/Market city gets 0.1 Culture per its citizens."
           - "Tailor city gets 0.1 Production and 0.1 Gold per customer-city citizen."
+          - "Each eligible adjacent customer city is counted once, and direct one-level replacements are included."
+          - "Temple and Market pages each retain one integrated Supply Chains section describing their Tailor population exchange; the Temple entry also carries the concise Sacristan pointer required by I.SACRISTAN."
+        implementation_binding:
+          customer_side:
+            method: direct_per_population_modifier
+            modifier_type: MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION
+            declared_amount_per_citizen: 0.1
+            bakers_engine_amount: 0.105
+          tailor_return_side:
+            method: shared_customer_population_lua_property_bit_bridge
+            reference_script: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
+            aggregation: sum_each_eligible_adjacent_customer_city_population_once
+            replacement_traversal: direct_one_level
+            declared_amount_per_customer_citizen: 0.1
+            bakers_engine_amount: 0.105
+            amount_scale: 10000
+          invariant: "Extend and parameterize the shared bridge for Tailors, replacing its current recursive replacement-family traversal with direct one-level expansion; do not copy Bakers-only resource, building, yield, or property identifiers."
+        replacement_binding:
+          market_and_temple_presence_requirements: engine_inherited
+          customer_city_yield_effects: engine_inherited
+          customer_population_Lua_lookups: explicit_direct_one_level
+          customer_description_appends: explicit_direct_one_level
         runtime_scenarios:
           - "Test both customers at populations 1, 5, 10, including direct replacements."
 
-      - id: I.ROBEMAKER
+      - id: I.SACRISTAN
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.SERVICE]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS]
-        localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.CIVIC.APPEND]
-        outputs: [core, localization_source]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.PEDIA.SERVICE_CHAPTERS, LP.PEDIA.CUSTOMER_APPEND, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
+        outputs: [core, localization_source, icons]
         static_assertions:
           - "Requires Divine Right, supplied BASE, adjacent Holy Site, functioning Temple."
-          - "Effect is +10% Faith and +1 Prophet point."
+          - "Effect is +10% Faith, +1 slot, and +1 Prophet point."
+          - "Exactly one mechanically real Sacristan attach/effect pair is the MCUIS presentation anchor; one aggregate preview and NEW/INCREASED/DECREASED/REMOVED notification family describes the complete live ability without multiplying its mechanics."
+          - "ICON_BUILDING_CSC_TAILORS_STAGE_3_SERVICE uses Tailors atlas index 9 and is the MCUIS/notification icon target."
+          - "The Sacristan Civilopedia page has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
+          - "Its Supply Chains entry follows the Storekeeper/Innkeeper structure: the Tailor draws on cloth from the Textile Workshop, creates garments or vestments for the adjacent Temple, then after one paragraph break gives a Citizen employment as a Sacristan in the Holy Site and expresses Faith and Great Prophet development in-world."
+          - "Its Historical Context entry explains the care of vestments, sacred furnishings, records, and daily material needs that connected textile crafts to religious institutions."
+          - "The Holy Site and Temple pages keep one integrated Supply Chains section, state that an adjacent supplied Tailor can establish a Sacristan at Divine Right, and point to the Sacristan page; direct one-level replacements receive equivalent text."
+          - "Divine Right description composition uses the bare service text only for NULL/empty base descriptions and a `[NEWLINE][NEWLINE]`-prefixed variant when visible base text exists."
+        replacement_binding:
+          holy_site_destination_requirement: engine_inherited
+          temple_presence_requirement: engine_inherited
+          customer_description_append: explicit_direct_one_level
+          service_and_CSC_source_buildings: never_expand
         runtime_scenarios:
-          - "Prove each prerequisite gate and remove one prerequisite after establishment."
+          - "Prove each prerequisite gate and remove one prerequisite after establishment; verify one MCUIS icon/notification stream and inspect the Sacristan, Holy Site, and Temple pedia integration."
 
       - id: I.STAGE3_TRADE
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.TRADE]
@@ -245,34 +554,45 @@ phases:
         outputs: [core, gold, localization_source]
         static_assertions:
           - "Destination +1 Culture; origin Quarter +1 Production/+1 Gold only without Tailors; origin +1 Amenity."
+          - "The Tailor contributes one complete route transaction and stacks additively with the Fashion House transaction."
         runtime_scenarios:
           - "Compare domestic routes with/without Tailor supply and with/without a Tailors' Quarter at origin."
 
   - id: stage4
-    purpose: Fashion House, population transaction, Couturier, and domestic trade.
+    purpose: Fashion House, population transaction, Stage Manager, and domestic trade.
     requirements:
       - id: I.STAGE4_DEFINITION_LOCAL_SPECIALISTS
         design_refs:
           - buildings.D.STAGE4
           - buildings.D.STAGE4.effects.D.STAGE4.LOCAL
-          - buildings.D.STAGE4.effects.D.STAGE4.INTRINSIC
           - buildings.D.STAGE4.effects.D.STAGE4.SPECIALISTS
           - buildings.D.STAGE4.effects.D.STAGE4.REGIONAL_AMENITY
+          - art.properties.D.ART.STAGE4.CUSTOMERS
         gameplay_patterns:
           - GP.BUILDING.DEFINITION
+          - GP.BUILDING.PRESENTATION
           - GP.BUILDING.LOCAL_EXCHANGE
           - GP.BUILDING.CITIZEN_YIELDS
           - GP.BUILDING.REGIONAL_AMENITY
-        localization_patterns: [LP.LOCAL.EXCHANGE_BULLET, LP.CITIZEN.BULLET, LP.REGIONAL.BULLET, LP.PEDIA.BUILDING_CHAPTERS]
-        outputs: [core, gold, localization_source]
+          - GP.ART.PROPERTY_BRIDGE
+        localization_patterns: [LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED, LP.LOCAL.EXCHANGE_BULLET, LP.PEDIA.BUILDING_CHAPTERS]
+        outputs: [core, gold, localization_source, art_property_lua, icons, buildings_artdef, landmarks_artdef, strategic_view_artdef, property_ranges_artdef, tilebase_xlp]
         static_assertions:
           - "Unlock=Humanism, prerequisite Textile Workshop, Cost=250, Maintenance=3."
-          - "Intrinsic +3 Culture; one slot; specialists +1 Culture/+2 Gold; +1 Amenity within 6."
+          - "One slot; specialists +1 Culture/+2 Gold; +1 Amenity within 6."
+          - "The completed Fashion House description omits its Citizen slot, specialist yields, and intrinsic regional Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 4 relationships in shared order: Specialty Material inputs; local Textile Workshop exchange; Amphitheater/Wonder population exchange; domestic trade exchange; Stage Manager establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
+          - "Industry and Corporation Specialty Material sub-bullets appear only through the Monopolies_Mode text action; the always-loaded Fashion House description contains only the standard-improvement line."
+          - "The Fashion House Civilopedia page matches the Café's format and breadth: exactly one Supply Chains title/paragraph followed by one Historical Context title with three history paragraphs, and no Civilopedia Description chapter."
+          - "Fashion House Supply Chains prose follows workshop cloth plus improved Specialty Materials into fashionable goods for Amphitheaters and the three named Wonders; its history separately covers the emergence of fashion houses, specialty materials and status, and the relationship between dress, performance, and civic display."
+          - "ICON_BUILDING_CSC_TAILORS_FASHION_HOUSE uses the Tailors atlas index 6, and Icons/CSC_TAILORS_ICONS.sql is Content loaded by the shared UpdateIcons action."
+          - "BUILDING_CSC_TAILORS_FASHION_HOUSE is bound to CSC_TAILORS_Fashion_House in Buildings and Landmarks ArtDefs, CSC_Tilebases.xlp, and completed/pillaged/under-construction Strategic View states."
+          - "CSC_TAILORS_BuildingChain adds exactly BUILDING_CSC_TAILORS_FASHION_HOUSE at Buildings (Level 3), preserving the district, Level 1 Textile Workshop, and Level 2 Tailor references."
+          - "The Stage 4 physical customer state writes CSC_TAILORS_STAGE_4_CUSTOMERS and mirrors CSC_TAILORS_STAGE_4_CUSTOMERS_ART when an adjacent same-owner Amphitheater or named Wonder serves a functioning Fashion House; Opera and Ballet and Stage Manager state are excluded from the art gate."
         runtime_scenarios:
-          - "Verify intrinsic/local/specialist effects and cities at radii 5, 6, and 7."
+          - "Verify local/specialist effects and cities at radii 5, 6, and 7; inspect the Fashion House icon, 3D/SV states, complete description, and all Civilopedia history paragraphs."
 
       - id: I.STAGE4_SPEC_INPUT
-        design_refs: [buildings.D.STAGE4.effects.D.STAGE4.SPEC_INPUT]
+        design_refs: [material_improvements.D.MATERIAL.SPECIALTY, buildings.D.STAGE4.effects.D.STAGE4.SPEC_INPUT]
         gameplay_patterns: [GP.MATERIAL.BUILDING_FROM_IMPROVEMENT, GP.MC.MATERIAL_TOTALS]
         localization_patterns: [LP.MATERIAL.BULLET, LP.MC.SUB_BULLET]
         outputs: [core, monopolies, localization_source]
@@ -289,20 +609,41 @@ phases:
         static_assertions:
           - "Per floor(population/5): customer +1 Culture; Fashion House +1 Production/+1 Gold."
           - "Amphitheater and all three named Wonders are covered."
+          - "Amphitheater replacements inherit their building-yield effect and are explicitly included once in Lua lookup and text; named Wonders are never expanded."
+          - "Amphitheater and each named Wonder page retain one integrated Supply Chains section describing the Fashion House exchange; Amphitheater and Theater Square entries also carry the concise Stage Manager pointer required by I.STAGE_MANAGER."
+        replacement_binding:
+          amphitheater_presence_requirement: engine_inherited
+          amphitheater_building_yield_effect: engine_inherited
+          customer_population_Lua_lookup: explicit_direct_one_level
+          amphitheater_description_append: explicit_direct_one_level
+          named_wonders: never_expand
         runtime_scenarios:
           - "Test every customer at populations 4, 5, 9, 10, including direct replacements."
 
-      - id: I.COUTURIER
+      - id: I.STAGE_MANAGER
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.SERVICE]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.WONDER_VARIANTS]
-        localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.CIVIC.APPEND]
-        outputs: [core, localization_source]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.SERVICE.WONDER_VARIANTS, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.PEDIA.SERVICE_CHAPTERS, LP.PEDIA.CUSTOMER_APPEND, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
+        outputs: [core, localization_source, icons]
         static_assertions:
           - "Requires Opera and Ballet plus supplied BASE and SPEC."
-          - "Targets Theater+Amphitheater or one named Wonder."
-          - "All targets get +10% Culture and +1 slot; only Wonders get +1 Artist point."
+          - "Establishes in a Theater Square with an Amphitheater, or in the Tailors' Quarter when adjacent to any one named Wonder."
+          - "Both destination variants get +10% Culture, +1 slot, and +1 Artist point."
+          - "Exactly one mechanically real Stage Manager attach/effect pair is the MCUIS presentation anchor across its destination variants; one aggregate preview and NEW/INCREASED/DECREASED/REMOVED notification family describes the complete live ability without multiplying mechanics."
+          - "ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE uses Tailors atlas index 10 and is the MCUIS/notification icon target."
+          - "The Stage Manager Civilopedia page has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
+          - "Its Supply Chains entry follows the service-page structure while integrating both destinations: the Fashion House draws on workshop cloth and improved Specialty Materials, creates performance dress for Amphitheaters and named Wonders, then after one paragraph break gives a Citizen employment as a Stage Manager and expresses Culture and Great Artist development in-world."
+          - "Its Historical Context entry explains the coordination of costumes, performers, scenery, schedules, and venues that made theatrical production an enduring urban profession."
+          - "The Theater Square, Amphitheater, and direct one-level replacements keep one integrated Supply Chains section with the Stage Manager pointer; Bolshoi Theatre, Broadway, and Sydney Opera House each receive equivalent named-Wonder prose without replacement expansion."
+          - "Opera and Ballet description composition uses the bare service text only for NULL/empty base descriptions and a `[NEWLINE][NEWLINE]`-prefixed variant when visible base text exists."
+        replacement_binding:
+          theater_destination_requirement: engine_inherited
+          amphitheater_presence_requirement: engine_inherited
+          theater_and_amphitheater_description_appends: explicit_direct_one_level
+          named_wonders: never_expand
+          tailors_quarter_and_service_building: never_expand
         runtime_scenarios:
-          - "Prove both material gates and every destination; prove Artist point never reaches Amphitheater."
+          - "Prove both material gates; test the Theater Square destination and the Tailors' Quarter destination separately with each named Wonder; verify one MCUIS icon/notification stream and inspect all Stage Manager pedia integrations."
 
       - id: I.STAGE4_TRADE
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.TRADE]
@@ -311,6 +652,7 @@ phases:
         outputs: [core, gold, localization_source]
         static_assertions:
           - "Destination +1 Culture; origin Quarter +1 Production/+1 Gold only without Tailors; origin +1 Amenity."
+          - "The Fashion House contributes one complete route transaction and stacks additively with the Tailor transaction."
         runtime_scenarios:
           - "Compare Stage 3 only, Stage 4 only, and both buildings to confirm designed stacking."
 
@@ -319,46 +661,78 @@ phases:
     requirements:
       - id: I.CITY_LIGHTS
         design_refs:
-          - district.effects.D.DISTRICT.CL_RURAL
-          - district.effects.D.DISTRICT.CL_URBAN
+          - district.effects.D.DISTRICT.CL_RURAL_WORKFORCE
+          - district.effects.D.DISTRICT.CL_URBAN_GOODS_SALES
         gameplay_patterns: [GP.DISTRICT.BILATERAL_ADJACENCY]
-        localization_patterns: [LP.DISTRICT.BILATERAL_BULLET]
-        outputs: []
-        owned_output: Civ Supply Chains/ModSupport/ModSupport_CL.sql
+        localization_patterns: [LP.DISTRICT.BILATERAL_BULLET, LP.PEDIA.DISTRICT_CHAPTERS, LP.PEDIA.SALES_DISTRICT_APPEND]
+        outputs: [city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
         static_assertions:
           - "Rows load only with City Lights."
-          - "Rural: Tailors +1 Production/customer +1 Culture; Urban: Tailors +1 Gold/customer +1 Culture."
+          - "Rural workforce: Tailors +1 Production/provider +1 Culture; Urban goods sales: Tailors +1 Gold/customer +1 Culture."
+          - "Every Rural Community type has CLASS_CSC_TAILORS_GOODS_PROVIDER and CLASS_CSC_TAILORS_SALES_CULTURE exactly once."
+          - "CLASS_CSC_TAILORS_GOODS_PROVIDER is registered in Ruivo_CAO with Name=LOC_CLASS_CSC_GOODS_PROVIDER_NAME and ArtdefOverlayEntry=CSC_Goods_Provider, matching Bakers, so adjacency tooltips render Rural Community instead of the raw class identifier."
+          - "Every Urban Borough type has CLASS_CSC_TAILORS_SALES and CLASS_CSC_TAILORS_SALES_CULTURE exactly once."
+          - "Every participating Quarter pedia page lists all Rural Community variants once under Goods Providers and all Urban Borough variants once under Sales Districts; currently this is required for both Bakers and Tailors."
+          - "Every Rural Community and Urban Borough pedia page has exactly one integrated Supply Chains title and one prose entry for the district's aggregate relationship with all Quarters, never one entry per Quarter."
+          - "Rural Community prose presents the district family as a goods and workforce provider; Urban Borough prose presents the district family as an urban sales target. Each uses an evocative sentence followed by a separate precise adjacency-and-return sentence and does not hard-code the current Quarter roster."
+          - "Rural descriptions append exactly `[NEWLINE][NEWLINE]Yield bonus from Quarters, and+1 [ICON_Production] Production in return.`"
+          - "Urban descriptions append exactly `[NEWLINE][NEWLINE]Yield bonus from Quarters, and+1 [ICON_Gold] Gold in return.`"
+          - "Bakers and Tailors composed district descriptions follow the shared canonical UI order even though tailors.md and bakers.md keep their optional interactions together: terrain/river, Materials, Rural Community when City Lights is active, then sales districts grouped by stage and returned yield."
+          - "For Bakers, Urban Borough joins the Stage 2 City Center/Commercial Hub Food-return bullet; the Culture-return Entertainment Complex/Water Park/Garden group remains separate. For Tailors, Harbor remains the distinct Stage 2 Production-return bullet, while Urban Borough joins the Stage 3/4 Commercial Hub/Holy Site/Theater Square Culture-return bullet."
+          - "The City Lights UpdateText patch inserts each Rural Community bullet immediately after Materials and merges Urban Borough into its matching returned-yield sales group; it never appends either interaction at the end merely because the public docs group City Lights content there."
+          - "Description patches follow City Lights' actual Description-key aliases: Venice 01 reuses LOC_DISTRICT_COREEXPANSIONA_DESCRIPTION and Venice 02 reuses LOC_DISTRICT_COREEXPANSIONB_DESCRIPTION; no invented Venice description keys are targeted."
+          - "The City Lights gameplay and text actions both require ModSupport_CL, and both generated files are packaged as Content."
         runtime_scenarios:
-          - "Test Rural and Urban adjacency with City Lights enabled and absence with it disabled."
+          - "Test Rural and Urban adjacency with City Lights enabled and absence with it disabled; inspect Bakers and Tailors pedia lists and confirm each City Lights district page shows one integrated Supply Chains section."
 
       - id: I.PRESERVED_RESOURCE_MODSUPPORT
         design_refs: [materials.base.optional, materials.specialty.optional]
         gameplay_patterns: [GP.MODSUPPORT.RESOURCE_CLASS_MAPPING]
-        localization_patterns: []
-        outputs: []
+        localization_patterns: [LP.PEDIA.RESOURCE_REVERSE_APPEND]
+        outputs: [hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated]
         preserved_input_refs: [MS.CH.HEMP, MS.LAR.LLAMAS, MS.R2.BAMBOO, MS.R2.GOLD, MS.R2.CASHMERE, MS.SR.GOLD]
         static_assertions:
           - "Every preserved file still contains its exact resource-to-class mapping."
+          - "Hemp, Llamas and Bamboo appear once in the Tailors Base Materials list; Cashmere and the active Gold resource appear once in Specialty Materials."
+          - "Hemp, Llamas, Bamboo, Cashmere, Resourceful 2 Gold, and Sukritact Gold each receive one reciprocal Supply Chains chapter under the same criteria as their gameplay mapping."
+          - "Each conditional mapping binds gameplay file, generated localization file, UpdateText action, criteria, Content entry, Quarter-side entry, and reciprocal resource entry; validation fails if any member is absent or differs."
+          - "Llamas and Cashmere text additionally require CSC_INCLUDE_ANIMAL_RESOURCES=1, exactly matching their gameplay actions."
         runtime_scenarios:
           - "Run one resource classification check per supported optional mod."
+          - "For every enabled optional mapping, Modding.log must contain `LocalizedText - Loading <declared generated file>` immediately within that UpdateText component; `Applying Component` without a file-load line is a failed packaging/load test."
 
   - id: localization_and_integration
     purpose: Complete text, wiring, static validation, and game validation.
     requirements:
       - id: I.LOCALIZATION_COMPLETE
         design_refs: [identity, district, material_improvements, buildings]
-        gameplay_patterns: []
+        gameplay_patterns: [GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns:
           - LP.NAMES.COMPLETE
           - LP.DISTRICT.SUMMARY
           - LP.PEDIA.DISTRICT_CHAPTERS
           - LP.PEDIA.BUILDING_CHAPTERS
           - LP.PEDIA.CUSTOMER_APPEND
+          - LP.PEDIA.DISTRICT_CHAPTERS
+          - LP.PEDIA.RESOURCE_REVERSE_APPEND
+          - LP.PEDIA.SALES_DISTRICT_APPEND
           - LP.CIVIC.APPEND
-        outputs: [localization_source, localization_generated]
+        outputs: [localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_localization_source, city_lights_localization_generated]
         static_assertions:
           - "Every implemented effect appears once in gameplay text and no unimplemented effect is claimed."
           - "Pedia customer and Civic append coverage is complete."
+          - "Every replacement-sensitive customer description is appended to the base type and each direct replacement exactly once."
+          - "Tailors district pedia has the unadorned headers Base Materials, Specialty Materials, Goods Providers, Sales Districts, and Historical Context in the Bakers order; no pedia section header contains a text icon."
+          - "Core and conditional modded Tailors resources each receive a Supply Chains reverse entry identifying their Base or Specialty material role."
+          - "Every resource page contains at most one `Base Materials:` group and at most one `Specialty Materials:` group; each Quarter is one bullet beneath its applicable group."
+          - "Each resource role label is followed by exactly one open line (`[NEWLINE][NEWLINE]`) before its first Quarter bullet; additional bullets in that role use one `[NEWLINE]`."
+          - "Flax composes as one Base Materials group containing separate Bakers' Quarter and Tailors' Quarter bullets, never two singular Base material lines."
+          - "Tailors' Quarter Historical Context lets the supply chain progression emerge through original prose and never labels or announces it as an arc."
+          - "Every ordinary Tailors sales district appends an evocative relationship sentence and a separate gameplay sentence to one shared Supply Chains section without replacing other Quarter entries."
+          - "The Commercial Hub is deliberately curated as one integrated Bakers-and-Tailors passage rather than accumulated from deterministic Quarter fragments."
+        replacement_binding:
+          customer_description_appends: explicit_direct_one_level
+          named_wonders_and_CSC_objects: never_expand
         runtime_scenarios:
           - "Inspect all Tailors Civilopedia pages and affected vanilla pages in game."
 
@@ -366,37 +740,105 @@ phases:
         design_refs: []
         gameplay_patterns: [GP.FILE.SECTION_ORDER]
         localization_patterns: []
-        outputs: [core, gold, monopolies, monopolies_gold, localization_generated]
+        outputs: [core, gold, monopolies, monopolies_gold, localization_generated, hemp_localization_generated, llamas_localization_generated, r2_localization_generated, cashmere_localization_generated, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_generated]
         static_assertions:
-          - "All six outputs are present in Content and the correct conditional actions."
+          - "All contracted gameplay and generated-localization outputs are present in Content and wired to the exact unconditional or conditional actions declared above."
           - "Generated action manifest and .civ6proj CDATA agree."
         runtime_scenarios:
-          - "Database and localization logs show every Tailors action loaded without errors."
+          - "Database and localization logs show every Tailors action loaded without errors; each UpdateText action must log its declared SQL/XML file load, not merely the component name."
 
   - id: art_integration
-    purpose: Bind accepted gameplay state to preserved Tailors art.
-    deferred: true
+    purpose: Expose approved Tailors gameplay state to preserved Tailors art.
     requirements:
       - id: I.ART_PROPERTY_BRIDGE
-        design_refs: [art]
+        design_refs: [art.properties]
         gameplay_patterns: [GP.ART.PROPERTY_BRIDGE]
         localization_patterns: []
-        outputs: []
+        outputs: [core, art_property_lua]
         static_assertions:
-          - "No gameplay-side art properties are introduced before this phase is separately approved."
+          - "A Lighthouse or direct one-level Lighthouse replacement writes CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION to the adjacent Tailors' Quarter city."
+          - "The source property is mirrored as CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART for GamePropertyRanges."
+          - "The art-facing property naming pattern is CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT>_ART; the second-to-last word identifies the represented effect content."
+          - "The corresponding GamePropertyRanges interval is CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE and the Textile Workshop alternate uses [CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]."
+          - "The baseline and triggered Textile Workshop TileBase assets are CSC_TAILORS_Textile_Workshop and CSC_TAILORS_Textile_Workshop_2."
+          - "The bridge requires a functioning Textile Workshop, an adjacent improved Base Material, the Tailors' Quarter, and same-owner adjacency."
+          - "The bridge never requires Naval Tradition or any service/effect civic or tech gate."
+          - "D.ART.STAGE2.LIGHTHOUSE and D.ART.STAGE3.CUSTOMERS have SQL and Lua implementations at this approval point."
+          - "D.ART.STAGE4.CUSTOMERS is a reserved contract name only; its properties, modifiers, and Lua mapping must not be implemented before Stage 4 approval."
+        implementation_binding:
+          implemented_bridge_ids: [D.ART.STAGE2.LIGHTHOUSE, D.ART.STAGE3.CUSTOMERS]
+          deferred_bridge_ids: [D.ART.STAGE4.CUSTOMERS]
+          bridges:
+            - id: D.ART.STAGE2.LIGHTHOUSE
+              status: implemented
+              source_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION
+              effect_content: PRODUCTION
+              mirrored_art_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART
+              interval_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE
+              property_name_pattern: CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT>_<ART_OR_ACTIVE>
+              naming_contract:
+                source_suffix: EFFECT_PRODUCTION
+                art_suffix: ART
+                interval_suffix: ACTIVE
+                effect_content_position: immediately_before_art_or_active_suffix
+              artdef:
+                property_ranges: Civ Supply Chains/ArtDefs/CSC_GamePropertyRanges.artdef
+                landmarks: Civ Supply Chains/ArtDefs/CSC_Landmarks.artdef
+                tilebase_xlp: Civ Supply Chains/XLPs/CSC_Tilebases.xlp
+                building_type: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+                baseline_asset: CSC_TAILORS_Textile_Workshop
+                triggered_asset: CSC_TAILORS_Textile_Workshop_2
+                selection_rule: '[CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]'
+              source_modifier: MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY
+              receiver_modifier: MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER
+              receiver_buildings: [BUILDING_LIGHTHOUSE, direct_one_level_replacements]
+              subject_requirement_set: REQSET_CSC_TAILORS_STAGE_2_ART
+              timing: physical_transaction_only
+            - id: D.ART.STAGE3.CUSTOMERS
+              status: implemented
+              source_property: CSC_TAILORS_STAGE_3_CUSTOMERS
+              mirrored_art_property: CSC_TAILORS_STAGE_3_CUSTOMERS_ART
+              interval_property: CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE
+              receiver_buildings: [BUILDING_TEMPLE, BUILDING_MARKET, direct_one_level_replacements]
+              subject_building: BUILDING_CSC_TAILORS_TAILOR
+              baseline_asset: CSC_TAILORS_Tailor
+              triggered_asset: CSC_TAILORS_Tailor_2
+              selection_rule: '[CITYPROP:CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE]'
+              source_modifier: MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY
+              receiver_modifier: MOD_CSC_TAILORS_STAGE_3_ART_ATTACH_QUARTER
+              subject_requirement_set: REQSET_CSC_TAILORS_STAGE_3_ART
+              timing: physical_transaction_only
+            - id: D.ART.STAGE4.CUSTOMERS
+              status: deferred_until_stage4
+              source_property: CSC_TAILORS_STAGE_4_CUSTOMERS
+              mirrored_art_property: CSC_TAILORS_STAGE_4_CUSTOMERS_ART
+              receiver_buildings: [BUILDING_AMPHITHEATER, BUILDING_BOLSHOI_THEATRE, BUILDING_BROADWAY, BUILDING_SYDNEY_OPERA_HOUSE, direct_one_level_replacements]
+              subject_building: BUILDING_CSC_TAILORS_FASHION_HOUSE
+              timing: physical_transaction_only
+          artdef_ownership: user
         runtime_scenarios:
-          - "After approval, verify every visual state transition and refresh event."
+          - "Stage 2: verify the source and mirrored property activate when all physical inputs exist, deactivate when any physical input is removed or pillaged, and remain independent of Naval Tradition."
+          - "Stage 3 and Stage 4: implement and verify only after the respective gameplay phases are approved."
 
-open_engine_decisions:
+resolved_engine_decisions:
   - id: E.DECIMAL_POPULATION
     affects: I.STAGE3_POP_CUSTOMERS
-    question: Which Bakers Lua/property-bit implementation is applicable without inheriting Bakers-only behavior?
-    resolution_required_before_phase: stage3
+    resolution: "Use the Bakers direct customer-side per-population modifier and extend the shared customer-population Lua/property-bit bridge for the cross-city Tailor returns. Preserve the Bakers 0.105 engine amount while presenting the designed 0.1 value."
+    evidence:
+      - Civ Supply Chains/Data/CSC_Q_BAKERS.sql
+      - Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
+      - Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
+
   - id: E.TRADE_STACKING
     affects: [I.STAGE3_TRADE, I.STAGE4_TRADE]
-    question: Does the design intend both supplied buildings to stack their identical route effects?
-    resolution_required_before_phase: stage3
+    resolution: "Yes. Tailor and Fashion House each contribute their complete trade-route transaction independently; when both apply to the same eligible route, their route bonuses and paired returns stack additively."
+    decided_by: user
+
   - id: E.SERVICE_PERSISTENCE
-    affects: [I.SAILMAKER, I.ROBEMAKER, I.COUTURIER]
-    question: Confirm Bakers persistent hidden-service behavior is intended when later prerequisites disappear.
-    resolution_required_before_phase: materials_and_stage2
+    affects: [I.DOCKMASTER, I.SACRISTAN, I.STAGE_MANAGER]
+    resolution: "Follow Bakers: MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE grants a persistent hidden service building. Separately attached effect and Great Person modifiers keep their prerequisite requirement sets, so they deactivate and reactivate as requirements change. Intrinsic fields on the granted service building, including its Citizen slot, persist with the building."
+    decided_by: user
+    evidence:
+      - Civ Supply Chains/Data/CSC_Q_BAKERS.sql
+
+open_engine_decisions: []

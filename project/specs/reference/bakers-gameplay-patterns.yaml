@@ -15,6 +15,26 @@ classifications:
   specialized_optional: Use only when the design calls for this mechanic.
   bakers_only: Do not inherit without an explicit design requirement.
 
+quarter_icon_atlas_layout:
+  district_normal: 0
+  district_fow: 1
+  stage2_building: 4
+  stage3_building: 5
+  stage4_building: 6
+  stage2_service: 8
+  stage3_service: 9
+  stage4_service: 10
+
+quarter_icon_atlas_layout:
+  district_normal: 0
+  district_fow: 1
+  stage2_building: 4
+  stage3_building: 5
+  stage4_building: 6
+  stage2_service: 8
+  stage3_service: 9
+  stage4_service: 10
+
 patterns:
   - id: GP.FILE.SECTION_ORDER
     classification: reusable_invariant
@@ -87,6 +107,8 @@ patterns:
     invariant:
       - "Both sides of the exchange are specified and tested."
       - "Use MAB tags where the design addresses a customer class."
+      - "Every class-valued MAB CustomAdjacentObject has a Ruivo_CAO row whose Name resolves through a readable localization key; a player-facing tooltip must never fall back to a raw CLASS_CSC_* identifier."
+      - "Quarter-specific tags with the same player-facing role may share the same generic localized role name and overlay, as Bakers and Tailors goods-provider classes share LOC_CLASS_CSC_GOODS_PROVIDER_NAME and CSC_Goods_Provider."
 
   - id: GP.DISTRICT.RIVER_EDGES
     classification: specialized_optional
@@ -102,6 +124,19 @@ patterns:
     invariant:
       - "Expansion fields and prerequisite rows are explicit."
       - "Gold maintenance belongs to the core Buildings row; transactional Gold modifiers belong in the Gold companion."
+
+  - id: GP.BUILDING.PRESENTATION
+    classification: reusable_invariant
+    source_anchor: "CSC_BAKERS_ICONS.sql, CSC_Buildings.artdef Buildings and BuildingChains collections, CSC_Landmarks.artdef, CSC_StrategicView.artdef, and CSC_Tilebases.xlp"
+    parameters: [district_type, building_type, building_stage, icon_name, icon_atlas_index, tilebase_asset, strategic_view_states]
+    invariant:
+      - "Every visible Quarter building has an ICON_BUILDING_<BUILDING_TYPE> definition in its Quarter atlas and that icon SQL is both Content and loaded by UpdateIcons."
+      - "Quarter icon rows use the catalog's shared district/building/service atlas layout unless the implementation contract records an explicit per-Quarter override."
+      - "Every visible Quarter building is bound in CSC_Buildings.artdef and CSC_Landmarks.artdef to its TileBase asset."
+      - "CSC_Buildings.artdef contains exactly one <QUARTER> BuildingChain: its Districts collection references the Quarter district, and Stage 2/3/4 buildings occupy Buildings (Level 1/2/3) respectively. Each implemented stage has exactly one correctly typed Building reference; later level collections may remain empty until their stage is implemented."
+      - "Completed, pillaged, and under-construction Strategic View states are present and referenced by the building ArtDef."
+      - "The TileBase asset is registered in CSC_Tilebases.xlp."
+      - "Existing user-authored art scaffolding is preserved and validated; implementation work fills missing bindings or icon rows without redesigning the art."
 
   - id: GP.BUILDING.LOCAL_EXCHANGE
     classification: reusable_parameterized
@@ -161,9 +196,25 @@ patterns:
   - id: GP.REPLACEMENT.DIRECT_ONE_LEVEL
     classification: reusable_invariant
     source_anchor: "CSC_Q_BAKERS.sql: customer replacement expansions"
+    mechanism_policy:
+      engine_inherited:
+        - REQUIREMENT_CITY_HAS_BUILDING
+        - REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES
+        - MODIFIER_BUILDING_YIELD_CHANGE
+      explicit_direct_one_level:
+        - BuildingModifiers
+        - building_and_district_description_appends
+        - MAB_TypeTags_and_generated_return_adjacencies
+        - Lua_building_and_district_type_lookups
+      never_expand:
+        - named_wonders
+        - CSC_owned_buildings_and_districts
     invariant:
-      - "Include direct one-level replacements where a target vanilla building has replacements."
+      - "Use the base type only where the Civ VI engine already recognizes BuildingReplaces or DistrictReplaces."
+      - "Expand direct one-level replacements only for tables, text, tags, generated rows, and Lua lookups that do not inherit replacement semantics."
+      - "Do not explicitly duplicate MODIFIER_BUILDING_YIELD_CHANGE for a replacement; the engine already applies it and duplicate rows double the effect."
       - "Do not recursively chase replacement chains."
+      - "Each replacement-sensitive implementation requirement declares which mechanism policy applies to each surface."
 
   - id: GP.SERVICE.HIDDEN_BUILDING
     classification: reusable_parameterized
@@ -181,6 +232,19 @@ patterns:
     invariant:
       - "Service effects attach at the service destination."
       - "Ability discovery and preview strings describe the same live effects."
+
+  - id: GP.SERVICE.PRESENTATION_ANCHOR
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql: CSC_AbilityAttachModifiers and ModifierStrings; CSC_UI_DB_Dynamic.sql"
+    parameters: [logical_ability, mechanical_attach_modifiers, presentation_anchor, primary_amount, service_icon, service_icon_target, notification_string_family]
+    invariant:
+      - "A mechanically split service exposes exactly one logical MCUIS city ability, icon, and notification stream."
+      - "Exactly one mechanically real attach/effect pair is designated as the presentation anchor and inserted into CSC_AbilityAttachModifiers."
+      - "Every unregistered mechanical sibling shares activation-equivalent owner and subject gates with the presentation anchor."
+      - "Only the presentation anchor's child effect receives the aggregate Preview ModifierString and NEW, INCREASED, DECREASED, and REMOVED localization family."
+      - "Unregistered mechanical siblings receive neither CSC_AbilityAttachModifiers rows nor independent notification string families."
+      - "The helper row resolves to a non-NULL child modifier and uses the primary formatted effect Amount expected by MCUIS."
+      - "Persistent service-grant state remains separate from the live effect anchor; removal text must not claim that the persistent service building or Citizen slot was removed."
 
   - id: GP.SERVICE.WONDER_VARIANTS
     classification: specialized_optional
@@ -217,11 +281,32 @@ patterns:
       - "Preserved mappings are validated as inputs and are not regenerated by the Quarter build."
 
   - id: GP.ART.PROPERTY_BRIDGE
-    classification: specialized_optional
-    source_anchor: "CSC_Q_BAKERS.sql and Lua_UI/CSC_ArtProperties.lua"
-    parameters: [source_properties, property_ranges, refresh_events]
+    classification: reusable_parameterized
+    source_anchor: "CSC_Q_BAKERS.sql, CSC_Q_TAILORS.sql, Lua_UI/ArtProperties/CSC_ArtProperties.lua, CSC_GamePropertyRanges.artdef, and CSC_Landmarks.artdef"
+    parameters:
+      - source_property
+      - effect_content
+      - mirrored_art_property
+      - interval_property
+      - property_ranges_artdef
+      - landmarks_artdef
+      - tilebase_xlp
+      - building_type
+      - baseline_asset
+      - triggered_asset
+      - selection_rule
+      - receiver_buildings
+      - subject_requirement_set
+      - refresh_events
     invariant:
-      - "Art integration is a separate approved phase."
+      - "Art integration is a separate approved phase, unless explicitly included in the approved gameplay slice."
+      - "The SQL source property identifies the physical transaction and is mirrored by CSC_ArtProperties.lua into a direct city property for GamePropertyRanges."
+      - "Use CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT> for the source, then append _ART for the art-facing property and _ACTIVE for the GamePropertyRanges interval."
+      - "<EFFECT_CONTENT> is the effect-semantic segment immediately before the _ART or _ACTIVE suffix; it must be declared explicitly rather than inferred from a customer building name."
+      - "GamePropertyRanges reads the _ART property and defines the _ACTIVE interval over the binary range 1..100."
+      - "The baseline landmark variant has no selection rule and priority 0; the triggered variant uses [CITYPROP:<INTERVAL_PROPERTY>] and priority 1."
+      - "The declared baseline and triggered TileBase assets must exist in the declared XLP, and the ArtDefs/XLP must be packaged by the ModBuddy project."
+      - "The bridge follows only visible physical/logistical state, never a later service or effect civic/tech gate."
 
   - id: GP.BAKERS.STAGE2_VARIANTS
     classification: bakers_only

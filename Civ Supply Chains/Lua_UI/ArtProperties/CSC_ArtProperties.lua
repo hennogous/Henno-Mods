@@ -18,6 +18,14 @@ local m_CityArtProperties:table = {
 		Source = "CSC_BAKERS_STAGE_4_EFFECT_TOURISM",
 		Art = "CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ART",
 	},
+	{
+		Source = "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION",
+		Art = "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART",
+	},
+	{
+		Source = "CSC_TAILORS_STAGE_3_CUSTOMERS",
+		Art = "CSC_TAILORS_STAGE_3_CUSTOMERS_ART",
+	},
 };
 
 -- Mirror modifier-adjusted gameplay properties into direct city properties for GamePropertyRanges/CITYPROP.

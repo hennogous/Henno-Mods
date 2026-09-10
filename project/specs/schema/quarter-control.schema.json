@@ -27,9 +27,76 @@
         }
       }
     },
-    "contract_approvals": {"type": "object", "minProperties": 4},
-    "phase_gates": {"type": "object", "minProperties": 1},
+    "contract_approvals": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/approval"}
+    },
+    "phase_gates": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/phaseGate"}
+    },
     "exceptions": {"type": "array"}
+  },
+  "$defs": {
+    "approval": {
+      "type": "object",
+      "required": ["path", "status", "approved_by", "approved_at", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "status": {"enum": ["pending", "approved", "superseded"]},
+        "approved_by": {"type": ["string", "null"]},
+        "approved_at": {"type": ["string", "null"], "format": "date-time"},
+        "sha256": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "approved"}}},
+          "then": {
+            "properties": {
+              "approved_by": {"type": "string", "minLength": 1},
+              "approved_at": {"type": "string", "format": "date-time"},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "phaseGate": {
+      "type": "object",
+      "required": ["status", "approved_by", "approved_at", "design_sha256"],
+      "properties": {
+        "status": {
+          "enum": [
+            "blocked_by_contract_review",
+            "approved",
+            "implementing",
+            "ready_for_review",
+            "accepted",
+            "deferred"
+          ]
+        },
+        "approved_by": {"type": ["string", "null"]},
+        "approved_at": {"type": ["string", "null"], "format": "date-time"},
+        "design_sha256": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          ]
+        },
+        "ready_at": {"type": ["string", "null"], "format": "date-time"},
+        "accepted_by": {"type": ["string", "null"]},
+        "accepted_at": {"type": ["string", "null"], "format": "date-time"}
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": true
 }

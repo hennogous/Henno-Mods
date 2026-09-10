@@ -593,7 +593,6 @@ INSERT INTO BuildingModifiers
 
 --  Mirror the adjacent Granary transaction back onto Mill cities for alternate mill art
 		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS'			),
---		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WIND'	),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth, gains a Storekeeper service and sets a city property for art selection

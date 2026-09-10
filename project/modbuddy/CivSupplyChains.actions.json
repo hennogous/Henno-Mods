@@ -346,6 +346,18 @@
         ]
       },
       {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_TAILORS",
+        "properties": {"LoadOrder": "100"},
+        "files": ["Data/CSC_Q_TAILORS.sql"]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_TAILORS_GOLD",
+        "properties": {"LoadOrder": "101"},
+        "files": ["Data/CSC_Q_TAILORS_GOLD.sql"]
+      },
+      {
         "type": "UpdateText",
         "id": "CSC_ALL_TEXT",
         "properties": {
@@ -364,6 +376,19 @@
         "files": [
           "Text/CSC_BAKERS_TEXT.sql"
         ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_TAILORS_TEXT",
+        "properties": {"LoadOrder": "102"},
+        "files": ["Text/CSC_TAILORS_TEXT.sql"]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_TAILORS_MC_MODE_TEXT",
+        "properties": {"LoadOrder": "103"},
+        "criteria": ["Monopolies_Mode"],
+        "files": ["Text/CSC_TAILORS_MC_MODE_TEXT.sql"]
       },
       {
         "type": "UpdateText",
@@ -400,6 +425,20 @@
         "files": [
           "Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql"
         ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_TAILORS_MC_MODE",
+        "properties": {"LoadOrder": "100"},
+        "criteria": ["Monopolies_Mode"],
+        "files": ["Data/CSC_Q_TAILORS_MC_MODE.sql"]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_Q_TAILORS_MC_MODE_GOLD",
+        "properties": {"LoadOrder": "101"},
+        "criteria": ["Monopolies_Mode"],
+        "files": ["Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql"]
       },
       {
         "type": "UpdateDatabase",
@@ -908,6 +947,34 @@
         "files": [
           "ModSupport/ModSupport_R2_TEXT.sql"
         ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_CH_Tailors_Text",
+        "properties": {"LoadOrder": "103"},
+        "criteria": ["ModSupport_CH"],
+        "files": ["ModSupport/ModSupport_CH_TAILORS_TEXT.sql"]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_LAR_A_Tailors_Text",
+        "properties": {"LoadOrder": "103"},
+        "criteria": ["CSC_A_RESOURCES", "ModSupport_LAR"],
+        "files": ["ModSupport/ModSupport_LAR_A_TAILORS_TEXT.sql"]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_R2_A_Tailors_Text",
+        "properties": {"LoadOrder": "103"},
+        "criteria": ["CSC_A_RESOURCES", "ModSupport_R2"],
+        "files": ["ModSupport/ModSupport_R2_A_TAILORS_TEXT.sql"]
+      },
+      {
+        "type": "UpdateText",
+        "id": "ModSupport_SR_Tailors_Text",
+        "properties": {"LoadOrder": "103"},
+        "criteria": ["ModSupport_SR"],
+        "files": ["ModSupport/ModSupport_SR_TAILORS_TEXT.sql"]
       },
       {
         "type": "UpdateDatabase",

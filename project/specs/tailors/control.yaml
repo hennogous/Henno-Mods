@@ -1,14 +1,14 @@
 schema_version: 1
 quarter: tailors
-status: review_required
+status: implementing
 
 locked_sources:
   - path: docs/content/quarters/tailors.md
     role: canonical_design
-    sha256: b71c14cfe5100bfb200c277089bf04d9af90ab3b17cb6309ffa33e2b010ae922
+    sha256: 4fa09956ec75eea064b9f2f5a592a2febe4942ef7ced0ee6e9fe2537d7b75a9d
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    sha256: ead6c6a9e448e267702da9c677ff0711ea591b5b252fd3002d74b2bb717d3fc9
+    sha256: 9f42351a303753d98d6667a8ae0ffb4c6d34c76a728af8cd409eff4aab059f91
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
     sha256: 7abdbbca5ee4ea862a897dc38794436667a832009e033e5365b565b43c274114
@@ -20,43 +20,58 @@ locked_sources:
     sha256: 8247353b8cfd5b4c0311844b0e921140c1eefa20c22b58cdb19d7ef7a4aed415
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
-    sha256: 8037e7dfa729a7f6ebe0b9f89578dd3e7e5616d645695901ab2e57628e3580bc
+    sha256: 6abe09dd4726c1cbdbdac6ae60b88b4c1e871406ce722492bfc64720e69d02df
 
 contract_approvals:
   design_transcription:
+    path: project/specs/tailors/design.yaml
     status: pending
     approved_by:
     approved_at:
+    sha256:
   gameplay_pattern_catalog:
+    path: project/specs/reference/bakers-gameplay-patterns.yaml
     status: pending
     approved_by:
     approved_at:
+    sha256:
   localization_pattern_catalog:
+    path: project/specs/reference/bakers-localization-patterns.yaml
     status: pending
     approved_by:
     approved_at:
+    sha256:
   sql_style_catalog:
+    path: project/specs/reference/bakers-sql-style.yaml
     status: pending
     approved_by:
     approved_at:
+    sha256:
   implementation_contract:
+    path: project/specs/tailors/implementation.yaml
     status: pending
     approved_by:
     approved_at:
+    sha256:
 
 phase_gates:
-  foundation: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
-  materials_and_stage2: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
-  stage3: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
-  stage4: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
-  compatibility: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
-  localization_and_integration: {status: blocked_by_contract_review, approved_by: null, approved_at: null}
-  art_integration: {status: deferred, approved_by: null, approved_at: null}
+  foundation: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: 1748f83b91ccfb9bcfb3ad4169fb78f0049fa0aea73d5a9e9eac2d4d3dee408d, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
+  materials_and_stage2: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: b457a8104c49232871f26145dc0e1b89b297adc076d7d2e7289bf37ccf6bd1e8, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
+  stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-09-07T19:43:25.7275140+02:00', design_sha256: b8e76def362f02ecd32551f6cf9c3304e4930cb588e35e17fbe275f3c65d5e71, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
+  stage4: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
+  compatibility: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
+  localization_and_integration: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
+  art_integration: {status: ready_for_review, approved_by: user, approved_at: '2026-08-27T20:10:22.6633379+02:00', design_sha256: 9e55db87b7e71ca17f2768dedc2e0f97709958b7af9eb257c843b9ec2db91792, ready_at: '2026-08-27T20:10:22.6633379+02:00', accepted_by: null, accepted_at: null}
 
 exceptions: []
 
 approval_rule: >
-  A phase may change to approved only after all four contract approvals are
-  approved, its open engine decisions are resolved as approved exceptions or
-  contract amendments, and validation passes. Approval is explicit user review,
-  never inferred from code generation or a successful test.
+  Each phase is approved independently by the user against the exact design
+  subtrees named by that phase's design_refs; their canonical slice hash is
+  recorded on the gate. Implementation contracts and pattern catalogs remain
+  machine-validated implementation inputs rather than extra user approvals. Any
+  open engine decisions must be resolved as approved exceptions or contract amendments. The
+  implementation agent may then move it through implementing and
+  ready_for_review only after the phase validator passes. User acceptance is a
+  separate accepted state. No approval or acceptance is inferred from generated
+  code or a successful test.

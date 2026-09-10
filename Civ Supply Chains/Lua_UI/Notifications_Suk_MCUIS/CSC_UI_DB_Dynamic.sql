@@ -76,25 +76,4 @@ SET AbilityRemovedDesc = (
       AND b.Context = 'Preview'
 );
 
---===========================================================================================================================================================================--
-/*	CITY SPECIALIST MODIFIERS */
---===========================================================================================================================================================================--
-/*
--- Step 1: Fill SpecialistGrantModifierId from ModifierArguments.Value
-UPDATE CSC_SpecialistAttachModifiers
-SET SpecialistGrantModifierId = (
-    SELECT b.Value
-    FROM ModifierArguments b
-    WHERE b.ModifierId = CSC_SpecialistAttachModifiers.ModifierId
-);
-
--- Step 2: Fill SpecialistGrantDesc from ModifierStrings.Text
-UPDATE CSC_SpecialistAttachModifiers
-SET SpecialistGrantDesc = (
-    SELECT b.Text
-    FROM ModifierStrings b
-    WHERE b.ModifierId = CSC_SpecialistAttachModifiers.SpecialistGrantModifierId
-		AND b.Context = 'Preview'
-); */
-
 

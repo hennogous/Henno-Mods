@@ -14,9 +14,14 @@ local DISTRICT_BAKERS_QUARTER = -1;
 if GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil then
 	DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index;
 end
+local DISTRICT_TAILORS_QUARTER = -1;
+if GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"] ~= nil then
+	DISTRICT_TAILORS_QUARTER = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"].Index;
+end
 
 local PROP_BAKERY_SUPPLIED = "CSC_BAKERS_BAKERY_SUPPLIED";
 local PROP_CAFE_SUPPLIED = "CSC_BAKERS_CAFE_SUPPLIED";
+local PROP_TAILOR_SUPPLIED = "CSC_TAILORS_TAILOR_SUPPLIED";
 
 local function CSC_BTS_IsPositiveProperty(owner, propertyName)
 	if owner == nil then return false; end
@@ -38,6 +43,16 @@ local function CSC_BTS_CityHasFunctioningBakersQuarter(pCity)
 		return not pDistricts:IsPillaged(DISTRICT_BAKERS_QUARTER);
 	end
 
+	return true;
+end
+
+local function CSC_BTS_CityHasFunctioningTailorsQuarter(pCity)
+	if pCity == nil or DISTRICT_TAILORS_QUARTER < 0 then return false; end
+	local pDistricts = pCity:GetDistricts();
+	if pDistricts == nil or not pDistricts:HasDistrict(DISTRICT_TAILORS_QUARTER) then return false; end
+	if pDistricts.IsPillaged ~= nil then
+		return not pDistricts:IsPillaged(DISTRICT_TAILORS_QUARTER);
+	end
 	return true;
 end
 
@@ -83,6 +98,16 @@ function CSC_BTS_GetBakersTradeRouteState(routeInfo)
 
 	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_BAKERY_SUPPLIED),
 		CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_CAFE_SUPPLIED);
+end
+
+function CSC_BTS_GetTailorsTradeRouteState(routeInfo)
+	if routeInfo == nil then return false; end
+	local pOriginCity = CSC_BTS_GetCity(routeInfo.OriginCityPlayer, routeInfo.OriginCityID);
+	local pDestinationCity = CSC_BTS_GetCity(routeInfo.DestinationCityPlayer, routeInfo.DestinationCityID);
+	if pOriginCity == nil or pDestinationCity == nil then return false; end
+	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return false; end
+	if CSC_BTS_CityHasFunctioningTailorsQuarter(pOriginCity) then return false; end
+	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED);
 end
 
 local function CSC_BTS_AppendTooltip(existingTooltip, newLine)
@@ -157,36 +182,68 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 	local routeCount = 0;
 	if bBakeryRoute then routeCount = routeCount + 1; end
 	if bCafeRoute then routeCount = routeCount + 1; end
-	if routeCount <= 0 then return; end
+	local bTailorRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
+	if routeCount <= 0 and not bTailorRoute then return; end
 
 	if target == "Origin" then
-		yieldValues[FOOD_INDEX] = (yieldValues[FOOD_INDEX] or 0) + routeCount;
+		if routeCount > 0 then
+			yieldValues[FOOD_INDEX] = (yieldValues[FOOD_INDEX] or 0) + routeCount;
+		end
+		if bTailorRoute then
+			yieldValues[CULTURE_INDEX] = (yieldValues[CULTURE_INDEX] or 0) + 1;
+		end
 
 		if buildTooltip and yieldTooltips ~= nil then
-			yieldTooltips[FOOD_INDEX] = CSC_BTS_PrependTooltip(
-				yieldTooltips[FOOD_INDEX],
-				CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Food]", "LOC_YIELD_FOOD_NAME", "imports")
-			);
+			if routeCount > 0 then
+				yieldTooltips[FOOD_INDEX] = CSC_BTS_PrependTooltip(
+					yieldTooltips[FOOD_INDEX],
+					CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Food]", "LOC_YIELD_FOOD_NAME", "imports")
+				);
+			end
+			if bTailorRoute then
+				yieldTooltips[CULTURE_INDEX] = CSC_BTS_PrependTooltip(
+					yieldTooltips[CULTURE_INDEX],
+					CSC_BTS_FormatQuarterYieldTooltip(1, "[ICON_Culture]", "LOC_YIELD_CULTURE_NAME", "imports")
+				);
+			end
 
 			local amenityTooltipIndex = CSC_BTS_GetLastPositiveYieldIndex(yieldValues);
 			yieldTooltips[amenityTooltipIndex] = CSC_BTS_AppendTooltip(
 				yieldTooltips[amenityTooltipIndex],
-				CSC_BTS_FormatQuarterAmenityTooltip(routeCount)
+				CSC_BTS_FormatQuarterAmenityTooltip(routeCount + (bTailorRoute and 1 or 0))
 			);
 		end
 	elseif target == "Destination" then
 		yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + routeCount;
 		yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + routeCount;
+		if bTailorRoute then
+			yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + 1;
+			yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + 1;
+		end
 
 		if buildTooltip and yieldTooltips ~= nil then
-			yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
-				yieldTooltips[PRODUCTION_INDEX],
-				CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
-			);
-			yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
-				yieldTooltips[GOLD_INDEX],
-				CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
-			);
+			if routeCount > 0 then
+				yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
+					yieldTooltips[PRODUCTION_INDEX],
+					CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
+				);
+			end
+			if bTailorRoute then
+				yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
+					yieldTooltips[PRODUCTION_INDEX],
+					CSC_BTS_FormatQuarterYieldTooltip(1, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
+				);
+				yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
+					yieldTooltips[GOLD_INDEX],
+					CSC_BTS_FormatQuarterYieldTooltip(1, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
+				);
+			end
+			if routeCount > 0 then
+				yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
+					yieldTooltips[GOLD_INDEX],
+					CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
+				);
+			end
 		end
 	end
 end

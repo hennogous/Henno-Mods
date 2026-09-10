@@ -1641,10 +1641,10 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Visible_XLPEntry"/>
 						</Element>
@@ -1659,10 +1659,10 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Revealed_XLPEntry"/>
 						</Element>
@@ -1686,10 +1686,10 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Visible_XLPEntry"/>
 						</Element>
@@ -1704,10 +1704,10 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Revealed_XLPEntry"/>
 						</Element>
@@ -1731,10 +1731,10 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Visible_XLPEntry"/>
 						</Element>
@@ -1749,10 +1749,10 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Revealed_XLPEntry"/>
 						</Element>
@@ -2181,10 +2181,10 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Visible_XLPEntry"/>
 						</Element>
@@ -2199,10 +2199,10 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Revealed_XLPEntry"/>
 						</Element>
@@ -2226,10 +2226,10 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Visible_XLPEntry"/>
 						</Element>
@@ -2244,10 +2244,10 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_Pillaged"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Revealed_XLPEntry"/>
 						</Element>
@@ -2271,10 +2271,10 @@
 				<m_Fields>
 					<m_Values>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Visible_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Visible_XLPEntry"/>
 						</Element>
@@ -2289,10 +2289,10 @@
 							<m_ParamName text="Visible_BottomRight"/>
 						</Element>
 						<Element class="AssetObjects..BLPEntryValue">
-							<m_EntryName text=""/>
+							<m_EntryName text="CSC_TAILORS_SV_Textile_Workshop_Revealed_UnderConstruction"/>
 							<m_XLPClass text="StrategicView_Sprite"/>
-							<m_XLPPath text="StrategicView_Buildings.xlp"/>
-							<m_BLPPackage text="strategicview/strategicview_buildings"/>
+							<m_XLPPath text="csc_strategicview.xlp"/>
+							<m_BLPPackage text="StrategicView/CSC_StrategicView"/>
 							<m_LibraryName text="StrategicView_Sprite"/>
 							<m_ParamName text="Revealed_XLPEntry"/>
 						</Element>

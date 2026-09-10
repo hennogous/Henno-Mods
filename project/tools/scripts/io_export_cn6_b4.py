@@ -860,7 +860,7 @@ class export_csc_fgx_geo(bpy.types.Operator):
 				("2", "2 UVs", "Position, normal, tangent, binormal, UV0, and UV1"),
 				("3", "3 UVs", "Position, normal, tangent, binormal, UV0, UV1, and UV2"),
 				),
-			default="2",
+			default="3",
 			)
 	keep_cn6: BoolProperty(
 			name="Also copy CN6",

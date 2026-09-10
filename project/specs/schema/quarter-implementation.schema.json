@@ -10,21 +10,141 @@
     "gameplay_catalog",
     "localization_catalog",
     "sql_style_catalog",
+    "icon_atlas_layout",
     "planned_outputs",
+    "build_wiring",
+    "phase_validation",
+    "validation_ownership",
     "sql_style_profiles",
     "implementation_rules",
     "preserved_inputs",
     "phases",
+    "resolved_engine_decisions",
     "open_engine_decisions"
   ],
   "properties": {
     "schema_version": {"const": 1},
     "quarter": {"type": "string", "minLength": 1},
     "status": {"enum": ["proposed", "approved", "implementing", "complete", "superseded"]},
+    "icon_atlas_layout": {
+      "type": "object",
+      "required": ["source", "overrides"],
+      "properties": {
+        "source": {"const": "gameplay_catalog"},
+        "overrides": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "district_normal",
+              "district_fow",
+              "stage2_building",
+              "stage3_building",
+              "stage4_building",
+              "stage2_service",
+              "stage3_service",
+              "stage4_service"
+            ]
+          },
+          "additionalProperties": {"type": "integer", "minimum": 0, "maximum": 15}
+        }
+      },
+      "additionalProperties": false
+    },
     "planned_outputs": {
       "type": "object",
       "required": ["core", "gold", "monopolies", "monopolies_gold", "localization_source", "localization_generated"],
       "additionalProperties": {"type": "string", "minLength": 1}
+    },
+    "build_wiring": {
+      "type": "object",
+      "required": ["action_manifest", "source_project", "actions"],
+      "properties": {
+        "action_manifest": {"type": "string", "minLength": 1},
+        "source_project": {"type": "string", "minLength": 1},
+        "actions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["id", "type", "file", "load_order", "criteria"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "type": {"enum": ["UpdateDatabase", "UpdateText", "UpdateIcons", "ImportFiles", "AddGameplayScripts", "AddUserInterfaces"]},
+              "file": {"type": "string", "minLength": 1},
+              "load_order": {"oneOf": [{"type": "integer"}, {"type": "string", "pattern": "^-?[0-9]+$"}]},
+              "criteria": {"type": "array", "items": {"type": "string", "minLength": 1}}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "phase_validation": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["required_outputs", "required_suites", "assertion_module"],
+        "properties": {
+          "assertion_module": {"type": "string", "minLength": 1},
+          "required_outputs": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "required_suites": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "contract",
+                "output_completeness",
+                "sql_style",
+                "sql_statement_boundaries",
+                "semantic_rows",
+                "modifier_graph",
+                "replacement_coverage",
+                "localization_generation",
+                "localization_patterns",
+                "modbuddy_wiring",
+                "conditional_load_boundaries",
+                "lua_contract",
+                "art_contract"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "validation_ownership": {
+      "type": "object",
+      "required": ["automated", "in_game"],
+      "properties": {
+        "automated": {
+          "type": "object",
+          "required": ["owner", "required_before_handoff", "scope"],
+          "properties": {
+            "owner": {"const": "implementation_agent"},
+            "required_before_handoff": {"const": true},
+            "scope": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+          },
+          "additionalProperties": false
+        },
+        "in_game": {
+          "type": "object",
+          "required": ["owner", "required_before_handoff", "required_for_final_acceptance", "scenarios_field"],
+          "properties": {
+            "owner": {"const": "user"},
+            "required_before_handoff": {"const": false},
+            "required_for_final_acceptance": {"type": "boolean"},
+            "scenarios_field": {"const": "runtime_scenarios"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "sql_style_profiles": {
       "type": "object",
@@ -63,7 +183,7 @@
                 "runtime_scenarios"
               ],
               "properties": {
-                "id": {"type": "string", "pattern": "^I\\."},
+                "id": {"type": "string", "pattern": "^I\\.[A-Z0-9_]+(?:\\.[A-Z0-9_]+)*$"},
                 "design_refs": {"type": "array", "items": {"type": "string"}},
                 "gameplay_patterns": {"type": "array", "items": {"type": "string"}},
                 "localization_patterns": {"type": "array", "items": {"type": "string"}},
@@ -78,7 +198,33 @@
         "additionalProperties": true
       }
     },
-    "open_engine_decisions": {"type": "array"}
+    "resolved_engine_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "affects", "resolution"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^E\\."},
+          "affects": {
+            "oneOf": [
+              {"type": "string", "pattern": "^I\\.[A-Z0-9_]+(?:\\.[A-Z0-9_]+)*$"},
+              {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^I\\.[A-Z0-9_]+(?:\\.[A-Z0-9_]+)*$"}}
+            ]
+          },
+          "resolution": {"type": "string", "minLength": 1},
+          "decided_by": {"type": "string", "minLength": 1},
+          "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "open_engine_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "affects", "question", "resolution_required_before_phase"]
+      }
+    }
   },
   "additionalProperties": true
 }

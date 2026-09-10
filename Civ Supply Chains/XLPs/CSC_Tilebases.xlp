@@ -142,10 +142,6 @@
 			<m_ObjectName text="CSC_BAKERS_Flour_Closed"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_Oven"/>
-			<m_ObjectName text="CSC_BAKERS_Oven"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_BAKERS_Bakery"/>
 			<m_ObjectName text="CSC_BAKERS_Bakery"/>
 		</Element>
@@ -314,10 +310,6 @@
 			<m_ObjectName text="CSC_TAILORS_Classical_Base_02"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_Oven_v2"/>
-			<m_ObjectName text="CSC_BAKERS_Oven_v2"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_ALL_Workbench_M"/>
 			<m_ObjectName text="CSC_ALL_Workbench_M"/>
 		</Element>
@@ -337,6 +329,26 @@
 			<m_EntryID text="CSC_TAILORS_SailRack"/>
 			<m_ObjectName text="CSC_TAILORS_SailRack"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_03"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_03"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_RugTable"/>
+			<m_ObjectName text="CSC_TAILORS_RugTable"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Rugs"/>
+			<m_ObjectName text="CSC_TAILORS_Rugs"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SailRack2"/>
+			<m_ObjectName text="CSC_TAILORS_SailRack2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Tailor_2"/>
+			<m_ObjectName text="CSC_TAILORS_Tailor_2"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>
@@ -349,3 +361,4 @@
 		<Element>STADIA</Element>
 	</m_AllowedPlatforms>
 </AssetObjects..XLP>
+

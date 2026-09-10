@@ -4,11 +4,20 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import re
 import sys
 from pathlib import Path
 
 import yaml
+
+
+LAYOUT_SPEC = importlib.util.spec_from_file_location(
+    "csc_format_sql_layout", Path(__file__).with_name("format_sql_layout.py")
+)
+assert LAYOUT_SPEC and LAYOUT_SPEC.loader
+SQL_LAYOUT = importlib.util.module_from_spec(LAYOUT_SPEC)
+LAYOUT_SPEC.loader.exec_module(SQL_LAYOUT)
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -68,6 +77,24 @@ def validate_sql_style(
         for number, line in enumerate(lines, 1):
             if line != line.rstrip():
                 errors.append(f"line {number}: trailing whitespace")
+        formatted = SQL_LAYOUT.format_sql_layout_text(raw)
+        if formatted != raw:
+            original_lines = raw.splitlines()
+            formatted_lines = formatted.splitlines()
+            mismatch = next(
+                (
+                    number
+                    for number, (original, expected) in enumerate(
+                        zip(original_lines, formatted_lines), 1
+                    )
+                    if original != expected
+                ),
+                min(len(original_lines), len(formatted_lines)) + 1,
+            )
+            errors.append(
+                f"line {mismatch}: Bakers-derived row alignment differs; "
+                "run format_sql_layout.py"
+            )
     for number, line in enumerate(lines, 1):
         if INDENTED_KEYWORD.match(line):
             errors.append(f"line {number}: top-level SQL keyword is indented")

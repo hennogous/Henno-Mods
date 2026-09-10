@@ -23,14 +23,14 @@
 	<m_GeometrySet>
 		<m_ModelInstances>
 			<Element>
-				<m_Name text="DIS_PRD_Pile"/>
-				<m_GeoName text="DIS_PRD_Pile"/>
+				<m_Name text="CSC_BAKERS_Flour"/>
+				<m_GeoName text="CSC_BAKERS_Flour"/>
 				<m_GroupStates>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_BAKERS_Storage_Barn"/>
+									<m_ObjectName text="CSC_ALL_Props"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -71,7 +71,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DIS_PRD_Base_Non_Emissive"/>
+									<m_ObjectName text="DIS_PRD_Base"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -153,7 +153,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DIS_PRD_Base_Non_Emissive"/>
+									<m_ObjectName text="DIS_PRD_Base"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>

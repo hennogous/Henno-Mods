@@ -30,6 +30,34 @@ The corresponding landmark variants live in:
 Civ Supply Chains/ArtDefs/CSC_Landmarks.artdef
 ```
 
+## Tailors' Stage 2 bridge
+
+The Tailors' Stage 2 bridge is complete: gameplay SQL, the shared Lua mirror,
+`GamePropertyRanges`, and the Textile Workshop landmark variant are wired
+together.
+
+| Source property | Mirrored art property | Active interval / selection property | Active physical state |
+|---|---|---|---|
+| `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION` | `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART` | `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE` | A same-owner Lighthouse (or direct unique replacement) is adjacent to a Tailors' Quarter containing a functioning Textile Workshop, and that Quarter is adjacent to an improved Base Material. |
+
+Art-facing names follow
+`CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT>_<ART_OR_ACTIVE>`.
+`<EFFECT_CONTENT>` is the second-to-last word; here it is `PRODUCTION`.
+The completed Tailors wire-up selects `CSC_TAILORS_Textile_Workshop_2` over
+the baseline `CSC_TAILORS_Textile_Workshop` when
+`[CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]` is true.
+
+The bridge deliberately does **not** require `CIVIC_NAVAL_TRADITION`. That
+civic controls the Dockmaster service; it must not delay the visual
+supply-chain state. ArtDefs may use the mirrored property in a
+`GamePropertyRanges` classifier and a `[CITYPROP:...]` selection rule.
+
+The Tailors contract also reserves later physical-state bridges for the Tailor
+(`CSC_TAILORS_STAGE_3_CUSTOMERS`) and Fashion House
+(`CSC_TAILORS_STAGE_4_CUSTOMERS`). They are deliberately declarations only:
+their SQL and Lua mappings must wait for the approved Stage 3 and Stage 4
+gameplay implementations.
+
 ## SQL remains authoritative
 
 The SQL modifier property is the gameplay source of truth. `Lua_UI/ArtProperties/CSC_ArtProperties.lua` mirrors the SQL-driven value into a direct `pCity:SetProperty(...)` value that `GamePropertyRanges` can read.

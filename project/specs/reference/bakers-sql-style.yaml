@@ -18,6 +18,8 @@ visual_rules:
   - "Top-level SQL keywords begin in column 1 and are uppercase."
   - "Districts and Buildings use per-value /* ColumnName, */ comments."
   - "New Quarter files contain no trailing whitespace."
+  - "Simple INSERT column headers and VALUES tuples use canonical Bakers-derived column alignment."
+  - "Wide Districts and Buildings rows align every value following its /* ColumnName, */ comment."
 
 architectural_rules:
   - "Core section order follows Bakers: Types, Resources, Stage 1, Quarter, Stages 2-4, Civics when used, Modifiers, Requirements, UI."

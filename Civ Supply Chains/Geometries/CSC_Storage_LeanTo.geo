@@ -21,7 +21,7 @@
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
 <m_nPrimitiveCount>182</m_nPrimitiveCount>
-<m_nVertexCount>286</m_nVertexCount>
+<m_nVertexCount>290</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>

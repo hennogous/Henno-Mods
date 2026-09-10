@@ -9,6 +9,11 @@ local IncreasedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EF
 local DecreasedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED")
 local RemovedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED")
 
+local NewTailorsEffectNotification = DB.MakeHash("NOTIFICATION_CSC_TAILORS_EFFECT_NEW")
+local IncreasedTailorsEffectNotification = DB.MakeHash("NOTIFICATION_CSC_TAILORS_EFFECT_INCREASED")
+local DecreasedTailorsEffectNotification = DB.MakeHash("NOTIFICATION_CSC_TAILORS_EFFECT_DECREASED")
+local RemovedTailorsEffectNotification = DB.MakeHash("NOTIFICATION_CSC_TAILORS_EFFECT_REMOVED")
+
 -- local NewBakersStage3SpecialistNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_3_SERVICE_GRANT")
 -- local NewBakersStage4SpecialistEnterNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER")
 -- local NewBakersStage4SpecialistWaterNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER")
@@ -31,6 +36,18 @@ function RegisterHandlers()
 	
 	g_notificationHandlers[RemovedBakersEffectNotifcation]			= MakeDefaultHandlers();
 	g_notificationHandlers[RemovedBakersEffectNotifcation].AddSound	= "ALERT_NEGATIVE";
+
+	g_notificationHandlers[NewTailorsEffectNotification] = MakeDefaultHandlers();
+	g_notificationHandlers[NewTailorsEffectNotification].AddSound = "ALERT_POSITIVE";
+
+	g_notificationHandlers[IncreasedTailorsEffectNotification] = MakeDefaultHandlers();
+	g_notificationHandlers[IncreasedTailorsEffectNotification].AddSound = "ALERT_POSITIVE";
+
+	g_notificationHandlers[DecreasedTailorsEffectNotification] = MakeDefaultHandlers();
+	g_notificationHandlers[DecreasedTailorsEffectNotification].AddSound = "ALERT_NEGATIVE";
+
+	g_notificationHandlers[RemovedTailorsEffectNotification] = MakeDefaultHandlers();
+	g_notificationHandlers[RemovedTailorsEffectNotification].AddSound = "ALERT_NEGATIVE";
 
 	-- g_notificationHandlers[NewBakersStage3SpecialistNotifcation]			= MakeDefaultHandlers();
 	-- g_notificationHandlers[NewBakersStage3SpecialistNotifcation].AddSound	= "ALERT_POSITIVE";
@@ -55,4 +72,3 @@ function RegisterHandlers()
 	----- NOTIFICATION_ESPIONAGE_OP_SUCCESS
 	----- NOTIFICATION_ESPIONAGE_OP_FAILED
 end
-

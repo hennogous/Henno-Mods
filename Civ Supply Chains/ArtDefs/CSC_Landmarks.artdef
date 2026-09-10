@@ -2000,6 +2000,120 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP"/>
+										<m_RootCollectionName text="Building"/>
+										<m_ArtDefPath text="CSC_Buildings.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Buildings"/>
+										<m_ParamName text="Tag_HeroBuilding"/>
+									</Element>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="DEFAULT"/>
+										<m_RootCollectionName text="ArtEra"/>
+										<m_ArtDefPath text="Eras.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Eras"/>
+										<m_ParamName text="Tag_Era"/>
+									</Element>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="DEFAULT"/>
+										<m_RootCollectionName text="Culture"/>
+										<m_ArtDefPath text="Cultures.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Cultures"/>
+										<m_ParamName text="Tag_Culture"/>
+									</Element>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="ANY"/>
+										<m_RootCollectionName text="AppealTags"/>
+										<m_ArtDefPath text="Appeal.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Appeal"/>
+										<m_ParamName text="Tag_Appeal"/>
+									</Element>
+									<Element class="AssetObjects..BLPEntryValue">
+										<m_EntryName text="CSC_TAILORS_Textile_Workshop_2"/>
+										<m_XLPClass text="TileBase"/>
+										<m_XLPPath text="csc_tilebases.xlp"/>
+										<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
+										<m_LibraryName text="TileBase"/>
+										<m_ParamName text="Asset"/>
+									</Element>
+									<Element class="AssetObjects..StringValue">
+										<m_Value text="[CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]"/>
+										<m_ParamName text="SelectionRule"/>
+									</Element>
+									<Element class="AssetObjects..IntValue">
+										<m_nValue>1</m_nValue>
+										<m_ParamName text="Priority"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="01 Classical: Textile Workshop 2"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="BUILDING_CSC_TAILORS_TAILOR"/>
+										<m_RootCollectionName text="Building"/>
+										<m_ArtDefPath text="CSC_Buildings.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Buildings"/>
+										<m_ParamName text="Tag_HeroBuilding"/>
+									</Element>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="DEFAULT"/>
+										<m_RootCollectionName text="ArtEra"/>
+										<m_ArtDefPath text="Eras.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Eras"/>
+										<m_ParamName text="Tag_Era"/>
+									</Element>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="DEFAULT"/>
+										<m_RootCollectionName text="Culture"/>
+										<m_ArtDefPath text="Cultures.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Cultures"/>
+										<m_ParamName text="Tag_Culture"/>
+									</Element>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="ANY"/>
+										<m_RootCollectionName text="AppealTags"/>
+										<m_ArtDefPath text="Appeal.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Appeal"/>
+										<m_ParamName text="Tag_Appeal"/>
+									</Element>
+									<Element class="AssetObjects..BLPEntryValue">
+										<m_EntryName text="CSC_TAILORS_Tailor_2"/>
+										<m_XLPClass text="TileBase"/>
+										<m_XLPPath text="csc_tilebases.xlp"/>
+										<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
+										<m_LibraryName text="TileBase"/>
+										<m_ParamName text="Asset"/>
+									</Element>
+									<Element class="AssetObjects..StringValue">
+										<m_Value text="[CITYPROP:CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE]"/>
+										<m_ParamName text="SelectionRule"/>
+									</Element>
+									<Element class="AssetObjects..IntValue">
+										<m_nValue>1</m_nValue>
+										<m_ParamName text="Priority"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="02 Medieval: Tailor 2"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
 										<m_ElementName text="BUILDING_CSC_TAILORS_TAILOR"/>
 										<m_RootCollectionName text="Building"/>
 										<m_ArtDefPath text="CSC_Buildings.artdef"/>
@@ -2281,4 +2395,3 @@
 		</Element>
 	</m_RootCollections>
 </AssetObjects..ArtDefSet>
-

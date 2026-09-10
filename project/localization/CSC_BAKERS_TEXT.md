@@ -10,10 +10,10 @@ Bakers' Quarter
 ## LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION
 A district in your city specializing in baking.
 
+- +1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.
 - +1 [ICON_Production] Production from each adjacent [ICON_CSC_BASE] Base or [ICON_CSC_SPEC] Specialty Materials resource from this supply chain.
 - +1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] City Center and Commercial Hub, and +1 [ICON_Food] Food in return.
 - +1 [ICON_Gold] Gold from each adjacent [ICON_CSC_SALES] Entertainment Complex and Water Park, and +1 [ICON_Culture] Culture in return.
-- +1 [ICON_Production] Production from every 2 adjacent river segments once the Water Mill is built, or +1 [ICON_Production] Production if built on Hills terrain once the Wind Mill is built.
 
 ### Bakers' Adjacencies
 
@@ -91,7 +91,7 @@ Bakery
 ## LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION
 - +1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +0.1 [ICON_Production] Production and +0.1 [ICON_Gold] Gold per [ICON_Citizen] Citizen from each adjacent Market, in exchange for +0.1 [ICON_Food] Food per [ICON_Citizen] Citizen to the Market city.
-- +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each incoming [ICON_TradeRoute] Trade Route, in exchange for a +1 [ICON_Food] Food bonus to the [ICON_TradeRoute] Trade Route, if the origin city itself does not have a Bakers' Quarter.
+- +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each incoming [ICON_TradeRoute] Trade Route, in exchange for a +1 [ICON_Food] Food bonus to the [ICON_TradeRoute] Trade Route, if the origin city itself does not have a Bakers' Quarter. +1 [ICON_Amenities] Amenity to the origin city.
 
 At Medieval Faires, a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Commercial Hub with a Market.
 
@@ -328,16 +328,16 @@ Stage 5: Goods sales
 For the most part, sales of different types of goods to buyers (stage 5) were described in the sections above along with the building that produced the goods.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCBASE_TITLE
-[ICON_CSC_BASE] Base Materials
+Base Materials
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSPEC_TITLE
-[ICON_CSC_SPEC] Specialty Materials
+Specialty Materials
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCGOODS_TITLE
-[ICON_CSC_GOODS] Goods Providers
+Goods Providers
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCSALES_TITLE
-[ICON_CSC_SALES] Sales Districts
+Sales Districts
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_HISTORY_TITLE
 Historical Context
@@ -643,8 +643,8 @@ SELECT
     'en_US',
     'LOC_PEDIA_RESOURCES_PAGE_' || ResourceName || '_CHAPTER_CSCQUAR_PARA_1',
     CASE
-        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_BASE' THEN 'Base material: [ICON_BAKERS] Bakers'' Quarter'
-        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_SPEC' THEN 'Specialty material: [ICON_BAKERS] Bakers'' Quarter'
+        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_BASE' THEN 'Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter'
+        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_SPEC' THEN 'Specialty Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter'
     END
 FROM BAKERS_RESOURCES;
 ```

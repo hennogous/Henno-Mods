@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import importlib.util
 import tempfile
 import unittest
@@ -35,11 +36,49 @@ class DesignReferenceTests(unittest.TestCase):
         )
         self.assertFalse(resolved)
 
+    def test_phase_hash_ignores_unreferenced_design_subtrees(self) -> None:
+        implementation = {
+            "phases": [{"id": "one", "requirements": [{"design_refs": ["district"]}]}]
+        }
+        design = {"district": {"cost": 60}, "future": {"value": 1}}
+        first = VALIDATOR.phase_design_sha256(design, implementation, "one")
+        design["future"]["value"] = 2
+        self.assertEqual(
+            first, VALIDATOR.phase_design_sha256(design, implementation, "one")
+        )
+
 
 class TailorsContractTests(unittest.TestCase):
     def test_current_contracts_pass(self) -> None:
         result = VALIDATOR.validate_quarter("tailors", check_clean_start=True)
         self.assertEqual(result.errors, [])
+
+    def test_quarter_icon_layout_uses_shared_catalog_convention(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        catalog = VALIDATOR.load_yaml(
+            VALIDATOR.ROOT / implementation["gameplay_catalog"]
+        )
+        result = VALIDATOR.Validation()
+        effective = VALIDATOR.validate_icon_atlas_layout(
+            catalog, implementation, result
+        )
+        self.assertEqual(result.errors, [])
+        self.assertEqual(effective, VALIDATOR.QUARTER_ICON_ATLAS_LAYOUT)
+
+    def test_quarter_icon_layout_rejects_colliding_override(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        catalog = VALIDATOR.load_yaml(
+            VALIDATOR.ROOT / implementation["gameplay_catalog"]
+        )
+        broken = copy.deepcopy(implementation)
+        broken["icon_atlas_layout"]["overrides"] = {"stage3_building": 4}
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_icon_atlas_layout(catalog, broken, result)
+        self.assertTrue(any("multiple semantic roles" in item for item in result.errors))
 
     def test_all_preserved_modsupport_mappings_are_detected(self) -> None:
         implementation = VALIDATOR.load_yaml(
@@ -63,8 +102,74 @@ class TailorsContractTests(unittest.TestCase):
             )
         )
 
+    def test_validation_ownership_and_engine_decisions_are_explicit(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+
+    def test_approved_contract_requires_identity_timestamp_and_hash(self) -> None:
+        control = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "control.yaml"
+        )
+        invalid = copy.deepcopy(control)
+        invalid["contract_approvals"]["design_transcription"]["status"] = "approved"
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_schema(invalid, "quarter-control.schema.json", result)
+        self.assertTrue(
+            any("design_transcription" in failure for failure in result.errors)
+        )
+
+    def test_every_build_output_has_exact_action_contract(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        content_only = {
+            "icons",
+            "buildings_artdef",
+            "landmarks_artdef",
+            "strategic_view_artdef",
+            "property_ranges_artdef",
+            "tilebase_xlp",
+        }
+        source_only = {
+            key
+            for key in implementation["planned_outputs"]
+            if key.endswith("_source")
+        }
+        expected = set(implementation["planned_outputs"]) - content_only - source_only
+        self.assertEqual(set(implementation["build_wiring"]["actions"]), expected)
+        ownership = implementation["validation_ownership"]
+        self.assertEqual(ownership["automated"]["owner"], "implementation_agent")
+        self.assertTrue(ownership["automated"]["required_before_handoff"])
+        self.assertEqual(ownership["in_game"]["owner"], "user")
+        self.assertFalse(ownership["in_game"]["required_before_handoff"])
+        self.assertEqual(implementation["open_engine_decisions"], [])
+        self.assertEqual(
+            {decision["id"] for decision in implementation["resolved_engine_decisions"]},
+            {
+                "E.DECIMAL_POPULATION",
+                "E.TRADE_STACKING",
+                "E.SERVICE_PERSISTENCE",
+            },
+        )
+
 
 class SqlStyleTests(unittest.TestCase):
+    def test_bakers_layout_formatter_is_idempotent(self) -> None:
+        source = """INSERT INTO Example\n        ( A, B )\nVALUES  ( 'SHORT', 'ONE' ),\n        ( 'A_LONGER_VALUE', 'TWO' );\n"""
+        formatter = VALIDATOR.SQL_STYLE.SQL_LAYOUT
+        formatted = formatter.format_sql_layout_text(source)
+        self.assertEqual(formatted, formatter.format_sql_layout_text(formatted))
+        self.assertIn("'SHORT',", formatted)
+        first = formatted.splitlines()[2].index("'ONE'")
+        second = formatted.splitlines()[3].index("'TWO'")
+        self.assertEqual(first, second)
+
+    def test_compact_tuple_layout_is_rejected_for_new_quarter_sql(self) -> None:
+        formatter = VALIDATOR.SQL_STYLE.SQL_LAYOUT
+        compact = """INSERT INTO Example\n        ( A, B )\nVALUES  ( 'SHORT', 'ONE' ),\n        ( 'A_LONGER_VALUE', 'TWO' );\n"""
+        self.assertNotEqual(compact, formatter.format_sql_layout_text(compact))
+
     def test_bakers_reference_matches_all_style_profiles(self) -> None:
         cases = [
             ("CSC_Q_BAKERS.sql", "core"),

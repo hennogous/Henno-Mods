@@ -13,6 +13,13 @@
 </m_Meshes>
 <m_Bones>
 <Element text="CSC_ALL_District_Base_CON+PIL"/>
+<Element text="CSC_ALL_District_Base_CON+PIL"/>
+<Element text="CSC_ALL_Road_CP_01"/>
+<Element text="CSC_ALL_Road_CP_02"/>
+<Element text="CSC_ALL_Road_CP_03"/>
+<Element text="CSC_ALL_Road_CP_04"/>
+<Element text="CSC_ALL_Road_CP_05"/>
+<Element text="CSC_ALL_Road_CP_06"/>
 </m_Bones>
 <m_ModelName text="CSC_ALL_District_Base_CON+PIL"/>
 <m_SourceFilePath text=""/>

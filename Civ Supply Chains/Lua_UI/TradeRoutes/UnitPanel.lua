@@ -23,9 +23,14 @@ local CSC_DISTRICT_BAKERS_QUARTER:number = -1;
 if GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil then
 	CSC_DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index;
 end
+local CSC_DISTRICT_TAILORS_QUARTER:number = -1;
+if GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"] ~= nil then
+	CSC_DISTRICT_TAILORS_QUARTER = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"].Index;
+end
 
 local CSC_PROP_BAKERY_SUPPLIED:string = "CSC_BAKERS_BAKERY_SUPPLIED";
 local CSC_PROP_CAFE_SUPPLIED:string = "CSC_BAKERS_CAFE_SUPPLIED";
+local CSC_PROP_TAILOR_SUPPLIED:string = "CSC_TAILORS_TAILOR_SUPPLIED";
 local CSC_UNIT_PANEL_YIELD_ORDER:table = {
 	"YIELD_FOOD",
 	"YIELD_PRODUCTION",
@@ -77,6 +82,20 @@ function CSC_UnitPanel_GetBakersTradeRouteCount(pOriginCity:table, pDestinationC
 	end
 
 	return routeCount;
+end
+
+function CSC_UnitPanel_GetTailorsTradeRouteCount(pOriginCity:table, pDestinationCity:table)
+	if pOriginCity == nil or pDestinationCity == nil then return 0; end
+	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return 0; end
+	if CSC_DISTRICT_TAILORS_QUARTER >= 0 then
+		local pDistricts:table = pOriginCity:GetDistricts();
+		if pDistricts ~= nil and pDistricts:HasDistrict(CSC_DISTRICT_TAILORS_QUARTER) then
+			if pDistricts.IsPillaged == nil or not pDistricts:IsPillaged(CSC_DISTRICT_TAILORS_QUARTER) then
+				return 0;
+			end
+		end
+	end
+	return CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_TAILOR_SUPPLIED) and 1 or 0;
 end
 
 
@@ -1713,6 +1732,14 @@ function TradeUnitView( viewData:table )
 								originYieldValues[foodYield.Index] = (originYieldValues[foodYield.Index] or 0) + cscBakersRouteCount;
 							end
 							cscAmenityAmount = cscBakersRouteCount;
+						end
+						local cscTailorsRouteCount:number = CSC_UnitPanel_GetTailorsTradeRouteCount(city, destinationCity);
+						if cscTailorsRouteCount > 0 then
+							local cultureYield:table = GameInfo.Yields["YIELD_CULTURE"];
+							if cultureYield ~= nil then
+								originYieldValues[cultureYield.Index] = (originYieldValues[cultureYield.Index] or 0) + cscTailorsRouteCount;
+							end
+							cscAmenityAmount = cscAmenityAmount + cscTailorsRouteCount;
 						end
 					end
 
