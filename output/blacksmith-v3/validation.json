@@ -1,0 +1,19 @@
+{
+  "external_maps_verified": [
+    "/Users/henno.gous/Play/Henno-Mods/output/blacksmith-v3/Textures/CSC_BLACKSMITH_Workshop_B.png",
+    "/Users/henno.gous/Play/Henno-Mods/output/blacksmith-v3/Textures/CSC_BLACKSMITH_Workshop_N.png",
+    "/Users/henno.gous/Play/Henno-Mods/output/blacksmith-v3/Textures/CSC_BLACKSMITH_Workshop_G.png",
+    "/Users/henno.gous/Play/Henno-Mods/output/blacksmith-v3/Textures/CSC_BLACKSMITH_Workshop_M.png",
+    "/Users/henno.gous/Play/Henno-Mods/output/blacksmith-v3/Textures/CSC_BLACKSMITH_Workshop_E.png",
+    "/Users/henno.gous/Play/Henno-Mods/output/blacksmith-v3/Textures/CSC_BLACKSMITH_Workshop_AO.png"
+  ],
+  "cn6_vertices": 1491,
+  "cn6_triangles": 781,
+  "material_count": 1,
+  "uv_layers": [
+    "UV1",
+    "UV2",
+    "UV3"
+  ],
+  "stump_side_faces_corrected": 4
+}

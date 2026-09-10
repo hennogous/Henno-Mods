@@ -1,0 +1,146 @@
+[
+  {
+    "name": "roof",
+    "bounds": [
+      0,
+      0,
+      0.5,
+      0.5
+    ],
+    "normal": 1,
+    "gloss": 0.17,
+    "metalness": 0
+  },
+  {
+    "name": "stone",
+    "bounds": [
+      0.5,
+      0,
+      1,
+      0.5
+    ],
+    "normal": 1,
+    "gloss": 0.1,
+    "metalness": 0
+  },
+  {
+    "name": "wood",
+    "bounds": [
+      0,
+      0.5,
+      0.5,
+      1
+    ],
+    "normal": 0.8,
+    "gloss": 0.19,
+    "metalness": 0
+  },
+  {
+    "name": "plaster",
+    "bounds": [
+      0.5,
+      0.5,
+      1,
+      0.68
+    ],
+    "normal": 0.22,
+    "gloss": 0.07,
+    "metalness": 0
+  },
+  {
+    "name": "iron",
+    "bounds": [
+      0.5,
+      0.68,
+      0.625,
+      0.815
+    ],
+    "normal": 0.5,
+    "gloss": 0.28,
+    "metalness": 0.85
+  },
+  {
+    "name": "endgrain",
+    "bounds": [
+      0.625,
+      0.68,
+      0.75,
+      0.815
+    ],
+    "normal": 0.7,
+    "gloss": 0.18,
+    "metalness": 0
+  },
+  {
+    "name": "cloth",
+    "bounds": [
+      0.75,
+      0.68,
+      0.875,
+      0.815
+    ],
+    "normal": 0.35,
+    "gloss": 0.07,
+    "metalness": 0
+  },
+  {
+    "name": "coals",
+    "bounds": [
+      0.875,
+      0.68,
+      1,
+      0.815
+    ],
+    "normal": 0.65,
+    "gloss": 0.1,
+    "metalness": 0
+  },
+  {
+    "name": "soot",
+    "bounds": [
+      0.5,
+      0.815,
+      0.625,
+      1
+    ],
+    "normal": 0,
+    "gloss": 0.04,
+    "metalness": 0
+  },
+  {
+    "name": "water",
+    "bounds": [
+      0.625,
+      0.815,
+      0.75,
+      1
+    ],
+    "normal": 0.35,
+    "gloss": 0.6,
+    "metalness": 0
+  },
+  {
+    "name": "leather",
+    "bounds": [
+      0.75,
+      0.815,
+      0.875,
+      1
+    ],
+    "normal": 0.35,
+    "gloss": 0.16,
+    "metalness": 0
+  },
+  {
+    "name": "steel",
+    "bounds": [
+      0.875,
+      0.815,
+      1,
+      1
+    ],
+    "normal": 0.45,
+    "gloss": 0.44,
+    "metalness": 0.95
+  }
+]

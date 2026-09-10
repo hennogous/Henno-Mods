@@ -1,0 +1,19 @@
+{
+  "cn6_vertices": 1491,
+  "cn6_triangles": 781,
+  "materials": 1,
+  "atlas_size": 1024,
+  "ao_bake": "Cycles AO; UV2; 96 samples; distance 34 game units; studio excluded",
+  "mapped_faces": {
+    "plaster": 11,
+    "stone": 98,
+    "roof": 17,
+    "wood": 134,
+    "endgrain": 37,
+    "soot": 13,
+    "iron": 27,
+    "coals": 16,
+    "cloth": 1,
+    "water": 1
+  }
+}

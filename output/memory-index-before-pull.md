@@ -6,7 +6,6 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 ## Active notes
 
-- [Blacksmith v5 texture refinement](session_blacksmith_v5.md) — latest blend/package paths, authored relief, generator changes and validation.
 - [Civ VI shape hierarchy feedback](feedback_csc_shape_hierarchy.md) — chunky structural forms must read in clay; bargeboard thickness must be measured across the slope.
 - [Working Files reachable from Mac](project_working-files-mac-access.md) — Shadow's Working Files syncs via Google Drive `Other computers/My PC/`
 - [Art performance & material architecture](project_art-performance-and-materials.md) — verts are cheap; optimize draw-calls/materials/textures; E/NE is a state-swap (not concurrent), Props is the one extra material
@@ -20,14 +19,6 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 ## Resolved feedback
 
 - Decal geometry visibility feedback was applied to the generic `civ6-modding` skill: `DecalGeometry` supports normal `GroupStates`; the limitation is reveal-animation keying, not general visibility.
-
-## Local tooling lessons
-
-- Shadow's normal Windows environment has Python installed at `C:\Users\Shadow\AppData\Local\Programs\Python\Python312\` with the launcher at `C:\Users\Shadow\AppData\Local\Programs\Python\Launcher\py.exe`. If Codex command execution cannot resolve or run `py`/`python`, describe it as a Codex sandbox/runtime limitation, not as "Python is not on PATH" for the user. For Codex-side tests, use the bundled runtime at `C:\Users\Shadow\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe` unless the user's local Python environment is specifically required.
-
-## Active implementation reset
-
-- Tailors contract-first restart → `session_tailors_contract_restart.md`
 
 ## Removed stale notes
 

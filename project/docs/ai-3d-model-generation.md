@@ -58,7 +58,7 @@ Use the nearby references:
    - Reject or regenerate base maps that include board/plank separators unless that specific asset explicitly requires painted seams.
 
 5. Derive companion maps deterministically.
-   - Derive `_N`, `_G`, and `_M` from the final `_B` with `project/tools/blender/csc_generate_pbr_maps.mjs`.
+   - Derive aligned `_N`, `_G`, and `_M` with `project/tools/blender/csc_generate_pbr_maps.mjs`. For construction detail, prefer an authored `--height` map and explicit `--regions` over base-color brightness; see [Authored Relief](textures-and-uvs.md#authored-relief-with-the-companion-map-generator).
    - Do not generate `_B`, `_N`, `_G`, and `_M` independently with image generation; even small pixel shifts will make atlas seams and material reads disagree.
    - Bake `_AO` from the actual geometry in Blender through UV2. AO is positional, not a painted-material property.
 

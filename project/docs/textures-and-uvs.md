@@ -113,6 +113,80 @@ These reference textures apply to all buildings uniformly. Create them once for 
 - **Generation:** Use Ndo, CrazyBump, or Substance from simplified heightmap. **Never** just desaturate the base colour
 - **Note:** Engine post-processes to CLEAN format during cook
 
+### Authored Relief with the Companion-Map Generator
+
+`project/tools/blender/csc_generate_pbr_maps.mjs` accepts an aligned grayscale
+height map and explicit material regions. Prefer this path for building atlases:
+painted highlights, dark grain and differences in stone color are not reliable
+measurements of surface height. The base-only path remains a quick approximation.
+
+```sh
+node project/tools/blender/csc_generate_pbr_maps.mjs \
+  --base Textures/Asset_B.png --height Textures/Asset_H.png \
+  --regions material-regions.json --normal-strength 4 \
+  --reference-size 1024 --normal-y opengl --overwrite
+```
+
+Height must match the source base image dimensions; `--size` resizes both together.
+White is high, black is low. Height is scalar data, read from the stored red channel
+without a gamma transform. Use grayscale RGB or grayscale PNGs. The `_H` image is
+an editable authoring source, not an additional runtime texture.
+
+Region JSON is an array of rectangles covering the entire atlas without overlap.
+Bounds use normalized **top-left image coordinates**, `[left, top, right, bottom]`.
+Upper edges are exclusive. For example:
+
+```json
+[
+  {"name":"stone", "bounds":[0,0,0.5,1], "normal":1, "gloss":0.10, "metalness":0},
+  {"name":"iron", "bounds":[0.5,0,1,1], "normal":0.5, "gloss":0.28, "metalness":1}
+]
+```
+
+`normal` is a nonnegative relief multiplier; `gloss` and `metalness` range from 0
+to 1. Omitted settings default to 1, 0.18 and 0. Region boundaries clamp derivative
+sampling, so adjacent atlas swatches do not create false cliffs. Material normal
+amplitude is applied after differentiation, including in the base-only path.
+Explicit regions also prevent painted color changes from changing material class.
+
+`--reference-size` scales X/Y derivatives by output width/height relative to the
+chosen reference resolution. This keeps relief approximately stable when resizing;
+small details can still disappear through filtering. Omit it for the previous
+pixel-based behavior. The default global normal strength remains 2.25.
+
+`--normal-y opengl` produces the tangent convention used by Blender's Normal Map
+node. `directx` preserves the generator's legacy green-channel convention and is
+the default. Validate the destination material/cook convention before game handoff;
+do not infer it solely from the graphics API. In Blender, load `_N`, `_G`, `_M` and
+`_AO` as Non-Color data, and use normal node strength 1 as a neutral starting point.
+
+The incomplete `--ao`/`--ao-strength` options now fail with a clear explanation.
+AO remains a geometry bake through unique UV2. Reuse it when geometry and UV2 are
+unchanged; rebake after changes that affect occlusion or that mapping.
+
+### Painterly Detail: Blacksmith Reference Study
+
+The supplied Firaxis watermill and commercial atlases suggest a useful distinction:
+simple silhouettes can carry substantial **designed construction detail**. Their
+base color includes selective highlights and crevice shading, but broad material
+faces remain comparatively calm. “Painterly” should not become dense mottled
+grunge, photographic grain or an oil-paint texture over every surface.
+
+For image generation, specify quiet broad faces, restrained color variation,
+selective edge wear and short purposeful grain marks. Keep atlas boundaries and
+material identities explicit. Inspect the generated result: style words alone do
+not guarantee restrained surfaces or exact boundaries.
+
+Author aligned relief around construction: broad stone bevels and recessed mortar,
+tile lips, selected grain grooves and shallow fabric structure. Keep plaster nearly
+flat. Do not independently generate a normal image and hope it aligns with the base.
+An inspected seam mask can seed height authoring, but its thresholds are asset
+specific and need review; dark painted shadows are not automatically deep geometry.
+
+Review a neutral-color render with normals enabled/disabled under the same light,
+then the textured result at a small size. Stronger normal-map colors are a diagnostic,
+not a quality score. Normals cannot replace chunky geometry at silhouette edges.
+
 ### Generic_AO (Ambient Occlusion)
 - **Format:** Linear greyscale
 - **Purpose:** Baked ambient occlusion for self-shadowing

@@ -137,6 +137,8 @@ node project/tools/blender/csc_generate_pbr_maps.mjs \
 
 The script infers `CSC_TAILORS_SpinningWheel` from `_B.png` and writes matching `_N.png`, `_G.png`, and `_M.png` beside the base map (no `_AO` — bake that from geometry, see above). Add `--copy-base` if the base map also needs to be resized/copied to the output folder. Use `--out-dir` to write to a temporary folder for review before replacing live textures.
 
+For building construction detail, prefer `--height Asset_H.png` and `--regions material-regions.json` so painted color does not become accidental relief or material classification. See [Authored Relief](textures-and-uvs.md#authored-relief-with-the-companion-map-generator) for the schema, resolution scaling and explicit normal green-channel convention. The base-only command above is an approximation.
+
 Do **not** generate `_B`, `_N`, `_G`, and `_M` independently with image generation unless the tool can guarantee exact pixel alignment. Even small shifts between maps will make seams, normals, or gloss disagree once the atlas is wrapped onto the mesh.
 
 Avoid using Blender as the primary pixel-writing tool for generated maps. It is reliable for material wiring and scene validation, but generated image datablocks can fail quietly when saving over existing texture paths. Prefer the Node/Sharp helper for map generation, write to a temporary path first, validate pixel stats or preview, then copy the verified files into the asset folder and reload the external images in Blender. After replacing a texture file at the same path, explicitly reload or recreate Blender's image datablock so the material is not still showing stale cached pixels. Do not pack active working textures by default.

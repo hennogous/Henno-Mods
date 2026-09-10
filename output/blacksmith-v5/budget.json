@@ -1,0 +1,9 @@
+{
+  "cn6_vertices": 1491,
+  "cn6_triangles": 781,
+  "materials": 1,
+  "atlas_size": 1024,
+  "geometry": "Unchanged from v4",
+  "ao": "Unchanged geometry and UV2: reused v4 Cycles bake",
+  "normal": "Explicit structural height; OpenGL for Blender preview; strength 1.0"
+}

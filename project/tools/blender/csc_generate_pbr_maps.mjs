@@ -32,8 +32,10 @@ Options:
   --size <px>               Square output size. Default: source _B dimensions.
   --preset <name>           Region rules: auto, csc-textile-prop. Default: auto.
   --normal-strength <num>   Multiplier for normal map relief. Default: 2.25.
-  --ao                      Also write an ambient occlusion map.
-  --ao-strength <num>       Multiplier for AO seam/recess contrast. Default: 1.
+  --height <file.png>       Aligned grayscale height; replaces brightness-derived relief.
+  --regions <file.json>     Explicit rectangular material regions (see textures-and-uvs.md).
+  --reference-size <px>     Scale derivatives relative to this resolution. Default: no scaling.
+  --normal-y <convention>   directx (legacy default) or opengl (Blender).
   --gloss-bias <num>        Additive gloss adjustment in -1..1. Default: 0.
   --copy-base               Also write a resized <Asset>_B.png beside derived maps.
   --overwrite               Replace existing output files.
@@ -56,8 +58,7 @@ function parseArgs(argv) {
   const args = {
     preset: "auto",
     normalStrength: 2.25,
-    writeAo: false,
-    aoStrength: 1,
+    normalY: "directx",
     glossBias: 0,
     copyBase: false,
     overwrite: false,
@@ -92,12 +93,21 @@ function parseArgs(argv) {
       case "--normal-strength":
         args.normalStrength = Number(readValue());
         break;
+      case "--height":
+        args.height = readValue();
+        break;
+      case "--regions":
+        args.regions = readValue();
+        break;
+      case "--reference-size":
+        args.referenceSize = Number(readValue());
+        break;
+      case "--normal-y":
+        args.normalY = readValue();
+        break;
       case "--ao":
-        args.writeAo = true;
-        break;
       case "--ao-strength":
-        args.aoStrength = Number(readValue());
-        break;
+        throw new Error("AO must be baked from geometry through UV2 in Blender; --ao and --ao-strength are unsupported.");
       case "--gloss-bias":
         args.glossBias = Number(readValue());
         break;
@@ -133,6 +143,11 @@ function parseArgs(argv) {
   for (const key of ["normalStrength", "glossBias"]) {
     if (!Number.isFinite(args[key])) throw new Error(`Invalid numeric value for ${key}`);
   }
+  if (args.normalStrength < 0) throw new Error("--normal-strength must be nonnegative");
+  if (args.referenceSize !== undefined && (!Number.isFinite(args.referenceSize) || args.referenceSize <= 0)) {
+    throw new Error("--reference-size must be positive");
+  }
+  if (!["directx", "opengl"].includes(args.normalY)) throw new Error("--normal-y must be directx or opengl");
   return args;
 }
 
@@ -215,6 +230,41 @@ function materialSettings(region) {
   }
 }
 
+// Bounds are normalized, top-left image coordinates, with exclusive upper edges.
+// Explicit regions deliberately replace HSV guesses: painted highlights must not
+// change a wood pixel into a different material or introduce a height discontinuity.
+async function loadRegions(file, width, height) {
+  if (!file) return null;
+  const regions = JSON.parse(await fs.readFile(file, "utf8"));
+  if (!Array.isArray(regions) || !regions.length) throw new Error("--regions must contain a nonempty JSON array");
+  const ids = new Int32Array(width * height).fill(-1);
+  const settings = regions.map((region, id) => {
+    const { bounds } = region;
+    if (!Array.isArray(bounds) || bounds.length !== 4 ||
+        bounds.some(v => !Number.isFinite(v) || v < 0 || v > 1) ||
+        bounds[0] >= bounds[2] || bounds[1] >= bounds[3]) {
+      throw new Error(`Invalid bounds for region ${id}`);
+    }
+    const result = { normal: 1, gloss: 0.18, metalness: 0, ...region,
+      pixels: bounds.map((v, i) => Math.round(v * (i % 2 === 0 ? width : height))) };
+    for (const key of ["normal", "gloss", "metalness"]) {
+      if (!Number.isFinite(result[key]) || result[key] < 0 || (key !== "normal" && result[key] > 1)) {
+        throw new Error(`Invalid ${key} for region ${id}`);
+      }
+    }
+    const [x0, y0, x1, y1] = result.pixels;
+    if (x0 >= x1 || y0 >= y1) throw new Error(`Region ${id} is smaller than one output pixel`);
+    for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) {
+      const i = y * width + x;
+      if (ids[i] !== -1) throw new Error(`Overlapping regions at ${x},${y}`);
+      ids[i] = id;
+    }
+    return result;
+  });
+  if (ids.includes(-1)) throw new Error("Regions must cover the entire output atlas");
+  return { ids, settings };
+}
+
 function pixelStats(buffer) {
   let min = 255;
   let max = 0;
@@ -289,8 +339,6 @@ async function main() {
     M: path.join(outDir, `${assetName}_M.png`),
   };
 
-  await fs.mkdir(outDir, { recursive: true });
-
   let baseImage = sharp(basePath);
   if (args.size !== undefined) {
     baseImage = baseImage.resize(args.size, args.size, { fit: "fill" });
@@ -299,6 +347,17 @@ async function main() {
 
   const width = info.width;
   const height = info.height;
+  const regions = await loadRegions(args.regions, width, height);
+  let explicitHeight;
+  if (args.height) {
+    const [baseMeta, heightMeta] = await Promise.all([sharp(basePath).metadata(), sharp(args.height).metadata()]);
+    if (baseMeta.width !== heightMeta.width || baseMeta.height !== heightMeta.height) {
+      throw new Error("Height map dimensions must match the source base atlas before resizing");
+    }
+    // Height is scalar data: use the stored red channel without an sRGB transform.
+    explicitHeight = await sharp(args.height).resize(width, height, { fit: "fill" })
+      .removeAlpha().extractChannel(0).raw().toBuffer();
+  }
   const pixelIndex = (x, y) => (y * width + x) * 4;
   const getLum = (x, y) => {
     const cx = Math.max(0, Math.min(width - 1, x));
@@ -307,6 +366,9 @@ async function main() {
     return luminance(data[i], data[i + 1], data[i + 2]);
   };
   const classifyRegion = makeRegionClassifier(args.preset, width, height, data);
+  const settingsAt = (x, y) => regions
+    ? regions.settings[regions.ids[y * width + x]]
+    : materialSettings(classifyRegion(x, y));
 
   const base = Buffer.from(data);
   const normal = Buffer.alloc(width * height * 4);
@@ -317,26 +379,26 @@ async function main() {
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
       const i = pixelIndex(x, y);
-      const region = classifyRegion(x, y);
-      const settings = materialSettings(region);
       const lum = luminance(data[i], data[i + 1], data[i + 2]);
-      heights[y * width + x] = lum * settings.normal;
+      heights[y * width + x] = explicitHeight ? explicitHeight[y * width + x] / 255 : lum;
     }
   }
 
-  const heightAt = (x, y) => {
-    const cx = Math.max(0, Math.min(width - 1, x));
-    const cy = Math.max(0, Math.min(height - 1, y));
+  const heightAt = (x, y, bounds) => {
+    const [x0, y0, x1, y1] = bounds;
+    const cx = Math.max(x0, Math.min(x1 - 1, x));
+    const cy = Math.max(y0, Math.min(y1 - 1, y));
     return heights[cy * width + cx];
   };
-  const heightGradient = (x, y) => {
+  const heightGradient = (x, y, bounds) => {
+    const at = (sx, sy) => heightAt(sx, sy, bounds);
     const dx =
-      (heightAt(x + 1, y - 1) + 2 * heightAt(x + 1, y) + heightAt(x + 1, y + 1) -
-        (heightAt(x - 1, y - 1) + 2 * heightAt(x - 1, y) + heightAt(x - 1, y + 1))) *
+      (at(x + 1, y - 1) + 2 * at(x + 1, y) + at(x + 1, y + 1) -
+        (at(x - 1, y - 1) + 2 * at(x - 1, y) + at(x - 1, y + 1))) *
       0.25;
     const dy =
-      (heightAt(x - 1, y + 1) + 2 * heightAt(x, y + 1) + heightAt(x + 1, y + 1) -
-        (heightAt(x - 1, y - 1) + 2 * heightAt(x, y - 1) + heightAt(x + 1, y - 1))) *
+      (at(x - 1, y + 1) + 2 * at(x, y + 1) + at(x + 1, y + 1) -
+        (at(x - 1, y - 1) + 2 * at(x, y - 1) + at(x + 1, y - 1))) *
       0.25;
     return { dx, dy };
   };
@@ -344,15 +406,16 @@ async function main() {
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
       const i = pixelIndex(x, y);
-      const region = classifyRegion(x, y);
-      const settings = materialSettings(region);
+      const settings = settingsAt(x, y);
       const lum = getLum(x, y);
 
-      const { dx: rawDx, dy: rawDy } = heightGradient(x, y);
-      const dx = rawDx * args.normalStrength;
-      const dy = rawDy * args.normalStrength;
+      const { dx: rawDx, dy: rawDy } = heightGradient(x, y, settings.pixels || [0, 0, width, height]);
+      // Apply material amplitude AFTER differentiation to avoid artificial steps.
+      const dx = rawDx * args.normalStrength * settings.normal * (args.referenceSize ? width / args.referenceSize : 1);
+      const dy = rawDy * args.normalStrength * settings.normal * (args.referenceSize ? height / args.referenceSize : 1);
       let nx = -dx;
-      let ny = -dy;
+      // Image Y points down; Blender's tangent V points up.
+      let ny = args.normalY === "opengl" ? dy : -dy;
       let nz = 1;
       const length = Math.sqrt(nx * nx + ny * ny + nz * nz) || 1;
       nx /= length;
@@ -363,23 +426,20 @@ async function main() {
       normal[i + 2] = clampByte((nz * 0.5 + 0.5) * 255);
       normal[i + 3] = 255;
 
-      const glossValue = clamp01(settings.gloss + (lum - 0.5) * 0.035 + args.glossBias);
+      const glossValue = clamp01(settings.gloss + (regions ? 0 : (lum - 0.5) * 0.035) + args.glossBias);
       const glossByte = clampByte(glossValue * 255);
       gloss[i] = glossByte;
       gloss[i + 1] = glossByte;
       gloss[i + 2] = glossByte;
       gloss[i + 3] = 255;
 
-      metal[i] = 0;
-      metal[i + 1] = 0;
-      metal[i + 2] = 0;
+      metal[i] = metal[i + 1] = metal[i + 2] = clampByte((settings.metalness || 0) * 255);
       metal[i + 3] = 255;
     }
   }
 
   const writes = [
     ...(args.copyBase ? [["B", base]] : []),
-    ...(args.writeAo ? [["AO", ao]] : []),
     ["N", normal],
     ["G", gloss],
     ["M", metal],
@@ -390,6 +450,7 @@ async function main() {
   }
 
   const report = {};
+  if (!args.dryRun) await fs.mkdir(outDir, { recursive: true });
   for (const [suffix, buffer] of writes) {
     report[suffix] = {
       path: outputs[suffix],
@@ -407,6 +468,11 @@ async function main() {
         assetName,
         size: [width, height],
         preset: args.preset,
+        heightSource: args.height ? path.resolve(args.height) : "base luminance (approximation)",
+        regions: args.regions ? path.resolve(args.regions) : null,
+        normalY: args.normalY,
+        normalStrength: args.normalStrength,
+        referenceSize: args.referenceSize || null,
         wrote: report,
       },
       null,
