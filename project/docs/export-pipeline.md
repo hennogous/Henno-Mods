@@ -1,6 +1,6 @@
 # Export Pipeline Reference
 
-The full workflow from Blender model to in-game building geometry.
+The workflow for taking a finished Blender source asset into Civ VI geometry/assets. For creating or AI-assisted modelling of the asset itself, start with [AI-Assisted 3D Model Generation](ai-3d-model-generation.md).
 
 > **Platform note:** Asset Editor, ModBuddy, CN6ToFGX, and the cook pipeline are **Windows-only**.
 
@@ -43,6 +43,7 @@ Run through this before every export. The pipeline script auto-fixes some of the
 - [ ] **UV layers named `UV1`, `UV2`, `UV3`** in that order
 - [ ] **Mesh vertex group matches the bound bone name**; for simple CSC props/buildings this is usually one vertex group named `Bone`
 - [ ] **All texture source maps exist at 256x256** for small standalone props unless the asset deliberately uses a larger atlas
+- [ ] **Source/working objects removed**; this file is the clean export scene, not the modelling sandbox
 
 ### Recommended
 - [ ] Vertex count within budget for target tier
@@ -76,7 +77,7 @@ For standalone CSC prop/building texture sets, use the asset name plus Civ's tex
 | Suffix | Civ slot | Notes |
 |--------|----------|-------|
 | `_B` | Base color | sRGB color map |
-| `_AO` | Ambient occlusion | Linear greyscale |
+| `_AO` | Ambient occlusion | Linear greyscale — **baked from geometry in Blender, not generated from `_B`**. See below. |
 | `_N` | Normal | Tangent-space normal map |
 | `_G` | Gloss | Linear greyscale; white is shinier, black is duller |
 | `_M` | Metalness | Linear greyscale; usually black for wood, wool, clay, and stone props |
@@ -93,16 +94,29 @@ CSC_TAILORS_SpinningWheel_M.png
 
 Use **256x256** for small standalone prop source maps and Asset Editor tests. Move to a larger texture or a shared atlas only when the asset's screen importance justifies it.
 
-For Blender preview shading, wire `_B` into Base Color, `_N` through a Normal Map node, `_M` into Metallic, and invert `_G` before feeding Principled Roughness. `_AO` can be multiplied into Base Color for preview, but Asset Editor should receive it in the AO texture slot.
+For Blender preview shading, wire `_B` into Base Color, `_N` through a Normal Map node, `_M` into Metallic, and invert `_G` before feeding Principled Roughness. `_AO` is sampled through **UV2** (see below) and multiplied into Base Color for preview; Asset Editor should receive it in the AO texture slot the same way.
 
-### AI-Assisted Texture Workflow
+### AO: Bake From Geometry, Not From `_B`
 
-For small CSC props, use image generation for the artistic base color map, but keep the rest of the PBR set deterministic:
+AO is a **positional** property (where a face sits relative to its surroundings), not a material property, so it cannot be safely derived from the painted base color once UV1 overlaps (see below). `csc_generate_pbr_maps.mjs` deliberately does **not** produce an `_AO` map — generate `_N`/`_G`/`_M` from `_B` with the script, then bake `_AO` in Blender:
 
-1. Generate or paint a single `_B` atlas in the Civ VI style.
-2. Derive `_AO`, `_N`, `_G`, and `_M` from the final `_B` map with `project/tools/blender/csc_generate_pbr_maps.mjs` so all seams and material regions stay pixel-aligned.
-3. Use Blender only to reload images, rebuild material nodes, validate the mesh, and render previews.
-4. Preserve the previous texture set before replacement, then verify each output image is 256x256 and has non-empty RGB data.
+1. **UV2 must be a fresh, non-overlapping unwrap/pack — never a copy of UV1.** UV1 is allowed (expected) to overlap so repeated pieces share atlas space; the engine samples AO through UV2 (TEXCOORD_1) specifically because it is the channel where every face gets its own unique texel space. Copying UV1 into UV2 (or leaving UV2 defaulted to a copy) forces overlapping faces to share one baked AO value, which is a step backward from real geometric AO — it reproduces the same "one answer for many positions" problem that made deriving AO from `_B` necessary in the first place.
+2. Pack Islands on UV2 (`Pack to: Original Bounding Box` if the model must stay confined to one atlas quadrant — see [Shared Atlas AO](shared-atlas-ao.md) for the multi-model/shared-atlas case).
+3. Bake in Cycles, AO bake type, with the model isolated from other scene objects (hide others from *render*, not just viewport — AO rays see the whole scene). Ray distance should scale with the model (~20% of its largest dimension is a reasonable start).
+4. Save the baked image as `{AssetName}_AO.png`, external/unpacked like the other maps.
+
+For a single standalone prop with no shared atlas, this is the whole story. For a shared atlas where several models reuse the same painted patches (Level 1/2/3 buildings, Storage S/M/L), see [Shared Atlas AO](shared-atlas-ao.md) — variants can share the parent's baked AO texels wherever they reuse the parent's UV1 content, so the bake only needs to happen once per family.
+
+During active texture iteration, keep Blender image textures **external/unpacked** and pointed at the PNG files in the asset folder. A packed image is only a snapshot embedded in the `.blend`; edits made later in GIMP, Photoshop, or scripts do not automatically update that embedded copy. Use Blender's image reload action, or a small reload script, after editing the PNGs externally. Pack images only for handoff/archive snapshots where portability matters, and repack deliberately after any external texture changes.
+
+### AI-Assisted Texture Handoff
+
+Texture generation decisions belong in [AI-Assisted 3D Model Generation](ai-3d-model-generation.md). By the time an asset reaches this export workflow:
+
+1. `_B` is the approved artistic base-color map.
+2. `_N`, `_G`, and `_M` are derived from that exact `_B` map so seams and material regions stay pixel-aligned.
+3. `_AO` is baked from the actual geometry through a non-overlapping UV2 layout.
+4. All active texture images are external PNGs beside the asset, not only packed inside the `.blend`.
 
 Set up the helper once:
 
@@ -121,15 +135,17 @@ node project/tools/blender/csc_generate_pbr_maps.mjs \
   --backup
 ```
 
-The script infers `CSC_TAILORS_SpinningWheel` from `_B.png` and writes matching `_AO.png`, `_N.png`, `_G.png`, and `_M.png` beside the base map. Add `--copy-base` if the base map also needs to be resized/copied to the output folder. Use `--out-dir` to write to a temporary folder for review before replacing live textures.
+The script infers `CSC_TAILORS_SpinningWheel` from `_B.png` and writes matching `_N.png`, `_G.png`, and `_M.png` beside the base map (no `_AO` — bake that from geometry, see above). Add `--copy-base` if the base map also needs to be resized/copied to the output folder. Use `--out-dir` to write to a temporary folder for review before replacing live textures.
 
-Do **not** generate `_B`, `_AO`, `_N`, `_G`, and `_M` independently with image generation unless the tool can guarantee exact pixel alignment. Even small shifts between maps will make seams, normals, or gloss disagree once the atlas is wrapped onto the mesh.
+Do **not** generate `_B`, `_N`, `_G`, and `_M` independently with image generation unless the tool can guarantee exact pixel alignment. Even small shifts between maps will make seams, normals, or gloss disagree once the atlas is wrapped onto the mesh.
 
-Avoid using Blender as the primary pixel-writing tool for generated maps. It is reliable for material wiring and scene validation, but generated image datablocks can fail quietly when saving over existing texture paths. Prefer the Node/Sharp helper for map generation, write to a temporary path first, validate pixel stats or preview, then copy the verified files into the asset folder and reload them in Blender.
+Avoid using Blender as the primary pixel-writing tool for generated maps. It is reliable for material wiring and scene validation, but generated image datablocks can fail quietly when saving over existing texture paths. Prefer the Node/Sharp helper for map generation, write to a temporary path first, validate pixel stats or preview, then copy the verified files into the asset folder and reload the external images in Blender. After replacing a texture file at the same path, explicitly reload or recreate Blender's image datablock so the material is not still showing stale cached pixels. Do not pack active working textures by default.
 
-When a generated atlas has strong material regions, check the UVs against the model before flattening the texture. If wood grain, wool, or thread swatches appear on the wrong parts, remap `UV1` by connected mesh island so each physical part samples the intended atlas region. Keep `UV2` and `UV3` intact unless you are deliberately rebuilding lightmap/tint/emissive channels.
+When a generated atlas has strong material regions, check the UVs against the model before flattening the texture. If wood grain, wool, or thread swatches appear on the wrong parts, remap `UV1` by connected mesh island so each physical part samples the intended atlas region. For wooden props, orient the UVs so the visible grain runs along the length of each board, spoke, post, beam, or rim segment. Check the atlas first instead of assuming the grain runs horizontally; if the useful grain direction is vertical, rotate the wood UV projection 90 degrees so the longest face direction maps to `V`. Generated prop atlases should be continuous material swatches; do not proceed with a `_B` map that already paints separate boards, planks, seams, or object parts unless the asset explicitly requires those painted features. Rebuild `UV2` (non-overlapping pack, for the AO bake) whenever `UV1` changes meaningfully; leave `UV3` (tint mask) intact unless deliberately rebuilding it.
 
 For quick Blender previews, temporary camera and light objects are fine, but remove them before saving the export `.blend`. The final export scene should return to the clean mesh+armature structure above.
+
+Before final handoff, reload the saved `.blend` and verify the material uses all expected external maps: `_B` through `UV1`, `_AO` through `UV2`, `_N` through a Normal Map node, `_G` inverted or otherwise converted to roughness for Blender preview, and `_M` into Metallic. Then do one viewport visual check to confirm material placement, not just path wiring.
 
 ---
 

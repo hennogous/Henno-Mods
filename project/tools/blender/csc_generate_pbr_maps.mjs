@@ -9,6 +9,11 @@
  *
  * This intentionally does not use Blender for pixel writing. Blender is better
  * used for material wiring, UV inspection, and render validation.
+ *
+ * Does NOT generate an AO map. AO must be baked from geometry in Blender (Cycles,
+ * via UV2) rather than derived from the base color -- see
+ * project/docs/shared-atlas-ao.md for why and how. UV2 for baking must be a fresh
+ * non-overlapping unwrap/pack, not a copy of UV1.
  */
 
 import fs from "node:fs/promises";
@@ -44,6 +49,7 @@ Examples:
 Notes:
   Civ VI uses _G as gloss: white is shinier, black is duller.
   _M is black by default because most CSC wood/wool/stone props are non-metal.
+  No _AO is generated here -- bake it from geometry in Blender instead.
 `;
 
 function parseArgs(argv) {
@@ -124,7 +130,7 @@ function parseArgs(argv) {
   if (!["auto", "csc-textile-prop"].includes(args.preset)) {
     throw new Error("--preset must be one of: auto, csc-textile-prop");
   }
-  for (const key of ["normalStrength", "aoStrength", "glossBias"]) {
+  for (const key of ["normalStrength", "glossBias"]) {
     if (!Number.isFinite(args[key])) throw new Error(`Invalid numeric value for ${key}`);
   }
   return args;
@@ -278,7 +284,6 @@ async function main() {
   const assetName = args.assetName || stripBaseSuffix(basePath);
   const outputs = {
     B: path.join(outDir, `${assetName}_B.png`),
-    AO: path.join(outDir, `${assetName}_AO.png`),
     N: path.join(outDir, `${assetName}_N.png`),
     G: path.join(outDir, `${assetName}_G.png`),
     M: path.join(outDir, `${assetName}_M.png`),
@@ -304,7 +309,6 @@ async function main() {
   const classifyRegion = makeRegionClassifier(args.preset, width, height, data);
 
   const base = Buffer.from(data);
-  const ao = Buffer.alloc(width * height * 4);
   const normal = Buffer.alloc(width * height * 4);
   const gloss = Buffer.alloc(width * height * 4);
   const metal = Buffer.alloc(width * height * 4);
@@ -343,20 +347,6 @@ async function main() {
       const region = classifyRegion(x, y);
       const settings = materialSettings(region);
       const lum = getLum(x, y);
-      const localContrast =
-        Math.abs(heightAt(x + 1, y) - heightAt(x - 1, y)) +
-        Math.abs(heightAt(x, y + 1) - heightAt(x, y - 1));
-
-      const aoValue = clamp01(
-        settings.aoCeil -
-          localContrast * 0.82 * args.aoStrength -
-          (1 - lum) * 0.12 * args.aoStrength,
-      );
-      const aoByte = clampByte(Math.max(settings.aoFloor, aoValue) * 255);
-      ao[i] = aoByte;
-      ao[i + 1] = aoByte;
-      ao[i + 2] = aoByte;
-      ao[i + 3] = 255;
 
       const { dx: rawDx, dy: rawDy } = heightGradient(x, y);
       const dx = rawDx * args.normalStrength;

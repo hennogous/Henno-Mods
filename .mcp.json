@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "blender": {
+      "command": "/Users/henno.gous/.local/bin/uvx",
+      "args": ["--python", "3.11", "blender-mcp"],
+      "env": {
+        "UV_PYTHON_PREFERENCE": "only-managed"
+      }
+    }
+  }
+}

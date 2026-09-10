@@ -4,6 +4,11 @@ This chapter covers the art pipeline for getting custom 3D districts and buildin
 
 Fair warning — the art side of Civ VI modding is significantly more painful than the database side. The tooling is old, documentation is scarce, and Asset Editor has... opinions about how you should work. But it is doable, and the result of seeing your custom buildings appear on the hex grid is worth the suffering.
 
+For CSC work, keep two workflows separate:
+
+- **Create the model/prop:** [AI-Assisted 3D Model Generation](ai-3d-model-generation.md)
+- **Export the finished Blender asset into the game:** [Export Pipeline Reference](export-pipeline.md)
+
 ## Overview of What's Involved
 
 To get a custom district or building rendering in-game, you need to wire up a chain of files from your 3D model all the way through to the game engine. The full chain looks like this:
@@ -96,13 +101,15 @@ Your Blender model needs to follow specific conventions:
 - **Mesh**: Single mesh object, parented to the armature via an Armature modifier. The game works with single-mesh objects; if you have multiple objects, join them first.
 - **Vertex Groups**: Every single vertex must be assigned to at least one vertex group (bone). Unweighted vertices silently prevent `DefaultBurnMaterial` from working — your building won't show burn damage when pillaged, and the engine gives you zero feedback about why.
 - **UV Maps**: You need exactly three UV layers:
-  - UV1 = albedo/normal mapping
-  - UV2 = lightmap
+  - UV1 = albedo/normal mapping (may overlap/tile — material properties don't care about position)
+  - UV2 = lightmap/AO — **must be a fresh, non-overlapping unwrap/pack, never a copy of UV1**. The engine samples baked AO through this channel specifically because every face needs its own unique texel space; a copy of an overlapping UV1 defeats that.
   - UV3 = tint mask
 - **Materials**: Single material per mesh. The material name becomes the mesh group name in the resulting .geo file.
 - **Pivot**: The top-level mesh pivot should be at 0,0,0. Any offset you want needs to be baked into the mesh geometry itself.
 
 For CSC's current small building-prop workflow, keep the final export `.blend` deliberately minimal: one armature named `{AssetName}`, one mesh named `{AssetName}_Bldg`, one material matching the mesh group, UV layers named `UV1`/`UV2`/`UV3`, and a simple `Bone` bone/vertex group when no animation hierarchy is needed. The source texture set should follow `{AssetName}_B`, `{AssetName}_AO`, `{AssetName}_N`, `{AssetName}_G`, `{AssetName}_M`; use 256x256 maps for small standalone props unless the asset belongs on a larger shared atlas. See [Export Pipeline Reference](export-pipeline.md#csc-blender-file-structure) for the exact checklist.
+
+If the model is being generated or blockout-built from scratch, use [AI-Assisted 3D Model Generation](ai-3d-model-generation.md) first. This section describes what the finished source must become before export.
 
 **Poly counts**: Think chunky toy models, not realistic architecture. Official Firaxis guidelines say *"simple, exaggerated, chunky — imagine them as toy models"*. A building typically sits around 300-600 triangles. The ratio should be 3 Big Shapes : 2 Intermediate Shapes : 1 Fine Detail. Only the big and intermediate shapes should affect the silhouette. Roof detail matters a lot because of the camera angle.
 
@@ -168,7 +175,7 @@ Each `.dds` file gets a `.tex` wrapper, and the `.tex` files are referenced by a
 
 **Tip**: Normal maps should be generated via a tool like Crazybump or Ndo from a simplified heightmap — never just desaturate your base color. Baked shadows in base color textures are viable and often look better than relying on real-time shadows at game camera distance.
 
-For AI-assisted prop textures, treat the base color atlas as the artistic source of truth and derive AO/normal/gloss/metalness from that exact map so the PBR set stays aligned. CSC's helper is `project/tools/blender/csc_generate_pbr_maps.mjs`. If a generated atlas has strong wood, wool, stone, or thread regions, fix the visible `UV1` material placement by mesh island before flattening the texture detail. See [Export Pipeline Reference](export-pipeline.md#ai-assisted-texture-workflow) for the full workflow.
+For AI-assisted prop textures, treat the base color atlas as the artistic source of truth and derive normal/gloss/metalness from that exact map so the PBR set stays aligned. CSC's helper is `project/tools/blender/csc_generate_pbr_maps.mjs`. **This script deliberately does not generate `_AO`** — AO is a positional property, not a material one, so it must be baked from the actual geometry in Blender (Cycles, via UV2) rather than derived from the painted base color. Keep active Blender texture images external/unpacked so the PNGs can be edited in GIMP, Photoshop, or scripts; reload those external images in Blender after edits, and pack only for handoff/archive snapshots. Unless a specific asset calls for visible planks, seams, or tile divisions, generate each `_B` material swatch as a continuous block; model edges and UV orientation should define separate wooden pieces, not dark separator lines painted into the atlas. If a generated atlas has strong wood, wool, stone, or thread regions, fix the visible `UV1` material placement by mesh island before flattening the texture detail. For wooden faces, rotate/align UVs so the grain runs along the board/post/spoke length, and check the texture's actual grain direction before assuming it is horizontal. See [AI-Assisted 3D Model Generation](ai-3d-model-generation.md) for creation-time texture decisions, [Export Pipeline Reference](export-pipeline.md#ai-assisted-texture-handoff) for export handoff, and [Shared Atlas AO](shared-atlas-ao.md) for baking AO when several models share one atlas.
 
 ## Asset Editor: The Necessary Evil
 

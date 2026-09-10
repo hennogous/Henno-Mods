@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "henno-agents": {
+      "source": "directory",
+      "path": "/Users/henno.gous/Agents/skills"
+    }
+  },
+  "enabledMcpjsonServers": ["blender"],
+  "enabledPlugins": {
+    "civ6-modding-skill@henno-agents": true,
+    "civ-supply-chains-skill@henno-agents": true,
+    "fable-orchestration@henno-agents": true
+  }
+}

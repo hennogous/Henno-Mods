@@ -17,6 +17,17 @@ Quarters: Bakers, Tailors, Apothecaries, Stonemasons, Carpenters, Blacksmiths, G
 - Optional integrations: Sukritact's Resources, Resourceful 2, Cannabis & Hemp, Latin American Resources
 - Mod ID: `c5e66bd1-d804-443b-ac3d-1917a20dba3c`
 
+## Skills Available
+
+- `/civ6-modding` — SQL schema, modifiers, Lua scripting, .modinfo/.civ6proj structure, Blender → FGX/GEO pipeline, ArtDefs, textures, strategic view sprites, icons
+
+**Skill loading (Claude Code stopgap):** Slash-command invocation of custom skills is not yet wired up in Claude Code. At the start of any CSC session, read both skill files manually before acting:
+
+1. `/Users/henno.gous/Agents/skills/civ6-modding-skill/SKILL.md`
+2. `/Users/henno.gous/Agents/skills/civ-supply-chains-skill/SKILL.md`
+
+Load focused `references/` docs from those directories only when the task needs them (see the reference routing tables in each SKILL.md).
+
 ## Directory Structure
 
 All mod content lives under `Civ Supply Chains/`:
@@ -168,7 +179,3 @@ ComfyUI is at `C:\Users\Shadow\ComfyUI`, API on `http://127.0.0.1:8188`.
 - **Icon LoRA** (`game_icon_v1`): trigger `2d icon. [description]`
 - **Isometric LoRA** (`cartoon_3d_isometric`): trigger `j_game_background`
 - Full setup + prompt templates in `project/docs/COMFYUI-SETUP.md`
-
-## Skills Available
-
-- `/civ6-modding` — SQL schema, modifiers, Lua scripting, .modinfo/.civ6proj structure, Blender → FGX/GEO pipeline, ArtDefs, textures, strategic view sprites, icons

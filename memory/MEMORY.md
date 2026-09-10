@@ -4,6 +4,11 @@
 
 This folder was cleaned in June 2026: stale session notes were removed, and reusable implementation notes were promoted into durable docs.
 
+## Active notes
+
+- [Working Files reachable from Mac](project_working-files-mac-access.md) — Shadow's Working Files syncs via Google Drive `Other computers/My PC/`
+- [Art performance & material architecture](project_art-performance-and-materials.md) — verts are cheap; optimize draw-calls/materials/textures; E/NE is a state-swap (not concurrent), Props is the one extra material
+
 ## Promoted docs
 
 - Dynamic art properties → `project/docs/dynamic-art-properties.md`

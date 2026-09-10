@@ -16,7 +16,7 @@
 - [ ] **Position 3D models** — Move models to match road layout, bake positioning into geometries
 - [ ] **Reference scaling** — Import Library or Market as scaling reference, apply consistent scale to all models
 - [ ] **CON → CON+PIL model conversion** — Rename and restructure: remove separate PIL models, create combined CON+PIL models with same positioning and scaling as Worked versions
-- [ ] **UV quadrant remapping** — Update UV1 and UV2 mappings to use only the right quadrant of texture atlas instead of full UV space
+- [ ] **UV quadrant remapping** — Update UV1 to use only the right quadrant of the texture atlas instead of full UV space. UV2 is not remapped alongside it — it should be (re)packed fresh, non-overlapping, for AO baking; see [Shared Atlas AO](shared-atlas-ao.md)
 - [ ] **Create UV3 emissive mapping** — New UV map for shared 256x256 emissive texture
 - [ ] **Texture paint emissive map** — Create the emissive texture using Blender texture painting
 - [ ] **Export updated geometries** — Use automated pipeline to convert models to .fgx/.geo

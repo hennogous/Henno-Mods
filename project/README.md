@@ -38,12 +38,14 @@ Working docs, reference material, and tools that don't belong in the mod source 
 | `taxes+politics.md` | Full design doc for the political loyalty system (Guilds/Elite/Church/Monarchy) |
 | `all-buildings-list.md` | Vanilla Civ 6 buildings by era — quick lookup reference |
 | `districts_buildings_art_guide.md` | Official Firaxis art guide for districts and buildings |
+| `ai-3d-model-generation.md` | CSC workflow for creating/AI-assisted generation of new 3D props and small building models before export |
 | `strategic-view-sprites.md` | Full SV sprite pipeline — Blender → img2img → post-process → DDS. LoRA trained (457 sprites, loss 0.0443) |
-| `export-pipeline.md` | Art export pipeline reference |
+| `export-pipeline.md` | Clean Blender asset → CN6/FGX/GEO → Asset Editor/cook export pipeline reference |
 | `geometry-catalogue.md` / `geometry-patterns.md` | Vanilla geometry stats + modelling patterns (skill version) |
 | `icons-pipeline.md` | Icon generation pipeline |
 | `lora-training.md` | LoRA training reference |
 | `textures-and-uvs.md` | Texture + UV reference |
+| `shared-atlas-ao.md` | Baking geometry-correct AO into a shared building atlas (UV2 sharing across model variants); tool: `tools/blender/csc_shared_atlas_ao_bake.py` |
 | `SKILL-REVIEW.md` | Analysis of 10+ published mods (Project Metropolis, Sukritact's Oson, MAB, JNR, etc.) |
 | `community-extension-modding.md` | CE usage from mod context (SQL/Lua), distinct from the FireTuner/wiki CE docs |
 
