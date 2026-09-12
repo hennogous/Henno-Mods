@@ -349,6 +349,14 @@
 			<m_EntryID text="CSC_TAILORS_Tailor_2"/>
 			<m_ObjectName text="CSC_TAILORS_Tailor_2"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_BLACKSMITH"/>
+			<m_ObjectName text="CSC_BLACKSMITH"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BLACKSMITH_Base"/>
+			<m_ObjectName text="CSC_BLACKSMITH_Base"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

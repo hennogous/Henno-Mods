@@ -334,7 +334,7 @@
 										<m_ParamName text="Tag_Appeal"/>
 									</Element>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="CSC_BAKERS_Classical_Base_01"/>
+										<m_EntryName text="CSC_BLACKSMITH_Base"/>
 										<m_XLPClass text="TileBase"/>
 										<m_XLPPath text="csc_tilebases.xlp"/>
 										<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -1666,7 +1666,7 @@
 										<m_ParamName text="Tag_Appeal"/>
 									</Element>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="CSC_TAILORS_Classical_Base_01"/>
+										<m_EntryName text="CSC_Tailors_Codex"/>
 										<m_XLPClass text="TileBase"/>
 										<m_XLPPath text="csc_tilebases.xlp"/>
 										<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -2395,3 +2395,4 @@
 		</Element>
 	</m_RootCollections>
 </AssetObjects..ArtDefSet>
+
