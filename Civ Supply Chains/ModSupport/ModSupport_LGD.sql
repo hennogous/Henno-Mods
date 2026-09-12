@@ -106,9 +106,6 @@ INSERT INTO BuildingModifiers
 --  With Urbanization, +2 Tourism to a Garden for each adjacent Cafe
         (	BuildingType,						ModifierId										    	)	VALUES
 		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN'	    	),
---  Mirror the adjacent Conservatory transaction back onto Cafe cities for alternate Cafe art
-		(	'BUILDING_LEU_CONSERVATORY',		'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_ENTER'	),
-
 -- 	+1 Citizen slot (Horticulturist) to a Garden with a Conservatory
 		(	'BUILDING_CSC_BAKERS_CAFE',			'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN'			),
 
@@ -150,17 +147,6 @@ VALUES
 	'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',
 	NULL,
 	NULL		),
-
---  Art bridge: Conservatories set the existing Stage 4 tourism source property on adjacent Cafe transaction cities
--- CONSOLIDATED: (	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_GARDEN',
--- CONSOLIDATED: 	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',
--- CONSOLIDATED: 	NULL,
--- CONSOLIDATED: 	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART'		),
-
--- CONSOLIDATED: (	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_GARDEN',
--- CONSOLIDATED: 	'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',
--- CONSOLIDATED: 	NULL,
--- CONSOLIDATED: 	NULL		),
 
 -- 	+1 Citizen slot (Horticulturist) to a Garden with a Conservatory
 (	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN',
@@ -219,10 +205,6 @@ INSERT OR IGNORE INTO ModifierArguments
 --  With Urbanization, +2 Tourism to a Garden for each adjacent Cafe
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN',				'ModifierId',			'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_GARDEN'		),
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_GARDEN',				'Amount',				2													),
---  Source property consumed by Lua, then exposed to GamePropertyRanges for Cafe SelectionRules
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE_GARDEN',	'ModifierId',			'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM'		),
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_GARDEN',				'Key',					'CSC_BAKERS_STAGE_4_EFFECT_TOURISM'					),
--- CONSOLIDATED: 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_GARDEN',				'Amount',				1													),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_GARDEN',          	'ModifierId',           'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN'		),
 		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_GARDEN',           	'BuildingType',         'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'		),
 
@@ -264,7 +246,8 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 
         (	'REQSET_CSC_ADJ_CONSERVATORY',      'REQ_CSC_PLOT_ADJ_TO_OWNER'		),
 		(	'REQSET_CSC_ADJ_CONSERVATORY',      'REQ_CSC_DISTRICT_IS_GARDEN'	),
-        (   'REQSET_CSC_ADJ_CONSERVATORY',      'REQ_CSC_CITY_HAS_CONSERVATORY' );
+		(   'REQSET_CSC_ADJ_CONSERVATORY',      'REQ_CSC_CITY_HAS_CONSERVATORY' ),
+		(   'REQSET_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY', 'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_GARDEN_CUSTOMER' );
 
 INSERT OR IGNORE INTO RequirementSetRequirements
 		(	RequirementSetId,															RequirementId										)
@@ -282,7 +265,8 @@ INSERT OR IGNORE INTO Requirements
 
         (	RequirementId,						RequirementType									)	VALUES
 		(	'REQ_CSC_DISTRICT_IS_GARDEN',		'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES'		),
-        (   'REQ_CSC_CITY_HAS_CONSERVATORY',    'REQUIREMENT_CITY_HAS_BUILDING'                 );
+		(   'REQ_CSC_CITY_HAS_CONSERVATORY',    'REQUIREMENT_CITY_HAS_BUILDING'                 ),
+		(   'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_GARDEN_CUSTOMER', 'REQUIREMENT_COLLECTION_COUNT_ATLEAST' );
 
 INSERT OR IGNORE INTO Requirements
 		(	RequirementId,															RequirementType,					Inverse	)
@@ -299,7 +283,10 @@ INSERT OR IGNORE INTO RequirementArguments
 
         (	RequirementId,						Name,					Value					)	VALUES
 		(	'REQ_CSC_DISTRICT_IS_GARDEN',		'DistrictType',			'DISTRICT_LEU_GARDEN'	),
-        (   'REQ_CSC_CITY_HAS_CONSERVATORY',    'BuildingType',         'BUILDING_LEU_CONSERVATORY' );
+		(   'REQ_CSC_CITY_HAS_CONSERVATORY',    'BuildingType',         'BUILDING_LEU_CONSERVATORY' ),
+		(   'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_GARDEN_CUSTOMER', 'CollectionType', 'COLLECTION_PLAYER_DISTRICTS' ),
+		(   'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_GARDEN_CUSTOMER', 'Count', 1 ),
+		(   'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_GARDEN_CUSTOMER', 'RequirementSetId', 'REQSET_CSC_ADJ_CONSERVATORY' );
 
 INSERT OR IGNORE INTO RequirementArguments
 		(	RequirementId,															Name,				Value	)
@@ -316,8 +303,8 @@ FROM CSC_Stage4StackBits;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO CSC_AbilityAttachModifiers
-		(	ModifierId,											AbilityIcon,										AbilityIconTarget		)
-VALUES	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN',		'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN'	);
+		(	ModifierId,											AbilityIcon,										AbilityIconTarget,								NotificationQuarter		)
+VALUES	(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_GARDEN',		'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN',		'BAKERS'	);
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CSC_SpecialistAttachModifiers

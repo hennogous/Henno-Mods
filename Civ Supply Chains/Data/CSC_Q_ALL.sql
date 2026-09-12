@@ -176,7 +176,8 @@ CREATE TABLE IF NOT EXISTS CSC_AbilityAttachModifiers(
 		AbilityDecreasedDesc TEXT DEFAULT NULL,
 		AbilityRemovedDesc TEXT DEFAULT NULL,
 		AbilityIcon TEXT DEFAULT NULL,
-		AbilityIconTarget TEXT DEFAULT NULL
+		AbilityIconTarget TEXT DEFAULT NULL,
+		NotificationQuarter TEXT NOT NULL
 );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -5,10 +5,10 @@ status: implementing
 locked_sources:
   - path: docs/content/quarters/tailors.md
     role: canonical_design
-    sha256: 4fa09956ec75eea064b9f2f5a592a2febe4942ef7ced0ee6e9fe2537d7b75a9d
+    sha256: 3777c817ccf90bf37013d0dcb017adba1e692bc15b2f77b3db04e9dc9d4720aa
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    sha256: 9f42351a303753d98d6667a8ae0ffb4c6d34c76a728af8cd409eff4aab059f91
+    sha256: 0cdaafef44cf7e97f105eca3c33a46e87733c190b25800a92ca3e01953933857
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
     sha256: 7abdbbca5ee4ea862a897dc38794436667a832009e033e5365b565b43c274114
@@ -57,11 +57,11 @@ contract_approvals:
 phase_gates:
   foundation: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: 1748f83b91ccfb9bcfb3ad4169fb78f0049fa0aea73d5a9e9eac2d4d3dee408d, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
   materials_and_stage2: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: b457a8104c49232871f26145dc0e1b89b297adc076d7d2e7289bf37ccf6bd1e8, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
-  stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-09-07T19:43:25.7275140+02:00', design_sha256: b8e76def362f02ecd32551f6cf9c3304e4930cb588e35e17fbe275f3c65d5e71, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
+  stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-09-12T20:17:35.7568139+02:00', design_sha256: d2da83dc38ee9d64442cdc7ac9c45cd3c9c4792cfcbc3efc27a14ce835e1429a, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
   stage4: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
   compatibility: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
   localization_and_integration: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
-  art_integration: {status: ready_for_review, approved_by: user, approved_at: '2026-08-27T20:10:22.6633379+02:00', design_sha256: 9e55db87b7e71ca17f2768dedc2e0f97709958b7af9eb257c843b9ec2db91792, ready_at: '2026-08-27T20:10:22.6633379+02:00', accepted_by: null, accepted_at: null}
+  art_integration: {status: ready_for_review, approved_by: user, approved_at: '2026-09-12T20:17:35.7568139+02:00', design_sha256: ad48110a26b0cd5b5a7200463a9d80536cfd31d7bbf44df7b6508718e0f508bb, ready_at: '2026-08-27T20:10:22.6633379+02:00', accepted_by: null, accepted_at: null}
 
 exceptions: []
 

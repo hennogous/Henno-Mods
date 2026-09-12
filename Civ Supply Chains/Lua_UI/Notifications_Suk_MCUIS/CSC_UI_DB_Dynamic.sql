@@ -10,6 +10,8 @@
 -- This late UI database pass resolves those attach modifiers into the inner
 -- effect modifier, amount, and preview text that CSC_UI_Notifications.lua needs
 -- when comparing current city effects against the saved notification cache.
+-- NotificationQuarter is authored explicitly on every helper row; it must not
+-- be reconstructed from a presentation anchor's ModifierId naming shape.
 
 -- Step 1: follow the attach modifier's ModifierId argument to find the inner effect modifier.
 UPDATE CSC_AbilityAttachModifiers
@@ -75,5 +77,4 @@ SET AbilityRemovedDesc = (
     WHERE b.ModifierId = CSC_AbilityAttachModifiers.AbilityEffectModifierId
       AND b.Context = 'Preview'
 );
-
 

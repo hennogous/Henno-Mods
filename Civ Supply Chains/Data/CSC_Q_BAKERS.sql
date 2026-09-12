@@ -9,21 +9,21 @@
 
 INSERT OR IGNORE INTO Types
 
-		(	Type,																Kind					)
-VALUES	( 	'DISTRICT_CSC_BAKERS_QUARTER',                              		'KIND_DISTRICT'         ),
+        (   Type,                                          Kind   )
+VALUES  (   'DISTRICT_CSC_BAKERS_QUARTER',                 'KIND_DISTRICT'   ),
 
-		(	'BUILDING_CSC_BAKERS_RIVER_ACCESS',									'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',								'KIND_BUILDING'			),
+        (   'BUILDING_CSC_BAKERS_RIVER_ACCESS',            'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',         'KIND_BUILDING'   ),
 
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',									'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',									'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_BAKERY',										'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_CAFE',											'KIND_BUILDING'			),
+        (   'BUILDING_CSC_BAKERS_WIND_MILL',               'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_BAKERS_WATER_MILL',              'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_BAKERS_BAKERY',                  'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_BAKERS_CAFE',                    'KIND_BUILDING'   ),
 
-		(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',								'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',								'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',						'KIND_BUILDING'			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',						'KIND_BUILDING'			);
+        (   'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',         'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',         'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',   'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',   'KIND_BUILDING'   );
 
 
 
@@ -37,12 +37,12 @@ VALUES	( 	'DISTRICT_CSC_BAKERS_QUARTER',                              		'KIND_DI
 
 INSERT OR IGNORE INTO Tags
 
-		(   Tag,							    Vocabulary			)
-VALUES	(	'CLASS_CSC_BAKERS_BASE',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BAKERS_SPEC',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BAKERS_SALES',	        'DISTRICT_CLASS'	),
-        (	'CLASS_CSC_BAKERS_SALES_FOOD',		'DISTRICT_CLASS'	),
-        (	'CLASS_CSC_BAKERS_SALES_CULTURE',	'DISTRICT_CLASS'	);
+        (   Tag,                                Vocabulary   )
+VALUES  (   'CLASS_CSC_BAKERS_BASE',            'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BAKERS_SPEC',            'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BAKERS_SALES',           'DISTRICT_CLASS'   ),
+        (   'CLASS_CSC_BAKERS_SALES_FOOD',      'DISTRICT_CLASS'   ),
+        (   'CLASS_CSC_BAKERS_SALES_CULTURE',   'DISTRICT_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -166,30 +166,30 @@ INSERT OR IGNORE INTO Districts
 			CityStrengthModifier,
 			AdvisorType                     		)
 VALUES	(
-		/*  DistrictType, */						'DISTRICT_CSC_BAKERS_QUARTER',
-		/*  Name, */								'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',
-		/*  Description, */							'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION',
-		/*  PrereqTech, */							NULL,
-		/*  PrereqCivic, */							'CIVIC_CRAFTSMANSHIP',
-		/*  Cost, */								60,
-		/*  CostProgressionModel, */    			'COST_PROGRESSION_PREVIOUS_COPIES',
-		/*  CostProgressionParam1, */				10,
-		/*  MilitaryDomain, */						'NO_DOMAIN',
-		/*  RequiresPlacement, */					1,
-		/*  Coast, */								0,
-		/*  RequiresPopulation, */	    			0,
-		/*  Aqueduct, */							0,
-		/*  InternalOnly, */						0,
-		/*  NoAdjacentCity, */						0,
-		/*  PlunderType, */							'PLUNDER_HEAL',
-		/*  PlunderAmount, */						50,
-		/*  Appeal, */								1,
-		/*  OnePerCity, */							1,
-		/*  CaptureRemovesBuildings, */	   			0,
-		/*  CaptureRemovesCityDefenses, */			0,
-		/*  Maintenance, */							1,
-		/*  CityStrengthModifier */					2,
-		/*  AdvisorType */							'ADVISOR_GENERIC'
+        /*  DistrictType,               */  'DISTRICT_CSC_BAKERS_QUARTER',
+        /*  Name,                       */  'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',
+        /*  Description,                */  'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION',
+        /*  PrereqTech,                 */  NULL,
+        /*  PrereqCivic,                */  'CIVIC_CRAFTSMANSHIP',
+        /*  Cost,                       */  60,
+        /*  CostProgressionModel,       */  'COST_PROGRESSION_PREVIOUS_COPIES',
+        /*  CostProgressionParam1,      */  10,
+        /*  MilitaryDomain,             */  'NO_DOMAIN',
+        /*  RequiresPlacement,          */  1,
+        /*  Coast,                      */  0,
+        /*  RequiresPopulation,         */  0,
+        /*  Aqueduct,                   */  0,
+        /*  InternalOnly,               */  0,
+        /*  NoAdjacentCity,             */  0,
+        /*  PlunderType,                */  'PLUNDER_HEAL',
+        /*  PlunderAmount,              */  50,
+        /*  Appeal,                     */  1,
+        /*  OnePerCity,                 */  1,
+        /*  CaptureRemovesBuildings,    */  0,
+        /*  CaptureRemovesCityDefenses, */  0,
+        /*  Maintenance,                */  1,
+        /*  CityStrengthModifier        */  2,
+        /*  AdvisorType                 */  'ADVISOR_GENERIC'
 													);
 
 /*
@@ -217,9 +217,9 @@ CREATE TEMPORARY TABLE CSC_BakersStage4CultureBuildings
 			PRIMARY KEY (Branch, BuildingType)	);
 
 INSERT OR IGNORE INTO CSC_BakersStage4CultureBuildings
-		(	Branch,					BuildingType	)
-VALUES	(	'ZOO',					'BUILDING_ZOO'			),
-		(	'FERRIS',				'BUILDING_FERRIS_WHEEL'	);
+        (   Branch,     BuildingType   )
+VALUES  (   'ZOO',      'BUILDING_ZOO'   ),
+        (   'FERRIS',   'BUILDING_FERRIS_WHEEL'   );
 
 -- Do not expand Zoo/Ferris unique replacements here: BUILDING_YIELD_CHANGE
 -- already applies through BuildingReplaces, and explicit rows double the yield.
@@ -319,144 +319,144 @@ INSERT OR IGNORE INTO Buildings
 			Entertainment,
 			AdvisorType	)
 VALUES	(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_RIVER_ACCESS',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_RIVER_ACCESS_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_RIVER_ACCESS_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				0,
-		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
-		/*  PurchaseYield, */		NULL,
-		/*  Maintenance, */			0,
-		/*	CitizenSlots */			0,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_RIVER_ACCESS',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_RIVER_ACCESS_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_RIVER_ACCESS_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  0,
+        /*  PrereqDistrict, */  'DISTRICT_CSC_BAKERS_QUARTER',
+        /*  PurchaseYield,  */  NULL,
+        /*  Maintenance,    */  0,
+        /*  CitizenSlots    */  0,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				0,
-		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
-		/*  PurchaseYield, */		NULL,
-		/*  Maintenance, */			0,
-		/*	CitizenSlots */			0,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_NO_RIVER_ACCESS_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  0,
+        /*  PrereqDistrict, */  'DISTRICT_CSC_BAKERS_QUARTER',
+        /*  PurchaseYield,  */  NULL,
+        /*  Maintenance,    */  0,
+        /*  CitizenSlots    */  0,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_WIND_MILL',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_WIND_MILL_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION',
-		/*  PrereqTech, */			'TECH_THE_WHEEL',
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				80,
-		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
-		/*  PurchaseYield, */		'YIELD_GOLD',
-		/*  Maintenance, */			2,
-		/*	CitizenSlots */			0,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_WIND_MILL',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_WIND_MILL_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_WIND_MILL_DESCRIPTION',
+        /*  PrereqTech,     */  'TECH_THE_WHEEL',
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  80,
+        /*  PrereqDistrict, */  'DISTRICT_CSC_BAKERS_QUARTER',
+        /*  PurchaseYield,  */  'YIELD_GOLD',
+        /*  Maintenance,    */  2,
+        /*  CitizenSlots    */  0,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_WATER_MILL',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_WATER_MILL_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION',
-		/*  PrereqTech, */			'TECH_THE_WHEEL',
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				80,
-		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
-		/*  PurchaseYield, */		'YIELD_GOLD',
-		/*  Maintenance, */			2,
-		/*	CitizenSlots */			0,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_WATER_MILL',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_WATER_MILL_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION',
+        /*  PrereqTech,     */  'TECH_THE_WHEEL',
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  80,
+        /*  PrereqDistrict, */  'DISTRICT_CSC_BAKERS_QUARTER',
+        /*  PurchaseYield,  */  'YIELD_GOLD',
+        /*  Maintenance,    */  2,
+        /*  CitizenSlots    */  0,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_BAKERY',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_BAKERY_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			'CIVIC_GUILDS',
-		/*  Cost, */				160,
-		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
-		/*  PurchaseYield, */		'YIELD_GOLD',
-		/*  Maintenance, */			2,
-		/*	CitizenSlots */			1,
-		/*  Entertainment */		1,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_BAKERY',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_BAKERY_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  'CIVIC_GUILDS',
+        /*  Cost,           */  160,
+        /*  PrereqDistrict, */  'DISTRICT_CSC_BAKERS_QUARTER',
+        /*  PurchaseYield,  */  'YIELD_GOLD',
+        /*  Maintenance,    */  2,
+        /*  CitizenSlots    */  1,
+        /*  Entertainment   */  1,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_CAFE',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_CAFE_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			'CIVIC_HUMANISM',
-		/*  Cost, */				250,
-		/*  PrereqDistrict, */		'DISTRICT_CSC_BAKERS_QUARTER',
-		/*  PurchaseYield, */		'YIELD_GOLD',
-		/*  Maintenance, */			3,
-		/*	CitizenSlots */			1,
-		/*  Entertainment */		1,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_CAFE',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_CAFE_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_CAFE_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  'CIVIC_HUMANISM',
+        /*  Cost,           */  250,
+        /*  PrereqDistrict, */  'DISTRICT_CSC_BAKERS_QUARTER',
+        /*  PurchaseYield,  */  'YIELD_GOLD',
+        /*  Maintenance,    */  3,
+        /*  CitizenSlots    */  1,
+        /*  Entertainment   */  1,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				0,
-		/*  PrereqDistrict, */		'DISTRICT_CITY_CENTER',
-		/*  PurchaseYield, */		NULL,
-		/*  Maintenance, */			0,
-		/*	CitizenSlots */			1,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  0,
+        /*  PrereqDistrict, */  'DISTRICT_CITY_CENTER',
+        /*  PurchaseYield,  */  NULL,
+        /*  Maintenance,    */  0,
+        /*  CitizenSlots    */  1,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				0,
-		/*  PrereqDistrict, */		'DISTRICT_COMMERCIAL_HUB',
-		/*  PurchaseYield, */		NULL,
-		/*  Maintenance, */			0,
-		/*	CitizenSlots */			1,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  0,
+        /*  PrereqDistrict, */  'DISTRICT_COMMERCIAL_HUB',
+        /*  PurchaseYield,  */  NULL,
+        /*  Maintenance,    */  0,
+        /*  CitizenSlots    */  1,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				0,
-		/*  PrereqDistrict, */		'DISTRICT_ENTERTAINMENT_COMPLEX',
-		/*  PurchaseYield, */		NULL,
-		/*  Maintenance, */			0,
-		/*	CitizenSlots */			1,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  0,
+        /*  PrereqDistrict, */  'DISTRICT_ENTERTAINMENT_COMPLEX',
+        /*  PurchaseYield,  */  NULL,
+        /*  Maintenance,    */  0,
+        /*  CitizenSlots    */  1,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									),
 		(
-		/*  BuildingType, */		'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',
-		/*  Name, */				'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME',
-		/*  Description, */			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_DESCRIPTION',
-		/*  PrereqTech, */			NULL,
-		/*  PrereqCivic, */			NULL,
-		/*  Cost, */				0,
-		/*  PrereqDistrict, */		'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',
-		/*  PurchaseYield, */		NULL,
-		/*  Maintenance, */			0,
-		/*	CitizenSlots */			1,
-		/*  Entertainment */		0,
-		/*  AdvisorType */			'ADVISOR_GENERIC'
+        /*  BuildingType,   */  'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',
+        /*  Name,           */  'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME',
+        /*  Description,    */  'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_DESCRIPTION',
+        /*  PrereqTech,     */  NULL,
+        /*  PrereqCivic,    */  NULL,
+        /*  Cost,           */  0,
+        /*  PrereqDistrict, */  'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',
+        /*  PurchaseYield,  */  NULL,
+        /*  Maintenance,    */  0,
+        /*  CitizenSlots    */  1,
+        /*  Entertainment   */  0,
+        /*  AdvisorType     */  'ADVISOR_GENERIC'
 									);
 
 UPDATE Buildings SET RegionalRange=6 WHERE BuildingType='BUILDING_CSC_BAKERS_CAFE';
@@ -515,13 +515,13 @@ OR BuildingType IN (SELECT CivUniqueBuildingType FROM BuildingReplaces WHERE Rep
 
 INSERT OR IGNORE INTO Buildings_XP2
 
-		(	BuildingType,										Pillage		)
-VALUES	(	'BUILDING_CSC_BAKERS_RIVER_ACCESS',					0			),
-		(	'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',				0			),
-		(	'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',				0			),
-		(	'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',				0			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		0			),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		0			);
+        (   BuildingType,                                  Pillage   )
+VALUES  (   'BUILDING_CSC_BAKERS_RIVER_ACCESS',            0   ),
+        (   'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS',         0   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',         0   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',         0   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',   0   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',   0   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingPrereqs
@@ -529,14 +529,14 @@ VALUES	(	'BUILDING_CSC_BAKERS_RIVER_ACCESS',					0			),
 
 INSERT OR IGNORE INTO BuildingPrereqs
 
-        (	Building,      		        				PrereqBuilding										)
-VALUES	(	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_RIVER_ACCESS'					),
+        (   Building,                           PrereqBuilding   )
+VALUES  (   'BUILDING_CSC_BAKERS_WATER_MILL',   'BUILDING_CSC_BAKERS_RIVER_ACCESS'   ),
 
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'BUILDING_CSC_BAKERS_WIND_MILL'						),
-		(	'BUILDING_CSC_BAKERS_BAKERY',				'BUILDING_CSC_BAKERS_WATER_MILL'					),
+        (   'BUILDING_CSC_BAKERS_BAKERY',       'BUILDING_CSC_BAKERS_WIND_MILL'   ),
+        (   'BUILDING_CSC_BAKERS_BAKERY',       'BUILDING_CSC_BAKERS_WATER_MILL'   ),
 
-		(	'BUILDING_CSC_BAKERS_CAFE',					'BUILDING_CSC_BAKERS_WIND_MILL'						),
-		(	'BUILDING_CSC_BAKERS_CAFE',					'BUILDING_CSC_BAKERS_WATER_MILL'					);
+        (   'BUILDING_CSC_BAKERS_CAFE',         'BUILDING_CSC_BAKERS_WIND_MILL'   ),
+        (   'BUILDING_CSC_BAKERS_CAFE',         'BUILDING_CSC_BAKERS_WATER_MILL'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	MutuallyExclusiveBuildings
@@ -544,10 +544,10 @@ VALUES	(	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_RIVER_ACCESS'	
 
 INSERT OR IGNORE INTO MutuallyExclusiveBuildings
 
-        (	Building,      		        				MutuallyExclusiveBuilding							)
-VALUES  (	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'				),
-		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_WIND_MILL'						),
-		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'BUILDING_CSC_BAKERS_WATER_MILL'					);
+        (   Building,                           MutuallyExclusiveBuilding   )
+VALUES  (   'BUILDING_CSC_BAKERS_WATER_MILL',   'BUILDING_CSC_BAKERS_NO_RIVER_ACCESS'   ),
+        (   'BUILDING_CSC_BAKERS_WATER_MILL',   'BUILDING_CSC_BAKERS_WIND_MILL'   ),
+        (   'BUILDING_CSC_BAKERS_WIND_MILL',    'BUILDING_CSC_BAKERS_WATER_MILL'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
@@ -555,17 +555,17 @@ VALUES  (	'BUILDING_CSC_BAKERS_WATER_MILL',			'BUILDING_CSC_BAKERS_NO_RIVER_ACCE
 
 INSERT INTO Building_CitizenYieldChanges
 
-        (	BuildingType,      		        					YieldType,       						YieldChange	        )
-VALUES  (	'BUILDING_CSC_BAKERS_BAKERY',       				'YIELD_FOOD',	        				2		        	),
+        (   BuildingType,                                  YieldType,         YieldChange   )
+VALUES  (   'BUILDING_CSC_BAKERS_BAKERY',                  'YIELD_FOOD',      2   ),
 
-		(	'BUILDING_CSC_BAKERS_CAFE',       					'YIELD_FOOD',	        				1		        	),
-		(	'BUILDING_CSC_BAKERS_CAFE',       					'YIELD_CULTURE',	        			1		        	),
+        (   'BUILDING_CSC_BAKERS_CAFE',                    'YIELD_FOOD',      1   ),
+        (   'BUILDING_CSC_BAKERS_CAFE',                    'YIELD_CULTURE',   1   ),
 
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		'YIELD_CULTURE',	        			2		        	),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',		'YIELD_GOLD',	        				2		        	),
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',   'YIELD_CULTURE',   2   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',   'YIELD_GOLD',      2   ),
 
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		'YIELD_CULTURE',	        			2		        	),
-		(	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',		'YIELD_GOLD',	        				2		        	);
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',   'YIELD_CULTURE',   2   ),
+        (   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',   'YIELD_GOLD',      2   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingModifiers
@@ -591,8 +591,9 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WATER_PROD'	),
 		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD'	),
 
---  Mirror the adjacent Granary transaction back onto Mill cities for alternate mill art
-		(	'BUILDING_GRANARY',							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS'			),
+--  Alternate mill art shares the complete Storekeeper activation gate
+		(	'BUILDING_CSC_BAKERS_WATER_MILL',			'MOD_CSC_BAKERS_STAGE_2_PROP'						),
+		(	'BUILDING_CSC_BAKERS_WIND_MILL',			'MOD_CSC_BAKERS_STAGE_2_PROP'						),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth, gains a Storekeeper service and sets a city property for art selection
@@ -619,8 +620,8 @@ INSERT INTO BuildingModifiers
 --  Cache supplied Bakery status for route exports
 		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP'		),
 
---  Mirror the adjacent Market transaction back onto the City of adjacent Bakeries for alternate Bakery art
-		(	'BUILDING_MARKET',							'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'	),
+--  Alternate Bakery art shares the complete Innkeeper activation gate
+		(	'BUILDING_CSC_BAKERS_BAKERY',				'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING'				),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
 -- 	Grant the Stage 3 Service to a Commercial Hub with a Market
@@ -654,9 +655,8 @@ INSERT INTO BuildingModifiers
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT'),
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK'	),
 
---  Mirror the adjacent Zoo/Ferris Wheel transactions back onto Cafe cities for alternate Cafe art
-		(	'BUILDING_ZOO',								'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE'	),
-		(	'BUILDING_FERRIS_WHEEL',					'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE'	),
+--  Alternate Cafe art shares the complete Stage 4 service activation gate
+		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM'				),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'BUILDING_CSC_BAKERS_CAFE',					'MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER'		),
@@ -680,26 +680,6 @@ INSERT OR IGNORE INTO BuildingModifiers
 SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD'
 FROM BuildingReplaces
 WHERE ReplacesBuildingType='BUILDING_GRANARY';
-
-INSERT OR IGNORE INTO BuildingModifiers
-		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS'
-FROM BuildingReplaces
-WHERE ReplacesBuildingType='BUILDING_GRANARY';
-
-INSERT OR IGNORE INTO BuildingModifiers
-		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER'
-FROM BuildingReplaces
-WHERE ReplacesBuildingType='BUILDING_MARKET';
-
-INSERT OR IGNORE INTO BuildingModifiers
-		(	BuildingType,								ModifierId											)
-SELECT	CivUniqueBuildingType,							'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE'
-FROM BuildingReplaces
-WHERE ReplacesBuildingType IN ('BUILDING_ZOO', 'BUILDING_FERRIS_WHEEL');
-
-
 
 --===========================================================================================================================================================================--
 /*	CIVICS */
@@ -754,9 +734,8 @@ INSERT OR IGNORE INTO Modifiers
 		(  	'MOD_CSC_BAKERS_PROD_TO_WATER_MILL',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 		(  	'MOD_CSC_BAKERS_GRANARY_ATTACH_BAKERS_WIND_PROD',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_QUARTER'						),
 		(  	'MOD_CSC_BAKERS_PROD_TO_WIND_MILL',									'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
---  Art bridge: Granaries set the source property on adjacent Water/Wind Mill transaction cities
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART'					),
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP',										'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
+--  Art bridge: the source property uses the same complete gate as the Storekeeper service
+		(	'MOD_CSC_BAKERS_STAGE_2_PROP',										'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_STAGE_2_EFFECT_PREREQ',		NULL												),
 
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth, gains a Storekeeper service, and sets a city property for art selection
@@ -777,14 +756,13 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 
 --  +0.105 Food per Citizen to adjacent Market cities
-		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',	'REQSET_CSC_ADJ_MARKET'								),
+		(	'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB',						'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_MARKET'								),
 		(	'MOD_CSC_BAKERS_BAKERY_FOOD_TO_MARKET',								'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',		NULL,										NULL												),
 
 --  Cache supplied Bakery status for route exports
 		(	'MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP',						'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_BAKERS_EXPORT_BAKERY_SUPPLY_PREREQ',	NULL										),
---  Art bridge: Markets set the source property on adjacent Bakery transaction cities
-		(	'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER',				'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART'					),
-		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
+--  Art bridge: the source property uses the same complete gate as the Innkeeper service
+		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_STAGE_3_EFFECT_PREREQ',		NULL												),
 
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
 -- 	Grant the Stage 3 Service to a Commercial Hub with a Market
@@ -812,9 +790,8 @@ INSERT OR IGNORE INTO Modifiers
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_ZOO',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_CAFE_CULTURE_TO_FERRIS',							'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
 		(	'MOD_CSC_BAKERS_PRODUCTION_TO_CAFE',								'MODIFIER_BUILDING_YIELD_CHANGE',								NULL,										NULL												),
---  Art bridge: Zoos and Ferris Wheels set the source property on adjacent Cafe transaction cities
-		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE',					'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',				NULL,										'REQSET_CSC_ADJ_CAFE_STAGE_4_ART'					),
-		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							NULL,										NULL												),
+--  Art bridge: the source property uses the same complete gate as the Stage 4 services
+		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM',								'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_STAGE_4_EFFECT_PREREQ',		NULL												),
 
 --  Cache supplied Cafe status for route exports
 		(	'MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP',							'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',							'REQSET_CSC_BAKERS_EXPORT_CAFE_SUPPLY_PREREQ',		NULL										),
@@ -948,7 +925,6 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',								'BuildingType',				'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'							),
 
 --  Source property consumed by Lua, then exposed to GamePropertyRanges for mill SelectionRules
-		(	'MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_2_PROP'									),
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP',										'Key',						'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'								),
 		(	'MOD_CSC_BAKERS_STAGE_2_PROP',										'Amount',					1																),
 
@@ -956,7 +932,7 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY',							'ModifierId',				'MOD_CSC_BAKERS_STAGE_2+4_GPP'									),
 		(	'MOD_CSC_BAKERS_STAGE_2+4_GPP',										'GreatPersonClassType',		'GREAT_PERSON_CLASS_ENGINEER'									),
 		(	'MOD_CSC_BAKERS_STAGE_2+4_GPP',										'Amount',					'1'																),
-		
+
 --	BAKERY ------------------------------------------------------------------------------
 
 --  +1 Food from the local Flour Mill
@@ -981,7 +957,6 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',						'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING'							),
 		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',							'Amount',					2																),
 --  Source property consumed by Lua, then exposed to GamePropertyRanges for Bakery SelectionRules
-		(	'MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER',				'ModifierId',				'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING'							),
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'Key',						'CSC_BAKERS_STAGE_3_EFFECT_HOUSING'								),
 		(	'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING',								'Amount',					1																),
 --  +1 Great Merchant point
@@ -1022,7 +997,6 @@ INSERT OR IGNORE INTO ModifierArguments
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER'					),
 		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',						'Amount',					2																),
 --  Source property consumed by Lua, then exposed to GamePropertyRanges for Cafe SelectionRules
-		(	'MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_BAKERS_CAFE',					'ModifierId',				'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM'							),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM',								'Key',						'CSC_BAKERS_STAGE_4_EFFECT_TOURISM'								),
 		(	'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM',								'Amount',					1																),
 
@@ -1183,8 +1157,6 @@ INSERT OR IGNORE INTO RequirementSets
 --  An adjacent Granary provides +10% growth in the city
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_CITY_HAS_MILL',								'REQUIREMENTSET_TEST_ANY'		),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQUIREMENTSET_TEST_ALL'		),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1195,7 +1167,6 @@ INSERT OR IGNORE INTO RequirementSets
 --  At Medieval Faires, a Bakery adjacent to an improved base materials resource unlocks:
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQUIREMENTSET_TEST_ALL'		),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -1212,7 +1183,7 @@ INSERT OR IGNORE INTO RequirementSets
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQUIREMENTSET_TEST_ALL'		),
-		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQUIREMENTSET_TEST_ALL'		),
+		(	'REQSET_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY',		'REQUIREMENTSET_TEST_ANY'		),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO',				'REQUIREMENTSET_TEST_ALL'		),
@@ -1294,12 +1265,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_CITY_HAS_MILL',								'REQ_CSC_CITY_HAS_WATER_MILL'					),
-		(	'REQSET_CSC_CITY_HAS_MILL',								'REQ_CSC_CITY_HAS_WIND_MILL'					),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_ADJ_BAKERS_STAGE_2_ART',					'REQ_CSC_CITY_HAS_MILL'							),
+		(	'REQSET_CSC_STAGE_2_EFFECT_PREREQ',						'REQ_CSC_BAKERS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER'	),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1314,10 +1280,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 --  An adjacent Market provides +2 Housing
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ', 					'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
-		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_ART',					'REQ_CSC_CITY_HAS_BAKERY'						),
+		(	'REQSET_CSC_STAGE_3_EFFECT_PREREQ',						'REQ_CSC_BAKERS_HAS_ADJ_STAGE_3_SERVICE_CUSTOMER'	),
 
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
 		(	'REQSET_CSC_ADJ_BAKERY_STAGE_3_RETURN',					'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
@@ -1343,11 +1306,9 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC'			),
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
 		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC'		),
-		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_BASE'		),
-		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_BAKERS_ADJ_PLOT_HAS_IMPROVED_SPEC'		),
-		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER'			),
-		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_PLOT_ADJ_TO_OWNER'						),
-		(	'REQSET_CSC_ADJ_CAFE_STAGE_4_ART',						'REQ_CSC_CITY_HAS_CAFE'							),
+		(	'REQSET_CSC_STAGE_4_EFFECT_PREREQ',						'REQ_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY'	),
+		(	'REQSET_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY',		'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_ENTER_CUSTOMER'	),
+		(	'REQSET_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY',		'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_WATER_CUSTOMER'	),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO',				'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX'				),
@@ -1425,9 +1386,7 @@ INSERT OR IGNORE INTO Requirements
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth in the city
 		(	'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
-		(	'REQ_CSC_CITY_HAS_WATER_MILL',							'REQUIREMENT_CITY_HAS_BUILDING',					0				),
-		(	'REQ_CSC_CITY_HAS_WIND_MILL',							'REQUIREMENT_CITY_HAS_BUILDING',					0				),
-		(	'REQ_CSC_CITY_HAS_MILL',								'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',		'REQUIREMENT_COLLECTION_COUNT_ATLEAST',			0				),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1440,6 +1399,7 @@ INSERT OR IGNORE INTO Requirements
 --  An adjacent Market provides +2 Housing
 -- 	+1 Citizen slot (Innkeeper) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_3_SERVICE_CUSTOMER',		'REQUIREMENT_COLLECTION_COUNT_ATLEAST',			0				),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -1450,7 +1410,9 @@ INSERT OR IGNORE INTO Requirements
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'REQUIREMENT_PLAYER_HAS_CIVIC',						0				),
-		(	'REQ_CSC_CITY_HAS_CAFE',								'REQUIREMENT_CITY_HAS_BUILDING',					0				),
+		(	'REQ_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY',			'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_ENTER_CUSTOMER',		'REQUIREMENT_COLLECTION_COUNT_ATLEAST',			0				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_WATER_CUSTOMER',		'REQUIREMENT_COLLECTION_COUNT_ATLEAST',			0				),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'REQUIREMENT_REQUIREMENTSET_IS_MET',				0				),
@@ -1525,9 +1487,9 @@ INSERT OR IGNORE INTO RequirementArguments
 --  At Feudalism, a Water Mill or Wind Mill adjacent to an improved base materials resource unlocks:
 --  An adjacent Granary provides +10% growth in the city
 		(	'REQ_CSC_STAGE_2_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_FEUDALISM'								),
-		(	'REQ_CSC_CITY_HAS_WATER_MILL',							'BuildingType',					'BUILDING_CSC_BAKERS_WATER_MILL'				),
-		(	'REQ_CSC_CITY_HAS_WIND_MILL',							'BuildingType',					'BUILDING_CSC_BAKERS_WIND_MILL'					),
-		(	'REQ_CSC_CITY_HAS_MILL',								'RequirementSetId',				'REQSET_CSC_CITY_HAS_MILL'						),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',		'CollectionType',				'COLLECTION_PLAYER_DISTRICTS'				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',		'Count',						1											),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',		'RequirementSetId',				'REQSET_CSC_ADJ_CITY_CENTER_GRANARY'			),
 
 -- 	BAKERY ------------------------------------------------------------------------------
 
@@ -1540,6 +1502,9 @@ INSERT OR IGNORE INTO RequirementArguments
 --  An adjacent Market provides +2 Housing
 -- 	+1 Citizen slot (Merchant Guildhall) to a Commercial Hub with a Market
 		(	'REQ_CSC_STAGE_3_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_MEDIEVAL_FAIRES'							),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_3_SERVICE_CUSTOMER',		'CollectionType',				'COLLECTION_PLAYER_DISTRICTS'				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_3_SERVICE_CUSTOMER',		'Count',						1											),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_3_SERVICE_CUSTOMER',		'RequirementSetId',				'REQSET_CSC_ADJ_MARKET'						),
 
 -- 	CAFE --------------------------------------------------------------------------
 
@@ -1550,7 +1515,13 @@ INSERT OR IGNORE INTO RequirementArguments
 --  At Urbanization, a Café adjacent to improved base and speciality materials resources unlocks:
 --  +2  Tourism to an Entertainment Complex, Water Park
 		(	'REQ_CSC_STAGE_4_EFFECT_TECH_OR_CIVIC',					'CivicType',					'CIVIC_URBANIZATION'							),
-		(	'REQ_CSC_CITY_HAS_CAFE',								'BuildingType',					'BUILDING_CSC_BAKERS_CAFE'						),
+		(	'REQ_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY',			'RequirementSetId',				'REQSET_CSC_BAKERS_STAGE_4_SERVICE_CUSTOMER_ANY'	),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_ENTER_CUSTOMER',		'CollectionType',				'COLLECTION_PLAYER_DISTRICTS'				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_ENTER_CUSTOMER',		'Count',						1											),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_ENTER_CUSTOMER',		'RequirementSetId',				'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX_ZOO'		),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_WATER_CUSTOMER',		'CollectionType',				'COLLECTION_PLAYER_DISTRICTS'				),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_WATER_CUSTOMER',		'Count',						1											),
+		(	'REQ_CSC_BAKERS_HAS_ADJ_STAGE_4_WATER_CUSTOMER',		'RequirementSetId',				'REQSET_CSC_ADJ_WATER_PARK_FERRIS'				),
 
 -- 	+1 Citizen slot from the relevant Stage 4 service: Groundskeeper for Zoo districts, Ride Technician for Ferris Wheel districts
 		(	'REQ_CSC_ADJ_ENTERTAINMENT_COMPLEX',					'RequirementSetId',				'REQSET_CSC_ADJ_ENTERTAINMENT_COMPLEX'			),
@@ -1695,30 +1666,30 @@ CROSS JOIN CSC_Stage4StackBits;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO Types
-		(	Type,														Kind)
-VALUES	(	'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',						'KIND_NOTIFICATION'	),
-		(	'NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED',					'KIND_NOTIFICATION'	),
-		(	'NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED',					'KIND_NOTIFICATION'	),
-		(	'NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED',					'KIND_NOTIFICATION'	);
+        (   Type,                                         Kind   )
+VALUES  (   'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',         'KIND_NOTIFICATION'   ),
+        (   'NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED',   'KIND_NOTIFICATION'   ),
+        (   'NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED',   'KIND_NOTIFICATION'   ),
+        (   'NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED',     'KIND_NOTIFICATION'   );
 
 INSERT INTO Notifications
-		(	NotificationType,											SeverityType,	ExpiresEndOfTurn,		AutoNotify	)
-VALUES	(	'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',						'HIGH',			0,						0			),
-		(	'NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED',					'HIGH',			0,						0			),
-		(	'NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED',					'HIGH',			0,						0			),
-		(	'NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED',					'HIGH',			0,						0			);
+        (   NotificationType,                             SeverityType,   ExpiresEndOfTurn,   AutoNotify   )
+VALUES  (   'NOTIFICATION_CSC_BAKERS_EFFECT_NEW',         'HIGH',         0,                  0   ),
+        (   'NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED',   'HIGH',         0,                  0   ),
+        (   'NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED',   'HIGH',         0,                  0   ),
+        (   'NOTIFICATION_CSC_BAKERS_EFFECT_REMOVED',     'HIGH',         0,                  0   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CSC_AbilityAttachModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO CSC_AbilityAttachModifiers
-		(	ModifierId,													AbilityIcon,										AbilityIconTarget							)
-VALUES	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',			'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',			'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_2_SERVICE'		),
-		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',				'ICON_BUILDING_CSC_BAKERS_STAGE_3_SERVICE',			'BUILDING_CSC_BAKERS_STAGE_3_SERVICE'		),
-		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT',		'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER'	),
-		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK',			'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',	'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER'	);
+        (   ModifierId,                                             AbilityIcon,                                        AbilityIconTarget,                             NotificationQuarter   )
+VALUES  (   'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',      'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',         'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',         'BAKERS'   ),
+        (   'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND',       'ICON_BUILDING_CSC_BAKERS_STAGE_2_SERVICE',         'BUILDING_CSC_BAKERS_STAGE_2_SERVICE',         'BAKERS'   ),
+        (   'MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB',          'ICON_BUILDING_CSC_BAKERS_STAGE_3_SERVICE',         'BUILDING_CSC_BAKERS_STAGE_3_SERVICE',         'BAKERS'   ),
+        (   'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT',   'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER',   'BAKERS'   ),
+        (   'MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK',      'ICON_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',   'BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER',   'BAKERS'   );
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1726,14 +1697,14 @@ VALUES	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER',			'ICON_BUILDING_CSC
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO ModifierStrings
-		(	ModifierId,                                			Context,			'Text'													)
-VALUES	(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',		'Preview',			'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER'		),
-		(	'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',		'Preview',			'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND'		),
-		(	'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',			'Preview',			'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION'				),
-		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ENTER',		'Preview',			'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER'		),
-		(	'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',		'Preview',			'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER'		),
+        (   ModifierId,                                      Context,     'Text'   )
+VALUES  (   'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER',    'Preview',   'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WATER'   ),
+        (   'MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WIND',     'Preview',   'LOC_CSC_BAKERS_STAGE_2_EFFECT_DESCRIPTION_WIND'   ),
+        (   'MOD_CSC_BAKERS_STAGE_3_EFFECT_HOUSING',         'Preview',   'LOC_CSC_BAKERS_STAGE_3_EFFECT_DESCRIPTION'   ),
+        (   'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ENTER',   'Preview',   'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_ENTER'   ),
+        (   'MOD_CSC_BAKERS_STAGE_4_EFFECT_TOURISM_WATER',   'Preview',   'LOC_CSC_BAKERS_STAGE_4_EFFECT_DESCRIPTION_WATER'   ),
 
-		(	'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',				'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME'			),
-		(	'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT',				'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME'			),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',		'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME'	),
-		(	'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',		'Preview',			'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME'	);
+        (   'MOD_CSC_BAKERS_STAGE_2_SERVICE_GRANT',          'Preview',   'LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME'   ),
+        (   'MOD_CSC_BAKERS_STAGE_3_SERVICE_GRANT',          'Preview',   'LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME'   ),
+        (   'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_ENTER',    'Preview',   'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME'   ),
+        (   'MOD_CSC_BAKERS_STAGE_4_SERVICE_GRANT_WATER',    'Preview',   'LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME'   );

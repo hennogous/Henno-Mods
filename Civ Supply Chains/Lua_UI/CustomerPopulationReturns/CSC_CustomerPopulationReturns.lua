@@ -103,7 +103,6 @@ local BUILDING_ZOO_FAMILY = CSC_CreateBuildingReplacementFamily("BUILDING_ZOO");
 local BUILDING_FERRIS_FAMILY = CSC_CreateBuildingReplacementFamily("BUILDING_FERRIS_WHEEL");
 local BUILDING_CONSERVATORY_FAMILY = CSC_CreateExplicitBuildingFamily({ "BUILDING_LEU_CONSERVATORY" });
 
-local PROP_BAKERY_SUPPLIED = "CSC_BAKERS_BAKERY_SUPPLIED";
 local PROP_BAKERS_MARKET_CUSTOMER_POP = "CSC_BAKERS_STAGE_3_MARKET_CUSTOMER_POP";
 local PROP_BAKERS_MARKET_FOOD_AMOUNT = "CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT";
 local PROP_BAKERS_MARKET_RETURN_AMOUNT = "CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT";
@@ -150,15 +149,6 @@ local function CSC_SetPropertyIfChanged(owner, propertyName, value)
 	end
 end
 
-local function CSC_IsPositiveProperty(owner, propertyName)
-	if owner == nil then return false; end
-
-	local value = owner:GetProperty(propertyName);
-	if value == nil then return false; end
-
-	return tonumber(value) ~= nil and tonumber(value) > 0;
-end
-
 local function CSC_CityHasFunctioningBuilding(pCity, iBuilding)
 	if pCity == nil or iBuilding == nil or iBuilding < 0 then return false; end
 
@@ -201,8 +191,7 @@ end
 
 local function CSC_CityHasBakerySeller(pCity)
 	return CSC_CityHasFunctioningBuilding(pCity, BUILDING_BAKERY)
-		and CSC_CityHasFunctioningDistrict(pCity, DISTRICT_BAKERS_QUARTER)
-		and CSC_IsPositiveProperty(pCity, PROP_BAKERY_SUPPLIED);
+		and CSC_CityHasFunctioningDistrict(pCity, DISTRICT_BAKERS_QUARTER);
 end
 
 local function CSC_CityHasCafeSeller(pCity)

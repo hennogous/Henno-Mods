@@ -96,6 +96,16 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
         ),
     )
     _clean_tailors_rows(connection)
+    helper_columns = {
+        row[1] for row in connection.execute('PRAGMA table_info("CSC_AbilityAttachModifiers")')
+    }
+    if "NotificationQuarter" not in helper_columns:
+        # Runtime caches created by an earlier build are only an offline fixture.
+        # Bring the in-memory copy up to the current shared-helper schema before
+        # loading the Tailors SQL; the source cache is never modified.
+        connection.execute(
+            "ALTER TABLE CSC_AbilityAttachModifiers ADD COLUMN NotificationQuarter TEXT"
+        )
     scripts = [
         "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
@@ -1075,22 +1085,28 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
         [("Amount", "0.105"), ("YieldType", "YIELD_CULTURE")],
         "Tailor customer Culture amount",
     )
+    _expect(
+        failures,
+        connection.execute(
+            "SELECT ModifierId, OwnerRequirementSetId FROM Modifiers WHERE ModifierId IN "
+            "('MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET','MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE') "
+            "ORDER BY ModifierId"
+        ).fetchall(),
+        [
+            ("MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET", None),
+            ("MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE", None),
+        ],
+        "Tailor adjacent-building transactions are not material-supply gated",
+    )
     for requirement_set, expected_requirements in (
         ("REQSET_CSC_TAILORS_ADJ_MARKET", {"REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER", "REQ_CSC_TAILORS_DISTRICT_IS_COMMERCIAL_HUB", "REQ_CSC_TAILORS_CITY_HAS_MARKET"}),
         ("REQSET_CSC_TAILORS_ADJ_TEMPLE", {"REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER", "REQ_CSC_TAILORS_DISTRICT_IS_HOLY_SITE", "REQ_CSC_TAILORS_CITY_HAS_TEMPLE"}),
-        ("REQSET_CSC_TAILORS_STAGE_3_ART", {"REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER", "REQ_CSC_TAILORS_DISTRICT_IS_QUARTER", "REQ_CSC_TAILORS_CITY_HAS_TAILOR"}),
-        ("REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ", {"REQ_CSC_TAILORS_PLAYER_HAS_DIVINE_RIGHT", "REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE"}),
+        ("REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ", {"REQ_CSC_TAILORS_PLAYER_HAS_DIVINE_RIGHT", "REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE", "REQ_CSC_TAILORS_HAS_ADJ_STAGE_3_SERVICE_CUSTOMER"}),
     ):
         actual = {row[0] for row in connection.execute(
             "SELECT RequirementId FROM RequirementSetRequirements WHERE RequirementSetId=?", (requirement_set,)
         )}
         _expect(failures, actual, expected_requirements, requirement_set)
-    _expect(
-        failures,
-        _scalar(connection, "SELECT COUNT(*) FROM RequirementSetRequirements RSR JOIN Requirements R ON R.RequirementId=RSR.RequirementId WHERE RSR.RequirementSetId='REQSET_CSC_TAILORS_STAGE_3_ART' AND R.RequirementType='REQUIREMENT_PLAYER_HAS_CIVIC'"),
-        0,
-        "Tailor art civic-gate exclusion",
-    )
     _expect(
         failures,
         connection.execute(
@@ -1102,7 +1118,7 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     _expect(
         failures,
         connection.execute(
-            "SELECT AbilityEffectModifierId, AbilityArgumentAmount, AbilityDesc, AbilityNewDesc, AbilityIncreasedDesc, AbilityDecreasedDesc, AbilityRemovedDesc "
+            "SELECT AbilityEffectModifierId, AbilityArgumentAmount, AbilityDesc, AbilityNewDesc, AbilityIncreasedDesc, AbilityDecreasedDesc, AbilityRemovedDesc, NotificationQuarter "
             "FROM CSC_AbilityAttachModifiers WHERE ModifierId='MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE'"
         ).fetchone(),
         (
@@ -1112,9 +1128,17 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
             "LOC_CSC_TAILORS_STAGE_3_EFFECT_DESCRIPTION_INCREASED",
             "LOC_CSC_TAILORS_STAGE_3_EFFECT_DESCRIPTION_DECREASED",
             "LOC_CSC_TAILORS_STAGE_3_EFFECT_DESCRIPTION_REMOVED",
+            "TAILORS",
         ),
         "Sacristan MCUIS presentation anchor",
     )
+    notification_lua = (
+        root / "Civ Supply Chains/Lua_UI/Notifications_Suk_MCUIS/CSC_UI_Notifications.lua"
+    ).read_text(encoding="utf-8-sig")
+    if "row.NotificationQuarter" not in notification_lua or "v.NotificationQuarter" not in notification_lua:
+        failures.append("notification Lua must dispatch from explicit CSC_AbilityAttachModifiers.NotificationQuarter")
+    if 'string.match(i, "MOD_CSC_([A-Z_]+)_STAGE_%d+")' in notification_lua:
+        failures.append("notification Lua must not infer Quarter identity from presentation-anchor names")
     _expect(
         failures,
         connection.execute(
@@ -1215,6 +1239,26 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
         )
     )
     art_lua = (root / "Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua").read_text(encoding="utf-8")
+    _expect(
+        failures,
+        connection.execute(
+            "SELECT ModifierType, OwnerRequirementSetId, SubjectRequirementSetId FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY'"
+        ).fetchone(),
+        ("MODIFIER_SINGLE_CITY_ADJUST_PROPERTY", "REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ", None),
+        "Tailors Stage 3 art property shares the Sacristan activation gate",
+    )
+    _expect(
+        failures,
+        _scalar(connection, "SELECT COUNT(*) FROM BuildingModifiers WHERE BuildingType='BUILDING_CSC_TAILORS_TAILOR' AND ModifierId='MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY'"),
+        1,
+        "Tailors Stage 3 producer-side art property attachment",
+    )
+    _expect(
+        failures,
+        _scalar(connection, "SELECT COUNT(*) FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_3_ART_ATTACH_QUARTER'"),
+        0,
+        "Tailors Stage 3 reverse customer art attach removed",
+    )
     if 'Source = "CSC_TAILORS_STAGE_3_CUSTOMERS"' not in art_lua or 'Art = "CSC_TAILORS_STAGE_3_CUSTOMERS_ART"' not in art_lua:
         failures.append("Tailor Stage 3 art Lua mirror mapping is missing")
     for relative, tokens in (
@@ -1248,22 +1292,14 @@ def _art_integration_assertions(root: Path, connection: sqlite3.Connection) -> l
     _expect(
         failures,
         connection.execute(
-            "SELECT ModifierType, OwnerRequirementSetId, SubjectRequirementSetId FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER'"
+            "SELECT ModifierType, OwnerRequirementSetId, SubjectRequirementSetId FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY'"
         ).fetchone(),
         (
-            "MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER",
+            "MODIFIER_SINGLE_CITY_ADJUST_PROPERTY",
+            "REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ",
             None,
-            "REQSET_CSC_TAILORS_STAGE_2_ART",
         ),
-        "Tailors Stage 2 art receiver modifier",
-    )
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT ModifierType FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY'"
-        ).fetchone(),
-        ("MODIFIER_SINGLE_CITY_ADJUST_PROPERTY",),
-        "Tailors Stage 2 art source modifier",
+        "Tailors Stage 2 art property shares the Dockmaster activation gate",
     )
     _expect(
         failures,
@@ -1275,41 +1311,58 @@ def _art_integration_assertions(root: Path, connection: sqlite3.Connection) -> l
     )
     _expect(
         failures,
-        {
-            row[0]
-            for row in connection.execute(
-                "SELECT RequirementId FROM RequirementSetRequirements WHERE RequirementSetId='REQSET_CSC_TAILORS_STAGE_2_ART'"
-            )
-        },
+        {row[0] for row in connection.execute(
+            "SELECT RequirementId FROM RequirementSetRequirements WHERE RequirementSetId='REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ'"
+        )},
         {
             "REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE",
-            "REQ_CSC_TAILORS_DISTRICT_IS_QUARTER",
-            "REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER",
-            "REQ_CSC_TAILORS_CITY_HAS_TEXTILE_WORKSHOP",
+            "REQ_CSC_TAILORS_PLAYER_HAS_NAVAL_TRADITION",
+            "REQ_CSC_TAILORS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER",
         },
-        "Tailors Stage 2 art physical-state requirements",
+        "Tailors Stage 2 shared Service/art activation requirements",
     )
     _expect(
         failures,
         _scalar(
             connection,
-            "SELECT COUNT(*) FROM RequirementSetRequirements RSR JOIN Requirements R ON R.RequirementId=RSR.RequirementId WHERE RSR.RequirementSetId='REQSET_CSC_TAILORS_STAGE_2_ART' AND R.RequirementType='REQUIREMENT_PLAYER_HAS_CIVIC'",
+            "SELECT COUNT(*) FROM BuildingModifiers WHERE BuildingType='BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP' AND ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY'",
+        ),
+        1,
+        "Tailors Stage 2 producer-side art property attachment",
+    )
+    _expect(
+        failures,
+        _scalar(
+            connection,
+            "SELECT COUNT(*) FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER'",
         ),
         0,
-        "Tailors Stage 2 art civic-gate exclusion",
+        "Tailors Stage 2 reverse customer art attach removed",
     )
     _expect(
         failures,
-        _scalar(
-            connection,
-            "SELECT COUNT(*) FROM BuildingModifiers BM JOIN BuildingReplaces BR ON BR.CivUniqueBuildingType=BM.BuildingType WHERE BR.ReplacesBuildingType='BUILDING_LIGHTHOUSE' AND BM.ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER'",
-        ),
-        _scalar(
-            connection,
-            "SELECT COUNT(*) FROM BuildingReplaces WHERE ReplacesBuildingType='BUILDING_LIGHTHOUSE'",
-        ),
-        "Tailors Stage 2 art direct Lighthouse replacement bridge",
+        _scalar(connection, "SELECT COUNT(*) FROM RequirementSets WHERE RequirementSetId IN ('REQSET_CSC_TAILORS_STAGE_2_ART','REQSET_CSC_TAILORS_STAGE_3_ART')"),
+        0,
+        "Tailors redundant art-only requirement sets removed",
     )
+    bakers_sql = (root / "Civ Supply Chains/Data/CSC_Q_BAKERS.sql").read_text(encoding="utf-8-sig")
+    for modifier_id, gate in (
+        ("MOD_CSC_BAKERS_STAGE_2_PROP", "REQSET_CSC_STAGE_2_EFFECT_PREREQ"),
+        ("MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING", "REQSET_CSC_STAGE_3_EFFECT_PREREQ"),
+        ("MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM", "REQSET_CSC_STAGE_4_EFFECT_PREREQ"),
+    ):
+        if not re.search(
+            rf"\(\s*'{re.escape(modifier_id)}'\s*,\s*'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY'\s*,\s*'{re.escape(gate)}'\s*,\s*NULL\s*\)",
+            bakers_sql,
+        ):
+            failures.append(f"{modifier_id} does not share its Bakers Service activation gate")
+    if re.search(r"REQSET_CSC_(?:ADJ_BAKERS_STAGE_2_ART|ADJ_BAKERY_STAGE_3_ART|ADJ_CAFE_STAGE_4_ART)", bakers_sql):
+        failures.append("Bakers redundant art-only requirement sets remain in active SQL")
+    if not re.search(
+        r"\(\s*'MOD_CSC_BAKERS_BAKERY_ATTACH_COMMERCIAL_HUB'\s*,\s*'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER'\s*,\s*NULL\s*,\s*'REQSET_CSC_ADJ_MARKET'\s*\)",
+        bakers_sql,
+    ):
+        failures.append("Bakers Stage 3 adjacent-building transaction has a material-supply owner gate")
     art_lua = (
         root / "Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua"
     ).read_text(encoding="utf-8")

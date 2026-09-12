@@ -2,10 +2,16 @@ schema_version: 1
 quarter: tailors
 status: transcribed
 canonical_source: docs/content/quarters/tailors.md
-canonical_source_sha256: 4fa09956ec75eea064b9f2f5a592a2febe4942ef7ced0ee6e9fe2537d7b75a9d
+canonical_source_sha256: 3777c817ccf90bf37013d0dcb017adba1e692bc15b2f77b3db04e9dc9d4720aa
 transcription_rule: >
   This file is a machine-readable transcription only. It must not resolve engine
   questions, select Bakers patterns, add replacement support, or reinterpret prose.
+
+transaction_gating:
+  adjacent_building_transactions: not_material_supply_gated
+  exception: Stage 2 transactions whose counterparty is the adjacent improved material supplier remain material-gated.
+  services: gated_by_unlock_material_supply_and_eligible_adjacent_customer
+  alternate_art: uses_the_same_activation_gate_as_the_related_service
 
 identity:
   name: Tailors' Quarter
@@ -243,7 +249,7 @@ buildings:
 
 art:
   status: stage2_art_bridge_and_wireup_implemented
-  rule: The existing Tailors art is retained. The SQL/Lua bridge exposes the supplied Textile Workshop-to-Lighthouse transaction as a binary city property; GamePropertyRanges and Landmarks select its visual variant.
+  rule: The existing Tailors art is retained. The SQL/Lua bridge exposes an active adjacent Service relationship as a binary city property; GamePropertyRanges and Landmarks select its visual variant.
   properties:
     - id: D.ART.STAGE2.LIGHTHOUSE
       source_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION
@@ -252,15 +258,15 @@ art:
       interval_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE
       baseline_asset: CSC_TAILORS_Textile_Workshop
       triggered_asset: CSC_TAILORS_Textile_Workshop_2
-      active_when: An adjacent same-owner Lighthouse serves a Tailors' Quarter with a functioning Textile Workshop and an adjacent improved Base Material.
-      excludes: [CIVIC_NAVAL_TRADITION]
+      active_when: "The Dockmaster service gate is active: Naval Tradition, an adjacent improved Base Material, and an adjacent same-owner Harbor with a functioning Lighthouse."
+      service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ
     - id: D.ART.STAGE3.CUSTOMERS
       source_property: CSC_TAILORS_STAGE_3_CUSTOMERS
       art_property: CSC_TAILORS_STAGE_3_CUSTOMERS_ART
-      active_when: An adjacent same-owner Temple or Market serves a Tailors' Quarter with a functioning Tailor.
-      excludes: [CIVIC_DIVINE_RIGHT]
+      active_when: "The Sacristan service gate is active: Divine Right, an adjacent improved Base Material, and an adjacent same-owner Holy Site with a functioning Temple."
+      service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ
     - id: D.ART.STAGE4.CUSTOMERS
       source_property: CSC_TAILORS_STAGE_4_CUSTOMERS
       art_property: CSC_TAILORS_STAGE_4_CUSTOMERS_ART
-      active_when: An adjacent same-owner Amphitheater, Bolshoi Theatre, Broadway, or Sydney Opera House serves a Tailors' Quarter with a functioning Fashion House.
-      excludes: [CIVIC_OPERA_BALLET]
+      active_when: "The Stage Manager service gate is active: Opera and Ballet, adjacent improved Base and Specialty Materials, and an eligible adjacent same-owner service destination."
+      service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ

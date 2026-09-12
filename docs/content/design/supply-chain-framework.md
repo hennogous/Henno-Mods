@@ -91,6 +91,8 @@ The ratio between Demand, Supply and Payment is used to represent some economic 
 
 2. Transactions between actors (suppliers, processors and customers) in the supply chain are then used as the basis for more detailed relationships, and are generally implemented as yields on adjacent buildings that are part of the transaction.
 
+   Transactions between adjacent buildings do not depend on whether the Quarter currently has adjacent improved Material resources. The adjacency and the required functioning supplier/customer buildings establish the sale itself. The exception is a Stage 2 transaction with a Material supplier, where the adjacent improved resource is one of the actors in the transaction.
+
 * Each Quarter constructed in a city is more expensive than the previous one, but Quarter construction costs do not scale by game era.
    * This ensures Quarters are accessible for developing new settlements throughout the game, supporting diverse playstyles.
 
@@ -195,6 +197,8 @@ The customer building defines the destination and theme of the Service, while th
 * a Horticulturist in an adjacent Garden with a Conservatory.
 
 Gameplay-wise, Services normally grant a Citizen slot in specialist-capable host districts and apply the value created by the completed supply chain: growth, housing, tourism, or another thematic effect. This keeps the chain readable: goods create recurring customers, recurring customers create local occupations, and those occupations expand the city's specialist capacity where the game supports it.
+
+Alternate Quarter-building art follows the same activation conditions as the related Service: the appropriate era unlock, the required adjacent improved Material supply, and an eligible adjacent customer. It illustrates the visible impact of the industry that enabled the Service, or the changed activity around the Quarter once that Service relationship is in place; it is not a visual indicator for every ordinary adjacent-building transaction.
 
 ---
 

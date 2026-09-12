@@ -153,6 +153,8 @@ patterns:
     invariant:
       - "Require adjacency, same owner, correct destination, and functioning required building."
       - "Record both customer benefit and Quarter return."
+      - "Do not gate an adjacent-building transaction on the Quarter's adjacent material supply. Material supply gates the related Service, not the underlying sale."
+      - "The exception is the Stage 2 transaction with a material supplier itself, whose resource, improvement, and adjacency define the transaction."
 
   - id: GP.BUILDING.CITIZEN_YIELDS
     classification: reusable_parameterized
@@ -244,6 +246,7 @@ patterns:
       - "Only the presentation anchor's child effect receives the aggregate Preview ModifierString and NEW, INCREASED, DECREASED, and REMOVED localization family."
       - "Unregistered mechanical siblings receive neither CSC_AbilityAttachModifiers rows nor independent notification string families."
       - "The helper row resolves to a non-NULL child modifier and uses the primary formatted effect Amount expected by MCUIS."
+      - "Every CSC_AbilityAttachModifiers row declares NotificationQuarter explicitly; notification dispatch uses that field and never infers Quarter identity from modifier-name shape."
       - "Persistent service-grant state remains separate from the live effect anchor; removal text must not claim that the persistent service building or Citizen slot was removed."
 
   - id: GP.SERVICE.WONDER_VARIANTS
@@ -295,18 +298,19 @@ patterns:
       - baseline_asset
       - triggered_asset
       - selection_rule
-      - receiver_buildings
-      - subject_requirement_set
+      - service_activation_requirement_set
       - refresh_events
     invariant:
       - "Art integration is a separate approved phase, unless explicitly included in the approved gameplay slice."
-      - "The SQL source property identifies the physical transaction and is mirrored by CSC_ArtProperties.lua into a direct city property for GamePropertyRanges."
+      - "The SQL source property identifies an active adjacent Service relationship and is mirrored by CSC_ArtProperties.lua into a direct city property for GamePropertyRanges."
       - "Use CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT> for the source, then append _ART for the art-facing property and _ACTIVE for the GamePropertyRanges interval."
       - "<EFFECT_CONTENT> is the effect-semantic segment immediately before the _ART or _ACTIVE suffix; it must be declared explicitly rather than inferred from a customer building name."
       - "GamePropertyRanges reads the _ART property and defines the _ACTIVE interval over the binary range 1..100."
       - "The baseline landmark variant has no selection rule and priority 0; the triggered variant uses [CITYPROP:<INTERVAL_PROPERTY>] and priority 1."
       - "The declared baseline and triggered TileBase assets must exist in the declared XLP, and the ArtDefs/XLP must be packaged by the ModBuddy project."
-      - "The bridge follows only visible physical/logistical state, never a later service or effect civic/tech gate."
+      - "Attach the property modifier directly to the Quarter building and give it the exact owner requirement set used by the related Service/effect attach modifiers."
+      - "That shared requirement set includes the era unlock, required adjacent improved material supply, and at least one eligible adjacent Service customer."
+      - "Do not create a reverse customer-building art attach modifier or a parallel art-only requirement set."
 
   - id: GP.BAKERS.STAGE2_VARIANTS
     classification: bakers_only

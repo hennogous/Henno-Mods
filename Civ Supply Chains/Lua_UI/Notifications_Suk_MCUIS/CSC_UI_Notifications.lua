@@ -44,6 +44,7 @@ for row in GameInfo.CSC_AbilityAttachModifiers() do
 	mCSC_AbilityAttachModifiers[row.ModifierId].IncreasedDesc = row.AbilityIncreasedDesc;
 	mCSC_AbilityAttachModifiers[row.ModifierId].DecreasedDesc = row.AbilityDecreasedDesc;
 	mCSC_AbilityAttachModifiers[row.ModifierId].RemovedDesc = row.AbilityRemovedDesc;
+	mCSC_AbilityAttachModifiers[row.ModifierId].NotificationQuarter = row.NotificationQuarter;
 end
 
 -- we also add each individual AbilityEffectModifierId found in mCSC_AbilityAttachModifiers to mCSC_AbilityEffectModifiers, for easy fetching later in the script
@@ -74,7 +75,7 @@ for i,v in pairs(mCSC_AbilityAttachModifiers) do
 			mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].RemovedDesc = v.RemovedDesc
 		end
 		
-		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Quarter = string.match(i, "MOD_CSC_([A-Z_]+)_STAGE_%d+")
+		mCSC_AbilityEffectModifiers[v.AbilityEffectModifierId].Quarter = v.NotificationQuarter
 	end
 end
 

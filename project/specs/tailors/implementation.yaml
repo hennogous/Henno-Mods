@@ -188,7 +188,8 @@ implementation_rules:
   - "Never treat a Bakers source_anchor as prose to reskin when its authorship_mode requires original or curated writing."
   - "No Bakers-only pattern may be used."
   - "No Tailors gameplay output may be written until its phase is approved in control.yaml."
-  - "Art bridge properties follow physical supply-chain state, independently of later service unlock civic/tech gates."
+  - "Adjacent-building transactions are not gated by adjacent material supply; only Stage 2 material-supplier transactions use material availability as part of the transaction itself."
+  - "Art bridge properties share the complete owner requirement set of the related Service, including unlock, material supply, and at least one eligible adjacent Service customer."
   - "runtime_scenarios are user-owned later acceptance tests; the implementation agent records them but is not required to launch Civ VI or execute them before handoff."
 
 replacement_policy:
@@ -487,7 +488,8 @@ phases:
           - "ICON_BUILDING_CSC_TAILORS_TAILOR uses the Tailors atlas index 5, and Icons/CSC_TAILORS_ICONS.sql is Content loaded by the shared UpdateIcons action."
           - "BUILDING_CSC_TAILORS_TAILOR is bound to CSC_TAILORS_Tailor in Buildings and Landmarks ArtDefs, CSC_Tilebases.xlp, and completed/pillaged/under-construction Strategic View states."
           - "CSC_TAILORS_BuildingChain keeps the Quarter district at Districts, the Textile Workshop at Buildings (Level 1), and adds exactly BUILDING_CSC_TAILORS_TAILOR at Buildings (Level 2); Buildings (Level 3) remains present but empty until Stage 4."
-          - "The Stage 3 physical customer state writes CSC_TAILORS_STAGE_3_CUSTOMERS and mirrors CSC_TAILORS_STAGE_3_CUSTOMERS_ART for art selection when an adjacent same-owner Temple or Market serves a functioning Tailor; Divine Right and Sacristan state are excluded from the art gate."
+          - "The Tailor population transaction with an adjacent Temple or Market has no material-supply owner gate."
+          - "CSC_TAILORS_STAGE_3_CUSTOMERS is written directly by the Tailor using the exact Sacristan owner requirement set: Divine Right, adjacent improved Base Material, and at least one adjacent same-owner Holy Site with a functioning Temple. Markets participate in the transaction but do not activate Sacristan art."
         runtime_scenarios:
           - "Verify local exchange, specialist yields, and amenity independently; inspect the Tailor icon, 3D/SV states, complete description, and both Civilopedia chapters."
 
@@ -533,6 +535,7 @@ phases:
           - "Requires Divine Right, supplied BASE, adjacent Holy Site, functioning Temple."
           - "Effect is +10% Faith, +1 slot, and +1 Prophet point."
           - "Exactly one mechanically real Sacristan attach/effect pair is the MCUIS presentation anchor; one aggregate preview and NEW/INCREASED/DECREASED/REMOVED notification family describes the complete live ability without multiplying its mechanics."
+          - "The Sacristan CSC_AbilityAttachModifiers presentation row explicitly declares NotificationQuarter=TAILORS, and notification Lua dispatches from that field rather than parsing the attach-modifier name."
           - "ICON_BUILDING_CSC_TAILORS_STAGE_3_SERVICE uses Tailors atlas index 9 and is the MCUIS/notification icon target."
           - "The Sacristan Civilopedia page has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
           - "Its Supply Chains entry follows the Storekeeper/Innkeeper structure: the Tailor draws on cloth from the Textile Workshop, creates garments or vestments for the adjacent Temple, then after one paragraph break gives a Citizen employment as a Sacristan in the Holy Site and expresses Faith and Great Prophet development in-world."
@@ -761,8 +764,8 @@ phases:
           - "The art-facing property naming pattern is CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT>_ART; the second-to-last word identifies the represented effect content."
           - "The corresponding GamePropertyRanges interval is CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE and the Textile Workshop alternate uses [CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]."
           - "The baseline and triggered Textile Workshop TileBase assets are CSC_TAILORS_Textile_Workshop and CSC_TAILORS_Textile_Workshop_2."
-          - "The bridge requires a functioning Textile Workshop, an adjacent improved Base Material, the Tailors' Quarter, and same-owner adjacency."
-          - "The bridge never requires Naval Tradition or any service/effect civic or tech gate."
+          - "The Stage 2 art property modifier is attached directly to the Textile Workshop and shares REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ with every Dockmaster mechanical attach modifier."
+          - "The shared gate requires Naval Tradition, an adjacent improved Base Material, and at least one adjacent same-owner Harbor with a functioning Lighthouse."
           - "D.ART.STAGE2.LIGHTHOUSE and D.ART.STAGE3.CUSTOMERS have SQL and Lua implementations at this approval point."
           - "D.ART.STAGE4.CUSTOMERS is a reserved contract name only; its properties, modifiers, and Lua mapping must not be implemented before Stage 4 approval."
         implementation_binding:
@@ -788,36 +791,35 @@ phases:
                 building_type: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
                 baseline_asset: CSC_TAILORS_Textile_Workshop
                 triggered_asset: CSC_TAILORS_Textile_Workshop_2
-                selection_rule: '[CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]'
+              selection_rule: '[CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]'
               source_modifier: MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY
-              receiver_modifier: MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER
-              receiver_buildings: [BUILDING_LIGHTHOUSE, direct_one_level_replacements]
-              subject_requirement_set: REQSET_CSC_TAILORS_STAGE_2_ART
-              timing: physical_transaction_only
+              source_building: BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP
+              service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ
+              timing: service_activation
             - id: D.ART.STAGE3.CUSTOMERS
               status: implemented
               source_property: CSC_TAILORS_STAGE_3_CUSTOMERS
               mirrored_art_property: CSC_TAILORS_STAGE_3_CUSTOMERS_ART
               interval_property: CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE
-              receiver_buildings: [BUILDING_TEMPLE, BUILDING_MARKET, direct_one_level_replacements]
-              subject_building: BUILDING_CSC_TAILORS_TAILOR
+              source_building: BUILDING_CSC_TAILORS_TAILOR
+              service_customer: BUILDING_TEMPLE
               baseline_asset: CSC_TAILORS_Tailor
               triggered_asset: CSC_TAILORS_Tailor_2
               selection_rule: '[CITYPROP:CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE]'
               source_modifier: MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY
-              receiver_modifier: MOD_CSC_TAILORS_STAGE_3_ART_ATTACH_QUARTER
-              subject_requirement_set: REQSET_CSC_TAILORS_STAGE_3_ART
-              timing: physical_transaction_only
+              service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ
+              timing: service_activation
             - id: D.ART.STAGE4.CUSTOMERS
               status: deferred_until_stage4
               source_property: CSC_TAILORS_STAGE_4_CUSTOMERS
               mirrored_art_property: CSC_TAILORS_STAGE_4_CUSTOMERS_ART
-              receiver_buildings: [BUILDING_AMPHITHEATER, BUILDING_BOLSHOI_THEATRE, BUILDING_BROADWAY, BUILDING_SYDNEY_OPERA_HOUSE, direct_one_level_replacements]
-              subject_building: BUILDING_CSC_TAILORS_FASHION_HOUSE
-              timing: physical_transaction_only
+              source_building: BUILDING_CSC_TAILORS_FASHION_HOUSE
+              service_customers: [BUILDING_AMPHITHEATER, BUILDING_BOLSHOI_THEATRE, BUILDING_BROADWAY, BUILDING_SYDNEY_OPERA_HOUSE, direct_one_level_replacements]
+              service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ
+              timing: service_activation
           artdef_ownership: user
         runtime_scenarios:
-          - "Stage 2: verify the source and mirrored property activate when all physical inputs exist, deactivate when any physical input is removed or pillaged, and remain independent of Naval Tradition."
+          - "Stage 2: verify the source and mirrored property activate only when the Dockmaster unlock, material supply, and eligible adjacent customer are all present, and deactivate when any live prerequisite is removed or pillaged."
           - "Stage 3 and Stage 4: implement and verify only after the respective gameplay phases are approved."
 
 resolved_engine_decisions:
