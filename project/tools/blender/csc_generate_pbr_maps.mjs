@@ -12,7 +12,7 @@
  *
  * Does NOT generate an AO map. AO must be baked from geometry in Blender (Cycles,
  * via UV2) rather than derived from the base color -- see
- * project/docs/shared-atlas-ao.md for why and how. UV2 for baking must be a fresh
+ * project/docs/art/shared-atlas-ao.md for why and how. UV2 for baking must be a fresh
  * non-overlapping unwrap/pack, not a copy of UV1.
  */
 

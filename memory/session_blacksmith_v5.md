@@ -24,7 +24,7 @@ the full normal/tangent convention, exact destination triangle count or all stat
 
 Generator gained --height, --regions, --reference-size and --normal-y; broken AO
 flags replaced with a geometry-bake explanation. Four focused Node tests passed.
-Workflow/art findings promoted to `project/docs/textures-and-uvs.md`.
+Workflow/art findings promoted to `project/docs/art/textures-and-uvs.md`.
 
 Read-back validation passed for all external paths, dimensions, color spaces and
 unchanged CN6 sections. `texture-comparison-v4-v5.png` compares textured renders;

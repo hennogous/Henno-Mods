@@ -10,8 +10,8 @@ below are historical working heuristics, not measured universal engine behavior.
 Shared materials do not establish batching; referenced meshes do not establish
 hardware instancing; vertices/props are not free. Separate unique definitions,
 placements, geometry/texture resources and actual submissions. See
-`project/docs/civ6-3d-art-development.md` and `project/docs/art-performance-evidence-review.md`
-and `project/skills/civ6-3d-art/references/performance.md` for the corrected
+`project/docs/research/art/civ6-3d-art-development.md` and `project/docs/research/art/art-performance-evidence-review.md`
+and the installed `civ6-art` skill’s `references/performance.md` for the corrected
 reuse/counting guidance. The E/NE distinction remains a useful state-use distinction,
 but exact draw-call totals need render-pass evidence.
 

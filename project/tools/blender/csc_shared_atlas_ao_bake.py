@@ -27,7 +27,7 @@ everything around it). With overlapping UV1 you cannot bake real AO -- many face
 fight for the same texels. The engine samples AO through UV2 (TEXCOORD_1), so the
 fix is: give UV2 a non-overlapping layout, bake geometric AO into it, and let
 model variants SHARE the parent's baked texels wherever they reuse the parent's
-UV1 content. See project/docs/shared-atlas-ao.md for the full write-up.
+UV1 content. See project/docs/art/shared-atlas-ao.md for the full write-up.
 
 --------------------------------------------------------------------------------
 CORE CONCEPTS

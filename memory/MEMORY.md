@@ -6,8 +6,10 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 ## Active notes
 
+- [Quarter building art plan](../project/docs/art/quarter-building-art-plan.md) — agreed 12 September 2026: retain Henno’s kit, Quarter roof/beam colours, assistant-built chunky prop scenes, storage/crane animation, Industrial Era variants and later cultural additions. [Internal docs index](../project/docs/README.md); studies now live under `project/docs/research/`.
+
 - [Art Dropzone location and catalog intake](project_art-dropzone.md) — current Google Drive art/output root; research catalog scope and validation notes.
-- [Civ VI 3D art skill development](../project/docs/civ6-3d-art-development.md) — first portable skill draft, texture-generation directives, trial plan and tool assessment; blacksmith 1,491-vertex Asset Editor parity confirmed by Henno.
+- [Civ VI 3D art skill development](../project/docs/research/art/civ6-3d-art-development.md) — first portable skill draft, texture-generation directives, trial plan and tool assessment; blacksmith 1,491-vertex Asset Editor parity confirmed by Henno.
 - [Blacksmith v5 texture refinement](session_blacksmith_v5.md) — latest blend/package paths, authored relief, generator changes and validation.
 - [Civ VI shape hierarchy feedback](feedback_csc_shape_hierarchy.md) — chunky structural forms must read in clay; bargeboard thickness must be measured across the slope.
 - [Working Files reachable from Mac](project_working-files-mac-access.md) — Shadow's Working Files syncs via Google Drive `Other computers/My PC/`
@@ -15,13 +17,13 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 ## Promoted docs
 
-- Dynamic art properties → `project/docs/dynamic-art-properties.md`
-- Bakers service notification UI → `project/docs/bakers-service-notification-ui.md`
-- ComfyUI icon implementation notes → `project/docs/icon-pipeline-implementation-notes.md`
+- Dynamic art properties → `project/docs/art/dynamic-art-properties.md`
+- Bakers service notification UI → `project/docs/integrations/bakers-service-notification-ui.md`
+- ComfyUI icon implementation notes → `project/docs/art/2d/icon-pipeline-implementation-notes.md`
 
 ## Resolved feedback
 
-- Decal geometry visibility feedback was applied to the generic `civ6-modding` skill: `DecalGeometry` supports normal `GroupStates`; the limitation is reveal-animation keying, not general visibility.
+- Decal geometry visibility feedback was applied to the generic `civ6-gameplay` skill: `DecalGeometry` supports normal `GroupStates`; the limitation is reveal-animation keying, not general visibility.
 
 ## Local tooling lessons
 

@@ -18,7 +18,7 @@ No engine bottleneck or asset ceiling follows from these metadata records.
 
 Market intake completed: `research/market-study/README.md` has source hashes, map/UV
 sheets, material ablations, normal-Y alternatives, raw JSON, scripts and a packed
-`Market-material-study.blend` preview. Repo summary: `project/docs/firaxis-market-study.md`.
+`Market-material-study.blend` preview. Repo summary: `project/docs/research/art/firaxis-market-study.md`.
 Completed mesh 480v/294t/1mat; UV1 union 10.05%, UV2 1.41%, custom normals. Source blend
 untouched. Base-only rendering already carries substantial local depth; normals
 reinforce it. Preview shader/tangent convention is not validated against the game.
@@ -30,7 +30,7 @@ comparisons. CN6 supplied after initial FGX intake: 999v/537t in ONE mesh but TW
 material missing, shown gray. Construction counts from GEO only, no CON CN6 yet.
 Mip variants have explicit MANUAL_MIPS and equal top levels but different lower levels;
 ordinary B artwork differs and variant state usage is unverified. Repo summary:
-`project/docs/firaxis-library-study.md`. Originals untouched; no Asset Editor validation.
+`project/docs/research/art/firaxis-library-study.md`. Originals untouched; no Asset Editor validation.
 
 Henno's correction: explicitly named MIP files are very rare in the Pantry; the campus
 variants may be among the only examples. Do not treat these as a standard Firaxis
@@ -38,7 +38,7 @@ practice or a skill-development priority. Removed their rationale from the art s
 default to ordinary automatic mips and investigate filtering only when useful.
 
 Campus family follow-up: `research/campus-family-study/README.md`; repo summary
-`project/docs/firaxis-campus-family-study.md`. Direct Library CON/PIL and University
+`project/docs/research/art/firaxis-campus-family-study.md`. Direct Library CON/PIL and University
 CN6 analysis. Campus AO regions for intact/CON/PIL/University are mutually disjoint
 and internally nonoverlapping, confirmed by polygon clipping (1e-12 area tolerance).
 Analytical AO areas 2.079/2.135/2.135/10.014%, total16.364%; raster estimates differ
@@ -48,3 +48,23 @@ Each CON/PIL file1567v/833t; University2742v/1478t. Foundation MTL now supplied:
 only, no AO; its actual named DDS maps still missing. Skill now conditions AO validation
 on bound maps and favors independently allocated state AO in a shared map. Parent-bake
 reuse remains an explicit compromise. No AST/runtime visibility or bottleneck proof.
+
+City block study: `research/city-block-study/README.md`; repo summary
+`project/docs/research/art/firaxis-city-block-study.md`. DIS_CTY_AB_Block_LG_SQ_01 CN6: main4298v/2405t,
+one material, plus Grass_7 six vertices/two triangles/another material. Neighborhood
+scope, not one house. B/N/G1024×512; A1024²; E512². Main AO analytical4.75884%, no positive
+area overlaps. UV1/UV3 out-of-range, MTL missing, so wrapped/emissive usage not inferred.
+Packed preview main mesh only, ground omitted. Strong visual pattern: stepped boxes,
+parapets/beams/domes and reusable two-tone wall treatments; calm painted color and
+selected masonry wear. Skill updated for architecture-specific shape vocabulary and
+independent per-map dimensions. Source files untouched.
+
+**SUPERSEDING AO interpretation (source review):** official mirrored guidance supports
+asset-level AO overriding material AO. Empty Foundation_Modern_01 material AO does NOT
+prove no AO. Prior city4.75884% and campus16.36378% are valid unit-square UV footprints,
+not verified runtime texture allocations; ASTs remain missing. Do not teach per-state
+AO separation as mandatory. Reports/skill corrected. Documentation cloned to
+`/Users/henno.gous/Play/Civ-6-Documentation`, commit
+`2c6b1baaf45c658600ac00b92a51c08b0334a3b4`. See `project/docs/research/art/firaxis-guidance-review.md`.
+Henno's unnamed-modder quote about fidelity leading abstraction is a quality-check
+interpretation, not official wording or a requirement to build high-poly first.

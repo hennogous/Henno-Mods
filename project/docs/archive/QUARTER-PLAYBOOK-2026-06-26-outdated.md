@@ -1,5 +1,8 @@
 # CSC — New Quarter Playbook
 
+> **Documentation audit — 2026-09-12: Superseded.** Already archived. Direct text-SQL editing, manual project actions and template-copy workflow have been replaced by Markdown localization, actions JSON and per-phase contracts.
+> Classification: Quarter workflow. See the [full audit](../DOCUMENT-AUDIT.md).
+
 Standard checklist for implementing each new Quarter after Bakers'. Use Bakers' as the reference implementation throughout.
 
 ---

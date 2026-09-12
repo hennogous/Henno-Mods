@@ -7,8 +7,8 @@
   },
   "enabledMcpjsonServers": ["blender"],
   "enabledPlugins": {
-    "civ6-modding-skill@henno-agents": true,
-    "civ-supply-chains-skill@henno-agents": true,
+    "civ6-gameplay@henno-agents": true,
+    "civ-supply-chains@henno-agents": true,
     "fable-orchestration@henno-agents": true
   }
 }

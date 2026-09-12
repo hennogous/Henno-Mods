@@ -13,20 +13,23 @@
 Quarters: Bakers, Tailors, Apothecaries, Stonemasons, Carpenters, Blacksmiths, Goldsmiths, Brewers.
 
 - Requires: Rise and Fall (XP1) + Gathering Storm (XP2)
-- Hard dependency: Modular Adjacency Bonuses Core (MAB) — see [`project/docs/MAB_CHANGES.md`](../project/docs/MAB_CHANGES.md) for CSC's changes to Ruivo's mod (branches, features, PR status)
+- Hard dependency: Modular Adjacency Bonuses Core (MAB) — see [`project/docs/integrations/MAB_CHANGES.md`](../project/docs/integrations/MAB_CHANGES.md) for CSC's changes to Ruivo's mod (branches, features, PR status)
 - Optional integrations: Sukritact's Resources, Resourceful 2, Cannabis & Hemp, Latin American Resources
 - Mod ID: `c5e66bd1-d804-443b-ac3d-1917a20dba3c`
 
 ## Skills Available
 
-- `/civ6-modding` — SQL schema, modifiers, Lua scripting, .modinfo/.civ6proj structure, Blender → FGX/GEO pipeline, ArtDefs, textures, strategic view sprites, icons
+- `civ6-gameplay` — SQL schema, modifiers, Lua/UI logic and general mod structure.
+- `civ6-art` — concepts, models, materials, icons, strategic view, overlays, export, Asset Editor, ArtDefs and cooking.
+- `civ-supply-chains` — CSC-specific context, workflows and project paths.
 
-**Skill loading (Claude Code stopgap):** Slash-command invocation of custom skills is not yet wired up in Claude Code. At the start of any CSC session, read both skill files manually before acting:
+**Skill loading:** If custom skill invocation is unavailable, locate the installed
+skill directories and read their `SKILL.md` files directly. Read `civ-supply-chains`
+for CSC work, plus `civ6-gameplay` for rules/logic and/or `civ6-art` for visual work.
+Do not assume a host-specific installation path. Resolve project documentation
+paths from the Henno Mods repository root and skill references from their skill directory.
 
-1. `/Users/henno.gous/Agents/skills/civ6-modding-skill/SKILL.md`
-2. `/Users/henno.gous/Agents/skills/civ-supply-chains-skill/SKILL.md`
-
-Load focused `references/` docs from those directories only when the task needs them (see the reference routing tables in each SKILL.md).
+Load focused `references/` docs only when the task needs them (see each skill’s routing table).
 
 ## Directory Structure
 
@@ -82,7 +85,7 @@ All mod content lives under `Civ Supply Chains/`:
 
 - **Working Files** = `C:\Users\Shadow\Desktop\Working Files\` — active art assets, screenshots, VS Code workspace. Subdirs: `3D Art`, `Docs`, `Icons` (Buildings/Effects/GreatWorks/Quarters/Resources/StrategicView), `Pantry Exports`, `Screenshots`, `Textures`
 - **Modding Resources** = `C:\Users\Shadow\Desktop\Modding Resources\` — reference PDFs, tech/civic tree PNGs, ERD, MC_MasterTemplate, tutorial docs
-- **Ruivo's Mod / MAB** = `C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\NEW_ADJACENCY_BONUS_BY_RUIVO` — hard dependency for CSC, local git repo. Ruivo's tutorial: `!参考性文件(reference_folder)\Modular_Adjacency_Bonus_Tutorial-by_Ruivo.md` in that folder. Full reverse-engineered schema reference: `project/docs/MAB_MANUAL.md`
+- **Ruivo's Mod / MAB** = `C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\NEW_ADJACENCY_BONUS_BY_RUIVO` — hard dependency for CSC, local git repo. Ruivo's tutorial: `!参考性文件(reference_folder)\Modular_Adjacency_Bonus_Tutorial-by_Ruivo.md` in that folder. Full reverse-engineered schema reference: `project/docs/integrations/MAB_MANUAL.md`
 - **CivAssetForge** = `C:\Users\Shadow\Desktop\Working Files\Tools\CivAssetForge` — purpose-built replacement for the Civ6 Asset Editor, built for CSC. Local git repo, also at `https://github.com/hennogous/CivAssetForge`. Prototype viewer (FGX → Three.js) is working; Electron app to follow. Plan: `PLAN.md` in the repo root.
 
 ## Key Architecture Points
@@ -91,7 +94,7 @@ All mod content lives under `Civ Supply Chains/`:
 - **Load order matters**: files use `LoadOrder` values (50–99999); dependencies must load before dependents.
 - **ActionCriteria system**: files load conditionally based on active game modes, other mods present, or Settings values. Check existing criteria before adding new conditional content.
 - **ModSupport is additive**: compatibility patches are separate SQL files loaded only when the target mod is active — never embed cross-mod logic in core Quarter files.
-- **Art pipeline**: geometry goes through Blender → `.cn6` export → CivNexus6 (→ `.fgx`/`.geo`) → Asset Editor (`.ast`/`.mat`/`.tex`) → ArtDefs → cook. See the `civ6-modding` skill (`art-pipeline.md` and `art-export-pipeline.md`) for the full workflow.
+- **Art pipeline**: geometry goes through Blender → `.cn6` export → CivNexus6 (→ `.fgx`/`.geo`) → Asset Editor (`.ast`/`.mat`/`.tex`) → ArtDefs → cook. See the `civ6-art` skill (`art-pipeline.md` and `art-export-pipeline.md`) for the full workflow.
 - **Reusable art kit**: 6 building geometries shared across all Quarters; differentiated via per-Quarter materials/textures (roof recoloring) + manual props.
 - **M&C integration file**: `Data/CSC_Q_BAKERS_MC_MODE.sql` — separate file, loaded only when M&C mode is active.
 - **Human-only tasks**: Blender retopo, texture creation, prop placement, in-game feel tuning.
@@ -175,7 +178,13 @@ The game exposes a TCP debug console on `127.0.0.1:4318`. A working Python clien
 
 ComfyUI is at `C:\Users\Shadow\ComfyUI`, API on `http://127.0.0.1:8188`.
 
-- **SV LoRA**: trained and ready — 457 sprites, 1,500 steps, loss 0.0443. Trigger: `civ 6 strategic view sprite`. Full pipeline in `project/docs/strategic-view-sprites.md`
+- **SV LoRA**: trained and ready — 457 sprites, 1,500 steps, loss 0.0443. Trigger: `civ 6 strategic view sprite`. Full pipeline in `project/docs/art/2d/strategic-view-sprites.md`
 - **Icon LoRA** (`game_icon_v1`): trigger `2d icon. [description]`
 - **Isometric LoRA** (`cartoon_3d_isometric`): trigger `j_game_background`
-- Full setup + prompt templates in `project/docs/COMFYUI-SETUP.md`
+- Full setup + prompt templates in `project/docs/archive/tooling/COMFYUI-SETUP.md`
+
+## Shared skill ownership
+
+Use installed `civ6-gameplay` for gameplay, SQL/XML effects, Lua/UI logic and general mod structure. Use installed `civ6-art` for all art: concepts, models, painted materials, icons, strategic view, overlays, export, Asset Editor, ArtDefs, XLP/BLP and cooking. `civ-supply-chains` owns all CSC-specific instructions, including art budgets, kit scale, palettes, tool recipes and host observations. Load its `references/art-production-conventions.md` for CSC art work; project design decisions remain in the art plan.
+
+The generic skills refer to the modder’s projects without depending on CSC. For this project, `civ-supply-chains` supplies that context. ComfyUI setups, building-icon generation and strategic-view automation remain project-specific; their publication has not been decided.
