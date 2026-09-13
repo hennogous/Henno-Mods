@@ -44,6 +44,8 @@ The initial inspection opened all four files successfully. They have UV1, UV2 an
 
 Use separate editable working scenes or versioned copies for variations. Preserve the original kit files as the reference. Possible small refinements include ridge treatment, framing and opening readability; this plan does not call for a wholesale remodel or universal changes to roof pitch and proportions.
 
+The bases are intentionally **off origin**, already positioned for their district slots and road relationships. Preserve their authored placement and orientation when appending them into a prop scene; move review cameras to frame them. Temporarily append the matching road layout from `Working Files/3D Art/Quarters/` to check entrances, prop clearance and work/loading routes. `CSC_ALL_Classical_Base_05_Road_Decals.blend` is an identified reference. The layouts share the same network, differing in how much is paved versus dirt path; keep that distinction in context checks. Exclude the temporary road geometry from building-only renders and export.
+
 ## Colour system
 
 Retain painted material detail, value variation and shading when recolouring. Roof surfaces and main roof beams need separately controllable masks or material regions.
@@ -69,21 +71,54 @@ The recolouring workflow is still open: the assistant may generate the variants,
 
 1. **Read the building's Quarter design.** Identify its inputs, processing activity, output goods and supply-chain stage. Use the framework for the common pattern and the Quarter document for thematic differences.
 2. **Frame the actual base model.** Choose Level 1 or Level 1 S where applicable, and retain the authored proportions, footprint and attachment conventions. Use a consistent view to compare variants.
-3. **Create contextual concept images.** The assistant dresses the base model with its Quarter colours and occupational scene. The point is to choose equipment, scale and composition around the existing building. Henno selects or refines the concept before detailed prop construction; an already accepted concept remains valid.
-4. **Build and place the props in Blender.** The assistant creates editable, named prop meshes around the base model, first checking the large forms and composition, then developing materials and selected detail. Reusable equipment and storage props can be shared where appropriate.
-5. **Review the complete scene.** Check the intended elevated game view and useful rotations, including at normal play distance. Adjust props and placement before deciding that the base architecture needs alteration.
-6. **Prepare the asset for the existing export workflow.** Deliver the editable scene, props, external textures, review images and geometry/material report; complete export and in-game checks through the established pipeline for the production asset.
+3. **Create concept images for both versions of one strong composition.** Start from Henno's supplied building image or a render of the applicable base model, then dress it with its Quarter colours and occupational scene. Iterate that composition with Henno; develop alternatives only if requested or needed after review. Provide a concept image for the standard version and another for the expanded version, with matching camera/framing for comparison. Henno reviews both before detailed prop construction; an already accepted concept remains valid.
+4. **Build and place the props in Blender.** Append/import the applicable base into the working blend and create editable, named prop meshes matching the accepted concept, first checking the large forms and composition, then developing materials and selected detail. Reusable equipment and storage props can be shared where appropriate.
+5. **Review the complete scene.** Send renders with the base included, checking the intended elevated game view and useful rotations, including at normal play distance. Henno may reposition props in Blender; continue from his edited scene. Adjust props and placement before deciding that the base architecture needs alteration.
+6. **Prepare the asset for the existing export workflow.** Deliver base and props together as a building asset while retaining separate named meshes/groups for material assignment and state visibility. Keep each significant prop as its own editable mesh, separate from the base, and preserve independently controlled groups through export. Smaller props may be grouped where their materials and visibility match. Include separate pillaged prop decal geometry. Deliver the editable scene, export-prepared version, external textures, state review images and geometry/material report; complete export and in-game checks through the established pipeline for the production asset.
+7. **Render final icon and strategic-view inputs.** After placement review and Henno's edits, render the latest scene for the existing 2D pipelines. Use the separate Wind Mill icon and SV references under `Working Files/2D Art/Quarters/Bakers/` and its `StrategicView/` subfolder. For SV, match Henno's perspective correction that makes outside walls more vertical and less inward-convergent at the bottom. Preserve the manual directional-shadow handoff: blue-ish colourization at about 70% opacity with light from the top left. Full source filenames and current command sequence live in the CSC production conventions; consult [Henno's commands](../workflows/commands-cheatsheet.md) and the live scripts before execution.
+
+### Shared prop materials
+
+Create a **fresh shared prop atlas library**, aiming for **fewer than five shared prop atlas materials across CSC art collectively**. Reuse common wood, stone, textile, metal and other surfaces. The legacy `Working Files/3D Art/Textures/CSC_Atlas_Props_B.png` is a coverage/style reference; preserve it for existing assets, but give the new library its own layout and remap reused props accordingly. This target does not replace the building atlases and independent AO/emissive layouts.
+
+Plan the fresh layout around the first normal/expanded scene and likely cross-Quarter reuse. Keep new regions stable once mapped, adding missing surfaces as actual scenes require them. Do not create all four sheets in advance or migrate unrelated existing assets during this first scene.
+
+Ovens, furnaces and other emissive equipment need an `_E` map through UV3. Prefer one shared B/N/G/M set for these props and a shared emissive sheet with lit regions and padded black for unlit faces. Reuse compatible material instances; separate meshes do not require a unique material per prop. Avoid proliferating surface/emissive combinations. AO remains geometry-dependent through UV2, with asset overrides checked during integration. The existing `CSC_ALL_Props` and `CSC_ALL_Props_E` materials demonstrate shared surface bindings; the new library still uses fresh textures.
+
+### Expanded art
+
+Provide normal and expanded versions where the design calls for an adjacent-service story. Use extra and/or different props while retaining the base, placement and material library. Record the service, recipient, full activation conditions and visual prop changes for each building. Each complete variant remains subject to the existing geometry budget.
+
+**Henno's latest direction (12 September 2026):** show expanded art when the requirements for establishing the adjacent service are satisfied, including its technology/civic unlock. His example is a boat frame at a Joinery next to a Lighthouse once Shipbuilding is researched. For the Textile Workshop, the current design specifies Naval Tradition, adjacency to an improved Base Material, and an adjacent Harbor containing a Lighthouse for the Dockmaster service. Sailmaking is the agreed visual story, consistent with the earlier textile study's natural-canvas variant.
+
+The alternate-art fix was pulled at Henno-Mods `11595de` on 12 September 2026. Source inspection confirms that the Textile Workshop property is producer-owned and shares the full Dockmaster Service gate, including Naval Tradition, material supply and an eligible Lighthouse customer. No new gameplay implementation was needed; runtime behaviour was not retested in this session. See [dynamic art properties](dynamic-art-properties.md).
+
+### Pillaged prop representation
+
+Provide separate **pillaged decals geometry**: major intact props disappear during `Pillaged` and are represented by damaged/scorched prop decals at their locations. Keep intact props and replacement decals in independently controllable mesh groups. Preserve the base building's existing pillaged treatment. Include the matching existing base pillage decals with the new prop decals in the delivered decal geometry and review; retain their placement/UVs and keep base versus prop groups identifiable. Avoid duplicating the base decals during asset integration. These runtime decals are separate from SV sprites and temporary road-layout geometry.
+
+Plan the decal representation for both normal and expanded scenes; share it only where the footprint and damaged-prop story fit. Review the full building in intact and pillaged states, checking visibility, emission, decal placement and z-fighting. Include decal/material counts, each state's visible geometry and complete delivered totals in the report; the existing budget remains unchanged. The CSC production conventions carry the export/group checks.
+
+### First production scene
+
+**Latest placement revision:** Move the normal Textile Workshop loom fully out from under the side roof and put stored crates/bales under that roof instead. Retain rear storage and include the existing Level 1 small-base pillage decals with the prop decals.
+
+**Current concept revision:** Keep the road visible, dye vats, a modest group beside the door and one or two goods visibly inside, but reduce the crowded frontage from revision 02. Arrange distinct processing stations with operator space and clear walking routes from the road to the door, loom and other work areas. Empty working/circulation space is part of the composition. Move bulk storage to the rear: stacked crates and bundled goods against the back walls/corners, with those quieter views considered even where the front concept hides them. Avoid a continuous row of props between the building and road.
+
+The expanded scene is now a **wholesale sailmaking transformation**, superseding the earlier retain-and-adapt composition. Canvas production should dominate the loom, worktable, drying/storage and goods, with conspicuous sailmaking cues. Produce revised standard and expanded concept images for review before building the scene; the generated revision is not accepted until Henno reviews it.
+
+Henno selected the **Tailors' Textile Workshop**. Use `/Users/henno.gous/Play/codex-outputs/textile-texture-pass-02` as the earlier visual/prop reference, including its colourful standard cloth and natural-canvas sailmaking distinction. Its bespoke architecture and dedicated atlas do not replace the agreed Level 1 kit and fresh shared prop library. Inspect reusable props and adapt their placement to the actual kit and roads. The old complete export measured 1,895 vertices; that is historical evidence, not a budget measurement of the new assembly.
 
 ### Prop direction
 
 - **Chunky, visible, activity-led props do the heavy lifting.** Exaggerate identifying shapes such as the loom, mortar, vat, furnace, workbench or stockpile so the profession is readable at game distance.
 - Show what the building does at its particular stage. Raw fibre and broad cloth production belong to a different scene from tailoring everyday garments or making specialty clothing.
-- Keep defining equipment visible from above. Roof overhangs should conceal only as much as needed to anchor the activity convincingly in the building. Use the smaller shelter, orientation or placement when those solve the problem.
+- **Standing rule:** place defining work equipment outside the side roof, visible from above, and use the sheltered area primarily for stored inputs, finished goods, crates or bales. Keep operator space and circulation clear. Apply a task-specific exception when the activity requires cover.
 - Arrange props into meaningful groups for processing, inputs, finished goods, drying or loading, with gaps that keep their silhouettes readable. Do not fill every gap with small clutter.
 - Keep entrances and working routes plausible. Large props should feel used and supported, not arranged as oversized ornaments outside an unrelated house.
 - Give quieter sides and rear views considered storage or service details. Avoid adding exterior paving aprons or display plinths unless the particular scene calls for them.
 
-Follow the current [Civ VI art skill](https://github.com/hennogous/civ6-art/blob/main/SKILL.md) and [art-direction synthesis](https://github.com/hennogous/civ6-art/blob/main/references/art-direction-synthesis.md). The [CSC production conventions](https://github.com/hennogous/civ-supply-chains/blob/main/references/art-production-conventions.md) set building budgets targeting 1,500 exported vertices with a hard cap of 2,000, including delivered props; count the actual export rather than assuming source counts equal runtime counts. Resolve an over-budget composition through simplification, or explicitly revise its budget with Henno. Animation requires its own checked implementation path.
+Follow the current [Civ VI art skill](https://github.com/hennogous/civ6-art/blob/main/SKILL.md) and [art-direction synthesis](https://github.com/hennogous/civ6-art/blob/main/references/art-direction-synthesis.md). The [CSC production conventions](https://github.com/hennogous/civ-supply-chains/blob/main/references/art-production-conventions.md) set building budgets targeting 2,000 exported vertices ±10% (a planning range of 1,800–2,200, upper limit 2,200), including delivered props; count the actual export rather than assuming source counts equal runtime counts. Resolve an over-budget composition through simplification, or explicitly revise its budget with Henno. Animation requires its own checked implementation path.
 
 Use [texture and UV guidance](textures-and-uvs.md), [shared-atlas AO guidance](shared-atlas-ao.md) and the [export pipeline](export-pipeline.md) for implementation details. Keep recolouring, new geometry and AO changes coordinated; the colour treatment alone should not erase authored construction detail.
 
@@ -134,7 +169,7 @@ Select the particular region and historical period before designing a cultural a
 | Work package | Intended result | Still to decide or verify |
 |---|---|---|
 | Kit and colour preparation | Existing sources ready for Quarter variants | Any minor refinements; exact beam colours for Goldsmiths/Brewers; assistant recolouring versus GIMP templates |
-| First production prop scene | One reviewed concept carried through Blender, export and game review | Which building goes first; final equipment composition and texture allocation |
+| First production prop scene | Textile Workshop: one reviewed composition with normal/expanded art, Level 1 kit and a fresh shared prop atlas | Final equipment composition, full/small shelter selection and texture allocation |
 | Quarter rollout | Concepts and finished prop scenes for the remaining building variants | Prioritisation and reusable prop sets |
 | Storage scenes and crane | Quarter goods around storage plus a working upper-bay loading animation | Storage source files; large-model reuse/replacement decision; animation pipeline proof |
 | Industrial variants | Coherent era update across the building families | Texture-only cases versus cases needing new geometry or equipment |

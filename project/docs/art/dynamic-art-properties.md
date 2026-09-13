@@ -1,9 +1,19 @@
 # Dynamic Art Properties
 
-> **Documentation audit — 2026-09-12: Needs refresh.** Stage 3 is no longer declaration-only: CSC_Q_TAILORS.sql contains Stage 3 art attachment/property rows. The blanket no-improved-material-gate timing rule also needs Bakers/Tailors scoping. Stage 4 remains gated in control.yaml.
+> **Documentation audit — 2026-09-12: Needs refresh.** Service-based timing and producer-owned bridge notes refreshed against 11595de. Remaining event/state and destination behaviour still requires live verification; consult current control.yaml for phase scope.
 > Classification: Art/gameplay integration. See the [full audit](../DOCUMENT-AUDIT.md).
 
 CSC uses SQL-driven city properties plus Lua mirroring to drive `GamePropertyRanges` art variants.
+
+## Current timing and local verification
+
+The alternate-art fix was pulled on 12 September 2026 at Henno-Mods `11595de`.
+Expanded art follows the full Service activation gate: unlock, required improved
+material supply and an eligible adjacent same-owner Service customer. Quarter
+buildings own the source-property modifiers, reusing their Service/effect owner
+requirement sets. The earlier reverse customer attaches and partial art-only gates
+were removed. This was verified by source inspection, not a fresh in-game test.
+See the [building art plan](quarter-building-art-plan.md#expanded-art).
 
 ## Current Bakers property bridge
 
@@ -41,7 +51,7 @@ together.
 
 | Source property | Mirrored art property | Active interval / selection property | Active physical state |
 |---|---|---|---|
-| `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION` | `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART` | `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE` | A same-owner Lighthouse (or direct unique replacement) is adjacent to a Tailors' Quarter containing a functioning Textile Workshop, and that Quarter is adjacent to an improved Base Material. |
+| `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION` | `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART` | `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE` | Naval Tradition is unlocked; a same-owner adjacent Harbor has a functioning Lighthouse (or supported replacement), the Quarter contains a functioning Textile Workshop, and the Quarter is adjacent to an improved Base Material. |
 
 Art-facing names follow
 `CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT>_<ART_OR_ACTIVE>`.
@@ -50,16 +60,14 @@ The completed Tailors wire-up selects `CSC_TAILORS_Textile_Workshop_2` over
 the baseline `CSC_TAILORS_Textile_Workshop` when
 `[CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE]` is true.
 
-The bridge deliberately does **not** require `CIVIC_NAVAL_TRADITION`. That
-civic controls the Dockmaster service; it must not delay the visual
-supply-chain state. ArtDefs may use the mirrored property in a
-`GamePropertyRanges` classifier and a `[CITYPROP:...]` selection rule.
-
-The Tailors contract also reserves later physical-state bridges for the Tailor
-(`CSC_TAILORS_STAGE_3_CUSTOMERS`) and Fashion House
-(`CSC_TAILORS_STAGE_4_CUSTOMERS`). They are deliberately declarations only:
-their SQL and Lua mappings must wait for the approved Stage 3 and Stage 4
-gameplay implementations.
+The property modifier is attached directly to the Textile Workshop and uses
+`REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ`, shared with the Dockmaster effects.
+That gate includes `CIVIC_NAVAL_TRADITION`, improved Base Material supply and a
+collection-count check for an eligible adjacent Harbor/Lighthouse customer.
+The corresponding contract declares `timing: service_activation`; tests check
+producer ownership, shared prerequisites and removal of old reverse attachments.
+For later stages, inspect the current approved contracts and live SQL rather than
+assuming their bridge declarations are still unimplemented.
 
 ## SQL remains authoritative
 
@@ -93,19 +101,13 @@ To avoid art only updating on the next turn, `CSC_ArtProperties.lua` refreshes o
 
 Plot/building/improvement/resource events refresh all cities for the affected player because the affected Bakers' Quarter can be adjacent to the city or plot that changed.
 
-## Variant ownership rule
+## Variant ownership and timing
 
-For art properties that must light up the Quarter owner's city, avoid attaching the SQL source property from the Quarter building to an adjacent subject district if cross-city adjacency is valid. That pattern sets `MODIFIER_SINGLE_CITY_ADJUST_PROPERTY` on the subject district's city.
-
-Use inverse receiver-to-Quarter attach modifiers instead:
-
-- Stage 2 Mill art: `BUILDING_GRANARY` owns `MOD_CSC_BAKERS_STAGE_2_PROP_ATTACH_BAKERS_WATER` / `_WIND`; subject reqsets find adjacent Bakers' Quarters with Water/Wind Mill.
-- Stage 3 Bakery art: `BUILDING_MARKET` / `BUILDING_SUKIENNICE` own `MOD_CSC_BAKERS_STAGE_3_PROP_ATTACH_BAKERS_QUARTER`; `REQSET_CSC_ADJ_BAKERY_STAGE_3_ART` finds adjacent Bakers' Quarters with a Bakery.
-- Stage 4 Café art: `BUILDING_ZOO`, `BUILDING_FERRIS_WHEEL`, and LGD's `BUILDING_LEU_CONSERVATORY` own the art attach modifiers; `REQSET_CSC_ADJ_CAFE_STAGE_4_ART` finds adjacent Bakers' Quarters with a Café.
-
-## Timing rule
-
-The art bridge follows the base transactions, not the later unlocked effects. Alternate assets should appear as soon as the adjacent Granary/Market/Zoo/Ferris Wheel/Conservatory transaction exists, even before the stage effect civic and improved-material gates are satisfied.
+Attach the source-property modifier directly to the Quarter building so the property
+belongs to the Quarter owner's city. Reuse the Service/effect `OwnerRequirementSetId`
+and prove an eligible adjacent customer exists through its collection-count gate.
+Do not restore inverse customer-building art attaches or parallel art-only gates.
+Ordinary adjacent-building transactions retain their own independent timing.
 
 ## Lua callback pitfall
 
@@ -119,11 +121,6 @@ LGD Conservatory support lives in the criteria-gated file:
 Civ Supply Chains/ModSupport/ModSupport_LGD.sql
 ```
 
-The art bridge mirrors the LGD Garden/Conservatory Stage 4 tourism branch with:
-
-```text
-MOD_CSC_BAKERS_STAGE_4_PROP_ATTACH_GARDEN
-  -> MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM_GARDEN
-```
-
-This sets the existing source property `CSC_BAKERS_STAGE_4_EFFECT_TOURISM`, letting `CSC_BAKERS_Cafe_2` activate from the Conservatory path without introducing core references to LGD objects.
+The LGD Service customer path contributes through the current shared Service gate.
+Inspect `ModSupport_LGD.sql` with the core Stage 4 prerequisites when changing it;
+do not restore the removed Garden-owned reverse property attachment.
