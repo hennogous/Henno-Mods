@@ -248,16 +248,14 @@ buildings:
         origin_amenities: 1
 
 art:
-  status: stage2_art_bridge_and_wireup_implemented
-  rule: The existing Tailors art is retained. The SQL/Lua bridge exposes an active adjacent Service relationship as a binary city property; GamePropertyRanges and Landmarks select its visual variant.
+  status: gameplay_state_bridge_defined
+  rule: The SQL/Lua bridge exposes an active adjacent Service relationship as a binary city property. Physical 3D assets, GamePropertyRanges, Landmarks, ASTs, materials, and XLP registration are integrated together after each final blend arrives and are not implementation-contract outputs.
   properties:
     - id: D.ART.STAGE2.LIGHTHOUSE
       source_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION
       effect_content: PRODUCTION
       art_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART
       interval_property: CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE
-      baseline_asset: CSC_TAILORS_Textile_Workshop
-      triggered_asset: CSC_TAILORS_Textile_Workshop_2
       active_when: "The Dockmaster service gate is active: Naval Tradition, an adjacent improved Base Material, and an adjacent same-owner Harbor with a functioning Lighthouse."
       service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ
     - id: D.ART.STAGE3.CUSTOMERS

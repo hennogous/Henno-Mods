@@ -51,8 +51,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-3.761220</x>
-							<y>-23.927620</y>
+							<x>-8.719885</x>
+							<y>-20.057573</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
@@ -103,7 +103,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>0.000000</x>
+							<x>-3.946868</x>
 							<y>-27.706757</y>
 							<z>0.000000</z>
 						</m_position>
@@ -155,7 +155,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>0.000000</x>
+							<x>-3.946868</x>
 							<y>-29.384970</y>
 							<z>0.000000</z>
 						</m_position>
@@ -207,7 +207,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-1.207981</x>
+							<x>-5.154849</x>
 							<y>-28.712906</y>
 							<z>0.000000</z>
 						</m_position>
@@ -259,8 +259,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>0.000000</x>
-							<y>-31.695124</y>
+							<x>-6.620507</x>
+							<y>-24.758200</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
@@ -311,7 +311,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-4.546677</x>
+							<x>-8.493546</x>
 							<y>-26.453814</y>
 							<z>0.000000</z>
 						</m_position>
@@ -363,7 +363,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>5.512623</x>
+							<x>-0.015729</x>
 							<y>-28.844999</y>
 							<z>0.000000</z>
 						</m_position>
@@ -415,7 +415,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>0.000000</x>
+							<x>-3.946868</x>
 							<y>-25.984543</y>
 							<z>0.000000</z>
 						</m_position>
@@ -467,7 +467,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-2.161841</x>
+							<x>-6.108709</x>
 							<y>-26.696192</y>
 							<z>0.000000</z>
 						</m_position>
@@ -519,7 +519,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-2.820668</x>
+							<x>-6.767536</x>
 							<y>-28.065325</y>
 							<z>0.000000</z>
 						</m_position>
@@ -623,9 +623,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-10.465698</x>
+							<x>11.177935</x>
 							<y>-19.487158</y>
-							<z>0.000000</z>
+							<z>1.324504</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -675,8 +675,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>13.303195</x>
-							<y>-23.711212</y>
+							<x>10.908536</x>
+							<y>-23.331257</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
@@ -727,8 +727,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-14.558893</x>
-							<y>-11.887812</y>
+							<x>-13.901989</x>
+							<y>-15.811228</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
@@ -1161,110 +1161,6 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="Zimbabwe_goods"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="tilebases.xlp"/>
-									<m_BLPPackage text="landmarks/tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="OPTIONAL"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>6.443591</x>
-							<y>-16.750256</y>
-							<z>0.000000</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_23"/>
-						<m_BoneName text="CSC_ALL_District_Base"/>
-						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>1.000000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="WON_Great_Zimbabwe_Wall_SmallA"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="tilebases.xlp"/>
-									<m_BLPPackage text="landmarks/tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="OPTIONAL"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>14.263859</x>
-							<y>-15.456474</y>
-							<z>0.000000</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_24"/>
-						<m_BoneName text="CSC_ALL_District_Base"/>
-						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>1.000000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
 									<m_EntryName text="WON_Great_Zimbabwe_PotTall_Clay"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="tilebases.xlp"/>
@@ -1351,8 +1247,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>5.034811</x>
-							<y>-10.915710</y>
+							<x>2.617669</x>
+							<y>-14.841679</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
@@ -1517,6 +1413,318 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_29"/>
+						<m_BoneName text="CSC_ALL_District_Base"/>
+						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
+						<m_scale>1.000000</m_scale>
+					</Element>
+					<Element>
+						<m_CookParams>
+							<m_Values>
+								<Element class="AssetObjects..BLPEntryValue">
+									<m_EntryName text="CSC_ALL_Workbench_M"/>
+									<m_XLPClass text="TileBase"/>
+									<m_XLPPath text="csc_tilebases.xlp"/>
+									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
+									<m_LibraryName text="TileBase"/>
+									<m_ParamName text="Asset"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="NONE"/>
+									<m_ParamName text="ConnectionType"/>
+								</Element>
+								<Element class="AssetObjects..ArtDefReferenceValue">
+									<m_ElementName text="DON'T CARE"/>
+									<m_RootCollectionName text="ResourceTags"/>
+									<m_ArtDefPath text="Landmarks.artdef"/>
+									<m_CollectionIsLocked>true</m_CollectionIsLocked>
+									<m_TemplateName text="Landmarks"/>
+									<m_ParamName text="ResourceType"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="Pivot Height"/>
+									<m_ParamName text="TerrainFollowMode"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="OPTIONAL"/>
+									<m_ParamName text="Cull Mode"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="RandomizeAnims"/>
+								</Element>
+							</m_Values>
+						</m_CookParams>
+						<m_position>
+							<x>-4.613704</x>
+							<y>-21.057962</y>
+							<z>0.000000</z>
+						</m_position>
+						<m_orientation>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_orientation>
+						<m_Name text="newAttachmentPoint_23"/>
+						<m_BoneName text="CSC_ALL_District_Base"/>
+						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
+						<m_scale>1.000000</m_scale>
+					</Element>
+					<Element>
+						<m_CookParams>
+							<m_Values>
+								<Element class="AssetObjects..BLPEntryValue">
+									<m_EntryName text="CSC_ALL_Stand"/>
+									<m_XLPClass text="TileBase"/>
+									<m_XLPPath text="csc_tilebases.xlp"/>
+									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
+									<m_LibraryName text="TileBase"/>
+									<m_ParamName text="Asset"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="NONE"/>
+									<m_ParamName text="ConnectionType"/>
+								</Element>
+								<Element class="AssetObjects..ArtDefReferenceValue">
+									<m_ElementName text="DON'T CARE"/>
+									<m_RootCollectionName text="ResourceTags"/>
+									<m_ArtDefPath text="Landmarks.artdef"/>
+									<m_CollectionIsLocked>true</m_CollectionIsLocked>
+									<m_TemplateName text="Landmarks"/>
+									<m_ParamName text="ResourceType"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="Pivot Height"/>
+									<m_ParamName text="TerrainFollowMode"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="OPTIONAL"/>
+									<m_ParamName text="Cull Mode"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="RandomizeAnims"/>
+								</Element>
+							</m_Values>
+						</m_CookParams>
+						<m_position>
+							<x>5.583180</x>
+							<y>-11.067672</y>
+							<z>0.000000</z>
+						</m_position>
+						<m_orientation>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_orientation>
+						<m_Name text="newAttachmentPoint_24"/>
+						<m_BoneName text="CSC_ALL_District_Base"/>
+						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
+						<m_scale>1.000000</m_scale>
+					</Element>
+					<Element>
+						<m_CookParams>
+							<m_Values>
+								<Element class="AssetObjects..BLPEntryValue">
+									<m_EntryName text="WON_Great_Zimbabwe_RugsB"/>
+									<m_XLPClass text="TileBase"/>
+									<m_XLPPath text="tilebases.xlp"/>
+									<m_BLPPackage text="landmarks/tilebases"/>
+									<m_LibraryName text="TileBase"/>
+									<m_ParamName text="Asset"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="NONE"/>
+									<m_ParamName text="ConnectionType"/>
+								</Element>
+								<Element class="AssetObjects..ArtDefReferenceValue">
+									<m_ElementName text="DON'T CARE"/>
+									<m_RootCollectionName text="ResourceTags"/>
+									<m_ArtDefPath text="Landmarks.artdef"/>
+									<m_CollectionIsLocked>true</m_CollectionIsLocked>
+									<m_TemplateName text="Landmarks"/>
+									<m_ParamName text="ResourceType"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="Pivot Height"/>
+									<m_ParamName text="TerrainFollowMode"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="OPTIONAL"/>
+									<m_ParamName text="Cull Mode"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="RandomizeAnims"/>
+								</Element>
+							</m_Values>
+						</m_CookParams>
+						<m_position>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_position>
+						<m_orientation>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_orientation>
+						<m_Name text="newAttachmentPoint_30"/>
+						<m_BoneName text="CSC_ALL_District_Base"/>
+						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
+						<m_scale>1.000000</m_scale>
+					</Element>
+					<Element>
+						<m_CookParams>
+							<m_Values>
+								<Element class="AssetObjects..BLPEntryValue">
+									<m_EntryName text="WON_Great_Zimbabwe_RugsC"/>
+									<m_XLPClass text="TileBase"/>
+									<m_XLPPath text="tilebases.xlp"/>
+									<m_BLPPackage text="landmarks/tilebases"/>
+									<m_LibraryName text="TileBase"/>
+									<m_ParamName text="Asset"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="NONE"/>
+									<m_ParamName text="ConnectionType"/>
+								</Element>
+								<Element class="AssetObjects..ArtDefReferenceValue">
+									<m_ElementName text="DON'T CARE"/>
+									<m_RootCollectionName text="ResourceTags"/>
+									<m_ArtDefPath text="Landmarks.artdef"/>
+									<m_CollectionIsLocked>true</m_CollectionIsLocked>
+									<m_TemplateName text="Landmarks"/>
+									<m_ParamName text="ResourceType"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="Pivot Height"/>
+									<m_ParamName text="TerrainFollowMode"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="OPTIONAL"/>
+									<m_ParamName text="Cull Mode"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="RandomizeAnims"/>
+								</Element>
+							</m_Values>
+						</m_CookParams>
+						<m_position>
+							<x>14.379457</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_position>
+						<m_orientation>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_orientation>
+						<m_Name text="newAttachmentPoint_31"/>
+						<m_BoneName text="CSC_ALL_District_Base"/>
+						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
+						<m_scale>1.000000</m_scale>
+					</Element>
+					<Element>
+						<m_CookParams>
+							<m_Values>
+								<Element class="AssetObjects..BLPEntryValue">
+									<m_EntryName text="WON_Great_Zimbabwe_RugsD"/>
+									<m_XLPClass text="TileBase"/>
+									<m_XLPPath text="tilebases.xlp"/>
+									<m_BLPPackage text="landmarks/tilebases"/>
+									<m_LibraryName text="TileBase"/>
+									<m_ParamName text="Asset"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="NONE"/>
+									<m_ParamName text="ConnectionType"/>
+								</Element>
+								<Element class="AssetObjects..ArtDefReferenceValue">
+									<m_ElementName text="DON'T CARE"/>
+									<m_RootCollectionName text="ResourceTags"/>
+									<m_ArtDefPath text="Landmarks.artdef"/>
+									<m_CollectionIsLocked>true</m_CollectionIsLocked>
+									<m_TemplateName text="Landmarks"/>
+									<m_ParamName text="ResourceType"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="Pivot Height"/>
+									<m_ParamName text="TerrainFollowMode"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="OPTIONAL"/>
+									<m_ParamName text="Cull Mode"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="RandomizeAnims"/>
+								</Element>
+							</m_Values>
+						</m_CookParams>
+						<m_position>
+							<x>7.750093</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_position>
+						<m_orientation>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_orientation>
+						<m_Name text="newAttachmentPoint_32"/>
+						<m_BoneName text="CSC_ALL_District_Base"/>
+						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
+						<m_scale>1.000000</m_scale>
+					</Element>
+					<Element>
+						<m_CookParams>
+							<m_Values>
+								<Element class="AssetObjects..BLPEntryValue">
+									<m_EntryName text="WON_Great_Zimbabwe_RugsF"/>
+									<m_XLPClass text="TileBase"/>
+									<m_XLPPath text="tilebases.xlp"/>
+									<m_BLPPackage text="landmarks/tilebases"/>
+									<m_LibraryName text="TileBase"/>
+									<m_ParamName text="Asset"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="NONE"/>
+									<m_ParamName text="ConnectionType"/>
+								</Element>
+								<Element class="AssetObjects..ArtDefReferenceValue">
+									<m_ElementName text="DON'T CARE"/>
+									<m_RootCollectionName text="ResourceTags"/>
+									<m_ArtDefPath text="Landmarks.artdef"/>
+									<m_CollectionIsLocked>true</m_CollectionIsLocked>
+									<m_TemplateName text="Landmarks"/>
+									<m_ParamName text="ResourceType"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="Pivot Height"/>
+									<m_ParamName text="TerrainFollowMode"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="OPTIONAL"/>
+									<m_ParamName text="Cull Mode"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="RandomizeAnims"/>
+								</Element>
+							</m_Values>
+						</m_CookParams>
+						<m_position>
+							<x>-14.843463</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_position>
+						<m_orientation>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>0.000000</z>
+						</m_orientation>
+						<m_Name text="newAttachmentPoint_33"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
 						<m_scale>1.000000</m_scale>

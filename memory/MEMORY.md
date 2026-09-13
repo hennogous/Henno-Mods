@@ -6,6 +6,8 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 ## Active notes
 
+- [Reusable prop library](project_reusable-prop-library.md) — initial 33-asset Blender library delivered; preserve source identities/transforms/materials; source Construction/Pillaged behavior catalogued.
+
 - [Quarter building art plan](../project/docs/art/quarter-building-art-plan.md) — agreed 12 September 2026: retain Henno’s kit, Quarter roof/beam colours, assistant-built chunky prop scenes, storage/crane animation, Industrial Era variants and later cultural additions. [Internal docs index](../project/docs/README.md); studies now live under `project/docs/research/`.
 
 - [Art Dropzone location and catalog intake](project_art-dropzone.md) — current Google Drive art/output root; research catalog scope and validation notes.

@@ -125,19 +125,6 @@ patterns:
       - "Expansion fields and prerequisite rows are explicit."
       - "Gold maintenance belongs to the core Buildings row; transactional Gold modifiers belong in the Gold companion."
 
-  - id: GP.BUILDING.PRESENTATION
-    classification: reusable_invariant
-    source_anchor: "CSC_BAKERS_ICONS.sql, CSC_Buildings.artdef Buildings and BuildingChains collections, CSC_Landmarks.artdef, CSC_StrategicView.artdef, and CSC_Tilebases.xlp"
-    parameters: [district_type, building_type, building_stage, icon_name, icon_atlas_index, tilebase_asset, strategic_view_states]
-    invariant:
-      - "Every visible Quarter building has an ICON_BUILDING_<BUILDING_TYPE> definition in its Quarter atlas and that icon SQL is both Content and loaded by UpdateIcons."
-      - "Quarter icon rows use the catalog's shared district/building/service atlas layout unless the implementation contract records an explicit per-Quarter override."
-      - "Every visible Quarter building is bound in CSC_Buildings.artdef and CSC_Landmarks.artdef to its TileBase asset."
-      - "CSC_Buildings.artdef contains exactly one <QUARTER> BuildingChain: its Districts collection references the Quarter district, and Stage 2/3/4 buildings occupy Buildings (Level 1/2/3) respectively. Each implemented stage has exactly one correctly typed Building reference; later level collections may remain empty until their stage is implemented."
-      - "Completed, pillaged, and under-construction Strategic View states are present and referenced by the building ArtDef."
-      - "The TileBase asset is registered in CSC_Tilebases.xlp."
-      - "Existing user-authored art scaffolding is preserved and validated; implementation work fills missing bindings or icon rows without redesigning the art."
-
   - id: GP.BUILDING.LOCAL_EXCHANGE
     classification: reusable_parameterized
     source_anchor: "CSC_Q_BAKERS.sql: local stage BuildingModifiers"
@@ -285,29 +272,21 @@ patterns:
 
   - id: GP.ART.PROPERTY_BRIDGE
     classification: reusable_parameterized
-    source_anchor: "CSC_Q_BAKERS.sql, CSC_Q_TAILORS.sql, Lua_UI/ArtProperties/CSC_ArtProperties.lua, CSC_GamePropertyRanges.artdef, and CSC_Landmarks.artdef"
+    source_anchor: "CSC_Q_BAKERS.sql, CSC_Q_TAILORS.sql, and Lua_UI/ArtProperties/CSC_ArtProperties.lua"
     parameters:
       - source_property
       - effect_content
       - mirrored_art_property
       - interval_property
-      - property_ranges_artdef
-      - landmarks_artdef
-      - tilebase_xlp
       - building_type
-      - baseline_asset
-      - triggered_asset
-      - selection_rule
       - service_activation_requirement_set
       - refresh_events
     invariant:
-      - "Art integration is a separate approved phase, unless explicitly included in the approved gameplay slice."
-      - "The SQL source property identifies an active adjacent Service relationship and is mirrored by CSC_ArtProperties.lua into a direct city property for GamePropertyRanges."
+      - "The gameplay phase that implements the related Service also owns its SQL source property and CSC_ArtProperties.lua mirror; there is no separate art-integration contract phase."
+      - "The implementation contract ends at the gameplay-visible source and mirrored city properties. Physical models, materials, ASTs, GamePropertyRanges, Landmarks, XLP entries, and Strategic View assets are integrated as one art pass after the final blend arrives."
+      - "The SQL source property identifies an active adjacent Service relationship and is mirrored by CSC_ArtProperties.lua into a direct city property for later GamePropertyRanges selection."
       - "Use CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT> for the source, then append _ART for the art-facing property and _ACTIVE for the GamePropertyRanges interval."
       - "<EFFECT_CONTENT> is the effect-semantic segment immediately before the _ART or _ACTIVE suffix; it must be declared explicitly rather than inferred from a customer building name."
-      - "GamePropertyRanges reads the _ART property and defines the _ACTIVE interval over the binary range 1..100."
-      - "The baseline landmark variant has no selection rule and priority 0; the triggered variant uses [CITYPROP:<INTERVAL_PROPERTY>] and priority 1."
-      - "The declared baseline and triggered TileBase assets must exist in the declared XLP, and the ArtDefs/XLP must be packaged by the ModBuddy project."
       - "Attach the property modifier directly to the Quarter building and give it the exact owner requirement set used by the related Service/effect attach modifiers."
       - "That shared requirement set includes the era unlock, required adjacent improved material supply, and at least one eligible adjacent Service customer."
       - "Do not create a reverse customer-building art attach modifier or a parallel art-only requirement set."

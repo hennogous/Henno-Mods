@@ -116,9 +116,8 @@ class TailorsPhaseContractTests(unittest.TestCase):
         for phase_id, contract in self.implementation["phase_validation"].items():
             with self.subTest(phase=phase_id):
                 self.assertIn("contract", contract["required_suites"])
-                if phase_id != "art_integration":
-                    self.assertIn("output_completeness", contract["required_suites"])
-                    self.assertIn("semantic_rows", contract["required_suites"])
+                self.assertIn("output_completeness", contract["required_suites"])
+                self.assertIn("semantic_rows", contract["required_suites"])
 
     def test_future_red_semantic_sentinel_blocks_premature_handoff(self) -> None:
         failures = ASSERTIONS.validate_phase_assertions(
@@ -169,49 +168,33 @@ class TailorsPhaseContractTests(unittest.TestCase):
         )
         self.assertTrue(any("index 6" in item for item in failures))
 
-    def test_tailors_building_chain_is_stage_accurate(self) -> None:
-        self.assertEqual(
-            ASSERTIONS._validate_tailors_building_chain(
-                PHASES.ROOT,
-                {
-                    "Buildings (Level 1)": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
-                    "Buildings (Level 2)": "BUILDING_CSC_TAILORS_TAILOR",
-                },
-                empty_levels=("Buildings (Level 3)",),
-            ),
-            [],
-        )
-        failures = ASSERTIONS._validate_tailors_building_chain(
-            PHASES.ROOT,
-            {"Buildings (Level 2)": "BUILDING_CSC_TAILORS_FASHION_HOUSE"},
-        )
-        self.assertTrue(any("Buildings (Level 2)" in item for item in failures))
-
-    def test_art_contract_reserves_later_bridges_without_implementing_them(self) -> None:
+    def test_visual_state_bridge_belongs_to_its_gameplay_phase(self) -> None:
         phase = next(
             phase
             for phase in self.implementation["phases"]
-            if phase["id"] == "art_integration"
+            if phase["id"] == "materials_and_stage2"
         )
-        binding = phase["requirements"][0]["implementation_binding"]
-        self.assertEqual(
-            binding["implemented_bridge_ids"],
-            ["D.ART.STAGE2.LIGHTHOUSE", "D.ART.STAGE3.CUSTOMERS"],
-        )
-        self.assertEqual(
-            binding["deferred_bridge_ids"],
-            ["D.ART.STAGE4.CUSTOMERS"],
-        )
-        stage2 = binding["bridges"][0]
-        self.assertEqual(stage2["effect_content"], "PRODUCTION")
-        self.assertEqual(
-            stage2["mirrored_art_property"],
-            "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART",
-        )
-        self.assertEqual(
-            stage2["interval_property"],
-            "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE",
-        )
+        dockmaster = next(item for item in phase["requirements"] if item["id"] == "I.DOCKMASTER")
+        self.assertIn("art.properties.D.ART.STAGE2.LIGHTHOUSE", dockmaster["design_refs"])
+        self.assertIn("GP.ART.PROPERTY_BRIDGE", dockmaster["gameplay_patterns"])
+        self.assertIn("art_property_lua", dockmaster["outputs"])
+
+    def test_physical_art_is_not_an_implementation_contract_output(self) -> None:
+        forbidden = {
+            "buildings_artdef",
+            "landmarks_artdef",
+            "strategic_view_artdef",
+            "property_ranges_artdef",
+            "tilebase_xlp",
+        }
+        self.assertTrue(forbidden.isdisjoint(self.implementation["planned_outputs"]))
+        declared = {
+            output
+            for phase in self.implementation["phases"]
+            for requirement in phase["requirements"]
+            for output in requirement["outputs"]
+        }
+        self.assertTrue(forbidden.isdisjoint(declared))
 
     def test_blocked_phase_cannot_be_validated_as_implementation(self) -> None:
         result = PHASES.validate_phase(

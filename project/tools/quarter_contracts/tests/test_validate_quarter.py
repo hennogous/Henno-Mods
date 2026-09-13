@@ -123,14 +123,7 @@ class TailorsContractTests(unittest.TestCase):
         implementation = VALIDATOR.load_yaml(
             VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
         )
-        content_only = {
-            "icons",
-            "buildings_artdef",
-            "landmarks_artdef",
-            "strategic_view_artdef",
-            "property_ranges_artdef",
-            "tilebase_xlp",
-        }
+        content_only = {"icons"}
         source_only = {
             key
             for key in implementation["planned_outputs"]

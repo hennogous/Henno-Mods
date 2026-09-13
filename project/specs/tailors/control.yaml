@@ -56,12 +56,11 @@ contract_approvals:
 
 phase_gates:
   foundation: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: 1748f83b91ccfb9bcfb3ad4169fb78f0049fa0aea73d5a9e9eac2d4d3dee408d, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
-  materials_and_stage2: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: b457a8104c49232871f26145dc0e1b89b297adc076d7d2e7289bf37ccf6bd1e8, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
+  materials_and_stage2: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: fa1db2c48baef16595b30497625875ae1410e95c489bd3d4c8ceba8219d6b6e2, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
   stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-09-12T20:17:35.7568139+02:00', design_sha256: d2da83dc38ee9d64442cdc7ac9c45cd3c9c4792cfcbc3efc27a14ce835e1429a, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
   stage4: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
   compatibility: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
   localization_and_integration: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
-  art_integration: {status: ready_for_review, approved_by: user, approved_at: '2026-09-12T20:17:35.7568139+02:00', design_sha256: ad48110a26b0cd5b5a7200463a9d80536cfd31d7bbf44df7b6508718e0f508bb, ready_at: '2026-08-27T20:10:22.6633379+02:00', accepted_by: null, accepted_at: null}
 
 exceptions: []
 

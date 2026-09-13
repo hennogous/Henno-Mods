@@ -446,9 +446,7 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
                 f"{phase_id}: phase validation omits requirement outputs "
                 + ", ".join(sorted(missing_outputs))
             )
-        minimum_suites = {"contract"}
-        if phase_id != "art_integration":
-            minimum_suites.update({"output_completeness", "semantic_rows"})
+        minimum_suites = {"contract", "output_completeness", "semantic_rows"}
         if required_outputs & set(style_profiles):
             minimum_suites.update({"sql_style", "sql_statement_boundaries"})
         if "localization_generated" in required_outputs:

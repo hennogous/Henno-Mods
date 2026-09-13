@@ -109,8 +109,7 @@
                 "localization_patterns",
                 "modbuddy_wiring",
                 "conditional_load_boundaries",
-                "lua_contract",
-                "art_contract"
+                "lua_contract"
               ]
             }
           }

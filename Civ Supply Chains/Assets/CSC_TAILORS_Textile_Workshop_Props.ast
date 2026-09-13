@@ -12,112 +12,7 @@
 				<m_Timelines/>
 			</m_timelines>
 			<m_attachmentPoints>
-				<m_Points>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_ALL_Workbench_M"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="csc_tilebases.xlp"/>
-									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="OPTIONAL"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>7.493476</x>
-							<y>-23.561285</y>
-							<z>0.000000</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_1"/>
-						<m_BoneName text="CSC_TAILORS_Textile_Workshop"/>
-						<m_ModelInstanceName text="CSC_TAILORS_Textile_Workshop"/>
-						<m_scale>1.000000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_TAILORS_Textile_Workshop_Props"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="csc_tilebases.xlp"/>
-									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="OPTIONAL"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_2"/>
-						<m_BoneName text="CSC_TAILORS_Textile_Workshop"/>
-						<m_ModelInstanceName text="CSC_TAILORS_Textile_Workshop"/>
-						<m_scale>1.000000</m_scale>
-					</Element>
-				</m_Points>
+				<m_Points/>
 			</m_attachmentPoints>
 			<m_stateSet/>
 		</m_behaviorDataSets>
@@ -128,224 +23,19 @@
 	<m_GeometrySet>
 		<m_ModelInstances>
 			<Element>
-				<m_Name text="CSC_TAILORS_Textile_Workshop"/>
-				<m_GeoName text="CSC_TAILORS_Textile_Workshop"/>
+				<m_Name text="CSC_TAILORS_Textile_Workshop_Props"/>
+				<m_GeoName text="CSC_TAILORS_Textile_Workshop_Props"/>
 				<m_GroupStates>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_E"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Base_Tailors"/>
-						<m_MeshName text="CSC_TAILORS_Textile_Workshop_Bldg"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_E"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Base_Tailors"/>
-						<m_MeshName text="CSC_TAILORS_Textile_Workshop_Bldg"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_E"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultBurnMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Base_Tailors"/>
-						<m_MeshName text="CSC_TAILORS_Textile_Workshop_Bldg"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_E"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Base_Tailors"/>
-						<m_MeshName text="CSC_TAILORS_Textile_Workshop_Bldg"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_E"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Base_Tailors"/>
-						<m_MeshName text="CSC_TAILORS_Textile_Workshop_Bldg"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
 									<m_ObjectName text="CSC_ALL_Props_01"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -550,7 +240,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -755,7 +445,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -960,7 +650,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -1165,7 +855,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -1370,7 +1060,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -1575,7 +1265,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -1780,7 +1470,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -1985,7 +1675,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -2190,7 +1880,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -2395,7 +2085,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -2600,7 +2290,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -2805,7 +2495,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -3010,7 +2700,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -3215,7 +2905,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -3420,7 +3110,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -3625,7 +3315,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -3830,7 +3520,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -4035,7 +3725,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -4240,7 +3930,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -4445,7 +4135,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -4650,7 +4340,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -4855,7 +4545,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -5060,7 +4750,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -5265,7 +4955,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -5470,7 +5160,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -5664,1604 +5354,6 @@
 						</m_Values>
 						<m_GroupName text="CSC_Props_Shared_01_v2"/>
 						<m_MeshName text="Prop_Shelter_Crate_C"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-				</m_GroupStates>
-			</Element>
-			<Element>
-				<m_Name text="CSC_Level_1_S_CON+PIL"/>
-				<m_GeoName text="CSC_Level_1_S_CON+PIL"/>
-				<m_GroupStates>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_NE"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_MeshName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_NE"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_MeshName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_NE"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultBurnMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_MeshName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_NE"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_MeshName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_TAILORS_NE"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_MeshName text="CSC_Level_1_S_CON+PIL_Bldg"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Pillage_Construction_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Pillage_Construction_01"/>
-						<m_MeshName text="Scaffolding"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Pillage_Construction_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Pillage_Construction_01"/>
-						<m_MeshName text="Scaffolding"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Pillage_Construction_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultBurnMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Pillage_Construction_01"/>
-						<m_MeshName text="Scaffolding"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Pillage_Construction_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Pillage_Construction_01"/>
-						<m_MeshName text="Scaffolding"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Pillage_Construction_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="FOW/DefaultMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="FOWMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text=""/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="BurnMaterial"/>
-								</Element>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultSnowMaterial"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="SnowMaterial"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="EmissiveEnabled"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="FOWVisibleOnly"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Pillage_Construction_01"/>
-						<m_MeshName text="Scaffolding"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-				</m_GroupStates>
-			</Element>
-			<Element>
-				<m_Name text="CSC_TAILORS_Textile_Workshop_PIL_Decals"/>
-				<m_GeoName text="CSC_TAILORS_Textile_Workshop_PIL_Decals"/>
-				<m_GroupStates>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Sheltered_Storage"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Sheltered_Storage"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Sheltered_Storage"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Sheltered_Storage"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Sheltered_Storage"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Rear_Storage"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Rear_Storage"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Rear_Storage"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Rear_Storage"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Rear_Storage"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Loom"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Loom"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Loom"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Loom"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Loom"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Finishing"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Finishing"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Finishing"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Finishing"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Finishing"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Vats"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Vats"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Vats"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Vats"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Vats"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Indigo"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Indigo"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Indigo"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Indigo"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Dye_Indigo"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Door_Storage"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Door_Storage"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Door_Storage"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Door_Storage"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Door_Storage"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_04"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_04"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_04"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_04"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_04"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_03"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_03"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_03"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_03"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_03"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_02"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_02"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_02"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_02"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_02"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_01"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_01"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_01"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_01"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Ruin_Debris_Decal"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Ruin_Debris_Decal"/>
-						<m_MeshName text="PIL_Base_01"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-				</m_GroupStates>
-			</Element>
-			<Element>
-				<m_Name text="CSC_Level_1_Decals"/>
-				<m_GeoName text="CSC_Level_1_Decals"/>
-				<m_GroupStates>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_A"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_A"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_A"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_A"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_A"/>
-						<m_StateName text="Unbuilt"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_B"/>
-						<m_StateName text="Worked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_B"/>
-						<m_StateName text="Unworked"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_B"/>
-						<m_StateName text="Pillaged"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_B"/>
-						<m_StateName text="Construction"/>
-					</Element>
-					<Element>
-						<m_Values>
-							<m_Values>
-								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Decal_Parts_Ancient_01"/>
-									<m_eObjectType>MATERIAL</m_eObjectType>
-									<m_ParamName text="Material"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="Visible"/>
-								</Element>
-							</m_Values>
-						</m_Values>
-						<m_GroupName text="Decal_Parts_Ancient_01"/>
-						<m_MeshName text="Decal_ANC_Organic_Patch_B"/>
 						<m_StateName text="Unbuilt"/>
 					</Element>
 				</m_GroupStates>
@@ -7370,7 +5462,7 @@
 	<m_Materials/>
 	<m_ClassName text="TileBase"/>
 	<m_DataFiles/>
-	<m_Name text="CSC_TAILORS_Textile_Workshop"/>
+	<m_Name text="CSC_TAILORS_Textile_Workshop_Props"/>
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..AssetInstance>

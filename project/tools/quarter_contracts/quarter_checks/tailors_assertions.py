@@ -12,7 +12,6 @@ import hashlib
 import json
 import re
 import sqlite3
-import xml.etree.ElementTree as ET
 from typing import Any
 
 
@@ -50,11 +49,10 @@ REQUIREMENTS_BY_PHASE = {
         "I.LOCALIZATION_COMPLETE",
         "I.MODBUDDY_WIRING",
     },
-    "art_integration": {"I.ART_PROPERTY_BRIDGE"},
 }
 
 
-IMPLEMENTED_ASSERTION_PHASES = {"foundation", "materials_and_stage2", "stage3", "art_integration"}
+IMPLEMENTED_ASSERTION_PHASES = {"foundation", "materials_and_stage2", "stage3"}
 
 
 def _runtime_database() -> Path:
@@ -149,104 +147,6 @@ def _validate_tailors_icon_bindings(
         )
         if not re.search(exact_row, icon_source):
             failures.append(f"Tailors icon binding missing: {icon} index {index}")
-    return failures
-
-
-def _validate_tailors_building_chain(
-    root: Path,
-    expected_levels: dict[str, str],
-    *,
-    empty_levels: tuple[str, ...] = (),
-) -> list[str]:
-    failures: list[str] = []
-    artdef_path = root / "Civ Supply Chains/ArtDefs/CSC_Buildings.artdef"
-    try:
-        document = ET.parse(artdef_path).getroot()
-    except ET.ParseError as failure:
-        return [f"CSC_Buildings.artdef is not valid XML: {failure}"]
-
-    root_collections = document.findall("./m_RootCollections/Element")
-    building_chains = next(
-        (
-            element
-            for element in root_collections
-            if element.find("./m_CollectionName") is not None
-            and element.find("./m_CollectionName").get("text") == "BuildingChains"
-        ),
-        None,
-    )
-    if building_chains is None:
-        return ["CSC_Buildings.artdef is missing its BuildingChains collection"]
-
-    chains = [
-        element
-        for element in building_chains.findall("./Element")
-        if element.find("./m_Name") is not None
-        and element.find("./m_Name").get("text") == "CSC_TAILORS_BuildingChain"
-    ]
-    if len(chains) != 1:
-        return [
-            "CSC_Buildings.artdef must contain exactly one "
-            f"CSC_TAILORS_BuildingChain; found {len(chains)}"
-        ]
-
-    collections = {
-        element.find("./m_CollectionName").get("text"): element
-        for element in chains[0].findall("./m_ChildCollections/Element")
-        if element.find("./m_CollectionName") is not None
-    }
-    required_collections = {
-        "Districts",
-        "Buildings (Level 1)",
-        "Buildings (Level 2)",
-        "Buildings (Level 3)",
-    }
-    missing = sorted(required_collections - set(collections))
-    if missing:
-        failures.append("Tailors BuildingChain missing collections: " + ", ".join(missing))
-
-    expected = {"Districts": "DISTRICT_CSC_TAILORS_QUARTER", **expected_levels}
-    for collection_name, expected_type in expected.items():
-        collection = collections.get(collection_name)
-        if collection is None:
-            continue
-        references = collection.findall(
-            "./Element/m_Fields/m_Values/Element[@class='AssetObjects..ArtDefReferenceValue']"
-        )
-        actual_types = [
-            reference.find("./m_ElementName").get("text")
-            for reference in references
-            if reference.find("./m_ElementName") is not None
-        ]
-        if actual_types != [expected_type]:
-            failures.append(
-                f"Tailors BuildingChain {collection_name}: expected exactly "
-                f"{expected_type}, found {actual_types!r}"
-            )
-            continue
-        reference = references[0]
-        is_district = collection_name == "Districts"
-        expected_fields = {
-            "m_RootCollectionName": "District" if is_district else "Building",
-            "m_ArtDefPath": "CSC_Districts.artdef" if is_district else "CSC_Buildings.artdef",
-            "m_TemplateName": "Districts" if is_district else "Buildings",
-            "m_ParamName": "District" if is_district else "Building",
-        }
-        for field, expected_value in expected_fields.items():
-            node = reference.find(f"./{field}")
-            actual_value = None if node is None else node.get("text")
-            if actual_value != expected_value:
-                failures.append(
-                    f"Tailors BuildingChain {collection_name} {field}: expected "
-                    f"{expected_value}, found {actual_value}"
-                )
-
-    for collection_name in empty_levels:
-        collection = collections.get(collection_name)
-        if collection is not None and collection.findall("./Element"):
-            failures.append(
-                f"Tailors BuildingChain {collection_name} must remain empty until its stage"
-            )
     return failures
 
 
@@ -1015,12 +915,6 @@ def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
             ),
         )
     )
-    failures.extend(
-        _validate_tailors_building_chain(
-            root,
-            {"Buildings (Level 1)": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP"},
-        )
-    )
     return failures
 
 
@@ -1228,16 +1122,6 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
             ),
         )
     )
-    failures.extend(
-        _validate_tailors_building_chain(
-            root,
-            {
-                "Buildings (Level 1)": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
-                "Buildings (Level 2)": "BUILDING_CSC_TAILORS_TAILOR",
-            },
-            empty_levels=("Buildings (Level 3)",),
-        )
-    )
     art_lua = (root / "Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua").read_text(encoding="utf-8")
     _expect(
         failures,
@@ -1261,25 +1145,13 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     )
     if 'Source = "CSC_TAILORS_STAGE_3_CUSTOMERS"' not in art_lua or 'Art = "CSC_TAILORS_STAGE_3_CUSTOMERS_ART"' not in art_lua:
         failures.append("Tailor Stage 3 art Lua mirror mapping is missing")
-    for relative, tokens in (
-        ("Civ Supply Chains/ArtDefs/CSC_Buildings.artdef", ("BUILDING_CSC_TAILORS_TAILOR", "CSC_TAILORS_Tailor")),
-        ("Civ Supply Chains/ArtDefs/CSC_Landmarks.artdef", ("CSC_TAILORS_Tailor_2", "[CITYPROP:CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE]")),
-        ("Civ Supply Chains/ArtDefs/CSC_StrategicView.artdef", ("CSC_TAILORS_Tailor", "CSC_TAILORS_Tailor_Pillaged", "CSC_TAILORS_Tailor_UnderConstruction")),
-        ("Civ Supply Chains/ArtDefs/CSC_GamePropertyRanges.artdef", ("CSC_TAILORS_STAGE_3_CUSTOMERS_ART", "CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE")),
-        ("Civ Supply Chains/XLPs/CSC_Tilebases.xlp", ("CSC_TAILORS_Tailor", "CSC_TAILORS_Tailor_2")),
-    ):
-        text = (root / relative).read_text(encoding="utf-8")
-        for token in tokens:
-            if token not in text:
-                failures.append(f"{relative}: Stage 3 art binding missing {token}")
     return failures
 
 
-def _art_integration_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
+def _visual_state_bridge_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     failures: list[str] = []
     source_property = "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION"
     art_property = f"{source_property}_ART"
-    interval_property = f"{source_property}_ACTIVE"
     naming_match = re.fullmatch(
         r"CSC_TAILORS_STAGE_(?P<stage>[1-4])_EFFECT_(?P<effect>[A-Z0-9_]+)",
         source_property,
@@ -1372,43 +1244,6 @@ def _art_integration_assertions(root: Path, connection: sqlite3.Connection) -> l
         or f'Art = "{art_property}"' not in art_lua
     ):
         failures.append("Tailors Stage 2 art Lua mirror mapping is missing")
-    property_ranges = (
-        root / "Civ Supply Chains/ArtDefs/CSC_GamePropertyRanges.artdef"
-    ).read_text(encoding="utf-8")
-    if not re.search(
-        re.escape(art_property) + r'[\s\S]*?' + re.escape(interval_property),
-        property_ranges,
-    ):
-        failures.append("Tailors Stage 2 GamePropertyRanges art/interval bridge is missing")
-    landmarks = (root / "Civ Supply Chains/ArtDefs/CSC_Landmarks.artdef").read_text(
-        encoding="utf-8"
-    )
-    if not re.search(
-        r'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP[\s\S]*?'
-        r'CSC_TAILORS_Textile_Workshop_2[\s\S]*?'
-        + re.escape(f"[CITYPROP:{interval_property}]"),
-        landmarks,
-    ):
-        failures.append("Tailors Stage 2 Textile Workshop alternate landmark is missing")
-    tilebase_xlp = (root / "Civ Supply Chains/XLPs/CSC_Tilebases.xlp").read_text(
-        encoding="utf-8"
-    )
-    for asset in (
-        "CSC_TAILORS_Textile_Workshop",
-        "CSC_TAILORS_Textile_Workshop_2",
-    ):
-        if asset not in tilebase_xlp:
-            failures.append(f"Tailors Stage 2 TileBase asset missing from XLP: {asset}")
-    project_source = (root / "Civ Supply Chains/Civ Supply Chains.civ6proj").read_text(
-        encoding="utf-8"
-    )
-    for content in (
-        "ArtDefs\\CSC_GamePropertyRanges.artdef",
-        "ArtDefs\\CSC_Landmarks.artdef",
-        "XLPs\\CSC_Tilebases.xlp",
-    ):
-        if content not in project_source:
-            failures.append(f"Tailors Stage 2 art dependency is not packaged: {content}")
     deferred_properties = {
         "CSC_TAILORS_STAGE_4_CUSTOMERS",
         "CSC_TAILORS_STAGE_4_CUSTOMERS_ART",
@@ -1463,11 +1298,9 @@ def validate_phase_assertions(
         failures.extend(_foundation_assertions(root, connection))
         if phase_id in {"materials_and_stage2", "stage3"}:
             failures.extend(_stage2_assertions(root, connection))
-            failures.extend(_art_integration_assertions(root, connection))
+            failures.extend(_visual_state_bridge_assertions(root, connection))
         if phase_id == "stage3":
             failures.extend(_stage3_assertions(root, connection))
-        if phase_id == "art_integration":
-            failures.extend(_art_integration_assertions(root, connection))
     finally:
         connection.close()
     return failures
