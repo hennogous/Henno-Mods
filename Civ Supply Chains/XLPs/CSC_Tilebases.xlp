@@ -286,14 +286,6 @@
 			<m_ObjectName text="CSC_TAILORS_Storage_L"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_TAILORS_Textile_Workshop"/>
-			<m_ObjectName text="CSC_TAILORS_Textile_Workshop"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_TAILORS_Textile_Workshop_2"/>
-			<m_ObjectName text="CSC_TAILORS_Textile_Workshop_2"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_TAILORS_Tailor"/>
 			<m_ObjectName text="CSC_TAILORS_Tailor"/>
 		</Element>
