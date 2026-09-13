@@ -52,7 +52,7 @@ Run through this before every export. The pipeline script auto-fixes some of the
 - [ ] Vertex count within budget for target tier
 - [ ] Custom normals set (hard edges at wall/roof boundaries)
 - [ ] Material name matches intended mesh group name in .geo
-- [ ] File saved (the addon exports the saved version)
+- [ ] The single visible armature object is named with the intended export basename
 
 ### CSC Blender File Structure
 
@@ -244,7 +244,7 @@ Install `csc_asset_editor_export.py` as a Blender addon for one-click export fro
 3. File > Export > Asset Editor (.fgx / .geo)
 
 Behavior:
-- Saves the file first (exports the saved version)
+- Names the exported `.cn6`, `.fgx`, and `.geo` files after the single visible armature object
 - Runs the pipeline script in a background thread
 - Shows success/failure popup in Blender
 - Hold **Alt** while clicking to show the options dialog (Add to .ast checkbox)

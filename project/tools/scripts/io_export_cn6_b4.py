@@ -11,7 +11,7 @@ Changes from 3.x version:
 bl_info = {
 	"name": "Export CivNexus6 (.cn6)",
 	"author": "Deliverator, Sukritact (Blender 4+ port: Bill/CSC)",
-	"version": (2, 3),
+	"version": (2, 4),
 	"blender": (4, 0, 0),
 	"location": "File > Export > CivNexus6 (.cn6)",
 	"description": "Export CivNexus6 (.cn6), with optional CSC FGX/GEO deployment",
@@ -869,12 +869,8 @@ class export_csc_fgx_geo(bpy.types.Operator):
 			)
 
 	def execute(self, context):
-		if not bpy.data.filepath:
-			self.report({'ERROR'}, "Save the .blend first so the exporter can infer the output name.")
-			return {'CANCELLED'}
-
-		base_name = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
 		try:
+			base_name = csc_find_export_armature().name
 			fixes, mesh_summaries, vertex_count, triangle_count = csc_export_fgx_geo(
 				base_name,
 				bpy.path.abspath(self.output_dir),
