@@ -341,6 +341,10 @@
 			<m_EntryID text="CSC_TAILORS_Tailor_2"/>
 			<m_ObjectName text="CSC_TAILORS_Tailor_2"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Textile_Workshop"/>
+			<m_ObjectName text="CSC_TAILORS_Textile_Workshop"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>

@@ -3,22 +3,22 @@
 	<m_CookParams>
 		<m_Values>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BLACKSMITH_Workshop_B"/>
+				<m_ObjectName text="CSC_Props_Shared_01_B"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="BaseColor"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BLACKSMITH_Workshop_N"/>
+				<m_ObjectName text="CSC_Props_Shared_01_N"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Normal"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BLACKSMITH_Workshop_AO"/>
+				<m_ObjectName text="CSC_Props_Shared_01_AO"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="AO"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BLACKSMITH_Workshop_M"/>
+				<m_ObjectName text="CSC_Props_Shared_01_M"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Metalness"/>
 			</Element>
@@ -28,7 +28,7 @@
 				<m_ParamName text="Opacity"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BLACKSMITH_Workshop_G"/>
+				<m_ObjectName text="CSC_Props_Shared_01_G"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Gloss"/>
 			</Element>
@@ -38,7 +38,7 @@
 				<m_ParamName text="LightMap"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_BLACKSMITH_Workshop_E"/>
+				<m_ObjectName text="CSC_Props_Shared_01_E"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Emissive"/>
 			</Element>
@@ -70,7 +70,7 @@
 	</m_Version>
 	<m_ClassName text="Landmark"/>
 	<m_DataFiles/>
-	<m_Name text="CSC_BLACKSMITH"/>
+	<m_Name text="CSC_ALL_Props_01"/>
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..MaterialInstance>
