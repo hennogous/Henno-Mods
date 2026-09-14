@@ -15,6 +15,32 @@ checking geometry, topology, UVs, material assignments, identities, transforms,
 normal directions and external texture resolution. No Asset Editor or game check
 was performed.
 
+## Authored additions
+
+The Textile Workshop reuse revision retains 7 authored CSC props, bringing
+the library to 40 assets at that point. Henno classified the nearby, building-specific loom and
+dye vats as fixed building geometry; their four draft standalone variants were
+withdrawn before Windows registration. These entries use `origin=authored_blender`; their Blender
+sources are verified, while Windows registration is explicitly pending. They keep
+three UV channels, static Bone binding, local pivots, CSC painted maps and an
+isolated-bake shared AO atlas. The original 33 blends are unchanged.
+
+See [contact sheets and authored intake](prop-library-contact-sheets.md) for refresh
+commands and the additive import tool. FGX-source details below describe converted
+native entries; authored entries have their own catalogue provenance and state plan.
+
+The uniform-scale correction adds `CSC_Attached_Workbench_Long_Narrow` and
+`CSC_Attached_Seating_Bench`, bringing the current library to **42 assets**. These
+are deliberate local-geometry variants of the existing CSC workbench, with
+identity source transforms and a single static Bone binding. They retain its
+existing Civ material and UV1/UV2; a neutral unused UV3 supplies the static export
+format. Both are reused across the normal and sailmaking workshops.
+
+See [scene export](blender-scene-export.md) for the current composition contract:
+attachment scale must already be uniform in Blender. The exporter rejects stretched
+placements and does not adjust proportions or positions automatically. Different
+proportions require an explicit reusable asset identity.
+
 ## Current agreed contract
 
 - Around 300 unique custom CSC assets is a flexible design goal. Repeated placements

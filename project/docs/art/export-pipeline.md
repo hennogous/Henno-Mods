@@ -1,5 +1,7 @@
 # Export Pipeline Reference
 
+> For composed building scenes using reusable props, use the [scene decoder and exporter](blender-scene-export.md). The pipeline below is legacy documentation and does not preserve that scene/attachment contract.
+
 > **Documentation audit — 2026-09-12: Needs refresh.** The actual PowerShell script still hard-codes .openclaw/workspace/csc paths, defaults UVCount to 2, and recognizes separate _CON/_PIL suffixes. Merely correcting document paths would not fix the tool. Preserve three UV channels for the current kit; reconcile script/state handling before production use. Static export examples do not validate crane animation.
 > Classification: 3D export. See the [full audit](../DOCUMENT-AUDIT.md).
 
@@ -309,7 +311,7 @@ Options:
 
 ### 4. XLP Registration
 
-Each geometry needs an XLP entry:
+Each separately registered asset needs an XLP entry. Geometry-only model instances inside an asset do not get their own entry:
 ```xml
 <Element>
     <m_EntryID text="CSC_Storage_L"/>

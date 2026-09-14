@@ -1,0 +1,509 @@
+#!/usr/bin/env python3
+"""Decode CSC Blender scenes and stage Civ VI assets. Standard Python, no third-party deps.
+
+Commands: decode JOB --blender EXE; build JOB; convert JOB --converter EXE --texconv EXE.
+Build always writes a review report; exits 2 if any placement cannot be represented.
+Source blends are never edited. Only the explicit install command changes the live project.
+"""
+import argparse
+import copy
+import hashlib
+import json
+import math
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+STATES = ('Worked', 'Unworked', 'Pillaged', 'Construction', 'Unbuilt')
+SLOTS = {'B':'BaseColor','N':'Normal','AO':'AO','G':'Gloss','M':'Metalness','E':'Emissive','O':'Opacity','T':'TintMask'}
+POINTS = 'm_BehaviorData/m_behaviorDataSets/m_attachmentPoints/m_Points'
+MODELS = 'm_GeometrySet/m_ModelInstances'
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def read_xml(path):
+    # SDK XML uses a literal unbound AssetObjects: prefix in some versions.
+    return ET.fromstring(re.sub(r'(<\/?)([\w.]+):', r'\1\2.', Path(path).read_text(encoding='utf-8-sig')))
+
+
+def txt(node, path, default=''):
+    n = node.find(path)
+    return n.get('text', default) if n is not None else default
+
+
+def set_text(node, path, value):
+    n = node.find(path)
+    if n is None:
+        raise ValueError(f'Missing template field {path}')
+    n.set('text', str(value))
+
+
+def elem(parent, name, value=None, **attrs):
+    e = ET.SubElement(parent, name, attrs)
+    if value is not None:
+        e.text = str(value)
+    return e
+
+
+def write_xml(path, root):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    ET.indent(root, space='  ')
+    ET.ElementTree(root).write(path, encoding='utf-8', xml_declaration=True)
+
+
+def identifier(value):
+    if not re.fullmatch(r'[A-Za-z0-9_+.-]+',value) or value in ('.','..'):
+        raise ValueError(f'Unsafe asset identifier: {value!r}')
+    return value
+
+
+def value(parent, name, value, kind='Object'):
+    e = elem(parent, 'Element', **{'class':f'AssetObjects..{kind}Value'})
+    if kind == 'Object':
+        elem(e, 'm_ObjectName', text=value)
+        elem(e, 'm_eObjectType', 'MATERIAL')
+    elif kind == 'Bool':
+        elem(e, 'm_bValue', str(value).lower())
+    else:
+        elem(e, 'm_Value', text=value)
+    elem(e, 'm_ParamName', text=name)
+    return e
+
+
+def groups(model):
+    for mesh in model['meshes']:
+        for i, mat in enumerate(mesh['materials']):
+            count = sum(t[3] == i for t in mesh['triangles'])
+            if count:
+                yield mesh, i, mat, count
+
+
+def model_instance(model, material_ids, visible, state_template=None):
+    e = ET.Element('Element')
+    elem(e,'m_Name',text=model['asset_id']); elem(e,'m_GeoName',text=model['asset_id'])
+    gs = elem(e,'m_GroupStates')
+    for mesh, _, mat, _ in groups(model):
+        for state in STATES:
+            # Preserve shader/FOW/burn settings from a chosen original mesh where supplied.
+            template = state_template.get(state) if state_template else None
+            if template is not None:
+                row = copy.deepcopy(template)
+                gs.append(row)
+                vals = row.find('m_Values/m_Values')
+                for p in vals:
+                    param = txt(p,'m_ParamName')
+                    if param == 'Material': set_text(p,'m_ObjectName',material_ids[mat['name']])
+                    if param == 'Visible': p.find('m_bValue').text = str(state in visible).lower()
+            else:
+                row = elem(gs,'Element'); vals = elem(elem(row,'m_Values'),'m_Values')
+                value(vals,'Material',material_ids[mat['name']])
+                value(vals,'Visible',state in visible,'Bool')
+                value(vals,'FOWMaterial','FOW/DefaultMaterial')
+                value(vals,'BurnMaterial','')
+                value(vals,'SnowMaterial','DefaultSnowMaterial')
+                value(vals,'EmissiveEnabled',state == 'Worked','Bool')
+                value(vals,'FOWVisibleOnly',False,'Bool')
+                for tag in ('m_GroupName','m_MeshName','m_StateName'): elem(row,tag,text='')
+            set_text(row,'m_GroupName',mat['name']); set_text(row,'m_MeshName',mesh['name']); set_text(row,'m_StateName',state)
+    return e
+
+
+def write_cn6(path, model):
+    # Static skeleton: identity root and identity Bone. Model coordinates are already
+    # in their asset frame; placement roots never enter the vertex stream.
+    ident = '1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1'
+    lines = ['// CivNexus6 CN6 - CSC scene decoder','skeleton',
+             f'0 "{model["asset_id"]}" -1 0 0 0 0 0 0 1 {ident}',
+             f'1 "Bone" 0 0 0 0 0 0 0 1 {ident}', f'meshes:{len(model["meshes"])}']
+    for mesh in model['meshes']:
+        if any('"' in x or '\n' in x for x in [mesh['name']] + [m['name'] for m in mesh['materials']]):
+            raise ValueError('CN6 names cannot contain quotes or newlines')
+        lines += [f'mesh:"{mesh["name"]}"', 'materials'] + [f'"{m["name"]}"' for m in mesh['materials']] + ['vertices']
+        for v in mesh['vertices']:
+            if len(v)!=18 or not all(math.isfinite(n) for n in v): raise ValueError('Invalid CN6 vertex')
+            lines.append(' '.join(f'{n:.8f}' for n in v) + ' 1 1 1 1 1 1 1 1 255 0 0 0 0 0 0 0')
+        lines += ['triangles'] + [' '.join(map(str,t)) for t in mesh['triangles']]
+    lines += ['end']
+    path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_text('\n'.join(lines)+'\n')
+
+
+def geometry(model, template):
+    r = copy.deepcopy(template)
+    r.tag = 'AssetObjects..GeometryInstance'
+    meshes = r.find('m_Meshes'); meshes.clear()
+    for mesh in model['meshes']:
+        e=elem(meshes,'Element'); elem(e,'m_Name',text=mesh['name']); gr=elem(e,'m_Groups')
+        first=0
+        for i,m in enumerate(mesh['materials']):
+            count=sum(t[3]==i for t in mesh['triangles'])
+            g=elem(gr,'Element'); elem(g,'m_Name',text=m['name']); elem(g,'m_nFirstPrim',first); elem(g,'m_nPrims',count)
+            first+=count
+        elem(e,'m_nBoundBoneCount',1); elem(e,'m_nPrimitiveCount',len(mesh['triangles'])); elem(e,'m_nVertexCount',len(mesh['vertices']))
+    b=r.find('m_Bones'); b.clear(); elem(b,'Element',text=model['asset_id']); elem(b,'Element',text='Bone')
+    for tag in ('m_ModelName','m_Name'): set_text(r,tag,model['asset_id'])
+    for tag in ('m_SourceFilePath','m_SourceObjectName'): set_text(r,tag,'')
+    cl='DecalGeometry' if model['kind']=='decal' else 'LandmarkModel'
+    set_text(r,'m_ClassName',cl); r.find('m_Tags').clear(); elem(r.find('m_Tags'),'Element',text=cl)
+    df=r.find('m_DataFiles'); df.clear(); e=elem(df,'Element'); elem(e,'m_ID',text='GR2'); elem(e,'m_RelativePath',text=model['asset_id']+'.fgx')
+    return r
+
+
+def validate_support(attachments):
+    index={a['instance_id']:a for a in attachments}
+    if len(index)!=len(attachments): raise ValueError('Duplicate attachment instance_id')
+    for ident,a in index.items():
+        seen={ident}; support=a['support']
+        while support not in ('ground','building'):
+            if support in seen: raise ValueError(f'Support cycle at {ident}')
+            if support not in index: raise ValueError(f'Missing support {support}')
+            seen.add(support); support=index[support]['support']
+
+
+def attachment_transform(a, policies):
+    problems=[]; scale=a['scale']; rot=a['rotation_degrees']
+    if a.get('shear_error',0)>1e-5: problems.append('world transform contains shear')
+    if min(scale)<=0: problems.append('mirrored/singular placement')
+    nonuniform=max(scale)-min(scale)>max(1,max(scale))*1e-5
+    if nonuniform:
+        problems.append('nonuniform scale; fix the Blender placement or publish a distinct proportion variant (AE has scalar m_scale)')
+    if max(abs(rot[0]),abs(rot[1]))>1e-4:
+        problems.append('X/Y rotation requires a verified coordinate mapping')
+    if a['support']!='ground' and policies.get('supported_props','reject')!='independent-pivot':
+        problems.append(f'support {a["support"]} requires shared elevation; independent pivots can separate')
+    return {'position':[v/10 for v in a['position']], 'rotation':[0,0,-rot[2]],
+            'scale':sum(scale)/3}, problems
+
+
+def attachment(a, binding, owner, policies):
+    transform, problems=attachment_transform(a,policies)
+    if problems:
+        return None, problems
+    e=ET.Element('Element'); vals=elem(elem(e,'m_CookParams'),'m_Values'); vals.append(copy.deepcopy(binding))
+    value(vals,'ConnectionType','NONE','String')
+    v=elem(vals,'Element',**{'class':'AssetObjects..ArtDefReferenceValue'})
+    for k,s in [('m_ElementName',"DON'T CARE"),('m_RootCollectionName','ResourceTags'),('m_ArtDefPath','Landmarks.artdef'),('m_TemplateName','Landmarks'),('m_ParamName','ResourceType')]: elem(v,k,text=s)
+    elem(v,'m_CollectionIsLocked','true')
+    value(vals,'TerrainFollowMode','Pivot Height','String'); value(vals,'Cull Mode','OPTIONAL','String'); value(vals,'RandomizeAnims',True,'Bool')
+    for name,arr in [('m_position',transform['position']),('m_orientation',transform['rotation'])]:
+        node=elem(e,name)
+        for axis,v in zip('xyz',arr): elem(node,axis,f'{v:.8f}')
+    elem(e,'m_Name',text='CSC_Attach_'+a['instance_id']); elem(e,'m_BoneName',text=owner); elem(e,'m_ModelInstanceName',text=owner); elem(e,'m_scale',f'{transform["scale"]:.8f}')
+    return e,problems
+
+
+def csc_binding(ident, xlp):
+    e=ET.Element('Element',{'class':'AssetObjects..BLPEntryValue'})
+    for k,v in [('m_EntryName',ident),('m_XLPClass','TileBase'),('m_XLPPath',xlp.name.lower()),('m_BLPPackage','Landmarks/CSC_Tilebases'),('m_LibraryName','TileBase'),('m_ParamName','Asset')]: elem(e,k,text=v)
+    return e
+
+
+def merge_xlp(root, identifiers):
+    entries=root.find('m_Entries'); known={txt(e,'m_EntryID'):txt(e,'m_ObjectName') for e in entries}
+    if len(known)!=len(entries): raise ValueError('Duplicate pre-existing XLP entries')
+    for ident in sorted(set(identifiers)):
+        if ident in known:
+            if known[ident]!=ident: raise ValueError(f'Conflicting XLP identity {ident}')
+        else:
+            e=elem(entries,'Element'); elem(e,'m_EntryID',text=ident); elem(e,'m_ObjectName',text=ident)
+    return root
+
+
+def load_job(path):
+    path=path.resolve(); job=json.loads(path.read_text()); base=path.parent
+    for key in ('library','mod_root','output'):
+        job[key]=str((base/Path(job[key])).resolve())
+    allowed={'nonuniform_scale':{'reject'},'supported_props':{'reject','independent-pivot'},'reused_states':{'reject','native'}}
+    for k,v in job.get('policies',{}).items():
+        if k not in allowed or v not in allowed[k]: raise ValueError(f'Unknown policy {k}={v}')
+    for section in ('buildings','props','decals'):
+        for item in job.get(section,[]):
+            item['blend']=str((base/Path(item['blend'])).resolve())
+            identifier(item.get('asset_id',item.get('geometry_id')))
+    if Path(job['output']).is_relative_to(Path(job['mod_root'])):
+        raise ValueError('Output must be outside live ModBuddy content')
+    return job
+
+
+def build(job):
+    out=Path(job['output']); decoded=json.loads((out/'decoded.json').read_text()); mod=Path(job['mod_root'])
+    # Never reuse a successful stage with new partial outputs.
+    stage=out/'stage'
+    if stage.exists():
+        previous=out/'manifest.json'
+        if not previous.exists():
+            raise ValueError(f'{stage} has no exporter manifest; choose a clean output folder')
+        owned=json.loads(previous.read_text())['files']
+        actual={str(p.relative_to(stage)):sha(p) for p in stage.rglob('*') if p.is_file()}
+        if owned != actual:
+            raise ValueError('Stage was edited or converted since build; choose another output folder to preserve it')
+        shutil.rmtree(stage)
+    stage.mkdir(parents=True)
+    report={'status':'draft', 'blockers':[], 'placements':[], 'assets':[], 'geometry_only':[],
+            'validation_boundary':'Blender/CN6/XML only; Windows conversion, cooking and in-game states are separate checks.'}
+    templates=job['templates']
+    geo_template=read_xml(mod/templates['geometry']); mtl_template=read_xml(mod/templates['material']); tex_template=read_xml(mod/templates['texture'])
+    xlp_path=mod/job.get('xlp','XLPs/CSC_Tilebases.xlp')
+    bindings={}
+    for p in read_xml(mod/templates['attachment_library']).findall(POINTS+'/Element'):
+        for v in p.findall('m_CookParams/m_Values/Element'):
+            if txt(v,'m_ParamName')=='Asset' and txt(v,'m_EntryName'): bindings[txt(v,'m_EntryName')]=v
+    catalogue={a['asset_id']:a for a in json.loads((Path(job['library'])/'catalogue.json').read_text())['assets']}
+    models=decoded['models']; materials={}; textures={}; source_inputs={}
+    for ident,entry in decoded.get('library_sources',{}).items():
+        if sha(entry['source']) != entry['sha256']: raise ValueError(f'Library asset changed; redecode {ident}')
+        source_inputs[entry['source']]=entry['sha256']
+    expected={e['asset_id']:e['blend'] for e in job['buildings']}
+    expected.update({e['asset_id']:e['blend'] for e in job.get('props',[])})
+    expected.update({e['geometry_id']:e['blend'] for e in job.get('decals',[])})
+    for ident,source in expected.items():
+        if ident not in models or Path(models[ident]['source']).resolve()!=Path(source).resolve():
+            raise ValueError('Job inputs changed; rerun decode')
+    for model in models.values():
+        if sha(model['source'])!=model['source_sha256']: raise ValueError(f'Redecode changed source {model["source"]}')
+        source_inputs[model['source']]=model['source_sha256']
+        for mesh in model['meshes']:
+            for mat in mesh['materials']:
+                ext=job.get('material_bindings',{}).get(mat['name'],mat.get('external'))
+                if ext:
+                    materials[mat['name']]=ext; continue
+                ims=mat['images']
+                if not {'B','N','AO','G','M'}<=ims.keys(): raise ValueError(f'{mat["name"]}: provide image nodes labelled B/N/AO/G/M or explicit material_bindings')
+                signature=json.dumps({k:v['sha256'] for k,v in ims.items()},sort_keys=True)
+                name='CSC_Mat_'+hashlib.sha256(signature.encode()).hexdigest()[:12]
+                if mat['name'] in materials and materials[mat['name']]!=name: raise ValueError(f'Material name collision {mat["name"]}')
+                materials[mat['name']]=name
+                mr=copy.deepcopy(mtl_template); set_text(mr,'m_Name',name)
+                for v in mr.findall('m_CookParams/m_Values/Element'):
+                    if v.find('m_eObjectType') is not None and v.find('m_eObjectType').text=='TEXTURE':
+                        key=next((k for k,s in SLOTS.items() if s==txt(v,'m_ParamName')),None)
+                        ti=''
+                        if key in ims:
+                            im=ims[key]; src=Path(im['path'])
+                            if sha(src)!=im['sha256']: raise ValueError(f'Changed texture {src}')
+                            ti='CSC_Tex_'+im['sha256'][:12]+'_'+key
+                            if ti not in textures:
+                                dest=stage/'TextureSources'/(ti+src.suffix.lower()); dest.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(src,dest)
+                                textures[ti]={'source':str(dest.relative_to(stage)), 'slot':key, 'size':im['size'], 'sha256':im['sha256'], 'format':'R8_UNORM' if key in ('AO','G','M','O','T') else 'R8G8B8A8_UNORM'}
+                        set_text(v,'m_ObjectName',ti)
+                write_xml(stage/'Materials'/(name+'.mtl'),mr)
+        write_cn6(stage/'CN6'/(model['asset_id']+'.cn6'),model)
+        write_xml(stage/'Geometries'/(model['asset_id']+'.geo'),geometry(model,geo_template))
+        if model['kind']=='decal': report['geometry_only'].append(model['asset_id'])
+    for name,im in textures.items():
+        tr=copy.deepcopy(tex_template); set_text(tr,'m_Name',name)
+        # Use R8 for scalar maps and RGBA8 for colour/normal maps.
+        for e in tr.iter():
+            if e.tag=='ePixelformat': e.text='PF_'+im['format']
+            if e.tag=='m_Width': e.text=str(im['size'][0])
+            if e.tag=='m_Height': e.text=str(im['size'][1])
+            if e.tag=='m_NumMipMaps': e.text=str(1+int(math.log2(max(im['size']))))
+        set_text(tr,'m_SourceFilePath',str((stage/im['source']).resolve()))
+        set_text(tr,'m_DataFiles/Element/m_RelativePath',name+'.dds')
+        # Clone the class/export settings belonging to this slot where available.
+        slot_template=mod/'Textures'/('CSC_Props_Shared_01_'+im['slot']+'.tex')
+        if slot_template.exists():
+            sr=read_xml(slot_template); set_text(tr,'m_ClassName',txt(sr,'m_ClassName'))
+            for tag in ('m_ExportSettings','m_Tags'):
+                old=tr.find(tag); replacement=sr.find(tag)
+                if old is not None and replacement is not None:
+                    tr.remove(old); tr.append(copy.deepcopy(replacement))
+            for e in tr.iter():
+                if e.tag=='ePixelformat': e.text='PF_'+im['format']
+        write_xml(stage/'Textures'/(name+'.tex'),tr)
+    for entry in job['buildings']:
+        ident=entry['asset_id']; model=models[ident]
+        root=read_xml(mod/entry.get('template_asset',templates.get('asset','')))
+        set_text(root,'m_Name',ident)
+        ms=root.find(MODELS); base_name=entry['replace_model']; old=next((m for m in ms if txt(m,'m_Name')==base_name),None)
+        if old is None: raise ValueError(f'Missing main model {base_name}')
+        states={txt(r,'m_StateName'):r for r in old.findall('m_GroupStates/Element') if txt(r,'m_MeshName')==entry['state_template_mesh']}
+        if set(states)!=set(STATES): raise ValueError('State template must contain all five states')
+        index=list(ms).index(old); ms.remove(old); ms.insert(index,model_instance(model,materials,('Worked','Unworked','Unbuilt'),states))
+        for decal_id in entry.get('decals',[]):
+            if models[decal_id]['kind']!='decal': raise ValueError('Expected decal geometry')
+            old_decals=[m for m in ms if txt(m,'m_GeoName')==decal_id]
+            if len(old_decals)>1: raise ValueError(f'Duplicate decal model {decal_id}')
+            if old_decals: ms.remove(old_decals[0])
+            ms.append(model_instance(models[decal_id],materials,('Pillaged',)))
+        for required in entry.get('preserve_models',[]):
+            if len([m for m in ms if txt(m,'m_Name')==required])!=1: raise ValueError(f'Missing/duplicate auxiliary model {required}')
+        points=root.find(POINTS)
+        remove=set(entry.get('replace_attachment_assets',[]))
+        for p in list(points):
+            refs=[txt(v,'m_EntryName') for v in p.findall('m_CookParams/m_Values/Element')]
+            owned=entry.get('replace_owned_attachments',False) and txt(p,'m_ModelInstanceName') in (base_name,ident)
+            if owned or remove.intersection(refs): points.remove(p)
+        validate_support(model['attachments'])
+        for a in model['attachments']:
+            asset=a['source_asset_id']
+            source={'source_pack':'CSC','origin':'authored_blender'} if asset in models and models[asset]['kind']=='prop' else catalogue[asset]
+            if source.get('source_pack') not in ('Base game','Rise and Fall','Gathering Storm','CSC'):
+                raise ValueError(f'{asset}: ineligible or unknown source pack')
+            custom=source.get('origin')=='authored_blender'
+            binding=csc_binding(asset,xlp_path) if custom else bindings.get(asset)
+            if binding is None: raise ValueError(f'Missing exact pantry XLP binding for {asset}')
+            point,problems=attachment(a,binding,ident,job.get('policies',{}))
+            if not custom and job.get('policies',{}).get('reused_states','reject')!='native':
+                problems.append('reused asset keeps native state behavior; per-instance state gating is unverified')
+            if point is not None: points.append(point)
+            converted, _ = attachment_transform(a,job.get('policies',{}))
+            row={'building':ident, **a, 'ae_transform':converted,
+                 'placement_changed_by_exporter':False, 'binding_status':'blocked' if problems else 'representable', 'issues':problems}
+            report['placements'].append(row)
+            for problem in problems: report['blockers'].append(f'{ident}/{a["instance_id"]}: {problem}')
+        write_xml(stage/'Assets'/(ident+'.ast'),root); report['assets'].append(ident)
+    # New props have their own state table and are registered once across all variants.
+    for ident,model in models.items():
+        if model['kind']!='prop': continue
+        # Start from the empty behavior schema of a plain prop, not workshop FX.
+        prop_template=read_xml(mod/templates['prop_asset'])
+        root=copy.deepcopy(prop_template); set_text(root,'m_Name',ident)
+        root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,('Worked','Unworked')))
+        root.find(POINTS).clear()
+        for tag in ('m_animationBindings/m_Bindings','m_timelineBindings/m_Bindings','m_timelines/m_Timelines'):
+            node=root.find('m_BehaviorData/m_behaviorDataSets/'+tag)
+            if node is not None: node.clear()
+        write_xml(stage/'Assets'/(ident+'.ast'),root); report['assets'].append(ident)
+    write_xml(stage/'XLPs'/xlp_path.name,merge_xlp(read_xml(xlp_path),report['assets']))
+    report['status']='blocked' if report['blockers'] else 'ready_for_windows_conversion'
+    report['counts']={'custom_assets':len(report['assets']), 'geometry_only':len(report['geometry_only']),
+                      'placements':len(report['placements']), 'materials':len(set(materials.values())), 'textures':len(textures)}
+    report['preserved_models']={e['asset_id']:e.get('preserve_models',[]) for e in job['buildings']}
+    (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+    destinations=[p.relative_to(stage) for p in stage.rglob('*') if p.is_file() and p.parts[-2]!='CN6']
+    destinations += [Path('Geometries')/(ident+'.fgx') for ident in models]
+    destinations += [Path('Textures')/(ident+'.dds') for ident in textures]
+    manifest={'destination_baseline':{str(p):sha(mod/p) if (mod/p).exists() else None for p in destinations}, 'models':list(models), 'textures':textures, 'inputs':source_inputs,
+              'files':{str(p.relative_to(stage)):sha(p) for p in sorted(stage.rglob('*')) if p.is_file()}}
+    (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+    print(json.dumps({'status':report['status'],'counts':report['counts'],'blockers':len(report['blockers']),'report':str(out/'report.json')},indent=2))
+    return 2 if report['blockers'] else 0
+
+
+def validate_dds(path, texture):
+    import struct
+    raw=Path(path).read_bytes()
+    if len(raw)<128 or raw[:4]!=b'DDS ' or struct.unpack_from('<I',raw,4)[0]!=124:
+        raise ValueError(f'Invalid DDS header: {path}')
+    height,width=struct.unpack_from('<II',raw,12)
+    mips=struct.unpack_from('<I',raw,28)[0] or 1
+    expected=1+int(math.log2(max(texture['size'])))
+    if [width,height]!=texture['size'] or mips!=expected:
+        raise ValueError(f'DDS dimensions/mip count disagree with TEX: {path}')
+    bpp=1 if texture['format']=='R8_UNORM' else 4
+    offset=128
+    if raw[84:88]==b'DX10':
+        if len(raw)<148: raise ValueError(f'Truncated DDS: {path}')
+        dxgi=struct.unpack_from('<I',raw,128)[0]
+        if dxgi!=(61 if bpp==1 else 28): raise ValueError(f'DDS format disagrees with TEX: {path} (DXGI {dxgi})')
+        offset=148
+    elif struct.unpack_from('<I',raw,88)[0] != bpp*8:
+        raise ValueError(f'DDS pixel size disagrees with TEX: {path}')
+    needed=sum(max(1,width>>i)*max(1,height>>i)*bpp for i in range(mips))
+    if len(raw)<offset+needed: raise ValueError(f'Truncated DDS pixel data: {path}')
+
+
+def convert(job,converter,texconv):
+    out=Path(job['output']); stage=out/'stage'; report=json.loads((out/'report.json').read_text()); manifest=json.loads((out/'manifest.json').read_text())
+    if report['blockers']: raise ValueError('Resolve report.json blockers and rebuild before Windows conversion')
+    for rel,h in manifest['files'].items():
+        if sha(stage/rel)!=h: raise ValueError(f'Staged file changed: {rel}; rebuild')
+    converter=Path(converter).resolve(); texconv=Path(texconv).resolve()
+    logs=out/'logs'; logs.mkdir(exist_ok=True)
+    for ident in manifest['models']:
+        dest=stage/'Geometries'/(ident+'.fgx')
+        if dest.exists(): dest.unlink()
+        with (logs/(ident+'.log')).open('w') as log:
+            subprocess.run([str(converter),str(stage/'CN6'/(ident+'.cn6')),str(dest),'2'],cwd=converter.parent,stdout=log,stderr=subprocess.STDOUT,check=True)
+        if not dest.is_file() or dest.stat().st_size<100: raise ValueError(f'Converter produced no valid-sized output for {ident}; see full log')
+    for ident,tex in manifest['textures'].items():
+        dest=stage/'Textures'/(ident+'.dds')
+        if dest.exists(): dest.unlink()
+        cmd=[str(texconv),'-nologo','-y','-m','0','-f',tex['format'],'-o',str(stage/'Textures')]
+        cmd += ['--ignore-srgb']
+        if tex['slot'] in ('B','E'): cmd+=['-srgb']
+        cmd+=[str(stage/tex['source'])]
+        with (logs/(ident+'.log')).open('w') as log: subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT,check=True)
+        dest=stage/'Textures'/(ident+'.dds')
+        validate_dds(dest,tex)
+    manifest['converted_files']={str(p.relative_to(stage)):sha(p) for p in stage.rglob('*') if p.is_file()}
+    (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+    report['status']='converted_pending_asset_editor_and_game_review'
+    (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+    print('Windows conversion complete. Stage is ready for Asset Editor review; no live project files changed.')
+
+
+def install(job):
+    """Explicit Windows deployment, with preflight, backups and rollback; merge live XLP."""
+    out=Path(job['output']); stage=out/'stage'; mod=Path(job['mod_root'])
+    report=json.loads((out/'report.json').read_text()); manifest=json.loads((out/'manifest.json').read_text())
+    if report['status']!='converted_pending_asset_editor_and_game_review' or not manifest.get('converted_files'):
+        raise ValueError('Successful Windows conversion is required before install')
+    for rel,h in manifest['converted_files'].items():
+        if sha(stage/rel)!=h: raise ValueError(f'Converted stage changed: {rel}')
+    payload={}
+    for rel in manifest['converted_files']:
+        p=Path(rel)
+        if p.parts[0]=='CN6': continue
+        if p.parts[0]=='XLPs':
+            root=merge_xlp(read_xml(mod/p),report['assets']); ET.indent(root,space='  ')
+            payload[p]=ET.tostring(root,encoding='utf-8',xml_declaration=True)
+            continue
+        current=sha(mod/p) if (mod/p).exists() else None
+        if current != manifest['destination_baseline'].get(rel):
+            raise ValueError(f'Live destination changed since staging: {rel}; rebuild against current project')
+        if p.suffix=='.tex':
+            r=read_xml(stage/p); texture=manifest['textures'][p.stem]
+            set_text(r,'m_SourceFilePath',str((mod/texture['source']).resolve())); ET.indent(r,space='  ')
+            payload[p]=ET.tostring(r,encoding='utf-8',xml_declaration=True)
+        else: payload[p]=(stage/p).read_bytes()
+    # Keep an exact pre-install copy. No cache deletion, ArtDef rewriting, or cook here.
+    import datetime
+    backup=out/'backups'/datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
+    backup.mkdir(parents=True); created=[]; changed=[]
+    try:
+        for p,data in payload.items():
+            dest=mod/p; dest.parent.mkdir(parents=True,exist_ok=True)
+            if dest.exists():
+                old=backup/p; old.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(dest,old)
+            else: created.append(str(p))
+            changed.append(p); dest.write_bytes(data)
+    except Exception:
+        for p in reversed(changed):
+            old=backup/p
+            if old.exists(): shutil.copy2(old,mod/p)
+            elif str(p) in created: (mod/p).unlink(missing_ok=True)
+        raise
+    (backup/'created-files.json').write_text(json.dumps(created,indent=2)+'\n')
+    report['status']='installed_pending_asset_editor_and_game_review'; report['backup']=str(backup)
+    (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+    print(f'Installed {len(payload)} files; backup: {backup}. Refresh AE dependencies, cook, and verify in game.')
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('command',choices=['decode','build','convert','install']); parser.add_argument('job',type=Path)
+    parser.add_argument('--blender'); parser.add_argument('--converter'); parser.add_argument('--texconv')
+    args=parser.parse_args(); job=load_job(args.job); out=Path(job['output']); out.mkdir(parents=True,exist_ok=True)
+    if args.command=='decode':
+        if not args.blender: parser.error('decode requires --blender')
+        resolved=out/'resolved-job.json'; resolved.write_text(json.dumps(job,indent=2)+'\n')
+        subprocess.run([args.blender,'--background','--factory-startup','--python-exit-code','1','--python',str(Path(__file__).with_name('decode_blend.py')),'--',str(resolved),str(out/'decoded.json')],check=True)
+        return 0
+    if args.command=='build': return build(job)
+    if args.command=='install':
+        install(job); return 0
+    if not args.converter or not args.texconv: parser.error('convert requires --converter and --texconv')
+    convert(job,args.converter,args.texconv); return 0
+
+if __name__=='__main__':
+    try: sys.exit(main())
+    except (ValueError,KeyError,OSError,subprocess.CalledProcessError) as error:
+        print(f'ERROR: {error}',file=sys.stderr); sys.exit(1)

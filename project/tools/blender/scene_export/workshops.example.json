@@ -1,0 +1,63 @@
+{
+  "library": "CSC_Prop_Library",
+  "mod_root": "Civ Supply Chains",
+  "output": "workshop-export",
+  "templates": {
+    "asset": "Assets/CSC_TAILORS_Textile_Workshop.ast",
+    "prop_asset": "Assets/CSC_ALL_Workbench_M.ast",
+    "geometry": "Geometries/CSC_Level_1_Decals.geo",
+    "material": "Materials/CSC_ALL_Props_01.mtl",
+    "texture": "Textures/CSC_Props_Shared_01_AO.tex",
+    "attachment_library": "Assets/CSC_ALL_Prop_Library.ast"
+  },
+  "buildings": [
+    {
+      "asset_id": "CSC_TAILORS_Textile_Workshop",
+      "blend": "CSC_TAILORS_Textile_Workshop_FINAL.blend",
+      "replace_model": "CSC_TAILORS_Textile_Workshop",
+      "state_template_mesh": "CSC_TAILORS_Textile_Workshop_Bldg",
+      "decals": [
+        "CSC_TAILORS_Textile_Workshop_PIL_Decals"
+      ],
+      "preserve_models": [
+        "CSC_Level_1_S_CON+PIL",
+        "CSC_Level_1_Decals"
+      ],
+      "replace_attachment_assets": [
+        "CSC_ALL_Workbench_M",
+        "CSC_TAILORS_Textile_Workshop_Props"
+      ]
+    },
+    {
+      "asset_id": "CSC_TAILORS_Textile_Workshop_Sailmaking",
+      "blend": "CSC_TAILORS_Textile_Workshop_Sailmaking_FINAL.blend",
+      "replace_model": "CSC_TAILORS_Textile_Workshop",
+      "state_template_mesh": "CSC_TAILORS_Textile_Workshop_Bldg",
+      "decals": [
+        "CSC_TAILORS_Textile_Workshop_PIL_Decals"
+      ],
+      "preserve_models": [
+        "CSC_Level_1_S_CON+PIL",
+        "CSC_Level_1_Decals"
+      ],
+      "replace_attachment_assets": [
+        "CSC_ALL_Workbench_M",
+        "CSC_TAILORS_Textile_Workshop_Props"
+      ]
+    }
+  ],
+  "decals": [
+    {
+      "geometry_id": "CSC_TAILORS_Textile_Workshop_PIL_Decals",
+      "blend": "CSC_TAILORS_Textile_Workshop_PIL_Decals_FINAL.blend"
+    }
+  ],
+  "material_bindings": {
+    "Ruin_Debris_Decal": "Ruin_Debris_Decal"
+  },
+  "policies": {
+    "nonuniform_scale": "reject",
+    "supported_props": "independent-pivot",
+    "reused_states": "native"
+  }
+}

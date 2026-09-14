@@ -4,6 +4,9 @@ LIB=pathlib.Path(sys.argv[1]).resolve()
 d=json.loads((LIB/'catalogue.json').read_text())
 lines=['# Initial CSC prop library','', 'Construction and Pillaged behavior below is read from the source AST. It has not been tested in Asset Editor or in game. Blends open in Worked state; all alternate components and material bindings are retained.','', '| Asset | Pack | Construction | Pillaged |','|---|---|---|---|']
 for r in d['assets']:
+    if r.get('origin') == 'authored_blender':
+        lines.append('| '+r['asset_id']+' | CSC | Hidden by owner (planned) | Hidden by owner (planned) |')
+        continue
     r['state_behavior']={}
     for state in ['Construction','Pillaged']:
         groups=[]
@@ -32,7 +35,10 @@ d['import_contract']={'geometry':'Vertex XYZ preserved exactly within float prec
 counts=collections.Counter(r['source_pack'] for r in d['assets'])
 readme='''# CSC Prop Library
 
-33 individual source-asset blends, with external portable textures and source records.
+Individual reusable blends, with external portable textures and source records.
+Discover the current count from catalogue.json. Authored Blender entries have
+origin=authored_blender and a registration_status; their Windows assets and state
+wiring may still be pending. The source converter preserves these blends.
 Open any blend, or append its asset collection/mesh into a building scene. Multi-component
 assets have an asset-ID root; preserve the component hierarchy and metadata. Hidden
 source skeleton references are not placement geometry. The scene opens in Worked state.
@@ -67,4 +73,4 @@ Construction/Pillaged notes describe source AST declarations, not tested runtime
 No geometry exports are blocked; shader-preview limitations remain explicitly recorded.
 '''
 (LIB/'README.md').write_text(readme)
-print(dict(counts));print('Behavior notes added:',len(d['assets']));print('Behavior extras:',[(r['asset_id'],r['source_behavior_counts']) for r in d['assets'] if any(r['source_behavior_counts'].values())])
+print(dict(counts));print('Behavior notes added:',len(d['assets']));print('Behavior extras:',[(r['asset_id'],r.get('source_behavior_counts',{})) for r in d['assets'] if any(r.get('source_behavior_counts',{}).values())])
