@@ -384,16 +384,6 @@ def build(job):
         prop_template=read_xml(mod/templates['prop_asset'])
         root=copy.deepcopy(prop_template); set_text(root,'m_Name',ident)
         root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,('Worked','Unworked')))
-        ao_overrides={mat.get('ao_override') for mesh in model['meshes'] for mat in mesh['materials']}
-        if any(ao_overrides):
-            if len(ao_overrides)!=1 or None in ao_overrides:
-                raise ValueError(f'{ident}: asset-level AO override must agree across all material groups')
-            ao=next(iter(ao_overrides)); identifier(ao)
-            for suffix in ('.tex','.dds'):
-                if not (mod/'Textures'/(ao+suffix)).is_file():
-                    raise ValueError(f'{ident}: missing existing AO texture {ao}{suffix}')
-            ao_value=next(v for v in root.findall('m_CookParams/m_Values/Element') if txt(v,'m_ParamName')=='AO')
-            set_text(ao_value,'m_ObjectName',ao)
         root.find(POINTS).clear()
         for tag in ('m_animationBindings/m_Bindings','m_timelineBindings/m_Bindings','m_timelines/m_Timelines'):
             node=root.find('m_BehaviorData/m_behaviorDataSets/'+tag)

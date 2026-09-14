@@ -306,7 +306,14 @@ Pantry attachments retain their own native construction/pillaged appearances.
 
 Unknown policies, negative/singular scale, shear and nonzero X/Y rotation remain
 errors. The verified placement mapping is Blender XYZ divided by ten and Z rotation
-negated, in degrees; scale is separate. Fixed geometry can retain editable object
+negated. AST `m_orientation` values are **radians**, although the AE UI displays
+degrees. Convert the decoded degree value to radians when serializing the AST.
+For example, Blender Z = 56.419046 degrees must serialize as approximately
+-0.984698 radians, which AE displays as -56.419046 degrees. The earlier exporter
+wrote -56.419046 directly and AE displayed -3232.573 degrees, visibly rotating
+props incorrectly. This affected all rotated attachment types, not only pantry
+assets. Values within 0.000001 of unit scale serialize as exactly 1; intentional
+non-unit scales are retained. Scale is separate. Fixed geometry can retain editable object
 transforms because the exporter serializes those into the building's vertex stream;
 the exported shape must still match the Blender composition.
 

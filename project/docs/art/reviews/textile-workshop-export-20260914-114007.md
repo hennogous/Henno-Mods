@@ -1,5 +1,13 @@
 # Textile Workshop export review — 14 September 2026
 
+**Correction after Henno's AE screenshots:** the original rotation check below
+was insufficient. It compared the AST to the exporter's own degree-based formula,
+but AST orientations are radians. AE therefore displayed rotations about 57.3
+times too large. The original run is not placement-approved. The exporter now
+serializes radians and tests the resulting AE degree display. See the current
+[exporter documentation](../blender-scene-export.md). Other structural checks
+below do not establish visual placement parity.
+
 Reviewed run: `20260914-114007-861249`, the newest run at review time, under
 `C:\Users\Shadow\Desktop\Working Files\3D Art\TAILORS\Textile Workshop\revision-08-export-ready\export-runs`.
 
