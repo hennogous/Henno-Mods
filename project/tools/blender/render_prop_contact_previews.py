@@ -164,7 +164,8 @@ def main():
     if args.output == args.library or args.library in args.output.parents:
         raise ValueError('Contact-sheet outputs must be separate from the source library')
     (args.output / 'previews').mkdir(parents=True, exist_ok=True)
-    blends = sorted(args.library.glob('*.blend'))
+    blends = sorted(p for p in args.library.glob('*.blend')
+                    if not p.stem.startswith('CSC_') or p.stem.startswith('CSC_ALL_'))
     if args.only:
         blends = [p for p in blends if p.stem in args.only]
         if len(blends) != len(set(args.only)):

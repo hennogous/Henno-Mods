@@ -120,7 +120,7 @@ containing a JSON string. One explicitly marked scene is selected; otherwise the
 named `Export` scene is used (a sole scene is also eligible). Minimal examples:
 
 ```json
-{"kind": "prop", "asset_id": "CSC_Attached_New_Bench"}
+{"kind": "prop", "asset_id": "CSC_ALL_New_Bench"}
 ```
 
 ```json
@@ -365,3 +365,22 @@ On Windows, review intact, unworked, construction and pillaged appearances and t
 flat and sloped tiles. Check especially pantry native states, independent supports,
 attachment culling and the new uniform proportions. These are the remaining runtime
 checks after successful conversion and cook.
+
+Asset naming reflects reuse scope: `CSC_ALL_` for approved shared-library props,
+`CSC_<QUARTER>_` for Quarter-specific assets. Export roles remain separate. The
+revision-09 workshop folder includes its two CSC_TAILORS prop-definition blends;
+the seven CSC_ALL definitions resolve through the updated shared library. All five
+top-level blends are inputs to a single discovery/export run.
+
+## Revision 10 — one shared bench definition
+
+Henno removed the redundant seating-bench asset. Both workshop Loom_Seat placements
+now reference CSC_ALL_Workbench_Long_Narrow at uniform scale 0.5333333, preserving
+the prior 16-unit length, pivot and Z rotation. Native proportions give a 6.4-unit
+width and approximately 6.93-unit height. Finishing-table placements are unchanged.
+The CSC_ALL_Seating_Bench and legacy CSC_Attached_Seating_Bench definitions were
+removed from the active library/catalogue, with recovery copies outside it.
+The pair now uses 10 custom assets: two buildings, six shared props and two
+Tailors-specific props. The reusable sheets contain 39 entries, including eight
+CSC_ALL assets; 47 catalogue records remain including other historical definitions.
+Use revision-10-shared-bench (five blends and textures) for the current workshop.

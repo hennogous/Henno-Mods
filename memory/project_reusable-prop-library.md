@@ -85,3 +85,30 @@ metadata is embedded in each Export scene, texture paths are portable, and fresh
 discovery/decode/staging succeeded with zero blockers (11 assets, 12 GEOs, 32 placements).
 Use the existing synced CSC_Prop_Library separately. Windows conversion/game checks
 remain pending. Repair records and validation are outside the minimal art folder.
+
+## 14 September — approved reuse naming, revision 09
+
+Henno requires reusable candidates to use CSC_ALL_ asset IDs; likely Quarter-specific
+assets use CSC_<QUARTER>_. Before settling future final blends, propose the split
+and ask his opinion; this thread's existing split is explicitly approved.
+Seven shared workshop props were renamed into CSC_ALL (workbench, seating bench,
+bale, folded cloth, canvas roll, teal bolt, rope coil). Sail drying rack and sail
+cutting panel now use CSC_TAILORS and their standalone blends accompany revision09.
+The latter has five blend inputs; loom/vats remain fixed meshes, no extra assets.
+Asset IDs, source mesh identities and placement metadata were changed without
+altering geometry, UVs, materials/AO bindings or world placements. Material names
+stay unchanged because Windows material reuse bindings already depend on them.
+Library changes are additive: auto-review rejected retirement of old synced blends,
+so those nine legacy files/records are retained. Seven new CSC_ALL records are added
+(49 records), while only 40 pantry/CSC_ALL entries appear on the contact sheets.
+
+## 14 September — revision 10 removes seating-bench redundancy
+
+User explicitly requested removing Seating_Bench and updating its usages. Replaced
+Loom_Seat in both workshop variants with CSC_ALL_Workbench_Long_Narrow at uniform
+0.5333333 to preserve seat length and root placement; native height becomes ~6.93.
+Other placements and source revision09 were preserved. Removed both CSC_ALL and
+legacy CSC_Attached seating-bench definitions from active library/catalogue, with
+backups outside the synced library; no live AST/XLP/GEO/ArtDef references existed
+in the repo. New output: codex-outputs/CSC_TAILORS_Textile_Workshop/revision-10-shared-bench.
+Six shared props + two Tailors props + two buildings = 10 unique custom assets.

@@ -119,6 +119,9 @@ def build(library, output):
     reviews = json.loads(review_path.read_text()) if review_path.is_file() else {}
     groups = OrderedDict((name, []) for name in CATEGORIES)
     for blend in sorted(library.glob('*.blend')):
+        # Only CSC_ALL identities are candidates for the shared prop library.
+        if blend.stem.startswith('CSC_') and not blend.stem.startswith('CSC_ALL_'):
+            continue
         path = output / 'previews' / (blend.stem + '.json')
         if not path.is_file():
             raise FileNotFoundError(f'Run preview renderer for {blend.name} first')
@@ -156,7 +159,7 @@ def build(library, output):
     overview.save(sheets / 'CSC_Prop_Library_Overview.png')
     outputs = ['CSC_Prop_Library_Overview.png']
     detail_groups = list(groups.items())
-    csc_assets = [row for row in rows if row['source_pack'] == 'CSC']
+    csc_assets = [row for row in rows if row['asset_id'].startswith('CSC_ALL_')]
     if csc_assets:
         detail_groups.append(('CSC props', csc_assets))
     for name, items in detail_groups:

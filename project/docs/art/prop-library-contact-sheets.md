@@ -89,5 +89,32 @@ matrix. Ground sampling and state propagation still need AE/in-game verification
 The primary overview and category sheets mix pantry and CSC assets by use, so
 scene selection can compare all available options. A supplementary
 `07_CSC_props.png` sheet shows CSC assets only, for asset-budget review. Source
-blends retain their existing paths. Entries tagged CSC automatically join the
+blends retain their existing paths. Entries starting `CSC_ALL_` automatically join the
 supplementary sheet on refresh; they are not counted twice in the inventory.
+
+## Reusability scope (revision 09)
+
+Only custom CSC asset IDs starting `CSC_ALL_` appear in these reusable-library
+sheets. Quarter-specific IDs such as `CSC_TAILORS_` are excluded from both the
+overview and category pages, even if an old file remains in the input directory.
+Pantry assets retain native IDs and stay included. The workshop's seven shared
+props were renamed into CSC_ALL; its two specialized sail props now travel with
+the workshop revision. The resulting contact-sheet inventory contains 40 assets, including nine
+CSC_ALL entries (seven authored plus the two original shared CSC assets). Nine
+older CSC_Attached definitions remain available for historical scenes, giving 49
+catalogue records; they are excluded from the reusable sheets. Discover future
+counts from the current inventory. See reusable-prop-library.md for the
+required reuse proposal and Henno's review before future finalization.
+
+## Revision 10 — one shared bench definition
+
+Henno removed the redundant seating-bench asset. Both workshop Loom_Seat placements
+now reference CSC_ALL_Workbench_Long_Narrow at uniform scale 0.5333333, preserving
+the prior 16-unit length, pivot and Z rotation. Native proportions give a 6.4-unit
+width and approximately 6.93-unit height. Finishing-table placements are unchanged.
+The CSC_ALL_Seating_Bench and legacy CSC_Attached_Seating_Bench definitions were
+removed from the active library/catalogue, with recovery copies outside it.
+The pair now uses 10 custom assets: two buildings, six shared props and two
+Tailors-specific props. The reusable sheets contain 39 entries, including eight
+CSC_ALL assets; 47 catalogue records remain including other historical definitions.
+Use revision-10-shared-bench (five blends and textures) for the current workshop.

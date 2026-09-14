@@ -52,8 +52,11 @@ proportions require an explicit reusable asset identity.
 - Single-mesh objects/datablocks use the exact asset ID. Multi-component assets have
   an asset-ID root and catalogue mapping. `source_asset_id` and `export_role` persist
   independently of Blender's duplicate names.
-- Future custom attachments start `CSC_Attached_`; geometry incorporated into the
-  building starts `CSC_Fixed_`. Existing shared CSC assets remain references.
+- Reusable CSC asset IDs start `CSC_ALL_`; Quarter-specific asset IDs start
+  `CSC_<QUARTER>_` (for example `CSC_TAILORS_`). This supersedes the earlier
+  `CSC_Attached_` asset prefix. Attachment/fixed behavior is an explicit export
+  role, independent of reusability. Fixed mesh components may retain `CSC_Fixed_`
+  names and do not become standalone assets.
 - Terrain following depends on physical support: building, ground, or another prop.
   Distance is a review warning, not a classification rule.
 - Observed future placement conversion: Blender XYZ / 10, reversed Z rotation for
@@ -101,3 +104,46 @@ Supporting scripts in `project/tools/blender/`:
 
 Temporary `project/prop-library-export` staging was removed after delivery. The
 delivered package retains all source records needed for inspection and reconstruction.
+
+## Reuse classification and approval
+
+Before finalizing future building blends, propose a short list of new props split
+into shared reuse candidates and likely Quarter-specific props. Explain the reuse
+case, fixed-versus-attachment treatment, and resulting unique-asset count. Ask Henno
+for his opinion and wait before settling final classifications/names and publishing
+new shared assets. Continue independent preparation while awaiting his reply. Prior
+approval applies: he explicitly approved the existing workshop decisions in this
+thread, so revision 09 does not need another confirmation.
+
+Shared `CSC_ALL_` definitions go into CSC_Prop_Library and its contact sheets.
+Quarter-specific custom definitions travel with their owning building/Quarter and
+are excluded from the reusable-library sheets. Pantry entries keep exact native
+identities and remain available on the library sheets. Mark source/placement
+`reuse_scope` and `reuse_approved` alongside the existing export-role metadata.
+
+Revision 09 renames the seven approved shared assets to `CSC_ALL_Workbench_Long_Narrow`,
+`CSC_ALL_Seating_Bench`, `CSC_ALL_Textile_Bale`, `CSC_ALL_Folded_Cloth_Teal`,
+`CSC_ALL_Cloth_Roll_Canvas`, `CSC_ALL_Cloth_Bolt_Teal` and `CSC_ALL_Rope_Coil`.
+The two specialized attachments become `CSC_TAILORS_Sail_Drying_Rack` and
+`CSC_TAILORS_Sail_Cutting_Panel`; their standalone blends accompany the workshop
+blends and are discovered in the same batch. Loom/vats remain fixed meshes in the
+building asset. Renaming does not create additional intended assets: the pair still
+uses 11 custom identities (two buildings, seven shared props, two Tailors props).
+Keep material IDs/bindings and AO unchanged when renaming asset identities.
+
+The nine old CSC_Attached library definitions are retained for older revisions.
+They do not appear in the new reusable contact sheets. There are 49 catalogue
+records but 40 current reusable-sheet entries after this additive rename.
+
+## Revision 10 — one shared bench definition
+
+Henno removed the redundant seating-bench asset. Both workshop Loom_Seat placements
+now reference CSC_ALL_Workbench_Long_Narrow at uniform scale 0.5333333, preserving
+the prior 16-unit length, pivot and Z rotation. Native proportions give a 6.4-unit
+width and approximately 6.93-unit height. Finishing-table placements are unchanged.
+The CSC_ALL_Seating_Bench and legacy CSC_Attached_Seating_Bench definitions were
+removed from the active library/catalogue, with recovery copies outside it.
+The pair now uses 10 custom assets: two buildings, six shared props and two
+Tailors-specific props. The reusable sheets contain 39 entries, including eight
+CSC_ALL assets; 47 catalogue records remain including other historical definitions.
+Use revision-10-shared-bench (five blends and textures) for the current workshop.
