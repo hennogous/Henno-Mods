@@ -1,17 +1,45 @@
 """Run: python -m unittest discover -s project/tools/blender/scene_export -v"""
 import copy
+import math
 import unittest
 import xml.etree.ElementTree as ET
 from export_scene import attachment_transform, merge_xlp, model_instance, geometry, validate_support, txt
 
 class ContractTests(unittest.TestCase):
+    def test_reuse_existing_materials_never_generates_unbound_names(self):
+        from export_scene import existing_material
+        with tempfile.TemporaryDirectory() as directory:
+            mod=Path(directory); (mod/'Materials').mkdir()
+            (mod/'Materials/CSC_Existing.mtl').write_text('<Material/>')
+            job={'material_policy':'reuse_existing','material_bindings':{'BlenderName':'CSC_Existing'}}
+            self.assertEqual(existing_material({'name':'BlenderName'},job,mod),'CSC_Existing')
+            self.assertEqual(existing_material({'name':'CSC_Existing'},job,mod),'CSC_Existing')
+            self.assertEqual(existing_material({'name':'Other','external':'CSC_Existing'},job,mod),'CSC_Existing')
+            with self.assertRaisesRegex(ValueError,'no existing material binding'):
+                existing_material({'name':'Unmapped'},job,mod)
+            with self.assertRaisesRegex(ValueError,'existing CSC material not found'):
+                existing_material({'name':'Other','external':'CSC_Missing'},job,mod)
+
     def placement(self):
         return {'instance_id':'A','support':'ground','position':[10,-20,30], 'rotation_degrees':[0,0,90], 'scale':[2,2,2]}
 
     def test_position_units_rotation_sign_and_scale(self):
         result,problems=attachment_transform(self.placement(),{})
-        self.assertEqual(result,{'position':[1,-2,3],'rotation':[0,0,-90],'scale':2})
+        self.assertEqual(result,{'position':[1,-2,3],'rotation':[0,0,-math.pi/2],'scale':2})
         self.assertEqual(problems,[])
+
+    def test_ae_display_uses_radians_from_ast(self):
+        from export_scene import attachment, csc_binding
+        a=self.placement(); a['rotation_degrees'][2]=56.419046185935734
+        point,problems=attachment(a,csc_binding('Prop',Path('CSC_Tilebases.xlp')),'Owner',{})
+        self.assertFalse(problems)
+        self.assertAlmostEqual(math.degrees(float(point.findtext('m_orientation/z'))),-56.419046185935734,places=5)
+
+    def test_unit_scale_noise_is_cleaned_without_changing_intentional_scale(self):
+        a=self.placement(); a['scale']=[.99999952,.99999952,.9999994]
+        self.assertEqual(attachment_transform(a,{})[0]['scale'],1.0)
+        a['scale']=[.6975625]*3
+        self.assertAlmostEqual(attachment_transform(a,{})[0]['scale'],.6975625)
 
     def test_nonuniform_is_explicit_and_preserves_source(self):
         row=self.placement(); row['scale']=[.7,.9,.8]; before=copy.deepcopy(row)
@@ -67,7 +95,7 @@ class WorkshopIntegration(unittest.TestCase):
         import export_scene as ex
         self.ex=ex; self.job=ex.load_job(Path(os.environ['CSC_EXPORT_TEST_JOB']))
         original=Path(self.job['output'])
-        self.tmp=tempfile.TemporaryDirectory(dir=original.parent,prefix='integration-')
+        self.tmp=tempfile.TemporaryDirectory(prefix='csc-export-integration-')
         self.addCleanup(self.tmp.cleanup); self.job['output']=self.tmp.name
         self.out=Path(self.tmp.name); shutil.copy2(original/'decoded.json',self.out/'decoded.json')
         self.assertEqual(ex.build(self.job),0)
@@ -85,7 +113,9 @@ class WorkshopIntegration(unittest.TestCase):
         for b in self.job['buildings']:
             root=ex.read_xml(self.stage/'Assets'/(b['asset_id']+'.ast'))
             models={ex.txt(m,'m_Name'):m for m in root.find(ex.MODELS)}
-            for name in b['preserve_models']: self.assertEqual(self.canonical(models[name]),self.canonical(old[name]))
+            for name in b['preserve_models']:
+                if name in old: self.assertEqual(self.canonical(models[name]),self.canonical(old[name]))
+                else: self.assertIn(name, b['decals'])
             main=models[b['asset_id']]; mesh_names={ex.txt(r,'m_MeshName') for r in main.findall('m_GroupStates/Element')}
             self.assertIn('CSC_Fixed_Textile_Loom',mesh_names); self.assertIn('CSC_Fixed_Dye_Vat_Indigo',mesh_names)
             self.assertEqual(len(mesh_names),6)
@@ -96,7 +126,8 @@ class WorkshopIntegration(unittest.TestCase):
                 a=placements[ex.txt(point,'m_Name').removeprefix('CSC_Attach_')]
                 for axis,expected in zip('xyz',a['position']):
                     self.assertAlmostEqual(float(point.findtext('m_position/'+axis))*10,expected,places=6)
-                self.assertAlmostEqual(float(point.findtext('m_scale')),sum(a['scale'])/3,places=6)
+                self.assertAlmostEqual(float(point.findtext('m_scale')),sum(a['scale'])/3,places=5)
+                self.assertAlmostEqual(math.degrees(float(point.findtext('m_orientation/z'))),-a['rotation_degrees'][2],places=5)
             self.assertEqual(len(models['CSC_TAILORS_Textile_Workshop_PIL_Decals'].find('m_GroupStates')),55)
         xlp=ex.read_xml(self.stage/'XLPs/CSC_Tilebases.xlp')
         entries=[ex.txt(e,'m_EntryID') for e in xlp.find('m_Entries')]
@@ -127,6 +158,15 @@ class WorkshopIntegration(unittest.TestCase):
             for mesh in m['meshes']:
                 for v in mesh['vertices']: self.assertEqual(len(v),18)
 
+    def test_reuse_mode_emits_no_material_or_texture_payload(self):
+        if self.job.get('material_policy') != 'reuse_existing':
+            self.skipTest('This integration job uses generated materials')
+        self.assertFalse(list(self.stage.rglob('*.mtl')))
+        self.assertFalse(list(self.stage.rglob('*.tex')))
+        report=json.loads((self.out/'report.json').read_text())
+        self.assertEqual(report['counts']['textures'],0)
+        self.assertEqual(report['material_bindings']['CSC_Textile_Building_Material'],'CSC_TAILORS_E')
+
     def test_strict_policy_reports_and_blocks_conversion(self):
         self.job['policies']={}
         self.assertEqual(self.ex.build(self.job),2)
@@ -152,14 +192,20 @@ class WorkshopIntegration(unittest.TestCase):
         manifest['converted_files']={str(p.relative_to(self.stage)):self.ex.sha(p) for p in self.stage.rglob('*') if p.is_file()}
         report['status']='converted_pending_asset_editor_and_game_review'
         (self.out/'manifest.json').write_text(json.dumps(manifest));(self.out/'report.json').write_text(json.dumps(report))
-        before=(target/'Assets/CSC_TAILORS_Textile_Workshop.ast').read_bytes()
+        existing=target/'Assets/CSC_TAILORS_Textile_Workshop.ast'
+        existing.parent.mkdir(parents=True,exist_ok=True)
+        if not existing.exists():
+            existing.write_bytes(b'previous output for backup test')
+            manifest['destination_baseline'][str(existing.relative_to(target))]=self.ex.sha(existing)
+            (self.out/'manifest.json').write_text(json.dumps(manifest))
+        before=existing.read_bytes()
         self.job['mod_root']=str(target); self.ex.install(self.job)
         after=json.loads((self.out/'report.json').read_text())
         self.assertEqual((Path(after['backup'])/'Assets/CSC_TAILORS_Textile_Workshop.ast').read_bytes(),before)
         ids=[self.ex.txt(e,'m_EntryID') for e in self.ex.read_xml(xlp).find('m_Entries')]
         self.assertIn('CSC_Concurrent_Test',ids)
-        tex=next((target/'Textures').glob('*.tex'))
-        self.assertTrue(Path(self.ex.txt(self.ex.read_xml(tex),'m_SourceFilePath')).is_file())
+        for tex in (target/'Textures').glob('*.tex'):
+            self.assertTrue(Path(self.ex.txt(self.ex.read_xml(tex),'m_SourceFilePath')).is_file())
 
 
 class DDSValidationTests(unittest.TestCase):

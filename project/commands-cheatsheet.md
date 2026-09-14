@@ -1,6 +1,15 @@
 > **Documentation audit — 2026-09-12: Needs refresh.** Mixes an obsolete Mac OneDrive checkout with Windows commands and has an unterminated final path quote. SV command locations are outdated. Examples need a platform-specific rewrite before copy/paste use.
 > Classification: Tool commands. See the [full audit](../DOCUMENT-AUDIT.md).
 
+cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\blender"
+
+py .\export_assets.py `
+  --blend-directory "C:\Users\Shadow\Desktop\Working Files\3D Art\TAILORS\Textile Workshop\revision-08-export-ready" `
+  --mod-root "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains" `
+  --library "C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library" `
+  --blender "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" `
+  --texconv "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\directxtex\texconv.exe"
+
 ## 3D Art
 
 ### Generate N, M, G PBR textures

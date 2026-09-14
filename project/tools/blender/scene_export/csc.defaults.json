@@ -7,11 +7,25 @@
     "attachment_library": "Assets/CSC_ALL_Prop_Library.ast"
   },
   "material_bindings": {
-    "Ruin_Debris_Decal": "Ruin_Debris_Decal"
+    "Ruin_Debris_Decal": "Ruin_Debris_Decal",
+    "CSC_Textile_Building_Material": "CSC_TAILORS_E",
+    "CSC_Textile_Fixed_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Dye_Vat_Indigo_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Dye_Vat_Madder_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Textile_Loom_Teal_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Textile_Loom_Canvas_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Cloth_Bolt_Teal_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Cloth_Roll_Canvas_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Textile_Bale_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Folded_Cloth_Teal_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Sail_Cutting_Panel_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Sail_Drying_Rack_Material": "CSC_ALL_Props_01",
+    "CSC_Attached_Rope_Coil_Material": "CSC_ALL_Props_01"
   },
   "policies": {
     "nonuniform_scale": "reject",
     "supported_props": "independent-pivot",
     "reused_states": "native"
-  }
+  },
+  "material_policy": "reuse_existing"
 }

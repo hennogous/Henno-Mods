@@ -4,6 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from discovery import classify, find_blends, make_job
+from export_scene import read_xml, txt, MODELS, POINTS, STATES, model_instance
 
 
 class DiscoveryTests(unittest.TestCase):
@@ -41,6 +42,8 @@ class DiscoveryTests(unittest.TestCase):
         rows = [self.row('anything.blend', 'building', 'ProductA', 'FactoryMesh'),
                 self.row('else.blend', 'building', 'ProductB', 'WarehouseMesh'),
                 self.row('red.blend', 'decal', 'Ash'), self.row('blue.blend', 'prop', 'Bench')]
+        rows[0]['metadata']['template_asset'] = 'Assets/Factory.ast'
+        rows[1]['metadata']['template_asset'] = 'Assets/Warehouse.ast'
         first, report = self.job(rows)
         self.assertEqual(report['blockers'], [])
         self.assertEqual(first['buildings'][0]['decals'], ['Ash'])
@@ -77,15 +80,71 @@ class DiscoveryTests(unittest.TestCase):
 
     def test_missing_decal_and_ambiguous_template_block(self):
         row = self.row('a.blend', 'building', 'Product', 'FactoryMesh')
+        row['metadata']['template_asset'] = 'Assets/Factory.ast'
         row['metadata']['decals'] = ['Missing']
         _, report = self.job([row])
         self.assertIn('missing decal', report['blockers'][0])
-        self.template('Other', 'FactoryMesh', 'OtherModel')
+        root = read_xml(self.root / 'Assets/Factory.ast')
+        root.find(MODELS).append(copy.deepcopy(root.find(MODELS)[0]))
+        import xml.etree.ElementTree as ET
+        ET.ElementTree(root).write(self.root / 'Assets/Factory.ast')
         _, report = self.job([row])
         self.assertIn('2 building template/model matches', report['blockers'][0])
+        self.template('Factory', 'FactoryMesh', 'FactoryModel', 'Ash')
         row['metadata'].update(template_asset='Assets/Factory.ast', decals=[])
         _, report = self.job([row])
         self.assertFalse(report['blockers'])
+
+    def test_new_building_needs_no_existing_output_or_mesh_match(self):
+        row = self.row('new.blend', 'building', 'BrandNew', 'UnseenMesh')
+        job, report = self.job([row])
+        self.assertFalse(report['blockers'])
+        entry = job['buildings'][0]
+        self.assertEqual(entry['template_profile'], 'tilebase')
+        self.assertFalse((self.root / 'Assets/BrandNew.ast').exists())
+        root = read_xml(entry['template_asset'])
+        self.assertEqual(txt(root, 'm_ClassName'), 'TileBase')
+        self.assertEqual(len(root.find(POINTS)), 0)
+        self.assertEqual(len(root.find(MODELS)), 1)
+        states = {txt(r, 'm_StateName'): r for r in root.find(MODELS)[0].find('m_GroupStates')}
+        self.assertEqual(set(states), set(STATES))
+        model = {'asset_id': 'BrandNew', 'meshes': [{'name': 'UnseenMesh',
+                 'materials': [{'name': 'NewMaterial'}], 'triangles': [[0, 1, 2, 0]]}]}
+        generated = model_instance(model, {'NewMaterial': 'NewRuntimeMaterial'},
+                                   ('Worked', 'Unworked', 'Unbuilt'), states)
+        self.assertEqual(txt(generated, 'm_GeoName'), 'BrandNew')
+        for r in generated.find('m_GroupStates'):
+            self.assertEqual(txt(r, 'm_MeshName'), 'UnseenMesh')
+
+    def test_legacy_workshop_uses_owned_profile_with_or_without_old_output(self):
+        row = self.row('any-name.blend', 'building', 'Sailmaking', 'WorkshopMesh')
+        row['metadata'].update(template_asset='Assets/CSC_TAILORS_Textile_Workshop.ast',
+                               replace_model='CSC_TAILORS_Textile_Workshop',
+                               state_template_mesh='CSC_TAILORS_Textile_Workshop_Bldg',
+                               decals=['NewPillage'])
+        rows = [row, self.row('decal.blend', 'decal', 'NewPillage')]
+        job, report = self.job(rows)
+        self.assertFalse(report['blockers'])
+        entry = job['buildings'][0]
+        self.assertEqual(entry['template_profile'], 'level1_small')
+        self.assertEqual(entry['preserve_models'], ['CSC_Level_1_S_CON+PIL', 'CSC_Level_1_Decals'])
+        self.assertEqual(entry['decals'], ['NewPillage'])
+        (self.root / row['metadata']['template_asset']).write_text('deliberately invalid old output')
+        again, report = self.job(rows)
+        self.assertFalse(report['blockers'])
+        self.assertEqual(job, again)
+
+    def test_explicit_profile_and_invalid_inputs(self):
+        row = self.row('new.blend', 'building', 'New', 'Mesh')
+        row['metadata']['template_profile'] = 'level1_small'
+        job, report = self.job([row])
+        self.assertFalse(report['blockers'])
+        self.assertEqual(job['buildings'][0]['template_profile'], 'level1_small')
+        row['metadata']['template_profile'] = 'unknown'
+        self.assertIn('Unknown template_profile', self.job([row])[1]['blockers'][0])
+        del row['metadata']['template_profile']
+        row['metadata']['template_asset'] = 'Assets/MissingCustom.ast'
+        self.assertTrue(self.job([row])[1]['blockers'])
 
 
 if __name__ == '__main__':

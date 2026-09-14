@@ -63,6 +63,20 @@ def identifier(value):
     return value
 
 
+def existing_material(mat, job, mod):
+    """Resolve authored identities explicitly; never guess an atlas from a mesh name."""
+    target = job.get('material_bindings', {}).get(mat['name'], mat.get('external'))
+    if not target and (mod / 'Materials' / (mat['name'] + '.mtl')).is_file():
+        target = mat['name']
+    if target:
+        if target.startswith('CSC_') and not (mod / 'Materials' / (target + '.mtl')).is_file():
+            raise ValueError(f'{mat["name"]}: existing CSC material not found: {target}')
+        return target
+    if job.get('material_policy') == 'reuse_existing':
+        raise ValueError(f'{mat["name"]}: no existing material binding; set civ_material in Blender or material_bindings in the exporter defaults')
+    return None
+
+
 def value(parent, name, value, kind='Object'):
     e = elem(parent, 'Element', **{'class':f'AssetObjects..{kind}Value'})
     if kind == 'Object':
@@ -177,8 +191,12 @@ def attachment_transform(a, policies):
         problems.append('X/Y rotation requires a verified coordinate mapping')
     if a['support']!='ground' and policies.get('supported_props','reject')!='independent-pivot':
         problems.append(f'support {a["support"]} requires shared elevation; independent pivots can separate')
-    return {'position':[v/10 for v in a['position']], 'rotation':[0,0,-rot[2]],
-            'scale':sum(scale)/3}, problems
+    scalar = sum(scale)/3
+    if abs(scalar - 1.0) <= 1e-6:
+        scalar = 1.0
+    # AE displays degrees, but AST m_orientation serializes radians.
+    return {'position':[v/10 for v in a['position']], 'rotation':[0,0,math.radians(-rot[2])],
+            'scale':scalar}, problems
 
 
 def attachment(a, binding, owner, policies):
@@ -270,7 +288,7 @@ def build(job):
         source_inputs[model['source']]=model['source_sha256']
         for mesh in model['meshes']:
             for mat in mesh['materials']:
-                ext=job.get('material_bindings',{}).get(mat['name'],mat.get('external'))
+                ext=existing_material(mat,job,mod)
                 if ext:
                     materials[mat['name']]=ext; continue
                 ims=mat['images']
@@ -366,6 +384,16 @@ def build(job):
         prop_template=read_xml(mod/templates['prop_asset'])
         root=copy.deepcopy(prop_template); set_text(root,'m_Name',ident)
         root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,('Worked','Unworked')))
+        ao_overrides={mat.get('ao_override') for mesh in model['meshes'] for mat in mesh['materials']}
+        if any(ao_overrides):
+            if len(ao_overrides)!=1 or None in ao_overrides:
+                raise ValueError(f'{ident}: asset-level AO override must agree across all material groups')
+            ao=next(iter(ao_overrides)); identifier(ao)
+            for suffix in ('.tex','.dds'):
+                if not (mod/'Textures'/(ao+suffix)).is_file():
+                    raise ValueError(f'{ident}: missing existing AO texture {ao}{suffix}')
+            ao_value=next(v for v in root.findall('m_CookParams/m_Values/Element') if txt(v,'m_ParamName')=='AO')
+            set_text(ao_value,'m_ObjectName',ao)
         root.find(POINTS).clear()
         for tag in ('m_animationBindings/m_Bindings','m_timelineBindings/m_Bindings','m_timelines/m_Timelines'):
             node=root.find('m_BehaviorData/m_behaviorDataSets/'+tag)
@@ -376,6 +404,8 @@ def build(job):
     report['counts']={'custom_assets':len(report['assets']), 'geometry_only':len(report['geometry_only']),
                       'placements':len(report['placements']), 'materials':len(set(materials.values())), 'textures':len(textures)}
     report['preserved_models']={e['asset_id']:e.get('preserve_models',[]) for e in job['buildings']}
+    report['material_bindings']=materials
+    report['material_policy']=job.get('material_policy','generate_unbound')
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     destinations=[p.relative_to(stage) for p in stage.rglob('*') if p.is_file() and p.parts[-2]!='CN6']
     destinations += [Path('Geometries')/(ident+'.fgx') for ident in models]

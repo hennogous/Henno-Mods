@@ -27,6 +27,8 @@ def material(mat):
     if not mat:
         raise ValueError('Empty material slot')
     result = {'name': mat.name, 'images': {}}
+    if mat.get('civ_ao_texture'):
+        result['ao_override'] = mat['civ_ao_texture']
     if mat.get('civ_material'):
         result['external'] = mat['civ_material']
         return result

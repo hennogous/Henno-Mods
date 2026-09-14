@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Discover and export all top-level .blend files in --blend-directory.
+"""Discover, export and install all top-level .blend files in --blend-directory.
 
 Run from the repository; helpers live in the adjacent scene_export directory.
 Python 3.10+, standard library only. Never connects to another machine.
@@ -43,10 +43,11 @@ def main():
     parser.add_argument('--library', type=Path)
     parser.add_argument('--blender', default='blender')
     parser.add_argument('--converter', help='Defaults to the mod repository tools/cn6libs converter')
-    parser.add_argument('--texconv', default='texconv')
+    parser.add_argument('--texconv', help='Defaults to project/tools/directxtex/texconv.exe, then texconv on PATH')
     parser.add_argument('--output', type=Path, help='New empty directory; default export-runs/timestamp')
     parser.add_argument('--defaults', type=Path, help='Override CSC template/material/policy defaults JSON')
     parser.add_argument('--stage-only', action='store_true', help='Decode and build; skip FGX/DDS conversion')
+    parser.add_argument('--no-install', action='store_true', help='Convert into the run folder without installing into the mod')
     parser.add_argument('--install', type=Path, metavar='JOB_JSON', help='Explicitly install a previously converted run')
     args = parser.parse_args()
     here = Path(__file__).resolve().parent
@@ -72,7 +73,8 @@ def main():
     converter = texconv = None
     if not args.stage_only:
         converter = executable(args.converter or str(mod.parent / 'project/tools/cn6libs/CN6ToFGX.exe'))
-        texconv = executable(args.texconv)
+        local_texconv = here.parent / 'directxtex' / 'texconv.exe'
+        texconv = executable(args.texconv or (str(local_texconv) if local_texconv.is_file() else 'texconv'))
     defaults = json.loads((args.defaults or helpers / 'csc.defaults.json').read_text(encoding='utf-8'))
     stamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
     out = (args.output or blends / 'export-runs' / stamp).expanduser().resolve()
@@ -102,8 +104,13 @@ def main():
     run_step(base + ['build', str(job_path)], logs / 'build.log')
     if not args.stage_only:
         run_step(base + ['convert', str(job_path), '--converter', converter, '--texconv', texconv], logs / 'convert.log')
+        if not args.no_install:
+            run_step(base + ['install', str(job_path)], logs / 'install.log')
     print(f'\nFinished. Report: {out / "report.json"}\nJob: {job_path}')
-    print('Source blends and live mod files were not changed. Review the report before installing.')
+    if args.stage_only or args.no_install:
+        print('Staged only. Source blends and live mod files were not changed.')
+    else:
+        print('Installed into the mod project, including XLP entries. Source blends were not changed.')
     return 0
 
 

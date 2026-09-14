@@ -3,7 +3,7 @@
   "mod_root": "Civ Supply Chains",
   "output": "workshop-export",
   "templates": {
-    "asset": "Assets/CSC_TAILORS_Textile_Workshop.ast",
+    "asset": "../project/tools/blender/scene_export/templates/level1_small.ast",
     "prop_asset": "Assets/CSC_ALL_Workbench_M.ast",
     "geometry": "Geometries/CSC_Level_1_Decals.geo",
     "material": "Materials/CSC_ALL_Props_01.mtl",
@@ -14,8 +14,8 @@
     {
       "asset_id": "CSC_TAILORS_Textile_Workshop",
       "blend": "CSC_TAILORS_Textile_Workshop_FINAL.blend",
-      "replace_model": "CSC_TAILORS_Textile_Workshop",
-      "state_template_mesh": "CSC_TAILORS_Textile_Workshop_Bldg",
+      "replace_model": "Building",
+      "state_template_mesh": "BuildingMesh",
       "decals": [
         "CSC_TAILORS_Textile_Workshop_PIL_Decals"
       ],
@@ -31,8 +31,8 @@
     {
       "asset_id": "CSC_TAILORS_Textile_Workshop_Sailmaking",
       "blend": "CSC_TAILORS_Textile_Workshop_Sailmaking_FINAL.blend",
-      "replace_model": "CSC_TAILORS_Textile_Workshop",
-      "state_template_mesh": "CSC_TAILORS_Textile_Workshop_Bldg",
+      "replace_model": "Building",
+      "state_template_mesh": "BuildingMesh",
       "decals": [
         "CSC_TAILORS_Textile_Workshop_PIL_Decals"
       ],

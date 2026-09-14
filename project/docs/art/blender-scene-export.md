@@ -7,14 +7,20 @@ attachment identities or transforms.
 
 The tool reads saved Blender files without saving or applying transforms to them.
 It stages CN6, GEO, AST, materials, texture descriptors/sources and an idempotent
-XLP merge. Windows then converts CN6 to FGX and PNG to DDS. Installation is a
-separate explicit command with destination checks, backups and rollback on errors.
+XLP merge. Windows then converts CN6 to FGX (and PNG to DDS when explicitly using
+material generation), and the normal run installs the converted files into the
+mod with destination checks, backups and rollback on errors.
 
 ## Windows: export a folder of Blender assets
 
 Prerequisites: Python 3.10+, Blender (tested decoding with 5.1.2), the repository's
 `project/tools/cn6libs/` folder and Microsoft DirectXTex `texconv.exe`. Python uses
 only its standard library: PyYAML is not required by this exporter.
+
+The runner uses `project/tools/directxtex/texconv.exe` by default when present,
+then searches PATH. See [the pinned download and checksum](../../tools/directxtex/README.md).
+`--texconv` overrides that selection. Shadow's old CivNexus6 copy fails to start;
+the current standalone Microsoft release is used by the command cheatsheet.
 
 Henno copies the complete revision folder into Google Drive himself and runs the
 export locally on Windows, either directly or through the Windows agent. Do not
@@ -45,7 +51,13 @@ blockers. Reports and streamed logs are retained there; failures stop the run. P
 `export-job.json` and `export-validation/` files are evidence, not Windows inputs.
 The script generates Windows-local paths and never edits the source blends.
 
-After reviewing the report and staged files, explicitly install that run:
+Normal export now installs automatically: FGX/GEO files go to `Geometries`, AST
+files to `Assets`, and asset entries are merged into `XLPs/CSC_Tilebases.xlp`.
+Source blends remain unchanged. Backups and reports remain in the timestamped run.
+Use `--no-install` for a converted preview, or `--stage-only` to stop before both
+conversion and installation. A conversion failure never triggers installation.
+
+To install a previously converted `--no-install` run, use:
 
 ```powershell
 python project/tools/blender/export_assets.py --install 'C:\path\to\revision-07-uniform-scale\export-runs\<timestamp>\job.json'
@@ -70,6 +82,32 @@ CSC TileBase XLP; source AST/GEO/MTL/TEX dependencies are resolved through that 
 
 ## Discovery and scene metadata
 
+### Existing material reuse
+
+The normal CSC defaults use `material_policy: "reuse_existing"`. Bindings come
+from `material_bindings` in `scene_export/csc.defaults.json`, a Blender material's
+`civ_material` property, or an exact match with an existing project MTL name.
+No atlas/Quarter inference is used. Unbound materials block the run with a message
+requesting an explicit binding, rather than generating hash-named MTLs/textures.
+
+Current Textile Workshop bindings:
+
+| Source | Existing material |
+|---|---|
+| Main building | `CSC_TAILORS_E` |
+| Fixed textile geometry, loom/vats, textile/sail/rope props | `CSC_ALL_Props_01` |
+| Bench/workbench | `CSC_ALL_Props` (existing `civ_material`) |
+| Pillage decals | `Ruin_Debris_Decal` |
+
+These bindings reuse existing materials and their textures unchanged. The blend's
+separate AO bakes and revised texture images are not exported in this mode;
+appearance follows the existing MTL definitions. Each report records the effective
+material mapping. Additional source materials need their own explicit mapping.
+Development jobs without `reuse_existing` retain the older unbound-material
+generation path; the normal CSC command does not use it.
+
+### Scene identity
+
 The normal entry point no longer uses `workshops.example.json`. Filenames are
 arbitrary: identity comes from the saved scene, so renaming a blend does not rename
 its game asset. Scan is nonrecursive to avoid exporting library backups and working
@@ -89,7 +127,37 @@ named `Export` scene is used (a sole scene is also eligible). Minimal examples:
 {"kind": "decal", "geometry_id": "CSC_New_Building_PIL_Decals"}
 ```
 
-A building can specify the template and relevant model selectors explicitly:
+A new building uses the exporter's bundled TileBase template. It does not need an
+existing output AST or a matching mesh in another building. For the small Level 1
+kit, select the profile that includes its shared construction/pillage and base
+decal models:
+
+```json
+{
+  "kind": "building",
+  "asset_id": "CSC_New_Building",
+  "template_profile": "level1_small",
+  "decals": ["CSC_New_Building_PIL_Decals"]
+}
+```
+
+Profiles ship in `project/tools/blender/scene_export/templates/`, outside generated
+mod content. `tilebase` (the default) is a bare TileBase shell with the main model's
+five state settings; it has no construction/pillage auxiliary models or base
+decals. `level1_small` adds `CSC_Level_1_S_CON+PIL` and `CSC_Level_1_Decals`, retaining
+their state tables and referencing their existing shared geometry. Choose this
+profile only for that kit; other kits need their own profile or explicit template.
+Neither profile contains Workshop geometry, props or material bindings.
+
+The existing revision-08 metadata referencing
+`Assets/CSC_TAILORS_Textile_Workshop.ast` maps explicitly to `level1_small`, even
+when that old output is absent. Legacy main-model selectors are replaced with
+the bundled template's placeholders; scene decal and preservation requirements
+remain in effect. Both normal and Sailmaking blends work without resaving them.
+Discovery reports record the selected profile and actual template path.
+
+For bespoke behavior, a building can instead specify an existing input template
+and relevant model selectors explicitly (do not also specify `template_profile`):
 
 ```json
 {
@@ -116,9 +184,10 @@ and `preserve_models` (required model names). Keep these selectors explicit when
 a template has behavior that is not fully represented by the composition.
 
 For existing scenes, discovery can infer a building from meshes marked
-`building_geometry` and their unique `source_asset_id`. It first tries the asset's
-own AST; otherwise it requires a unique template/model match by main mesh name.
-Ambiguity requires explicit template metadata. Existing `Shared PIL export` scenes
+`building_geometry` and their unique `source_asset_id`. Without an explicit input
+template, discovery uses the bundled profile, never the output AST or a scan of
+unrelated assets. Explicit custom templates must exist and identify a unique
+model; unknown missing paths remain errors. Existing `Shared PIL export` scenes
 use their sole armature identity as the decal ID. Building/decal links can come
 from template GEO IDs, with the legacy `PIL_geometry` path as a fallback. Existing
 library prop scenes can be recognized by a unique catalogued armature identity.
@@ -133,6 +202,15 @@ still verifies that placements reference those definitions verbatim.
 Common CSC geometry/material/texture/prop templates and policies are stored in
 `scene_export/csc.defaults.json`; `--defaults` selects another defaults file. Building
 templates are resolved per file, so one run can contain different building types.
+
+Verified on Shadow on 14 September 2026 with the revision-08 Workshop handoff:
+both buildings discover and build while the old Workshop AST/GEO/FGX outputs are
+absent. The integration suite checks shared state preservation, 32 placements,
+geometry metadata, staged XLP entries and isolated installation/backup behavior.
+The full run also passed Windows conversion (11 assets, 12 FGX geometries and 13
+DDS textures), converted-file hash checks and DDS dimensions/mipmap validation.
+Source blend hashes were unchanged. Asset Editor/cook/in-game review remains a
+separate step; the test run did not install into the live mod.
 The defaults contain no building filenames or building identity preset. Discovery
 and decode verify source hashes and never save or apply transforms to the blends.
 

@@ -4,6 +4,17 @@ import xml.etree.ElementTree as ET
 from export_scene import identifier, read_xml, txt, MODELS
 
 
+TEMPLATE_PROFILES = {
+    'tilebase': 'tilebase.ast',
+    'level1_small': 'level1_small.ast',
+}
+# Migration of shipped scene metadata, regardless of whether the old output exists.
+# Do not silently substitute a generic template for arbitrary missing custom ASTs.
+LEGACY_TEMPLATE_PROFILES = {
+    'assets/csc_tailors_textile_workshop.ast': 'level1_small',
+}
+
+
 def find_blends(directory):
     files = sorted((p.resolve() for p in directory.iterdir()
                     if p.is_file() and p.suffix.lower() == '.blend'), key=lambda p: p.name.casefold())
@@ -48,15 +59,26 @@ def resolve_building(entry, row, mod):
     meshes = {m['name'] for m in row['meshes'] if m['role'] == 'building_geometry'}
     candidates = []
     explicit = meta.get('template_asset')
-    own = mod / 'Assets' / (entry['asset_id'] + '.ast')
-    paths = [mod / explicit] if explicit else ([own] if own.is_file() else sorted((mod / 'Assets').glob('*.ast')))
+    legacy_profile = LEGACY_TEMPLATE_PROFILES.get(str(explicit).replace('\\', '/').casefold())
+    profile = meta.get('template_profile') or legacy_profile or ('tilebase' if not explicit else None)
+    if profile:
+        if profile not in TEMPLATE_PROFILES:
+            raise ValueError(f'Unknown template_profile {profile!r}; choose {sorted(TEMPLATE_PROFILES)}')
+        if explicit and not legacy_profile:
+            raise ValueError('Choose template_profile or template_asset, not both')
+        paths = [Path(__file__).resolve().parent / 'templates' / TEMPLATE_PROFILES[profile]]
+        model_selector, mesh_selector = 'Building', 'BuildingMesh'
+        entry['template_profile'] = profile
+    else:
+        paths = [mod / explicit]
+        model_selector, mesh_selector = meta.get('replace_model'), meta.get('state_template_mesh')
     for path in paths:
         root = read_xml(path)
         for model in root.findall(MODELS + '/Element'):
-            if meta.get('replace_model') and txt(model, 'm_Name') != meta['replace_model']:
+            if model_selector and txt(model, 'm_Name') != model_selector:
                 continue
             names = {txt(g, 'm_MeshName') for g in model.findall('m_GroupStates/Element')}
-            match = {meta['state_template_mesh']} & names if meta.get('state_template_mesh') else meshes & names
+            match = {mesh_selector} & names if mesh_selector else meshes & names
             if len(match) == 1:
                 candidates.append((path, root, model, next(iter(match))))
     if len(candidates) != 1:
@@ -99,6 +121,8 @@ def make_job(rows, defaults, mod, library, output, catalogue):
                      ('geometry_id' if kind == 'decal' else 'asset_id'): ident}
             if kind == 'building':
                 auxiliary[ident] = resolve_building(entry, row, mod)
+                result['template_asset'] = entry['template_asset']
+                result['template_profile'] = entry.get('template_profile')
             job[{'building': 'buildings', 'prop': 'props', 'decal': 'decals'}[kind]].append(entry)
             records[ident] = row
             result['status'] = 'resolved'
