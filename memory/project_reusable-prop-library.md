@@ -72,3 +72,16 @@ Buildings resolve their own templates and preserve auxiliary state geometry. Loc
 authored prop definitions are shared once per batch; native assets remain references.
 The current synced normal workshop was discovered successfully but decoding found
 `Drying_Display` mesh-child transform offset. Do not silently change Henno's placement.
+
+## 14 September — revision 08 repairs and minimal art handoff
+
+Fixed the normal RugsF display and sailmaking seating-bench mesh-child offsets by
+moving their transforms onto attachment controllers. All mesh world matrices, local
+geometry and UVs were preserved within float tolerance; transforms were not baked
+into vertices. Original user-edited revision07 on Drive remains unchanged.
+The corrected delivery is `codex-outputs/CSC_TAILORS_Textile_Workshop/revision-08-export-ready/`:
+three final blends plus `textures/` (31 files), no tools/logs/ZIPs. Explicit csc_export
+metadata is embedded in each Export scene, texture paths are portable, and fresh
+discovery/decode/staging succeeded with zero blockers (11 assets, 12 GEOs, 32 placements).
+Use the existing synced CSC_Prop_Library separately. Windows conversion/game checks
+remain pending. Repair records and validation are outside the minimal art folder.
