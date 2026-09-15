@@ -221,3 +221,25 @@ class DDSValidationTests(unittest.TestCase):
             with self.assertRaises(ValueError): validate_dds('unused',{'format':'R8_UNORM','size':[2,2]})
 
 if __name__=='__main__': unittest.main()
+
+class ExplicitAOTests(unittest.TestCase):
+    def test_ao_reuse_variant_and_conflicting_pixels(self):
+        from export_scene import stage_ao_binding, sha
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d); mod=root/'mod'; stage=root/'stage'; (mod/'Materials').mkdir(parents=True)
+            original='<M><m_Name text="CSC_M"/><m_CookParams><m_Values><Element><m_ParamName text="AO"/><m_ObjectName text="CSC_Old"/></Element><Element><m_ParamName text="BaseColor"/><m_ObjectName text="KeepSurface"/></Element></m_Values></m_CookParams></M>'
+            path=mod/'Materials/CSC_M.mtl'; path.write_text(original)
+            src=root/'ao.png'; src.write_bytes(b'actual source bytes')
+            mat={'name':'Preview','ao_texture':'CSC_Shared_AO','images':{'AO':{'path':str(src),'sha256':sha(src),'size':[2048,2048]}}}
+            tex={}; inputs={}; ident=stage_ao_binding(mat,'CSC_M',mod,stage,tex,inputs)
+            variant=ET.parse(stage/'Materials'/(ident+'.mtl')).getroot()
+            bindings={txt(e,'m_ParamName'):txt(e,'m_ObjectName') for e in variant.findall('m_CookParams/m_Values/Element')}
+            self.assertEqual(bindings,{'AO':'CSC_Shared_AO','BaseColor':'KeepSurface'})
+            self.assertEqual(path.read_text(),original)
+            self.assertEqual((stage/tex['CSC_Shared_AO']['source']).read_bytes(),src.read_bytes())
+            self.assertEqual(inputs[str(src)],sha(src))
+            path.write_text(original.replace('CSC_Old','CSC_Shared_AO'))
+            self.assertEqual(stage_ao_binding(mat,'CSC_M',mod,stage,tex,inputs),'CSC_M')
+            src.write_bytes(b'other pixels'); mat['images']['AO']['sha256']=sha(src)
+            with self.assertRaisesRegex(ValueError,'Conflicting AO source'):
+                stage_ao_binding(mat,'CSC_M',mod,stage,tex,inputs)

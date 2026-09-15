@@ -62,6 +62,57 @@ the saved blends anew into a fresh output directory; installation remains explic
 Henno can edit `Attach_…` controllers in Object Mode: move, Z-rotate, positive uniform
 scale, save without applying transforms. Preserve mesh children, source IDs and UVs.
 
+## 15 September — everyday Blender scene edits
+
+CSC Scene Tools add-on at `project/tools/blender/csc_scene_tools.py` handles attachment
+duplication with new instance IDs, fixed-mesh duplication, export inclusion/exclusion,
+and catalogue prop imports at cursor with adjacent portable textures. Placement remains
+on attachment Empties; keep transforms unapplied and use uniform positive scale.
+The decoder omits render-hidden/CSC-excluded roots and fixed meshes. One authored
+single-mesh CSC prop can use vertex-position edits while topology/UV/material layout
+stays unchanged, emitting one updated asset definition for every placement in that
+batch and reporting that AO was not rebaked. Native pantry assets stay exact; explicit
+Quarter master blends must be edited alongside their scenes. Library reconciliation
+after CSC scene edits is deliberate, not an automatic shared-drive write.
+Blender 5.1.2 headless validation on a workshop copy verified direct add-on methods,
+registration/dropdown/duplicate operator and saved scene stage-only export. Three
+new native placements plus one fixed clone yielded 43 placements and 10 custom
+identities; excluding/removing two yielded 41. A small CSC_ALL_Textile_Bale vertex
+edit changed one GEO under the same ID with `ao_rebaked: false`; a native barrel
+vertex edit was rejected. The current synced library has `CSC_ALL_Workbench_Narrow`
+where the accepted revision11 scenes still use `CSC_ALL_Workbench_Long_Narrow`;
+validation used a local historical-master snapshot. Reconcile scene/library IDs
+before exporting accepted revision11 against the live catalogue.
+
+## 15 September — Workbench Narrow add-on repair
+
+`CSC_ALL_Workbench_Narrow.blend` contains a single mesh plus an armature rig;
+the v1.0.0 importer's name-prefix lookup loaded both and rejected the non-mesh.
+Version 1.0.1 prefers catalogue-declared mesh names, discards implicitly appended
+orphan rigs after reparenting, and maps Windows `Working Files/3D Art` image paths
+to the synced local art tree. Actual Blender add-on import and saved stage-only
+export passed on a workshop copy. Installed Blender 5.1 add-on was replaced with
+the tested source after backing up v1.0.0 under codex-outputs; a running Blender
+session must reload scripts or restart to use the new module.
+Reloaded scripts in Henno's open Blender session and used the actual CSC sidebar
+import button. Blender reported one-mesh Workbench Narrow import and selected the
+new `Attach_CSC_ALL_Workbench_Narrow_01` controller. The live scene was left unsaved
+for Henno to position the prop before saving.
+
+## 15 September — non-library asset-master import
+
+CSC Scene Tools v1.1 adds Asset master / Add non-library asset master. One-scene
+CSC prop masters can use explicit csc_export prop metadata or a unique armature
+whose name is the asset ID. External masters are written as portable metadata
+copies at the building revision folder's top level, retaining source geometry and
+using the adjacent textures folder; one `Attach_` controller references the ID.
+Tailors Sail Cutting Panel import and stage-only export passed on a disposable
+revision11 copy. Spinning Wheel (no metadata, armature name = ID) imported and
+decoded, but its Current shared AO differs from revision11's atlas: staging was
+blocked, then the add-on was tightened to reject the mismatch before import and
+verified to leave zero extra scenes, objects or master files. Source masters stay
+unchanged.
+
 ## 14 September — filename-independent discovery
 
 `project/tools/blender/export_assets.py` now scans top-level `.blend` files instead
@@ -112,3 +163,80 @@ legacy CSC_Attached seating-bench definitions from active library/catalogue, wit
 backups outside the synced library; no live AST/XLP/GEO/ArtDef references existed
 in the repo. New output: codex-outputs/CSC_TAILORS_Textile_Workshop/revision-10-shared-bench.
 Six shared props + two Tailors props + two buildings = 10 unique custom assets.
+
+2026-09-14 current work: revision 11 replaces entrance custom goods with pantry
+DIS_COM_Crate + PROP_Barrel_Classical, two props each side per workshop. Migrates
+custom AO into shared Sheet01 Tailors Stage2. Henno's explicit ceiling: BOTH
+workshop variants together <=1/3 of Tailors quadrant; keep 512² reservation (25%)
+where possible. Twelve padded 128² cells occupy18.75%,6.25% spare inside family,
+75% reserved for other hero families/storage. Shared props get one self-AO cell
+where first allocated, reused across scenes/Quarters. Pantry retains native AO.
+Skill1.3.11 records ceiling. Exporter must retain explicit civ_ao_texture even when
+civ_material is used; stage stable named AO sources and use AO-only material
+variants when necessary, preserving base surfaces. No AO bake during export.
+
+Revision11 completed at codex-outputs/CSC_TAILORS_Textile_Workshop/revision-11-pantry-interiors-shared-ao:
+5 blends plus36 textures, no ZIP/tools. Published AO Current/release
+2026-09-14_Shared_01_r004 and six CSC_ALL masters to the existing Drive library.
+Prior sources retained in entrance-props/ao-work/pre-migration-library and prior
+atlas releases; no unrelated assets removed. Contact sheets refreshed:39 reusable
+entries,8 CSC_ALL. Final export stage:10 ASTs,11 GEOs (one geometry-only sharedPIL),
+40 placements,4 runtime materials,2 AO texture sources,0 blockers. Extra materials
+are AO-only variants preserving current surface bindings for the building and
+legacy narrow bench. Windows conversion/game still pending. New exporter contract
+checks pass;31 unit tests ran,7 optional integrations skipped. Specific current
+Blender/CN6/XML integration verified separately in entrance-props/export-final.
+
+2026-09-14 follow-up: user explicitly requested UV1/material/AO migration of
+Working Files/3D Art/Props/Tailors/Spinning Wheel/CSC_TAILORS_SpinningWheel.blend and
+Props/CSC_ALL_Workbench.blend. Both exact originals now use CSC_ALL_Props_01 with
+portable relative paths to CSC_Props/Current; geometry, topology, rig weights,
+transforms and UV3 retained. Source backups and portable preview bundles are at
+codex-outputs/csc-prop-material-migration. r005 adds AO cells [1024,384,1152,512]
+and [1152,384,1280,512];14cells=21.875% Tailors quadrant used,2cells=3.125% still
+free in Stage2,75% reserved outside it. Existing12cells/all other pixels and all
+surface maps preserved. Current manifest/independent bake sources/release updated.
+No new catalogue/asset registration; these are the two exact provided sources,
+not replacements for similarly named library entries. Older workshop bundles and
+library image snapshots remain unchanged; unify AO snapshots before a mixed batch
+export to avoid conflicting images under the same stable texture ID.
+Decoder now triangulates n-gons only on its temporary export mesh; source stays
+editable. Both sources decode with the shared existing material and explicit AO.
+
+2026-09-14 basket replacement: user requested exact Props/Tailors/CSC_TAILORS_Basket.blend
+be replaced by a lower-poly large basket of pale cotton-like raw fibre using shared
+prop material. Installed new source with same asset ID, identity transforms, ~28.8×34.2×29
+bounds, 169 mesh positions/260 triangles; same decoder measures351 vertices vs506
+for old270-position/353-triangle source. CSC_ALL_Props_01, existing sackcloth/rope/canvas
+patches, UV1/UV2/UV3 and static Bone. Original backed up in
+codex-outputs/csc-tailors-cotton-basket/originals. Shared atlas r006 adds self-AO cell
+[1280,384,1408,512]; all prior pixels preserved.15cells=23.4375% Tailors quadrant,
+one cell free within25% family block. Exact installed blend reopened/decoder verified;
+local portable copy/renders/report/internal CN6 in task folder. No FGX/game update.
+
+2026-09-15 AO/import repair: the synced revision-11 Textile Workshop and
+CSC_Prop_Library local `CSC_Props_Shared_01_AO.png` copies explicitly adopted
+Current r006. Pixel comparison against the old r004 workshop image found changes
+only in the three new 128×128 cells for SpinningWheel, original Workbench and
+Basket; prior occupied cells and all other pixels remained identical. Both exact
+Tailors SpinningWheel/Basket source masters now use portable relative paths to
+`Textures/CSC_Props/Current/textures` for all six shared PNGs. The Blender add-on
+1.1.1 has a bounded fallback for previously saved missing CSC production-map
+paths, including the Basket's missing `Props/Tailors/textures` path. Headless
+imports of both masters into a disposable revision-11 scene passed and retained
+matching r006 AO. The user's open unsaved Blender scene was not overwritten;
+backups and validation copy are in codex-outputs/csc-ao-basket-fix.
+
+2026-09-15 attachment rename repair: saved revision-11 workshop had
+`Rear_Crate_A_01` and `Rear_Crate_A_01_01_01` from repeated duplication, with
+their mesh child `instance_id` still `Rear_Crate_A`; `Attach_Loom_Seat` retained
+the old Workbench Narrow root ID. CSC Scene Tools 1.2.0 now uses controller names
+as placement IDs, synchronizes direct mesh names/IDs and dependent support IDs,
+preflights collisions, and chooses unused letters for lettered duplicates. An
+explicit rename to an occupied ID is rejected; an Outliner `.001` collision
+resolves to the next unused placement name. The sidebar cleanup action maps the
+old rear crate duplicates to `Rear_Crate_C` and `Rear_Crate_D` while B remains
+occupied. Headless Blender checks on a disposable saved-scene copy exercised
+cleanup, repeated lettered/numbered duplicates, raw Outliner rename, collision,
+mesh rename and support update. The live unsaved Blender scene was not saved or
+overwritten; validation scene is in codex-outputs/csc-attachment-rename.

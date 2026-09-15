@@ -235,7 +235,7 @@ stage without a manifest; use a fresh directory for that case too.
 | Input | Output treatment |
 |---|---|
 | `building_geometry`, `fixed_geometry`, or `CSC_Fixed_` mesh | Included in the primary building GEO/CN6 with its world placement serialized into a temporary vertex stream. No separate prop asset. |
-| Attachment EMPTY with `instance_id`, `source_asset_id`, `support` | Placement from its world matrix. Direct mesh children must retain their library geometry/UVs and identity transforms relative to the root. |
+| Attachment EMPTY with `instance_id`, `source_asset_id`, `support` | Placement from its world matrix. Direct mesh children keep identity transforms relative to the root. Native meshes match their library source exactly; a controlled CSC vertex edit can define one updated asset for the whole batch. |
 | Reused catalogue asset | Exact existing BLP binding copied from `CSC_ALL_Prop_Library.ast`; no duplicate geometry/material/XLP registration. |
 | Catalogue `origin: authored_blender` | One new prop asset/GEO per exact identity, shared across all buildings in the job. |
 | Explicit decal input | DecalGeometry referenced as a model instance; **no standalone AST/XLP registration**. |
@@ -270,12 +270,106 @@ positive equal scale components; do not apply transforms. Save the blend and rer
 `export_assets.py` so the new placements are decoded. Review and Export share
 the same asset objects, so either scene can be used for these edits.
 
-Do not transform its mesh child, edit the reused mesh/UVs, or change source identity
-properties. The child's transform relative to its controller must remain identity.
-X/Y tilting, mirroring and axis-specific scaling are rejected. To change a prop's
-proportions, author a separate library asset and bind it explicitly. Adding a new
-instance also needs a unique `instance_id`; ordinary duplicate-and-save is not the
-same as repositioning an existing controller.
+The mesh child must remain at identity relative to its controller. X/Y tilting,
+mirroring and axis-specific scaling are rejected. To change proportions, author a
+distinct library asset and place it with uniform scale.
+
+For everyday editing, install `project/tools/blender/csc_scene_tools.py` in Blender
+via Preferences → Add-ons → Install from Disk. Its **CSC** tab in the 3D View
+sidebar works on the saved building scene; Review and Export share the asset
+objects. Select an attachment Empty or its child and click **Duplicate selected
+prop**. The tool creates a new controller with a unique `instance_id`, preserves
+source/support/state metadata, and shares the source mesh datablock with the
+existing placement. Move the selected new Empty and save without applying
+transforms. Duplication adds a placement, not another asset or AO allocation.
+
+Attachment placement names are the `Attach_<instance_id>` controller names; the
+controller's custom `instance_id`, direct mesh children's names and `instance_id`s,
+and any dependent attachment `support` references must agree. With CSC Scene Tools
+1.2.0, rename a controller in the Outliner or use **Rename selected prop** in the
+CSC sidebar; the add-on synchronizes these fields. The mesh child follows its
+controller name, so rename the controller rather than its generated mesh name.
+The rename dialog rejects an ID already in use. If Blender produces a `.001`
+suffix after an Outliner name collision, the add-on selects the next available
+placement name instead of storing `.001` as an export ID. Lettered placements
+such as `Rear_Crate_A` duplicate to the next unused letter; numbered asset
+placements advance `_01`, `_02`, `_03` without accumulating numeric tails.
+**Clean up attachment names** migrates older tool-generated lettered duplicates
+and repairs stale mesh IDs in the open scene. Save the scene after reviewing its
+renamed controllers. Mesh geometry and placement transforms are unchanged.
+
+**Include / exclude from export** sets render visibility and a CSC exclusion flag
+on a selected attachment and its mesh children, or on a fixed mesh. The exporter
+also respects Blender's `Hide in Renders` on an attachment root or fixed mesh. An
+excluded attachment contributes no Asset Editor point; an excluded fixed mesh
+contributes no building GEO mesh. Keep at least one intact building mesh visible.
+Blender viewport hiding alone does not mean exclusion.
+
+**Remove selected prop** deletes an attachment root with its direct meshes from
+both scenes, or a fixed mesh. It refuses removal if another attachment uses that
+root as support or it has non-mesh children. Blender Undo reverses the operation.
+
+To add a prop, set **Library** to the synced `CSC_Prop_Library` folder, choose an
+asset ID and click **Add library prop at cursor**. The tool imports the visible
+mesh components and copies required textures to the saved blend's adjacent
+`textures/` folder. It creates a new `Attach_` controller at the 3D cursor with
+`support: ground`; move, Z-rotate or scale that controller uniformly. The imported
+mesh retains its library-local geometry, UVs and pivot. Duplicate it with the
+same button. A prop with an unusual support/state relationship may need an
+intentional follow-up edit to the controller metadata.
+Rigged static library masters import their declared mesh components; the add-on
+removes the preview rig after rebinding the mesh to its attachment controller.
+For CSC masters saved on Windows, texture paths inside the synced `Working Files/3D Art`
+tree resolve to the matching local files before they are copied beside the scene.
+
+Fixed `CSC_Fixed_` meshes can be moved, Z-rotated, uniformly scaled, duplicated
+with the button, or have their vertices adjusted in Edit Mode. Each fixed
+duplicate is a new building GEO mesh and receives no new asset ID. Existing AO
+UVs stay in place; review whether the edited shape still suits its baked AO.
+
+For an authored, **single-mesh CSC library prop**, adjusting only vertex
+positions in the scene is supported without an automatic AO rebake. The exporter
+checks that topology, all UV layers and material assignments still match the
+library master. One edited geometry definition is emitted for that asset ID and
+affects **every placement** of that ID in the batch, including placements still
+showing the old mesh in Blender. Different edited definitions conflict and block.
+The run report records `scene_geometry_edits` with the master SHA, edited placement
+count and `ao_rebaked: false`. Reconcile the library master and any other scenes
+before later batches; this exporter does not silently write to the shared library.
+For a Quarter prop with an explicit local master blend in the revision folder,
+edit that master too. Pantry geometry, UVs and materials must remain verbatim;
+make a new custom asset if a native prop needs a different shape.
+
+### Adding a non-library asset master
+
+Use **Asset master → Add non-library asset master** in the CSC sidebar when the
+prop already exists as its own static `.blend` master. The add-on accepts a master
+with one scene, one or more meshes, UV1/UV2/UV3, identity mesh placement and either
+`csc_export` prop metadata or a single `CSC_…` armature whose name is the intended
+asset ID. It uses that ID as the attachment's `source_asset_id`; no custom property
+editing is needed in the building scene. Place, Z-rotate and uniformly scale the
+new `Attach_` Empty, then save.
+
+If the source master is outside the building's revision folder, the add-on writes
+an export-ready **copy** named `<asset ID>.blend` at the top level of that folder.
+Its `csc_export` metadata declares `kind: prop` and the ID; its image paths point
+to the same adjacent `textures/` directory as the building blend. The original
+master remains unchanged. The exporter then discovers the local master and stages
+one custom prop asset, regardless of how many placements use it. If that ID is
+already in the active catalogue, use **Add library prop** instead. An existing
+in-folder master needs its own `csc_export` prop metadata; the tool will not
+overwrite it. AO allocation, UVs, materials and static weights must already be
+prepared in the source master.
+
+The add-on checks for conflicting pixels under the same shared AO atlas filename
+before importing. A newer `CSC_Props_Shared_01_AO.png` cannot be mixed with an
+older one in the same scene batch; reconcile the AO release first. Blender's
+viewport may show a prop correctly even when that shared atlas mismatch would
+make the exporter reject it.
+For CSC production maps, the add-on also resolves an old or missing master image
+path to the exact matching filename under synced `3D Art/Textures/CSC_Props/Current/textures`.
+New Tailors masters should instead save portable paths to that folder; imported
+copies then bind to the building revision's adjacent `textures/` snapshot.
 
 Moving or uniformly scaling a table controller also affects props parented to it
 in Blender. Check their contact afterward. The exporter reads the resulting world
@@ -384,3 +478,27 @@ The pair now uses 10 custom assets: two buildings, six shared props and two
 Tailors-specific props. The reusable sheets contain 39 entries, including eight
 CSC_ALL assets; 47 catalogue records remain including other historical definitions.
 Use revision-10-shared-bench (five blends and textures) for the current workshop.
+
+### Explicit custom AO bindings
+
+Set a Blender material's `civ_ao_texture` to the stable CSC texture ID and provide
+an external image node labelled `AO`. The decoder retains this binding even when
+`civ_material` references an existing material. The exporter stages the actual
+PNG and a TEX with the same identity for Windows DDS conversion. Different source
+pixels claiming the same texture ID in a batch are an error.
+
+If the existing material already samples that AO ID, reuse it. Otherwise create a
+stable AO-only material variant, preserving its surface maps and other parameters;
+do not overwrite a material used by assets with another AO layout. This introduces
+no additional asset/XLP entry. Native pantry attachments keep their source bindings.
+This explicit handling fixes the former path that silently skipped AO source images
+when reusing a material. It does not bake AO during export.
+
+Revision 11 workshop source checks cover Blender, CN6, XML, native source signatures,
+shared AO staging and retained construction/pillage/decal models. Windows conversion,
+cooking and in-game slope/stack behavior remain to be checked on Windows.
+
+User-authored meshes may contain n-gons. The decoder triangulates those faces only
+on its temporary export copy before calculating tangents; the saved source topology,
+UV3, weights and transforms remain unchanged. This was checked with the supplied
+CSC_TAILORS_SpinningWheel source during its shared-material migration.

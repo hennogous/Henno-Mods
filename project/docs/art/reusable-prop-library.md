@@ -147,3 +147,43 @@ The pair now uses 10 custom assets: two buildings, six shared props and two
 Tailors-specific props. The reusable sheets contain 39 entries, including eight
 CSC_ALL assets; 47 catalogue records remain including other historical definitions.
 Use revision-10-shared-bench (five blends and textures) for the current workshop.
+
+### Workshop AO capacity and pantry interiors — revision 11
+
+Both workshop variants now use one pantry crate and one classical barrel on each
+side inside the entrance. These replace the two fixed custom interior goods meshes.
+They retain native identities, geometry, UVs, materials and states, with uniform
+placement transforms. All other placements are preserved.
+
+Custom prop AO follows the two-sheet Quarter plan: 2048×2048 per sheet, four
+1024×1024 Quarter quadrants per sheet. Tailors uses Sheet 01's upper-right quadrant.
+The Textile Workshop family, **both variants combined**, must consume no more than
+one third of that quadrant. Keep its existing 512×512 family reservation (25%) rather
+than treating the ceiling as a target. Reserve the other 75% for the two remaining
+hero families and storage.
+
+Revision 11 allocates twelve 128×128 cells including padding: **18.75% of the
+Tailors quadrant**, with four cells (6.25%) still free inside the family block.
+Six shared custom props, two Tailors attachments, two loom versions and two vats
+receive isolated self-AO bakes. Shared masters use the same cell at every placement,
+including in future Quarters; do not allocate a new copy per placement or Quarter.
+All these props sample `CSC_Props_Shared_01_AO.png` through UV2. Base-building AO
+stays separate; pantry props retain their native AO and consume no custom atlas space.
+UV1, UV3, geometry, pivots and retained placements are unchanged by this migration.
+
+`CSC_Props/Current/atlas/quarter-ao-manifest.json` records stable rectangles, source
+bakes and capacity. Rebuild an explicit working snapshot using
+`project/tools/blender/pack_csc_prop_ao.py <CSC_Props/Current>` with Pillow. Its
+registered cells must not overlap or exceed their family budget; all occupied
+regions are rebuilt from independent sources. Promote the reviewed snapshot and
+migrate master/scene UV2 together, preserving old final bundles.
+
+The current accepted `2026-09-14_Shared_01_r006` AO atlas extends the revision-11
+workshop's twelve cells with `CSC_TAILORS_SpinningWheel`, `CSC_ALL_Workbench`, and
+`CSC_TAILORS_Basket`. It occupies fifteen cells (23.4375% of Tailors), leaving one
+128×128 cell inside the 25% family reservation. On 15 September the synced
+revision-11 workshop and reusable-prop library AO image copies explicitly adopted
+r006 so either newly migrated master can join the same export batch. All older
+occupied pixels match the r004 image exactly; the six shared surface maps did not
+change. Earlier export-run manifests remain historical records of their original
+texture snapshots.

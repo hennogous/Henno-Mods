@@ -77,6 +77,51 @@ def existing_material(mat, job, mod):
     return None
 
 
+def stage_ao_binding(mat, existing, mod, stage, textures, source_inputs):
+    """Keep surface bindings; stage an explicitly authored AO map and resolve its material.
+
+    Native attachment assets never enter this path. An AO-only material variant is
+    necessary when another asset still uses the base material's original AO layout.
+    """
+    ident = mat.get('ao_texture')
+    if not ident:
+        return existing
+    if not ident.startswith('CSC_') or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_' for c in ident):
+        raise ValueError(f'Invalid explicit AO texture identity: {ident}')
+    im = mat.get('images', {}).get('AO')
+    if not im:
+        raise ValueError(f'{mat["name"]}: explicit AO binding has no AO source image')
+    src = Path(im['path'])
+    if sha(src) != im['sha256']:
+        raise ValueError(f'Changed AO texture {src}')
+    if ident in textures and textures[ident]['sha256'] != im['sha256']:
+        raise ValueError(f'Conflicting AO source images for {ident}')
+    source_inputs[str(src)] = im['sha256']
+    dest = stage / 'TextureSources' / (ident + src.suffix.lower())
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if ident not in textures:
+        shutil.copy2(src, dest)
+        textures[ident] = {'source':str(dest.relative_to(stage)), 'slot':'AO',
+            'size':im['size'], 'sha256':im['sha256'], 'format':'R8_UNORM'}
+    if not existing:
+        return None
+    path = mod / 'Materials' / (existing + '.mtl')
+    if not path.is_file():
+        raise ValueError(f'{mat["name"]}: explicit AO requires an inspectable material: {path}')
+    root = read_xml(path)
+    ao = [v for v in root.findall('m_CookParams/m_Values/Element') if txt(v,'m_ParamName') == 'AO']
+    if len(ao) != 1:
+        raise ValueError(f'{existing}: expected one material AO slot')
+    if txt(ao[0], 'm_ObjectName') == ident:
+        return existing
+    # Stable identities: changes to AO pixels don't introduce more material names.
+    name = existing + '__AO_' + ident
+    set_text(root, 'm_Name', name)
+    set_text(ao[0], 'm_ObjectName', ident)
+    write_xml(stage / 'Materials' / (name + '.mtl'), root)
+    return name
+
+
 def value(parent, name, value, kind='Object'):
     e = elem(parent, 'Element', **{'class':f'AssetObjects..{kind}Value'})
     if kind == 'Object':
@@ -274,6 +319,8 @@ def build(job):
             if txt(v,'m_ParamName')=='Asset' and txt(v,'m_EntryName'): bindings[txt(v,'m_EntryName')]=v
     catalogue={a['asset_id']:a for a in json.loads((Path(job['library'])/'catalogue.json').read_text())['assets']}
     models=decoded['models']; materials={}; textures={}; source_inputs={}
+    report['scene_geometry_edits'] = [m['scene_geometry_edit'] for m in models.values()
+                                      if m.get('scene_geometry_edit')]
     for ident,entry in decoded.get('library_sources',{}).items():
         if sha(entry['source']) != entry['sha256']: raise ValueError(f'Library asset changed; redecode {ident}')
         source_inputs[entry['source']]=entry['sha256']
@@ -289,6 +336,7 @@ def build(job):
         for mesh in model['meshes']:
             for mat in mesh['materials']:
                 ext=existing_material(mat,job,mod)
+                ext=stage_ao_binding(mat,ext,mod,stage,textures,source_inputs)
                 if ext:
                     materials[mat['name']]=ext; continue
                 ims=mat['images']
@@ -305,7 +353,7 @@ def build(job):
                         if key in ims:
                             im=ims[key]; src=Path(im['path'])
                             if sha(src)!=im['sha256']: raise ValueError(f'Changed texture {src}')
-                            ti='CSC_Tex_'+im['sha256'][:12]+'_'+key
+                            ti=mat['ao_texture'] if key == 'AO' and mat.get('ao_texture') else 'CSC_Tex_'+im['sha256'][:12]+'_'+key
                             if ti not in textures:
                                 dest=stage/'TextureSources'/(ti+src.suffix.lower()); dest.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(src,dest)
                                 textures[ti]={'source':str(dest.relative_to(stage)), 'slot':key, 'size':im['size'], 'sha256':im['sha256'], 'format':'R8_UNORM' if key in ('AO','G','M','O','T') else 'R8G8B8A8_UNORM'}

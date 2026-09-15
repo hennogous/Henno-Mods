@@ -1,5 +1,6 @@
 """Blender-only, read-only scene decoder. Run through export_scene.py decode."""
 import bpy
+import bmesh
 import hashlib
 import json
 import math
@@ -19,6 +20,15 @@ def mesh_signature(mesh):
     return hashlib.sha256(json.dumps(data,sort_keys=True).encode()).hexdigest()
 
 
+def mesh_layout_signature(mesh):
+    """Guard the AO/material layout when only vertex positions are edited."""
+    data = {'polygons': [list(p.vertices) for p in mesh.polygons],
+            'polygon_materials': [p.material_index for p in mesh.polygons],
+            'uvs': [[list(d.uv) for d in u.data] for u in mesh.uv_layers],
+            'materials': [m.name if m else None for m in mesh.materials]}
+    return hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
+
+
 def matrix(m):
     return [list(r) for r in m]
 
@@ -29,12 +39,15 @@ def material(mat):
     result = {'name': mat.name, 'images': {}}
     if mat.get('civ_material'):
         result['external'] = mat['civ_material']
-        return result
+    if mat.get('civ_ao_texture'):
+        result['ao_texture'] = str(mat['civ_ao_texture'])
     for n in mat.node_tree.nodes if mat.use_nodes else []:
         if n.type != 'TEX_IMAGE' or not n.image:
             continue
         im = n.image
         key = n.label or n.name
+        if result.get('external') and (not result.get('ao_texture') or key != 'AO'):
+            continue
         if key not in ('B', 'N', 'AO', 'G', 'M', 'E', 'O', 'T'):
             continue
         p = Path(bpy.path.abspath(im.filepath)).resolve()
@@ -43,6 +56,8 @@ def material(mat):
         if key in result['images']:
             raise ValueError(f'{mat.name}: ambiguous image slot {key}')
         result['images'][key] = {'path': str(p), 'sha256': digest(p), 'size': list(im.size)}
+    if result.get('ao_texture') and 'AO' not in result['images']:
+        raise ValueError(f'{mat.name}: civ_ao_texture requires an external image node labelled AO')
     return result
 
 
@@ -61,6 +76,16 @@ def decode_mesh(ob, transform):
         raise ValueError(f'{ob.name}: singular or mirrored geometry transform unsupported')
     mesh = ob.data.copy()
     try:
+        # User-authored props can contain n-gons. Tangent calculation accepts only
+        # tris/quads; triangulate those faces on this temporary export copy.
+        if any(len(p.vertices) > 4 for p in mesh.polygons):
+            bm = bmesh.new()
+            try:
+                bm.from_mesh(mesh)
+                bmesh.ops.triangulate(bm, faces=[f for f in bm.faces if len(f.verts) > 4])
+                bm.to_mesh(mesh)
+            finally:
+                bm.free()
         mesh.transform(transform)
         mesh.calc_loop_triangles()
         mesh.calc_tangents(uvmap=mesh.uv_layers[0].name)
@@ -106,6 +131,8 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
     if len(roots) != sum(o.type == 'EMPTY' and bool(o.get('instance_id')) for o in scene.objects):
         raise ValueError('Duplicate attachment instance IDs')
     for instance, o in sorted(roots.items()):
+        if o.hide_render or o.get('csc_export_exclude'):
+            continue
         if not o.get('source_asset_id'):
             raise ValueError(f'{instance}: missing source_asset_id')
         support = o.get('support', 'ground')
@@ -114,7 +141,8 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
         pos, quat, scale = o.matrix_world.decompose()
         reconstructed = Matrix.LocRotScale(pos, quat, scale)
         err = max(abs(a-b) for r,s in zip(reconstructed, o.matrix_world) for a,b in zip(r,s))
-        children = [child for child in o.children if child.type == 'MESH']
+        children = [child for child in o.children if child.type == 'MESH' and
+                    not child.hide_render and not child.get('csc_export_exclude')]
         if not children:
             raise ValueError(f'{instance}: attachment has no direct mesh children')
         for child in children:
@@ -131,6 +159,10 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
     selected = []
     for o in scene.objects:
         if o.type != 'MESH':
+            continue
+        if kind == 'building' and (o.hide_render or o.get('csc_export_exclude') or any(
+                parent.hide_render or parent.get('csc_export_exclude')
+                for parent in parent_chain(o))):
             continue
         role = o.get('export_role', '')
         if o.name.startswith('REVIEW_'):
@@ -197,8 +229,10 @@ def main():
                 # Flat catalogue filenames are stable across hosts.
                 path = library / (ident + '.blend')
                 models[ident] = inspect(path, 'prop', ident, source.get('export_scene', 'Export'))
-    # An attachment references the library asset verbatim. Detect local geometry/UV edits
-    # rather than silently discarding them when generating an external reference.
+    # Native assets always remain verbatim. A CSC-owned, single-mesh prop may use
+    # an edited scene mesh as the definition for this batch, provided all divergent
+    # placements agree. Existing master-matching placements inherit that definition.
+    # No extra identity is registered and AO is not rebaked here.
     reused = {a['source_asset_id'] for ident in buildings for a in models[ident]['attachments']}
     verified = {}
     for ident in sorted(reused):
@@ -210,11 +244,48 @@ def main():
         if scene is None and len(bpy.data.scenes)==1: scene=bpy.data.scenes[0]
         if scene is None: raise ValueError(f'{ident}: no source export scene')
         signatures = {mesh_signature(o.data) for o in scene.objects if o.type == 'MESH'}
+        layouts = {mesh_layout_signature(o.data) for o in scene.objects if o.type == 'MESH'}
         verified[ident] = {'source':str(source_path), 'sha256':before}
-        for building in buildings:
-            for a in models[building]['attachments']:
-                if a['source_asset_id'] == ident and not set(a['source_mesh_signatures']) <= signatures:
-                    raise ValueError(f'{building}/{a["instance_id"]}: geometry/UVs diverge from {ident}; publish a custom asset')
+        refs = [(building, a) for building in buildings for a in models[building]['attachments']
+                if a['source_asset_id'] == ident]
+        divergent = [(building, a) for building, a in refs
+                     if not set(a['source_mesh_signatures']) <= signatures]
+        if divergent:
+            origin = catalogue.get(ident, {}).get('origin')
+            source_is_library = source_path.resolve() == (library / (ident + '.blend')).resolve()
+            if origin != 'authored_blender' or not ident.startswith('CSC_') or not source_is_library:
+                first, a = divergent[0]
+                raise ValueError(f'{first}/{a["instance_id"]}: geometry/UVs diverge from {ident}; native assets and explicit local masters must match their source')
+            if len(models[ident]['meshes']) != 1 or any(len(a['source_mesh_signatures']) != 1 for _, a in refs):
+                raise ValueError(f'{ident}: scene geometry edits require a single-mesh CSC asset')
+            variants = {a['source_mesh_signatures'][0] for _, a in divergent}
+            if len(variants) != 1:
+                raise ValueError(f'{ident}: edited placements use different geometry/UVs; use one reusable definition')
+            building, sample = divergent[0]
+            bpy.ops.wm.open_mainfile(filepath=models[building]['source'], load_ui=False, use_scripts=False)
+            building_scene = bpy.data.scenes.get(next((e.get('scene', 'Export') for e in job['buildings']
+                                                      if e['asset_id'] == building), 'Export'))
+            root = next((o for o in building_scene.objects if o.type == 'EMPTY' and
+                         o.get('instance_id') == sample['instance_id']), None)
+            children = [o for o in root.children if o.type == 'MESH' and not o.hide_render
+                        and not o.get('csc_export_exclude')] if root else []
+            if len(children) != 1:
+                raise ValueError(f'{building}/{sample["instance_id"]}: expected one edited mesh')
+            child = children[0]
+            if mesh_signature(child.data) != next(iter(variants)):
+                raise ValueError(f'{building}/{sample["instance_id"]}: edited mesh changed since inspection')
+            if mesh_layout_signature(child.data) not in layouts:
+                raise ValueError(f'{building}/{sample["instance_id"]}: topology, material or UV layout changed; update the library master and AO deliberately')
+            model_mesh_name = models[ident]['meshes'][0]['name']
+            edited = decode_mesh(child, Matrix.Identity(4))
+            edited['name'] = model_mesh_name
+            models[ident]['meshes'] = [edited]
+            models[ident]['scene_geometry_edit'] = {
+                'building': building, 'instance_id': sample['instance_id'],
+                'asset_id': ident, 'master_sha256': before,
+                'ao_rebaked': False, 'placements': len(refs),
+                'edited_placements': len(divergent),
+                'behavior': 'one edited CSC asset definition affects all placements of this ID'}
         if digest(source_path) != before: raise ValueError(f'Library source changed: {source_path}')
     for item in job.get('decals', []):
         ident = item['geometry_id']
