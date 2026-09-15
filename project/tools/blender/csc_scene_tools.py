@@ -178,6 +178,9 @@ def reconcile_attachment_names(*, clean_generated=False):
 @persistent
 def _attachment_name_change(scene, depsgraph=None):
     global _SYNCING_NAMES
+    # Add-on registration runs with restricted data; handlers sync after loading.
+    if not hasattr(bpy.data, 'scenes'):
+        return
     if _SYNCING_NAMES or bpy.data.scenes.get('Export') is None:
         return
     _SYNCING_NAMES = True
