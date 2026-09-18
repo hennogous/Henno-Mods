@@ -1143,7 +1143,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-7.725611</x>
+							<x>-7.723084</x>
 							<y>-8.747141</y>
 							<z>0.000000</z>
 						</m_position>
@@ -3698,18 +3698,18 @@
 						<m_orientation>
 							<x>0.000000</x>
 							<y>0.000000</y>
-							<z>2.139431</z>
+							<z>2.827361</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_11"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.864000</m_scale>
+						<m_scale>0.700000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_ALL_Basket"/>
+									<m_EntryName text="CSC_TAILORS_Basket"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -3755,13 +3755,13 @@
 						<m_Name text="newAttachmentPoint_3"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.656500</m_scale>
+						<m_scale>0.500000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_ALL_Basket"/>
+									<m_EntryName text="CSC_TAILORS_Basket"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -3795,8 +3795,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-16.032021</x>
-							<y>-9.182419</y>
+							<x>-15.659149</x>
+							<y>-8.707176</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
@@ -3807,7 +3807,7 @@
 						<m_Name text="newAttachmentPoint_23"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.656500</m_scale>
+						<m_scale>0.500000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -3906,12 +3906,12 @@
 						<m_orientation>
 							<x>0.000000</x>
 							<y>0.000000</y>
-							<z>0.000000</z>
+							<z>0.457955</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_31"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.700000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -3951,8 +3951,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>16.274395</x>
-							<y>-9.878499</y>
+							<x>11.509014</x>
+							<y>-10.823232</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>

@@ -11,10 +11,12 @@ class ContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             mod=Path(directory); (mod/'Materials').mkdir()
             (mod/'Materials/CSC_Existing.mtl').write_text('<Material/>')
+            (mod/'Materials/CSC_FromBlender.mtl').write_text('<Material/>')
             job={'material_policy':'reuse_existing','material_bindings':{'BlenderName':'CSC_Existing'}}
             self.assertEqual(existing_material({'name':'BlenderName'},job,mod),'CSC_Existing')
             self.assertEqual(existing_material({'name':'CSC_Existing'},job,mod),'CSC_Existing')
             self.assertEqual(existing_material({'name':'Other','external':'CSC_Existing'},job,mod),'CSC_Existing')
+            self.assertEqual(existing_material({'name':'BlenderName','external':'CSC_FromBlender'},job,mod),'CSC_FromBlender')
             with self.assertRaisesRegex(ValueError,'no existing material binding'):
                 existing_material({'name':'Unmapped'},job,mod)
             with self.assertRaisesRegex(ValueError,'existing CSC material not found'):
@@ -206,6 +208,107 @@ class WorkshopIntegration(unittest.TestCase):
         self.assertIn('CSC_Concurrent_Test',ids)
         for tex in (target/'Textures').glob('*.tex'):
             self.assertTrue(Path(self.ex.txt(self.ex.read_xml(tex),'m_SourceFilePath')).is_file())
+
+
+class UninstallTests(unittest.TestCase):
+    def setUp(self):
+        import export_scene as ex
+        self.ex=ex
+        self.tmp=tempfile.TemporaryDirectory(prefix='csc-uninstall-test-')
+        self.addCleanup(self.tmp.cleanup)
+        root=Path(self.tmp.name); self.mod=root/'mod'; self.out=root/'run'; self.stage=self.out/'stage'
+        for p in (self.mod/'Assets',self.mod/'Geometries',self.mod/'XLPs',
+                  self.stage/'Assets',self.stage/'Geometries',self.stage/'XLPs'):
+            p.mkdir(parents=True,exist_ok=True)
+        self.original=self.mod/'Assets/CSC_Old.ast'; self.original.write_bytes(b'original asset')
+        (self.stage/'Assets/CSC_Old.ast').write_bytes(b'new asset')
+        (self.stage/'Geometries/CSC_New.geo').write_bytes(b'new geometry')
+        self.ex.write_xml(self.mod/'XLPs/CSC_Tilebases.xlp',self._xlp_root())
+        self.ex.write_xml(self.stage/'XLPs/CSC_Tilebases.xlp',self.ex.merge_xlp(self.ex.read_xml(self.mod/'XLPs/CSC_Tilebases.xlp'),['CSC_New']))
+        files={str(p.relative_to(self.stage)):self.ex.sha(p) for p in self.stage.rglob('*') if p.is_file()}
+        baseline={rel:self.ex.sha(self.mod/rel) if (self.mod/rel).is_file() else None for rel in files}
+        (self.out/'manifest.json').write_text(json.dumps({'converted_files':files,'destination_baseline':baseline,'textures':{}}))
+        (self.out/'report.json').write_text(json.dumps({'status':'converted_pending_asset_editor_and_game_review',
+            'assets':['CSC_Old','CSC_New']}))
+        self.job={'output':str(self.out),'mod_root':str(self.mod)}
+
+    def _xlp_root(self):
+        root=self.ex.ET.Element('XLP'); entries=self.ex.elem(root,'m_Entries')
+        row=self.ex.elem(entries,'Element'); self.ex.elem(row,'m_EntryID',text='CSC_Old')
+        self.ex.elem(row,'m_ObjectName',text='CSC_Old')
+        return root
+
+    def test_uninstall_restores_prior_files_deletes_new_files_and_preserves_other_xlp_entries(self):
+        self.ex.install(self.job)
+        self.assertEqual(self.original.read_bytes(),b'new asset')
+        new=self.mod/'Geometries/CSC_New.geo'; self.assertTrue(new.is_file())
+        self.ex.write_xml(self.mod/'XLPs/CSC_Tilebases.xlp',self.ex.merge_xlp(
+            self.ex.read_xml(self.mod/'XLPs/CSC_Tilebases.xlp'),['CSC_Later']))
+        self.ex.uninstall(self.job,dry_run=True)
+        self.assertTrue(new.is_file())
+        self.ex.uninstall(self.job)
+        self.assertEqual(self.original.read_bytes(),b'original asset')
+        self.assertFalse(new.exists())
+        ids={self.ex.txt(e,'m_EntryID') for e in self.ex.read_xml(self.mod/'XLPs/CSC_Tilebases.xlp').find('m_Entries')}
+        self.assertEqual(ids,{'CSC_Old','CSC_Later'})
+        self.assertEqual(json.loads((self.out/'report.json').read_text())['status'],'uninstalled')
+
+    def test_uninstall_blocks_changed_installed_file(self):
+        self.ex.install(self.job)
+        self.original.write_bytes(b'later edit')
+        with self.assertRaisesRegex(ValueError,'changed or missing'):
+            self.ex.uninstall(self.job)
+        self.assertEqual(self.original.read_bytes(),b'later edit')
+        self.assertTrue((self.mod/'Geometries/CSC_New.geo').exists())
+
+    def test_force_purge_backs_up_changed_output_and_accepts_missing_output(self):
+        self.ex.install(self.job)
+        self.original.write_bytes(b'later edit')
+        (self.mod/'Geometries/CSC_New.geo').unlink()
+        self.ex.uninstall(self.job,purge=True,force=True)
+        self.assertFalse(self.original.exists())
+        self.assertFalse((self.mod/'Geometries/CSC_New.geo').exists())
+        report=json.loads((self.out/'report.json').read_text())
+        backup=Path(report['uninstall_backup'])
+        self.assertEqual((backup/'Assets/CSC_Old.ast').read_bytes(),b'later edit')
+        self.assertFalse((backup/'Geometries/CSC_New.geo').exists())
+        ids={self.ex.txt(e,'m_EntryID') for e in self.ex.read_xml(
+            self.mod/'XLPs/CSC_Tilebases.xlp').find('m_Entries')}
+        self.assertEqual(ids,set())
+        self.assertEqual(report['status'],'purged')
+
+    def test_uninstall_older_run_without_receipt_uses_stage_and_backup(self):
+        self.ex.install(self.job)
+        (self.out/'install-receipt.json').unlink()
+        self.ex.uninstall(self.job)
+        self.assertEqual(self.original.read_bytes(),b'original asset')
+        self.assertFalse((self.mod/'Geometries/CSC_New.geo').exists())
+
+    def test_purge_deletes_replaced_output_and_its_prior_xlp_registration(self):
+        self.ex.install(self.job)
+        self.ex.uninstall(self.job,purge=True)
+        self.assertFalse(self.original.exists())
+        self.assertFalse((self.mod/'Geometries/CSC_New.geo').exists())
+        ids={self.ex.txt(e,'m_EntryID') for e in self.ex.read_xml(self.mod/'XLPs/CSC_Tilebases.xlp').find('m_Entries')}
+        self.assertEqual(ids,set())
+        self.assertTrue((Path(json.loads((self.out/'report.json').read_text())['uninstall_backup'])/
+                         'Assets/CSC_Old.ast').is_file())
+
+    def test_purge_listing_names_every_file_and_xlp_id_without_changes(self):
+        import contextlib
+        import io
+        self.ex.install(self.job)
+        printed=io.StringIO()
+        with contextlib.redirect_stdout(printed):
+            self.ex.uninstall(self.job,dry_run=True,purge=True)
+        listing=printed.getvalue()
+        self.assertIn(str(self.mod/'Assets/CSC_Old.ast'),listing)
+        self.assertIn(str(self.mod/'Geometries/CSC_New.geo'),listing)
+        self.assertIn(':: CSC_Old',listing)
+        self.assertIn(':: CSC_New',listing)
+        self.assertEqual(self.original.read_bytes(),b'new asset')
+        self.assertEqual(json.loads((self.out/'report.json').read_text())['status'],
+                         'installed_pending_asset_editor_and_game_review')
 
 
 class DDSValidationTests(unittest.TestCase):

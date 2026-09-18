@@ -1,6 +1,7 @@
 > **Documentation audit — 2026-09-12: Needs refresh.** Mixes an obsolete Mac OneDrive checkout with Windows commands and has an unterminated final path quote. SV command locations are outdated. Examples need a platform-specific rewrite before copy/paste use.
 > Classification: Tool commands. See the [full audit](../DOCUMENT-AUDIT.md).
 
+### install scene from blender
 cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\blender"
 
 py .\export_assets.py `
@@ -9,6 +10,12 @@ py .\export_assets.py `
   --library "C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library" `
   --blender "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" `
   --texconv "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\directxtex\texconv.exe"
+
+### preview what to delete
+py .\export_assets.py --list-purge "C:\Users\Shadow\AppData\Local\Temp\csc-export-existing-materials-only-20260915\job.json"
+
+### delete
+py .\export_assets.py --uninstall "<run>\job.json" --purge --force
 
 ## 3D Art
 
@@ -59,11 +66,16 @@ py -3.12 main.py --listen 127.0.0.1 --port 8188
 
 cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\comfyui\sv_pipeline"
 
-py sv_img2img.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Water_Mill_Test_Input.png"  
+### Blender-render input: deterministic grade, SAM settings and Bakery-scale placement
+py sv_blender_frontend.py generate "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Tailors\StrategicView\CSC_TAILORS_SV_Textile_Workshop_Input.png"
 
--- manual edit shadows
+### PreShadow already has post-SAM contrast -3 + 10% desaturation;
+### inspect it and add directional shadow paint only if needed
+py sv_blender_frontend.py finalize "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Tailors\StrategicView\CSC_TAILORS_SV_Textile_Workshop_Visible_PreShadow.png"
 
-py sv_postprocess.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Water_Mill_Test_Visible_PreShadow.png" 
+### Asset Editor screenshot or other non-Blender input: legacy/general path
+py sv_img2img.py "C:\path\to\Building_Input.png"
+py sv_postprocess.py "C:\path\to\Building_Visible_PreShadow.png"
 
 ### Quarter SV sprites
 

@@ -152,6 +152,11 @@ def _validate_tailors_icon_bindings(
 
 def _validate_dockmaster_mcuis_signs(source: str) -> list[str]:
     failures: list[str] = []
+    expected_supply_chain = (
+        "Supply Chain: {3_TotalStackCount} supplied "
+        "{3_TotalStackCount : plural 1?Textile Workshop; other?Textile Workshops;} "
+        "[ICON_ARROW] adjacent Lighthouse."
+    )
     dockmaster_state_keys = (
         "LOC_CSC_TAILORS_STAGE_2_EFFECT_DESCRIPTION",
         "LOC_CSC_TAILORS_STAGE_2_EFFECT_DESCRIPTION_NEW",
@@ -165,6 +170,13 @@ def _validate_dockmaster_mcuis_signs(source: str) -> list[str]:
             failures.append(f"Dockmaster MCUIS localization missing {key}")
         else:
             fragment = match.group(1).strip()
+            if (
+                key == "LOC_CSC_TAILORS_STAGE_2_EFFECT_DESCRIPTION"
+                and expected_supply_chain not in fragment
+            ):
+                failures.append(
+                    "Dockmaster MCUIS Preview must display and pluralize the contributing Textile Workshop count"
+                )
             if re.search(r"(?:[+-]\s*\{1_|\b(?:less|lost|fewer)\s+\{[12]_)", fragment):
                 failures.append(
                     f"{key}: MCUIS dynamically signs amounts; do not add a literal sign or directional qualifier"

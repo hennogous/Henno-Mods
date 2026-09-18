@@ -403,6 +403,7 @@ phases:
           - "Exactly one Dockmaster row exists in CSC_AbilityAttachModifiers and exactly one aggregate notification string family exists."
           - "All non-anchor naval-production siblings share the anchor's gates and have no MCUIS helper row or notification strings."
           - "Dockmaster MCUIS and notification strings render the pre-signed dynamic amount directly; they add no literal sign or directional qualifier."
+          - "The Dockmaster MCUIS Preview supply-chain line displays the total contributing-source count and pluralizes `Textile Workshop` from `{3_TotalStackCount}`. Count omission is reserved for a mechanically non-stacking service whose contract explicitly declares that exception."
           - "Dockmaster NEW/INCREASED/DECREASED/REMOVED notification fragments have no terminal punctuation because LOC_NOTIFICATION_HENNO_*_CITY_QUARTER_ABILITY_SUMMARY supplies the single final period; the REMOVED fragment keeps its internal sentence break but ends with `remain`, not `remain.`."
           - "MCUIS removal text deactivates the gated production and Admiral-point effects without claiming that the persistent Dockmaster building or Citizen slot was removed."
           - "The Dockmaster Civilopedia page matches the Bakers Service-page scope exactly: one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."

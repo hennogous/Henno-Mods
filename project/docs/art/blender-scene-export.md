@@ -11,6 +11,11 @@ XLP merge. Windows then converts CN6 to FGX (and PNG to DDS when explicitly usin
 material generation), and the normal run installs the converted files into the
 mod with destination checks, backups and rollback on errors.
 
+Installed custom props are safe to rerun from the same source bundle. Discovery
+recognizes an output only when a prior install receipt names that exact blend and
+the live AST still matches the receipt; unrelated or subsequently edited ID
+collisions remain blocked.
+
 ## Windows: export a folder of Blender assets
 
 Prerequisites: Python 3.10+, Blender (tested decoding with 5.1.2), the repository's
@@ -31,6 +36,36 @@ its helpers in `project/tools/blender/scene_export/`. Keep tools in the repo; th
 revision folder holds the blends, textures and supporting art files. Referenced
 library props must be present in the synced catalogue; explicitly declared custom
 prop definitions in the input folder can also be exported and shared in that batch.
+For already installed CSC assets, list their IDs under `reuse_existing_assets` in
+the exporter defaults. Their `Attach_` placements still export, while their AST
+and geometry remain untouched. The installed AST and CSC TileBase XLP entry must
+exist. If the AST refers to its own GEO identity, its local GEO and FGX must also
+exist. An asset such as `CSC_TAILORS_Rugs`, whose AST refers to pantry geometry
+`WON_Great_Zimbabwe_RugsF`, needs no CSC-local Rugs GEO/FGX. Their master blends
+are optional for this export; keep copies in a subfolder if useful, since
+discovery scans only top-level `.blend` files. **Add non-library asset master** in
+CSC Scene Tools imports and saves a top-level prop source; it does not by itself
+declare that a same-ID installed asset should be reused. Put that ID in
+`reuse_existing_assets` when its existing AST should supply the game geometry.
+The attachment Empty's `source_asset_id` identifies the asset; it does not choose
+whether the exporter references or replaces its files. For a previously installed
+CSC prop, inspect that ID on the `Attach_` Empty, then add the exact ID to
+`scene_export/csc.defaults.json` under `reuse_existing_assets`. This applies to
+the whole folder export, regardless of how many placements use the prop. Use
+`replace_existing_assets` instead only when the master is intentionally an updated
+definition to install under the same ID. An asset in the synced prop catalogue
+should be placed with **Add library prop**.
+An explicitly authored prop update to an installed CSC identity must be listed in
+`replace_existing_assets`; otherwise discovery blocks the replacement. This keeps
+reference-only assets such as the Textile Workshop's basket and spinning wheel from
+being overwritten by copied masters.
+
+The Windows AO conversion uses the installed Firaxis 8-bit luminance DDS header
+with texconv's mip pixels. For AO TEX files, `m_NumMipMaps` is the highest mip
+index (2048 → 11; 1024 → 10), while the DDS header counts all levels (12 and 11).
+On 15 September 2026, texconv's direct R8 output marked the channel as alpha and
+the exporter wrote 12 into the 2048 AO TEX; Asset Editor crashed opening the
+Textile Workshop. The corrected package opened and displayed in Asset Editor.
 
 From the Henno-Mods repository root, run with the copied revision folder as input:
 
@@ -50,6 +85,11 @@ then builds and converts into a fresh
 blockers. Reports and streamed logs are retained there; failures stop the run. Previous Mac
 `export-job.json` and `export-validation/` files are evidence, not Windows inputs.
 The script generates Windows-local paths and never edits the source blends.
+If a transferred blend retains a missing absolute image path from another host,
+the decoder may resolve the exact image basename from that blend folder's own
+`textures/` directory. It reports the relocation in `decode.log` and leaves the
+blend unchanged; it does not search unrelated folders or accept a missing bundle
+texture.
 
 Normal export now installs automatically: FGX/GEO files go to `Geometries`, AST
 files to `Assets`, and asset entries are merged into `XLPs/CSC_Tilebases.xlp`.
@@ -62,6 +102,34 @@ To install a previously converted `--no-install` run, use:
 ```powershell
 python project/tools/blender/export_assets.py --install 'C:\path\to\revision-07-uniform-scale\export-runs\<timestamp>\job.json'
 ```
+
+To uninstall every asset produced by one folder export, pass that run's `job.json`:
+
+```powershell
+py project/tools/blender/export_assets.py --list-purge 'C:\path\to\revision\export-runs\<timestamp>\job.json'
+py project/tools/blender/export_assets.py --uninstall 'C:\path\to\revision\export-runs\<timestamp>\job.json' --purge --dry-run
+py project/tools/blender/export_assets.py --uninstall 'C:\path\to\revision\export-runs\<timestamp>\job.json' --purge
+py project/tools/blender/export_assets.py --uninstall 'C:\path\to\revision\export-runs\<timestamp>\job.json' --purge --force
+```
+
+`--list-purge` is a read-only shortcut for the purge preview. It lists the full
+path of every file and each XLP entry ID that would be removed. `--purge` deletes this
+run's AST/FGX/GEO and any material/texture files it actually installed, including
+files that replaced earlier versions. It keeps an exact copy of the live files in
+the run's `backups/uninstall-<timestamp>/` before deletion. Omit `--purge` to undo
+just this installation: newly created files are deleted and overwritten files are
+restored from the pre-install backup. Both modes preserve source `.blend` files,
+unrelated XLP entries, existing materials reused by the run, and assets named in
+`reuse_existing_assets`. If any installed output was modified or replaced by a
+later export, uninstall stops without changing the mod. When the explicit intent
+is to remove every output owned by the run, `--purge --force` accepts changed or
+already-missing outputs. This is useful after Asset Editor reserializes an AST.
+Force purge still validates recorded paths, preserves unrelated XLP entries, and
+backs up every surviving live target before deleting it. Use `--list-purge ...
+--force` for a read-only preview. The command affects one
+timestamped export run; outputs installed by other runs require their own jobs.
+ArtDefs, cooked packages and Asset Editor's dependency cache are outside the
+exporter's installation record and are not changed by uninstall.
 
 The modular `export_scene.py` commands and older workshop-specific PowerShell
 wrapper remain available for development, but the repository Python entry point is the normal
@@ -84,9 +152,14 @@ CSC TileBase XLP; source AST/GEO/MTL/TEX dependencies are resolved through that 
 
 ### Existing material reuse
 
-The normal CSC defaults use `material_policy: "reuse_existing"`. Bindings come
-from `material_bindings` in `scene_export/csc.defaults.json`, a Blender material's
-`civ_material` property, or an exact match with an existing project MTL name.
+The normal CSC defaults use `material_policy: "reuse_existing"`. The exporter
+first reads a Blender material's `civ_material` custom property, then falls back
+to `material_bindings` in `scene_export/csc.defaults.json`, then to an exact match
+with an existing project MTL name. To author the binding in Blender, select a
+mesh, open Material Properties, select its material, and add a string Custom
+Property named `civ_material` with the existing Civ material ID as its value
+(for example, `CSC_TAILORS_E` or `CSC_ALL_Props_01`). Save the blend file.
+The exporter checks that a referenced CSC `.mtl` exists in the mod project.
 No atlas/Quarter inference is used. Unbound materials block the run with a message
 requesting an explicit binding, rather than generating hash-named MTLs/textures.
 
@@ -96,10 +169,15 @@ Current Textile Workshop bindings:
 |---|---|
 | Main building | `CSC_TAILORS_E` |
 | Fixed textile geometry, loom/vats, textile/sail/rope props | `CSC_ALL_Props_01` |
-| Bench/workbench | `CSC_ALL_Props` (existing `civ_material`) |
+| Custom CSC bench/workbench | `CSC_ALL_Props_01`; never select compatibility-only `CSC_ALL_Props` for new exports |
 | Pillage decals | `Ruin_Debris_Decal` |
 
-These bindings reuse existing materials and their textures unchanged. The blend's
+Reused asset instances keep the material bindings already declared by their own
+installed ASTs; the scene exporter must not remap them to a Quarter or CSC atlas.
+The table above applies only to geometry authored or merged into this export.
+These bindings reuse existing materials and their textures unchanged. Blender
+can make the material choice per authored material; the JSON mappings supply
+defaults for older blend files without that property. The blend's
 separate AO bakes and revised texture images are not exported in this mode;
 appearance follows the existing MTL definitions. Each report records the effective
 material mapping. Additional source materials need their own explicit mapping.
@@ -194,7 +272,10 @@ library prop scenes can be recognized by a unique catalogued armature identity.
 No arbitrary filename suffix is used to invent an asset ID or state role.
 
 Use `{"kind": "ignore"}` to explicitly exclude a scene; it remains listed in the
-report. Existing pantry assets are reference-only: attach them from the library,
+report. Treat an ignored intact building as a hard integration boundary: a run that
+only exports its decals has not replaced the building shown in Asset Editor. Before
+installing a final handoff, confirm every intended intact variant resolves as
+`kind: building` in `discovery-report.json`. Existing pantry assets are reference-only: attach them from the library,
 rather than exporting their source blends as new assets. Authored prop definitions
 in the folder can be standalone or shared across buildings; geometry/UV matching
 still verifies that placements reference those definitions verbatim.
@@ -234,8 +315,8 @@ stage without a manifest; use a fresh directory for that case too.
 
 | Input | Output treatment |
 |---|---|
-| `building_geometry`, `fixed_geometry`, or `CSC_Fixed_` mesh | Included in the primary building GEO/CN6 with its world placement serialized into a temporary vertex stream. No separate prop asset. |
-| Attachment EMPTY with `instance_id`, `source_asset_id`, `support` | Placement from its world matrix. Direct mesh children keep identity transforms relative to the root. Native meshes match their library source exactly; a controlled CSC vertex edit can define one updated asset for the whole batch. |
+| `building_geometry`, `fixed_geometry`, or `CSC_Fixed_` mesh | Included in the primary building GEO/CN6 with its world placement serialized into a temporary vertex stream. Compatible fixed pieces are merged in that temporary stream by material/state to keep CivNexus6 stable; the editable Blender objects remain separate. No separate prop asset. |
+| Attachment EMPTY with `instance_id`, `source_asset_id`, `support` | Placement from its world matrix. Direct mesh children retain the standalone asset's exact asset-local transforms, including deliberate multi-mesh or off-origin assemblies. Native meshes and local transforms match their library source exactly; a controlled single-mesh CSC vertex edit can define one updated asset for the whole batch without changing its local transform. |
 | Reused catalogue asset | Exact existing BLP binding copied from `CSC_ALL_Prop_Library.ast`; no duplicate geometry/material/XLP registration. |
 | Catalogue `origin: authored_blender` | One new prop asset/GEO per exact identity, shared across all buildings in the job. |
 | Explicit decal input | DecalGeometry referenced as a model instance; **no standalone AST/XLP registration**. |
@@ -277,7 +358,13 @@ distinct library asset and place it with uniform scale.
 For everyday editing, install `project/tools/blender/csc_scene_tools.py` in Blender
 via Preferences → Add-ons → Install from Disk. Its **CSC** tab in the 3D View
 sidebar works on the saved building scene; Review and Export share the asset
-objects. Select an attachment Empty or its child and click **Duplicate selected
+objects. For placement edits, click a prop mesh, then **Select prop controller**
+(CSC Scene Tools 1.2.1) before moving, Z rotating or uniformly scaling it. This
+selects its `Attach_` Empty; moving a mesh child in Object Mode creates an offset
+that the exporter rejects. Edit Mode is for deliberate geometry edits, subject to
+the CSC/pantry rules below.
+
+Select an attachment Empty or its child and click **Duplicate selected
 prop**. The tool creates a new controller with a unique `instance_id`, preserves
 source/support/state metadata, and shares the source mesh datablock with the
 existing placement. Move the selected new Empty and save without applying
@@ -375,6 +462,21 @@ Moving or uniformly scaling a table controller also affects props parented to it
 in Blender. Check their contact afterward. The exporter reads the resulting world
 placements, but their in-game Pivot Height samples remain independent.
 
+### Reparenting copied fixed geometry to the building rig
+
+When copying a static mesh such as `CSC_Fixed_Dye_Vat_Madder` from another building
+blend, preserve its mesh data and vertex groups. For the current Workshop vats,
+every vertex belongs to the one `Bone` group at weight `1`. In Object Mode,
+parent the copied object to the new building armature with **Object (Keep
+Transform)**, then point its existing Armature modifier at that new armature.
+This changes the parent and rig target without calculating new weights. Avoid
+**Armature Deform → With Automatic Weights** for a fully weighted static mesh;
+that command computes new, distance-based weights and can replace the exact static
+binding. If in doubt, select every vertex in Edit Mode, select the `Bone` vertex
+group, set Weight to `1.000`, and click **Assign**. Check that no extra deforming
+groups or modifiers were added before saving. The decoder rejects vertices that
+do not have exactly one deforming weight at `1`.
+
 ### Placement contract — revised with Henno, 14 September 2026
 
 Blender compositions must already use **uniform attachment scales**. The exporter
@@ -419,8 +521,11 @@ An explicit `material_bindings` mapping or material `civ_material` property refe
 an existing Civ material instead, as used for `Ruin_Debris_Decal`.
 
 Generated material/texture identities use content hashes to deduplicate shared maps
-across the job. Original meshes retain UV0/UV1/UV2 and per-corner normal/tangent
-splits. AO stays bound to the exported material rather than being replaced with a
+across the job. Original meshes retain UV0/UV1/UV2. To match the established CN6
+exporter, the decoded vertex key is the source vertex plus its UV coordinates; loop
+normal/tangent/bitangent values are averaged per source vertex. Do not key output
+vertices on the full per-corner frame, which needlessly inflates Civ VI vertex
+counts. AO stays bound to the exported material rather than being replaced with a
 scene-wide placeholder. Scalar DDS maps use R8; colour and normal maps use RGBA8.
 This first version prioritizes fidelity over block compression.
 
@@ -481,11 +586,15 @@ Use revision-10-shared-bench (five blends and textures) for the current workshop
 
 ### Explicit custom AO bindings
 
-Set a Blender material's `civ_ao_texture` to the stable CSC texture ID and provide
-an external image node labelled `AO`. The decoder retains this binding even when
-`civ_material` references an existing material. The exporter stages the actual
-PNG and a TEX with the same identity for Windows DDS conversion. Different source
-pixels claiming the same texture ID in a batch are an error.
+The normal CSC `ao_policy: "reuse_existing"` keeps the AO map already assigned in
+the existing Civ material. A Blender AO image or `civ_ao_texture` property does
+not replace it during export. For a new AO map that should become a game texture,
+use `ao_policy: "stage_explicit"`, set the Blender material's `civ_ao_texture` to
+the stable CSC texture ID, and provide an external image node labelled `AO`.
+The decoder retains this binding even when `civ_material` references an existing
+material. In that mode, the exporter stages the actual PNG and a TEX with the
+same identity for Windows DDS conversion. Different source pixels claiming the
+same texture ID in a batch are an error.
 
 If the existing material already samples that AO ID, reuse it. Otherwise create a
 stable AO-only material variant, preserving its surface maps and other parameters;

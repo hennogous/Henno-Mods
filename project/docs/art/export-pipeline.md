@@ -246,7 +246,12 @@ Install `csc_asset_editor_export.py` as a Blender addon for one-click export fro
 3. File > Export > Asset Editor (.fgx / .geo)
 
 Behavior:
-- Names the exported `.cn6`, `.fgx`, and `.geo` files after the single visible armature object
+- Shows an **Armature** dropdown and names `.cn6`, `.fgx`, and `.geo` after
+  that explicit armature. The default is the active/selected armature, the sole
+  armature in the current scene, or the sole armature in the `Export` scene.
+- Exports visible mesh descendants and meshes bound to the chosen armature. Other
+  review-scene armatures do not cause the former "expected one visible armature"
+  failure or leak into the output.
 - Runs the pipeline script in a background thread
 - Shows success/failure popup in Blender
 - Hold **Alt** while clicking to show the options dialog (Add to .ast checkbox)

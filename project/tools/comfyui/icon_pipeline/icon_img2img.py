@@ -32,7 +32,7 @@ def ensure_output_dir():
         raise FileNotFoundError(f"Output directory does not exist and could not be created: {OUTPUT_DIR}")
 
 
-DENOISE     = 0.4
+DENOISE     = float(os.environ.get("CSC_ICON_DENOISE", "0.4"))
 # Higher = more freedom/style drift from input; lower = preserves source image more tightly. (0-1; 0.35-0.55 useful, quite sensitive)
 
 LORA_STR    = 0.92
@@ -76,6 +76,7 @@ PROMPT = (
     "isometric 3/4 view, muted palette, painterly brush strokes, "
     "black outline on every architectural element, outline art style"
 )
+PROMPT = os.environ.get("CSC_ICON_PROMPT", PROMPT)
 NEGATIVE = (
     "blurry, realistic, photograph, text, watermark, multiple buildings, "
     "cluttered, dark, noisy, modern, futuristic, sky, clouds, grass, ground plane"

@@ -328,6 +328,7 @@ patterns:
     invariant:
       - "Only include if the shared service notification subsystem will surface the service."
       - "Every state names the source and destination unambiguously."
+      - "The aggregate MCUIS Preview supply-chain line displays the total contributing-source count and pluralizes the source noun from `{3_TotalStackCount}`. Omit the count only when gameplay mechanically limits the service to one source and the owning implementation contract explicitly declares that non-stacking exception."
       - "The first dynamic amount placeholder is pre-signed by the UI; present it directly (for example, '{1_NewAmount}%'), without a literal sign or directional qualifier."
       - "NEW, INCREASED, DECREASED, and REMOVED state fragments contain no terminal period, exclamation mark, or question mark because the shared notification summary owns and appends the single final period after `{2_Ability}`. Internal sentence punctuation is allowed when a fragment contains more than one sentence."
 

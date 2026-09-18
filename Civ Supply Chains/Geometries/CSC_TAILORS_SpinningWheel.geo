@@ -14,7 +14,7 @@
 <m_Name text="CSC_TAILORS_SpinningWheel_Bldg"/>
 <m_Groups>
 <Element>
-<m_Name text="CSC_TAILORS_SpinningWheel_Bldg"/>
+<m_Name text="CSC_ALL_Props_01"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>490</m_nPrims>
 </Element>

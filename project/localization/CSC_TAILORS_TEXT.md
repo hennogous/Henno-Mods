@@ -115,7 +115,7 @@ text-prefix: [NEWLINE][NEWLINE]
 
 ## LOC_CSC_TAILORS_STAGE_2_EFFECT_DESCRIPTION
 - {LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME}: {1_TotalAmount}% [ICON_Production] Production toward Renaissance Era or earlier naval units and {2_TotalStack} [ICON_GreatAdmiral] Great Admiral {3_TotalStackCount : plural 1?point; other?points;}.
-- Supply Chain: supplied Textile Workshop [ICON_ARROW] adjacent Lighthouse.
+- Supply Chain: {3_TotalStackCount} supplied {3_TotalStackCount : plural 1?Textile Workshop; other?Textile Workshops;} [ICON_ARROW] adjacent Lighthouse.
 
 ## LOC_CSC_TAILORS_STAGE_2_EFFECT_DESCRIPTION_NEW
 a new {LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME} service: {1_NewAmount}% [ICON_Production] Production toward Renaissance Era or earlier naval units and {2_NewStack} [ICON_GreatAdmiral] Great Admiral {3_StackCount : plural 1?point; other?points;}

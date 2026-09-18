@@ -1,5 +1,7 @@
 """Discovery tests use arbitrary filenames and identities, never the workshop preset."""
 import copy
+import hashlib
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -78,6 +80,46 @@ class DiscoveryTests(unittest.TestCase):
         self.assertFalse(report['blockers'])
         self.assertEqual(report['files'][0]['status'], 'explicitly_ignored')
 
+    def test_existing_pantry_geometry_asset_can_be_reused_without_local_geo_fgx(self):
+        (self.root/'XLPs').mkdir()
+        (self.root/'XLPs/CSC_Tilebases.xlp').write_text('''<XLP><m_Entries><Element>
+            <m_EntryID text="CSC_TAILORS_Rugs"/><m_ObjectName text="CSC_TAILORS_Rugs"/>
+            </Element></m_Entries></XLP>''')
+        ast=self.root/'Assets/CSC_TAILORS_Rugs.ast'
+        ast.write_text('''<Asset><m_GeometrySet><m_ModelInstances><Element>
+            <m_GeoName text="WON_Great_Zimbabwe_RugsF"/>
+            </Element></m_ModelInstances></m_GeometrySet><m_Name text="CSC_TAILORS_Rugs"/></Asset>''')
+        defaults={'templates':{},'reuse_existing_assets':['CSC_TAILORS_Rugs']}
+        rows=[self.row('rugs.blend','prop','CSC_TAILORS_Rugs'),
+              self.row('new.blend','prop','NewProp')]
+        job,report=make_job(rows,defaults,self.root,self.root,self.root/'out',{})
+        self.assertFalse(report['blockers'])
+        self.assertEqual(job['references'],[{'asset_id':'CSC_TAILORS_Rugs'}])
+        self.assertEqual([p['asset_id'] for p in job['props']],['NewProp'])
+        self.assertEqual(report['files'][0]['status'],'existing_asset_reference')
+        ast.write_text(ast.read_text().replace('WON_Great_Zimbabwe_RugsF','CSC_TAILORS_Rugs'))
+        _,report=make_job(rows,defaults,self.root,self.root,self.root/'out',{})
+        self.assertIn('own GEO/FGX',report['blockers'][0])
+
+    def test_prior_run_can_replace_its_own_installed_prop_but_not_a_changed_collision(self):
+        row = self.row('custom.blend', 'prop', 'CSC_Custom')
+        output = self.root/'export-runs/current'
+        prior = self.root/'export-runs/prior'
+        prior.mkdir(parents=True)
+        installed = self.root/'Assets/CSC_Custom.ast'
+        installed.write_bytes(b'pipeline output')
+        (prior/'job.json').write_text(json.dumps({
+            'mod_root': str(self.root),
+            'props': [{'asset_id': 'CSC_Custom', 'blend': row['path']}]}))
+        (prior/'install-receipt.json').write_text(json.dumps({'installed_sha256': {
+            'Assets\\CSC_Custom.ast': hashlib.sha256(installed.read_bytes()).hexdigest()}}))
+        job, report = make_job([row], {'templates': {}}, self.root, self.root, output, {})
+        self.assertFalse(report['blockers'])
+        self.assertEqual([item['asset_id'] for item in job['props']], ['CSC_Custom'])
+        installed.write_bytes(b'unrelated later edit')
+        _, report = make_job([row], {'templates': {}}, self.root, self.root, output, {})
+        self.assertIn('already has this ID', report['blockers'][0])
+
     def test_missing_decal_and_ambiguous_template_block(self):
         row = self.row('a.blend', 'building', 'Product', 'FactoryMesh')
         row['metadata']['template_asset'] = 'Assets/Factory.ast'
@@ -133,6 +175,23 @@ class DiscoveryTests(unittest.TestCase):
         again, report = self.job(rows)
         self.assertFalse(report['blockers'])
         self.assertEqual(job, again)
+
+    def test_legacy_tailor_self_templates_do_not_require_existing_outputs(self):
+        rows = []
+        for ident in ('CSC_TAILORS_Tailor', 'CSC_TAILORS_Tailor_2'):
+            row = self.row(ident + '.blend', 'building', ident, 'CSC_Level_2_Bldg')
+            row['metadata'].update(template_asset=f'Assets/{ident}.ast',
+                                   replace_model=ident,
+                                   state_template_mesh='CSC_Level_2_Bldg')
+            rows.append(row)
+        job, report = self.job(rows)
+        self.assertFalse(report['blockers'])
+        self.assertEqual([entry['template_profile'] for entry in job['buildings']],
+                         ['tilebase', 'tilebase'])
+        self.assertTrue(all(Path(entry['template_asset']).is_file()
+                            for entry in job['buildings']))
+        self.assertFalse(any((self.root / 'Assets' / (ident + '.ast')).exists()
+                             for ident in ('CSC_TAILORS_Tailor', 'CSC_TAILORS_Tailor_2')))
 
     def test_explicit_profile_and_invalid_inputs(self):
         row = self.row('new.blend', 'building', 'New', 'Mesh')

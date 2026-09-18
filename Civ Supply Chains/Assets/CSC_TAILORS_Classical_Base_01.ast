@@ -1351,7 +1351,7 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-7.725611</x>
+							<x>-7.418570</x>
 							<y>-8.747141</y>
 							<z>0.000000</z>
 						</m_position>
@@ -4680,7 +4680,7 @@
 						</m_CookParams>
 						<m_position>
 							<x>-14.429546</x>
-							<y>-0.935829</y>
+							<y>-0.417591</y>
 							<z>0.189284</z>
 						</m_position>
 						<m_orientation>
@@ -5575,7 +5575,7 @@
 						<m_Name text="newAttachmentPoint_11"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.864000</m_scale>
+						<m_scale>0.700000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -5627,13 +5627,13 @@
 						<m_Name text="newAttachmentPoint_13"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.864000</m_scale>
+						<m_scale>0.700000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_ALL_Basket"/>
+									<m_EntryName text="CSC_TAILORS_Basket"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -5667,8 +5667,8 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>17.701141</x>
-							<y>-9.860779</y>
+							<x>12.250475</x>
+							<y>-11.072727</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
@@ -5679,13 +5679,13 @@
 						<m_Name text="newAttachmentPoint_3"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.656500</m_scale>
+						<m_scale>0.500000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_ALL_Basket"/>
+									<m_EntryName text="CSC_TAILORS_Basket"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -5731,7 +5731,7 @@
 						<m_Name text="newAttachmentPoint_23"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.656500</m_scale>
+						<m_scale>0.500000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>

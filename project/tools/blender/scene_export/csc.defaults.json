@@ -1,6 +1,6 @@
 {
   "templates": {
-    "prop_asset": "Assets/CSC_ALL_Workbench_M.ast",
+    "prop_asset": "Assets/CSC_ALL_Workbench_Wide.ast",
     "geometry": "Geometries/CSC_Level_1_Decals.geo",
     "material": "Materials/CSC_ALL_Props_01.mtl",
     "texture": "Textures/CSC_Props_Shared_01_AO.tex",
@@ -8,6 +8,11 @@
   },
   "material_bindings": {
     "Ruin_Debris_Decal": "Ruin_Debris_Decal",
+    "CSC_ALL_Cobble_Patch_Decal": "CSC_ALL_Cobble_Patch_Decal",
+    "CSC_Level_2_Bldg": "CSC_TAILORS_E",
+    "CSC_Storage_LeanTo": "CSC_TAILORS_E",
+    "CSC_Tailor_Props_Review": "CSC_ALL_Props_01",
+    "CSC_ALL_Workbench_Wide": "CSC_ALL_Props_01",
     "CSC_Textile_Building_Material": "CSC_TAILORS_E",
     "CSC_Textile_Fixed_Material": "CSC_ALL_Props_01",
     "CSC_Attached_Dye_Vat_Indigo_Material": "CSC_ALL_Props_01",
@@ -27,5 +32,8 @@
     "supported_props": "independent-pivot",
     "reused_states": "native"
   },
-  "material_policy": "reuse_existing"
+  "material_policy": "reuse_existing",
+  "ao_policy": "reuse_existing",
+  "reuse_existing_assets": ["CSC_ALL_Workbench_Narrow", "CSC_ALL_Workbench_Wide", "CSC_TAILORS_Basket", "CSC_TAILORS_SpinningWheel", "CSC_TAILORS_Rugs"],
+  "replace_existing_assets": ["CSC_TAILORS_Sail_Cutting_Panel", "CSC_TAILORS_Sail_Drying_Rack"]
 }

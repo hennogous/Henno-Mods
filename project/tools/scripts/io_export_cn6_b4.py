@@ -11,7 +11,7 @@ Changes from 3.x version:
 bl_info = {
 	"name": "Export CivNexus6 (.cn6)",
 	"author": "Deliverator, Sukritact (Blender 4+ port: Bill/CSC)",
-	"version": (2, 4),
+	"version": (2, 5),
 	"blender": (4, 0, 0),
 	"location": "File > Export > CivNexus6 (.cn6)",
 	"description": "Export CivNexus6 (.cn6), with optional CSC FGX/GEO deployment",
@@ -139,25 +139,71 @@ def getBoneWeights(boneName, weights):
 
 	return vgroup_data
 
-def csc_find_export_armature():
-	armatures = [o for o in bpy.data.objects if o.type == 'ARMATURE' and not o.hide_get()]
+def csc_armature_items(self, context):
+	items = []
+	for armature in sorted((o for o in bpy.data.objects if o.type == 'ARMATURE'), key=lambda o: o.name.casefold()):
+		scenes = sorted(scene.name for scene in bpy.data.scenes if armature.name in scene.objects)
+		description = "Scenes: %s" % (", ".join(scenes) if scenes else "unlinked")
+		items.append((armature.name, armature.name, description))
+	return items
+
+def csc_find_export_armature(armature_name="", context=None):
+	if armature_name:
+		armature = bpy.data.objects.get(armature_name)
+		if armature is None or armature.type != 'ARMATURE':
+			raise RuntimeError("Selected export armature no longer exists: %s" % armature_name)
+		return armature
+
+	context = context or bpy.context
+	active = context.view_layer.objects.active if context and context.view_layer else None
+	if active is not None and active.type == 'ARMATURE':
+		return active
+
+	selected = [o for o in context.selected_objects if o.type == 'ARMATURE'] if context else []
+	if len(selected) == 1:
+		return selected[0]
+
+	scene_armatures = [o for o in context.scene.objects if o.type == 'ARMATURE' and not o.hide_get()] if context else []
+	if len(scene_armatures) == 1:
+		return scene_armatures[0]
+
+	export_scene = bpy.data.scenes.get('Export')
+	export_armatures = [o for o in export_scene.objects if o.type == 'ARMATURE' and not o.hide_render] if export_scene else []
+	if len(export_armatures) == 1:
+		return export_armatures[0]
+
+	armatures = [o for o in bpy.data.objects if o.type == 'ARMATURE']
 	if not armatures:
-		raise RuntimeError("No visible armature object found.")
-	if len(armatures) > 1:
-		raise RuntimeError("Expected one visible armature, found %d." % len(armatures))
-	return armatures[0]
+		raise RuntimeError("No armature object found.")
+	raise RuntimeError("Choose an Armature in the export dialog (found %d)." % len(armatures))
+
+def csc_preferred_export_armature(context):
+	try:
+		return csc_find_export_armature(context=context)
+	except RuntimeError:
+		return None
 
 def csc_export_meshes(armature_object):
 	meshes = []
 	for object in bpy.data.objects:
-		if object.type != 'MESH' or object.hide_get():
+		if object.type != 'MESH' or object.hide_render or object.hide_viewport:
 			continue
+		parent = object.parent
+		is_descendant = False
+		while parent is not None:
+			if parent == armature_object:
+				is_descendant = True
+				break
+			parent = parent.parent
+		is_bound = False
 		for modifier in object.modifiers:
 			if modifier.type == 'ARMATURE' and modifier.object == armature_object:
-				meshes.append(object)
+				is_bound = True
 				break
+		if is_descendant or is_bound:
+			meshes.append(object)
 	if not meshes:
-		raise RuntimeError("No visible mesh objects attached to %s." % armature_object.name)
+		raise RuntimeError("No exportable mesh children or armature-bound meshes found for %s." % armature_object.name)
 	return meshes
 
 def csc_clean_bone_name(name):
@@ -174,11 +220,10 @@ def csc_clean_object_name(name):
 		cleaned = cleaned[:-2]
 	return cleaned
 
-def csc_validate_scene_for_export(uv_count):
+def csc_validate_scene_for_export(uv_count, armature_object):
 	if bpy.context.mode != 'OBJECT' and bpy.ops.object.mode_set.poll():
 		bpy.ops.object.mode_set(mode='OBJECT')
 
-	armature_object = csc_find_export_armature()
 	mesh_objects = csc_export_meshes(armature_object)
 	fixes = []
 
@@ -440,24 +485,39 @@ def csc_do_export_selected(cn6_path, export_objects):
 		if previous_active and previous_active.name in bpy.data.objects:
 			bpy.context.view_layer.objects.active = previous_active
 
-def csc_export_fgx_geo(base_name, output_dir, geo_class, uv_count, keep_cn6):
+def csc_export_fgx_geo(base_name, output_dir, geo_class, uv_count, keep_cn6, armature_object):
 	os.makedirs(output_dir, exist_ok=True)
-	fixes, armature_object, mesh_objects = csc_validate_scene_for_export(uv_count)
-	export_objects = [armature_object] + mesh_objects
+	previous_scene = bpy.context.window.scene if bpy.context.window else None
+	armature_scenes = [scene for scene in bpy.data.scenes if armature_object.name in scene.objects]
+	export_scene = next((scene for scene in armature_scenes if scene.name == 'Export'), None)
+	target_scene = export_scene or (bpy.context.scene if bpy.context.scene in armature_scenes else None)
+	if target_scene is None and armature_scenes:
+		target_scene = armature_scenes[0]
+	if target_scene is None:
+		raise RuntimeError("Selected armature is not linked to a Blender scene: %s" % armature_object.name)
+	try:
+		if target_scene is not None and bpy.context.window:
+			bpy.context.window.scene = target_scene
+		target_scene.view_layers[0].update()
+		fixes, armature_object, mesh_objects = csc_validate_scene_for_export(uv_count, armature_object)
+		export_objects = [armature_object] + mesh_objects
 
-	with tempfile.TemporaryDirectory(prefix="csc_cn6_export_") as temp_dir:
-		cn6_path = os.path.join(temp_dir, base_name + ".cn6")
-		fgx_path = os.path.join(temp_dir, base_name + ".fgx")
-		geo_path = os.path.join(temp_dir, base_name + ".geo")
+		with tempfile.TemporaryDirectory(prefix="csc_cn6_export_") as temp_dir:
+			cn6_path = os.path.join(temp_dir, base_name + ".cn6")
+			fgx_path = os.path.join(temp_dir, base_name + ".fgx")
+			geo_path = os.path.join(temp_dir, base_name + ".geo")
 
-		csc_do_export_selected(cn6_path, export_objects)
-		csc_convert_cn6_to_fgx(cn6_path, fgx_path, uv_count - 1)
-		mesh_summaries, vertex_count, triangle_count = csc_write_geo(geo_path, base_name, cn6_path, geo_class)
+			csc_do_export_selected(cn6_path, export_objects)
+			csc_convert_cn6_to_fgx(cn6_path, fgx_path, uv_count - 1)
+			mesh_summaries, vertex_count, triangle_count = csc_write_geo(geo_path, base_name, cn6_path, geo_class)
 
-		shutil.copy2(fgx_path, os.path.join(output_dir, base_name + ".fgx"))
-		shutil.copy2(geo_path, os.path.join(output_dir, base_name + ".geo"))
-		if keep_cn6:
-			shutil.copy2(cn6_path, os.path.join(output_dir, base_name + ".cn6"))
+			shutil.copy2(fgx_path, os.path.join(output_dir, base_name + ".fgx"))
+			shutil.copy2(geo_path, os.path.join(output_dir, base_name + ".geo"))
+			if keep_cn6:
+				shutil.copy2(cn6_path, os.path.join(output_dir, base_name + ".cn6"))
+	finally:
+		if previous_scene is not None and bpy.context.window:
+			bpy.context.window.scene = previous_scene
 
 	return fixes, mesh_summaries, vertex_count, triangle_count
 
@@ -834,6 +894,12 @@ class export_csc_fgx_geo(bpy.types.Operator):
 	bl_description = "Export current Blender scene to Civ VI .fgx + .geo and copy them to CSC Geometries"
 	bl_options = {'PRESET'}
 
+	armature_name: EnumProperty(
+			name="Armature",
+			description="Armature whose mesh children/bindings will be exported",
+			items=csc_armature_items,
+			)
+
 	output_dir: StringProperty(
 			name="Output Directory",
 			description="Folder where .fgx and .geo files will be copied",
@@ -870,13 +936,15 @@ class export_csc_fgx_geo(bpy.types.Operator):
 
 	def execute(self, context):
 		try:
-			base_name = csc_find_export_armature().name
+			armature_object = csc_find_export_armature(self.armature_name, context)
+			base_name = armature_object.name
 			fixes, mesh_summaries, vertex_count, triangle_count = csc_export_fgx_geo(
 				base_name,
 				bpy.path.abspath(self.output_dir),
 				self.geo_class,
 				int(self.uv_count),
 				self.keep_cn6,
+				armature_object,
 			)
 		except Exception as exc:
 			self.report({'ERROR'}, str(exc))
@@ -895,6 +963,9 @@ class export_csc_fgx_geo(bpy.types.Operator):
 		return {'FINISHED'}
 
 	def invoke(self, context, event):
+		preferred = csc_preferred_export_armature(context)
+		if preferred is not None:
+			self.armature_name = preferred.name
 		return context.window_manager.invoke_props_dialog(self, width=520)
 
 def menu_func(self, context):

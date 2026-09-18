@@ -240,3 +240,94 @@ occupied. Headless Blender checks on a disposable saved-scene copy exercised
 cleanup, repeated lettered/numbered duplicates, raw Outliner rename, collision,
 mesh rename and support update. The live unsaved Blender scene was not saved or
 overwritten; validation scene is in codex-outputs/csc-attachment-rename.
+
+2026-09-15 Windows placement repair: repaired six mesh-child offsets in the saved
+revision-11 `CSC_TAILORS_Textile_Workshop_FINAL.blend` by transferring their world
+transforms to Attach_ controllers and resetting child local transforms. All mesh
+world vertices were preserved within 0.000016 Blender units. Original backup beside
+the blend: `CSC_TAILORS_Textile_Workshop_FINAL.before-controller-repair-20260915-123521.blend.bak`.
+CSC Scene Tools 1.2.1 adds Select prop controller (installed and tested in the open
+Blender); click a mesh then this button for placement edits. Full folder decode,
+build and Windows conversion passed in `%LOCALAPPDATA%/Temp/csc-export-controller-repair-20260915`;
+no installation into the mod was performed. CN6ToFGX required sandbox escalation
+for its Firaxis Projects registry key; this was not an asset/exporter defect.
+
+2026-09-15 reference-only correction after Asset Editor crash: basket and spinning
+wheel already existed in CSC and are used by district bases. Restored their AST,
+GEO and FGX from the 12:37 exporter backup. The two copied `.blend` masters were
+moved into revision-11 `existing-asset-masters/` (top-level-only discovery now
+ignores them). `reuse_existing_assets` in CSC defaults lists both IDs; discovery
+requires installed AST/GEO/FGX and XLP registration, and build uses their TileBase
+bindings without staging replacements. The 5-blend batch builds 10 custom assets
+rather than 12, with 42 placements. The decoder also excluded a basket attachment
+child that had leaked into the Workshop's fixed geometry. Rebuilt, converted and
+installed from `%LOCALAPPDATA%/Temp/csc-export-workshop-no-duplicate-20260915`;
+Asset Editor opening and game behavior remain to be checked.
+
+2026-09-15 Asset Editor crash resolution: coherent pre-export Workshop package opened.
+An attachment-only hybrid also opened; new Workshop models plus AO/PIL crashed;
+new PIL with old AO opened. The direct R8 texconv AO DDS used alpha pixel-format
+flags (`0x20000`) and the exporter wrote 12 AO TEX mips for 2048; the working
+Firaxis DDS used luminance (`0x40`) and TEX mip index 11. Exporter now replaces
+texconv's AO header with a compatible installed Firaxis AO DDS header (retaining
+converted mip pixels) and writes TEX mip index 11/10 for 2048/1024. New package
+at `%LOCALAPPDATA%/Temp/csc-export-ae-ao-fix-2-20260915` was converted and
+installed; shared AO DDS header matched yesterday's byte-for-byte. Henno reopened
+CSC_TAILORS_Textile_Workshop in Asset Editor and confirmed it works fine. This is
+AE validation only; no cook or in-game review was done.
+
+2026-09-15 material reuse decision: Henno confirmed the installed Textile Workshop
+opens and looks right with existing `CSC_TAILORS_E` for the main building and
+`CSC_ALL_Props_01` for the authored props. CSC defaults now use
+`material_policy: reuse_existing` and `ao_policy: reuse_existing`; the successful
+5-blend export stages no material or texture payload. Blender material custom
+property `civ_material` now takes precedence over JSON `material_bindings`, which
+remain a fallback for older blend files. An explicit AO map requires switching
+to `ao_policy: stage_explicit`; source AO bakes alone do not alter the installed
+material. Asset Editor confirmed the installed material-only version opens and
+looks fine; cooking and in-game appearance are unverified.
+
+2026-09-15 export uninstall: `export_assets.py --uninstall RUN/job.json` now uses
+the install receipt and backup to undo the whole folder run, checking current
+installed file hashes before touching anything. Default restores overwritten
+files and deletes files created by the run; `--purge` removes all file outputs
+and XLP entries authored by that run, even when previous versions existed.
+`--dry-run` shows the full plan. Legacy runs without the new receipt derive
+expected output hashes from their saved stage and backup. The current successful
+Textile Workshop run dry-run reported 32 restorable files in default mode, or
+32 deletions and 10 XLP removals with `--purge`. Neither dry-run changed the live
+mod; no uninstall was executed.
+
+`export_assets.py --list-purge RUN/job.json` is a read-only shortcut to the purge
+preview. It now prints full destination paths and each XLP entry ID, rather than
+only an XLP removal count. A file-hash mismatch still blocks the listing so it
+cannot imply a purge is ready when installed outputs have changed.
+
+2026-09-15 Rugs import: CSC Scene Tools' Add non-library asset master saved
+`CSC_TAILORS_Rugs.blend` at the top level and created its `Attach_` placement, so
+discovery treated the master as a prop output. `CSC_TAILORS_Rugs.ast` already
+exists and binds native `WON_Great_Zimbabwe_RugsF` geometry; CSC has no local
+Rugs GEO/FGX. Discovery now permits explicit reuse of such pantry-backed ASTs
+with a valid CSC TileBase XLP entry, while still requiring own GEO/FGX when the
+AST names its own identity. Added Rugs to CSC defaults `reuse_existing_assets`.
+Real 8-blend discovery classified Rugs as `existing_asset_reference`, with no
+Rugs staged output and a representable Rug placement in the Workshop AST.
+Workshop 2's Madder fixed vat had malformed Bone weights from 0.3359 to 1.0010;
+the matching main Workshop vat had Bone=1 throughout. Backed up the Workshop 2
+blend beside its source as `CSC_TAILORS_Textile_Workshop_2_FINAL.before-weight-repair-20260915.blend.bak`,
+then set its 76 vat vertices to Bone=1 without changing coordinates. The full
+folder passed decode/build (10 assets, 42 placements, 3 existing materials, 0
+textures, 0 blockers), converted with SDK registry access, and installed from
+`%LOCALAPPDATA%/Temp/csc-export-rugs-reference-converted-20260915-1634` with its
+normal backup. Rug AST/GEO/FGX and existing materials were not replaced. Asset
+Editor and game appearance remain to be reviewed by Henno.
+
+The pre-repair Workshop 2 vat had a newly named `Armature` modifier targeting the
+new building rig and one `Bone` group with varied weights. The source Workshop
+vat had a `Building static binding` modifier and `Bone=1` throughout. This is
+consistent with using Blender's automatic armature weights while parenting, but
+the exact UI action cannot be recovered from the blend. For copied fixed geometry,
+use Object (Keep Transform) parenting, retarget the existing Armature modifier,
+and confirm all vertices remain in the one Bone group at weight 1. The `Attach_`
+Empty's `source_asset_id` only chooses the asset identity; installed CSC reuse is
+selected for the batch through `scene_export/csc.defaults.json`.

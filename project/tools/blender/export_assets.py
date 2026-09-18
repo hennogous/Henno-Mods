@@ -49,12 +49,36 @@ def main():
     parser.add_argument('--stage-only', action='store_true', help='Decode and build; skip FGX/DDS conversion')
     parser.add_argument('--no-install', action='store_true', help='Convert into the run folder without installing into the mod')
     parser.add_argument('--install', type=Path, metavar='JOB_JSON', help='Explicitly install a previously converted run')
+    parser.add_argument('--uninstall', type=Path, metavar='JOB_JSON', help='Undo one installed folder export from its run job.json')
+    parser.add_argument('--list-purge', type=Path, metavar='JOB_JSON', help='List every file and XLP entry a purge of this run would remove; make no changes')
+    parser.add_argument('--dry-run', action='store_true', help='With --uninstall, show the plan without changing mod files')
+    parser.add_argument('--purge', action='store_true', help='With --uninstall, delete all assets produced by this run instead of restoring prior versions')
+    parser.add_argument('--force', action='store_true', help='With purge, also delete run-owned outputs changed or removed since installation')
     args = parser.parse_args()
     here = Path(__file__).resolve().parent
     helpers = here / 'scene_export'
     engine = helpers / 'export_scene.py'
     if not engine.is_file():
         parser.error(f'Missing helper: {engine}; copy the scene_export folder too')
+    if sum(bool(x) for x in (args.install,args.uninstall,args.list_purge))>1:
+        parser.error('Choose only one of --install, --uninstall, or --list-purge')
+    if args.dry_run and not args.uninstall:
+        parser.error('--dry-run requires --uninstall')
+    if args.purge and not args.uninstall:
+        parser.error('--purge requires --uninstall')
+    if args.force and not (args.list_purge or (args.uninstall and args.purge)):
+        parser.error('--force requires --list-purge or --uninstall with --purge')
+    if args.list_purge:
+        command = [sys.executable, str(engine), 'uninstall',
+                   str(args.list_purge.resolve()), '--purge', '--dry-run']
+        if args.force: command.append('--force')
+        return subprocess.call(command)
+    if args.uninstall:
+        command=[sys.executable, str(engine), 'uninstall', str(args.uninstall.resolve())]
+        if args.dry_run: command.append('--dry-run')
+        if args.purge: command.append('--purge')
+        if args.force: command.append('--force')
+        return subprocess.call(command)
     if args.install:
         # The engine verifies conversion receipts and destination hashes, backs up
         # replaced files and merges the current XLP before installing.

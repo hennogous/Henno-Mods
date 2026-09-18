@@ -4,7 +4,7 @@ Install this file as a Blender add-on. It changes only the open .blend; save nor
 The Windows exporter remains the authority for material/asset/state validation.
 """
 bl_info = {
-    'name': 'CSC Scene Tools', 'author': 'CSC', 'version': (1, 2, 0),
+    'name': 'CSC Scene Tools', 'author': 'CSC', 'version': (1, 2, 1),
     'blender': (4, 0, 0), 'location': '3D View > Sidebar > CSC',
     'description': 'Place, duplicate and exclude reusable CSC scene props',
     'category': 'Object',
@@ -547,6 +547,21 @@ def select_root(context, root):
     context.view_layer.objects.active = root
 
 
+class CSC_OT_select_controller(bpy.types.Operator):
+    bl_idname = 'csc_scene.select_controller'
+    bl_label = 'Select prop controller'
+    bl_description = 'Select the Attach_ Empty for moving, Z rotating or uniformly scaling this prop'
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+        return context.mode == 'OBJECT' and attachment_root(context.active_object) is not None
+
+    def execute(self, context):
+        select_root(context, attachment_root(context.active_object))
+        return {'FINISHED'}
+
+
 class CSC_OT_duplicate(bpy.types.Operator):
     bl_idname = 'csc_scene.duplicate'
     bl_label = 'Duplicate selected prop'
@@ -687,6 +702,7 @@ class CSC_PT_scene(bpy.types.Panel):
         layout = self.layout
         layout.label(text='Edit placements on Attach_ Empties')
         layout.label(text='Move / Z rotate / uniform scale; save')
+        layout.operator('csc_scene.select_controller')
         layout.operator('csc_scene.duplicate')
         layout.operator('csc_scene.rename')
         layout.operator('csc_scene.repair_names')
@@ -705,7 +721,7 @@ class CSC_PT_scene(bpy.types.Panel):
         layout.label(text='Pantry geometry: source must stay verbatim')
 
 
-CLASSES = (CSC_OT_duplicate, CSC_OT_rename, CSC_OT_repair_names,
+CLASSES = (CSC_OT_select_controller, CSC_OT_duplicate, CSC_OT_rename, CSC_OT_repair_names,
            CSC_OT_visibility, CSC_OT_import, CSC_OT_remove,
            CSC_OT_import_master, CSC_PT_scene)
 

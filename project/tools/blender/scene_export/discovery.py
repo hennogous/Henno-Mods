@@ -1,5 +1,7 @@
 """Filename-independent classification and template resolution for saved scenes."""
 from pathlib import Path
+import hashlib
+import json
 import xml.etree.ElementTree as ET
 from export_scene import identifier, read_xml, txt, MODELS
 
@@ -11,8 +13,39 @@ TEMPLATE_PROFILES = {
 # Migration of shipped scene metadata, regardless of whether the old output exists.
 # Do not silently substitute a generic template for arbitrary missing custom ASTs.
 LEGACY_TEMPLATE_PROFILES = {
+    'assets/csc_tailors_tailor.ast': 'tilebase',
+    'assets/csc_tailors_tailor_2.ast': 'tilebase',
     'assets/csc_tailors_textile_workshop.ast': 'level1_small',
 }
+
+
+def prior_run_owns_installed_prop(output, mod, row, ident):
+    """Allow an export source to update only an installed output it previously created."""
+    installed = mod / 'Assets' / (ident + '.ast')
+    if not installed.is_file():
+        return False
+    installed_sha = hashlib.sha256(installed.read_bytes()).hexdigest()
+    runs = output.parent
+    if not runs.is_dir():
+        return False
+    for receipt_path in sorted(runs.glob('*/install-receipt.json'), reverse=True):
+        job_path = receipt_path.parent / 'job.json'
+        if receipt_path.parent == output or not job_path.is_file():
+            continue
+        try:
+            receipt = json.loads(receipt_path.read_text())
+            prior = json.loads(job_path.read_text())
+            if Path(prior['mod_root']).resolve() != mod.resolve():
+                continue
+            owned = any(item.get('asset_id') == ident and
+                        Path(item.get('blend', '')).resolve() == Path(row['path']).resolve()
+                        for item in prior.get('props', []))
+            expected = receipt.get('installed_sha256', {}).get(f'Assets\\{ident}.ast')
+            if owned and expected == installed_sha:
+                return True
+        except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+            continue
+    return False
 
 
 def find_blends(directory):
@@ -96,8 +129,28 @@ def resolve_building(entry, row, mod):
 def make_job(rows, defaults, mod, library, output, catalogue):
     import copy
     job = copy.deepcopy(defaults)
-    job.update(mod_root=str(mod), library=str(library), output=str(output), buildings=[], props=[], decals=[])
+    job.update(mod_root=str(mod), library=str(library), output=str(output), buildings=[], props=[], decals=[],
+               references=[{'asset_id': ident} for ident in job.get('reuse_existing_assets', [])])
     report = {'files': [], 'blockers': []}
+    xlp = mod / 'XLPs' / 'CSC_Tilebases.xlp'
+    installed = read_xml(xlp).findall('m_Entries/Element') if xlp.is_file() else []
+    for ref in job['references']:
+        ident = ref['asset_id']
+        ast = mod / 'Assets' / (ident + '.ast')
+        required = [ast]
+        if ast.is_file():
+            root = read_xml(ast)
+            geos = {txt(model, 'm_GeoName') for model in root.findall(MODELS + '/Element')}
+            if not geos or '' in geos or txt(root, 'm_Name') != ident:
+                report['blockers'].append(f'{ident}: installed AST has an invalid name or geometry binding')
+            if ident in geos:
+                required += [mod / 'Geometries' / (ident + '.geo'),
+                             mod / 'Geometries' / (ident + '.fgx')]
+        missing = [str(path) for path in required if not path.is_file()]
+        if missing or not any(txt(e, 'm_EntryID') == ident and txt(e, 'm_ObjectName') == ident
+                              for e in installed):
+            report['blockers'].append(f'{ident}: existing asset needs its AST, own GEO/FGX when used, '
+                                      f'and CSC TileBase registration; missing {missing}')
     known, records, auxiliary = {}, {}, {}
     for row in rows:
         result = {'path': row['path']}
@@ -117,8 +170,16 @@ def make_job(rows, defaults, mod, library, output, catalogue):
             source = catalogue.get(ident)
             if kind == 'prop' and source and source.get('origin') != 'authored_blender':
                 raise ValueError('Existing pantry/library asset is reference-only; use as an attachment or explicitly ignore its source blend')
+            if (kind == 'prop' and (mod / 'Assets' / (ident + '.ast')).is_file()
+                    and ident not in job.get('reuse_existing_assets', [])
+                    and ident not in job.get('replace_existing_assets', []) and not source
+                    and not prior_run_owns_installed_prop(output, mod, row, ident)):
+                raise ValueError(f'{ident}: an installed CSC asset already has this ID; add it to reuse_existing_assets to reference it without replacement')
             entry = {'blend': row['path'], 'scene': row['scene'], 'source_sha256': row['sha256'],
                      ('geometry_id' if kind == 'decal' else 'asset_id'): ident}
+            if kind == 'prop' and ident in job.get('reuse_existing_assets', []):
+                result['status'] = 'existing_asset_reference'
+                continue
             if kind == 'building':
                 auxiliary[ident] = resolve_building(entry, row, mod)
                 result['template_asset'] = entry['template_asset']

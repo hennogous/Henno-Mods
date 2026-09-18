@@ -2032,10 +2032,10 @@
 										<m_ParamName text="Tag_Appeal"/>
 									</Element>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="TB_ERROR"/>
+										<m_EntryName text="CSC_TAILORS_Textile_Workshop_2"/>
 										<m_XLPClass text="TileBase"/>
-										<m_XLPPath text="tilebases.xlp"/>
-										<m_BLPPackage text="landmarks/tilebases"/>
+										<m_XLPPath text="csc_tilebases.xlp"/>
+										<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
 										<m_LibraryName text="TileBase"/>
 										<m_ParamName text="Asset"/>
 									</Element>

@@ -9,6 +9,9 @@ from pathlib import Path
 from mathutils import Matrix
 
 
+_RELOCATED_IMAGES = set()
+
+
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -27,6 +30,53 @@ def mesh_layout_signature(mesh):
             'uvs': [[list(d.uv) for d in u.data] for u in mesh.uv_layers],
             'materials': [m.name if m else None for m in mesh.materials]}
     return hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
+
+
+def matrix_key(value):
+    # Reparenting an imported component through an attachment empty introduces
+    # harmless float32 round-off (typically 1e-5) when Blender reconstructs its
+    # matrix.  Compare at Civ-scale placement precision, while still catching
+    # authored rotation/scale/offset changes.
+    return tuple(round(cell, 4) for row in value for cell in row)
+
+
+def mesh_component_signature(mesh, local_matrix):
+    data = {'mesh': mesh_signature(mesh), 'matrix': matrix_key(local_matrix)}
+    return hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()
+
+
+def matrices_close(left, right, tolerance=1e-4):
+    return max(abs(a - b) for row_left, row_right in zip(left, right)
+               for a, b in zip(row_left, row_right)) <= tolerance
+
+
+def components_match(left, right):
+    """Compare a mesh assembly as a multiset with float-tolerant transforms."""
+    if len(left) != len(right):
+        return False
+    remaining = list(right)
+    for component in left:
+        match = next((index for index, candidate in enumerate(remaining)
+                      if component['mesh_signature'] == candidate['mesh_signature']
+                      and matrices_close(component['matrix'], candidate['matrix'])), None)
+        if match is None:
+            return False
+        remaining.pop(match)
+    return True
+
+
+def matrix_collections_match(left, right):
+    """Compare unordered matrices without quantization-boundary false failures."""
+    if len(left) != len(right):
+        return False
+    remaining = list(right)
+    for value in left:
+        match = next((index for index, candidate in enumerate(remaining)
+                      if matrices_close(value, candidate)), None)
+        if match is None:
+            return False
+        remaining.pop(match)
+    return True
 
 
 def matrix(m):
@@ -51,8 +101,24 @@ def material(mat):
         if key not in ('B', 'N', 'AO', 'G', 'M', 'E', 'O', 'T'):
             continue
         p = Path(bpy.path.abspath(im.filepath)).resolve()
-        if im.packed_file or not p.is_file():
-            raise ValueError(f'{mat.name}: external image missing or packed: {p}')
+        if im.packed_file:
+            raise ValueError(f'{mat.name}: external image is packed: {p}')
+        if not p.is_file():
+            # Final handoff folders are copied between Mac and Windows. Blender
+            # can retain the sending host's absolute image path even though the
+            # self-contained bundle has the same file beside it in textures/.
+            # Resolve that exact basename read-only; never search outside the
+            # active blend bundle or rewrite the source file.
+            fallback = (Path(bpy.data.filepath).resolve().parent / 'textures' /
+                        Path(im.filepath).name).resolve()
+            if not fallback.is_file():
+                raise ValueError(f'{mat.name}: external image missing: {p}; '
+                                 f'bundle fallback also missing: {fallback}')
+            relocation = (str(p), str(fallback))
+            if relocation not in _RELOCATED_IMAGES:
+                print(f'Relocated transferred image: {p} -> {fallback}')
+                _RELOCATED_IMAGES.add(relocation)
+            p = fallback
         if key in result['images']:
             raise ValueError(f'{mat.name}: ambiguous image slot {key}')
         result['images'][key] = {'path': str(p), 'sha256': digest(p), 'size': list(im.size)}
@@ -90,6 +156,24 @@ def decode_mesh(ob, transform):
         mesh.calc_loop_triangles()
         mesh.calc_tangents(uvmap=mesh.uv_layers[0].name)
         materials = [material(m) for m in mesh.materials]
+        # Match the established CSC CN6 exporter: preserve topology identity and
+        # split only where one of the three UV sets differs.  Per-corner normal,
+        # tangent and bitangent values are averaged for each authored source
+        # vertex.  Keying by the complete corner frame inflated imported Civ
+        # meshes at every hard/smoothed edge (for example 448 authored Tailor
+        # vertices became 1,881 export vertices).
+        frames = {}
+        for polygon in mesh.polygons:
+            for loop_index in polygon.loop_indices:
+                loop = mesh.loops[loop_index]
+                frame = (tuple(loop.normal), tuple(loop.tangent), tuple(loop.bitangent))
+                frames.setdefault(loop.vertex_index, []).append(frame)
+        averaged_frames = {}
+        for vertex_index, values in frames.items():
+            averaged_frames[vertex_index] = [
+                sum(frame[part][axis] for frame in values) / len(values)
+                for part in range(3) for axis in range(3)
+            ]
         vertices, faces, lookup = [], [], {}
         # Sort by material so GEO group primitive ranges match CN6 triangle order.
         for tri in sorted(mesh.loop_triangles, key=lambda t: t.material_index):
@@ -99,10 +183,10 @@ def decode_mesh(ob, transform):
             for li in tri.loops:
                 loop = mesh.loops[li]
                 uv = [x for layer in mesh.uv_layers for x in (layer.data[li].uv.x, 1-layer.data[li].uv.y)]
-                row = list(mesh.vertices[loop.vertex_index].co) + list(loop.normal) + list(loop.tangent) + list(loop.bitangent) + uv
+                row = list(mesh.vertices[loop.vertex_index].co) + averaged_frames[loop.vertex_index] + uv
                 if not all(math.isfinite(x) for x in row):
                     raise ValueError(f'{ob.name}: nonfinite vertex frame')
-                key = tuple(round(x, 7) for x in row)
+                key = (loop.vertex_index,) + tuple(round(x, 8) for x in uv)
                 if key not in lookup:
                     lookup[key] = len(vertices)
                     vertices.append(row)
@@ -112,6 +196,33 @@ def decode_mesh(ob, transform):
                 'triangles': faces, 'materials': materials, 'source_matrix_world': matrix(ob.matrix_world)}
     finally:
         bpy.data.meshes.remove(mesh)
+
+
+def merge_meshes(name, meshes):
+    """Combine fixed building parts in the export stream without editing Blender sources."""
+    materials, material_indexes = [], {}
+    vertices, triangles, sources = [], [], []
+    for mesh in meshes:
+        local_to_merged = {}
+        for index, item in enumerate(mesh['materials']):
+            material_name = item['name']
+            if material_name in material_indexes:
+                merged_index = material_indexes[material_name]
+                if materials[merged_index] != item:
+                    raise ValueError(f'{name}: conflicting definitions for material {material_name}')
+            else:
+                merged_index = len(materials)
+                material_indexes[material_name] = merged_index
+                materials.append(item)
+            local_to_merged[index] = merged_index
+        offset = len(vertices)
+        vertices.extend(mesh['vertices'])
+        triangles.extend([[a + offset, b + offset, c + offset, local_to_merged[material]]
+                          for a, b, c, material in mesh['triangles']])
+        sources.append({'name': mesh['name'], 'matrix_world': mesh['source_matrix_world']})
+    triangles.sort(key=lambda triangle: triangle[3])
+    return {'name': name, 'role': 'fixed_geometry', 'vertices': vertices,
+            'triangles': triangles, 'materials': materials, 'source_meshes': sources}
 
 
 def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
@@ -145,10 +256,19 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
                     not child.hide_render and not child.get('csc_export_exclude')]
         if not children:
             raise ValueError(f'{instance}: attachment has no direct mesh children')
-        for child in children:
-            if max(abs(a-b) for row,ref in zip(o.matrix_world.inverted() @ child.matrix_world, Matrix.Identity(4)) for a,b in zip(row,ref)) > 1e-4:
-                raise ValueError(f'{instance}: mesh child has a placement offset; move it to the root')
-        attachments.append({'source_mesh_signatures':sorted(mesh_signature(child.data) for child in children), 'instance_id': instance, 'source_asset_id': o['source_asset_id'],
+        relative_meshes = [(child, o.matrix_world.inverted() @ child.matrix_world)
+                           for child in children]
+        attachments.append({
+            'source_components': [
+                {'mesh_signature': mesh_signature(child.data), 'matrix': matrix(relative)}
+                for child, relative in relative_meshes],
+            'source_mesh_signatures': sorted(mesh_signature(child.data)
+                                             for child, _ in relative_meshes),
+            'source_component_signatures': sorted(mesh_component_signature(child.data, relative)
+                                                  for child, relative in relative_meshes),
+            'source_local_matrices': sorted(matrix_key(relative)
+                                            for _, relative in relative_meshes),
+            'instance_id': instance, 'source_asset_id': o['source_asset_id'],
             'role': o.get('export_role'), 'support': support, 'matrix_world': matrix(o.matrix_world),
             'matrix_relative_support': matrix(roots[support].matrix_world.inverted() @ o.matrix_world) if support in roots else matrix(o.matrix_world),
             'matrix_parent_inverse': matrix(o.matrix_parent_inverse),
@@ -168,9 +288,13 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
         if o.name.startswith('REVIEW_'):
             raise ValueError(f'Review object leaked into Export: {o.name}')
         if kind == 'building':
+            # An attachment child belongs to its reusable asset, even if it
+            # carries an old fixed-geometry role from a scene import.
+            if any(parent in roots.values() for parent in parent_chain(o)):
+                continue
             if role in ('building_geometry', 'fixed_geometry') or o.name.startswith('CSC_Fixed_'):
                 selected.append(o)
-            elif not any(parent in roots.values() for parent in parent_chain(o)):
+            else:
                 raise ValueError(f'{o.name}: unclassified export mesh')
         elif kind == 'decal':
             selected.append(o)
@@ -188,6 +312,12 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
                 if any(any(abs(a-b)>1e-6 for a,b in zip(row, ref)) for bone in parent.pose.bones for row,ref in zip(bone.matrix_basis, Matrix.Identity(4))):
                     raise ValueError(f'{o.name}: non-rest pose unsupported')
         geometry.append(decode_mesh(o, o.matrix_world))
+    if kind == 'building':
+        fixed = [mesh for mesh in geometry if mesh['role'] == 'fixed_geometry'
+                 or mesh['name'].startswith('CSC_Fixed_')]
+        if len(fixed) > 1:
+            primary = [mesh for mesh in geometry if mesh not in fixed]
+            geometry = primary + [merge_meshes(asset_id + '_Fixed', fixed)]
     if digest(path) != before:
         raise ValueError(f'Source file changed while decoding: {path}')
     return {'asset_id': asset_id, 'kind': kind, 'source': str(path), 'source_sha256': before,
@@ -206,6 +336,7 @@ def main():
     job = json.loads(job_path.read_text())
     library = Path(job['library'])
     catalogue = {a['asset_id']: a for a in json.loads((library/'catalogue.json').read_text())['assets']}
+    references = {item['asset_id']: item for item in job.get('references', [])}
     models, buildings = {}, []
     for item in job.get('props', []):
         ident = item['asset_id']
@@ -218,6 +349,8 @@ def main():
         buildings.append(row['asset_id'])
         for a in row['attachments']:
             ident = a['source_asset_id']
+            if ident in references:
+                continue
             if ident in models:
                 if models[ident]['kind'] != 'prop':
                     raise ValueError(f'{ident}: attachment identity conflicts with non-prop model')
@@ -236,18 +369,35 @@ def main():
     reused = {a['source_asset_id'] for ident in buildings for a in models[ident]['attachments']}
     verified = {}
     for ident in sorted(reused):
-        source_path = Path(models[ident]['source']) if ident in models else library / (ident+'.blend')
+        if ident in references:
+            continue
+        source_path = (Path(models[ident]['source']) if ident in models else
+                       library / (ident+'.blend'))
         before = digest(source_path)
         bpy.ops.wm.open_mainfile(filepath=str(source_path), load_ui=False, use_scripts=False)
-        prop_scene = next((e.get('scene','Export') for e in job.get('props',[]) if e['asset_id']==ident), catalogue.get(ident,{}).get('export_scene','Export'))
+        prop_scene = next((e.get('scene','Export') for e in job.get('props',[])
+                           if e['asset_id']==ident), catalogue.get(ident,{}).get('export_scene','Export'))
         scene = bpy.data.scenes.get(prop_scene)
         if scene is None and len(bpy.data.scenes)==1: scene=bpy.data.scenes[0]
         if scene is None: raise ValueError(f'{ident}: no source export scene')
-        signatures = {mesh_signature(o.data) for o in scene.objects if o.type == 'MESH'}
-        layouts = {mesh_layout_signature(o.data) for o in scene.objects if o.type == 'MESH'}
+        source_meshes = [o for o in scene.objects if o.type == 'MESH']
+        signatures = {mesh_signature(o.data) for o in source_meshes}
+        layouts = {mesh_layout_signature(o.data) for o in source_meshes}
+        component_signatures = sorted(mesh_component_signature(o.data, o.matrix_world)
+                                      for o in source_meshes)
+        source_components = [
+            {'mesh_signature': mesh_signature(o.data), 'matrix': matrix(o.matrix_world)}
+            for o in source_meshes]
+        local_matrices = sorted(matrix_key(o.matrix_world) for o in source_meshes)
         verified[ident] = {'source':str(source_path), 'sha256':before}
         refs = [(building, a) for building in buildings for a in models[building]['attachments']
                 if a['source_asset_id'] == ident]
+        for building, attachment in refs:
+            if components_match(attachment['source_components'], source_components):
+                continue
+            if set(attachment['source_mesh_signatures']) <= signatures:
+                raise ValueError(f'{building}/{attachment["instance_id"]}: local mesh transforms '
+                                 f'diverge from {ident}; preserve the standalone asset assembly')
         divergent = [(building, a) for building, a in refs
                      if not set(a['source_mesh_signatures']) <= signatures]
         if divergent:
@@ -258,6 +408,11 @@ def main():
                 raise ValueError(f'{first}/{a["instance_id"]}: geometry/UVs diverge from {ident}; native assets and explicit local masters must match their source')
             if len(models[ident]['meshes']) != 1 or any(len(a['source_mesh_signatures']) != 1 for _, a in refs):
                 raise ValueError(f'{ident}: scene geometry edits require a single-mesh CSC asset')
+            if any(not matrix_collections_match(
+                    [component['matrix'] for component in a['source_components']],
+                    [component['matrix'] for component in source_components])
+                   for _, a in divergent):
+                raise ValueError(f'{ident}: edited scene geometry changed its asset-local transform')
             variants = {a['source_mesh_signatures'][0] for _, a in divergent}
             if len(variants) != 1:
                 raise ValueError(f'{ident}: edited placements use different geometry/UVs; use one reusable definition')

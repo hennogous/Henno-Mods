@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Decode CSC Blender scenes and stage Civ VI assets. Standard Python, no third-party deps.
 
-Commands: decode JOB --blender EXE; build JOB; convert JOB --converter EXE --texconv EXE.
+Commands: decode JOB --blender EXE; build JOB; convert JOB --converter EXE --texconv EXE;
+install JOB; uninstall JOB [--dry-run] [--purge].
 Build always writes a review report; exits 2 if any placement cannot be represented.
 Source blends are never edited. Only the explicit install command changes the live project.
 """
@@ -65,7 +66,7 @@ def identifier(value):
 
 def existing_material(mat, job, mod):
     """Resolve authored identities explicitly; never guess an atlas from a mesh name."""
-    target = job.get('material_bindings', {}).get(mat['name'], mat.get('external'))
+    target = mat.get('external') or job.get('material_bindings', {}).get(mat['name'])
     if not target and (mod / 'Materials' / (mat['name'] + '.mtl')).is_file():
         target = mat['name']
     if target:
@@ -77,7 +78,7 @@ def existing_material(mat, job, mod):
     return None
 
 
-def stage_ao_binding(mat, existing, mod, stage, textures, source_inputs):
+def stage_ao_binding(mat, existing, mod, stage, textures, source_inputs, ao_policy='stage_explicit'):
     """Keep surface bindings; stage an explicitly authored AO map and resolve its material.
 
     Native attachment assets never enter this path. An AO-only material variant is
@@ -85,6 +86,10 @@ def stage_ao_binding(mat, existing, mod, stage, textures, source_inputs):
     """
     ident = mat.get('ao_texture')
     if not ident:
+        return existing
+    if ao_policy == 'reuse_existing':
+        if not existing:
+            raise ValueError(f'{mat["name"]}: AO reuse needs an existing material binding')
         return existing
     if not ident.startswith('CSC_') or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_' for c in ident):
         raise ValueError(f'Invalid explicit AO texture identity: {ident}')
@@ -318,6 +323,7 @@ def build(job):
         for v in p.findall('m_CookParams/m_Values/Element'):
             if txt(v,'m_ParamName')=='Asset' and txt(v,'m_EntryName'): bindings[txt(v,'m_EntryName')]=v
     catalogue={a['asset_id']:a for a in json.loads((Path(job['library'])/'catalogue.json').read_text())['assets']}
+    references={item['asset_id'] for item in job.get('references', [])}
     models=decoded['models']; materials={}; textures={}; source_inputs={}
     report['scene_geometry_edits'] = [m['scene_geometry_edit'] for m in models.values()
                                       if m.get('scene_geometry_edit')]
@@ -336,7 +342,7 @@ def build(job):
         for mesh in model['meshes']:
             for mat in mesh['materials']:
                 ext=existing_material(mat,job,mod)
-                ext=stage_ao_binding(mat,ext,mod,stage,textures,source_inputs)
+                ext=stage_ao_binding(mat,ext,mod,stage,textures,source_inputs,job.get('ao_policy','stage_explicit'))
                 if ext:
                     materials[mat['name']]=ext; continue
                 ims=mat['images']
@@ -369,7 +375,10 @@ def build(job):
             if e.tag=='ePixelformat': e.text='PF_'+im['format']
             if e.tag=='m_Width': e.text=str(im['size'][0])
             if e.tag=='m_Height': e.text=str(im['size'][1])
-            if e.tag=='m_NumMipMaps': e.text=str(1+int(math.log2(max(im['size']))))
+            if e.tag=='m_NumMipMaps':
+                # Firaxis AO TEX stores the highest mip index (2048 -> 11),
+                # while its DDS header stores the number of levels (12).
+                e.text=str(int(math.log2(max(im['size'])))) if im['slot']=='AO' else str(1+int(math.log2(max(im['size']))))
         set_text(tr,'m_SourceFilePath',str((stage/im['source']).resolve()))
         set_text(tr,'m_DataFiles/Element/m_RelativePath',name+'.dds')
         # Clone the class/export settings belonging to this slot where available.
@@ -409,11 +418,12 @@ def build(job):
         validate_support(model['attachments'])
         for a in model['attachments']:
             asset=a['source_asset_id']
-            source={'source_pack':'CSC','origin':'authored_blender'} if asset in models and models[asset]['kind']=='prop' else catalogue[asset]
+            source=({'source_pack':'CSC','origin':'authored_blender'} if asset in models and models[asset]['kind']=='prop'
+                    else {'source_pack':'CSC','origin':'existing_mod_asset'} if asset in references else catalogue[asset])
             if source.get('source_pack') not in ('Base game','Rise and Fall','Gathering Storm','CSC'):
                 raise ValueError(f'{asset}: ineligible or unknown source pack')
             custom=source.get('origin')=='authored_blender'
-            binding=csc_binding(asset,xlp_path) if custom else bindings.get(asset)
+            binding=csc_binding(asset,xlp_path) if custom or asset in references else bindings.get(asset)
             if binding is None: raise ValueError(f'Missing exact pantry XLP binding for {asset}')
             point,problems=attachment(a,binding,ident,job.get('policies',{}))
             if not custom and job.get('policies',{}).get('reused_states','reject')!='native':
@@ -474,8 +484,33 @@ def validate_dds(path, texture):
         offset=148
     elif struct.unpack_from('<I',raw,88)[0] != bpp*8:
         raise ValueError(f'DDS pixel size disagrees with TEX: {path}')
+    if texture.get('slot')=='AO' and (raw[84:88]==b'DX10' or struct.unpack_from('<I',raw,80)[0]!=0x40):
+        raise ValueError(f'AO DDS must use Firaxis-compatible 8-bit luminance header: {path}')
     needed=sum(max(1,width>>i)*max(1,height>>i)*bpp for i in range(mips))
     if len(raw)<offset+needed: raise ValueError(f'Truncated DDS pixel data: {path}')
+
+
+def normalize_ao_dds(path, texture, template_path):
+    """Keep texconv mip pixels, but use the installed Firaxis R8 AO header."""
+    import struct
+    source=Path(path).read_bytes()
+    template=Path(template_path).read_bytes()
+    if (len(source)<128 or len(template)<128 or source[:4]!=b'DDS ' or template[:4]!=b'DDS '
+            or source[84:88]==b'DX10' or template[84:88]==b'DX10'
+            or struct.unpack_from('<I',source,88)[0]!=8
+            or struct.unpack_from('<I',template,88)[0]!=8
+            or struct.unpack_from('<I',template,80)[0]!=0x40):
+        raise ValueError('AO DDS conversion needs an installed Firaxis 8-bit luminance template')
+    width,height=texture['size']
+    levels=1+int(math.log2(max(width,height)))
+    header=bytearray(template[:128])
+    struct.pack_into('<II',header,12,height,width)
+    struct.pack_into('<I',header,28,levels)
+    payload=source[128:]
+    needed=sum(max(1,width>>i)*max(1,height>>i) for i in range(levels))
+    if len(payload)!=needed:
+        raise ValueError(f'AO DDS mip payload has unexpected size: {path}')
+    Path(path).write_bytes(header+payload)
 
 
 def convert(job,converter,texconv):
@@ -500,6 +535,8 @@ def convert(job,converter,texconv):
         cmd+=[str(stage/tex['source'])]
         with (logs/(ident+'.log')).open('w') as log: subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT,check=True)
         dest=stage/'Textures'/(ident+'.dds')
+        if tex['slot']=='AO':
+            normalize_ao_dds(dest,tex,Path(job['mod_root'])/'Textures'/'CSC_Props_Shared_01_AO.dds')
         validate_dds(dest,tex)
     manifest['converted_files']={str(p.relative_to(stage)):sha(p) for p in stage.rglob('*') if p.is_file()}
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
@@ -536,6 +573,11 @@ def install(job):
     import datetime
     backup=out/'backups'/datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
     backup.mkdir(parents=True); created=[]; changed=[]
+    xlp_added=[]
+    for p in payload:
+        if p.parts[0]=='XLPs':
+            before={txt(e,'m_EntryID') for e in read_xml(mod/p).find('m_Entries')}
+            xlp_added.extend(sorted(set(report['assets'])-before))
     try:
         for p,data in payload.items():
             dest=mod/p; dest.parent.mkdir(parents=True,exist_ok=True)
@@ -550,16 +592,137 @@ def install(job):
             elif str(p) in created: (mod/p).unlink(missing_ok=True)
         raise
     (backup/'created-files.json').write_text(json.dumps(created,indent=2)+'\n')
+    receipt={'backup':str(backup),'installed_sha256':{str(p):hashlib.sha256(data).hexdigest()
+             for p,data in payload.items() if p.parts[0]!='XLPs'},'xlp_added_ids':xlp_added}
+    (out/'install-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
     report['status']='installed_pending_asset_editor_and_game_review'; report['backup']=str(backup)
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     print(f'Installed {len(payload)} files; backup: {backup}. Refresh AE dependencies, cook, and verify in game.')
 
 
+def uninstall(job, dry_run=False, purge=False, force=False):
+    """Undo one installed folder export, preserving later edits and prior assets."""
+    import datetime
+    if force and not purge:
+        raise ValueError('Force is supported only with purge')
+    out=Path(job['output']); mod=Path(job['mod_root'])
+    report=json.loads((out/'report.json').read_text())
+    manifest=json.loads((out/'manifest.json').read_text())
+    if report['status']!='installed_pending_asset_editor_and_game_review':
+        raise ValueError('This export run is not currently installed')
+    backup=Path(report['backup']).resolve()
+    if not backup.is_relative_to((out/'backups').resolve()) or not (backup/'created-files.json').is_file():
+        raise ValueError('Missing or invalid pre-install backup')
+    created=set(json.loads((backup/'created-files.json').read_text()))
+    receipt_path=out/'install-receipt.json'
+    receipt=json.loads(receipt_path.read_text()) if receipt_path.is_file() else None
+    if receipt and Path(receipt['backup']).resolve()!=backup:
+        raise ValueError('Install receipt and backup disagree')
+    files={}
+    forced=[]
+    for rel in manifest['converted_files']:
+        p=Path(rel)
+        if p.parts and p.parts[0]=='CN6': continue
+        if p.is_absolute() or '..' in p.parts or len(p.parts)!=2 or p.parts[0] not in (
+                'Assets','Geometries','Materials','Textures','TextureSources','XLPs'):
+            raise ValueError(f'Invalid installed output path: {rel}')
+        dest=mod/p
+        if dest.is_symlink() or any(a.is_symlink() for a in dest.parents if a.is_relative_to(mod)):
+            raise ValueError(f'Symlink in installed output path: {rel}')
+        if p.parts[0]=='XLPs': continue
+        if receipt:
+            expected=receipt['installed_sha256'].get(rel)
+            if not expected: raise ValueError(f'Missing install receipt for {rel}')
+        elif p.suffix=='.tex':
+            r=read_xml(out/'stage'/p)
+            texture=manifest['textures'][p.stem]
+            set_text(r,'m_SourceFilePath',str((mod/texture['source']).resolve()))
+            ET.indent(r,space='  ')
+            expected=hashlib.sha256(ET.tostring(r,encoding='utf-8',xml_declaration=True)).hexdigest()
+        else:
+            expected=sha(out/'stage'/p)
+        if not dest.is_file() or sha(dest)!=expected:
+            if not force:
+                raise ValueError(f'Installed output changed or missing: {rel}; review it before uninstalling')
+            forced.append((p, 'missing' if not dest.is_file() else 'changed'))
+        old=backup/p
+        if purge:
+            files[p]='delete'
+        elif rel in created:
+            if old.exists(): raise ValueError(f'Unexpected backup for created file: {rel}')
+            files[p]='delete'
+        else:
+            if not old.is_file(): raise ValueError(f'Missing original file backup: {rel}')
+            files[p]='restore'
+    xlp_paths=[Path(rel) for rel in manifest['converted_files'] if Path(rel).parts[0]=='XLPs']
+    xlp_updates={}
+    xlp_removals={}
+    for p in xlp_paths:
+        old=backup/p
+        if not old.is_file(): raise ValueError(f'Missing original XLP backup: {p}')
+        prior={txt(e,'m_EntryID') for e in read_xml(old).find('m_Entries')}
+        added=set(report['assets'] if purge else
+                  (receipt['xlp_added_ids'] if receipt else report['assets']))
+        if not purge: added-=prior
+        if not (mod/p).is_file():
+            if not force:
+                raise ValueError(f'Installed XLP changed or missing: {p}')
+            forced.append((p, 'missing'))
+            xlp_removals[p]=[]
+            continue
+        root=read_xml(mod/p); entries=root.find('m_Entries')
+        matching=[e for e in entries if txt(e,'m_EntryID') in added]
+        found={txt(e,'m_EntryID') for e in matching}
+        if found!=added or any(txt(e,'m_ObjectName')!=txt(e,'m_EntryID') for e in matching):
+            if not force:
+                raise ValueError(f'Installed XLP entries changed or missing: {p}')
+            forced.append((p, 'entries changed or missing'))
+        for e in matching: entries.remove(e)
+        ET.indent(root,space='  ')
+        xlp_updates[p]=ET.tostring(root,encoding='utf-8',xml_declaration=True)
+        xlp_removals[p]=sorted(added)
+    xlp_removed=sum(len(ids) for ids in xlp_removals.values())
+    deletions=sum(v=='delete' for v in files.values())
+    restorations=sum(v=='restore' for v in files.values())
+    print(f'Uninstall plan: {deletions} file{"s" if deletions!=1 else ""} to delete, '
+          f'{restorations} prior file{"s" if restorations!=1 else ""} to restore, '
+          f'{xlp_removed} XLP entries to remove.')
+    for p,reason in forced:
+        print(f'  force purge ({reason}): {mod/p}')
+    for p,action in sorted(files.items()): print(f'  {action}: {mod/p}')
+    for p in xlp_paths:
+        for ident in xlp_removals[p]: print(f'  remove XLP entry: {mod/p} :: {ident}')
+        if not xlp_removals[p]: print(f'  no XLP entries to remove: {mod/p}')
+    if dry_run: return
+    undo=out/'backups'/('uninstall-'+datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f'))
+    undo.mkdir(parents=True)
+    changed=[]
+    try:
+        for p in [*files,*xlp_updates]:
+            dest=mod/p; saved=undo/p; saved.parent.mkdir(parents=True,exist_ok=True)
+            if dest.exists():
+                shutil.copy2(dest,saved); changed.append(p)
+            if p in xlp_updates: dest.write_bytes(xlp_updates[p])
+            elif files[p]=='restore': shutil.copy2(backup/p,dest)
+            else: dest.unlink(missing_ok=True)
+    except Exception:
+        for p in reversed(changed): shutil.copy2(undo/p,mod/p)
+        raise
+    report['status']='purged' if purge else 'uninstalled'; report['uninstall_backup']=str(undo)
+    (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+    print(f'Uninstalled export run; previous live files backed up at {undo}.')
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command',choices=['decode','build','convert','install']); parser.add_argument('job',type=Path)
+    parser.add_argument('command',choices=['decode','build','convert','install','uninstall']); parser.add_argument('job',type=Path)
     parser.add_argument('--blender'); parser.add_argument('--converter'); parser.add_argument('--texconv')
+    parser.add_argument('--dry-run',action='store_true')
+    parser.add_argument('--purge',action='store_true')
+    parser.add_argument('--force',action='store_true')
     args=parser.parse_args(); job=load_job(args.job); out=Path(job['output']); out.mkdir(parents=True,exist_ok=True)
+    if args.force and (args.command!='uninstall' or not args.purge):
+        parser.error('--force requires uninstall with --purge')
     if args.command=='decode':
         if not args.blender: parser.error('decode requires --blender')
         resolved=out/'resolved-job.json'; resolved.write_text(json.dumps(job,indent=2)+'\n')
@@ -568,6 +731,8 @@ def main():
     if args.command=='build': return build(job)
     if args.command=='install':
         install(job); return 0
+    if args.command=='uninstall':
+        uninstall(job,args.dry_run,args.purge,args.force); return 0
     if not args.converter or not args.texconv: parser.error('convert requires --converter and --texconv')
     convert(job,args.converter,args.texconv); return 0
 

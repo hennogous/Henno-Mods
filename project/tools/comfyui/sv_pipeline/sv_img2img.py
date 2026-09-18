@@ -111,6 +111,9 @@ KEEP_INTERMEDIATES = os.environ.get("CSC_SV_KEEP_INTERMEDIATES", "0").strip().lo
 # Default off; _Visible_PreShadow is always exported because it is the manual
 # shadow-painting handoff point.
 
+BLENDER_FRONTEND = os.environ.get("CSC_SV_BLENDER_FRONTEND", "0").strip().lower() in {"1", "true", "yes", "on", "y"}
+# Enables deterministic Blender-render grading before ComfyUI and before SAM.
+
 
 # -----------------------------------------------------------------------------
 # Helpers
@@ -261,6 +264,10 @@ def prepare_upload_image(input_path: str, workflow_size: int = WORKFLOW_SIZE) ->
     produces clean transparent edges on the final sprite.
     """
     img = Image.open(input_path).convert("RGBA")
+    if BLENDER_FRONTEND:
+        from sv_blender_frontend import grade_blender_render
+        img = grade_blender_render(img)
+        print("  Blender frontend: graded render before ComfyUI")
     img = resize_to_workflow(img, workflow_size)
     arr = np.array(img)
     alpha = arr[:, :, 3]
@@ -440,6 +447,10 @@ def run_variant(image_name: str, source_path: Path, cfg: float,
 
     # Step 4: apply the input alpha mask to crop the generated output to the subject
     masked_img = apply_alpha_mask(img_data, generation_mask)
+    if BLENDER_FRONTEND:
+        from sv_blender_frontend import grade_generated_for_sam
+        masked_img = grade_generated_for_sam(masked_img)
+        print("  Blender frontend: graded generated image before SAM")
 
     if keep_intermediates:
         raw_path = intermediate_dir / f"{output_stem_for_source(source_path, cfg, raw=True)}.png"
@@ -456,6 +467,11 @@ def run_variant(image_name: str, source_path: Path, cfg: float,
     postprocess_config.enable_resize_canvas = False
     pre_shadow_path = src_dir / f"{output_stem_for_source(source_path, cfg)}_PreShadow.png"
     pre_shadow_result = sv_process(str(raw_path), str(pre_shadow_path), config=postprocess_config)
+    if BLENDER_FRONTEND:
+        from sv_blender_frontend import prepare_preshadow_handoff
+        prepared = prepare_preshadow_handoff(Image.open(pre_shadow_result).convert("RGBA"))
+        prepared.save(pre_shadow_result)
+        print("  Blender frontend: applied contrast -3 and 10% desaturation after SAM")
     print(f"  PreShadow handoff: {pre_shadow_result}")
 
     produced = [pre_shadow_result]

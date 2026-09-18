@@ -1,0 +1,100 @@
+[
+  {
+    "index": 0,
+    "name": "CSC_TAILORS_Tailor_Output.png",
+    "size": [
+      256,
+      256
+    ],
+    "offset": [
+      256,
+      256
+    ],
+    "opacity": 100.0,
+    "visible": true
+  },
+  {
+    "index": 1,
+    "name": "Dockmaster",
+    "size": [
+      256,
+      256
+    ],
+    "offset": [
+      0,
+      512
+    ],
+    "opacity": 100.0,
+    "visible": true
+  },
+  {
+    "index": 2,
+    "name": "CSC_TAILORS_Textile_Workshop_Output.png",
+    "size": [
+      256,
+      256
+    ],
+    "offset": [
+      0,
+      256
+    ],
+    "opacity": 100.0,
+    "visible": true
+  },
+  {
+    "index": 3,
+    "name": "Tailors' FOW",
+    "size": [
+      256,
+      256
+    ],
+    "offset": [
+      256,
+      0
+    ],
+    "opacity": 100.0,
+    "visible": true
+  },
+  {
+    "index": 4,
+    "name": "Tailors Front",
+    "size": [
+      131,
+      180
+    ],
+    "offset": [
+      62,
+      30
+    ],
+    "opacity": 100.0,
+    "visible": true
+  },
+  {
+    "index": 5,
+    "name": "Tailors Back",
+    "size": [
+      253,
+      269
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "opacity": 100.0,
+    "visible": true
+  },
+  {
+    "index": 6,
+    "name": "Background",
+    "size": [
+      1024,
+      1024
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "opacity": 100.0,
+    "visible": true
+  }
+]

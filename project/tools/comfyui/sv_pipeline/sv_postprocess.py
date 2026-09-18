@@ -71,6 +71,7 @@ ENABLE_PADDING_BEFORE_REMBG = env_bool("CSC_SV_ENABLE_PADDING_BEFORE_REMBG", Tru
 ENABLE_BRIGHTNESS = env_bool("CSC_SV_ENABLE_BRIGHTNESS", False)
 ENABLE_OUTLINES = env_bool("CSC_SV_ENABLE_OUTLINES", True)
 ENABLE_RESIZE_CANVAS = env_bool("CSC_SV_ENABLE_RESIZE_CANVAS", True)
+TRIM_TO_SUBJECT = env_bool("CSC_SV_TRIM_TO_SUBJECT", False)
 ENABLE_SAM_OUTLINES = env_bool("CSC_SV_ENABLE_SAM_OUTLINES", True)
 # Higher = adds SAM structural outlines inside the subject mask.
 # Optional — requires sv_sam_outline.py + segment_anything + torch. Default: on
@@ -234,6 +235,7 @@ class PostProcessConfig:
     rembg_mask_alpha: int = REMBG_MASK_ALPHA
 
     enable_resize_canvas: bool = ENABLE_RESIZE_CANVAS
+    trim_to_subject: bool = TRIM_TO_SUBJECT
     canvas_size: int = CANVAS_SIZE
     sprite_size: int = SPRITE_SIZE
     quarter_mode: bool = QUARTER_MODE
@@ -279,6 +281,7 @@ class PostProcessConfig:
             rembg_pad=REMBG_PAD,
             rembg_mask_alpha=REMBG_MASK_ALPHA,
             enable_resize_canvas=ENABLE_RESIZE_CANVAS,
+            trim_to_subject=TRIM_TO_SUBJECT,
             canvas_size=128 if QUARTER_MODE else CANVAS_SIZE,
             sprite_size=(
                 int(round(SPRITE_SIZE * (128 / CANVAS_SIZE)))
@@ -840,7 +843,16 @@ def underlay_revealed_shadow_canvas(img: Image.Image, config: PostProcessConfig,
 
 def resize_to_canvas(img: Image.Image, config: PostProcessConfig) -> Image.Image:
     """Resize sprite, optionally composite a shadow plate, then paste on canvas."""
-    img = img.resize((config.sprite_size, config.sprite_size), Image.LANCZOS)
+    if config.trim_to_subject:
+        alpha = img.getchannel("A")
+        bbox = alpha.point(lambda value: 255 if value > config.mask_alpha_threshold else 0).getbbox()
+        if bbox:
+            img = img.crop(bbox)
+        ratio = min(config.sprite_size / img.width, config.sprite_size / img.height)
+        fitted = (max(1, round(img.width * ratio)), max(1, round(img.height * ratio)))
+        img = img.resize(fitted, Image.LANCZOS)
+    else:
+        img = img.resize((config.sprite_size, config.sprite_size), Image.LANCZOS)
 
     shadow_abs = resolve_pipeline_asset(config.shadow_path)
     if config.enable_base_shadow and shadow_abs and shadow_abs.exists():
@@ -1220,6 +1232,8 @@ def add_processing_options(parser: argparse.ArgumentParser) -> None:
                         help="Enable SAM structural outlines inside subject. Requires torch+segment_anything. Default/env: on.")
 
     parser.add_argument("--resize-canvas", dest="enable_resize_canvas", action=argparse.BooleanOptionalAction, default=None)
+    parser.add_argument("--trim-to-subject", dest="trim_to_subject", action=argparse.BooleanOptionalAction, default=None,
+                        help="Crop transparent margins before fitting the subject to --sprite-size.")
     parser.add_argument("--canvas-size", type=int, default=None, help="Final square canvas size. Default/env: 256.")
     parser.add_argument("--quarter", dest="quarter_mode", action="store_true",
                         help="Build a 128x128 buildingless Quarter/district SV sprite; 256px shadow and state plates keep native scale.")

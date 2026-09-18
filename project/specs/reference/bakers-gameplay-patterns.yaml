@@ -231,6 +231,7 @@ patterns:
       - "Exactly one mechanically real attach/effect pair is designated as the presentation anchor and inserted into CSC_AbilityAttachModifiers."
       - "Every unregistered mechanical sibling shares activation-equivalent owner and subject gates with the presentation anchor."
       - "Only the presentation anchor's child effect receives the aggregate Preview ModifierString and NEW, INCREASED, DECREASED, and REMOVED localization family."
+      - "The aggregate Preview identifies the number of contributing service sources with the positive stack-count placeholder and pluralizes the source noun; omit that count only for a mechanically non-stacking service explicitly declared as an exception by its implementation contract."
       - "Unregistered mechanical siblings receive neither CSC_AbilityAttachModifiers rows nor independent notification string families."
       - "The helper row resolves to a non-NULL child modifier and uses the primary formatted effect Amount expected by MCUIS."
       - "Every CSC_AbilityAttachModifiers row declares NotificationQuarter explicitly; notification dispatch uses that field and never infers Quarter identity from modifier-name shape."
