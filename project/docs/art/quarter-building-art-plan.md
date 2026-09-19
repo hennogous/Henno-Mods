@@ -46,6 +46,17 @@ Use separate editable working scenes or versioned copies for variations. Preserv
 
 The bases are intentionally **off origin**, already positioned for their district slots and road relationships. Preserve their authored placement and orientation when appending them into a prop scene; move review cameras to frame them. Temporarily append the matching road layout from `Working Files/3D Art/Quarters/` to check entrances, prop clearance and work/loading routes. `CSC_ALL_Classical_Base_05_Road_Decals.blend` is an identified reference. The layouts share the same network, differing in how much is paved versus dirt path; keep that distinction in context checks. Exclude the temporary road geometry from building-only renders and export.
 
+### Level 2 placement standard — 18 September 2026
+
+Henno approved the current Tailor Worked footprint as the reusable Stage 3 standard.
+The shared sources `Level 2/CSC_Level_2.blend` and `Level 2/CSC_Level_2_CON+PIL.blend`
+now use that placement. The Tailor-specific shared CON+PIL source also aligns its
+building and lean-to with Worked; scaffolding and the fallen sign follow the
+building. Reuse the updated authored placement directly, without reapplying the
+older Tailor +6 Y setback. This changes the starting points for future work; it
+does not migrate previously authored Quarter buildings automatically. Source mesh
+data and UVs are preserved. Windows export and runtime checks remain separate.
+
 ## Colour system
 
 Retain painted material detail, value variation and shading when recolouring. Roof surfaces and main roof beams need separately controllable masks or material regions.

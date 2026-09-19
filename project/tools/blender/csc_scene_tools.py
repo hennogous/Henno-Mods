@@ -15,6 +15,7 @@ import json
 import re
 import shutil
 import hashlib
+import sys
 from pathlib import Path
 from mathutils import Matrix
 from bpy.app.handlers import persistent
@@ -24,6 +25,11 @@ from bpy.props import EnumProperty, StringProperty
 # Blender's dynamic EnumProperty callback needs string storage to survive redraws.
 _LIBRARY_ENUM_ITEMS = []
 _SYNCING_NAMES = False
+DEFAULT_PROP_LIBRARY = (
+    str(Path.home() / 'Library/CloudStorage/GoogleDrive-henno.gous@gmail.com'
+        / 'Other computers/My PC/Working Files/3D Art/Props/CSC_Prop_Library')
+    if sys.platform == 'darwin' else ''
+)
 
 
 def export_scene():
@@ -226,8 +232,10 @@ def duplicate_attachment(root):
         child['instance_id'] = ident
         child['source_asset_id'] = root['source_asset_id']
         child.parent = copy
-        child.matrix_parent_inverse = Matrix.Identity(4)
-        child.matrix_basis = Matrix.Identity(4)
+        # A user may have moved the mesh relative to its controller. Preserve
+        # that placement instead of resetting the copy to the import position.
+        child.matrix_parent_inverse = original.matrix_parent_inverse.copy()
+        child.matrix_basis = original.matrix_basis.copy()
         for coll in original.users_collection:
             coll.objects.link(child)
         children.append(child)
@@ -289,7 +297,15 @@ def remove_prop(obj):
     return name
 
 
+def normalize_library_path(library):
+    library = library.strip()
+    if len(library) >= 2 and library[0] in "\"'" and library[-1] == library[0]:
+        library = library[1:-1].strip()
+    return library or DEFAULT_PROP_LIBRARY
+
+
 def catalogue(library):
+    library = normalize_library_path(library)
     path = Path(bpy.path.abspath(library)).expanduser().resolve()
     file = path / 'catalogue.json'
     if not file.is_file():
@@ -303,12 +319,25 @@ def catalogue(library):
 def library_items(self, context):
     global _LIBRARY_ENUM_ITEMS
     try:
-        _, records = catalogue(context.scene.csc_prop_library)
+        scene = self if isinstance(self, bpy.types.Scene) else getattr(context, 'scene', None)
+        _, records = catalogue(scene.csc_prop_library if scene else '')
         _LIBRARY_ENUM_ITEMS = [(a, a, str(records[a].get('source_pack', '')), i)
                                for i, a in enumerate(sorted(records))]
     except (ValueError, OSError):
         _LIBRARY_ENUM_ITEMS = [('NONE', 'Choose library folder', '', 0)]
     return _LIBRARY_ENUM_ITEMS
+
+
+@persistent
+def _initialize_prop_library(_):
+    for scene in getattr(bpy.data, 'scenes', ()):
+        _prop_library_changed(scene, None)
+
+
+def _prop_library_changed(scene, context):
+    normalized = normalize_library_path(scene.csc_prop_library)
+    if scene.csc_prop_library != normalized:
+        scene.csc_prop_library = normalized
 
 
 def texture_source(image, library_path):
@@ -367,6 +396,67 @@ def localize_images(before_images, source_folder):
         if not dest.exists():
             shutil.copy2(source, dest)
         image.filepath = '//textures/' + dest.name
+
+
+def ao_multiply_nodes(tree):
+    """Find AO colour blends, including those inside nested material groups."""
+    def uses_ao(node, seen):
+        if node in seen:
+            return False
+        seen.add(node)
+        if node.type == 'TEX_IMAGE':
+            names = [node.name, node.label]
+            if node.image:
+                names.extend((node.image.name, node.image.filepath))
+            return any(re.search(r'(?i)(?:^|[_\W])(?:ao|ambient[ _]?occlusion)(?:$|[_\W])',
+                                 name) for name in names)
+        return any(uses_ao(link.from_node, seen)
+                   for socket in node.inputs for link in socket.links)
+
+    visited = set()
+
+    def walk(node_tree):
+        if node_tree in visited:
+            return
+        visited.add(node_tree)
+        for node in node_tree.nodes:
+            if node.type == 'GROUP' and node.node_tree:
+                yield from walk(node.node_tree)
+            if (node.type in {'MIX_RGB', 'MIX'}
+                    and node.blend_type == 'MULTIPLY'
+                    and (node.type != 'MIX' or node.data_type == 'RGBA')):
+                colors = node.inputs[1:3] if node.type == 'MIX_RGB' else node.inputs[6:8]
+                if any(uses_ao(link.from_node, set())
+                       for socket in colors for link in socket.links):
+                    yield node_tree, node
+
+    yield from walk(tree)
+
+
+def set_prop_ao_strength(meshes):
+    """Apply the CSC preview AO blend without modifying images or UVs."""
+    materials = {mat for obj in meshes if obj.type == 'MESH'
+                 for mat in obj.data.materials if mat and mat.use_nodes}
+    changed = []
+    for material in materials:
+        for tree, node in ao_multiply_nodes(material.node_tree):
+            factor = node.inputs[0]
+            if factor.is_linked or factor.default_value != 0.5:
+                for link in list(factor.links):
+                    tree.links.remove(link)
+                factor.default_value = 0.5
+                changed.append((material.name, node.name))
+    return changed
+
+
+@persistent
+def _initialize_prop_materials(_):
+    meshes = []
+    for obj in getattr(bpy.data, 'objects', ()):
+        root = attachment_root(obj) if obj.type == 'MESH' else None
+        if root and root.get('export_role') in {'reused_attachment', 'custom_attachment'}:
+            meshes.append(obj)
+    set_prop_ao_strength(meshes)
 
 
 def import_prop(library, ident, location):
@@ -435,6 +525,7 @@ def import_prop(library, ident, location):
     for extra in set(bpy.data.objects) - before_objects:
         if extra.type != 'MESH' and not extra.users_collection and not extra.children:
             bpy.data.objects.remove(extra, do_unlink=True)
+    set_prop_ao_strength(meshes)
     return root, meshes
 
 
@@ -468,6 +559,9 @@ def import_asset_master(master_file, location, library=None):
 
 def _finalize_asset_master(source, master_scene, location, library,
                            scene, collections, before_images, before_objects):
+    # Appended component matrices need evaluation in their own scene before its
+    # armature is removed and the parts are reparented to a placement controller.
+    master_scene.view_layers[0].update()
     source_objects = list(master_scene.objects)
     meshes = [o for o in source_objects if o.type == 'MESH']
     arms = [o for o in source_objects if o.type == 'ARMATURE']
@@ -496,7 +590,7 @@ def _finalize_asset_master(source, master_scene, location, library,
             raise ValueError(f'{mesh.name}: asset master needs UV1, UV2 and UV3')
         if any(m.type != 'ARMATURE' for m in mesh.modifiers):
             raise ValueError(f'{mesh.name}: resolve non-armature modifiers in the master')
-        if max(abs(a-b) for row, ref in zip(mesh.matrix_world, Matrix.Identity(4))
+        if not meta.get('component_transforms') and max(abs(a-b) for row, ref in zip(mesh.matrix_world, Matrix.Identity(4))
                for a,b in zip(row,ref)) > 1e-4:
             raise ValueError(f'{mesh.name}: master mesh placement is not identity; reconcile its pivot before attaching')
     destination = Path(bpy.data.filepath).parent / (ident + '.blend')
@@ -510,8 +604,9 @@ def _finalize_asset_master(source, master_scene, location, library,
         localize_images(before_images, source.parent)
     except ValueError as error:
         raise ValueError(f'{ident}: {error}') from error
+    set_prop_ao_strength(meshes)
     if destination != source:
-        master_scene['csc_export'] = json.dumps({'kind': 'prop', 'asset_id': ident})
+        master_scene['csc_export'] = json.dumps({**meta, 'kind': 'prop', 'asset_id': ident})
         bpy.data.libraries.write(str(destination), {master_scene}, path_remap='NONE')
     instance = next_instance(scene, ident)
     root = bpy.data.objects.new('Attach_' + instance, None)
@@ -519,18 +614,26 @@ def _finalize_asset_master(source, master_scene, location, library,
     root['source_asset_id'] = ident
     root['export_role'] = 'custom_attachment'
     root['support'] = 'ground'
+    root['component_transforms'] = bool(meta.get('component_transforms', False))
     root.location = location
     for coll in collections:
         coll.objects.link(root)
     for i, mesh in enumerate(meshes):
+        component_frame = mesh.matrix_world.copy()
+        component_basis = mesh.matrix_basis.copy()
         for mod in list(mesh.modifiers):
             mesh.modifiers.remove(mod)
         mesh.name = mesh_component_name(mesh) + '__' + instance + (f'_{i}' if len(meshes) > 1 else '')
         mesh['instance_id'] = instance
         mesh['source_asset_id'] = ident
         mesh.parent = root
-        mesh.matrix_parent_inverse = Matrix.Identity(4)
-        mesh.matrix_basis = Matrix.Identity(4)
+        if meta.get('component_transforms'):
+            mesh['source_component'] = mesh.get('source_component', mesh.data.name)
+            mesh.matrix_parent_inverse = component_frame @ component_basis.inverted()
+            mesh.matrix_basis = component_basis
+        else:
+            mesh.matrix_parent_inverse = Matrix.Identity(4)
+            mesh.matrix_basis = Matrix.Identity(4)
         for coll in collections:
             coll.objects.link(mesh)
     bpy.data.scenes.remove(master_scene)
@@ -565,6 +668,7 @@ class CSC_OT_select_controller(bpy.types.Operator):
 class CSC_OT_duplicate(bpy.types.Operator):
     bl_idname = 'csc_scene.duplicate'
     bl_label = 'Duplicate selected prop'
+    bl_description = 'Duplicate in place, preserving the controller and mesh transforms'
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -573,7 +677,7 @@ class CSC_OT_duplicate(bpy.types.Operator):
             root = attachment_root(obj)
             result = duplicate_attachment(root)[0] if root else duplicate_fixed(obj)
             select_root(context, result)
-            self.report({'INFO'}, f'Duplicated {result.name}; place the selected controller')
+            self.report({'INFO'}, f'Duplicated {result.name} in place; move the selected controller')
             return {'FINISHED'}
         except (ValueError, KeyError, TypeError) as error:
             self.report({'ERROR'}, str(error))
@@ -729,9 +833,17 @@ CLASSES = (CSC_OT_select_controller, CSC_OT_duplicate, CSC_OT_rename, CSC_OT_rep
 def register():
     for cls in CLASSES:
         bpy.utils.register_class(cls)
-    bpy.types.Scene.csc_prop_library = StringProperty(name='CSC prop library', subtype='DIR_PATH')
+    bpy.types.Scene.csc_prop_library = StringProperty(
+        name='CSC prop library', subtype='DIR_PATH', default=DEFAULT_PROP_LIBRARY,
+        update=_prop_library_changed)
     bpy.types.Scene.csc_library_asset = EnumProperty(name='CSC asset', items=library_items)
     bpy.types.Scene.csc_custom_master = StringProperty(name='Non-library asset master', subtype='FILE_PATH')
+    if _initialize_prop_library not in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.append(_initialize_prop_library)
+    _initialize_prop_library(None)
+    if _initialize_prop_materials not in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.append(_initialize_prop_materials)
+    _initialize_prop_materials(None)
     if _attachment_name_change not in bpy.app.handlers.depsgraph_update_post:
         bpy.app.handlers.depsgraph_update_post.append(_attachment_name_change)
     if _attachment_name_change not in bpy.app.handlers.load_post:
@@ -740,6 +852,10 @@ def register():
 
 
 def unregister():
+    if _initialize_prop_materials in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.remove(_initialize_prop_materials)
+    if _initialize_prop_library in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.remove(_initialize_prop_library)
     for handlers in (bpy.app.handlers.depsgraph_update_post, bpy.app.handlers.load_post):
         if _attachment_name_change in handlers:
             handlers.remove(_attachment_name_change)

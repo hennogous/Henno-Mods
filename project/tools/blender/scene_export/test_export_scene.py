@@ -76,6 +76,28 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(txt(root,'m_Entries/Element/m_ObjectName'),'Other')
         with self.assertRaises(ValueError): merge_xlp(root,['Keep'])
 
+    def test_shared_support_pivot_rejects_offset_even_with_legacy_policy(self):
+        support = self.placement(); support['instance_id'] = 'Table'
+        contents = copy.deepcopy(support)
+        contents.update(instance_id='Contents', support='Table', terrain_follow='shared-support-pivot')
+        validate_support([support, contents])
+        self.assertFalse(attachment_transform(contents, {})[1])
+        # Both placements evaluate height at the same location on a non-flat surface.
+        terrain = lambda p: .1*p[0] - .2*p[1]
+        for dz in [0, 13, -8]:
+            support['position'][2] += dz; contents['position'][2] += dz
+            validate_support([support, contents])
+            self.assertEqual(terrain(support['position']), terrain(contents['position']))
+        contents['position'][0] += .5
+        with self.assertRaisesRegex(ValueError, 'must coincide'):
+            validate_support([support, contents])
+
+    def test_shared_support_pivot_cannot_claim_building_as_attachment_support(self):
+        contents = self.placement()
+        contents.update(support='building', terrain_follow='shared-support-pivot')
+        with self.assertRaisesRegex(ValueError, 'needs an attachment support'):
+            validate_support([contents])
+
     def test_all_groups_all_states_and_fixed_visibility(self):
         model={'asset_id':'A','meshes':[{'name':'Mesh1','materials':[{'name':'Wood'},{'name':'Cloth'}], 'triangles':[[0,1,2,0],[0,1,2,1]]}, {'name':'Mesh2','materials':[{'name':'Wood'}], 'triangles':[[0,1,2,0]]}]}
         root=model_instance(model,{'Wood':'M1','Cloth':'M2'},('Worked','Unworked'))

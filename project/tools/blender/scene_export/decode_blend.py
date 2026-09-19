@@ -256,6 +256,9 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
                     not child.hide_render and not child.get('csc_export_exclude')]
         if not children:
             raise ValueError(f'{instance}: attachment has no direct mesh children')
+        component_transforms = bool(o.get('component_transforms', False))
+        if component_transforms and o.get('export_role') != 'custom_attachment':
+            raise ValueError(f'{instance}: component transforms require an explicit custom attachment master')
         relative_meshes = [(child, o.matrix_world.inverted() @ child.matrix_world)
                            for child in children]
         attachments.append({
@@ -274,6 +277,12 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
             'matrix_parent_inverse': matrix(o.matrix_parent_inverse),
             'position': list(pos), 'rotation_degrees': [math.degrees(v) for v in quat.to_euler('XYZ')],
             'scale': list(scale), 'shear_error': err,
+            'terrain_follow': str(o.get('terrain_follow', 'pivot')),
+            'component_frames': [
+                {'component': child.get('source_component', child.data.name),
+                 'signature': mesh_signature(child.data),
+                 'matrix': matrix(o.matrix_world.inverted() @ child.matrix_world)}
+                for child in children] if component_transforms else [],
             'pillaged': bool(o.get('pillaged_visibility', False)),
             'construction': bool(o.get('construction_visibility', False))})
     selected = []
@@ -321,6 +330,10 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
     if digest(path) != before:
         raise ValueError(f'Source file changed while decoding: {path}')
     return {'asset_id': asset_id, 'kind': kind, 'source': str(path), 'source_sha256': before,
+            'component_frames': [
+                {'component': ob.get('source_component', ob.data.name),
+                 'signature': mesh_signature(ob.data), 'matrix': matrix(ob.matrix_world)}
+                for ob in selected] if kind == 'prop' else [],
             'meshes': geometry, 'attachments': attachments}
 
 
@@ -329,6 +342,21 @@ def parent_chain(o):
     while p:
         yield p
         p = p.parent
+
+
+def validate_component_frames(placed, master, label):
+    """Allow authored assembly transforms only when its standalone master agrees."""
+    by_name = {c['component']: c for c in master}
+    if len(by_name) != len(master) or len({c['component'] for c in placed}) != len(placed):
+        raise ValueError(f'{label}: duplicate component identity')
+    if {c['component'] for c in placed} != set(by_name):
+        raise ValueError(f'{label}: component inventory differs from master')
+    for c in placed:
+        ref = by_name[c['component']]
+        if c['signature'] != ref['signature'] or max(
+                abs(a-b) for row, target in zip(c['matrix'], ref['matrix'])
+                for a,b in zip(row, target)) > 1e-4:
+            raise ValueError(f'{label}/{c["component"]}: geometry, UVs or relative placement differs from master')
 
 
 def main():
@@ -392,6 +420,12 @@ def main():
         verified[ident] = {'source':str(source_path), 'sha256':before}
         refs = [(building, a) for building in buildings for a in models[building]['attachments']
                 if a['source_asset_id'] == ident]
+        for building, placement in refs:
+            if placement.get('component_frames'):
+                if ident not in models or models[ident]['kind'] != 'prop':
+                    raise ValueError(f'{building}/{placement["instance_id"]}: missing explicit custom component master')
+                validate_component_frames(placement['component_frames'], models[ident]['component_frames'],
+                                          f'{building}/{placement["instance_id"]}')
         for building, attachment in refs:
             if components_match(attachment['source_components'], source_components):
                 continue

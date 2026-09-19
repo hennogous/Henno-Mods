@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib
 import json
 import xml.etree.ElementTree as ET
-from export_scene import identifier, read_xml, txt, MODELS
+from export_scene import identifier, read_xml, txt, MODELS, STATES
 
 
 TEMPLATE_PROFILES = {
@@ -212,6 +212,14 @@ def make_job(rows, defaults, mod, library, output, catalogue):
         if missing:
             report['blockers'].append(f'{row["path"]}: missing decal blends for {sorted(missing)}')
         entry['decals'] = sorted(set(requested))
+        state_map = meta.get('decal_states', {})
+        if (not isinstance(state_map, dict) or set(state_map) - set(requested) or any(
+                not isinstance(states, list) or not states or
+                any(state not in STATES for state in states)
+                for states in state_map.values())):
+            report['blockers'].append(f'{row["path"]}: invalid decal_states mapping')
+            continue
+        entry['decal_states'] = state_map
         template = read_xml(Path(entry['template_asset']))
         replaced_names = {txt(m, 'm_Name') for m in template.findall(MODELS + '/Element')
                           if txt(m, 'm_GeoName') in requested}

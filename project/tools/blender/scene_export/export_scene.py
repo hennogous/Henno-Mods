@@ -228,6 +228,15 @@ def validate_support(attachments):
             if support in seen: raise ValueError(f'Support cycle at {ident}')
             if support not in index: raise ValueError(f'Missing support {support}')
             seen.add(support); support=index[support]['support']
+        mode = a.get('terrain_follow', 'pivot')
+        if mode not in ('pivot', 'shared-support-pivot'):
+            raise ValueError(f'{ident}: unknown terrain-follow mode {mode}')
+        if mode == 'shared-support-pivot':
+            parent = index.get(a['support'])
+            if parent is None:
+                raise ValueError(f'{ident}: shared support pivot needs an attachment support')
+            if any(abs(x-y) > 1e-4 for x,y in zip(a['position'], parent['position'])):
+                raise ValueError(f'{ident}: shared support pivot must coincide with {a["support"]} in XYZ')
 
 
 def attachment_transform(a, policies):
@@ -239,7 +248,8 @@ def attachment_transform(a, policies):
         problems.append('nonuniform scale; fix the Blender placement or publish a distinct proportion variant (AE has scalar m_scale)')
     if max(abs(rot[0]),abs(rot[1]))>1e-4:
         problems.append('X/Y rotation requires a verified coordinate mapping')
-    if a['support']!='ground' and policies.get('supported_props','reject')!='independent-pivot':
+    if (a['support']!='ground' and a.get('terrain_follow') != 'shared-support-pivot'
+            and policies.get('supported_props','reject')!='independent-pivot'):
         problems.append(f'support {a["support"]} requires shared elevation; independent pivots can separate')
     scalar = sum(scale)/3
     if abs(scalar - 1.0) <= 1e-6:
@@ -403,10 +413,13 @@ def build(job):
         index=list(ms).index(old); ms.remove(old); ms.insert(index,model_instance(model,materials,('Worked','Unworked','Unbuilt'),states))
         for decal_id in entry.get('decals',[]):
             if models[decal_id]['kind']!='decal': raise ValueError('Expected decal geometry')
-            old_decals=[m for m in ms if txt(m,'m_GeoName')==decal_id]
+            old_decals=[m for m in ms if txt(m,'m_GeoName')==decal_id or txt(m,'m_Name')==decal_id]
             if len(old_decals)>1: raise ValueError(f'Duplicate decal model {decal_id}')
             if old_decals: ms.remove(old_decals[0])
-            ms.append(model_instance(models[decal_id],materials,('Pillaged',)))
+            decal_states = entry.get('decal_states', {}).get(decal_id, ['Pillaged'])
+            if not decal_states or any(state not in STATES for state in decal_states):
+                raise ValueError(f'{ident}/{decal_id}: invalid decal visibility states')
+            ms.append(model_instance(models[decal_id],materials,tuple(decal_states)))
         for required in entry.get('preserve_models',[]):
             if len([m for m in ms if txt(m,'m_Name')==required])!=1: raise ValueError(f'Missing/duplicate auxiliary model {required}')
         points=root.find(POINTS)

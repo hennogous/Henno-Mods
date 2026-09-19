@@ -497,8 +497,32 @@ The example job records `nonuniform_scale: reject`, `supported_props:
 independent-pivot`, and `reused_states: native`. Support parenting in Blender remains
 useful for composition, but all exported attachments independently sample Pivot
 Height. **Stacked objects are not guaranteed to rise and fall together on slopes.**
-Henno accepted testing that behavior in game before introducing assembly assets.
+Henno accepted testing that behavior for the first Workshop export; it is not the
+default for subsequent contents that must move with a support.
 Pantry attachments retain their own native construction/pillaged appearances.
+
+For the Tailor support correction (18 September), group tabletop contents as one
+custom attachment and folded bench stock as another. Parent each controller to its
+support controller at identity and set `support` to that controller's `instance_id`,
+`terrain_follow: shared-support-pivot` and `component_transforms: true`. The contents
+and support must have coincident world XYZ origins. Both exported points then use
+the same `Pivot Height` sample, while content offsets remain in the standalone
+master's component transforms. The exporter rejects mismatched pivots even under
+the historical `independent-pivot` policy. This avoids dependence on unverified
+nested asset terrain inheritance; actual AE/game slope and water behavior still
+needs visual verification.
+
+Component masters declare `csc_export.component_transforms: true` and retain local
+mesh coordinates plus authored object transforms. Each part has a stable
+`source_component` key. No transform application or vertex repivoting occurs in
+the authoritative Blender files; only temporary exported vertex streams use the
+master's relative frame. The add-on preserves this structure on import and duplicate.
+
+Building metadata may declare `decal_states` keyed by a listed decal geometry ID.
+Unspecified decals retain the historical Pillaged-only default. Normal paving must
+explicitly name its intact states; it also needs a real registered material binding.
+When replacing a PIL model, matching model instance identity replaces the legacy
+geometry reference too, preventing duplicate base debris after a geometry rename.
 
 Unknown policies, negative/singular scale, shear and nonzero X/Y rotation remain
 errors. The verified placement mapping is Blender XYZ divided by ten and Z rotation
