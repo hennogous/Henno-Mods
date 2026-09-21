@@ -4,6 +4,7 @@ import hashlib
 import json
 import xml.etree.ElementTree as ET
 from export_scene import identifier, read_xml, txt, MODELS, STATES
+from asset_contract import contract_for
 
 
 TEMPLATE_PROFILES = {
@@ -25,7 +26,7 @@ def prior_run_owns_installed_prop(output, mod, row, ident):
     if not installed.is_file():
         return False
     installed_sha = hashlib.sha256(installed.read_bytes()).hexdigest()
-    runs = output.parent
+    runs = Path(row['path']).resolve().parent / 'export-runs'
     if not runs.is_dir():
         return False
     for receipt_path in sorted(runs.glob('*/install-receipt.json'), reverse=True):
@@ -56,6 +57,96 @@ def find_blends(directory):
     return files
 
 
+def select_blends(files, contract_path, include_optional=False):
+    """Keep contract-listed alternate blends out of the normal export batch."""
+    data = json.loads(contract_path.read_text(encoding='utf-8'))
+    optional = data.get('optional_blends', [])
+    if (not isinstance(optional, list) or
+            any(not isinstance(name, str) or Path(name).name != name or not name.lower().endswith('.blend')
+                for name in optional) or len(optional) != len(set(optional))):
+        raise ValueError(f'{contract_path}: optional_blends must be unique blend filenames')
+    names = {path.name for path in files}
+    if include_optional:
+        missing = set(optional) - names
+        if missing:
+            raise ValueError(f'{contract_path}: requested optional blends are missing: {sorted(missing)}')
+        return files
+    return [path for path in files if path.name not in optional]
+
+
+def apply_contract_file(rows, path, catalogue):
+    """Merge explicit per-building declarations without changing source blends."""
+    data=json.loads(path.read_text(encoding='utf-8'))
+    declarations=data.get('buildings')
+    if not isinstance(declarations,dict) or not declarations:
+        raise ValueError(f'{path}: expected a nonempty buildings object')
+    seen=set()
+    required=data.get('required_blends')
+    optional=data.get('optional_blends', [])
+    if (not isinstance(optional,list) or any(not isinstance(name,str) for name in optional) or
+            len(optional)!=len(set(optional))):
+        raise ValueError(f'{path}: optional_blends must be unique blend filenames')
+    optional_buildings=data.get('optional_buildings', [])
+    if (not isinstance(optional_buildings, list) or
+            any(not isinstance(ident, str) for ident in optional_buildings) or
+            len(optional_buildings) != len(set(optional_buildings)) or
+            not set(optional_buildings) <= set(declarations)):
+        raise ValueError(f'{path}: optional_buildings must name unique declared buildings')
+    if required is not None:
+        found=[Path(row['path']).name for row in rows]
+        if not isinstance(required,list) or any(not isinstance(name,str) for name in required):
+            raise ValueError(f'{path}: required_blends must be a list of blend filenames')
+        expected=set(required)
+        if (len(required)!=len(expected) or
+                expected & set(optional)):
+            raise ValueError(f'{path}: required_blends must be unique and separate from optional_blends')
+        included=set(found) & set(optional)
+        if included and included != set(optional):
+            raise ValueError(f'{path}: optional blend group is incomplete: {sorted(set(optional)-included)}')
+        expected |= included
+        if set(found)!=expected:
+            raise ValueError(f'{path}: required_blends differs from folder: missing={sorted(expected-set(found))}, extra={sorted(set(found)-expected)}')
+    shared=data.get('shared_geometries',{})
+    if not isinstance(shared,dict):
+        raise ValueError(f'{path}: shared_geometries must be an object')
+    sources={}
+    for ident,name in shared.items():
+        identifier(ident)
+        if not isinstance(name,str) or name in sources:
+            raise ValueError(f'{path}: duplicate or invalid shared geometry source {name}')
+        sources[name]=ident
+    found_shared=set()
+    for row in rows:
+        if row.get('error'):
+            continue
+        source_name=Path(row['path']).name
+        if source_name in sources:
+            ident=sources[source_name]
+            row.setdefault('metadata',{}).update(kind='shared_geometry',geometry_id=ident)
+            found_shared.add(source_name)
+        kind,ident=classify(row,catalogue)
+        if required is not None and kind=='ignore':
+            raise ValueError(f'{path}: required blend is ignored: {source_name}')
+        if kind!='building' or ident not in declarations:
+            continue
+        fields=declarations[ident]
+        if not isinstance(fields,dict) or any(k not in ('quarter','supply_chain_stage','construction_geometry') for k in fields):
+            raise ValueError(f'{path}: invalid fields for {ident}')
+        metadata=row.setdefault('metadata',{})
+        for key,value in fields.items():
+            if key in metadata and metadata[key]!=value:
+                raise ValueError(f'{path}: {ident}.{key} conflicts with Blender scene metadata')
+            metadata[key]=value
+        seen.add(ident)
+    found_optional = bool(set(optional) & {Path(row['path']).name for row in rows})
+    expected_buildings = set(declarations) if found_optional else set(declarations) - set(optional_buildings)
+    if seen != expected_buildings:
+        raise ValueError(f'{path}: declarations do not match discovered buildings: {sorted(set(declarations)-seen)}')
+    if found_shared!=set(sources):
+        raise ValueError(f'{path}: shared geometry sources missing: {sorted(set(sources)-found_shared)}')
+    return rows
+
+
 def unique(values, label):
     values = {v for v in values if v}
     if len(values) != 1:
@@ -78,7 +169,7 @@ def classify(row, catalogue):
             raise ValueError('Cannot classify scene; set csc_export.kind to building, prop, decal or ignore')
     if kind == 'ignore':
         return kind, None
-    if kind not in ('building', 'prop', 'decal'):
+    if kind not in ('building', 'prop', 'decal', 'shared_geometry'):
         raise ValueError(f'Unsupported csc_export.kind: {kind}')
     ident = meta.get('asset_id') or meta.get('geometry_id')
     if not ident:
@@ -129,7 +220,7 @@ def resolve_building(entry, row, mod):
 def make_job(rows, defaults, mod, library, output, catalogue):
     import copy
     job = copy.deepcopy(defaults)
-    job.update(mod_root=str(mod), library=str(library), output=str(output), buildings=[], props=[], decals=[],
+    job.update(mod_root=str(mod), library=str(library), output=str(output), buildings=[], props=[], decals=[], shared_geometries=[],
                references=[{'asset_id': ident} for ident in job.get('reuse_existing_assets', [])])
     report = {'files': [], 'blockers': []}
     xlp = mod / 'XLPs' / 'CSC_Tilebases.xlp'
@@ -176,26 +267,66 @@ def make_job(rows, defaults, mod, library, output, catalogue):
                     and not prior_run_owns_installed_prop(output, mod, row, ident)):
                 raise ValueError(f'{ident}: an installed CSC asset already has this ID; add it to reuse_existing_assets to reference it without replacement')
             entry = {'blend': row['path'], 'scene': row['scene'], 'source_sha256': row['sha256'],
-                     ('geometry_id' if kind == 'decal' else 'asset_id'): ident}
+                     ('geometry_id' if kind in ('decal','shared_geometry') else 'asset_id'): ident}
             if kind == 'prop' and ident in job.get('reuse_existing_assets', []):
                 result['status'] = 'existing_asset_reference'
                 continue
             if kind == 'building':
+                meta=row['metadata']
+                if job.get('strict_contracts') and str(meta.get('template_asset','')).replace('\\','/').casefold() == f'assets/{ident}.ast'.casefold():
+                    # An old output cannot be a dependency of its own replacement:
+                    # purge/rebuild must work when that AST is absent.
+                    meta=dict(meta)
+                    for key in ('template_asset','replace_model','state_template_mesh'):
+                        meta.pop(key,None)
+                    meta['template_profile']='tilebase'
+                    row['metadata']=meta
                 auxiliary[ident] = resolve_building(entry, row, mod)
+                if job.get('strict_contracts'):
+                    entry['contract'] = contract_for(ident, meta, mod)
+                    shared_ids={entry['contract']['ruin_geometry']}
+                    if 'cobble_geometry' in entry['contract']:
+                        shared_ids.add(entry['contract']['cobble_geometry'])
+                    template=read_xml(Path(entry['template_asset']))
+                    entry['preserve_models']=[name for name in entry['preserve_models']
+                        if not any(txt(model,'m_Name')==name and txt(model,'m_GeoName') in shared_ids
+                                   for model in template.findall(MODELS+'/Element'))]
                 result['template_asset'] = entry['template_asset']
                 result['template_profile'] = entry.get('template_profile')
-            job[{'building': 'buildings', 'prop': 'props', 'decal': 'decals'}[kind]].append(entry)
+                result['contract'] = entry.get('contract')
+            job[{'building': 'buildings', 'prop': 'props', 'decal': 'decals', 'shared_geometry':'shared_geometries'}[kind]].append(entry)
             records[ident] = row
             result['status'] = 'resolved'
         except (ValueError, KeyError, OSError, TypeError, ET.ParseError) as error:
             result['status'] = 'blocked'
             result['error'] = str(error)
             report['blockers'].append(f'{row["path"]}: {error}')
+    shared_geometry = {c[key] for e in job['buildings'] if (c:=e.get('contract'))
+                       for key in ('ruin_geometry','cobble_geometry') if key in c}
+    authored_shared={e['geometry_id'] for e in job['shared_geometries']}
+    unused=authored_shared-shared_geometry
+    if unused:
+        report['blockers'].append(f'Unused authored shared geometries: {sorted(unused)}')
+    for entry in job['buildings']:
+        contract=entry.get('contract')
+        if contract and contract['ruin_geometry'] in authored_shared:
+            contract['authored_ruin_geometry']=True
+        elif contract and contract['ruin_geometry'] not in {
+                'CSC_Level_1_CON+PIL','CSC_Level_1_S_CON+PIL',
+                'CSC_Level_2_CON+PIL','CSC_Level_3_CON+PIL'}:
+            report['blockers'].append(f'{entry["asset_id"]}: construction geometry {contract["ruin_geometry"]} has no authored blend in this batch')
+    if shared_geometry:
+        job['decals']=[e for e in job['decals'] if e['geometry_id'] not in shared_geometry]
+        for result in report['files']:
+            if result.get('kind')=='decal' and result.get('asset_id') in shared_geometry:
+                result['status']='existing_shared_geometry_reference'
     decals = {e['geometry_id']: e for e in job['decals']}
     for entry in job['buildings']:
         row = records[entry['asset_id']]
         meta = row['metadata']
         requested = meta.get('decals')
+        if requested is not None and entry.get('contract'):
+            requested=[ident for ident in requested if ident not in shared_geometry]
         if requested is None:
             requested = sorted(auxiliary[entry['asset_id']] & decals.keys())
             # Legacy file link is only a fallback. New metadata links by asset ID;
@@ -213,6 +344,8 @@ def make_job(rows, defaults, mod, library, output, catalogue):
             report['blockers'].append(f'{row["path"]}: missing decal blends for {sorted(missing)}')
         entry['decals'] = sorted(set(requested))
         state_map = meta.get('decal_states', {})
+        if entry.get('contract') and isinstance(state_map,dict):
+            state_map={ident:states for ident,states in state_map.items() if ident not in shared_geometry}
         if (not isinstance(state_map, dict) or set(state_map) - set(requested) or any(
                 not isinstance(states, list) or not states or
                 any(state not in STATES for state in states)
@@ -224,7 +357,7 @@ def make_job(rows, defaults, mod, library, output, catalogue):
         replaced_names = {txt(m, 'm_Name') for m in template.findall(MODELS + '/Element')
                           if txt(m, 'm_GeoName') in requested}
         entry['preserve_models'] = [n for n in entry['preserve_models'] if n not in replaced_names]
-    if not any(job[k] for k in ('buildings', 'props', 'decals')):
+    if not any(job[k] for k in ('buildings', 'props', 'decals', 'shared_geometries')):
         report['blockers'].append('No exportable assets discovered')
     report['status'] = 'blocked' if report['blockers'] else 'ready_to_decode'
     return job, report

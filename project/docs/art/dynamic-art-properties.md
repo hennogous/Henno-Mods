@@ -1,9 +1,6 @@
 # Dynamic Art Properties
 
-> **Documentation audit — 2026-09-12: Needs refresh.** Service-based timing and producer-owned bridge notes refreshed against 11595de. Remaining event/state and destination behaviour still requires live verification; consult current control.yaml for phase scope.
-> Classification: Art/gameplay integration. See the [full audit](../DOCUMENT-AUDIT.md).
-
-CSC uses SQL-driven city properties plus Lua mirroring to drive `GamePropertyRanges` art variants.
+The optional CSC Art Pack uses SQL-driven city properties plus Lua mirroring to drive `GamePropertyRanges` art variants. CSC supplies the gameplay requirement sets; the Art Pack owns all alternate-art bridge files and models. See [the Art Pack split](optional-art-pack-test.md).
 
 ## Current timing and local verification
 
@@ -21,31 +18,31 @@ Bakers' dynamic building variants use SQL-side source properties mirrored into c
 
 | Art branch | Source property | Active interval / selection target |
 |---|---|---|
-| Stage 2 Water/Wind Mill transaction | `CSC_BAKERS_STAGE_2_GRANARY_GROWTH` | `CSC_BAKERS_STAGE_2_GRANARY_GROWTH_ACTIVE` |
+| Stage 2 Water/Wind Mill transaction | `CSC_BAKERS_STAGE_2_EFFECT_GROWTH` | `CSC_BAKERS_STAGE_2_EFFECT_GROWTH_ACTIVE` |
 | Stage 3 Bakery transaction | `CSC_BAKERS_STAGE_3_EFFECT_HOUSING` | `CSC_BAKERS_STAGE_3_EFFECT_HOUSING_ACTIVE` |
 | Stage 4 Café transaction | `CSC_BAKERS_STAGE_4_EFFECT_TOURISM` | `CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ACTIVE` |
 
 SelectionRule syntax:
 
 ```text
-[CITYPROP:CSC_BAKERS_STAGE_2_GRANARY_GROWTH_ACTIVE]
+[CITYPROP:CSC_BAKERS_STAGE_2_EFFECT_GROWTH_ACTIVE]
 ```
 
 The relevant ArtDef file is:
 
 ```text
-Civ Supply Chains/ArtDefs/CSC_GamePropertyRanges.artdef
+CSC Art Pack/ArtDefs/CSC_GamePropertyRanges.artdef
 ```
 
 The corresponding landmark variants live in:
 
 ```text
-Civ Supply Chains/ArtDefs/CSC_Landmarks.artdef
+CSC Art Pack/ArtDefs/CSC_ArtPack_Landmarks.artdef
 ```
 
 ## Tailors' Stage 2 bridge
 
-The Tailors' Stage 2 bridge is complete: gameplay SQL, the shared Lua mirror,
+The Tailors' Stage 2 bridge is complete: Art Pack SQL, the shared Lua mirror,
 `GamePropertyRanges`, and the Textile Workshop landmark variant are wired
 together.
 
@@ -64,14 +61,11 @@ The property modifier is attached directly to the Textile Workshop and uses
 `REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ`, shared with the Dockmaster effects.
 That gate includes `CIVIC_NAVAL_TRADITION`, improved Base Material supply and a
 collection-count check for an eligible adjacent Harbor/Lighthouse customer.
-The corresponding contract declares `timing: service_activation`; tests check
-producer ownership, shared prerequisites and removal of old reverse attachments.
-For later stages, inspect the current approved contracts and live SQL rather than
-assuming their bridge declarations are still unimplemented.
+The old Tailors contract still points at CSC-owned bridge files and requires a separate rebaseline before future contract-driven bridge work.
 
 ## SQL remains authoritative
 
-The SQL modifier property is the gameplay source of truth. `Lua_UI/ArtProperties/CSC_ArtProperties.lua` mirrors the SQL-driven value into a direct `pCity:SetProperty(...)` value that `GamePropertyRanges` can read.
+The Art Pack SQL modifier property is the art-state source of truth. `CSC Art Pack/Lua_UI/ArtProperties/CSC_ArtProperties.lua` mirrors the SQL-driven value into a direct `pCity:SetProperty(...)` value that `GamePropertyRanges` can read.
 
 This follows Sukritact's Posuban-style art-facing property pattern while preserving SQL-driven gameplay logic.
 
@@ -80,7 +74,7 @@ This follows Sukritact's Posuban-style art-facing property pattern while preserv
 The Lua bridge must be present in the ModBuddy `InGameActionData` inside:
 
 ```text
-Civ Supply Chains/Civ Supply Chains.civ6proj
+CSC Art Pack/CSC Art Pack.civ6proj
 ```
 
 Do not maintain a tracked root `.modinfo`; the real `.modinfo` is generated into the built mod output and is not versioned here.

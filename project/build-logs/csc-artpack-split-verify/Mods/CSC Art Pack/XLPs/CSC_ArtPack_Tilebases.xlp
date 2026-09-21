@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<AssetObjects..XLP>
+  <m_Version><major>1</major><minor>0</minor><build>0</build><revision>0</revision></m_Version>
+  <m_ClassName text="TileBase"/>
+  <m_PackageName text="Landmarks/CSC_ArtPack_Tilebases"/>
+  <m_Entries><Element><m_EntryID text="CSC_BAKERS_Wind_Mill_2"/><m_ObjectName text="CSC_BAKERS_Wind_Mill_2"/></Element><Element>
+      <m_EntryID text="CSC_ALL_Rope_Coil"/>
+      <m_ObjectName text="CSC_ALL_Rope_Coil"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Bakery_2"/>
+      <m_ObjectName text="CSC_BAKERS_Bakery_2"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Cafe_2"/>
+      <m_ObjectName text="CSC_BAKERS_Cafe_2"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Water_Mill_2"/>
+      <m_ObjectName text="CSC_BAKERS_Water_Mill_2"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_TAILORS_Sail_Cutting_Panel"/>
+      <m_ObjectName text="CSC_TAILORS_Sail_Cutting_Panel"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_TAILORS_Sail_Drying_Rack"/>
+      <m_ObjectName text="CSC_TAILORS_Sail_Drying_Rack"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_TAILORS_Tailor_2"/>
+      <m_ObjectName text="CSC_TAILORS_Tailor_2"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_TAILORS_Tailor_Dress_Form_2"/>
+      <m_ObjectName text="CSC_TAILORS_Tailor_Dress_Form_2"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_TAILORS_Tailor_Folded_Stock_2"/>
+      <m_ObjectName text="CSC_TAILORS_Tailor_Folded_Stock_2"/>
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_TAILORS_Tailor_Table_Contents_2"/>
+      <m_ObjectName text="CSC_TAILORS_Tailor_Table_Contents_2"/>
+    </Element>
+  <Element>
+      <m_EntryID text="CSC_TAILORS_Textile_Workshop_2"/>
+      <m_ObjectName text="CSC_TAILORS_Textile_Workshop_2"/>
+    </Element>
+    </m_Entries>
+  <m_AllowedPlatforms>
+    <Element>WINDOWS</Element>
+    <Element>MACOS</Element>
+  </m_AllowedPlatforms>
+</AssetObjects..XLP>

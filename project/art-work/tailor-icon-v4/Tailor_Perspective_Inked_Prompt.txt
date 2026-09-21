@@ -1,0 +1,11 @@
+ImageGen edit, final perspective pass.
+
+Input 1: Tailor_Inked_Orthographic_Alternate.png, generated from the previous Tailor ImageGen master.
+Input 2: Buildings256_style_reference.png, selected cells from the Civ VI SDK Buildings256.dds.
+
+Prompt:
+Edit Image 1 into the perspective projection used for Civilization VI building UI icons, using Image 2 as the camera and linework style reference. Critical geometry correction: do NOT use a parallel/orthographic/isometric projection. Use a distinct perspective view looking down at the building: the upper roof and second-floor structure should appear slightly broader and closer to the viewer, while the ground-floor base and feet of the shop recede and appear visibly narrower. The facade's major vertical edges must converge subtly toward the bottom. This should be apparent in the overall silhouette, not just roof tile lines. Retain a natural three-quarter view with both front and right side visible. Keep the whole Tailor shop, roof, two dormers, chimney, full stone ground floor and door, fabric lean-to, cutting table, bolts of fabric, dress form, hanging garments, and blue outfit at right. Retain a substantial nearly-black outer silhouette line and strong varying black interior outlines of roof planes, dormers, timber frame, stone arch, canopy, table and garment silhouettes. Painted Civ VI SDK style with slightly textured warm shading, moderately saturated lilac roof and turquoise cloth; no sterile vector gloss. It must read clearly at 50 pixels. Centered complete icon on genuine transparent background, ample padding. No terrain, decals, shadow plate, platform, text, border, people or extra buildings. Do not crop or omit the ground floor.
+
+Output master: Tailor_Perspective_Inked_Master.png
+Atlas input: Tailor_Perspective_Inked_256.png, prepared with prepare_imagegen_building_icon.py --extent 220.
+Atlas: Tailor layer, cell index 5.

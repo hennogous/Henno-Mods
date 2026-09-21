@@ -11,6 +11,98 @@ XLP merge. Windows then converts CN6 to FGX (and PNG to DDS when explicitly usin
 material generation), and the normal run installs the converted files into the
 mod with destination checks, backups and rollback on errors.
 
+## Contracted building exports (September 2026)
+
+The normal CSC defaults now set `strict_contracts: true`. Every exported building's
+`Export` scene needs explicit `csc_export` metadata identifying its Quarter and
+supply-chain stage. This is a preflight gate: missing metadata or a required shared
+material/geometry stops discovery before conversion or installation. Example:
+
+```json
+{"kind":"building","asset_id":"CSC_TAILORS_Textile_Workshop","quarter":"TAILORS","supply_chain_stage":3}
+```
+
+These three contract fields can instead live in the blend folder's
+`export-contract.json`, keeping an existing blend unchanged. The runner loads that
+file automatically when present; `--contract PATH` selects a different file.
+Declarations must match discovered building IDs and cannot conflict with Blender
+metadata. For example:
+
+```json
+{"buildings":{"CSC_TAILORS_Textile_Workshop":{"quarter":"TAILORS","supply_chain_stage":3}}}
+```
+
+The run records the sidecar's path and hash in `contract-source.json`; the resolved
+per-building contract is also in `job.json` and `discovery-report.json`.
+
+An export contract may list expanded-model files in `optional_blends` and their
+building IDs in `optional_buildings`. The normal runner skips those blends even
+when they share the source folder with the standard model. Pass
+`--include-optional` to export the complete optional group; the run then requires
+every listed optional blend. Keep the standard files in `required_blends`. For
+example, `project/art-export-contracts/tailor-revision09.json` exports the normal
+Tailor by default and includes `Tailor_2` only on request. The optional flag
+exports the standard files as well, so review the output and destination before
+installing an expanded-model run.
+
+The supply-chain stage maps to a building level: Stage 2 → Level 1, Stage 3 → Level 2,
+Stage 4 → Level 3. Stage 2 additionally needs `construction_geometry` set to either
+`CSC_Level_1_CON+PIL` or `CSC_Level_1_S_CON+PIL`. Stages 3 and 4 use
+`CSC_Level_2_CON+PIL` and `CSC_Level_3_CON+PIL` respectively by default. A
+contract may instead name an authored `construction_geometry` and map its
+`shared_geometries` ID to a blend in the same folder. The exporter then creates
+one GEO/FGX pair and binds it into both building variants. `required_blends`
+can list the complete folder inventory; any missing, extra, ignored, or unused
+building, prop master, shared ruin, or PIL decal blocks the run. The stages require
+`CSC_ALL_Stage_3_Cobble_Decals` or `CSC_ALL_Stage_4_Cobble_Decals` in the mod's
+Geometries directory. Existing shared GEO/FGX files are referenced unchanged.
+
+The contract applies `CSC_<QUARTER>_E` to the building and lean-to, and
+`CSC_ALL_Props_01` to fixed prop meshes in Bakers, Tailors, Apothecaries and
+Stonemasons. Carpenters, Blacksmiths, Goldsmiths and Brewers use
+`CSC_ALL_Props_02`. It applies `CSC_<QUARTER>_NE` to the shared construction/pillage
+building groups, retains `Pillage_Construction_01` for scaffolding, and applies
+`CSC_ALL_Cobble_Patch_Decal` to the stage 3/4 cobble model. Existing MTL and texture
+files are reused without modification. Missing files block only a run that needs
+them, so Stage 4 can wait until its shared assets are authored.
+
+Main building and fixed prop groups are visible in Worked only. The shared ruin
+building is visible in Construction and Pillaged; scaffolding is Construction only.
+Cobble is visible in Worked and Construction. Unworked and Unbuilt are invisible.
+Newly exported CSC prop assets are Worked only. Already installed CSC attachment
+assets keep their own state tables; the validation report lists their IDs for
+Henno's manual check. Pantry attachments keep their own materials and states.
+
+After staging, the builder validates every generated group/state/material row
+against the GEO, plus attachment identities and numeric transforms. It records
+`contract_validation` in `report.json`. Run the same read-only check independently:
+
+```powershell
+python project/tools/blender/scene_export/asset_contract.py 'C:\path\to\export-runs\<timestamp>\job.json'
+```
+
+AE orientation uses radians. The exporter serializes Blender X/Y Euler angles in
+the same direction and reverses Z; combined-axis visual parity needs an AE review
+with a known reference before treating it as calibrated. Henno owns in-game
+testing. XML, FGX presence, and conversion checks establish the asset package,
+not its final appearance or runtime behavior.
+
+Each rerun uses a fresh timestamped run and installs over the previous matching
+outputs. When the previous installed run came from the same `export-runs` folder,
+installation also retires outputs and XLP IDs that disappeared from the new run,
+after checking their recorded hashes. The new run backs them up. A normal uninstall
+restores its predecessor; a purge removes the latest run's outputs. To address the
+newest installed run by its blend folder:
+
+```powershell
+python project/tools/blender/export_assets.py --list-latest-purge 'C:\path\to\blend-folder'
+python project/tools/blender/export_assets.py --purge-latest 'C:\path\to\blend-folder'
+```
+
+The preview lists exact targets. Use `--force` only when deliberately purging
+outputs subsequently changed or removed in AE. These commands do not remove
+ArtDef wiring, cooked packages, or the AE dependency cache.
+
 Installed custom props are safe to rerun from the same source bundle. Discovery
 recognizes an output only when a prior install receipt names that exact blend and
 the live AST still matches the receipt; unrelated or subsequently edited ID
@@ -186,6 +278,12 @@ generation path; the normal CSC command does not use it.
 
 ### Scene identity
 
+The template examples below describe legacy source metadata and template
+selection. With normal strict defaults, also supply the contracted Quarter,
+stage, and (for Stage 2) construction geometry, either in Blender or the sidecar.
+The builder replaces the contracted shared construction/cobble models using their
+declared geometry identities and validates their exact state tables.
+
 The normal entry point no longer uses `workshops.example.json`. Filenames are
 arbitrary: identity comes from the saved scene, so renaming a blend does not rename
 its game asset. Scan is nonrecursive to avoid exporting library backups and working
@@ -213,7 +311,10 @@ decal models:
 ```json
 {
   "kind": "building",
-  "asset_id": "CSC_New_Building",
+  "asset_id": "CSC_TAILORS_New_Building",
+  "quarter": "TAILORS",
+  "supply_chain_stage": 2,
+  "construction_geometry": "CSC_Level_1_S_CON+PIL",
   "template_profile": "level1_small",
   "decals": ["CSC_New_Building_PIL_Decals"]
 }
@@ -240,7 +341,10 @@ and relevant model selectors explicitly (do not also specify `template_profile`)
 ```json
 {
   "kind": "building",
-  "asset_id": "CSC_New_Building",
+  "asset_id": "CSC_TAILORS_New_Building",
+  "quarter": "TAILORS",
+  "supply_chain_stage": 2,
+  "construction_geometry": "CSC_Level_1_S_CON+PIL",
   "template_asset": "Assets/CSC_Existing_Building.ast",
   "replace_model": "CSC_Existing_Building",
   "state_template_mesh": "CSC_Existing_Building_Bldg",

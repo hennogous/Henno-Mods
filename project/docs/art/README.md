@@ -6,9 +6,10 @@ Building concepts, 3D production, materials, export and art integration. Status 
 
 - [AI-Assisted 3D Model Generation](ai-3d-model-generation.md) — **Needs refresh**.
 - [Districts & Buildings: Art Guide](districts_buildings_art_guide.md) — **Needs refresh**.
-- [Dynamic Art Properties](dynamic-art-properties.md) — **Needs refresh**.
+- [Dynamic Art Properties](dynamic-art-properties.md) — **Current Art Pack ownership; new variants need in-game checks**.
 - [Export Pipeline Reference](export-pipeline.md) — **Needs refresh**.
 - [Quarter building art plan](quarter-building-art-plan.md) — **Current**.
+- [Optional CSC Art Pack](optional-art-pack-test.md) — **Six-model source split built; five newly moved variants need in-game checks**.
 - [Baked AO for shared texture atlases](shared-atlas-ao.md) — **Current**.
 - [Textures and UV Mapping Reference](textures-and-uvs.md) — **Needs refresh**.
 

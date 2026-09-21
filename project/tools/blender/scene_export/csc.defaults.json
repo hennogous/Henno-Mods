@@ -34,6 +34,7 @@
   },
   "material_policy": "reuse_existing",
   "ao_policy": "reuse_existing",
+  "strict_contracts": true,
   "reuse_existing_assets": ["CSC_ALL_Workbench_Narrow", "CSC_ALL_Workbench_Wide", "CSC_TAILORS_Basket", "CSC_TAILORS_SpinningWheel", "CSC_TAILORS_Rugs"],
   "replace_existing_assets": ["CSC_TAILORS_Sail_Cutting_Panel", "CSC_TAILORS_Sail_Drying_Rack"]
 }

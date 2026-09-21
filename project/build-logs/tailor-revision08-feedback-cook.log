@@ -1,0 +1,1100 @@
+Microsoft (R) Build Engine version 12.0.21005.1
+[Microsoft .NET Framework, version 4.0.30319.42000]
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Buildings.artdef
+  Cooking ArtDef: (Eras.artdef).
+  Cooking ArtDef: (Cultures.artdef).
+  Cooking ArtDef: (CityGenerators.artdef).
+  Cooking ArtDef: (Appeal.artdef).
+  Cooking ArtDef: (Civilizations.artdef).
+  Cooking ArtDef: (Landmarks.artdef).
+  Cooking ArtDef: (Districts.artdef).
+  Cooking ArtDef: (Buildings.artdef).
+  Cooking ArtDef: (StrategicView.artdef).
+  Cooking ArtDef: (CSC_StrategicView.artdef).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+  Cooking ArtDef: (CSC_Landmarks.artdef).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_04) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset has had its value replaced with its default value.
+  
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_05) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset has had its value replaced with its default value.
+  
+  Cooking ArtDef: (CSC_Districts.artdef).
+  Cooking ArtDef: (CSC_Buildings.artdef).
+  Cook finished for ArtDef at Path: 'CSC_Buildings.artdef' with Template: 'Buildings'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.674 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Clutter.artdef
+  Cooking ArtDef: (Clutter.artdef).
+  Cooking ArtDef: (CSC_Clutter.artdef).
+  Cook finished for ArtDef at Path: 'CSC_Clutter.artdef' with Template: 'Clutter'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.594 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Districts.artdef
+  Cooking ArtDef: (Eras.artdef).
+  Cooking ArtDef: (Cultures.artdef).
+  Cooking ArtDef: (CityGenerators.artdef).
+  Cooking ArtDef: (Appeal.artdef).
+  Cooking ArtDef: (StrategicView.artdef).
+  Cooking ArtDef: (Districts.artdef).
+  Cooking ArtDef: (Buildings.artdef).
+  Cooking ArtDef: (Civilizations.artdef).
+  Cooking ArtDef: (Landmarks.artdef).
+  Cooking ArtDef: (CSC_StrategicView.artdef).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+  Cooking ArtDef: (CSC_Buildings.artdef).
+  Cooking ArtDef: (CSC_Landmarks.artdef).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_04) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset has had its value replaced with its default value.
+  
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_05) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset has had its value replaced with its default value.
+  
+  Cooking ArtDef: (CSC_Districts.artdef).
+  Cook finished for ArtDef at Path: 'CSC_Districts.artdef' with Template: 'Districts'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.436 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Farms.artdef
+  Cooking ArtDef: (Clutter.artdef).
+  Cooking ArtDef: (Eras.artdef).
+  Cooking ArtDef: (Cultures.artdef).
+  Cooking ArtDef: (CityGenerators.artdef).
+  Cooking ArtDef: (Appeal.artdef).
+  Cooking ArtDef: (Civilizations.artdef).
+  Cooking ArtDef: (Landmarks.artdef).
+  Cooking ArtDef: (Districts.artdef).
+  Cooking ArtDef: (Buildings.artdef).
+  Cooking ArtDef: (StrategicView.artdef).
+  Cooking ArtDef: (Features.artdef).
+  Cooking ArtDef: (Terrains.artdef).
+  Cooking ArtDef: (Resources.artdef).
+  Cooking ArtDef: (Walls.artdef).
+  Cooking ArtDef: (Improvements.artdef).
+  Cooking ArtDef: (Farms.artdef).
+  Cooking ArtDef: (CSC_Clutter.artdef).
+  Cooking ArtDef: (CSC_Resources.artdef).
+  Cooking ArtDef: (CSC_Farms.artdef).
+  Cook finished for ArtDef at Path: 'CSC_Farms.artdef' with Template: 'Farms'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.573 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_GamePropertyRanges.artdef
+  Cooking ArtDef: (CSC_GamePropertyRanges.artdef).
+  Cook finished for ArtDef at Path: 'CSC_GamePropertyRanges.artdef' with Template: 'GamePropertyRanges'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.448 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Icons.artdef
+  Cooking ArtDef: (CSC_Icons.artdef).
+  Cook finished for ArtDef at Path: 'CSC_Icons.artdef' with Template: 'UserInterfaceBLPs'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.425 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Landmarks.artdef
+  Cooking ArtDef: (Eras.artdef).
+  Cooking ArtDef: (Cultures.artdef).
+  Cooking ArtDef: (CityGenerators.artdef).
+  Cooking ArtDef: (Appeal.artdef).
+  Cooking ArtDef: (StrategicView.artdef).
+  Cooking ArtDef: (Districts.artdef).
+  Cooking ArtDef: (Buildings.artdef).
+  Cooking ArtDef: (Civilizations.artdef).
+  Cooking ArtDef: (Landmarks.artdef).
+  Cooking ArtDef: (CSC_StrategicView.artdef).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+  Cooking ArtDef: (CSC_Districts.artdef).
+  Cooking ArtDef: (CSC_Buildings.artdef).
+  Cooking ArtDef: (CSC_Landmarks.artdef).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_04) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset has had its value replaced with its default value.
+  
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_05) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset has had its value replaced with its default value.
+  
+  Cook finished for ArtDef at Path: 'CSC_Landmarks.artdef' with Template: 'Landmarks'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.445 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Overlay.artdef
+  Cooking ArtDef: (Overlay.artdef).
+  Cooking ArtDef: (CSC_Overlay.artdef).
+  Cook finished for ArtDef at Path: 'CSC_Overlay.artdef' with Template: 'Overlay'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.444 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_Resources.artdef
+  Cooking ArtDef: (Clutter.artdef).
+  Cooking ArtDef: (CSC_Clutter.artdef).
+  Cooking ArtDef: (CSC_Resources.artdef).
+  Cook finished for ArtDef at Path: 'CSC_Resources.artdef' with Template: 'Resources'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.485 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\ArtDefs/CSC_StrategicView.artdef
+  Cooking ArtDef: (Eras.artdef).
+  Cooking ArtDef: (Cultures.artdef).
+  Cooking ArtDef: (CityGenerators.artdef).
+  Cooking ArtDef: (Appeal.artdef).
+  Cooking ArtDef: (Civilizations.artdef).
+  Cooking ArtDef: (Landmarks.artdef).
+  Cooking ArtDef: (Districts.artdef).
+  Cooking ArtDef: (Buildings.artdef).
+  Cooking ArtDef: (StrategicView.artdef).
+  Cooking ArtDef: (CSC_Landmarks.artdef).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_04) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 05 Classical: Textile Workshop, Fashion House >> Asset has had its value replaced with its default value.
+  
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset references an XLP entry (CSC_TAILORS_Classical_Base_05) that does not exist in the XLP (csc_tilebases.xlp).
+   >> CSC_Landmarks.artdef >> Districts >> DISTRICT_CSC_TAILORS_QUARTER >> BaseVariants >> 06 Classical: Textile Workshop, Tailor, Fashion House >> Asset has had its value replaced with its default value.
+  
+  Cooking ArtDef: (CSC_Districts.artdef).
+  Cooking ArtDef: (CSC_Buildings.artdef).
+  Cooking ArtDef: (CSC_StrategicView.artdef).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Water_Mill_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Water_Mill_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_Pillaged >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Visible_XLPEntry has had its value replaced with its default value.
+  
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry references an XLP entry (CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction) that does not exist in the XLP (csc_strategicview.xlp).
+   >> CSC_StrategicView.artdef >> BuildingEntries >> CSC_TAILORS_Fashion_House_UnderConstruction >> Revealed_XLPEntry has had its value replaced with its default value.
+  
+  Cook finished for ArtDef at Path: 'CSC_StrategicView.artdef' with Template: 'StrategicView'
+  ArtDef cook completed.
+  Opened output file: C:/Users/Shadow/Documents/My Games/Sid Meier's Civilization VI/Mods/Civ Supply Chains/Civ_Supply_Chains.dep    For project Civ_Supply_Chains
+  Cook completed in 2.463 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Clutter.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\Windows\BLPs/Environment/CSC_Clutter.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Clutter.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'Environment/CSC_Clutter'
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft01' ********
+  --------------
+  Geo RES_Wheat_Tuft01 Mesh RES_Wheat_Tuft01_Mesh : 8 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft02' ********
+  --------------
+  Geo RES_Wheat_Tuft02 Mesh RES_Wheat_Tuft02_Mesh : 56 vertices removed by tangent merger.
+  Geo RES_Wheat_Tuft02 mesh RES_Wheat_Tuft02_Mesh flagged for possible vertex duplication. Vertex Count: 168, Index Count: 336, Tri Count 112, Reused Vertices: 112, Duplicate Vertices: 0, Duplicate Positions: 0, Vertex:Tri Ratio: 1.50
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft03' ********
+  --------------
+  Geo RES_Wheat_Tuft03 Mesh RES_Wheat_Tuft03_Mesh : 40 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft04' ********
+  --------------
+  Geo RES_Wheat_Tuft04 Mesh RES_Wheat_Tuft04_Mesh : 40 vertices removed by tangent merger.
+  Load finished for: 'Environment/CSC_Clutter' in 0.051 seconds
+  Cook finished for: 'Environment/CSC_Clutter' in 0.001 seconds
+  Disk write finished for: 'Environment/CSC_Clutter' in 0.062 seconds
+  Cleanup finished for: 'Environment/CSC_Clutter' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.128 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Icons.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\Windows\BLPs/UI/CSC_Icons.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Icons.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'UI/CSC_Icons'
+  Load finished for: 'UI/CSC_Icons' in 0.038 seconds
+  Cook finished for: 'UI/CSC_Icons' in 0.131 seconds
+  Disk write finished for: 'UI/CSC_Icons' in 0.054 seconds
+  Cleanup finished for: 'UI/CSC_Icons' in 0.002 seconds
+  XLP cook completed with success.
+  Cook completed in 0.238 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Lights.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\Windows\BLPs/CSC_Lights.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Lights.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'CSC_Lights'
+  Load finished for: 'CSC_Lights' in 0.001 seconds
+  Cook finished for: 'CSC_Lights' in 0.000 seconds
+  Disk write finished for: 'CSC_Lights' in 0.046 seconds
+  Cleanup finished for: 'CSC_Lights' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.060 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_StrategicView.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\Windows\BLPs/StrategicView/CSC_StrategicView.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_StrategicView.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'StrategicView/CSC_StrategicView'
+  Load finished for: 'StrategicView/CSC_StrategicView' in 0.071 seconds
+  Cook finished for: 'StrategicView/CSC_StrategicView' in 0.000 seconds
+  Disk write finished for: 'StrategicView/CSC_StrategicView' in 0.064 seconds
+  Cleanup finished for: 'StrategicView/CSC_StrategicView' in 0.003 seconds
+  XLP cook completed with success.
+  Cook completed in 0.151 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Tilebases.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\Windows\BLPs/Landmarks/CSC_Tilebases.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Tilebases.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'Landmarks/CSC_Tilebases'
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_03_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.003_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_04_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_05_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.003_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Wind_Mill_Tower' ********
+  --------------
+  Geo CSC_BAKERS_Wind_Mill_Tower Mesh IMP_Lumbermill_Medieval_Mill_Mesh#M : 21 vertices removed by tangent merger.
+  Geo CSC_BAKERS_Wind_Mill_Tower mesh IMP_Lumbermill_Medieval_Mill_Mesh#M flagged for possible vertex duplication. Vertex Count: 366, Index Count: 627, Tri Count 209, Reused Vertices: 167, Duplicate Vertices: 0, Duplicate Positions: 110, Vertex:Tri Ratio: 1.75
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Wind_Mill_Tower_CON' ********
+  --------------
+  Geo CSC_BAKERS_Wind_Mill_Tower_CON Mesh CSC_BAKERS_Wind_Mill_Tower_CON : 21 vertices removed by tangent merger.
+  Geo CSC_BAKERS_Wind_Mill_Tower_CON mesh CSC_BAKERS_Wind_Mill_Tower_CON flagged for possible vertex duplication. Vertex Count: 366, Index Count: 627, Tri Count 209, Reused Vertices: 167, Duplicate Vertices: 0, Duplicate Positions: 110, Vertex:Tri Ratio: 1.75
+  
+  ****** Log from Geometry: 'DIS_CTY_Watermill_AN' ********
+  --------------
+  Geo DIS_CTY_Watermill_AN Mesh DIS_CTY_Watermill_AN_Bldg : 11 vertices removed by tangent merger.
+  Geo DIS_CTY_Watermill_AN Mesh Grass : 2 vertices removed by tangent merger.
+  Geo DIS_CTY_Watermill_AN Mesh DIS_CTY_Watermill_AN_Bldg_PIL : 23 vertices removed by tangent merger.
+  Geo DIS_CTY_Watermill_AN mesh DIS_CTY_Watermill_AN_Bldg flagged for possible vertex duplication. Vertex Count: 1271, Index Count: 2187, Tri Count 729, Reused Vertices: 722, Duplicate Vertices: 0, Duplicate Positions: 488, Vertex:Tri Ratio: 1.74
+  Geo DIS_CTY_Watermill_AN mesh DIS_CTY_Watermill_AN_Bldg_PIL flagged for possible vertex duplication. Vertex Count: 2603, Index Count: 4548, Tri Count 1516, Reused Vertices: 1414, Duplicate Vertices: 0, Duplicate Positions: 926, Vertex:Tri Ratio: 1.72
+  Geo DIS_CTY_Watermill_AN mesh Wheel flagged for possible vertex duplication. Vertex Count: 920, Index Count: 1839, Tri Count 613, Reused Vertices: 611, Duplicate Vertices: 0, Duplicate Positions: 366, Vertex:Tri Ratio: 1.50
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Water_Mill_CON+PIL' ********
+  --------------
+  Geo CSC_BAKERS_Water_Mill_CON+PIL Mesh CSC_BAKERS_Water_Mill_CON+PIL_Bldg : 2 vertices removed by tangent merger.
+  Geo CSC_BAKERS_Water_Mill_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 319, Index Count: 441, Tri Count 147, Reused Vertices: 122, Duplicate Vertices: 0, Duplicate Positions: 105, Vertex:Tri Ratio: 2.17
+  
+  ****** Log from Geometry: 'CSC_Level_2_CON+PIL' ********
+  --------------
+  Geo CSC_Level_2_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Bakery' ********
+  --------------
+  Geo CSC_BAKERS_Bakery mesh CSC_BAKERS_Oven_Bldg flagged for possible vertex duplication. Vertex Count: 879, Index Count: 1281, Tri Count 427, Reused Vertices: 398, Duplicate Vertices: 0, Duplicate Positions: 232, Vertex:Tri Ratio: 2.06
+  
+  ****** Log from Geometry: 'CSC_Level_3_CON+PIL' ********
+  --------------
+  Geo CSC_Level_3_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Geometry: 'CSC_ALL_Curved_Path' ********
+  --------------
+  Geo CSC_ALL_Curved_Path Mesh Decal_CLA_Elbow011 : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Ancient_Base_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_01_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_02_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'DIS_CTY_Foundation_WR_LgGrayBlock' ********
+  --------------
+  Geo DIS_CTY_Foundation_WR_LgGrayBlock Mesh WR_Base : 1 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_Storage_L_CON+PIL' ********
+  --------------
+  Geo CSC_Storage_L_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  Geo CSC_Storage_L_CON+PIL mesh CSC_Storage_L_CON+PIL_Bldg flagged for possible vertex duplication. Vertex Count: 1179, Index Count: 2316, Tri Count 772, Reused Vertices: 725, Duplicate Vertices: 0, Duplicate Positions: 333, Vertex:Tri Ratio: 1.53
+  
+  ****** Log from Geometry: 'CSC_Storage_M_CON+PIL' ********
+  --------------
+  Geo CSC_Storage_M_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 269, Index Count: 375, Tri Count 125, Reused Vertices: 106, Duplicate Vertices: 0, Duplicate Positions: 85, Vertex:Tri Ratio: 2.15
+  
+  ****** Log from Geometry: 'CSC_Storage_S' ********
+  --------------
+  Geo CSC_Storage_S Mesh CSC_Storage_S_Bdg : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_Storage_S_CON+PIL' ********
+  --------------
+  Geo CSC_Storage_S_CON+PIL Mesh CSC_Storage_S_CON+PIL_Bdg : 2 vertices removed by tangent merger.
+  Geo CSC_Storage_S_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 319, Index Count: 441, Tri Count 147, Reused Vertices: 122, Duplicate Vertices: 0, Duplicate Positions: 105, Vertex:Tri Ratio: 2.17
+  
+  ****** Log from Geometry: 'IMP_Fishery_ANC_Crane_PIL' ********
+  --------------
+  Geo IMP_Fishery_ANC_Crane_PIL mesh IMP_Fishery_ANC_Crane_PIL flagged for possible vertex duplication. Vertex Count: 242, Index Count: 384, Tri Count 128, Reused Vertices: 116, Duplicate Vertices: 0, Duplicate Positions: 92, Vertex:Tri Ratio: 1.89
+  
+  ****** Log from Geometry: 'IMP_Fishery_ANC_Crane' ********
+  --------------
+  Geo IMP_Fishery_ANC_Crane Mesh IMP_Fishery_ANC_Crane_Mesh : 2 vertices removed by tangent merger.
+  Geo IMP_Fishery_ANC_Crane mesh IMP_Fishery_ANC_Crane_Mesh flagged for possible vertex duplication. Vertex Count: 306, Index Count: 564, Tri Count 188, Reused Vertices: 178, Duplicate Vertices: 0, Duplicate Positions: 114, Vertex:Tri Ratio: 1.63
+  
+  ****** Log from Geometry: 'CSC_Level_1_S_CON+PIL' ********
+  --------------
+  Geo CSC_Level_1_S_CON+PIL Mesh CSC_Level_1_S_CON+PIL_Bldg : 2 vertices removed by tangent merger.
+  Geo CSC_Level_1_S_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Tailor' ********
+  --------------
+  Geo CSC_TAILORS_Tailor mesh CSC_TAILORS_Tailor_Fixed flagged for possible vertex duplication. Vertex Count: 1368, Index Count: 2604, Tri Count 868, Reused Vertices: 806, Duplicate Vertices: 0, Duplicate Positions: 475, Vertex:Tri Ratio: 1.58
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Tailor_CON+PIL' ********
+  --------------
+  Geo CSC_TAILORS_Tailor_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  Geo CSC_TAILORS_Tailor_CON+PIL mesh CSC_Storage_LeanTo_CON+PIL_Bldg flagged for possible vertex duplication. Vertex Count: 305, Index Count: 555, Tri Count 185, Reused Vertices: 181, Duplicate Vertices: 0, Duplicate Positions: 111, Vertex:Tri Ratio: 1.65
+  
+  ****** Log from Geometry: 'CSC_ALL_Props_PIL_Decals' ********
+  --------------
+  Geo CSC_ALL_Props_PIL_Decals Mesh Plane1 : 4 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_TAILORS_SpinningWheel' ********
+  --------------
+  Geo CSC_TAILORS_SpinningWheel mesh CSC_TAILORS_SpinningWheel_Bldg flagged for possible vertex duplication. Vertex Count: 978, Index Count: 1470, Tri Count 490, Reused Vertices: 470, Duplicate Vertices: 0, Duplicate Positions: 306, Vertex:Tri Ratio: 2.00
+  
+  ****** Log from Geometry: 'CSC_ALL_Well_PIL' ********
+  --------------
+  Geo CSC_ALL_Well_PIL mesh CSC_ALL_Well_PIL_Obj flagged for possible vertex duplication. Vertex Count: 280, Index Count: 450, Tri Count 150, Reused Vertices: 137, Duplicate Vertices: 0, Duplicate Positions: 94, Vertex:Tri Ratio: 1.87
+  
+  ****** Log from Geometry: 'WON_Great_Zimbabwe_RugsF' ********
+  --------------
+  Geo WON_Great_Zimbabwe_RugsF mesh WON_Great_Zimbabwe_RugsF flagged for possible vertex duplication. Vertex Count: 288, Index Count: 480, Tri Count 160, Reused Vertices: 156, Duplicate Vertices: 0, Duplicate Positions: 100, Vertex:Tri Ratio: 1.80
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Tailor_2' ********
+  --------------
+  Geo CSC_TAILORS_Tailor_2 mesh CSC_TAILORS_Tailor_2_Fixed flagged for possible vertex duplication. Vertex Count: 1546, Index Count: 2970, Tri Count 990, Reused Vertices: 919, Duplicate Vertices: 0, Duplicate Positions: 523, Vertex:Tri Ratio: 1.56
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Textile_Workshop' ********
+  --------------
+  Geo CSC_TAILORS_Textile_Workshop mesh CSC_Fixed_Textile_Loom flagged for possible vertex duplication. Vertex Count: 210, Index Count: 324, Tri Count 108, Reused Vertices: 98, Duplicate Vertices: 0, Duplicate Positions: 72, Vertex:Tri Ratio: 1.94
+  Geo CSC_TAILORS_Textile_Workshop mesh CSC_TAILORS_Textile_Workshop_Bldg flagged for possible vertex duplication. Vertex Count: 1143, Index Count: 2070, Tri Count 690, Reused Vertices: 663, Duplicate Vertices: 0, Duplicate Positions: 365, Vertex:Tri Ratio: 1.66
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Textile_Workshop_2' ********
+  --------------
+  Geo CSC_TAILORS_Textile_Workshop_2 mesh CSC_Fixed_Textile_Loom flagged for possible vertex duplication. Vertex Count: 210, Index Count: 324, Tri Count 108, Reused Vertices: 98, Duplicate Vertices: 0, Duplicate Positions: 72, Vertex:Tri Ratio: 1.94
+  Geo CSC_TAILORS_Textile_Workshop_2 mesh CSC_TAILORS_Textile_Workshop_Bldg flagged for possible vertex duplication. Vertex Count: 1143, Index Count: 2070, Tri Count 690, Reused Vertices: 663, Duplicate Vertices: 0, Duplicate Positions: 365, Vertex:Tri Ratio: 1.66
+  
+  ****** Log from Texture: 'CSC_Atlas_Props_M' ********
+  --------------
+  Texture 'CSC_Atlas_Props_M' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  
+  ****** Log from Texture: 'CSC_Atlas_O' ********
+  --------------
+  Texture 'CSC_Atlas_O' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  
+  ****** Log from Texture: 'CSC_Props_Shared_01_E' ********
+  --------------
+  Texture 'CSC_Props_Shared_01_E' (256x256) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  Load finished for: 'Landmarks/CSC_Tilebases' in 2.330 seconds
+  CSC_BAKERS_Water_Mill_CON+PIL_Bldg:CSC_BAKERS_Water_Mill_CON+PIL_Bldg has 2 degenerate triangles
+  CSC_Level_1_S_CON+PIL_Bldg:CSC_Level_1_S_CON+PIL_Bldg has 2 degenerate triangles
+  CSC_Level_3_CON+PIL_Bldg:CSC_Level_3_CON+PIL_Bldg has 80 zero area triangles (example position: 195.199, 27.632, -0.064 )
+  CSC_Storage_S_Bdg:CSC_Storage_S has 2 degenerate triangles
+  CSC_Storage_S_Bdg:CSC_Storage_S has 58 zero area triangles (example position: 26.008, -9.405, 0.067 )
+  CSC_Storage_S_CON+PIL_Bdg:CSC_Storage_S_CON+PIL_Bdg has 2 degenerate triangles
+  CSC_Storage_S_CON+PIL_Bdg:CSC_Storage_S_CON+PIL_Bdg has 68 zero area triangles (example position: -3.537, -21.785, 31.770 )
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Circle_Patch".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Curved_Path".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Organic_Patch_L".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Organic_Patch_M".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Organic_Patch_S".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Plaza_Inner".
+  			An empty OB will be used for this asset.
+  Profile AABB exceeds hex AABB in geo "IMP_Farm_Decal_Transition_08_OB"
+  			Make sure model is correctly transformed, then reset and collapse the transform.
+  			If everything is working as intended, ignore this message.
+  Cook finished for: 'Landmarks/CSC_Tilebases' in 0.068 seconds
+  Disk write finished for: 'Landmarks/CSC_Tilebases' in 0.417 seconds
+  Cleanup finished for: 'Landmarks/CSC_Tilebases' in 0.047 seconds
+  XLP cook completed with success.
+  Cook completed in 2.877 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_UILensAssets.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\Windows\BLPs/UILensAsset/CSC_UILensAssets.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_UILensAssets.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'UILensAsset/CSC_UILensAssets'
+  Load finished for: 'UILensAsset/CSC_UILensAssets' in 0.022 seconds
+  Cook finished for: 'UILensAsset/CSC_UILensAssets' in 0.000 seconds
+  Disk write finished for: 'UILensAsset/CSC_UILensAssets' in 0.099 seconds
+  Cleanup finished for: 'UILensAsset/CSC_UILensAssets' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.138 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_VFX.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\Windows\BLPs/CSC_VFX.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_VFX.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'CSC_VFX'
+  XLP (CSC_VFX) contains no entries.
+  Load finished for: 'CSC_VFX' in 0.000 seconds
+  Cook finished for: 'CSC_VFX' in 0.000 seconds
+  Disk write finished for: 'CSC_VFX' in 0.064 seconds
+  Cleanup finished for: 'CSC_VFX' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.079 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Clutter.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/Environment/CSC_Clutter.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Clutter.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'Environment/CSC_Clutter'
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft01' ********
+  --------------
+  Geo RES_Wheat_Tuft01 Mesh RES_Wheat_Tuft01_Mesh : 8 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft02' ********
+  --------------
+  Geo RES_Wheat_Tuft02 Mesh RES_Wheat_Tuft02_Mesh : 56 vertices removed by tangent merger.
+  Geo RES_Wheat_Tuft02 mesh RES_Wheat_Tuft02_Mesh flagged for possible vertex duplication. Vertex Count: 168, Index Count: 336, Tri Count 112, Reused Vertices: 112, Duplicate Vertices: 0, Duplicate Positions: 0, Vertex:Tri Ratio: 1.50
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft03' ********
+  --------------
+  Geo RES_Wheat_Tuft03 Mesh RES_Wheat_Tuft03_Mesh : 40 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'RES_Wheat_Tuft04' ********
+  --------------
+  Geo RES_Wheat_Tuft04 Mesh RES_Wheat_Tuft04_Mesh : 40 vertices removed by tangent merger.
+  Load finished for: 'Environment/CSC_Clutter' in 0.065 seconds
+  Cook finished for: 'Environment/CSC_Clutter' in 0.002 seconds
+  Disk write finished for: 'Environment/CSC_Clutter' in 0.109 seconds
+  Cleanup finished for: 'Environment/CSC_Clutter' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.195 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Icons.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/UI/CSC_Icons.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Icons.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'UI/CSC_Icons'
+  Load finished for: 'UI/CSC_Icons' in 0.063 seconds
+  Cook finished for: 'UI/CSC_Icons' in 0.167 seconds
+  Disk write finished for: 'UI/CSC_Icons' in 0.094 seconds
+  Cleanup finished for: 'UI/CSC_Icons' in 0.002 seconds
+  XLP cook completed with success.
+  Cook completed in 0.344 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Lights.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/CSC_Lights.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Lights.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'CSC_Lights'
+  Load finished for: 'CSC_Lights' in 0.001 seconds
+  Cook finished for: 'CSC_Lights' in 0.000 seconds
+  Disk write finished for: 'CSC_Lights' in 0.053 seconds
+  Cleanup finished for: 'CSC_Lights' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.068 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_StrategicView.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/StrategicView/CSC_StrategicView.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_StrategicView.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'StrategicView/CSC_StrategicView'
+  Load finished for: 'StrategicView/CSC_StrategicView' in 0.062 seconds
+  Cook finished for: 'StrategicView/CSC_StrategicView' in 0.000 seconds
+  Disk write finished for: 'StrategicView/CSC_StrategicView' in 0.051 seconds
+  Cleanup finished for: 'StrategicView/CSC_StrategicView' in 0.002 seconds
+  XLP cook completed with success.
+  Cook completed in 0.129 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Tilebases.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/Landmarks/CSC_Tilebases.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_Tilebases.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'Landmarks/CSC_Tilebases'
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_03_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.003_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_03_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_04_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_04_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_05_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.003_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_05_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Wind_Mill_Tower' ********
+  --------------
+  Geo CSC_BAKERS_Wind_Mill_Tower Mesh IMP_Lumbermill_Medieval_Mill_Mesh#M : 21 vertices removed by tangent merger.
+  Geo CSC_BAKERS_Wind_Mill_Tower mesh IMP_Lumbermill_Medieval_Mill_Mesh#M flagged for possible vertex duplication. Vertex Count: 366, Index Count: 627, Tri Count 209, Reused Vertices: 167, Duplicate Vertices: 0, Duplicate Positions: 110, Vertex:Tri Ratio: 1.75
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Wind_Mill_Tower_CON' ********
+  --------------
+  Geo CSC_BAKERS_Wind_Mill_Tower_CON Mesh CSC_BAKERS_Wind_Mill_Tower_CON : 21 vertices removed by tangent merger.
+  Geo CSC_BAKERS_Wind_Mill_Tower_CON mesh CSC_BAKERS_Wind_Mill_Tower_CON flagged for possible vertex duplication. Vertex Count: 366, Index Count: 627, Tri Count 209, Reused Vertices: 167, Duplicate Vertices: 0, Duplicate Positions: 110, Vertex:Tri Ratio: 1.75
+  
+  ****** Log from Geometry: 'DIS_CTY_Watermill_AN' ********
+  --------------
+  Geo DIS_CTY_Watermill_AN Mesh DIS_CTY_Watermill_AN_Bldg : 11 vertices removed by tangent merger.
+  Geo DIS_CTY_Watermill_AN Mesh Grass : 2 vertices removed by tangent merger.
+  Geo DIS_CTY_Watermill_AN Mesh DIS_CTY_Watermill_AN_Bldg_PIL : 23 vertices removed by tangent merger.
+  Geo DIS_CTY_Watermill_AN mesh DIS_CTY_Watermill_AN_Bldg flagged for possible vertex duplication. Vertex Count: 1271, Index Count: 2187, Tri Count 729, Reused Vertices: 722, Duplicate Vertices: 0, Duplicate Positions: 488, Vertex:Tri Ratio: 1.74
+  Geo DIS_CTY_Watermill_AN mesh DIS_CTY_Watermill_AN_Bldg_PIL flagged for possible vertex duplication. Vertex Count: 2603, Index Count: 4548, Tri Count 1516, Reused Vertices: 1414, Duplicate Vertices: 0, Duplicate Positions: 926, Vertex:Tri Ratio: 1.72
+  Geo DIS_CTY_Watermill_AN mesh Wheel flagged for possible vertex duplication. Vertex Count: 920, Index Count: 1839, Tri Count 613, Reused Vertices: 611, Duplicate Vertices: 0, Duplicate Positions: 366, Vertex:Tri Ratio: 1.50
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Water_Mill_CON+PIL' ********
+  --------------
+  Geo CSC_BAKERS_Water_Mill_CON+PIL Mesh CSC_BAKERS_Water_Mill_CON+PIL_Bldg : 2 vertices removed by tangent merger.
+  Geo CSC_BAKERS_Water_Mill_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 319, Index Count: 441, Tri Count 147, Reused Vertices: 122, Duplicate Vertices: 0, Duplicate Positions: 105, Vertex:Tri Ratio: 2.17
+  
+  ****** Log from Geometry: 'CSC_Level_2_CON+PIL' ********
+  --------------
+  Geo CSC_Level_2_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Geometry: 'CSC_BAKERS_Bakery' ********
+  --------------
+  Geo CSC_BAKERS_Bakery mesh CSC_BAKERS_Oven_Bldg flagged for possible vertex duplication. Vertex Count: 879, Index Count: 1281, Tri Count 427, Reused Vertices: 398, Duplicate Vertices: 0, Duplicate Positions: 232, Vertex:Tri Ratio: 2.06
+  
+  ****** Log from Geometry: 'CSC_Level_3_CON+PIL' ********
+  --------------
+  Geo CSC_Level_3_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Geometry: 'CSC_ALL_Curved_Path' ********
+  --------------
+  Geo CSC_ALL_Curved_Path Mesh Decal_CLA_Elbow011 : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Ancient_Base_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Ancient_Base_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_01_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_01_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_ALL_Classical_Base_02_Road_Decals' ********
+  --------------
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.001_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.002_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.003_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.004_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.005_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.006_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.006_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.007_ANC : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.007_CLA : 1 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.008_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.009_ANC : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.010_CLA : 2 vertices removed by tangent merger.
+  Geo CSC_ALL_Classical_Base_02_Road_Decals Mesh CSC_Road_Curve_M.011_ANC : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'DIS_CTY_Foundation_WR_LgGrayBlock' ********
+  --------------
+  Geo DIS_CTY_Foundation_WR_LgGrayBlock Mesh WR_Base : 1 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_Storage_L_CON+PIL' ********
+  --------------
+  Geo CSC_Storage_L_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  Geo CSC_Storage_L_CON+PIL mesh CSC_Storage_L_CON+PIL_Bldg flagged for possible vertex duplication. Vertex Count: 1179, Index Count: 2316, Tri Count 772, Reused Vertices: 725, Duplicate Vertices: 0, Duplicate Positions: 333, Vertex:Tri Ratio: 1.53
+  
+  ****** Log from Geometry: 'CSC_Storage_M_CON+PIL' ********
+  --------------
+  Geo CSC_Storage_M_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 269, Index Count: 375, Tri Count 125, Reused Vertices: 106, Duplicate Vertices: 0, Duplicate Positions: 85, Vertex:Tri Ratio: 2.15
+  
+  ****** Log from Geometry: 'CSC_Storage_S' ********
+  --------------
+  Geo CSC_Storage_S Mesh CSC_Storage_S_Bdg : 2 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_Storage_S_CON+PIL' ********
+  --------------
+  Geo CSC_Storage_S_CON+PIL Mesh CSC_Storage_S_CON+PIL_Bdg : 2 vertices removed by tangent merger.
+  Geo CSC_Storage_S_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 319, Index Count: 441, Tri Count 147, Reused Vertices: 122, Duplicate Vertices: 0, Duplicate Positions: 105, Vertex:Tri Ratio: 2.17
+  
+  ****** Log from Geometry: 'IMP_Fishery_ANC_Crane_PIL' ********
+  --------------
+  Geo IMP_Fishery_ANC_Crane_PIL mesh IMP_Fishery_ANC_Crane_PIL flagged for possible vertex duplication. Vertex Count: 242, Index Count: 384, Tri Count 128, Reused Vertices: 116, Duplicate Vertices: 0, Duplicate Positions: 92, Vertex:Tri Ratio: 1.89
+  
+  ****** Log from Geometry: 'IMP_Fishery_ANC_Crane' ********
+  --------------
+  Geo IMP_Fishery_ANC_Crane Mesh IMP_Fishery_ANC_Crane_Mesh : 2 vertices removed by tangent merger.
+  Geo IMP_Fishery_ANC_Crane mesh IMP_Fishery_ANC_Crane_Mesh flagged for possible vertex duplication. Vertex Count: 306, Index Count: 564, Tri Count 188, Reused Vertices: 178, Duplicate Vertices: 0, Duplicate Positions: 114, Vertex:Tri Ratio: 1.63
+  
+  ****** Log from Geometry: 'CSC_Level_1_S_CON+PIL' ********
+  --------------
+  Geo CSC_Level_1_S_CON+PIL Mesh CSC_Level_1_S_CON+PIL_Bldg : 2 vertices removed by tangent merger.
+  Geo CSC_Level_1_S_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Tailor' ********
+  --------------
+  Geo CSC_TAILORS_Tailor mesh CSC_TAILORS_Tailor_Fixed flagged for possible vertex duplication. Vertex Count: 1368, Index Count: 2604, Tri Count 868, Reused Vertices: 806, Duplicate Vertices: 0, Duplicate Positions: 475, Vertex:Tri Ratio: 1.58
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Tailor_CON+PIL' ********
+  --------------
+  Geo CSC_TAILORS_Tailor_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  Geo CSC_TAILORS_Tailor_CON+PIL mesh CSC_Storage_LeanTo_CON+PIL_Bldg flagged for possible vertex duplication. Vertex Count: 305, Index Count: 555, Tri Count 185, Reused Vertices: 181, Duplicate Vertices: 0, Duplicate Positions: 111, Vertex:Tri Ratio: 1.65
+  
+  ****** Log from Geometry: 'CSC_ALL_Props_PIL_Decals' ********
+  --------------
+  Geo CSC_ALL_Props_PIL_Decals Mesh Plane1 : 4 vertices removed by tangent merger.
+  
+  ****** Log from Geometry: 'CSC_TAILORS_SpinningWheel' ********
+  --------------
+  Geo CSC_TAILORS_SpinningWheel mesh CSC_TAILORS_SpinningWheel_Bldg flagged for possible vertex duplication. Vertex Count: 978, Index Count: 1470, Tri Count 490, Reused Vertices: 470, Duplicate Vertices: 0, Duplicate Positions: 306, Vertex:Tri Ratio: 2.00
+  
+  ****** Log from Geometry: 'CSC_ALL_Well_PIL' ********
+  --------------
+  Geo CSC_ALL_Well_PIL mesh CSC_ALL_Well_PIL_Obj flagged for possible vertex duplication. Vertex Count: 280, Index Count: 450, Tri Count 150, Reused Vertices: 137, Duplicate Vertices: 0, Duplicate Positions: 94, Vertex:Tri Ratio: 1.87
+  
+  ****** Log from Geometry: 'WON_Great_Zimbabwe_RugsF' ********
+  --------------
+  Geo WON_Great_Zimbabwe_RugsF mesh WON_Great_Zimbabwe_RugsF flagged for possible vertex duplication. Vertex Count: 288, Index Count: 480, Tri Count 160, Reused Vertices: 156, Duplicate Vertices: 0, Duplicate Positions: 100, Vertex:Tri Ratio: 1.80
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Tailor_2' ********
+  --------------
+  Geo CSC_TAILORS_Tailor_2 mesh CSC_TAILORS_Tailor_2_Fixed flagged for possible vertex duplication. Vertex Count: 1546, Index Count: 2970, Tri Count 990, Reused Vertices: 919, Duplicate Vertices: 0, Duplicate Positions: 523, Vertex:Tri Ratio: 1.56
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Textile_Workshop' ********
+  --------------
+  Geo CSC_TAILORS_Textile_Workshop mesh CSC_Fixed_Textile_Loom flagged for possible vertex duplication. Vertex Count: 210, Index Count: 324, Tri Count 108, Reused Vertices: 98, Duplicate Vertices: 0, Duplicate Positions: 72, Vertex:Tri Ratio: 1.94
+  Geo CSC_TAILORS_Textile_Workshop mesh CSC_TAILORS_Textile_Workshop_Bldg flagged for possible vertex duplication. Vertex Count: 1143, Index Count: 2070, Tri Count 690, Reused Vertices: 663, Duplicate Vertices: 0, Duplicate Positions: 365, Vertex:Tri Ratio: 1.66
+  
+  ****** Log from Geometry: 'CSC_TAILORS_Textile_Workshop_2' ********
+  --------------
+  Geo CSC_TAILORS_Textile_Workshop_2 mesh CSC_Fixed_Textile_Loom flagged for possible vertex duplication. Vertex Count: 210, Index Count: 324, Tri Count 108, Reused Vertices: 98, Duplicate Vertices: 0, Duplicate Positions: 72, Vertex:Tri Ratio: 1.94
+  Geo CSC_TAILORS_Textile_Workshop_2 mesh CSC_TAILORS_Textile_Workshop_Bldg flagged for possible vertex duplication. Vertex Count: 1143, Index Count: 2070, Tri Count 690, Reused Vertices: 663, Duplicate Vertices: 0, Duplicate Positions: 365, Vertex:Tri Ratio: 1.66
+  
+  ****** Log from Texture: 'CSC_Atlas_Props_M' ********
+  --------------
+  Texture 'CSC_Atlas_Props_M' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  
+  ****** Log from Texture: 'CSC_Atlas_O' ********
+  --------------
+  Texture 'CSC_Atlas_O' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  
+  ****** Log from Texture: 'CSC_Props_Shared_01_E' ********
+  --------------
+  Texture 'CSC_Props_Shared_01_E' (256x256) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  Load finished for: 'Landmarks/CSC_Tilebases' in 2.569 seconds
+  CSC_BAKERS_Water_Mill_CON+PIL_Bldg:CSC_BAKERS_Water_Mill_CON+PIL_Bldg has 2 degenerate triangles
+  CSC_Level_1_S_CON+PIL_Bldg:CSC_Level_1_S_CON+PIL_Bldg has 2 degenerate triangles
+  CSC_Level_3_CON+PIL_Bldg:CSC_Level_3_CON+PIL_Bldg has 80 zero area triangles (example position: 195.199, 27.632, -0.064 )
+  CSC_Storage_S_Bdg:CSC_Storage_S has 2 degenerate triangles
+  CSC_Storage_S_Bdg:CSC_Storage_S has 58 zero area triangles (example position: 26.008, -9.405, 0.067 )
+  CSC_Storage_S_CON+PIL_Bdg:CSC_Storage_S_CON+PIL_Bdg has 2 degenerate triangles
+  CSC_Storage_S_CON+PIL_Bdg:CSC_Storage_S_CON+PIL_Bdg has 68 zero area triangles (example position: -3.537, -21.785, 31.770 )
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Circle_Patch".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Curved_Path".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Organic_Patch_L".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Organic_Patch_M".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Organic_Patch_S".
+  			An empty OB will be used for this asset.
+  Geometry is required to autogenerate an OB for asset "CSC_ALL_Plaza_Inner".
+  			An empty OB will be used for this asset.
+  Profile AABB exceeds hex AABB in geo "IMP_Farm_Decal_Transition_08_OB"
+  			Make sure model is correctly transformed, then reset and collapse the transform.
+  			If everything is working as intended, ignore this message.
+  Cook finished for: 'Landmarks/CSC_Tilebases' in 0.082 seconds
+  Disk write finished for: 'Landmarks/CSC_Tilebases' in 0.392 seconds
+  Cleanup finished for: 'Landmarks/CSC_Tilebases' in 0.038 seconds
+  XLP cook completed with success.
+  Cook completed in 3.096 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_UILensAssets.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/UILensAsset/CSC_UILensAssets.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_UILensAssets.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'UILensAsset/CSC_UILensAssets'
+  Load finished for: 'UILensAsset/CSC_UILensAssets' in 0.009 seconds
+  Cook finished for: 'UILensAsset/CSC_UILensAssets' in 0.000 seconds
+  Disk write finished for: 'UILensAsset/CSC_UILensAssets' in 0.055 seconds
+  Cleanup finished for: 'UILensAsset/CSC_UILensAssets' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.076 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_VFX.xlp
+  Opened output file: C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\Civ Supply Chains\Platforms\MacOS\BLPs/CSC_VFX.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\XLPs\CSC_VFX.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'CSC_VFX'
+  XLP (CSC_VFX) contains no entries.
+  Load finished for: 'CSC_VFX' in 0.000 seconds
+  Cook finished for: 'CSC_VFX' in 0.000 seconds
+  Disk write finished for: 'CSC_VFX' in 0.052 seconds
+  Cleanup finished for: 'CSC_VFX' in 0.000 seconds
+  XLP cook completed with success.
+  Cook completed in 0.065 seconds

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Settings_Text -->
+<!-- Author: Henno -->
+<!-- DateCreated: 2025-06-15 14:38:34 -->
+
+<GameData>
+    <LocalizedText>
+
+        <Replace Tag="LOC_CSC_HEADER_INTERNAL_NAME" Language="en_US">
+            <Text>[COLOR:ResProductionLabelCS]CIV SUPPLY CHAINS: SETTINGS[ENDCOLOR]</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_HEADER_INTERNAL_DESCRIPTION" Language="en_US">
+            <Text></Text>
+        </Replace>
+
+         <Replace Tag="LOC_CSC_MC_REMOVE_BONUSES_NAME" Language="en_US">
+            <Text>Remove M&amp;C City Bonuses</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_MC_REMOVE_BONUSES_DESCRIPTION" Language="en_US">
+            <Text>Streamline gameplay by reducing the sources of city bonuses, which can otherwise become hard to keep track of.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_INCLUDE_ANIMAL_RESOURCES_NAME" Language="en_US">
+            <Text>Include animal resources</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_INCLUDE_ANIMAL_RESOURCES_DESCRIPTION" Language="en_US">
+            <Text>Include animal resources for use in supply chains.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_REMOVE_UNUSED_MODDED_RESOURCES_NAME" Language="en_US">
+            <Text>Remove unused modded resources</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_REMOVE_UNUSED_MODDED_RESOURCES_DESCRIPTION" Language="en_US">
+            <Text>Declutter the map by removing modded resources that are not used in supply chains.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_NAME" Language="en_US">
+            <Text>Suppress supply chain notifications</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_DESCRIPTION" Language="en_US">
+            <Text>Disable pop-up notifications when supply chain effects are added, increased, decreased, or removed. City-panel integration remains available when the MCUIS mod is active.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_FOOTER_INTERNAL_NAME" Language="en_US">
+            <Text>[COLOR:ResProductionLabelCS]CIV SUPPLY CHAINS: SETTINGS[ENDCOLOR]</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_FOOTER_INTERNAL_DESCRIPTION" Language="en_US">
+            <Text></Text>
+        </Replace>
+        
+    </LocalizedText>
+</GameData>

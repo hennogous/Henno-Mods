@@ -1,0 +1,12 @@
+{
+  "status": "ready_for_windows_conversion",
+  "counts": {
+    "custom_assets": 9,
+    "geometry_only": 2,
+    "placements": 18,
+    "materials": 4,
+    "textures": 0
+  },
+  "blockers": 0,
+  "report": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno Mods\\project\\build-logs\\tailor-revision09-conpil-preflight2-20260919\\report.json"
+}

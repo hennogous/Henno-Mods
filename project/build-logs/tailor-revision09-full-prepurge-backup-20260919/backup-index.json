@@ -1,0 +1,162 @@
+[
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor.ast",
+    "sha256": "c492adb2d0b162a57b71505dba1e917358d7080988ccdb927705082411f254d0",
+    "changed_from_install": true
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_2.ast",
+    "sha256": "a1768b9f48302768f6facd264b7f69c7c1600ab9021d2ca85fcfd7a2b21db041",
+    "changed_from_install": true
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_Dress_Form.ast",
+    "sha256": "82ff38ef3e93ad528488c1314edac1d96db9dee3c79986d34f0bc1210c39566d",
+    "changed_from_install": false
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_Dress_Form_2.ast",
+    "sha256": "ddeea9b404f93ef647fc6fa87071dd0a3d06fc8ecd4d8a7551f5ef11a6e1a738",
+    "changed_from_install": false
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_Folded_Stock.ast",
+    "sha256": "796aa870c62d3466b4937dfbee5e3188ca5e63630541c87213a361406bc89656",
+    "changed_from_install": false
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_Folded_Stock_2.ast",
+    "sha256": "9ddeb1d563d8f730cdf79cd146d92048b654464c6e4a84aa3b2933f535e7c752",
+    "changed_from_install": false
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_LeanTo.ast",
+    "sha256": "266ef22c3004c128318f9915bfebccb0e3bcfd59649295da03ba5600040f1fc9",
+    "changed_from_install": false
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_Table_Contents.ast",
+    "sha256": "d9aea8284042ac4f7b6fa9560427a85c1f453e2f6fd3d87dbd090d92d9969da9",
+    "changed_from_install": false
+  },
+  {
+    "path": "Assets\\CSC_TAILORS_Tailor_Table_Contents_2.ast",
+    "sha256": "a71924df1e55b910b4ef56d18eca774a9ced1a1611e1a6178d6942311e0d1ccb",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_ALL_Stage_3_Cobble_Decals.fgx",
+    "sha256": "9e46e11697d2bc9e4ddf1be92983be449410634fd8c96f81d5a7d2d11b86fdcb",
+    "changed_from_install": true
+  },
+  {
+    "path": "Geometries\\CSC_ALL_Stage_3_Cobble_Decals.geo",
+    "sha256": "2dcf16c0dbe8fef3fc892a8c18e05a7f26e666577fcf8dc376c9e4185791c9f6",
+    "changed_from_install": true
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor.fgx",
+    "sha256": "53e662da2ba06a3887d4705bd55b54b8a3f718bb13f9f66b8ad5a8718b99aee2",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor.geo",
+    "sha256": "8677c9ab04783f1640e36f66a48497d66da709b28d95ba927ad80996b67a2301",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_2.fgx",
+    "sha256": "9d0f941ad4d4684caad2c829119888bd300662f8e68f20e6981ae5d158b0747d",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_2.geo",
+    "sha256": "923cd1acf3a2378feee342e92eb755ded55e67d5f865e9df6cb5ea95e2931bdb",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Dress_Form.fgx",
+    "sha256": "c44c8d4d60dab5bc28fd14069a5301b1e1cd361c602d0ecd8edd473f4111d2af",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Dress_Form.geo",
+    "sha256": "cbcb7f26844b90217f3acc32d68522116cb719c6cb51874eb7dd29671634cfd5",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Dress_Form_2.fgx",
+    "sha256": "76bf282b64f856e431a5653e046d23e9d4a6fd8b74f85c6526bca7ba6a14e4cc",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Dress_Form_2.geo",
+    "sha256": "8a1a2c30ea3c25f3bd5fb9d8d8b7611d3c62417e2822d298608df51105fd35d9",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Folded_Stock.fgx",
+    "sha256": "9889675751d59cea25ecd4a895d2a533b1008750d431ed4fc9b1cb598b469c0d",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Folded_Stock.geo",
+    "sha256": "75acd543a60c6efb10a167674c07d9cb69ada780f85dee38584e67345cc12891",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Folded_Stock_2.fgx",
+    "sha256": "9e1f9d04012f497b7693b8136cfa56455f2ff0c70c0b2ba2f3bc05fe8c71f9d3",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Folded_Stock_2.geo",
+    "sha256": "4e8d4b36a6f5de796b5991cde778541a811c6c862224012bf15e0fa687fe0722",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_LeanTo.fgx",
+    "sha256": "b00e909f56c0c94bac2e40ba3a6e9598b7555ad44eb17c839a25ba98184c7e6f",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_LeanTo.geo",
+    "sha256": "83a4facf53e2736da3564e0cad3bff8194d76972c89aeee0e82597587484cf42",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_PIL_Decals.fgx",
+    "sha256": "18ffaf73e9619ab29033da8a8716d519e3b14548fd120f531f430de17afc9498",
+    "changed_from_install": true
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_PIL_Decals.geo",
+    "sha256": "e0ff018ca1a309080e4a67c2ba47fce64e7d9741902e39b1f4f4d70ee1d915d5",
+    "changed_from_install": true
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Table_Contents.fgx",
+    "sha256": "309b14c4592497fd7418d7688116496af3ae769cb8567fa83d519a21359d87f9",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Table_Contents.geo",
+    "sha256": "35c531329f8db449416aaf3e4195aeb69d43afbf026a71abbec4c5b0e1c213e2",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Table_Contents_2.fgx",
+    "sha256": "1fe29249b282b55bf497bf053a02cc77221a71b25a181299aa634c3f41a8a0f6",
+    "changed_from_install": false
+  },
+  {
+    "path": "Geometries\\CSC_TAILORS_Tailor_Table_Contents_2.geo",
+    "sha256": "43e1dad26f82eaf27d757ae01eb72078e089733c1329d1b05cf21c423fed3544",
+    "changed_from_install": false
+  },
+  {
+    "path": "XLPs\\CSC_Tilebases.xlp",
+    "sha256": "8190096893a6f8392fdfa9da0bcb41c75fc67aceccdd8450dbd2458ccd8ed3ba",
+    "changed_from_install": null
+  }
+]

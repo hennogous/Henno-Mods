@@ -1,0 +1,231 @@
+Microsoft (R) Build Engine version 4.8.9221.0
+[Microsoft .NET Framework, version 4.0.30319.42000]
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\build-logs\csc-artpack-verify\Mods\CSC Art Pack\ArtDefs/CSC_ArtPack_Landmarks.artdef
+  Cannot cook the ArtDef (CSC_StrategicView.artdef) since it does not exist in the pantry!
+  Cooking ArtDef: (StrategicView.artdef).
+  Cooking ArtDef: (Eras.artdef).
+  Cooking ArtDef: (Cultures.artdef).
+  Cooking ArtDef: (CityGenerators.artdef).
+  Cooking ArtDef: (Appeal.artdef).
+  Cooking ArtDef: (Civilizations.artdef).
+  Cooking ArtDef: (Landmarks.artdef).
+  Cooking ArtDef: (Districts.artdef).
+  Cooking ArtDef: (Buildings.artdef).
+  Cannot cook the ArtDef (CSC_Districts.artdef) since it does not exist in the pantry!
+  Cooking ArtDef: (CSC_Buildings.artdef).
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_Districts.artdef) referenced by  >> CSC_Buildings.artdef >> BuildingChains >> CSC_BAKERS_BuildingChain >> Districts >> Bakers_Quarter >> District.
+   >> CSC_Buildings.artdef >> BuildingChains >> CSC_BAKERS_BuildingChain >> Districts >> Bakers_Quarter >> District has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_Districts.artdef) referenced by  >> CSC_Buildings.artdef >> BuildingChains >> CSC_TAILORS_BuildingChain >> Districts >> Tailors_Quarter >> District.
+   >> CSC_Buildings.artdef >> BuildingChains >> CSC_TAILORS_BuildingChain >> Districts >> Tailors_Quarter >> District has had its value replaced with its default value.
+  
+  Cooking ArtDef: (CSC_ArtPack_Landmarks.artdef).
+  Cook finished for ArtDef at Path: 'CSC_ArtPack_Landmarks.artdef' with Template: 'Landmarks'
+  ArtDef cook completed.
+  Dependencies for file 'CSC_StrategicView.artdef' will not be included in the dependency data.
+  Dependencies for file 'CSC_Districts.artdef' will not be included in the dependency data.
+  Opened output file: C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/project/build-logs/csc-artpack-verify/Mods/CSC Art Pack/CSC_Art_Pack.dep    For project CSC_Art_Pack
+  Unable to auto-generate ArtDef dependency information.  This will need to be done manually.Cook completed in 4.252 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  Opened output file: C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\build-logs\csc-artpack-verify\Mods\CSC Art Pack\ArtDefs/CSC_Buildings.artdef
+  Cannot cook the ArtDef (CSC_StrategicView.artdef) since it does not exist in the pantry!
+  Cooking ArtDef: (StrategicView.artdef).
+  Cooking ArtDef: (Eras.artdef).
+  Cooking ArtDef: (Cultures.artdef).
+  Cooking ArtDef: (CityGenerators.artdef).
+  Cooking ArtDef: (Appeal.artdef).
+  Cooking ArtDef: (Civilizations.artdef).
+  Cooking ArtDef: (Landmarks.artdef).
+  Cooking ArtDef: (Districts.artdef).
+  Cooking ArtDef: (Buildings.artdef).
+  Cannot cook the ArtDef (CSC_Districts.artdef) since it does not exist in the pantry!
+  Cooking ArtDef: (CSC_Buildings.artdef).
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WIND_MILL >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_BAKERY >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_CAFE >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_BAKERS_WATER_MILL >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_TAILOR >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView001 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView001 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView002 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView002 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_StrategicView.artdef) referenced by  >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView003 >> XrefName.
+   >> CSC_Buildings.artdef >> Building >> BUILDING_CSC_TAILORS_FASHION_HOUSE >> StrategicView >> StrategicView003 >> XrefName has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_Districts.artdef) referenced by  >> CSC_Buildings.artdef >> BuildingChains >> CSC_BAKERS_BuildingChain >> Districts >> Bakers_Quarter >> District.
+   >> CSC_Buildings.artdef >> BuildingChains >> CSC_BAKERS_BuildingChain >> Districts >> Bakers_Quarter >> District has had its value replaced with its default value.
+  
+  Unable to find the ArtDef (CSC_Districts.artdef) referenced by  >> CSC_Buildings.artdef >> BuildingChains >> CSC_TAILORS_BuildingChain >> Districts >> Tailors_Quarter >> District.
+   >> CSC_Buildings.artdef >> BuildingChains >> CSC_TAILORS_BuildingChain >> Districts >> Tailors_Quarter >> District has had its value replaced with its default value.
+  
+  Cook finished for ArtDef at Path: 'CSC_Buildings.artdef' with Template: 'Buildings'
+  ArtDef cook completed.
+  Dependencies for file 'CSC_StrategicView.artdef' will not be included in the dependency data.
+  Dependencies for file 'CSC_Districts.artdef' will not be included in the dependency data.
+  Opened output file: C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/project/build-logs/csc-artpack-verify/Mods/CSC Art Pack/CSC_Art_Pack.dep    For project CSC_Art_Pack
+  Unable to auto-generate ArtDef dependency information.  This will need to be done manually.Cook completed in 4.502 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\CSC Art Pack\XLPs\CSC_ArtPack_Tilebases.xlp
+  Opened output file: C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\build-logs\csc-artpack-verify\Mods\CSC Art Pack\Platforms\Windows\BLPs/Landmarks/CSC_ArtPack_Tilebases.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\CSC Art Pack\XLPs\CSC_ArtPack_Tilebases.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'Landmarks/CSC_ArtPack_Tilebases'
+  
+  ****** Log from Geometry: 'CSC_Level_1_S_CON+PIL' ********
+  --------------
+  Geo CSC_Level_1_S_CON+PIL Mesh CSC_Level_1_S_CON+PIL_Bldg : 2 vertices removed by tangent merger.
+  Geo CSC_Level_1_S_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Texture: 'CSC_Atlas_O' ********
+  --------------
+  Texture 'CSC_Atlas_O' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  Load finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.319 seconds
+  CSC_Level_1_S_CON+PIL_Bldg:CSC_Level_1_S_CON+PIL_Bldg has 2 degenerate triangles
+  Cook finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.003 seconds
+  Disk write finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.102 seconds
+  Cleanup finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.002 seconds
+  XLP cook completed with success.
+  Cook completed in 0.446 seconds
+  Starting AssetCooker...
+  Argument '--shaders' has been deprecated and is no longer used.
+  XLP cook starting...
+  C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\CSC Art Pack\XLPs\CSC_ArtPack_Tilebases.xlp
+  Opened output file: C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\build-logs\csc-artpack-verify\Mods\CSC Art Pack\Platforms\MacOS\BLPs/Landmarks/CSC_ArtPack_Tilebases.blp    For XLP: 'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\CSC Art Pack\XLPs\CSC_ArtPack_Tilebases.xlp'
+  Could not load digest key: ''.  Using mod key to sign BLP.
+  Starting 'Landmarks/CSC_ArtPack_Tilebases'
+  
+  ****** Log from Geometry: 'CSC_Level_1_S_CON+PIL' ********
+  --------------
+  Geo CSC_Level_1_S_CON+PIL Mesh CSC_Level_1_S_CON+PIL_Bldg : 2 vertices removed by tangent merger.
+  Geo CSC_Level_1_S_CON+PIL mesh Scaffolding flagged for possible vertex duplication. Vertex Count: 588, Index Count: 816, Tri Count 272, Reused Vertices: 228, Duplicate Vertices: 0, Duplicate Positions: 192, Vertex:Tri Ratio: 2.16
+  
+  ****** Log from Texture: 'CSC_Atlas_O' ********
+  --------------
+  Texture 'CSC_Atlas_O' (1024x1024) is at least 99 percent solid color, but is 64x64 or larger resolution!
+  Load finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.282 seconds
+  CSC_Level_1_S_CON+PIL_Bldg:CSC_Level_1_S_CON+PIL_Bldg has 2 degenerate triangles
+  Cook finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.003 seconds
+  Disk write finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.103 seconds
+  Cleanup finished for: 'Landmarks/CSC_ArtPack_Tilebases' in 0.002 seconds
+  XLP cook completed with success.
+  Cook completed in 0.410 seconds

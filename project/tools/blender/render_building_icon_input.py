@@ -2,20 +2,27 @@
 
 Run: blender --background FILE.blend --python render_building_icon_input.py -- OUTPUT.png
 """
+import argparse
 import math
 import os
 import sys
 
 import bpy
+import bmesh
 from mathutils import Vector
 
 
 def main():
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
-    if len(args) != 1:
-        raise SystemExit("Expected one output PNG path after --")
-    output = os.path.abspath(args[0])
-    scene = bpy.context.scene
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("output", help="Transparent PNG destination")
+    parser.add_argument("--camera-distance", type=float,
+                        help="Distance from the building bounds center; default is 1.5 times the widest span")
+    parser.add_argument("--lens", type=float, default=30.0,
+                        help="Perspective lens in mm (default: 30)")
+    parsed = parser.parse_args(args)
+    output = os.path.abspath(parsed.output)
+    scene = bpy.data.scenes.get("Export") or bpy.context.scene
     source_dir = os.path.dirname(bpy.data.filepath)
     texture_dir = os.path.join(source_dir, "textures")
     missing = []
@@ -32,22 +39,33 @@ def main():
     if missing:
         raise RuntimeError("Missing scene textures: " + ", ".join(sorted(set(missing))))
 
+    context_prefixes = ("review_", "road_", "csc_road_", "csc_dirt_", "preview_")
+    context_fragments = ("decal", "terrain", "ground", "grass", "cobble", "paving")
+    hidden_context = []
     for obj in scene.objects:
-        if obj.type == "MESH" and (obj.name.startswith("REVIEW_") or obj.name.startswith("ROAD_")):
+        name = obj.name.casefold()
+        if obj.type == "MESH" and (name.startswith(context_prefixes) or any(part in name for part in context_fragments)):
             obj.hide_render = True
+            hidden_context.append(obj.name)
+    print("ICON_HIDDEN_CONTEXT", len(hidden_context), hidden_context)
     meshes = [o for o in scene.objects if o.type == "MESH" and not o.hide_render]
     building = max(meshes, key=lambda o: o.dimensions.x * o.dimensions.y * o.dimensions.z)
-    foundation = building.vertex_groups.get("Foundation")
-    if foundation is None:
-        below_ground = [v.index for v in building.data.vertices if (building.matrix_world @ v.co).z < 0]
-        if below_ground:
-            foundation = building.vertex_groups.new(name="ICON_Foundation_BelowGround")
-            foundation.add(below_ground, 1.0, "REPLACE")
-            print("ICON_FOUNDATION_VERTICES", building.name, len(below_ground))
-    if foundation is not None:
-        foundation_mask = building.modifiers.new(name="ICON_HideFoundation", type="MASK")
-        foundation_mask.vertex_group = foundation.name
-        foundation_mask.invert_vertex_group = True
+    # A vertex-group MASK removes whole wall faces whenever one bottom vertex is
+    # below ground. Bisect a render-only mesh copy instead so the ground floor stays.
+    building.data = building.data.copy()
+    mesh = bmesh.new()
+    mesh.from_mesh(building.data)
+    before_faces = len(mesh.faces)
+    local_ground = building.matrix_world.inverted() @ Vector((0, 0, 0))
+    local_up = (building.matrix_world.transposed().to_3x3() @ Vector((0, 0, 1))).normalized()
+    bmesh.ops.bisect_plane(
+        mesh, geom=list(mesh.verts) + list(mesh.edges) + list(mesh.faces),
+        plane_co=local_ground, plane_no=local_up, clear_inner=True,
+    )
+    mesh.to_mesh(building.data)
+    mesh.free()
+    building.data.update()
+    print("ICON_FOUNDATION_CLIP", building.name, before_faces, len(building.data.polygons))
 
     depsgraph = bpy.context.evaluated_depsgraph_get()
     points = []
@@ -63,14 +81,18 @@ def main():
 
     camera_data = bpy.data.cameras.new("ICON_Input_Camera")
     camera_data.type = "PERSP"
-    camera_data.lens = 50
+    camera_data.lens = parsed.lens
     camera = bpy.data.objects.new("ICON_Input_Camera", camera_data)
     scene.collection.objects.link(camera)
     scene.camera = camera
     direction = Vector((0, -1, math.tan(math.radians(30)))).normalized()
-    camera.location = target + direction * 350
+    span = max(high.x - low.x, high.y - low.y, high.z - low.z)
+    camera_distance = parsed.camera_distance or span * 1.5
+    camera.location = target + direction * camera_distance
     camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
     camera_data.clip_end = 2000
+    print("ICON_CAMERA", "PERSP", "distance", round(camera_distance, 2),
+          "lens", round(camera_data.lens, 2))
 
     # A broad frontal key keeps the facade and occupational props readable in
     # the small icon without flattening their shadows.
@@ -91,7 +113,7 @@ def main():
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.filepath = output
     os.makedirs(os.path.dirname(output), exist_ok=True)
-    bpy.ops.render.render(write_still=True)
+    bpy.ops.render.render(scene=scene.name, write_still=True)
     print("ICON_OUTPUT", output)
 
 

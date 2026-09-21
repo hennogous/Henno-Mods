@@ -348,14 +348,22 @@
       {
         "type": "UpdateDatabase",
         "id": "CSC_Q_TAILORS",
-        "properties": {"LoadOrder": "100"},
-        "files": ["Data/CSC_Q_TAILORS.sql"]
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "files": [
+          "Data/CSC_Q_TAILORS.sql"
+        ]
       },
       {
         "type": "UpdateDatabase",
         "id": "CSC_Q_TAILORS_GOLD",
-        "properties": {"LoadOrder": "101"},
-        "files": ["Data/CSC_Q_TAILORS_GOLD.sql"]
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "files": [
+          "Data/CSC_Q_TAILORS_GOLD.sql"
+        ]
       },
       {
         "type": "UpdateText",
@@ -380,15 +388,25 @@
       {
         "type": "UpdateText",
         "id": "CSC_TAILORS_TEXT",
-        "properties": {"LoadOrder": "102"},
-        "files": ["Text/CSC_TAILORS_TEXT.sql"]
+        "properties": {
+          "LoadOrder": "102"
+        },
+        "files": [
+          "Text/CSC_TAILORS_TEXT.sql"
+        ]
       },
       {
         "type": "UpdateText",
         "id": "CSC_TAILORS_MC_MODE_TEXT",
-        "properties": {"LoadOrder": "103"},
-        "criteria": ["Monopolies_Mode"],
-        "files": ["Text/CSC_TAILORS_MC_MODE_TEXT.sql"]
+        "properties": {
+          "LoadOrder": "103"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Text/CSC_TAILORS_MC_MODE_TEXT.sql"
+        ]
       },
       {
         "type": "UpdateText",
@@ -429,16 +447,28 @@
       {
         "type": "UpdateDatabase",
         "id": "CSC_Q_TAILORS_MC_MODE",
-        "properties": {"LoadOrder": "100"},
-        "criteria": ["Monopolies_Mode"],
-        "files": ["Data/CSC_Q_TAILORS_MC_MODE.sql"]
+        "properties": {
+          "LoadOrder": "100"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Data/CSC_Q_TAILORS_MC_MODE.sql"
+        ]
       },
       {
         "type": "UpdateDatabase",
         "id": "CSC_Q_TAILORS_MC_MODE_GOLD",
-        "properties": {"LoadOrder": "101"},
-        "criteria": ["Monopolies_Mode"],
-        "files": ["Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql"]
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "criteria": [
+          "Monopolies_Mode"
+        ],
+        "files": [
+          "Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql"
+        ]
       },
       {
         "type": "UpdateDatabase",
@@ -951,30 +981,56 @@
       {
         "type": "UpdateText",
         "id": "ModSupport_CH_Tailors_Text",
-        "properties": {"LoadOrder": "103"},
-        "criteria": ["ModSupport_CH"],
-        "files": ["ModSupport/ModSupport_CH_TAILORS_TEXT.sql"]
+        "properties": {
+          "LoadOrder": "103"
+        },
+        "criteria": [
+          "ModSupport_CH"
+        ],
+        "files": [
+          "ModSupport/ModSupport_CH_TAILORS_TEXT.sql"
+        ]
       },
       {
         "type": "UpdateText",
         "id": "ModSupport_LAR_A_Tailors_Text",
-        "properties": {"LoadOrder": "103"},
-        "criteria": ["CSC_A_RESOURCES", "ModSupport_LAR"],
-        "files": ["ModSupport/ModSupport_LAR_A_TAILORS_TEXT.sql"]
+        "properties": {
+          "LoadOrder": "103"
+        },
+        "criteria": [
+          "CSC_A_RESOURCES",
+          "ModSupport_LAR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_LAR_A_TAILORS_TEXT.sql"
+        ]
       },
       {
         "type": "UpdateText",
         "id": "ModSupport_R2_A_Tailors_Text",
-        "properties": {"LoadOrder": "103"},
-        "criteria": ["CSC_A_RESOURCES", "ModSupport_R2"],
-        "files": ["ModSupport/ModSupport_R2_A_TAILORS_TEXT.sql"]
+        "properties": {
+          "LoadOrder": "103"
+        },
+        "criteria": [
+          "CSC_A_RESOURCES",
+          "ModSupport_R2"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_A_TAILORS_TEXT.sql"
+        ]
       },
       {
         "type": "UpdateText",
         "id": "ModSupport_SR_Tailors_Text",
-        "properties": {"LoadOrder": "103"},
-        "criteria": ["ModSupport_SR"],
-        "files": ["ModSupport/ModSupport_SR_TAILORS_TEXT.sql"]
+        "properties": {
+          "LoadOrder": "103"
+        },
+        "criteria": [
+          "ModSupport_SR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_SR_TAILORS_TEXT.sql"
+        ]
       },
       {
         "type": "UpdateDatabase",
@@ -1046,16 +1102,6 @@
         ],
         "files": [
           "Lua_UI/Notifications_Suk_MCUIS/NotificationPanel_CSC_UI.lua"
-        ]
-      },
-      {
-        "type": "AddGameplayScripts",
-        "id": "CSC_ArtProperties",
-        "properties": {
-          "LoadOrder": "501"
-        },
-        "files": [
-          "Lua_UI/ArtProperties/CSC_ArtProperties.lua"
         ]
       },
       {

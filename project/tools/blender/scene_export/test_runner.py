@@ -52,3 +52,17 @@ class RunnerTests(unittest.TestCase):
 
     def test_failed_conversion_never_installs(self):
         self.assertEqual(self.run_export(fail_conversion=True), ['discover', 'decode', 'build', 'convert'])
+
+    def test_latest_installed_job_ignores_superseded_and_uninstalled_runs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            blends=Path(directory); runs=blends/'export-runs'
+            for name,status in [('20260101','superseded'),('20260102','installed_pending_asset_editor_and_game_review'),
+                                ('20260103','uninstalled')]:
+                folder=runs/name; folder.mkdir(parents=True)
+                (folder/'job.json').write_text(json.dumps({'output':str(folder)}))
+                (folder/'report.json').write_text(json.dumps({'status':status}))
+            with self.assertRaisesRegex(ValueError,'No installed export run'):
+                runner.latest_installed_job(blends)
+            (runs/'20260103/report.json').write_text(json.dumps({
+                'status':'converted_pending_asset_editor_and_game_review'}))
+            self.assertEqual(runner.latest_installed_job(blends),runs/'20260102/job.json')

@@ -1,0 +1,14 @@
+Source blend: C:\Users\Shadow\Desktop\Working Files\3D Art\TAILORS\Tailor\revision-09-terrain-attachments\CSC_TAILORS_Tailor.blend
+Render: Tailor_Blender_Perspective.png, Blender 5.1, render_building_icon_input.py, 30 mm perspective camera at 1.5 times the longest scene bounds span. The script hides terrain/decal context and bisects the foundation at world Z=0 on a render-only mesh copy.
+
+ImageGen input 1: Tailor_Blender_Perspective.png (authoritative camera, geometry and placement).
+ImageGen input 2: Buildings256_style_reference.png (SDK icon style).
+ImageGen input 3: previous perspective inked icon master (palette and line weight only).
+
+Prompt:
+Image-to-image repaint of Image 1, which is the authoritative actual Blender PERSPECTIVE render of the Tailor building. LOCK the camera projection, 3D silhouette, building proportions, roof-to-base taper, visible facades, lean-to placement, and all major object positions to Image 1. Do not reinterpret the view as orthographic/isometric and do not copy the camera from Image 3. Image 2 shows the official Civilization VI SDK building-icon painting style. Image 3 shows the desired Tailor palette and dark line weight only; it is NOT a geometry or perspective reference. Turn the raw Blender render into a hand-painted Civ VI building icon: bold nearly black outer contour of varied weight and prominent black interior lines for the roof, dormers, timber frame, stone arch and doorway, fabric lean-to, table, mannequin, fabric bolts and hanging clothes. Keep the complete lower storey and work scene present. Moderately saturated lilac purple roof, turquoise cloth and blue garments; warm ochre timber, cool blue-grey masonry, pale wall plaster. Favor large clean readable shapes at 50 pixels with painterly texture and natural shadows; no glossy vector look. One complete centered icon with transparent background and comfortable padding. No terrain, decals, ground texture, grass, road, shadow plate, frame, text or people.
+
+Selected master: Tailor_BlenderPerspective_ImageGen_Master.png
+256px atlas input: Tailor_BlenderPerspective_ImageGen_256.png, prepared with prepare_imagegen_building_icon.py --extent 220.
+ComfyUI comparison: Tailor_Comfy_Output.png, from icon_img2img.py at denoise 0.45, seed 2025. It retained geometry but lost color and tailoring detail, so it was not selected.
+Atlas: CSC_TAILORS_Icons.xcf, Tailor layer, cell index 5.

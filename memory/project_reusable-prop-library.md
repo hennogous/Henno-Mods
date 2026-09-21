@@ -331,3 +331,41 @@ use Object (Keep Transform) parenting, retarget the existing Armature modifier,
 and confirm all vertices remain in the one Bone group at weight 1. The `Attach_`
 Empty's `source_asset_id` only chooses the asset identity; installed CSC reuse is
 selected for the batch through `scene_export/csc.defaults.json`.
+
+2026-09-19 exporter contract work: normal defaults now require Quarter and
+supply-chain-stage metadata for building scenes. The new validator checks
+stage/level shared geometry, existing material/texture dependencies, generated
+AST state tables and attachment transforms. Stage 3 uses Level 2 CON+PIL; Stage 4
+uses Level 3. Contracted main/fixed meshes and new CSC props are Worked-only;
+Unworked/Unbuilt are hidden, stage 3/4 cobble appears in Worked/Construction.
+Reruns in the same export-runs folder retire stale run-owned outputs with backups;
+`--list-latest-purge` and `--purge-latest` address the newest installed run by blend
+folder. X/Y orientation writes same-direction radians with Z reversed, pending
+AE visual calibration for combined rotations. Henno owns in-game testing.
+
+2026-09-19 Tailor revision-09 live rerun: purged installed run
+`20260918-183018-496861` after preserving all 32 live targets (including six
+changed files) under `project/build-logs/tailor-revision09-full-prepurge-backup-20260919`.
+Restored the changed shared Stage 3 cobble GEO/FGX byte-for-byte as inputs. The
+new exporter run `20260919-134806-157385` decoded 10 geometries, validated two
+building ASTs and 18 placements, converted 40 staged files, and installed 30
+files (9 assets, 1 geometry-only PIL decal). It references shared cobble without
+rewriting it. The two reused CSC workbenches remain in Henno's manual state
+review list; no X/Y-tilted attachments appeared. In-game/AE appearance not yet
+reviewed. A purged run now forms an ownership boundary, preventing stale older
+receipts from being used for a later install or latest-purge lookup.
+
+2026-09-19 Tailor revision-09 correction: Henno clarified that the bundle's
+`CSC_TAILORS_Tailor_CON+PIL.blend` is the authoritative shared construction and
+pillage source for both Tailor variants. Export contract now enumerates all 11
+required blends and maps that source to one authored geometry ID. The exporter
+decodes its four meshes into a static GEO/FGX, binds `CSC_TAILORS_NE` to its
+building/sign/lean-to groups, retains `Pillage_Construction_01` for scaffolding,
+and validates that both building ASTs use the new geometry and the PIL decal.
+Source vertex weights are bypassed only for this static shared geometry because
+CN6 rebakes mesh positions and writes its own identity skeleton. The previous
+`20260919-134806-157385` run was normally uninstalled after a clean dry-run.
+Corrected run `20260919-165608-188861` decoded all 11 blends, converted 43
+files, installed 32 files, and passed independent XML validation. The live
+`CSC_TAILORS_Tailor_CON+PIL.fgx` and `.geo` are present. AE and in-game review
+remain Henno's checkpoint.

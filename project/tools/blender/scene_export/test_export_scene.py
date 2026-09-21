@@ -53,9 +53,13 @@ class ContractTests(unittest.TestCase):
         point, errors=attachment(row,None,'Owner',{'nonuniform_scale':'uniform-min'})
         self.assertIsNone(point); self.assertTrue(errors)
 
-    def test_unsupported_transforms_stay_blocked(self):
-        row=self.placement(); row['rotation_degrees'][0]=10
-        self.assertTrue(attachment_transform(row,{})[1])
+    def test_xy_rotation_serializes_in_same_direction(self):
+        row=self.placement(); row['rotation_degrees']=[10,-20,90]
+        result,issues=attachment_transform(row,{})
+        self.assertFalse(issues)
+        self.assertEqual([round(math.degrees(v),5) for v in result['rotation']],[10,-20,-90])
+
+    def test_sheared_transforms_stay_blocked(self):
         row=self.placement(); row['shear_error']=.2
         self.assertTrue(attachment_transform(row,{})[1])
 
@@ -306,6 +310,7 @@ class UninstallTests(unittest.TestCase):
         self.assertEqual(self.original.read_bytes(),b'original asset')
         self.assertFalse((self.mod/'Geometries/CSC_New.geo').exists())
 
+
     def test_purge_deletes_replaced_output_and_its_prior_xlp_registration(self):
         self.ex.install(self.job)
         self.ex.uninstall(self.job,purge=True)
@@ -331,6 +336,78 @@ class UninstallTests(unittest.TestCase):
         self.assertEqual(self.original.read_bytes(),b'new asset')
         self.assertEqual(json.loads((self.out/'report.json').read_text())['status'],
                          'installed_pending_asset_editor_and_game_review')
+
+
+class RerunOwnershipTests(unittest.TestCase):
+    def test_purged_run_is_boundary_for_older_installed_receipts(self):
+        import export_scene as ex
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); mod=root/'mod'; runs=root/'blends/export-runs'
+            (mod/'Assets').mkdir(parents=True); (mod/'XLPs').mkdir()
+            ex.write_xml(mod/'XLPs/CSC_Tilebases.xlp',ex.ET.fromstring('<X><m_Entries/></X>'))
+            def prepare(name,asset):
+                out=runs/name; stage=out/'stage'; (stage/'Assets').mkdir(parents=True)
+                (stage/'XLPs').mkdir()
+                (stage/'Assets'/(asset+'.ast')).write_text(name)
+                ex.write_xml(stage/'XLPs/CSC_Tilebases.xlp',ex.read_xml(mod/'XLPs/CSC_Tilebases.xlp'))
+                files={str(p.relative_to(stage)):ex.sha(p) for p in stage.rglob('*') if p.is_file()}
+                baseline={rel:ex.sha(mod/rel) if (mod/rel).is_file() else None for rel in files}
+                (out/'manifest.json').write_text(json.dumps({'converted_files':files,
+                    'destination_baseline':baseline,'textures':{}}))
+                (out/'report.json').write_text(json.dumps({'status':'converted_pending_asset_editor_and_game_review',
+                    'assets':[asset]}))
+                job={'output':str(out),'mod_root':str(mod)}
+                (out/'job.json').write_text(json.dumps(job))
+                return job
+            old=prepare('20260101','Old'); ex.install(old)
+            middle=prepare('20260102','Middle'); ex.install(middle)
+            ex.uninstall(middle,purge=True)
+            # Old receipt still exists, but its outputs were retired by Middle.
+            newer=prepare('20260103','New'); ex.install(newer)
+            self.assertTrue((mod/'Assets/New.ast').is_file())
+            self.assertIsNone(json.loads((runs/'20260103/install-receipt.json').read_text())['predecessor_job'])
+
+    def test_rerun_retires_stale_assets_and_normal_uninstall_restores_prior_run(self):
+        import export_scene as ex
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); mod=root/'mod'; runs=root/'blends/export-runs'
+            (mod/'Assets').mkdir(parents=True); (mod/'XLPs').mkdir()
+            ex.write_xml(mod/'XLPs/CSC_Tilebases.xlp', ex.ET.fromstring('<X><m_Entries/></X>'))
+
+            def prepare(name, assets):
+                out=runs/name; stage=out/'stage'
+                (stage/'Assets').mkdir(parents=True); (stage/'XLPs').mkdir()
+                for ident in assets:
+                    (stage/'Assets'/(ident+'.ast')).write_text(name+' '+ident)
+                ex.write_xml(stage/'XLPs/CSC_Tilebases.xlp', ex.read_xml(mod/'XLPs/CSC_Tilebases.xlp'))
+                files={str(p.relative_to(stage)):ex.sha(p) for p in stage.rglob('*') if p.is_file()}
+                baseline={rel:ex.sha(mod/rel) if (mod/rel).is_file() else None for rel in files}
+                (out/'manifest.json').write_text(json.dumps({'converted_files':files,
+                    'destination_baseline':baseline,'textures':{}}))
+                (out/'report.json').write_text(json.dumps({'status':'converted_pending_asset_editor_and_game_review',
+                    'assets':assets}))
+                job={'output':str(out),'mod_root':str(mod)}
+                (out/'job.json').write_text(json.dumps(job))
+                return job
+
+            first=prepare('20260101-000000', ['Keep','Drop'])
+            ex.install(first)
+            self.assertTrue((mod/'Assets/Drop.ast').is_file())
+            second=prepare('20260102-000000', ['Keep','New'])
+            ex.install(second)
+            self.assertFalse((mod/'Assets/Drop.ast').exists())
+            self.assertEqual((mod/'Assets/Keep.ast').read_text(), '20260102-000000 Keep')
+            ids={ex.txt(e,'m_EntryID') for e in ex.read_xml(mod/'XLPs/CSC_Tilebases.xlp').find('m_Entries')}
+            self.assertEqual(ids,{'Keep','New'})
+            self.assertEqual(json.loads((runs/'20260101-000000/report.json').read_text())['status'],'superseded')
+            ex.uninstall(second)
+            self.assertEqual((mod/'Assets/Keep.ast').read_text(), '20260101-000000 Keep')
+            self.assertTrue((mod/'Assets/Drop.ast').is_file())
+            self.assertFalse((mod/'Assets/New.ast').exists())
+            ids={ex.txt(e,'m_EntryID') for e in ex.read_xml(mod/'XLPs/CSC_Tilebases.xlp').find('m_Entries')}
+            self.assertEqual(ids,{'Keep','Drop'})
+            self.assertEqual(json.loads((runs/'20260101-000000/report.json').read_text())['status'],
+                             'installed_pending_asset_editor_and_game_review')
 
 
 class DDSValidationTests(unittest.TestCase):

@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from discovery import classify, find_blends, make_job
+from discovery import classify, find_blends, select_blends, make_job, apply_contract_file
 from export_scene import read_xml, txt, MODELS, POINTS, STATES, model_instance
 
 
@@ -39,6 +39,52 @@ class DiscoveryTests(unittest.TestCase):
         (self.root / 'sub').mkdir()
         (self.root / 'sub' / 'third.blend').touch()
         self.assertEqual([p.name for p in find_blends(self.root)], ['second.BLEND', 'unrelated.blend'])
+
+    def test_sidecar_contract_merges_without_overriding_conflicting_scene_metadata(self):
+        row=self.row('building.blend','building','CSC_TAILORS_Shop','Shop')
+        sidecar=self.root/'export-contract.json'
+        sidecar.write_text(json.dumps({'buildings':{'CSC_TAILORS_Shop':{
+            'quarter':'TAILORS','supply_chain_stage':3}}}))
+        apply_contract_file([row],sidecar,{})
+        self.assertEqual(row['metadata']['supply_chain_stage'],3)
+        row['metadata']['supply_chain_stage']=4
+        with self.assertRaisesRegex(ValueError,'conflicts'):
+            apply_contract_file([row],sidecar,{})
+
+    def test_alternate_blends_are_opt_in(self):
+        base=self.row('Tailor.blend','building','Tailor','BuildingMesh')
+        alternate=self.row('Tailor_2.blend','building','Tailor_2','BuildingMesh')
+        extra=self.row('Extra_2.blend','prop','Extra_2')
+        sidecar=self.root/'export-contract.json'
+        sidecar.write_text(json.dumps({
+            'buildings':{'Tailor':{'quarter':'TAILORS','supply_chain_stage':3},
+                         'Tailor_2':{'quarter':'TAILORS','supply_chain_stage':3}},
+            'required_blends':['Tailor.blend'],
+            'optional_blends':['Tailor_2.blend','Extra_2.blend'],
+            'optional_buildings':['Tailor_2']}))
+        files=[Path(row['path']) for row in (base,alternate,extra)]
+        self.assertEqual([p.name for p in select_blends(files,sidecar)], ['Tailor.blend'])
+        apply_contract_file([base],sidecar,{})
+        self.assertEqual(base['metadata']['supply_chain_stage'],3)
+        apply_contract_file([base,alternate,extra],sidecar,{})
+        self.assertEqual(alternate['metadata']['supply_chain_stage'],3)
+        self.assertEqual(select_blends(files,sidecar,True), files)
+        with self.assertRaisesRegex(ValueError,'requested optional blends are missing'):
+            select_blends(files[:2],sidecar,True)
+
+    def test_required_authored_shared_geometry_is_never_ignored(self):
+        building=self.row('shop.blend','building','CSC_TAILORS_Shop','Shop')
+        ruin=self.row('ruin.blend','ignore','CSC_TAILORS_Shop_CON+PIL')
+        sidecar=self.root/'export-contract.json'
+        sidecar.write_text(json.dumps({
+            'buildings':{'CSC_TAILORS_Shop':{'quarter':'TAILORS','supply_chain_stage':3,
+                                           'construction_geometry':'CSC_TAILORS_Shop_CON+PIL'}},
+            'shared_geometries':{'CSC_TAILORS_Shop_CON+PIL':'ruin.blend'},
+            'required_blends':['shop.blend','ruin.blend']}))
+        apply_contract_file([building,ruin],sidecar,{})
+        self.assertEqual(classify(ruin,{}),('shared_geometry','CSC_TAILORS_Shop_CON+PIL'))
+        with self.assertRaisesRegex(ValueError,'required_blends differs'):
+            apply_contract_file([building],sidecar,{})
 
     def test_renaming_inputs_preserves_asset_template_and_decal_binding(self):
         rows = [self.row('anything.blend', 'building', 'ProductA', 'FactoryMesh'),

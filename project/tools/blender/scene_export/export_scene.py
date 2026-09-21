@@ -153,6 +153,10 @@ def model_instance(model, material_ids, visible, state_template=None):
     elem(e,'m_Name',text=model['asset_id']); elem(e,'m_GeoName',text=model['asset_id'])
     gs = elem(e,'m_GroupStates')
     for mesh, _, mat, _ in groups(model):
+        material_id = material_ids.get((mesh['name'], mat['name']), material_ids.get(mat['name']))
+        if material_id is None:
+            raise ValueError(f'{model["asset_id"]}/{mesh["name"]}: missing material binding for {mat["name"]}')
+        mesh_visible = visible.get(mesh['name'], ()) if isinstance(visible, dict) else visible
         for state in STATES:
             # Preserve shader/FOW/burn settings from a chosen original mesh where supplied.
             template = state_template.get(state) if state_template else None
@@ -162,12 +166,12 @@ def model_instance(model, material_ids, visible, state_template=None):
                 vals = row.find('m_Values/m_Values')
                 for p in vals:
                     param = txt(p,'m_ParamName')
-                    if param == 'Material': set_text(p,'m_ObjectName',material_ids[mat['name']])
-                    if param == 'Visible': p.find('m_bValue').text = str(state in visible).lower()
+                    if param == 'Material': set_text(p,'m_ObjectName',material_id)
+                    if param == 'Visible': p.find('m_bValue').text = str(state in mesh_visible).lower()
             else:
                 row = elem(gs,'Element'); vals = elem(elem(row,'m_Values'),'m_Values')
-                value(vals,'Material',material_ids[mat['name']])
-                value(vals,'Visible',state in visible,'Bool')
+                value(vals,'Material',material_id)
+                value(vals,'Visible',state in mesh_visible,'Bool')
                 value(vals,'FOWMaterial','FOW/DefaultMaterial')
                 value(vals,'BurnMaterial','')
                 value(vals,'SnowMaterial','DefaultSnowMaterial')
@@ -219,6 +223,40 @@ def geometry(model, template):
     return r
 
 
+def shared_model_from_geo(mod, ident, material_for_group, visible_for_group):
+    """Build a state model from an installed or newly staged shared GEO."""
+    geo = read_xml(mod / 'Geometries' / (ident + '.geo'))
+    meshes, bindings, visibility = [], {}, {}
+    for source_mesh in geo.findall('m_Meshes/Element'):
+        mesh_name = txt(source_mesh, 'm_Name')
+        group_names = [txt(group, 'm_Name') for group in source_mesh.findall('m_Groups/Element')]
+        if not mesh_name or not group_names or len(set(group_names)) != len(group_names):
+            raise ValueError(f'{ident}: invalid shared GEO mesh/groups')
+        meshes.append({'name': mesh_name, 'materials': [{'name': name} for name in group_names],
+                       'triangles': [[0, 1, 2, i] for i in range(len(group_names))]})
+        for name in group_names:
+            bindings[(mesh_name, name)] = material_for_group(name)
+            visibility[(mesh_name, name)] = visible_for_group(name)
+    model = {'asset_id': ident, 'meshes': meshes}
+    root = ET.Element('Element')
+    elem(root, 'm_Name', text=ident); elem(root, 'm_GeoName', text=ident)
+    state_rows = elem(root, 'm_GroupStates')
+    for mesh, _, mat, _ in groups(model):
+        name = mat['name']
+        for state in STATES:
+            row = elem(state_rows, 'Element'); values = elem(elem(row, 'm_Values'), 'm_Values')
+            value(values, 'Material', bindings[(mesh['name'], name)])
+            value(values, 'Visible', state in visibility[(mesh['name'], name)], 'Bool')
+            value(values, 'FOWMaterial', 'FOW/DefaultMaterial')
+            value(values, 'BurnMaterial', 'DefaultBurnMaterial' if state == 'Pillaged' else '')
+            value(values, 'SnowMaterial', 'DefaultSnowMaterial')
+            value(values, 'EmissiveEnabled', state == 'Worked', 'Bool')
+            value(values, 'FOWVisibleOnly', False, 'Bool')
+            for tag, val in [('m_GroupName', name), ('m_MeshName', mesh['name']), ('m_StateName', state)]:
+                elem(row, tag, text=val)
+    return root
+
+
 def validate_support(attachments):
     index={a['instance_id']:a for a in attachments}
     if len(index)!=len(attachments): raise ValueError('Duplicate attachment instance_id')
@@ -246,8 +284,6 @@ def attachment_transform(a, policies):
     nonuniform=max(scale)-min(scale)>max(1,max(scale))*1e-5
     if nonuniform:
         problems.append('nonuniform scale; fix the Blender placement or publish a distinct proportion variant (AE has scalar m_scale)')
-    if max(abs(rot[0]),abs(rot[1]))>1e-4:
-        problems.append('X/Y rotation requires a verified coordinate mapping')
     if (a['support']!='ground' and a.get('terrain_follow') != 'shared-support-pivot'
             and policies.get('supported_props','reject')!='independent-pivot'):
         problems.append(f'support {a["support"]} requires shared elevation; independent pivots can separate')
@@ -255,7 +291,11 @@ def attachment_transform(a, policies):
     if abs(scalar - 1.0) <= 1e-6:
         scalar = 1.0
     # AE displays degrees, but AST m_orientation serializes radians.
-    return {'position':[v/10 for v in a['position']], 'rotation':[0,0,math.radians(-rot[2])],
+    # The AE orientation fields are radians. X/Y retain Blender's direction;
+    # the established CSC Z convention is reversed. Combined-axis visual parity
+    # remains an AE review item until calibrated against a known reference asset.
+    return {'position':[v/10 for v in a['position']],
+            'rotation':[math.radians(rot[0]),math.radians(rot[1]),math.radians(-rot[2])],
             'scale':scalar}, problems
 
 
@@ -300,7 +340,7 @@ def load_job(path):
     allowed={'nonuniform_scale':{'reject'},'supported_props':{'reject','independent-pivot'},'reused_states':{'reject','native'}}
     for k,v in job.get('policies',{}).items():
         if k not in allowed or v not in allowed[k]: raise ValueError(f'Unknown policy {k}={v}')
-    for section in ('buildings','props','decals'):
+    for section in ('buildings','props','decals','shared_geometries'):
         for item in job.get(section,[]):
             item['blend']=str((base/Path(item['blend'])).resolve())
             identifier(item.get('asset_id',item.get('geometry_id')))
@@ -334,7 +374,8 @@ def build(job):
             if txt(v,'m_ParamName')=='Asset' and txt(v,'m_EntryName'): bindings[txt(v,'m_EntryName')]=v
     catalogue={a['asset_id']:a for a in json.loads((Path(job['library'])/'catalogue.json').read_text())['assets']}
     references={item['asset_id'] for item in job.get('references', [])}
-    models=decoded['models']; materials={}; textures={}; source_inputs={}
+    models=decoded['models']; materials={}; model_materials={}; textures={}; source_inputs={}
+    contracts={e['asset_id']:e['contract'] for e in job['buildings'] if e.get('contract')}
     report['scene_geometry_edits'] = [m['scene_geometry_edit'] for m in models.values()
                                       if m.get('scene_geometry_edit')]
     for ident,entry in decoded.get('library_sources',{}).items():
@@ -343,14 +384,23 @@ def build(job):
     expected={e['asset_id']:e['blend'] for e in job['buildings']}
     expected.update({e['asset_id']:e['blend'] for e in job.get('props',[])})
     expected.update({e['geometry_id']:e['blend'] for e in job.get('decals',[])})
+    expected.update({e['geometry_id']:e['blend'] for e in job.get('shared_geometries',[])})
     for ident,source in expected.items():
         if ident not in models or Path(models[ident]['source']).resolve()!=Path(source).resolve():
             raise ValueError('Job inputs changed; rerun decode')
     for model in models.values():
         if sha(model['source'])!=model['source_sha256']: raise ValueError(f'Redecode changed source {model["source"]}')
         source_inputs[model['source']]=model['source_sha256']
+        model_materials[model['asset_id']]={}
         for mesh in model['meshes']:
             for mat in mesh['materials']:
+                contract=contracts.get(model['asset_id'])
+                if contract:
+                    from asset_contract import material_for_mesh
+                    target=material_for_mesh(mesh,mat,contract,job)
+                    model_materials[model['asset_id']][(mesh['name'],mat['name'])]=target
+                    materials[f'{model["asset_id"]}/{mesh["name"]}/{mat["name"]}']=target
+                    continue
                 ext=existing_material(mat,job,mod)
                 ext=stage_ao_binding(mat,ext,mod,stage,textures,source_inputs,job.get('ao_policy','stage_explicit'))
                 if ext:
@@ -377,7 +427,7 @@ def build(job):
                 write_xml(stage/'Materials'/(name+'.mtl'),mr)
         write_cn6(stage/'CN6'/(model['asset_id']+'.cn6'),model)
         write_xml(stage/'Geometries'/(model['asset_id']+'.geo'),geometry(model,geo_template))
-        if model['kind']=='decal': report['geometry_only'].append(model['asset_id'])
+        if model['kind'] in ('decal','shared_geometry'): report['geometry_only'].append(model['asset_id'])
     for name,im in textures.items():
         tr=copy.deepcopy(tex_template); set_text(tr,'m_Name',name)
         # Use R8 for scalar maps and RGBA8 for colour/normal maps.
@@ -410,7 +460,26 @@ def build(job):
         if old is None: raise ValueError(f'Missing main model {base_name}')
         states={txt(r,'m_StateName'):r for r in old.findall('m_GroupStates/Element') if txt(r,'m_MeshName')==entry['state_template_mesh']}
         if set(states)!=set(STATES): raise ValueError('State template must contain all five states')
-        index=list(ms).index(old); ms.remove(old); ms.insert(index,model_instance(model,materials,('Worked','Unworked','Unbuilt'),states))
+        contract=entry.get('contract')
+        selected_materials={**materials, **model_materials.get(ident,{})}
+        visibility={mesh['name']: ('Worked',) for mesh in model['meshes']} if contract else ('Worked','Unworked','Unbuilt')
+        index=list(ms).index(old); ms.remove(old); ms.insert(index,model_instance(model,selected_materials,visibility,states))
+        if contract:
+            from asset_contract import COBBLE_MATERIAL
+            shared_ids=[contract['ruin_geometry']]
+            if 'cobble_geometry' in contract:
+                shared_ids.append(contract['cobble_geometry'])
+            for shared_id in shared_ids:
+                for previous in [m for m in ms if txt(m,'m_GeoName')==shared_id]:
+                    ms.remove(previous)
+            ruin=shared_model_from_geo(stage if contract.get('authored_ruin_geometry') else mod,contract['ruin_geometry'],
+                lambda group: 'Pillage_Construction_01' if group=='Pillage_Construction_01' else contract['ruin_material'],
+                lambda group: ('Construction',) if group=='Pillage_Construction_01' else ('Construction','Pillaged'))
+            ms.append(ruin)
+            if 'cobble_geometry' in contract:
+                cobble=shared_model_from_geo(mod,contract['cobble_geometry'],
+                    lambda group: COBBLE_MATERIAL, lambda group: ('Worked','Construction'))
+                ms.append(cobble)
         for decal_id in entry.get('decals',[]):
             if models[decal_id]['kind']!='decal': raise ValueError('Expected decal geometry')
             old_decals=[m for m in ms if txt(m,'m_GeoName')==decal_id or txt(m,'m_Name')==decal_id]
@@ -447,6 +516,13 @@ def build(job):
                  'placement_changed_by_exporter':False, 'binding_status':'blocked' if problems else 'representable', 'issues':problems}
             report['placements'].append(row)
             for problem in problems: report['blockers'].append(f'{ident}/{a["instance_id"]}: {problem}')
+        if contract:
+            for instance in ms:
+                for state_row in instance.findall('m_GroupStates/Element'):
+                    if txt(state_row,'m_StateName') in ('Unworked','Unbuilt'):
+                        for parameter in state_row.findall('m_Values/m_Values/Element'):
+                            if txt(parameter,'m_ParamName')=='Visible':
+                                parameter.find('m_bValue').text='false'
         write_xml(stage/'Assets'/(ident+'.ast'),root); report['assets'].append(ident)
     # New props have their own state table and are registered once across all variants.
     for ident,model in models.items():
@@ -454,7 +530,7 @@ def build(job):
         # Start from the empty behavior schema of a plain prop, not workshop FX.
         prop_template=read_xml(mod/templates['prop_asset'])
         root=copy.deepcopy(prop_template); set_text(root,'m_Name',ident)
-        root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,('Worked','Unworked')))
+        root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,('Worked',)))
         root.find(POINTS).clear()
         for tag in ('m_animationBindings/m_Bindings','m_timelineBindings/m_Bindings','m_timelines/m_Timelines'):
             node=root.find('m_BehaviorData/m_behaviorDataSets/'+tag)
@@ -467,6 +543,9 @@ def build(job):
     report['preserved_models']={e['asset_id']:e.get('preserve_models',[]) for e in job['buildings']}
     report['material_bindings']=materials
     report['material_policy']=job.get('material_policy','generate_unbound')
+    if contracts:
+        from asset_contract import validate_stage
+        report['contract_validation']=validate_stage(job,decoded,stage)
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     destinations=[p.relative_to(stage) for p in stage.rglob('*') if p.is_file() and p.parts[-2]!='CN6']
     destinations += [Path('Geometries')/(ident+'.fgx') for ident in models]
@@ -566,12 +645,54 @@ def install(job):
         raise ValueError('Successful Windows conversion is required before install')
     for rel,h in manifest['converted_files'].items():
         if sha(stage/rel)!=h: raise ValueError(f'Converted stage changed: {rel}')
+    predecessor=None
+    for prior_path in sorted(out.parent.glob('*/job.json'), reverse=True):
+        if prior_path.parent == out or prior_path.parent.name >= out.name:
+            continue
+        prior_report_path=prior_path.parent/'report.json'
+        prior_receipt_path=prior_path.parent/'install-receipt.json'
+        if not prior_report_path.is_file() or not prior_receipt_path.is_file():
+            continue
+        prior_job=json.loads(prior_path.read_text())
+        prior_report=json.loads(prior_report_path.read_text())
+        if Path(prior_job.get('mod_root','')).resolve()!=mod.resolve():
+            continue
+        if prior_report.get('status') in ('purged','uninstalled'):
+            # A deliberate removal ends this folder's ownership chain. Older
+            # receipts no longer describe the live files after that boundary.
+            break
+        if prior_report.get('status')=='installed_pending_asset_editor_and_game_review':
+            predecessor=(prior_path,prior_report_path,prior_report,json.loads(prior_receipt_path.read_text()))
+            break
+    previous_files={}; retired_ids=set(); owned_ids=set()
+    if predecessor:
+        prior_path,_,prior_report,prior_receipt=predecessor
+        old_files=prior_receipt.get('installed_sha256',{})
+        current_files={rel for rel in manifest['converted_files'] if Path(rel).parts[0]!='CN6'}
+        for rel,expected_hash in old_files.items():
+            p=Path(rel)
+            if str(p) in current_files or p.is_absolute() or '..' in p.parts or len(p.parts)!=2 or p.parts[0] not in (
+                    'Assets','Geometries','Materials','Textures','TextureSources'):
+                continue
+            target=mod/p
+            if not target.is_file() or sha(target)!=expected_hash:
+                raise ValueError(f'Prior run output changed; cannot retire {rel}')
+            previous_files[p]=expected_hash
+        owned_ids=set(prior_receipt.get('owned_xlp_ids',prior_receipt.get('xlp_added_ids',[])))
+        retired_ids=owned_ids-set(report['assets'])
     payload={}
     for rel in manifest['converted_files']:
         p=Path(rel)
         if p.parts[0]=='CN6': continue
         if p.parts[0]=='XLPs':
-            root=merge_xlp(read_xml(mod/p),report['assets']); ET.indent(root,space='  ')
+            root=merge_xlp(read_xml(mod/p),report['assets'])
+            entries=root.find('m_Entries')
+            found={txt(e,'m_EntryID') for e in entries if txt(e,'m_EntryID') in retired_ids and txt(e,'m_ObjectName')==txt(e,'m_EntryID')}
+            if found!=retired_ids:
+                raise ValueError(f'Prior run XLP entries changed; cannot retire {sorted(retired_ids-found)}')
+            for e in list(entries):
+                if txt(e,'m_EntryID') in retired_ids: entries.remove(e)
+            ET.indent(root,space='  ')
             payload[p]=ET.tostring(root,encoding='utf-8',xml_declaration=True)
             continue
         current=sha(mod/p) if (mod/p).exists() else None
@@ -598,6 +719,9 @@ def install(job):
                 old=backup/p; old.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(dest,old)
             else: created.append(str(p))
             changed.append(p); dest.write_bytes(data)
+        for p in previous_files:
+            dest=mod/p; old=backup/p; old.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(dest,old); changed.append(p); dest.unlink()
     except Exception:
         for p in reversed(changed):
             old=backup/p
@@ -606,10 +730,17 @@ def install(job):
         raise
     (backup/'created-files.json').write_text(json.dumps(created,indent=2)+'\n')
     receipt={'backup':str(backup),'installed_sha256':{str(p):hashlib.sha256(data).hexdigest()
-             for p,data in payload.items() if p.parts[0]!='XLPs'},'xlp_added_ids':xlp_added}
+             for p,data in payload.items() if p.parts[0]!='XLPs'},'xlp_added_ids':xlp_added,
+             'owned_xlp_ids':sorted((owned_ids|set(xlp_added))-retired_ids),
+             'retired_files':[str(p) for p in previous_files], 'retired_xlp_ids':sorted(retired_ids),
+             'predecessor_job':str(predecessor[0]) if predecessor else None}
     (out/'install-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
     report['status']='installed_pending_asset_editor_and_game_review'; report['backup']=str(backup)
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+    if predecessor:
+        _,prior_report_path,prior_report,_=predecessor
+        prior_report['status']='superseded'
+        (prior_report_path).write_text(json.dumps(prior_report,indent=2)+'\n')
     print(f'Installed {len(payload)} files; backup: {backup}. Refresh AE dependencies, cook, and verify in game.')
 
 
@@ -667,6 +798,15 @@ def uninstall(job, dry_run=False, purge=False, force=False):
         else:
             if not old.is_file(): raise ValueError(f'Missing original file backup: {rel}')
             files[p]='restore'
+    if receipt and not purge:
+        for rel in receipt.get('retired_files',[]):
+            p=Path(rel)
+            if p.is_absolute() or '..' in p.parts or len(p.parts)!=2 or p.parts[0] not in (
+                    'Assets','Geometries','Materials','Textures','TextureSources'):
+                raise ValueError(f'Invalid retired output path: {rel}')
+            if not (backup/p).is_file() or (mod/p).exists():
+                raise ValueError(f'Retired output cannot be restored safely: {rel}')
+            files[p]='restore'
     xlp_paths=[Path(rel) for rel in manifest['converted_files'] if Path(rel).parts[0]=='XLPs']
     xlp_updates={}
     xlp_removals={}
@@ -691,6 +831,12 @@ def uninstall(job, dry_run=False, purge=False, force=False):
                 raise ValueError(f'Installed XLP entries changed or missing: {p}')
             forced.append((p, 'entries changed or missing'))
         for e in matching: entries.remove(e)
+        if not purge and receipt:
+            prior_entries={txt(e,'m_EntryID'):e for e in read_xml(old).find('m_Entries')}
+            for ident in receipt.get('retired_xlp_ids',[]):
+                if ident not in prior_entries or any(txt(e,'m_EntryID')==ident for e in entries):
+                    raise ValueError(f'Retired XLP entry cannot be restored safely: {ident}')
+                entries.append(copy.deepcopy(prior_entries[ident]))
         ET.indent(root,space='  ')
         xlp_updates[p]=ET.tostring(root,encoding='utf-8',xml_declaration=True)
         xlp_removals[p]=sorted(added)
@@ -723,6 +869,13 @@ def uninstall(job, dry_run=False, purge=False, force=False):
         raise
     report['status']='purged' if purge else 'uninstalled'; report['uninstall_backup']=str(undo)
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+    if receipt and receipt.get('predecessor_job') and not purge:
+        prior_report_path=Path(receipt['predecessor_job']).parent/'report.json'
+        prior_report=json.loads(prior_report_path.read_text())
+        if prior_report.get('status')!='superseded':
+            raise ValueError('Predecessor report changed; review restored run status')
+        prior_report['status']='installed_pending_asset_editor_and_game_review'
+        prior_report_path.write_text(json.dumps(prior_report,indent=2)+'\n')
     print(f'Uninstalled export run; previous live files backed up at {undo}.')
 
 

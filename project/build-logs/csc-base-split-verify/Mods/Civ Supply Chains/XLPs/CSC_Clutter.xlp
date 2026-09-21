@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects..XLP>
+	<m_Version>
+		<major>1</major>
+		<minor>0</minor>
+		<build>0</build>
+		<revision>0</revision>
+	</m_Version>
+	<m_ClassName text="Landmark"/>
+	<m_PackageName text="Environment/CSC_Clutter"/>
+	<m_Entries>
+		<Element>
+			<m_EntryID text="RES_CSC_Flax_Tuft01"/>
+			<m_ObjectName text="RES_CSC_Flax_Tuft01"/>
+		</Element>
+		<Element>
+			<m_EntryID text="RES_CSC_Flax_Tuft02"/>
+			<m_ObjectName text="RES_CSC_Flax_Tuft02"/>
+		</Element>
+		<Element>
+			<m_EntryID text="RES_CSC_Flax_Tuft03"/>
+			<m_ObjectName text="RES_CSC_Flax_Tuft03"/>
+		</Element>
+		<Element>
+			<m_EntryID text="RES_CSC_Flax_Tuft04"/>
+			<m_ObjectName text="RES_CSC_Flax_Tuft04"/>
+		</Element>
+	</m_Entries>
+	<m_AllowedPlatforms>
+		<Element>WINDOWS</Element>
+		<Element>MACOS</Element>
+		<Element>IOS</Element>
+		<Element>LINUX</Element>
+		<Element>XBONE</Element>
+		<Element>PS4</Element>
+		<Element>SWITCH</Element>
+		<Element>STADIA</Element>
+	</m_AllowedPlatforms>
+</AssetObjects..XLP>
+

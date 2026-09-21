@@ -7,6 +7,8 @@ Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "Civ Supply Chains", "Civ Su
 EndProject
 Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "Taxes And Politics", "..\TaxesPolitics\Taxes And Politics.civ6proj", "{A6C42021-C2CD-47CC-92F1-6CDFC3195B53}"
 EndProject
+Project("{5DAE07AF-E217-45C1-8DE7-FF99D6011E8A}") = "CSC Art Pack", "..\CSC Art Pack\CSC Art Pack.civ6proj", "{D54001BC-AFB6-463E-9648-63E4262A95BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Civ6 = Default|Civ6
@@ -16,6 +18,8 @@ Global
 		{2DC56931-1F3F-4822-907B-F67901AF7F03}.Default|Civ6.Build.0 = Default|Civ6
 		{A6C42021-C2CD-47CC-92F1-6CDFC3195B53}.Default|Civ6.ActiveCfg = Default|Civ6
 		{A6C42021-C2CD-47CC-92F1-6CDFC3195B53}.Default|Civ6.Build.0 = Default|Civ6
+		{D54001BC-AFB6-463E-9648-63E4262A95BA}.Default|Civ6.ActiveCfg = Default|Civ6
+		{D54001BC-AFB6-463E-9648-63E4262A95BA}.Default|Civ6.Build.0 = Default|Civ6
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

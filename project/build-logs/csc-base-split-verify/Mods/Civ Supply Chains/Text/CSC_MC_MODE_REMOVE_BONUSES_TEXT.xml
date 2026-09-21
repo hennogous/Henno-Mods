@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CSC_REMOVE_MC_BONUSES -->
+<!-- Author: Henno -->
+<!-- DateCreated: 2025-06-15 19:54:38 -->
+<GameData>
+    <EnglishText>
+
+        <!--Industry and Corporation Improvements-->
+        <Replace Tag="LOC_IMPROVEMENT_CORPORATION_DESCRIPTION">
+            <Text>A corporation dedicated to a specific Luxury Resource.</Text>
+        </Replace>
+        <Replace Tag="LOC_IMPROVEMENT_CORPORATION_EXPANSION2_DESCRIPTION">
+            <Text>A corporation dedicated to a specific Luxury Resource. Can only be pillaged (never destroyed) by natural disasters.</Text>
+        </Replace> 
+
+        <!--Industry Effects Descriptions-->
+        <Replace Tag="LOC_INDUSTRY_CITY_GROWTH_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_INDUSTRY_MILITARY_UNIT_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_INDUSTRY_CIVILIAN_UNIT_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_INDUSTRY_BUILDING_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_INDUSTRY_GOLD_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_INDUSTRY_FAITH_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_INDUSTRY_SCIENCE_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_INDUSTRY_CULTURE_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+
+        <!--Corporation Effects Descriptions-->
+        <Replace Tag="LOC_CORPORATION_CITY_GROWTH_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_CORPORATION_MILITARY_UNIT_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_CORPORATION_CIVILIAN_UNIT_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_CORPORATION_BUILDING_DISCOUNT_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_CORPORATION_GOLD_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_CORPORATION_FAITH_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_CORPORATION_SCIENCE_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+        <Replace Tag="LOC_CORPORATION_CULTURE_YIELD_BONUS_DESCRIPTION">
+            <Text></Text>
+        </Replace>
+
+        <!--Historic Moments-->
+        <Replace Tag="LOC_MOMENT_FIRST_CORPORATION_INSTANCE_DESCRIPTION">  
+            <Text>Business require management, oversight, marketing, branding… a Corporation. Time to take out the competition! </Text>  
+        </Replace>
+
+        <!--Advisor Text-->
+        <Replace Tag="LOC_HUD_CITY_HOUSING_FROM_GREATWORKS">
+            <Text>Housing from Industries and Corporations:</Text>
+        </Replace>
+              
+    </EnglishText>
+</GameData>

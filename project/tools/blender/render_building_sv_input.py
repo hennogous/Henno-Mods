@@ -8,6 +8,7 @@ import os
 import sys
 
 import bpy
+import bmesh
 from mathutils import Vector
 
 
@@ -16,7 +17,7 @@ def main():
     if len(args) != 1:
         raise SystemExit("Expected one output PNG after --")
     output = os.path.abspath(args[0])
-    scene = bpy.context.scene
+    scene = bpy.data.scenes.get("Export") or bpy.context.scene
     source_dir = os.path.dirname(bpy.data.filepath)
     texture_dir = os.path.join(source_dir, "textures")
     missing = []
@@ -33,24 +34,35 @@ def main():
     if missing:
         raise RuntimeError("Missing scene textures: " + ", ".join(sorted(set(missing))))
 
+    context_prefixes = ("review_", "road_", "csc_road_", "csc_dirt_", "preview_")
+    context_fragments = ("decal", "terrain", "ground", "grass", "cobble", "paving")
+    hidden_context = []
     for obj in scene.objects:
-        if obj.type == "MESH" and (obj.name.startswith("REVIEW_") or obj.name.startswith("ROAD_")):
+        name = obj.name.casefold()
+        if obj.type == "MESH" and (name.startswith(context_prefixes) or any(part in name for part in context_fragments)):
             obj.hide_render = True
+            hidden_context.append(obj.name)
+    print("SV_HIDDEN_CONTEXT", len(hidden_context), hidden_context)
     meshes = [obj for obj in scene.objects if obj.type == "MESH" and not obj.hide_render]
     if not meshes:
         raise RuntimeError("No visible meshes")
     building = max(meshes, key=lambda obj: obj.dimensions.x * obj.dimensions.y * obj.dimensions.z)
-    foundation = building.vertex_groups.get("Foundation")
-    if foundation is None:
-        below = [v.index for v in building.data.vertices if (building.matrix_world @ v.co).z < 0]
-        if below:
-            foundation = building.vertex_groups.new(name="SV_Foundation_BelowGround")
-            foundation.add(below, 1.0, "REPLACE")
-            print("SV_FOUNDATION_VERTICES", building.name, len(below))
-    if foundation is not None:
-        mask = building.modifiers.new(name="SV_HideFoundation", type="MASK")
-        mask.vertex_group = foundation.name
-        mask.invert_vertex_group = True
+    # Bisect a render-only mesh copy: masking below-ground vertices also removes
+    # the wall faces spanning Z=0 and makes the entire lower storey disappear.
+    building.data = building.data.copy()
+    mesh = bmesh.new()
+    mesh.from_mesh(building.data)
+    before_faces = len(mesh.faces)
+    local_ground = building.matrix_world.inverted() @ Vector((0, 0, 0))
+    local_up = (building.matrix_world.transposed().to_3x3() @ Vector((0, 0, 1))).normalized()
+    bmesh.ops.bisect_plane(
+        mesh, geom=list(mesh.verts) + list(mesh.edges) + list(mesh.faces),
+        plane_co=local_ground, plane_no=local_up, clear_inner=True,
+    )
+    mesh.to_mesh(building.data)
+    mesh.free()
+    building.data.update()
+    print("SV_FOUNDATION_CLIP", building.name, before_faces, len(building.data.polygons))
 
     depsgraph = bpy.context.evaluated_depsgraph_get()
     points = []
@@ -98,7 +110,7 @@ def main():
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.filepath = output
     os.makedirs(os.path.dirname(output), exist_ok=True)
-    bpy.ops.render.render(write_still=True)
+    bpy.ops.render.render(scene=scene.name, write_still=True)
     print("SV_OUTPUT", output)
 
 

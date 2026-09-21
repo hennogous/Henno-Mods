@@ -127,17 +127,18 @@ def material(mat):
     return result
 
 
-def decode_mesh(ob, transform):
+def decode_mesh(ob, transform, require_weights=True):
     # Only static, fully weighted geometry is supported. Never repair source data silently.
     if len(ob.data.uv_layers) != 3:
         raise ValueError(f'{ob.name}: expected exactly three UV layers')
     if any(m.type != 'ARMATURE' for m in ob.modifiers):
         raise ValueError(f'{ob.name}: evaluate/resolve non-armature modifiers before export')
-    bones = {g.index for g in ob.vertex_groups if g.name != 'VERTEX_KEYS'}
-    for v in ob.data.vertices:
-        weights = [g.weight for g in v.groups if g.group in bones and g.weight > 0]
-        if len(weights) != 1 or abs(weights[0] - 1) > 1e-5:
-            raise ValueError(f'{ob.name}: vertex {v.index} is not statically weighted at 1')
+    if require_weights:
+        bones = {g.index for g in ob.vertex_groups if g.name != 'VERTEX_KEYS'}
+        for v in ob.data.vertices:
+            weights = [g.weight for g in v.groups if g.group in bones and g.weight > 0]
+            if len(weights) != 1 or abs(weights[0] - 1) > 1e-5:
+                raise ValueError(f'{ob.name}: vertex {v.index} is not statically weighted at 1')
     if transform.determinant() <= 0:
         raise ValueError(f'{ob.name}: singular or mirrored geometry transform unsupported')
     mesh = ob.data.copy()
@@ -305,14 +306,18 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
                 selected.append(o)
             else:
                 raise ValueError(f'{o.name}: unclassified export mesh')
+        elif kind == 'shared_geometry':
+            if o.hide_render or o.get('csc_export_exclude') or role != 'state_geometry':
+                raise ValueError(f'{o.name}: shared construction geometry must be renderable state_geometry')
+            selected.append(o)
         elif kind == 'decal':
             selected.append(o)
         elif kind == 'prop':
             selected.append(o)
     if not selected:
         raise ValueError(f'{path}: no {kind} meshes')
-    if kind == 'prop' and attachments:
-        raise ValueError('Nested asset definitions are not supported')
+    if kind in ('prop','shared_geometry') and attachments:
+        raise ValueError(f'{kind}: nested attachments are not supported')
     for o in sorted(selected, key=lambda o:o.name):
         for parent in parent_chain(o):
             if parent.type == 'ARMATURE':
@@ -320,10 +325,12 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
                     raise ValueError(f'{o.name}: animated armature unsupported')
                 if any(any(abs(a-b)>1e-6 for a,b in zip(row, ref)) for bone in parent.pose.bones for row,ref in zip(bone.matrix_basis, Matrix.Identity(4))):
                     raise ValueError(f'{o.name}: non-rest pose unsupported')
-        geometry.append(decode_mesh(o, o.matrix_world))
+        # Shared construction geometry is baked to a new static identity skeleton;
+        # source vertex-group weights are not serialized into this CN6 stream.
+        geometry.append(decode_mesh(o, o.matrix_world, require_weights=kind!='shared_geometry'))
     if kind == 'building':
-        fixed = [mesh for mesh in geometry if mesh['role'] == 'fixed_geometry'
-                 or mesh['name'].startswith('CSC_Fixed_')]
+        fixed = [mesh for mesh in geometry if (mesh['role'] == 'fixed_geometry'
+                 or mesh['name'].startswith('CSC_Fixed_')) and 'leanto' not in mesh['name'].casefold()]
         if len(fixed) > 1:
             primary = [mesh for mesh in geometry if mesh not in fixed]
             geometry = primary + [merge_meshes(asset_id + '_Fixed', fixed)]
@@ -369,6 +376,11 @@ def main():
     for item in job.get('props', []):
         ident = item['asset_id']
         models[ident] = inspect(Path(item['blend']), 'prop', ident, item.get('scene', 'Export'), item.get('source_sha256'))
+    for item in job.get('shared_geometries', []):
+        ident = item['geometry_id']
+        if ident in models:
+            raise ValueError(f'Duplicate model identity: {ident}')
+        models[ident] = inspect(Path(item['blend']), 'shared_geometry', ident, item.get('scene', 'Export'), item.get('source_sha256'))
     for item in job['buildings']:
         row = inspect(Path(item['blend']), 'building', item['asset_id'], item.get('scene', 'Export'), item.get('source_sha256'))
         if row['asset_id'] in models:
