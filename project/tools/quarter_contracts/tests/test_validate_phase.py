@@ -168,7 +168,7 @@ class TailorsPhaseContractTests(unittest.TestCase):
         )
         self.assertTrue(any("index 6" in item for item in failures))
 
-    def test_visual_state_bridge_belongs_to_its_gameplay_phase(self) -> None:
+    def test_optional_art_bridge_is_not_a_core_contract_output(self) -> None:
         phase = next(
             phase
             for phase in self.implementation["phases"]
@@ -176,8 +176,12 @@ class TailorsPhaseContractTests(unittest.TestCase):
         )
         dockmaster = next(item for item in phase["requirements"] if item["id"] == "I.DOCKMASTER")
         self.assertIn("art.properties.D.ART.STAGE2.LIGHTHOUSE", dockmaster["design_refs"])
-        self.assertIn("GP.ART.PROPERTY_BRIDGE", dockmaster["gameplay_patterns"])
-        self.assertIn("art_property_lua", dockmaster["outputs"])
+        self.assertNotIn("GP.ART.PROPERTY_BRIDGE", dockmaster["gameplay_patterns"])
+        self.assertNotIn("art_property_lua", dockmaster["outputs"])
+        self.assertNotIn("art_property_lua", self.implementation["planned_outputs"])
+        self.assertTrue(
+            any("optional CSC Art Pack owns" in assertion for assertion in dockmaster["static_assertions"])
+        )
 
     def test_physical_art_is_not_an_implementation_contract_output(self) -> None:
         forbidden = {

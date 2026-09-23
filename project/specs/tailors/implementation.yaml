@@ -37,7 +37,6 @@ planned_outputs:
   city_lights_gameplay: Civ Supply Chains/ModSupport/ModSupport_CL.sql
   city_lights_localization_source: project/localization/ModSupport_CL_TEXT.md
   city_lights_localization_generated: Civ Supply Chains/ModSupport/ModSupport_CL_TEXT.sql
-  art_property_lua: Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua
   icons: Civ Supply Chains/Icons/CSC_TAILORS_ICONS.sql
 
 build_wiring:
@@ -122,27 +121,21 @@ build_wiring:
       file: ModSupport/ModSupport_CL_TEXT.sql
       load_order: 1000
       criteria: [ModSupport_CL]
-    art_property_lua:
-      id: CSC_ArtProperties
-      type: AddGameplayScripts
-      file: Lua_UI/ArtProperties/CSC_ArtProperties.lua
-      load_order: 501
-      criteria: []
 phase_validation:
   foundation:
     required_outputs: [core, gold, localization_source, localization_generated]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   materials_and_stage2:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, monopolies_localization_generated, art_property_lua]
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, monopolies_localization_generated]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage3:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, art_property_lua, icons]
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage4:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, art_property_lua, icons]
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   compatibility:
@@ -389,9 +382,9 @@ phases:
 
       - id: I.DOCKMASTER
         design_refs: [buildings.D.STAGE2.effects.D.STAGE2.SERVICE, art.properties.D.ART.STAGE2.LIGHTHOUSE]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL, GP.ART.PROPERTY_BRIDGE]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.SERVICE.STACKING_CIVIC, LP.PEDIA.SERVICE_CHAPTERS, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
-        outputs: [core, localization_source, art_property_lua]
+        outputs: [core, localization_source]
         static_assertions:
           - "Requires Naval Tradition, supplied BASE, adjacent Harbor, functioning Lighthouse."
           - "Effect is +20% Production to naval units through Renaissance, +1 slot, and +1 Admiral point."
@@ -409,7 +402,7 @@ phases:
           - "The Dockmaster Civilopedia page matches the Bakers Service-page scope exactly: one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
           - "Its Supply Chains entry follows the Storekeeper/Innkeeper rhythm: Textile Workshop plus improved Base Materials to cloth and sail canvas to the Lighthouse, then one paragraph break and `This gives a Citizen the opportunity to take up employment as a Dockmaster in the Harbor...` expressing naval production and Great Admiral development in-world."
           - "Its Historical Context entry explains dockmasters' coordination of berths, crews, stores, repairs, and naval logistics."
-          - "The Dockmaster gate writes CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION on the Textile Workshop and CSC_ArtProperties.lua mirrors it as CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ART; the physical asset, GamePropertyRanges, Landmarks, AST, and XLP wiring are handled together after the final blend arrives."
+          - "CSC retains REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ as the complete Dockmaster activation gate. The optional CSC Art Pack owns the source-property modifier, building attachment, Lua mirror, GamePropertyRanges, selection rule, and alternate model; none of those bridge files or rows are core Tailors outputs."
         implementation_binding:
           service_grant:
             method: persistent_hidden_building
@@ -465,7 +458,7 @@ phases:
           - GP.BUILDING.CITIZEN_YIELDS
           - GP.BUILDING.CITY_AMENITY
         localization_patterns: [LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED, LP.LOCAL.EXCHANGE_BULLET, LP.PEDIA.BUILDING_CHAPTERS]
-        outputs: [core, gold, localization_source, art_property_lua, icons]
+        outputs: [core, gold, localization_source, icons]
         static_assertions:
           - "Unlock=Guilds, prerequisite Textile Workshop, Cost=160, Maintenance=2."
           - "One slot; specialists +2 Culture/+1 Gold; city +1 Amenity."
@@ -512,9 +505,9 @@ phases:
 
       - id: I.SACRISTAN
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.SERVICE, art.properties.D.ART.STAGE3.CUSTOMERS]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL, GP.ART.PROPERTY_BRIDGE]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.PEDIA.SERVICE_CHAPTERS, LP.PEDIA.CUSTOMER_APPEND, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
-        outputs: [core, localization_source, art_property_lua, icons]
+        outputs: [core, localization_source, icons]
         static_assertions:
           - "Requires Divine Right, supplied BASE, adjacent Holy Site, functioning Temple."
           - "Effect is +10% Faith, +1 slot, and +1 Prophet point."
@@ -524,7 +517,7 @@ phases:
           - "The Sacristan Civilopedia page has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
           - "Its Supply Chains entry follows the Storekeeper/Innkeeper structure: the Tailor draws on cloth from the Textile Workshop, creates garments or vestments for the adjacent Temple, then after one paragraph break gives a Citizen employment as a Sacristan in the Holy Site and expresses Faith and Great Prophet development in-world."
           - "Its Historical Context entry explains the care of vestments, sacred furnishings, records, and daily material needs that connected textile crafts to religious institutions."
-          - "CSC_TAILORS_STAGE_3_CUSTOMERS is written directly by the Tailor using the exact Sacristan owner requirement set and mirrored by CSC_ArtProperties.lua. Markets participate in the transaction but do not activate the visual-state bridge; physical art wiring is outside the implementation contract."
+          - "CSC retains REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ as the complete Sacristan activation gate. The optional CSC Art Pack owns CSC_TAILORS_STAGE_3_CUSTOMERS, its building attachment and Lua mirror; Markets remain outside that optional visual-state gate, and no alternate-art bridge rows or files are core Tailors outputs."
           - "The Holy Site and Temple pages keep one integrated Supply Chains section, state that an adjacent supplied Tailor can establish a Sacristan at Divine Right, and point to the Sacristan page; direct one-level replacements receive equivalent text."
           - "Divine Right description composition uses the bare service text only for NULL/empty base descriptions and a `[NEWLINE][NEWLINE]`-prefixed variant when visible base text exists."
         replacement_binding:
@@ -561,7 +554,7 @@ phases:
           - GP.BUILDING.CITIZEN_YIELDS
           - GP.BUILDING.REGIONAL_AMENITY
         localization_patterns: [LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED, LP.LOCAL.EXCHANGE_BULLET, LP.PEDIA.BUILDING_CHAPTERS]
-        outputs: [core, gold, localization_source, art_property_lua, icons]
+        outputs: [core, gold, localization_source, icons]
         static_assertions:
           - "Unlock=Humanism, prerequisite Textile Workshop, Cost=250, Maintenance=3."
           - "One slot; specialists +1 Culture/+2 Gold; +1 Amenity within 6."
@@ -604,9 +597,9 @@ phases:
 
       - id: I.STAGE_MANAGER
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.SERVICE, art.properties.D.ART.STAGE4.CUSTOMERS]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.SERVICE.WONDER_VARIANTS, GP.REPLACEMENT.DIRECT_ONE_LEVEL, GP.ART.PROPERTY_BRIDGE]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.SERVICE.WONDER_VARIANTS, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.PEDIA.SERVICE_CHAPTERS, LP.PEDIA.CUSTOMER_APPEND, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
-        outputs: [core, localization_source, art_property_lua, icons]
+        outputs: [core, localization_source, icons]
         static_assertions:
           - "Requires Opera and Ballet plus supplied BASE and SPEC."
           - "Establishes in a Theater Square with an Amphitheater, or in the Tailors' Quarter when adjacent to any one named Wonder."
@@ -616,7 +609,7 @@ phases:
           - "The Stage Manager Civilopedia page has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
           - "Its Supply Chains entry follows the service-page structure while integrating both destinations: the Fashion House draws on workshop cloth and improved Specialty Materials, creates performance dress for Amphitheaters and named Wonders, then after one paragraph break gives a Citizen employment as a Stage Manager and expresses Culture and Great Artist development in-world."
           - "Its Historical Context entry explains the coordination of costumes, performers, scenery, schedules, and venues that made theatrical production an enduring urban profession."
-          - "The eligible physical-customer state writes CSC_TAILORS_STAGE_4_CUSTOMERS and CSC_ArtProperties.lua mirrors it for later visual selection; Opera and Ballet and the Stage Manager state are excluded from this gate, and physical art wiring is outside the implementation contract."
+          - "CSC retains the complete Stage Manager activation requirement set for optional consumers. Any later CSC_TAILORS_STAGE_4_CUSTOMERS property modifier, building attachment, Lua mirror, GamePropertyRanges entry, selection rule, and alternate model belong to the optional CSC Art Pack; none are core Tailors outputs."
           - "The Theater Square, Amphitheater, and direct one-level replacements keep one integrated Supply Chains section with the Stage Manager pointer; Bolshoi Theatre, Broadway, and Sydney Opera House each receive equivalent named-Wonder prose without replacement expansion."
           - "Opera and Ballet description composition uses the bare service text only for NULL/empty base descriptions and a `[NEWLINE][NEWLINE]`-prefixed variant when visible base text exists."
         replacement_binding:

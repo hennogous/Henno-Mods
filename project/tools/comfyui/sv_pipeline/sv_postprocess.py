@@ -12,6 +12,11 @@ Steps (all toggleable/tweakable):
 
 The historical filename is misleading now: this script intentionally does not
 add the old elliptical shadow. Use the base shadow plate (step 4) instead.
+
+An unsuffixed CSC_<QUARTER>_SV_<Building>.png exported from the painted XCF is
+treated as an already-composed editing canvas: scale the entire canvas to
+256px, then create Visible/Revealed and state variants. Existing
+*_Visible_PreShadow.png inputs retain their prior sprite-fitting behavior.
 """
 from __future__ import annotations
 
@@ -71,7 +76,6 @@ ENABLE_PADDING_BEFORE_REMBG = env_bool("CSC_SV_ENABLE_PADDING_BEFORE_REMBG", Tru
 ENABLE_BRIGHTNESS = env_bool("CSC_SV_ENABLE_BRIGHTNESS", False)
 ENABLE_OUTLINES = env_bool("CSC_SV_ENABLE_OUTLINES", True)
 ENABLE_RESIZE_CANVAS = env_bool("CSC_SV_ENABLE_RESIZE_CANVAS", True)
-TRIM_TO_SUBJECT = env_bool("CSC_SV_TRIM_TO_SUBJECT", False)
 ENABLE_SAM_OUTLINES = env_bool("CSC_SV_ENABLE_SAM_OUTLINES", True)
 # Higher = adds SAM structural outlines inside the subject mask.
 # Optional — requires sv_sam_outline.py + segment_anything + torch. Default: on
@@ -235,7 +239,6 @@ class PostProcessConfig:
     rembg_mask_alpha: int = REMBG_MASK_ALPHA
 
     enable_resize_canvas: bool = ENABLE_RESIZE_CANVAS
-    trim_to_subject: bool = TRIM_TO_SUBJECT
     canvas_size: int = CANVAS_SIZE
     sprite_size: int = SPRITE_SIZE
     quarter_mode: bool = QUARTER_MODE
@@ -281,7 +284,6 @@ class PostProcessConfig:
             rembg_pad=REMBG_PAD,
             rembg_mask_alpha=REMBG_MASK_ALPHA,
             enable_resize_canvas=ENABLE_RESIZE_CANVAS,
-            trim_to_subject=TRIM_TO_SUBJECT,
             canvas_size=128 if QUARTER_MODE else CANVAS_SIZE,
             sprite_size=(
                 int(round(SPRITE_SIZE * (128 / CANVAS_SIZE)))
@@ -843,16 +845,7 @@ def underlay_revealed_shadow_canvas(img: Image.Image, config: PostProcessConfig,
 
 def resize_to_canvas(img: Image.Image, config: PostProcessConfig) -> Image.Image:
     """Resize sprite, optionally composite a shadow plate, then paste on canvas."""
-    if config.trim_to_subject:
-        alpha = img.getchannel("A")
-        bbox = alpha.point(lambda value: 255 if value > config.mask_alpha_threshold else 0).getbbox()
-        if bbox:
-            img = img.crop(bbox)
-        ratio = min(config.sprite_size / img.width, config.sprite_size / img.height)
-        fitted = (max(1, round(img.width * ratio)), max(1, round(img.height * ratio)))
-        img = img.resize(fitted, Image.LANCZOS)
-    else:
-        img = img.resize((config.sprite_size, config.sprite_size), Image.LANCZOS)
+    img = img.resize((config.sprite_size, config.sprite_size), Image.LANCZOS)
 
     shadow_abs = resolve_pipeline_asset(config.shadow_path)
     if config.enable_base_shadow and shadow_abs and shadow_abs.exists():
@@ -1030,6 +1023,21 @@ def strip_pipeline_suffix(stem: str) -> str:
     return stem
 
 
+def is_canonical_sv_edit_source(stem: str) -> bool:
+    """Recognize an exported ``CSC_<QUARTER>_SV_<Building>.png`` XCF canvas.
+
+    Older ``_Visible_PreShadow`` images are unfitted editing sprites; this
+    unsuffixed source is already composed on its editing canvas. Explicit
+    ``_Input``/``_Raw`` and finished-state names keep their existing routes.
+    """
+    if not stem.startswith("CSC_") or "_SV_" not in stem:
+        return False
+    return not stem.endswith((
+        "_Input", "_Raw", "_Visible", "_Revealed", "_PreShadow",
+        "_Visible_PreShadow", "_UnderConstruction", "_Pillaged",
+    ))
+
+
 def default_output_path(input_path: str) -> Path:
     input_file = Path(input_path)
     stem = strip_pipeline_suffix(input_file.stem)
@@ -1054,6 +1062,7 @@ def process_from_preshadow(
     revealed_config: RevealedPostProcessConfig | None = None,
     *,
     state_overlays: list[tuple[str, str]] | None = None,
+    preplaced_canvas: bool = False,
 ) -> list[str]:
     """Build all final SV variants from a hand-edited _Visible_PreShadow image.
 
@@ -1066,6 +1075,8 @@ def process_from_preshadow(
 
     Brightness/outlines/SAM are not repeated here; only final placement/scaling,
     shadow plates, color treatment, and state overlays happen in this stage.
+    An exported XCF PNG is already laid out on a full editing canvas; pass
+    ``preplaced_canvas=True`` to scale that whole canvas to the final size.
     """
     config = base_config or PostProcessConfig.from_env()
     revealed_config = revealed_config or RevealedPostProcessConfig.from_env()
@@ -1074,7 +1085,7 @@ def process_from_preshadow(
     edited_pre_shadow = Image.open(input_path).convert("RGBA")
     if edited_pre_shadow.size == (config.canvas_size, config.canvas_size):
         pre_shadow_canvas = edited_pre_shadow
-    elif config.quarter_mode:
+    elif preplaced_canvas or config.quarter_mode:
         # _Visible_PreShadow is already a full pre-shadow canvas, just at the
         # editing/export size. Scale that canvas directly for Quarter sprites.
         pre_shadow_canvas = edited_pre_shadow.resize(
@@ -1206,7 +1217,11 @@ def add_processing_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--revealed-from-visible", action="store_true",
                         help="Treat input as a pre-shadow 256px Visible canvas and rebuild _Revealed + state overlays only (no ComfyUI).")
     parser.add_argument("--from-preshadow", action="store_true",
-                        help="Treat input as a hand-edited _Visible_PreShadow canvas and build _Visible, Visible states, _Revealed, and Revealed states. Auto-enabled for *_PreShadow.png inputs.")
+                        help="Treat input as a hand-edited pre-shadow image and build all six states. Auto-enabled for *_PreShadow.png and unsuffixed CSC_*_SV_*.png inputs.")
+    parser.add_argument("--preplaced-canvas", action="store_true",
+                        help="With --from-preshadow, scale the whole exported editing canvas to 256px instead of fitting it into the sprite box. Automatic for unsuffixed CSC_*_SV_*.png inputs.")
+    parser.add_argument("--raw-input", action="store_true",
+                        help="Force the original raw-image processing path even when the name matches an exported CSC SV canvas.")
     parser.add_argument("--background-removal", dest="enable_background_removal", action=argparse.BooleanOptionalAction, default=None)
     parser.add_argument("--padding-before-rembg", dest="enable_padding_before_rembg", action=argparse.BooleanOptionalAction, default=None,
                         help="Add gray padding before rembg for better edge detection. Default/env: on.")
@@ -1232,8 +1247,6 @@ def add_processing_options(parser: argparse.ArgumentParser) -> None:
                         help="Enable SAM structural outlines inside subject. Requires torch+segment_anything. Default/env: on.")
 
     parser.add_argument("--resize-canvas", dest="enable_resize_canvas", action=argparse.BooleanOptionalAction, default=None)
-    parser.add_argument("--trim-to-subject", dest="trim_to_subject", action=argparse.BooleanOptionalAction, default=None,
-                        help="Crop transparent margins before fitting the subject to --sprite-size.")
     parser.add_argument("--canvas-size", type=int, default=None, help="Final square canvas size. Default/env: 256.")
     parser.add_argument("--quarter", dest="quarter_mode", action="store_true",
                         help="Build a 128x128 buildingless Quarter/district SV sprite; 256px shadow and state plates keep native scale.")
@@ -1314,7 +1327,7 @@ def add_processing_options(parser: argparse.ArgumentParser) -> None:
 
 
 def add_cli_options(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("input", help="Input PNG to post-process.")
+    parser.add_argument("input", help="Input PNG to post-process; an unsuffixed CSC_*_SV_*.png is treated as an exported editing canvas.")
     parser.add_argument("output", nargs="?", help="Output PNG. Defaults to the CSC ComfyUI output folder.")
     add_processing_options(parser)
 
@@ -1357,15 +1370,26 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Post-process a Civ 6 strategic-view sprite.")
     add_cli_options(parser)
     args = parser.parse_args()
+    if args.raw_input and (args.from_preshadow or args.preplaced_canvas or args.revealed_from_visible):
+        parser.error("--raw-input cannot be combined with pre-shadow or revealed modes")
+    if args.revealed_from_visible and (args.from_preshadow or args.preplaced_canvas):
+        parser.error("--revealed-from-visible cannot be combined with pre-shadow modes")
+    if args.preplaced_canvas and not args.from_preshadow:
+        parser.error("--preplaced-canvas requires --from-preshadow")
     base_config = config_from_args(args)
     input_stem = Path(args.input).stem
-    from_preshadow = args.from_preshadow or input_stem.endswith("_Visible_PreShadow") or input_stem.endswith("_PreShadow")
+    canonical_edit_source = is_canonical_sv_edit_source(input_stem) and not args.raw_input
+    from_preshadow = (args.from_preshadow or canonical_edit_source or
+                      input_stem.endswith("_Visible_PreShadow") or input_stem.endswith("_PreShadow"))
     if from_preshadow:
+        if canonical_edit_source:
+            print("Exported CSC SV editing canvas: scaling the whole canvas to final size.")
         saved = process_from_preshadow(
             args.input,
             args.output,
             base_config=base_config,
             revealed_config=revealed_config_from_args(args),
+            preplaced_canvas=canonical_edit_source or args.preplaced_canvas,
         )
         print("Saved:")
         for path in saved:

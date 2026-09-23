@@ -259,6 +259,12 @@ function RefreshTopPanel()
             originReceivedResources = originReceivedResources or (originYields[yieldIndex] > 0)  -- basically or'ing all the yields > 0
         end
 
+        -- CSC: Amenities are not normal yields, so render the preview amount in the
+        -- dedicated BTS column without feeding it into yield totals or sorting.
+        local originAmenityAmount:number = GetCSCQuarterImportAmenityAmount(routeInfo);
+        SetRouteInstanceAmenities(originYieldInstance, originAmenityAmount);
+        originReceivedResources = originReceivedResources or (originAmenityAmount > 0);
+
         local destinationMajorityReligion = GetDestinationMajorityReligion(routeInfo)
         if (destinationMajorityReligion > 0) then
             local pressureValue, sourceText = GetOriginReligionPressure(routeInfo, destinationMajorityReligion);
@@ -298,6 +304,7 @@ function RefreshTopPanel()
             SetRouteInstanceYields(destinationYieldInstance, yieldIndex, destinationYields[yieldIndex]);
             destinationReceivedResources = destinationReceivedResources or (destinationYields[yieldIndex] > 0)   -- basically or'ing all the yields > 0
         end
+        SetRouteInstanceAmenities(destinationYieldInstance, 0);
 
         local originMajorityReligion = GetOriginMajorityReligion(routeInfo)
         if (originMajorityReligion > 0) then
@@ -818,6 +825,9 @@ function AddRouteToDestinationStack(routeInfo:table)
         SetRouteInstanceYields(destinationYieldInstance, yieldIndex, destinationYields[yieldIndex])
     end
 
+    SetRouteInstanceAmenities(originYieldInstance, GetCSCQuarterImportAmenityAmount(routeInfo));
+    SetRouteInstanceAmenities(destinationYieldInstance, 0);
+
     -------------------------------------------------
     -- Religion
     -------------------------------------------------
@@ -900,6 +910,28 @@ function SetRouteInstanceYields(yieldsInstance, yieldIndex, yieldValue)
     elseif (yieldIndex == FAITH_INDEX) then
         yieldsInstance.YieldFaithLabel:SetText(text .. iconString);
     end
+end
+
+-- ===========================================================================
+function GetCSCQuarterImportAmenityAmount(routeInfo)
+    if CSC_BTS_GetQuarterImportAmenityAmount ~= nil then
+        return CSC_BTS_GetQuarterImportAmenityAmount(routeInfo) or 0;
+    end
+
+    return 0;
+end
+
+-- ===========================================================================
+function SetRouteInstanceAmenities(yieldsInstance, amenityAmount)
+    if yieldsInstance == nil or yieldsInstance.YieldAmenityLabel == nil then
+        return;
+    end
+
+    local text:string = "";
+    if amenityAmount ~= nil and amenityAmount > 0 then
+        text = "+" .. tostring(amenityAmount) .. "[ICON_Amenities]";
+    end
+    yieldsInstance.YieldAmenityLabel:SetText(text);
 end
 
 -- ===========================================================================

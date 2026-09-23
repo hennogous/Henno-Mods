@@ -3,6 +3,7 @@
 Run: blender --background FILE.blend --python render_building_sv_input.py -- OUTPUT.png
 Does not save the source blend.
 """
+import argparse
 import math
 import os
 import sys
@@ -14,9 +15,19 @@ from mathutils import Vector
 
 def main():
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
-    if len(args) != 1:
-        raise SystemExit("Expected one output PNG after --")
-    output = os.path.abspath(args[0])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("output", help="Transparent 1024px PNG destination")
+    parser.add_argument("--elevation", type=float,
+                        default=math.degrees(math.atan(0.82)),
+                        help="Camera elevation in degrees (default: existing 39.35-degree SV view)")
+    parser.add_argument("--clockwise-turn", type=float, default=0.0,
+                        help="Apparent building turn in degrees; camera orbits instead of moving geometry")
+    parsed = parser.parse_args(args)
+    if not 0 < parsed.elevation < 90:
+        parser.error("--elevation must be between 0 and 90 degrees")
+    if not -180 <= parsed.clockwise_turn <= 180:
+        parser.error("--clockwise-turn must be between -180 and 180 degrees")
+    output = os.path.abspath(parsed.output)
     scene = bpy.data.scenes.get("Export") or bpy.context.scene
     source_dir = os.path.dirname(bpy.data.filepath)
     texture_dir = os.path.join(source_dir, "textures")
@@ -82,11 +93,18 @@ def main():
     camera_data.clip_end = 5000
     camera = bpy.data.objects.new("SV_Input_Camera", camera_data)
     scene.collection.objects.link(camera)
-    direction = Vector((0, -1, 0.82)).normalized()
+    # Orbiting the camera counterclockwise by N degrees makes the composed
+    # building appear turned clockwise by N degrees, with no scene edits.
+    turn = math.radians(parsed.clockwise_turn)
+    direction = Vector((math.sin(turn), -math.cos(turn),
+                        math.tan(math.radians(parsed.elevation)))).normalized()
     camera.location = target + direction * 800
     camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
     scene.camera = camera
-    print("SV_CAMERA_SCALE", round(camera_data.ortho_scale, 2))
+    print("SV_CAMERA", "ORTHO", "elevation", round(parsed.elevation, 3),
+          "building_turn_clockwise", parsed.clockwise_turn,
+          "direction", tuple(round(value, 5) for value in direction),
+          "scale", round(camera_data.ortho_scale, 2))
 
     # In this front-view camera, negative X is image left. A high, left,
     # frontal sun creates form shading on right-facing walls/roof pitches.

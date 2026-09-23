@@ -5,7 +5,7 @@ The explicit intake selection is the user's reviewed shortlist minus camp racks/
 """
 import json,pathlib,sys,shutil,hashlib
 ROOT=pathlib.Path(__file__).resolve().parents[3]
-REVIEW=ROOT/'project/pantry-candidate-review'
+REVIEW=pathlib.Path('C:/Users/Shadow/Desktop/Codex/pantry-candidate-review')
 SOURCE=REVIEW/'work/CSC_Prop_Library'
 STAGE=REVIEW/'approved-library-intake'
 LIVE=pathlib.Path('C:/Users/Shadow/Desktop/Working Files/3D Art/Props/CSC_Prop_Library')

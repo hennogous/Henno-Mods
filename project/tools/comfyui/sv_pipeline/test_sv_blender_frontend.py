@@ -1,4 +1,6 @@
 import unittest
+from pathlib import Path
+import tempfile
 
 import numpy as np
 from PIL import Image
@@ -9,7 +11,7 @@ from sv_blender_frontend import (
     grade_generated_for_sam,
     prepare_preshadow_handoff,
 )
-from sv_postprocess import PostProcessConfig, resize_to_canvas
+from sv_postprocess import PostProcessConfig, RevealedPostProcessConfig, process_from_preshadow
 
 
 class BlenderFrontendTests(unittest.TestCase):
@@ -49,18 +51,25 @@ class BlenderFrontendTests(unittest.TestCase):
         self.assertLess(result_range.mean(), graded_range.mean())
         self.assertTrue(np.all(result[:, :, 3] == 177))
 
-    def test_subject_trim_fits_real_sprite_not_transparent_canvas(self):
-        source = Image.new("RGBA", (100, 100), (0, 0, 0, 0))
-        source.paste((120, 80, 40, 255), (20, 30, 60, 50))
-        config = PostProcessConfig(
-            canvas_size=100,
-            sprite_size=50,
-            trim_to_subject=True,
-            enable_base_shadow=False,
-        )
-        result = resize_to_canvas(source, config)
-        self.assertEqual(result.getchannel("A").getbbox()[2] - result.getchannel("A").getbbox()[0], 50)
-        self.assertEqual(result.getchannel("A").getbbox()[3] - result.getchannel("A").getbbox()[1], 25)
+    def test_preshadow_finalization_writes_six_state_variants(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "Sample_Visible_PreShadow.png"
+            Image.new("RGBA", (256, 256), (120, 80, 40, 255)).save(source)
+            outputs = process_from_preshadow(
+                str(source),
+                base_config=PostProcessConfig(enable_base_shadow=False),
+                revealed_config=RevealedPostProcessConfig(shadow_path=None),
+            )
+            expected = {
+                "Sample_Visible.png",
+                "Sample_Visible_UnderConstruction.png",
+                "Sample_Visible_Pillaged.png",
+                "Sample_Revealed.png",
+                "Sample_Revealed_UnderConstruction.png",
+                "Sample_Revealed_Pillaged.png",
+            }
+            self.assertEqual({Path(output).name for output in outputs}, expected)
+            self.assertTrue(all(Path(output).is_file() for output in outputs))
 
 
 if __name__ == "__main__":

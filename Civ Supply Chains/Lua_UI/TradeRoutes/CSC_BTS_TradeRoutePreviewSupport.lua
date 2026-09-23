@@ -110,6 +110,22 @@ function CSC_BTS_GetTailorsTradeRouteState(routeInfo)
 	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED);
 end
 
+local function CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute)
+	local amount = 0;
+	if bBakeryRoute then amount = amount + 1; end
+	if bCafeRoute then amount = amount + 1; end
+	if bTailorRoute then amount = amount + 1; end
+	return amount;
+end
+
+-- Exposed for the BTS chooser override, whose dedicated Amenity column is not part
+-- of the normal GameInfo.Yields arrays returned by TradeSupport.
+function CSC_BTS_GetQuarterImportAmenityAmount(routeInfo)
+	local bBakeryRoute, bCafeRoute = CSC_BTS_GetBakersTradeRouteState(routeInfo);
+	local bTailorRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
+	return CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute);
+end
+
 local function CSC_BTS_AppendTooltip(existingTooltip, newLine)
 	if newLine == nil or newLine == "" then
 		return existingTooltip or "";
@@ -183,6 +199,7 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 	if bBakeryRoute then routeCount = routeCount + 1; end
 	if bCafeRoute then routeCount = routeCount + 1; end
 	local bTailorRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
+	local amenityAmount = CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute);
 	if routeCount <= 0 and not bTailorRoute then return; end
 
 	if target == "Origin" then
@@ -210,7 +227,7 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 			local amenityTooltipIndex = CSC_BTS_GetLastPositiveYieldIndex(yieldValues);
 			yieldTooltips[amenityTooltipIndex] = CSC_BTS_AppendTooltip(
 				yieldTooltips[amenityTooltipIndex],
-				CSC_BTS_FormatQuarterAmenityTooltip(routeCount + (bTailorRoute and 1 or 0))
+				CSC_BTS_FormatQuarterAmenityTooltip(amenityAmount)
 			);
 		end
 	elseif target == "Destination" then

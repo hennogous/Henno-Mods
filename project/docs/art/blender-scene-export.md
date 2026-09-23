@@ -40,7 +40,7 @@ building IDs in `optional_buildings`. The normal runner skips those blends even
 when they share the source folder with the standard model. Pass
 `--include-optional` to export the complete optional group; the run then requires
 every listed optional blend. Keep the standard files in `required_blends`. For
-example, `project/art-export-contracts/tailor-revision09.json` exports the normal
+example, `C:\Users\Shadow\Desktop\Codex\art-export-contracts\tailor-revision09.json` exports the normal
 Tailor by default and includes `Tailor_2` only on request. The optional flag
 exports the standard files as well, so review the output and destination before
 installing an expanded-model run.

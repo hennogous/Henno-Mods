@@ -21,4 +21,6 @@ project/snapshots/
 # Local export and review output; source scripts and durable notes live elsewhere.
 project/build-logs/
 project/pantry-candidate-review/
+project/art-work/
+project/art-export-contracts/
 **/Engine.log

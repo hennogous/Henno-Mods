@@ -1147,7 +1147,8 @@
         "files": [
           "Lua_UI/TradeRoutes/CSC_BTS_TradeRoutePreviewSupport.lua",
           "Lua_UI/TradeRoutes/TradeSupport.lua",
-          "Replacements/TradeRouteChooser.lua"
+          "Replacements/TradeRouteChooser.lua",
+          "Replacements/TradeRouteChooser.xml"
         ]
       },
       {

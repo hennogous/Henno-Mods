@@ -8,7 +8,7 @@ locked_sources:
     sha256: 3777c817ccf90bf37013d0dcb017adba1e692bc15b2f77b3db04e9dc9d4720aa
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    sha256: 0cdaafef44cf7e97f105eca3c33a46e87733c190b25800a92ca3e01953933857
+    sha256: 70974a5a8f68b7ebd358644b432dfa60412d169aa7a46f75586c9f0ed9a95eb1
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
     sha256: 7abdbbca5ee4ea862a897dc38794436667a832009e033e5365b565b43c274114

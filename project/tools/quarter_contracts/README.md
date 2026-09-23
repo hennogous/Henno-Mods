@@ -18,12 +18,12 @@ catalog: district normal/FOW use 0/1, stage 2/3/4 buildings use 4/5/6, and stage
 2/3/4 services use 8/9/10. Quarter contracts may declare a narrow override;
 `design.yaml` does not repeat the default layout.
 
-Quarter contracts own gameplay, localization, build wiring, UI identifiers, and
-the SQL/Lua property bridges that expose dynamic visual state. They do not own
-placeholder 3D assets or partial ArtDef/XLP scaffolding. Once a building's final
-blend arrives, integrate its geometry, materials, AST states, ArtDefs and XLP as
-one art pass under the CSC art workflow; validate that package separately from
-the gameplay phase gates.
+Quarter contracts own gameplay, localization, core build wiring, UI identifiers,
+and the complete Service requirement sets consumed by optional integrations. The
+optional CSC Art Pack owns alternate-art property modifiers and attachments, the
+Lua property mirror, GamePropertyRanges, selection rules, models, materials,
+ArtDefs and XLP entries. Core Quarter validators enforce that ownership boundary;
+validate the Art Pack package separately from the gameplay phase gates.
 
 Each implementation phase has its own explicit gate. After approval, establish
 the phase's red state and then converge its cumulative outputs with:

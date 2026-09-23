@@ -1134,65 +1134,14 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
             ),
         )
     )
-    art_lua = (root / "Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua").read_text(encoding="utf-8")
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT ModifierType, OwnerRequirementSetId, SubjectRequirementSetId FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY'"
-        ).fetchone(),
-        ("MODIFIER_SINGLE_CITY_ADJUST_PROPERTY", "REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ", None),
-        "Tailors Stage 3 art property shares the Sacristan activation gate",
-    )
-    _expect(
-        failures,
-        _scalar(connection, "SELECT COUNT(*) FROM BuildingModifiers WHERE BuildingType='BUILDING_CSC_TAILORS_TAILOR' AND ModifierId='MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY'"),
-        1,
-        "Tailors Stage 3 producer-side art property attachment",
-    )
-    _expect(
-        failures,
-        _scalar(connection, "SELECT COUNT(*) FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_3_ART_ATTACH_QUARTER'"),
-        0,
-        "Tailors Stage 3 reverse customer art attach removed",
-    )
-    if 'Source = "CSC_TAILORS_STAGE_3_CUSTOMERS"' not in art_lua or 'Art = "CSC_TAILORS_STAGE_3_CUSTOMERS_ART"' not in art_lua:
-        failures.append("Tailor Stage 3 art Lua mirror mapping is missing")
     return failures
 
 
-def _visual_state_bridge_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
+def _optional_art_pack_boundary_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     failures: list[str] = []
-    source_property = "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION"
-    art_property = f"{source_property}_ART"
-    naming_match = re.fullmatch(
-        r"CSC_TAILORS_STAGE_(?P<stage>[1-4])_EFFECT_(?P<effect>[A-Z0-9_]+)",
-        source_property,
-    )
-    if naming_match is None or naming_match.group("effect") != "PRODUCTION":
-        failures.append(
-            "Tailors Stage 2 art property must use the reusable "
-            "CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT> naming pattern"
-        )
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT ModifierType, OwnerRequirementSetId, SubjectRequirementSetId FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY'"
-        ).fetchone(),
-        (
-            "MODIFIER_SINGLE_CITY_ADJUST_PROPERTY",
-            "REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ",
-            None,
-        ),
-        "Tailors Stage 2 art property shares the Dockmaster activation gate",
-    )
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT Name, Value FROM ModifierArguments WHERE ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY' ORDER BY Name"
-        ).fetchall(),
-        [("Amount", "1"), ("Key", source_property)],
-        "Tailors Stage 2 art source property arguments",
-    )
+    # CSC owns the reusable Service gates consumed by the optional Art Pack. The
+    # Art Pack owns every alternate-art property modifier, attachment and Lua
+    # mirror, so none of those implementation details may leak back into core.
     _expect(
         failures,
         {row[0] for row in connection.execute(
@@ -1205,23 +1154,33 @@ def _visual_state_bridge_assertions(root: Path, connection: sqlite3.Connection) 
         },
         "Tailors Stage 2 shared Service/art activation requirements",
     )
+    art_pack_modifier_ids = {
+        "MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY",
+        "MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY",
+        "MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY",
+        "MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER",
+        "MOD_CSC_TAILORS_STAGE_3_ART_ATTACH_QUARTER",
+        "MOD_CSC_TAILORS_STAGE_4_ART_ATTACH_QUARTER",
+    }
     _expect(
         failures,
         _scalar(
             connection,
-            "SELECT COUNT(*) FROM BuildingModifiers WHERE BuildingType='BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP' AND ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY'",
+            f"SELECT COUNT(*) FROM Modifiers WHERE ModifierId IN ({','.join('?' for _ in art_pack_modifier_ids)})",
+            tuple(sorted(art_pack_modifier_ids)),
         ),
-        1,
-        "Tailors Stage 2 producer-side art property attachment",
+        0,
+        "Tailors optional Art Pack modifiers absent from core gameplay",
     )
     _expect(
         failures,
         _scalar(
             connection,
-            "SELECT COUNT(*) FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER'",
+            f"SELECT COUNT(*) FROM BuildingModifiers WHERE ModifierId IN ({','.join('?' for _ in art_pack_modifier_ids)})",
+            tuple(sorted(art_pack_modifier_ids)),
         ),
         0,
-        "Tailors Stage 2 reverse customer art attach removed",
+        "Tailors optional Art Pack attachments absent from core gameplay",
     )
     _expect(
         failures,
@@ -1230,16 +1189,13 @@ def _visual_state_bridge_assertions(root: Path, connection: sqlite3.Connection) 
         "Tailors redundant art-only requirement sets removed",
     )
     bakers_sql = (root / "Civ Supply Chains/Data/CSC_Q_BAKERS.sql").read_text(encoding="utf-8-sig")
-    for modifier_id, gate in (
-        ("MOD_CSC_BAKERS_STAGE_2_PROP", "REQSET_CSC_STAGE_2_EFFECT_PREREQ"),
-        ("MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING", "REQSET_CSC_STAGE_3_EFFECT_PREREQ"),
-        ("MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM", "REQSET_CSC_STAGE_4_EFFECT_PREREQ"),
+    for modifier_id in (
+        "MOD_CSC_BAKERS_STAGE_2_PROP",
+        "MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING",
+        "MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM",
     ):
-        if not re.search(
-            rf"\(\s*'{re.escape(modifier_id)}'\s*,\s*'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY'\s*,\s*'{re.escape(gate)}'\s*,\s*NULL\s*\)",
-            bakers_sql,
-        ):
-            failures.append(f"{modifier_id} does not share its Bakers Service activation gate")
+        if modifier_id in bakers_sql:
+            failures.append(f"{modifier_id} remains in core Bakers SQL instead of the optional Art Pack")
     if re.search(r"REQSET_CSC_(?:ADJ_BAKERS_STAGE_2_ART|ADJ_BAKERY_STAGE_3_ART|ADJ_CAFE_STAGE_4_ART)", bakers_sql):
         failures.append("Bakers redundant art-only requirement sets remain in active SQL")
     if not re.search(
@@ -1247,15 +1203,6 @@ def _visual_state_bridge_assertions(root: Path, connection: sqlite3.Connection) 
         bakers_sql,
     ):
         failures.append("Bakers Stage 3 adjacent-building transaction has a material-supply owner gate")
-    art_lua = (
-        root / "Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua"
-    ).read_text(encoding="utf-8")
-    if (
-        f'Source = "{source_property}"'
-        not in art_lua
-        or f'Art = "{art_property}"' not in art_lua
-    ):
-        failures.append("Tailors Stage 2 art Lua mirror mapping is missing")
     deferred_properties = {
         "CSC_TAILORS_STAGE_4_CUSTOMERS",
         "CSC_TAILORS_STAGE_4_CUSTOMERS_ART",
@@ -1271,8 +1218,6 @@ def _visual_state_bridge_assertions(root: Path, connection: sqlite3.Connection) 
         0,
         "Tailors deferred Stage 4 art properties absent from SQL",
     )
-    if any(property_id in art_lua for property_id in deferred_properties):
-        failures.append("Tailors deferred Stage 4 art Lua mappings were implemented early")
     return failures
 
 
@@ -1310,7 +1255,7 @@ def validate_phase_assertions(
         failures.extend(_foundation_assertions(root, connection))
         if phase_id in {"materials_and_stage2", "stage3"}:
             failures.extend(_stage2_assertions(root, connection))
-            failures.extend(_visual_state_bridge_assertions(root, connection))
+            failures.extend(_optional_art_pack_boundary_assertions(root, connection))
         if phase_id == "stage3":
             failures.extend(_stage3_assertions(root, connection))
     finally:

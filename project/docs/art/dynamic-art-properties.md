@@ -61,7 +61,9 @@ The property modifier is attached directly to the Textile Workshop and uses
 `REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ`, shared with the Dockmaster effects.
 That gate includes `CIVIC_NAVAL_TRADITION`, improved Base Material supply and a
 collection-count check for an eligible adjacent Harbor/Lighthouse customer.
-The old Tailors contract still points at CSC-owned bridge files and requires a separate rebaseline before future contract-driven bridge work.
+The Tailors contract and phase validator were rebaselined on 23 September 2026:
+they retain the art-design references and validate CSC's reusable Service gates,
+but no longer declare or inspect Art Pack SQL/Lua as core Tailors outputs.
 
 ## SQL remains authoritative
 

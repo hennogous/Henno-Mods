@@ -86,6 +86,8 @@ Documentation outside the mod content tree is split by audience:
 
 ## Desktop Working Locations
 
+- **Codex outputs** = `C:\Users\Shadow\Desktop\Codex\` — put assistant-generated art trials, review packages, build logs, export contracts, snapshots, and other temporary output here. Keep `project/` for source tools and durable documentation; pass explicit output paths when a tool would otherwise write generated files there.
+
 - **Working Files** = `C:\Users\Shadow\Desktop\Working Files\` — active art assets, screenshots, VS Code workspace. Subdirs: `3D Art`, `Docs`, `Icons` (Buildings/Effects/GreatWorks/Quarters/Resources/StrategicView), `Pantry Exports`, `Screenshots`, `Textures`
 - **Modding Resources** = `C:\Users\Shadow\Desktop\Modding Resources\` — reference PDFs, tech/civic tree PNGs, ERD, MC_MasterTemplate, tutorial docs
 - **Ruivo's Mod / MAB** = `C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\NEW_ADJACENCY_BONUS_BY_RUIVO` — hard dependency for CSC, local git repo. Ruivo's tutorial: `!参考性文件(reference_folder)\Modular_Adjacency_Bonus_Tutorial-by_Ruivo.md` in that folder. Full reverse-engineered schema reference: `project/docs/integrations/MAB_MANUAL.md`
