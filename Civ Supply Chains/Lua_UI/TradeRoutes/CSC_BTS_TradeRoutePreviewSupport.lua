@@ -231,36 +231,19 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 			);
 		end
 	elseif target == "Destination" then
-		yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + routeCount;
-		yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + routeCount;
-		if bTailorRoute then
-			yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + 1;
-			yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + 1;
-		end
+		local exportAmount = routeCount + (bTailorRoute and 1 or 0);
+		yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + exportAmount;
+		yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + exportAmount;
 
 		if buildTooltip and yieldTooltips ~= nil then
-			if routeCount > 0 then
-				yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
-					yieldTooltips[PRODUCTION_INDEX],
-					CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
-				);
-			end
-			if bTailorRoute then
-				yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
-					yieldTooltips[PRODUCTION_INDEX],
-					CSC_BTS_FormatQuarterYieldTooltip(1, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
-				);
-				yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
-					yieldTooltips[GOLD_INDEX],
-					CSC_BTS_FormatQuarterYieldTooltip(1, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
-				);
-			end
-			if routeCount > 0 then
-				yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
-					yieldTooltips[GOLD_INDEX],
-					CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
-				);
-			end
+			yieldTooltips[PRODUCTION_INDEX] = CSC_BTS_PrependTooltip(
+				yieldTooltips[PRODUCTION_INDEX],
+				CSC_BTS_FormatQuarterYieldTooltip(exportAmount, "[ICON_Production]", "LOC_YIELD_PRODUCTION_NAME", "exports")
+			);
+			yieldTooltips[GOLD_INDEX] = CSC_BTS_PrependTooltip(
+				yieldTooltips[GOLD_INDEX],
+				CSC_BTS_FormatQuarterYieldTooltip(exportAmount, "[ICON_Gold]", "LOC_YIELD_GOLD_NAME", "exports")
+			);
 		end
 	end
 end

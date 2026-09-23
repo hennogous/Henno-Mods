@@ -188,6 +188,18 @@
       {
         "tag": "Criteria",
         "attributes": {
+          "id": "SimpleUIAdjustmentsMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "805cc499-c534-4e0a-bdce-32fb3c53ba38"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
           "id": "CSC_A_RESOURCES"
         },
         "children": [
@@ -1133,6 +1145,19 @@
         },
         "files": [
           "Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.xml"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_SUIA_YieldTooltipSupport",
+        "properties": {
+          "LoadOrder": "60001"
+        },
+        "criteria": [
+          "SimpleUIAdjustmentsMod"
+        ],
+        "files": [
+          "UI/Common/Additions/Suk_YieldTT.lua"
         ]
       },
       {
