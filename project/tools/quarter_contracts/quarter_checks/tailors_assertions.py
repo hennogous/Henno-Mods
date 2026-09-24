@@ -111,6 +111,7 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql",
         "Civ Supply Chains/Lua_UI/Ruivo_Adjacencies/CSC_Ruivo_AdjacencyProcessor.sql",
         "Civ Supply Chains/Lua_UI/Notifications_Suk_MCUIS/CSC_UI_DB_Dynamic.sql",
+        "Civ Supply Chains/ModSupport/ModSupport_SUIA.sql",
     ]
     try:
         for relative in scripts:
@@ -930,7 +931,158 @@ def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     return failures
 
 
-def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
+def _validate_trade_route_yield_presentation(
+    root: Path,
+    connection: sqlite3.Connection,
+    implementation: dict[str, Any],
+    requirement_id: str,
+) -> list[str]:
+    failures: list[str] = []
+    requirement = next(
+        (
+            requirement
+            for phase in implementation.get("phases", [])
+            for requirement in phase.get("requirements", [])
+            if requirement.get("id") == requirement_id
+        ),
+        None,
+    )
+    if requirement is None:
+        return [f"{requirement_id}: trade-route presentation requirement is missing"]
+    binding = requirement.get("trade_route_yield_presentation", {})
+    entries = binding.get("entries", []) if isinstance(binding, dict) else []
+    for entry in entries:
+        expected = (
+            entry["entry_id"],
+            entry["quarter_key"],
+            entry["modifier_id"],
+            entry["property_name"],
+            entry["property_scope"],
+            entry["yield_type"],
+            float(entry["amount"]),
+            entry["display_bucket"],
+        )
+        actual = connection.execute(
+            "SELECT EntryId, QuarterKey, ModifierId, PropertyName, PropertyScope, "
+            "YieldType, Amount, DisplayBucket "
+            "FROM CSC_TradeRouteYieldPresentation WHERE EntryId=?",
+            (entry["entry_id"],),
+        ).fetchone()
+        _expect(failures, actual, expected, f"{entry['entry_id']} presentation row")
+
+        modifier_arguments = dict(
+            connection.execute(
+                "SELECT Name, Value FROM ModifierArguments "
+                "WHERE ModifierId=? AND Name IN ('YieldType','Amount')",
+                (entry["modifier_id"],),
+            ).fetchall()
+        )
+        _expect(
+            failures,
+            modifier_arguments.get("YieldType"),
+            entry["yield_type"],
+            f"{entry['modifier_id']} presentation YieldType",
+        )
+        try:
+            modifier_amount = float(modifier_arguments.get("Amount"))
+        except (TypeError, ValueError):
+            modifier_amount = None
+        _expect(
+            failures,
+            modifier_amount,
+            float(entry["amount"]),
+            f"{entry['modifier_id']} presentation Amount",
+        )
+
+        property_requirements = connection.execute(
+            "SELECT Requirements.RequirementType, RequirementArguments.Value "
+            "FROM Modifiers "
+            "JOIN RequirementSetRequirements ON "
+            "RequirementSetRequirements.RequirementSetId=Modifiers.SubjectRequirementSetId "
+            "JOIN Requirements ON Requirements.RequirementId=RequirementSetRequirements.RequirementId "
+            "JOIN RequirementArguments ON "
+            "RequirementArguments.RequirementId=Requirements.RequirementId "
+            "AND RequirementArguments.Name='PropertyName' "
+            "WHERE Modifiers.ModifierId=?",
+            (entry["modifier_id"],),
+        ).fetchall()
+        _expect(
+            failures,
+            property_requirements,
+            [("REQUIREMENT_PLOT_PROPERTY_MATCHES", entry["property_name"])],
+            f"{entry['modifier_id']} presentation property gate",
+        )
+
+    modsupport_sql = (root / "Civ Supply Chains/ModSupport/ModSupport_SUIA.sql").read_text(
+        encoding="utf-8-sig"
+    )
+    for token in (
+        "CREATE TABLE IF NOT EXISTS CSC_TradeRouteYieldPresentation",
+        "EntryId",
+        "ModifierId",
+        "PropertyName",
+        "PropertyScope",
+        "DisplayBucket",
+    ):
+        if token not in modsupport_sql:
+            failures.append(f"SUIA trade-route presentation registry missing {token}")
+
+    for relative in (
+        "Civ Supply Chains/Data/CSC_Q_ALL.sql",
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+    ):
+        core_source = (root / relative).read_text(encoding="utf-8-sig")
+        if "CSC_TradeRouteYieldPresentation" in core_source:
+            failures.append(
+                f"{relative}: SUIA presentation metadata must live in ModSupport_SUIA.sql"
+            )
+
+    ui_source = (
+        root / "Civ Supply Chains/UI/Common/Additions/Suk_YieldTT.lua"
+    ).read_text(encoding="utf-8-sig")
+    for token in (
+        "GameInfo.CSC_TradeRouteYieldPresentation()",
+        "row.PropertyName",
+        "row.YieldType",
+        "row.Amount",
+        "CITY_CENTER_PLOT",
+        "OUTGOING_TRADE_ROUTES",
+    ):
+        if token not in ui_source:
+            failures.append(f"Suk_YieldTT registry consumer missing {token}")
+    for forbidden in (
+        "CSC_BAKERS_IMPORT_CONSUMER_ROUTE",
+        "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE",
+        "CSC_TAILORS_IMPORT_TAILOR_ROUTE",
+    ):
+        if forbidden in ui_source:
+            failures.append(
+                "Suk_YieldTT must consume the registry instead of hardcoding " + forbidden
+            )
+
+    for tokens in (
+        (
+            "CSC_BAKERS_IMPORT_CONSUMER_FOOD",
+            "MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD",
+            "CSC_BAKERS_IMPORT_CONSUMER_ROUTE",
+        ),
+        (
+            "CSC_BAKERS_IMPORT_SPECIALTY_FOOD",
+            "MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD",
+            "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE",
+        ),
+    ):
+        if not all(token in modsupport_sql for token in tokens):
+            failures.append(
+                "Bakers trade-route presentation row is incomplete: " + tokens[0]
+            )
+    return failures
+
+
+def _stage3_assertions(
+    root: Path, connection: sqlite3.Connection, implementation: dict[str, Any]
+) -> list[str]:
     failures: list[str] = []
     _expect(
         failures,
@@ -1069,6 +1221,11 @@ def _stage3_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
             failures.append(f"Stage 3 trade modifier missing: {modifier}")
         if yield_type not in {row[0] for row in connection.execute("SELECT Value FROM ModifierArguments WHERE ModifierId=? AND Name='YieldType'", (modifier,))}:
             failures.append(f"Stage 3 trade yield missing: {modifier} -> {yield_type}")
+    failures.extend(
+        _validate_trade_route_yield_presentation(
+            root, connection, implementation, "I.STAGE3_TRADE"
+        )
+    )
     if _scalar(connection, "SELECT COUNT(*) FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY'") != 1:
         failures.append("Stage 3 trade origin Amenity modifier missing")
     gold_connection = connection
@@ -1257,7 +1414,7 @@ def validate_phase_assertions(
             failures.extend(_stage2_assertions(root, connection))
             failures.extend(_optional_art_pack_boundary_assertions(root, connection))
         if phase_id == "stage3":
-            failures.extend(_stage3_assertions(root, connection))
+            failures.extend(_stage3_assertions(root, connection, implementation))
     finally:
         connection.close()
     return failures

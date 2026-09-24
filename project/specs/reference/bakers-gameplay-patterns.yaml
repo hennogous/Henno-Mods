@@ -237,12 +237,18 @@ patterns:
       - "Every CSC_AbilityAttachModifiers row declares NotificationQuarter explicitly; notification dispatch uses that field and never infers Quarter identity from modifier-name shape."
       - "Persistent service-grant state remains separate from the live effect anchor; removal text must not claim that the persistent service building or Citizen slot was removed."
 
-  - id: GP.SERVICE.WONDER_VARIANTS
+  - id: GP.SERVICE.WONDER_HOSTED_EXACT_PLACEMENT
     classification: specialized_optional
-    source_anchor: "CSC_Q_BAKERS.sql: stage-four service target expansion"
-    parameters: [service_type, normal_customer, wonder_customers, wonder_only_effects]
+    source_anchor: "project/tests/wonder-service-hosting-spike: exact-placement gameplay and UI proof"
+    parameters: [normal_destination, wonder_variants, activation_properties, gameplay_reconciler, city_breakdown_ui, plot_tooltip_ui]
     invariant:
-      - "Each Wonder target is explicit."
+      - "Each eligible Wonder has its own internal hidden Service building type because a city can contain only one instance of a building type. The variants may share their visible name, icon, and effects."
+      - "Wonder-hosted variants use PrereqDistrict=DISTRICT_WONDER, MustPurchase=1, and CitizenSlots=0; Wonder districts do not expose Citizen assignment."
+      - "No SQL grant modifier creates a Wonder-hosted variant. SQL grants cannot select among multiple DISTRICT_WONDER instances and place every compatible building in the city's first Wonder district."
+      - "A deterministic gameplay reconciler reads the explicit host/Service mapping and uses CityBuildQueue.CreateBuilding(buildingIndex, hostWonderPlotIndex). It keeps correct instances, relocates misplaced instances, creates missing persistent instances after activation, and removes orphans whose host no longer exists."
+      - "Gameplay placement resolves stored plots with CityBuildings.GetBuildingLocation. UI code does not assume that method is exposed; it scans district plots with CityBuildings.GetBuildingsAtLocation."
+      - "City Breakdown nests each Service beneath the Wonder on its actual stored plot, and plot tooltips list the Service on that same actual plot. UI never spoofs a desired location."
+      - "A conventional customer building whose district is unique in the city retains the normal persistent SQL-grant path; the exact-plot Lua path is only for Wonder-hosted variants."
       - "Wonder-only Great Person effects cannot leak to normal customers."
 
   - id: GP.TRADE.DOMESTIC_SUPPLY
@@ -254,6 +260,20 @@ patterns:
       - "Quarter return applies only if the origin lacks the Quarter."
       - "Amenity applies to the origin city."
       - "Gameplay, route preview, and UnitPanel display use the same property-bit contract."
+    risk: high
+
+  - id: GP.TRADE.CITY_YIELD_PRESENTATION
+    classification: reusable_parameterized
+    source_anchor: "ModSupport/ModSupport_SUIA.sql plus UI/Common/Additions/Suk_YieldTT.lua"
+    parameters: [registry_output, entry_id, quarter_key, modifier_id, property_name, property_scope, yield_type, amount, display_bucket]
+    invariant:
+      - "Every post-route city-yield modifier that should appear as a trade-route source has one explicit CSC_TradeRouteYieldPresentation allowlist row; presentation code never infers eligibility from modifier-name shape."
+      - "EntryId identifies the economic transaction tier rather than its concrete building: CSC_<QUARTER>_IMPORT_CONSUMER_<YIELD> for Stage 3 and CSC_<QUARTER>_IMPORT_SPECIALTY_<YIELD> for Stage 4."
+      - "ModifierId is traceability metadata. Runtime detection reads the same city-center plot property consumed by the modifier's REQUIREMENT_PLOT_PROPERTY_MATCHES gate."
+      - "The declared YieldType and Amount exactly match the modifier arguments, and the contract's entries aggregate to the designed origin_yields."
+      - "The Sukritact city-yield override reads the shared registry and reclassifies only active CITY_CENTER_PLOT entries assigned to OUTGOING_TRADE_ROUTES."
+      - "The registry schema and rows live in a dedicated ModSupport SQL output; both that UpdateDatabase action and the Suk_YieldTT ReplaceUIScript action are gated by SimpleUIAdjustmentsMod. Core shared and Quarter SQL contain no presentation registry metadata."
+      - "Amenities and destination-side building yields are not city-yield rows in this registry and retain their dedicated presentation surfaces."
     risk: high
 
   - id: GP.GOLD.COMPANION_SPLIT

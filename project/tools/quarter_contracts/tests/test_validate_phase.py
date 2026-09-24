@@ -97,6 +97,84 @@ class ModBuddyWiringTests(unittest.TestCase):
             [],
         )
 
+    def test_replace_ui_script_uses_lua_replace_and_context(self) -> None:
+        actions = {
+            "blocks": {
+                "inGameActions": [
+                    {
+                        "id": "CSC_WonderServicePlotTooltip_Base",
+                        "type": "ReplaceUIScript",
+                        "properties": {
+                            "LoadOrder": "504",
+                            "LuaContext": "PlotToolTip",
+                            "LuaReplace": "Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Base.lua",
+                        },
+                        "criteria": ["NoSimpleUIAdjustmentsMod"],
+                    }
+                ]
+            }
+        }
+        wiring = {
+            "actions": {
+                "wonder_tooltip": {
+                    "id": "CSC_WonderServicePlotTooltip_Base",
+                    "type": "ReplaceUIScript",
+                    "file": "Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Base.lua",
+                    "lua_context": "PlotToolTip",
+                    "load_order": 504,
+                    "criteria": ["NoSimpleUIAdjustmentsMod"],
+                }
+            }
+        }
+        self.assertEqual(
+            PHASES.validate_action_wiring(actions, wiring, {"wonder_tooltip"}), []
+        )
+
+    def test_inverse_mod_criterion_is_validated(self) -> None:
+        actions = {
+            "blocks": {
+                "actionCriteria": [
+                    {
+                        "tag": "Criteria",
+                        "attributes": {"id": "NoSimpleUIAdjustmentsMod"},
+                        "children": [
+                            {
+                                "tag": "ModInUse",
+                                "attributes": {"inverse": "1"},
+                                "text": "805cc499-c534-4e0a-bdce-32fb3c53ba38",
+                            }
+                        ],
+                    }
+                ]
+            }
+        }
+        wiring = {
+            "criteria_contracts": {
+                "NoSimpleUIAdjustmentsMod": {
+                    "kind": "ModInUse",
+                    "value": "805cc499-c534-4e0a-bdce-32fb3c53ba38",
+                    "inverse": True,
+                }
+            },
+            "actions": {
+                "wonder_tooltip": {
+                    "criteria": ["NoSimpleUIAdjustmentsMod"],
+                }
+            },
+        }
+        self.assertEqual(
+            PHASES.validate_action_criteria_wiring(
+                actions, wiring, {"wonder_tooltip"}
+            ),
+            [],
+        )
+
+        actions["blocks"]["actionCriteria"][0]["children"][0]["attributes"] = {}
+        failures = PHASES.validate_action_criteria_wiring(
+            actions, wiring, {"wonder_tooltip"}
+        )
+        self.assertTrue(any("inverse is False" in item for item in failures))
+
 
 class TailorsPhaseContractTests(unittest.TestCase):
     @classmethod
@@ -124,6 +202,14 @@ class TailorsPhaseContractTests(unittest.TestCase):
             PHASES.ROOT, "stage4", self.implementation
         )
         self.assertTrue(any("still red" in item for item in failures))
+
+    def test_stage3_semantics_do_not_require_blocked_stage4_wonder_types(self) -> None:
+        failures = ASSERTIONS.validate_phase_assertions(
+            PHASES.ROOT, "stage3", self.implementation
+        )
+        self.assertFalse(
+            any("BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI" in item for item in failures)
+        )
 
     def test_dockmaster_mcuis_strings_reject_a_second_sign(self) -> None:
         source = (
@@ -182,6 +268,29 @@ class TailorsPhaseContractTests(unittest.TestCase):
         self.assertTrue(
             any("optional CSC Art Pack owns" in assertion for assertion in dockmaster["static_assertions"])
         )
+
+    def test_suk_yield_tooltip_uses_registry_without_quarter_hardcodes(self) -> None:
+        source = (
+            PHASES.ROOT / "Civ Supply Chains/UI/Common/Additions/Suk_YieldTT.lua"
+        ).read_text(encoding="utf-8")
+        self.assertIn("GameInfo.CSC_TradeRouteYieldPresentation()", source)
+        self.assertIn("row.PropertyName", source)
+        self.assertNotIn("CSC_BAKERS_IMPORT_CONSUMER_ROUTE", source)
+        self.assertNotIn("CSC_TAILORS_IMPORT_TAILOR_ROUTE", source)
+
+        modsupport = (
+            PHASES.ROOT / "Civ Supply Chains/ModSupport/ModSupport_SUIA.sql"
+        ).read_text(encoding="utf-8")
+        self.assertIn("CREATE TABLE IF NOT EXISTS CSC_TradeRouteYieldPresentation", modsupport)
+        for relative in (
+            "Civ Supply Chains/Data/CSC_Q_ALL.sql",
+            "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+            "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        ):
+            self.assertNotIn(
+                "CSC_TradeRouteYieldPresentation",
+                (PHASES.ROOT / relative).read_text(encoding="utf-8"),
+            )
 
     def test_physical_art_is_not_an_implementation_contract_output(self) -> None:
         forbidden = {

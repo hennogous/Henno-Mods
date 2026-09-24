@@ -1,7 +1,7 @@
 -- Suk_ReligionTT
 -- Author: Sukrit
 -- DateCreated: 10/20/2017 4:30:19 PM
--- CSC compatibility: reclassify Bakers import Food as an outgoing trade-route yield.
+-- CSC compatibility: reclassify origin-city Quarter import yields as outgoing trade-route yields.
 --------------------------------------------------------------
 include( "InstanceManager" );
 include( "SupportFunctions" );
@@ -89,12 +89,26 @@ function TTtoTable(sTT)
 	return tTT
 end
 --------------------------------------------------------------
--- CSC Bakers import Food compatibility
+-- CSC origin-city trade-route yield compatibility
 --------------------------------------------------------------
-local CSC_PROP_IMPORT_CONSUMER_ROUTE = "CSC_BAKERS_IMPORT_CONSUMER_ROUTE";
-local CSC_PROP_IMPORT_SPECIALTY_ROUTE = "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE";
 local CSC_LOC_GAME_EFFECTS = "LOC_CITY_YIELD_FROM_GAMEEFFECTS_TOOLTIP";
 local CSC_LOC_OUTGOING_ROUTES = "LOC_CITY_YIELD_FROM_OUTGOING_TRADE_ROUTES_TOOLTIP";
+local CSC_PROPERTY_SCOPE_CITY_CENTER_PLOT = "CITY_CENTER_PLOT";
+local CSC_DISPLAY_BUCKET_OUTGOING_ROUTES = "OUTGOING_TRADE_ROUTES";
+local m_CSCOutgoingRouteYieldRules = {};
+
+if GameInfo.CSC_TradeRouteYieldPresentation ~= nil then
+	for row in GameInfo.CSC_TradeRouteYieldPresentation() do
+		if row.PropertyScope == CSC_PROPERTY_SCOPE_CITY_CENTER_PLOT
+			and row.DisplayBucket == CSC_DISPLAY_BUCKET_OUTGOING_ROUTES then
+			m_CSCOutgoingRouteYieldRules[row.YieldType] = m_CSCOutgoingRouteYieldRules[row.YieldType] or {};
+			table.insert(m_CSCOutgoingRouteYieldRules[row.YieldType], {
+				PropertyName = row.PropertyName,
+				Amount = tonumber(row.Amount) or 0,
+			});
+		end
+	end
+end
 
 local function CSC_IsPositiveProperty(owner, propertyName)
 	if owner == nil then return false; end
@@ -102,19 +116,26 @@ local function CSC_IsPositiveProperty(owner, propertyName)
 	return value ~= nil and value > 0;
 end
 
-local function CSC_GetOutgoingFoodAmount(sYieldName)
-	if sYieldName ~= "Food" then return 0; end
+local function CSC_GetOutgoingRouteYieldAmount(sYieldName)
+	local rules = m_CSCOutgoingRouteYieldRules["YIELD_" .. string.upper(sYieldName or "")];
+	if rules == nil then return 0; end
+
 	local pCity = UI.GetHeadSelectedCity();
 	if pCity == nil then return 0; end
+	local pCityPlot = Map.GetPlot(pCity:GetX(), pCity:GetY());
+	if pCityPlot == nil then return 0; end
 
 	local amount = 0;
-	if CSC_IsPositiveProperty(pCity, CSC_PROP_IMPORT_CONSUMER_ROUTE) then amount = amount + 1; end
-	if CSC_IsPositiveProperty(pCity, CSC_PROP_IMPORT_SPECIALTY_ROUTE) then amount = amount + 1; end
+	for _, rule in ipairs(rules) do
+		if CSC_IsPositiveProperty(pCityPlot, rule.PropertyName) then
+			amount = amount + rule.Amount;
+		end
+	end
 	return amount;
 end
 
 local function CSC_GetTooltipLabel(localizationKey)
-	local entries = TTtoTable(Locale.Lookup(localizationKey, 0));
+	local entries = TTtoTable(Locale.Lookup(localizationKey, {Name = "Value", Value = 0}));
 	if entries == nil or entries[1] == nil then return nil; end
 	return entries[1][3];
 end
@@ -123,7 +144,7 @@ local function CSC_FormatSignedYield(value)
 	return Locale.ToNumber(value, "+#,###.#;-#,###.#");
 end
 
-local function CSC_ReclassifyOutgoingFood(tEntries, amount)
+local function CSC_ReclassifyOutgoingRouteYield(tEntries, amount)
 	if tEntries == nil or amount == nil or amount <= 0 then return; end
 
 	local modifierLabel = CSC_GetTooltipLabel(CSC_LOC_GAME_EFFECTS);
@@ -142,7 +163,7 @@ local function CSC_ReclassifyOutgoingFood(tEntries, amount)
 		end
 	end
 
-	-- If the flat modifier source is absent, another UI layer may already have classified the Food.
+	-- If the flat modifier source is absent, another UI layer may already have classified the yield.
 	if modifierIndex == nil or modifierValue == nil then return; end
 
 	if outgoingIndex ~= nil and outgoingValue ~= nil then
@@ -158,7 +179,10 @@ local function CSC_ReclassifyOutgoingFood(tEntries, amount)
 	end
 
 	if outgoingIndex == nil then
-		local outgoingEntries = TTtoTable(Locale.Lookup(CSC_LOC_OUTGOING_ROUTES, amount));
+		local outgoingEntries = TTtoTable(Locale.Lookup(
+			CSC_LOC_OUTGOING_ROUTES,
+			{Name = "Value", Value = amount}
+		));
 		if outgoingEntries ~= nil and outgoingEntries[1] ~= nil then
 			local insertIndex = modifierWasRemoved and modifierIndex or (modifierIndex + 1);
 			table.insert(tEntries, insertIndex, outgoingEntries[1]);
@@ -172,13 +196,13 @@ local sTooltip_Base_Cache
 function UpdateSuk_YieldTooltip(tControl, iYieldFilter, iYieldIncome, sTooltip_Base)
 
 	local sYieldName = string.match(tControl:GetID(), "(.+)Grid")
-	local iCSCOutgoingFood = CSC_GetOutgoingFoodAmount(sYieldName);
-	local sTooltipCacheKey = tostring(tControl:GetID()) .. "|" .. tostring(iCSCOutgoingFood) .. "|" .. tostring(sTooltip_Base);
+	local iCSCOutgoingRouteYield = CSC_GetOutgoingRouteYieldAmount(sYieldName);
+	local sTooltipCacheKey = tostring(tControl:GetID()) .. "|" .. tostring(iCSCOutgoingRouteYield) .. "|" .. tostring(sTooltip_Base);
 	if sTooltip_Base_Cache == sTooltipCacheKey then return end
 	sTooltip_Base_Cache = sTooltipCacheKey
 
 	tEntries = TTtoTable(sTooltip_Base)
-	CSC_ReclassifyOutgoingFood(tEntries, iCSCOutgoingFood);
+	CSC_ReclassifyOutgoingRouteYield(tEntries, iCSCOutgoingRouteYield);
 	m_Suk_EntriesIM:ResetInstances()
 
 	local tInstances = {}

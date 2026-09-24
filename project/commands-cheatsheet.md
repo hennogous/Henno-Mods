@@ -61,6 +61,9 @@ py icon_img2img.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Tailor
 
 ### Building SV sprites
 
+give codex the blend and output location
+stroke 8px
+
 cd C:\Users\Shadow\ComfyUI
 py -3.12 main.py --listen 127.0.0.1 --port 8188
 

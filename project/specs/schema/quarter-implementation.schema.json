@@ -61,6 +61,19 @@
       "properties": {
         "action_manifest": {"type": "string", "minLength": 1},
         "source_project": {"type": "string", "minLength": 1},
+        "criteria_contracts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["kind", "value", "inverse"],
+            "properties": {
+              "kind": {"enum": ["ModInUse"]},
+              "value": {"type": "string", "minLength": 1},
+              "inverse": {"type": "boolean"}
+            },
+            "additionalProperties": false
+          }
+        },
         "actions": {
           "type": "object",
           "additionalProperties": {
@@ -68,11 +81,18 @@
             "required": ["id", "type", "file", "load_order", "criteria"],
             "properties": {
               "id": {"type": "string", "minLength": 1},
-              "type": {"enum": ["UpdateDatabase", "UpdateText", "UpdateIcons", "ImportFiles", "AddGameplayScripts", "AddUserInterfaces"]},
+              "type": {"enum": ["UpdateDatabase", "UpdateText", "UpdateIcons", "ImportFiles", "AddGameplayScripts", "AddUserInterfaces", "ReplaceUIScript"]},
               "file": {"type": "string", "minLength": 1},
               "load_order": {"oneOf": [{"type": "integer"}, {"type": "string", "pattern": "^-?[0-9]+$"}]},
-              "criteria": {"type": "array", "items": {"type": "string", "minLength": 1}}
+              "criteria": {"type": "array", "items": {"type": "string", "minLength": 1}},
+              "lua_context": {"type": "string", "minLength": 1}
             },
+            "allOf": [
+              {
+                "if": {"properties": {"type": {"const": "ReplaceUIScript"}}},
+                "then": {"required": ["lua_context"]}
+              }
+            ],
             "additionalProperties": false
           }
         }
@@ -188,7 +208,9 @@
                 "localization_patterns": {"type": "array", "items": {"type": "string"}},
                 "outputs": {"type": "array", "items": {"type": "string"}},
                 "static_assertions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-                "runtime_scenarios": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+                "runtime_scenarios": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+                "trade_route_yield_presentation": {"$ref": "#/$defs/tradeRouteYieldPresentationBinding"},
+                "wonder_service_binding": {"$ref": "#/$defs/wonderServiceBinding"}
               },
               "additionalProperties": true
             }
@@ -223,6 +245,108 @@
         "type": "object",
         "required": ["id", "affects", "question", "resolution_required_before_phase"]
       }
+    }
+  },
+  "$defs": {
+    "tradeRouteYieldPresentationBinding": {
+      "type": "object",
+      "required": ["registry_table", "registry_output", "ui_output", "entries"],
+      "properties": {
+        "registry_table": {"const": "CSC_TradeRouteYieldPresentation"},
+        "registry_output": {"type": "string", "minLength": 1},
+        "ui_output": {"type": "string", "minLength": 1},
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["entry_id", "quarter_key", "modifier_id", "property_name", "property_scope", "yield_type", "amount", "display_bucket"],
+            "properties": {
+              "entry_id": {"type": "string", "pattern": "^CSC_[A-Z][A-Z0-9_]*_IMPORT_(CONSUMER|SPECIALTY)_[A-Z][A-Z0-9_]*$"},
+              "quarter_key": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]+$"},
+              "modifier_id": {"type": "string", "pattern": "^MOD_CSC_[A-Z0-9_]+$"},
+              "property_name": {"type": "string", "pattern": "^CSC_[A-Z0-9_]+$"},
+              "property_scope": {"const": "CITY_CENTER_PLOT"},
+              "yield_type": {"type": "string", "pattern": "^YIELD_[A-Z0-9_]+$"},
+              "amount": {"type": "number", "exclusiveMinimum": 0},
+              "display_bucket": {"const": "OUTGOING_TRADE_ROUTES"}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "wonderServiceBinding": {
+      "type": "object",
+      "required": ["wonder_variants", "placement", "ui"],
+      "properties": {
+        "normal_destination": {
+          "type": "object",
+          "required": ["service_building_type", "district_type", "customer_building_type", "placement_method", "citizen_slots"],
+          "properties": {
+            "service_building_type": {"type": "string", "minLength": 1},
+            "district_type": {"type": "string", "minLength": 1},
+            "customer_building_type": {"type": "string", "minLength": 1},
+            "placement_method": {"const": "persistent_sql_grant"},
+            "citizen_slots": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": false
+        },
+        "wonder_variants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["host_wonder_type", "service_building_type", "activation_property"],
+            "properties": {
+              "host_wonder_type": {"type": "string", "minLength": 1},
+              "service_building_type": {"type": "string", "minLength": 1},
+              "activation_property": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        },
+        "placement": {
+          "type": "object",
+          "required": ["method", "output", "building_prereq_district", "wonder_citizen_slots", "sql_grant_modifier", "create_api", "gameplay_location_api", "persistent_after_activation", "relocate_misplaced", "remove_orphans", "deterministic", "refresh_events"],
+          "properties": {
+            "method": {"const": "gameplay_lua_exact_plot_reconciler"},
+            "output": {"type": "string", "minLength": 1},
+            "building_prereq_district": {"const": "DISTRICT_WONDER"},
+            "wonder_citizen_slots": {"const": 0},
+            "sql_grant_modifier": {"const": false},
+            "create_api": {"const": "CityBuildQueue.CreateBuilding(buildingIndex, plotIndex)"},
+            "gameplay_location_api": {"const": "CityBuildings.GetBuildingLocation"},
+            "persistent_after_activation": {"const": true},
+            "relocate_misplaced": {"const": true},
+            "remove_orphans": {"const": true},
+            "deterministic": {"const": true},
+            "refresh_events": {
+              "type": "array",
+              "minItems": 4,
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            }
+          },
+          "additionalProperties": false
+        },
+        "ui": {
+          "type": "object",
+          "required": ["city_breakdown", "plot_tooltip", "location_api", "spoof_location", "city_breakdown_output", "base_plot_tooltip_output", "suk_plot_tooltip_output"],
+          "properties": {
+            "city_breakdown": {"const": "actual_plot_nested_under_host_wonder"},
+            "plot_tooltip": {"const": "actual_buildings_at_location"},
+            "location_api": {"const": "CityBuildings.GetBuildingsAtLocation"},
+            "spoof_location": {"const": false},
+            "city_breakdown_output": {"type": "string", "minLength": 1},
+            "base_plot_tooltip_output": {"type": "string", "minLength": 1},
+            "suk_plot_tooltip_output": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": true

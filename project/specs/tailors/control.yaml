@@ -5,7 +5,7 @@ status: implementing
 locked_sources:
   - path: docs/content/quarters/tailors.md
     role: canonical_design
-    sha256: 3777c817ccf90bf37013d0dcb017adba1e692bc15b2f77b3db04e9dc9d4720aa
+    sha256: 60f9cbd3be41990380017ed950c53d9117acb4418955ba80f273c963c1c90a1d
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
     sha256: 70974a5a8f68b7ebd358644b432dfa60412d169aa7a46f75586c9f0ed9a95eb1
@@ -55,7 +55,7 @@ contract_approvals:
     sha256:
 
 phase_gates:
-  foundation: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: 1748f83b91ccfb9bcfb3ad4169fb78f0049fa0aea73d5a9e9eac2d4d3dee408d, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
+  foundation: {status: approved, approved_by: user, approved_at: '2026-09-24T11:33:30.9018069+02:00', design_sha256: dd4494002b2c6cdd3040d78121602be1cfdb33826cbb7ec1676e899d342dbb8d, ready_at: null, accepted_by: null, accepted_at: null}
   materials_and_stage2: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: fa1db2c48baef16595b30497625875ae1410e95c489bd3d4c8ceba8219d6b6e2, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
   stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-09-12T20:17:35.7568139+02:00', design_sha256: d2da83dc38ee9d64442cdc7ac9c45cd3c9c4792cfcbc3efc27a14ce835e1429a, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
   stage4: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}

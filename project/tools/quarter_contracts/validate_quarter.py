@@ -281,6 +281,369 @@ def flatten_requirements(implementation: dict[str, Any]) -> list[dict[str, Any]]
     ]
 
 
+DOMESTIC_TRADE_PATTERN = "GP.TRADE.DOMESTIC_SUPPLY"
+TRADE_YIELD_PRESENTATION_PATTERN = "GP.TRADE.CITY_YIELD_PRESENTATION"
+WONDER_SERVICE_PATTERN = "GP.SERVICE.WONDER_HOSTED_EXACT_PLACEMENT"
+
+
+def design_origin_yields(value: Any) -> dict[str, float]:
+    """Collect designed origin yields from a referenced trade-design subtree."""
+    totals: dict[str, float] = {}
+    if isinstance(value, dict):
+        origin_yields = value.get("origin_yields")
+        if isinstance(origin_yields, dict):
+            for yield_type, amount in origin_yields.items():
+                if isinstance(yield_type, str) and isinstance(amount, (int, float)):
+                    totals[yield_type] = totals.get(yield_type, 0) + float(amount)
+        for key, child in value.items():
+            if key != "origin_yields":
+                for yield_type, amount in design_origin_yields(child).items():
+                    totals[yield_type] = totals.get(yield_type, 0) + amount
+    elif isinstance(value, list):
+        for child in value:
+            for yield_type, amount in design_origin_yields(child).items():
+                totals[yield_type] = totals.get(yield_type, 0) + amount
+    return totals
+
+
+def validate_trade_route_yield_presentation_requirement(
+    requirement: dict[str, Any],
+    origin_yields: dict[str, float],
+    implementation: dict[str, Any],
+    result: Validation,
+) -> None:
+    """Validate the explicit contract that reclassifies CSC route-yield modifiers."""
+    requirement_id = str(requirement.get("id", "<unknown>"))
+    patterns = set(requirement.get("gameplay_patterns", []))
+    binding = requirement.get("trade_route_yield_presentation")
+    is_domestic_trade = DOMESTIC_TRADE_PATTERN in patterns
+    has_pattern = TRADE_YIELD_PRESENTATION_PATTERN in patterns
+
+    if is_domestic_trade and origin_yields and not has_pattern:
+        result.error(
+            f"{requirement_id}: domestic trade origin_yields require "
+            f"{TRADE_YIELD_PRESENTATION_PATTERN}"
+        )
+    if is_domestic_trade and origin_yields and not isinstance(binding, dict):
+        result.error(
+            f"{requirement_id}: domestic trade origin_yields require "
+            "trade_route_yield_presentation"
+        )
+    if binding is not None and not has_pattern:
+        result.error(
+            f"{requirement_id}: trade_route_yield_presentation requires "
+            f"{TRADE_YIELD_PRESENTATION_PATTERN}"
+        )
+    if has_pattern and not isinstance(binding, dict):
+        result.error(
+            f"{requirement_id}: {TRADE_YIELD_PRESENTATION_PATTERN} requires "
+            "trade_route_yield_presentation"
+        )
+    if not has_pattern or not isinstance(binding, dict):
+        return
+
+    entries = binding.get("entries", [])
+    if not isinstance(entries, list):
+        return
+    for label, key in (
+        ("entry ID", "entry_id"),
+        ("modifier ID", "modifier_id"),
+        ("property name", "property_name"),
+    ):
+        values = [entry.get(key) for entry in entries if isinstance(entry, dict)]
+        text_values = [value for value in values if isinstance(value, str)]
+        if len(text_values) != len(set(text_values)):
+            result.error(
+                f"{requirement_id}: duplicate {label} in "
+                "trade_route_yield_presentation"
+            )
+
+    expected_quarter = str(implementation.get("quarter", "")).upper()
+    transaction_tiers = {
+        tier
+        for reference in requirement.get("design_refs", [])
+        for marker, tier in (
+            (".D.STAGE3.", "CONSUMER"),
+            (".D.STAGE4.", "SPECIALTY"),
+        )
+        if marker in reference
+    }
+    expected_tier = next(iter(transaction_tiers)) if len(transaction_tiers) == 1 else None
+    if entries and expected_tier is None:
+        result.error(
+            f"{requirement_id}: presentation entries require exactly one Stage 3 "
+            "CONSUMER or Stage 4 SPECIALTY design reference"
+        )
+    actual_yields: dict[str, float] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("quarter_key") != expected_quarter:
+            result.error(
+                f"{requirement_id}: presentation entry {entry.get('entry_id')} "
+                f"must use quarter_key {expected_quarter}"
+            )
+        yield_type = entry.get("yield_type")
+        amount = entry.get("amount")
+        if isinstance(yield_type, str) and yield_type.startswith("YIELD_") and expected_tier:
+            expected_entry_id = (
+                f"CSC_{expected_quarter}_IMPORT_{expected_tier}_"
+                f"{yield_type.removeprefix('YIELD_')}"
+            )
+            if entry.get("entry_id") != expected_entry_id:
+                result.error(
+                    f"{requirement_id}: presentation entry ID must be "
+                    f"{expected_entry_id}, found {entry.get('entry_id')}"
+                )
+        if isinstance(yield_type, str) and isinstance(amount, (int, float)):
+            actual_yields[yield_type] = actual_yields.get(yield_type, 0) + float(amount)
+    if actual_yields != origin_yields:
+        result.error(
+            f"{requirement_id}: presentation yields differ from design origin_yields; "
+            f"expected={origin_yields}, actual={actual_yields}"
+        )
+
+    registry_output = binding.get("registry_output")
+    ui_output = binding.get("ui_output")
+    declared_outputs = set(requirement.get("outputs", []))
+    known_outputs = set(implementation.get("planned_outputs", {}))
+    actions = implementation.get("build_wiring", {}).get("actions", {})
+    if registry_output not in known_outputs:
+        result.error(
+            f"{requirement_id}: presentation references unknown registry output "
+            f"{registry_output}"
+        )
+    if registry_output not in declared_outputs:
+        result.error(
+            f"{requirement_id}: outputs omit presentation registry output "
+            f"{registry_output}"
+        )
+    if ui_output not in known_outputs:
+        result.error(f"{requirement_id}: presentation references unknown output {ui_output}")
+    if ui_output not in declared_outputs:
+        result.error(f"{requirement_id}: outputs omit presentation output {ui_output}")
+    registry_path = str(
+        implementation.get("planned_outputs", {}).get(registry_output, "")
+    ).replace("\\", "/")
+    if not registry_path.startswith("Civ Supply Chains/ModSupport/"):
+        result.error(
+            f"{requirement_id}: presentation registry output must live in ModSupport"
+        )
+    registry_action = actions.get(registry_output, {})
+    if registry_action.get("type") != "UpdateDatabase":
+        result.error(
+            f"{requirement_id}: presentation registry output {registry_output} "
+            "must use UpdateDatabase"
+        )
+    if registry_action.get("criteria") != ["SimpleUIAdjustmentsMod"]:
+        result.error(
+            f"{requirement_id}: presentation registry output {registry_output} "
+            "must be gated only by SimpleUIAdjustmentsMod"
+        )
+
+    ui_action = actions.get(ui_output, {})
+    if ui_action.get("type") != "ReplaceUIScript":
+        result.error(
+            f"{requirement_id}: presentation output {ui_output} must use ReplaceUIScript"
+        )
+    if ui_action.get("lua_context") != "Suk_YieldTT":
+        result.error(
+            f"{requirement_id}: presentation output {ui_output} must replace Suk_YieldTT"
+        )
+    if ui_action.get("criteria") != ["SimpleUIAdjustmentsMod"]:
+        result.error(
+            f"{requirement_id}: presentation output {ui_output} must be gated only "
+            "by SimpleUIAdjustmentsMod"
+        )
+    registry_order = registry_action.get("load_order")
+    ui_order = ui_action.get("load_order")
+    if not isinstance(registry_order, int) or not isinstance(ui_order, int) or registry_order >= ui_order:
+        result.error(
+            f"{requirement_id}: presentation registry must load before Suk_YieldTT"
+        )
+
+
+def validate_trade_route_yield_presentation_uniqueness(
+    requirements: list[dict[str, Any]], result: Validation
+) -> None:
+    """Reject registry identities reused across separate requirement bindings."""
+    seen: dict[str, dict[str, str]] = {
+        "entry_id": {},
+        "modifier_id": {},
+        "property_name": {},
+    }
+    for requirement in requirements:
+        requirement_id = str(requirement.get("id", "<unknown>"))
+        binding = requirement.get("trade_route_yield_presentation")
+        if not isinstance(binding, dict):
+            continue
+        for entry in binding.get("entries", []):
+            if not isinstance(entry, dict):
+                continue
+            for key, owners in seen.items():
+                value = entry.get(key)
+                if not isinstance(value, str):
+                    continue
+                prior = owners.get(value)
+                if prior is not None and prior != requirement_id:
+                    result.error(
+                        f"{requirement_id}: {key} {value} is already bound by {prior}"
+                    )
+                owners[value] = requirement_id
+
+
+def wonder_service_destinations(value: Any) -> list[dict[str, Any]]:
+    """Return explicit Wonder-tile destinations from a referenced Service design node."""
+    if not isinstance(value, dict) or not value.get("service"):
+        return []
+    destinations = value.get("destinations", [])
+    if not isinstance(destinations, list):
+        return []
+    return [
+        destination
+        for destination in destinations
+        if isinstance(destination, dict)
+        and destination.get("placement") == "wonder_tile"
+        and isinstance(destination.get("wonder"), str)
+    ]
+
+
+def validate_wonder_service_requirement(
+    requirement: dict[str, Any],
+    design_destinations: list[dict[str, Any]],
+    implementation: dict[str, Any],
+    result: Validation,
+) -> None:
+    requirement_id = str(requirement.get("id", "<unknown>"))
+    patterns = set(requirement.get("gameplay_patterns", []))
+    binding = requirement.get("wonder_service_binding")
+    has_pattern = WONDER_SERVICE_PATTERN in patterns
+
+    if design_destinations and not has_pattern:
+        result.error(
+            f"{requirement_id}: Wonder-tile Service design requires {WONDER_SERVICE_PATTERN}"
+        )
+    if design_destinations and not isinstance(binding, dict):
+        result.error(
+            f"{requirement_id}: Wonder-tile Service design requires wonder_service_binding"
+        )
+    if binding is not None and not has_pattern:
+        result.error(
+            f"{requirement_id}: wonder_service_binding requires {WONDER_SERVICE_PATTERN}"
+        )
+    if not has_pattern or not isinstance(binding, dict):
+        return
+
+    variants = binding.get("wonder_variants", [])
+    if not isinstance(variants, list):
+        return
+    hosts = [variant.get("host_wonder_type") for variant in variants if isinstance(variant, dict)]
+    services = [variant.get("service_building_type") for variant in variants if isinstance(variant, dict)]
+    properties = [variant.get("activation_property") for variant in variants if isinstance(variant, dict)]
+    for label, values in (
+        ("host Wonder", hosts),
+        ("internal Service building", services),
+        ("activation property", properties),
+    ):
+        text_values = [value for value in values if isinstance(value, str)]
+        if len(text_values) != len(set(text_values)):
+            result.error(f"{requirement_id}: duplicate {label} in wonder_service_binding")
+
+    expected_hosts = {destination["wonder"] for destination in design_destinations}
+    actual_hosts = {host for host in hosts if isinstance(host, str)}
+    if expected_hosts != actual_hosts:
+        result.error(
+            f"{requirement_id}: Wonder host mapping differs from design; "
+            f"missing={sorted(expected_hosts - actual_hosts)}, "
+            f"extra={sorted(actual_hosts - expected_hosts)}"
+        )
+    if any(destination.get("citizen_slots") != 0 for destination in design_destinations):
+        result.error(
+            f"{requirement_id}: every Wonder-tile destination must declare citizen_slots: 0"
+        )
+
+    normal = binding.get("normal_destination")
+    if isinstance(normal, dict) and normal.get("service_building_type") in services:
+        result.error(
+            f"{requirement_id}: normal and Wonder destinations must use distinct building types"
+        )
+
+    placement = binding.get("placement", {})
+    ui = binding.get("ui", {})
+    output_roles = {
+        "gameplay reconciler": placement.get("output"),
+        "City Breakdown UI": ui.get("city_breakdown_output"),
+        "base PlotToolTip UI": ui.get("base_plot_tooltip_output"),
+        "Sukritact PlotToolTip UI": ui.get("suk_plot_tooltip_output"),
+    }
+    declared_outputs = set(requirement.get("outputs", []))
+    known_outputs = set(implementation.get("planned_outputs", {}))
+    actions = implementation.get("build_wiring", {}).get("actions", {})
+    expected_action_types = {
+        "gameplay reconciler": "AddGameplayScripts",
+        "City Breakdown UI": "AddUserInterfaces",
+        "base PlotToolTip UI": "ReplaceUIScript",
+        "Sukritact PlotToolTip UI": "ReplaceUIScript",
+    }
+    for role, output_key in output_roles.items():
+        if not isinstance(output_key, str):
+            continue
+        if output_key not in known_outputs:
+            result.error(f"{requirement_id}: {role} references unknown output {output_key}")
+        if output_key not in declared_outputs:
+            result.error(f"{requirement_id}: outputs omit {role} output {output_key}")
+        action = actions.get(output_key, {})
+        expected_type = expected_action_types[role]
+        if action.get("type") != expected_type:
+            result.error(
+                f"{requirement_id}: {role} output {output_key} must use {expected_type}"
+            )
+        if expected_type == "ReplaceUIScript" and action.get("lua_context") != "PlotToolTip":
+            result.error(
+                f"{requirement_id}: {role} output {output_key} must replace PlotToolTip"
+            )
+
+    base_output = output_roles.get("base PlotToolTip UI")
+    suk_output = output_roles.get("Sukritact PlotToolTip UI")
+    if isinstance(base_output, str):
+        if "NoSimpleUIAdjustmentsMod" not in actions.get(base_output, {}).get("criteria", []):
+            result.error(
+                f"{requirement_id}: base PlotToolTip replacement requires NoSimpleUIAdjustmentsMod"
+            )
+        inverse_contract = (
+            implementation.get("build_wiring", {})
+            .get("criteria_contracts", {})
+            .get("NoSimpleUIAdjustmentsMod", {})
+        )
+        if inverse_contract != {
+            "kind": "ModInUse",
+            "value": "805cc499-c534-4e0a-bdce-32fb3c53ba38",
+            "inverse": True,
+        }:
+            result.error(
+                f"{requirement_id}: NoSimpleUIAdjustmentsMod must be the inverse "
+                "ModInUse criterion for Simple UI Adjustments"
+            )
+    if isinstance(suk_output, str):
+        if "SimpleUIAdjustmentsMod" not in actions.get(suk_output, {}).get("criteria", []):
+            result.error(
+                f"{requirement_id}: Sukritact PlotToolTip replacement requires SimpleUIAdjustmentsMod"
+            )
+
+    required_refreshes = {
+        "INITIALIZE",
+        "Events.LoadScreenClose",
+        "Events.WonderCompleted",
+        "Events.PlayerTurnActivated",
+    }
+    actual_refreshes = set(placement.get("refresh_events", []))
+    if not required_refreshes.issubset(actual_refreshes):
+        result.error(
+            f"{requirement_id}: exact-plot reconciler omits refresh events "
+            + ", ".join(sorted(required_refreshes - actual_refreshes))
+        )
+
+
 ACTIVE_PHASE_STATUSES = {"approved", "implementing", "ready_for_review", "accepted"}
 
 
@@ -384,12 +747,21 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
 
     for requirement in requirements:
         requirement_id = requirement.get("id", "<unknown>")
+        referenced_wonder_destinations: list[dict[str, Any]] = []
+        referenced_origin_yields: dict[str, float] = {}
         for reference in requirement.get("design_refs", []):
             resolved, design_value = resolve_design_ref(design, reference)
             if not resolved:
                 result.error(f"{requirement_id}: unresolved design ref {reference}")
             else:
                 used_design_ids.update(collect_design_ids(design_value))
+                referenced_wonder_destinations.extend(
+                    wonder_service_destinations(design_value)
+                )
+                for yield_type, amount in design_origin_yields(design_value).items():
+                    referenced_origin_yields[yield_type] = (
+                        referenced_origin_yields.get(yield_type, 0) + amount
+                    )
         for pattern_id in requirement.get("gameplay_patterns", []):
             pattern = gameplay_patterns.get(pattern_id)
             if pattern is None:
@@ -402,6 +774,20 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
         for output in requirement.get("outputs", []):
             if output not in output_keys:
                 result.error(f"{requirement_id}: unknown planned output key {output}")
+        validate_wonder_service_requirement(
+            requirement,
+            referenced_wonder_destinations,
+            implementation,
+            result,
+        )
+        validate_trade_route_yield_presentation_requirement(
+            requirement,
+            referenced_origin_yields,
+            implementation,
+            result,
+        )
+
+    validate_trade_route_yield_presentation_uniqueness(requirements, result)
 
     all_design_ids = collect_design_ids(design)
     uncovered = sorted(all_design_ids - used_design_ids)
@@ -465,6 +851,16 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
             for requirement in phase.get("requirements", [])
         ):
             minimum_suites.add("modifier_graph")
+        if any(
+            requirement.get("wonder_service_binding")
+            for requirement in phase.get("requirements", [])
+        ):
+            minimum_suites.add("lua_contract")
+        if any(
+            requirement.get("trade_route_yield_presentation")
+            for requirement in phase.get("requirements", [])
+        ):
+            minimum_suites.update({"lua_contract", "modifier_graph"})
         missing_suites = minimum_suites - required_suites
         if missing_suites:
             result.error(

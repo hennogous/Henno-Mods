@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="38c10152-1d6f-4a79-8a37-ecbf8dc53c95" version="3">
+  <Properties>
+    <Name>CSC Lab: Wonder-hosted Service</Name>
+    <Description>Isolated Fashion House Stage Manager placement and UI proof. Not production CSC content.</Description>
+    <Teaser>Tests exact-plot creation of hidden Services on individual Wonder tiles.</Teaser>
+    <Authors>Henno / Codex</Authors>
+    <AffectsSavedGames>1</AffectsSavedGames>
+    <CompatibleVersions>1.2,2.0</CompatibleVersions>
+  </Properties>
+
+  <ActionCriteria>
+    <Criteria id="Expansion2">
+      <GameCoreInUse>Expansion2</GameCoreInUse>
+    </Criteria>
+    <Criteria id="SukSimpleUI">
+      <ModInUse>805cc499-c534-4e0a-bdce-32fb3c53ba38</ModInUse>
+    </Criteria>
+    <Criteria id="NoSukSimpleUI">
+      <ModInUse inverse="1">805cc499-c534-4e0a-bdce-32fb3c53ba38</ModInUse>
+    </Criteria>
+  </ActionCriteria>
+
+  <InGameActions>
+    <UpdateDatabase id="CSC_WSHS_Gameplay">
+      <Properties>
+        <LoadOrder>999900</LoadOrder>
+      </Properties>
+      <Criteria>Expansion2</Criteria>
+      <File>Data/CSC_WonderServiceHostingSpike.sql</File>
+    </UpdateDatabase>
+
+    <UpdateText id="CSC_WSHS_Text">
+      <Properties>
+        <LoadOrder>999900</LoadOrder>
+      </Properties>
+      <Criteria>Expansion2</Criteria>
+      <File>Text/CSC_WonderServiceHostingSpike_Text.sql</File>
+    </UpdateText>
+
+    <UpdateIcons id="CSC_WSHS_Icons">
+      <Properties>
+        <LoadOrder>999900</LoadOrder>
+      </Properties>
+      <Criteria>Expansion2</Criteria>
+      <File>Icons/CSC_WonderServiceHostingSpike_Icons.sql</File>
+    </UpdateIcons>
+
+    <AddGameplayScripts id="CSC_WSHS_ExactPlacement">
+      <Properties>
+        <LoadOrder>999900</LoadOrder>
+      </Properties>
+      <Criteria>Expansion2</Criteria>
+      <File>Scripts/CSC_WonderServiceHostingSpike.lua</File>
+    </AddGameplayScripts>
+
+    <AddUserInterfaces id="CSC_WSHS_CityBreakdown">
+      <Properties>
+        <Context>InGame</Context>
+        <LoadOrder>999900</LoadOrder>
+      </Properties>
+      <Criteria>Expansion2</Criteria>
+      <File>UI/CSC_WonderServiceCityBreakdown.xml</File>
+    </AddUserInterfaces>
+
+    <ReplaceUIScript id="CSC_WSHS_BasePlotTooltip">
+      <Properties>
+        <LoadOrder>999900</LoadOrder>
+        <LuaContext>PlotToolTip</LuaContext>
+        <LuaReplace>UI/CSC_WonderServicePlotTooltip_Base.lua</LuaReplace>
+      </Properties>
+      <Criteria>Expansion2</Criteria>
+      <Criteria>NoSukSimpleUI</Criteria>
+    </ReplaceUIScript>
+
+    <ReplaceUIScript id="CSC_WSHS_SukPlotTooltip">
+      <Properties>
+        <LoadOrder>999900</LoadOrder>
+        <LuaContext>PlotToolTip</LuaContext>
+        <LuaReplace>UI/CSC_WonderServicePlotTooltip_Suk.lua</LuaReplace>
+      </Properties>
+      <Criteria>Expansion2</Criteria>
+      <Criteria>SukSimpleUI</Criteria>
+    </ReplaceUIScript>
+  </InGameActions>
+
+  <Files>
+    <File>Data/CSC_WonderServiceHostingSpike.sql</File>
+    <File>Icons/CSC_WonderServiceHostingSpike_Icons.sql</File>
+    <File>Scripts/CSC_WonderServiceHostingSpike.lua</File>
+    <File>Text/CSC_WonderServiceHostingSpike_Text.sql</File>
+    <File>UI/CSC_WonderServiceCityBreakdown.lua</File>
+    <File>UI/CSC_WonderServiceCityBreakdown.xml</File>
+    <File>UI/CSC_WonderServicePlotTooltip_Base.lua</File>
+    <File>UI/CSC_WonderServicePlotTooltip_Suk.lua</File>
+  </Files>
+</Mod>

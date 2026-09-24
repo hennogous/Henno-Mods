@@ -2,7 +2,7 @@ schema_version: 1
 quarter: tailors
 status: transcribed
 canonical_source: docs/content/quarters/tailors.md
-canonical_source_sha256: 3777c817ccf90bf37013d0dcb017adba1e692bc15b2f77b3db04e9dc9d4720aa
+canonical_source_sha256: 60f9cbd3be41990380017ed950c53d9117acb4418955ba80f273c963c1c90a1d
 transcription_rule: >
   This file is a machine-readable transcription only. It must not resolve engine
   questions, select Bakers patterns, add replacement support, or reinterpret prose.
@@ -229,13 +229,9 @@ buildings:
         service_name: Stage Manager
         destinations:
           - {district: DISTRICT_THEATER, required_customer: BUILDING_AMPHITHEATER}
-
-          - district: DISTRICT_CSC_TAILORS_QUARTER
-            required_adjacent_wonders:
-              any_of:
-                - BUILDING_BOLSHOI_THEATRE
-                - BUILDING_BROADWAY
-                - BUILDING_SYDNEY_OPERA_HOUSE
+          - {wonder: BUILDING_BOLSHOI_THEATRE, placement: wonder_tile, citizen_slots: 0}
+          - {wonder: BUILDING_BROADWAY, placement: wonder_tile, citizen_slots: 0}
+          - {wonder: BUILDING_SYDNEY_OPERA_HOUSE, placement: wonder_tile, citizen_slots: 0}
         effects:
           city_culture_percent: 10
           citizen_slots: 1

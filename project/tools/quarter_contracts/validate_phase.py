@@ -73,6 +73,9 @@ def validate_statement_boundaries(path: Path) -> list[str]:
 
 
 def action_file_paths(action: dict[str, Any]) -> list[str]:
+    if action.get("type") == "ReplaceUIScript":
+        replacement = action.get("properties", {}).get("LuaReplace")
+        return [str(replacement)] if replacement else []
     paths: list[str] = []
     for entry in action.get("files", []):
         paths.append(entry if isinstance(entry, str) else str(entry.get("path", "")))
@@ -104,6 +107,13 @@ def validate_action_wiring(
             failures.append(
                 f"{output_key}: action files are {action_file_paths(actual)}, expected {[expected.get('file')]}"
             )
+        if expected.get("type") == "ReplaceUIScript":
+            actual_context = actual.get("properties", {}).get("LuaContext")
+            if actual_context != expected.get("lua_context"):
+                failures.append(
+                    f"{output_key}: LuaContext is {actual_context!r}, "
+                    f"expected {expected.get('lua_context')!r}"
+                )
         actual_load_order = str(actual.get("properties", {}).get("LoadOrder", ""))
         if actual_load_order != str(expected.get("load_order")):
             failures.append(
@@ -112,6 +122,54 @@ def validate_action_wiring(
         if actual.get("criteria", []) != expected.get("criteria", []):
             failures.append(
                 f"{output_key}: criteria are {actual.get('criteria', [])}, expected {expected.get('criteria', [])}"
+            )
+    return failures
+
+
+def validate_action_criteria_wiring(
+    actions_document: dict[str, Any],
+    wiring: dict[str, Any],
+    required_outputs: set[str],
+) -> list[str]:
+    failures: list[str] = []
+    required_criteria = {
+        criterion
+        for output_key, action in wiring.get("actions", {}).items()
+        if output_key in required_outputs
+        for criterion in action.get("criteria", [])
+    }
+    contracts = wiring.get("criteria_contracts", {})
+    criteria_nodes = actions_document.get("blocks", {}).get("actionCriteria", [])
+    for criterion_id in sorted(required_criteria & set(contracts)):
+        expected = contracts[criterion_id]
+        matches = [
+            node
+            for node in criteria_nodes
+            if node.get("tag") == "Criteria"
+            and node.get("attributes", {}).get("id") == criterion_id
+        ]
+        if len(matches) != 1:
+            failures.append(
+                f"{criterion_id}: expected exactly one ActionCriteria definition, found {len(matches)}"
+            )
+            continue
+        children = matches[0].get("children", [])
+        kind_matches = [child for child in children if child.get("tag") == expected.get("kind")]
+        if len(kind_matches) != 1:
+            failures.append(
+                f"{criterion_id}: expected exactly one {expected.get('kind')} condition"
+            )
+            continue
+        condition = kind_matches[0]
+        if condition.get("text") != expected.get("value"):
+            failures.append(
+                f"{criterion_id}: condition value is {condition.get('text')!r}, "
+                f"expected {expected.get('value')!r}"
+            )
+        actual_inverse = condition.get("attributes", {}).get("inverse") == "1"
+        if actual_inverse != expected.get("inverse"):
+            failures.append(
+                f"{criterion_id}: inverse is {actual_inverse}, expected {expected.get('inverse')}"
             )
     return failures
 
@@ -260,6 +318,10 @@ def validate_phase(
         actions_document = load_json(action_manifest)
         for failure in validate_action_wiring(actions_document, wiring, required_outputs):
             result.error(f"ModBuddy action: {failure}")
+        for failure in validate_action_criteria_wiring(
+            actions_document, wiring, required_outputs
+        ):
+            result.error(f"ModBuddy criterion: {failure}")
         for failure in validate_content_wiring(project_path, wiring, required_outputs):
             result.error(f"ModBuddy Content: {failure}")
     except (OSError, KeyError, ValueError, json.JSONDecodeError) as failure:

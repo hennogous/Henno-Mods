@@ -38,10 +38,21 @@ planned_outputs:
   city_lights_localization_source: project/localization/ModSupport_CL_TEXT.md
   city_lights_localization_generated: Civ Supply Chains/ModSupport/ModSupport_CL_TEXT.sql
   icons: Civ Supply Chains/Icons/CSC_TAILORS_ICONS.sql
+  trade_route_yield_presentation_suk: Civ Supply Chains/ModSupport/ModSupport_SUIA.sql
+  trade_route_yield_tooltip_suk: Civ Supply Chains/UI/Common/Additions/Suk_YieldTT.lua
+  wonder_service_gameplay: Civ Supply Chains/Lua_UI/WonderServices/CSC_WonderServicePlacement.lua
+  wonder_service_city_breakdown: Civ Supply Chains/Lua_UI/WonderServices/CSC_WonderServiceCityBreakdown.xml
+  wonder_service_plot_tooltip_base: Civ Supply Chains/Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Base.lua
+  wonder_service_plot_tooltip_suk: Civ Supply Chains/Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Suk.lua
 
 build_wiring:
   action_manifest: project/modbuddy/CivSupplyChains.actions.json
   source_project: Civ Supply Chains/Civ Supply Chains.civ6proj
+  criteria_contracts:
+    NoSimpleUIAdjustmentsMod:
+      kind: ModInUse
+      value: 805cc499-c534-4e0a-bdce-32fb3c53ba38
+      inverse: true
   actions:
     core:
       id: CSC_Q_TAILORS
@@ -121,6 +132,45 @@ build_wiring:
       file: ModSupport/ModSupport_CL_TEXT.sql
       load_order: 1000
       criteria: [ModSupport_CL]
+    trade_route_yield_presentation_suk:
+      id: CSC_SUIA_YieldPresentationDatabase
+      type: UpdateDatabase
+      file: ModSupport/ModSupport_SUIA.sql
+      load_order: 60000
+      criteria: [SimpleUIAdjustmentsMod]
+    trade_route_yield_tooltip_suk:
+      id: CSC_SUIA_YieldTooltipSupport
+      type: ReplaceUIScript
+      file: UI/Common/Additions/Suk_YieldTT.lua
+      lua_context: Suk_YieldTT
+      load_order: 60001
+      criteria: [SimpleUIAdjustmentsMod]
+    wonder_service_gameplay:
+      id: CSC_WonderServicePlacement
+      type: AddGameplayScripts
+      file: Lua_UI/WonderServices/CSC_WonderServicePlacement.lua
+      load_order: 504
+      criteria: []
+    wonder_service_city_breakdown:
+      id: CSC_WonderServiceCityBreakdown
+      type: AddUserInterfaces
+      file: Lua_UI/WonderServices/CSC_WonderServiceCityBreakdown.xml
+      load_order: 504
+      criteria: []
+    wonder_service_plot_tooltip_base:
+      id: CSC_WonderServicePlotTooltip_Base
+      type: ReplaceUIScript
+      file: Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Base.lua
+      lua_context: PlotToolTip
+      load_order: 504
+      criteria: [NoSimpleUIAdjustmentsMod]
+    wonder_service_plot_tooltip_suk:
+      id: CSC_WonderServicePlotTooltip_Suk
+      type: ReplaceUIScript
+      file: Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Suk.lua
+      lua_context: PlotToolTip
+      load_order: 504
+      criteria: [SimpleUIAdjustmentsMod]
 phase_validation:
   foundation:
     required_outputs: [core, gold, localization_source, localization_generated]
@@ -131,11 +181,11 @@ phase_validation:
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage3:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons]
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage4:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons]
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   compatibility:
@@ -143,7 +193,7 @@ phase_validation:
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   localization_and_integration:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
+    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
 validation_ownership:
@@ -530,14 +580,28 @@ phases:
 
       - id: I.STAGE3_TRADE
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.TRADE]
-        gameplay_patterns: [GP.TRADE.DOMESTIC_SUPPLY]
+        gameplay_patterns: [GP.TRADE.DOMESTIC_SUPPLY, GP.TRADE.CITY_YIELD_PRESENTATION]
         localization_patterns: [LP.TRADE.DOMESTIC_BULLET]
-        outputs: [core, gold, localization_source]
+        outputs: [core, gold, localization_source, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
         static_assertions:
           - "Destination +1 Culture; origin Quarter +1 Production/+1 Gold only without Tailors; origin +1 Amenity."
           - "The Tailor contributes one complete route transaction and stacks additively with the Fashion House transaction."
+          - "The origin +1 Culture modifier has one explicit CSC_TradeRouteYieldPresentation row and Sukritact's city-yield tooltip moves exactly that active amount from Modifiers to Outgoing Trade Routes without modifier-name inference."
+        trade_route_yield_presentation:
+          registry_table: CSC_TradeRouteYieldPresentation
+          registry_output: trade_route_yield_presentation_suk
+          ui_output: trade_route_yield_tooltip_suk
+          entries:
+            - entry_id: CSC_TAILORS_IMPORT_CONSUMER_CULTURE
+              quarter_key: TAILORS
+              modifier_id: MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE
+              property_name: CSC_TAILORS_IMPORT_TAILOR_ROUTE
+              property_scope: CITY_CENTER_PLOT
+              yield_type: YIELD_CULTURE
+              amount: 1
+              display_bucket: OUTGOING_TRADE_ROUTES
         runtime_scenarios:
-          - "Compare domestic routes with/without Tailor supply and with/without a Tailors' Quarter at origin."
+          - "Compare domestic routes with/without Tailor supply and with/without a Tailors' Quarter at origin; with Simple UI Adjustments active, the origin +1 Culture appears under Outgoing Trade Routes rather than Modifiers."
 
   - id: stage4
     purpose: Fashion House, population transaction, Stage Manager, and domestic trade.
@@ -597,17 +661,21 @@ phases:
 
       - id: I.STAGE_MANAGER
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.SERVICE, art.properties.D.ART.STAGE4.CUSTOMERS]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.SERVICE.WONDER_VARIANTS, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.SERVICE.WONDER_HOSTED_EXACT_PLACEMENT, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.PEDIA.SERVICE_CHAPTERS, LP.PEDIA.CUSTOMER_APPEND, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
-        outputs: [core, localization_source, icons]
+        outputs: [core, localization_source, icons, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
         static_assertions:
           - "Requires Opera and Ballet plus supplied BASE and SPEC."
-          - "Establishes in a Theater Square with an Amphitheater, or in the Tailors' Quarter when adjacent to any one named Wonder."
-          - "Both destination variants get +10% Culture, +1 slot, and +1 Artist point."
+          - "The normal Stage Manager uses the persistent SQL-grant path and is established in a Theater Square with an Amphitheater."
+          - "Bolshoi Theatre, Broadway, and Sydney Opera House each map to a distinct internal Stage Manager building type and activation property; their visible name, icon, and effects are shared."
+          - "Wonder-hosted variants have PrereqDistrict=DISTRICT_WONDER, MustPurchase=1, and CitizenSlots=0. They are never created by a SQL grant modifier."
+          - "The shared deterministic gameplay reconciler creates each Wonder variant with CityBuildQueue.CreateBuilding(buildingIndex, hostWonderPlotIndex), preserves a correct instance, relocates a misplaced instance, creates a missing persistent instance after activation, and removes an orphan whose host Wonder no longer exists."
+          - "Every destination gets +10% Culture and +1 Artist point. Only the Theater Square variant gets the usable +1 Citizen slot; Wonder districts cannot assign Citizens."
+          - "City Breakdown scans actual district-plot building lists and nests each Wonder-hosted Stage Manager beneath the Wonder on the same stored plot. Base and Sukritact plot tooltips list the actual buildings at that plot. No UI path spoofs a desired location."
           - "Exactly one mechanically real Stage Manager attach/effect pair is the MCUIS presentation anchor across its destination variants; one aggregate preview and NEW/INCREASED/DECREASED/REMOVED notification family describes the complete live ability without multiplying mechanics."
           - "ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE uses Tailors atlas index 10 and is the MCUIS/notification icon target."
           - "The Stage Manager Civilopedia page has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
-          - "Its Supply Chains entry follows the service-page structure while integrating both destinations: the Fashion House draws on workshop cloth and improved Specialty Materials, creates performance dress for Amphitheaters and named Wonders, then after one paragraph break gives a Citizen employment as a Stage Manager and expresses Culture and Great Artist development in-world."
+          - "Its Supply Chains entry follows the service-page structure while integrating both destinations: the Fashion House draws on workshop cloth and improved Specialty Materials, creates performance dress for Amphitheaters and named Wonders, then after one paragraph break explains that the Theater Square post employs a Citizen while every destination advances Culture and Great Artist development."
           - "Its Historical Context entry explains the coordination of costumes, performers, scenery, schedules, and venues that made theatrical production an enduring urban profession."
           - "CSC retains the complete Stage Manager activation requirement set for optional consumers. Any later CSC_TAILORS_STAGE_4_CUSTOMERS property modifier, building attachment, Lua mirror, GamePropertyRanges entry, selection rule, and alternate model belong to the optional CSC Art Pack; none are core Tailors outputs."
           - "The Theater Square, Amphitheater, and direct one-level replacements keep one integrated Supply Chains section with the Stage Manager pointer; Bolshoi Theatre, Broadway, and Sydney Opera House each receive equivalent named-Wonder prose without replacement expansion."
@@ -617,20 +685,74 @@ phases:
           amphitheater_presence_requirement: engine_inherited
           theater_and_amphitheater_description_appends: explicit_direct_one_level
           named_wonders: never_expand
-          tailors_quarter_and_service_building: never_expand
+          service_buildings: never_expand
+        wonder_service_binding:
+          normal_destination:
+            service_building_type: BUILDING_CSC_TAILORS_STAGE_4_SERVICE
+            district_type: DISTRICT_THEATER
+            customer_building_type: BUILDING_AMPHITHEATER
+            placement_method: persistent_sql_grant
+            citizen_slots: 1
+          wonder_variants:
+            - host_wonder_type: BUILDING_BOLSHOI_THEATRE
+              service_building_type: BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI
+              activation_property: CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_READY
+            - host_wonder_type: BUILDING_BROADWAY
+              service_building_type: BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY
+              activation_property: CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY
+            - host_wonder_type: BUILDING_SYDNEY_OPERA_HOUSE
+              service_building_type: BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY
+              activation_property: CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_READY
+          placement:
+            method: gameplay_lua_exact_plot_reconciler
+            output: wonder_service_gameplay
+            building_prereq_district: DISTRICT_WONDER
+            wonder_citizen_slots: 0
+            sql_grant_modifier: false
+            create_api: CityBuildQueue.CreateBuilding(buildingIndex, plotIndex)
+            gameplay_location_api: CityBuildings.GetBuildingLocation
+            persistent_after_activation: true
+            relocate_misplaced: true
+            remove_orphans: true
+            deterministic: true
+            refresh_events: [INITIALIZE, Events.LoadScreenClose, Events.WonderCompleted, Events.PlayerTurnActivated]
+          ui:
+            city_breakdown: actual_plot_nested_under_host_wonder
+            plot_tooltip: actual_buildings_at_location
+            location_api: CityBuildings.GetBuildingsAtLocation
+            spoof_location: false
+            city_breakdown_output: wonder_service_city_breakdown
+            base_plot_tooltip_output: wonder_service_plot_tooltip_base
+            suk_plot_tooltip_output: wonder_service_plot_tooltip_suk
         runtime_scenarios:
-          - "Prove both material gates; test the Theater Square destination and the Tailors' Quarter destination separately with each named Wonder; verify one MCUIS icon/notification stream and inspect all Stage Manager pedia integrations."
+          - "Prove both material gates and the normal Theater Square destination; verify the usable Citizen slot, one MCUIS icon/notification stream, and all Stage Manager pedia integrations."
+          - "Build Bolshoi Theatre, Broadway, and Sydney Opera House in different orders in one city. Each eligible Wonder must receive exactly its own internal Stage Manager on the same plot, with no first-Wonder capture and no Citizen slot."
+          - "Save/reload and advance a turn. The reconciler must keep correct locations, repair deliberately misplaced legacy instances, and remain deterministic. City Breakdown and both supported plot-tooltip paths must show only the actual co-located Service under/on its host Wonder."
 
       - id: I.STAGE4_TRADE
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.TRADE]
-        gameplay_patterns: [GP.TRADE.DOMESTIC_SUPPLY]
+        gameplay_patterns: [GP.TRADE.DOMESTIC_SUPPLY, GP.TRADE.CITY_YIELD_PRESENTATION]
         localization_patterns: [LP.TRADE.DOMESTIC_BULLET]
-        outputs: [core, gold, localization_source]
+        outputs: [core, gold, localization_source, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
         static_assertions:
           - "Destination +1 Culture; origin Quarter +1 Production/+1 Gold only without Tailors; origin +1 Amenity."
           - "The Fashion House contributes one complete route transaction and stacks additively with the Tailor transaction."
+          - "The Fashion House origin Culture modifier receives its own explicit presentation-registry row; when Tailor and Fashion House transactions both apply, their active registry entries add under Outgoing Trade Routes."
+        trade_route_yield_presentation:
+          registry_table: CSC_TradeRouteYieldPresentation
+          registry_output: trade_route_yield_presentation_suk
+          ui_output: trade_route_yield_tooltip_suk
+          entries:
+            - entry_id: CSC_TAILORS_IMPORT_SPECIALTY_CULTURE
+              quarter_key: TAILORS
+              modifier_id: MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE
+              property_name: CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE
+              property_scope: CITY_CENTER_PLOT
+              yield_type: YIELD_CULTURE
+              amount: 1
+              display_bucket: OUTGOING_TRADE_ROUTES
         runtime_scenarios:
-          - "Compare Stage 3 only, Stage 4 only, and both buildings to confirm designed stacking."
+          - "Compare Stage 3 only, Stage 4 only, and both buildings to confirm designed stacking; with Simple UI Adjustments active, Culture is reclassified as +1, +1, and +2 Outgoing Trade Routes respectively."
 
   - id: compatibility
     purpose: Conditional integrations retained or rebuilt outside core.
@@ -716,9 +838,9 @@ phases:
         design_refs: []
         gameplay_patterns: [GP.FILE.SECTION_ORDER]
         localization_patterns: []
-        outputs: [core, gold, monopolies, monopolies_gold, localization_generated, hemp_localization_generated, llamas_localization_generated, r2_localization_generated, cashmere_localization_generated, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_generated]
+        outputs: [core, gold, monopolies, monopolies_gold, localization_generated, hemp_localization_generated, llamas_localization_generated, r2_localization_generated, cashmere_localization_generated, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_generated, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
         static_assertions:
-          - "All contracted gameplay and generated-localization outputs are present in Content and wired to the exact unconditional or conditional actions declared above."
+          - "All contracted gameplay, UI, and generated-localization outputs are present in Content and wired to the exact unconditional or conditional actions declared above, including mutually exclusive base/Simple UI Adjustments PlotToolTip replacements."
           - "Generated action manifest and .civ6proj CDATA agree."
         runtime_scenarios:
           - "Database and localization logs show every Tailors action loaded without errors; each UpdateText action must log its declared SQL/XML file load, not merely the component name."
@@ -739,9 +861,19 @@ resolved_engine_decisions:
 
   - id: E.SERVICE_PERSISTENCE
     affects: [I.DOCKMASTER, I.SACRISTAN, I.STAGE_MANAGER]
-    resolution: "Follow Bakers: MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE grants a persistent hidden service building. Separately attached effect and Great Person modifiers keep their prerequisite requirement sets, so they deactivate and reactivate as requirements change. Intrinsic fields on the granted service building, including its Citizen slot, persist with the building."
+    resolution: "For a conventional destination district, follow Bakers: MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE grants a persistent hidden service building. Separately attached effect and Great Person modifiers keep their prerequisite requirement sets, so they deactivate and reactivate as requirements change. Intrinsic fields on the granted service building, including its Citizen slot, persist with the building. Wonder-hosted variants preserve the same one-way establishment semantics through the exact-plot reconciler recorded by E.WONDER_SERVICE_EXACT_PLACEMENT."
     decided_by: user
     evidence:
       - Civ Supply Chains/Data/CSC_Q_BAKERS.sql
+
+  - id: E.WONDER_SERVICE_EXACT_PLACEMENT
+    affects: I.STAGE_MANAGER
+    resolution: "A Service whose customer is a Wonder is represented by one distinct internal hidden building type per eligible Wonder, hosted directly in DISTRICT_WONDER with no Citizen slot. SQL grant modifiers are forbidden for these variants because they choose the city's first Wonder district. A deterministic gameplay reconciler instead creates each variant on its mapped Wonder's exact stored plot, repairs misplaced legacy instances, and removes orphans. City Breakdown and plot tooltips report the actual stored plot and never spoof location. The normal Amphitheater destination remains a conventional persistent SQL-granted Service with its Citizen slot."
+    decided_by: user
+    evidence:
+      - project/tests/wonder-service-hosting-spike/README.md
+      - project/tests/wonder-service-hosting-spike/Scripts/CSC_WonderServiceHostingSpike.lua
+      - project/tests/wonder-service-hosting-spike/UI/CSC_WonderServiceCityBreakdown.lua
+      - project/tests/wonder-service-hosting-spike/verify_spike.py
 
 open_engine_decisions: []

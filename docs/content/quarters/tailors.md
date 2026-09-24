@@ -77,6 +77,6 @@ title: Tailors' Quarter
 * +1 {{amenity}} Amenity in all cities within 6 tiles.
 * +1 {{culture}} Culture for every 5 {{citizen}} Citizens in the city to each adjacent Amphitheater, Bolshoi Theatre, Broadway or Sydney Opera House, and +1 {{production}} Production and +1 {{gold}} Gold to the Fashion House in return.
 * At Opera and Ballet, a Fashion House adjacent to improved {{base}} Base and {{spec}} Specialty Materials resources unlocks:
-   * A Stage Manager is established in an adjacent Theater Square with an Amphitheater, or in the Tailors' Quarter if it is adjacent to Bolshoi Theatre, Broadway or Sydney Opera House.
-   * The Stage Manager provides the city with +10% {{culture}} Culture, +1 {{citizen}} Citizen slot and +1 {{artist}} Great Artist point per turn.
+   * A Stage Manager is established in an adjacent Theater Square with an Amphitheater, or directly at each adjacent Bolshoi Theatre, Broadway or Sydney Opera House.
+   * Every Stage Manager provides the city with +10% {{culture}} Culture and +1 {{artist}} Great Artist point per turn. A Stage Manager in a Theater Square also provides +1 {{citizen}} Citizen slot; Wonder-hosted Stage Managers do not, because Citizens cannot be assigned to a Wonder district.
 * +1 {{culture}} Culture bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Tailors' Quarter. +1 {{amenity}} Amenity to the origin city.

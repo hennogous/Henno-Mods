@@ -4,6 +4,7 @@ docs/.quartz-cache/
 
 # ModBuddy generated/build output
 *.modinfo
+!project/tests/wonder-service-hosting-spike/WonderServiceHostingSpike.modinfo
 
 # Python/tooling cache
 __pycache__/

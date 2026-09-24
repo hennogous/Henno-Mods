@@ -1148,16 +1148,28 @@
         ]
       },
       {
-        "type": "ImportFiles",
-        "id": "CSC_SUIA_YieldTooltipSupport",
+        "type": "UpdateDatabase",
+        "id": "CSC_SUIA_YieldPresentationDatabase",
         "properties": {
-          "LoadOrder": "60001"
+          "LoadOrder": "60000"
         },
         "criteria": [
           "SimpleUIAdjustmentsMod"
         ],
         "files": [
-          "UI/Common/Additions/Suk_YieldTT.lua"
+          "ModSupport/ModSupport_SUIA.sql"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_SUIA_YieldTooltipSupport",
+        "properties": {
+          "LuaContext": "Suk_YieldTT",
+          "LuaReplace": "UI/Common/Additions/Suk_YieldTT.lua",
+          "LoadOrder": "60001"
+        },
+        "criteria": [
+          "SimpleUIAdjustmentsMod"
         ]
       },
       {

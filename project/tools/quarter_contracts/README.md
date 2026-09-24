@@ -25,6 +25,43 @@ Lua property mirror, GamePropertyRanges, selection rules, models, materials,
 ArtDefs and XLP entries. Core Quarter validators enforce that ownership boundary;
 validate the Art Pack package separately from the gameplay phase gates.
 
+## Wonder-hosted Services
+
+When a Service destination in `design.yaml` declares `placement: wonder_tile`, the
+owning implementation requirement must use
+`GP.SERVICE.WONDER_HOSTED_EXACT_PLACEMENT` and declare a structured
+`wonder_service_binding`. Contract validation then requires one distinct internal
+Service building and activation property per Wonder, `DISTRICT_WONDER` placement
+with zero Citizen slots, a deterministic exact-plot gameplay reconciler, and UI
+outputs for City Breakdown plus the base and Simple UI Adjustments plot tooltips.
+
+## Trade-route city-yield presentation
+
+When a domestic-trade design node declares `origin_yields`, the owning
+implementation requirement must use `GP.TRADE.CITY_YIELD_PRESENTATION` and
+declare `trade_route_yield_presentation`. Each reclassified modifier gets one
+explicit `CSC_TradeRouteYieldPresentation` entry; the UI must consume that
+registry rather than infer eligibility from modifier names. The registry schema
+and rows live in a dedicated `ModSupport` SQL output, never in core shared or
+Quarter SQL. Its `UpdateDatabase` action and the `Suk_YieldTT` replacement are
+both gated by `SimpleUIAdjustmentsMod`, with the database action loading first.
+Registry entry IDs use the economic tier rather than the implementation building:
+`CSC_<QUARTER>_IMPORT_CONSUMER_<YIELD>` for Stage 3 and
+`CSC_<QUARTER>_IMPORT_SPECIALTY_<YIELD>` for Stage 4. Modifier and property IDs
+remain free to identify the concrete source building.
+Contract validation matches the entries' aggregate yield types and amounts to
+`origin_yields`, rejects reused entry/modifier/property identities, and enforces
+that conditional wiring. Phase assertions then trace each live row through its
+modifier arguments and `REQUIREMENT_PLOT_PROPERTY_MATCHES` property gate.
+
+The gameplay path must call
+`CityBuildQueue.CreateBuilding(buildingIndex, hostWonderPlotIndex)` and must not use
+an SQL building-grant modifier for Wonder variants. SQL grants cannot distinguish
+multiple instances of `DISTRICT_WONDER`; they place compatible buildings in the
+city's first Wonder district. UI must derive and display each Service's actual
+stored plot, never a desired or spoofed host. Conventional destinations such as a
+Theater Square with an Amphitheater retain the normal persistent SQL-grant path.
+
 Each implementation phase has its own explicit gate. After approval, establish
 the phase's red state and then converge its cumulative outputs with:
 

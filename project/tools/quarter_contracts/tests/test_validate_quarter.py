@@ -143,7 +143,186 @@ class TailorsContractTests(unittest.TestCase):
                 "E.DECIMAL_POPULATION",
                 "E.TRADE_STACKING",
                 "E.SERVICE_PERSISTENCE",
+                "E.WONDER_SERVICE_EXACT_PLACEMENT",
             },
+        )
+
+    def test_wonder_service_design_requires_exact_plot_contract(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        design = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "design.yaml"
+        )
+        stage4 = next(phase for phase in implementation["phases"] if phase["id"] == "stage4")
+        requirement = next(
+            item for item in stage4["requirements"] if item["id"] == "I.STAGE_MANAGER"
+        )
+        resolved, service_design = VALIDATOR.resolve_design_ref(
+            design, "buildings.D.STAGE4.effects.D.STAGE4.SERVICE"
+        )
+        self.assertTrue(resolved)
+        destinations = VALIDATOR.wonder_service_destinations(service_design)
+        self.assertEqual(
+            {item["wonder"] for item in destinations},
+            {
+                "BUILDING_BOLSHOI_THEATRE",
+                "BUILDING_BROADWAY",
+                "BUILDING_SYDNEY_OPERA_HOUSE",
+            },
+        )
+
+        broken = copy.deepcopy(requirement)
+        broken["gameplay_patterns"].remove(VALIDATOR.WONDER_SERVICE_PATTERN)
+        broken.pop("wonder_service_binding")
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_wonder_service_requirement(
+            broken, destinations, implementation, result
+        )
+        self.assertTrue(any("requires GP.SERVICE.WONDER_HOSTED" in item for item in result.errors))
+        self.assertTrue(any("requires wonder_service_binding" in item for item in result.errors))
+
+    def test_wonder_service_contract_rejects_reused_internal_type(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        stage4 = next(phase for phase in implementation["phases"] if phase["id"] == "stage4")
+        requirement = copy.deepcopy(
+            next(item for item in stage4["requirements"] if item["id"] == "I.STAGE_MANAGER")
+        )
+        variants = requirement["wonder_service_binding"]["wonder_variants"]
+        variants[1]["service_building_type"] = variants[0]["service_building_type"]
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_wonder_service_requirement(
+            requirement,
+            [
+                {"wonder": variant["host_wonder_type"], "placement": "wonder_tile", "citizen_slots": 0}
+                for variant in variants
+            ],
+            implementation,
+            result,
+        )
+        self.assertTrue(any("duplicate internal Service building" in item for item in result.errors))
+
+    def test_trade_origin_yields_require_explicit_presentation_contract(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        stage3 = next(phase for phase in implementation["phases"] if phase["id"] == "stage3")
+        requirement = copy.deepcopy(
+            next(item for item in stage3["requirements"] if item["id"] == "I.STAGE3_TRADE")
+        )
+        requirement["gameplay_patterns"].remove(
+            VALIDATOR.TRADE_YIELD_PRESENTATION_PATTERN
+        )
+        requirement.pop("trade_route_yield_presentation")
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_trade_route_yield_presentation_requirement(
+            requirement, {"YIELD_CULTURE": 1.0}, implementation, result
+        )
+        self.assertTrue(
+            any("origin_yields require GP.TRADE.CITY_YIELD_PRESENTATION" in item for item in result.errors)
+        )
+        self.assertTrue(
+            any("origin_yields require trade_route_yield_presentation" in item for item in result.errors)
+        )
+
+    def test_trade_presentation_totals_must_match_design(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        stage3 = next(phase for phase in implementation["phases"] if phase["id"] == "stage3")
+        requirement = copy.deepcopy(
+            next(item for item in stage3["requirements"] if item["id"] == "I.STAGE3_TRADE")
+        )
+        requirement["trade_route_yield_presentation"]["entries"][0]["amount"] = 2
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_trade_route_yield_presentation_requirement(
+            requirement, {"YIELD_CULTURE": 1.0}, implementation, result
+        )
+        self.assertTrue(
+            any("presentation yields differ from design origin_yields" in item for item in result.errors)
+        )
+
+    def test_trade_presentation_entry_id_uses_transaction_tier(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        stage3 = next(phase for phase in implementation["phases"] if phase["id"] == "stage3")
+        requirement = copy.deepcopy(
+            next(item for item in stage3["requirements"] if item["id"] == "I.STAGE3_TRADE")
+        )
+        requirement["trade_route_yield_presentation"]["entries"][0][
+            "entry_id"
+        ] = "CSC_TAILORS_IMPORT_TAILOR_CULTURE"
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_trade_route_yield_presentation_requirement(
+            requirement, {"YIELD_CULTURE": 1.0}, implementation, result
+        )
+        self.assertTrue(
+            any(
+                "entry ID must be CSC_TAILORS_IMPORT_CONSUMER_CULTURE" in item
+                for item in result.errors
+            )
+        )
+
+    def test_trade_presentation_rejects_duplicate_registry_identities(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        stage3 = next(phase for phase in implementation["phases"] if phase["id"] == "stage3")
+        requirement = copy.deepcopy(
+            next(item for item in stage3["requirements"] if item["id"] == "I.STAGE3_TRADE")
+        )
+        duplicate = copy.deepcopy(
+            requirement["trade_route_yield_presentation"]["entries"][0]
+        )
+        requirement["trade_route_yield_presentation"]["entries"].append(duplicate)
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_trade_route_yield_presentation_requirement(
+            requirement, {"YIELD_CULTURE": 2.0}, implementation, result
+        )
+        self.assertTrue(any("duplicate entry ID" in item for item in result.errors))
+        self.assertTrue(any("duplicate modifier ID" in item for item in result.errors))
+        self.assertTrue(any("duplicate property name" in item for item in result.errors))
+
+    def test_trade_presentation_requires_suk_yield_tooltip_replacement(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        broken = copy.deepcopy(implementation)
+        broken["build_wiring"]["actions"]["trade_route_yield_tooltip_suk"][
+            "type"
+        ] = "AddUserInterfaces"
+        stage3 = next(phase for phase in broken["phases"] if phase["id"] == "stage3")
+        requirement = next(
+            item for item in stage3["requirements"] if item["id"] == "I.STAGE3_TRADE"
+        )
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_trade_route_yield_presentation_requirement(
+            requirement, {"YIELD_CULTURE": 1.0}, broken, result
+        )
+        self.assertTrue(any("must use ReplaceUIScript" in item for item in result.errors))
+
+    def test_trade_presentation_registry_requires_gated_modsupport_database(self) -> None:
+        implementation = VALIDATOR.load_yaml(
+            VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
+        )
+        broken = copy.deepcopy(implementation)
+        action = broken["build_wiring"]["actions"][
+            "trade_route_yield_presentation_suk"
+        ]
+        action["criteria"] = []
+        stage3 = next(phase for phase in broken["phases"] if phase["id"] == "stage3")
+        requirement = next(
+            item for item in stage3["requirements"] if item["id"] == "I.STAGE3_TRADE"
+        )
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_trade_route_yield_presentation_requirement(
+            requirement, {"YIELD_CULTURE": 1.0}, broken, result
+        )
+        self.assertTrue(
+            any("must be gated only by SimpleUIAdjustmentsMod" in item for item in result.errors)
         )
 
 

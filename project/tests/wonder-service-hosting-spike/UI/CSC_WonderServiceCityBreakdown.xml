@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context ColorSet="BodyTextCool" FontStyle="Shadow">
+  <Instance Name="CSC_WonderServiceInstance">
+    <GridButton ID="Top" Offset="15,0" Size="parent-15,auto" Style="CityPanelSubPanelContainer" AutoSizePadding="0,0" MinSize="24,24">
+      <Container Size="24,24">
+        <Image ID="Icon" Offset="-2,-4" Texture="Buildings32" Size="32,32"/>
+      </Container>
+      <Label ID="BuildingName" Anchor="L,C" Offset="30,0" Style="CityPanelText" String="$BuildingName$" WrapWidth="215"/>
+    </GridButton>
+  </Instance>
+</Context>
