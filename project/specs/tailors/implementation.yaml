@@ -17,6 +17,8 @@ authority_order:
   - "An approved exception is required when the design and an applicable pattern cannot both be satisfied."
 
 planned_outputs:
+  shared_stage3_registry: Civ Supply Chains/Data/CSC_Q_ALL.sql
+  stage3_population_gameplay: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
   core: Civ Supply Chains/Data/CSC_Q_TAILORS.sql
   gold: Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql
   monopolies: Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql
@@ -54,6 +56,18 @@ build_wiring:
       value: 805cc499-c534-4e0a-bdce-32fb3c53ba38
       inverse: true
   actions:
+    shared_stage3_registry:
+      id: CSC_Q_ALL
+      type: UpdateDatabase
+      file: Data/CSC_Q_ALL.sql
+      load_order: 95
+      criteria: []
+    stage3_population_gameplay:
+      id: CSC_CustomerPopulationReturns
+      type: AddGameplayScripts
+      file: Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
+      load_order: 502
+      criteria: []
     core:
       id: CSC_Q_TAILORS
       type: UpdateDatabase
@@ -181,19 +195,19 @@ phase_validation:
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage3:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
+    required_outputs: [shared_stage3_registry, stage3_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   stage4:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
+    required_outputs: [shared_stage3_registry, stage3_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, icons, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   compatibility:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
+    required_outputs: [shared_stage3_registry, stage3_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
   localization_and_integration:
-    required_outputs: [core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
+    required_outputs: [shared_stage3_registry, stage3_population_gameplay, core, gold, monopolies, monopolies_gold, localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_gameplay, city_lights_localization_source, city_lights_localization_generated, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
     required_suites: [contract, output_completeness, sql_style, sql_statement_boundaries, semantic_rows, modifier_graph, replacement_coverage, localization_generation, localization_patterns, modbuddy_wiring, conditional_load_boundaries, lua_contract]
     assertion_module: project/tools/quarter_contracts/quarter_checks/tailors_assertions.py
 validation_ownership:
@@ -395,6 +409,8 @@ phases:
         static_assertions:
           - "Unlock=Construction, Cost=80, Maintenance=2."
           - "ICON_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP uses the shared Quarter atlas stage-2-building index 4."
+          - "Following the Water Mill and Wind Mill pages, the Textile Workshop Civilopedia has exactly one Supply Chains title and narrative paragraph, followed by a Historical Context title and two substantive history paragraphs; it has no Description chapter."
+          - "Its Supply Chains prose traces cotton, flax and available wool through spinning and weaving to cloth for the local Tailor and Fashion House, then canvas for an adjacent Lighthouse. Historical Context explains the sequence of textile work and the town and harbor demand for its output without listing modifier yields."
         runtime_scenarios:
           - "Textile Workshop requires only its designed technology and Quarter."
 
@@ -418,9 +434,13 @@ phases:
         outputs: [core, gold, localization_source]
         static_assertions:
           - "Lighthouse and local Stage 3/4 exchanges implement both directions."
+          - "As in the Bakery-to-Mill exchange, the Tailor owns its Production and Gold modifiers targeting the local Textile Workshop, while the Workshop owns its Culture modifier targeting the Tailor. No city-has-Tailor owner gate substitutes for sender attachment."
+          - "Fashion House Production and Gold returns use the same sender-owned pattern, but their BuildingModifiers rows are inserted only when the Fashion House Buildings row exists."
           - "Lighthouse replacements inherit building-yield effects, while direct BuildingModifiers and text append rows are expanded exactly once."
-          - "The Textile Workshop description lists the Lighthouse end-customer transaction before the downstream local Tailor and Fashion House transaction."
+          - "Like the Water Mill and Wind Mill, the Textile Workshop description lists Base Materials input first, sales to the local Tailor and Fashion House second, and sales to adjacent Lighthouses third."
           - "The Lighthouse line is exactly `+1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each adjacent Lighthouse, and +1 [ICON_Production] Production in return.` It uses `each adjacent` to make stacking explicit and has no redundant destination-city suffix."
+        implementation_binding:
+          stacking_unit: eligible_adjacent_lighthouse_site
         replacement_binding:
           lighthouse_presence_requirement: engine_inherited
           lighthouse_building_yield_effect: engine_inherited
@@ -428,7 +448,8 @@ phases:
           lighthouse_description_append: explicit_direct_one_level
           local_CSC_buildings: never_expand
         runtime_scenarios:
-          - "Test Lighthouse adjacency and each local building independently."
+          - "With a Workshop and Tailor in one city, verify +1 Production and +1 Gold on the Workshop and +1 Culture on the Tailor; remove or pillage the Tailor and verify its two Workshop returns stop. Test Lighthouse adjacency independently."
+          - "With two adjacent Lighthouses from different cities, verify that both customer effects and both Textile Workshop returns stack, then remove one Lighthouse and verify only its transaction stops."
 
       - id: I.DOCKMASTER
         design_refs: [buildings.D.STAGE2.effects.D.STAGE2.SERVICE, art.properties.D.ART.STAGE2.LIGHTHOUSE]
@@ -437,6 +458,7 @@ phases:
         outputs: [core, localization_source]
         static_assertions:
           - "Requires Naval Tradition, supplied BASE, adjacent Harbor, functioning Lighthouse."
+          - "The Textile Workshop description says it establishes a Dockmaster service in an adjacent Harbor with a Lighthouse at Naval Tradition; the word 'service' follows the localized Dockmaster name."
           - "Effect is +20% Production to naval units through Renaissance, +1 slot, and +1 Admiral point."
           - "ICON_BUILDING_CSC_TAILORS_STAGE_2_SERVICE uses the shared Quarter atlas stage-2-service index 8."
           - "Because Naval Tradition has no base description, its Tailors append has no text-prefix and begins with its first visible character; it says the Production and Great Admiral point are from each adjacent supplied Textile Workshop."
@@ -512,7 +534,9 @@ phases:
         static_assertions:
           - "Unlock=Guilds, prerequisite Textile Workshop, Cost=160, Maintenance=2."
           - "One slot; specialists +2 Culture/+1 Gold; city +1 Amenity."
-          - "The completed Tailor description omits its Citizen slot, specialist yields, and intrinsic city Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 3 relationships in shared order: local Textile Workshop exchange; adjacent Temple/Market population exchange; domestic trade exchange; Sacristan establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
+          - "The completed Tailor description omits its Citizen slot, specialist yields, and intrinsic city Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 3 relationships in shared order: local Textile Workshop exchange; adjacent Temple/Market population exchange; domestic trade exchange; Sacristan service establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
+          - "The Tailor description says a supplied Tailor establishes a Sacristan service in an adjacent Holy Site with a Temple at Divine Right; the word 'service' follows the localized Sacristan name."
+          - "Like the Bakery, the Tailor's domestic trade bullet leads with the Tailor's +1 Production and +1 Gold demand yields from each incoming Trade Route, then states the +1 Culture bonus to that route in exchange, the no-Tailors'-Quarter origin condition, and the +1 Amenity to the origin city."
           - "The Tailor Civilopedia page matches the Bakery's format: exactly one Supply Chains title/paragraph followed by one Historical Context title with two history paragraphs, and no Civilopedia Description chapter."
           - "Tailor Supply Chains prose follows cloth from the local Textile Workshop into finished garments for adjacent Temples and Markets; its history covers the specialized urban tailoring trade and its expansion through guild, religious, and market demand."
           - "ICON_BUILDING_CSC_TAILORS_TAILOR uses the Tailors atlas index 5, and Icons/CSC_TAILORS_ICONS.sql is Content loaded by the shared UpdateIcons action."
@@ -524,27 +548,37 @@ phases:
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.POP_CUSTOMERS]
         gameplay_patterns: [GP.BUILDING.CUSTOMER_TRANSACTION, GP.SCALING.PER_POPULATION_DECIMAL, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns: [LP.CUSTOMER.BILATERAL_BULLET, LP.PEDIA.CUSTOMER_APPEND]
-        outputs: [core, gold, localization_source]
+        outputs: [shared_stage3_registry, stage3_population_gameplay, core, gold, localization_source]
         static_assertions:
-          - "Temple/Market city gets 0.1 Culture per its citizens."
-          - "Tailor city gets 0.1 Production and 0.1 Gold per customer-city citizen."
-          - "Each eligible adjacent customer city is counted once, and direct one-level replacements are included."
+          - "Each adjacent Temple and Market grants its city 0.1 Culture per citizen through a distinct child modifier, so both buildings in one customer city stack."
+          - "The Tailor city gets 0.1 Production and 0.1 Gold per citizen of each eligible adjacent Temple and Market city; both families in one customer city contribute separately."
+          - "For one Tailor, both its Production and Gold totals equal 0.1 times the sum over customer cities of (customer-city population times the number of qualifying adjacent Markets and Temples in that city). Each customer city's Culture from that Tailor equals 0.1 times its population times that same city-specific building count. The Tailor and customer may be the same city."
+          - "Deduplicate by seller city, transaction ID, and adjacent customer plot; direct one-level replacements are included."
+          - "CSC_Stage3CustomerTransactions has exactly one Tailor-Market row and one Tailor-Temple row, sharing the seller population and return properties. The shared Stage 3 Lua scanner reads both; no Tailor-specific scan branch remains."
           - "Temple and Market pages each retain one integrated Supply Chains section describing their Tailor population exchange; the Temple entry also carries the concise Sacristan pointer required by I.SACRISTAN."
         implementation_binding:
+          stacking_unit: eligible_adjacent_customer_building_family
+          transaction_registry: CSC_Stage3CustomerTransactions
+          transaction_ids: [CSC_TAILORS_TAILOR_MARKET, CSC_TAILORS_TAILOR_TEMPLE]
+          seller_and_customer_may_share_city: true
+          declared_seller_total_each_yield: "0.1 * sum(customer_city_population * qualifying_adjacent_market_or_temple_count_in_customer_city)"
+          declared_customer_city_culture: "0.1 * customer_city_population * qualifying_adjacent_market_or_temple_count_in_customer_city"
           customer_side:
             method: direct_per_population_modifier
             modifier_type: MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION
+            distinct_child_modifier_per_family: true
             declared_amount_per_citizen: 0.1
             bakers_engine_amount: 0.105
           tailor_return_side:
             method: shared_customer_population_lua_property_bit_bridge
             reference_script: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
-            aggregation: sum_each_eligible_adjacent_customer_city_population_once
+            aggregation: sum_each_eligible_adjacent_customer_site_population_once_per_registry_transaction
+            deduplication_key: [seller_city, transaction_id, customer_plot]
             replacement_traversal: direct_one_level
             declared_amount_per_customer_citizen: 0.1
             bakers_engine_amount: 0.105
             amount_scale: 10000
-          invariant: "Extend and parameterize the shared bridge for Tailors, replacing its current recursive replacement-family traversal with direct one-level expansion; do not copy Bakers-only resource, building, yield, or property identifiers."
+          invariant: "Stage 3 population returns use the shared registry scanner and property-bit bridge. Direct one-level customer replacements are expanded by the shared scanner; customer Culture remains on distinct SQL attach modifiers."
         replacement_binding:
           market_and_temple_presence_requirements: engine_inherited
           customer_city_yield_effects: engine_inherited
@@ -552,6 +586,10 @@ phases:
           customer_description_appends: explicit_direct_one_level
         runtime_scenarios:
           - "Test both customers at populations 1, 5, 10, including direct replacements."
+          - "With both Market and Temple adjacent to the Tailor inside its own city, verify that city gets 0.2 Culture, 0.2 Production, and 0.2 Gold per citizen from the two transactions."
+          - "With the Market and Temple in separate adjacent customer cities, verify that each city receives its own Culture effect and the Tailor receives the sum of both cities' population-based Production and Gold returns."
+          - "With a Market and Temple in adjacent districts of the same other city, verify that the customer city receives two Culture contributions and the Tailor city receives Production and Gold based on twice that customer city's population; verify each contribution disappears independently if its building is pillaged or removed."
+          - "Mixed-city calculation: customer city A has 10 citizens plus adjacent Market and Temple, while city B has 6 citizens plus an adjacent Market. For this Tailor, A receives 2.0 Culture, B receives 0.6 Culture, and the Tailor city receives 2.6 Production and 2.6 Gold; repeat with A as the Tailor city."
 
       - id: I.SACRISTAN
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.SERVICE, art.properties.D.ART.STAGE3.CUSTOMERS]
@@ -581,10 +619,11 @@ phases:
       - id: I.STAGE3_TRADE
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.TRADE]
         gameplay_patterns: [GP.TRADE.DOMESTIC_SUPPLY, GP.TRADE.CITY_YIELD_PRESENTATION]
-        localization_patterns: [LP.TRADE.DOMESTIC_BULLET]
+        localization_patterns: [LP.TRADE.DOMESTIC_DEMAND_FIRST_BULLET]
         outputs: [core, gold, localization_source, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
         static_assertions:
           - "Destination +1 Culture; origin Quarter +1 Production/+1 Gold only without Tailors; origin +1 Amenity."
+          - "The Tailor building description presents its incoming Trade Route transaction in recipient-first order: Quarter +1 Production/+1 Gold, then route +1 Culture, followed by the origin condition and Amenity."
           - "The Tailor contributes one complete route transaction and stacks additively with the Fashion House transaction."
           - "The origin +1 Culture modifier has one explicit CSC_TradeRouteYieldPresentation row and Sukritact's city-yield tooltip moves exactly that active amount from Modifiers to Outgoing Trade Routes without modifier-name inference."
         trade_route_yield_presentation:
@@ -650,6 +689,9 @@ phases:
           - "Amphitheater and all three named Wonders are covered."
           - "Amphitheater replacements inherit their building-yield effect and are explicitly included once in Lua lookup and text; named Wonders are never expanded."
           - "Amphitheater and each named Wonder page retain one integrated Supply Chains section describing the Fashion House exchange; Amphitheater and Theater Square entries also carry the concise Stage Manager pointer required by I.STAGE_MANAGER."
+        implementation_binding:
+          stacking_unit: eligible_adjacent_customer_site_and_branch
+          deduplication_key: [seller_city, customer_city, customer_plot, customer_branch]
         replacement_binding:
           amphitheater_presence_requirement: engine_inherited
           amphitheater_building_yield_effect: engine_inherited
@@ -658,6 +700,7 @@ phases:
           named_wonders: never_expand
         runtime_scenarios:
           - "Test every customer at populations 4, 5, 9, 10, including direct replacements."
+          - "With two eligible customer sites adjacent to one Fashion House, including sites in the same city where possible, verify that Culture customer benefits and Production/Gold returns stack and that removing one site removes only its contribution."
 
       - id: I.STAGE_MANAGER
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.SERVICE, art.properties.D.ART.STAGE4.CUSTOMERS]

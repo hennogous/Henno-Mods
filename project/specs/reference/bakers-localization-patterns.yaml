@@ -39,8 +39,8 @@ district_description_order:
 building_description_order:
   - material_input
   - local_exchange
-  - customer_output
   - downstream_output
+  - customer_output
   - trade_output
   - service
 
@@ -143,7 +143,7 @@ patterns:
     classification: exact_bakers_parameterized
     applies_to: building_description
     authorship_mode: strict_template
-    authorship_guidance: ["Use for later local buildings that consume the current building's output; place it after the current building's direct end-customer transaction."]
+    authorship_guidance: ["Use for later local buildings that consume the current building's output; place it before the adjacent end-customer transaction, as in the Water Mill and Wind Mill descriptions."]
     source_anchor: LOC_BUILDING_CSC_BAKERS_WATER_MILL_DESCRIPTION
     order_group: downstream_output
     template: >
@@ -212,6 +212,19 @@ patterns:
       in exchange for +{quarter_return} to the Quarter, if the origin city does not
       have a {quarter_name}. +{origin_amenity} to the origin city.
     required_slots: [destination_bonus, quarter_return, quarter_name, origin_amenity]
+
+  - id: LP.TRADE.DOMESTIC_DEMAND_FIRST_BULLET
+    classification: exact_bakers_parameterized
+    applies_to: building_description
+    authorship_mode: strict_template
+    authorship_guidance: ["Lead with yields received by the building from each incoming Trade Route, then the route bonus, no-origin-Quarter condition, and origin Amenity."]
+    source_anchor: LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION
+    order_group: trade_output
+    template: >
+      * +{quarter_return} from each incoming [ICON_TradeRoute] Trade Route,
+      in exchange for a +{destination_bonus} bonus to the [ICON_TradeRoute] Trade Route,
+      if the origin city itself does not have a {quarter_name}. +{origin_amenity} to the origin city.
+    required_slots: [quarter_return, destination_bonus, quarter_name, origin_amenity]
 
   - id: LP.PEDIA.DISTRICT_CHAPTERS
     classification: exact_bakers_structure

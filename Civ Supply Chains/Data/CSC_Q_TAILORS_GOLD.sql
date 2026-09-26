@@ -15,8 +15,12 @@ INSERT INTO BuildingModifiers
         (   BuildingType,                              ModifierId   )
 VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD'   ),
         (   'BUILDING_LIGHTHOUSE',                     'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_GOLD'   ),
-        (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP'   ),
-        (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP'   );
+        (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP'   );
+
+INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
+SELECT BuildingType, 'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP'
+FROM Buildings
+WHERE BuildingType = 'BUILDING_CSC_TAILORS_FASHION_HOUSE';
 
 INSERT OR IGNORE INTO BuildingModifiers
 		( BuildingType, ModifierId )
@@ -48,14 +52,14 @@ WHERE Bit > 1;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Modifiers
-        (   ModifierId,                                            ModifierType,                                         OwnerRequirementSetId,                         SubjectRequirementSetId   )
-VALUES  (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   NULL,                                          'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
-        (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',                    'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',            NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_GOLD',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      NULL,                                          'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP',         'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP',             'MODIFIER_BUILDING_YIELD_CHANGE',                     'REQSET_CSC_TAILORS_CITY_HAS_TAILOR',          NULL   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP',      'MODIFIER_BUILDING_YIELD_CHANGE',                     'REQSET_CSC_TAILORS_CITY_HAS_FASHION_HOUSE',   NULL   ),
-        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD',                  'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                                          'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_1'   );
+        (   ModifierId,                                            ModifierType,                                         OwnerRequirementSetId,   SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
+        (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',                    'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',            NULL,                    NULL   ),
+        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_GOLD',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      NULL,                    'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'MOD_CSC_TAILORS_LIGHTHOUSE_GOLD_TO_WORKSHOP',         'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
+        (   'MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP',             'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
+        (   'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP',      'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    NULL   ),
+        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD',                  'MODIFIER_BUILDING_YIELD_CHANGE',                     NULL,                    'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_1'   );
 
 INSERT OR IGNORE INTO Modifiers
 		( ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId )

@@ -20,10 +20,10 @@ Textile Workshop
 
 ## LOC_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP_DESCRIPTION
 - +1 [ICON_Culture] Culture from each adjacent [ICON_CSC_BASE] Base Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
-- +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each adjacent Lighthouse, and +1 [ICON_Production] Production in return.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from the local Tailor and Fashion House, in exchange for +1 [ICON_Culture] Culture.
+- +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each adjacent Lighthouse, and +1 [ICON_Production] Production in return.
 
-At Naval Tradition, a supplied Textile Workshop establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME} in an adjacent Harbor with a Lighthouse.
+At Naval Tradition, a supplied Textile Workshop establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME} service in an adjacent Harbor with a Lighthouse.
 
 ## LOC_BUILDING_CSC_TAILORS_TAILOR_NAME
 Tailor
@@ -31,9 +31,9 @@ Tailor
 ## LOC_BUILDING_CSC_TAILORS_TAILOR_DESCRIPTION
 - +1 [ICON_Culture] Culture from the local Textile Workshop, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +0.1 [ICON_Production] Production and +0.1 [ICON_Gold] Gold per [ICON_Citizen] Citizen from each adjacent Temple or Market, in exchange for +0.1 [ICON_Culture] Culture per [ICON_Citizen] Citizen to the customer city.
-- +1 [ICON_Culture] Culture bonus to trade routes to the city, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Quarter, if the origin city does not have a Tailors' Quarter. +1 [ICON_Amenities] Amenity to the origin city.
+- +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each incoming [ICON_TradeRoute] Trade Route, in exchange for a +1 [ICON_Culture] Culture bonus to the [ICON_TradeRoute] Trade Route, if the origin city itself does not have a Tailors' Quarter. +1 [ICON_Amenities] Amenity to the origin city.
 
-At Divine Right, a supplied Tailor establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_3_SERVICE_NAME} in an adjacent Holy Site with a Temple.
+At Divine Right, a supplied Tailor establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_3_SERVICE_NAME} service in an adjacent Holy Site with a Temple.
 
 ## LOC_BUILDING_CSC_TAILORS_FASHION_HOUSE_NAME
 Fashion House
@@ -165,16 +165,19 @@ Textile making was among the most widespread urban industries long before the fa
 Fibres processed in a workshop become tailored consumer goods, then fashion and performance goods sold into the institutions where a city presents itself to its people and the wider world. And so, as the chain develops, cloth becomes more than a necessity: tailors serve religious ceremony, civic display, theaters and commerce; fine dyes, silk, silver and gold make dress a visible language of wealth, office and taste.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP_CHAPTER_CSCHAIN_TITLE
-Supply Chain
+Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP_CHAPTER_CSCHAIN_PARA_1
-The Textile Workshop receives Culture from adjacent Base Materials improvements while returning Production and Gold, exchanges yields with Lighthouses and later local Tailors buildings, and can establish a Dockmaster service.
+From nearby cotton fields and flax plots, bundles of fibre arrive at the Textile Workshop; wool joins them where flocks are kept. Spinning wheels draw the fibres into thread, and looms turn that thread into sturdy lengths of cloth. The local Tailor cuts these bolts into everyday clothing, while the Fashion House selects finer weaves for elaborate dress. Heavier canvas passes to an adjacent Lighthouse for the harbor's sails and stores, carrying the Quarter's work from loom to waterfront.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP_CHAPTER_HISTORY_TITLE
-History
+Historical Context
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP_CHAPTER_HISTORY_PARA_1
-Textile workshops combined specialized tools and skilled labor to prepare fibres, spin thread and weave cloth. Their output linked rural producers to urban merchants, shipyards and markets, making the workshop an early hinge between material supply and commercial life.
+Before cloth could be cut into a garment, raw fibre had to be cleaned, spun into yarn and woven. Dyeing, fulling and other finishing work could follow. Each task called for its own tools and practiced hands, and the quality of one step shaped what the next craftsperson could make. Textile workshops helped bring these skills together and gave tailors dependable bolts of cloth rather than an uncertain assortment of household pieces.
+
+## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP_CHAPTER_HISTORY_PARA_2
+That output served more than clothing. Towns needed plain fabric for daily wear and finer cloth for ceremonial and fashionable dress, while ports depended on strong canvas for sails, awnings and coverings. Merchants carried fibre in from fields and flocks and sent woven goods onward through markets and harbors. The textile workshop stood between those worlds, turning rural materials into something that could be worn at home or carried across the sea.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_TITLE
 Supply Chains

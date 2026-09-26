@@ -1,5 +1,7 @@
 # Reusable prop library
 
+**Current inventory, 25 September 2026:** 197 individual blends and catalogue entries. The [material and storage intake](pantry-material-intake.md) added 111 native assets; the [plant intake](pantry-plant-intake.md) added 47 more after Henno's visual selection. Earlier counts below document intermediate stages, not the live inventory.
+
 Initial export completed 13 September 2026 at
 `C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library`.
 The package contains 33 asset blends (26 base-game, 5 Rise and Fall, 2 shared CSC),
@@ -29,8 +31,8 @@ See [contact sheets and authored intake](prop-library-contact-sheets.md) for ref
 commands and the additive import tool. FGX-source details below describe converted
 native entries; authored entries have their own catalogue provenance and state plan.
 
-The uniform-scale correction adds `CSC_Attached_Workbench_Long_Narrow` and
-`CSC_Attached_Seating_Bench`, bringing the current library to **42 assets**. These
+The uniform-scale correction added `CSC_Attached_Workbench_Long_Narrow` and
+`CSC_Attached_Seating_Bench`, bringing the library at that stage to **42 assets**. These
 are deliberate local-geometry variants of the existing CSC workbench, with
 identity source transforms and a single static Bone binding. They retain its
 existing Civ material and UV1/UV2; a neutral unused UV3 supplies the static export

@@ -1,0 +1,13 @@
+# Pantry plant intake
+
+**25 September 2026.** Henno reviewed a numbered contact sheet of 50 Pantry vegetation models and excluded entries **14, 20 and 45**: `Shrub_Round_Sm_Flowered_Color`, `IMP_QuarryREDO_GrassTuft_C` and `Tree_StumpA`. The other **47** were added to `Working Files/3D Art/Props/CSC_Prop_Library/`, bringing the live catalogue and individual `.blend` count to **197**. All 150 pre-existing blends were preserved byte-for-byte.
+
+The review package and filtered approved contact sheets are at `C:\Users\Shadow\Desktop\Codex\pantry-plant-review\`. The original numbered sheet remains a record of the selection, including rejected candidates. The approved sheets retain those original review numbers for traceability. `approved-plant-index.json`, `plant-intake-install-report.json` and `plant-intake-live-verification.json` record the delivered assets and checks.
+
+Discovery scanned the base-game, Rise and Fall and Gathering Storm package ASTs. A broad name/geometry search found 634 semantic matches, including unrelated items; 60 representative vegetation models were shortlisted. Fifty prepared and rendered. Ten others hit the current FGX extraction or source XML limits, remain outside the library, and are listed in the review package's `preparation-failures.json`. They were not implicitly approved.
+
+The additions retain exact native asset IDs, source geometry and local coordinates, original material and texture bindings, UVs, normals, state components and transform metadata. External textures use portable relative paths. Native package XLP bindings and source Construction/Pillaged metadata are recorded in the catalogue. No duplicate CSC asset registration, cooking or in-game integration was performed.
+
+All 47 staged blends were reopened and compared with extracted source geometry, topology, UVs, material groups, transforms, normals and source-resolution textures. The same checks passed again from the final library location. `Tree_Trop_A` uses unusually large UV2 coordinates; verification now compares against Blender's stored float32 representation to account for expected rounding without loosening the source-fidelity check. Blender material nodes interpret scalar-map red channels and decal alpha for previews, but Firaxis shader effects and native runtime state/placement still need evaluation in context.
+
+Tools: `project/tools/blender/discover_pantry_plants.py`, `prepare_pantry_plant_candidates.py`, `render_pantry_candidates.py`, `assemble_pantry_plant_sheets.py` and `intake_pantry_plants.py`. The intake staging and complete source audit remain in the turn's Codex visualization output, separate from the live library.

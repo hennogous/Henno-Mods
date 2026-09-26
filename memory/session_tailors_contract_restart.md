@@ -33,3 +33,15 @@
   Fashion House at Buildings Level 1/2/3 (corresponding to gameplay Stages
   2/3/4). Contract assertions are cumulative and permit only future levels to
   remain empty.
+- Stage 3 Market and Temple sales stack by customer city and building family.
+  A shared child Culture modifier and Lua deduplication by city alone collapsed
+  a same-city Market/Temple pair to one transaction. The SQL now uses distinct
+  Culture child modifiers and the shared population-return Lua deduplicates
+  seller/transaction/customer-plot pairs, including in another city. The design, implementation,
+  reusable customer-transaction contract, and Tailors validator encode this.
+  The shared contract also requires future customer transactions to name their
+  stacking unit; the generic contract validator checks that binding.
+- Stage 3 population sales now use CSC_Stage3CustomerTransactions: one Bakery
+  row and two Tailor rows. The shared Lua scanner reads these rows, expands
+  direct customer replacements, and aggregates seller/customer population
+  yields by the existing SQL property names. Stage 4 remains separate.

@@ -56,6 +56,29 @@ CREATE TABLE IF NOT EXISTS CSC_QuarterMaterialAdjacencyConfig
     );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	CSC_Stage3CustomerTransactions
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- One row per Stage 3 seller/customer building family. The gameplay script
+-- reads these rows after all Quarter SQL has loaded, expands direct unique
+-- replacements, and computes population returns for each adjacent site.
+-- CustomerYieldAmountProperty is NULL when SQL attach modifiers provide the
+-- customer yield directly (as with the Tailor's Market and Temple Culture).
+CREATE TABLE IF NOT EXISTS CSC_Stage3CustomerTransactions
+    (
+    TransactionId               TEXT PRIMARY KEY NOT NULL,
+    SellerDistrictType           TEXT NOT NULL,
+    SellerBuildingType           TEXT NOT NULL,
+    CustomerDistrictType         TEXT NOT NULL,
+    CustomerBuildingType         TEXT NOT NULL,
+    SellerPopulationProperty     TEXT NOT NULL,
+    SellerReturnAmountProperty   TEXT NOT NULL,
+    CustomerYieldAmountProperty  TEXT DEFAULT NULL,
+    EngineAmountPerPopulation    REAL NOT NULL CHECK (EngineAmountPerPopulation > 0),
+    UNIQUE (SellerDistrictType, SellerBuildingType, CustomerDistrictType, CustomerBuildingType)
+    );
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	CSC_PopulationLevels
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

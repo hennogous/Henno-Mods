@@ -8,7 +8,9 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 - [Optional Art Pack split test](session_optional-art-pack-test.md) — Wind Mill 2 source split, cooker pantry requirement, and pending in-game ArtDef merge check.
 
+- [Bakers Storage_L rev 01](session_bakers-storage-l-rev01.md) — additions + 27 reused props built; crane (animated) next; PIL/CON+PIL/AO/flour cataloguing open.
 - [Reusable prop library](project_reusable-prop-library.md) — initial 33-asset Blender library delivered; preserve source identities/transforms/materials; source Construction/Pillaged behavior catalogued.
+- [Pantry plant intake](session_pantry-plant-review.md) — 47 approved vegetation assets added to the live library; selection, verification and review-package paths.
 
 - [Quarter building art plan](../project/docs/art/quarter-building-art-plan.md) — agreed 12 September 2026: retain Henno’s kit, Quarter roof/beam colours, assistant-built chunky prop scenes, storage/crane animation, Industrial Era variants and later cultural additions. [Internal docs index](../project/docs/README.md); studies now live under `project/docs/research/`.
 

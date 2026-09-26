@@ -87,31 +87,19 @@ local function CSC_CreateExplicitBuildingFamily(buildingTypeList)
 end
 
 local DISTRICT_BAKERS_QUARTER = GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"] ~= nil and GameInfo.Districts["DISTRICT_CSC_BAKERS_QUARTER"].Index or -1;
-local DISTRICT_TAILORS_QUARTER = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"] ~= nil and GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"].Index or -1;
-local DISTRICT_COMMERCIAL_HUB_FAMILY = CSC_CreateDistrictReplacementFamily("DISTRICT_COMMERCIAL_HUB");
-local DISTRICT_HOLY_SITE_FAMILY = CSC_CreateDistrictReplacementFamily("DISTRICT_HOLY_SITE");
 local DISTRICT_ENTERTAINMENT_FAMILY = CSC_CreateDistrictReplacementFamily("DISTRICT_ENTERTAINMENT_COMPLEX");
 local DISTRICT_WATER_PARK_FAMILY = CSC_CreateDistrictReplacementFamily("DISTRICT_WATER_ENTERTAINMENT_COMPLEX");
 local DISTRICT_GARDEN_FAMILY = CSC_CreateExplicitDistrictFamily({ "DISTRICT_LEU_GARDEN" });
 
-local BUILDING_BAKERY = GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"].Index or -1;
 local BUILDING_CAFE = GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"].Index or -1;
-local BUILDING_TAILOR = GameInfo.Buildings["BUILDING_CSC_TAILORS_TAILOR"] ~= nil and GameInfo.Buildings["BUILDING_CSC_TAILORS_TAILOR"].Index or -1;
-local BUILDING_MARKET_FAMILY = CSC_CreateBuildingReplacementFamily("BUILDING_MARKET");
-local BUILDING_TEMPLE_FAMILY = CSC_CreateBuildingReplacementFamily("BUILDING_TEMPLE");
 local BUILDING_ZOO_FAMILY = CSC_CreateBuildingReplacementFamily("BUILDING_ZOO");
 local BUILDING_FERRIS_FAMILY = CSC_CreateBuildingReplacementFamily("BUILDING_FERRIS_WHEEL");
 local BUILDING_CONSERVATORY_FAMILY = CSC_CreateExplicitBuildingFamily({ "BUILDING_LEU_CONSERVATORY" });
 
-local PROP_BAKERS_MARKET_CUSTOMER_POP = "CSC_BAKERS_STAGE_3_MARKET_CUSTOMER_POP";
-local PROP_BAKERS_MARKET_FOOD_AMOUNT = "CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT";
-local PROP_BAKERS_MARKET_RETURN_AMOUNT = "CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT";
 local PROP_BAKERS_STAGE_4_CAFE_RETURN = "CSC_BAKERS_STAGE_4_CAFE_RETURN";
 local PROP_BAKERS_STAGE_4_ZOO_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_ZOO_CULTURE_RETURN";
 local PROP_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN";
 local PROP_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN = "CSC_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN";
-local PROP_TAILORS_CUSTOMER_POP = "CSC_TAILORS_STAGE_3_CUSTOMER_POP";
-local PROP_TAILORS_CUSTOMER_RETURN_AMOUNT = "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT";
 local AMOUNT_SCALE = 10000;
 -- These bits mirror CSC_ScaledAmountBits and CSC_Stage4StackBits in CSC_Q_ALL.sql.
 -- For decimal per-population returns, Lua writes scaled integers such as 2500
@@ -185,23 +173,9 @@ local function CSC_CityHasAnyFunctioningBuilding(pCity, buildingIndexes)
 	return false;
 end
 
-local function CSC_CityHasMarket(pCity)
-	return CSC_CityHasAnyFunctioningBuilding(pCity, BUILDING_MARKET_FAMILY);
-end
-
-local function CSC_CityHasBakerySeller(pCity)
-	return CSC_CityHasFunctioningBuilding(pCity, BUILDING_BAKERY)
-		and CSC_CityHasFunctioningDistrict(pCity, DISTRICT_BAKERS_QUARTER);
-end
-
 local function CSC_CityHasCafeSeller(pCity)
 	return CSC_CityHasFunctioningBuilding(pCity, BUILDING_CAFE)
 		and CSC_CityHasFunctioningDistrict(pCity, DISTRICT_BAKERS_QUARTER);
-end
-
-local function CSC_CityHasTailorSeller(pCity)
-	return CSC_CityHasFunctioningBuilding(pCity, BUILDING_TAILOR)
-		and CSC_CityHasFunctioningDistrict(pCity, DISTRICT_TAILORS_QUARTER);
 end
 
 local function CSC_GetCityDistrictPlot(pCity, iDistrict)
@@ -237,14 +211,63 @@ local function CSC_AddStage4CustomerCity(stage4CustomerCitiesByPlotKey, pCity, d
 	};
 end
 
+local function CSC_LoadStage3Transactions()
+	local transactions = {};
+	local populationProperties = {};
+	local amountProperties = {};
+	if GameInfo.CSC_Stage3CustomerTransactions == nil then
+		print("CSC: Stage 3 customer transaction registry is missing");
+		return transactions, populationProperties, amountProperties;
+	end
+
+	for row in GameInfo.CSC_Stage3CustomerTransactions() do
+		local sellerDistrict = GameInfo.Districts[row.SellerDistrictType];
+		local sellerBuilding = GameInfo.Buildings[row.SellerBuildingType];
+		local customerDistricts = CSC_CreateDistrictReplacementFamily(row.CustomerDistrictType);
+		local customerBuildings = CSC_CreateBuildingReplacementFamily(row.CustomerBuildingType);
+		local amount = tonumber(row.EngineAmountPerPopulation) or 0;
+		if sellerDistrict ~= nil and sellerBuilding ~= nil and #customerDistricts > 0
+			and #customerBuildings > 0 and amount > 0
+			and row.TransactionId ~= nil and row.TransactionId ~= ""
+			and row.SellerPopulationProperty ~= nil and row.SellerPopulationProperty ~= ""
+			and row.SellerReturnAmountProperty ~= nil and row.SellerReturnAmountProperty ~= ""
+			and row.CustomerYieldAmountProperty ~= "" then
+			table.insert(transactions, {
+				Id = row.TransactionId,
+				SellerDistrictIndex = sellerDistrict.Index,
+				SellerBuildingIndex = sellerBuilding.Index,
+				CustomerDistrictIndexes = customerDistricts,
+				CustomerBuildingIndexes = customerBuildings,
+				SellerPopulationProperty = row.SellerPopulationProperty,
+				SellerReturnAmountProperty = row.SellerReturnAmountProperty,
+				CustomerYieldAmountProperty = row.CustomerYieldAmountProperty,
+				Amount = amount,
+			});
+			populationProperties[row.SellerPopulationProperty] = true;
+			amountProperties[row.SellerReturnAmountProperty] = true;
+			if row.CustomerYieldAmountProperty ~= nil then
+				amountProperties[row.CustomerYieldAmountProperty] = true;
+			end
+		else
+			print("CSC: invalid Stage 3 customer transaction " .. tostring(row.TransactionId));
+		end
+	end
+
+	return transactions, populationProperties, amountProperties;
+end
+
+local STAGE3_TRANSACTIONS, STAGE3_POPULATION_PROPERTIES, STAGE3_AMOUNT_PROPERTIES = CSC_LoadStage3Transactions();
+
 local function CSC_CreateReturnStates()
 	-- First pass: cache every city and build lookup tables by district plot.
-	-- Later scans only walk the six plots around each Bakers' Quarter and use
-	-- these maps to find eligible customer cities quickly.
+	-- Later scans only walk the six plots around each selling Quarter.
 	local cityStates = {};
-	local commercialHubCitiesByPlotKey = {};
-	local holySiteCitiesByPlotKey = {};
+	local stage3SellerRecords = {};
+	local stage3CustomerCitiesByTransaction = {};
 	local stage4CustomerCitiesByPlotKey = {};
+	for _, transaction in ipairs(STAGE3_TRANSACTIONS) do
+		stage3CustomerCitiesByTransaction[transaction.Id] = {};
+	end
 
 	for iPlayerID = 0, PlayerManager.GetWasEverAliveCount() - 1 do
 		local pPlayer = Players[iPlayerID];
@@ -255,28 +278,36 @@ local function CSC_CreateReturnStates()
 					local cityState = {
 						City = pCity,
 						BakersQuarterPlot = CSC_GetCityDistrictPlot(pCity, DISTRICT_BAKERS_QUARTER),
-						TailorsQuarterPlot = CSC_GetCityDistrictPlot(pCity, DISTRICT_TAILORS_QUARTER),
-						CommercialHubPlot = CSC_GetCityAnyDistrictPlot(pCity, DISTRICT_COMMERCIAL_HUB_FAMILY),
-						HolySitePlot = CSC_GetCityAnyDistrictPlot(pCity, DISTRICT_HOLY_SITE_FAMILY),
-						CustomerPopulation = 0,
-						TailorsCustomerPopulation = 0,
-						FoodPopulation = 0,
+						Stage3PopulationByProperty = {},
+						Stage3TargetYieldByProperty = {},
+						Stage3TransactionsSeen = {},
 						Stage4CafeReturn = 0,
 						Stage4ZooCultureReturn = 0,
 						Stage4FerrisCultureReturn = 0,
 						Stage4ConservatoryCultureReturn = 0,
-						CustomersSeen = {},
-						TailorsCustomersSeen = {},
 						Stage4CustomersSeen = {},
 					};
 
 					cityStates[CSC_GetCityStateKey(iPlayerID, pCity:GetID())] = cityState;
 
-					if cityState.CommercialHubPlot ~= nil then
-						commercialHubCitiesByPlotKey[CSC_GetPlotKey(cityState.CommercialHubPlot:GetX(), cityState.CommercialHubPlot:GetY())] = pCity;
-					end
-					if cityState.HolySitePlot ~= nil then
-						holySiteCitiesByPlotKey[CSC_GetPlotKey(cityState.HolySitePlot:GetX(), cityState.HolySitePlot:GetY())] = pCity;
+					for _, transaction in ipairs(STAGE3_TRANSACTIONS) do
+						local pSellerPlot = CSC_GetCityDistrictPlot(pCity, transaction.SellerDistrictIndex);
+						if pSellerPlot ~= nil
+							and CSC_CityHasFunctioningBuilding(pCity, transaction.SellerBuildingIndex)
+							and CSC_CityHasFunctioningDistrict(pCity, transaction.SellerDistrictIndex) then
+							table.insert(stage3SellerRecords, {
+								State = cityState,
+								Plot = pSellerPlot,
+								Transaction = transaction,
+							});
+						end
+						local customerCitiesByPlotKey = stage3CustomerCitiesByTransaction[transaction.Id];
+						for _, districtIndex in ipairs(transaction.CustomerDistrictIndexes) do
+							local pCustomerPlot = CSC_GetCityDistrictPlot(pCity, districtIndex);
+							if pCustomerPlot ~= nil then
+								customerCitiesByPlotKey[CSC_GetPlotKey(pCustomerPlot:GetX(), pCustomerPlot:GetY())] = pCity;
+							end
+						end
 					end
 
 					if CSC_CityHasAnyFunctioningBuilding(pCity, BUILDING_ZOO_FAMILY) then
@@ -293,50 +324,39 @@ local function CSC_CreateReturnStates()
 		end
 	end
 
-	return cityStates, commercialHubCitiesByPlotKey, holySiteCitiesByPlotKey, stage4CustomerCitiesByPlotKey;
+	return cityStates, stage3SellerRecords, stage3CustomerCitiesByTransaction, stage4CustomerCitiesByPlotKey;
 end
 
-local function CSC_MarkBakeryMarketTransaction(cityStates, pSellerCity, pCustomerCity)
-	-- Stage 3 Bakery -> Market relationship:
-	--   * the Bakery city receives per-population Production/Gold returns
-	--   * the Market city receives per-population Food
-	-- The Gold side lives in CSC_Q_BAKERS_GOLD.sql; this script only computes
-	-- shared population totals and writes neutral property names.
-	if pSellerCity == nil or pCustomerCity == nil then return; end
-	if pSellerCity:GetOwner() ~= pCustomerCity:GetOwner() then return; end
-	if not CSC_CityHasBakerySeller(pSellerCity) then return; end
-	if not CSC_CityHasMarket(pCustomerCity) then return; end
+local function CSC_MarkStage3CustomerTransaction(cityStates, sellerRecord, pCustomerCity, customerPlotKey)
+	local transaction = sellerRecord.Transaction;
+	local sellerState = sellerRecord.State;
+	local pSellerCity = sellerState.City;
+	if pCustomerCity == nil or pSellerCity:GetOwner() ~= pCustomerCity:GetOwner() then return; end
+	if not CSC_CityHasAnyFunctioningBuilding(pCustomerCity, transaction.CustomerBuildingIndexes) then return; end
 
-	local sellerKey = CSC_GetCityStateKey(pSellerCity:GetOwner(), pSellerCity:GetID());
-	local sellerState = cityStates[sellerKey];
-	if sellerState == nil then return; end
+	-- The seller state scopes this key. Transaction ID separates Market from
+	-- Temple; plot key also preserves multiple eligible sites in one city.
+	local transactionKey = transaction.Id .. ":" .. customerPlotKey;
+	if sellerState.Stage3TransactionsSeen[transactionKey] then return; end
+	sellerState.Stage3TransactionsSeen[transactionKey] = true;
 
-	local customerKey = CSC_GetCityStateKey(pCustomerCity:GetOwner(), pCustomerCity:GetID());
-	if sellerState.CustomersSeen[customerKey] then return; end
+	local customerPopulation = pCustomerCity:GetPopulation() or 0;
+	local populationProperty = transaction.SellerPopulationProperty;
+	local returnProperty = transaction.SellerReturnAmountProperty;
+	sellerState.Stage3PopulationByProperty[populationProperty] =
+		(sellerState.Stage3PopulationByProperty[populationProperty] or 0) + customerPopulation;
+	sellerState.Stage3TargetYieldByProperty[returnProperty] =
+		(sellerState.Stage3TargetYieldByProperty[returnProperty] or 0) + customerPopulation * transaction.Amount;
 
-	sellerState.CustomersSeen[customerKey] = true;
-	sellerState.CustomerPopulation = sellerState.CustomerPopulation + (pCustomerCity:GetPopulation() or 0);
-
-	local customerState = cityStates[customerKey];
-	if customerState ~= nil then
-		customerState.FoodPopulation = customerState.FoodPopulation + (pCustomerCity:GetPopulation() or 0);
+	local customerProperty = transaction.CustomerYieldAmountProperty;
+	if customerProperty ~= nil then
+		local customerKey = CSC_GetCityStateKey(pCustomerCity:GetOwner(), pCustomerCity:GetID());
+		local customerState = cityStates[customerKey];
+		if customerState ~= nil then
+			customerState.Stage3TargetYieldByProperty[customerProperty] =
+				(customerState.Stage3TargetYieldByProperty[customerProperty] or 0) + customerPopulation * transaction.Amount;
+		end
 	end
-end
-
-local function CSC_MarkTailorCustomerTransaction(cityStates, pSellerCity, pCustomerCity, customerBuildingFamily)
-	if pSellerCity == nil or pCustomerCity == nil then return; end
-	if pSellerCity:GetOwner() ~= pCustomerCity:GetOwner() then return; end
-	if not CSC_CityHasTailorSeller(pSellerCity) then return; end
-	if not CSC_CityHasAnyFunctioningBuilding(pCustomerCity, customerBuildingFamily) then return; end
-
-	local sellerState = cityStates[CSC_GetCityStateKey(pSellerCity:GetOwner(), pSellerCity:GetID())];
-	if sellerState == nil then return; end
-
-	local customerKey = CSC_GetCityStateKey(pCustomerCity:GetOwner(), pCustomerCity:GetID());
-	if sellerState.TailorsCustomersSeen[customerKey] then return; end
-
-	sellerState.TailorsCustomersSeen[customerKey] = true;
-	sellerState.TailorsCustomerPopulation = sellerState.TailorsCustomerPopulation + (pCustomerCity:GetPopulation() or 0);
 end
 
 local function CSC_MarkCafeStage4Transaction(cityStates, pSellerCity, customerRecord, customerPlotKey)
@@ -374,36 +394,16 @@ local function CSC_MarkCafeStage4Transaction(cityStates, pSellerCity, customerRe
 	end
 end
 
-local function CSC_ScanBakeryMarketTransactions(cityStates, commercialHubCitiesByPlotKey)
-	if DISTRICT_BAKERS_QUARTER < 0 or #DISTRICT_COMMERCIAL_HUB_FAMILY == 0 then return; end
-
-	for _, sellerState in pairs(cityStates) do
-		local pSellerPlot = sellerState.BakersQuarterPlot;
-		if pSellerPlot ~= nil then
-			for direction = 0, NUM_DIRECTIONS - 1 do
-				local pCustomerPlot = Map.GetAdjacentPlot(pSellerPlot:GetX(), pSellerPlot:GetY(), direction);
-				if pCustomerPlot ~= nil then
-					local pCustomerCity = commercialHubCitiesByPlotKey[CSC_GetPlotKey(pCustomerPlot:GetX(), pCustomerPlot:GetY())];
-					CSC_MarkBakeryMarketTransaction(cityStates, sellerState.City, pCustomerCity);
-				end
-			end
-		end
-	end
-end
-
-local function CSC_ScanTailorCustomerTransactions(cityStates, commercialHubCitiesByPlotKey, holySiteCitiesByPlotKey)
-	if DISTRICT_TAILORS_QUARTER < 0 then return; end
-
-	for _, sellerState in pairs(cityStates) do
-		local pSellerPlot = sellerState.TailorsQuarterPlot;
-		if pSellerPlot ~= nil then
-			for direction = 0, NUM_DIRECTIONS - 1 do
-				local pCustomerPlot = Map.GetAdjacentPlot(pSellerPlot:GetX(), pSellerPlot:GetY(), direction);
-				if pCustomerPlot ~= nil then
-					local plotKey = CSC_GetPlotKey(pCustomerPlot:GetX(), pCustomerPlot:GetY());
-					CSC_MarkTailorCustomerTransaction(cityStates, sellerState.City, commercialHubCitiesByPlotKey[plotKey], BUILDING_MARKET_FAMILY);
-					CSC_MarkTailorCustomerTransaction(cityStates, sellerState.City, holySiteCitiesByPlotKey[plotKey], BUILDING_TEMPLE_FAMILY);
-				end
+local function CSC_ScanStage3CustomerTransactions(cityStates, sellerRecords, customerCitiesByTransaction)
+	for _, sellerRecord in ipairs(sellerRecords) do
+		local transaction = sellerRecord.Transaction;
+		local pSellerPlot = sellerRecord.Plot;
+		local customerCitiesByPlotKey = customerCitiesByTransaction[transaction.Id];
+		for direction = 0, NUM_DIRECTIONS - 1 do
+			local pCustomerPlot = Map.GetAdjacentPlot(pSellerPlot:GetX(), pSellerPlot:GetY(), direction);
+			if pCustomerPlot ~= nil then
+				local plotKey = CSC_GetPlotKey(pCustomerPlot:GetX(), pCustomerPlot:GetY());
+				CSC_MarkStage3CustomerTransaction(cityStates, sellerRecord, customerCitiesByPlotKey[plotKey], plotKey);
 			end
 		end
 	end
@@ -460,43 +460,38 @@ local function CSC_WriteAmountBits(pCity, pCityCenterPlot, propertyName, scaledA
 	end
 end
 
-local function CSC_WriteReturnState(pCity, customerPopulation, foodPopulation, tailorsCustomerPopulation, stage4CafeReturn, stage4ZooCultureReturn, stage4FerrisCultureReturn, stage4ConservatoryCultureReturn)
+local function CSC_WriteReturnState(cityState)
+	local pCity = cityState.City;
 	if pCity == nil then return; end
 
 	local pCityCenterPlot = Map.GetPlot(pCity:GetX(), pCity:GetY());
-	local sellerPopulation = pCity:GetPopulation() or 0;
-	local returnTargetYield = (tonumber(customerPopulation) or 0) * 0.105;
-	local foodTargetYield = (tonumber(foodPopulation) or 0) * 0.105;
-	local returnScaledAmount = CSC_GetScaledPerPopulationAmount(returnTargetYield, sellerPopulation);
-	local foodScaledAmount = CSC_GetScaledPerPopulationAmount(foodTargetYield, sellerPopulation);
-	local tailorsReturnTargetYield = (tonumber(tailorsCustomerPopulation) or 0) * 0.105;
-	local tailorsReturnScaledAmount = CSC_GetScaledPerPopulationAmount(tailorsReturnTargetYield, sellerPopulation);
-
-	CSC_SetPropertyIfChanged(pCityCenterPlot, PROP_BAKERS_MARKET_CUSTOMER_POP, customerPopulation);
-	CSC_SetPropertyIfChanged(pCity, PROP_BAKERS_MARKET_CUSTOMER_POP, customerPopulation);
-
-	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_MARKET_RETURN_AMOUNT, returnScaledAmount);
-	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_MARKET_FOOD_AMOUNT, foodScaledAmount);
-	CSC_SetPropertyIfChanged(pCityCenterPlot, PROP_TAILORS_CUSTOMER_POP, tailorsCustomerPopulation);
-	CSC_SetPropertyIfChanged(pCity, PROP_TAILORS_CUSTOMER_POP, tailorsCustomerPopulation);
-	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_TAILORS_CUSTOMER_RETURN_AMOUNT, tailorsReturnScaledAmount);
-	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_CAFE_RETURN, stage4CafeReturn);
-	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_ZOO_CULTURE_RETURN, stage4ZooCultureReturn);
-	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN, stage4FerrisCultureReturn);
-	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN, stage4ConservatoryCultureReturn);
+	local cityPopulation = pCity:GetPopulation() or 0;
+	for propertyName in pairs(STAGE3_POPULATION_PROPERTIES) do
+		local population = cityState.Stage3PopulationByProperty[propertyName] or 0;
+		CSC_SetPropertyIfChanged(pCityCenterPlot, propertyName, population);
+		CSC_SetPropertyIfChanged(pCity, propertyName, population);
+	end
+	for propertyName in pairs(STAGE3_AMOUNT_PROPERTIES) do
+		local targetYield = cityState.Stage3TargetYieldByProperty[propertyName] or 0;
+		local scaledAmount = CSC_GetScaledPerPopulationAmount(targetYield, cityPopulation);
+		CSC_WriteAmountBits(pCity, pCityCenterPlot, propertyName, scaledAmount);
+	end
+	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_CAFE_RETURN, cityState.Stage4CafeReturn);
+	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_ZOO_CULTURE_RETURN, cityState.Stage4ZooCultureReturn);
+	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN, cityState.Stage4FerrisCultureReturn);
+	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN, cityState.Stage4ConservatoryCultureReturn);
 end
 
 function CSC_RefreshCustomerPopulationReturns()
 	-- Full refreshes are intentionally idempotent. Every pass recomputes all
 	-- return properties from current game state, so removed buildings, pillage,
 	-- population changes, and ownership changes clear stale bonuses naturally.
-	local cityStates, commercialHubCitiesByPlotKey, holySiteCitiesByPlotKey, stage4CustomerCitiesByPlotKey = CSC_CreateReturnStates();
-	CSC_ScanBakeryMarketTransactions(cityStates, commercialHubCitiesByPlotKey);
-	CSC_ScanTailorCustomerTransactions(cityStates, commercialHubCitiesByPlotKey, holySiteCitiesByPlotKey);
+	local cityStates, stage3SellerRecords, stage3CustomerCitiesByTransaction, stage4CustomerCitiesByPlotKey = CSC_CreateReturnStates();
+	CSC_ScanStage3CustomerTransactions(cityStates, stage3SellerRecords, stage3CustomerCitiesByTransaction);
 	CSC_ScanCafeStage4Transactions(cityStates, stage4CustomerCitiesByPlotKey);
 
 	for _, cityState in pairs(cityStates) do
-		CSC_WriteReturnState(cityState.City, cityState.CustomerPopulation, cityState.FoodPopulation, cityState.TailorsCustomerPopulation, cityState.Stage4CafeReturn, cityState.Stage4ZooCultureReturn, cityState.Stage4FerrisCultureReturn, cityState.Stage4ConservatoryCultureReturn);
+		CSC_WriteReturnState(cityState);
 	end
 end
 

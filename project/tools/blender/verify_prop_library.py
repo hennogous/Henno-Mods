@@ -51,7 +51,12 @@ for row in data['assets']:
             for layer,key in zip(me.uv_layers,['uv','uv2','uv3']):
                 for loop in me.loops:
                     u,v=src['vertices'][loop.vertex_index][key]
-                    assert max(abs(layer.data[loop.index].uv[0]-u),abs(layer.data[loop.index].uv[1]-(1-v)))<0.00001
+                    # Blender stores UVs as float32. Compare against the same
+                    # representation: some native UV2 coordinates exceed 4,000,
+                    # where float32 rounding is larger than the old fixed epsilon.
+                    expected_u=struct.unpack('<f',struct.pack('<f',u))[0]
+                    expected_v=struct.unpack('<f',struct.pack('<f',1-v))[0]
+                    assert max(abs(layer.data[loop.index].uv[0]-expected_u),abs(layer.data[loop.index].uv[1]-expected_v))<0.00001
             for binding in c['materials']:
                 for p in list(me.polygons)[binding['first']:binding['first']+binding['count']]:
                     assert me.materials[p.material_index]['source_material_id']==binding['material']

@@ -96,6 +96,17 @@ VALUES
     ('BAKERS',       'CLASS_CSC_BAKERS_BASE',       '',           'YIELD_PRODUCTION', 1,   'FROM_RINGS_TYPETAG_RESOURCE'),
     ('BAKERS',       'CLASS_CSC_BAKERS_SPEC',       '',           'YIELD_PRODUCTION', 1,   'FROM_RINGS_TYPETAG_RESOURCE');
 
+-- Stage 3 Bakery -> Market population sale. Bakery Food is paid through the
+-- shared Lua amount bridge because several Bakery cities can supply one Market.
+INSERT OR IGNORE INTO CSC_Stage3CustomerTransactions
+    (TransactionId, SellerDistrictType, SellerBuildingType, CustomerDistrictType, CustomerBuildingType,
+     SellerPopulationProperty, SellerReturnAmountProperty, CustomerYieldAmountProperty, EngineAmountPerPopulation)
+VALUES
+    ('CSC_BAKERS_BAKERY_MARKET', 'DISTRICT_CSC_BAKERS_QUARTER', 'BUILDING_CSC_BAKERS_BAKERY',
+     'DISTRICT_COMMERCIAL_HUB', 'BUILDING_MARKET',
+     'CSC_BAKERS_STAGE_3_MARKET_CUSTOMER_POP', 'CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT',
+     'CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT', 0.105);
+
 
 
 --===========================================================================================================================================================================--

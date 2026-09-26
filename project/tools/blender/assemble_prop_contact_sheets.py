@@ -17,8 +17,8 @@ CARD = '#faf9f3'
 INK = '#263c35'
 MUTED = '#64716a'
 LINE = '#d7dbd1'
-ACCENTS = ['#466c52', '#9a7547', '#6c807d', '#a57765', '#627998', '#79756c', '#675481']
-CATEGORIES = ['Work surfaces & stands', 'Barrels', 'Crates & boxes', 'Pots', 'Textiles', 'Other props', 'CSC props']
+ACCENTS = ['#466c52', '#9a7547', '#6c807d', '#a57765', '#627998', '#5d815d', '#79756c', '#675481']
+CATEGORIES = ['Work surfaces & stands', 'Barrels', 'Crates & boxes', 'Pots', 'Textiles', 'Plants', 'Other props', 'CSC props']
 
 
 def font(size, bold=False):
@@ -31,7 +31,12 @@ def font(size, bold=False):
     raise FileNotFoundError('Install Arial or DejaVu Sans, or update the font paths')
 
 
-def category(asset_id, source_pack=None):
+def category(asset_id, source_pack=None, catalogue_row=None):
+    if catalogue_row and catalogue_row.get('category') in {
+        'Planters and hanging greenery', 'Shrubs and flowering plants',
+        'Ground and wetland plants', 'Crops and productive plants', 'Trees and palms',
+    }:
+        return 'Plants'
     name = asset_id.lower()
     if any(s in name for s in ['table', 'workbench', 'bench', 'stand']):
         return CATEGORIES[0]
@@ -131,7 +136,7 @@ def build(library, output):
         row['source_pack'] = row['source_pack'] or 'Uncatalogued'
         row['blend_path'] = str(blend)
         row['review_note'] = reviews.get(blend.stem)
-        row['category'] = category(blend.stem, row['source_pack'])
+        row['category'] = category(blend.stem, row['source_pack'], by_id.get(blend.stem))
         groups[row['category']].append(row)
     groups = OrderedDict((key, rows) for key, rows in groups.items() if rows)
     rows = [row for items in groups.values() for row in items]

@@ -131,15 +131,25 @@ patterns:
     parameters: [source_building, destination_building, source_yields, return_yields]
     invariant:
       - "Local exchanges require both buildings to be present and functioning."
+      - "Follow the Bakery and Mill wiring: attach each yield modifier to the building that sends it, and use its BuildingType argument to target the local building that receives it. The source building's presence activates the return; do not attach the return to its recipient and gate it with a city-has-source requirement."
+      - "If a later-stage sender has no Buildings row yet, register its attachment only when that row exists."
       - "Every direction has a matching design and localization obligation."
 
   - id: GP.BUILDING.CUSTOMER_TRANSACTION
     classification: reusable_parameterized
-    source_anchor: "CSC_Q_BAKERS.sql: customer BuildingModifiers and requirements"
-    parameters: [source_building, customer_buildings_or_districts, customer_yields, return_yields, scaling]
+    source_anchor: "CSC_Q_ALL.sql: CSC_Stage3CustomerTransactions; CSC_Q_BAKERS.sql and CSC_Q_TAILORS.sql: transaction rows; CSC_CustomerPopulationReturns.lua: shared scanner"
+    parameters: [source_building, customer_buildings_or_districts, customer_yields, return_yields, scaling, stacking_unit]
     invariant:
       - "Require adjacency, same owner, correct destination, and functioning required building."
       - "Record both customer benefit and Quarter return."
+      - "Each eligible adjacent customer site is a separate transaction. Distinct qualifying building families in one city remain separate, as do multiple qualifying sites of one family when the game permits them. Customer-side effects and every Quarter return yield stack per transaction."
+      - "For a population-scaled transaction, the seller's total for each return yield is its per-customer-population rate times the sum, over customer cities, of that city's population times its number of qualifying adjacent customer sites. A customer city's total for each supply yield is its per-citizen rate times its population times its number of qualifying adjacent sites for that seller. The seller and customer may be the same city or different cities."
+      - "This population formula is the standard for every Stage 3 building. Bakery contributes one Market transaction row; Tailor contributes separate Market and Temple rows. The Bakery's single customer site per city is the N=1 case."
+      - "Declare every Stage 3 producer/customer building-family pair in CSC_Stage3CustomerTransactions, including seller and customer district/building types, distinct transaction ID, seller population and return properties, optional customer yield property, and calibrated per-population amount. The shared gameplay Lua reads the registry and scans all Stage 3 pairs; do not add Quarter-specific Stage 3 population scanners."
+      - "Where two customer families can grant the same city yield through attach wrappers, each wrapper references its own child effect modifier ID; sharing one child ID can collapse the effects."
+      - "For Lua population returns, identify the seller city, registry transaction ID, and adjacent customer plot. This distinguishes Market and Temple in one city and multiple customer sites of one family. Sum all qualifying customer-population contributions before scaling each Quarter return; deduplicate repeated scans of the same transaction only."
+      - "Customer-side SQL attach modifiers and seller-side SQL amount-bit modifiers must match the registry's customer families and property names. A NULL customer yield property means SQL attaches the customer yield directly; otherwise the shared Lua writes that property's amount bits."
+      - "The implementation contract names its stacking unit and tests multiple eligible adjacent customers, including same-city and cross-city customer sites where applicable, plus independent removal or pillage."
       - "Do not gate an adjacent-building transaction on the Quarter's adjacent material supply. Material supply gates the related Service, not the underlying sale."
       - "The exception is the Stage 2 transaction with a material supplier itself, whose resource, improvement, and adjacency define the transaction."
 

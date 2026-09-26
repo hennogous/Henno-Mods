@@ -69,6 +69,16 @@ INSERT OR IGNORE INTO CSC_QuarterMaterialAdjacencyConfig
 VALUES  (   'TAILORS',    'CLASS_CSC_TAILORS_BASE',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   ),
         (   'TAILORS',    'CLASS_CSC_TAILORS_SPEC',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   );
 
+-- Each Stage 3 customer family is a separate sale, even when its Market and
+-- Temple belong to the same city. SQL attach modifiers pay their Culture.
+INSERT OR IGNORE INTO CSC_Stage3CustomerTransactions
+        (   TransactionId,                  SellerDistrictType,            SellerBuildingType,             CustomerDistrictType,       CustomerBuildingType,
+            SellerPopulationProperty,       SellerReturnAmountProperty,    CustomerYieldAmountProperty,    EngineAmountPerPopulation   )
+VALUES  (   'CSC_TAILORS_TAILOR_MARKET',    'DISTRICT_CSC_TAILORS_QUARTER', 'BUILDING_CSC_TAILORS_TAILOR', 'DISTRICT_COMMERCIAL_HUB',  'BUILDING_MARKET',
+            'CSC_TAILORS_STAGE_3_CUSTOMER_POP', 'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT', NULL, 0.105   ),
+        (   'CSC_TAILORS_TAILOR_TEMPLE',    'DISTRICT_CSC_TAILORS_QUARTER', 'BUILDING_CSC_TAILORS_TAILOR', 'DISTRICT_HOLY_SITE',     'BUILDING_TEMPLE',
+            'CSC_TAILORS_STAGE_3_CUSTOMER_POP', 'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT', NULL, 0.105   );
+
 
 --===========================================================================================================================================================================--
 /*	STAGE 1 - MATERIALS IMPROVEMENTS */
@@ -285,8 +295,7 @@ VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP
         (   'BUILDING_LIGHTHOUSE',                     'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD'   ),
         (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR'   ),
         (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE'   ),
-        (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP'   ),
-        (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP'   ),
+        (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP'   ),
         (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR'   ),
         (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR'   ),
         (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET'   ),
@@ -295,6 +304,12 @@ VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP
         (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_STAGE_3_SERVICE_ATTACH_HOLY_SITE'   ),
         (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE'   ),
         (   'BUILDING_CSC_TAILORS_TAILOR',             'MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE'   );
+
+-- Attach the later Fashion House return only once that building is implemented.
+INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId)
+SELECT BuildingType, 'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP'
+FROM Buildings
+WHERE BuildingType = 'BUILDING_CSC_TAILORS_FASHION_HOUSE';
 
 INSERT OR IGNORE INTO BuildingModifiers
 		( BuildingType, ModifierId )
@@ -342,36 +357,37 @@ WHERE CivicType = 'CIVIC_DIVINE_RIGHT';
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Modifiers
-        (   ModifierId,                                            ModifierType,                                              OwnerRequirementSetId,                         SubjectRequirementSetId   )
-VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_PLOT_HAS_BASE',            'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
-        (   'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP',     'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',        NULL,                                          'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
-        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                    'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',                 NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_HARBOR_LIGHTHOUSE',   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                          'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE',         'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                          'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
-        (   'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',         'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',          'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',   'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',             'MODIFIER_BUILDING_YIELD_CHANGE',                          'REQSET_CSC_TAILORS_CITY_HAS_TAILOR',          NULL   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',      'MODIFIER_BUILDING_YIELD_CHANGE',                          'REQSET_CSC_TAILORS_CITY_HAS_FASHION_HOUSE',   NULL   ),
-        (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR',       'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',    'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
-        (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT',               'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',      NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR',        'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',    'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
-        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                      'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',     NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET',                'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                          'REQSET_CSC_TAILORS_ADJ_MARKET'   ),
-        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE',                'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                          'REQSET_CSC_TAILORS_ADJ_TEMPLE'   ),
-        (   'MOD_CSC_TAILORS_CUSTOMER_CULTURE',                    'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',   NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',            'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',                    'REQSET_CSC_TAILORS_STAGE_3_SUPPLY_PREREQ',    NULL   ),
-        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_ATTACH_HOLY_SITE',    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ',    'REQSET_CSC_TAILORS_ADJ_HOLY_SITE_TEMPLE'   ),
-        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT',               'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',      NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE',    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ',    'REQSET_CSC_TAILORS_ADJ_HOLY_SITE_TEMPLE'   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                     'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_MODIFIER',         NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ',    'REQSET_CSC_TAILORS_ADJ_HOLY_SITE_TEMPLE'   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_GPP',                       'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',     NULL,                                          NULL   ),
-        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',               'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',                NULL,                                          'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE'   ),
-        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY',               'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',          NULL,                                          'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE'   ),
-        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                          'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_1'   );
+        (   ModifierId,                                            ModifierType,                                              OwnerRequirementSetId,                        SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_PLOT_HAS_BASE',           'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP',     'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',        NULL,                                         'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
+        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                    'MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',                 NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_HARBOR_LIGHTHOUSE',   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                         'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
+        (   'MOD_CSC_TAILORS_WORKSHOP_PROD_TO_LIGHTHOUSE',         'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_LIGHTHOUSE_ATTACH_QUARTER_PROD',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                         'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'MOD_CSC_TAILORS_LIGHTHOUSE_PROD_TO_WORKSHOP',         'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR',          'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE',   'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP',             'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP',      'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR',       'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
+        (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT',               'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',      NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR',        'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
+        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                      'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',     NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET',                'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                         'REQSET_CSC_TAILORS_ADJ_MARKET'   ),
+        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE',                'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           NULL,                                         'REQSET_CSC_TAILORS_ADJ_TEMPLE'   ),
+        (   'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE',             'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',   NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE',             'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION',   NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',            'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',                    'REQSET_CSC_TAILORS_STAGE_3_SUPPLY_PREREQ',   NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_ATTACH_HOLY_SITE',    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HOLY_SITE_TEMPLE'   ),
+        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT',               'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',      NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE',    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HOLY_SITE_TEMPLE'   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                     'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_MODIFIER',         NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',           'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HOLY_SITE_TEMPLE'   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_GPP',                       'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',     NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',               'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',                NULL,                                         'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE'   ),
+        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY',               'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',          NULL,                                         'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                         'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_1'   );
 
 INSERT OR IGNORE INTO Modifiers
 		( ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId )
@@ -460,10 +476,12 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'ModifierId',
         (   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR',        'ModifierId',             'MOD_CSC_TAILORS_DOCKMASTER_GPP'   ),
         (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                      'GreatPersonClassType',   'GREAT_PERSON_CLASS_ADMIRAL'   ),
         (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                      'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET',                'ModifierId',             'MOD_CSC_TAILORS_CUSTOMER_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE',                'ModifierId',             'MOD_CSC_TAILORS_CUSTOMER_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_CUSTOMER_CULTURE',                    'YieldType',              'YIELD_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_CUSTOMER_CULTURE',                    'Amount',                 0.105   ),
+        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET',                'ModifierId',             'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE',                'ModifierId',             'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE',             'YieldType',              'YIELD_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE',             'Amount',                 0.105   ),
+        (   'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE',             'YieldType',              'YIELD_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE',             'Amount',                 0.105   ),
         (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',            'Key',                    'CSC_TAILORS_TAILOR_SUPPLIED'   ),
         (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',            'Amount',                 1   ),
         (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_ATTACH_HOLY_SITE',    'ModifierId',             'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT'   ),
@@ -572,8 +590,6 @@ VALUES  (   'REQSET_CSC_TAILORS_PLOT_HAS_BASE',               'REQUIREMENTSET_TE
         (   'REQSET_CSC_ADJ_TAILORS_QUARTER',                 'REQUIREMENTSET_TEST_ALL'   ),
         (   'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE',       'REQUIREMENTSET_TEST_ALL'   ),
         (   'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',       'REQUIREMENTSET_TEST_ALL'   ),
-        (   'REQSET_CSC_TAILORS_CITY_HAS_TAILOR',             'REQUIREMENTSET_TEST_ALL'   ),
-        (   'REQSET_CSC_TAILORS_CITY_HAS_FASHION_HOUSE',      'REQUIREMENTSET_TEST_ALL'   ),
         (   'REQSET_CSC_TAILORS_ADJ_MARKET',                  'REQUIREMENTSET_TEST_ALL'   ),
         (   'REQSET_CSC_TAILORS_ADJ_TEMPLE',                  'REQUIREMENTSET_TEST_ALL'   ),
         (   'REQSET_CSC_TAILORS_STAGE_3_SUPPLY_PREREQ',       'REQUIREMENTSET_TEST_ALL'   ),
@@ -610,8 +626,6 @@ VALUES  (   'REQSET_CSC_TAILORS_PLOT_HAS_BASE',               'REQ_CSC_TAILORS_P
         (   'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',       'REQ_CSC_TAILORS_PLAYER_HAS_NAVAL_TRADITION'   ),
         (   'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',       'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE'   ),
         (   'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ',       'REQ_CSC_TAILORS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER'   ),
-        (   'REQSET_CSC_TAILORS_CITY_HAS_TAILOR',             'REQ_CSC_TAILORS_CITY_HAS_TAILOR'   ),
-        (   'REQSET_CSC_TAILORS_CITY_HAS_FASHION_HOUSE',      'REQ_CSC_TAILORS_CITY_HAS_FASHION_HOUSE'   ),
         (   'REQSET_CSC_TAILORS_ADJ_MARKET',                  'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
         (   'REQSET_CSC_TAILORS_ADJ_MARKET',                  'REQ_CSC_TAILORS_DISTRICT_IS_COMMERCIAL_HUB'   ),
         (   'REQSET_CSC_TAILORS_ADJ_MARKET',                  'REQ_CSC_TAILORS_CITY_HAS_MARKET'   ),
@@ -655,8 +669,6 @@ VALUES  (   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',                  'REQUIREMENT_P
         (   'REQ_CSC_TAILORS_PLAYER_HAS_NAVAL_TRADITION',         'REQUIREMENT_PLAYER_HAS_CIVIC',             0   ),
         (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE',         'REQUIREMENT_COLLECTION_COUNT_ATLEAST',     0   ),
         (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',   'REQUIREMENT_COLLECTION_COUNT_ATLEAST',     0   ),
-        (   'REQ_CSC_TAILORS_CITY_HAS_TAILOR',                    'REQUIREMENT_CITY_HAS_BUILDING',            0   ),
-        (   'REQ_CSC_TAILORS_CITY_HAS_FASHION_HOUSE',             'REQUIREMENT_CITY_HAS_BUILDING',            0   ),
         (   'REQ_CSC_TAILORS_DISTRICT_IS_COMMERCIAL_HUB',         'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',   0   ),
         (   'REQ_CSC_TAILORS_DISTRICT_IS_HOLY_SITE',              'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',   0   ),
         (   'REQ_CSC_TAILORS_CITY_HAS_MARKET',                    'REQUIREMENT_CITY_HAS_BUILDING',            0   ),
@@ -695,10 +707,6 @@ VALUES  (   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',             'Tag',        
         (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',   'CollectionType',      'COLLECTION_PLAYER_DISTRICTS'   ),
         (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',   'Count',               1   ),
         (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_2_SERVICE_CUSTOMER',   'RequirementSetId',    'REQSET_CSC_TAILORS_ADJ_HARBOR_LIGHTHOUSE'   ),
-        (   'REQ_CSC_TAILORS_CITY_HAS_TAILOR',                    'BuildingType',        'BUILDING_CSC_TAILORS_TAILOR'   ),
-        (   'REQ_CSC_TAILORS_CITY_HAS_TAILOR',                    'MustBeFunctioning',   1   ),
-        (   'REQ_CSC_TAILORS_CITY_HAS_FASHION_HOUSE',             'BuildingType',        'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
-        (   'REQ_CSC_TAILORS_CITY_HAS_FASHION_HOUSE',             'MustBeFunctioning',   1   ),
         (   'REQ_CSC_TAILORS_DISTRICT_IS_COMMERCIAL_HUB',         'DistrictType',        'DISTRICT_COMMERCIAL_HUB'   ),
         (   'REQ_CSC_TAILORS_DISTRICT_IS_HOLY_SITE',              'DistrictType',        'DISTRICT_HOLY_SITE'   ),
         (   'REQ_CSC_TAILORS_CITY_HAS_MARKET',                    'BuildingType',        'BUILDING_MARKET'   ),

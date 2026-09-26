@@ -105,6 +105,7 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
             "ALTER TABLE CSC_AbilityAttachModifiers ADD COLUMN NotificationQuarter TEXT"
         )
     scripts = [
+        "Civ Supply Chains/Data/CSC_Q_ALL.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql",
@@ -325,6 +326,18 @@ def _validate_resource_pedia_contract(root: Path) -> list[str]:
         if f'Content Include="{content_path}"' not in project_text:
             failures.append(f".civ6proj Content missing {content_path}")
 
+    combined_text_file = "Civ Supply Chains/ModSupport/ModSupport_R2_SR_TEXT.sql"
+    combined_action = actions.get("ModSupport_R2_SR_Text", {})
+    if (
+        combined_action.get("type") != "UpdateText"
+        or combined_action.get("files") != ["ModSupport/ModSupport_R2_SR_TEXT.sql"]
+        or combined_action.get("criteria") != ["ModSupport_R2", "ModSupport_SR"]
+        or int(combined_action.get("properties", {}).get("LoadOrder", 0)) <= 103
+    ):
+        failures.append("combined R2/SR Gold pedia correction must load after both resource text actions")
+    if 'Content Include="ModSupport\\ModSupport_R2_SR_TEXT.sql"' not in project_text:
+        failures.append(".civ6proj Content missing combined R2/SR Gold pedia correction")
+
     connection = sqlite3.connect(":memory:")
     try:
         connection.execute("CREATE TABLE LocalizedText (Language TEXT, Tag TEXT PRIMARY KEY, Text TEXT)")
@@ -368,6 +381,13 @@ def _validate_resource_pedia_contract(root: Path) -> list[str]:
                 failures.append(f"{resource} reciprocal pedia list is absent, duplicated, or mis-grouped")
             if f"{group_label}[NEWLINE][NEWLINE][ICON_BULLET]" not in reverse:
                 failures.append(f"{resource} reciprocal pedia list must leave one open line after {group_label}")
+        connection.executescript((root / combined_text_file).read_text(encoding="utf-8-sig"))
+        combined_spec_list = _scalar(
+            connection,
+            "SELECT Text FROM LocalizedText WHERE Tag='LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCSPEC_PARA_1'",
+        ) or ""
+        if "[ICON_RESOURCE_GOLD2] Gold" in combined_spec_list or combined_spec_list.count("[ICON_RESOURCE_GOLD] Gold") != 1:
+            failures.append("Tailors Pedia must list only Sukritact's Gold when both resource mods are active")
     except (OSError, sqlite3.DatabaseError) as failure:
         failures.append(f"resource pedia localization composition failed: {failure}")
     finally:
@@ -719,6 +739,65 @@ def _foundation_assertions(root: Path, connection: sqlite3.Connection) -> list[s
     return failures
 
 
+def _validate_textile_workshop_description(description: str) -> list[str]:
+    failures: list[str] = []
+    positions = [
+        description.find(token)
+        for token in (
+            "Base Materials improvement",
+            "from the local Tailor and Fashion House",
+            "from each adjacent Lighthouse",
+        )
+    ]
+    if any(position < 0 for position in positions) or positions != sorted(positions):
+        failures.append(
+            "Textile Workshop description must order Base input, local Tailor/Fashion House sales, then adjacent Lighthouse sales"
+        )
+    service_sentence = (
+        "At Naval Tradition, a supplied Textile Workshop establishes a "
+        "{LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME} service "
+        "in an adjacent Harbor with a Lighthouse."
+    )
+    if service_sentence not in description.splitlines():
+        failures.append("Textile Workshop description must identify the Dockmaster as a service")
+    return failures
+
+
+def _validate_textile_workshop_pedia(source: str) -> list[str]:
+    failures: list[str] = []
+    prefix = "LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP_CHAPTER"
+    entries = re.findall(
+        rf"^## ({prefix}_[A-Z0-9_]+)\n(.*?)(?=^## |\Z)",
+        source,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    expected_suffixes = (
+        "CSCHAIN_TITLE",
+        "CSCHAIN_PARA_1",
+        "HISTORY_TITLE",
+        "HISTORY_PARA_1",
+        "HISTORY_PARA_2",
+    )
+    expected_tags = [f"{prefix}_{suffix}" for suffix in expected_suffixes]
+    if [tag for tag, _ in entries] != expected_tags:
+        failures.append("Textile Workshop Pedia must follow the Mills' Supply Chains and two-paragraph Historical Context structure")
+    sections = {tag: body.strip() for tag, body in entries}
+    if sections.get(f"{prefix}_CSCHAIN_TITLE") != "Supply Chains":
+        failures.append("Textile Workshop Pedia title must be Supply Chains")
+    if sections.get(f"{prefix}_HISTORY_TITLE") != "Historical Context":
+        failures.append("Textile Workshop Pedia title must be Historical Context")
+    supply = sections.get(f"{prefix}_CSCHAIN_PARA_1", "")
+    if any(token not in supply.lower() for token in (
+        "cotton", "flax", "wool", "spinning", "loom", "tailor", "fashion house", "lighthouse",
+    )) or "[ICON_" in supply:
+        failures.append("Textile Workshop Supply Chains prose must narrate materials, clothmaking, and both local and harbor customers")
+    for suffix in ("HISTORY_PARA_1", "HISTORY_PARA_2"):
+        paragraph = sections.get(f"{prefix}_{suffix}", "")
+        if len(paragraph.split()) < 45 or "[ICON_" in paragraph:
+            failures.append(f"Textile Workshop {suffix} must be substantive historical prose")
+    return failures
+
+
 def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     failures: list[str] = []
     building = connection.execute(
@@ -810,11 +889,44 @@ def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
         0,
         "unapproved Stage 4 building rows",
     )
+    for modifier, yield_type in (
+        ("MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP", "YIELD_PRODUCTION"),
+        ("MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP", "YIELD_GOLD"),
+    ):
+        _expect(
+            failures,
+            connection.execute(
+                "SELECT ModifierType, OwnerRequirementSetId, SubjectRequirementSetId "
+                "FROM Modifiers WHERE ModifierId=?",
+                (modifier,),
+            ).fetchone(),
+            ("MODIFIER_BUILDING_YIELD_CHANGE", None, None),
+            f"{modifier} Bakery-style modifier gate",
+        )
+        _expect(
+            failures,
+            connection.execute(
+                "SELECT Name, Value FROM ModifierArguments WHERE ModifierId=? ORDER BY Name",
+                (modifier,),
+            ).fetchall(),
+            [("Amount", "1"), ("BuildingType", "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP"), ("YieldType", yield_type)],
+            f"{modifier} Workshop target",
+        )
+        _expect(
+            failures,
+            connection.execute(
+                "SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?",
+                (modifier,),
+            ).fetchall(),
+            [],
+            f"{modifier} must wait for the Fashion House Buildings row",
+        )
     source = (root / "project/localization/CSC_TAILORS_TEXT.md").read_text(encoding="utf-8")
     monopolies_source = (root / "project/localization/CSC_TAILORS_MC_MODE_TEXT.md").read_text(encoding="utf-8")
+    failures.extend(_validate_textile_workshop_pedia(source))
     for exact in (
         "+1 [ICON_Culture] Culture from each adjacent [ICON_CSC_BASE] Base Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.",
-        "At Naval Tradition, a supplied Textile Workshop establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME} in an adjacent Harbor with a Lighthouse.",
+        "At Naval Tradition, a supplied Textile Workshop establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME} service in an adjacent Harbor with a Lighthouse.",
         "+1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each adjacent Lighthouse, and +1 [ICON_Production] Production in return.",
         "+20% [ICON_Production] Production toward Renaissance Era or earlier naval units and +1 [ICON_GreatAdmiral] Great Admiral point from each adjacent supplied Textile Workshop.",
         "The established service and its [ICON_Citizen] Citizen slot remain",
@@ -861,15 +973,7 @@ def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
         description = description_match.group(1)
         if any(term in description for term in forbidden):
             failures.append("Textile Workshop M&C wording must not appear in always-loaded Tailors text")
-        base_position = description.find("Base Materials improvement")
-        lighthouse_position = description.find("from each adjacent Lighthouse")
-        local_position = description.find("from the local Tailor and Fashion House")
-        if min(base_position, lighthouse_position, local_position) < 0 or not (
-            base_position < lighthouse_position < local_position
-        ):
-            failures.append(
-                "Textile Workshop description must order Base input, Lighthouse end customer, then downstream local Tailor/Fashion House"
-            )
+        failures.extend(_validate_textile_workshop_description(description))
     if not all(term in monopolies_source for term in forbidden):
         failures.append("Monopolies-gated Textile Workshop text must contain Industry and Corporation wording")
     if "Production to the Lighthouse city" in source:
@@ -1080,6 +1184,43 @@ def _validate_trade_route_yield_presentation(
     return failures
 
 
+def _validate_tailor_description(authored: str) -> list[str]:
+    failures: list[str] = []
+    forbidden = (
+        "[ICON_Citizen] Citizen slot",
+        "[ICON_Citizen] Citizens in the Quarter",
+        "[ICON_Amenities] Amenity to the city",
+    )
+    for token in forbidden:
+        if token in authored:
+            failures.append("Tailor description repeats engine-rendered building stats: " + token)
+    trade_bullet = (
+        "- +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each incoming "
+        "[ICON_TradeRoute] Trade Route, in exchange for a +1 [ICON_Culture] Culture bonus "
+        "to the [ICON_TradeRoute] Trade Route, if the origin city itself does not have a "
+        "Tailors' Quarter. +1 [ICON_Amenities] Amenity to the origin city."
+    )
+    if trade_bullet not in authored.splitlines():
+        failures.append("Tailor trade bullet must lead with its demand yields, then the route bonus and origin Amenity")
+    service_sentence = (
+        "At Divine Right, a supplied Tailor establishes a "
+        "{LOC_BUILDING_CSC_TAILORS_STAGE_3_SERVICE_NAME} service "
+        "in an adjacent Holy Site with a Temple."
+    )
+    if service_sentence not in authored.splitlines():
+        failures.append("Tailor description must identify the Sacristan as a service")
+    ordered = (
+        "local Textile Workshop",
+        "each adjacent Temple or Market",
+        "each incoming [ICON_TradeRoute] Trade Route",
+        "At Divine Right",
+    )
+    positions = [authored.find(token) for token in ordered]
+    if any(position < 0 for position in positions) or positions != sorted(positions):
+        failures.append("Tailor description does not contain every authored Stage 3 relationship in contract order")
+    return failures
+
+
 def _stage3_assertions(
     root: Path, connection: sqlite3.Connection, implementation: dict[str, Any]
 ) -> list[str]:
@@ -1113,6 +1254,7 @@ def _stage3_assertions(
     for modifier, expected in (
         ("MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR", ("BUILDING_CSC_TAILORS_TAILOR", "YIELD_CULTURE", "1")),
         ("MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP", ("BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP", "YIELD_PRODUCTION", "1")),
+        ("MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP", ("BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP", "YIELD_GOLD", "1")),
     ):
         row = connection.execute(
             "SELECT MAX(CASE WHEN Name='BuildingType' THEN Value END), "
@@ -1121,27 +1263,64 @@ def _stage3_assertions(
             (modifier,),
         ).fetchone()
         _expect(failures, row, expected, f"{modifier} local exchange")
+    for modifier, sender in (
+        ("MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR", "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP"),
+        ("MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP", "BUILDING_CSC_TAILORS_TAILOR"),
+        ("MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP", "BUILDING_CSC_TAILORS_TAILOR"),
+    ):
+        _expect(
+            failures,
+            connection.execute(
+                "SELECT BM.BuildingType, M.ModifierType, M.OwnerRequirementSetId, M.SubjectRequirementSetId "
+                "FROM BuildingModifiers BM JOIN Modifiers M ON M.ModifierId=BM.ModifierId "
+                "WHERE BM.ModifierId=?",
+                (modifier,),
+            ).fetchall(),
+            [(sender, "MODIFIER_BUILDING_YIELD_CHANGE", None, None)],
+            f"{modifier} Bakery-style sender attachment",
+        )
     _expect(
         failures,
         connection.execute(
             "SELECT ModifierId, ModifierType FROM Modifiers WHERE ModifierId IN "
             "('MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET','MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE',"
-            "'MOD_CSC_TAILORS_CUSTOMER_CULTURE') ORDER BY ModifierId"
+            "'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE','MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE') ORDER BY ModifierId"
         ).fetchall(),
         [
-            ("MOD_CSC_TAILORS_CUSTOMER_CULTURE", "MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION"),
+            ("MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE", "MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION"),
             ("MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET", "MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER"),
             ("MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE", "MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER"),
+            ("MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE", "MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION"),
         ],
         "Tailor customer modifier graph",
     )
     _expect(
         failures,
         connection.execute(
-            "SELECT Name, Value FROM ModifierArguments WHERE ModifierId='MOD_CSC_TAILORS_CUSTOMER_CULTURE' ORDER BY Name"
+            "SELECT ModifierId, Name, Value FROM ModifierArguments WHERE ModifierId IN "
+            "('MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE','MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE') "
+            "ORDER BY ModifierId, Name"
         ).fetchall(),
-        [("Amount", "0.105"), ("YieldType", "YIELD_CULTURE")],
-        "Tailor customer Culture amount",
+        [
+            ("MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE", "Amount", "0.105"),
+            ("MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE", "YieldType", "YIELD_CULTURE"),
+            ("MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE", "Amount", "0.105"),
+            ("MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE", "YieldType", "YIELD_CULTURE"),
+        ],
+        "Tailor independent Market and Temple Culture amounts",
+    )
+    _expect(
+        failures,
+        connection.execute(
+            "SELECT ModifierId, Value FROM ModifierArguments WHERE ModifierId IN "
+            "('MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET','MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE') "
+            "AND Name='ModifierId' ORDER BY ModifierId"
+        ).fetchall(),
+        [
+            ("MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET", "MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE"),
+            ("MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE", "MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE"),
+        ],
+        "Tailor customer families have distinct Culture actions",
     )
     _expect(
         failures,
@@ -1232,10 +1411,44 @@ def _stage3_assertions(
     for token in ("MOD_CSC_TAILORS_CUSTOMER_RETURN_GOLD_AMOUNT_BIT_", "MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD"):
         if _scalar(gold_connection, "SELECT COUNT(*) FROM Modifiers WHERE ModifierId LIKE ?", (token + "%",)) < 1:
             failures.append(f"Tailors Gold companion modifier family missing: {token}")
+    _expect(
+        failures,
+        connection.execute(
+            "SELECT TransactionId, SellerDistrictType, SellerBuildingType, CustomerDistrictType, "
+            "CustomerBuildingType, SellerPopulationProperty, SellerReturnAmountProperty, "
+            "CustomerYieldAmountProperty, EngineAmountPerPopulation "
+            "FROM CSC_Stage3CustomerTransactions WHERE TransactionId LIKE 'CSC_TAILORS_%' "
+            "ORDER BY TransactionId"
+        ).fetchall(),
+        [
+            (
+                "CSC_TAILORS_TAILOR_MARKET", "DISTRICT_CSC_TAILORS_QUARTER", "BUILDING_CSC_TAILORS_TAILOR",
+                "DISTRICT_COMMERCIAL_HUB", "BUILDING_MARKET", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
+                "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", None, 0.105,
+            ),
+            (
+                "CSC_TAILORS_TAILOR_TEMPLE", "DISTRICT_CSC_TAILORS_QUARTER", "BUILDING_CSC_TAILORS_TAILOR",
+                "DISTRICT_HOLY_SITE", "BUILDING_TEMPLE", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
+                "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", None, 0.105,
+            ),
+        ],
+        "Tailors Stage 3 customer transaction registry",
+    )
     customer_lua = (root / "Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua").read_text(encoding="utf-8")
-    for token in ("DISTRICT_TAILORS_QUARTER", "BUILDING_MARKET_FAMILY", "BUILDING_TEMPLE_FAMILY", "PROP_TAILORS_CUSTOMER_RETURN_AMOUNT", "TailorsCustomersSeen"):
+    for token in (
+        "GameInfo.CSC_Stage3CustomerTransactions()",
+        "CSC_CreateDistrictReplacementFamily(row.CustomerDistrictType)",
+        "CSC_CreateBuildingReplacementFamily(row.CustomerBuildingType)",
+        'local transactionKey = transaction.Id .. ":" .. customerPlotKey;',
+        "CSC_ScanStage3CustomerTransactions(cityStates, stage3SellerRecords, stage3CustomerCitiesByTransaction);",
+        "sellerState.Stage3PopulationByProperty[populationProperty]",
+        "sellerState.Stage3TargetYieldByProperty[returnProperty]",
+        "customerState.Stage3TargetYieldByProperty[customerProperty]",
+    ):
         if token not in customer_lua:
-            failures.append(f"Tailors customer-population Lua contract missing {token}")
+            failures.append(f"Stage 3 registry Lua contract missing {token}")
+    if "CSC_ScanBakeryMarketTransactions" in customer_lua or "CSC_ScanTailorCustomerTransactions" in customer_lua:
+        failures.append("Stage 3 population sales must use the shared transaction scanner")
     if "while changed do" in customer_lua:
         failures.append("customer-population Lua must use direct one-level replacement expansion")
     route_ui = (root / "Civ Supply Chains/Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.lua").read_text(encoding="utf-8")
@@ -1259,21 +1472,7 @@ def _stage3_assertions(
     if description is None:
         failures.append("Tailor description is missing")
     else:
-        authored = description.group(1)
-        forbidden = (
-            "[ICON_Citizen] Citizen slot",
-            "[ICON_Citizen] Citizens in the Quarter",
-            "[ICON_Amenities] Amenity to the city",
-        )
-        for token in forbidden:
-            if token in authored:
-                failures.append(
-                    "Tailor description repeats engine-rendered building stats: " + token
-                )
-        ordered = ("local Textile Workshop", "each adjacent Temple or Market", "trade routes to the city", "At Divine Right")
-        positions = [authored.find(token) for token in ordered]
-        if any(position < 0 for position in positions) or positions != sorted(positions):
-            failures.append("Tailor description does not contain every authored Stage 3 relationship in contract order")
+        failures.extend(_validate_tailor_description(description.group(1)))
     tailor_tags = re.findall(r"^## (LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TAILOR_CHAPTER_[A-Z0-9_]+)$", source, flags=re.MULTILINE)
     _expect(failures, tailor_tags, [
         "LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_TAILOR_CHAPTER_CSCHAIN_TITLE",

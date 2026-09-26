@@ -1045,6 +1045,20 @@
         ]
       },
       {
+        "type": "UpdateText",
+        "id": "ModSupport_R2_SR_Text",
+        "properties": {
+          "LoadOrder": "104"
+        },
+        "criteria": [
+          "ModSupport_R2",
+          "ModSupport_SR"
+        ],
+        "files": [
+          "ModSupport/ModSupport_R2_SR_TEXT.sql"
+        ]
+      },
+      {
         "type": "UpdateDatabase",
         "id": "CSC_MAB_DB_RingFix",
         "properties": {

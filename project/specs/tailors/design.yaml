@@ -165,6 +165,8 @@ buildings:
         customers: [BUILDING_TEMPLE, BUILDING_MARKET]
         per_citizen_customer_yields: {YIELD_CULTURE: 0.1}
         per_citizen_building_yields: {YIELD_PRODUCTION: 0.1, YIELD_GOLD: 0.1}
+        stacking: "Each adjacent Temple and Market contributes separately, including when both belong to one customer city."
+        seller_and_customer_may_share_city: true
 
       - id: D.STAGE3.SERVICE
         unlock: CIVIC_DIVINE_RIGHT

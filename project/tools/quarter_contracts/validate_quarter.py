@@ -768,6 +768,21 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
                 result.error(f"{requirement_id}: unknown gameplay pattern {pattern_id}")
             elif pattern.get("classification") == "bakers_only":
                 result.error(f"{requirement_id}: illegally uses Bakers-only pattern {pattern_id}")
+        if "GP.BUILDING.CUSTOMER_TRANSACTION" in requirement.get("gameplay_patterns", []):
+            binding = requirement.get("implementation_binding") or {}
+            if not binding.get("stacking_unit"):
+                result.error(
+                    f"{requirement_id}: customer transaction must declare implementation_binding.stacking_unit"
+                )
+            if str(requirement_id).startswith("I.STAGE3_"):
+                if binding.get("transaction_registry") != "CSC_Stage3CustomerTransactions":
+                    result.error(
+                        f"{requirement_id}: Stage 3 customer transaction must use CSC_Stage3CustomerTransactions"
+                    )
+                if not binding.get("transaction_ids"):
+                    result.error(
+                        f"{requirement_id}: Stage 3 customer transaction must list its registry transaction IDs"
+                    )
         for pattern_id in requirement.get("localization_patterns", []):
             if pattern_id not in localization_patterns:
                 result.error(f"{requirement_id}: unknown localization pattern {pattern_id}")

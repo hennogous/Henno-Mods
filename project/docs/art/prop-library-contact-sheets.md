@@ -1,5 +1,7 @@
 # Reusable prop contact sheets
 
+The 25 September 2026 plant intake is recorded in [pantry plant intake](pantry-plant-intake.md). Its approved sheets under `Desktop/Codex/pantry-plant-review/approved-contact-sheets/` contain the 47 newly added native plants, preserving the original review numbers. The older review sheets still show the three rejected options and should not be used as the current plant inventory.
+
 The initial library arrived on 13 September 2026 with 33 blends (2 CSC, 26 base
 game, 5 Rise and Fall). Its portable location is
 `Working Files/3D Art/Props/CSC_Prop_Library/`; resolve Working Files on the current

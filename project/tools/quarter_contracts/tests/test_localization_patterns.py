@@ -137,6 +137,7 @@ class LocalizationPatternCatalogTests(unittest.TestCase):
             "LP.MATERIAL.BULLET",
             "LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED",
             "LP.LOCAL.EXCHANGE_BULLET",
+            "LP.LOCAL.DOWNSTREAM_EXCHANGE_BULLET",
             "LP.CUSTOMER.BILATERAL_BULLET",
             "LP.TRADE.DOMESTIC_BULLET",
             "LP.SERVICE.INTRO",
@@ -148,6 +149,12 @@ class LocalizationPatternCatalogTests(unittest.TestCase):
             ["LP.LOCAL.EXCHANGE_BULLET", "LP.MATERIAL.BULLET"],
         )
         self.assertTrue(any("material_input" in failure for failure in failures))
+
+        failures = PATTERNS.validate_description_order(
+            self.catalog,
+            ["LP.CUSTOMER.BILATERAL_BULLET", "LP.LOCAL.DOWNSTREAM_EXCHANGE_BULLET"],
+        )
+        self.assertTrue(any("downstream_output" in failure for failure in failures))
 
     def test_engine_rendered_building_stats_are_omission_only(self) -> None:
         patterns = PATTERNS.pattern_map(self.catalog)
