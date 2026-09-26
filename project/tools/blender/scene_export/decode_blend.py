@@ -366,6 +366,19 @@ def validate_component_frames(placed, master, label):
             raise ValueError(f'{label}/{c["component"]}: geometry, UVs or relative placement differs from master')
 
 
+def source_mesh_components(scene, ident, native_record=None):
+    meshes = [o for o in scene.objects if o.type == 'MESH']
+    # Match the native importer's assembly, excluding hidden alternate states.
+    # Explicit custom masters pass no record and retain their complete assembly.
+    if native_record and native_record.get('components'):
+        selected = {c['object'] for c in native_record['components']
+                    if c.get('default_visible', True)}
+        meshes = [o for o in meshes if o.name in selected]
+        if not selected or {o.name for o in meshes} != selected:
+            raise ValueError(f'{ident}: default-visible catalogue components missing from source')
+    return meshes
+
+
 def main():
     job_path, output = map(Path, sys.argv[sys.argv.index('--')+1:])
     job = json.loads(job_path.read_text())
@@ -420,7 +433,8 @@ def main():
         scene = bpy.data.scenes.get(prop_scene)
         if scene is None and len(bpy.data.scenes)==1: scene=bpy.data.scenes[0]
         if scene is None: raise ValueError(f'{ident}: no source export scene')
-        source_meshes = [o for o in scene.objects if o.type == 'MESH']
+        source_meshes = source_mesh_components(
+            scene, ident, catalogue.get(ident) if ident not in models else None)
         signatures = {mesh_signature(o.data) for o in source_meshes}
         layouts = {mesh_layout_signature(o.data) for o in source_meshes}
         component_signatures = sorted(mesh_component_signature(o.data, o.matrix_world)
