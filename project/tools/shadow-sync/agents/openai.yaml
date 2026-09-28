@@ -1,0 +1,4 @@
+interface:
+  display_name: "shadow-sync"
+  short_description: "Sync the four Civ repos between Mac and Shadow"
+  default_prompt: "Use $shadow-sync to commit and sync the four Civ repos between my Mac, Shadow and GitHub."
