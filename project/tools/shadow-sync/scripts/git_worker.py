@@ -14,8 +14,12 @@ class SyncError(RuntimeError):
 
 def git(path, *args, allowed=(0,)):
     env = dict(os.environ, GIT_TERMINAL_PROMPT="0", GCM_INTERACTIVE="never")
+    options = ["-c", "core.quotePath=false"]
+    if os.name == "nt" and args and args[0] in ("fetch", "push", "ls-remote"):
+        # gh credentials can be made readable in SSH logins; wincredman cannot.
+        options += ["-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential"]
     result = subprocess.run(
-        ["git", "-c", "core.quotePath=false", "-C", str(path), *args],
+        ["git", *options, "-C", str(path), *args],
         capture_output=True, encoding="utf-8", errors="replace", env=env,
         timeout=300,
     )

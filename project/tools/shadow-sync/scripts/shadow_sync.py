@@ -121,7 +121,7 @@ def integrate_bundle(spec, bundle, expected_head):
     Path(bundle).unlink()
 
 
-def synchronize(specs, call, message, preview=False, transfer=None, deliver=None, shadow_git=False):
+def synchronize(specs, call, message, preview=False, transfer=None, deliver=None, shadow_git=True):
     # Preflight every selected checkout on both hosts before any checkpoint.
     states = {}
     for spec in specs:
@@ -180,8 +180,12 @@ def main():
     parser.add_argument("--repo", action="append", choices=[s["name"] for s in bindings()])
     parser.add_argument("--message", default="Shadow sync checkpoint " + datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
     parser.add_argument("--shadow", default="Shadow@100.122.143.96")
-    parser.add_argument("--shadow-git", action="store_true",
-                        help="use direct GitHub fetch/push on Shadow; requires working SSH-session credentials")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--shadow-git", dest="shadow_git", action="store_true",
+                      help="use direct GitHub fetch/push on Shadow (default)")
+    mode.add_argument("--bundle", dest="shadow_git", action="store_false",
+                      help="use SSH bundles with all GitHub access on Mac")
+    parser.set_defaults(shadow_git=True)
     args = parser.parse_args()
     specs = [s for s in bindings() if not args.repo or s["name"] in args.repo]
 
