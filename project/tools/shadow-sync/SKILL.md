@@ -33,8 +33,13 @@ SSH uses `Shadow@100.122.143.96`, the verified Tailscale address, with existing 
 and host-key checking. `--shadow` can override the target if its binding changes.
 
 The sequence per repo saves work on **both** hosts first, merges current GitHub
-history into Mac and pushes, merges that history into Shadow and pushes, then
-fast-forwards Mac. Divergent history is preserved with ordinary merge commits.
+history into Mac and pushes, then merges that history into Shadow. If Shadow has
+additional commits, stream them back over SSH as a Git bundle, fast-forward Mac,
+and push from Mac. Finally fast-forward both hosts and verify their commit IDs.
+Mac handles all GitHub writes: Shadow's Windows credential manager is unavailable
+in SSH logins, and its existing GitHub CLI credential was invalid when tested.
+Shadow's public HTTPS fetches work. No credentials are copied between machines.
+Divergent history is preserved with ordinary merge commits.
 Ignored output stays ignored; clean repos do not receive checkpoint commits.
 
 Save pending editor changes and avoid editing these repos during the run. Stop on
@@ -47,5 +52,7 @@ Tool-required filesystem/network approval still applies; use escalation when nee
 
 For implementation changes, run `scripts/test_shadow_sync.py --scratch` with a folder
 under `/Users/henno.gous/Play/codex-outputs/shadow-sync/`. Keep generated logs and test
-repositories there. The routine itself writes only Git's normal checkout metadata
-and changes needed to merge the versioned repos.
+repositories there. Transfer bundles are written under that output folder and
+removed after successful import; failed bundles are kept for diagnosis. The routine
+otherwise writes only Git's normal checkout metadata and changes needed to merge
+the versioned repos.

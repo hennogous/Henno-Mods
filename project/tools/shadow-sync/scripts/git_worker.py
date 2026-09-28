@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 import subprocess
+import sys
 
 
 class SyncError(RuntimeError):
@@ -79,7 +80,7 @@ def operate(spec, host, action, message="", expected=None):
                 commit = git(path, "rev-parse", "HEAD")
             elif result.returncode != 0:
                 raise SyncError(f"{path}: cannot inspect staged changes")
-    elif action in ("publish", "finish"):
+    elif action in ("publish", "merge", "finish"):
         if state["status"]:
             raise SyncError(f"{path}: worktree became dirty; stop editing and retry")
         branch = spec["branch"]
@@ -88,7 +89,8 @@ def operate(spec, host, action, message="", expected=None):
             git(path, "merge", "--ff-only", f"origin/{branch}")
         else:
             git(path, "-c", "merge.autoStash=false", "merge", "--no-edit", f"origin/{branch}")
-            git(path, "push", "origin", f"HEAD:refs/heads/{branch}")
+            if action == "publish":
+                git(path, "push", "origin", f"HEAD:refs/heads/{branch}")
     else:
         raise SyncError(f"Unknown action: {action}")
     final = inspect_repo(spec, host)
@@ -96,6 +98,20 @@ def operate(spec, host, action, message="", expected=None):
         raise SyncError(f"{path}: worktree is still dirty after {action}")
     final["checkpoint"] = commit
     return final
+
+
+def stream_bundle(spec, host, base, expected_head):
+    """Stream only objects after the shared Mac commit; never copy credentials."""
+    state = inspect_repo(spec, host)
+    if state["status"] or state["head"] != expected_head:
+        raise SyncError(f"{state['path']}: changed before bundle transfer")
+    git(state["path"], "merge-base", "--is-ancestor", base, "HEAD")
+    result = subprocess.run(
+        ["git", "-C", state["path"], "bundle", "create", "-", f"{base}..HEAD"],
+        stdout=sys.stdout.buffer, stderr=subprocess.PIPE, timeout=300,
+    )
+    if result.returncode:
+        raise SyncError(result.stderr.decode("utf-8", errors="replace"))
 
 
 def handle(request):

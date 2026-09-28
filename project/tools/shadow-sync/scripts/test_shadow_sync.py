@@ -51,8 +51,12 @@ class SyncTests(unittest.TestCase):
         git(path, "config", "user.email", "sync-test@example.invalid")
 
     def sync(self, preview=False, specs=None):
+        def transfer(spec, base, expected_head):
+            bundle = self.root / "shadow.bundle"
+            git(spec["shadow"], "bundle", "create", str(bundle), f"{base}..HEAD")
+            return bundle
         with contextlib.redirect_stdout(io.StringIO()):
-            return synchronize(specs or [self.spec], operate, "test checkpoint", preview)
+            return synchronize(specs or [self.spec], operate, "test checkpoint", preview, transfer)
 
     def assert_converged(self):
         heads = {git(p, "rev-parse", "HEAD") for p in (self.mac, self.shadow)}
