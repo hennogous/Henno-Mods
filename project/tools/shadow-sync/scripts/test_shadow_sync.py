@@ -50,13 +50,28 @@ class SyncTests(unittest.TestCase):
         git(path, "config", "user.name", "Sync Test")
         git(path, "config", "user.email", "sync-test@example.invalid")
 
-    def sync(self, preview=False, specs=None):
+    def sync(self, preview=False, specs=None, shadow_git=False):
+        def call(**request):
+            self.assertFalse(not shadow_git and request["host"] == "shadow" and request["action"] in ("publish", "finish"),
+                             "Shadow must not need GitHub authentication")
+            return operate(**request)
         def transfer(spec, base, expected_head):
             bundle = self.root / "shadow.bundle"
             git(spec["shadow"], "bundle", "create", str(bundle), f"{base}..HEAD")
             return bundle
+        def deliver(spec, incoming, state):
+            if incoming != state["head"]:
+                base = git(spec["mac"], "merge-base", incoming, state["origin_head"])
+                if base != incoming:
+                    bundle = self.root / "to-shadow.bundle"
+                    git(spec["mac"], "bundle", "create", str(bundle), f"{base}..{incoming}", "HEAD")
+                    git(spec["shadow"], "bundle", "verify", str(bundle))
+                    git(spec["shadow"], "fetch", "--no-tags", str(bundle), "HEAD")
+                    self.assertEqual(git(spec["shadow"], "rev-parse", "FETCH_HEAD"), incoming)
+            return operate(spec, "shadow", "merge-known", incoming=incoming, expected=state)
         with contextlib.redirect_stdout(io.StringIO()):
-            return synchronize(specs or [self.spec], operate, "test checkpoint", preview, transfer)
+            return synchronize(specs or [self.spec], call, "test checkpoint", preview,
+                               transfer, deliver, shadow_git=shadow_git)
 
     def assert_converged(self):
         heads = {git(p, "rev-parse", "HEAD") for p in (self.mac, self.shadow)}
@@ -146,6 +161,14 @@ class SyncTests(unittest.TestCase):
         self.sync()
         self.assertEqual(git(self.mac, "rev-parse", "HEAD"), git(self.shadow, "rev-parse", "HEAD"))
         self.assertEqual(git(self.origin, "rev-parse", "master"), git(self.mac, "rev-parse", "HEAD"))
+
+    def test_direct_git_mode_when_shadow_has_credentials(self):
+        (self.mac / "mac.txt").write_text("Mac work\n")
+        (self.shadow / "shadow.txt").write_text("Shadow work\n")
+        self.sync(shadow_git=True)
+        self.assert_converged()
+        self.assertEqual((self.mac / "shadow.txt").read_text(), "Shadow work\n")
+        self.assertEqual((self.shadow / "mac.txt").read_text(), "Mac work\n")
 
 
 if __name__ == "__main__":

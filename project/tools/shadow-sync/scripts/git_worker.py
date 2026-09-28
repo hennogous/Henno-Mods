@@ -2,8 +2,10 @@
 
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
+import tempfile
 
 
 class SyncError(RuntimeError):
@@ -61,7 +63,7 @@ def inspect_repo(spec, host):
             "status": status}
 
 
-def operate(spec, host, action, message="", expected=None):
+def operate(spec, host, action, message="", expected=None, incoming=None):
     state = inspect_repo(spec, host)
     path = state["path"]
     if action == "inspect":
@@ -80,7 +82,12 @@ def operate(spec, host, action, message="", expected=None):
                 commit = git(path, "rev-parse", "HEAD")
             elif result.returncode != 0:
                 raise SyncError(f"{path}: cannot inspect staged changes")
-    elif action in ("publish", "merge", "finish"):
+    elif action == "merge-known":
+        if state["status"]:
+            raise SyncError(f"{path}: worktree became dirty before incoming merge")
+        git(path, "-c", "merge.autoStash=false", "merge", "--no-edit", incoming)
+        git(path, "update-ref", f"refs/remotes/origin/{spec['branch']}", incoming)
+    elif action in ("publish", "finish"):
         if state["status"]:
             raise SyncError(f"{path}: worktree became dirty; stop editing and retry")
         branch = spec["branch"]
@@ -112,6 +119,34 @@ def stream_bundle(spec, host, base, expected_head):
     )
     if result.returncode:
         raise SyncError(result.stderr.decode("utf-8", errors="replace"))
+
+
+def accept_uploaded_bundle(spec, incoming, expected):
+    """Accept a Mac bundle from stdin and merge its already-published commit."""
+    output_dir = Path.home() / "Desktop/Codex/shadow-sync/bundles"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(prefix=spec["name"] + "-", suffix=".bundle",
+                                     dir=output_dir, delete=False) as output:
+        bundle = Path(output.name)
+        shutil.copyfileobj(sys.stdin.buffer, output)
+    try:
+        state = inspect_repo(spec, "shadow")
+        git(state["path"], "bundle", "verify", str(bundle))
+        git(state["path"], "fetch", "--no-tags", str(bundle), "HEAD")
+        if git(state["path"], "rev-parse", "FETCH_HEAD") != incoming:
+            raise SyncError(f"{bundle}: unexpected incoming commit")
+        result = operate(spec, "shadow", "merge-known", incoming=incoming, expected=expected)
+    except Exception as error:
+        raise SyncError(f"{error}\nIncoming bundle kept at {bundle}") from error
+    bundle.unlink()
+    return result
+
+
+def handle_uploaded_bundle(request):
+    try:
+        return {"ok": True, "result": accept_uploaded_bundle(**request)}
+    except (SyncError, OSError, subprocess.TimeoutExpired) as error:
+        return {"ok": False, "error": str(error)}
 
 
 def handle(request):

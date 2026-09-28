@@ -5,7 +5,9 @@ description: Sync Henno-Mods and the three Civ skill Git repos between Henno's M
 
 # Shadow sync
 
-Run this routine from the Mac. Invoking it authorizes committing and pushing all
+Run this routine from the Mac. Henno's Tailscale ACL permits Mac → Shadow access
+and blocks the reverse route; keep Mac as the orchestrator. Invoking it authorizes
+committing and pushing all
 pending, non-ignored changes in these four repositories, including existing staged
 changes, new files and deletions. A request to check/preview only does not authorize
 commits or pushes. Respect any narrower scope in the current request.
@@ -33,14 +35,24 @@ SSH uses `Shadow@100.122.143.96`, the verified Tailscale address, with existing 
 and host-key checking. `--shadow` can override the target if its binding changes.
 
 The sequence per repo saves work on **both** hosts first, merges current GitHub
-history into Mac and pushes, then merges that history into Shadow. If Shadow has
+history into Mac and pushes, then sends the published history to Shadow as a Git
+bundle over SSH and merges it there. If Shadow has
 additional commits, stream them back over SSH as a Git bundle, fast-forward Mac,
 and push from Mac. Finally fast-forward both hosts and verify their commit IDs.
-Mac handles all GitHub writes: Shadow's Windows credential manager is unavailable
+Mac handles all GitHub access: Shadow's Windows credential manager is unavailable
 in SSH logins, and its existing GitHub CLI credential was invalid when tested.
-Shadow's public HTTPS fetches work. No credentials are copied between machines.
+The skill repos also require authenticated fetches, so Shadow uses SSH bundles in
+both directions. Its tracking refs are updated to commits fetched/published by Mac.
+No credentials are copied between machines; no reverse SSH or ACL changes are needed.
 Divergent history is preserved with ordinary merge commits.
 Ignored output stays ignored; clean repos do not receive checkpoint commits.
+
+If Henno requests direct Git after authenticating on Shadow, pass `--shadow-git`.
+This runs Mac push → Shadow fetch/merge/push → Mac/Shadow fast-forward and verify.
+It needs working GitHub credentials inside the unattended SSH session; a successful
+desktop login alone does not prove that Windows credential storage works over SSH.
+Both modes are initiated from Mac and leave the Tailscale ACL unchanged. Keep bundle
+mode as the default until direct mode is requested and verified.
 
 Save pending editor changes and avoid editing these repos during the run. Stop on
 conflicts, changed branch/upstream, active merge/rebase, SSH/authentication failure
@@ -53,6 +65,8 @@ Tool-required filesystem/network approval still applies; use escalation when nee
 For implementation changes, run `scripts/test_shadow_sync.py --scratch` with a folder
 under `/Users/henno.gous/Play/codex-outputs/shadow-sync/`. Keep generated logs and test
 repositories there. Transfer bundles are written under that output folder and
-removed after successful import; failed bundles are kept for diagnosis. The routine
+removed after successful import; failed bundles are kept for diagnosis. Shadow's
+incoming bundles use `C:\Users\Shadow\Desktop\Codex\shadow-sync\bundles`.
+The routine
 otherwise writes only Git's normal checkout metadata and changes needed to merge
 the versioned repos.
