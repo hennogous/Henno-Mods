@@ -11,15 +11,35 @@ for row in data['assets']:
         if row.get('origin')=='authored_blender':
             meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
             rigs=[o for o in bpy.context.scene.objects if o.type=='ARMATURE']
-            assert len(meshes)==len(rigs)==1
-            o=meshes[0];rig=rigs[0]
-            assert o.name==o.data.name==row['asset_id']
-            assert o['source_asset_id']==row['asset_id'] and o['export_role']=='custom_attachment'
-            assert o.matrix_world==Matrix.Identity(4) and rig.matrix_world==Matrix.Identity(4)
-            assert [u.name for u in o.data.uv_layers]==['UV1','UV2','UV3']
-            assert [b.name for b in rig.data.bones]==['Bone'] and o.parent==rig
-            assert min(v.co.z for v in o.data.vertices)>-0.0001
-            assert all(abs(o.vertex_groups['Bone'].weight(v.index)-1)<1e-6 for v in o.data.vertices)
+            if row.get('component_transforms'):
+                sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'scene_export'))
+                import decode_blend as decoder
+                meta=json.loads(bpy.context.scene['csc_export'])
+                assert meta['asset_id']==row['asset_id'] and meta['component_transforms']
+                declared={c['object']:c for c in row['components']}
+                assert {o.name for o in meshes}==set(declared)
+                bpy.context.view_layer.update()
+                for o in meshes:
+                    c=declared[o.name]
+                    assert o['source_asset_id']==row['asset_id'] and o['export_role']=='prop_geometry'
+                    assert o.data.name==c['mesh_datablock'] and o['source_component']==c['source_component']
+                    assert decoder.mesh_signature(o.data)==c['mesh_signature']
+                    assert decoder.matrices_close(decoder.matrix(o.matrix_world),c['matrix_world'])
+                    assert [u.name for u in o.data.uv_layers]==['UV1','UV2','UV3']
+                    assert not o.modifiers and len(o.vertex_groups)==1
+                    assert all(abs(o.vertex_groups[0].weight(v.index)-1)<1e-6 for v in o.data.vertices)
+                geometry_check='Authored multi-component geometry/UVs and asset-local frames match declared source signatures; static weights retained'
+            else:
+                assert len(meshes)==len(rigs)==1
+                o=meshes[0];rig=rigs[0]
+                assert o.name==o.data.name==row['asset_id']
+                assert o['source_asset_id']==row['asset_id'] and o['export_role']=='custom_attachment'
+                assert o.matrix_world==Matrix.Identity(4) and rig.matrix_world==Matrix.Identity(4)
+                assert [u.name for u in o.data.uv_layers]==['UV1','UV2','UV3']
+                assert [b.name for b in rig.data.bones]==['Bone'] and o.parent==rig
+                assert min(v.co.z for v in o.data.vertices)>-0.0001
+                assert all(abs(o.vertex_groups['Bone'].weight(v.index)-1)<1e-6 for v in o.data.vertices)
+                geometry_check='Local contact pivot; identity transforms; static Bone binding'
             textures=[]
             for im in bpy.data.images:
                 if im.source!='FILE':continue
@@ -28,7 +48,7 @@ for row in data['assets']:
                 assert p.is_relative_to(LIB) and p.is_file(),str(p)
                 im.reload();assert min(im.size)>0
                 textures.append(dict(path=p.relative_to(LIB).as_posix(),resolution=list(im.size)))
-            report.update(status='passed',textures=textures,checks=['Authored blend reopened; exact asset identity','Local contact pivot; identity transforms; static Bone binding','Three UV channels and external portable textures','Windows registration remains explicitly pending; no FGX-source comparison claimed'])
+            report.update(status='passed',textures=textures,checks=['Authored blend reopened; exact asset identity',geometry_check,'Three UV channels and external portable textures','Windows registration remains explicitly pending; no FGX-source comparison claimed'])
             row['status']='verified_blender';row['verification']=report;reports.append(report)
             print('PASSED',row['asset_id'],flush=True)
             continue

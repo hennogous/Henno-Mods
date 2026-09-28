@@ -4,7 +4,7 @@ Install this file as a Blender add-on. It changes only the open .blend; save nor
 The Windows exporter remains the authority for material/asset/state validation.
 """
 bl_info = {
-    'name': 'CSC Scene Tools', 'author': 'CSC', 'version': (1, 2, 1),
+    'name': 'CSC Scene Tools', 'author': 'CSC', 'version': (1, 3, 4),
     'blender': (4, 0, 0), 'location': '3D View > Sidebar > CSC',
     'description': 'Place, duplicate and exclude reusable CSC scene props',
     'category': 'Object',
@@ -471,6 +471,11 @@ def import_prop(library, ident, location):
     if not blend.is_file():
         raise ValueError(f'{ident}: source blend missing: {blend}')
     components = record.get('components')
+    component_transforms = bool(record.get('component_transforms'))
+    if component_transforms and (record.get('origin') != 'authored_blender' or not components or
+                                 any('matrix_world' not in c for c in components)):
+        raise ValueError(f'{ident}: authored component transforms need explicit catalogue matrices')
+    component_records = {c['object']: c for c in components or []}
     selected = {c['object'] for c in components if c.get('default_visible', True)} if components else None
     declared_meshes = {m['geometry'] for m in record.get('models', []) if m.get('geometry')}
     before_images = set(bpy.data.images)
@@ -499,12 +504,18 @@ def import_prop(library, ident, location):
     root = bpy.data.objects.new('Attach_' + instance, None)
     root['instance_id'] = instance
     root['source_asset_id'] = ident
-    root['export_role'] = 'reused_attachment'
+    root['export_role'] = 'custom_attachment' if component_transforms else 'reused_attachment'
     root['support'] = 'ground'
+    root['terrain_follow'] = 'pivot'
+    root['component_transforms'] = component_transforms
+    for key in ('reuse_approved', 'reuse_scope', 'reuse_reference'):
+        if key in record:
+            root[key] = record[key]
     root.location = location
     for coll in collections:
         coll.objects.link(root)
     for i, mesh in enumerate(meshes):
+        component = component_records.get(mesh.name, {})
         # Keep the library geometry/UVs and asset-local pivot exactly. The Empty is
         # the only place for scene placement. Native rig modifiers are not exported.
         for mod in list(mesh.modifiers):
@@ -514,9 +525,11 @@ def import_prop(library, ident, location):
         mesh.name = mesh_component_name(mesh) + '__' + instance + (f'_{i}' if len(meshes) > 1 else '')
         mesh['instance_id'] = instance
         mesh['source_asset_id'] = ident
+        if component_transforms:
+            mesh['source_component'] = component.get('source_component', mesh.data.name)
         mesh.parent = root
         mesh.matrix_parent_inverse = Matrix.Identity(4)
-        mesh.matrix_basis = Matrix.Identity(4)
+        mesh.matrix_basis = Matrix(component['matrix_world']) if component_transforms else Matrix.Identity(4)
         for coll in collections:
             coll.objects.link(mesh)
     # Blender may append a rig as an implicit dependency even if only its mesh
@@ -804,6 +817,8 @@ class CSC_PT_scene(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+        layout.operator('csc_scene.validate')
+        layout.separator()
         layout.label(text='Edit placements on Attach_ Empties')
         layout.label(text='Move / Z rotate / uniform scale; save')
         layout.operator('csc_scene.select_controller')
@@ -825,7 +840,41 @@ class CSC_PT_scene(bpy.types.Panel):
         layout.label(text='Pantry geometry: source must stay verbatim')
 
 
-CLASSES = (CSC_OT_select_controller, CSC_OT_duplicate, CSC_OT_rename, CSC_OT_repair_names,
+class CSC_OT_validate_scene(bpy.types.Operator):
+    bl_idname = 'csc_scene.validate'
+    bl_label = 'Validate scene'
+    bl_description = 'Check authoring rules without changing geometry; export also runs these checks'
+
+    def execute(self, context):
+        import importlib.util
+        path = Path(__file__).with_name('csc_scene_validation.py')
+        if not path.is_file():
+            self.report({'ERROR'}, 'Install csc_scene_validation.py beside csc_scene_tools.py')
+            return {'CANCELLED'}
+        spec = importlib.util.spec_from_file_location('csc_scene_validation_ui', path)
+        validator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(validator)
+        report = validator.validate_current_scene()
+        context.window_manager.csc_validation_report = json.dumps(report)
+        print(validator.format_report(report))
+        # A transient popup and WindowManager report leave scene data untouched.
+        def draw(menu, _context):
+            import textwrap
+            menu.layout.label(text=f'{report["error_count"]} errors, {report["warning_count"]} warnings; visual review required')
+            menu.layout.label(text=f'Budget: {report["counts"]["budget_vertices"]}/{report["counts"]["main_maximum"]} vertices (direct + bespoke props/decals)')
+            for finding in report['findings'][:6]:
+                menu.layout.label(text=f'{finding["severity"].upper()}: {finding["code"]}')
+                for line in textwrap.wrap(finding['message'], width=90):
+                    menu.layout.label(text=line)
+                if finding['objects']:
+                    menu.layout.label(text=', '.join(finding['objects']))
+            if len(report['findings']) > 6:
+                menu.layout.label(text='Full report: Python Console, bpy.context.window_manager.csc_validation_report')
+        context.window_manager.popup_menu(draw, title='CSC Scene Validation', icon='ERROR' if report['error_count'] else 'INFO')
+        return {'FINISHED'}
+
+
+CLASSES = (CSC_OT_validate_scene, CSC_OT_select_controller, CSC_OT_duplicate, CSC_OT_rename, CSC_OT_repair_names,
            CSC_OT_visibility, CSC_OT_import, CSC_OT_remove,
            CSC_OT_import_master, CSC_PT_scene)
 
@@ -833,6 +882,7 @@ CLASSES = (CSC_OT_select_controller, CSC_OT_duplicate, CSC_OT_rename, CSC_OT_rep
 def register():
     for cls in CLASSES:
         bpy.utils.register_class(cls)
+    bpy.types.WindowManager.csc_validation_report = StringProperty(name='CSC validation report', options={'SKIP_SAVE'})
     bpy.types.Scene.csc_prop_library = StringProperty(
         name='CSC prop library', subtype='DIR_PATH', default=DEFAULT_PROP_LIBRARY,
         update=_prop_library_changed)
@@ -859,6 +909,7 @@ def unregister():
     for handlers in (bpy.app.handlers.depsgraph_update_post, bpy.app.handlers.load_post):
         if _attachment_name_change in handlers:
             handlers.remove(_attachment_name_change)
+    del bpy.types.WindowManager.csc_validation_report
     del bpy.types.Scene.csc_custom_master
     del bpy.types.Scene.csc_library_asset
     del bpy.types.Scene.csc_prop_library

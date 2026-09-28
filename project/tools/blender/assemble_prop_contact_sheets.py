@@ -32,13 +32,15 @@ def font(size, bold=False):
 
 
 def category(asset_id, source_pack=None, catalogue_row=None):
+    if catalogue_row and catalogue_row.get('category') in CATEGORIES:
+        return catalogue_row['category']
     if catalogue_row and catalogue_row.get('category') in {
         'Planters and hanging greenery', 'Shrubs and flowering plants',
         'Ground and wetland plants', 'Crops and productive plants', 'Trees and palms',
     }:
         return 'Plants'
     name = asset_id.lower()
-    if any(s in name for s in ['table', 'workbench', 'bench', 'stand']):
+    if any(s in name for s in ['table', 'workbench', 'bench', 'stand', 'chair']):
         return CATEGORIES[0]
     if 'barrel' in name or 'vat' in name:
         return CATEGORIES[1]

@@ -42,7 +42,7 @@ def add_assets(library, additions, audit):
             shutil.copy2(source, target)
     original['assets'].extend(incoming)
     original.setdefault('authored_contract', {}).update(
-        geometry='Authored entries contain local contact pivots, identity source transforms, UV1/UV2/UV3 and a static Bone rig. Building placements retain unapplied transforms.',
+        geometry='Authored entries retain asset-local pivots, UV1/UV2/UV3 and static weights. Legacy single meshes have identity transforms and a Bone rig; component_transforms entries preserve explicit catalogue component matrices. Building placements remain unapplied.',
         runtime='registration_status records Windows integration; verified_blender does not mean registered or terrain-tested.',
         source_refresh='The pantry converter preserves origin=authored_blender entries. Handle shared-asset updates explicitly.')
     catalogue_path.write_text(json.dumps(original, indent=2) + '\n')

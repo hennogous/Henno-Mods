@@ -120,3 +120,8 @@ The pair now uses 10 custom assets: two buildings, six shared props and two
 Tailors-specific props. The reusable sheets contain 39 entries, including eight
 CSC_ALL assets; 47 catalogue records remain including other historical definitions.
 Use revision-10-shared-bench (five blends and textures) for the current workshop.
+
+
+## Fashion House reusable props — 26 September 2026
+
+Henno approved `CSC_ALL_Chair_Upholstered_Claret` and `CSC_ALL_Folded_Cloth_Claret_Ivory`. The latter is deliberately one prop containing the claret/ivory folded-cloth pair; the claret bolt stays bundled in the building. These masters retain explicit asset-local component matrices, three UV channels and static weights, without applying transforms. The catalogue sets `component_transforms=true`; Scene Tools1.3.3 preserves those frames when importing. The verifier supports this authored multi-component contract alongside the older single-mesh Bone-rig contract. Geometry counts are54 and40, respectively. Existing AO allocations remain unchanged when refreshing the library map to r014. Windows registration is still pending.

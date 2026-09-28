@@ -459,7 +459,10 @@ The mesh child must remain at identity relative to its controller. X/Y tilting,
 mirroring and axis-specific scaling are rejected. To change proportions, author a
 distinct library asset and place it with uniform scale.
 
-For everyday editing, install `project/tools/blender/csc_scene_tools.py` in Blender
+Pantry props must remain native attachments, including storage crates. Ordinary `Place_` empties around fixed geometry are not attachment controllers and cannot be selected/duplicated with the attachment commands. Only CSC-authored props may be bundled into building geometry when they can safely share the building’s terrain height; reusing pantry assets does not add new CSC asset definitions.
+
+For everyday editing, install `project/tools/blender/csc_scene_tools.py` and keep
+`csc_scene_validation.py` beside it in the Blender add-ons directory. Enable CSC Scene Tools
 via Preferences → Add-ons → Install from Disk. Its **CSC** tab in the 3D View
 sidebar works on the saved building scene; Review and Export share the asset
 objects. For placement edits, click a prop mesh, then **Select prop controller**
@@ -739,3 +742,18 @@ User-authored meshes may contain n-gons. The decoder triangulates those faces on
 on its temporary export copy before calculating tangents; the saved source topology,
 UV3, weights and transforms remain unchanged. This was checked with the supplied
 CSC_TAILORS_SpinningWheel source during its shared-material migration.
+
+
+## Scene-authoring validation (CSC Scene Tools 1.3.0)
+
+**The producing agent owns the pre-delivery check.** After the final save, proactively run the saved-file validator and relevant source/export checks, inspect current renders, fix violations and rerun affected checks before claiming completion. Do not ask Henno to run the check on the agent’s behalf. Failed checks mean the scene is still unfinished; a report or an installed button is not a completed scene. Checks apply to the declared delivery stage, with destination/game acceptance kept separate.
+
+**CSC → Validate scene** is also available for interactive editing. It reads the current in-memory building scene and reports named objects without changing geometry, transforms, materials or scene data. The popup shows findings; the complete JSON is available in `bpy.context.window_manager.csc_validation_report`, and a readable report is printed to the console. Reload the add-on after installing/updating both Python files.
+
+For a saved building, run Blender with `--background --python project/tools/blender/csc_scene_validation.py -- --blend <building.blend> --output <report.json>`. Use the host's designated generated-output directory for the report. This emits JSON and a readable `.txt`, verifies the source file hash is unchanged, and exits unsuccessfully on errors. It does not fix or save the source. The main export decoder invokes the same authoring check before serializing building geometry, so a missed UI check cannot bypass errors.
+
+Automated checks cover pantry props bundled into direct or custom CSC geometry (including retained native provenance), controller roles/IDs, direct children and Review/Export membership, uniform non-mirrored transforms, direct plus bespoke-attachment/decal exported vertex accounting, static weights/UV channels/modifiers, portable texture availability, prescribed world/color management/Review Sun and explicit terrain/support metadata. `main_geometry_maximum` retains its legacy field name but is an advisory design threshold, default2200. Exceeding it produces a `MAIN_BUDGET` warning, never an export-blocking error; counts and exclusions remain unchanged. Bespoke one-off attachments count toward this target, including courtyard assemblies retained separately for terrain behavior. Native pantry attachments are excluded. CSC attachments default to bespoke: exemption requires explicit `reuse_approved=true`, `reuse_scope=shared` or `quarter`, and `reuse_reference` naming the approved reusable source. A potential library candidate or `reused_attachment` role alone is not an exemption. Review the approval/reference and verify canonical source parity. Counts expose direct `main_vertices`, `bespoke_attachment_vertices`, combined `budget_vertices`, and excluded `reused_attachment_vertices`. Composition meshes for separately exported bespoke decals carry `budget_role=bespoke_decal` in Review and contribute actual exported vertices through `bespoke_decal_vertices`; do not tag shared roads/review context. `visible_export_vertices` excludes separate decals, while `visible_scene_vertices` includes the tagged decals. Reuse approval may precede library publication when Henno agrees credible reuse. Alternate states are budgeted separately.
+
+The existing full decoder still verifies native/custom geometry and component frames against canonical sources; the asset/state contract and build stages validate destination bindings, materials, XML and installation receipts. Source-parity validation cannot be replaced by the UI authoring check.
+
+Visual review remains explicit for opaque road clearance, mapped AO quality/atlas allocations, opposite-facing thin surfaces, approved composition, and CON+PIL/decal/terrain behavior. Automated success is labelled `review_required`, never complete approval. Alpha-textured road-plane bounding boxes are not treated as the road surface. Mechanical errors block export; budget warnings alone do not. Correct the scene or report unresolved violations rather than relabeling pantry-derived meshes as CSC to suppress the findings.

@@ -227,6 +227,13 @@ def merge_meshes(name, meshes):
 
 
 def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from csc_scene_validation import suspend_csc_repairs
+    with suspend_csc_repairs():
+        return _inspect(path, kind, asset_id, scene_name, expected_sha)
+
+
+def _inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
     before = digest(path)
     if expected_sha and before != expected_sha:
         raise ValueError(f'{path}: changed since discovery; rerun export')
@@ -238,6 +245,13 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
         raise ValueError(f'{path}: no scene {scene_name!r}')
     bpy.context.window.scene = scene
     scene.view_layers[0].update()
+    validation = None
+    if kind == 'building':
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from csc_scene_validation import validate_current_scene, format_report
+        validation = validate_current_scene()
+        if not validation['automated_pass']:
+            raise ValueError(format_report(validation))
     attachments, geometry = [], []
     roots = {o['instance_id']: o for o in scene.objects if o.type == 'EMPTY' and o.get('instance_id')}
     if len(roots) != sum(o.type == 'EMPTY' and bool(o.get('instance_id')) for o in scene.objects):
@@ -337,6 +351,7 @@ def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
     if digest(path) != before:
         raise ValueError(f'Source file changed while decoding: {path}')
     return {'asset_id': asset_id, 'kind': kind, 'source': str(path), 'source_sha256': before,
+            'authoring_validation': validation,
             'component_frames': [
                 {'component': ob.get('source_component', ob.data.name),
                  'signature': mesh_signature(ob.data), 'matrix': matrix(ob.matrix_world)}
