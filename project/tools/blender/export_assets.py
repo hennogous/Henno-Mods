@@ -22,6 +22,12 @@ def executable(value):
     return str(path)
 
 
+def defaults_path(explicit, blends, helpers):
+    """A revision can retain its AO and prop-state policy beside its sources."""
+    local = blends / 'export.defaults.json'
+    return explicit or (local if local.is_file() else helpers / 'csc.defaults.json')
+
+
 def run_step(command, log_path):
     print(f'Running {log_path.stem}; log: {log_path}', flush=True)
     with log_path.open('w', encoding='utf-8') as log:
@@ -69,7 +75,7 @@ def main():
     parser.add_argument('--converter', help='Defaults to the mod repository tools/cn6libs converter')
     parser.add_argument('--texconv', help='Defaults to project/tools/directxtex/texconv.exe, then texconv on PATH')
     parser.add_argument('--output', type=Path, help='New empty directory; default export-runs/timestamp')
-    parser.add_argument('--defaults', type=Path, help='Override CSC template/material/policy defaults JSON')
+    parser.add_argument('--defaults', type=Path, help='Override defaults JSON; otherwise use blend-directory/export.defaults.json, then CSC defaults')
     parser.add_argument('--contract', type=Path, help='Building contract JSON; defaults to export-contract.json in blend folder when present')
     parser.add_argument('--include-optional', action='store_true', help='Include all optional blends listed by the building contract')
     parser.add_argument('--stage-only', action='store_true', help='Decode and build; skip FGX/DDS conversion')
@@ -140,7 +146,7 @@ def main():
         converter = executable(args.converter or str(mod.parent / 'project/tools/cn6libs/CN6ToFGX.exe'))
         local_texconv = here.parent / 'directxtex' / 'texconv.exe'
         texconv = executable(args.texconv or (str(local_texconv) if local_texconv.is_file() else 'texconv'))
-    defaults = json.loads((args.defaults or helpers / 'csc.defaults.json').read_text(encoding='utf-8'))
+    defaults = json.loads(defaults_path(args.defaults, blends, helpers).read_text(encoding='utf-8'))
     stamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
     out = (args.output or blends / 'export-runs' / stamp).expanduser().resolve()
     if out == mod or mod in out.parents:

@@ -13,6 +13,15 @@ spec.loader.exec_module(runner)
 
 
 class RunnerTests(unittest.TestCase):
+    def test_revision_defaults_and_explicit_override_precedence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.assertEqual(runner.defaults_path(None,root,root/'helpers'),root/'helpers/csc.defaults.json')
+            local = root/'export.defaults.json';local.write_text('{}')
+            self.assertEqual(runner.defaults_path(None,root,root/'helpers'),local)
+            explicit = root/'explicit.json'
+            self.assertEqual(runner.defaults_path(explicit,root,root/'helpers'),explicit)
+
     def run_export(self, flags=(), fail_conversion=False):
         calls = []
         with tempfile.TemporaryDirectory() as directory:

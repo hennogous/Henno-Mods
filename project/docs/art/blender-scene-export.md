@@ -791,6 +791,38 @@ no additional asset/XLP entry. Native pantry attachments keep their source bindi
 This explicit handling fixes the former path that silently skipped AO source images
 when reusing a material. It does not bake AO during export.
 
+Keep a revision's complete defaults in `export.defaults.json` beside its blends.
+The runner loads that file automatically; `--defaults` takes precedence and the
+bundled CSC defaults remain the fallback. This retains an intentional
+`ao_policy: "stage_explicit"` on later runs without changing other revisions.
+
+To regenerate a prop while retaining its edited Asset Editor state table, add
+`"prop_templates": {"CSC_Prop_ID": "Assets/CSC_Prop_ID.ast"}` to those defaults
+and explicitly authorize its replacement in `replace_existing_assets`. The
+template must exist in the mod and contain the prop's single geometry model.
+Each source mesh/group must resolve to exactly one row per state. A single-group
+mesh can retain its row when an AO material changes the group name; ambiguous
+multi-group matches stop the export. Visibility and other shader parameters are
+retained, while the mesh/group identities and material binding are regenerated.
+The template is an input dependency, so keep it when rebuilding the revision.
+
+### CSC variants of native state tables
+
+For a reusable CSC asset that needs different visibility from a pantry asset,
+catalogue it with `origin: "native_state_variant"`, `source_pack: "CSC"`, the
+original SDK `source_ast`, and explicit `hidden_states`. Keep its copied library
+master's geometry, UVs, component names and pivots identical to the native source.
+The preview master has its own CSC scene/asset identity and library entry.
+Use that CSC identity in the building attachment's `source_asset_id`.
+
+The exporter emits and registers a CSC AST that retains all native GEO references,
+materials and behavior. It changes only the asset identity and the declared states'
+Visible booleans, requiring a unique hidden-state row for every native group.
+Nested native attachments require explicit handling and are rejected. No native
+FGX reconversion or custom atlas mapping occurs. Library refreshes preserve these
+entries. Staged validation compares the complete variant AST against this policy.
+Construction/Pillaged behavior still needs a cook and runtime appearance review.
+
 Revision 11 workshop source checks cover Blender, CN6, XML, native source signatures,
 shared AO staging and retained construction/pillage/decal models. Windows conversion,
 cooking and in-game slope/stack behavior remain to be checked on Windows.

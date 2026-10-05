@@ -160,6 +160,52 @@ def validate_mesh_names(model):
         raise ValueError(f'{model["asset_id"]}: mesh names collide after CN6 name normalization: {names}')
 
 
+def native_state_variant(source, ident, hidden_states):
+    """Own an AST state table while retaining native GEOs, shaders and behavior."""
+    if not ident.startswith('CSC_') or not hidden_states or set(hidden_states) - set(STATES):
+        raise ValueError('Native state variant needs a CSC identity and valid hidden states')
+    root = copy.deepcopy(source)
+    set_text(root, 'm_Name', ident)
+    identifier(ident)
+    found = set()
+    group_states = {}
+    for index, instance in enumerate(root.findall(MODELS + '/Element')):
+        for row in instance.findall('m_GroupStates/Element'):
+            state = txt(row, 'm_StateName')
+            key = (index, txt(row, 'm_MeshName'), txt(row, 'm_GroupName'))
+            group_states.setdefault(key, []).append(state)
+            if state in hidden_states:
+                visible = [p for p in row.findall('m_Values/m_Values/Element') if txt(p, 'm_ParamName') == 'Visible']
+                if len(visible) != 1 or visible[0].find('m_bValue') is None:
+                    raise ValueError(f'{ident}: native state row needs exactly one boolean Visible parameter')
+                visible[0].find('m_bValue').text = 'false'
+                found.add(state)
+    if found != set(hidden_states):
+        raise ValueError(f'{ident}: missing native states {set(hidden_states)-found}')
+    if any(states.count(state) != 1 for states in group_states.values() for state in hidden_states):
+        raise ValueError(f'{ident}: every native group needs exactly one row for each hidden state')
+    if root.findall(POINTS + '/Element'):
+        raise ValueError(f'{ident}: nested native attachments need explicit state handling')
+    return root
+
+
+def prop_state_templates(model, instance):
+    """Retain edited state parameters by mesh/group, including AO-only group renames."""
+    result = {}
+    rows = instance.findall('m_GroupStates/Element')
+    for mesh, _, mat, _ in groups(model):
+        group_count = sum(1 for item, _, _, _ in groups(model) if item is mesh)
+        for state in STATES:
+            candidates = [r for r in rows if txt(r, 'm_MeshName') == export_mesh_name(mesh['name'])
+                          and txt(r, 'm_StateName') == state]
+            exact = [r for r in candidates if txt(r, 'm_GroupName') == mat['name']]
+            match = exact if exact else candidates if group_count == 1 else []
+            if len(match) != 1:
+                raise ValueError(f'{model["asset_id"]}/{mesh["name"]}/{mat["name"]}/{state}: cannot preserve ambiguous/missing prop state')
+            result[(mesh['name'], mat['name'], state)] = match[0]
+    return result
+
+
 def model_instance(model, material_ids, visible, state_template=None):
     is_decal = model.get('kind') == 'decal'
     e = ET.Element('Element')
@@ -172,7 +218,8 @@ def model_instance(model, material_ids, visible, state_template=None):
         mesh_visible = visible.get(mesh['name'], ()) if isinstance(visible, dict) else visible
         for state in STATES:
             # Preserve shader/FOW/burn settings from a chosen original mesh where supplied.
-            template = state_template.get(state) if state_template and not is_decal else None
+            template = (state_template.get((mesh['name'], mat['name'], state), state_template.get(state))
+                        if state_template and not is_decal else None)
             if template is not None:
                 row = copy.deepcopy(template)
                 gs.append(row)
@@ -180,7 +227,7 @@ def model_instance(model, material_ids, visible, state_template=None):
                 for p in vals:
                     param = txt(p,'m_ParamName')
                     if param == 'Material': set_text(p,'m_ObjectName',material_id)
-                    if param == 'Visible': p.find('m_bValue').text = str(state in mesh_visible).lower()
+                    if param == 'Visible' and visible is not None: p.find('m_bValue').text = str(state in mesh_visible).lower()
             else:
                 row = elem(gs,'Element'); vals = elem(elem(row,'m_Values'),'m_Values')
                 value(vals,'Material',material_id)
@@ -551,7 +598,7 @@ def build(job):
                     else {'source_pack':'CSC','origin':'existing_mod_asset'} if asset in references else catalogue[asset])
             if source.get('source_pack') not in ('Base game','Rise and Fall','Gathering Storm','CSC'):
                 raise ValueError(f'{asset}: ineligible or unknown source pack')
-            custom=source.get('origin')=='authored_blender'
+            custom=source.get('origin') in ('authored_blender', 'native_state_variant')
             binding=csc_binding(asset,xlp_path) if custom or asset in references else bindings.get(asset)
             if binding is None and not custom and asset not in references:
                 binding = native_catalogue_binding(asset, source)
@@ -579,14 +626,31 @@ def build(job):
     for ident,model in models.items():
         if model['kind']!='prop': continue
         # Start from the empty behavior schema of a plain prop, not workshop FX.
-        prop_template=read_xml(mod/templates['prop_asset'])
+        preserve_path = job.get('prop_templates', {}).get(ident)
+        prop_template=read_xml(mod/(preserve_path or templates['prop_asset']))
+        states = None
+        if preserve_path:
+            instances = prop_template.findall(MODELS + '/Element')
+            if len(instances) != 1 or txt(instances[0], 'm_GeoName') != ident:
+                raise ValueError(f'{ident}: prop template must contain its single geometry model')
+            states = prop_state_templates(model, instances[0])
         root=copy.deepcopy(prop_template); set_text(root,'m_Name',ident)
-        root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,('Worked',)))
+        root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,None if states else ('Worked',),states))
         root.find(POINTS).clear()
         for tag in ('m_animationBindings/m_Bindings','m_timelineBindings/m_Bindings','m_timelines/m_Timelines'):
             node=root.find('m_BehaviorData/m_behaviorDataSets/'+tag)
             if node is not None: node.clear()
         write_xml(stage/'Assets'/(ident+'.ast'),root); report['assets'].append(ident)
+    variant_ids = sorted({a['source_asset_id'] for entry in job['buildings'] for a in models[entry['asset_id']]['attachments']
+                          if catalogue.get(a['source_asset_id'], {}).get('origin') == 'native_state_variant'})
+    for ident in variant_ids:
+        source = catalogue[ident]
+        original = Path(source['source_ast'])
+        root = native_state_variant(read_xml(original), ident, source['hidden_states'])
+        source_inputs[str(original)] = sha(original)
+        write_xml(stage/'Assets'/(ident+'.ast'),root)
+        report['assets'].append(ident)
+    report['native_state_variants'] = variant_ids
     write_xml(stage/'XLPs'/xlp_path.name,merge_xlp(read_xml(xlp_path),report['assets']))
     report['status']='blocked' if report['blockers'] else 'ready_for_windows_conversion'
     report['counts']={'custom_assets':len(report['assets']), 'geometry_only':len(report['geometry_only']),

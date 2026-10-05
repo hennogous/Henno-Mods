@@ -109,6 +109,31 @@ def state_rows(model):
     return rows
 
 
+def material_is_ao_variant(material, base, stage, mod):
+    """An AO variant must preserve every other parameter of the contracted material."""
+    from export_scene import read_xml, txt, set_text
+    if material == base:
+        return True
+    if not material.startswith(base + '__AO_'):
+        return False
+    path = next((p for p in (stage/'Materials'/(material+'.mtl'), mod/'Materials'/(material+'.mtl')) if p.is_file()), None)
+    if path is None:
+        return False
+    actual, expected = read_xml(path), read_xml(mod/'Materials'/(base+'.mtl'))
+    set_text(actual, 'm_Name', base)
+    a = [v for v in actual.findall('m_CookParams/m_Values/Element') if txt(v, 'm_ParamName') == 'AO']
+    b = [v for v in expected.findall('m_CookParams/m_Values/Element') if txt(v, 'm_ParamName') == 'AO']
+    if len(a) != 1 or len(b) != 1:
+        return False
+    texture = txt(a[0], 'm_ObjectName')
+    if not texture or not any((folder/'Textures'/(texture+'.tex')).is_file() for folder in (stage,mod)):
+        return False
+    set_text(a[0], 'm_ObjectName', txt(b[0], 'm_ObjectName'))
+    def canonical(node):
+        return node.tag, sorted(node.attrib.items()), (node.text or '').strip(), tuple(canonical(c) for c in node)
+    return canonical(actual) == canonical(expected)
+
+
 def assert_groups(model, geo, expected):
     """Every GEO mesh/group must have exactly five matching AST rows."""
     from export_scene import txt
@@ -226,7 +251,7 @@ def validate_stage(job, decoded, stage):
                 prop_model = prop_root.find(MODELS + '/Element')
                 actual_materials = {material for visible, material in state_rows(prop_model).values() if visible}
                 expected_material = contract['building_material'] if 'leanto' in asset.casefold() else contract['prop_material']
-                if actual_materials != {expected_material}:
+                if not actual_materials or not all(material_is_ao_variant(m, expected_material, stage, mod) for m in actual_materials):
                     raise ValueError(f'{ident}/{instance_id}: new CSC prop uses {actual_materials}, expected {expected_material}')
         checked.append(ident)
     missing_props = {e['asset_id'] for e in job.get('props', [])} - used_new_props
@@ -240,10 +265,33 @@ def validate_stage(job, decoded, stage):
         prop = root.find(MODELS + '/Element')
         geo = read_xml(stage / 'Geometries' / (ident + '.geo'))
         rows = state_rows(prop)
-        if any(visible != (state == 'Worked') for (_, _, state), (visible, _) in rows.items()):
-            raise ValueError(f'{ident}: new CSC prop must be Worked-only')
+        template_path = job.get('prop_templates', {}).get(ident)
+        if template_path:
+            from export_scene import prop_state_templates
+            template = read_xml(mod/template_path).find(MODELS + '/Element')
+            preserved = prop_state_templates(model, template)
+            expected_visibility = {(export_mesh_name(mesh), group, state):next(v.findtext('m_bValue') == 'true'
+                                      for v in row.findall('m_Values/m_Values/Element') if txt(v,'m_ParamName') == 'Visible')
+                                   for (mesh, group, state), row in preserved.items()}
+        else:
+            expected_visibility = {key:key[2] == 'Worked' for key in rows}
+        if any(visible != expected_visibility[(mesh, group, state)] for (mesh, group, state), (visible, _) in rows.items()):
+            raise ValueError(f'{ident}: prop visibility differs from its declared state template')
         assert_groups(prop, geo, lambda mesh, group, state: rows[(mesh, group, state)])
+    from export_scene import native_state_variant
+    catalogue = {r['asset_id']:r for r in json.loads((Path(job['library'])/'catalogue.json').read_text())['assets']}
+    variants = sorted({a['source_asset_id'] for e in job['buildings']
+                       for a in decoded['models'][e['asset_id']]['attachments']
+                       if catalogue.get(a['source_asset_id'], {}).get('origin') == 'native_state_variant'})
+    def canonical(node):
+        return (node.tag, sorted(node.attrib.items()), (node.text or '').strip(), tuple(canonical(c) for c in node))
+    for ident in variants:
+        source = catalogue[ident]
+        expected = native_state_variant(read_xml(Path(source['source_ast'])), ident, source['hidden_states'])
+        if canonical(read_xml(stage/'Assets'/(ident+'.ast'))) != canonical(expected):
+            raise ValueError(f'{ident}: native variant changed more than identity and declared visibility')
     return {'validated_buildings': checked, 'new_props': [i for i,m in decoded['models'].items() if m['kind']=='prop'],
+            'native_state_variants': variants,
             'reused_csc_props_for_henno': sorted(reused_csc),
             'xy_rotation_ae_review': tilted_attachments,
             'manual_review': 'Existing CSC attachment assets retain their installed state tables; Henno checks those in game.'}
