@@ -6,6 +6,8 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 ## Active notes
 
+- [CSC adjacency replacement](session_csc_adjacency_replacement.md) — bundled first implementation, parity/live yield evidence, clean reload check and test preference restoration.
+
 - [Optional Art Pack split test](session_optional-art-pack-test.md) — Wind Mill 2 source split, cooker pantry requirement, and pending in-game ArtDef merge check.
 
 - [Bakers Storage_L rev 01](session_bakers-storage-l-rev01.md) — additions + 27 reused props built; crane (animated) next; PIL/CON+PIL/AO/flour cataloguing open.

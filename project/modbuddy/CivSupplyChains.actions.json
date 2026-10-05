@@ -867,16 +867,6 @@
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_Ruivo_AdjacencyProcessor",
-        "properties": {
-          "LoadOrder": "3000"
-        },
-        "files": [
-          "Lua_UI/Ruivo_Adjacencies/CSC_Ruivo_AdjacencyProcessor.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
         "id": "ModSupport_LGD",
         "properties": {
           "LoadOrder": "2005"
@@ -1060,7 +1050,7 @@
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_MAB_DB_RingFix",
+        "id": "CSC_UI_DynamicDatabase",
         "properties": {
           "LoadOrder": "9999999"
         },
@@ -1210,6 +1200,102 @@
         },
         "files": [
           "Lua_UI/TradeRoutes/UnitPanel.lua"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencySchema",
+        "properties": {
+          "LoadOrder": "90"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencySchema.sql",
+          "Lua_UI/Adjacencies/CSC_AdjacencySources.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencyProcessor",
+        "properties": {
+          "LoadOrder": "3000"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencyModifiers",
+        "properties": {
+          "LoadOrder": "4000"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyModifiers.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_AdjacencyText",
+        "properties": {
+          "LoadOrder": "4000"
+        },
+        "files": [
+          "Text/CSC_ADJACENCY_TEXT.sql",
+          "Text/CSC_ADJACENCY_SOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_AdjacencyModules",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyCore.lua",
+          "Lua_UI/Adjacencies/CSC_AdjacencyPresentation.lua",
+          "Lua_UI/Adjacencies/CSC_StockAdjacencyBonusSupport.lua"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_AdjacencyUI",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/AdjacencyBonusSupport.lua",
+          "Lua_UI/Adjacencies/ToolTipLoader_CSCAdjacency.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_AdjacencyGameplay",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyGameplay.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_AdjacencyNativeReads",
+        "properties": {
+          "LoadOrder": "501",
+          "Context": "InGame"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyUI.xml"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_AdjacencyUIBridge",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyUI.lua"
         ]
       }
     ]

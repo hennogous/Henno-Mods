@@ -13,7 +13,7 @@
 Quarters: Bakers, Tailors, Apothecaries, Stonemasons, Carpenters, Blacksmiths, Goldsmiths, Brewers.
 
 - Requires: Rise and Fall (XP1) + Gathering Storm (XP2)
-- Hard dependency: Modular Adjacency Bonuses Core (MAB) — see [`project/docs/integrations/MAB_CHANGES.md`](../project/docs/integrations/MAB_CHANGES.md) for CSC's changes to Ruivo's mod (branches, features, PR status)
+- Bundled adjacency engine: first implementation in `Lua_UI/Adjacencies/`; MAB is no longer a declared dependency. See [implementation and test status](project/docs/integrations/csc-adjacencies.md). Ruivo's fork remains a read-only behavioral reference; its older changes are in `project/docs/integrations/MAB_CHANGES.md`.
 - Optional integrations: Sukritact's Resources, Resourceful 2, Cannabis & Hemp, Latin American Resources
 - Mod ID: `c5e66bd1-d804-443b-ac3d-1917a20dba3c`
 
@@ -33,7 +33,7 @@ CSC mod content lives under `Civ Supply Chains/`:
 |---|---|
 | `Data/` | Core SQL — one `CSC_Q_*.sql` per Quarter, plus resources and M&C mode support |
 | `Text/` | Localization SQL/XML — names, descriptions, Pedia entries |
-| `Lua_UI/` | UI scripts: notifications (Suk MCUIS), adjacency (Ruivo), lenses |
+| `Lua_UI/` | UI/gameplay scripts: notifications (Suk MCUIS), bundled CSC adjacencies, lenses |
 | `ModSupport/` | Compatibility patches for ~6 other mods (R2, LAR, SR, 6T, CL, LGD) |
 | `ArtDefs/` | Art definition files linking geometry/textures to game entries |
 | `Geometries/` | 3D models in FGX + GEO format (Firaxis export format) |
@@ -90,7 +90,7 @@ Documentation outside the mod content tree is split by audience:
 
 - **Working Files** = `C:\Users\Shadow\Desktop\Working Files\` — active art assets, screenshots, VS Code workspace. Subdirs: `3D Art`, `Docs`, `Icons` (Buildings/Effects/GreatWorks/Quarters/Resources/StrategicView), `Pantry Exports`, `Screenshots`, `Textures`
 - **Modding Resources** = `C:\Users\Shadow\Desktop\Modding Resources\` — reference PDFs, tech/civic tree PNGs, ERD, MC_MasterTemplate, tutorial docs
-- **Ruivo's Mod / MAB** = `C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\NEW_ADJACENCY_BONUS_BY_RUIVO` — hard dependency for CSC, local git repo. Ruivo's tutorial: `!参考性文件(reference_folder)\Modular_Adjacency_Bonus_Tutorial-by_Ruivo.md` in that folder. Full reverse-engineered schema reference: `project/docs/integrations/MAB_MANUAL.md`
+- **Ruivo's Mod / MAB** = `C:\Users\Shadow\Documents\My Games\Sid Meier's Civilization VI\Mods\NEW_ADJACENCY_BONUS_BY_RUIVO` — read-only reference for CSC's bundled replacement, local git repo. Ruivo's tutorial: `!参考性文件(reference_folder)\Modular_Adjacency_Bonus_Tutorial-by_Ruivo.md` in that folder. Historical schema reference: `project/docs/integrations/MAB_MANUAL.md`
 - **CivAssetForge** = `C:\Users\Shadow\Desktop\Working Files\Tools\CivAssetForge` — purpose-built replacement for the Civ6 Asset Editor, built for CSC. Local git repo, also at `https://github.com/hennogous/CivAssetForge`. Prototype viewer (FGX → Three.js) is working; Electron app to follow. Plan: `PLAN.md` in the repo root.
 
 ## Key Architecture Points
@@ -145,7 +145,7 @@ Each Quarter SQL follows this 9-section pattern (reference: `CSC_Q_BAKERS.sql`, 
 ## Lua UI Subsystems
 
 - **Notifications** (`Lua_UI/Notifications_Suk_MCUIS/`): Uses Sukritact's MCUIS framework. `CSC_UI_Notifications.lua` is the main entry; `CSC_UI_NotificationPanel.lua` handles panel rendering.
-- **Adjacency** (`Lua_UI/Ruivo_Adjacencies/`): Ruivo's adjacency bonus system. `NEW_ADJACENCY_BONUS_BY_RUIVO_GP.lua` is the core logic.
+- **Adjacency** (`Lua_UI/Adjacencies/`): CSC's bundled replacement, credited to Ruivo's architecture. `CSC_AdjacencyCore.lua` shares matching between gameplay/UI; `CSC_AdjacencyGameplay.lua` writes properties. The old Ruivo folder is unregistered historical reference. See `project/docs/integrations/csc-adjacencies.md` before changing rule generation or test fixtures.
 - **Lenses** (`Lua_UI/Lenses/`): Custom map lens overlaying Quarter placement. `ModLens_CSC_Quarters.lua`.
 
 ## Settings / Game Options

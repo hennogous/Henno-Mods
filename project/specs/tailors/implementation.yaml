@@ -811,7 +811,7 @@ phases:
           - "Rows load only with City Lights."
           - "Rural workforce: Tailors +1 Production/provider +1 Culture; Urban goods sales: Tailors +1 Gold/customer +1 Culture."
           - "Every Rural Community type has CLASS_CSC_TAILORS_GOODS_PROVIDER and CLASS_CSC_TAILORS_SALES_CULTURE exactly once."
-          - "CLASS_CSC_TAILORS_GOODS_PROVIDER is registered in Ruivo_CAO with Name=LOC_CLASS_CSC_GOODS_PROVIDER_NAME and ArtdefOverlayEntry=CSC_Goods_Provider, matching Bakers, so adjacency tooltips render Rural Community instead of the raw class identifier."
+          - "CLASS_CSC_TAILORS_GOODS_PROVIDER is registered in CSC_AdjacencyObjects with Name=LOC_CLASS_CSC_GOODS_PROVIDER_NAME and ArtdefOverlayEntry=CSC_Goods_Provider, matching Bakers, so adjacency tooltips render Rural Community instead of the raw class identifier."
           - "Every Urban Borough type has CLASS_CSC_TAILORS_SALES and CLASS_CSC_TAILORS_SALES_CULTURE exactly once."
           - "Every participating Quarter pedia page lists all Rural Community variants once under Goods Providers and all Urban Borough variants once under Sales Districts; currently this is required for both Bakers and Tailors."
           - "Every Rural Community and Urban Borough pedia page has exactly one integrated Supply Chains title and one prose entry for the district's aggregate relationship with all Quarters, never one entry per Quarter."

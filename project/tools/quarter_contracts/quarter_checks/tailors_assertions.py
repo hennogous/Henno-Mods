@@ -105,12 +105,14 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
             "ALTER TABLE CSC_AbilityAttachModifiers ADD COLUMN NotificationQuarter TEXT"
         )
     scripts = [
+        "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencySchema.sql",
+        "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencySources.sql",
         "Civ Supply Chains/Data/CSC_Q_ALL.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql",
-        "Civ Supply Chains/Lua_UI/Ruivo_Adjacencies/CSC_Ruivo_AdjacencyProcessor.sql",
+        "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql",
         "Civ Supply Chains/Lua_UI/Notifications_Suk_MCUIS/CSC_UI_DB_Dynamic.sql",
         "Civ Supply Chains/ModSupport/ModSupport_SUIA.sql",
     ]
@@ -189,6 +191,139 @@ def _validate_dockmaster_mcuis_signs(source: str) -> list[str]:
                 failures.append(
                     f"{key}: notification state fragments omit terminal punctuation because the shared summary appends it"
                 )
+    return failures
+
+
+def _material_design_expectations(root: Path) -> tuple[list[dict[str, Any]], list[str]]:
+    """Read intended resources/roles from design, and engine bindings separately."""
+    import yaml
+
+    expected: list[dict[str, Any]] = []
+    failures: list[str] = []
+    for folder in sorted((root / "project/specs").iterdir()):
+        design_path = folder / "design.yaml"
+        scoped = folder / "materials.yaml"
+        if not design_path.exists() and not scoped.exists():
+            continue
+        design = yaml.safe_load((design_path if design_path.exists() else scoped).read_text())
+        if not design_path.exists():
+            canonical = root / design["canonical_source"]
+            if hashlib.sha256(canonical.read_bytes()).hexdigest() != design["canonical_source_sha256"]:
+                failures.append(f"{scoped}: canonical material declaration requires reconciliation")
+            profile = yaml.safe_load((folder / "material-validation.yaml").read_text())
+            implementation = None
+        else:
+            control = yaml.safe_load((folder / "control.yaml").read_text())
+            if control["phase_gates"]["foundation"]["status"] not in {"approved", "implementing", "ready_for_review", "accepted"}:
+                continue
+            implementation = yaml.safe_load((folder / "implementation.yaml").read_text())
+            profile = None
+        quarter = design["identity"]["abbreviation"]
+        for role, categories in design["materials"].items():
+            code = {"base": "BASE", "specialty": "SPEC"}[role]
+            for category, resources in categories.items():
+                for resource in resources:
+                    tag = f"CLASS_CSC_{quarter}_{code}"
+                    if implementation is not None:
+                        if category == "optional":
+                            bindings = [item for item in implementation.get("preserved_inputs", []) if item.get("resource") == resource["resource"] and item.get("class") == tag]
+                            if len(bindings) != 1:
+                                failures.append(f"{design_path}: {resource['resource']} requires exactly one implementation binding")
+                                continue
+                            binding = bindings[0]
+                        else:
+                            binding = {"file": implementation["planned_outputs"]["core"], "criteria": []}
+                    else:
+                        binding = profile["optional"][resource["mod"]] if category == "optional" else profile["animal"] if resource.get("animal_resource") else profile["csc"] if category == "csc" else profile["core"]
+                    expected.append({"resource": resource["resource"], "tag": tag, "quarter": quarter, "role": code, "file": binding["file"], "criteria": frozenset(binding.get("criteria", []))})
+    if not expected:
+        failures.append("No active design-contract material declarations found")
+    return expected, failures
+
+
+def _validate_mapped_resource_pedia(root: Path) -> list[str]:
+    """Validate gameplay and reciprocal Pedia against design-contract mappings."""
+    expected, failures = _material_design_expectations(root)
+    quarters = {item["quarter"] for item in expected}
+    manifest = json.loads((root / "project/modbuddy/CivSupplyChains.actions.json").read_text())
+    actions = manifest["blocks"]["inGameActions"]
+    mod_root = root / "Civ Supply Chains"
+    mapping_actions = []
+    resource_ids: set[str] = {item["resource"] for item in expected}
+    for action in actions:
+        if action.get("type") != "UpdateDatabase":
+            continue
+        statements = []
+        for relative in action.get("files", []):
+            path = mod_root / relative
+            if path.suffix.lower() != ".sql":
+                continue
+            text = path.read_text(encoding="utf-8-sig")
+            text = re.sub(r"/\*.*?\*/|--[^\n]*", "", text, flags=re.S)
+            for statement in text.split(";"):
+                if re.match(r"\s*INSERT\s+(?:OR\s+\w+\s+)?INTO\s+TypeTags\b", statement, re.I) and re.search(r"CLASS_CSC_\w+_(?:BASE|SPEC)", statement):
+                    statements.append(statement + ";")
+                    resource_ids.update(re.findall(r"'((?:RESOURCE_)\w+)'", statement))
+        if statements:
+            mapping_actions.append((action, statements))
+    scenarios = {item["criteria"] for item in expected} | {frozenset()}
+    # Observe additional conditions to detect undeclared optional mappings too.
+    for action, statements in mapping_actions:
+        if any(f"CLASS_CSC_{quarter}_{role}" in statement
+               for quarter in quarters for role in ("BASE", "SPEC")
+               for statement in statements):
+            scenarios.add(frozenset(action.get("criteria", [])))
+    for item in expected:
+        matching = [action for action, _ in mapping_actions if item["file"].removeprefix("Civ Supply Chains/") in action.get("files", [])]
+        if len(matching) != 1 or frozenset(matching[0].get("criteria", [])) != item["criteria"]:
+            failures.append(f"{item['resource']} -> {item['tag']}: gameplay file/action criteria differ from implementation binding")
+    for enabled in sorted(scenarios, key=lambda value: tuple(sorted(value))):
+        connection = sqlite3.connect(":memory:")
+        try:
+            connection.executescript("CREATE TABLE Resources(ResourceType TEXT PRIMARY KEY); CREATE TABLE TypeTags(Type TEXT, Tag TEXT, UNIQUE(Type,Tag)); CREATE TABLE LocalizedText(Language TEXT, Tag TEXT, Text TEXT, PRIMARY KEY(Language,Tag));")
+            connection.executemany("INSERT INTO Resources VALUES(?)", ((resource,) for resource in sorted(resource_ids)))
+            for action, statements in mapping_actions:
+                if set(action.get("criteria", [])).issubset(enabled):
+                    for statement in statements:
+                        connection.executescript(statement)
+            for action in sorted(actions, key=lambda item: int(item.get("properties", {}).get("LoadOrder", 0))):
+                if action.get("type") != "UpdateText" or not set(action.get("criteria", [])).issubset(enabled):
+                    continue
+                for relative in action.get("files", []):
+                    path = mod_root / relative
+                    if path.suffix.lower() != ".sql":
+                        continue
+                    text = path.read_text(encoding="utf-8-sig")
+                    if "CHAPTER_CSCQUAR" in text or re.search(r"CHAPTER_CSC(?:BASE|SPEC)", text):
+                        connection.executescript(text)
+            scenario = ", ".join(sorted(enabled)) or "core"
+            actual = {(resource, tag) for resource, tag in connection.execute("SELECT DISTINCT Type, Tag FROM TypeTags") if any(tag == f"CLASS_CSC_{quarter}_{role}" for quarter in quarters for role in ("BASE", "SPEC"))}
+            intended = {(item["resource"], item["tag"]) for item in expected if item["criteria"].issubset(enabled)}
+            for resource, tag in sorted(actual - intended):
+                failures.append(f"[{scenario}] {resource} -> {tag}: unexpected gameplay material mapping")
+            for resource, tag in sorted(intended):
+                if (resource, tag) not in actual:
+                    failures.append(f"[{scenario}] {resource} -> {tag}: design-required gameplay mapping is missing")
+                match = re.fullmatch(r"CLASS_CSC_(\w+)_(BASE|SPEC)", tag)
+                if not match:
+                    continue
+                quarter, role = match.groups()
+                label = "Base Materials:" if role == "BASE" else "Specialty Materials:"
+                prefix = f"LOC_PEDIA_RESOURCES_PAGE_{resource}_CHAPTER_CSCQUAR"
+                title = _scalar(connection, "SELECT Text FROM LocalizedText WHERE Language='en_US' AND Tag=?", (prefix + "_TITLE",))
+                reverse = _scalar(connection, "SELECT Text FROM LocalizedText WHERE Language='en_US' AND Tag=?", (prefix + "_PARA_1",)) or ""
+                group = re.search(re.escape(label) + r"\[NEWLINE\]\[NEWLINE\](.*?)(?=(?:Base|Specialty) Materials:|$)", reverse)
+                bullet = f"[ICON_BULLET] [ICON_{quarter}]"
+                if title != "Supply Chains" or reverse.count(label) != 1 or not group or group.group(1).count(bullet) != 1:
+                    failures.append(f"[{scenario}] {resource} -> {tag}: reciprocal pedia chapter missing, duplicated, or wrong material role")
+                quarter_tag = f"LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_{quarter}_QUARTER_CHAPTER_CSC{role}_PARA_1"
+                quarter_text = _scalar(connection, "SELECT Text FROM LocalizedText WHERE Language='en_US' AND Tag=?", (quarter_tag,)) or ""
+                if quarter_text.count(f"[ICON_{resource}]") != 1:
+                    failures.append(f"[{scenario}] {resource} -> {tag}: Quarter material list entry missing or duplicated")
+        except (OSError, sqlite3.DatabaseError) as error:
+            failures.append(f"mapped resource pedia validation failed: {error}")
+        finally:
+            connection.close()
     return failures
 
 
@@ -351,6 +486,7 @@ def _validate_resource_pedia_contract(root: Path) -> list[str]:
             "Civ Supply Chains/ModSupport/ModSupport_SR_TAILORS_TEXT.sql",
         ):
             connection.executescript((root / relative).read_text(encoding="utf-8-sig"))
+        failures.extend(_validate_mapped_resource_pedia(root))
         flax = _scalar(
             connection,
             "SELECT Text FROM LocalizedText WHERE Tag='LOC_PEDIA_RESOURCES_PAGE_RESOURCE_CSC_FLAX_CHAPTER_CSCQUAR_PARA_1'",
@@ -436,14 +572,14 @@ def _validate_city_lights_contract(
                 failures.append(f"City Lights gameplay missing {district} -> {tag}")
 
     processor = (
-        root / "Civ Supply Chains/Lua_UI/Ruivo_Adjacencies/CSC_Ruivo_AdjacencyProcessor.sql"
+        root / "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql"
     ).read_text(encoding="utf-8-sig")
     if not re.search(
         r"'CLASS_CSC_TAILORS_GOODS_PROVIDER'\s*,\s*'LOC_CLASS_CSC_GOODS_PROVIDER_NAME'\s*,\s*'CSC_Goods_Provider'",
         processor,
     ):
         failures.append(
-            "Tailors goods-provider MAB class lacks the Bakers-pattern readable Ruivo_CAO tooltip registration"
+            "Tailors goods-provider adjacency class lacks the Bakers-pattern readable CSC_AdjacencyObjects tooltip registration"
         )
 
     reciprocal_description_lines = (
@@ -518,7 +654,7 @@ def _validate_city_lights_contract(
             _expect(
                 failures,
                 gameplay_connection.execute(
-                    "SELECT Name, ArtdefOverlayEntry FROM Ruivo_CAO WHERE CustomAdjacentObject='CLASS_CSC_TAILORS_GOODS_PROVIDER'"
+                    "SELECT Name, ArtdefOverlayEntry FROM CSC_AdjacencyObjects WHERE CustomAdjacentObject='CLASS_CSC_TAILORS_GOODS_PROVIDER'"
                 ).fetchone(),
                 ("LOC_CLASS_CSC_GOODS_PROVIDER_NAME", "CSC_Goods_Provider"),
                 "Tailors Rural Community adjacency tooltip presentation",
@@ -708,13 +844,13 @@ def _foundation_assertions(root: Path, connection: sqlite3.Connection) -> list[s
     )
     _expect(
         failures,
-        _scalar(connection, "SELECT COUNT(*) FROM Ruivo_New_Adjacency WHERE DistrictType='DISTRICT_CSC_TAILORS_QUARTER' AND ID='CSC_CITY_ALL_SALES_GOLD_TO_TAILORS' AND YieldType='YIELD_GOLD' AND YieldChange=1"),
+        _scalar(connection, "SELECT COUNT(*) FROM CSC_AdjacencyRules WHERE DistrictType='DISTRICT_CSC_TAILORS_QUARTER' AND ID='CSC_CITY_ALL_SALES_GOLD_TO_TAILORS' AND YieldType='YIELD_GOLD' AND YieldChange=1"),
         1,
         "Quarter customer Gold adjacency",
     )
     _expect(
         failures,
-        _scalar(connection, "SELECT COUNT(*) FROM Ruivo_New_Adjacency WHERE ID='CSC_TAILORS_PRODUCTION_FROM_RIVER_EDGES' AND YieldChange=0.5 AND AdjacencyType='FROM_RIVER_CROSSING'"),
+        _scalar(connection, "SELECT COUNT(*) FROM CSC_AdjacencyRules WHERE ID='CSC_TAILORS_PRODUCTION_FROM_RIVER_EDGES' AND YieldChange=0.5 AND AdjacencyType='FROM_RIVER_CROSSING'"),
         1,
         "river-edge adjacency",
     )

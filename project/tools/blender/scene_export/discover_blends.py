@@ -10,6 +10,25 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def export_scene(scenes):
+    candidates = []
+    for scene in scenes:
+        metadata = scene.get('csc_export')
+        if metadata:
+            metadata = json.loads(metadata) if isinstance(metadata, str) else metadata.to_dict()
+            if not isinstance(metadata, dict):
+                raise ValueError('csc_export must be a JSON object')
+            if metadata.get('kind') != 'ignore':
+                candidates.append(scene)
+    if not candidates:
+        candidates = [scene for scene in scenes if scene.name == 'Export']
+    if not candidates and len(scenes) == 1:
+        candidates = list(scenes)
+    if len(candidates) != 1:
+        raise ValueError('Provide one Export scene or one scene with csc_export metadata')
+    return candidates[0]
+
+
 def main():
     request, output = map(Path, sys.argv[sys.argv.index('--') + 1:])
     rows = []
@@ -19,14 +38,7 @@ def main():
         try:
             before = digest(path)
             bpy.ops.wm.open_mainfile(filepath=str(path), load_ui=False, use_scripts=False)
-            scenes = [s for s in bpy.data.scenes if s.get('csc_export')]
-            if not scenes:
-                scenes = [bpy.data.scenes['Export']] if 'Export' in bpy.data.scenes else []
-            if not scenes and len(bpy.data.scenes) == 1:
-                scenes = list(bpy.data.scenes)
-            if len(scenes) != 1:
-                raise ValueError('Provide one Export scene or one scene with csc_export metadata')
-            scene = scenes[0]
+            scene = export_scene(bpy.data.scenes)
             metadata = scene.get('csc_export', '{}')
             metadata = json.loads(metadata) if isinstance(metadata, str) else metadata.to_dict()
             if not isinstance(metadata, dict):

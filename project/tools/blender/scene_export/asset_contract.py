@@ -46,10 +46,18 @@ def contract_for(asset_id, metadata, mod):
     else:
         level = stage - 1
         result.update(ruin_geometry=metadata.get('construction_geometry') or f'CSC_Level_{level}_CON+PIL',
-                      cobble_geometry=f'CSC_ALL_Stage_{stage}_Cobble_Decals',
-                      ruin_visible=['Construction', 'Pillaged'],
-                      cobble_visible=['Worked', 'Construction'])
-        required.append(COBBLE_MATERIAL)
+                      ruin_visible=['Construction', 'Pillaged'])
+        cobble = metadata.get('cobble_geometry', f'CSC_ALL_Stage_{stage}_Cobble_Decals')
+        if cobble is None:
+            decals = metadata.get('decals', [])
+            states = metadata.get('decal_states', {})
+            if not any({'Worked', 'Construction'} <= set(states.get(ident, [])) for ident in decals):
+                raise ValueError(f'{asset_id}: disabling shared cobble requires an authored Worked/Construction decal')
+        elif cobble != f'CSC_ALL_Stage_{stage}_Cobble_Decals':
+            raise ValueError(f'{asset_id}: cobble_geometry must be the stage default or null for authored paving')
+        else:
+            result.update(cobble_geometry=cobble, cobble_visible=['Worked', 'Construction'])
+            required.append(COBBLE_MATERIAL)
     for ident in (result['ruin_geometry'], *([result['cobble_geometry']] if 'cobble_geometry' in result else [])):
         if ident == metadata.get('construction_geometry') and ident not in (
                 'CSC_Level_1_CON+PIL', 'CSC_Level_1_S_CON+PIL',
@@ -133,7 +141,8 @@ def validate_stage(job, decoded, stage):
         models = {txt(m, 'm_Name'): m for m in root.findall(MODELS + '/Element')}
         for model_name, instance in models.items():
             for (mesh_name, group_name, state), (visible, _) in state_rows(instance).items():
-                if state in ('Unworked','Unbuilt') and visible:
+                authored_states = entry.get('decal_states', {}).get(model_name, [])
+                if state in ('Unworked','Unbuilt') and visible and state not in authored_states:
                     raise ValueError(f'{ident}/{model_name}/{mesh_name}/{group_name}: {state} must be invisible')
         unexpected_ruins = [name for name in models if 'CON+PIL' in name and name != entry['contract']['ruin_geometry']]
         if unexpected_ruins:
@@ -157,7 +166,7 @@ def validate_stage(job, decoded, stage):
         assert_groups(models[ruin_id], ruin_geo,
                       lambda mesh, group, state: (state == 'Construction' if group == 'Pillage_Construction_01' else state in ('Construction', 'Pillaged'),
                                                   'Pillage_Construction_01' if group == 'Pillage_Construction_01' else contract['ruin_material']))
-        if contract['supply_chain_stage'] in (3, 4):
+        if 'cobble_geometry' in contract:
             cobble_id = contract['cobble_geometry']
             if cobble_id not in models:
                 raise ValueError(f'{ident}: missing shared model {cobble_id}')
