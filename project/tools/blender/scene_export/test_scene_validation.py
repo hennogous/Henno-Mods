@@ -92,6 +92,14 @@ class AuthoringTests(unittest.TestCase):
         s=scene();_,child=add_crate(s);child['scenes']=['Review']
         self.assertTrue({'REVIEW_ONLY_PROP','CHILD_NOT_EXPORTED'} <= self.codes(s))
 
+    def test_used_state_material_cannot_leak_into_intact_geometry(self):
+        s = scene()
+        s['objects'][0]['used_materials'] = ['CSC_Level_3_Bldg', 'CSC_Level_3_CON+PIL_Bldg']
+        self.assertIn('STATE_GEOMETRY_IN_INTACT', self.codes(s))
+        s['objects'][0]['materials'] = ['CSC_Level_3_Bldg', 'CSC_Level_3_CON+PIL_Bldg']
+        s['objects'][0]['used_materials'] = ['CSC_Level_3_Bldg']
+        self.assertNotIn('STATE_GEOMETRY_IN_INTACT', self.codes(s))
+
     def test_identity_mismatch_and_duplicate_ids(self):
         s=scene();root,child=add_crate(s);child['instance_id']='Stale'
         s['objects'].append(controller('Other',children=[]))

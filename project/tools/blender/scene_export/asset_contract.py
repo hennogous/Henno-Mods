@@ -10,12 +10,18 @@ COBBLE_MATERIAL = 'CSC_ALL_Cobble_Patch_Decal'
 
 
 def material_for_mesh(mesh, mat, contract, job):
-    """Preserve prop material groups even when authored inside the main mesh."""
+    """Placement roles do not determine a surface's atlas/shader binding."""
     fixed = (mesh['role'] == 'fixed_geometry' or mesh['name'].startswith('CSC_Fixed_')) and \
             'leanto' not in mesh['name'].casefold()
     declared = mat.get('external') or job.get('material_bindings', {}).get(mat['name'])
-    if fixed or declared in ('CSC_ALL_Props_01', 'CSC_ALL_Props_02'):
-        return contract['prop_material']
+    if 'CON+PIL' in mat['name'] or mat['name'] == 'Pillage_Construction_01':
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: construction/pillage material in intact geometry; move its faces to the separate state model')
+    if declared:
+        if declared not in (contract['building_material'], contract['prop_material']):
+            raise ValueError(f'{mesh["name"]}/{mat["name"]}: intact material binding {declared} is outside the building/prop contract')
+        return declared
+    if fixed:
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: fixed_geometry does not imply a prop material; set civ_material or an explicit material_bindings entry')
     return contract['building_material']
 
 

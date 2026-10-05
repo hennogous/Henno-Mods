@@ -71,14 +71,36 @@ this option for its limestone garden path, with a DecalMaterial binding its
 512 px B (alpha), H (height) and G (Spec) maps. The native decal shader uses H for
 relief; its supplied Blender N/AO/M/O maps are not building-shader bindings.
 
-The contract applies `CSC_<QUARTER>_E` to the building and lean-to, and
-`CSC_ALL_Props_01` to fixed prop meshes in Bakers, Tailors, Apothecaries and
-Stonemasons. Carpenters, Blacksmiths, Goldsmiths and Brewers use
-`CSC_ALL_Props_02`. It applies `CSC_<QUARTER>_NE` to the shared construction/pillage
+The contract defaults the building and lean-to to `CSC_<QUARTER>_E`.
+For fixed geometry, set `civ_material` or a `material_bindings` entry explicitly:
+`fixed_geometry` governs placement and merging, not the surface atlas. Explicit
+building bindings remain building bindings even on fixed architecture. Fixed props
+use `CSC_ALL_Props_01` in Bakers, Tailors, Apothecaries and Stonemasons;
+Carpenters, Blacksmiths, Goldsmiths and Brewers use `CSC_ALL_Props_02`. Intact
+bindings outside the declared building/prop pair block the run. Only material slots
+with actual triangles are processed; unused inherited slots do not create groups.
+Used `CON+PIL` and `Pillage_Construction_01` material faces in intact geometry are
+rejected by saved-scene validation and the export contract rather than silently
+rebinding them as Worked geometry.
+
+The contract applies `CSC_<QUARTER>_NE` to the shared construction/pillage
 building groups, retains `Pillage_Construction_01` for scaffolding, and applies
 `CSC_ALL_Cobble_Patch_Decal` to the stage 3/4 cobble model. Existing MTL and texture
 files are reused without modification. Missing files block only a run that needs
 them, so Stage 4 can wait until its shared assets are authored.
+
+Fashion House exposed two source/integration errors on 5 October 2026. Four
+inherited construction/pillage shell faces were included in its intact mesh, and
+the base-kit window panes had been separated as `Original_Window_Panes`, tagged
+`fixed_geometry`, and consequently rebound to the prop atlas. The scene was backed
+up and corrected: the twelve pane faces (Level 3 faces 401–411 and 444) were restored
+to `CSC_Level_3_Bldg`, with all UV1/UV2/UV3 values verified against the authoritative
+`3D Art/Level 3/CSC_Level_3.blend`. They use `CSC_TAILORS_E`, retaining
+`CSC_Atlas_E` and `CSC_Atlas_O` emission/opacity bindings. The four stray state faces
+were removed from the intact mesh and remain in the separate CON+PIL model. The
+intact export now has only the building group (1050 triangles) and fixed prop group
+(608 triangles), with all 56 attachments retained. Five rows per group in AE are
+the five state definitions, not five geometry copies.
 
 Main building and fixed prop groups are visible in Worked only. The shared ruin
 building is visible in Construction and Pillaged; scaffolding is Construction only.

@@ -100,6 +100,11 @@ def validate_snapshot(snapshot):
                 add('NESTED_COMPONENT', 'Attachment meshes must be direct controller children.', [ob['name']])
         elif ob.get('role') in FIXED_ROLES or ob['name'].startswith('CSC_Fixed_'):
             direct.append(ob)
+            state_materials = [name for name in ob.get('used_materials', [])
+                               if 'CON+PIL' in name or name == 'Pillage_Construction_01']
+            if state_materials:
+                add('STATE_GEOMETRY_IN_INTACT', 'Construction/pillage material faces belong in the separate state model: '
+                    + ', '.join(state_materials), [ob['name']])
             if ob.get('uv_layers') != 3:
                 add('UV_CHANNELS', 'Direct geometry needs exactly three UV channels.', [ob['name']])
             if not ob.get('static_weights', False):
@@ -239,6 +244,9 @@ def collect_snapshot():
                        static_weights=all(len(w)==1 and abs(w[0]-1)<1e-5 for w in weights),
                        unsupported_modifiers=[m.type for m in ob.modifiers if m.type!='ARMATURE'],
                        materials=[m.name for m in ob.data.materials if m])
+            row['used_materials'] = sorted({ob.data.materials[p.material_index].name
+                                            for p in ob.data.polygons
+                                            if p.material_index < len(ob.data.materials) and ob.data.materials[p.material_index]})
             if set(row['scenes']) & {'Export','Review'} and not row['excluded']:
                 for mat in ob.data.materials:
                     for node in mat.node_tree.nodes if mat and mat.use_nodes else []:

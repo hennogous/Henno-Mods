@@ -437,7 +437,10 @@ def build(job):
         source_inputs[model['source']]=model['source_sha256']
         model_materials[model['asset_id']]={}
         for mesh in model['meshes']:
-            for mat in mesh['materials']:
+            used_materials = {t[3] for t in mesh['triangles']}
+            for slot, mat in enumerate(mesh['materials']):
+                if slot not in used_materials:
+                    continue
                 contract=contracts.get(model['asset_id'])
                 if contract:
                     from asset_contract import material_for_mesh

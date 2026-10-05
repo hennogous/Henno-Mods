@@ -205,5 +205,24 @@ class AssetContractTests(unittest.TestCase):
                          'CSC_TAILORS_E')
 
 
+    def test_fixed_architecture_keeps_explicit_building_material(self):
+        contract = {'building_material': 'CSC_TAILORS_E', 'prop_material': 'CSC_ALL_Props_01'}
+        panes = {'name': 'Original_Window_Panes', 'role': 'fixed_geometry'}
+        self.assertEqual(material_for_mesh(panes, {'name': 'Kit', 'external': 'CSC_TAILORS_E'}, contract, {}),
+                         'CSC_TAILORS_E')
+        self.assertEqual(material_for_mesh(panes, {'name': 'Kit'}, contract,
+                                         {'material_bindings': {'Kit': 'CSC_TAILORS_E'}}), 'CSC_TAILORS_E')
+        with self.assertRaisesRegex(ValueError, 'fixed_geometry does not imply'):
+            material_for_mesh(panes, {'name': 'Kit'}, contract, {})
+        with self.assertRaisesRegex(ValueError, 'outside the building/prop contract'):
+            material_for_mesh(panes, {'name': 'Kit', 'external': 'CSC_TAILORS_NE'}, contract, {})
+
+    def test_intact_geometry_rejects_used_construction_material(self):
+        contract = {'building_material': 'CSC_TAILORS_E', 'prop_material': 'CSC_ALL_Props_01'}
+        with self.assertRaisesRegex(ValueError, 'construction/pillage material in intact'):
+            material_for_mesh({'name': 'Building', 'role': 'building_geometry'},
+                              {'name': 'CSC_Level_3_CON+PIL_Bldg'}, contract, {})
+
+
 if __name__ == '__main__':
     unittest.main()
