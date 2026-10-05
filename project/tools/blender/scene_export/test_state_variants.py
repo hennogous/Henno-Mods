@@ -7,7 +7,8 @@ import xml.etree.ElementTree as ET
 
 from export_scene import (STATES, MODELS, POINTS, model_instance, native_state_variant,
                           prop_state_templates, value, txt, write_xml)
-from asset_contract import material_is_ao_variant, state_rows
+from asset_contract import (material_is_ao_variant, state_rows, contract_visible_states,
+                            contract_state_parameters, contract_material_binding)
 
 
 def model():
@@ -33,6 +34,58 @@ def canonical(node):
 
 
 class StateVariantTests(unittest.TestCase):
+    def test_bundled_groups_keep_independent_construction_visibility(self):
+        fixed={'name':'CSC_Fixed_Props','role':'fixed_geometry','materials':[
+            {'name':'Arbour','visible_states':['Worked','Construction']},
+            {'name':'Screens','visible_states':['Worked']}], 'triangles':[[0,1,2,0],[0,2,3,1]]}
+        visible={(fixed['name'],m['name']):contract_visible_states(fixed,m) for m in fixed['materials']}
+        root=model_instance({'asset_id':'CSC_Shop','meshes':[fixed]}, {'Arbour':'Shared','Screens':'DarkerAO'}, visible)
+        rows=state_rows(root)
+        self.assertEqual(rows[(fixed['name'],'Arbour','Construction')],(True,'Shared'))
+        self.assertEqual(rows[(fixed['name'],'Screens','Construction')],(False,'DarkerAO'))
+        self.assertFalse(rows[(fixed['name'],'Arbour','Pillaged')][0])
+
+    def test_authored_visibility_does_not_expose_building_or_invalid_states(self):
+        fixed={'name':'CSC_Fixed_Props','role':'fixed_geometry'}
+        for states in [['Worked','Pillaged'],['Worked','Worked'],['Construction'],['Worked',{}]]:
+            with self.assertRaisesRegex(ValueError,'civ_visible_states'):
+                contract_visible_states(fixed,{'name':'Props','visible_states':states})
+        with self.assertRaisesRegex(ValueError,'civ_visible_states'):
+            contract_visible_states({'name':'Building','role':'building_geometry'},
+                                    {'name':'Building','visible_states':['Worked','Construction']})
+
+    def test_bundled_shader_parameters_override_building_template_and_reject_wrong_types(self):
+        m=model();mesh=m['meshes'][0];mesh['role']='fixed_geometry'
+        mat=mesh['materials'][0]
+        mat['state_parameters']={s:{'EmissiveEnabled':s=='Worked','BurnMaterial':''} for s in STATES}
+        contract_state_parameters(mesh,mat)
+        template=model_instance(m,{'OldGroup':'Shared'},STATES)
+        states={txt(r,'m_StateName'):r for r in template.findall('m_GroupStates/Element')}
+        for row in states.values():
+            next(p for p in row.findall('m_Values/m_Values/Element') if txt(p,'m_ParamName')=='EmissiveEnabled').find('m_bValue').text='true'
+        result=model_instance(m,{'OldGroup':'Shared'},STATES,states)
+        for row in result.findall('m_GroupStates/Element'):
+            emission=next(p for p in row.findall('m_Values/m_Values/Element') if txt(p,'m_ParamName')=='EmissiveEnabled').findtext('m_bValue')
+            self.assertEqual(emission,str(txt(row,'m_StateName')=='Worked').lower())
+        mat['state_parameters']['Construction']['EmissiveEnabled']='true'
+        with self.assertRaisesRegex(ValueError,'invalid fixed'):
+            contract_state_parameters(mesh,mat)
+        mat['state_parameters']['Construction']={'Visible':True}
+        with self.assertRaisesRegex(ValueError,'invalid fixed'):
+            contract_state_parameters(mesh,mat)
+
+    def test_fixed_ao_override_reuses_shared_binding_and_selects_stable_private_variant(self):
+        with tempfile.TemporaryDirectory() as directory:
+            mod=Path(directory);root=ET.Element('Material');ET.SubElement(root,'m_Name',text='CSC_Props')
+            vals=ET.SubElement(ET.SubElement(root,'m_CookParams'),'m_Values');value(vals,'AO','SharedAO')
+            write_xml(mod/'Materials/CSC_Props.mtl',root)
+            mesh={'name':'Fixed','role':'fixed_geometry'};mat={'name':'Props','external':'CSC_Props','ao_texture':'SharedAO'}
+            contract={'building_material':'CSC_Building','prop_material':'CSC_Props'};job={'ao_policy':'stage_explicit'}
+            self.assertEqual(contract_material_binding(mesh,mat,contract,job,mod),'CSC_Props')
+            mat['ao_texture']='CSC_PrivateAO'
+            self.assertEqual(contract_material_binding(mesh,mat,contract,job,mod),'CSC_Props__AO_CSC_PrivateAO')
+            self.assertEqual(contract_material_binding(mesh,mat,contract,{'ao_policy':'reuse_existing'},mod),'CSC_Props')
+
     def test_native_wrapper_changes_only_identity_and_two_visibility_states(self):
         original = source_asset()
         before = canonical(original)

@@ -806,6 +806,30 @@ multi-group matches stop the export. Visibility and other shader parameters are
 retained, while the mesh/group identities and material binding are regenerated.
 The template is an input dependency, so keep it when rebuilding the revision.
 
+### Bundled fixed groups with different state settings
+
+Close bespoke props can become `fixed_geometry` in the building's main blend.
+They then share the building's terrain placement. Fixed groups default to Worked
+visibility. To retain a structure during construction while hiding its screens,
+use separate Blender materials and give each a `civ_visible_states` JSON array:
+`["Worked", "Construction"]` for the structure and `["Worked"]` for the screens.
+Both may reference the same game material through `civ_material`. The contract
+accepts these declarations only on fixed geometry and rejects other states,
+duplicates and declarations without Worked.
+
+With `ao_policy: "stage_explicit"`, fixed groups retain their explicit AO binding.
+An override creates the same stable AO-only variant used for separate props;
+groups that use the existing AO keep the shared material. Construction visibility
+is resolved per mesh/material group, so merging geometry preserves those differences.
+
+When bundling a prop with edited shader settings, its source material can carry
+`civ_state_parameters` as JSON keyed by all five states. Supported parameters are
+`FOWMaterial`, `BurnMaterial` and `SnowMaterial` (strings), plus `EmissiveEnabled`
+and `FOWVisibleOnly` (booleans). Empty per-state dictionaries retain the building
+template values. The contract rejects unsupported parameters and wrong types,
+and verifies the staged rows against the source. Material and Visible remain
+controlled by their dedicated bindings and visibility declarations.
+
 ### CSC variants of native state tables
 
 For a reusable CSC asset that needs different visibility from a pantry asset,

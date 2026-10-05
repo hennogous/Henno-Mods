@@ -9,10 +9,40 @@ STATES = ('Worked', 'Unworked', 'Pillaged', 'Construction', 'Unbuilt')
 COBBLE_MATERIAL = 'CSC_ALL_Cobble_Patch_Decal'
 
 
+def fixed_mesh(mesh):
+    return (mesh['role'] == 'fixed_geometry' or mesh['name'].startswith('CSC_Fixed_')) and \
+            'leanto' not in mesh['name'].casefold()
+
+
+def contract_visible_states(mesh, mat):
+    """Construction may retain authored fixed groups without exposing the building."""
+    states = mat.get('visible_states')
+    if states is None:
+        return ('Worked',)
+    if (not fixed_mesh(mesh) or not isinstance(states, list) or not all(isinstance(s,str) for s in states) or
+            len(states) != len(set(states)) or 'Worked' not in states or
+            set(states) - {'Worked', 'Construction'}):
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: civ_visible_states must be unique Worked/Construction states on fixed geometry')
+    return tuple(states)
+
+
+def contract_material_binding(mesh, mat, contract, job, mod):
+    """Resolve a fixed group's explicit AO override without replacing shared AO."""
+    from export_scene import read_xml, txt
+    base = material_for_mesh(mesh, mat, contract, job)
+    if fixed_mesh(mesh) and mat.get('ao_texture') and job.get('ao_policy') == 'stage_explicit':
+        root = read_xml(mod/'Materials'/(base+'.mtl'))
+        slots = [v for v in root.findall('m_CookParams/m_Values/Element') if txt(v,'m_ParamName') == 'AO']
+        if len(slots) != 1:
+            raise ValueError(f'{base}: expected one AO slot for fixed geometry')
+        if txt(slots[0],'m_ObjectName') != mat['ao_texture']:
+            return base + '__AO_' + mat['ao_texture']
+    return base
+
+
 def material_for_mesh(mesh, mat, contract, job):
     """Placement roles do not determine a surface's atlas/shader binding."""
-    fixed = (mesh['role'] == 'fixed_geometry' or mesh['name'].startswith('CSC_Fixed_')) and \
-            'leanto' not in mesh['name'].casefold()
+    fixed = fixed_mesh(mesh)
     declared = mat.get('external') or job.get('material_bindings', {}).get(mat['name'])
     if 'CON+PIL' in mat['name'] or mat['name'] == 'Pillage_Construction_01':
         raise ValueError(f'{mesh["name"]}/{mat["name"]}: construction/pillage material in intact geometry; move its faces to the separate state model')
@@ -23,6 +53,20 @@ def material_for_mesh(mesh, mat, contract, job):
     if fixed:
         raise ValueError(f'{mesh["name"]}/{mat["name"]}: fixed_geometry does not imply a prop material; set civ_material or an explicit material_bindings entry')
     return contract['building_material']
+
+
+def contract_state_parameters(mesh, mat):
+    """Retain known shader parameters when an authored prop becomes fixed geometry."""
+    rows = mat.get('state_parameters')
+    if rows is None:
+        return {}
+    types = {'FOWMaterial':str, 'BurnMaterial':str, 'SnowMaterial':str,
+             'EmissiveEnabled':bool, 'FOWVisibleOnly':bool}
+    if (not fixed_mesh(mesh) or not isinstance(rows,dict) or set(rows) != set(STATES) or
+            any(not isinstance(params,dict) or set(params)-set(types) or
+                any(type(v) is not types[k] for k,v in params.items()) for params in rows.values())):
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: invalid fixed civ_state_parameters')
+    return rows
 
 
 def contract_for(asset_id, metadata, mod):
@@ -190,9 +234,26 @@ def validate_stage(job, decoded, stage):
         def main_expected(mesh, group, state):
             source_mesh = mesh_lookup[mesh]
             source_mat = next(m for m in source_mesh['materials'] if m['name'] == group)
-            material = material_for_mesh(source_mesh, source_mat, contract, job)
-            return (state == 'Worked', material)
+            base = material_for_mesh(source_mesh, source_mat, contract, job)
+            material = contract_material_binding(source_mesh, source_mat, contract, job, mod)
+            if not material_is_ao_variant(material, base, stage, mod):
+                raise ValueError(f'{ident}/{mesh}/{group}: fixed material changed beyond its explicit AO override')
+            return (state in contract_visible_states(source_mesh, source_mat), material)
         assert_groups(main, geo, main_expected)
+        for row in main.findall('m_GroupStates/Element'):
+            mesh = mesh_lookup[txt(row,'m_MeshName')]
+            mat = next(m for m in mesh['materials'] if m['name'] == txt(row,'m_GroupName'))
+            expected = contract_state_parameters(mesh,mat).get(txt(row,'m_StateName'),{})
+            for param,wanted in expected.items():
+                nodes = [p for p in row.findall('m_Values/m_Values/Element') if txt(p,'m_ParamName') == param]
+                actual = None
+                if len(nodes) == 1:
+                    if type(wanted) is bool and nodes[0].findtext('m_bValue') in ('true', 'false'):
+                        actual = nodes[0].findtext('m_bValue') == 'true'
+                    elif type(wanted) is str and nodes[0].find('m_ObjectName') is not None:
+                        actual = txt(nodes[0],'m_ObjectName')
+                if actual != wanted:
+                    raise ValueError(f'{ident}/{mesh["name"]}/{mat["name"]}/{param}: bundled shader state differs from source')
         ruin_id = contract['ruin_geometry']
         if contract.get('authored_ruin_geometry') != (ruin_id in authored_ruins):
             raise ValueError(f'{ident}: authored construction geometry declaration differs from source inventory')

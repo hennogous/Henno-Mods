@@ -91,6 +91,11 @@ def material(mat):
         result['external'] = mat['civ_material']
     if mat.get('civ_ao_texture'):
         result['ao_texture'] = str(mat['civ_ao_texture'])
+    if mat.get('civ_visible_states') is not None:
+        raw = mat['civ_visible_states']
+        result['visible_states'] = json.loads(raw) if isinstance(raw, str) else list(raw)
+    if mat.get('civ_state_parameters') is not None:
+        result['state_parameters'] = json.loads(mat['civ_state_parameters'])
     for n in mat.node_tree.nodes if mat.use_nodes else []:
         if n.type != 'TEX_IMAGE' or not n.image:
             continue

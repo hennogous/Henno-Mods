@@ -215,7 +215,7 @@ def model_instance(model, material_ids, visible, state_template=None):
         material_id = material_ids.get((mesh['name'], mat['name']), material_ids.get(mat['name']))
         if material_id is None:
             raise ValueError(f'{model["asset_id"]}/{mesh["name"]}: missing material binding for {mat["name"]}')
-        mesh_visible = visible.get(mesh['name'], ()) if isinstance(visible, dict) else visible
+        mesh_visible = visible.get((mesh['name'], mat['name']), visible.get(mesh['name'], ())) if isinstance(visible, dict) else visible
         for state in STATES:
             # Preserve shader/FOW/burn settings from a chosen original mesh where supplied.
             template = (state_template.get((mesh['name'], mat['name'], state), state_template.get(state))
@@ -241,6 +241,16 @@ def model_instance(model, material_ids, visible, state_template=None):
                     value(vals,'EmissiveEnabled',state == 'Worked','Bool')
                     value(vals,'FOWVisibleOnly',False,'Bool')
                 for tag in ('m_GroupName','m_MeshName','m_StateName'): elem(row,tag,text='')
+            for param,wanted in mat.get('state_parameters',{}).get(state,{}).items():
+                nodes=[p for p in vals if txt(p,'m_ParamName') == param]
+                if len(nodes) != 1:
+                    raise ValueError(f'{mesh["name"]}/{mat["name"]}: shader template lacks {param}')
+                if type(wanted) is bool and nodes[0].find('m_bValue') is not None:
+                    nodes[0].find('m_bValue').text=str(wanted).lower()
+                elif type(wanted) is str and nodes[0].find('m_ObjectName') is not None:
+                    set_text(nodes[0],'m_ObjectName',wanted)
+                else:
+                    raise ValueError(f'{mesh["name"]}/{mat["name"]}: shader type mismatch for {param}')
             set_text(row,'m_GroupName',mat['name']); set_text(row,'m_MeshName',export_mesh_name(mesh['name'])); set_text(row,'m_StateName',state)
     return e
 
@@ -490,8 +500,14 @@ def build(job):
                     continue
                 contract=contracts.get(model['asset_id'])
                 if contract:
-                    from asset_contract import material_for_mesh
-                    target=material_for_mesh(mesh,mat,contract,job)
+                    from asset_contract import material_for_mesh, contract_material_binding, contract_state_parameters
+                    contract_state_parameters(mesh,mat)
+                    base=material_for_mesh(mesh,mat,contract,job)
+                    target=contract_material_binding(mesh,mat,contract,job,mod)
+                    if target != base:
+                        actual=stage_ao_binding(mat,base,mod,stage,textures,source_inputs,job['ao_policy'])
+                        if actual != target:
+                            raise ValueError(f'{mesh["name"]}/{mat["name"]}: fixed AO identity mismatch')
                     model_materials[model['asset_id']][(mesh['name'],mat['name'])]=target
                     materials[f'{model["asset_id"]}/{mesh["name"]}/{mat["name"]}']=target
                     continue
@@ -556,7 +572,11 @@ def build(job):
         if set(states)!=set(STATES): raise ValueError('State template must contain all five states')
         contract=entry.get('contract')
         selected_materials={**materials, **model_materials.get(ident,{})}
-        visibility={mesh['name']: ('Worked',) for mesh in model['meshes']} if contract else ('Worked','Unworked','Unbuilt')
+        if contract:
+            from asset_contract import contract_visible_states
+            visibility={(mesh['name'],mat['name']):contract_visible_states(mesh,mat) for mesh,_,mat,_ in groups(model)}
+        else:
+            visibility=('Worked','Unworked','Unbuilt')
         index=list(ms).index(old); ms.remove(old); ms.insert(index,model_instance(model,selected_materials,visibility,states))
         if contract:
             from asset_contract import COBBLE_MATERIAL
