@@ -148,7 +148,20 @@ def groups(model):
                 yield mesh, i, mat, count
 
 
+def export_mesh_name(name):
+    # CivNexus6 treats # as a mesh-name delimiter and silently drops its suffix.
+    # Avoid that delimiter in every destination format; retain Blender names.
+    return name.replace('#', '_')
+
+
+def validate_mesh_names(model):
+    names = [export_mesh_name(mesh['name']) for mesh in model['meshes']]
+    if len(names) != len(set(names)):
+        raise ValueError(f'{model["asset_id"]}: mesh names collide after CN6 name normalization: {names}')
+
+
 def model_instance(model, material_ids, visible, state_template=None):
+    is_decal = model.get('kind') == 'decal'
     e = ET.Element('Element')
     elem(e,'m_Name',text=model['asset_id']); elem(e,'m_GeoName',text=model['asset_id'])
     gs = elem(e,'m_GroupStates')
@@ -159,7 +172,7 @@ def model_instance(model, material_ids, visible, state_template=None):
         mesh_visible = visible.get(mesh['name'], ()) if isinstance(visible, dict) else visible
         for state in STATES:
             # Preserve shader/FOW/burn settings from a chosen original mesh where supplied.
-            template = state_template.get(state) if state_template else None
+            template = state_template.get(state) if state_template and not is_decal else None
             if template is not None:
                 row = copy.deepcopy(template)
                 gs.append(row)
@@ -172,17 +185,21 @@ def model_instance(model, material_ids, visible, state_template=None):
                 row = elem(gs,'Element'); vals = elem(elem(row,'m_Values'),'m_Values')
                 value(vals,'Material',material_id)
                 value(vals,'Visible',state in mesh_visible,'Bool')
-                value(vals,'FOWMaterial','FOW/DefaultMaterial')
-                value(vals,'BurnMaterial','')
-                value(vals,'SnowMaterial','DefaultSnowMaterial')
-                value(vals,'EmissiveEnabled',state == 'Worked','Bool')
-                value(vals,'FOWVisibleOnly',False,'Bool')
+                # DecalGeometry uses a different state schema from LandmarkModel.
+                # Native decal rows contain only Material and Visible.
+                if not is_decal:
+                    value(vals,'FOWMaterial','FOW/DefaultMaterial')
+                    value(vals,'BurnMaterial','')
+                    value(vals,'SnowMaterial','DefaultSnowMaterial')
+                    value(vals,'EmissiveEnabled',state == 'Worked','Bool')
+                    value(vals,'FOWVisibleOnly',False,'Bool')
                 for tag in ('m_GroupName','m_MeshName','m_StateName'): elem(row,tag,text='')
-            set_text(row,'m_GroupName',mat['name']); set_text(row,'m_MeshName',mesh['name']); set_text(row,'m_StateName',state)
+            set_text(row,'m_GroupName',mat['name']); set_text(row,'m_MeshName',export_mesh_name(mesh['name'])); set_text(row,'m_StateName',state)
     return e
 
 
 def write_cn6(path, model):
+    validate_mesh_names(model)
     # Static skeleton: identity root and identity Bone. Model coordinates are already
     # in their asset frame; placement roots never enter the vertex stream.
     ident = '1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1'
@@ -194,7 +211,7 @@ def write_cn6(path, model):
             raise ValueError('CN6 names cannot contain quotes or newlines')
         used = sorted({triangle[3] for triangle in mesh['triangles']})
         remap = {original: exported for exported, original in enumerate(used)}
-        lines += [f'mesh:"{mesh["name"]}"', 'materials'] + [f'"{mesh["materials"][i]["name"]}"' for i in used] + ['vertices']
+        lines += [f'mesh:"{export_mesh_name(mesh["name"])}"', 'materials'] + [f'"{mesh["materials"][i]["name"]}"' for i in used] + ['vertices']
         for v in mesh['vertices']:
             if len(v)!=18 or not all(math.isfinite(n) for n in v): raise ValueError('Invalid CN6 vertex')
             lines.append(' '.join(f'{n:.8f}' for n in v) + ' 1 1 1 1 1 1 1 1 255 0 0 0 0 0 0 0')
@@ -209,7 +226,7 @@ def geometry(model, template):
     r.tag = 'AssetObjects..GeometryInstance'
     meshes = r.find('m_Meshes'); meshes.clear()
     for mesh in model['meshes']:
-        e=elem(meshes,'Element'); elem(e,'m_Name',text=mesh['name']); gr=elem(e,'m_Groups')
+        e=elem(meshes,'Element'); elem(e,'m_Name',text=export_mesh_name(mesh['name'])); gr=elem(e,'m_Groups')
         first=0
         for i,m in enumerate(mesh['materials']):
             count=sum(t[3]==i for t in mesh['triangles'])
@@ -230,6 +247,7 @@ def geometry(model, template):
 def shared_model_from_geo(mod, ident, material_for_group, visible_for_group):
     """Build a state model from an installed or newly staged shared GEO."""
     geo = read_xml(mod / 'Geometries' / (ident + '.geo'))
+    is_decal = txt(geo, 'm_ClassName') == 'DecalGeometry'
     meshes, bindings, visibility = [], {}, {}
     for source_mesh in geo.findall('m_Meshes/Element'):
         mesh_name = txt(source_mesh, 'm_Name')
@@ -251,11 +269,12 @@ def shared_model_from_geo(mod, ident, material_for_group, visible_for_group):
             row = elem(state_rows, 'Element'); values = elem(elem(row, 'm_Values'), 'm_Values')
             value(values, 'Material', bindings[(mesh['name'], name)])
             value(values, 'Visible', state in visibility[(mesh['name'], name)], 'Bool')
-            value(values, 'FOWMaterial', 'FOW/DefaultMaterial')
-            value(values, 'BurnMaterial', 'DefaultBurnMaterial' if state == 'Pillaged' else '')
-            value(values, 'SnowMaterial', 'DefaultSnowMaterial')
-            value(values, 'EmissiveEnabled', state == 'Worked', 'Bool')
-            value(values, 'FOWVisibleOnly', False, 'Bool')
+            if not is_decal:
+                value(values, 'FOWMaterial', 'FOW/DefaultMaterial')
+                value(values, 'BurnMaterial', 'DefaultBurnMaterial' if state == 'Pillaged' else '')
+                value(values, 'SnowMaterial', 'DefaultSnowMaterial')
+                value(values, 'EmissiveEnabled', state == 'Worked', 'Bool')
+                value(values, 'FOWVisibleOnly', False, 'Bool')
             for tag, val in [('m_GroupName', name), ('m_MeshName', mesh['name']), ('m_StateName', state)]:
                 elem(row, tag, text=val)
     return root

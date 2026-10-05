@@ -5,7 +5,7 @@ import unittest
 import xml.etree.ElementTree as ET
 
 from asset_contract import contract_for, assert_groups, state_rows, material_for_mesh, COBBLE_MATERIAL
-from export_scene import (model_instance, read_xml, shared_model_from_geo,
+from export_scene import (model_instance, read_xml, shared_model_from_geo, value,
                           txt, write_xml, geometry, native_catalogue_binding, write_cn6)
 
 
@@ -107,6 +107,36 @@ class AssetContractTests(unittest.TestCase):
         assert_groups(model_instance(model, {'Used': 'Material'}, ('Worked',)), output,
                       lambda mesh, group, state: (state == 'Worked', 'Material'))
 
+    def test_decal_states_reject_building_parameters_before_install(self):
+        model = {'asset_id': 'Pillage', 'kind': 'decal', 'meshes': [
+            {'name': 'Decal', 'materials': [{'name': 'Pillage_Decals'}],
+             'triangles': [[0, 1, 2, 0]]}]}
+        building = model_instance(dict(model, kind='building'),
+                                  {'Pillage_Decals': 'Pillage_Decals'}, ('Worked',))
+        template = {txt(row, 'm_StateName'): row for row in building.findall('m_GroupStates/Element')}
+        decal = model_instance(model, {'Pillage_Decals': 'Pillage_Decals'}, ('Pillaged',), template)
+        decal_geo = geo('Pillage', [('Decal', 'Pillage_Decals')])
+        ET.SubElement(decal_geo, 'm_ClassName', text='DecalGeometry')
+        expected = lambda mesh, group, state: (state == 'Pillaged', 'Pillage_Decals')
+        assert_groups(decal, decal_geo, expected)
+        self.assertEqual(state_rows(decal)[('Decal', 'Pillage_Decals', 'Pillaged')],
+                         (True, 'Pillage_Decals'))
+        # A valid visibility/material table must not hide an incompatible shader parameter.
+        value(decal.find('m_GroupStates/Element/m_Values/m_Values'), 'SnowMaterial', 'DefaultSnowMaterial')
+        with self.assertRaisesRegex(ValueError, 'DecalGeometry state parameters'):
+            assert_groups(decal, decal_geo, expected)
+
+    def test_shared_cobble_uses_native_decal_schema(self):
+        path = self.mod / 'Geometries/CSC_ALL_Stage_3_Cobble_Decals.geo'
+        root = read_xml(path)
+        ET.SubElement(root, 'm_ClassName', text='DecalGeometry')
+        write_xml(path, root)
+        cobble = shared_model_from_geo(self.mod, 'CSC_ALL_Stage_3_Cobble_Decals',
+                                      lambda group: COBBLE_MATERIAL,
+                                      lambda group: ('Worked', 'Construction'))
+        assert_groups(cobble, root,
+                      lambda mesh, group, state: (state in ('Worked', 'Construction'), COBBLE_MATERIAL))
+
     def test_cn6_compacts_unused_materials_and_remaps_triangle_indices(self):
         model = {'asset_id': 'Shop', 'meshes': [
             {'name': 'Fixed', 'materials': [{'name': 'Unused'}, {'name': 'Used'}],
@@ -117,6 +147,26 @@ class AssetContractTests(unittest.TestCase):
         self.assertNotIn('"Unused"', text)
         self.assertIn('triangles\n0 1 2 0\n', text)
         self.assertEqual(model['meshes'][0]['triangles'][0][3], 1)
+
+    def test_cn6_delimiter_mesh_names_match_geo_and_ast_without_source_edits(self):
+        model = {'asset_id': 'Pillage', 'kind': 'decal', 'meshes': [
+            {'name': 'Plane11008#M', 'materials': [{'name': 'Ruin_Debris_Decal'}],
+             'triangles': [[0, 1, 2, 0]], 'vertices': [[0.0] * 18 for _ in range(3)]}]}
+        path = self.mod / 'pillage.cn6'
+        write_cn6(path, model)
+        self.assertIn('mesh:"Plane11008_M"', path.read_text())
+        template = ET.fromstring('<Geometry><m_Meshes/><m_Bones/><m_ModelName/><m_Name/>'
+                                 '<m_SourceFilePath/><m_SourceObjectName/><m_ClassName/><m_Tags/><m_DataFiles/></Geometry>')
+        output = geometry(model, template)
+        self.assertEqual(txt(output, 'm_Meshes/Element/m_Name'), 'Plane11008_M')
+        instance = model_instance(model, {'Ruin_Debris_Decal': 'Ruin_Debris_Decal'}, ('Pillaged',))
+        assert_groups(instance, output,
+                      lambda mesh, group, state: (state == 'Pillaged', 'Ruin_Debris_Decal'))
+        self.assertEqual(txt(instance, 'm_GroupStates/Element/m_MeshName'), 'Plane11008_M')
+        self.assertEqual(model['meshes'][0]['name'], 'Plane11008#M')
+        model['meshes'].append(dict(model['meshes'][0], name='Plane11008_M'))
+        with self.assertRaisesRegex(ValueError, 'mesh names collide'):
+            write_cn6(path, model)
 
     def test_new_native_catalogue_binding_uses_exact_nonfallback_entry(self):
         row = {'entry_id': 'Shrub', 'asset_class': 'TileBase', 'package': 'landmarks/tilebases',

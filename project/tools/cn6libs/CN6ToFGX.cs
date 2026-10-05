@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Firaxis.IO;
 using Firaxis.Utility;
@@ -11,6 +13,25 @@ namespace CSCTools
 {
     class CN6ToFGX
     {
+        static void ValidateMeshNames(string cn6Path, string fgxPath)
+        {
+            var expected = new List<string>();
+            foreach (string line in File.ReadLines(cn6Path))
+            {
+                Match match = Regex.Match(line.Trim(), "^mesh:\"([^\"]+)\"");
+                if (match.Success) expected.Add(match.Groups[1].Value);
+            }
+            IGrannyFile file = new GrannyFileLoader().LoadGrannyFile(fgxPath);
+            if (file.Meshes.Count != expected.Count)
+                throw new InvalidDataException("Converted FGX mesh count differs from CN6");
+            for (int i = 0; i < expected.Count; i++)
+                if (file.Meshes[i].Name != expected[i])
+                    throw new InvalidDataException("Converted FGX mesh name differs from CN6: expected "
+                        + expected[i] + ", got " + file.Meshes[i].Name
+                        + ". Normalize names consistently in CN6, GEO and AST before conversion.");
+            Console.WriteLine("Verified " + expected.Count + " FGX mesh names against CN6");
+        }
+
         [STAThread]
         static int Main(string[] args)
         {
@@ -70,9 +91,15 @@ namespace CSCTools
                             .Invoke(null, new object[] { cn6Path, fgxPath, gc, vertexFormat });
                         
                         if (File.Exists(fgxPath))
+                        {
+                            ValidateMeshNames(cn6Path, fgxPath);
                             Console.WriteLine("OK: " + new FileInfo(fgxPath).Length + " bytes");
+                        }
                         else
+                        {
                             Console.WriteLine("ERROR: Output not created");
+                            exitCode = 1;
+                        }
                     }
                     catch (TargetInvocationException tex)
                     {

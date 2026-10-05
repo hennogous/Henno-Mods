@@ -210,6 +210,20 @@ Source blends remain unchanged. Backups and reports remain in the timestamped ru
 Use `--no-install` for a converted preview, or `--stage-only` to stop before both
 conversion and installation. A conversion failure never triggers installation.
 
+CivNexus6 treats `#` as a mesh-name delimiter and can silently drop the suffix.
+The scene exporter replaces `#` with `_` consistently in CN6, GEO and AST mesh
+names, while retaining the original Blender names in decoded source evidence.
+Names that collide after replacement block export. The bundled CN6ToFGX converter
+reopens each FGX and verifies its mesh count and names against CN6 before reporting
+success. Matching vertex/triangle counts alone do not prove a valid binding.
+
+This repaired the Fashion House pillage-decal AE crash: source names such as
+`Plane11008#M` had become `Plane11008` in FGX but remained `Plane11008#M` in GEO/AST.
+The regenerated asset uses `Plane11008_M` throughout and was confirmed to open in AE
+on 5 October 2026. Decal group states also follow the working Tailor schema with
+only `Material` and `Visible`; Landmark FOW/burn/snow parameters remain on building
+models. Removing those parameters alone did not fix the crash.
+
 To install a previously converted `--no-install` run, use:
 
 ```powershell

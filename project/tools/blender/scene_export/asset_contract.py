@@ -107,6 +107,11 @@ def assert_groups(model, geo, expected):
     """Every GEO mesh/group must have exactly five matching AST rows."""
     from export_scene import txt
     actual = state_rows(model)
+    if txt(geo, 'm_ClassName') == 'DecalGeometry':
+        for row in model.findall('m_GroupStates/Element'):
+            params = [txt(v, 'm_ParamName') for v in row.findall('m_Values/m_Values/Element')]
+            if sorted(params) != ['Material', 'Visible']:
+                raise ValueError(f'{txt(model, "m_Name")}: DecalGeometry state parameters must be Material/Visible only: {params}')
     wanted = {}
     for mesh in geo.findall('m_Meshes/Element'):
         mesh_name = txt(mesh, 'm_Name')
@@ -124,7 +129,7 @@ def assert_groups(model, geo, expected):
 
 def validate_stage(job, decoded, stage):
     """Check the exact AST/GEO state and material contract before conversion/install."""
-    from export_scene import read_xml, txt, MODELS, POINTS, attachment_transform
+    from export_scene import read_xml, txt, MODELS, POINTS, attachment_transform, export_mesh_name
     mod = Path(job['mod_root'])
     checked = []
     reused_csc = set()
@@ -150,7 +155,7 @@ def validate_stage(job, decoded, stage):
         main = models[ident]
         geo = read_xml(stage / 'Geometries' / (ident + '.geo'))
         decoded_model = decoded['models'][ident]
-        mesh_lookup = {m['name']: m for m in decoded_model['meshes']}
+        mesh_lookup = {export_mesh_name(m['name']): m for m in decoded_model['meshes']}
         def main_expected(mesh, group, state):
             source_mesh = mesh_lookup[mesh]
             source_mat = next(m for m in source_mesh['materials'] if m['name'] == group)
@@ -179,7 +184,7 @@ def validate_stage(job, decoded, stage):
             decal_geo = read_xml(stage / 'Geometries' / (decal_id + '.geo'))
             assert_groups(models[decal_id], decal_geo,
                           lambda mesh, group, state: (state in entry.get('decal_states', {}).get(decal_id, ['Pillaged']),
-                                                      next(m['name'] for m in next(x for x in decoded['models'][decal_id]['meshes'] if x['name']==mesh)['materials'] if m['name']==group)))
+                                                      next(m['name'] for m in next(x for x in decoded['models'][decal_id]['meshes'] if export_mesh_name(x['name'])==mesh)['materials'] if m['name']==group)))
             used_decals.add(decal_id)
         attachments = {a['instance_id']: a for a in decoded_model['attachments']}
         points = {txt(p, 'm_Name').removeprefix('CSC_Attach_'): p
