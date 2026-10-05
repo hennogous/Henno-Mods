@@ -1,6 +1,6 @@
 # Reusable prop library
 
-**Current inventory, 25 September 2026:** 197 individual blends and catalogue entries. The [material and storage intake](pantry-material-intake.md) added 111 native assets; the [plant intake](pantry-plant-intake.md) added 47 more after Henno's visual selection. Earlier counts below document intermediate stages, not the live inventory.
+**Current inventory, 1 October 2026:** 200 individual blends and catalogue entries. The [material and storage intake](pantry-material-intake.md) added 111 native assets; the [plant intake](pantry-plant-intake.md) added 47 more after Henno's visual selection. Earlier counts below document intermediate stages, not the live inventory.
 
 Initial export completed 13 September 2026 at
 `C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library`.
@@ -180,7 +180,7 @@ registered cells must not overlap or exceed their family budget; all occupied
 regions are rebuilt from independent sources. Promote the reviewed snapshot and
 migrate master/scene UV2 together, preserving old final bundles.
 
-The current accepted `2026-09-14_Shared_01_r006` AO atlas extends the revision-11
+The `2026-09-14_Shared_01_r006` AO release extended the revision-11
 workshop's twelve cells with `CSC_TAILORS_SpinningWheel`, `CSC_ALL_Workbench`, and
 `CSC_TAILORS_Basket`. It occupies fifteen cells (23.4375% of Tailors), leaving one
 128×128 cell inside the 25% family reservation. On 15 September the synced
@@ -189,3 +189,57 @@ r006 so either newly migrated master can join the same export batch. All older
 occupied pixels match the r004 image exactly; the six shared surface maps did not
 change. Earlier export-run manifests remain historical records of their original
 texture snapshots.
+
+## Oval table and scaled stool — 1 October 2026
+
+Henno approved `CSC_ALL_Oval_Table` as one shared source for a full-size table and
+a backless stool at uniform placement scale 0.53. Its source dimensions are
+22 × 18 × 13 Blender units with 112 editable vertices, three UV channels, a
+ground pivot and static Bone binding. Two placements use one asset identity.
+UV1 samples a single dark timber swatch in the existing shared B/N/G/M maps;
+the first preview crossed two differently coloured wood swatches and was corrected
+before final publication. Keep future single-material props within one continuous
+swatch unless a deliberate colour break is part of the design.
+
+Its isolated self-AO occupies pixels `[512, 1024, 640, 1152]` in the
+Apothecaries Stage 3 family of `CSC_Props_Shared_01_AO.png`. Release
+`2026-10-01_Shared_01_r015` added only that AO cell, preserving every prior AO
+pixel and all surface maps. Release `2026-10-01_Shared_01_r016` updated only the
+table's UV1 source; all shared textures and its AO allocation are byte-identical
+to r015. The shared prop library catalogue and verification records contain the
+published blend. Blender validation and contact-sheet previews pass; Windows
+asset registration and in-game appearance remain pending.
+
+## Apothecaries shared AO — 2 October 2026
+
+Release `2026-10-02_Shared_01_r017` adds six isolated Herbalist Stage 2 cells
+and five Apothecary Stage 3 cells to `CSC_Props_Shared_01_AO.png`. The existing
+oval-table cell remains in Stage 3. Together these occupy 245,760 pixels, or
+23.4375% of the Apothecaries quadrant; both stage families remain inside their
+reserved 512×512 regions. The release manifest records every cell and source bake.
+
+The Herbalist wall shelves, post drying assembly, mortar contents, herb baskets
+and inset herb fill use geometry AO through UV2. The Apothecary chest, painted
+jar-niche support, drawer cabinet, pickup ledge and tabletop assembly likewise
+use their Stage 3 cells. Dense painted herb, jar and drawer detail continues to
+derive its relief from normal maps; no geometry was added for that detail.
+Base-building, native pantry and approved reusable prop AO retain their own
+bindings. Both updated scenes and their bespoke masters carry the complete r017
+atlas snapshot. All previously occupied AO pixels, Sheet 02 and the B/N/G/M/E
+surface maps are unchanged from r016. Mapped AO and game-size renders were
+reviewed, saved-file/source checks passed, and Windows/in-game rendering remains
+unverified.
+
+Release `2026-10-02_Shared_01_r018` replaces those eleven Apothecaries AO
+sources after the two scenes' final UV2 seam and geometry optimization. Every
+cell keeps its r017 rectangle; all other occupied AO pixels, Sheet 02 and the
+surface maps are unchanged. The Apothecary now counts **2,179** exported
+vertices (down from 2,708): aligning UV2 cuts to existing UV1/UV3 cuts saved
+347, and cleaning collapsed lathe caps plus reducing tiny tabletop jar segments
+saved another 182. The Herbalist counts **2,159** (down from 2,644): a less
+fragmented UV2 layout saved 305, and removing 45 faces fully enclosed inside
+the fixed rack joinery saved 180. These counts include final UV2 seam splits and
+the agreed bespoke attachments. Both scenes are inside the 1,800–2,200 design
+range. Saved-file validation, source parity and mapped AO views pass; in-game
+rendering remains unverified. Keep each scene and its bespoke masters on the
+complete r018 atlas snapshot for subsequent export.

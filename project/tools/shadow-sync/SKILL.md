@@ -34,25 +34,26 @@ Mac skills live under `~/Play/.agents/skills`; Shadow's canonical skills live un
 SSH uses `Shadow@100.122.143.96`, the verified Tailscale address, with existing keys
 and host-key checking. `--shadow` can override the target if its binding changes.
 
-The sequence per repo saves work on **both** hosts first, merges current GitHub
-history into Mac and pushes, then sends the published history to Shadow as a Git
-bundle over SSH and merges it there. If Shadow has
-additional commits, stream them back over SSH as a Git bundle, fast-forward Mac,
-and push from Mac. Finally fast-forward both hosts and verify their commit IDs.
-Mac handles all GitHub access: Shadow's Windows credential manager is unavailable
-in SSH logins, and its existing GitHub CLI credential was invalid when tested.
-The skill repos also require authenticated fetches, so Shadow uses SSH bundles in
-both directions. Its tracking refs are updated to commits fetched/published by Mac.
-No credentials are copied between machines; no reverse SSH or ACL changes are needed.
-Divergent history is preserved with ordinary merge commits.
-Ignored output stays ignored; clean repos do not receive checkpoint commits.
+Direct Git is the default, as requested by Henno. The sequence saves work on **both**
+hosts first, fetches/merges GitHub into Mac and pushes, then fetches/merges on Shadow
+and pushes. Finally fast-forward both hosts and verify their commit IDs. Divergent
+history is preserved with ordinary merge commits. Ignored output stays ignored;
+clean repos do not receive checkpoint commits. `--shadow-git` remains an optional
+explicit spelling of the default.
 
-If Henno requests direct Git after authenticating on Shadow, pass `--shadow-git`.
-This runs Mac push → Shadow fetch/merge/push → Mac/Shadow fast-forward and verify.
-It needs working GitHub credentials inside the unattended SSH session; a successful
-desktop login alone does not prove that Windows credential storage works over SSH.
-Both modes are initiated from Mac and leave the Tailscale ACL unchanged. Keep bundle
-mode as the default until direct mode is requested and verified.
+On Shadow, network Git commands use the GitHub CLI credential helper per command,
+without changing global Git configuration. Its token must be readable inside the
+unattended SSH session. A desktop login alone does not prove that: Windows credential
+storage can be unavailable over SSH. An SSH-compatible GitHub CLI login can use
+`gh auth login --hostname github.com --git-protocol https --web --insecure-storage`;
+this stores a token in the user config file, so explain that storage tradeoff before
+requesting such a login. Never display or copy tokens between machines.
+
+Use `--bundle` only when Henno requests the credential-independent fallback. In that
+mode Mac handles all GitHub access, transfers published history to Shadow as a Git
+bundle over SSH, merges it there, brings any additional Shadow commits back as a
+bundle, and pushes from Mac. Shadow's tracking refs record commits fetched/published
+by Mac. Both modes originate on Mac and leave the Tailscale ACL unchanged.
 
 Save pending editor changes and avoid editing these repos during the run. Stop on
 conflicts, changed branch/upstream, active merge/rebase, SSH/authentication failure
