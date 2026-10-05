@@ -125,3 +125,11 @@ Use revision-10-shared-bench (five blends and textures) for the current workshop
 ## Fashion House reusable props — 26 September 2026
 
 Henno approved `CSC_ALL_Chair_Upholstered_Claret` and `CSC_ALL_Folded_Cloth_Claret_Ivory`. The latter is deliberately one prop containing the claret/ivory folded-cloth pair; the claret bolt stays bundled in the building. These masters retain explicit asset-local component matrices, three UV channels and static weights, without applying transforms. The catalogue sets `component_transforms=true`; Scene Tools1.3.3 preserves those frames when importing. The verifier supports this authored multi-component contract alongside the older single-mesh Bone-rig contract. Geometry counts are54 and40, respectively. Existing AO allocations remain unchanged when refreshing the library map to r014. Windows registration is still pending.
+
+## Oval table — 1 October 2026
+
+`CSC_ALL_Oval_Table` is published in the shared library and appears on the refreshed
+200-asset contact sheets. Its UV1 stays wholly inside one dark timber swatch, so the
+full-size table and uniformly scaled stool no longer show a light/dark split. The
+standard front and side previews were rerendered from the published blend. Its AO
+cell is in Apothecaries Stage 3; the Tailors Stage 2 free cell remains available.
