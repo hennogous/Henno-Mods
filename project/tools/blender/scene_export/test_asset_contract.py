@@ -48,7 +48,7 @@ class AssetContractTests(unittest.TestCase):
         self.assertEqual(contract['ruin_geometry'], 'CSC_Level_2_CON+PIL')
         self.assertEqual(contract['cobble_geometry'], 'CSC_ALL_Stage_3_Cobble_Decals')
         self.assertEqual(contract['prop_material'], 'CSC_ALL_Props_01')
-        self.assertEqual(contract['cobble_visible'], ['Worked', 'Construction'])
+        self.assertEqual(contract['cobble_visible'], ['Worked'])
         with self.assertRaisesRegex(ValueError, 'required existing material missing'):
             contract_for('CSC_CARPENTERS_Shop',
                          {'quarter': 'CARPENTERS', 'supply_chain_stage': 3}, self.mod)
@@ -66,11 +66,11 @@ class AssetContractTests(unittest.TestCase):
         metadata = {'quarter': 'TAILORS', 'supply_chain_stage': 4,
                     'construction_geometry': 'CSC_TAILORS_Shop_CON+PIL',
                     'cobble_geometry': None, 'decals': ['Entrance_Path'],
-                    'decal_states': {'Entrance_Path': ['Worked', 'Construction']}}
+                    'decal_states': {'Entrance_Path': ['Worked', 'Unworked']}}
         contract = contract_for('CSC_TAILORS_Shop', metadata, self.mod)
         self.assertNotIn('cobble_geometry', contract)
         metadata['decal_states']['Entrance_Path'] = ['Pillaged']
-        with self.assertRaisesRegex(ValueError, 'authored Worked/Construction decal'):
+        with self.assertRaisesRegex(ValueError, 'authored Worked decal'):
             contract_for('CSC_TAILORS_Shop', metadata, self.mod)
 
     def test_shared_models_get_exact_five_state_tables(self):

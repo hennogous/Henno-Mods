@@ -174,6 +174,7 @@ elif MODE == "install":
     live = read(LIVE / "catalogue.json")
     assert len(data["assets"]) == 47 and all(row["verification"]["status"] == "passed" for row in data["assets"])
     approved = set(read(REVIEW / "plant-intake-selection.json")["approved"])
+    assert not approved & set(live.get("retired_native_assets", {})), "Retired pantry entries have CSC replacements; do not reintroduce them"
     assert {row["asset_id"] for row in data["assets"]} == approved
     assert not approved & {row["asset_id"] for row in live["assets"]}, "Asset ID collision with existing library"
     collisions = []

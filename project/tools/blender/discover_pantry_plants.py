@@ -26,7 +26,9 @@ def txt(element, path):
 
 
 def main():
-    owned = {row["asset_id"].lower() for row in json.loads(LIB.read_text())["assets"]}
+    catalogue = json.loads(LIB.read_text())
+    owned = {row["asset_id"].lower() for row in catalogue["assets"]}
+    owned.update(name.lower() for name in catalogue.get("retired_native_assets", {}))
     files = {}
     for key, pack in (("civ6", "Base game"), ("expansion1", "Rise and Fall"), ("expansion2", "Gathering Storm")):
         manifest = key + "-asset-deps.json"

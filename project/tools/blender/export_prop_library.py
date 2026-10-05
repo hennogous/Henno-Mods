@@ -93,6 +93,7 @@ def prepare():
     copy(MOD/'Assets/CSC_ALL_Prop_Library.ast','sources/inventory')
     # A refreshed pantry export must not erase locally authored reusable assets.
     previous=json.loads((out/'catalogue.json').read_text()) if (out/'catalogue.json').is_file() else {}
+    rows=[r for r in rows if r['asset_id'] not in previous.get('retired_native_assets',{})]
     authored=[r for r in previous.get('assets',[]) if r.get('origin') in ('authored_blender', 'native_state_variant')]
     conflicts={r['asset_id'] for r in rows}&{r['asset_id'] for r in authored}
     if conflicts: raise ValueError('Authored/source identity collision; reconcile explicitly: '+', '.join(sorted(conflicts)))

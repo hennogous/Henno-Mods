@@ -101,12 +101,12 @@ def contract_for(asset_id, metadata, mod):
         if cobble is None:
             decals = metadata.get('decals', [])
             states = metadata.get('decal_states', {})
-            if not any({'Worked', 'Construction'} <= set(states.get(ident, [])) for ident in decals):
-                raise ValueError(f'{asset_id}: disabling shared cobble requires an authored Worked/Construction decal')
+            if not any('Worked' in states.get(ident, []) for ident in decals):
+                raise ValueError(f'{asset_id}: disabling shared cobble requires an authored Worked decal')
         elif cobble != f'CSC_ALL_Stage_{stage}_Cobble_Decals':
             raise ValueError(f'{asset_id}: cobble_geometry must be the stage default or null for authored paving')
         else:
-            result.update(cobble_geometry=cobble, cobble_visible=['Worked', 'Construction'])
+            result.update(cobble_geometry=cobble, cobble_visible=['Worked'])
             required.append(COBBLE_MATERIAL)
     for ident in (result['ruin_geometry'], *([result['cobble_geometry']] if 'cobble_geometry' in result else [])):
         if ident == metadata.get('construction_geometry') and ident not in (
@@ -269,7 +269,7 @@ def validate_stage(job, decoded, stage):
                 raise ValueError(f'{ident}: missing shared model {cobble_id}')
             cobble_geo = read_xml(mod / 'Geometries' / (cobble_id + '.geo'))
             assert_groups(models[cobble_id], cobble_geo,
-                          lambda mesh, group, state: (state in ('Worked', 'Construction'), COBBLE_MATERIAL))
+                          lambda mesh, group, state: (state in contract['cobble_visible'], COBBLE_MATERIAL))
         for decal_id in entry.get('decals', []):
             if decal_id not in models:
                 raise ValueError(f'{ident}: missing authored PIL decal model {decal_id}')

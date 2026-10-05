@@ -79,6 +79,7 @@ elif MODE=='install':
  data=read(STAGE/'catalogue.json');live=read(LIVE/'catalogue.json')
  assert all(r['verification']['status']=='passed' for r in data['assets'])
  ids={r['asset_id'] for r in data['assets']}
+ assert not ids&set(live.get('retired_native_assets',{})),'Retired pantry entries have CSC replacements; do not reintroduce them'
  assert not ids&{r['asset_id'] for r in live['assets']},'Already installed or ID conflict'
  conflicts=[]
  for p in STAGE.rglob('*'):

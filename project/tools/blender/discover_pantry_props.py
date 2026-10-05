@@ -18,7 +18,9 @@ def text(e,path):
 def parse(p):return ET.fromstring(re.sub(r'(<\/?)([\w.]+):+',r'\1\2.',p.read_text(encoding='utf-8-sig')))
 def main():
  OUTPUT.mkdir(parents=True,exist_ok=True)
- owned={r['asset_id'].lower() for r in json.loads((LIB/'catalogue.json').read_text(encoding='utf-8'))['assets']}
+ catalogue=json.loads((LIB/'catalogue.json').read_text(encoding='utf-8'))
+ owned={r['asset_id'].lower() for r in catalogue['assets']}
+ owned.update(name.lower() for name in catalogue.get('retired_native_assets',{}))
  files={};manifests={}
  for key,pack in [('civ6','Base game'),('expansion1','Rise and Fall'),('expansion2','Gathering Storm')]:
   manifest=key+'-asset-deps.json';d=json.loads((SDK/manifest).read_text())

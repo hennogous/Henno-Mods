@@ -774,6 +774,14 @@ Use revision-10-shared-bench (five blends and textures) for the current workshop
 
 ### Explicit custom AO bindings
 
+**CSC shared-prop rule (5 October 2026):** tonal edits to a garment or other prop
+using the shared atlas must be published in the canonical CSC_Props shared-texture
+release and continue using `CSC_ALL_Props_01` / `CSC_Props_Shared_01_AO`. Do not
+create a per-building runtime AO, AO-only material or mod-local TextureSources PNG
+for that change. The explicit-binding mechanism below remains available for
+deliberately separate texture layouts; it does not authorize a shared-atlas fork.
+See the CSC skill's `references/art-prop-atlas-plan.md`, Shared AO tone changes.
+
 The normal CSC `ao_policy: "reuse_existing"` keeps the AO map already assigned in
 the existing Civ material. A Blender AO image or `civ_ao_texture` property does
 not replace it during export. For a new AO map that should become a game texture,
@@ -808,14 +816,22 @@ The template is an input dependency, so keep it when rebuilding the revision.
 
 ### Bundled fixed groups with different state settings
 
+**Construction policy (5 October 2026):** show the authored main CON+PIL shell
+and major props with explicit CON+PIL versions. Hide intact decoration, plants,
+small props and paths. Shared cobbles now default to Worked only. Replacing them
+with authored paving requires a Worked decal, without requiring Construction
+visibility. Check the source `decal_states` and every attachment's actual AST
+state rows as well as the main mesh groups.
+
 Close bespoke props can become `fixed_geometry` in the building's main blend.
 They then share the building's terrain placement. Fixed groups default to Worked
-visibility. To retain a structure during construction while hiding its screens,
-use separate Blender materials and give each a `civ_visible_states` JSON array:
+visibility. For an approved major prop with an explicitly authored CON+PIL
+version, use separate Blender materials and give each a `civ_visible_states` JSON array:
 `["Worked", "Construction"]` for the structure and `["Worked"]` for the screens.
 Both may reference the same game material through `civ_material`. The contract
 accepts these declarations only on fixed geometry and rejects other states,
 duplicates and declarations without Worked.
+The Fashion House arbour is intact decoration and uses Worked only for both groups.
 
 With `ao_policy: "stage_explicit"`, fixed groups retain their explicit AO binding.
 An override creates the same stable AO-only variant used for separate props;

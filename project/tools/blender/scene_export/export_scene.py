@@ -592,7 +592,7 @@ def build(job):
             ms.append(ruin)
             if 'cobble_geometry' in contract:
                 cobble=shared_model_from_geo(mod,contract['cobble_geometry'],
-                    lambda group: COBBLE_MATERIAL, lambda group: ('Worked','Construction'))
+                    lambda group: COBBLE_MATERIAL, lambda group: tuple(contract['cobble_visible']))
                 ms.append(cobble)
         for decal_id in entry.get('decals',[]):
             if models[decal_id]['kind']!='decal': raise ValueError('Expected decal geometry')
