@@ -192,11 +192,13 @@ def write_cn6(path, model):
     for mesh in model['meshes']:
         if any('"' in x or '\n' in x for x in [mesh['name']] + [m['name'] for m in mesh['materials']]):
             raise ValueError('CN6 names cannot contain quotes or newlines')
-        lines += [f'mesh:"{mesh["name"]}"', 'materials'] + [f'"{m["name"]}"' for m in mesh['materials']] + ['vertices']
+        used = sorted({triangle[3] for triangle in mesh['triangles']})
+        remap = {original: exported for exported, original in enumerate(used)}
+        lines += [f'mesh:"{mesh["name"]}"', 'materials'] + [f'"{mesh["materials"][i]["name"]}"' for i in used] + ['vertices']
         for v in mesh['vertices']:
             if len(v)!=18 or not all(math.isfinite(n) for n in v): raise ValueError('Invalid CN6 vertex')
             lines.append(' '.join(f'{n:.8f}' for n in v) + ' 1 1 1 1 1 1 1 1 255 0 0 0 0 0 0 0')
-        lines += ['triangles'] + [' '.join(map(str,t)) for t in mesh['triangles']]
+        lines += ['triangles'] + [' '.join(map(str, [*t[:3], remap[t[3]]])) for t in mesh['triangles']]
     lines += ['end']
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text('\n'.join(lines)+'\n')
@@ -211,6 +213,8 @@ def geometry(model, template):
         first=0
         for i,m in enumerate(mesh['materials']):
             count=sum(t[3]==i for t in mesh['triangles'])
+            if not count:
+                continue
             g=elem(gr,'Element'); elem(g,'m_Name',text=m['name']); elem(g,'m_nFirstPrim',first); elem(g,'m_nPrims',count)
             first+=count
         elem(e,'m_nBoundBoneCount',1); elem(e,'m_nPrimitiveCount',len(mesh['triangles'])); elem(e,'m_nVertexCount',len(mesh['vertices']))
@@ -320,6 +324,27 @@ def csc_binding(ident, xlp):
     e=ET.Element('Element',{'class':'AssetObjects..BLPEntryValue'})
     for k,v in [('m_EntryName',ident),('m_XLPClass','TileBase'),('m_XLPPath',xlp.name.lower()),('m_BLPPackage','Landmarks/CSC_Tilebases'),('m_LibraryName','TileBase'),('m_ParamName','Asset')]: elem(e,k,text=v)
     return e
+
+
+def native_catalogue_binding(ident, source):
+    """Resolve newly catalogued pantry props absent from the older inventory AST."""
+    choices = set()
+    for row in source.get('native_bindings', []):
+        xlp = str(row.get('xlp', '')).replace('\\', '/').rsplit('/', 1)[-1]
+        if (row.get('entry_id') == ident and row.get('asset_class') == 'TileBase'
+                and row.get('package') and xlp and 'fallback' not in xlp.casefold()):
+            choices.add((xlp, row['package']))
+    if not choices:
+        return None
+    if len(choices) != 1:
+        raise ValueError(f'{ident}: ambiguous native catalogue XLP bindings: {sorted(choices)}')
+    xlp, package = next(iter(choices))
+    entry = ET.Element('Element', {'class': 'AssetObjects..BLPEntryValue'})
+    for key, val in [('m_EntryName', ident), ('m_XLPClass', 'TileBase'),
+                     ('m_XLPPath', xlp), ('m_BLPPackage', package),
+                     ('m_LibraryName', 'TileBase'), ('m_ParamName', 'Asset')]:
+        elem(entry, key, text=val)
+    return entry
 
 
 def merge_xlp(root, identifiers):
@@ -506,6 +531,8 @@ def build(job):
                 raise ValueError(f'{asset}: ineligible or unknown source pack')
             custom=source.get('origin')=='authored_blender'
             binding=csc_binding(asset,xlp_path) if custom or asset in references else bindings.get(asset)
+            if binding is None and not custom and asset not in references:
+                binding = native_catalogue_binding(asset, source)
             if binding is None: raise ValueError(f'Missing exact pantry XLP binding for {asset}')
             point,problems=attachment(a,binding,ident,job.get('policies',{}))
             if not custom and job.get('policies',{}).get('reused_states','reject')!='native':
@@ -518,8 +545,10 @@ def build(job):
             for problem in problems: report['blockers'].append(f'{ident}/{a["instance_id"]}: {problem}')
         if contract:
             for instance in ms:
+                authored_states = entry.get('decal_states', {}).get(txt(instance, 'm_Name'), [])
                 for state_row in instance.findall('m_GroupStates/Element'):
-                    if txt(state_row,'m_StateName') in ('Unworked','Unbuilt'):
+                    if (txt(state_row,'m_StateName') in ('Unworked','Unbuilt')
+                            and txt(state_row,'m_StateName') not in authored_states):
                         for parameter in state_row.findall('m_Values/m_Values/Element'):
                             if txt(parameter,'m_ParamName')=='Visible':
                                 parameter.find('m_bValue').text='false'

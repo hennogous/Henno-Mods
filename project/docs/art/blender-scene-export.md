@@ -32,6 +32,10 @@ metadata. For example:
 {"buildings":{"CSC_TAILORS_Textile_Workshop":{"quarter":"TAILORS","supply_chain_stage":3}}}
 ```
 
+Review scenes marked `csc_export.kind: ignore` do not count as export candidates.
+Multiple actual export scenes still block discovery. A discovery failure reports
+the offending blend and its underlying error before contract matching.
+
 The run records the sidecar's path and hash in `contract-source.json`; the resolved
 per-building contract is also in `job.json` and `discovery-report.json`.
 
@@ -56,6 +60,16 @@ can list the complete folder inventory; any missing, extra, ignored, or unused
 building, prop master, shared ruin, or PIL decal blocks the run. The stages require
 `CSC_ALL_Stage_3_Cobble_Decals` or `CSC_ALL_Stage_4_Cobble_Decals` in the mod's
 Geometries directory. Existing shared GEO/FGX files are referenced unchanged.
+
+For a building with its own authored paving, set `cobble_geometry: null` in its
+scene metadata or sidecar building declaration. This explicitly omits the generic
+stage cobble model and requires a declared decal visible in both Worked and
+Construction. The decal's own material must already be registered. Authored decal
+state mappings are preserved, including explicit Unworked visibility; the normal
+building and prop visibility rules still apply. Fashion House revision 12 uses
+this option for its limestone garden path, with a DecalMaterial binding its
+512 px B (alpha), H (height) and G (Spec) maps. The native decal shader uses H for
+relief; its supplied Blender N/AO/M/O maps are not building-shader bindings.
 
 The contract applies `CSC_<QUARTER>_E` to the building and lean-to, and
 `CSC_ALL_Props_01` to fixed prop meshes in Bakers, Tailors, Apothecaries and
@@ -147,6 +161,13 @@ the whole folder export, regardless of how many placements use the prop. Use
 `replace_existing_assets` instead only when the master is intentionally an updated
 definition to install under the same ID. An asset in the synced prop catalogue
 should be placed with **Add library prop**.
+
+Newer native library entries may provide `native_bindings` in the catalogue even
+when absent from `CSC_ALL_Prop_Library.ast`. The exporter uses an exact TileBase
+entry from those records, excluding fallback packages and rejecting ambiguous
+bindings. Native source geometry and materials remain references. Unused Blender
+material slots are omitted from GEO groups and CN6 material lists; triangle
+material indices are compacted in the conversion input without editing blends.
 An explicitly authored prop update to an installed CSC identity must be listed in
 `replace_existing_assets`; otherwise discovery blocks the replacement. This keeps
 reference-only assets such as the Textile Workshop's basket and spinning wheel from
