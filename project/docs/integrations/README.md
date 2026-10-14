@@ -8,5 +8,6 @@ CSC adjacency engine, historical MAB/Ruivo integration and Bakers service/notifi
 - [MAB Manual — Modular Adjacency Bonuses Core (Ruivo)](MAB_MANUAL.md) — **Needs refresh**.
 - [Bakers Service Notification UI](bakers-service-notification-ui.md) — **Needs refresh**.
 - [CSC bundled adjacencies](csc-adjacencies.md) — **Current first implementation and test results**.
+- [CSC Quarter lenses and placement](csc-quarter-lenses.md) — **Automatic native placement and optional More Lenses buttons; shared data and test results**.
 - [Ruivo Adjacency Processor](ruivo-adjacency-processor.md) — **Historical; replaced by CSC's own processor**.
 - [CSC adjacency independence plan](mab-independence-plan.md) — **Current source audit and release plan**.

@@ -19,7 +19,9 @@ Start at the [internal documentation index](docs/README.md). The [full documenta
 | Area | Entry point |
 |---|---|
 | Current Quarter building art direction | [Building art plan](docs/art/quarter-building-art-plan.md) |
+| AE placement authority and saved-asset renders | [AE-owned assembly](docs/art/ae-owned-assembly-workflow.md), [render runner](docs/art/2d/ae-asset-renderer.md) |
 | Art production, icons and strategic view | [Art plans and production](docs/art/README.md) |
+| Storage crane animation investigation | [Native animation and Blender conversion](docs/art/storage-crane-animation.md) |
 | Quarter implementation and validation | [Workflow references](docs/quarters/README.md) |
 | Gameplay systems and related projects | [System references](docs/integrations/README.md) |
 | Art studies, trials and reference-mod research | [Research index](docs/research/README.md) |
@@ -59,7 +61,7 @@ Scripts accumulated during development. Paths may need updating if the source da
 
 | Folder | Contents |
 |--------|---------|
-| `asset_editor/` | Asset Editor IronPython helpers and diagnostics |
+| `asset_editor/` | Asset Editor IronPython helpers and [reusable crash capture](docs/art/asset-editor-crash-diagnostics.md) |
 | `blender/` | Blender/art scripts — SV sprite rendering pipeline, mesh inspection, and PBR companion-map generation |
 | `comfyui/` | ComfyUI scripts — icon post-processing, img2img, bakery/SV generation |
 | `modbuddy/` | ModBuddy project helpers, including `.civ6proj` action CDATA export/check/patch |

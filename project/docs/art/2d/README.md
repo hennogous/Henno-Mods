@@ -5,6 +5,7 @@ Icons, strategic-view sprites, ComfyUI and LoRA training. Status notices in each
 [Documentation index](../../README.md) · [Currency audit](../../DOCUMENT-AUDIT.md)
 
 - [ComfyUI & LoRA — Practical Manual for CSC Art Generation](COMFYUI-MANUAL.md) — **Needs refresh**.
+- [Saved AE asset renderer](ae-asset-renderer.md) — **Current finalized-asset input:** AST to deterministic icon/SV renders, packed blends and registered outlining passes. Overrides composed authoring blends as 2D placement sources.
 - [AE-matched building icon input](ae-matched-building-icon-input.md) — current Tailor render, color treatment and img2img wrapper.
 - [Blender icon linework trial](blender-icon-lineart-trial.md) — Tailor Freestyle comparison, exact registration, and remaining production-wrapper work.
 - [Icon Pipeline Implementation Notes](icon-pipeline-implementation-notes.md) — **Needs refresh**.

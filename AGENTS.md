@@ -24,7 +24,6 @@ The local ModBuddy solution workspace is `C:\Users\Shadow\Documents\Firaxis ModB
 | Folder | Project | Purpose |
 |---|---|---|
 | `Civ Supply Chains/` | Civ Supply Chains | Active CSC mod content. |
-| `CSC Art Pack/` | CSC Art Pack | Optional expanded building models and their complete art-state bridge; depends on CSC. |
 | `TaxesPolitics/` | Taxes And Politics | Parked/future Taxes & Politics work, including the Specialty Products/Aristocrat prototype moved out of CSC. |
 
 CSC mod content lives under `Civ Supply Chains/`:
@@ -100,11 +99,12 @@ Documentation outside the mod content tree is split by audience:
 - **ActionCriteria system**: files load conditionally based on active game modes, other mods present, or Settings values. Check existing criteria before adding new conditional content.
 - **ModSupport is additive**: compatibility patches are separate SQL files loaded only when the target mod is active — never embed cross-mod logic in core Quarter files.
 - **Art pipeline**: geometry goes through Blender → `.cn6` export → CivNexus6 (→ `.fgx`/`.geo`) → Asset Editor (`.ast`/`.mat`/`.tex`) → ArtDefs → cook. See the `civ6-art` skill (`art-pipeline.md` and `art-export-pipeline.md`) for the full workflow.
-- **Optional alternate art**: `CSC Art Pack/` owns all expanded building models and their property-modifier SQL, Lua mirror, `GamePropertyRanges`, and `BuildingVariants` selection rules. Main CSC retains normal art and the gameplay Service requirement sets. See `project/docs/art/optional-art-pack-test.md`; run the Art Pack's finishing CMD after each ModBuddy build.
+- **Expanded building art**: CSC owns normal and alternate models, source-property rows in its Quarter SQL, the shared `Lua_UI/ArtProperties/CSC_ArtProperties.lua` mirror, `CSC_GamePropertyRanges.artdef`, and variants in `CSC_Landmarks.artdef`. Source modifiers reuse the complete Service requirement sets; Lua only mirrors their values. The separate Art Pack trial is retired. Build CSC normally in ModBuddy; see `project/docs/art/expanded-building-art.md`.
 - **Reusable art kit**: Henno's existing models are the base for Quarter-specific roof/beam colours and chunky occupational prop scenes. Follow [the agreed building art plan](project/docs/art/quarter-building-art-plan.md); architectural tweaks should be minor, with storage/crane, Industrial Era and later cultural variants handled as described there.
 - **M&C integration file**: `Data/CSC_Q_BAKERS_MC_MODE.sql` — separate file, loaded only when M&C mode is active.
 - **Specialty Products boundary**: Product substrate/shims, Aristocrat hidden building/slots/grant scripts, Product GreatWorks UI handlers, Product icons/text, Specialty Product project rows, and the option that removes vanilla M&C Product projects are parked in the sibling `TaxesPolitics/` project. CSC keeps only Industry/Corporation improvement interactions plus the M&C remove-city-bonuses option.
 - **Art collaboration**: Henno directs the base kit and reviews concepts; the assistant is authorised to develop contextual concept images and build the agreed 3D prop scenes in Blender. Recolouring may be done by the assistant or Henno using the existing GIMP path templates. In-game review remains a shared checkpoint; follow the current task's scope.
+- **AE placement authority (13 October 2026)**: AE owns final assembly, placements and duplicates. Blender delivers geometry/prop-kit/decal masters and optional review proposals; exports must preserve AE edits. Alternates retain standard props and add service props. Reuse shared base-building PIL decals; Henno manually attaches his reusable debris decal to selected props. Final 2D inputs reconstruct the saved AST through `project/tools/blender/render_ae_asset.py`. See `project/docs/art/ae-owned-assembly-workflow.md` and the overriding CSC skill reference.
 
 ## Quarters Status
 
