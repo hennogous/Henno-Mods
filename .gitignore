@@ -25,3 +25,6 @@ project/pantry-candidate-review/
 project/art-work/
 project/art-export-contracts/
 **/Engine.log
+
+# Local diagnostic logs are retained on disk, not versioned.
+*.log
