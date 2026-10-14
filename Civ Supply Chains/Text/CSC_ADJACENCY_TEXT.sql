@@ -6,7 +6,6 @@
 INSERT OR REPLACE INTO LocalizedText
     (Language, Tag, Text)
 VALUES
-    ('en_US', 'LOC_CSC_ADJ_HEADING', 'Modular Adjacency Bonus:'),
     ('en_US', 'LOC_CSC_ADJ_PREVIEW_LINE', '{1_Amount} {2_Yield} from {3_Count : plural 1?the; other?{3_Count};} {5_Distance} {4_Source}.'),
     ('en_US', 'LOC_CSC_ADJ_PREVIEW_NAMED_RESOURCE', '{1_Amount} {2_Yield} from {3_Count : plural 1?the; other?{3_Count};} {5_Distance} {4_Source} {3_Count : plural 1?resource; other?resources;}.'),
     ('en_US', 'LOC_CSC_ADJ_PREVIEW_NAMED_DISTRICT', '{1_Amount} {2_Yield} from {3_Count : plural 1?the; other?{3_Count};} {5_Distance} {4_Source} {3_Count : plural 1?district; other?districts;}.'),

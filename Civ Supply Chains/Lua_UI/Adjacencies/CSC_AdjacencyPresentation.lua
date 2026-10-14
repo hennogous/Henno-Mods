@@ -73,23 +73,6 @@ function A.SourceName(rule,count)
     return info and Locale.Lookup(info.Name,count or 1) or Locale.Lookup('LOC_CSC_ADJ_SOURCE_GENERIC');
 end
 
-function A.Description(rule)
-    -- MAB uses the same source sentence as placement, with a count of one,
-    -- followed by the modifier owner's name in parentheses.
-    local text = A.PreviewLine(rule,rule.YieldChange,1);
-    if rule.WhoIsTheOwner then
-        for _,tableName in ipairs({'Traits','Buildings','Policies','Beliefs','Technologies','Civics','Governments','GovernorPromotions'}) do
-            local definitions=GameInfo[tableName];
-            local owner=definitions and definitions[rule.WhoIsTheOwner];
-            if owner and owner.Name then
-                text=text..' ('..Locale.Lookup(owner.Name)..')';
-                break;
-            end
-        end
-    end
-    return text;
-end
-
 -- MAB's placement text keeps amount, localized yield, count, source and
 -- distance separate. Preserve that contract using CSC-owned localization.
 local namedSources={
@@ -114,17 +97,6 @@ function A.PreviewLine(rule,amount,count)
         text=Locale.Lookup('LOC_CSC_ADJ_PREVIEW_LINE',A.AmountText(rule,amount),A.YieldText(rule,amount),count,A.SourceName(rule,count),Locale.Lookup(distance));
     end
     return text;
-end
-
-function A.RuleDescriptions(districtType)
-    local lines = {};
-    local playerID=Game.GetLocalPlayer();
-    for _,rule in ipairs(A.ByDistrict[districtType] or {}) do
-        if A.Eligible(rule,nil,playerID) then
-            lines[#lines+1]='[ICON_BULLET]'..A.Description(rule);
-        end
-    end
-    return table.concat(lines,'[NEWLINE]');
 end
 
 function A.Preview(districtType, plot, city)

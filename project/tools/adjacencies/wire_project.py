@@ -22,7 +22,7 @@ def main():
     add('UpdateText','CSC_AdjacencyText',4000,['Text/CSC_ADJACENCY_TEXT.sql','Text/CSC_ADJACENCY_SOURCES_TEXT.sql'])
     add('ImportFiles','CSC_AdjacencyModules',490,[BASE+'CSC_AdjacencyCore.lua',BASE+'CSC_AdjacencyPresentation.lua',
         BASE+'CSC_StockAdjacencyBonusSupport.lua'])
-    add('ImportFiles','CSC_AdjacencyUI',501,[BASE+'AdjacencyBonusSupport.lua',BASE+'ToolTipLoader_CSCAdjacency.lua'])
+    add('ImportFiles','CSC_AdjacencyUI',501,[BASE+'AdjacencyBonusSupport.lua'])
     add('AddGameplayScripts','CSC_AdjacencyGameplay',501,[BASE+'CSC_AdjacencyGameplay.lua'])
     actions.append({'type':'AddUserInterfaces','id':'CSC_AdjacencyNativeReads',
         'properties':{'LoadOrder':'501','Context':'InGame'},'files':[BASE+'CSC_AdjacencyUI.xml']})
@@ -33,7 +33,7 @@ def main():
     text=re.sub(r'^\s*<Dependency type="Mod" title="Modular Adjacency Bonuses Core"[^>]+/>\s*$', '',text,flags=re.M)
     text=re.sub(r'^\s*<Content Include="Lua_UI\\Ruivo_Adjacencies\\[^\"]+">.*?</Content>', '',text,flags=re.M|re.S)
     text=text.replace('<Folder Include="Lua_UI\\Ruivo_Adjacencies" />','<Folder Include="Lua_UI\\Adjacencies" />')
-    for retired in ['CSC_StockToolTipHelper.lua','ToolTipHelper.lua']:
+    for retired in ['CSC_StockToolTipHelper.lua','ToolTipHelper.lua','ToolTipLoader_CSCAdjacency.lua']:
         text=re.sub(r'\s*<Content Include="'+re.escape('Lua_UI\\Adjacencies\\'+retired)+r'">.*?</Content>', '',text,flags=re.S)
     files=sorted((ROOT/'Civ Supply Chains/Lua_UI/Adjacencies').glob('*'))
     files.extend(ROOT/'Civ Supply Chains'/name for name in ['Text/CSC_ADJACENCY_TEXT.sql','Text/CSC_ADJACENCY_SOURCES_TEXT.sql'])

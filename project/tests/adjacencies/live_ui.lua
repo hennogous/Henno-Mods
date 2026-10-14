@@ -10,7 +10,7 @@ for _,kind in ipairs({'DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_CSC_TAILORS_QUARTE
     local expectedIcons,expectedDescription=CSC_Adjacency.Preview(kind,plot,city);
     assert(expectedDescription~='' and description:find(expectedDescription,1,true),'Custom preview must be present');
     local tooltip=ToolTipHelper.GetToolTip(kind,0,city);
-    assert(tooltip:find(Locale.Lookup('LOC_CSC_ADJ_HEADING'),1,true),'Dispatcher must include CSC descriptions');
+    assert(tooltip and not tooltip:find('Modular Adjacency Bonus:',1,true),'District tooltip must not append the redundant adjacency section');
     local bonuses=AddAdjacentPlotBonuses(plot,kind,city,{});
     for _,view in pairs(bonuses) do
         local faces={};

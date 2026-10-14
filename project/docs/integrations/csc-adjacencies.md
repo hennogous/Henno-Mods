@@ -1,11 +1,11 @@
 # CSC bundled adjacencies — first implementation
 
-_2 October 2026. Implemented and locally tested; not a Workshop release._
+_Implemented 2 October 2026; tooltip presentation updated 12 October. Not a Workshop release._
 
 ## Scope and provenance
 
 CSC now ships its own adjacency schema, modifier compiler, gameplay evaluator,
-placement preview, descriptions, overlays and localization. Its ModBuddy project
+placement preview, overlays and localization. Its ModBuddy project
 no longer declares MAB as a dependency. Players of this build do not need a fork
 or a patch helper. Normal ModBuddy packaging includes the replacement.
 
@@ -41,9 +41,8 @@ All shipped engine files are under `Civ Supply Chains/Lua_UI/Adjacencies/`.
 | `CSC_AdjacencyModifiers.sql` | Unique clones, signed bit modifiers, requirements, attachments | 4000 |
 | `CSC_AdjacencyCore.lua` | Shared matching, ring traversal, eligibility, amounts | Imported 490 |
 | `CSC_AdjacencyGameplay.lua` | Event refresh; sole writer of plot properties | 501 |
-| `CSC_AdjacencyPresentation.lua` | Shared signed previews, descriptions and edge selection | Imported 490 |
+| `CSC_AdjacencyPresentation.lua` | Shared signed previews and edge selection | Imported 490 |
 | `AdjacencyBonusSupport.lua` | Native placement support plus CSC preview/overlays | Imported 501 |
-| `ToolTipLoader_CSCAdjacency.lua` | Firaxis tooltip extension hook; skips loading-screen contexts | Imported 501 |
 | `CSC_AdjacencyUI.xml/.lua` | Native UI unit-level read exposed to gameplay | InGame 501 |
 | `Text/CSC_ADJACENCY*_TEXT.sql` | Generated from `project/localization/` Markdown | 4000 |
 
@@ -142,6 +141,17 @@ test, capture/restore preferences again; `restore_mod_preferences.py` uses the n
 Modding API. Do not mistake a test's disabled optional mods for a user's preferences.
 
 ## Remaining release checks
+
+### District tooltip appendix removed (12 October)
+
+Henno requested removal of the MAB-style **Modular Adjacency Bonus:** block
+because the authored district descriptions explain these effects more clearly.
+The tooltip loader is deleted and unregistered; its description helpers and
+heading localization are removed. Placement yield previews and edge overlays
+remain active. Future wiring must not restore this appendix.
+The focused tooltip check still compares placement sentences to MAB and verifies
+the retired loader is absent from both source actions and the ModBuddy project.
+The installed CSC package received only the affected Lua/text and manifest changes.
 
 ### Tooltip regression corrected (2 October)
 

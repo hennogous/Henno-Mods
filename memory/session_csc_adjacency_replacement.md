@@ -84,3 +84,14 @@ source icons, Hills/River capitalization and yield icon/name spacing restored.
 Direct read-only execution of MAB's actual detail builder/helpers now compares
 all five CSC source families plus mill ownership false/true; passes. Native
 visual confirmation of the restored format remains pending.
+
+12 October 2026: Henno reversed the earlier static tooltip presentation decision.
+Remove the MAB-style Modular Adjacency Bonus appendix because authored district
+descriptions already explain the effects better. Deleted/unregistered the loader,
+removed Description/RuleDescriptions and the heading localization. Keep placement
+preview and edge overlays. Updated wiring helper and existing text/live fixtures
+so they cannot silently reintroduce the block. Installed only the affected
+Lua/text plus removal of the loader from the existing manifest (no art rebuild).
+Focused placement text and manifest/localization checks pass. Workspace-wide
+diff whitespace check reports unrelated existing art/SQL whitespace; scoped
+checks are used for this change.

@@ -2,9 +2,6 @@
 output: Civ Supply Chains/Text/CSC_ADJACENCY_TEXT.sql
 language: en_US
 
-## LOC_CSC_ADJ_HEADING
-Modular Adjacency Bonus:
-
 ## LOC_CSC_ADJ_PREVIEW_LINE
 {1_Amount} {2_Yield} from {3_Count : plural 1?the; other?{3_Count};} {5_Distance} {4_Source}.
 

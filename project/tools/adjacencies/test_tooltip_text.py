@@ -5,12 +5,13 @@ syntax, and the reference's English templates read-only. This checks sentences;
 native on-screen rendering remains a separate review.
 """
 import argparse
+import json
 import re
 import sqlite3
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from test_parity import CODE,ROOT,TESTS,lua_value,reference_functions,untype
+from test_parity import CODE,ROOT,TESTS,lua_value
 
 
 def main():
@@ -79,68 +80,24 @@ def main():
     assert {key for key in text if key.startswith('LOC_CSC_ADJ_TERRAIN_')}=={'LOC_CSC_ADJ_TERRAIN_IsHills'}
     for row in db.execute('SELECT Name FROM CSC_AdjacencySources'):
         assert row['Name'] in text, row['Name']
-    assert '+1 [ICON_Production]Production' in g.CSC_Adjacency.Description(rule())
     # Native GameInfo returns nil for absent tables. The general world mock
     # creates empty tables automatically, which previously hid this crash.
     lua.execute('GameInfo.ResourceClasses=nil; setmetatable(GameInfo,nil)')
     river=rule('FROM_RIVER_CROSSING','NONE')
     assert g.CSC_Adjacency.SourceName(river,2)=='River edges'
-    assert 'from the adjacent River edge.' in g.CSC_Adjacency.Description(river)
     lua.execute('GameInfo.Districts=info({{DistrictType="DISTRICT_NATIVE",Name="Native district"}})')
     assert g.CSC_Adjacency.SourceName(rule('FROM_RINGS_CAO_DISTRICT','DISTRICT_NATIVE'))=='[ICON_DISTRICT_NATIVE]Native district'
     assert g.CSC_Adjacency.SourceName(rule('FROM_RINGS_CAO_DISTRICT','MISSING'))=='matching object'
-    # Execute MAB's actual detail builder and helpers read-only. This catches
-    # changes in bullets, source sentences, owner suffixes and owner visibility.
-    reference_lua=(args.reference/'RUIVO_STAT_MODULE_GP.lua').read_text(encoding='utf-8-sig')
-    functions=reference_functions(reference_lua)
-    # This builder's outer loop and final end share the function indentation;
-    # use its section boundary instead of the simpler source-function extractor.
-    detail_start=reference_lua.index('    function GetDistrictModularAdjacencyBonusText(')
-    functions['GetDistrictModularAdjacencyBonusText']=untype(reference_lua[detail_start:].split('\n--====',1)[0])
-    for name in ['RUIVO_GetYieldTextIcon','RUIVO_GetYieldText','RUIVO_GetCAOName',
-                 'RUIVO_toPlusMinusString','RUIVO_AppendOwnerInfo','Ruivo_CityHasBuilding',
-                 'Ruivo_PlayerHasBuilding','IsModifierOwnerValid','GetDistrictModularAdjacencyBonusText']:
-        lua.execute(functions[name])
-    g.Locale.ToNumber=lambda value,pattern:format(value,'+g')
-    lua.execute('''
-        GameInfo.Ruivo_CAO=CSC_Adjacency.Objects;
-        GameInfo.Ruivo_Yield_IconString={}; GameInfo.Ruivo_New_Adjacency_Text={};
-        GameInfo.GreatPersonClasses=info({});
-        for _,name in ipairs({'Traits','Policies','Beliefs','Governments','GovernorPromotions'}) do GameInfo[name]=info({}); end
-        GlobalTable={DirectBonusTypes={},MultiplierTypes={},yieldOrder={}};
-        Modifier_sources={'Traits','Buildings','Policies','Beliefs','Technologies','Civics','Governments','GovernorPromotions'};
-        PlayerConfigurations={[0]={GetCivilizationTypeName=function() return 'TEST_CIV' end,GetLeaderTypeName=function() return 'TEST_LEADER' end}};
-    ''')
-    detail_rules=[rule(),rule('FROM_RINGS_TYPETAG_DISTRICT','CLASS_SALES','YIELD_GOLD'),
-                  rule('FROM_RINGS_CAO_DISTRICT','DISTRICT_NATIVE'),
-                  rule('FROM_RINGS_CAO_TERRAIN_SETS','IsHills',distance=0),river]
-    for index,r in enumerate(detail_rules):
-        r.ID='DETAIL_'+str(index); r.DistrictType='DISTRICT_TEST'
-    mill=rule('FROM_RIVER_CROSSING','NONE'); mill.ID='DETAIL_MILL'; mill.DistrictType='DISTRICT_TEST'
-    mill.YieldChange=0.5; mill.ModifierOwner='BuildingModifiers'; mill.WhoIsTheOwner='BUILDING_MILL'
-    mill.CollectionType='COLLECTION_PLAYER_DISTRICTS'; detail_rules.append(mill)
-    for owned in [False,True]:
-        g.city.mill=owned
-        rows=lua.table_from(detail_rules)
-        g.CSC_Adjacency.ByDistrict.DISTRICT_TEST=rows
-        g.Ruivo_Adjacency_Cache=lua.table_from({'byDistrict':lua.table_from({'DISTRICT_TEST':rows})})
-        actual=g.CSC_Adjacency.RuleDescriptions('DISTRICT_TEST')
-        expected=g.GetDistrictModularAdjacencyBonusText('DISTRICT_TEST')
-        assert actual==expected,(actual,expected)
-        assert actual.count('[ICON_BULLET]')==(6 if owned else 5)
-        assert ('(Mill)' in actual)==owned
-        assert 'Only tiles' not in actual and 'Requires' not in actual
-    assert lookup('LOC_CSC_ADJ_HEADING')==lookup('LOC_RUIVO_MODULAR_ADJACENCY_BONUS').rstrip()
-    # Exercise the same tooltip dispatcher used by the civic tree/map pins.
-    river.ID='TEST_RIVER'; river.DistrictType='DISTRICT_TEST'
-    lua.execute('GameInfo.CSC_AdjacencyRules=info({'+lua_value(dict(river.items()))+'})')
-    lua.execute('ToolTipHelper={GetDistrictToolTip=function() return "Native tooltip" end}; g_ToolTipGenerators={}')
-    include('ToolTipLoader_CSCAdjacency')
-    for tooltip in [g.ToolTipHelper.GetDistrictToolTip('DISTRICT_TEST'),
-                    g.g_ToolTipGenerators.KIND_DISTRICT('DISTRICT_TEST')]:
-        assert tooltip.startswith('Native tooltip[NEWLINE][NEWLINE]Modular Adjacency Bonus:')
-        assert '[ICON_BULLET]+1 [ICON_Production]Production from the adjacent River edge.' in tooltip
-    print(f'PASS: {cases} MAB placement sentences; exact MAB detail builder with mills absent/present; native tooltip dispatcher')
+    # District descriptions already explain these rules. No automatic appendix.
+    assert 'LOC_CSC_ADJ_HEADING' not in text
+    assert not (CODE/'ToolTipLoader_CSCAdjacency.lua').exists()
+    actions=json.loads((ROOT/'project/modbuddy/CivSupplyChains.actions.json').read_text(encoding='utf-8-sig'))
+    for block in actions['blocks'].values():
+        for action in block:
+            assert not any('ToolTipLoader_CSCAdjacency' in name for name in action.get('files',[]))
+    assert 'ToolTipLoader_CSCAdjacency' not in (ROOT/'Civ Supply Chains/Civ Supply Chains.civ6proj').read_text(encoding='utf-8-sig')
+    print(f'PASS: {cases} MAB placement sentences; missing GameInfo tables; redundant district tooltip hook removed')
+
 
 
 if __name__=='__main__': main()

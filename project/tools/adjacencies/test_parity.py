@@ -286,9 +286,6 @@ def main():
     unit_levels=rule_for('FROM_UI_RINGS_UNIT_LEVELS',0,0,0)
     assert g.CSC_Adjacency.Count(lua.table_from(unit_levels),g.center,g.city,0)==4
     lua.execute('probeUnit.GetExperience=savedExperience; ExposedMembers=nil')
-    lua.execute('savedDefense=DefenseTypes; DefenseTypes=nil; ToolTipHelper=nil')
-    include('ToolTipLoader_CSCAdjacency')
-    lua.execute('DefenseTypes=savedDefense')
     # Lua syntax check all shipped modules, including Firaxis dialect annotations.
     for file in CODE.glob('*.lua'):
         lua.compile(untype(file.read_text(encoding='utf-8-sig')))
