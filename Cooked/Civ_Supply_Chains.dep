@@ -6,10 +6,6 @@
 	</ID>
 	<RequiredGameArtIDs>
 		<Element>
-			<name text="Civ6"/>
-			<id text="cb2f71b7-843e-4af3-9ca7-992acda9c195"/>
-		</Element>
-		<Element>
 			<name text="Expansion1"/>
 			<id text="7446c8fe-29eb-44f8-801f-098f681cc5c5"/>
 		</Element>
@@ -225,6 +221,7 @@
 			<ConsumerName text="Overlay"/>
 			<ArtDefDependencyPaths>
 				<Element text="CSC_Overlay.artdef"/>
+				<Element text="CSC_QuarterResourceBorders.artdef"/>
 			</ArtDefDependencyPaths>
 			<LibraryDependencies>
 				<Element text="OverlayTexture"/>
@@ -313,6 +310,7 @@
 		<Element>
 			<ConsumerName text="WorldView_Translate"/>
 			<ArtDefDependencyPaths>
+				<Element text="CSC_GamePropertyRanges.artdef"/>
 				<Element text="CSC_Buildings.artdef"/>
 				<Element text="CSC_Districts.artdef"/>
 				<Element text="CSC_Landmarks.artdef"/>
@@ -376,7 +374,9 @@
 		</Element>
 		<Element>
 			<ConsumerName text="Lenses"/>
-			<ArtDefDependencyPaths/>
+			<ArtDefDependencyPaths>
+				<Element text="CSC_Lenses.artdef"/>
+			</ArtDefDependencyPaths>
 			<LibraryDependencies/>
 			<LoadsLibraries>false</LoadsLibraries>
 		</Element>
@@ -508,6 +508,18 @@
 		</Element>
 		<Element>
 			<ArtDefPath text="CSC_Overlay.artdef"/>
+			<ArtDefDependencyPaths/>
+		</Element>
+		<Element>
+			<ArtDefPath text="CSC_QuarterResourceBorders.artdef"/>
+			<ArtDefDependencyPaths/>
+		</Element>
+		<Element>
+			<ArtDefPath text="CSC_GamePropertyRanges.artdef"/>
+			<ArtDefDependencyPaths/>
+		</Element>
+		<Element>
+			<ArtDefPath text="CSC_Lenses.artdef"/>
 			<ArtDefDependencyPaths/>
 		</Element>
 	</ArtDefDependencies>
