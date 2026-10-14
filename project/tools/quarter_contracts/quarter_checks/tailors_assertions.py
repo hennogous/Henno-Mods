@@ -52,7 +52,7 @@ REQUIREMENTS_BY_PHASE = {
 }
 
 
-IMPLEMENTED_ASSERTION_PHASES = {"foundation", "materials_and_stage2", "stage3"}
+IMPLEMENTED_ASSERTION_PHASES = {"foundation", "materials_and_stage2", "stage3", "stage4"}
 
 
 def _runtime_database() -> Path:
@@ -809,6 +809,9 @@ def _foundation_assertions(root: Path, connection: sqlite3.Connection) -> list[s
         "BUILDING_CSC_TAILORS_STAGE_2_SERVICE",
         "BUILDING_CSC_TAILORS_STAGE_3_SERVICE",
         "BUILDING_CSC_TAILORS_STAGE_4_SERVICE",
+        "BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI",
+        "BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY",
+        "BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY",
     }
     actual_types = {
         row[0]
@@ -1022,8 +1025,8 @@ def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     _expect(
         failures,
         _scalar(connection, "SELECT COUNT(*) FROM Buildings WHERE BuildingType='BUILDING_CSC_TAILORS_FASHION_HOUSE'"),
-        0,
-        "unapproved Stage 4 building rows",
+        1 if _stage4_has_started(root) else 0,
+        "Stage 4 building rows follow the approved active scope",
     )
     for modifier, yield_type in (
         ("MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP", "YIELD_PRODUCTION"),
@@ -1054,7 +1057,7 @@ def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
                 "SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?",
                 (modifier,),
             ).fetchall(),
-            [],
+            [("BUILDING_CSC_TAILORS_FASHION_HOUSE",)] if _stage4_has_started(root) else [],
             f"{modifier} must wait for the Fashion House Buildings row",
         )
     source = (root / "project/localization/CSC_TAILORS_TEXT.md").read_text(encoding="utf-8")
@@ -1629,11 +1632,10 @@ def _stage3_assertions(
     return failures
 
 
-def _optional_art_pack_boundary_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
+def _shared_service_art_bridge_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     failures: list[str] = []
-    # CSC owns the reusable Service gates consumed by the optional Art Pack. The
-    # Art Pack owns every alternate-art property modifier, attachment and Lua
-    # mirror, so none of those implementation details may leak back into core.
+    # Source modifiers share the complete gameplay Service gates. Lua only mirrors
+    # their values; it must not duplicate the criteria or create reverse attaches.
     _expect(
         failures,
         {row[0] for row in connection.execute(
@@ -1646,34 +1648,30 @@ def _optional_art_pack_boundary_assertions(root: Path, connection: sqlite3.Conne
         },
         "Tailors Stage 2 shared Service/art activation requirements",
     )
-    art_pack_modifier_ids = {
-        "MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY",
-        "MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY",
+    for stage, building, source in (
+        (2, "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP", "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION"),
+        (3, "BUILDING_CSC_TAILORS_TAILOR", "CSC_TAILORS_STAGE_3_CUSTOMERS"),
+    ):
+        modifier = f"MOD_CSC_TAILORS_STAGE_{stage}_ART_PROPERTY"
+        _expect(failures, connection.execute(
+            "SELECT ModifierType, OwnerRequirementSetId, SubjectRequirementSetId FROM Modifiers WHERE ModifierId=?",
+            (modifier,),
+        ).fetchall(), [("MODIFIER_SINGLE_CITY_ADJUST_PROPERTY", f"REQSET_CSC_TAILORS_STAGE_{stage}_EFFECT_PREREQ", None)],
+            f"{modifier} shares the Service gate")
+        _expect(failures, dict(connection.execute(
+            "SELECT Name, Value FROM ModifierArguments WHERE ModifierId=?", (modifier,)
+        )), {"Key": source, "Amount": "1"}, f"{modifier} source arguments")
+        _expect(failures, connection.execute(
+            "SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?", (modifier,)
+        ).fetchall(), [(building,)], f"{modifier} Quarter ownership")
+    obsolete = {
         "MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY",
-        "MOD_CSC_TAILORS_STAGE_2_ART_ATTACH_QUARTER",
-        "MOD_CSC_TAILORS_STAGE_3_ART_ATTACH_QUARTER",
-        "MOD_CSC_TAILORS_STAGE_4_ART_ATTACH_QUARTER",
+        *(f"MOD_CSC_TAILORS_STAGE_{stage}_ART_ATTACH_QUARTER" for stage in (2, 3, 4)),
     }
-    _expect(
-        failures,
-        _scalar(
-            connection,
-            f"SELECT COUNT(*) FROM Modifiers WHERE ModifierId IN ({','.join('?' for _ in art_pack_modifier_ids)})",
-            tuple(sorted(art_pack_modifier_ids)),
-        ),
-        0,
-        "Tailors optional Art Pack modifiers absent from core gameplay",
-    )
-    _expect(
-        failures,
-        _scalar(
-            connection,
-            f"SELECT COUNT(*) FROM BuildingModifiers WHERE ModifierId IN ({','.join('?' for _ in art_pack_modifier_ids)})",
-            tuple(sorted(art_pack_modifier_ids)),
-        ),
-        0,
-        "Tailors optional Art Pack attachments absent from core gameplay",
-    )
+    for table in ("Modifiers", "BuildingModifiers"):
+        _expect(failures, _scalar(connection,
+            f"SELECT COUNT(*) FROM {table} WHERE ModifierId IN ({','.join('?' for _ in obsolete)})",
+            tuple(sorted(obsolete))), 0, f"{table}: inverse/deferred art modifiers absent")
     _expect(
         failures,
         _scalar(connection, "SELECT COUNT(*) FROM RequirementSets WHERE RequirementSetId IN ('REQSET_CSC_TAILORS_STAGE_2_ART','REQSET_CSC_TAILORS_STAGE_3_ART')"),
@@ -1681,13 +1679,14 @@ def _optional_art_pack_boundary_assertions(root: Path, connection: sqlite3.Conne
         "Tailors redundant art-only requirement sets removed",
     )
     bakers_sql = (root / "Civ Supply Chains/Data/CSC_Q_BAKERS.sql").read_text(encoding="utf-8-sig")
-    for modifier_id in (
-        "MOD_CSC_BAKERS_STAGE_2_PROP",
-        "MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING",
-        "MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM",
+    for modifier_id, stage in (
+        ("MOD_CSC_BAKERS_STAGE_2_PROP", 2),
+        ("MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING", 3),
+        ("MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM", 4),
     ):
-        if modifier_id in bakers_sql:
-            failures.append(f"{modifier_id} remains in core Bakers SQL instead of the optional Art Pack")
+        row = rf"\(\s*'{modifier_id}'\s*,\s*'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY'\s*,\s*'REQSET_CSC_STAGE_{stage}_EFFECT_PREREQ'\s*,\s*NULL\s*\)"
+        if not re.search(row, bakers_sql):
+            failures.append(f"{modifier_id} must reuse the complete Bakers Service gate")
     if re.search(r"REQSET_CSC_(?:ADJ_BAKERS_STAGE_2_ART|ADJ_BAKERY_STAGE_3_ART|ADJ_CAFE_STAGE_4_ART)", bakers_sql):
         failures.append("Bakers redundant art-only requirement sets remain in active SQL")
     if not re.search(
@@ -1711,6 +1710,12 @@ def _optional_art_pack_boundary_assertions(root: Path, connection: sqlite3.Conne
         "Tailors deferred Stage 4 art properties absent from SQL",
     )
     return failures
+
+
+def _stage4_has_started(root: Path) -> bool:
+    import yaml
+    control = yaml.safe_load((root / "project/specs/tailors/control.yaml").read_text())
+    return control["phase_gates"]["stage4"]["status"] in {"implementing", "ready_for_review", "accepted"}
 
 
 def validate_phase_assertions(
@@ -1745,11 +1750,18 @@ def validate_phase_assertions(
         return failures
     try:
         failures.extend(_foundation_assertions(root, connection))
-        if phase_id in {"materials_and_stage2", "stage3"}:
+        if phase_id in {"materials_and_stage2", "stage3", "stage4"}:
             failures.extend(_stage2_assertions(root, connection))
-            failures.extend(_optional_art_pack_boundary_assertions(root, connection))
-        if phase_id == "stage3":
+            failures.extend(_shared_service_art_bridge_assertions(root, connection))
+        if phase_id in {"stage3", "stage4"}:
             failures.extend(_stage3_assertions(root, connection, implementation))
+        if phase_id == "stage4":
+            import importlib.util
+            path = root / "project/tools/quarter_contracts/quarter_checks/tailors_stage4_assertions.py"
+            spec = importlib.util.spec_from_file_location("tailors_stage4_assertions", path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            failures.extend(module.validate(root, connection, implementation))
     finally:
         connection.close()
     return failures

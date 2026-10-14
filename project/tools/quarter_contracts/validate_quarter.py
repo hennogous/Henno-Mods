@@ -647,6 +647,69 @@ def validate_wonder_service_requirement(
 ACTIVE_PHASE_STATUSES = {"approved", "implementing", "ready_for_review", "accepted"}
 
 
+def validate_stage4_population_requirement(
+    requirement: dict[str, Any],
+    design: dict[str, Any],
+    implementation: dict[str, Any],
+    result: Validation,
+) -> None:
+    """Bind integer population transactions to the current Cafe Lua/SQL method."""
+    requirement_id = requirement.get("id", "<unknown>")
+    design_intervals = []
+    for reference in requirement.get("design_refs", []):
+        resolved, value = resolve_design_ref(design, reference)
+        if resolved and isinstance(value, dict) and "population_interval" in value:
+            design_intervals.append(value["population_interval"])
+    if "GP.SCALING.PER_N_POPULATION_INTEGER" not in requirement.get("gameplay_patterns", []):
+        if design_intervals:
+            result.error(f"{requirement_id}: interval-scaled customer design requires GP.SCALING.PER_N_POPULATION_INTEGER")
+        return
+
+    binding = requirement.get("implementation_binding") or {}
+    if not isinstance(binding, dict):
+        result.error(f"{requirement_id}: Cafe Stage 4 method requires a structured implementation_binding")
+        return
+    expected = {
+        "canonical_reference": "bakers_cafe_stage4",
+        "method": "gameplay_lua_property_bits",
+        "population_source": "customer_city",
+        "rounding": "floor_per_customer_site",
+        "sql_effect": "MODIFIER_BUILDING_YIELD_CHANGE",
+        "property_scope": "city_and_city_center_plot",
+        "stacking_unit": "eligible_adjacent_customer_site_and_branch",
+        "deduplication_key": ["seller_city", "customer_city", "customer_plot", "customer_branch"],
+    }
+    for key, value in expected.items():
+        if binding.get(key) != value:
+            result.error(
+                f"{requirement_id}: Cafe Stage 4 method requires implementation_binding.{key}={value!r}"
+            )
+
+    interval = binding.get("population_interval")
+    if not isinstance(interval, int) or isinstance(interval, bool) or interval <= 0:
+        result.error(f"{requirement_id}: population_interval must be a positive integer")
+    if not design_intervals or any(value != interval for value in design_intervals):
+        result.error(f"{requirement_id}: population_interval must match its referenced design")
+
+    output = binding.get("gameplay_output")
+    planned = implementation.get("planned_outputs", {})
+    expected_path = "Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
+    if not isinstance(output, str) or planned.get(output) != expected_path:
+        result.error(f"{requirement_id}: gameplay_output must name the shared customer-population Lua output")
+        return
+    if output not in requirement.get("outputs", []):
+        result.error(f"{requirement_id}: population requirement outputs must include {output}")
+    action = implementation.get("build_wiring", {}).get("actions", {}).get(output, {})
+    if (
+        action.get("id") != "CSC_CustomerPopulationReturns"
+        or action.get("type") != "AddGameplayScripts"
+        or action.get("file") != expected_path.removeprefix("Civ Supply Chains/")
+        or action.get("load_order") != 502
+        or action.get("criteria") != []
+    ):
+        result.error(f"{requirement_id}: gameplay_output must use the shared unconditional gameplay action at load order 502")
+
+
 def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
     result = Validation()
     quarter_dir = SPEC_ROOT / quarter
@@ -789,6 +852,7 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
         for output in requirement.get("outputs", []):
             if output not in output_keys:
                 result.error(f"{requirement_id}: unknown planned output key {output}")
+        validate_stage4_population_requirement(requirement, design, implementation, result)
         validate_wonder_service_requirement(
             requirement,
             referenced_wonder_destinations,
@@ -876,6 +940,11 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
             for requirement in phase.get("requirements", [])
         ):
             minimum_suites.update({"lua_contract", "modifier_graph"})
+        if any(
+            "GP.SCALING.PER_N_POPULATION_INTEGER" in requirement.get("gameplay_patterns", [])
+            for requirement in phase.get("requirements", [])
+        ):
+            minimum_suites.update({"lua_contract", "modifier_graph"})
         missing_suites = minimum_suites - required_suites
         if missing_suites:
             result.error(
@@ -893,6 +962,15 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
         result.error(f"missing ModBuddy action manifest: {action_manifest}")
     if not source_project.is_file():
         result.error(f"missing ModBuddy source project: {source_project}")
+    for output_key, file_path in build_wiring.get("content_only", {}).items():
+        if output_key not in output_keys:
+            result.error(f"Content-only wiring references unknown output {output_key}")
+            continue
+        if output_key in build_wiring.get("actions", {}):
+            result.error(f"{output_key}: cannot declare both an action and Content-only wiring")
+        expected_path = str(implementation["planned_outputs"][output_key]).removeprefix("Civ Supply Chains/")
+        if file_path != expected_path:
+            result.error(f"{output_key}: Content-only file {file_path!r} differs from output {expected_path!r}")
     for output_key, action in build_wiring.get("actions", {}).items():
         if output_key not in output_keys:
             result.error(f"build wiring references unknown output {output_key}")

@@ -317,7 +317,7 @@ patterns:
       - "Patch every affected vanilla customer building or Wonder with its Tailors interaction."
       - "The append text is generated from the same implementation requirement as gameplay."
       - "A customer or destination page has one shared Supply Chains section integrating all Quarter relationships; it never receives one separate section per Quarter."
-      - "When the customer enables a Service, the same integrated section concisely names the supplied producer and unlock, says the Service can be established there, and points readers to the Service Civilopedia page for full requirements and effects."
+      - "When the customer enables a Service, the same integrated section concisely names the supplied producer and unlock and says the Service can be established there. Player-facing text must never direct readers to another Civilopedia page for requirements, effects or details; state relevant information directly and retain the service name as the normal link."
       - "Base types and direct one-level replacements receive equivalent prose wherever localization does not inherit automatically; named Wonders are updated only when explicitly listed by the design."
 
   - id: LP.CIVIC.APPEND
@@ -341,6 +341,7 @@ patterns:
     invariant:
       - "Only include if the shared service notification subsystem will surface the service."
       - "Every state names the source and destination unambiguously."
+      - "For a Service with an intrinsic Citizen slot, NEW explicitly states the slot count and destination district. A persistent Service's REMOVED fragment states that its established building and Citizen slot remain while gated effects deactivate. INCREASED and DECREASED describe only the stackable effect change; they must not imply another slot, a multiplied slot or a removed slot. Zero-slot Wonder services must not claim a Citizen slot."
       - "The aggregate MCUIS Preview supply-chain line displays the total contributing-source count and pluralizes the source noun from `{3_TotalStackCount}`. Omit the count only when gameplay mechanically limits the service to one source and the owning implementation contract explicitly declares that non-stacking exception."
       - "The first dynamic amount placeholder is pre-signed by the UI; present it directly (for example, '{1_NewAmount}%'), without a literal sign or directional qualifier."
       - "NEW, INCREASED, DECREASED, and REMOVED state fragments contain no terminal period, exclamation mark, or question mark because the shared notification summary owns and appends the single final period after `{2_Ability}`. Internal sentence punctuation is allowed when a fragment contains more than one sentence."

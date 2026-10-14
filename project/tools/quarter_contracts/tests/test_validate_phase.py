@@ -199,7 +199,7 @@ class TailorsPhaseContractTests(unittest.TestCase):
 
     def test_future_red_semantic_sentinel_blocks_premature_handoff(self) -> None:
         failures = ASSERTIONS.validate_phase_assertions(
-            PHASES.ROOT, "stage4", self.implementation
+            PHASES.ROOT, "compatibility", self.implementation
         )
         self.assertTrue(any("still red" in item for item in failures))
 
@@ -254,7 +254,7 @@ class TailorsPhaseContractTests(unittest.TestCase):
         )
         self.assertTrue(any("index 6" in item for item in failures))
 
-    def test_optional_art_bridge_is_not_a_core_contract_output(self) -> None:
+    def test_physical_art_is_checked_separately_from_gameplay_outputs(self) -> None:
         phase = next(
             phase
             for phase in self.implementation["phases"]
@@ -266,7 +266,7 @@ class TailorsPhaseContractTests(unittest.TestCase):
         self.assertNotIn("art_property_lua", dockmaster["outputs"])
         self.assertNotIn("art_property_lua", self.implementation["planned_outputs"])
         self.assertTrue(
-            any("optional CSC Art Pack owns" in assertion for assertion in dockmaster["static_assertions"])
+            any("CSC owns the source-property modifier" in assertion for assertion in dockmaster["static_assertions"])
         )
 
     def test_suk_yield_tooltip_uses_registry_without_quarter_hardcodes(self) -> None:
@@ -311,7 +311,7 @@ class TailorsPhaseContractTests(unittest.TestCase):
 
     def test_blocked_phase_cannot_be_validated_as_implementation(self) -> None:
         result = PHASES.validate_phase(
-            "tailors", "stage4", handoff=False, run_commands=False
+            "tailors", "compatibility", handoff=False, run_commands=False
         )
         self.assertTrue(any("gate status" in item for item in result.errors))
 

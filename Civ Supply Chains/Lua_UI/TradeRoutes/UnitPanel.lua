@@ -30,6 +30,7 @@ end
 
 local CSC_PROP_BAKERY_SUPPLIED:string = "CSC_BAKERS_BAKERY_SUPPLIED";
 local CSC_PROP_CAFE_SUPPLIED:string = "CSC_BAKERS_CAFE_SUPPLIED";
+local CSC_PROP_FASHION_HOUSE_SUPPLIED:string = "CSC_TAILORS_FASHION_HOUSE_SUPPLIED";
 local CSC_PROP_TAILOR_SUPPLIED:string = "CSC_TAILORS_TAILOR_SUPPLIED";
 local CSC_UNIT_PANEL_YIELD_ORDER:table = {
 	"YIELD_FOOD",
@@ -95,7 +96,8 @@ function CSC_UnitPanel_GetTailorsTradeRouteCount(pOriginCity:table, pDestination
 			end
 		end
 	end
-	return CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_TAILOR_SUPPLIED) and 1 or 0;
+	return (CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_TAILOR_SUPPLIED) and 1 or 0)
+		+ (CSC_UnitPanel_IsPositiveProperty(pDestinationCity, CSC_PROP_FASHION_HOUSE_SUPPLIED) and 1 or 0);
 end
 
 

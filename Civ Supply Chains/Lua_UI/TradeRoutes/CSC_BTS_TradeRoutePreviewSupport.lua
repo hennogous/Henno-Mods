@@ -21,6 +21,7 @@ end
 
 local PROP_BAKERY_SUPPLIED = "CSC_BAKERS_BAKERY_SUPPLIED";
 local PROP_CAFE_SUPPLIED = "CSC_BAKERS_CAFE_SUPPLIED";
+local PROP_FASHION_HOUSE_SUPPLIED = "CSC_TAILORS_FASHION_HOUSE_SUPPLIED";
 local PROP_TAILOR_SUPPLIED = "CSC_TAILORS_TAILOR_SUPPLIED";
 
 local function CSC_BTS_IsPositiveProperty(owner, propertyName)
@@ -101,20 +102,22 @@ function CSC_BTS_GetBakersTradeRouteState(routeInfo)
 end
 
 function CSC_BTS_GetTailorsTradeRouteState(routeInfo)
-	if routeInfo == nil then return false; end
+	if routeInfo == nil then return false, false; end
 	local pOriginCity = CSC_BTS_GetCity(routeInfo.OriginCityPlayer, routeInfo.OriginCityID);
 	local pDestinationCity = CSC_BTS_GetCity(routeInfo.DestinationCityPlayer, routeInfo.DestinationCityID);
-	if pOriginCity == nil or pDestinationCity == nil then return false; end
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return false; end
-	if CSC_BTS_CityHasFunctioningTailorsQuarter(pOriginCity) then return false; end
-	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED);
+	if pOriginCity == nil or pDestinationCity == nil then return false, false; end
+	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return false, false; end
+	if CSC_BTS_CityHasFunctioningTailorsQuarter(pOriginCity) then return false, false; end
+	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED),
+		CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_FASHION_HOUSE_SUPPLIED);
 end
 
-local function CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute)
+local function CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute, bFashionHouseRoute)
 	local amount = 0;
 	if bBakeryRoute then amount = amount + 1; end
 	if bCafeRoute then amount = amount + 1; end
 	if bTailorRoute then amount = amount + 1; end
+	if bFashionHouseRoute then amount = amount + 1; end
 	return amount;
 end
 
@@ -122,8 +125,8 @@ end
 -- of the normal GameInfo.Yields arrays returned by TradeSupport.
 function CSC_BTS_GetQuarterImportAmenityAmount(routeInfo)
 	local bBakeryRoute, bCafeRoute = CSC_BTS_GetBakersTradeRouteState(routeInfo);
-	local bTailorRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
-	return CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute);
+	local bTailorRoute, bFashionHouseRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
+	return CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute, bFashionHouseRoute);
 end
 
 local function CSC_BTS_AppendTooltip(existingTooltip, newLine)
@@ -198,16 +201,17 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 	local routeCount = 0;
 	if bBakeryRoute then routeCount = routeCount + 1; end
 	if bCafeRoute then routeCount = routeCount + 1; end
-	local bTailorRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
-	local amenityAmount = CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute);
-	if routeCount <= 0 and not bTailorRoute then return; end
+	local bTailorRoute, bFashionHouseRoute = CSC_BTS_GetTailorsTradeRouteState(routeInfo);
+	local amenityAmount = CSC_BTS_CountQuarterImportAmenities(bBakeryRoute, bCafeRoute, bTailorRoute, bFashionHouseRoute);
+	local tailorsRouteCount = (bTailorRoute and 1 or 0) + (bFashionHouseRoute and 1 or 0);
+	if routeCount <= 0 and tailorsRouteCount <= 0 then return; end
 
 	if target == "Origin" then
 		if routeCount > 0 then
 			yieldValues[FOOD_INDEX] = (yieldValues[FOOD_INDEX] or 0) + routeCount;
 		end
-		if bTailorRoute then
-			yieldValues[CULTURE_INDEX] = (yieldValues[CULTURE_INDEX] or 0) + 1;
+		if tailorsRouteCount > 0 then
+			yieldValues[CULTURE_INDEX] = (yieldValues[CULTURE_INDEX] or 0) + tailorsRouteCount;
 		end
 
 		if buildTooltip and yieldTooltips ~= nil then
@@ -217,10 +221,10 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 					CSC_BTS_FormatQuarterYieldTooltip(routeCount, "[ICON_Food]", "LOC_YIELD_FOOD_NAME", "imports")
 				);
 			end
-			if bTailorRoute then
+			if tailorsRouteCount > 0 then
 				yieldTooltips[CULTURE_INDEX] = CSC_BTS_PrependTooltip(
 					yieldTooltips[CULTURE_INDEX],
-					CSC_BTS_FormatQuarterYieldTooltip(1, "[ICON_Culture]", "LOC_YIELD_CULTURE_NAME", "imports")
+					CSC_BTS_FormatQuarterYieldTooltip(tailorsRouteCount, "[ICON_Culture]", "LOC_YIELD_CULTURE_NAME", "imports")
 				);
 			end
 
@@ -231,7 +235,7 @@ function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldToolt
 			);
 		end
 	elseif target == "Destination" then
-		local exportAmount = routeCount + (bTailorRoute and 1 or 0);
+		local exportAmount = routeCount + tailorsRouteCount;
 		yieldValues[PRODUCTION_INDEX] = (yieldValues[PRODUCTION_INDEX] or 0) + exportAmount;
 		yieldValues[GOLD_INDEX] = (yieldValues[GOLD_INDEX] or 0) + exportAmount;
 

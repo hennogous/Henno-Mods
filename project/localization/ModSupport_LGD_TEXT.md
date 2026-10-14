@@ -91,7 +91,7 @@ Supply Chains
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_LEU_GARDEN_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Garden also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service if this district has a Conservatory. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_GARDEN_NAME} service if this district has a Conservatory.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_LEU_CONSERVATORY_CHAPTER_CSCHAIN_TITLE
 Supply Chains

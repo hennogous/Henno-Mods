@@ -100,3 +100,28 @@ INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,                            Name,                Value   )
 VALUES  (   'REQ_CSC_TAILORS_PLOT_HAS_INDUSTRY',      'ImprovementType',   'IMPROVEMENT_INDUSTRY'   ),
         (   'REQ_CSC_TAILORS_PLOT_HAS_CORPORATION',   'ImprovementType',   'IMPROVEMENT_CORPORATION'   );
+INSERT OR IGNORE INTO ImprovementModifiers
+        (   ImprovementType,          ModifierId   )
+VALUES  (   'IMPROVEMENT_INDUSTRY',   'MOD_CSC_TAILORS_SPEC_INDUSTRY_ATTACH_QUARTER'   );
+
+INSERT OR IGNORE INTO ImprovementModifiers
+        (   ImprovementType,             ModifierId   )
+VALUES  (   'IMPROVEMENT_CORPORATION',   'MOD_CSC_TAILORS_SPEC_CORPORATION_ATTACH_QUARTER'   );
+
+INSERT OR IGNORE INTO Modifiers
+        (   ModifierId,                                                    ModifierType,                                      OwnerRequirementSetId,                SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_ATTACH_QUARTER',                'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',   'REQSET_CSC_TAILORS_PLOT_HAS_SPEC',   'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_CULTURE_TO_FASHION_HOUSE',      'MODIFIER_BUILDING_YIELD_CHANGE',                  NULL,                                 NULL   ),
+        (   'MOD_CSC_TAILORS_SPEC_CORPORATION_ATTACH_QUARTER',             'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',   'REQSET_CSC_TAILORS_PLOT_HAS_SPEC',   'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'MODIFIER_BUILDING_YIELD_CHANGE',                  NULL,                                 NULL   );
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,                                                    Name,             Value   )
+VALUES  (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_ATTACH_QUARTER',                'ModifierId',     'MOD_CSC_TAILORS_SPEC_INDUSTRY_CULTURE_TO_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_CULTURE_TO_FASHION_HOUSE',      'BuildingType',   'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_CULTURE_TO_FASHION_HOUSE',      'YieldType',      'YIELD_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_CULTURE_TO_FASHION_HOUSE',      'Amount',         2   ),
+        (   'MOD_CSC_TAILORS_SPEC_CORPORATION_ATTACH_QUARTER',             'ModifierId',     'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'BuildingType',   'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'YieldType',      'YIELD_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'Amount',         3   );

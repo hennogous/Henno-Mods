@@ -189,6 +189,9 @@ def validate_content_wiring(
 ) -> list[str]:
     included = content_includes(project_path)
     failures: list[str] = []
+    for output_key, expected_file in wiring.get("content_only", {}).items():
+        if output_key in required_outputs and expected_file not in included:
+            failures.append(f"{output_key}: {expected_file} is not registered as Content in {project_path}")
     for output_key, expected in wiring.get("actions", {}).items():
         if output_key not in required_outputs:
             continue

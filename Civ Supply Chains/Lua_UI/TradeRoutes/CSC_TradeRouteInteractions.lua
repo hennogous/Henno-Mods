@@ -28,6 +28,7 @@ local PROP_HAS_BAKERS_QUARTER			= "CSC_HAS_BAKERS_QUARTER";
 -- "supplied building" logic as the local city effects.
 local PROP_BAKERY_SUPPLIED				= "CSC_BAKERS_BAKERY_SUPPLIED";
 local PROP_CAFE_SUPPLIED					= "CSC_BAKERS_CAFE_SUPPLIED";
+local PROP_FASHION_HOUSE_SUPPLIED = "CSC_TAILORS_FASHION_HOUSE_SUPPLIED";
 local PROP_TAILOR_SUPPLIED				= "CSC_TAILORS_TAILOR_SUPPLIED";
 
 local PROP_IMPORT_CONSUMER_ROUTE			= "CSC_BAKERS_IMPORT_CONSUMER_ROUTE";
@@ -35,10 +36,13 @@ local PROP_IMPORT_SPECIALTY_ROUTE		= "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE";
 local PROP_EXPORT_BAKERY_ROUTE			= "CSC_BAKERS_EXPORT_BAKERY_ROUTE";
 local PROP_EXPORT_CAFE_ROUTE				= "CSC_BAKERS_EXPORT_CAFE_ROUTE";
 local PROP_IMPORT_TAILOR_ROUTE			= "CSC_TAILORS_IMPORT_TAILOR_ROUTE";
+local PROP_IMPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE";
 local PROP_EXPORT_TAILOR_ROUTE			= "CSC_TAILORS_EXPORT_TAILOR_ROUTE";
+local PROP_EXPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE";
 local ROUTE_STACK_BITS					= { 1, 2, 4, 8, 16 };
 local BUILDING_BAKERY = GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"].Index or -1;
 local BUILDING_CAFE = GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"].Index or -1;
+local BUILDING_FASHION_HOUSE = GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"].Index or -1;
 local BUILDING_TAILOR = GameInfo.Buildings["BUILDING_CSC_TAILORS_TAILOR"] ~= nil and GameInfo.Buildings["BUILDING_CSC_TAILORS_TAILOR"].Index or -1;
 local CIVIC_MEDIEVAL_FAIRES = GameInfo.Civics["CIVIC_MEDIEVAL_FAIRES"] ~= nil and GameInfo.Civics["CIVIC_MEDIEVAL_FAIRES"].Index or -1;
 local CIVIC_URBANIZATION = GameInfo.Civics["CIVIC_URBANIZATION"] ~= nil and GameInfo.Civics["CIVIC_URBANIZATION"].Index or -1;
@@ -136,11 +140,13 @@ function CSC_GetBakersTradeRouteState(pOriginCity, pDestinationCity)
 end
 
 function CSC_GetTailorsTradeRouteState(pOriginCity, pDestinationCity)
-	if pOriginCity == nil or pDestinationCity == nil then return false; end
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return false; end
-	if CSC_CityHasFunctioningTailorsQuarter(pOriginCity) then return false; end
+	if pOriginCity == nil or pDestinationCity == nil then return false, false; end
+	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return false, false; end
+	if CSC_CityHasFunctioningTailorsQuarter(pOriginCity) then return false, false; end
 	return CSC_CityHasBuilding(pDestinationCity, BUILDING_TAILOR)
-		and CSC_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED);
+		and CSC_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED),
+		CSC_CityHasBuilding(pDestinationCity, BUILDING_FASHION_HOUSE)
+		and CSC_IsPositiveProperty(pDestinationCity, PROP_FASHION_HOUSE_SUPPLIED);
 end
 
 local function CSC_GetCityStateKey(iPlayerID, iCityID)
@@ -171,10 +177,13 @@ local function CSC_CreateBakersCityState(pCity)
 		ExportBakeryRoute = 0,
 		ExportCafeRoute = 0,
 		ImportTailorRoute = 0,
+		ImportFashionHouseRoute = 0,
 		ExportTailorRoute = 0,
+		ExportFashionHouseRoute = 0,
 		ExportBakeryRouteBits = {},
 		ExportCafeRouteBits = {},
 		ExportTailorRouteBits = {},
+		ExportFashionHouseRouteBits = {},
 	};
 end
 
@@ -224,8 +233,8 @@ end
 -- origins can feed the same supplied Bakery/Cafe and each route should add a return.
 local function CSC_MarkBakersTradeRoute(cityStates, pOriginCity, pDestinationCity)
 	local bBakeryRoute, bCafeRoute = CSC_GetBakersTradeRouteState(pOriginCity, pDestinationCity);
-	local bTailorRoute = CSC_GetTailorsTradeRouteState(pOriginCity, pDestinationCity);
-	if not bBakeryRoute and not bCafeRoute and not bTailorRoute then return; end
+	local bTailorRoute, bFashionHouseRoute = CSC_GetTailorsTradeRouteState(pOriginCity, pDestinationCity);
+	if not bBakeryRoute and not bCafeRoute and not bTailorRoute and not bFashionHouseRoute then return; end
 
 	local originState = cityStates[CSC_GetCityStateKey(pOriginCity:GetOwner(), pOriginCity:GetID())];
 	local destinationState = cityStates[CSC_GetCityStateKey(pDestinationCity:GetOwner(), pDestinationCity:GetID())];
@@ -245,6 +254,10 @@ local function CSC_MarkBakersTradeRoute(cityStates, pOriginCity, pDestinationCit
 		originState.ImportTailorRoute = originState.ImportTailorRoute + 1;
 		destinationState.ExportTailorRoute = destinationState.ExportTailorRoute + 1;
 	end
+	if bFashionHouseRoute then
+		originState.ImportFashionHouseRoute = originState.ImportFashionHouseRoute + 1;
+		destinationState.ExportFashionHouseRoute = destinationState.ExportFashionHouseRoute + 1;
+	end
 end
 
 local function CSC_ApplyBakersRouteBitState(cityState)
@@ -252,6 +265,7 @@ local function CSC_ApplyBakersRouteBitState(cityState)
 		cityState.ExportBakeryRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportBakeryRoute, bit);
 		cityState.ExportCafeRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportCafeRoute, bit);
 		cityState.ExportTailorRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportTailorRoute, bit);
+		cityState.ExportFashionHouseRouteBits[bit] = CSC_GetRouteBitValue(cityState.ExportFashionHouseRoute, bit);
 	end
 end
 
@@ -316,7 +330,9 @@ local function CSC_CityStateMatchesPlotProperties(cityState)
 		and (pPlot:GetProperty(PROP_EXPORT_BAKERY_ROUTE) or 0) == cityState.ExportBakeryRoute
 		and (pPlot:GetProperty(PROP_EXPORT_CAFE_ROUTE) or 0) == cityState.ExportCafeRoute
 		and (pPlot:GetProperty(PROP_IMPORT_TAILOR_ROUTE) or 0) == cityState.ImportTailorRoute
+		and (pPlot:GetProperty(PROP_IMPORT_FASHION_HOUSE_ROUTE) or 0) == cityState.ImportFashionHouseRoute
 		and (pPlot:GetProperty(PROP_EXPORT_TAILOR_ROUTE) or 0) == cityState.ExportTailorRoute
+		and (pPlot:GetProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE) or 0) == cityState.ExportFashionHouseRoute
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 1)) or 0) == (cityState.ExportBakeryRouteBits[1] or 0)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 2)) or 0) == (cityState.ExportBakeryRouteBits[2] or 0)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 4)) or 0) == (cityState.ExportBakeryRouteBits[4] or 0)
@@ -328,10 +344,15 @@ local function CSC_CityStateMatchesPlotProperties(cityState)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 8)) or 0) == (cityState.ExportCafeRouteBits[8] or 0)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 16)) or 0) == (cityState.ExportCafeRouteBits[16] or 0)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 1)) or 0) == (cityState.ExportTailorRouteBits[1] or 0)
+		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 1)) or 0) == (cityState.ExportFashionHouseRouteBits[1] or 0)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 2)) or 0) == (cityState.ExportTailorRouteBits[2] or 0)
+		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 2)) or 0) == (cityState.ExportFashionHouseRouteBits[2] or 0)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 4)) or 0) == (cityState.ExportTailorRouteBits[4] or 0)
+		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 4)) or 0) == (cityState.ExportFashionHouseRouteBits[4] or 0)
 		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 8)) or 0) == (cityState.ExportTailorRouteBits[8] or 0)
-		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 16)) or 0) == (cityState.ExportTailorRouteBits[16] or 0);
+		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 8)) or 0) == (cityState.ExportFashionHouseRouteBits[8] or 0)
+		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 16)) or 0) == (cityState.ExportTailorRouteBits[16] or 0)
+		and (pPlot:GetProperty(CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 16)) or 0) == (cityState.ExportFashionHouseRouteBits[16] or 0);
 end
 
 -- UI-to-gameplay bridge. The gameplay function name goes in OnStart; the remaining
@@ -348,7 +369,9 @@ local function CSC_RequestBakersCityState(cityState)
 	parameters.ExportBakeryRoute = cityState.ExportBakeryRoute;
 	parameters.ExportCafeRoute = cityState.ExportCafeRoute;
 	parameters.ImportTailorRoute = cityState.ImportTailorRoute;
+	parameters.ImportFashionHouseRoute = cityState.ImportFashionHouseRoute;
 	parameters.ExportTailorRoute = cityState.ExportTailorRoute;
+	parameters.ExportFashionHouseRoute = cityState.ExportFashionHouseRoute;
 	parameters.ExportBakeryRouteBit1 = cityState.ExportBakeryRouteBits[1] or 0;
 	parameters.ExportBakeryRouteBit2 = cityState.ExportBakeryRouteBits[2] or 0;
 	parameters.ExportBakeryRouteBit4 = cityState.ExportBakeryRouteBits[4] or 0;
@@ -360,10 +383,15 @@ local function CSC_RequestBakersCityState(cityState)
 	parameters.ExportCafeRouteBit8 = cityState.ExportCafeRouteBits[8] or 0;
 	parameters.ExportCafeRouteBit16 = cityState.ExportCafeRouteBits[16] or 0;
 	parameters.ExportTailorRouteBit1 = cityState.ExportTailorRouteBits[1] or 0;
+	parameters.ExportFashionHouseRouteBit1 = cityState.ExportFashionHouseRouteBits[1] or 0;
 	parameters.ExportTailorRouteBit2 = cityState.ExportTailorRouteBits[2] or 0;
+	parameters.ExportFashionHouseRouteBit2 = cityState.ExportFashionHouseRouteBits[2] or 0;
 	parameters.ExportTailorRouteBit4 = cityState.ExportTailorRouteBits[4] or 0;
+	parameters.ExportFashionHouseRouteBit4 = cityState.ExportFashionHouseRouteBits[4] or 0;
 	parameters.ExportTailorRouteBit8 = cityState.ExportTailorRouteBits[8] or 0;
+	parameters.ExportFashionHouseRouteBit8 = cityState.ExportFashionHouseRouteBits[8] or 0;
 	parameters.ExportTailorRouteBit16 = cityState.ExportTailorRouteBits[16] or 0;
+	parameters.ExportFashionHouseRouteBit16 = cityState.ExportFashionHouseRouteBits[16] or 0;
 	parameters.OnStart = "CSC_SetBakersTradeRouteProperties";
 
 	UI.RequestPlayerOperation(cityState.PlayerID, PlayerOperations.EXECUTE_SCRIPT, parameters);

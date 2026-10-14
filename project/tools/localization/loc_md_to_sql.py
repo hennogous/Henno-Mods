@@ -265,6 +265,12 @@ def tag_where(tags: list[str], explicit_where: str | None) -> str:
 
 
 def render_sql(source: SourceFile) -> str:
+    for entry in source.entries:
+        if re.search(r"\b(?:see|consult|refer to|read|check|look up)\b[^\n.!?]{0,250}\bCivilopedia\b", entry.text, flags=re.IGNORECASE):
+            raise LocError(
+                f"{rel(source.path)}:{entry.line}: state requirements and effects directly; "
+                "do not refer readers to another Civilopedia page"
+            )
     out: list[str] = [
         f"-- {source.title}",
         f"-- Generated from {rel(source.path)} by project/tools/localization/loc_md_to_sql.py",

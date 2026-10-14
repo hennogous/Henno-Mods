@@ -16,6 +16,9 @@ VALUES  (   'DISTRICT_CSC_TAILORS_QUARTER',                                     
         (   'BUILDING_CSC_TAILORS_STAGE_2_SERVICE',                              'KIND_BUILDING'   ),
         (   'BUILDING_CSC_TAILORS_STAGE_3_SERVICE',                              'KIND_BUILDING'   ),
         (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE',                              'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI',                      'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY',                     'KIND_BUILDING'   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',                       'KIND_BUILDING'   ),
         (   'MODIFIER_CSC_TAILORS_SINGLE_CITY_ADJUST_UNIT_TAG_ERA_PRODUCTION',   'KIND_MODIFIER'   );
 
 INSERT OR IGNORE INTO DynamicModifiers
@@ -69,6 +72,13 @@ INSERT OR IGNORE INTO CSC_QuarterMaterialAdjacencyConfig
 VALUES  (   'TAILORS',    'CLASS_CSC_TAILORS_BASE',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   ),
         (   'TAILORS',    'CLASS_CSC_TAILORS_SPEC',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   );
 
+-- Wonder customers hosted by the Fashion House's Stage 4 Services. Both map
+-- planning views highlight their completed Wonder plots as points of sale.
+INSERT OR IGNORE INTO CSC_QuarterWonderSales (QuarterKey, BuildingType)
+VALUES ('TAILORS', 'BUILDING_BOLSHOI_THEATRE'),
+       ('TAILORS', 'BUILDING_BROADWAY'),
+       ('TAILORS', 'BUILDING_SYDNEY_OPERA_HOUSE');
+
 -- Each Stage 3 customer family is a separate sale, even when its Market and
 -- Temple belong to the same city. SQL attach modifiers pay their Culture.
 INSERT OR IGNORE INTO CSC_Stage3CustomerTransactions
@@ -87,6 +97,11 @@ VALUES  (   'CSC_TAILORS_TAILOR_MARKET',    'DISTRICT_CSC_TAILORS_QUARTER', 'BUI
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ImprovementModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO ImprovementModifiers
+        (   ImprovementType,            ModifierId   )
+VALUES  (   'IMPROVEMENT_PLANTATION',   'MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER'   ),
+        (   'IMPROVEMENT_MINE',         'MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER'   );
 
 INSERT INTO ImprovementModifiers
         (   ImprovementType,            ModifierId   )
@@ -140,6 +155,38 @@ VALUES	(
 
 -- Stage 3 population and domestic trade returns are driven by city-center plot
 -- properties maintained by the shared gameplay bridges.
+INSERT INTO DistrictModifiers (DistrictType, ModifierId)
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT INTO DistrictModifiers (DistrictType, ModifierId)
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT INTO DistrictModifiers (DistrictType, ModifierId)
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT INTO DistrictModifiers (DistrictType, ModifierId)
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT INTO DistrictModifiers (DistrictType, ModifierId)
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT INTO DistrictModifiers
+        (   DistrictType,             ModifierId   )
+VALUES  (   'DISTRICT_CITY_CENTER',   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE'   ),
+        (   'DISTRICT_CITY_CENTER',   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_AMENITY'   ),
+        (   'DISTRICT_CITY_CENTER',   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION'   );
+
+INSERT INTO DistrictModifiers
+        (   DistrictType,            ModifierId   )
+SELECT  'DISTRICT_CITY_CENTER',       'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION_BIT_' || Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
 INSERT INTO DistrictModifiers
         (   DistrictType,             ModifierId   )
 VALUES  (   'DISTRICT_CITY_CENTER',   'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_1'   ),
@@ -258,6 +305,49 @@ END
 WHERE BuildingType = 'BUILDING_TEMPLE'
 	OR BuildingType IN (SELECT CivUniqueBuildingType FROM BuildingReplaces WHERE ReplacesBuildingType = 'BUILDING_TEMPLE');
 
+INSERT OR IGNORE INTO Buildings
+        (   BuildingType,                                      Name,                                                       Description,                                                       PrereqCivic,        Cost,   PrereqDistrict,                   PurchaseYield,   Maintenance,   CitizenSlots,   Entertainment,   RegionalRange,   MustPurchase,   AdvisorType   )
+VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',              'LOC_BUILDING_CSC_TAILORS_FASHION_HOUSE_NAME',              'LOC_BUILDING_CSC_TAILORS_FASHION_HOUSE_DESCRIPTION',              'CIVIC_HUMANISM',   250,    'DISTRICT_CSC_TAILORS_QUARTER',   'YIELD_GOLD',    3,             1,              1,               6,               0,              'ADVISOR_CULTURE'   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE',            'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME',            'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_DESCRIPTION',            NULL,               0,      'DISTRICT_THEATER',               NULL,            0,             1,              0,               0,               1,              'ADVISOR_CULTURE'   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI',    'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME',    'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_DESCRIPTION',    NULL,               0,      'DISTRICT_WONDER',                NULL,            0,             0,              0,               0,               1,              'ADVISOR_CULTURE'   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY',   'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME',   'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_DESCRIPTION',   NULL,               0,      'DISTRICT_WONDER',                NULL,            0,             0,              0,               0,               1,              'ADVISOR_CULTURE'   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',     'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME',     'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_DESCRIPTION',     NULL,               0,      'DISTRICT_WONDER',                NULL,            0,             0,              0,               0,               1,              'ADVISOR_CULTURE'   );
+
+UPDATE Buildings
+SET Description = CASE
+	WHEN Description IS NULL OR Description = '' THEN 'LOC_CSC_TAILORS_STAGE_4_AMPHITHEATER_EFFECT'
+	ELSE '{' || Description || '}' || '{LOC_CSC_TAILORS_STAGE_4_AMPHITHEATER_EFFECT_APPEND}'
+END
+WHERE BuildingType = 'BUILDING_AMPHITHEATER' OR BuildingType IN (SELECT CivUniqueBuildingType FROM BuildingReplaces WHERE ReplacesBuildingType = 'BUILDING_AMPHITHEATER');
+
+UPDATE Buildings
+SET Description = CASE
+	WHEN Description IS NULL OR Description = '' THEN 'LOC_CSC_TAILORS_STAGE_4_BOLSHOI_EFFECT'
+	ELSE '{' || Description || '}' || '{LOC_CSC_TAILORS_STAGE_4_BOLSHOI_EFFECT_APPEND}'
+END
+WHERE BuildingType = 'BUILDING_BOLSHOI_THEATRE';
+
+UPDATE Buildings
+SET Description = CASE
+	WHEN Description IS NULL OR Description = '' THEN 'LOC_CSC_TAILORS_STAGE_4_BROADWAY_EFFECT'
+	ELSE '{' || Description || '}' || '{LOC_CSC_TAILORS_STAGE_4_BROADWAY_EFFECT_APPEND}'
+END
+WHERE BuildingType = 'BUILDING_BROADWAY';
+
+UPDATE Buildings
+SET Description = CASE
+	WHEN Description IS NULL OR Description = '' THEN 'LOC_CSC_TAILORS_STAGE_4_SYDNEY_EFFECT'
+	ELSE '{' || Description || '}' || '{LOC_CSC_TAILORS_STAGE_4_SYDNEY_EFFECT_APPEND}'
+END
+WHERE BuildingType = 'BUILDING_SYDNEY_OPERA_HOUSE';
+
+UPDATE Civics
+SET Description = CASE
+	WHEN Description IS NULL OR Description = '' THEN 'LOC_CSC_TAILORS_STAGE_4_CIVIC'
+	ELSE '{' || Description || '}' || '{LOC_CSC_TAILORS_STAGE_4_CIVIC_APPEND}'
+END
+WHERE CivicType = 'CIVIC_OPERA_BALLET';
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Buildings_XP2
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -267,6 +357,13 @@ INSERT OR IGNORE INTO Buildings_XP2
 VALUES  (   'BUILDING_CSC_TAILORS_STAGE_2_SERVICE',   0   ),
         (   'BUILDING_CSC_TAILORS_STAGE_3_SERVICE',   0   );
 
+INSERT OR IGNORE INTO Buildings_XP2
+        (   BuildingType,                                      Pillage   )
+VALUES  (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE',            0   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI',    0   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY',   0   ),
+        (   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',     0   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingPrereqs
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -274,6 +371,10 @@ VALUES  (   'BUILDING_CSC_TAILORS_STAGE_2_SERVICE',   0   ),
 INSERT OR IGNORE INTO BuildingPrereqs
         (   Building,                        PrereqBuilding   )
 VALUES  (   'BUILDING_CSC_TAILORS_TAILOR',   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   );
+
+INSERT OR IGNORE INTO BuildingPrereqs
+        (   Building,                               PrereqBuilding   )
+VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Building_CitizenYieldChanges
@@ -284,9 +385,21 @@ INSERT INTO Building_CitizenYieldChanges
 VALUES  (   'BUILDING_CSC_TAILORS_TAILOR',   'YIELD_CULTURE',   2   ),
         (   'BUILDING_CSC_TAILORS_TAILOR',   'YIELD_GOLD',      1   );
 
+INSERT OR IGNORE INTO Building_CitizenYieldChanges
+        (   BuildingType,                           YieldType,         YieldChange   )
+VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'YIELD_CULTURE',   1   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'YIELD_GOLD',      2   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	BuildingModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO BuildingModifiers
+        (   BuildingType,                           ModifierId   )
+VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_4_SERVICE_ATTACH_THEATER'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_CUSTOMER'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_CUSTOMER'   );
 
 INSERT INTO BuildingModifiers
         (   BuildingType,                              ModifierId   )
@@ -352,9 +465,64 @@ WHERE CivicType = 'CIVIC_DIVINE_RIGHT';
 /*	MODIFIERS */
 --===========================================================================================================================================================================--
 
+INSERT OR IGNORE INTO BuildingModifiers
+        (   BuildingType,                           ModifierId   )
+VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BOLSHOI'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BOLSHOI'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BROADWAY'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BROADWAY'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_SYDNEY'   ),
+        (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_SYDNEY'   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Modifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO Modifiers
+        (   ModifierId,                                                ModifierType,                                            OwnerRequirementSetId,                        SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',           'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER',         'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         'REQSET_CSC_TAILORS_PLOT_HAS_SPEC',           'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY',         'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY',                  'REQSET_CSC_TAILORS_STAGE_4_SUPPLY_PREREQ',   NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_4_SERVICE_GRANT',                   'MODIFIER_SINGLE_CITY_GRANT_BUILDING_IN_CITY_IGNORE',    NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_4_SERVICE_ATTACH_THEATER',          'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM',                   'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',        NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_CUSTOMER',   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP',                       'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',   NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_CUSTOMER',       'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER'   );
+
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit, 'MODIFIER_BUILDING_YIELD_CHANGE', NULL, 'REQSET_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'MODIFIER_BUILDING_YIELD_CHANGE', NULL, 'REQSET_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'MODIFIER_BUILDING_YIELD_CHANGE', NULL, 'REQSET_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'MODIFIER_BUILDING_YIELD_CHANGE', NULL, 'REQSET_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'MODIFIER_BUILDING_YIELD_CHANGE', NULL, 'REQSET_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Modifiers
+        (   ModifierId,                                          ModifierType,                                       OwnerRequirementSetId,   SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',      'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',         NULL,                    'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE'   ),
+        (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_AMENITY',      'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',   NULL,                    'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION',   'MODIFIER_BUILDING_YIELD_CHANGE',                   NULL,                    'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1'   );
+
+INSERT OR IGNORE INTO Modifiers
+		( ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION_BIT_' || Bit,
+	'MODIFIER_BUILDING_YIELD_CHANGE', NULL,
+	'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
 
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,                                            ModifierType,                                              OwnerRequirementSetId,                        SubjectRequirementSetId   )
@@ -438,9 +606,124 @@ SELECT 'PROMOTION_CLASS_NAVAL_RANGED' UNION ALL
 SELECT 'PROMOTION_CLASS_NAVAL_RAIDER'
 );
 
+INSERT OR IGNORE INTO Modifiers
+        (   ModifierId,                                                ModifierType,                                       OwnerRequirementSetId,                        SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BOLSHOI',           'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',   NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BOLSHOI',    'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',    'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BOLSHOI'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BOLSHOI',        'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',    'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BOLSHOI'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BROADWAY',          'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',   NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BROADWAY',   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',    'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BROADWAY'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BROADWAY',       'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',    'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BROADWAY'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_SYDNEY',            'MODIFIER_PLAYER_DISTRICT_ADJUST_TOURISM_CHANGE',   NULL,                                         NULL   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_SYDNEY',     'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',    'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_STAGE_4_SYDNEY'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_SYDNEY',         'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',    'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_STAGE_4_SYDNEY'   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ModifierArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,                                                Name,                     Value   )
+VALUES  (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',           'BuildingType',           'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',           'YieldType',              'YIELD_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',           'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER',         'ModifierId',             'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY',         'Key',                    'CSC_TAILORS_FASHION_HOUSE_SUPPLIED'   ),
+        (   'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY',         'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_STAGE_4_SERVICE_GRANT',                   'BuildingType',           'BUILDING_CSC_TAILORS_STAGE_4_SERVICE'   ),
+        (   'MOD_CSC_TAILORS_STAGE_4_SERVICE_ATTACH_THEATER',          'ModifierId',             'MOD_CSC_TAILORS_STAGE_4_SERVICE_GRANT'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM',                   'Amount',                 2   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_CUSTOMER',   'ModifierId',             'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP',                       'GreatPersonClassType',   'GREAT_PERSON_CLASS_ARTIST'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP',                       'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_CUSTOMER',       'ModifierId',             'MOD_CSC_TAILORS_STAGE_MANAGER_GPP'   );
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit, 'BuildingType', 'BUILDING_CSC_TAILORS_FASHION_HOUSE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit, 'YieldType', 'YIELD_PRODUCTION'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit, 'Amount', Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_AMPHITHEATER'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_BOLSHOI_THEATRE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_BROADWAY'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_SYDNEY_OPERA_HOUSE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,                                          Name,             Value   )
+VALUES  (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',      'YieldType',      'YIELD_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',      'Amount',         1   ),
+        (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_AMENITY',      'Amount',         1   ),
+        (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION',   'BuildingType',   'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION',   'YieldType',      'YIELD_PRODUCTION'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION',   'Amount',         1   );
+
+INSERT OR IGNORE INTO ModifierArguments
+		( ModifierId, Name, Value )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION_BIT_' || Bit, 'BuildingType', 'BUILDING_CSC_TAILORS_FASHION_HOUSE'
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT OR IGNORE INTO ModifierArguments
+		( ModifierId, Name, Value )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION_BIT_' || Bit, 'YieldType', 'YIELD_PRODUCTION'
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT OR IGNORE INTO ModifierArguments
+		( ModifierId, Name, Value )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION_BIT_' || Bit, 'Amount', Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,                                            Name,                     Value   )
@@ -579,9 +862,62 @@ SELECT 'PROMOTION_CLASS_NAVAL_MELEE' AS PromotionClass UNION ALL SELECT 'PROMOTI
 /*	REQUIREMENTS */
 --===========================================================================================================================================================================--
 
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,                                                Name,           Value   )
+VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BOLSHOI',           'Amount',       2   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BOLSHOI',    'ModifierId',   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BOLSHOI'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BOLSHOI',        'ModifierId',   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BROADWAY',          'Amount',       2   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BROADWAY',   'ModifierId',   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BROADWAY'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BROADWAY',       'ModifierId',   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_SYDNEY',            'Amount',       2   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_SYDNEY',     'ModifierId',   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_SYDNEY'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_SYDNEY',         'ModifierId',   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP'   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO RequirementSets
+        (   RequirementSetId,                                RequirementSetType   )
+VALUES  (   'REQSET_CSC_TAILORS_PLOT_HAS_SPEC',              'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',          'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_SUPPLY_PREREQ',      'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER',   'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_CUSTOMER_ANY',       'REQUIREMENTSET_TEST_ANY'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_CUSTOMER',       'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',      'REQUIREMENTSET_TEST_ALL'   );
+
+INSERT OR IGNORE INTO RequirementSets (RequirementSetId, RequirementSetType)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSets (RequirementSetId, RequirementSetType)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSets (RequirementSetId, RequirementSetType)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSets (RequirementSetId, RequirementSetType)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSets (RequirementSetId, RequirementSetType)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSets
+        (   RequirementSetId,                                        RequirementSetType   )
+VALUES  (   'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',         'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1',   'REQUIREMENTSET_TEST_ALL'   );
+
+INSERT OR IGNORE INTO RequirementSets
+		( RequirementSetId, RequirementSetType )
+SELECT 'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
 
 INSERT OR IGNORE INTO RequirementSets
         (   RequirementSetId,                                 RequirementSetType   )
@@ -609,9 +945,68 @@ SELECT 'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_' || Bit, 'REQUIREMENTSET_TES
 FROM CSC_RouteStackBits
 WHERE Bit > 1;
 
+INSERT OR IGNORE INTO RequirementSets
+        (   RequirementSetId,                            RequirementSetType   )
+VALUES  (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BOLSHOI',    'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BROADWAY',   'REQUIREMENTSET_TEST_ALL'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_SYDNEY',     'REQUIREMENTSET_TEST_ALL'   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSetRequirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+        (   RequirementSetId,                                RequirementId   )
+VALUES  (   'REQSET_CSC_TAILORS_PLOT_HAS_SPEC',              'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',          'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',          'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_SUPPLY_PREREQ',      'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_SUPPLY_PREREQ',      'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER',   'REQ_CSC_TAILORS_DISTRICT_IS_THEATER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER',   'REQ_CSC_TAILORS_CITY_HAS_AMPHITHEATER'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_CUSTOMER_ANY',       'REQ_CSC_TAILORS_STAGE_4_THEATER_CUSTOMER'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_CUSTOMER_ANY',       'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_READY'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_CUSTOMER_ANY',       'REQ_CSC_TAILORS_STAGE_4_BROADWAY_READY'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_CUSTOMER_ANY',       'REQ_CSC_TAILORS_STAGE_4_SYDNEY_READY'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_CUSTOMER',       'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_CUSTOMER',       'REQ_CSC_TAILORS_STAGE_4_CUSTOMER_ANY'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',      'REQ_CSC_TAILORS_PLAYER_HAS_OPERA_BALLET'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',      'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',      'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC'   ),
+        (   'REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',      'REQ_CSC_TAILORS_HAS_ADJ_STAGE_4_SERVICE_CUSTOMER'   );
+
+INSERT OR IGNORE INTO RequirementSetRequirements (RequirementSetId, RequirementId)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit, 'REQ_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements (RequirementSetId, RequirementId)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit, 'REQ_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements (RequirementSetId, RequirementId)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit, 'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements (RequirementSetId, RequirementId)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit, 'REQ_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements (RequirementSetId, RequirementId)
+SELECT 'REQSET_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit, 'REQ_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+        (   RequirementSetId,                                        RequirementId   )
+VALUES  (   'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',         'REQ_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE'   ),
+        (   'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1',   'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1'   );
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+		( RequirementSetId, RequirementId )
+SELECT 'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit,
+	'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
 
 INSERT OR IGNORE INTO RequirementSetRequirements
         (   RequirementSetId,                                 RequirementId   )
@@ -655,9 +1050,63 @@ SELECT 'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_' || Bit,
 FROM CSC_RouteStackBits
 WHERE Bit > 1;
 
+INSERT OR IGNORE INTO RequirementSetRequirements
+        (   RequirementSetId,                            RequirementId   )
+VALUES  (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BOLSHOI',    'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BOLSHOI',    'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_READY'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BROADWAY',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_BROADWAY',   'REQ_CSC_TAILORS_STAGE_4_BROADWAY_READY'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_SYDNEY',     'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_STAGE_4_SYDNEY',     'REQ_CSC_TAILORS_STAGE_4_SYDNEY_READY'   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Requirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO Requirements
+        (   RequirementId,                                        RequirementType,                            Inverse   )
+VALUES  (   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',             'REQUIREMENT_PLOT_RESOURCE_TAG_MATCHES',    0   ),
+        (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'REQUIREMENT_COLLECTION_COUNT_ATLEAST',     0   ),
+        (   'REQ_CSC_TAILORS_PLAYER_HAS_OPERA_BALLET',            'REQUIREMENT_PLAYER_HAS_CIVIC',             0   ),
+        (   'REQ_CSC_TAILORS_DISTRICT_IS_THEATER',                'REQUIREMENT_PLOT_DISTRICT_TYPE_MATCHES',   0   ),
+        (   'REQ_CSC_TAILORS_CITY_HAS_AMPHITHEATER',              'REQUIREMENT_CITY_HAS_BUILDING',            0   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_THEATER_CUSTOMER',           'REQUIREMENT_REQUIREMENTSET_IS_MET',        0   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_READY',              'REQUIREMENT_PLOT_PROPERTY_MATCHES',        0   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_BROADWAY_READY',             'REQUIREMENT_PLOT_PROPERTY_MATCHES',        0   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_SYDNEY_READY',               'REQUIREMENT_PLOT_PROPERTY_MATCHES',        0   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_CUSTOMER_ANY',               'REQUIREMENT_REQUIREMENTSET_IS_MET',        0   ),
+        (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_4_SERVICE_CUSTOMER',   'REQUIREMENT_COLLECTION_COUNT_ATLEAST',     0   );
+
+INSERT OR IGNORE INTO Requirements (RequirementId, RequirementType, Inverse)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES', 0
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Requirements (RequirementId, RequirementType, Inverse)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES', 0
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Requirements (RequirementId, RequirementType, Inverse)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES', 0
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Requirements (RequirementId, RequirementType, Inverse)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES', 0
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Requirements (RequirementId, RequirementType, Inverse)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES', 0
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO Requirements
+        (   RequirementId,                                        RequirementType,                       Inverse   )
+VALUES  (   'REQ_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',         'REQUIREMENT_PLOT_PROPERTY_MATCHES',   0   ),
+        (   'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1',   'REQUIREMENT_PLOT_PROPERTY_MATCHES',   0   );
+
+INSERT OR IGNORE INTO Requirements
+		( RequirementId, RequirementType, Inverse )
+SELECT 'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES', 0
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
 
 INSERT OR IGNORE INTO Requirements
         (   RequirementId,                                        RequirementType,                            Inverse   )
@@ -692,6 +1141,88 @@ WHERE Bit > 1;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT OR IGNORE INTO RequirementArguments
+        (   RequirementId,                                        Name,                  Value   )
+VALUES  (   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',             'Tag',                 'CLASS_CSC_TAILORS_SPEC'   ),
+        (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'CollectionType',      'COLLECTION_PLAYER_IMPROVEMENTS'   ),
+        (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'Count',               1   ),
+        (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'RequirementSetId',    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC'   ),
+        (   'REQ_CSC_TAILORS_PLAYER_HAS_OPERA_BALLET',            'CivicType',           'CIVIC_OPERA_BALLET'   ),
+        (   'REQ_CSC_TAILORS_DISTRICT_IS_THEATER',                'DistrictType',        'DISTRICT_THEATER'   ),
+        (   'REQ_CSC_TAILORS_CITY_HAS_AMPHITHEATER',              'BuildingType',        'BUILDING_AMPHITHEATER'   ),
+        (   'REQ_CSC_TAILORS_CITY_HAS_AMPHITHEATER',              'MustBeFunctioning',   1   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_THEATER_CUSTOMER',           'RequirementSetId',    'REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER'   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_READY',              'PropertyName',        'CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_READY'   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_READY',              'PropertyMinimum',     1   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_BROADWAY_READY',             'PropertyName',        'CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY'   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_BROADWAY_READY',             'PropertyMinimum',     1   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_SYDNEY_READY',               'PropertyName',        'CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_READY'   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_SYDNEY_READY',               'PropertyMinimum',     1   ),
+        (   'REQ_CSC_TAILORS_STAGE_4_CUSTOMER_ANY',               'RequirementSetId',    'REQSET_CSC_TAILORS_STAGE_4_CUSTOMER_ANY'   ),
+        (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_4_SERVICE_CUSTOMER',   'CollectionType',      'COLLECTION_PLAYER_DISTRICTS'   ),
+        (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_4_SERVICE_CUSTOMER',   'Count',               1   ),
+        (   'REQ_CSC_TAILORS_HAS_ADJ_STAGE_4_SERVICE_CUSTOMER',   'RequirementSetId',    'REQSET_CSC_TAILORS_ADJ_STAGE_4_CUSTOMER'   );
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit, 'PropertyName', 'CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments (RequirementId, Name, Value)
+SELECT 'REQ_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO RequirementArguments
+        (   RequirementId,                                        Name,                Value   )
+VALUES  (   'REQ_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',         'PropertyName',      'CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE'   ),
+        (   'REQ_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',         'PropertyMinimum',   1   ),
+        (   'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1',   'PropertyName',      'CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1'   ),
+        (   'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1',   'PropertyMinimum',   1   );
+
+INSERT OR IGNORE INTO RequirementArguments
+		( RequirementId, Name, Value )
+SELECT 'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit, 'PropertyName',
+	'CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT OR IGNORE INTO RequirementArguments
+		( RequirementId, Name, Value )
+SELECT 'REQ_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,                                        Name,                  Value   )
@@ -778,6 +1309,12 @@ INSERT INTO CSC_AbilityAttachModifiers
 VALUES  (   'MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_ANCIENT_NAVAL_MELEE',   'ICON_BUILDING_CSC_TAILORS_STAGE_2_SERVICE',   'BUILDING_CSC_TAILORS_STAGE_2_SERVICE',   'TAILORS'   ),
         (   'MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE',                'ICON_BUILDING_CSC_TAILORS_STAGE_3_SERVICE',   'BUILDING_CSC_TAILORS_STAGE_3_SERVICE',   'TAILORS'   );
 
+INSERT OR IGNORE INTO CSC_AbilityAttachModifiers
+        (   ModifierId,                                                AbilityIcon,                                            AbilityIconTarget,                                 NotificationQuarter   )
+VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BOLSHOI',    'ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI',    'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI',    'TAILORS'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BROADWAY',   'ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY',   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY',   'TAILORS'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_SYDNEY',     'ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',     'BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY',     'TAILORS'   );
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	ModifierStrings
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -788,3 +1325,35 @@ VALUES  (   'MOD_CSC_TAILORS_DOCKMASTER_EFFECT_ANCIENT_NAVAL_MELEE',   'Preview'
         (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT',                   'Preview',   'LOC_BUILDING_CSC_TAILORS_STAGE_2_SERVICE_NAME'   ),
         (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                         'Preview',   'LOC_CSC_TAILORS_STAGE_3_EFFECT_DESCRIPTION'   ),
         (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT',                   'Preview',   'LOC_BUILDING_CSC_TAILORS_STAGE_3_SERVICE_NAME'   );
+
+INSERT OR IGNORE INTO CSC_AbilityAttachModifiers
+        (   ModifierId,                                                AbilityIcon,                                   AbilityIconTarget,                        NotificationQuarter   )
+VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_CUSTOMER',   'ICON_BUILDING_CSC_TAILORS_STAGE_4_SERVICE',   'BUILDING_CSC_TAILORS_STAGE_4_SERVICE',   'TAILORS'   );
+
+INSERT OR IGNORE INTO ModifierStrings
+        (   ModifierId,                                Context,     Text   )
+VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM',   'Preview',   'LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION'   ),
+        (   'MOD_CSC_TAILORS_STAGE_4_SERVICE_GRANT',   'Preview',   'LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME'   );
+
+
+INSERT OR IGNORE INTO ModifierStrings
+        (   ModifierId,                                         Context,     Text   )
+VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BOLSHOI',    'Preview',   'LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BOLSHOI'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BROADWAY',   'Preview',   'LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BROADWAY'   ),
+        (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_SYDNEY',     'Preview',   'LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_SYDNEY'   );
+
+-- Expanded building art: source properties use the complete gameplay Service gates.
+-- CSC_ArtProperties.lua mirrors these into binary CITYPROP selection flags.
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId) VALUES
+  ('MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY', 'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY', 'REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ', NULL),
+  ('MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY', 'MODIFIER_SINGLE_CITY_ADJUST_PROPERTY', 'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ', NULL);
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value) VALUES
+  ('MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY', 'Key', 'CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION'),
+  ('MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY', 'Amount', 1),
+  ('MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY', 'Key', 'CSC_TAILORS_STAGE_3_CUSTOMERS'),
+  ('MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY', 'Amount', 1);
+
+INSERT OR IGNORE INTO BuildingModifiers (BuildingType, ModifierId) VALUES
+  ('BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP', 'MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY'),
+  ('BUILDING_CSC_TAILORS_TAILOR', 'MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY');
