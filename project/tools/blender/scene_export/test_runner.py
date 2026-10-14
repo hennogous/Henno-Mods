@@ -13,6 +13,27 @@ spec.loader.exec_module(runner)
 
 
 class RunnerTests(unittest.TestCase):
+    def test_previous_setup_uses_successful_matching_mod_and_skips_failed_runs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def snapshot(name, status, mod, blockers=()):
+                out = root / 'export-runs' / name
+                out.mkdir(parents=True)
+                (out / 'export-setup.json').write_text(json.dumps({
+                    'schema_version': 1, 'mod_root': str(mod), 'has_contract': True}))
+                (out / 'export.defaults.json').write_text('{}')
+                (out / 'export-contract.json').write_text('{}')
+                (out / 'report.json').write_text(json.dumps({'status': status, 'blockers': list(blockers)}))
+                return out
+            valid = snapshot('01', 'converted_pending_asset_editor_and_game_review', root / 'mod')
+            snapshot('02', 'installed_pending_asset_editor_and_game_review', root / 'other-mod')
+            snapshot('03', 'ready_for_windows_conversion', root / 'mod', ['bad geometry'])
+            snapshot('04', 'purged', root / 'mod')
+            self.assertEqual(runner.previous_setup(root, root / 'mod'),
+                             (valid / 'export.defaults.json', valid / 'export-contract.json'))
+            (valid / 'export-contract.json').unlink()
+            self.assertEqual(runner.previous_setup(root, root / 'mod'), (None, None))
+
     def test_revision_defaults_and_explicit_override_precedence(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

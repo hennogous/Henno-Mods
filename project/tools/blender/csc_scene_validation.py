@@ -203,6 +203,24 @@ def validate_snapshot(snapshot):
                         'visible_scene_vertices':direct_count + attachment_count + decal_count}, findings=findings)
 
 
+def export_validation_report(report, policies=None):
+    """Apply explicit export policies without weakening the authoring checks."""
+    import copy
+    result = copy.deepcopy(report)
+    for finding in result['findings']:
+        if finding['severity'] == 'error' and finding['code'] in {
+                'WORLD_LIGHT', 'COLOR_MANAGEMENT', 'REVIEW_KEY'}:
+            finding['severity'] = 'warning'
+        if (finding['severity'] == 'error' and finding['code'] == 'SUPPORT_HEIGHT'
+                and (policies or {}).get('supported_props') == 'independent-pivot'):
+            finding['severity'] = 'warning'
+    result['error_count'] = sum(f['severity'] == 'error' for f in result['findings'])
+    result['warning_count'] = sum(f['severity'] == 'warning' for f in result['findings'])
+    result['automated_pass'] = result['error_count'] == 0
+    result['status'] = 'failed' if result['error_count'] else 'review_required'
+    return result
+
+
 def export_vertex_count(mesh):
     keys = set()
     for polygon in mesh.polygons:

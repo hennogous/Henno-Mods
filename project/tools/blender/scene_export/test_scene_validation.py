@@ -45,6 +45,38 @@ def add_crate(snapshot):
 
 
 class AuthoringTests(unittest.TestCase):
+    def test_independent_support_requires_explicit_export_policy(self):
+        data = scene()
+        root, _ = add_crate(data)
+        root['support'] = 'building'
+        authoring = validator.validate_snapshot(data)
+        self.assertFalse(validator.export_validation_report(authoring)['automated_pass'])
+        export = validator.export_validation_report(authoring, {'supported_props': 'independent-pivot'})
+        self.assertTrue(export['automated_pass'])
+        self.assertFalse(authoring['automated_pass'])
+        data['objects'][0]['uv_layers'] = 1
+        export = validator.export_validation_report(validator.validate_snapshot(data), {'supported_props': 'independent-pivot'})
+        self.assertFalse(export['automated_pass'])
+
+    def test_export_lighting_is_advisory_without_changing_authoring_report(self):
+        data = scene()
+        data['scenes']['Export']['world'] = None
+        data['scenes']['Export']['engine'] = 'BLENDER_EEVEE_NEXT'
+        data['scenes']['Review']['review_key'] = None
+        authoring = validator.validate_snapshot(data)
+        before = copy.deepcopy(authoring)
+        export = validator.export_validation_report(authoring)
+        self.assertFalse(authoring['automated_pass'])
+        self.assertTrue(export['automated_pass'])
+        self.assertEqual(export['error_count'], 0)
+        self.assertEqual(export['warning_count'], 3)
+        self.assertEqual(authoring, before)
+        data['objects'][0]['uv_layers'] = 1
+        export = validator.export_validation_report(validator.validate_snapshot(data))
+        self.assertFalse(export['automated_pass'])
+        self.assertEqual(export['error_count'], 1)
+        self.assertIn('UV_CHANNELS', {f['code'] for f in export['findings'] if f['severity'] == 'error'})
+
     def codes(self, data):
         return {f['code'] for f in validator.validate_snapshot(data)['findings'] if f['severity']=='error'}
 

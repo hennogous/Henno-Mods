@@ -62,6 +62,16 @@ class AssetContractTests(unittest.TestCase):
                                  'construction_geometry':'CSC_TAILORS_Shop_CON+PIL'}, self.mod)
         self.assertEqual(contract['ruin_geometry'],'CSC_TAILORS_Shop_CON+PIL')
 
+    def test_explicit_cobble_material_is_retained_and_validated(self):
+        metadata = {'quarter': 'TAILORS', 'supply_chain_stage': 3,
+                    'cobble_material': 'CSC_ALL_Stage_3_Cobbles_Sq'}
+        with self.assertRaisesRegex(ValueError, 'required existing material missing'):
+            contract_for('CSC_TAILORS_Tailor', metadata, self.mod)
+        (self.mod / 'Materials/CSC_ALL_Stage_3_Cobbles_Sq.mtl').write_text(
+            '<Material><m_Name text="CSC_ALL_Stage_3_Cobbles_Sq"/></Material>')
+        contract = contract_for('CSC_TAILORS_Tailor', metadata, self.mod)
+        self.assertEqual(contract['cobble_material'], metadata['cobble_material'])
+
     def test_authored_paving_can_replace_missing_stage_cobble(self):
         metadata = {'quarter': 'TAILORS', 'supply_chain_stage': 4,
                     'construction_geometry': 'CSC_TAILORS_Shop_CON+PIL',

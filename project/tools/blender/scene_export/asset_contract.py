@@ -106,8 +106,11 @@ def contract_for(asset_id, metadata, mod):
         elif cobble != f'CSC_ALL_Stage_{stage}_Cobble_Decals':
             raise ValueError(f'{asset_id}: cobble_geometry must be the stage default or null for authored paving')
         else:
-            result.update(cobble_geometry=cobble, cobble_visible=['Worked'])
-            required.append(COBBLE_MATERIAL)
+            material = metadata.get('cobble_material', COBBLE_MATERIAL)
+            from export_scene import identifier
+            identifier(material)
+            result.update(cobble_geometry=cobble, cobble_visible=['Worked'], cobble_material=material)
+            required.append(material)
     for ident in (result['ruin_geometry'], *([result['cobble_geometry']] if 'cobble_geometry' in result else [])):
         if ident == metadata.get('construction_geometry') and ident not in (
                 'CSC_Level_1_CON+PIL', 'CSC_Level_1_S_CON+PIL',
@@ -255,7 +258,7 @@ def validate_stage(job, decoded, stage):
                 if actual != wanted:
                     raise ValueError(f'{ident}/{mesh["name"]}/{mat["name"]}/{param}: bundled shader state differs from source')
         ruin_id = contract['ruin_geometry']
-        if contract.get('authored_ruin_geometry') != (ruin_id in authored_ruins):
+        if bool(contract.get('authored_ruin_geometry')) != (ruin_id in authored_ruins):
             raise ValueError(f'{ident}: authored construction geometry declaration differs from source inventory')
         if ruin_id not in models:
             raise ValueError(f'{ident}: missing shared model {ruin_id}')
@@ -269,7 +272,7 @@ def validate_stage(job, decoded, stage):
                 raise ValueError(f'{ident}: missing shared model {cobble_id}')
             cobble_geo = read_xml(mod / 'Geometries' / (cobble_id + '.geo'))
             assert_groups(models[cobble_id], cobble_geo,
-                          lambda mesh, group, state: (state in contract['cobble_visible'], COBBLE_MATERIAL))
+                          lambda mesh, group, state: (state in contract['cobble_visible'], contract.get('cobble_material', COBBLE_MATERIAL)))
         for decal_id in entry.get('decals', []):
             if decal_id not in models:
                 raise ValueError(f'{ident}: missing authored PIL decal model {decal_id}')
@@ -311,9 +314,9 @@ def validate_stage(job, decoded, stage):
                 prop_root = read_xml(stage / 'Assets' / (asset + '.ast'))
                 prop_model = prop_root.find(MODELS + '/Element')
                 actual_materials = {material for visible, material in state_rows(prop_model).values() if visible}
-                expected_material = contract['building_material'] if 'leanto' in asset.casefold() else contract['prop_material']
-                if not actual_materials or not all(material_is_ao_variant(m, expected_material, stage, mod) for m in actual_materials):
-                    raise ValueError(f'{ident}/{instance_id}: new CSC prop uses {actual_materials}, expected {expected_material}')
+                expected_materials = (contract['building_material'], contract['ruin_material']) if 'leanto' in asset.casefold() else (contract['prop_material'],)
+                if not actual_materials or not all(any(material_is_ao_variant(m, expected, stage, mod) for expected in expected_materials) for m in actual_materials):
+                    raise ValueError(f'{ident}/{instance_id}: new CSC prop uses {actual_materials}, expected one of {expected_materials}')
         checked.append(ident)
     missing_props = {e['asset_id'] for e in job.get('props', [])} - used_new_props
     missing_decals = {e['geometry_id'] for e in job.get('decals', [])} - used_decals

@@ -231,14 +231,14 @@ def merge_meshes(name, meshes):
             'triangles': triangles, 'materials': materials, 'source_meshes': sources}
 
 
-def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
+def inspect(path, kind, asset_id, scene_name='Export', expected_sha=None, policies=None):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from csc_scene_validation import suspend_csc_repairs
     with suspend_csc_repairs():
-        return _inspect(path, kind, asset_id, scene_name, expected_sha)
+        return _inspect(path, kind, asset_id, scene_name, expected_sha, policies)
 
 
-def _inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
+def _inspect(path, kind, asset_id, scene_name='Export', expected_sha=None, policies=None):
     before = digest(path)
     if expected_sha and before != expected_sha:
         raise ValueError(f'{path}: changed since discovery; rerun export')
@@ -253,8 +253,8 @@ def _inspect(path, kind, asset_id, scene_name='Export', expected_sha=None):
     validation = None
     if kind == 'building':
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-        from csc_scene_validation import validate_current_scene, format_report
-        validation = validate_current_scene()
+        from csc_scene_validation import validate_current_scene, export_validation_report, format_report
+        validation = export_validation_report(validate_current_scene(), policies)
         if not validation['automated_pass']:
             raise ValueError(format_report(validation))
     attachments, geometry = [], []
@@ -415,7 +415,7 @@ def main():
             raise ValueError(f'Duplicate model identity: {ident}')
         models[ident] = inspect(Path(item['blend']), 'shared_geometry', ident, item.get('scene', 'Export'), item.get('source_sha256'))
     for item in job['buildings']:
-        row = inspect(Path(item['blend']), 'building', item['asset_id'], item.get('scene', 'Export'), item.get('source_sha256'))
+        row = inspect(Path(item['blend']), 'building', item['asset_id'], item.get('scene', 'Export'), item.get('source_sha256'), job.get('policies'))
         if row['asset_id'] in models:
             raise ValueError(f'Duplicate model identity: {row["asset_id"]}')
         models[row['asset_id']] = row

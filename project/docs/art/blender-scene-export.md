@@ -1,5 +1,9 @@
 # Blender scene decoder and asset exporter
 
+**Workflow override, 13 October 2026:** [AE owns assembly and placement](ae-owned-assembly-workflow.md).
+This tool still implements legacy whole-scene export. Do not use it to regenerate
+a Henno-edited AE assembly. For icon/SV inputs, use [the saved-AE renderer](2d/ae-asset-renderer.md).
+
 Use `project/tools/blender/export_assets.py` for the reusable-prop workflow. It replaces
 `csc_export_pipeline.ps1` for composed building scenes. The older script exports
 whole scenes, handles multi-mesh GEO metadata incorrectly, and does not decode
@@ -10,6 +14,24 @@ It stages CN6, GEO, AST, materials, texture descriptors/sources and an idempoten
 XLP merge. Windows then converts CN6 to FGX (and PNG to DDS when explicitly using
 material generation), and the normal run installs the converted files into the
 mod with destination checks, backups and rollback on errors.
+
+## Routine re-exports
+
+For an existing prepared scene, save the blend after moving or rotating a prop
+and run the same directory command. A normal run now keeps a setup snapshot
+inside its `export-runs/<timestamp>/` folder. If the revision's settings sidecars
+are later absent, the runner reuses the newest successful setup for the same mod
+from that folder's export history. Explicit options and current revision sidecars
+take precedence. Failed runs cannot supply setup. Keep `export-runs` if relying
+on this fallback; custom `--output` locations are not searched automatically.
+
+Quarter/stage and material choices remain initial preparation decisions. They
+do not need to be re-entered for a placement edit. Export validation reports
+world lighting, color management and Review Sun deviations as warnings, since
+these affect previews rather than the exported geometry or asset materials.
+The standalone authoring validator still enforces the prescribed review setup.
+Geometry, missing materials, asset identity and unsupported transform checks
+remain export blockers.
 
 ## Contracted building exports (September 2026)
 
@@ -36,8 +58,9 @@ Review scenes marked `csc_export.kind: ignore` do not count as export candidates
 Multiple actual export scenes still block discovery. A discovery failure reports
 the offending blend and its underlying error before contract matching.
 
-The run records the sidecar's path and hash in `contract-source.json`; the resolved
-per-building contract is also in `job.json` and `discovery-report.json`.
+The run records the sidecar's path and hash in `contract-source.json`, retains
+copies of the effective settings with `export-setup.json`, and saves the resolved
+per-building contract in `job.json` and `discovery-report.json`.
 
 An export contract may list expanded-model files in `optional_blends` and their
 building IDs in `optional_buildings`. The normal runner skips those blends even
@@ -48,6 +71,14 @@ example, `C:\Users\Shadow\Desktop\Codex\art-export-contracts\tailor-revision09.j
 Tailor by default and includes `Tailor_2` only on request. The optional flag
 exports the standard files as well, so review the output and destination before
 installing an expanded-model run.
+
+Tailor `revision-10-vertex-budget` now carries `export-contract.json` and
+`export.defaults.json` beside its blends (7 October 2026). These declare Tailors,
+Stage 3, the authored shared Tailor CON+PIL source, the complete source inventory
+(including Work Area Decals), and replacement of the four revised standard prop
+masters: Dress Form, Folded Stock, LeanTo and Table Contents. The normal command
+exports the standard model; `--include-optional` includes Tailor_2 and its prop
+masters. Keep both settings files with the revision when transferring it.
 
 The supply-chain stage maps to a building level: Stage 2 → Level 1, Stage 3 → Level 2,
 Stage 4 → Level 3. Stage 2 additionally needs `construction_geometry` set to either
@@ -88,6 +119,15 @@ building groups, retains `Pillage_Construction_01` for scaffolding, and applies
 `CSC_ALL_Cobble_Patch_Decal` to the stage 3/4 cobble model. Existing MTL and texture
 files are reused without modification. Missing files block only a run that needs
 them, so Stage 4 can wait until its shared assets are authored.
+
+Set `cobble_material` in the building scene metadata or its contract sidecar to
+retain an explicitly chosen material on the shared stage decal. Tailor revision 10
+uses `CSC_ALL_Stage_3_Cobbles_Sq`, matching Henno's AE binding. The exporter checks
+that material and its texture dependencies and preserves the binding on re-export;
+omitting the field retains the existing `CSC_ALL_Cobble_Patch_Decal` default.
+Standalone lean-to props may use the Quarter's non-emissive building material
+(`CSC_<QUARTER>_NE`) as well as its emissive counterpart. Their declared existing
+prop templates retain authored state parameters.
 
 Fashion House exposed two source/integration errors on 5 October 2026. Four
 inherited construction/pillage shell faces were included in its intact mesh, and
@@ -195,18 +235,41 @@ An explicitly authored prop update to an installed CSC identity must be listed i
 reference-only assets such as the Textile Workshop's basket and spinning wheel from
 being overwritten by copied masters.
 
-The Windows AO conversion uses the installed Firaxis 8-bit luminance DDS header
+The Windows AO conversion uses the installed Firaxis 8-bit scalar DDS header
 with texconv's mip pixels. For AO TEX files, `m_NumMipMaps` is the highest mip
 index (2048 → 11; 1024 → 10), while the DDS header counts all levels (12 and 11).
-On 15 September 2026, texconv's direct R8 output marked the channel as alpha and
+On 15 September 2026, texconv's direct R8 output used a different pixel-format header and
 the exporter wrote 12 into the 2048 AO TEX; Asset Editor crashed opening the
 Textile Workshop. The corrected package opened and displayed in Asset Editor.
+
+On 12 October 2026, the standalone Storage S/M export script bypassed that
+normalization and installed `CSC_Atlas_AO2.dds` with pixel-format flags `0x20000`
+(`DDPF_LUMINANCE`), rather than the working Firaxis scalar header's `0x40`.
+Building materials, standalone props and the Wind Mill tower still opened, but
+the assembled Wind Mill and many Bakers/Tailors buildings crashed. A full AE
+crash dump identified **CSC_Atlas_AO2**, internal texture format **1009**, and a
+null encoder call inside `ModelCooker_ModelCookTexture.cpp` (toolhost return RVA
+`0x4ffc81`). Thus a successful material preview does not prove attachment-time
+texture cooking is safe. Restoring the working DDS header preserves every mip
+pixel; do not discard the rebake or regenerate geometry for this failure.
+`export_storage_sm_ao.py` now calls the same `normalize_ao_dds` and `validate_dds`
+helpers before installation. Henno confirmed the repair; the fresh AE log records
+successful opens of `CSC_BAKERS_Wind_Mill` and `CSC_TAILORS_Storage_L` at 13:52:53
+and 13:53:16 local time on 12 October. Game/cooked-package validation is separate.
 
 From the Henno-Mods repository root, run with the copied revision folder as input:
 
 ```powershell
-python project/tools/blender/export_assets.py --blend-directory 'C:\path\to\revision-07-uniform-scale' --mod-root 'C:\path\to\Henno Mods\Civ Supply Chains' --library 'C:\path\to\CSC_Prop_Library' --blender 'C:\path\to\blender.exe' --texconv 'C:\path\to\texconv.exe'
+python project/tools/blender/export_assets.py 'C:\path\to\revision-07-uniform-scale'
 ```
+
+Only the directory path is required; `--blend-directory 'C:\path\to\folder'`
+also remains supported. Use either form, not both. The runner defaults to the repository's
+`Civ Supply Chains` project, Shadow's prop library at
+`C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library`, Blender at
+`C:\Program Files\Blender Foundation\Blender 5.1\blender.exe`, and the repository's
+`project/tools/directxtex/texconv.exe` (falling back to PATH if absent). Override
+these with `--mod-root`, `--library`, `--blender` or `--texconv` as needed.
 
 `--converter` can override the default repository `project/tools/cn6libs/CN6ToFGX.exe`.
 Keep the converter's existing DLLs alongside it. `--stage-only` skips FGX/DDS
@@ -282,7 +345,7 @@ exporter's installation record and are not changed by uninstall.
 
 The modular `export_scene.py` commands and older workshop-specific PowerShell
 wrapper remain available for development, but the repository Python entry point is the normal
-workflow. `--blend-directory` is required for export; helpers resolve relative to
+workflow. A directory path (bare or with `--blend-directory`) is required for export; helpers resolve relative to
 the script, regardless of the shell working directory.
 
 Installation copies the generated assets/geometries/materials/textures and their

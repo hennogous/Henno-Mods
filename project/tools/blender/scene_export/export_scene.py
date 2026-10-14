@@ -592,7 +592,7 @@ def build(job):
             ms.append(ruin)
             if 'cobble_geometry' in contract:
                 cobble=shared_model_from_geo(mod,contract['cobble_geometry'],
-                    lambda group: COBBLE_MATERIAL, lambda group: tuple(contract['cobble_visible']))
+                    lambda group: contract.get('cobble_material', COBBLE_MATERIAL), lambda group: tuple(contract['cobble_visible']))
                 ms.append(cobble)
         for decal_id in entry.get('decals',[]):
             if models[decal_id]['kind']!='decal': raise ValueError('Expected decal geometry')
@@ -772,6 +772,19 @@ def convert(job,converter,texconv):
     print('Windows conversion complete. Stage is ready for Asset Editor review; no live project files changed.')
 
 
+def installation_group(job):
+    """Scope retirement to the source scene group, even with a shared output root."""
+    if job.get('source_group'):
+        return (str(Path(job['source_group']).resolve()).casefold(),)
+    for category in ('buildings', 'props', 'decals'):
+        parents = {str(Path(row['blend']).resolve().parent).casefold()
+                   for row in job.get(category, []) if row.get('blend')}
+        if parents:
+            return tuple(sorted(parents))
+    # Legacy direct-engine jobs had one export-runs directory per scene group.
+    return (str(Path(job['output']).resolve().parent).casefold(),)
+
+
 def install(job):
     """Explicit Windows deployment, with preflight, backups and rollback; merge live XLP."""
     out=Path(job['output']); stage=out/'stage'; mod=Path(job['mod_root'])
@@ -791,6 +804,8 @@ def install(job):
         prior_job=json.loads(prior_path.read_text())
         prior_report=json.loads(prior_report_path.read_text())
         if Path(prior_job.get('mod_root','')).resolve()!=mod.resolve():
+            continue
+        if installation_group(prior_job) != installation_group(job):
             continue
         if prior_report.get('status') in ('purged','uninstalled'):
             # A deliberate removal ends this folder's ownership chain. Older
