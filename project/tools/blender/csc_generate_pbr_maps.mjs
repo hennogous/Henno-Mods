@@ -33,6 +33,10 @@ Options:
   --preset <name>           Region rules: auto, csc-textile-prop. Default: auto.
   --normal-strength <num>   Multiplier for normal map relief. Default: 2.25.
   --height <file.png>       Aligned grayscale height; replaces brightness-derived relief.
+  --height-scale <num>      Black-to-white height span in surface units; requires --surface-size.
+  --surface-size <W,H>      Physical width,height of this patch in the same units as height.
+  --gloss-map <file.png>    Aligned scalar gloss; overrides region gloss (bias still applies).
+  --metalness-map <file>    Aligned scalar metalness; overrides region metalness.
   --regions <file.json>     Explicit rectangular material regions (see textures-and-uvs.md).
   --reference-size <px>     Scale derivatives relative to this resolution. Default: no scaling.
   --normal-y <convention>   directx (legacy default) or opengl (Blender).
@@ -96,6 +100,18 @@ function parseArgs(argv) {
       case "--height":
         args.height = readValue();
         break;
+      case "--height-scale":
+        args.heightScale = Number(readValue());
+        break;
+      case "--surface-size":
+        args.surfaceSize = readValue().split(",").map(Number);
+        break;
+      case "--gloss-map":
+        args.glossMap = readValue();
+        break;
+      case "--metalness-map":
+        args.metalnessMap = readValue();
+        break;
       case "--regions":
         args.regions = readValue();
         break;
@@ -144,6 +160,14 @@ function parseArgs(argv) {
     if (!Number.isFinite(args[key])) throw new Error(`Invalid numeric value for ${key}`);
   }
   if (args.normalStrength < 0) throw new Error("--normal-strength must be nonnegative");
+  if (args.heightScale !== undefined || args.surfaceSize !== undefined) {
+    if (!args.height || !Number.isFinite(args.heightScale) || args.heightScale <= 0 ||
+        !Array.isArray(args.surfaceSize) || args.surfaceSize.length !== 2 ||
+        args.surfaceSize.some(v => !Number.isFinite(v) || v <= 0)) {
+      throw new Error("Physical relief requires --height, positive --height-scale and --surface-size W,H");
+    }
+    if (args.referenceSize !== undefined) throw new Error("--surface-size replaces --reference-size; choose one scaling mode");
+  }
   if (args.referenceSize !== undefined && (!Number.isFinite(args.referenceSize) || args.referenceSize <= 0)) {
     throw new Error("--reference-size must be positive");
   }
@@ -348,16 +372,21 @@ async function main() {
   const width = info.width;
   const height = info.height;
   const regions = await loadRegions(args.regions, width, height);
-  let explicitHeight;
-  if (args.height) {
-    const [baseMeta, heightMeta] = await Promise.all([sharp(basePath).metadata(), sharp(args.height).metadata()]);
-    if (baseMeta.width !== heightMeta.width || baseMeta.height !== heightMeta.height) {
-      throw new Error("Height map dimensions must match the source base atlas before resizing");
+  const baseMeta = await sharp(basePath).metadata();
+  async function loadScalar(file, label) {
+    if (!file) return undefined;
+    const meta = await sharp(file).metadata();
+    if (baseMeta.width !== meta.width || baseMeta.height !== meta.height) {
+      throw new Error(`${label} map dimensions must match the source base atlas before resizing`);
     }
-    // Height is scalar data: use the stored red channel without an sRGB transform.
-    explicitHeight = await sharp(args.height).resize(width, height, { fit: "fill" })
+    // Scalar data: use the stored red channel without a luminance/gamma transform.
+    return sharp(file).resize(width, height, { fit: "fill" })
       .removeAlpha().extractChannel(0).raw().toBuffer();
   }
+  const [explicitHeight, explicitGloss, explicitMetalness] = await Promise.all([
+    loadScalar(args.height, "Height"), loadScalar(args.glossMap, "Gloss"),
+    loadScalar(args.metalnessMap, "Metalness"),
+  ]);
   const pixelIndex = (x, y) => (y * width + x) * 4;
   const getLum = (x, y) => {
     const cx = Math.max(0, Math.min(width - 1, x));
@@ -411,8 +440,15 @@ async function main() {
 
       const { dx: rawDx, dy: rawDy } = heightGradient(x, y, settings.pixels || [0, 0, width, height]);
       // Apply material amplitude AFTER differentiation to avoid artificial steps.
-      const dx = rawDx * args.normalStrength * settings.normal * (args.referenceSize ? width / args.referenceSize : 1);
-      const dy = rawDy * args.normalStrength * settings.normal * (args.referenceSize ? height / args.referenceSize : 1);
+      // The Sobel /4 above returns twice the per-pixel slope. In physical mode,
+      // convert that slope to rise/run. Normal strength 1 is the authored relief.
+      // Legacy/reference modes retain their original behavior for existing atlases.
+      const scaleX = args.surfaceSize ? args.heightScale * width / (2 * args.surfaceSize[0])
+        : (args.referenceSize ? width / args.referenceSize : 1);
+      const scaleY = args.surfaceSize ? args.heightScale * height / (2 * args.surfaceSize[1])
+        : (args.referenceSize ? height / args.referenceSize : 1);
+      const dx = rawDx * args.normalStrength * settings.normal * scaleX;
+      const dy = rawDy * args.normalStrength * settings.normal * scaleY;
       let nx = -dx;
       // Image Y points down; Blender's tangent V points up.
       let ny = args.normalY === "opengl" ? dy : -dy;
@@ -426,14 +462,16 @@ async function main() {
       normal[i + 2] = clampByte((nz * 0.5 + 0.5) * 255);
       normal[i + 3] = 255;
 
-      const glossValue = clamp01(settings.gloss + (regions ? 0 : (lum - 0.5) * 0.035) + args.glossBias);
+      const glossValue = clamp01((explicitGloss ? explicitGloss[y * width + x] / 255
+        : settings.gloss + (regions ? 0 : (lum - 0.5) * 0.035)) + args.glossBias);
       const glossByte = clampByte(glossValue * 255);
       gloss[i] = glossByte;
       gloss[i + 1] = glossByte;
       gloss[i + 2] = glossByte;
       gloss[i + 3] = 255;
 
-      metal[i] = metal[i + 1] = metal[i + 2] = clampByte((settings.metalness || 0) * 255);
+      metal[i] = metal[i + 1] = metal[i + 2] = explicitMetalness
+        ? explicitMetalness[y * width + x] : clampByte((settings.metalness || 0) * 255);
       metal[i + 3] = 255;
     }
   }
@@ -473,6 +511,10 @@ async function main() {
         normalY: args.normalY,
         normalStrength: args.normalStrength,
         referenceSize: args.referenceSize || null,
+        heightScale: args.heightScale ?? null,
+        surfaceSize: args.surfaceSize || null,
+        glossSource: args.glossMap ? path.resolve(args.glossMap) : "material regions/preset",
+        metalnessSource: args.metalnessMap ? path.resolve(args.metalnessMap) : "material regions/preset",
         wrote: report,
       },
       null,

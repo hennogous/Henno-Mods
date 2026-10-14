@@ -75,3 +75,51 @@ test('invalid height, region coverage and obsolete AO fail before writing maps',
   assert.match(f.run().stderr,/dimensions must match/);
   await assert.rejects(fs.access(path.join(f.dir,'Test_N.png')));
 });
+
+test('physical relief matches analytic slopes on rectangular surfaces and survives resizing',async t=>{
+  const f=await fixture(t,64);
+  const regions=path.join(f.dir,'regions.json');
+  await fs.writeFile(regions,JSON.stringify([{bounds:[0,0,1,1],normal:1}]));
+  await f.writeHeight((x,y)=>20+x*2+y);
+  const args=['--regions',regions,'--normal-strength','1','--normal-y','opengl',
+    '--height-scale','1','--surface-size','2,1'];
+  assert.equal(f.run(...args).status,0);
+  const full=await f.read('N');const i=(32*64+32)*3;
+  const slope=64/255, length=Math.sqrt(1+2*slope*slope);
+  const expected=[-slope/length,slope/length,1/length].map(v=>Math.round((v*.5+.5)*255));
+  assert.deepEqual([...full.subarray(i,i+3)],expected);
+  assert.equal(f.run(...args,'--size','32').status,0);
+  const half=await f.read('N');const j=(16*32+16)*3;
+  for(let c=0;c<3;c++)assert.ok(Math.abs(half[j+c]-expected[c])<=2);
+});
+
+test('painted scalar maps override regions without treating dark paint as metal',async t=>{
+  const f=await fixture(t);
+  const g=path.join(f.dir,'gloss.png'),m=path.join(f.dir,'metal.png');
+  const rgb=Buffer.alloc(32*32*3);
+  for(let y=0;y<32;y++)for(let x=0;x<32;x++) {
+    const i=(y*32+x)*3;rgb[i]=x<16?40:190;rgb[i+1]=255;rgb[i+2]=0;
+  }
+  await sharp(rgb,{raw:{width:32,height:32,channels:3}}).png().toFile(g);
+  const metal=Buffer.alloc(32*32);
+  for(let y=10;y<20;y++)for(let x=10;x<20;x++)metal[y*32+x]=220;
+  await sharp(metal,{raw:{width:32,height:32,channels:1}}).png().toFile(m);
+  assert.equal(f.run('--gloss-map',g,'--metalness-map',m,'--gloss-bias','.1').status,0);
+  const gm=await f.read('G'),mm=await f.read('M');
+  assert.equal(gm[0],66);assert.equal(gm[31*3],216);
+  assert.equal(mm[(15*32+15)*3],220);assert.equal(mm[31*3],0);
+});
+
+test('physical parameters and scalar-map alignment fail before writing',async t=>{
+  const f=await fixture(t);
+  for(const args of [ ['--height-scale','1'], ['--surface-size','1,1'],
+    ['--height-scale','1','--surface-size','0,1'],
+    ['--height-scale','1','--surface-size','1,1','--reference-size','32'] ]) {
+    assert.notEqual(f.run(...args).status,0);
+  }
+  const g=path.join(f.dir,'bad.png');
+  await sharp({create:{width:16,height:16,channels:3,background:'#888'}}).png().toFile(g);
+  assert.match(f.run('--gloss-map',g).stderr,/Gloss map dimensions must match/);
+  assert.match(f.run('--metalness-map',g).stderr,/Metalness map dimensions must match/);
+  await assert.rejects(fs.access(path.join(f.dir,'Test_N.png')));
+});

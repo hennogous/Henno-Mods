@@ -171,20 +171,13 @@ class SyncTests(unittest.TestCase):
         self.assertEqual((self.mac / "shadow.txt").read_text(), "Shadow work\n")
         self.assertEqual((self.shadow / "mac.txt").read_text(), "Mac work\n")
 
-    def test_cli_default_syncs_directly_without_bundles(self):
-        (self.mac / "mac-default.txt").write_text("Mac work\n")
-        (self.shadow / "shadow-default.txt").write_text("Shadow work\n")
-        def local_remote(request, target):
-            return operate(**request)
+    def test_cli_defaults_to_bundle_transfer(self):
         with patch("shadow_sync.bindings", return_value=[self.spec]), \
-             patch("shadow_sync.remote", side_effect=local_remote), \
-             patch("shadow_sync.deliver_bundle", side_effect=AssertionError("Default must use direct Git")), \
-             patch("shadow_sync.receive_bundle", side_effect=AssertionError("Default must use direct Git")), \
+             patch("shadow_sync.synchronize", return_value=[]) as synchronize_call, \
              patch.object(sys, "argv", ["shadow-sync"]), \
              contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(main(), 0)
-        self.assert_converged()
-        self.assertEqual((self.mac / "shadow-default.txt").read_text(), "Shadow work\n")
+        self.assertFalse(synchronize_call.call_args.kwargs["shadow_git"])
 
 
 if __name__ == "__main__":

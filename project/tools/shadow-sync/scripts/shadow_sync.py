@@ -182,10 +182,10 @@ def main():
     parser.add_argument("--shadow", default="Shadow@100.122.143.96")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--shadow-git", dest="shadow_git", action="store_true",
-                      help="use direct GitHub fetch/push on Shadow (default)")
+                      help="use direct GitHub fetch/push on Shadow")
     mode.add_argument("--bundle", dest="shadow_git", action="store_false",
-                      help="use SSH bundles with all GitHub access on Mac")
-    parser.set_defaults(shadow_git=True)
+                      help="use SSH bundles with all GitHub access on Mac (default)")
+    parser.set_defaults(shadow_git=False)
     args = parser.parse_args()
     specs = [s for s in bindings() if not args.repo or s["name"] in args.repo]
 

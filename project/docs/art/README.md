@@ -4,7 +4,7 @@ Building concepts, 3D production, materials, export and art integration. Status 
 
 [Documentation index](../README.md) · [Currency audit](../DOCUMENT-AUDIT.md)
 
-- [AI-Assisted 3D Model Generation](ai-3d-model-generation.md) — **Needs refresh**.
+- [CSC 3D authoring: project tooling bridge](ai-3d-model-generation.md) — **Current; complete workflow consolidated in the CSC skill**.
 - [Districts & Buildings: Art Guide](districts_buildings_art_guide.md) — **Needs refresh**.
 - [Dynamic Art Properties](dynamic-art-properties.md) — **Current Art Pack ownership; new variants need in-game checks**.
 - [Export Pipeline Reference](export-pipeline.md) — **Needs refresh**.

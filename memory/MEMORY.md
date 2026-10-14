@@ -6,6 +6,8 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 ## Active notes
 
+- [Tailors storage direct-wall trial](session_tailors_storage_direct_wall.md) — Astra rebuild selected; new storage family now published with a shared 512² quadrant, canonical atlases and archive-bound backups; state UV/runtime integration pending.
+
 - [Optional Art Pack split test](session_optional-art-pack-test.md) — Wind Mill 2 source split, cooker pantry requirement, and pending in-game ArtDef merge check.
 
 - [Bakers Storage_L rev 01](session_bakers-storage-l-rev01.md) — additions + 27 reused props built; crane (animated) next; PIL/CON+PIL/AO/flour cataloguing open.

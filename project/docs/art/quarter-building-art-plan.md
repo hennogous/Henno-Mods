@@ -168,13 +168,74 @@ Use [texture and UV guidance](textures-and-uvs.md), [shared-atlas AO guidance](s
 
 ## Storage buildings and loading crane
 
-Create Quarter-specific prop scenes around the shared storage buildings. Stored materials, goods, containers and loading activity should identify the Quarter while preserving a recognisable storage family.
+Create Quarter-specific prop scenes around a recognisable storage family. Stored
+materials, goods, containers and loading activity should identify the Quarter.
 
-Assess the existing large storage building. A completely new large variant is an option, not yet a decision to replace it. Its design should support an upper-level loading bay and an **animated crane loading goods into that bay**.
+**Agreed revision — 7 October 2026:** replace the old large storage with the new
+compact T-shaped stone-and-timber building. Preserve the distinct front window
+and left upper loading bay, dark Quarter-coloured roof trim, open ground entrances,
+buried foundation and shallow stone thresholds. The crane is a separate static
+assembly at the right loading-bay jamb; animation remains a later implementation
+step. Its checked static inward swing is not proof of a working game animation.
 
-The animated crane is part of the planned storage work. Start by identifying the source storage model and verifying a minimal crane animation through the Civ VI export/runtime path. Establish the crane's pivots or rig, hoist and load movement, loading-bay clearance and a repeatable loading cycle before polishing the full scene. The static-building workflow alone is not evidence that this animation will work.
+### Shared storage texture quadrant
 
-Use a crane structure that can be shared, with Quarter-appropriate loads where practical. Keep its movement readable at game distance and within the usable scene envelope. Check the animation in game as well as in Blender. A temporary static pose may support blockout, but does not complete the animated-crane objective.
+Use one **512×512 storage quadrant in the existing 1024×1024 district atlas** for
+small, medium and large storage plus the reusable `CSC_Storage_LeanTo` shelter.
+Do not enlarge the district atlas to preserve close-up detail. Judge readability
+at game scale and favour reusable material patches.
+
+Initially populate roughly **40–50%** of that quadrant for the large building,
+including its reusable stone, wood, roof and hardware patches. Reserve remaining
+space for genuinely distinct S/M/lean-to details. Reuse the common patches across
+assets, rotating or adjusting UV mapping to respect construction and grain; do
+not allocate a duplicate complete texture sheet to every building.
+
+Next revisit S and M with geometry roughly stable and source pivots/transforms
+preserved. Retain their individual window, door and wall arrangements. The agreed
+hybrid approach reuses the new large building's material patches for common
+surfaces and transfers useful distinctive legacy details, such as M's lattice
+windows, into small reserved patches. Transfer base colour without baking scene
+lighting or AO into it. Repaint only details that look weak beside the new kit at
+game scale, using the existing geometry and UV guides. Keep companion maps aligned
+with each patch and its UV orientation. The generic lean-to stays open and reuses
+the roof/timber/stone modules where suitable. No runtime H is required.
+
+UV1 shares B/N/G/M material areas. UV2 gives each independent building its own
+geometry AO allocation; common wood does not imply common occlusion. Include
+necessary state-specific areas when construction/pillaged variants are migrated.
+Stage the new quadrant in local copies and preserve the other three quadrants.
+Replace production maps only as a coordinated family/state/material integration,
+not while remaining assets still depend on old storage pixels. Quarter palette
+variants must use the same layout with compatible companion maps.
+
+**Source publication:** Henno wants the updated blends under their current clean
+filenames and the new maps in their canonical `Textures` locations so existing AE
+texture definitions can reimport them. Rename previous blends with a dated backup
+suffix, archive the old maps, and rebind those backup blends to the archived maps.
+Do not leave the new models on a separate versioned active material. Unmigrated
+state blends must retain compatible archived texture bindings until their UVs are
+updated. Publishing authoring sources does not itself migrate state exports or
+refresh the game's cooked assets.
+
+**Normal-state publication — 7 October 2026:** S/M/L and the generic lean-to now
+share 46.38% of the storage material quadrant. Existing S/M/lean-to visible shapes
+and transforms remain; inherited zero-area faces were removed. Final exported
+vertices are S 917, M 951, L 1,910 and lean-to 358. All have independent geometry
+AO and validated UVs. Clean-name blends/CN6 and canonical maps were published,
+with dated backups rebound to archived textures. The three B XCFs preserve their
+existing layers and add a storage group with separate roof recolouring layers.
+Henno accepts Tailors pink-purple on all storage roofs for now and will recolour
+later. Construction/pillage UV migration and runtime conversion/cooking remain
+outstanding; legacy state blends retain compatible archived texture bindings.
+
+### Later crane animation
+
+Use a crane structure that can be shared, with Quarter-appropriate loads where
+practical. Establish pivots/rig, hoist and load movement, loading-bay clearance and
+a repeatable cycle through the Civ VI export/runtime path. Keep movement readable
+at game distance and check it in game as well as in Blender. The static-building
+handoff does not complete this animation objective.
 
 ## Industrial Era variants
 
@@ -215,7 +276,7 @@ Select the particular region and historical period before designing a cultural a
 | Kit and colour preparation | Existing sources ready for Quarter variants | Any minor refinements; exact beam colours for Goldsmiths/Brewers; assistant recolouring versus GIMP templates |
 | First production prop scene | Textile Workshop: one reviewed composition with normal/expanded art, Level 1 kit and a fresh shared prop atlas | Final equipment composition, full/small shelter selection and texture allocation |
 | Quarter rollout | Concepts and finished prop scenes for the remaining building variants | Prioritisation and reusable prop sets |
-| Storage scenes and crane | Quarter goods around storage plus a working upper-bay loading animation | Storage source files; large-model reuse/replacement decision; animation pipeline proof |
+| Storage scenes and crane | New large storage and existing S/M/lean-to sharing a 512² quadrant; later Quarter goods and crane animation | Complete family/state atlas migration, palette variants and runtime checks; animation pipeline proof |
 | Industrial variants | Coherent era update across the building families | Texture-only cases versus cases needing new geometry or equipment |
 | Cultural additions | Selective historically grounded unique models or kit adaptations | Which traditions and civilisations to prioritise |
 
@@ -258,3 +319,90 @@ Judge success by a complete Quarter scene at the game camera: the player should 
 **Standing art-publication approval — 2 October 2026:** In response to the request to publish the completed Tailor scene package and shared AO release to their established Google Drive backed Working Files locations, Henno said “yes! always.” Treat this as standing authorization to publish similarly completed and verified CSC art revisions to their established Working Files scene folders and versioned shared atlas library without asking him again for the same transfer. Continue using the execution environment's filesystem approval mechanism where required; do not extend this approval to unrelated destinations or public release.
 
 **UV2-inclusive planning — 2 October 2026:** Henno clarified that the 2,000 ±10% design goal includes vertices split by the final AO UV2 layout, as well as UV1 and UV3 splits. Plan headroom before AO allocation; report the exporter-equivalent count after final UV2 unwrap and bake, not a pre-AO mesh count as the budget result. Diagnose seam growth per object and optimize UV layouts or unreadable geometry without sacrificing the approved silhouette and mapped AO. The budget remains advisory, with overages reported as warnings rather than export blocks.
+
+
+## 7 October 2026 — storage family entrance/wear revision (published)
+
+- Fixed S/M diagonal stone wedges from whole-triangle material classification by splitting only wall triangles crossing the original plinth line (S12.1/M18.4). Old vertex positions, saved rotations, native pivots/scales and silhouettes retained; interpolated UV2 keeps existing AO valid.
+- Added shared rough fieldstone for S/M bases/feet and lean-to feet, leaving doorway surrounds dressed. Added restrained imagegen-painted material wear with registered existing relief.
+- Added two tile-to-oak roof-return patches for the different terminal tile courses; actual ridge and gable boards remain plum. Atlas remains a512² storage quadrant in1K district maps; allocated143600px /54.78%, with all other runtime quadrants pixel-identical.
+- Saved validators pass; UV2 overlaps0; geometry AO2 bytes unchanged. Actual CN6 vertices/triangles: S986/511, M981/566, L1910/1004, lean-to330/178. All runtime N/G/M available; new roughstone N uses authored block/mortar height through CSC companion generator, no runtimeH.
+- Published clean normal-state blends/CN6 and official DDS/XCF locations. Prior textures archived at Textures/Archive/Storage_Atlas_Pre_Wear_2026-10-07; *_pre_wear_2026-10-07.blend backups rebind there. S/M pre-orientation normal backups also point at archived prior textures.
+- Current portable bundle: codex-outputs/tailors_storage_l/shared-storage-quadrant/Storage_Family_FINAL. Previous portable release archived under wear-revision/previous-release. Current comparison: renders/three_buildings_both_entrances.png.
+- Construction/pillage UV migration, FGX/AE reimport, cooking and game review remain separate unfinished integration work.
+
+
+## 7 October2026 — final roof-edge / UV cleanup handoff
+
+User requested visible S/M tile-to-wood on bargeboards, removal of L thresholds and foundation walls below doorway clear spans, then ONE facade cleanup before taking over editing. Completed: four compact vertical tile-to-oak strips; S wall/frame UV alignment; M gable patch rebuilt from current common materials in same UV footprint; L two threshold objects removed and doorway foundation gaps open to−21.6. L geometry-only AO rebaked through unchanged UV2 allocation. Atlas occupancy57.904%, still512square. Final saved validators/export checks pass. Counts:{'S': {'vertices': 895, 'triangles': 519}, 'M': {'vertices': 941, 'triangles': 590}, 'L': {'vertices': 1878, 'triangles': 988}}.
+
+Final visual QA caught transition UVs spreading over broad roof triangles due shared mutable clipping records; restored original tiled-roof UVs before publishing. One cleanup pass is complete; further artistic UV work now belongs to Henno. Latest source files published under clean names; pre-eave backups use archived texture bindings. Current handoff in Storage_Family_FINAL/UV_HANDOFF.md and allocation_diagram.png. Prior wear release archived at eave-opening-revision/previous-release. Runtime/state integration remains outstanding.
+
+
+## 7 October2026 — original-style timber wall island correction
+
+User clarified the earlier cleanup was insufficient: whole architectural wall regions should form coherent UV islands over actual timber-board patches, and base stone should read as1–2courses. Compared archived S/M renders and source UV regions. Transferred original S horizontal boards and M vertical planks to compact new patches, strengthened joint contrast36% at seam centres, authored board-lap/recess height through CSC companion generator. Recovered wall faces misclassified as beams; continuous panel coordinates/seams replace per-face fitting. All current wood wall faces join the panels; the original-material evidence is required for recovering beam-labelled faces. Two-course base patch applies only rough base masonry, preserving dressed arch UVs. Geometry/transforms/roofUV1/UV2/AO unchanged. Atlas remains512square,67.67% allocated.
+
+Final review corrected an over-broad stone-role selection that initially swallowed doorway arches and original-centroid selection that missed plain-wood triangles. Published only corrected result. Current portable bundle Storage_Family_FINAL; pre_wall_islands backups bind to archived texture release. Counts:{'S': {'vertices': 871, 'triangles': 519}, 'M': {'vertices': 990, 'triangles': 590}, 'L': {'vertices': 1878, 'triangles': 988}}. Full saved validation, island-continuity proof, original/render comparisons and texture alignment checks accompany handoff.
+
+
+## 7 October 2026 — restored medium dark timber and darker shared stone
+
+User requested darker posts/accents as in original M, and slightly darker stone. Added medium_dark_beam patch [768,864,1024,896] with inner [770,866,1022,894]; remapped 23 M framing faces (82 loops), leaving coherent board wall islands untouched. Darkened M gable framing and only wood in M barge-board patches; S framing and purple ridges stay as approved. Shared stone B is multiplied by 0.87. Registered relief/G/M and geometry AO preserved. Full geometry/transforms/UV2 audit exact; all four saved scenes pass validation. Runtime other quadrants pixel-identical; XCF storage composites exact. Allocation70.8% of 512square. Official sources and portable Storage_Family_FINAL updated; all four backups point to Pre_DarkTimber archived textures. CN6 counts: {'S': {'vertices': 871, 'triangles': 519}, 'M': {'vertices': 990, 'triangles': 590}, 'L': {'vertices': 1878, 'triangles': 988}, 'LeanTo': {'vertices': 330, 'triangles': 178}}.
+
+
+## 7 October 2026 — medium upright corner post correction
+
+User spotted diagonal dark posts on long walls. Four triangular corner faces (82/83/90/92) had been tagged as solid dark beam, so face boundaries became post silhouettes. Recovered them into coherent exterior long-wall islands 0 and 3. Added medium_post_wall [768,896,896,960], inner [770,898,894,958], cloning registered vertical boards with straight dark end strips. Shared physical projection across all panel faces keeps posts upright across triangles. Geometry/UV2 unchanged; saved validators and renders pass. Atlas73.9% of512square. Official files plus Storage_Family_FINAL updated; previous files linked to Pre_UprightPosts archived textures. Counts: {'S': {'vertices': 871, 'triangles': 519}, 'M': {'vertices': 984, 'triangles': 590}, 'L': {'vertices': 1878, 'triangles': 988}, 'LeanTo': {'vertices': 330, 'triangles': 178}}.
+
+
+## 7 October2026 — medium shape and equal corner post width
+
+7 October 2026. Long-wall dark posts now match the existing short-side framing: about4 units at the head and5.5 at the foot. Medium body length reduced5%; roof gains two support lines, a gently rolled slope and flared eaves. Feet flare modestly. Object scales/pivots/rotations remain native. The ridge height is retained; medium remains clearly taller than small.
+
+The geometry-only medium AO was rebaked into its existing180-square UV2 atlas slot. Other AO pixels are exact. Wall materials and relief remain registered; other district atlas quadrants are unchanged. Storage still uses a512square quadrant,73.9% allocated. All saved scenes pass validation.
+
+| Model | CN6 vertices | Triangles |
+|---|---:|---:|
+|S|871|519|
+|M|1041|658|
+|L|1878|988|
+|LeanTo|330|178|
+
+Height above ground: small: 60.18, medium_after: 80.00, large: 109.42.
+
+Official clean models, exports, DDS/AO and XCF updated. *_pre_medium_shape_2026-10-07.blend backups bind to Textures/Archive/Storage_Atlas_Pre_MediumShape_2026-10-07. FGX/AE reimport, state UV migration, cooking and in-game review remain separate.
+
+
+## 7 October2026 — large reuses medium timber
+
+7 October2026. The new large building now uses medium_dark_beam for its structural frames and floor band, plus vertical_boards for upper wall infill and gables. Broad wall regions share planar mapping across openings and adjoining faces. Existing windows, shutters, crane, roof materials and stonework retain their treatment.
+
+This is a UV1/material-reuse revision: geometry, transforms, UV2 and AO are unchanged. Existing B/N/G/M patches are reused directly; no extra atlas space or material. Storage remains within its512square quadrant,73.9% allocated. Texture files are byte-identical to the preceding release. All saved scenes pass authoring validation.
+
+Medium retains the earlier fuller roof and corner posts, with height80 versus small60.18 and large109.42.
+
+| Model | CN6 vertices | Triangles |
+|---|---:|---:|
+|S|871|519|
+|M|1041|658|
+|L|1878|988|
+|LeanTo|330|178|
+
+Clean official Blend and CN6 updated. Large backup *_pre_large_shared_timber_2026-10-07.blend binds to Textures/Archive/Storage_Atlas_Pre_LargeSharedTimber_2026-10-07. FGX/AE reimport, state UV migration, cooking and in-game review remain separate.
+
+
+## 7 October2026 — medium projecting ridge
+
+7 October2026. Medium now has a bevelled ridge beam 7.6 units wide, between small5.4 and large9.8. It projects about4 units beyond each prior ridge end. Its top is81.76units; body, eaves and roof slopes retain their approved dimensions. The existing plum timber patch is reused.
+
+Only the old ridge faces were replaced. Existing non-ridge UV1/UV2/UV3 are preserved; new ridge AO faces fit inside old ridge allocations. Geometry AO rebaked into the existing180square M slot. Other atlas/AO regions remain unchanged. All saved scenes pass validation.
+
+| Model | CN6 vertices | Triangles |
+|---|---:|---:|
+|S|871|519|
+|M|1030|658|
+|L|1878|988|
+|LeanTo|330|178|
+
+Clean official Blend and CN6 updated. Medium backup *_pre_medium_ridge_2026-10-07.blend binds to Textures/Archive/Storage_Atlas_Pre_MediumRidge_2026-10-07. FGX/AE reimport, state UV migration, cooking and in-game review remain separate.

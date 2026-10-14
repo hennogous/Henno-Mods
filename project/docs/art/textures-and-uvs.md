@@ -163,9 +163,56 @@ the default. Validate the destination material/cook convention before game hando
 do not infer it solely from the graphics API. In Blender, load `_N`, `_G`, `_M` and
 `_AO` as Non-Color data, and use normal node strength 1 as a neutral starting point.
 
+#### Physical relief and painted material masks
+
+For a facade or material patch with known dimensions, use `--height-scale` and
+`--surface-size W,H` together. The first is the black-to-white height span; the
+second is the patch's width and height, in the **same units**. This converts the
+height gradient to a surface slope independently of image resolution. In this
+mode, `--normal-strength 1` and a region normal multiplier of 1 represent the
+authored relief. Increase them deliberately for stylization. This mode replaces
+`--reference-size`; the two cannot be combined. Existing defaults are unchanged.
+
+```sh
+node project/tools/blender/csc_generate_pbr_maps.mjs \
+  --base BackWall_B.png --height BackWall_H.png --regions wall-regions.json \
+  --height-scale 0.014 --surface-size 0.725,0.307 --normal-strength 1 \
+  --gloss-map BackWall_G_author.png --metalness-map BackWall_M_author.png \
+  --normal-y opengl --out-dir derived
+```
+
+Those dimensions are an example from one prototype, not a building preset.
+Physical sizing describes the complete image patch, not each atlas rectangle.
+For differently scaled atlas islands, generate patches separately and pack them
+together, rotating tangent normals with the UV orientation and renormalizing after
+filtering. UV stretching still changes perceived relief and must be checked.
+
+`--gloss-map` and `--metalness-map` accept aligned scalar PNGs with the same source
+dimensions as B. They override the respective region/preset values per pixel;
+`--gloss-bias` still applies. As with height, the stored red channel supplies the
+scalar value without luminance weighting. This permits iron fittings, worn areas
+and grain to have intentional material variation instead of constant values across
+an entire rectangular swatch. Author these masks semantically; dark paint alone
+does not identify metal, roughness or depth.
+
+Strong normals require meaningful height shapes and bevel widths. A higher
+multiplier cannot create missing joinery or correct misaligned features. Compare
+neutral materials with normals off/on under identical lighting, plus the complete
+material at the intended display size. Narrow steep ridges can alias or disappear
+when packed down; inspect the final atlas rather than only the source maps.
+
 The incomplete `--ao`/`--ao-strength` options now fail with a clear explanation.
 AO remains a geometry bake through unique UV2. Reuse it when geometry and UV2 are
 unchanged; rebake after changes that affect occlusion or that mapping.
+For geometry-only AO, temporarily disconnect shader normal/bump inputs while baking,
+retain the other relevant components as occluders, then restore the display shader.
+Inspect mapped contact/recess shading and padding in the final atlas.
+For rebakes of an existing material, select UV2 explicitly, bake into a fresh image,
+and disconnect the old AO texture from the display shader while baking. Restore
+links afterward. A Tailors storage rebake developed false ridge stripes after UV2
+reallocation; this combined bake-context reset resolved them without geometry or
+atlas-size changes. The individual cause was not isolated. Compare unchanged
+exposed surfaces before accepting the new AO.
 
 ### Painterly Detail: Blacksmith Reference Study
 
@@ -193,7 +240,7 @@ not a quality score. Normals cannot replace chunky geometry at silhouette edges.
 ### Generic_AO (Ambient Occlusion)
 - **Format:** Linear greyscale
 - **Purpose:** Baked ambient occlusion for self-shadowing
-- **Baking:** Use Marmoset or Substance for AO bakes
+- **Baking:** Geometry bake through UV2; the current CSC workflow uses Blender/Cycles. Follow the shared-atlas AO contract when applicable. Other bakers are optional, not required.
 - **Maps to UV2** (lightmap channel)
 
 ### Generic_Gloss (Roughness)
