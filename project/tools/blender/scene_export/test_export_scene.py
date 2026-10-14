@@ -410,6 +410,34 @@ class RerunOwnershipTests(unittest.TestCase):
                              'installed_pending_asset_editor_and_game_review')
 
 
+class InstallationGroupTests(unittest.TestCase):
+    def test_distinct_scene_groups_in_shared_output_do_not_retire_each_other(self):
+        import export_scene as ex
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); mod=root/'mod'; runs=root/'runs'
+            (mod/'Assets').mkdir(parents=True); (mod/'XLPs').mkdir()
+            ex.write_xml(mod/'XLPs/CSC_Tilebases.xlp', ET.fromstring('<X><m_Entries/></X>'))
+            def prepare(name, asset):
+                out=runs/name; stage=out/'stage'
+                (stage/'Assets').mkdir(parents=True); (stage/'XLPs').mkdir()
+                (stage/'Assets'/(asset+'.ast')).write_text(asset)
+                ex.write_xml(stage/'XLPs/CSC_Tilebases.xlp', ex.read_xml(mod/'XLPs/CSC_Tilebases.xlp'))
+                files={str(p.relative_to(stage)):ex.sha(p) for p in stage.rglob('*') if p.is_file()}
+                (out/'manifest.json').write_text(json.dumps({'converted_files':files,
+                    'destination_baseline':{rel:ex.sha(mod/rel) if (mod/rel).is_file() else None for rel in files},'textures':{}}))
+                (out/'report.json').write_text(json.dumps({'status':'converted_pending_asset_editor_and_game_review','assets':[asset]}))
+                job={'output':str(out),'mod_root':str(mod),
+                     'buildings':[{'asset_id':asset,'blend':str(root/asset/(asset+'.blend'))}]}
+                (out/'job.json').write_text(json.dumps(job)); return job
+            first=prepare('20260101','Tailor'); ex.install(first)
+            second=prepare('20260102','Workshop'); ex.install(second)
+            self.assertTrue((mod/'Assets/Tailor.ast').is_file())
+            self.assertEqual({ex.txt(e,'m_EntryID') for e in ex.read_xml(mod/'XLPs/CSC_Tilebases.xlp').find('m_Entries')}, {'Tailor','Workshop'})
+            receipt=json.loads((runs/'20260102/install-receipt.json').read_text())
+            self.assertIsNone(receipt['predecessor_job']); self.assertEqual(receipt['retired_files'],[])
+            self.assertEqual(json.loads((runs/'20260101/report.json').read_text())['status'],'installed_pending_asset_editor_and_game_review')
+
+
 class DDSValidationTests(unittest.TestCase):
     def test_reject_truncated_and_wrong_mips(self):
         import struct

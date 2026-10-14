@@ -5,10 +5,6 @@ cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\projec
 
 py .\export_assets.py `
   --blend-directory "C:\Users\Shadow\Desktop\Working Files\3D Art\TAILORS\Textile Workshop\revision-08-export-ready" `
-  --mod-root "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains" `
-  --library "C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library" `
-  --blender "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" `
-  --texconv "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\directxtex\texconv.exe"
 
 ## 3D Art
 
@@ -42,13 +38,39 @@ node project/tools/blender/csc_generate_pbr_maps.mjs `
 
 ### Building icon
 
-& 'C:\Users\Shadow\AppData\Local\Programs\Python\Python312\python.exe' -B `
-  'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\gimp\create_building_icon_xcf.py' `
-  'C:\Users\Shadow\Desktop\Working Files\3D Art\TAILORS\Tailor\revision-09-terrain-attachments\CSC_TAILORS_Tailor.blend' 3
+py -3 "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\blender\render_ae_asset.py" `
+  "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\Assets\CSC_TAILORS_Textile_Workshop.ast"
+
+mean curvature blur 25 steps
+sharpen amount 1.5
+brightness -20
 
 grow selection 8px, exterior stroke 22px
 interior stroke 6px
 
+### Building SV sprites
+
+give codex the blend and output location
+stroke 8px
+
+-- manual edit shadows
+
+brightness +3
+contrast -3
+
+py sv_postprocess.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Water_Mill_Test_Visible_PreShadow.png"
+
+### Quarter SV sprites
+
+py sv_postprocess.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Quarter_Visible_PreShadow.png" --quarter
+
+### Archive
+
+& 'C:\Users\Shadow\AppData\Local\Programs\Python\Python312\python.exe' -B `
+  'C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\gimp\create_building_icon_xcf.py' `
+  'C:\Users\Shadow\Desktop\Working Files\3D Art\TAILORS\Tailor\revision-09-terrain-attachments\CSC_TAILORS_Tailor.blend' 3
+
+#### Icon
 -- start comfyui
 
 cd C:\Users\Shadow\ComfyUI
@@ -59,26 +81,13 @@ cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\projec
 
 py icon_img2img.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Tailors\CSC_TAILORS_Textile_Workshop_Input.png"
 
-### Building SV sprites
-
-give codex the blend and output location
-stroke 8px
-
+#### SV
 cd C:\Users\Shadow\ComfyUI
 py -3.12 main.py --listen 127.0.0.1 --port 8188
 
 cd "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\comfyui\sv_pipeline"
 
 py sv_img2img.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Water_Mill_Test_Input.png"
-
--- manual edit shadows
-
-py sv_postprocess.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Water_Mill_Test_Visible_PreShadow.png"
-
-### Quarter SV sprites
-
-py sv_postprocess.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Quarter_Visible_PreShadow.png" --quarter
-
 
 ### Localization regeneration
 

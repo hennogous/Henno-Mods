@@ -1,5 +1,7 @@
 # Ruivo Adjacency Processor
 
+> **Historical as of 2 October 2026.** The bundled `Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql` now writes `CSC_AdjacencyRules` and `CSC_AdjacencyObjects`. The tag/config ownership described here remains useful; the MAB table names, path and external dependency describe the preceding build. See [current implementation](csc-adjacencies.md).
+
 > **Documentation audit — 2026-09-12: Current.** Central processor exists and its ModBuddy action still uses LoadOrder 3000. Declarative config/tag ownership matches current Quarter/reference guidance. External MAB build compatibility was not runtime tested.
 > Classification: Gameplay integration. See the [full audit](../DOCUMENT-AUDIT.md).
 

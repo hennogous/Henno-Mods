@@ -21,7 +21,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>12</m_nPrimitiveCount>
-      <m_nVertexCount>24</m_nVertexCount>
+      <m_nVertexCount>16</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Folded_Stock__Folded_Stock_2" />
@@ -34,7 +34,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>12</m_nPrimitiveCount>
-      <m_nVertexCount>24</m_nVertexCount>
+      <m_nVertexCount>16</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Folded_Stock__Folded_Stock_3" />
@@ -47,7 +47,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>12</m_nPrimitiveCount>
-      <m_nVertexCount>24</m_nVertexCount>
+      <m_nVertexCount>16</m_nVertexCount>
     </Element>
   </m_Meshes>
   <m_Bones>

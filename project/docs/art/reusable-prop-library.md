@@ -243,3 +243,21 @@ the agreed bespoke attachments. Both scenes are inside the 1,800–2,200 design
 range. Saved-file validation, source parity and mapped AO views pass; in-game
 rendering remains unverified. Keep each scene and its bespoke masters on the
 complete r018 atlas snapshot for subsequent export.
+
+## CSC replacements for native plants — 5 October 2026
+
+The active library contains 200 entries. Henno replaced three pantry choices with
+owned CSC state variants: `Tree_C_Sm` → `CSC_ALL_Shrug_Tall`,
+`PantanalTreeBushA` → `CSC_ALL_Leafy_Bush`, and `NWON_IkKil_VineA` → `CSC_ALL_Vine`.
+The tall shrub hides Construction only and retains the original tree's Pillaged
+foliage and decal behavior. The bush and vine hide Construction and Pillaged.
+All three reference native geometry/materials without new texture or geometry
+registrations. Their native model/component names remain source provenance.
+
+The replaced pantry masters, catalogue/verification entries and gallery cards
+are retired from the active library; recovery copies live in the task backup.
+Native source geometry and texture dependencies needed by the CSC masters remain.
+`catalogue.json` records `retired_native_assets` as an old-ID → replacement-ID
+mapping. Pantry discovery treats those IDs as already represented, refreshes
+exclude them, and intake rejects their accidental reintroduction. The SDK assets
+themselves remain intact. Fashion House revision12 uses all three CSC variants.

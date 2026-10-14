@@ -58,7 +58,7 @@ for row in data['assets']:
             o=bpy.data.objects[c['object']];me=o.data
             assert o['source_asset_id']==row['asset_id'] and o['export_role']=='reused_asset'
             assert me.name==c['mesh_datablock']
-            if len(row['components'])==1: assert o.name==me.name==row['asset_id']
+            if len(row['components'])==1: assert o.name==me.name==row.get('native_source_asset_id',row['asset_id'])
             assert o.matrix_basis==Matrix.Identity(4) and o.matrix_world==Matrix.Identity(4)
             assert len(me.vertices)==c['vertices'] and len(me.polygons)==c['triangles']
             assert len(me.uv_layers)==c['uv_layers']

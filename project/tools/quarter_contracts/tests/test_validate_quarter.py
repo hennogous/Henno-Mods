@@ -123,7 +123,8 @@ class TailorsContractTests(unittest.TestCase):
         implementation = VALIDATOR.load_yaml(
             VALIDATOR.SPEC_ROOT / "tailors" / "implementation.yaml"
         )
-        content_only = {"icons"}
+        content_only = set(implementation["build_wiring"].get("content_only", {}))
+        self.assertEqual(content_only, {"icons", "trade_route_state_ui", "trade_route_preview_bts", "wonder_service_city_breakdown_lua"})
         source_only = {
             key
             for key in implementation["planned_outputs"]

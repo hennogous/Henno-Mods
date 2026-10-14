@@ -687,7 +687,7 @@
 						<m_Name text="newAttachmentPoint_49"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.200000</m_scale>
+						<m_scale>1.000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -1259,7 +1259,7 @@
 						<m_Name text="newAttachmentPoint_63"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.150000</m_scale>
+						<m_scale>0.750000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>

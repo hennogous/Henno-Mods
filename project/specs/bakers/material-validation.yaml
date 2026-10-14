@@ -1,0 +1,9 @@
+schema_version: 1
+quarter: bakers
+# Engine bindings only; resources and roles come exclusively from materials.yaml.
+core: {file: Civ Supply Chains/Data/CSC_Q_BAKERS.sql, criteria: []}
+csc: {file: Civ Supply Chains/Data/CSC_RESOURCES.sql, criteria: []}
+animal: {file: Civ Supply Chains/Data/CSC_A_RESOURCES.sql, criteria: [CSC_A_RESOURCES]}
+optional:
+  R2: {file: Civ Supply Chains/ModSupport/ModSupport_R2.sql, criteria: [ModSupport_R2]}
+  LAR: {file: Civ Supply Chains/ModSupport/ModSupport_LAR.sql, criteria: [ModSupport_LAR]}

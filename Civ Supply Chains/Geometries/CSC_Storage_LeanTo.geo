@@ -14,14 +14,14 @@
 <m_Name text="CSC_Storage_LeanTo_Bldg"/>
 <m_Groups>
 <Element>
-<m_Name text="CSC_Storage_LeanTo"/>
+<m_Name text="CSC_TAILORS_NE"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>182</m_nPrims>
+<m_nPrims>178</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>182</m_nPrimitiveCount>
-<m_nVertexCount>290</m_nVertexCount>
+<m_nPrimitiveCount>178</m_nPrimitiveCount>
+<m_nVertexCount>330</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>

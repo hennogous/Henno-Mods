@@ -1,5 +1,9 @@
 # Blender scene decoder and asset exporter
 
+**Workflow override, 13 October 2026:** [AE owns assembly and placement](ae-owned-assembly-workflow.md).
+This tool still implements legacy whole-scene export. Do not use it to regenerate
+a Henno-edited AE assembly. For icon/SV inputs, use [the saved-AE renderer](2d/ae-asset-renderer.md).
+
 Use `project/tools/blender/export_assets.py` for the reusable-prop workflow. It replaces
 `csc_export_pipeline.ps1` for composed building scenes. The older script exports
 whole scenes, handles multi-mesh GEO metadata incorrectly, and does not decode
@@ -10,6 +14,24 @@ It stages CN6, GEO, AST, materials, texture descriptors/sources and an idempoten
 XLP merge. Windows then converts CN6 to FGX (and PNG to DDS when explicitly using
 material generation), and the normal run installs the converted files into the
 mod with destination checks, backups and rollback on errors.
+
+## Routine re-exports
+
+For an existing prepared scene, save the blend after moving or rotating a prop
+and run the same directory command. A normal run now keeps a setup snapshot
+inside its `export-runs/<timestamp>/` folder. If the revision's settings sidecars
+are later absent, the runner reuses the newest successful setup for the same mod
+from that folder's export history. Explicit options and current revision sidecars
+take precedence. Failed runs cannot supply setup. Keep `export-runs` if relying
+on this fallback; custom `--output` locations are not searched automatically.
+
+Quarter/stage and material choices remain initial preparation decisions. They
+do not need to be re-entered for a placement edit. Export validation reports
+world lighting, color management and Review Sun deviations as warnings, since
+these affect previews rather than the exported geometry or asset materials.
+The standalone authoring validator still enforces the prescribed review setup.
+Geometry, missing materials, asset identity and unsupported transform checks
+remain export blockers.
 
 ## Contracted building exports (September 2026)
 
@@ -32,8 +54,13 @@ metadata. For example:
 {"buildings":{"CSC_TAILORS_Textile_Workshop":{"quarter":"TAILORS","supply_chain_stage":3}}}
 ```
 
-The run records the sidecar's path and hash in `contract-source.json`; the resolved
-per-building contract is also in `job.json` and `discovery-report.json`.
+Review scenes marked `csc_export.kind: ignore` do not count as export candidates.
+Multiple actual export scenes still block discovery. A discovery failure reports
+the offending blend and its underlying error before contract matching.
+
+The run records the sidecar's path and hash in `contract-source.json`, retains
+copies of the effective settings with `export-setup.json`, and saves the resolved
+per-building contract in `job.json` and `discovery-report.json`.
 
 An export contract may list expanded-model files in `optional_blends` and their
 building IDs in `optional_buildings`. The normal runner skips those blends even
@@ -44,6 +71,14 @@ example, `C:\Users\Shadow\Desktop\Codex\art-export-contracts\tailor-revision09.j
 Tailor by default and includes `Tailor_2` only on request. The optional flag
 exports the standard files as well, so review the output and destination before
 installing an expanded-model run.
+
+Tailor `revision-10-vertex-budget` now carries `export-contract.json` and
+`export.defaults.json` beside its blends (7 October 2026). These declare Tailors,
+Stage 3, the authored shared Tailor CON+PIL source, the complete source inventory
+(including Work Area Decals), and replacement of the four revised standard prop
+masters: Dress Form, Folded Stock, LeanTo and Table Contents. The normal command
+exports the standard model; `--include-optional` includes Tailor_2 and its prop
+masters. Keep both settings files with the revision when transferring it.
 
 The supply-chain stage maps to a building level: Stage 2 → Level 1, Stage 3 → Level 2,
 Stage 4 → Level 3. Stage 2 additionally needs `construction_geometry` set to either
@@ -57,14 +92,55 @@ building, prop master, shared ruin, or PIL decal blocks the run. The stages requ
 `CSC_ALL_Stage_3_Cobble_Decals` or `CSC_ALL_Stage_4_Cobble_Decals` in the mod's
 Geometries directory. Existing shared GEO/FGX files are referenced unchanged.
 
-The contract applies `CSC_<QUARTER>_E` to the building and lean-to, and
-`CSC_ALL_Props_01` to fixed prop meshes in Bakers, Tailors, Apothecaries and
-Stonemasons. Carpenters, Blacksmiths, Goldsmiths and Brewers use
-`CSC_ALL_Props_02`. It applies `CSC_<QUARTER>_NE` to the shared construction/pillage
+For a building with its own authored paving, set `cobble_geometry: null` in its
+scene metadata or sidecar building declaration. This explicitly omits the generic
+stage cobble model and requires a declared decal visible in both Worked and
+Construction. The decal's own material must already be registered. Authored decal
+state mappings are preserved, including explicit Unworked visibility; the normal
+building and prop visibility rules still apply. Fashion House revision 12 uses
+this option for its limestone garden path, with a DecalMaterial binding its
+512 px B (alpha), H (height) and G (Spec) maps. The native decal shader uses H for
+relief; its supplied Blender N/AO/M/O maps are not building-shader bindings.
+
+The contract defaults the building and lean-to to `CSC_<QUARTER>_E`.
+For fixed geometry, set `civ_material` or a `material_bindings` entry explicitly:
+`fixed_geometry` governs placement and merging, not the surface atlas. Explicit
+building bindings remain building bindings even on fixed architecture. Fixed props
+use `CSC_ALL_Props_01` in Bakers, Tailors, Apothecaries and Stonemasons;
+Carpenters, Blacksmiths, Goldsmiths and Brewers use `CSC_ALL_Props_02`. Intact
+bindings outside the declared building/prop pair block the run. Only material slots
+with actual triangles are processed; unused inherited slots do not create groups.
+Used `CON+PIL` and `Pillage_Construction_01` material faces in intact geometry are
+rejected by saved-scene validation and the export contract rather than silently
+rebinding them as Worked geometry.
+
+The contract applies `CSC_<QUARTER>_NE` to the shared construction/pillage
 building groups, retains `Pillage_Construction_01` for scaffolding, and applies
 `CSC_ALL_Cobble_Patch_Decal` to the stage 3/4 cobble model. Existing MTL and texture
 files are reused without modification. Missing files block only a run that needs
 them, so Stage 4 can wait until its shared assets are authored.
+
+Set `cobble_material` in the building scene metadata or its contract sidecar to
+retain an explicitly chosen material on the shared stage decal. Tailor revision 10
+uses `CSC_ALL_Stage_3_Cobbles_Sq`, matching Henno's AE binding. The exporter checks
+that material and its texture dependencies and preserves the binding on re-export;
+omitting the field retains the existing `CSC_ALL_Cobble_Patch_Decal` default.
+Standalone lean-to props may use the Quarter's non-emissive building material
+(`CSC_<QUARTER>_NE`) as well as its emissive counterpart. Their declared existing
+prop templates retain authored state parameters.
+
+Fashion House exposed two source/integration errors on 5 October 2026. Four
+inherited construction/pillage shell faces were included in its intact mesh, and
+the base-kit window panes had been separated as `Original_Window_Panes`, tagged
+`fixed_geometry`, and consequently rebound to the prop atlas. The scene was backed
+up and corrected: the twelve pane faces (Level 3 faces 401–411 and 444) were restored
+to `CSC_Level_3_Bldg`, with all UV1/UV2/UV3 values verified against the authoritative
+`3D Art/Level 3/CSC_Level_3.blend`. They use `CSC_TAILORS_E`, retaining
+`CSC_Atlas_E` and `CSC_Atlas_O` emission/opacity bindings. The four stray state faces
+were removed from the intact mesh and remain in the separate CON+PIL model. The
+intact export now has only the building group (1050 triangles) and fixed prop group
+(608 triangles), with all 56 attachments retained. Five rows per group in AE are
+the five state definitions, not five geometry copies.
 
 Main building and fixed prop groups are visible in Worked only. The shared ruin
 building is visible in Construction and Pillaged; scaffolding is Construction only.
@@ -147,23 +223,53 @@ the whole folder export, regardless of how many placements use the prop. Use
 `replace_existing_assets` instead only when the master is intentionally an updated
 definition to install under the same ID. An asset in the synced prop catalogue
 should be placed with **Add library prop**.
+
+Newer native library entries may provide `native_bindings` in the catalogue even
+when absent from `CSC_ALL_Prop_Library.ast`. The exporter uses an exact TileBase
+entry from those records, excluding fallback packages and rejecting ambiguous
+bindings. Native source geometry and materials remain references. Unused Blender
+material slots are omitted from GEO groups and CN6 material lists; triangle
+material indices are compacted in the conversion input without editing blends.
 An explicitly authored prop update to an installed CSC identity must be listed in
 `replace_existing_assets`; otherwise discovery blocks the replacement. This keeps
 reference-only assets such as the Textile Workshop's basket and spinning wheel from
 being overwritten by copied masters.
 
-The Windows AO conversion uses the installed Firaxis 8-bit luminance DDS header
+The Windows AO conversion uses the installed Firaxis 8-bit scalar DDS header
 with texconv's mip pixels. For AO TEX files, `m_NumMipMaps` is the highest mip
 index (2048 → 11; 1024 → 10), while the DDS header counts all levels (12 and 11).
-On 15 September 2026, texconv's direct R8 output marked the channel as alpha and
+On 15 September 2026, texconv's direct R8 output used a different pixel-format header and
 the exporter wrote 12 into the 2048 AO TEX; Asset Editor crashed opening the
 Textile Workshop. The corrected package opened and displayed in Asset Editor.
+
+On 12 October 2026, the standalone Storage S/M export script bypassed that
+normalization and installed `CSC_Atlas_AO2.dds` with pixel-format flags `0x20000`
+(`DDPF_LUMINANCE`), rather than the working Firaxis scalar header's `0x40`.
+Building materials, standalone props and the Wind Mill tower still opened, but
+the assembled Wind Mill and many Bakers/Tailors buildings crashed. A full AE
+crash dump identified **CSC_Atlas_AO2**, internal texture format **1009**, and a
+null encoder call inside `ModelCooker_ModelCookTexture.cpp` (toolhost return RVA
+`0x4ffc81`). Thus a successful material preview does not prove attachment-time
+texture cooking is safe. Restoring the working DDS header preserves every mip
+pixel; do not discard the rebake or regenerate geometry for this failure.
+`export_storage_sm_ao.py` now calls the same `normalize_ao_dds` and `validate_dds`
+helpers before installation. Henno confirmed the repair; the fresh AE log records
+successful opens of `CSC_BAKERS_Wind_Mill` and `CSC_TAILORS_Storage_L` at 13:52:53
+and 13:53:16 local time on 12 October. Game/cooked-package validation is separate.
 
 From the Henno-Mods repository root, run with the copied revision folder as input:
 
 ```powershell
-python project/tools/blender/export_assets.py --blend-directory 'C:\path\to\revision-07-uniform-scale' --mod-root 'C:\path\to\Henno Mods\Civ Supply Chains' --library 'C:\path\to\CSC_Prop_Library' --blender 'C:\path\to\blender.exe' --texconv 'C:\path\to\texconv.exe'
+python project/tools/blender/export_assets.py 'C:\path\to\revision-07-uniform-scale'
 ```
+
+Only the directory path is required; `--blend-directory 'C:\path\to\folder'`
+also remains supported. Use either form, not both. The runner defaults to the repository's
+`Civ Supply Chains` project, Shadow's prop library at
+`C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library`, Blender at
+`C:\Program Files\Blender Foundation\Blender 5.1\blender.exe`, and the repository's
+`project/tools/directxtex/texconv.exe` (falling back to PATH if absent). Override
+these with `--mod-root`, `--library`, `--blender` or `--texconv` as needed.
 
 `--converter` can override the default repository `project/tools/cn6libs/CN6ToFGX.exe`.
 Keep the converter's existing DLLs alongside it. `--stage-only` skips FGX/DDS
@@ -188,6 +294,20 @@ files to `Assets`, and asset entries are merged into `XLPs/CSC_Tilebases.xlp`.
 Source blends remain unchanged. Backups and reports remain in the timestamped run.
 Use `--no-install` for a converted preview, or `--stage-only` to stop before both
 conversion and installation. A conversion failure never triggers installation.
+
+CivNexus6 treats `#` as a mesh-name delimiter and can silently drop the suffix.
+The scene exporter replaces `#` with `_` consistently in CN6, GEO and AST mesh
+names, while retaining the original Blender names in decoded source evidence.
+Names that collide after replacement block export. The bundled CN6ToFGX converter
+reopens each FGX and verifies its mesh count and names against CN6 before reporting
+success. Matching vertex/triangle counts alone do not prove a valid binding.
+
+This repaired the Fashion House pillage-decal AE crash: source names such as
+`Plane11008#M` had become `Plane11008` in FGX but remained `Plane11008#M` in GEO/AST.
+The regenerated asset uses `Plane11008_M` throughout and was confirmed to open in AE
+on 5 October 2026. Decal group states also follow the working Tailor schema with
+only `Material` and `Visible`; Landmark FOW/burn/snow parameters remain on building
+models. Removing those parameters alone did not fix the crash.
 
 To install a previously converted `--no-install` run, use:
 
@@ -225,7 +345,7 @@ exporter's installation record and are not changed by uninstall.
 
 The modular `export_scene.py` commands and older workshop-specific PowerShell
 wrapper remain available for development, but the repository Python entry point is the normal
-workflow. `--blend-directory` is required for export; helpers resolve relative to
+workflow. A directory path (bare or with `--blend-directory`) is required for export; helpers resolve relative to
 the script, regardless of the shell working directory.
 
 Installation copies the generated assets/geometries/materials/textures and their
@@ -717,6 +837,14 @@ Use revision-10-shared-bench (five blends and textures) for the current workshop
 
 ### Explicit custom AO bindings
 
+**CSC shared-prop rule (5 October 2026):** tonal edits to a garment or other prop
+using the shared atlas must be published in the canonical CSC_Props shared-texture
+release and continue using `CSC_ALL_Props_01` / `CSC_Props_Shared_01_AO`. Do not
+create a per-building runtime AO, AO-only material or mod-local TextureSources PNG
+for that change. The explicit-binding mechanism below remains available for
+deliberately separate texture layouts; it does not authorize a shared-atlas fork.
+See the CSC skill's `references/art-prop-atlas-plan.md`, Shared AO tone changes.
+
 The normal CSC `ao_policy: "reuse_existing"` keeps the AO map already assigned in
 the existing Civ material. A Blender AO image or `civ_ao_texture` property does
 not replace it during export. For a new AO map that should become a game texture,
@@ -733,6 +861,70 @@ do not overwrite a material used by assets with another AO layout. This introduc
 no additional asset/XLP entry. Native pantry attachments keep their source bindings.
 This explicit handling fixes the former path that silently skipped AO source images
 when reusing a material. It does not bake AO during export.
+
+Keep a revision's complete defaults in `export.defaults.json` beside its blends.
+The runner loads that file automatically; `--defaults` takes precedence and the
+bundled CSC defaults remain the fallback. This retains an intentional
+`ao_policy: "stage_explicit"` on later runs without changing other revisions.
+
+To regenerate a prop while retaining its edited Asset Editor state table, add
+`"prop_templates": {"CSC_Prop_ID": "Assets/CSC_Prop_ID.ast"}` to those defaults
+and explicitly authorize its replacement in `replace_existing_assets`. The
+template must exist in the mod and contain the prop's single geometry model.
+Each source mesh/group must resolve to exactly one row per state. A single-group
+mesh can retain its row when an AO material changes the group name; ambiguous
+multi-group matches stop the export. Visibility and other shader parameters are
+retained, while the mesh/group identities and material binding are regenerated.
+The template is an input dependency, so keep it when rebuilding the revision.
+
+### Bundled fixed groups with different state settings
+
+**Construction policy (5 October 2026):** show the authored main CON+PIL shell
+and major props with explicit CON+PIL versions. Hide intact decoration, plants,
+small props and paths. Shared cobbles now default to Worked only. Replacing them
+with authored paving requires a Worked decal, without requiring Construction
+visibility. Check the source `decal_states` and every attachment's actual AST
+state rows as well as the main mesh groups.
+
+Close bespoke props can become `fixed_geometry` in the building's main blend.
+They then share the building's terrain placement. Fixed groups default to Worked
+visibility. For an approved major prop with an explicitly authored CON+PIL
+version, use separate Blender materials and give each a `civ_visible_states` JSON array:
+`["Worked", "Construction"]` for the structure and `["Worked"]` for the screens.
+Both may reference the same game material through `civ_material`. The contract
+accepts these declarations only on fixed geometry and rejects other states,
+duplicates and declarations without Worked.
+The Fashion House arbour is intact decoration and uses Worked only for both groups.
+
+With `ao_policy: "stage_explicit"`, fixed groups retain their explicit AO binding.
+An override creates the same stable AO-only variant used for separate props;
+groups that use the existing AO keep the shared material. Construction visibility
+is resolved per mesh/material group, so merging geometry preserves those differences.
+
+When bundling a prop with edited shader settings, its source material can carry
+`civ_state_parameters` as JSON keyed by all five states. Supported parameters are
+`FOWMaterial`, `BurnMaterial` and `SnowMaterial` (strings), plus `EmissiveEnabled`
+and `FOWVisibleOnly` (booleans). Empty per-state dictionaries retain the building
+template values. The contract rejects unsupported parameters and wrong types,
+and verifies the staged rows against the source. Material and Visible remain
+controlled by their dedicated bindings and visibility declarations.
+
+### CSC variants of native state tables
+
+For a reusable CSC asset that needs different visibility from a pantry asset,
+catalogue it with `origin: "native_state_variant"`, `source_pack: "CSC"`, the
+original SDK `source_ast`, and explicit `hidden_states`. Keep its copied library
+master's geometry, UVs, component names and pivots identical to the native source.
+The preview master has its own CSC scene/asset identity and library entry.
+Use that CSC identity in the building attachment's `source_asset_id`.
+
+The exporter emits and registers a CSC AST that retains all native GEO references,
+materials and behavior. It changes only the asset identity and the declared states'
+Visible booleans, requiring a unique hidden-state row for every native group.
+Nested native attachments require explicit handling and are rejected. No native
+FGX reconversion or custom atlas mapping occurs. Library refreshes preserve these
+entries. Staged validation compares the complete variant AST against this policy.
+Construction/Pillaged behavior still needs a cook and runtime appearance review.
 
 Revision 11 workshop source checks cover Blender, CN6, XML, native source signatures,
 shared AO staging and retained construction/pillage/decal models. Windows conversion,

@@ -20,3 +20,4 @@ Scoped measurements, experiments and historical reviews. These do not override t
 - [geometry-catalogue](art/geometry-catalogue.md) — **Historical**; Native asset inventory.
 - [geometry-patterns](art/geometry-patterns.md) — **Historical**; Native asset interpretation.
 - [SKILL-REVIEW](mods/SKILL-REVIEW.md) — **Historical**; Reference-mod research.
+- [Grand Eras unlock proposal](mods/grand-eras-unlock-proposal.md) — **Draft**; Bakers/Tailors research mapping, regular-Service sequencing, text scope and the retained Wonder exception.

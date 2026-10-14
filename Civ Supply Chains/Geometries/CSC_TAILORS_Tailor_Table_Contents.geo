@@ -47,7 +47,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>20</m_nPrimitiveCount>
-      <m_nVertexCount>30</m_nVertexCount>
+      <m_nVertexCount>26</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Table_Contents__Tailor_Shears" />

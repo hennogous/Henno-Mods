@@ -61,6 +61,10 @@
       "properties": {
         "action_manifest": {"type": "string", "minLength": 1},
         "source_project": {"type": "string", "minLength": 1},
+        "content_only": {
+          "type": "object",
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
         "criteria_contracts": {
           "type": "object",
           "additionalProperties": {

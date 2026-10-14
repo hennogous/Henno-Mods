@@ -258,6 +258,79 @@ end
 
 local STAGE3_TRANSACTIONS, STAGE3_POPULATION_PROPERTIES, STAGE3_AMOUNT_PROPERTIES = CSC_LoadStage3Transactions();
 
+-- Stage 4 uses the Cafe's integer property-bit exchange. Each branch identifies
+-- one actual customer site; a Wonder's district family is deliberately unused.
+local FASHION_CUSTOMERS = {
+	{ Branch = "AMPHITHEATER", Districts = CSC_CreateDistrictReplacementFamily("DISTRICT_THEATER"), Buildings = CSC_CreateBuildingReplacementFamily("BUILDING_AMPHITHEATER") },
+	{ Branch = "BOLSHOI", Buildings = CSC_CreateExplicitBuildingFamily({"BUILDING_BOLSHOI_THEATRE"}) },
+	{ Branch = "BROADWAY", Buildings = CSC_CreateExplicitBuildingFamily({"BUILDING_BROADWAY"}) },
+	{ Branch = "SYDNEY", Buildings = CSC_CreateExplicitBuildingFamily({"BUILDING_SYDNEY_OPERA_HOUSE"}) },
+};
+local FASHION_DISTRICT = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"];
+local FASHION_BUILDING = GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"];
+
+local function CSC_GetFashionCustomerPlot(pCity, branch)
+	if not CSC_CityHasAnyFunctioningBuilding(pCity, branch.Buildings) then return nil; end
+	if branch.Districts ~= nil then
+		for _, districtIndex in ipairs(branch.Districts) do
+			if CSC_CityHasFunctioningDistrict(pCity, districtIndex) then
+				return CSC_GetCityDistrictPlot(pCity, districtIndex);
+			end
+		end
+		return nil;
+	end
+	local buildings = pCity:GetBuildings();
+	for _, buildingIndex in ipairs(branch.Buildings) do
+		if CSC_CityHasFunctioningBuilding(pCity, buildingIndex) then
+			local plotIndex = buildings:GetBuildingLocation(buildingIndex);
+			if plotIndex ~= nil and plotIndex >= 0 then return Map.GetPlotByIndex(plotIndex); end
+		end
+	end
+	return nil;
+end
+
+local function CSC_ScanFashionStage4Transactions(cityStates)
+	local customers = {};
+	for _, state in pairs(cityStates) do
+		state.FashionReturns = { FASHION_HOUSE_RETURN = 0 };
+		for _, branch in ipairs(FASHION_CUSTOMERS) do
+			state.FashionReturns[branch.Branch .. "_CULTURE_RETURN"] = 0;
+			local plot = CSC_GetFashionCustomerPlot(state.City, branch);
+			if plot ~= nil then
+				local key = CSC_GetPlotKey(plot:GetX(), plot:GetY());
+				customers[key] = customers[key] or {};
+				table.insert(customers[key], { State = state, Branch = branch.Branch });
+			end
+		end
+	end
+	if FASHION_DISTRICT == nil or FASHION_BUILDING == nil then return; end
+	for _, seller in pairs(cityStates) do
+		local city = seller.City;
+		if CSC_CityHasFunctioningBuilding(city, FASHION_BUILDING.Index)
+			and CSC_CityHasFunctioningDistrict(city, FASHION_DISTRICT.Index) then
+			local plot = CSC_GetCityDistrictPlot(city, FASHION_DISTRICT.Index);
+			local seen = {};
+			for direction = 0, NUM_DIRECTIONS - 1 do
+				local adjacent = Map.GetAdjacentPlot(plot:GetX(), plot:GetY(), direction);
+				if adjacent ~= nil then
+					local plotKey = CSC_GetPlotKey(adjacent:GetX(), adjacent:GetY());
+					for _, customer in ipairs(customers[plotKey] or {}) do
+						local customerCity = customer.State.City;
+						local key = CSC_GetCityStateKey(customerCity:GetOwner(), customerCity:GetID()) .. ":" .. plotKey .. ":" .. customer.Branch;
+						if customerCity:GetOwner() == city:GetOwner() and not seen[key] then
+							seen[key] = true;
+							local stacks = math.floor((customerCity:GetPopulation() or 0) / 5);
+							seller.FashionReturns.FASHION_HOUSE_RETURN = seller.FashionReturns.FASHION_HOUSE_RETURN + stacks;
+							local property = customer.Branch .. "_CULTURE_RETURN";
+							customer.State.FashionReturns[property] = customer.State.FashionReturns[property] + stacks;
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 local function CSC_CreateReturnStates()
 	-- First pass: cache every city and build lookup tables by district plot.
 	-- Later scans only walk the six plots around each selling Quarter.
@@ -480,6 +553,9 @@ local function CSC_WriteReturnState(cityState)
 	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_ZOO_CULTURE_RETURN, cityState.Stage4ZooCultureReturn);
 	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN, cityState.Stage4FerrisCultureReturn);
 	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN, cityState.Stage4ConservatoryCultureReturn);
+	for branch, amount in pairs(cityState.FashionReturns) do
+		CSC_WriteAmountBits(pCity, pCityCenterPlot, "CSC_TAILORS_STAGE_4_" .. branch, amount);
+	end
 end
 
 function CSC_RefreshCustomerPopulationReturns()
@@ -489,6 +565,7 @@ function CSC_RefreshCustomerPopulationReturns()
 	local cityStates, stage3SellerRecords, stage3CustomerCitiesByTransaction, stage4CustomerCitiesByPlotKey = CSC_CreateReturnStates();
 	CSC_ScanStage3CustomerTransactions(cityStates, stage3SellerRecords, stage3CustomerCitiesByTransaction);
 	CSC_ScanCafeStage4Transactions(cityStates, stage4CustomerCitiesByPlotKey);
+	CSC_ScanFashionStage4Transactions(cityStates);
 
 	for _, cityState in pairs(cityStates) do
 		CSC_WriteReturnState(cityState);

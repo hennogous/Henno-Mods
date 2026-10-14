@@ -77,6 +77,9 @@ def select_blends(files, contract_path, include_optional=False):
 def apply_contract_file(rows, path, catalogue):
     """Merge explicit per-building declarations without changing source blends."""
     data=json.loads(path.read_text(encoding='utf-8'))
+    errors = [f"{Path(row['path']).name}: {row['error']}" for row in rows if row.get('error')]
+    if errors:
+        raise ValueError('Blend discovery failed:\n' + '\n'.join(errors))
     declarations=data.get('buildings')
     if not isinstance(declarations,dict) or not declarations:
         raise ValueError(f'{path}: expected a nonempty buildings object')
@@ -130,7 +133,7 @@ def apply_contract_file(rows, path, catalogue):
         if kind!='building' or ident not in declarations:
             continue
         fields=declarations[ident]
-        if not isinstance(fields,dict) or any(k not in ('quarter','supply_chain_stage','construction_geometry') for k in fields):
+        if not isinstance(fields,dict) or any(k not in ('quarter','supply_chain_stage','construction_geometry','cobble_geometry','cobble_material') for k in fields):
             raise ValueError(f'{path}: invalid fields for {ident}')
         metadata=row.setdefault('metadata',{})
         for key,value in fields.items():
@@ -279,7 +282,8 @@ def make_job(rows, defaults, mod, library, output, catalogue):
                     meta=dict(meta)
                     for key in ('template_asset','replace_model','state_template_mesh'):
                         meta.pop(key,None)
-                    meta['template_profile']='tilebase'
+                    meta['template_profile'] = meta.get('template_profile') or LEGACY_TEMPLATE_PROFILES.get(
+                        str(row['metadata'].get('template_asset', '')).replace('\\', '/').casefold(), 'tilebase')
                     row['metadata']=meta
                 auxiliary[ident] = resolve_building(entry, row, mod)
                 if job.get('strict_contracts'):

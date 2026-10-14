@@ -45,6 +45,38 @@ def add_crate(snapshot):
 
 
 class AuthoringTests(unittest.TestCase):
+    def test_independent_support_requires_explicit_export_policy(self):
+        data = scene()
+        root, _ = add_crate(data)
+        root['support'] = 'building'
+        authoring = validator.validate_snapshot(data)
+        self.assertFalse(validator.export_validation_report(authoring)['automated_pass'])
+        export = validator.export_validation_report(authoring, {'supported_props': 'independent-pivot'})
+        self.assertTrue(export['automated_pass'])
+        self.assertFalse(authoring['automated_pass'])
+        data['objects'][0]['uv_layers'] = 1
+        export = validator.export_validation_report(validator.validate_snapshot(data), {'supported_props': 'independent-pivot'})
+        self.assertFalse(export['automated_pass'])
+
+    def test_export_lighting_is_advisory_without_changing_authoring_report(self):
+        data = scene()
+        data['scenes']['Export']['world'] = None
+        data['scenes']['Export']['engine'] = 'BLENDER_EEVEE_NEXT'
+        data['scenes']['Review']['review_key'] = None
+        authoring = validator.validate_snapshot(data)
+        before = copy.deepcopy(authoring)
+        export = validator.export_validation_report(authoring)
+        self.assertFalse(authoring['automated_pass'])
+        self.assertTrue(export['automated_pass'])
+        self.assertEqual(export['error_count'], 0)
+        self.assertEqual(export['warning_count'], 3)
+        self.assertEqual(authoring, before)
+        data['objects'][0]['uv_layers'] = 1
+        export = validator.export_validation_report(validator.validate_snapshot(data))
+        self.assertFalse(export['automated_pass'])
+        self.assertEqual(export['error_count'], 1)
+        self.assertIn('UV_CHANNELS', {f['code'] for f in export['findings'] if f['severity'] == 'error'})
+
     def codes(self, data):
         return {f['code'] for f in validator.validate_snapshot(data)['findings'] if f['severity']=='error'}
 
@@ -91,6 +123,14 @@ class AuthoringTests(unittest.TestCase):
     def test_review_only_duplicate_cannot_disappear_from_export(self):
         s=scene();_,child=add_crate(s);child['scenes']=['Review']
         self.assertTrue({'REVIEW_ONLY_PROP','CHILD_NOT_EXPORTED'} <= self.codes(s))
+
+    def test_used_state_material_cannot_leak_into_intact_geometry(self):
+        s = scene()
+        s['objects'][0]['used_materials'] = ['CSC_Level_3_Bldg', 'CSC_Level_3_CON+PIL_Bldg']
+        self.assertIn('STATE_GEOMETRY_IN_INTACT', self.codes(s))
+        s['objects'][0]['materials'] = ['CSC_Level_3_Bldg', 'CSC_Level_3_CON+PIL_Bldg']
+        s['objects'][0]['used_materials'] = ['CSC_Level_3_Bldg']
+        self.assertNotIn('STATE_GEOMETRY_IN_INTACT', self.codes(s))
 
     def test_identity_mismatch_and_duplicate_ids(self):
         s=scene();root,child=add_crate(s);child['instance_id']='Stale'

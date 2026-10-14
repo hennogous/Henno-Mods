@@ -5,10 +5,10 @@ status: implementing
 locked_sources:
   - path: docs/content/quarters/tailors.md
     role: canonical_design
-    sha256: 60f9cbd3be41990380017ed950c53d9117acb4418955ba80f273c963c1c90a1d
+    sha256: e933a57404fa04ef8d9fbb6283690293d195bc43e6c2501e2f7fab4d740747a9
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    sha256: eb36cacb6e2c46d7a717a3f0fb585e95c39a8a1598d90184fc7c5502d0922c16
+    sha256: da5bfd414342dec80674ec52f81949b16ed07c446878cb8168cb8f848ec16dd9
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
     sha256: 7abdbbca5ee4ea862a897dc38794436667a832009e033e5365b565b43c274114
@@ -20,7 +20,7 @@ locked_sources:
     sha256: 8247353b8cfd5b4c0311844b0e921140c1eefa20c22b58cdb19d7ef7a4aed415
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
-    sha256: 6abe09dd4726c1cbdbdac6ae60b88b4c1e871406ce722492bfc64720e69d02df
+    sha256: 3ebab1555992b176f192b1801c17a39ab7829534aa3bfe381463121d1c47f687
 
 contract_approvals:
   design_transcription:
@@ -55,10 +55,10 @@ contract_approvals:
     sha256:
 
 phase_gates:
-  foundation: {status: approved, approved_by: user, approved_at: '2026-09-24T11:33:30.9018069+02:00', design_sha256: dd4494002b2c6cdd3040d78121602be1cfdb33826cbb7ec1676e899d342dbb8d, ready_at: null, accepted_by: null, accepted_at: null}
+  foundation: {status: ready_for_review, approved_by: user, approved_at: '2026-10-13T19:26:32+02:00', design_sha256: a34c5a9edac0bee21e08bd1cbcfebb0d08d19bdbec2e5e4401654c89604a2c60, ready_at: '2026-10-05T12:17:05+02:00', accepted_by: null, accepted_at: null}
   materials_and_stage2: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: fa1db2c48baef16595b30497625875ae1410e95c489bd3d4c8ceba8219d6b6e2, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
-  stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-09-12T20:17:35.7568139+02:00', design_sha256: d2da83dc38ee9d64442cdc7ac9c45cd3c9c4792cfcbc3efc27a14ce835e1429a, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
-  stage4: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
+  stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-10-05T10:25:55+02:00', design_sha256: 15cc8114176a6469faf803e76ef772f873552124c7966554be9699a85057be64, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
+  stage4: {status: ready_for_review, approved_by: user, approved_at: '2026-10-13T19:26:32+02:00', design_sha256: f48bf9383b070b0833c309bce78423f37ab5a0f17e57a10f65eb66ba46325b50, ready_at: '2026-10-13T19:48:31+02:00', accepted_by: null, accepted_at: null}
   compatibility: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
   localization_and_integration: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
 

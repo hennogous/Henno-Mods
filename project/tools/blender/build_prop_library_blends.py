@@ -161,7 +161,7 @@ def build(row):
     row['status']='exported'
     print('EXPORTED',aid,flush=True)
 for row in data['assets']:
-    if row.get('origin') == 'authored_blender':
+    if row.get('origin') in ('authored_blender', 'native_state_variant'):
         if not (LIB/row['blend_path']).is_file():
             raise FileNotFoundError('Authored asset missing: '+row['blend_path'])
         print('PRESERVED_AUTHORED',row['asset_id'],flush=True)

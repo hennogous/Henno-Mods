@@ -1,6 +1,6 @@
 # Dynamic Art Properties
 
-The optional CSC Art Pack uses SQL-driven city properties plus Lua mirroring to drive `GamePropertyRanges` art variants. CSC supplies the gameplay requirement sets; the Art Pack owns all alternate-art bridge files and models. See [the Art Pack split](optional-art-pack-test.md).
+CSC uses SQL-driven city properties plus one shared Lua mirror to drive `GamePropertyRanges` art variants. The source-property modifiers live in their Quarter SQL and reuse the complete gameplay Service gates. CSC owns the bridge and both normal/alternate models. The Art Pack trial was merged back on 7 October 2026; see [expanded building art](expanded-building-art.md).
 
 ## Current timing and local verification
 
@@ -31,18 +31,18 @@ SelectionRule syntax:
 The relevant ArtDef file is:
 
 ```text
-CSC Art Pack/ArtDefs/CSC_GamePropertyRanges.artdef
+Civ Supply Chains/ArtDefs/CSC_GamePropertyRanges.artdef
 ```
 
 The corresponding landmark variants live in:
 
 ```text
-CSC Art Pack/ArtDefs/CSC_ArtPack_Landmarks.artdef
+Civ Supply Chains/ArtDefs/CSC_Landmarks.artdef
 ```
 
 ## Tailors' Stage 2 bridge
 
-The Tailors' Stage 2 bridge is complete: Art Pack SQL, the shared Lua mirror,
+The Tailors' Stage 2 bridge is complete: Quarter SQL, the shared Lua mirror,
 `GamePropertyRanges`, and the Textile Workshop landmark variant are wired
 together.
 
@@ -61,22 +61,34 @@ The property modifier is attached directly to the Textile Workshop and uses
 `REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ`, shared with the Dockmaster effects.
 That gate includes `CIVIC_NAVAL_TRADITION`, improved Base Material supply and a
 collection-count check for an eligible adjacent Harbor/Lighthouse customer.
-The Tailors contract and phase validator were rebaselined on 23 September 2026:
-they retain the art-design references and validate CSC's reusable Service gates,
-but no longer declare or inspect Art Pack SQL/Lua as core Tailors outputs.
+The Tailors contract and phase validator now verify the Stage 2 and Stage 3
+source modifiers, arguments and owning buildings against the shared Service gates.
+Physical package verification remains separate from the gameplay phase handoff.
+
+## Tailors' Stage 3 bridge
+
+`CSC_TAILORS_STAGE_3_CUSTOMERS` is attached to the Tailor through
+`MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY`, using the full
+`REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ` Sacristan gate. The shared Lua mirror
+writes `CSC_TAILORS_STAGE_3_CUSTOMERS_ART`; classifier
+`CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE` selects `CSC_TAILORS_Tailor_2`.
+Markets keep their independent transaction gates. Fashion House art remains
+deferred until an alternate scene exists.
 
 ## SQL remains authoritative
 
-The Art Pack SQL modifier property is the art-state source of truth. `CSC Art Pack/Lua_UI/ArtProperties/CSC_ArtProperties.lua` mirrors the SQL-driven value into a direct `pCity:SetProperty(...)` value that `GamePropertyRanges` can read.
+The Quarter SQL modifier property is the art-state source of truth. `Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua` mirrors the SQL-driven value into a direct `pCity:SetProperty(...)` value that `GamePropertyRanges` can read.
 
 This follows Sukritact's Posuban-style art-facing property pattern while preserving SQL-driven gameplay logic.
 
 ## ModBuddy action requirement
 
-The Lua bridge must be present in the ModBuddy `InGameActionData` inside:
+The Lua bridge uses the `CSC_ArtProperties` AddGameplayScripts action, LoadOrder
+501. Maintain actions in `project/modbuddy/CivSupplyChains.actions.json` and
+regenerate the ModBuddy `InGameActionData` inside:
 
 ```text
-CSC Art Pack/CSC Art Pack.civ6proj
+Civ Supply Chains/Civ Supply Chains.civ6proj
 ```
 
 Do not maintain a tracked root `.modinfo`; the real `.modinfo` is generated into the built mod output and is not versioned here.

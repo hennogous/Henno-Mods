@@ -53,13 +53,25 @@ CLI login can use `gh auth login --hostname github.com --git-protocol https --we
 storage tradeoff before requesting such a login. Never display or copy tokens
 between machines. Both modes originate on Mac and leave the Tailscale ACL unchanged.
 
-Save pending editor changes and avoid editing these repos during the run. Stop on
-conflicts, changed branch/upstream, active merge/rebase, SSH/authentication failure
-or rejected push. Completed repos and checkpoint commits remain saved; sync is not
-atomic across all four repos. Report the exact host/repo and remaining work. A
-failed merge may remain open for review. Do not silently choose a conflict side,
-stash, reset, clean, rebase published commits, force-push, or retry indefinitely.
-Tool-required filesystem/network approval still applies; use escalation when needed.
+Save pending editor changes and avoid editing these repos during the run. The
+script stops on merge conflicts; the agent should inspect both sides and resolve
+them sensibly within the sync request, without asking for routine confirmation.
+Preserve independent additions and use project context and evidence of newer
+decisions to reconcile overlapping edits. Do not blindly select an entire side.
+Validate affected content, stage the resolved files, complete the ordinary merge
+commit on the affected host, then rerun `--check` and resume the selected sync.
+Report meaningful resolutions. Ask only when the intended result is genuinely
+ambiguous, a binary conflict cannot be safely reconciled, or resolution would
+discard work without clear evidence that it is superseded.
+
+Stop on changed branch/upstream, an unrelated active merge/rebase,
+SSH/authentication failure or rejected push. Only complete an active merge created
+by this sync or explicitly authorized by Henno. Completed repos and checkpoint
+commits remain saved; sync is not atomic across all four repos. If blocked, report
+the exact host/repo and remaining work; an unresolved merge may remain open for
+review. Do not stash, reset, clean, rebase published commits, force-push, or retry
+indefinitely. Tool-required filesystem/network approval still applies; use
+escalation when needed.
 
 For implementation changes, run `scripts/test_shadow_sync.py --scratch` with a folder
 under `/Users/henno.gous/Play/codex-outputs/shadow-sync/`. Keep generated logs and test

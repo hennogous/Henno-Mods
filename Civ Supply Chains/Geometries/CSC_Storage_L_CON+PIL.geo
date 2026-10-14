@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AssetObjects..GeometryInstance>
+<AssetObjects:GeometryInstance>
 <m_CookParams>
 <m_Values/>
 </m_CookParams>
@@ -11,30 +11,30 @@
 </m_Version>
 <m_Meshes>
 <Element>
+<m_Name text="CSC_Storage_L_CON+PIL_Bldg"/>
+<m_Groups>
+<Element>
+<m_Name text="CSC_TAILORS_NE"/>
+<m_nFirstPrim>0</m_nFirstPrim>
+<m_nPrims>1210</m_nPrims>
+</Element>
+</m_Groups>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nPrimitiveCount>1210</m_nPrimitiveCount>
+<m_nVertexCount>2176</m_nVertexCount>
+</Element>
+<Element>
 <m_Name text="Scaffolding"/>
 <m_Groups>
 <Element>
 <m_Name text="Pillage_Construction_01"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>272</m_nPrims>
+<m_nPrims>125</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>272</m_nPrimitiveCount>
-<m_nVertexCount>588</m_nVertexCount>
-</Element>
-<Element>
-<m_Name text="CSC_Storage_L_CON+PIL_Bldg"/>
-<m_Groups>
-<Element>
-<m_Name text="CSC_Storage_L_CON+PIL_Bldg"/>
-<m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>772</m_nPrims>
-</Element>
-</m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>772</m_nPrimitiveCount>
-<m_nVertexCount>1179</m_nVertexCount>
+<m_nPrimitiveCount>125</m_nPrimitiveCount>
+<m_nVertexCount>269</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
@@ -59,4 +59,4 @@
 <Element text="LandmarkModel"/>
 </m_Tags>
 <m_Groups/>
-</AssetObjects..GeometryInstance>
+</AssetObjects:GeometryInstance>

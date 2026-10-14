@@ -34,7 +34,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>464</m_nPrimitiveCount>
-      <m_nVertexCount>710</m_nVertexCount>
+      <m_nVertexCount>571</m_nVertexCount>
     </Element>
   </m_Meshes>
   <m_Bones>

@@ -1,0 +1,29 @@
+# AE-owned 3D assembly workflow — 12 October 2026
+
+Henno is changing the working method. **Asset Editor owns final placement and assembly.** Blender remains the geometry/UV/material authoring workspace and an optional concept/progress-review area. Blender compositions must not overwrite AE placements on later geometry exports. This supersedes the Blender-master composition guidance for the new workflow; tooling has not yet been adapted.
+
+## User-directed deliverables
+
+- Alternate building versions retain the standard building and standard props, with additional service-specific props. Final placement is done in AE with the surrounding district base available.
+- Deliver a Blender kit containing a building's custom props and its alternate's custom props. Continue using/extending the shared prop material.
+- Export each custom prop as an independent AE asset, register it in the XLP, and hide it in Construction and Pillaged. Set prop attachment Cull Mode to PERMANENT.
+- Deliver each new custom decal in its own Blender file and export it for AE use.
+- Initial AE setup includes intact building geometry, the CON+PIL version, the shared building PIL decal, custom decals, and one copy of each prop for Henno to place/duplicate. These copies are starting inventory, not an authoritative assistant-authored layout.
+- Build a saved-AE-asset-to-Blender reconstruction tool for standardized icon/SV inputs, including materials and attachments. Henno requests the building's light-roof `_2` image texture for icons. Do not conflate that texture substitution with choosing an alternate runtime assembly; whether SV uses that substitution remains unspecified.
+
+## 13 October agreement and delivery
+
+- Later clarification: retain optional bundling of close, non-reused CSC props into bespoke main building GEO/FGX. AST then references that bespoke geometry, while separately placed/reusable props remain attachments. Bundled props keep shared prop material groups and disappear in Construction/Pillaged. AE owns assembly placement; Blender owns the bundled geometry's internal layout. Initial setup attaches only standalone props, avoiding duplicated bundled props. Skill and durable workflow updated; no asset/tool changes needed.
+
+- Base-building PIL decal is created once to match the shared building's pillaged geometry. Henno manually attaches his reusable single-debris-decal asset to deserving props. This supersedes proposals for layout-wide or automatically generated prop debris.
+- Canonical CSC skill updated in `.agents/skills/civ-supply-chains`, with `references/art-ae-owned-assembly-workflow.md`, a top-level priority override and overrides in the older production/reuse/integration/icon/SV references. Skill validation passes. Unrelated dirty skill changes preserved; no commit/sync.
+- Durable collaborator reference: `project/docs/art/ae-owned-assembly-workflow.md`.
+- Implemented `project/tools/blender/render_ae_asset.py` + `ae_asset_render_blender.py`: saved AST, native FGX, material overrides and recursive AE placements to packed Blender snapshots and transparent icon/SV inputs. Documentation: `project/docs/art/2d/ae-asset-renderer.md`. No source asset or authoring blend is modified.
+- Tested Workshop: 20 AE attachments, 24 visible mesh groups. Icon uses `_2` light roof, SV retains runtime roof. Fixed documented cameras/worlds/suns, AO Fac .5, CPU Cycles seed 0. Numeric object IDs and multilayer normal/depth/ID passes accompany images.
+- Firaxis R8 DDS decodes red-only: scalar AO/gloss/metalness/opacity must use Red, not RGB-to-value averaging. Packed alpha preserves base-color RGB. Fixed before final delivery.
+- PNG timestamp/path stamps caused hash differences; stripping volatile metadata preserves pixel/color chunks. Both 1024px inputs and ID masks match exactly across runs. Ten regressions pass, cached rerun verified, reopened snapshots preserve transforms/packed textures.
+- Initial reviewed output: `C:/Users/Shadow/Desktop/Codex/asset-renders/CSC_TAILORS_Textile_Workshop/ca2725004affa958/`.
+- Henno accepted the icon view, then requested no Emissive texture for these renders. Both icon/SV material builders now omit emissive image nodes and explicitly set emission strength zero for buildings and props. Rule added to CSC workflow reference and repo docs. Updated output: `C:/Users/Shadow/Desktop/Codex/asset-renders/CSC_TAILORS_Textile_Workshop/44cb654393389185/`. Source AE materials remain authoritative and unchanged.
+- Windows inline image embeds load with `/C:/Users/...` absolute targets; `C:/Users/...` failed in this chat.
+- Output correction: final icon/SV PNGs now default beside the input AST as `<asset>_Icon_Input.png` and `<asset>_SV_Input.png`, with atomic updates on fresh and cached runs. `--image-output-dir` overrides that folder. Supporting blends/passes/cache remain under Desktop/Codex; `--output` still controls that package root.
+- Legacy `export_assets.py` still regenerates whole assemblies and defaults attachments to OPTIONAL. Selective prop export/initial setup remains a separate future task; never use legacy exports to overwrite Henno's AE edits.

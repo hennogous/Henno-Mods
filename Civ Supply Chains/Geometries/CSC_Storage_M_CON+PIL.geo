@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AssetObjects..GeometryInstance>
+<AssetObjects:GeometryInstance>
 <m_CookParams>
 <m_Values/>
 </m_CookParams>
@@ -16,12 +16,12 @@
 <Element>
 <m_Name text="CSC_Storage_M_CON+PIL_Bldg"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>631</m_nPrims>
+<m_nPrims>708</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>631</m_nPrimitiveCount>
-<m_nVertexCount>908</m_nVertexCount>
+<m_nPrimitiveCount>708</m_nPrimitiveCount>
+<m_nVertexCount>1266</m_nVertexCount>
 </Element>
 <Element>
 <m_Name text="Scaffolding"/>
@@ -59,4 +59,4 @@
 <Element text="LandmarkModel"/>
 </m_Tags>
 <m_Groups/>
-</AssetObjects..GeometryInstance>
+</AssetObjects:GeometryInstance>

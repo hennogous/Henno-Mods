@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AssetObjects:GeometryInstance>
+<AssetObjects..GeometryInstance>
 <m_CookParams>
 <m_Values/>
 </m_CookParams>
@@ -16,12 +16,12 @@
 <Element>
 <m_Name text="CSC_Level_1_S_Bldg"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>690</m_nPrims>
+<m_nPrims>696</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>690</m_nPrimitiveCount>
-<m_nVertexCount>906</m_nVertexCount>
+<m_nPrimitiveCount>696</m_nPrimitiveCount>
+<m_nVertexCount>928</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
@@ -46,4 +46,4 @@
 <Element text="LandmarkModel"/>
 </m_Tags>
 <m_Groups/>
-</AssetObjects:GeometryInstance>
+</AssetObjects..GeometryInstance>

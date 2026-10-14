@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AssetObjects..ArtDefSet>
+  <m_Version><major>4</major><minor>0</minor><build>434</build><revision>920</revision></m_Version>
+  <m_TemplateName text="Overlay"/>
+  <m_RootCollections>
+    <Element>
+      <m_CollectionName text="Layers"/>
+      <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+      <Element>
+        <m_Fields><m_Values>
+          <Element class="AssetObjects..StringValue"><m_Value text="BorderOverlay"/><m_ParamName text="Type"/></Element>
+          <Element class="AssetObjects..IntValue"><m_nValue>0</m_nValue><m_ParamName text="Pass"/></Element>
+          <Element class="AssetObjects..FloatValue"><m_fValue>15.5</m_fValue><m_ParamName text="Priority"/></Element>
+          <Element class="AssetObjects..BoolValue"><m_bValue>false</m_bValue><m_ParamName text="Visible"/></Element>
+          <Element class="AssetObjects..StringValue"><m_Value text="MapSearchBorder"/><m_ParamName text="Material"/></Element>
+          <Element class="AssetObjects..BoolValue"><m_bValue>true</m_bValue><m_ParamName text="ShowOnMap"/></Element>
+          <Element class="AssetObjects..BoolValue"><m_bValue>true</m_bValue><m_ParamName text="ShowOnWorld"/></Element>
+        </m_Values></m_Fields>
+        <m_ChildCollections/>
+        <m_Name text="CSC_QuarterLens_Improved"/>
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+    </Element>
+  </m_RootCollections>
+</AssetObjects..ArtDefSet>

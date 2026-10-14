@@ -16,25 +16,12 @@
 <Element>
 <m_Name text="CSC_Storage_S_CON+PIL_Bdg"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>666</m_nPrims>
+<m_nPrims>674</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>666</m_nPrimitiveCount>
-<m_nVertexCount>900</m_nVertexCount>
-</Element>
-<Element>
-<m_Name text="Floor"/>
-<m_Groups>
-<Element>
-<m_Name text="Floor"/>
-<m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>10</m_nPrims>
-</Element>
-</m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>10</m_nPrimitiveCount>
-<m_nVertexCount>14</m_nVertexCount>
+<m_nPrimitiveCount>674</m_nPrimitiveCount>
+<m_nVertexCount>1277</m_nVertexCount>
 </Element>
 <Element>
 <m_Name text="Scaffolding"/>

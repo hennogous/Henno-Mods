@@ -9,14 +9,64 @@ STATES = ('Worked', 'Unworked', 'Pillaged', 'Construction', 'Unbuilt')
 COBBLE_MATERIAL = 'CSC_ALL_Cobble_Patch_Decal'
 
 
-def material_for_mesh(mesh, mat, contract, job):
-    """Preserve prop material groups even when authored inside the main mesh."""
-    fixed = (mesh['role'] == 'fixed_geometry' or mesh['name'].startswith('CSC_Fixed_')) and \
+def fixed_mesh(mesh):
+    return (mesh['role'] == 'fixed_geometry' or mesh['name'].startswith('CSC_Fixed_')) and \
             'leanto' not in mesh['name'].casefold()
+
+
+def contract_visible_states(mesh, mat):
+    """Construction may retain authored fixed groups without exposing the building."""
+    states = mat.get('visible_states')
+    if states is None:
+        return ('Worked',)
+    if (not fixed_mesh(mesh) or not isinstance(states, list) or not all(isinstance(s,str) for s in states) or
+            len(states) != len(set(states)) or 'Worked' not in states or
+            set(states) - {'Worked', 'Construction'}):
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: civ_visible_states must be unique Worked/Construction states on fixed geometry')
+    return tuple(states)
+
+
+def contract_material_binding(mesh, mat, contract, job, mod):
+    """Resolve a fixed group's explicit AO override without replacing shared AO."""
+    from export_scene import read_xml, txt
+    base = material_for_mesh(mesh, mat, contract, job)
+    if fixed_mesh(mesh) and mat.get('ao_texture') and job.get('ao_policy') == 'stage_explicit':
+        root = read_xml(mod/'Materials'/(base+'.mtl'))
+        slots = [v for v in root.findall('m_CookParams/m_Values/Element') if txt(v,'m_ParamName') == 'AO']
+        if len(slots) != 1:
+            raise ValueError(f'{base}: expected one AO slot for fixed geometry')
+        if txt(slots[0],'m_ObjectName') != mat['ao_texture']:
+            return base + '__AO_' + mat['ao_texture']
+    return base
+
+
+def material_for_mesh(mesh, mat, contract, job):
+    """Placement roles do not determine a surface's atlas/shader binding."""
+    fixed = fixed_mesh(mesh)
     declared = mat.get('external') or job.get('material_bindings', {}).get(mat['name'])
-    if fixed or declared in ('CSC_ALL_Props_01', 'CSC_ALL_Props_02'):
-        return contract['prop_material']
+    if 'CON+PIL' in mat['name'] or mat['name'] == 'Pillage_Construction_01':
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: construction/pillage material in intact geometry; move its faces to the separate state model')
+    if declared:
+        if declared not in (contract['building_material'], contract['prop_material']):
+            raise ValueError(f'{mesh["name"]}/{mat["name"]}: intact material binding {declared} is outside the building/prop contract')
+        return declared
+    if fixed:
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: fixed_geometry does not imply a prop material; set civ_material or an explicit material_bindings entry')
     return contract['building_material']
+
+
+def contract_state_parameters(mesh, mat):
+    """Retain known shader parameters when an authored prop becomes fixed geometry."""
+    rows = mat.get('state_parameters')
+    if rows is None:
+        return {}
+    types = {'FOWMaterial':str, 'BurnMaterial':str, 'SnowMaterial':str,
+             'EmissiveEnabled':bool, 'FOWVisibleOnly':bool}
+    if (not fixed_mesh(mesh) or not isinstance(rows,dict) or set(rows) != set(STATES) or
+            any(not isinstance(params,dict) or set(params)-set(types) or
+                any(type(v) is not types[k] for k,v in params.items()) for params in rows.values())):
+        raise ValueError(f'{mesh["name"]}/{mat["name"]}: invalid fixed civ_state_parameters')
+    return rows
 
 
 def contract_for(asset_id, metadata, mod):
@@ -46,10 +96,21 @@ def contract_for(asset_id, metadata, mod):
     else:
         level = stage - 1
         result.update(ruin_geometry=metadata.get('construction_geometry') or f'CSC_Level_{level}_CON+PIL',
-                      cobble_geometry=f'CSC_ALL_Stage_{stage}_Cobble_Decals',
-                      ruin_visible=['Construction', 'Pillaged'],
-                      cobble_visible=['Worked', 'Construction'])
-        required.append(COBBLE_MATERIAL)
+                      ruin_visible=['Construction', 'Pillaged'])
+        cobble = metadata.get('cobble_geometry', f'CSC_ALL_Stage_{stage}_Cobble_Decals')
+        if cobble is None:
+            decals = metadata.get('decals', [])
+            states = metadata.get('decal_states', {})
+            if not any('Worked' in states.get(ident, []) for ident in decals):
+                raise ValueError(f'{asset_id}: disabling shared cobble requires an authored Worked decal')
+        elif cobble != f'CSC_ALL_Stage_{stage}_Cobble_Decals':
+            raise ValueError(f'{asset_id}: cobble_geometry must be the stage default or null for authored paving')
+        else:
+            material = metadata.get('cobble_material', COBBLE_MATERIAL)
+            from export_scene import identifier
+            identifier(material)
+            result.update(cobble_geometry=cobble, cobble_visible=['Worked'], cobble_material=material)
+            required.append(material)
     for ident in (result['ruin_geometry'], *([result['cobble_geometry']] if 'cobble_geometry' in result else [])):
         if ident == metadata.get('construction_geometry') and ident not in (
                 'CSC_Level_1_CON+PIL', 'CSC_Level_1_S_CON+PIL',
@@ -95,10 +156,40 @@ def state_rows(model):
     return rows
 
 
+def material_is_ao_variant(material, base, stage, mod):
+    """An AO variant must preserve every other parameter of the contracted material."""
+    from export_scene import read_xml, txt, set_text
+    if material == base:
+        return True
+    if not material.startswith(base + '__AO_'):
+        return False
+    path = next((p for p in (stage/'Materials'/(material+'.mtl'), mod/'Materials'/(material+'.mtl')) if p.is_file()), None)
+    if path is None:
+        return False
+    actual, expected = read_xml(path), read_xml(mod/'Materials'/(base+'.mtl'))
+    set_text(actual, 'm_Name', base)
+    a = [v for v in actual.findall('m_CookParams/m_Values/Element') if txt(v, 'm_ParamName') == 'AO']
+    b = [v for v in expected.findall('m_CookParams/m_Values/Element') if txt(v, 'm_ParamName') == 'AO']
+    if len(a) != 1 or len(b) != 1:
+        return False
+    texture = txt(a[0], 'm_ObjectName')
+    if not texture or not any((folder/'Textures'/(texture+'.tex')).is_file() for folder in (stage,mod)):
+        return False
+    set_text(a[0], 'm_ObjectName', txt(b[0], 'm_ObjectName'))
+    def canonical(node):
+        return node.tag, sorted(node.attrib.items()), (node.text or '').strip(), tuple(canonical(c) for c in node)
+    return canonical(actual) == canonical(expected)
+
+
 def assert_groups(model, geo, expected):
     """Every GEO mesh/group must have exactly five matching AST rows."""
     from export_scene import txt
     actual = state_rows(model)
+    if txt(geo, 'm_ClassName') == 'DecalGeometry':
+        for row in model.findall('m_GroupStates/Element'):
+            params = [txt(v, 'm_ParamName') for v in row.findall('m_Values/m_Values/Element')]
+            if sorted(params) != ['Material', 'Visible']:
+                raise ValueError(f'{txt(model, "m_Name")}: DecalGeometry state parameters must be Material/Visible only: {params}')
     wanted = {}
     for mesh in geo.findall('m_Meshes/Element'):
         mesh_name = txt(mesh, 'm_Name')
@@ -116,7 +207,7 @@ def assert_groups(model, geo, expected):
 
 def validate_stage(job, decoded, stage):
     """Check the exact AST/GEO state and material contract before conversion/install."""
-    from export_scene import read_xml, txt, MODELS, POINTS, attachment_transform
+    from export_scene import read_xml, txt, MODELS, POINTS, attachment_transform, export_mesh_name
     mod = Path(job['mod_root'])
     checked = []
     reused_csc = set()
@@ -133,7 +224,8 @@ def validate_stage(job, decoded, stage):
         models = {txt(m, 'm_Name'): m for m in root.findall(MODELS + '/Element')}
         for model_name, instance in models.items():
             for (mesh_name, group_name, state), (visible, _) in state_rows(instance).items():
-                if state in ('Unworked','Unbuilt') and visible:
+                authored_states = entry.get('decal_states', {}).get(model_name, [])
+                if state in ('Unworked','Unbuilt') and visible and state not in authored_states:
                     raise ValueError(f'{ident}/{model_name}/{mesh_name}/{group_name}: {state} must be invisible')
         unexpected_ruins = [name for name in models if 'CON+PIL' in name and name != entry['contract']['ruin_geometry']]
         if unexpected_ruins:
@@ -141,15 +233,32 @@ def validate_stage(job, decoded, stage):
         main = models[ident]
         geo = read_xml(stage / 'Geometries' / (ident + '.geo'))
         decoded_model = decoded['models'][ident]
-        mesh_lookup = {m['name']: m for m in decoded_model['meshes']}
+        mesh_lookup = {export_mesh_name(m['name']): m for m in decoded_model['meshes']}
         def main_expected(mesh, group, state):
             source_mesh = mesh_lookup[mesh]
             source_mat = next(m for m in source_mesh['materials'] if m['name'] == group)
-            material = material_for_mesh(source_mesh, source_mat, contract, job)
-            return (state == 'Worked', material)
+            base = material_for_mesh(source_mesh, source_mat, contract, job)
+            material = contract_material_binding(source_mesh, source_mat, contract, job, mod)
+            if not material_is_ao_variant(material, base, stage, mod):
+                raise ValueError(f'{ident}/{mesh}/{group}: fixed material changed beyond its explicit AO override')
+            return (state in contract_visible_states(source_mesh, source_mat), material)
         assert_groups(main, geo, main_expected)
+        for row in main.findall('m_GroupStates/Element'):
+            mesh = mesh_lookup[txt(row,'m_MeshName')]
+            mat = next(m for m in mesh['materials'] if m['name'] == txt(row,'m_GroupName'))
+            expected = contract_state_parameters(mesh,mat).get(txt(row,'m_StateName'),{})
+            for param,wanted in expected.items():
+                nodes = [p for p in row.findall('m_Values/m_Values/Element') if txt(p,'m_ParamName') == param]
+                actual = None
+                if len(nodes) == 1:
+                    if type(wanted) is bool and nodes[0].findtext('m_bValue') in ('true', 'false'):
+                        actual = nodes[0].findtext('m_bValue') == 'true'
+                    elif type(wanted) is str and nodes[0].find('m_ObjectName') is not None:
+                        actual = txt(nodes[0],'m_ObjectName')
+                if actual != wanted:
+                    raise ValueError(f'{ident}/{mesh["name"]}/{mat["name"]}/{param}: bundled shader state differs from source')
         ruin_id = contract['ruin_geometry']
-        if contract.get('authored_ruin_geometry') != (ruin_id in authored_ruins):
+        if bool(contract.get('authored_ruin_geometry')) != (ruin_id in authored_ruins):
             raise ValueError(f'{ident}: authored construction geometry declaration differs from source inventory')
         if ruin_id not in models:
             raise ValueError(f'{ident}: missing shared model {ruin_id}')
@@ -157,20 +266,20 @@ def validate_stage(job, decoded, stage):
         assert_groups(models[ruin_id], ruin_geo,
                       lambda mesh, group, state: (state == 'Construction' if group == 'Pillage_Construction_01' else state in ('Construction', 'Pillaged'),
                                                   'Pillage_Construction_01' if group == 'Pillage_Construction_01' else contract['ruin_material']))
-        if contract['supply_chain_stage'] in (3, 4):
+        if 'cobble_geometry' in contract:
             cobble_id = contract['cobble_geometry']
             if cobble_id not in models:
                 raise ValueError(f'{ident}: missing shared model {cobble_id}')
             cobble_geo = read_xml(mod / 'Geometries' / (cobble_id + '.geo'))
             assert_groups(models[cobble_id], cobble_geo,
-                          lambda mesh, group, state: (state in ('Worked', 'Construction'), COBBLE_MATERIAL))
+                          lambda mesh, group, state: (state in contract['cobble_visible'], contract.get('cobble_material', COBBLE_MATERIAL)))
         for decal_id in entry.get('decals', []):
             if decal_id not in models:
                 raise ValueError(f'{ident}: missing authored PIL decal model {decal_id}')
             decal_geo = read_xml(stage / 'Geometries' / (decal_id + '.geo'))
             assert_groups(models[decal_id], decal_geo,
                           lambda mesh, group, state: (state in entry.get('decal_states', {}).get(decal_id, ['Pillaged']),
-                                                      next(m['name'] for m in next(x for x in decoded['models'][decal_id]['meshes'] if x['name']==mesh)['materials'] if m['name']==group)))
+                                                      next(m['name'] for m in next(x for x in decoded['models'][decal_id]['meshes'] if export_mesh_name(x['name'])==mesh)['materials'] if m['name']==group)))
             used_decals.add(decal_id)
         attachments = {a['instance_id']: a for a in decoded_model['attachments']}
         points = {txt(p, 'm_Name').removeprefix('CSC_Attach_'): p
@@ -205,9 +314,9 @@ def validate_stage(job, decoded, stage):
                 prop_root = read_xml(stage / 'Assets' / (asset + '.ast'))
                 prop_model = prop_root.find(MODELS + '/Element')
                 actual_materials = {material for visible, material in state_rows(prop_model).values() if visible}
-                expected_material = contract['building_material'] if 'leanto' in asset.casefold() else contract['prop_material']
-                if actual_materials != {expected_material}:
-                    raise ValueError(f'{ident}/{instance_id}: new CSC prop uses {actual_materials}, expected {expected_material}')
+                expected_materials = (contract['building_material'], contract['ruin_material']) if 'leanto' in asset.casefold() else (contract['prop_material'],)
+                if not actual_materials or not all(any(material_is_ao_variant(m, expected, stage, mod) for expected in expected_materials) for m in actual_materials):
+                    raise ValueError(f'{ident}/{instance_id}: new CSC prop uses {actual_materials}, expected one of {expected_materials}')
         checked.append(ident)
     missing_props = {e['asset_id'] for e in job.get('props', [])} - used_new_props
     missing_decals = {e['geometry_id'] for e in job.get('decals', [])} - used_decals
@@ -220,10 +329,33 @@ def validate_stage(job, decoded, stage):
         prop = root.find(MODELS + '/Element')
         geo = read_xml(stage / 'Geometries' / (ident + '.geo'))
         rows = state_rows(prop)
-        if any(visible != (state == 'Worked') for (_, _, state), (visible, _) in rows.items()):
-            raise ValueError(f'{ident}: new CSC prop must be Worked-only')
+        template_path = job.get('prop_templates', {}).get(ident)
+        if template_path:
+            from export_scene import prop_state_templates
+            template = read_xml(mod/template_path).find(MODELS + '/Element')
+            preserved = prop_state_templates(model, template)
+            expected_visibility = {(export_mesh_name(mesh), group, state):next(v.findtext('m_bValue') == 'true'
+                                      for v in row.findall('m_Values/m_Values/Element') if txt(v,'m_ParamName') == 'Visible')
+                                   for (mesh, group, state), row in preserved.items()}
+        else:
+            expected_visibility = {key:key[2] == 'Worked' for key in rows}
+        if any(visible != expected_visibility[(mesh, group, state)] for (mesh, group, state), (visible, _) in rows.items()):
+            raise ValueError(f'{ident}: prop visibility differs from its declared state template')
         assert_groups(prop, geo, lambda mesh, group, state: rows[(mesh, group, state)])
+    from export_scene import native_state_variant
+    catalogue = {r['asset_id']:r for r in json.loads((Path(job['library'])/'catalogue.json').read_text())['assets']}
+    variants = sorted({a['source_asset_id'] for e in job['buildings']
+                       for a in decoded['models'][e['asset_id']]['attachments']
+                       if catalogue.get(a['source_asset_id'], {}).get('origin') == 'native_state_variant'})
+    def canonical(node):
+        return (node.tag, sorted(node.attrib.items()), (node.text or '').strip(), tuple(canonical(c) for c in node))
+    for ident in variants:
+        source = catalogue[ident]
+        expected = native_state_variant(read_xml(Path(source['source_ast'])), ident, source['hidden_states'])
+        if canonical(read_xml(stage/'Assets'/(ident+'.ast'))) != canonical(expected):
+            raise ValueError(f'{ident}: native variant changed more than identity and declared visibility')
     return {'validated_buildings': checked, 'new_props': [i for i,m in decoded['models'].items() if m['kind']=='prop'],
+            'native_state_variants': variants,
             'reused_csc_props_for_henno': sorted(reused_csc),
             'xy_rotation_ae_review': tilted_attachments,
             'manual_review': 'Existing CSC attachment assets retain their installed state tables; Henno checks those in game.'}

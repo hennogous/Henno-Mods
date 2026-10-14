@@ -15,7 +15,9 @@ local PROP_IMPORT_SPECIALTY_ROUTE		= "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE";
 local PROP_EXPORT_BAKERY_ROUTE			= "CSC_BAKERS_EXPORT_BAKERY_ROUTE";
 local PROP_EXPORT_CAFE_ROUTE				= "CSC_BAKERS_EXPORT_CAFE_ROUTE";
 local PROP_IMPORT_TAILOR_ROUTE			= "CSC_TAILORS_IMPORT_TAILOR_ROUTE";
+local PROP_IMPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE";
 local PROP_EXPORT_TAILOR_ROUTE			= "CSC_TAILORS_EXPORT_TAILOR_ROUTE";
+local PROP_EXPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE";
 
 local function CSC_GetRouteBitProperty(basePropertyName, bit)
 	return basePropertyName .. "_BIT_" .. tostring(bit);
@@ -54,7 +56,9 @@ function CSC_SetBakersTradeRouteProperties(iPlayerID, parameters)
 	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_BAKERY_ROUTE, parameters.ExportBakeryRoute or 0);
 	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_CAFE_ROUTE, parameters.ExportCafeRoute or 0);
 	CSC_SetPropertyIfChanged(pPlot, PROP_IMPORT_TAILOR_ROUTE, parameters.ImportTailorRoute or 0);
+	CSC_SetPropertyIfChanged(pPlot, PROP_IMPORT_FASHION_HOUSE_ROUTE, parameters.ImportFashionHouseRoute or 0);
 	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_TAILOR_ROUTE, parameters.ExportTailorRoute or 0);
+	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_FASHION_HOUSE_ROUTE, parameters.ExportFashionHouseRoute or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 1), parameters.ExportBakeryRouteBit1 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 2), parameters.ExportBakeryRouteBit2 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 4), parameters.ExportBakeryRouteBit4 or 0);
@@ -66,10 +70,15 @@ function CSC_SetBakersTradeRouteProperties(iPlayerID, parameters)
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 8), parameters.ExportCafeRouteBit8 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 16), parameters.ExportCafeRouteBit16 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 1), parameters.ExportTailorRouteBit1 or 0);
+	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 1), parameters.ExportFashionHouseRouteBit1 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 2), parameters.ExportTailorRouteBit2 or 0);
+	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 2), parameters.ExportFashionHouseRouteBit2 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 4), parameters.ExportTailorRouteBit4 or 0);
+	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 4), parameters.ExportFashionHouseRouteBit4 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 8), parameters.ExportTailorRouteBit8 or 0);
+	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 8), parameters.ExportFashionHouseRouteBit8 or 0);
 	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 16), parameters.ExportTailorRouteBit16 or 0);
+	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 16), parameters.ExportFashionHouseRouteBit16 or 0);
 
 	-- Mirror the same values onto the city object for FireTuner/debug inspection.
 	-- SQL still consumes the plot properties above.
@@ -79,7 +88,9 @@ function CSC_SetBakersTradeRouteProperties(iPlayerID, parameters)
 	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_BAKERY_ROUTE, parameters.ExportBakeryRoute or 0);
 	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_CAFE_ROUTE, parameters.ExportCafeRoute or 0);
 	CSC_SetPropertyIfChanged(pCity, PROP_IMPORT_TAILOR_ROUTE, parameters.ImportTailorRoute or 0);
+	CSC_SetPropertyIfChanged(pCity, PROP_IMPORT_FASHION_HOUSE_ROUTE, parameters.ImportFashionHouseRoute or 0);
 	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_TAILOR_ROUTE, parameters.ExportTailorRoute or 0);
+	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_FASHION_HOUSE_ROUTE, parameters.ExportFashionHouseRoute or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 1), parameters.ExportBakeryRouteBit1 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 2), parameters.ExportBakeryRouteBit2 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 4), parameters.ExportBakeryRouteBit4 or 0);
@@ -91,10 +102,15 @@ function CSC_SetBakersTradeRouteProperties(iPlayerID, parameters)
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 8), parameters.ExportCafeRouteBit8 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 16), parameters.ExportCafeRouteBit16 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 1), parameters.ExportTailorRouteBit1 or 0);
+	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 1), parameters.ExportFashionHouseRouteBit1 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 2), parameters.ExportTailorRouteBit2 or 0);
+	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 2), parameters.ExportFashionHouseRouteBit2 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 4), parameters.ExportTailorRouteBit4 or 0);
+	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 4), parameters.ExportFashionHouseRouteBit4 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 8), parameters.ExportTailorRouteBit8 or 0);
+	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 8), parameters.ExportFashionHouseRouteBit8 or 0);
 	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 16), parameters.ExportTailorRouteBit16 or 0);
+	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 16), parameters.ExportFashionHouseRouteBit16 or 0);
 end
 
 -- Register the function name used by parameters.OnStart in the UI script.

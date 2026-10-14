@@ -126,3 +126,71 @@ INSERT OR IGNORE INTO ModifierArguments
 SELECT 'MOD_CSC_TAILORS_EXPORT_TAILOR_GOLD_BIT_' || Bit, 'Amount', Bit
 FROM CSC_RouteStackBits
 WHERE Bit > 1;
+
+INSERT INTO DistrictModifiers
+        (   DistrictType,             ModifierId   )
+VALUES  (   'DISTRICT_CITY_CENTER',   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD'   );
+
+INSERT INTO DistrictModifiers
+		( DistrictType, ModifierId )
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD_BIT_' || Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT OR IGNORE INTO Modifiers
+        (   ModifierId,                                    ModifierType,                       OwnerRequirementSetId,   SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD',   'MODIFIER_BUILDING_YIELD_CHANGE',   NULL,                    'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1'   );
+
+INSERT OR IGNORE INTO Modifiers
+		( ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD_BIT_' || Bit,
+	'MODIFIER_BUILDING_YIELD_CHANGE', NULL,
+	'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_' || Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,                                    Name,             Value   )
+VALUES  (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD',   'BuildingType',   'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD',   'YieldType',      'YIELD_GOLD'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD',   'Amount',         1   );
+
+INSERT OR IGNORE INTO ModifierArguments
+		( ModifierId, Name, Value )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD_BIT_' || Bit, 'BuildingType', 'BUILDING_CSC_TAILORS_FASHION_HOUSE'
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT OR IGNORE INTO ModifierArguments
+		( ModifierId, Name, Value )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD_BIT_' || Bit, 'YieldType', 'YIELD_GOLD'
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT OR IGNORE INTO ModifierArguments
+		( ModifierId, Name, Value )
+SELECT 'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_GOLD_BIT_' || Bit, 'Amount', Bit
+FROM CSC_RouteStackBits
+WHERE Bit > 1;
+
+INSERT INTO DistrictModifiers (DistrictType, ModifierId)
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_GOLD_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+
+INSERT OR IGNORE INTO Modifiers (ModifierId, ModifierType, OwnerRequirementSetId, SubjectRequirementSetId)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_GOLD_BIT_' || Bit, 'MODIFIER_BUILDING_YIELD_CHANGE', NULL, 'REQSET_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_BIT_' || Bit
+FROM CSC_Stage4StackBits;
+
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_GOLD_BIT_' || Bit, 'BuildingType', 'BUILDING_CSC_TAILORS_FASHION_HOUSE'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_GOLD_BIT_' || Bit, 'YieldType', 'YIELD_GOLD'
+FROM CSC_Stage4StackBits;
+
+INSERT OR IGNORE INTO ModifierArguments (ModifierId, Name, Value)
+SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_GOLD_BIT_' || Bit, 'Amount', Bit
+FROM CSC_Stage4StackBits;

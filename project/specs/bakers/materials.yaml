@@ -1,0 +1,42 @@
+schema_version: 1
+quarter: bakers
+scope: materials_only
+canonical_source: docs/content/quarters/bakers.md
+canonical_source_sha256: 98cf307e8f8ada153e2a999239f5a3b1c49cd54b123745f752f72d74661b333b
+transcription_rule: Literal transcription of the canonical materials table; not a full Quarter phase contract.
+identity:
+  name: Bakers' Quarter
+  abbreviation: BAKERS
+materials:
+  base:
+    standard:
+      - {resource: RESOURCE_BANANAS, source_label: "Bananas"}
+      - {resource: RESOURCE_CATTLE, source_label: "Cattle", animal_resource: true}
+      - {resource: RESOURCE_MAIZE, source_label: "Maize"}
+      - {resource: RESOURCE_RICE, source_label: "Rice"}
+      - {resource: RESOURCE_WHEAT, source_label: "Wheat"}
+    csc:
+      - {resource: RESOURCE_CSC_FLAX, source_label: Flax}
+    optional:
+      - {resource: RESOURCE_BARLEY, source_label: Barley, mod: R2}
+      - {resource: RESOURCE_LEU_P0K_QUINOA, source_label: Quinoa, mod: LAR}
+      - {resource: RESOURCE_SORGHUM, source_label: Sorghum, mod: R2}
+  specialty:
+    standard:
+      - {resource: RESOURCE_COCOA, source_label: "Cocoa"}
+      - {resource: RESOURCE_COFFEE, source_label: "Coffee"}
+      - {resource: RESOURCE_WINE, source_label: "Grapes (Wine)"}
+      - {resource: RESOURCE_HONEY, source_label: "Honey", animal_resource: true}
+      - {resource: RESOURCE_OLIVES, source_label: "Olives"}
+      - {resource: RESOURCE_SALT, source_label: "Salt"}
+      - {resource: RESOURCE_SPICES, source_label: "Spices"}
+      - {resource: RESOURCE_SUGAR, source_label: "Sugar"}
+      - {resource: RESOURCE_TEA, source_label: "Tea"}
+    optional:
+      - {resource: RESOURCE_BERRIES, source_label: Berries, mod: R2}
+      - {resource: RESOURCE_DATES, source_label: Dates, mod: R2}
+      - {resource: RESOURCE_POPPIES, source_label: Poppies, mod: R2}
+      - {resource: RESOURCE_SAFFRON, source_label: Saffron, mod: R2}
+      - {resource: RESOURCE_STRAWBERRY, source_label: Strawberry, mod: R2}
+      - {resource: RESOURCE_MAPLE, source_label: Sugar Maple, mod: R2}
+      - {resource: RESOURCE_TOMATO, source_label: Tomato, mod: R2}

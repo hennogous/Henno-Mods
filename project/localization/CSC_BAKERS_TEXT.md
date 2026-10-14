@@ -384,7 +384,7 @@ Supply Chains
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_GRANARY_CHAPTER_CSCHAIN_PARA_1
 The Granary stands as the final stop for flour before it reaches the city's bakers. A bustling storehouse of grain and flour, it purchases the milled output from an adjacent Water Mill or Wind Mill, ensuring a constant supply of the raw materials needed to feed your populace.
 
-At Feudalism, an adjacent supplied Water Mill or Wind Mill can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service here. See the {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} Civilopedia page for full requirements and effects.
+At Feudalism, an adjacent supplied Water Mill or Wind Mill can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service here.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_BAKERY_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -407,7 +407,7 @@ Supply Chains
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_MARKET_CHAPTER_CSCHAIN_PARA_1
 The Market is where the general population can purchase freshly baked goods from the Bakery every day, ensuring that the economic chain is completed and your citizens are well-fed.
 
-At Medieval Faires, an adjacent supplied Bakery can establish an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service here. See the {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} Civilopedia page for full requirements and effects.
+At Medieval Faires, an adjacent supplied Bakery can establish an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service here.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_CAFE_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -433,7 +433,7 @@ Supply Chains
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Entertainment Complex also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_STREET_CARNIVAL_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -441,7 +441,7 @@ Supply Chains
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_STREET_CARNIVAL_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Street Carnival also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_HIPPODROME_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -449,7 +449,7 @@ Supply Chains
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_HIPPODROME_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Hippodrome also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service if this district has a Zoo.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_ZOO_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -457,7 +457,7 @@ Supply Chains
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_ZOO_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Zoo also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in this district. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_ENTER_NAME} service in this district.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -465,7 +465,7 @@ Supply Chains
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_ENTERTAINMENT_COMPLEX_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Water Park also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service if this district has a Ferris Wheel. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service if this district has a Ferris Wheel.
 
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_STREET_CARNIVAL_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -473,7 +473,7 @@ Supply Chains
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_WATER_STREET_CARNIVAL_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Copacabana also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service if this district has a Ferris Wheel. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service if this district has a Ferris Wheel.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_FERRIS_WHEEL_CHAPTER_CSCHAIN_TITLE
 Supply Chains
@@ -481,7 +481,7 @@ Supply Chains
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_FERRIS_WHEEL_CHAPTER_CSCHAIN_PARA_1
 Some visitors to the Ferris Wheel also enjoy refreshments from the adjacent Café.
 
-At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in this district. See the {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} Civilopedia page for full requirements and effects.
+At Urbanization, an adjacent supplied Café can establish a {LOC_BUILDING_CSC_BAKERS_STAGE_4_SERVICE_WATER_NAME} service in this district.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_CHAPTER_CSCHAIN_TITLE
 Supply Chains

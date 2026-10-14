@@ -40,14 +40,14 @@
       <m_Name text="CSC_Storage_LeanTo_CON+PIL_Bldg" />
       <m_Groups>
         <Element>
-          <m_Name text="CSC_Storage_LeanTo" />
+          <m_Name text="CSC_TAILORS_NE" />
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>185</m_nPrims>
         </Element>
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>185</m_nPrimitiveCount>
-      <m_nVertexCount>305</m_nVertexCount>
+      <m_nVertexCount>364</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="Scaffolding" />

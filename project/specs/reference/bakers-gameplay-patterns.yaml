@@ -143,7 +143,7 @@ patterns:
       - "Require adjacency, same owner, correct destination, and functioning required building."
       - "Record both customer benefit and Quarter return."
       - "Each eligible adjacent customer site is a separate transaction. Distinct qualifying building families in one city remain separate, as do multiple qualifying sites of one family when the game permits them. Customer-side effects and every Quarter return yield stack per transaction."
-      - "For a population-scaled transaction, the seller's total for each return yield is its per-customer-population rate times the sum, over customer cities, of that city's population times its number of qualifying adjacent customer sites. A customer city's total for each supply yield is its per-citizen rate times its population times its number of qualifying adjacent sites for that seller. The seller and customer may be the same city or different cities."
+      - "For a Stage 3 per-citizen transaction, the seller's total for each return yield is its per-customer-population rate times the sum, over customer cities, of that city's population times its number of qualifying adjacent customer sites. A customer city's total for each supply yield is its per-citizen rate times its population times its number of qualifying adjacent sites for that seller. The seller and customer may be the same city or different cities."
       - "This population formula is the standard for every Stage 3 building. Bakery contributes one Market transaction row; Tailor contributes separate Market and Temple rows. The Bakery's single customer site per city is the N=1 case."
       - "Declare every Stage 3 producer/customer building-family pair in CSC_Stage3CustomerTransactions, including seller and customer district/building types, distinct transaction ID, seller population and return properties, optional customer yield property, and calibrated per-population amount. The shared gameplay Lua reads the registry and scans all Stage 3 pairs; do not add Quarter-specific Stage 3 population scanners."
       - "Where two customer families can grant the same city yield through attach wrappers, each wrapper references its own child effect modifier ID; sharing one child ID can collapse the effects."
@@ -185,10 +185,22 @@ patterns:
 
   - id: GP.SCALING.PER_N_POPULATION_INTEGER
     classification: specialized_optional
-    source_anchor: "CSC_Q_BAKERS.sql: temporary customer table and population property bits"
+    source_anchor: "CSC_CustomerPopulationReturns.lua: CSC_MarkCafeStage4Transaction, CSC_ScanCafeStage4Transactions, CSC_WriteReturnState; CSC_Q_BAKERS.sql and CSC_Q_BAKERS_GOLD.sql: Stage 4 building-yield property-bit consumers"
+    canonical_reference:
+      id: bakers_cafe_stage4
+      gameplay: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
+      core: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
+      gold: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     parameters: [source_building, customer_targets, customer_yield, return_yields, population_interval]
     invariant:
-      - "Threshold is floor(population / interval)."
+      - "The current Cafe gameplay Lua plus SQL building-yield property-bit consumers are the canonical Stage 4 population-transaction implementation. Reuse this method for later Stage 4 buildings, including the Fashion House."
+      - "Both demand and supply use floor(customer_city_population / population_interval) for each qualifying seller/customer-site pair. Producer population never determines either side."
+      - "Round each customer's population before summing: the producer receives sum(floor(customer_city_population / population_interval)) across eligible customer sites for each return yield. Each customer site receives the same stack count for each adjacent eligible producer."
+      - "Deduplicate by seller city, customer city, customer plot, and customer branch; different qualifying sites or branches in the same city stack. Seller and customer may share a city."
+      - "Gameplay Lua recomputes whole-number stacks and writes raw and bit properties to the city and city-center plot. Core and Gold-only SQL consume those bits through MODIFIER_BUILDING_YIELD_CHANGE, targeting the producer or the relevant customer building."
+      - "CSC_PopulationLevels is a reusable threshold ladder, not the implementation of this transaction. Do not replace the Cafe method with SQL-only population-threshold attachments or reuse the Stage 3 decimal per-population conversion. Any change of method requires an explicit contract amendment."
+      - "The implementation contract declares canonical_reference=bakers_cafe_stage4, population_source=customer_city, rounding=floor_per_customer_site, method=gameplay_lua_property_bits, and a wired gameplay_output required by the population requirement and phase validation."
+      - "Validation covers unequal producer/customer populations, threshold boundaries, independent multiple-site stacking, removal/pillage, and stale-property clearing. Automated checks do not establish in-game acceptance."
       - "All listed customer buildings and Wonders are covered without unintended recursive replacements."
     risk: high
 
@@ -303,7 +315,7 @@ patterns:
 
   - id: GP.ART.PROPERTY_BRIDGE
     classification: specialized_optional
-    source_anchor: "CSC Art Pack/Data/CSC_ArtPack_Properties.sql and CSC Art Pack/Lua_UI/ArtProperties/CSC_ArtProperties.lua"
+    source_anchor: "Civ Supply Chains/Data/CSC_Q_BAKERS.sql, CSC_Q_TAILORS.sql and Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua"
     parameters:
       - source_property
       - effect_content
@@ -314,9 +326,9 @@ patterns:
       - refresh_events
     invariant:
       - "Core CSC owns the complete reusable Service activation requirement set and the stable gameplay/UI identifiers consumed by optional integrations."
-      - "The optional CSC Art Pack owns the SQL source-property modifier, building attachment, CSC_ArtProperties.lua mirror, GamePropertyRanges, Landmarks selection rule, models, materials, ASTs, XLP entries, and alternate-art assets."
-      - "Core Quarter implementation contracts must retain the art-design reference and state the ownership boundary, but must not declare Art Pack SQL, Lua, ArtDefs, or assets as core outputs."
-      - "The Art Pack source property identifies an active adjacent Service relationship and is mirrored by its CSC_ArtProperties.lua into a direct city property for GamePropertyRanges selection."
+      - "CSC owns the SQL source-property modifiers and building attachments in their Quarter files, plus the shared CSC_ArtProperties.lua mirror, GamePropertyRanges, Landmarks variants and assets."
+      - "Quarter validators check the source modifiers against their shared Service gates. Physical assets and the shared mirror are checked separately after the authoritative Blender source is exported; do not pre-scaffold physical art in gameplay phases."
+      - "The SQL source property identifies an active adjacent Service relationship and is mirrored by CSC_ArtProperties.lua into a direct city property for GamePropertyRanges selection."
       - "Use CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT> for the source, then append _ART for the art-facing property and _ACTIVE for the GamePropertyRanges interval."
       - "<EFFECT_CONTENT> is the effect-semantic segment immediately before the _ART or _ACTIVE suffix; it must be declared explicitly rather than inferred from a customer building name."
       - "Attach the property modifier directly to the Quarter building and give it the exact owner requirement set used by the related Service/effect attach modifiers."

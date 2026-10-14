@@ -148,7 +148,66 @@ def groups(model):
                 yield mesh, i, mat, count
 
 
+def export_mesh_name(name):
+    # CivNexus6 treats # as a mesh-name delimiter and silently drops its suffix.
+    # Avoid that delimiter in every destination format; retain Blender names.
+    return name.replace('#', '_')
+
+
+def validate_mesh_names(model):
+    names = [export_mesh_name(mesh['name']) for mesh in model['meshes']]
+    if len(names) != len(set(names)):
+        raise ValueError(f'{model["asset_id"]}: mesh names collide after CN6 name normalization: {names}')
+
+
+def native_state_variant(source, ident, hidden_states):
+    """Own an AST state table while retaining native GEOs, shaders and behavior."""
+    if not ident.startswith('CSC_') or not hidden_states or set(hidden_states) - set(STATES):
+        raise ValueError('Native state variant needs a CSC identity and valid hidden states')
+    root = copy.deepcopy(source)
+    set_text(root, 'm_Name', ident)
+    identifier(ident)
+    found = set()
+    group_states = {}
+    for index, instance in enumerate(root.findall(MODELS + '/Element')):
+        for row in instance.findall('m_GroupStates/Element'):
+            state = txt(row, 'm_StateName')
+            key = (index, txt(row, 'm_MeshName'), txt(row, 'm_GroupName'))
+            group_states.setdefault(key, []).append(state)
+            if state in hidden_states:
+                visible = [p for p in row.findall('m_Values/m_Values/Element') if txt(p, 'm_ParamName') == 'Visible']
+                if len(visible) != 1 or visible[0].find('m_bValue') is None:
+                    raise ValueError(f'{ident}: native state row needs exactly one boolean Visible parameter')
+                visible[0].find('m_bValue').text = 'false'
+                found.add(state)
+    if found != set(hidden_states):
+        raise ValueError(f'{ident}: missing native states {set(hidden_states)-found}')
+    if any(states.count(state) != 1 for states in group_states.values() for state in hidden_states):
+        raise ValueError(f'{ident}: every native group needs exactly one row for each hidden state')
+    if root.findall(POINTS + '/Element'):
+        raise ValueError(f'{ident}: nested native attachments need explicit state handling')
+    return root
+
+
+def prop_state_templates(model, instance):
+    """Retain edited state parameters by mesh/group, including AO-only group renames."""
+    result = {}
+    rows = instance.findall('m_GroupStates/Element')
+    for mesh, _, mat, _ in groups(model):
+        group_count = sum(1 for item, _, _, _ in groups(model) if item is mesh)
+        for state in STATES:
+            candidates = [r for r in rows if txt(r, 'm_MeshName') == export_mesh_name(mesh['name'])
+                          and txt(r, 'm_StateName') == state]
+            exact = [r for r in candidates if txt(r, 'm_GroupName') == mat['name']]
+            match = exact if exact else candidates if group_count == 1 else []
+            if len(match) != 1:
+                raise ValueError(f'{model["asset_id"]}/{mesh["name"]}/{mat["name"]}/{state}: cannot preserve ambiguous/missing prop state')
+            result[(mesh['name'], mat['name'], state)] = match[0]
+    return result
+
+
 def model_instance(model, material_ids, visible, state_template=None):
+    is_decal = model.get('kind') == 'decal'
     e = ET.Element('Element')
     elem(e,'m_Name',text=model['asset_id']); elem(e,'m_GeoName',text=model['asset_id'])
     gs = elem(e,'m_GroupStates')
@@ -156,10 +215,11 @@ def model_instance(model, material_ids, visible, state_template=None):
         material_id = material_ids.get((mesh['name'], mat['name']), material_ids.get(mat['name']))
         if material_id is None:
             raise ValueError(f'{model["asset_id"]}/{mesh["name"]}: missing material binding for {mat["name"]}')
-        mesh_visible = visible.get(mesh['name'], ()) if isinstance(visible, dict) else visible
+        mesh_visible = visible.get((mesh['name'], mat['name']), visible.get(mesh['name'], ())) if isinstance(visible, dict) else visible
         for state in STATES:
             # Preserve shader/FOW/burn settings from a chosen original mesh where supplied.
-            template = state_template.get(state) if state_template else None
+            template = (state_template.get((mesh['name'], mat['name'], state), state_template.get(state))
+                        if state_template and not is_decal else None)
             if template is not None:
                 row = copy.deepcopy(template)
                 gs.append(row)
@@ -167,22 +227,36 @@ def model_instance(model, material_ids, visible, state_template=None):
                 for p in vals:
                     param = txt(p,'m_ParamName')
                     if param == 'Material': set_text(p,'m_ObjectName',material_id)
-                    if param == 'Visible': p.find('m_bValue').text = str(state in mesh_visible).lower()
+                    if param == 'Visible' and visible is not None: p.find('m_bValue').text = str(state in mesh_visible).lower()
             else:
                 row = elem(gs,'Element'); vals = elem(elem(row,'m_Values'),'m_Values')
                 value(vals,'Material',material_id)
                 value(vals,'Visible',state in mesh_visible,'Bool')
-                value(vals,'FOWMaterial','FOW/DefaultMaterial')
-                value(vals,'BurnMaterial','')
-                value(vals,'SnowMaterial','DefaultSnowMaterial')
-                value(vals,'EmissiveEnabled',state == 'Worked','Bool')
-                value(vals,'FOWVisibleOnly',False,'Bool')
+                # DecalGeometry uses a different state schema from LandmarkModel.
+                # Native decal rows contain only Material and Visible.
+                if not is_decal:
+                    value(vals,'FOWMaterial','FOW/DefaultMaterial')
+                    value(vals,'BurnMaterial','')
+                    value(vals,'SnowMaterial','DefaultSnowMaterial')
+                    value(vals,'EmissiveEnabled',state == 'Worked','Bool')
+                    value(vals,'FOWVisibleOnly',False,'Bool')
                 for tag in ('m_GroupName','m_MeshName','m_StateName'): elem(row,tag,text='')
-            set_text(row,'m_GroupName',mat['name']); set_text(row,'m_MeshName',mesh['name']); set_text(row,'m_StateName',state)
+            for param,wanted in mat.get('state_parameters',{}).get(state,{}).items():
+                nodes=[p for p in vals if txt(p,'m_ParamName') == param]
+                if len(nodes) != 1:
+                    raise ValueError(f'{mesh["name"]}/{mat["name"]}: shader template lacks {param}')
+                if type(wanted) is bool and nodes[0].find('m_bValue') is not None:
+                    nodes[0].find('m_bValue').text=str(wanted).lower()
+                elif type(wanted) is str and nodes[0].find('m_ObjectName') is not None:
+                    set_text(nodes[0],'m_ObjectName',wanted)
+                else:
+                    raise ValueError(f'{mesh["name"]}/{mat["name"]}: shader type mismatch for {param}')
+            set_text(row,'m_GroupName',mat['name']); set_text(row,'m_MeshName',export_mesh_name(mesh['name'])); set_text(row,'m_StateName',state)
     return e
 
 
 def write_cn6(path, model):
+    validate_mesh_names(model)
     # Static skeleton: identity root and identity Bone. Model coordinates are already
     # in their asset frame; placement roots never enter the vertex stream.
     ident = '1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1'
@@ -192,11 +266,13 @@ def write_cn6(path, model):
     for mesh in model['meshes']:
         if any('"' in x or '\n' in x for x in [mesh['name']] + [m['name'] for m in mesh['materials']]):
             raise ValueError('CN6 names cannot contain quotes or newlines')
-        lines += [f'mesh:"{mesh["name"]}"', 'materials'] + [f'"{m["name"]}"' for m in mesh['materials']] + ['vertices']
+        used = sorted({triangle[3] for triangle in mesh['triangles']})
+        remap = {original: exported for exported, original in enumerate(used)}
+        lines += [f'mesh:"{export_mesh_name(mesh["name"])}"', 'materials'] + [f'"{mesh["materials"][i]["name"]}"' for i in used] + ['vertices']
         for v in mesh['vertices']:
             if len(v)!=18 or not all(math.isfinite(n) for n in v): raise ValueError('Invalid CN6 vertex')
             lines.append(' '.join(f'{n:.8f}' for n in v) + ' 1 1 1 1 1 1 1 1 255 0 0 0 0 0 0 0')
-        lines += ['triangles'] + [' '.join(map(str,t)) for t in mesh['triangles']]
+        lines += ['triangles'] + [' '.join(map(str, [*t[:3], remap[t[3]]])) for t in mesh['triangles']]
     lines += ['end']
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text('\n'.join(lines)+'\n')
@@ -207,10 +283,12 @@ def geometry(model, template):
     r.tag = 'AssetObjects..GeometryInstance'
     meshes = r.find('m_Meshes'); meshes.clear()
     for mesh in model['meshes']:
-        e=elem(meshes,'Element'); elem(e,'m_Name',text=mesh['name']); gr=elem(e,'m_Groups')
+        e=elem(meshes,'Element'); elem(e,'m_Name',text=export_mesh_name(mesh['name'])); gr=elem(e,'m_Groups')
         first=0
         for i,m in enumerate(mesh['materials']):
             count=sum(t[3]==i for t in mesh['triangles'])
+            if not count:
+                continue
             g=elem(gr,'Element'); elem(g,'m_Name',text=m['name']); elem(g,'m_nFirstPrim',first); elem(g,'m_nPrims',count)
             first+=count
         elem(e,'m_nBoundBoneCount',1); elem(e,'m_nPrimitiveCount',len(mesh['triangles'])); elem(e,'m_nVertexCount',len(mesh['vertices']))
@@ -226,6 +304,7 @@ def geometry(model, template):
 def shared_model_from_geo(mod, ident, material_for_group, visible_for_group):
     """Build a state model from an installed or newly staged shared GEO."""
     geo = read_xml(mod / 'Geometries' / (ident + '.geo'))
+    is_decal = txt(geo, 'm_ClassName') == 'DecalGeometry'
     meshes, bindings, visibility = [], {}, {}
     for source_mesh in geo.findall('m_Meshes/Element'):
         mesh_name = txt(source_mesh, 'm_Name')
@@ -247,11 +326,12 @@ def shared_model_from_geo(mod, ident, material_for_group, visible_for_group):
             row = elem(state_rows, 'Element'); values = elem(elem(row, 'm_Values'), 'm_Values')
             value(values, 'Material', bindings[(mesh['name'], name)])
             value(values, 'Visible', state in visibility[(mesh['name'], name)], 'Bool')
-            value(values, 'FOWMaterial', 'FOW/DefaultMaterial')
-            value(values, 'BurnMaterial', 'DefaultBurnMaterial' if state == 'Pillaged' else '')
-            value(values, 'SnowMaterial', 'DefaultSnowMaterial')
-            value(values, 'EmissiveEnabled', state == 'Worked', 'Bool')
-            value(values, 'FOWVisibleOnly', False, 'Bool')
+            if not is_decal:
+                value(values, 'FOWMaterial', 'FOW/DefaultMaterial')
+                value(values, 'BurnMaterial', 'DefaultBurnMaterial' if state == 'Pillaged' else '')
+                value(values, 'SnowMaterial', 'DefaultSnowMaterial')
+                value(values, 'EmissiveEnabled', state == 'Worked', 'Bool')
+                value(values, 'FOWVisibleOnly', False, 'Bool')
             for tag, val in [('m_GroupName', name), ('m_MeshName', mesh['name']), ('m_StateName', state)]:
                 elem(row, tag, text=val)
     return root
@@ -320,6 +400,27 @@ def csc_binding(ident, xlp):
     e=ET.Element('Element',{'class':'AssetObjects..BLPEntryValue'})
     for k,v in [('m_EntryName',ident),('m_XLPClass','TileBase'),('m_XLPPath',xlp.name.lower()),('m_BLPPackage','Landmarks/CSC_Tilebases'),('m_LibraryName','TileBase'),('m_ParamName','Asset')]: elem(e,k,text=v)
     return e
+
+
+def native_catalogue_binding(ident, source):
+    """Resolve newly catalogued pantry props absent from the older inventory AST."""
+    choices = set()
+    for row in source.get('native_bindings', []):
+        xlp = str(row.get('xlp', '')).replace('\\', '/').rsplit('/', 1)[-1]
+        if (row.get('entry_id') == ident and row.get('asset_class') == 'TileBase'
+                and row.get('package') and xlp and 'fallback' not in xlp.casefold()):
+            choices.add((xlp, row['package']))
+    if not choices:
+        return None
+    if len(choices) != 1:
+        raise ValueError(f'{ident}: ambiguous native catalogue XLP bindings: {sorted(choices)}')
+    xlp, package = next(iter(choices))
+    entry = ET.Element('Element', {'class': 'AssetObjects..BLPEntryValue'})
+    for key, val in [('m_EntryName', ident), ('m_XLPClass', 'TileBase'),
+                     ('m_XLPPath', xlp), ('m_BLPPackage', package),
+                     ('m_LibraryName', 'TileBase'), ('m_ParamName', 'Asset')]:
+        elem(entry, key, text=val)
+    return entry
 
 
 def merge_xlp(root, identifiers):
@@ -393,11 +494,20 @@ def build(job):
         source_inputs[model['source']]=model['source_sha256']
         model_materials[model['asset_id']]={}
         for mesh in model['meshes']:
-            for mat in mesh['materials']:
+            used_materials = {t[3] for t in mesh['triangles']}
+            for slot, mat in enumerate(mesh['materials']):
+                if slot not in used_materials:
+                    continue
                 contract=contracts.get(model['asset_id'])
                 if contract:
-                    from asset_contract import material_for_mesh
-                    target=material_for_mesh(mesh,mat,contract,job)
+                    from asset_contract import material_for_mesh, contract_material_binding, contract_state_parameters
+                    contract_state_parameters(mesh,mat)
+                    base=material_for_mesh(mesh,mat,contract,job)
+                    target=contract_material_binding(mesh,mat,contract,job,mod)
+                    if target != base:
+                        actual=stage_ao_binding(mat,base,mod,stage,textures,source_inputs,job['ao_policy'])
+                        if actual != target:
+                            raise ValueError(f'{mesh["name"]}/{mat["name"]}: fixed AO identity mismatch')
                     model_materials[model['asset_id']][(mesh['name'],mat['name'])]=target
                     materials[f'{model["asset_id"]}/{mesh["name"]}/{mat["name"]}']=target
                     continue
@@ -462,7 +572,11 @@ def build(job):
         if set(states)!=set(STATES): raise ValueError('State template must contain all five states')
         contract=entry.get('contract')
         selected_materials={**materials, **model_materials.get(ident,{})}
-        visibility={mesh['name']: ('Worked',) for mesh in model['meshes']} if contract else ('Worked','Unworked','Unbuilt')
+        if contract:
+            from asset_contract import contract_visible_states
+            visibility={(mesh['name'],mat['name']):contract_visible_states(mesh,mat) for mesh,_,mat,_ in groups(model)}
+        else:
+            visibility=('Worked','Unworked','Unbuilt')
         index=list(ms).index(old); ms.remove(old); ms.insert(index,model_instance(model,selected_materials,visibility,states))
         if contract:
             from asset_contract import COBBLE_MATERIAL
@@ -478,7 +592,7 @@ def build(job):
             ms.append(ruin)
             if 'cobble_geometry' in contract:
                 cobble=shared_model_from_geo(mod,contract['cobble_geometry'],
-                    lambda group: COBBLE_MATERIAL, lambda group: ('Worked','Construction'))
+                    lambda group: contract.get('cobble_material', COBBLE_MATERIAL), lambda group: tuple(contract['cobble_visible']))
                 ms.append(cobble)
         for decal_id in entry.get('decals',[]):
             if models[decal_id]['kind']!='decal': raise ValueError('Expected decal geometry')
@@ -504,8 +618,10 @@ def build(job):
                     else {'source_pack':'CSC','origin':'existing_mod_asset'} if asset in references else catalogue[asset])
             if source.get('source_pack') not in ('Base game','Rise and Fall','Gathering Storm','CSC'):
                 raise ValueError(f'{asset}: ineligible or unknown source pack')
-            custom=source.get('origin')=='authored_blender'
+            custom=source.get('origin') in ('authored_blender', 'native_state_variant')
             binding=csc_binding(asset,xlp_path) if custom or asset in references else bindings.get(asset)
+            if binding is None and not custom and asset not in references:
+                binding = native_catalogue_binding(asset, source)
             if binding is None: raise ValueError(f'Missing exact pantry XLP binding for {asset}')
             point,problems=attachment(a,binding,ident,job.get('policies',{}))
             if not custom and job.get('policies',{}).get('reused_states','reject')!='native':
@@ -518,8 +634,10 @@ def build(job):
             for problem in problems: report['blockers'].append(f'{ident}/{a["instance_id"]}: {problem}')
         if contract:
             for instance in ms:
+                authored_states = entry.get('decal_states', {}).get(txt(instance, 'm_Name'), [])
                 for state_row in instance.findall('m_GroupStates/Element'):
-                    if txt(state_row,'m_StateName') in ('Unworked','Unbuilt'):
+                    if (txt(state_row,'m_StateName') in ('Unworked','Unbuilt')
+                            and txt(state_row,'m_StateName') not in authored_states):
                         for parameter in state_row.findall('m_Values/m_Values/Element'):
                             if txt(parameter,'m_ParamName')=='Visible':
                                 parameter.find('m_bValue').text='false'
@@ -528,14 +646,31 @@ def build(job):
     for ident,model in models.items():
         if model['kind']!='prop': continue
         # Start from the empty behavior schema of a plain prop, not workshop FX.
-        prop_template=read_xml(mod/templates['prop_asset'])
+        preserve_path = job.get('prop_templates', {}).get(ident)
+        prop_template=read_xml(mod/(preserve_path or templates['prop_asset']))
+        states = None
+        if preserve_path:
+            instances = prop_template.findall(MODELS + '/Element')
+            if len(instances) != 1 or txt(instances[0], 'm_GeoName') != ident:
+                raise ValueError(f'{ident}: prop template must contain its single geometry model')
+            states = prop_state_templates(model, instances[0])
         root=copy.deepcopy(prop_template); set_text(root,'m_Name',ident)
-        root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,('Worked',)))
+        root.find(MODELS).clear(); root.find(MODELS).append(model_instance(model,materials,None if states else ('Worked',),states))
         root.find(POINTS).clear()
         for tag in ('m_animationBindings/m_Bindings','m_timelineBindings/m_Bindings','m_timelines/m_Timelines'):
             node=root.find('m_BehaviorData/m_behaviorDataSets/'+tag)
             if node is not None: node.clear()
         write_xml(stage/'Assets'/(ident+'.ast'),root); report['assets'].append(ident)
+    variant_ids = sorted({a['source_asset_id'] for entry in job['buildings'] for a in models[entry['asset_id']]['attachments']
+                          if catalogue.get(a['source_asset_id'], {}).get('origin') == 'native_state_variant'})
+    for ident in variant_ids:
+        source = catalogue[ident]
+        original = Path(source['source_ast'])
+        root = native_state_variant(read_xml(original), ident, source['hidden_states'])
+        source_inputs[str(original)] = sha(original)
+        write_xml(stage/'Assets'/(ident+'.ast'),root)
+        report['assets'].append(ident)
+    report['native_state_variants'] = variant_ids
     write_xml(stage/'XLPs'/xlp_path.name,merge_xlp(read_xml(xlp_path),report['assets']))
     report['status']='blocked' if report['blockers'] else 'ready_for_windows_conversion'
     report['counts']={'custom_assets':len(report['assets']), 'geometry_only':len(report['geometry_only']),
@@ -637,6 +772,19 @@ def convert(job,converter,texconv):
     print('Windows conversion complete. Stage is ready for Asset Editor review; no live project files changed.')
 
 
+def installation_group(job):
+    """Scope retirement to the source scene group, even with a shared output root."""
+    if job.get('source_group'):
+        return (str(Path(job['source_group']).resolve()).casefold(),)
+    for category in ('buildings', 'props', 'decals'):
+        parents = {str(Path(row['blend']).resolve().parent).casefold()
+                   for row in job.get(category, []) if row.get('blend')}
+        if parents:
+            return tuple(sorted(parents))
+    # Legacy direct-engine jobs had one export-runs directory per scene group.
+    return (str(Path(job['output']).resolve().parent).casefold(),)
+
+
 def install(job):
     """Explicit Windows deployment, with preflight, backups and rollback; merge live XLP."""
     out=Path(job['output']); stage=out/'stage'; mod=Path(job['mod_root'])
@@ -656,6 +804,8 @@ def install(job):
         prior_job=json.loads(prior_path.read_text())
         prior_report=json.loads(prior_report_path.read_text())
         if Path(prior_job.get('mod_root','')).resolve()!=mod.resolve():
+            continue
+        if installation_group(prior_job) != installation_group(job):
             continue
         if prior_report.get('status') in ('purged','uninstalled'):
             # A deliberate removal ends this folder's ownership chain. Older

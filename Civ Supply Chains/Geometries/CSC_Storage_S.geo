@@ -14,27 +14,14 @@
 <m_Name text="CSC_Storage_S_Bdg"/>
 <m_Groups>
 <Element>
-<m_Name text="CSC_Storage_S"/>
+<m_Name text="CSC_TAILORS_NE"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>509</m_nPrims>
+<m_nPrims>515</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>509</m_nPrimitiveCount>
-<m_nVertexCount>640</m_nVertexCount>
-</Element>
-<Element>
-<m_Name text="Floor"/>
-<m_Groups>
-<Element>
-<m_Name text="Floor"/>
-<m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>10</m_nPrims>
-</Element>
-</m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>10</m_nPrimitiveCount>
-<m_nVertexCount>14</m_nVertexCount>
+<m_nPrimitiveCount>515</m_nPrimitiveCount>
+<m_nVertexCount>867</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>

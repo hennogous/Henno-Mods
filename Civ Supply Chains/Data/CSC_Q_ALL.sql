@@ -18,17 +18,17 @@ VALUES	(	'DISTRICT_CLASS'	);
 
 INSERT OR IGNORE INTO Types
 
-		(	Type,													Kind				)
-VALUES	(	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',		'KIND_MODIFIER'		),
-		(	'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',		'KIND_MODIFIER'		),
-		(	'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',		'KIND_MODIFIER'		);
+        (   Type,                                                 Kind   )
+VALUES  (   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      'KIND_MODIFIER'   ),
+        (   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'KIND_MODIFIER'   ),
+        (   'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',     'KIND_MODIFIER'   );
 
 INSERT OR IGNORE INTO DynamicModifiers
 
-		(	ModifierType,										    CollectionType,					EffectType				)
-VALUES	(	'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',		'COLLECTION_PLAYER_DISTRICTS',		'EFFECT_ATTACH_MODIFIER'	),
-		(	'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',		'COLLECTION_PLAYER_IMPROVEMENTS',	'EFFECT_ATTACH_MODIFIER'	),
-		(	'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',		'COLLECTION_OWNER',					'EFFECT_ADJUST_DISTRICT_EXTRA_ENTERTAINMENT'	);
+        (   ModifierType,                                         CollectionType,                     EffectType   )
+VALUES  (   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      'COLLECTION_PLAYER_DISTRICTS',      'EFFECT_ATTACH_MODIFIER'   ),
+        (   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'COLLECTION_PLAYER_IMPROVEMENTS',   'EFFECT_ATTACH_MODIFIER'   ),
+        (   'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',     'COLLECTION_OWNER',                 'EFFECT_ADJUST_DISTRICT_EXTRA_ENTERTAINMENT'   );
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -53,6 +53,20 @@ CREATE TABLE IF NOT EXISTS CSC_QuarterMaterialAdjacencyConfig
         YieldType,
         AdjacencyType
         )
+    );
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--	CSC_QuarterWonderSales
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Explicit Wonder points of sale for Quarter planning UI. A Wonder occupies its
+-- own plot rather than its associated district's plot. This mapping grants no
+-- adjacency or Service; the Quarter's gameplay rules remain authoritative.
+CREATE TABLE IF NOT EXISTS CSC_QuarterWonderSales
+    (
+    QuarterKey TEXT NOT NULL,
+    BuildingType TEXT NOT NULL,
+    PRIMARY KEY (QuarterKey, BuildingType)
     );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -184,6 +198,9 @@ CREATE TABLE IF NOT EXISTS CSC_Stage4StackBits
 INSERT OR IGNORE INTO CSC_Stage4StackBits
         (   Bit )
 VALUES  (   1   ), (   2   ), (   4   ), (   8   ), (   16  ), (   32  ), (   64  ), (   128 );
+
+INSERT OR IGNORE INTO CSC_Stage4StackBits (Bit)
+SELECT Bit FROM CSC_ScaledAmountBits WHERE Bit > 128;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- CSC_AbilityAttachModifiers

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Discover, export and install all top-level .blend files in --blend-directory.
+"""Discover, export and install all top-level .blend files in a directory.
 
 Run from the repository; helpers live in the adjacent scene_export directory.
 Python 3.10+, standard library only. Never connects to another machine.
@@ -20,6 +20,34 @@ def executable(value):
     if not path.is_file():
         raise ValueError(f'Executable not found: {value}')
     return str(path)
+
+
+def defaults_path(explicit, blends, helpers):
+    """A revision can retain its AO and prop-state policy beside its sources."""
+    local = blends / 'export.defaults.json'
+    return explicit or (local if local.is_file() else helpers / 'csc.defaults.json')
+
+
+def previous_setup(blends, mod):
+    """Reuse settings from a successful run when revision sidecars are absent."""
+    accepted = {'ready_for_windows_conversion',
+                'converted_pending_asset_editor_and_game_review',
+                'installed_pending_asset_editor_and_game_review', 'superseded'}
+    for snapshot in sorted((blends / 'export-runs').glob('*/export-setup.json'), reverse=True):
+        try:
+            setup = json.loads(snapshot.read_text(encoding='utf-8'))
+            report = json.loads((snapshot.parent / 'report.json').read_text(encoding='utf-8'))
+            if (setup.get('schema_version') != 1 or
+                    Path(setup['mod_root']).resolve() != mod.resolve() or
+                    report.get('status') not in accepted or report.get('blockers')):
+                continue
+            defaults = snapshot.parent / 'export.defaults.json'
+            contract = snapshot.parent / 'export-contract.json' if setup.get('has_contract') else None
+            if defaults.is_file() and (contract is None or contract.is_file()):
+                return defaults, contract
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+    return None, None
 
 
 def run_step(command, log_path):
@@ -61,16 +89,24 @@ def latest_installed_job(blend_directory):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    here = Path(__file__).resolve().parent
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('directory', nargs='?', type=Path,
+                        help='Revision folder containing the final blends and textures')
     parser.add_argument('--blend-directory', type=Path, help='Revision folder containing the final blends and textures')
-    parser.add_argument('--mod-root', type=Path)
-    parser.add_argument('--library', type=Path)
-    parser.add_argument('--blender', default='blender')
+    parser.add_argument('--mod-root', type=Path, default=here.parents[2] / 'Civ Supply Chains',
+                        help='Mod project directory')
+    parser.add_argument('--library', type=Path,
+                        default=Path(r'C:\Users\Shadow\Desktop\Working Files\3D Art\Props\CSC_Prop_Library'),
+                        help='Reusable prop library directory')
+    parser.add_argument('--blender', default=r'C:\Program Files\Blender Foundation\Blender 5.1\blender.exe',
+                        help='Blender executable')
     parser.add_argument('--converter', help='Defaults to the mod repository tools/cn6libs converter')
     parser.add_argument('--texconv', help='Defaults to project/tools/directxtex/texconv.exe, then texconv on PATH')
     parser.add_argument('--output', type=Path, help='New empty directory; default export-runs/timestamp')
-    parser.add_argument('--defaults', type=Path, help='Override CSC template/material/policy defaults JSON')
-    parser.add_argument('--contract', type=Path, help='Building contract JSON; defaults to export-contract.json in blend folder when present')
+    parser.add_argument('--defaults', type=Path, help='Override defaults JSON; otherwise use revision settings, previous successful setup, then CSC defaults')
+    parser.add_argument('--contract', type=Path, help='Building contract JSON; otherwise use revision settings or previous successful setup')
     parser.add_argument('--include-optional', action='store_true', help='Include all optional blends listed by the building contract')
     parser.add_argument('--stage-only', action='store_true', help='Decode and build; skip FGX/DDS conversion')
     parser.add_argument('--no-install', action='store_true', help='Convert into the run folder without installing into the mod')
@@ -83,7 +119,9 @@ def main():
     parser.add_argument('--purge', action='store_true', help='With --uninstall, delete all assets produced by this run instead of restoring prior versions')
     parser.add_argument('--force', action='store_true', help='With purge, also delete run-owned outputs changed or removed since installation')
     args = parser.parse_args()
-    here = Path(__file__).resolve().parent
+    if args.directory and args.blend_directory:
+        parser.error('Provide the directory either as a bare path or with --blend-directory, not both')
+    args.blend_directory = args.blend_directory or args.directory
     helpers = here / 'scene_export'
     engine = helpers / 'export_scene.py'
     if not engine.is_file():
@@ -117,15 +155,18 @@ def main():
         # The engine verifies conversion receipts and destination hashes, backs up
         # replaced files and merges the current XLP before installing.
         return subprocess.call([sys.executable, str(engine), 'install', str(args.install.resolve())])
-    if not args.mod_root or not args.library or not args.blend_directory:
-        parser.error('Export requires --blend-directory, --mod-root and --library')
+    if not args.blend_directory:
+        parser.error('Export requires a directory path or --blend-directory')
     mod = args.mod_root.expanduser().resolve()
     library = args.library.expanduser().resolve()
     blends = args.blend_directory.expanduser().resolve()
     sys.path.insert(0, str(helpers))
     from discovery import find_blends, select_blends, make_job, apply_contract_file
     files = find_blends(blends)
-    contract_path=(args.contract or blends/'export-contract.json').expanduser().resolve()
+    saved_defaults, saved_contract = previous_setup(blends, mod)
+    local_contract = blends / 'export-contract.json'
+    contract_path=(args.contract or (local_contract if local_contract.is_file() else saved_contract)
+                   or local_contract).expanduser().resolve()
     if args.contract and not contract_path.is_file():
         parser.error(f'Missing contract file: {contract_path}')
     if args.include_optional and not contract_path.is_file():
@@ -140,7 +181,11 @@ def main():
         converter = executable(args.converter or str(mod.parent / 'project/tools/cn6libs/CN6ToFGX.exe'))
         local_texconv = here.parent / 'directxtex' / 'texconv.exe'
         texconv = executable(args.texconv or (str(local_texconv) if local_texconv.is_file() else 'texconv'))
-    defaults = json.loads((args.defaults or helpers / 'csc.defaults.json').read_text(encoding='utf-8'))
+    local_defaults = blends / 'export.defaults.json'
+    selected_defaults = defaults_path(args.defaults, blends, helpers)
+    if not args.defaults and not local_defaults.is_file() and saved_defaults:
+        selected_defaults = saved_defaults
+    defaults = json.loads(selected_defaults.read_text(encoding='utf-8'))
     stamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
     out = (args.output or blends / 'export-runs' / stamp).expanduser().resolve()
     if out == mod or mod in out.parents:
@@ -148,6 +193,16 @@ def main():
     if out.exists():
         parser.error(f'Output already exists: {out}; choose a fresh directory')
     out.mkdir(parents=True)
+    # Retain setup inside the run, so ordinary re-exports need no renewed setup.
+    # Only a successful report makes these snapshots eligible for reuse.
+    (out / 'export.defaults.json').write_text(json.dumps(defaults, indent=2) + '\n', encoding='utf-8')
+    if contract_path.is_file():
+        shutil.copy2(contract_path, out / 'export-contract.json')
+    (out / 'export-setup.json').write_text(json.dumps({
+        'schema_version': 1, 'mod_root': str(mod), 'has_contract': contract_path.is_file()
+    }, indent=2) + '\n', encoding='utf-8')
+    if selected_defaults == saved_defaults or contract_path == saved_contract:
+        print('Reusing settings from a previous successful export.', flush=True)
     logs = out / 'runner-logs'
     logs.mkdir()
     request = out / 'discovery-request.json'
@@ -163,6 +218,7 @@ def main():
         (out/'contract-source.json').write_text(json.dumps({'path':str(contract_path),
             'sha256':hashlib.sha256(contract_path.read_bytes()).hexdigest()},indent=2)+'\n')
     job, report = make_job(rows, defaults, mod, library, out, catalogue)
+    job['source_group'] = str(blends)
     (out / 'discovery-report.json').write_text(json.dumps(report, indent=2) + '\n')
     if report['blockers']:
         raise ValueError('Discovery blocked; see ' + str(out / 'discovery-report.json') +

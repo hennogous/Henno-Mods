@@ -18,14 +18,69 @@ catalog: district normal/FOW use 0/1, stage 2/3/4 buildings use 4/5/6, and stage
 2/3/4 services use 8/9/10. Quarter contracts may declare a narrow override;
 `design.yaml` does not repeat the default layout.
 
-Quarter contracts own gameplay, localization, core build wiring, UI identifiers,
-and the complete Service requirement sets consumed by optional integrations. The
-optional CSC Art Pack owns alternate-art property modifiers and attachments, the
-Lua property mirror, GamePropertyRanges, selection rules, models, materials,
-ArtDefs and XLP entries. Core Quarter validators enforce that ownership boundary;
-validate the Art Pack package separately from the gameplay phase gates.
+Tailors Stage Managers currently use a declared venue override: Theater Square,
+Bolshoi, Broadway and Sydney icons occupy indices 12, 13, 14 and 15. Each venue
+has one mechanically real Culture presentation anchor and its own MCUIS ability
+and notification family. Adjacent supplied Fashion Houses from different cities
+stack within that venue's ability; Great Artist point siblings share the same
+gates and remain unregistered. See `I.STAGE_MANAGER` for the current contract.
+
+Quarter contracts own gameplay, localization, build wiring, UI identifiers and
+the complete Service requirement sets. CSC also owns expanded building art: the
+Quarter SQL source-property modifiers reuse those exact Service gates, and one
+shared Lua mirror writes their binary art properties. Core validators check the
+source modifiers and Quarter ownership. Validate the physical ArtDefs, models and
+XLP package separately after export from authoritative Blender scenes; do not
+pre-scaffold physical art during gameplay phases. See
+[expanded building art](../../docs/art/expanded-building-art.md).
+
+## Stage 4 customer-population transactions
+
+`GP.SCALING.PER_N_POPULATION_INTEGER` uses the current Cafe implementation as its
+canonical reference: `CSC_CustomerPopulationReturns.lua` computes whole-number
+stacks, and core/Gold SQL deliver them through building-yield property-bit
+modifiers. Each seller/customer-site pair uses
+`floor(customer_city_population / population_interval)` on both sides. Round
+each customer's population before summing contributions; producer population
+does not determine demand or supply. Same-city transactions and independent
+sites/branches stack.
+
+Contract validation requires the explicit `bakers_cafe_stage4` binding, the
+customer-population source and rounding rule, the interval from the referenced
+design, and the shared gameplay output/action. Its phase must require that output
+plus Lua and modifier-graph validation. A SQL-only population-threshold method or
+the Stage 3 decimal conversion fails this contract. The Tailors Stage 4 semantic
+assertions remain red until that phase is implemented; declaring this binding
+does not establish implementation readiness or runtime acceptance.
+
+Focused checks run with:
+
+```powershell
+py -3 -m unittest discover -s project/tools/quarter_contracts/tests -p test_stage4_population_contract.py -v
+```
+
+The behavior tests execute the unchanged Cafe gameplay script with a small game
+API fixture. They cover unequal producer/customer populations, thresholds beyond
+the SQL ladder, rounding before summation, multiple customer sites/sellers,
+same-city and unique-replacement transactions, and clearing raw/bit properties.
+They require `lupa`; use an existing isolated test-dependency directory on
+`PYTHONPATH`. Without it, these behavior tests are explicitly reported as skipped.
+These tests verify Lua calculations and property writes, not Civ VI's live yield
+delivery; the contract retains in-game scenarios for final acceptance.
 
 ## Wonder-hosted Services
+
+Stage 4 Tailors implementation checks also execute its shipped population, trade
+and Wonder placement Lua through Lupa. The focused suite is
+`python -m unittest discover -s project/tools/quarter_contracts/tests -p test_fashion_house_gameplay.py`.
+These controlled game API scenarios verify threshold rounding, per-site stacking,
+same-city/replacement transactions, stale-state clearing, independent route channels,
+and persistent exact-plot placement/repair. They do not replace the user-owned
+in-game acceptance scenarios.
+
+The build contract can declare `build_wiring.content_only` for files loaded through
+a paired XML context or shared import action. Their project Content registration
+is checked at handoff; Quarter semantic assertions verify their actual consumers.
 
 When a Service destination in `design.yaml` declares `placement: wonder_tile`, the
 owning implementation requirement must use

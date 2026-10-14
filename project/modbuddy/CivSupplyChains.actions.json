@@ -6,6 +6,18 @@
       {
         "tag": "Criteria",
         "attributes": {
+          "id": "MoreLensesMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "35f33319-ad93-4d6b-bf27-406fac382d06"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
           "id": "Monopolies_Mode"
         },
         "children": [
@@ -308,6 +320,21 @@
             ]
           }
         ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "NoSimpleUIAdjustmentsMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "attributes": {
+              "inverse": "1"
+            },
+            "text": "805cc499-c534-4e0a-bdce-32fb3c53ba38"
+          }
+        ]
       }
     ],
     "frontEndActions": [
@@ -327,6 +354,77 @@
       }
     ],
     "inGameActions": [
+      {
+        "type": "ImportFiles",
+        "id": "CSC_QuarterOverlaySupport",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_QuarterLensSupport.lua",
+          "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_QuarterPlacementOverlay",
+        "properties": {
+          "LoadOrder": "505",
+          "LuaContext": "PlotInfo",
+          "LuaReplace": "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua"
+        }
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_QuarterLenses",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "criteria": [
+          "MoreLensesMod"
+        ],
+        "files": [
+          "Lua_UI/Lenses/ModLens_CSC_Quarters.lua",
+          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_SupplyChainsLensPanel",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "501"
+        },
+        "criteria": [
+          "MoreLensesMod"
+        ],
+        "files": [
+          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.xml"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_LensColors",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_Lens_Colors.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_LensText",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "criteria": [
+          "MoreLensesMod"
+        ],
+        "files": [
+          "Lua_UI/Lenses/CSC_Lens_Text.sql"
+        ]
+      },
       {
         "type": "UpdateDatabase",
         "id": "CSC_Q_ALL",
@@ -867,16 +965,6 @@
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_Ruivo_AdjacencyProcessor",
-        "properties": {
-          "LoadOrder": "3000"
-        },
-        "files": [
-          "Lua_UI/Ruivo_Adjacencies/CSC_Ruivo_AdjacencyProcessor.sql"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
         "id": "ModSupport_LGD",
         "properties": {
           "LoadOrder": "2005"
@@ -1060,7 +1148,7 @@
       },
       {
         "type": "UpdateDatabase",
-        "id": "CSC_MAB_DB_RingFix",
+        "id": "CSC_UI_DynamicDatabase",
         "properties": {
           "LoadOrder": "9999999"
         },
@@ -1128,6 +1216,16 @@
         ],
         "files": [
           "Lua_UI/Notifications_Suk_MCUIS/NotificationPanel_CSC_UI.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_ArtProperties",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/ArtProperties/CSC_ArtProperties.lua"
         ]
       },
       {
@@ -1210,6 +1308,146 @@
         },
         "files": [
           "Lua_UI/TradeRoutes/UnitPanel.lua"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencySchema",
+        "properties": {
+          "LoadOrder": "90"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencySchema.sql",
+          "Lua_UI/Adjacencies/CSC_AdjacencySources.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencyProcessor",
+        "properties": {
+          "LoadOrder": "3000"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AdjacencyModifiers",
+        "properties": {
+          "LoadOrder": "4000"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyModifiers.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_AdjacencyText",
+        "properties": {
+          "LoadOrder": "4000"
+        },
+        "files": [
+          "Text/CSC_ADJACENCY_TEXT.sql",
+          "Text/CSC_ADJACENCY_SOURCES_TEXT.sql"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_AdjacencyModules",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyCore.lua",
+          "Lua_UI/Adjacencies/CSC_AdjacencyPresentation.lua",
+          "Lua_UI/Adjacencies/CSC_StockAdjacencyBonusSupport.lua"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_AdjacencyUI",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/AdjacencyBonusSupport.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_AdjacencyGameplay",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyGameplay.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_AdjacencyNativeReads",
+        "properties": {
+          "LoadOrder": "501",
+          "Context": "InGame"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyUI.xml"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_AdjacencyUIBridge",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/Adjacencies/CSC_AdjacencyUI.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_WonderServicePlacement",
+        "properties": {
+          "LoadOrder": "504"
+        },
+        "files": [
+          "Lua_UI/WonderServices/CSC_WonderServicePlacement.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_WonderServiceCityBreakdown",
+        "properties": {
+          "LoadOrder": "504",
+          "Context": "InGame"
+        },
+        "files": [
+          "Lua_UI/WonderServices/CSC_WonderServiceCityBreakdown.xml"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_WonderServicePlotTooltip_Base",
+        "properties": {
+          "LoadOrder": "504",
+          "LuaContext": "PlotToolTip",
+          "LuaReplace": "Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Base.lua"
+        },
+        "criteria": [
+          "NoSimpleUIAdjustmentsMod"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_WonderServicePlotTooltip_Suk",
+        "properties": {
+          "LoadOrder": "504",
+          "LuaContext": "PlotToolTip",
+          "LuaReplace": "Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Suk.lua"
+        },
+        "criteria": [
+          "SimpleUIAdjustmentsMod"
         ]
       }
     ]

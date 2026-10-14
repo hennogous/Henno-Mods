@@ -8,7 +8,42 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 
 - [Tailors storage direct-wall trial](session_tailors_storage_direct_wall.md) — Astra rebuild selected; new storage family now published with a shared 512² quadrant, canonical atlases and archive-bound backups; state UV/runtime integration pending.
 
-- [Optional Art Pack split test](session_optional-art-pack-test.md) — Wind Mill 2 source split, cooker pantry requirement, and pending in-game ArtDef merge check.
+- [Fashion House mustard dress](session_fashion_dress_mustard.md) — gown/sleeves recoloured; atlas r024 and native UV-only update installed, AE placements preserved.
+
+- [Fashion House coach](session_fashion_coach.md) — revision 02, 937 exported vertices, standalone AE asset and shared atlas r023; fine trim removed per Henno's feedback.
+
+- [Prop detail in paint](feedback_prop_geometry_detail.md) — Henno's coach feedback: omit small trim geometry, including seat rails; spend geometry on the main shapes, openings and support.
+
+- [No Civilopedia referrals](feedback_localization_no_civilopedia_referrals.md) — player-facing text states information directly; never tells players to consult another page for requirements/effects/details.
+
+- [Tailors Stage 4 Tourism](session_tailors_stage4_tourism.md) — all four services changed to +2 Tourism per supplied Fashion House; text and automated checks updated, in-game review pending.
+
+- [Tailor garment rack](session_tailor_garment_rack.md) — wall rack and three garments extracted as one installed asset; 312 vertices, native readback and saved-source checks pass.
+
+- [AE-owned 3D assembly workflow](session_ae_owned_art_workflow.md) — 13 October: skill workflow overridden; saved-AST icon/SV renderer delivered and repeatable on Textile Workshop. AE owns placement; selective geometry export remains future work.
+
+- [Level 1 open ground interior](session_level1_foundation.md) — requested intact and S CON+PIL kit thresholds/floors removed, inward foundations completed; both FGX/GEO pairs installed and native readback verified.
+
+- [Storage AE crash investigation](session_storage_asset_crash.md) — AO2 DDS header fixed and user-confirmed; six extension attachments restored; automatic full-dump capture runs at sign-in and re-arms after AE sessions.
+
+- [Storage S/M AO rebake](session_storage_sm_ao_rebake.md) — four sources + canonical AO2 PNG rebaked in existing regions; CON+PIL UV2 repaired; all four FGX/GEO pairs and AO DDS installed, native readback verified.
+
+- [CSC AI feasibility](session_csc_ai_feasibility.md) — native virtual-yield placement precedent, custom preview/AI boundary, exact material and builder scoring experiments still needed; research only.
+
+- [Quarter lenses and placement](session_quarter_lenses.md) — minimal shared material/sales palette and improved-resource outlines, icon-coloured Bakers/Tailors districts; placement sampler retired. Automated/native checks pass, revised visual review pending.
+
+- [Storage animation research](session_storage_animation_research.md) — v12 deck aligned to sled runners and gait, geometry-only update; v11 clip retains Cargo_TipUpright 90-degree sack lift and concealed rightward reset. Native/clearance checks pass; AE/cook/game review open.
+- [Storage L open interior](session_storage_interior.md) — open upper floor/inward walls, foundation entrance extensions and 0.9 resize exported; current AO2 DDS already refreshed. CON+PIL later.
+
+- [Bakers flour replacements](session_bakers_flour_integration.md) — original names retained; 156 placements updated; vertex savings and cook evidence in the durable report.
+
+- [Stage Manager service-icon studies](session_stage_manager_icons.md) — four venue variants; latest crossed ballet shoes and tilted microphone head, with 100%/80% layers and review paths.
+
+- [Fashion House export](session_fashion_house_export.md) — revision 12 exported and installed; authored paving, native vegetation bindings and unused material-slot fixes.
+
+- [CSC adjacency replacement](session_csc_adjacency_replacement.md) — bundled first implementation, parity/live yield evidence, clean reload check and test preference restoration.
+
+- [Expanded art merged into CSC](session_art-pack-merge-20261007.md) — six variants, shared Service gates, current ModBuddy setup and export repairs. [Art Pack split trial](session_optional-art-pack-test.md) is historical; current ownership is in [expanded building art](../project/docs/art/expanded-building-art.md).
 
 - [Bakers Storage_L rev 01](session_bakers-storage-l-rev01.md) — additions + 27 reused props built; crane (animated) next; PIL/CON+PIL/AO/flour cataloguing open.
 - [Reusable prop library](project_reusable-prop-library.md) — initial 33-asset Blender library delivered; preserve source identities/transforms/materials; source Construction/Pillaged behavior catalogued.
@@ -52,3 +87,5 @@ This folder was cleaned in June 2026: stale session notes were removed, and reus
 - Q2 2026 roadmap snapshot;
 - old memory-discipline feedback now superseded by repo documentation boundaries;
 - CivAssetForge viewer prototype notes, which belong with the separate CivAssetForge repo rather than CSC memory.
+
+- [Tailor lean-to atlas propagation](session_tailor_leanto_atlas.md) — both variants/state previews remapped, CON+PIL normal shading fixed, square cobbles synced; complete 11-FGX re-export installed and verified.
