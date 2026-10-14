@@ -6,6 +6,18 @@
       {
         "tag": "Criteria",
         "attributes": {
+          "id": "MoreLensesMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "35f33319-ad93-4d6b-bf27-406fac382d06"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
           "id": "Monopolies_Mode"
         },
         "children": [
@@ -308,6 +320,21 @@
             ]
           }
         ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "NoSimpleUIAdjustmentsMod"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "attributes": {
+              "inverse": "1"
+            },
+            "text": "805cc499-c534-4e0a-bdce-32fb3c53ba38"
+          }
+        ]
       }
     ],
     "frontEndActions": [
@@ -327,6 +354,77 @@
       }
     ],
     "inGameActions": [
+      {
+        "type": "ImportFiles",
+        "id": "CSC_QuarterOverlaySupport",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_QuarterLensSupport.lua",
+          "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_QuarterPlacementOverlay",
+        "properties": {
+          "LoadOrder": "505",
+          "LuaContext": "PlotInfo",
+          "LuaReplace": "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua"
+        }
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_QuarterLenses",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "criteria": [
+          "MoreLensesMod"
+        ],
+        "files": [
+          "Lua_UI/Lenses/ModLens_CSC_Quarters.lua",
+          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_SupplyChainsLensPanel",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "501"
+        },
+        "criteria": [
+          "MoreLensesMod"
+        ],
+        "files": [
+          "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.xml"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_LensColors",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_Lens_Colors.sql"
+        ]
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_LensText",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "criteria": [
+          "MoreLensesMod"
+        ],
+        "files": [
+          "Lua_UI/Lenses/CSC_Lens_Text.sql"
+        ]
+      },
       {
         "type": "UpdateDatabase",
         "id": "CSC_Q_ALL",
@@ -1122,6 +1220,16 @@
       },
       {
         "type": "AddGameplayScripts",
+        "id": "CSC_ArtProperties",
+        "properties": {
+          "LoadOrder": "501"
+        },
+        "files": [
+          "Lua_UI/ArtProperties/CSC_ArtProperties.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
         "id": "CSC_CustomerPopulationReturns",
         "properties": {
           "LoadOrder": "502"
@@ -1263,8 +1371,7 @@
           "LoadOrder": "501"
         },
         "files": [
-          "Lua_UI/Adjacencies/AdjacencyBonusSupport.lua",
-          "Lua_UI/Adjacencies/ToolTipLoader_CSCAdjacency.lua"
+          "Lua_UI/Adjacencies/AdjacencyBonusSupport.lua"
         ]
       },
       {
@@ -1296,6 +1403,51 @@
         },
         "files": [
           "Lua_UI/Adjacencies/CSC_AdjacencyUI.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_WonderServicePlacement",
+        "properties": {
+          "LoadOrder": "504"
+        },
+        "files": [
+          "Lua_UI/WonderServices/CSC_WonderServicePlacement.lua"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_WonderServiceCityBreakdown",
+        "properties": {
+          "LoadOrder": "504",
+          "Context": "InGame"
+        },
+        "files": [
+          "Lua_UI/WonderServices/CSC_WonderServiceCityBreakdown.xml"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_WonderServicePlotTooltip_Base",
+        "properties": {
+          "LoadOrder": "504",
+          "LuaContext": "PlotToolTip",
+          "LuaReplace": "Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Base.lua"
+        },
+        "criteria": [
+          "NoSimpleUIAdjustmentsMod"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_WonderServicePlotTooltip_Suk",
+        "properties": {
+          "LoadOrder": "504",
+          "LuaContext": "PlotToolTip",
+          "LuaReplace": "Lua_UI/WonderServices/CSC_WonderServicePlotTooltip_Suk.lua"
+        },
+        "criteria": [
+          "SimpleUIAdjustmentsMod"
         ]
       }
     ]

@@ -1,5 +1,11 @@
 # Optional CSC Art Pack: alternate building art
 
+> Historical trial, retired on 7 October 2026. The bridge and six expanded models
+> are integrated in CSC again. The ownership and finishing-script instructions
+> below describe the earlier split only. See
+> [current expanded-art setup](expanded-building-art.md).
+
+
 The `CSC Art Pack` is an optional mod with a hard dependency on Civ Supply Chains. The 20 September 2026 Wind Mill trial established that a separate `Landmarks.artdef` can add a building variant to CSC's district when both root `Districts` and nested `BuildingVariants` use `m_ReplaceMergedCollectionElements=false`. The author confirmed the Wind Mill setup works in game. The other five expanded variants still need an in-game visual check after this broader split.
 
 ## Ownership

@@ -1,5 +1,11 @@
 # Optional Art Pack split test (20 September 2026)
 
+> Historical trial, retired on 7 October 2026. The bridge and six expanded models
+> are integrated in CSC again. The ownership and finishing-script instructions
+> below describe the earlier split only. See
+> [current expanded-art setup](../project/docs/art/expanded-building-art.md).
+
+
 Moved only `CSC_BAKERS_Wind_Mill_2` from core CSC into the new `CSC Art Pack` project. The shared Bakers' Stage 2 source property, Lua mirror, and GamePropertyRanges stay in core because Water Mill 2 still uses them. Art Pack adds one `BuildingVariants` child for the existing Bakers' district in a distinct ArtDef; runtime merge behavior remains to be tested in game.
 
 The Art Pack needs `CSC Art Pack.Build.targets` to add sibling CSC as a cooker pantry. Without it, ModBuddy reports success but the cook drops the building ArtDef reference and cannot resolve shared materials/geometry. An isolated MSBuild cook with the target succeeded for Windows and Mac; the generated `.modinfo` contains CSC dependency and `UpdateArt`. Source XML and asset hash checks passed. No live game was running, so no runtime merge test was performed. See `project/docs/art/optional-art-pack-test.md` for the test procedure.

@@ -82,30 +82,6 @@
 			<m_ObjectName text="CSC_BAKERS_SV_Wind_Mill_Visible_UnderConstruction"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Revealed"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Revealed"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Revealed_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Revealed_Pillaged"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Revealed_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Revealed_UnderConstruction"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Visible"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Visible"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Visible_Pillaged"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Visible_Pillaged"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Visible_UnderConstruction"/>
-			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Visible_UnderConstruction"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_TAILORS_SV_Quarter_Revealed"/>
 			<m_ObjectName text="CSC_TAILORS_SV_Quarter_Revealed"/>
 		</Element>
@@ -200,6 +176,54 @@
 		<Element>
 			<m_EntryID text="CSC_TAILORS_SV_Tailor_Visible_UnderConstruction"/>
 			<m_ObjectName text="CSC_TAILORS_SV_Tailor_Visible_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Fashion_House_Revealed"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Fashion_House_Revealed"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Fashion_House_Revealed_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Fashion_House_Revealed_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Fashion_House_Visible"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Fashion_House_Visible"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Fashion_House_Visible_Pillaged"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Fashion_House_Visible_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction"/>
+			<m_ObjectName text="CSC_TAILORS_SV_Fashion_House_Visible_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Revealed"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Revealed"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Revealed_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Revealed_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Revealed_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Revealed_UnderConstruction"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Visible"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Visible"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Visible_Pillaged"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Visible_Pillaged"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_SV_Water_Mill_Visible_UnderConstruction"/>
+			<m_ObjectName text="CSC_BAKERS_SV_Water_Mill_Visible_UnderConstruction"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
