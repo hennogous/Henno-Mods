@@ -121,7 +121,7 @@ def integrate_bundle(spec, bundle, expected_head):
     Path(bundle).unlink()
 
 
-def synchronize(specs, call, message, preview=False, transfer=None, deliver=None, shadow_git=True):
+def synchronize(specs, call, message, preview=False, transfer=None, deliver=None, shadow_git=False):
     # Preflight every selected checkout on both hosts before any checkpoint.
     states = {}
     for spec in specs:

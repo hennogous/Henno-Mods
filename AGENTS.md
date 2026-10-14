@@ -166,10 +166,10 @@ Working docs, tools, and reference material live in `project/` at the repo root.
 | Path | Contents |
 |---|---|
 | `project/TODO.md` | Active task list |
-| `project/docs/` | Reference docs — Quarter playbook, art guidelines, building geometry catalogue, MAB manual, ComfyUI/LoRA setup, SV sprite pipeline, design docs |
+| `project/docs/` | Current Quarter, art, adjacency and build workflows; historical research stays separate. |
 | `project/firetuner/` | FireTuner protocol docs + CE API findings |
 | `project/community-extension/wiki/` | Offline CE wiki — memory manipulation, objects, events |
-| `project/tools/` | Scripts: blender SV pipeline, ComfyUI icon gen, CN6 I/O, FireTuner automation, LoRA training |
+| `project/tools/` | Blender/AE rendering and export, deterministic XCF/atlas/postprocessing, CN6 I/O and FireTuner automation. |
 
 ## Testing via FireTuner
 
@@ -208,4 +208,4 @@ Rule of thumb: if another Civ VI modder could use it on a different mod, put it 
 
 Use installed `civ6-gameplay` for gameplay, SQL/XML effects, Lua/UI logic and general mod structure. Use installed `civ6-art` for all art: concepts, models, painted materials, icons, strategic view, overlays, export, Asset Editor, ArtDefs, XLP/BLP and cooking. `civ-supply-chains` owns all CSC-specific instructions, including art budgets, kit scale, palettes, tool recipes and host observations. Load its `references/art-production-conventions.md` for CSC art work; project design decisions remain in the art plan.
 
-The generic skills refer to the modder’s projects without depending on CSC. For this project, `civ-supply-chains` supplies that context. ComfyUI setups, building-icon generation and strategic-view automation remain project-specific; their publication has not been decided.
+The generic skills refer to the modder’s projects without depending on CSC. For this project, `civ-supply-chains` supplies that context. ImageGen and deterministic building-icon/SV production remain project-specific; their publication has not been decided.

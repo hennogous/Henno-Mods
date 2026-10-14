@@ -34,8 +34,7 @@ Mac skills live under `~/Play/.agents/skills`; Shadow's canonical skills live un
 SSH uses `Shadow@100.122.143.96`, the verified Tailscale address, with existing keys
 and host-key checking. `--shadow` can override the target if its binding changes.
 
-Bundle transfer is the default, as requested by Henno. The sequence saves work on
-**both** hosts first. Mac fetches/merges GitHub and pushes, transfers published
+Bundle transfer is the default, as requested by Henno. For each repo, the sequence saves work on **both** hosts before publishing it. Mac fetches/merges GitHub and pushes, transfers published
 history to Shadow over SSH, then brings any additional Shadow commits back as a
 bundle and pushes them from Mac. Finally fast-forward both hosts and verify their
 commit IDs. Shadow's tracking refs record commits fetched/published by Mac.

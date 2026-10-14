@@ -71,6 +71,9 @@ class SyncTests(unittest.TestCase):
                     self.assertEqual(git(spec["shadow"], "rev-parse", "FETCH_HEAD"), incoming)
             return operate(spec, "shadow", "merge-known", incoming=incoming, expected=state)
         with contextlib.redirect_stdout(io.StringIO()):
+            if shadow_git is None:
+                return synchronize(specs or [self.spec], call, "test checkpoint", preview,
+                                   transfer, deliver)
             return synchronize(specs or [self.spec], call, "test checkpoint", preview,
                                transfer, deliver, shadow_git=shadow_git)
 
@@ -103,6 +106,14 @@ class SyncTests(unittest.TestCase):
         self.sync()
         self.assert_converged()
         self.assertEqual(git(self.mac, "rev-parse", "HEAD"), self.base)
+
+    def test_controller_default_converges_through_bundles(self):
+        (self.mac / "mac-default.txt").write_text("Mac work\n")
+        (self.shadow / "shadow-default.txt").write_text("Shadow work\n")
+        self.sync(shadow_git=None)
+        self.assert_converged()
+        self.assertEqual((self.shadow / "mac-default.txt").read_text(), "Mac work\n")
+        self.assertEqual((self.mac / "shadow-default.txt").read_text(), "Shadow work\n")
 
     def test_preview_does_not_save_or_push(self):
         (self.mac / "pending.txt").write_text("pending\n")
