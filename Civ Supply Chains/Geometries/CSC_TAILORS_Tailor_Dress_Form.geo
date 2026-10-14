@@ -21,7 +21,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>56</m_nPrimitiveCount>
-      <m_nVertexCount>62</m_nVertexCount>
+      <m_nVertexCount>47</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Dress_Form__Work_Form_Finial" />
@@ -34,7 +34,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>32</m_nPrimitiveCount>
-      <m_nVertexCount>46</m_nVertexCount>
+      <m_nVertexCount>33</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Dress_Form__Work_Form_Stem" />
@@ -47,7 +47,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>12</m_nPrimitiveCount>
-      <m_nVertexCount>24</m_nVertexCount>
+      <m_nVertexCount>18</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Dress_Form__Work_Form_Tripod_1" />
@@ -60,7 +60,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>12</m_nPrimitiveCount>
-      <m_nVertexCount>24</m_nVertexCount>
+      <m_nVertexCount>16</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Dress_Form__Work_Form_Tripod_2" />
@@ -73,7 +73,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>12</m_nPrimitiveCount>
-      <m_nVertexCount>24</m_nVertexCount>
+      <m_nVertexCount>16</m_nVertexCount>
     </Element>
     <Element>
       <m_Name text="CSC_TAILORS_Tailor_Dress_Form__Work_Form_Tripod_3" />
@@ -86,7 +86,7 @@
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
       <m_nPrimitiveCount>12</m_nPrimitiveCount>
-      <m_nVertexCount>24</m_nVertexCount>
+      <m_nVertexCount>16</m_nVertexCount>
     </Element>
   </m_Meshes>
   <m_Bones>

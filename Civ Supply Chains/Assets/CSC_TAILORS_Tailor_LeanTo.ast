@@ -30,7 +30,7 @@
             <m_Values>
               <m_Values>
                 <Element class="AssetObjects..ObjectValue">
-                  <m_ObjectName text="CSC_TAILORS_E" />
+                  <m_ObjectName text="CSC_TAILORS_NE" />
                   <m_eObjectType>MATERIAL</m_eObjectType>
                   <m_ParamName text="Material" />
                 </Element>
@@ -63,7 +63,7 @@
                 </Element>
               </m_Values>
             </m_Values>
-            <m_GroupName text="CSC_Storage_LeanTo" />
+            <m_GroupName text="CSC_TAILORS_NE" />
             <m_MeshName text="CSC_TAILORS_Tailor_LeanTo__CSC_Storage_LeanTo_Bldg" />
             <m_StateName text="Worked" />
           </Element>
@@ -71,12 +71,12 @@
             <m_Values>
               <m_Values>
                 <Element class="AssetObjects..ObjectValue">
-                  <m_ObjectName text="CSC_TAILORS_E" />
+                  <m_ObjectName text="CSC_TAILORS_NE" />
                   <m_eObjectType>MATERIAL</m_eObjectType>
                   <m_ParamName text="Material" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
-                  <m_bValue>false</m_bValue>
+                  <m_bValue>true</m_bValue>
                   <m_ParamName text="Visible" />
                 </Element>
                 <Element class="AssetObjects..ObjectValue">
@@ -95,7 +95,7 @@
                   <m_ParamName text="SnowMaterial" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
-                  <m_bValue>false</m_bValue>
+                  <m_bValue>true</m_bValue>
                   <m_ParamName text="EmissiveEnabled" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
@@ -104,7 +104,7 @@
                 </Element>
               </m_Values>
             </m_Values>
-            <m_GroupName text="CSC_Storage_LeanTo" />
+            <m_GroupName text="CSC_TAILORS_NE" />
             <m_MeshName text="CSC_TAILORS_Tailor_LeanTo__CSC_Storage_LeanTo_Bldg" />
             <m_StateName text="Unworked" />
           </Element>
@@ -112,7 +112,7 @@
             <m_Values>
               <m_Values>
                 <Element class="AssetObjects..ObjectValue">
-                  <m_ObjectName text="CSC_TAILORS_E" />
+                  <m_ObjectName text="CSC_TAILORS_NE" />
                   <m_eObjectType>MATERIAL</m_eObjectType>
                   <m_ParamName text="Material" />
                 </Element>
@@ -126,7 +126,7 @@
                   <m_ParamName text="FOWMaterial" />
                 </Element>
                 <Element class="AssetObjects..ObjectValue">
-                  <m_ObjectName text="" />
+                  <m_ObjectName text="DefaultBurnMaterial" />
                   <m_eObjectType>MATERIAL</m_eObjectType>
                   <m_ParamName text="BurnMaterial" />
                 </Element>
@@ -136,7 +136,7 @@
                   <m_ParamName text="SnowMaterial" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
-                  <m_bValue>false</m_bValue>
+                  <m_bValue>true</m_bValue>
                   <m_ParamName text="EmissiveEnabled" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
@@ -145,7 +145,7 @@
                 </Element>
               </m_Values>
             </m_Values>
-            <m_GroupName text="CSC_Storage_LeanTo" />
+            <m_GroupName text="CSC_TAILORS_NE" />
             <m_MeshName text="CSC_TAILORS_Tailor_LeanTo__CSC_Storage_LeanTo_Bldg" />
             <m_StateName text="Pillaged" />
           </Element>
@@ -153,7 +153,7 @@
             <m_Values>
               <m_Values>
                 <Element class="AssetObjects..ObjectValue">
-                  <m_ObjectName text="CSC_TAILORS_E" />
+                  <m_ObjectName text="CSC_TAILORS_NE" />
                   <m_eObjectType>MATERIAL</m_eObjectType>
                   <m_ParamName text="Material" />
                 </Element>
@@ -177,7 +177,7 @@
                   <m_ParamName text="SnowMaterial" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
-                  <m_bValue>false</m_bValue>
+                  <m_bValue>true</m_bValue>
                   <m_ParamName text="EmissiveEnabled" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
@@ -186,7 +186,7 @@
                 </Element>
               </m_Values>
             </m_Values>
-            <m_GroupName text="CSC_Storage_LeanTo" />
+            <m_GroupName text="CSC_TAILORS_NE" />
             <m_MeshName text="CSC_TAILORS_Tailor_LeanTo__CSC_Storage_LeanTo_Bldg" />
             <m_StateName text="Construction" />
           </Element>
@@ -194,12 +194,12 @@
             <m_Values>
               <m_Values>
                 <Element class="AssetObjects..ObjectValue">
-                  <m_ObjectName text="CSC_TAILORS_E" />
+                  <m_ObjectName text="CSC_TAILORS_NE" />
                   <m_eObjectType>MATERIAL</m_eObjectType>
                   <m_ParamName text="Material" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
-                  <m_bValue>false</m_bValue>
+                  <m_bValue>true</m_bValue>
                   <m_ParamName text="Visible" />
                 </Element>
                 <Element class="AssetObjects..ObjectValue">
@@ -218,7 +218,7 @@
                   <m_ParamName text="SnowMaterial" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
-                  <m_bValue>false</m_bValue>
+                  <m_bValue>true</m_bValue>
                   <m_ParamName text="EmissiveEnabled" />
                 </Element>
                 <Element class="AssetObjects..BoolValue">
@@ -227,7 +227,7 @@
                 </Element>
               </m_Values>
             </m_Values>
-            <m_GroupName text="CSC_Storage_LeanTo" />
+            <m_GroupName text="CSC_TAILORS_NE" />
             <m_MeshName text="CSC_TAILORS_Tailor_LeanTo__CSC_Storage_LeanTo_Bldg" />
             <m_StateName text="Unbuilt" />
           </Element>

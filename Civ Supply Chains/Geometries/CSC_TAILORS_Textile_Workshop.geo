@@ -11,56 +11,40 @@
   </m_Version>
   <m_Meshes>
     <Element>
-      <m_Name text="CSC_Fixed_Dye_Vat_Indigo" />
+      <m_Name text="CSC_TAILORS_Textile_Workshop_Bldg" />
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Textile_Building_Material" />
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>696</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>696</m_nPrimitiveCount>
+      <m_nVertexCount>1155</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_TAILORS_Textile_Workshop_Fixed" />
       <m_Groups>
         <Element>
           <m_Name text="CSC_Attached_Dye_Vat_Indigo_Material" />
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>68</m_nPrims>
         </Element>
-      </m_Groups>
-      <m_nBoundBoneCount>1</m_nBoundBoneCount>
-      <m_nPrimitiveCount>68</m_nPrimitiveCount>
-      <m_nVertexCount>122</m_nVertexCount>
-    </Element>
-    <Element>
-      <m_Name text="CSC_Fixed_Dye_Vat_Madder" />
-      <m_Groups>
         <Element>
           <m_Name text="CSC_Attached_Dye_Vat_Madder_Material" />
-          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nFirstPrim>68</m_nFirstPrim>
           <m_nPrims>54</m_nPrims>
         </Element>
-      </m_Groups>
-      <m_nBoundBoneCount>1</m_nBoundBoneCount>
-      <m_nPrimitiveCount>54</m_nPrimitiveCount>
-      <m_nVertexCount>82</m_nVertexCount>
-    </Element>
-    <Element>
-      <m_Name text="CSC_Fixed_Textile_Loom" />
-      <m_Groups>
         <Element>
           <m_Name text="CSC_Attached_Textile_Loom_Teal_Material" />
-          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nFirstPrim>122</m_nFirstPrim>
           <m_nPrims>108</m_nPrims>
         </Element>
       </m_Groups>
       <m_nBoundBoneCount>1</m_nBoundBoneCount>
-      <m_nPrimitiveCount>108</m_nPrimitiveCount>
-      <m_nVertexCount>210</m_nVertexCount>
-    </Element>
-    <Element>
-      <m_Name text="CSC_TAILORS_Textile_Workshop_Bldg" />
-      <m_Groups>
-        <Element>
-          <m_Name text="CSC_Textile_Building_Material" />
-          <m_nFirstPrim>0</m_nFirstPrim>
-          <m_nPrims>690</m_nPrims>
-        </Element>
-      </m_Groups>
-      <m_nBoundBoneCount>1</m_nBoundBoneCount>
-      <m_nPrimitiveCount>690</m_nPrimitiveCount>
-      <m_nVertexCount>1143</m_nVertexCount>
+      <m_nPrimitiveCount>230</m_nPrimitiveCount>
+      <m_nVertexCount>414</m_nVertexCount>
     </Element>
   </m_Meshes>
   <m_Bones>
