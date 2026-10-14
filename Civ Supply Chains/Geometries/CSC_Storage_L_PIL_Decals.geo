@@ -11,7 +11,7 @@
 </m_Version>
 <m_Meshes>
 <Element>
-<m_Name text="Plane11008"/>
+<m_Name text="PilDecal02"/>
 <m_Groups>
 <Element>
 <m_Name text="Ruin_Debris_Decal"/>
@@ -19,12 +19,12 @@
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nBoundBoneCount>5</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
 <Element>
-<m_Name text="Plane11009"/>
+<m_Name text="PilDecal01"/>
 <m_Groups>
 <Element>
 <m_Name text="Ruin_Debris_Decal"/>
@@ -32,12 +32,12 @@
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nBoundBoneCount>5</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
 <Element>
-<m_Name text="Plane11011"/>
+<m_Name text="PilDecal04"/>
 <m_Groups>
 <Element>
 <m_Name text="Ruin_Debris_Decal"/>
@@ -45,12 +45,12 @@
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nBoundBoneCount>5</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
 <Element>
-<m_Name text="Plane11020"/>
+<m_Name text="PilDecal03"/>
 <m_Groups>
 <Element>
 <m_Name text="Ruin_Debris_Decal"/>
@@ -58,17 +58,31 @@
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nBoundBoneCount>5</m_nBoundBoneCount>
+<m_nPrimitiveCount>2</m_nPrimitiveCount>
+<m_nVertexCount>4</m_nVertexCount>
+</Element>
+<Element>
+<m_Name text="PilDecal05"/>
+<m_Groups>
+<Element>
+<m_Name text="Ruin_Debris_Decal"/>
+<m_nFirstPrim>0</m_nFirstPrim>
+<m_nPrims>2</m_nPrims>
+</Element>
+</m_Groups>
+<m_nBoundBoneCount>5</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
 <Element text="CSC_Storage_L_PIL_Decals"/>
-<Element text="Plane11008"/>
-<Element text="Plane11009"/>
-<Element text="Plane11011"/>
-<Element text="Plane11020"/>
+<Element text="PilDecal01"/>
+<Element text="PilDecal02"/>
+<Element text="PilDecal03"/>
+<Element text="PilDecal04"/>
+<Element text="PilDecal05"/>
 </m_Bones>
 <m_ModelName text="CSC_Storage_L_PIL_Decals"/>
 <m_SourceFilePath text=""/>
