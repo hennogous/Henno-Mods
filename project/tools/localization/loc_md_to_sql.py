@@ -264,6 +264,52 @@ def tag_where(tags: list[str], explicit_where: str | None) -> str:
     return "Tag IN (" + ", ".join(sql_quote(tag) for tag in tags) + ")"
 
 
+RELATIONSHIP_ICONS = (
+    (re.compile(r"\bBase(?=\s+(?:Materials?\b|(?:and|or)\s+(?:\[ICON_CSC_SPEC\]\s*)?Specialty\s+Materials?\b))", re.I), "ICON_CSC_BASE"),
+    (re.compile(r"\bSpecialty(?=\s+Materials?\b)", re.I), "ICON_CSC_SPEC"),
+    (re.compile(r"\bSales(?=\s+districts?\b)", re.I), "ICON_CSC_SALES"),
+    (re.compile(r"\bGoods(?=\s+providers?\b)", re.I), "ICON_CSC_GOODS"),
+)
+SQL_TEXT_TOKENS = re.compile(r"--[^\n]*|/\*[\s\S]*?\*/|'(?:''|[^'])*'")
+SERVICE_VENUE_SUFFIX = re.compile(
+    r"\{LOC_BUILDING_CSC_[A-Z0-9_]*SERVICE[A-Z0-9_]*_NAME\}(?:\s+service)?\s+(?:at|on|in)\b", re.I
+)
+
+
+def relationship_icon_errors(text: str) -> list[str]:
+    failures = []
+    for pattern, icon in RELATIONSHIP_ICONS:
+        for match in pattern.finditer(text):
+            if not re.search(r"\[" + icon + r"\]\s*$", text[:match.start()]):
+                failures.append(f"{match.group(0)} relationship reference requires [{icon}]")
+    return failures
+
+
+def raw_localization_literals(sql: str):
+    """Read text literals, excluding comments and INSTR search needles."""
+    for match in SQL_TEXT_TOKENS.finditer(sql):
+        if not match.group(0).startswith("'"):
+            continue
+        if re.search(r"\binstr\s*\([^,]*,\s*$", sql[:match.start()], re.I):
+            continue
+        yield match.group(0)[1:-1].replace("''", "'")
+
+
+def validate_editorial_entry(entry: Entry) -> list[str]:
+    tags = [tag for tag in [entry.tag, *entry.tags] if tag] or [entry.heading]
+    # Native Civilopedia chapter headings stay plain, including grouped tags.
+    chapter_title = any(re.fullmatch(r"LOC_PEDIA_.*_CHAPTER_.*_TITLE", tag) for tag in tags)
+    fragments = list(raw_localization_literals(entry.text)) if entry.mode == "raw" else [entry.text_prefix + entry.text + entry.text_suffix]
+    if chapter_title and entry.mode != "raw":
+        failures = ["Civilopedia chapter headings must not contain texticons"] if any(re.search(r"\[ICON_[^\]]+\]", text) for text in fragments) else []
+    else:
+        failures = [failure for text in fragments for failure in relationship_icon_errors(text)]
+    tags = [entry.heading, *tags]
+    if any("EFFECT_DESCRIPTION" in tag for tag in tags) and SERVICE_VENUE_SUFFIX.search(entry.text):
+        failures.append("MCUIS service labels use the service name alone; omit venue suffixes")
+    return failures
+
+
 def render_sql(source: SourceFile) -> str:
     for entry in source.entries:
         if re.search(r"\b(?:see|consult|refer to|read|check|look up)\b[^\n.!?]{0,250}\bCivilopedia\b", entry.text, flags=re.IGNORECASE):
@@ -271,6 +317,10 @@ def render_sql(source: SourceFile) -> str:
                 f"{rel(source.path)}:{entry.line}: state requirements and effects directly; "
                 "do not refer readers to another Civilopedia page"
             )
+    for entry in source.entries:
+        failures = validate_editorial_entry(entry)
+        if failures:
+            raise LocError(f"{rel(source.path)}:{entry.line}: " + "; ".join(failures))
     out: list[str] = [
         f"-- {source.title}",
         f"-- Generated from {rel(source.path)} by project/tools/localization/loc_md_to_sql.py",

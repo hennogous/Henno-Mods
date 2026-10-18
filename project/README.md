@@ -24,6 +24,7 @@ Start at the [internal documentation index](docs/README.md). The [full documenta
 | Storage crane animation investigation | [Native animation and Blender conversion](docs/art/storage-crane-animation.md) |
 | Quarter implementation and validation | [Workflow references](docs/quarters/README.md) |
 | Gameplay systems and related projects | [System references](docs/integrations/README.md) |
+| Automatic industry-material map assistance | [Runtime and build](docs/integrations/csc-material-map-assistance.md), [five-seed results](docs/research/mods/csc-continental-helper-lua-20261016.md) |
 | Art studies, trials and reference-mod research | [Research index](docs/research/README.md) |
 | Superseded Quarter checklist | [Archived playbook](docs/archive/QUARTER-PLAYBOOK-2026-06-26-outdated.md) |
 
@@ -68,6 +69,7 @@ Scripts accumulated during development. Paths may need updating if the source da
 | `scripts/` | Pipeline scripts — CN6 I/O, bone fixing, export pipeline, geo parsing |
 | `training/` | LoRA training — data extraction, kohya-ss training launchers |
 | `firetuner/` | FireTuner/CE automation — proxy sniffer, game control, CE probing |
+| `qa/` | Native gameplay regression runner; [workflow and coverage](docs/workflows/gameplay-qa.md). |
 | `quarter_contracts/` | Quarter contract validator for schemas, locked sources, traceability, approvals, and preserved inputs. |
 
 ### Key scripts
