@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- Build-time layout. Open viewer.html or the generated snapshots/map-lab/index.html. -->
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSC · Material maps</title><style>/* MAP_LAB_CSS */</style></head>
+<body>
+<header><div><span class="eyebrow">CIV SUPPLY CHAINS</span><h1>Material maps</h1></div>
+<div class="map-picker"><label>Map instance <select id="landscape" aria-label="Map instance"></select></label>
+<label>Resource setup <select id="setup" aria-label="Resource setup"></select></label></div>
+<button id="importButton" type="button">Open map data…</button><input id="importFile" type="file" accept=".json" hidden></header>
+<main>
+<aside>
+<h2>Industry</h2><div id="quarters" role="group" aria-label="Quarter"></div>
+<h2>Map layers</h2>
+<label id="versionField" class="field" hidden>Placement comparison<select id="version"><option value="after">With proposed additions</option><option value="preview" hidden>Offline preview</option><option value="offline" hidden>Original Python preview</option><option value="before">Original native resources</option></select></label>
+<label id="additionsField" class="check" hidden><input id="additions" type="checkbox" checked><span class="swatch added"></span>Added deposits & site changes</label>
+<label class="field">Continent<select id="continent"><option value="-1">Whole map</option></select></label>
+<label class="field">Opportunity supply<select id="supply"><option value="both">Base + specialty · Stage 4</option><option value="base">Base supplied · Stages 2–3</option></select></label>
+<label class="check"><input id="base" type="checkbox" checked><span class="swatch base"></span>Base materials</label>
+<label class="check"><input id="spec" type="checkbox" checked><span class="swatch spec"></span>Specialty materials</label>
+<label class="check"><input id="sites" type="checkbox" checked><span class="swatch site"></span>Placement opportunities</label>
+<label class="check"><input id="labels" type="checkbox" checked>Resource labels</label>
+<label class="check"><input id="features" type="checkbox" checked>Hills, features & wonders</label>
+<label class="field">Opportunity filter<select id="filter"><option value="land_both">Passable land</option><option value="common_clearable_both">Ordinary clearing allowed</option><option value="harvest_aware_both">Loaded harvesting rules</option></select></label>
+<label class="check"><input id="distinct" type="checkbox">Two distinct material tiles</label>
+<label class="field">Find a resource<input id="search" type="search" placeholder="e.g. Dyes, Silver, Flax"></label>
+<div id="materialList" class="material-list"></div>
+<section id="detail" aria-label="Tile details"><h2>Inspect a tile</h2><p>Click a tile to pin its materials and neighbouring sources.</p></section>
+</aside>
+<section class="map-area" aria-label="Resource map">
+<div class="map-heading"><div><h2 id="mapTitle"></h2><p id="mapMeta"></p></div><div class="zoom-tools"><button id="zoomOut" aria-label="Zoom out">−</button><button id="fit">Fit</button><button id="zoomIn" aria-label="Zoom in">+</button></div></div>
+<p id="notice" role="note" hidden></p>
+<div id="stats" aria-live="polite"></div>
+<details id="continentPanel" open><summary>Continent comparison</summary><p id="continentHelp"></p><div class="table-scroll"><table id="continentTable"></table></div></details>
+<details id="abundancePanel" open hidden><summary id="abundanceSummary">Abundance study · all setups</summary><p id="abundanceHelp"></p><div class="table-scroll"><table id="abundanceTable"></table></div></details>
+<div id="canvasWrap"><canvas id="map" tabindex="0" aria-label="Hex map. Drag to pan, scroll to zoom; use arrow keys to inspect adjacent coordinates, Enter to pin, Escape to clear."></canvas><div id="tooltip" role="tooltip" hidden></div><div class="map-hint">Drag to pan · scroll to zoom · click to inspect</div></div>
+<details id="assistancePanel" open hidden><summary id="assistanceSummary">CSC helper · before / after</summary><p id="assistanceHelp"></p><div class="table-scroll"><table id="coverageTable"></table></div><details><summary>Continent resource pools</summary><p class="method">Preferred types per class; habitat and usable Quarter sites can require another mapped type. Types can be shared between continents, with reduced selection weight.</p><div id="palettes"></div></details><h2 id="additionTitle">Proposed deposits on this map</h2><div class="table-scroll"><table id="additionTable"></table></div><p id="additionLegend" class="method">Orange numbered outlines mark proposed deposits in both views. Green rings mark new opportunities; red crosses mark original opportunities blocked by additions. Counts use the current clearing filter. Click a deposit or its Quarter site to inspect it.</p></details>
+<div class="legend"><span><i class="terrain grass"></i>Grassland</span><span><i class="terrain plains"></i>Plains</span><span><i class="terrain desert"></i>Desert</span><span><i class="terrain tundra"></i>Tundra / snow</span><span><i class="terrain coast"></i>Coast / ocean</span><span>△ Hills · ♠ Woods / rainforest · ★ Natural wonder · ○ Reef · ≋ Kelp</span></div>
+<p class="method">Opportunities show material geography; improvements, research, customer districts and other service conditions still apply. Base supply supports Stages 2–3; Base + specialty supports Stage 4. Base counts include both-class sites. Future clearing follows the selected filter. Unrevealed strategic deposits count. Neighbouring opportunities may share materials, including across continent borders. Clusters are connected candidate tiles, not independent settlements. Older surveys lack continent metadata.</p>
+<p id="status" role="status"></p>
+</section>
+</main>
+<script id="map-data" type="application/json">{"MAP_LAB_DATA":true}</script>
+<script>/* MAP_LAB_JS */</script>
+</body></html>

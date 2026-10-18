@@ -335,6 +335,18 @@
             "text": "805cc499-c534-4e0a-bdce-32fb3c53ba38"
           }
         ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
+          "id": "ModSupport_TAR"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "960c7ce4-c961-43c8-90bf-282eb7b260ea"
+          }
+        ]
       }
     ],
     "frontEndActions": [
@@ -1458,6 +1470,40 @@
         },
         "criteria": [
           "SimpleUIAdjustmentsMod"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_MaterialMapModules",
+        "properties": {
+          "LoadOrder": "999900"
+        },
+        "files": [
+          "Lua_UI/MapGeneration/CSC_MaterialMapCore.lua",
+          "Lua_UI/MapGeneration/CSC_MaterialMapDefinitions.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_MaterialMap",
+        "properties": {
+          "LoadOrder": "999901"
+        },
+        "files": [
+          "Lua_UI/MapGeneration/CSC_MaterialMap.lua"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_MaterialMap_TAR",
+        "criteria": [
+          "ModSupport_TAR"
+        ],
+        "properties": {
+          "LoadOrder": "999899"
+        },
+        "files": [
+          "ModSupport/ModSupport_TAR_MAP.sql"
         ]
       }
     ]

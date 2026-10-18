@@ -1,0 +1,10 @@
+{
+  "BAKERS": {"source":"runtime CLASS_CSC_BAKERS_BASE/SPEC","base":{"resources":["RESOURCE_BANANAS","RESOURCE_CATTLE","RESOURCE_MAIZE","RESOURCE_RICE","RESOURCE_WHEAT","RESOURCE_CSC_FLAX"]},"spec":{"resources":["RESOURCE_COCOA","RESOURCE_COFFEE","RESOURCE_WINE","RESOURCE_HONEY","RESOURCE_OLIVES","RESOURCE_SALT","RESOURCE_SPICES","RESOURCE_SUGAR","RESOURCE_TEA"]}},
+  "TAILORS": {"source":"runtime CLASS_CSC_TAILORS_BASE/SPEC","base":{"resources":["RESOURCE_COTTON","RESOURCE_SHEEP","RESOURCE_CSC_FLAX"]},"spec":{"resources":["RESOURCE_DYES","RESOURCE_SILK","RESOURCE_SILVER"]}},
+  "APOTHECARIES": {"source":"docs/content/quarters/apothecaries.md","base":{"resources":["RESOURCE_COCOA","RESOURCE_COFFEE","RESOURCE_HONEY","RESOURCE_INCENSE","RESOURCE_OLIVES","RESOURCE_SPICES","RESOURCE_TEA","RESOURCE_TOBACCO"]},"spec":{"resources":["RESOURCE_COPPER","RESOURCE_IRON","RESOURCE_MERCURY","RESOURCE_SILVER"]}},
+  "STONEMASONS": {"source":"docs/content/quarters/stonemasons.md","base":{"resources":["RESOURCE_STONE"],"hills":true},"spec":{"resources":["RESOURCE_GYPSUM","RESOURCE_MARBLE"]}},
+  "CARPENTERS": {"source":"docs/content/quarters/carpenters.md","base":{"resources":["RESOURCE_COPPER","RESOURCE_IRON"],"features":["FEATURE_FOREST","FEATURE_JUNGLE"]},"spec":{"resources":["RESOURCE_ALUMINUM","RESOURCE_AMBER","RESOURCE_DYES","RESOURCE_SILK","RESOURCE_SILVER"]}},
+  "BLACKSMITHS": {"source":"docs/content/quarters/blacksmiths.md","base":{"resources":["RESOURCE_COPPER","RESOURCE_IRON"],"hills":true},"spec":{"resources":["RESOURCE_ALUMINUM","RESOURCE_SILVER"]}},
+  "GOLDSMITHS": {"source":"docs/content/quarters/goldsmiths.md","base":{"resources":["RESOURCE_AMBER","RESOURCE_SILVER"]},"spec":{"resources":["RESOURCE_DIAMONDS","RESOURCE_JADE"]}},
+  "BREWERS": {"source":"docs/content/quarters/brewers.md","base":{"resources":["RESOURCE_BANANAS","RESOURCE_WINE","RESOURCE_MAIZE","RESOURCE_RICE","RESOURCE_WHEAT"]},"spec":{"resources":["RESOURCE_CITRUS","RESOURCE_COCOA","RESOURCE_COFFEE","RESOURCE_HONEY","RESOURCE_SPICES","RESOURCE_SUGAR"]}}
+}
