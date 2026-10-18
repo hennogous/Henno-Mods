@@ -190,3 +190,27 @@ SQL must already match its output for validation to pass.
 `validate_quarter.py` remains the contract/preflight command. Use
 `validate_phase.py` for all implementation and handoff checks once a phase is
 approved; the old clean-start bypass is not the phase-completion gate.
+
+## Native QA regression guards
+
+`quarter_checks/qa_regressions.py` evaluates complete material-return modifier
+chains rather than checking isolated Amount rows. The same evaluator covers
+Tailors Workshop/Fashion House and Bakers Water Mill/Wind Mill/Cafe. It checks
+ordinary/Industry/Corporation totals of +1/+2/+3 Production and Gold, including
+all overlapping attachments, and rejects nonadjacent and wrong-class returns.
+These are reusable checks of the existing Bakers implementation pattern; no new
+material-return gameplay registry or compiler is required.
+
+Tailors `mechanism_bindings` records the implementation choices and participants.
+The cumulative phase validator checks those declarations against active database
+connections. Customer Culture must use the existing customer-population scanner
+and customer-owned property bits, so delivery updates when a supplier changes.
+The ownership listener must use the native `CityTileOwnershipChanged` event.
+A Lua fixture executes the actual shared notification handler with serialized
+hash keys and checks unchanged, increased, decreased and removed stacks.
+
+Run `test_qa_regressions.py` for negative tests that deliberately restore the
+original bugs. Native FireTuner tests remain necessary to establish engine event
+and yield behavior; the offline graph evaluator cannot prove native delivery.
+`CSC_GAMEPLAY_DATABASE` may select an immutable XP2 gameplay database fixture;
+validation replays current Tailors source into an in-memory copy.

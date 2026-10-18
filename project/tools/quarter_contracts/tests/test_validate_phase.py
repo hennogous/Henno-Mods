@@ -262,7 +262,9 @@ class TailorsPhaseContractTests(unittest.TestCase):
         )
         dockmaster = next(item for item in phase["requirements"] if item["id"] == "I.DOCKMASTER")
         self.assertIn("art.properties.D.ART.STAGE2.LIGHTHOUSE", dockmaster["design_refs"])
-        self.assertNotIn("GP.ART.PROPERTY_BRIDGE", dockmaster["gameplay_patterns"])
+        # Gameplay owns the source-property gate; geometry and art production
+        # remain separate under the current CSC architecture.
+        self.assertIn("GP.ART.PROPERTY_BRIDGE", dockmaster["gameplay_patterns"])
         self.assertNotIn("art_property_lua", dockmaster["outputs"])
         self.assertNotIn("art_property_lua", self.implementation["planned_outputs"])
         self.assertTrue(

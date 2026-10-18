@@ -2,7 +2,7 @@ schema_version: 1
 quarter: tailors
 status: transcribed
 canonical_source: docs/content/quarters/tailors.md
-canonical_source_sha256: e933a57404fa04ef8d9fbb6283690293d195bc43e6c2501e2f7fab4d740747a9
+canonical_source_sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
 transcription_rule: >
   This file is a machine-readable transcription only. It must not resolve engine
   questions, select Bakers patterns, add replacement support, or reinterpret prose.
@@ -257,12 +257,16 @@ art:
       active_when: "The Dockmaster service gate is active: Naval Tradition, an adjacent improved Base Material, and an adjacent same-owner Harbor with a functioning Lighthouse."
       service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ
     - id: D.ART.STAGE3.CUSTOMERS
-      source_property: CSC_TAILORS_STAGE_3_CUSTOMERS
-      art_property: CSC_TAILORS_STAGE_3_CUSTOMERS_ART
+      source_property: CSC_TAILORS_STAGE_3_EFFECT_FAITH
+      effect_content: FAITH
+      art_property: CSC_TAILORS_STAGE_3_EFFECT_FAITH_ART
+      interval_property: CSC_TAILORS_STAGE_3_EFFECT_FAITH_ACTIVE
       active_when: "The Sacristan service gate is active: Divine Right, an adjacent improved Base Material, and an adjacent same-owner Holy Site with a functioning Temple."
       service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ
     - id: D.ART.STAGE4.CUSTOMERS
-      source_property: CSC_TAILORS_STAGE_4_CUSTOMERS
-      art_property: CSC_TAILORS_STAGE_4_CUSTOMERS_ART
+      source_property: CSC_TAILORS_STAGE_4_EFFECT_TOURISM
+      effect_content: TOURISM
+      art_property: CSC_TAILORS_STAGE_4_EFFECT_TOURISM_ART
+      interval_property: CSC_TAILORS_STAGE_4_EFFECT_TOURISM_ACTIVE
       active_when: "The Stage Manager service gate is active: Opera and Ballet, adjacent improved Base and Specialty Materials, and an eligible adjacent same-owner service destination."
       service_activation_requirement_set: REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ

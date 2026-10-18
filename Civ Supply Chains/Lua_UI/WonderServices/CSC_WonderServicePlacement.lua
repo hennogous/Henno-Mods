@@ -11,7 +11,8 @@ local m_HostPlots = {};
 local m_CurrentHostPlots = {};
 local FASHION_HOUSE = GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"];
 local TAILORS_QUARTER = GameInfo.Districts["DISTRICT_CSC_TAILORS_QUARTER"];
-local OPERA_BALLET = GameInfo.Civics["CIVIC_OPERA_BALLET"];
+-- SQL owns unlock and material rules through the shared producer requirement set.
+local SOURCE_ELIGIBILITY_PROPERTY = "CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE";
 local NUM_DIRECTIONS = (DirectionTypes and DirectionTypes.NUM_DIRECTION_TYPES) or 6;
 
 local function PropertyNumber(owner, name)
@@ -41,9 +42,9 @@ local function HasFunctioningQuarter(districts)
 end
 
 local function IsEligible(city, hostPlot, hostIndex)
-	if FASHION_HOUSE == nil or TAILORS_QUARTER == nil or OPERA_BALLET == nil then return false; end
+	if FASHION_HOUSE == nil or TAILORS_QUARTER == nil then return false; end
 	local player = Players[city:GetOwner()];
-	if player == nil or not player:GetCulture():HasCivic(OPERA_BALLET.Index) then return false; end
+	if player == nil then return false; end
 	if city:GetBuildings():IsPillaged(hostIndex) then return false; end
 	local plot = Map.GetPlotByIndex(hostPlot);
 	if plot == nil then return false; end
@@ -52,7 +53,7 @@ local function IsEligible(city, hostPlot, hostIndex)
 		local districts = seller:GetDistricts();
 		if buildings:HasBuilding(FASHION_HOUSE.Index) and not buildings:IsPillaged(FASHION_HOUSE.Index)
 			and HasFunctioningQuarter(districts)
-			and (PropertyNumber(seller, "CSC_TAILORS_FASHION_HOUSE_SUPPLIED") or 0) > 0 then
+			and (PropertyNumber(seller, SOURCE_ELIGIBILITY_PROPERTY) or 0) > 0 then
 			local x, y = districts:GetDistrictLocation(TAILORS_QUARTER.Index);
 			for direction = 0, NUM_DIRECTIONS - 1 do
 				local adjacent = Map.GetAdjacentPlot(x, y, direction);

@@ -279,54 +279,6 @@ text-prefix: [NEWLINE][NEWLINE]
 At Urbanization, a district adjacent to a supplied Café establishes a local service:
 -->
 
-## LOC_PEDIA_CONCEPTS_PAGEGROUP_CSC_SUPPLY_CHAINS_NAME
-Supply Chains
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_INTRODUCTION_CHAPTER_CONTENT_TITLE
-Introduction
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_INTRODUCTION_CHAPTER_CONTENT_PARA_1
-Introduction text...
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_MATERIALS_CHAPTER_CONTENT_TITLE
-Stage 1: Materials extraction
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_MATERIALS_CHAPTER_CONTENT_PARA_1
-- - Stage 1 of supply chains consist of standard game improvements (e.g. wheat farms, cotton plantations and lumber mills) that extract materials from resources on the map, and sell them as inputs to stage 2 and 4 buildings.
-- - Materials mapped to supply chains are classified as either [ICON_CSC_BASE] Base Materials or [ICON_CSC_SPEC] Specialty Materials.
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_QUARTERS_CHAPTER_CONTENT_TITLE
-Quarters
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_QUARTERS_CHAPTER_CONTENT_PARA_1
-- - Stages 2, 3 and 4 of supply chains are implemented as 3 buildings inside of 8 new districts called Quarters, each dedicated to the goods supply chain of a specific industry, e.g. Baking or Textiles.
-- - All Quarters unlock at Craftsmanship.
-- - Each Quarter can only be constructed once per city, and count toward district slots.
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_INTERMEDIARY_CHAPTER_CONTENT_TITLE
-Stage 2: Intermediary goods
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_INTERMEDIARY_CHAPTER_CONTENT_PARA_1
-Intermediary goods buildings purchase various [ICON_CSC_BASE] Base Materials from stage 1 suppliers and processes those into intermediary goods (e.g. flour, textiles) to sell to customers. These customers could be both downstream actors in its supply chain for further processing, as well as outside of the supply chain for direct use.
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_CONSUMER_CHAPTER_CONTENT_TITLE
-Stage 3: Consumer goods
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_CONSUMER_CHAPTER_CONTENT_PARA_1
-Consumer goods buildings procure intermediary goods from a stage 2 supplier in the Quarter, and processes those into consumer goods (e.g. bakery, tailor, joinery) ready for sale to the general city population.
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_SPECIALTY_CHAPTER_CONTENT_TITLE
-Stage 4: Specialty goods
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_SPECIALTY_CHAPTER_CONTENT_PARA_1
-Specialty goods buildings procure intermediary goods from a stage 2 supplier in the Quarter and various [ICON_CSC_SPEC] Specialty Materials from stage 1 suppliers, and transforms them into specialty goods (e.g. Café, Fashion House, Sculptor) for sale to select customers.
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_SALES_CHAPTER_CONTENT_TITLE
-Stage 5: Goods sales
-
-## LOC_PEDIA_CONCEPTS_PAGE_CSC_SALES_CHAPTER_CONTENT_PARA_1
-For the most part, sales of different types of goods to buyers (stage 5) were described in the sections above along with the building that produced the goods.
-
 ## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_BAKERS_QUARTER_CHAPTER_CSCBASE_TITLE
 Base Materials
 
@@ -643,8 +595,8 @@ SELECT
     'en_US',
     'LOC_PEDIA_RESOURCES_PAGE_' || ResourceName || '_CHAPTER_CSCQUAR_PARA_1',
     CASE
-        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_BASE' THEN 'Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter'
-        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_SPEC' THEN 'Specialty Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter'
+        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_BASE' THEN '[ICON_CSC_BASE] Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter'
+        WHEN ResourceCategory = 'CLASS_CSC_BAKERS_SPEC' THEN '[ICON_CSC_SPEC] Specialty Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter'
     END
 FROM BAKERS_RESOURCES;
 ```

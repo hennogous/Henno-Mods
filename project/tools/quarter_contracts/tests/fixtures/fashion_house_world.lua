@@ -50,6 +50,16 @@ function addCity(id,population)
     local city=baseAddCity(id,population);table.insert(fashionCities,city);
     city.center=Map.GetPlot(city:GetX(),city:GetY());city.locations={};city.routes={};
     function city:GetName()return 'City'..tostring(self.id);end
+    -- Simulated SQL producer-property output; Lua tests do not evaluate Civ SQL.
+    -- Explicit values allow tests to prove the production Lua trusts this result.
+    local baseGetProperty=city.GetProperty;
+    function city:GetProperty(key)
+        local value=baseGetProperty(self,key);
+        if key=='CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE' and value==nil then
+            return hasOpera and (baseGetProperty(self,'CSC_TAILORS_FASHION_HOUSE_SUPPLIED') or 0)>0 and 1 or 0;
+        end;
+        return value;
+    end;
     local baseGetDistricts=city.GetDistricts;
     function city:GetDistricts()
         local districts=baseGetDistricts(self);

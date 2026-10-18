@@ -56,10 +56,10 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_INDUSTRY_ATTACH_QUARTER',           'ModifierI
         (   'MOD_CSC_TAILORS_BASE_CORPORATION_CULTURE_TO_WORKSHOP',   'Amount',         3   ),
         (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IND_BASE_PROD',      'ModifierId',     'MOD_CSC_TAILORS_PROD_TO_ADJ_IND'   ),
         (   'MOD_CSC_TAILORS_PROD_TO_ADJ_IND',                        'YieldType',      'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_IND',                        'Amount',         2   ),
+        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_IND',                        'Amount',         1   ),
         (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_CORP_BASE_PROD',     'ModifierId',     'MOD_CSC_TAILORS_PROD_TO_ADJ_CORP'   ),
         (   'MOD_CSC_TAILORS_PROD_TO_ADJ_CORP',                       'YieldType',      'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_CORP',                       'Amount',         3   );
+        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_CORP',                       'Amount',         2   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets
@@ -125,3 +125,31 @@ VALUES  (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_ATTACH_QUARTER',                'Modi
         (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'BuildingType',   'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
         (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'YieldType',      'YIELD_CULTURE'   ),
         (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'Amount',         3   );
+
+-- Additional +1 on top of the ordinary +1 return.
+INSERT INTO BuildingModifiers (BuildingType, ModifierId)
+VALUES ('BUILDING_CSC_TAILORS_FASHION_HOUSE', 'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD');
+INSERT INTO Modifiers (ModifierId, ModifierType, SubjectRequirementSetId)
+VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD', 'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER', 'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC');
+INSERT INTO ModifierArguments (ModifierId, Name, Value)
+VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD', 'ModifierId', 'MOD_CSC_TAILORS_PROD_TO_ADJ_IND');
+INSERT INTO RequirementSets (RequirementSetId, RequirementSetType)
+VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQUIREMENTSET_TEST_ALL');
+INSERT INTO RequirementSetRequirements (RequirementSetId, RequirementId)
+VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'),
+       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'),
+       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_INDUSTRY');
+
+-- Additional +2 on top of the ordinary +1 return.
+INSERT INTO BuildingModifiers (BuildingType, ModifierId)
+VALUES ('BUILDING_CSC_TAILORS_FASHION_HOUSE', 'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD');
+INSERT INTO Modifiers (ModifierId, ModifierType, SubjectRequirementSetId)
+VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD', 'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER', 'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC');
+INSERT INTO ModifierArguments (ModifierId, Name, Value)
+VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD', 'ModifierId', 'MOD_CSC_TAILORS_PROD_TO_ADJ_CORP');
+INSERT INTO RequirementSets (RequirementSetId, RequirementSetType)
+VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQUIREMENTSET_TEST_ALL');
+INSERT INTO RequirementSetRequirements (RequirementSetId, RequirementId)
+VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'),
+       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'),
+       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_CORPORATION');

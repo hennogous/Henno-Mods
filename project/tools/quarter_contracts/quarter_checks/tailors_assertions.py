@@ -56,6 +56,10 @@ IMPLEMENTED_ASSERTION_PHASES = {"foundation", "materials_and_stage2", "stage3", 
 
 
 def _runtime_database() -> Path:
+    import os
+    fixture = os.environ.get("CSC_GAMEPLAY_DATABASE")
+    if fixture:
+        return Path(fixture)
     return Path.home() / "AppData/Local/Firaxis Games/Sid Meier's Civilization VI/Cache/DebugGameplay.sqlite"
 
 
@@ -97,7 +101,7 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
     helper_columns = {
         row[1] for row in connection.execute('PRAGMA table_info("CSC_AbilityAttachModifiers")')
     }
-    if "NotificationQuarter" not in helper_columns:
+    if helper_columns and "NotificationQuarter" not in helper_columns:
         # Runtime caches created by an earlier build are only an offline fixture.
         # Bring the in-memory copy up to the current shared-helper schema before
         # loading the Tailors SQL; the source cache is never modified.
@@ -308,11 +312,11 @@ def _validate_mapped_resource_pedia(root: Path) -> list[str]:
                 if not match:
                     continue
                 quarter, role = match.groups()
-                label = "Base Materials:" if role == "BASE" else "Specialty Materials:"
+                label = "[ICON_CSC_BASE] Base Materials:" if role == "BASE" else "[ICON_CSC_SPEC] Specialty Materials:"
                 prefix = f"LOC_PEDIA_RESOURCES_PAGE_{resource}_CHAPTER_CSCQUAR"
                 title = _scalar(connection, "SELECT Text FROM LocalizedText WHERE Language='en_US' AND Tag=?", (prefix + "_TITLE",))
                 reverse = _scalar(connection, "SELECT Text FROM LocalizedText WHERE Language='en_US' AND Tag=?", (prefix + "_PARA_1",)) or ""
-                group = re.search(re.escape(label) + r"\[NEWLINE\]\[NEWLINE\](.*?)(?=(?:Base|Specialty) Materials:|$)", reverse)
+                group = re.search(re.escape(label) + r"\[NEWLINE\]\[NEWLINE\](.*?)(?=\[ICON_CSC_(?:BASE|SPEC)\]\s+(?:Base|Specialty) Materials:|$)", reverse)
                 bullet = f"[ICON_BULLET] [ICON_{quarter}]"
                 if title != "Supply Chains" or reverse.count(label) != 1 or not group or group.group(1).count(bullet) != 1:
                     failures.append(f"[{scenario}] {resource} -> {tag}: reciprocal pedia chapter missing, duplicated, or wrong material role")
@@ -330,32 +334,32 @@ def _validate_mapped_resource_pedia(root: Path) -> list[str]:
 def _validate_resource_pedia_contract(root: Path) -> list[str]:
     failures: list[str] = []
     optional_bindings = (
-        ("RESOURCE_AOM_HEMP", "CLASS_CSC_TAILORS_BASE", "Hemp", "Base Materials:",
+        ("RESOURCE_AOM_HEMP", "CLASS_CSC_TAILORS_BASE", "Hemp", "[ICON_CSC_BASE] Base Materials:",
          "Civ Supply Chains/ModSupport/ModSupport_CH.sql",
          "project/localization/ModSupport_CH_TAILORS_TEXT.md",
          "Civ Supply Chains/ModSupport/ModSupport_CH_TAILORS_TEXT.sql",
          "ModSupport_CH_Tailors_Text", ["ModSupport_CH"]),
-        ("RESOURCE_LEU_P0K_LLAMAS", "CLASS_CSC_TAILORS_BASE", "Llamas", "Base Materials:",
+        ("RESOURCE_LEU_P0K_LLAMAS", "CLASS_CSC_TAILORS_BASE", "Llamas", "[ICON_CSC_BASE] Base Materials:",
          "Civ Supply Chains/ModSupport/ModSupport_LAR_A.sql",
          "project/localization/ModSupport_LAR_A_TAILORS_TEXT.md",
          "Civ Supply Chains/ModSupport/ModSupport_LAR_A_TAILORS_TEXT.sql",
          "ModSupport_LAR_A_Tailors_Text", ["CSC_A_RESOURCES", "ModSupport_LAR"]),
-        ("RESOURCE_BAMBOO", "CLASS_CSC_TAILORS_BASE", "Bamboo", "Base Materials:",
+        ("RESOURCE_BAMBOO", "CLASS_CSC_TAILORS_BASE", "Bamboo", "[ICON_CSC_BASE] Base Materials:",
          "Civ Supply Chains/ModSupport/ModSupport_R2.sql",
          "project/localization/ModSupport_R2_TEXT.md",
          "Civ Supply Chains/ModSupport/ModSupport_R2_TEXT.sql",
          "ModSupport_R2_Text", ["ModSupport_R2"]),
-        ("RESOURCE_GOLD2", "CLASS_CSC_TAILORS_SPEC", "Gold", "Specialty Materials:",
+        ("RESOURCE_GOLD2", "CLASS_CSC_TAILORS_SPEC", "Gold", "[ICON_CSC_SPEC] Specialty Materials:",
          "Civ Supply Chains/ModSupport/ModSupport_R2.sql",
          "project/localization/ModSupport_R2_TEXT.md",
          "Civ Supply Chains/ModSupport/ModSupport_R2_TEXT.sql",
          "ModSupport_R2_Text", ["ModSupport_R2"]),
-        ("RESOURCE_CASHMERE", "CLASS_CSC_TAILORS_SPEC", "Cashmere", "Specialty Materials:",
+        ("RESOURCE_CASHMERE", "CLASS_CSC_TAILORS_SPEC", "Cashmere", "[ICON_CSC_SPEC] Specialty Materials:",
          "Civ Supply Chains/ModSupport/ModSupport_R2_A.sql",
          "project/localization/ModSupport_R2_A_TAILORS_TEXT.md",
          "Civ Supply Chains/ModSupport/ModSupport_R2_A_TAILORS_TEXT.sql",
          "ModSupport_R2_A_Tailors_Text", ["CSC_A_RESOURCES", "ModSupport_R2"]),
-        ("RESOURCE_GOLD", "CLASS_CSC_TAILORS_SPEC", "Gold", "Specialty Materials:",
+        ("RESOURCE_GOLD", "CLASS_CSC_TAILORS_SPEC", "Gold", "[ICON_CSC_SPEC] Specialty Materials:",
          "Civ Supply Chains/ModSupport/ModSupport_SR.sql",
          "project/localization/ModSupport_SR_TAILORS_TEXT.md",
          "Civ Supply Chains/ModSupport/ModSupport_SR_TAILORS_TEXT.sql",
@@ -399,8 +403,12 @@ def _validate_resource_pedia_contract(root: Path) -> list[str]:
             r"## LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_(?:BAKERS|TAILORS)_QUARTER_CHAPTER_(?:CSCBASE|CSCSPEC|CSCGOODS|CSCSALES)_TITLE\n([^\n]+)",
             text,
         )
-        if len(titles) != 4 or any("[ICON_" in title for title in titles):
-            failures.append(f"{relative}: four Quarter pedia section headers must exist without icons")
+        expected_titles = [
+            "Base Materials", "Specialty Materials",
+            "Goods Providers", "Sales Districts",
+        ]
+        if titles != expected_titles:
+            failures.append(f"{relative}: four Quarter pedia section headers must use plain titles without texticons")
 
     tailors_source = (root / "project/localization/CSC_TAILORS_TEXT.md").read_text(encoding="utf-8-sig")
     sales_prose = (
@@ -492,7 +500,7 @@ def _validate_resource_pedia_contract(root: Path) -> list[str]:
             "SELECT Text FROM LocalizedText WHERE Tag='LOC_PEDIA_RESOURCES_PAGE_RESOURCE_CSC_FLAX_CHAPTER_CSCQUAR_PARA_1'",
         )
         expected_flax = (
-            "Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers' Quarter"
+            "[ICON_CSC_BASE] Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers' Quarter"
             "[NEWLINE][ICON_BULLET] [ICON_TAILORS] Tailors' Quarter"
         )
         _expect(failures, flax, expected_flax, "Flax composed Base Materials pedia list")
@@ -505,7 +513,7 @@ def _validate_resource_pedia_contract(root: Path) -> list[str]:
             "SELECT Text FROM LocalizedText WHERE Tag='LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TAILORS_QUARTER_CHAPTER_CSCSPEC_PARA_1'",
         ) or ""
         for resource, _, display_name, group_label, *_ in optional_bindings:
-            material_list = base_list if group_label == "Base Materials:" else spec_list
+            material_list = base_list if group_label == "[ICON_CSC_BASE] Base Materials:" else spec_list
             entry = f"[ICON_{resource}] {display_name}"
             if material_list.count(entry) != 1:
                 failures.append(f"Tailors {group_label[:-1]} list must contain {entry} exactly once")
@@ -1001,14 +1009,8 @@ def _stage2_assertions(root: Path, connection: sqlite3.Connection) -> list[str]:
     )
     for modifier, amount in (
         ("MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP", "1"),
-        ("MOD_CSC_TAILORS_PROD_TO_ADJ_BASE", "1"),
-        ("MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE", "1"),
         ("MOD_CSC_TAILORS_BASE_INDUSTRY_CULTURE_TO_WORKSHOP", "2"),
         ("MOD_CSC_TAILORS_BASE_CORPORATION_CULTURE_TO_WORKSHOP", "3"),
-        ("MOD_CSC_TAILORS_PROD_TO_ADJ_IND", "2"),
-        ("MOD_CSC_TAILORS_PROD_TO_ADJ_CORP", "3"),
-        ("MOD_CSC_TAILORS_GOLD_TO_ADJ_IND", "2"),
-        ("MOD_CSC_TAILORS_GOLD_TO_ADJ_CORP", "3"),
     ):
         _expect(
             failures,
@@ -1418,62 +1420,8 @@ def _stage3_assertions(
             [(sender, "MODIFIER_BUILDING_YIELD_CHANGE", None, None)],
             f"{modifier} Bakery-style sender attachment",
         )
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT ModifierId, ModifierType FROM Modifiers WHERE ModifierId IN "
-            "('MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET','MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE',"
-            "'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE','MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE') ORDER BY ModifierId"
-        ).fetchall(),
-        [
-            ("MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE", "MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION"),
-            ("MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET", "MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER"),
-            ("MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE", "MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER"),
-            ("MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE", "MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION"),
-        ],
-        "Tailor customer modifier graph",
-    )
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT ModifierId, Name, Value FROM ModifierArguments WHERE ModifierId IN "
-            "('MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE','MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE') "
-            "ORDER BY ModifierId, Name"
-        ).fetchall(),
-        [
-            ("MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE", "Amount", "0.105"),
-            ("MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE", "YieldType", "YIELD_CULTURE"),
-            ("MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE", "Amount", "0.105"),
-            ("MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE", "YieldType", "YIELD_CULTURE"),
-        ],
-        "Tailor independent Market and Temple Culture amounts",
-    )
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT ModifierId, Value FROM ModifierArguments WHERE ModifierId IN "
-            "('MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET','MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE') "
-            "AND Name='ModifierId' ORDER BY ModifierId"
-        ).fetchall(),
-        [
-            ("MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET", "MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE"),
-            ("MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE", "MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE"),
-        ],
-        "Tailor customer families have distinct Culture actions",
-    )
-    _expect(
-        failures,
-        connection.execute(
-            "SELECT ModifierId, OwnerRequirementSetId FROM Modifiers WHERE ModifierId IN "
-            "('MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET','MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE') "
-            "ORDER BY ModifierId"
-        ).fetchall(),
-        [
-            ("MOD_CSC_TAILORS_TAILOR_ATTACH_MARKET", None),
-            ("MOD_CSC_TAILORS_TAILOR_ATTACH_TEMPLE", None),
-        ],
-        "Tailor adjacent-building transactions are not material-supply gated",
-    )
+    from quarter_checks.qa_regressions import validate_customer_delivery
+    failures.extend(validate_customer_delivery(connection))
     for requirement_set, expected_requirements in (
         ("REQSET_CSC_TAILORS_ADJ_MARKET", {"REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER", "REQ_CSC_TAILORS_DISTRICT_IS_COMMERCIAL_HUB", "REQ_CSC_TAILORS_CITY_HAS_MARKET"}),
         ("REQSET_CSC_TAILORS_ADJ_TEMPLE", {"REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER", "REQ_CSC_TAILORS_DISTRICT_IS_HOLY_SITE", "REQ_CSC_TAILORS_CITY_HAS_TEMPLE"}),
@@ -1563,12 +1511,12 @@ def _stage3_assertions(
             (
                 "CSC_TAILORS_TAILOR_MARKET", "DISTRICT_CSC_TAILORS_QUARTER", "BUILDING_CSC_TAILORS_TAILOR",
                 "DISTRICT_COMMERCIAL_HUB", "BUILDING_MARKET", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
-                "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", None, 0.105,
+                "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", "CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT", 0.105,
             ),
             (
                 "CSC_TAILORS_TAILOR_TEMPLE", "DISTRICT_CSC_TAILORS_QUARTER", "BUILDING_CSC_TAILORS_TAILOR",
                 "DISTRICT_HOLY_SITE", "BUILDING_TEMPLE", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
-                "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", None, 0.105,
+                "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", "CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT", 0.105,
             ),
         ],
         "Tailors Stage 3 customer transaction registry",
@@ -1650,7 +1598,7 @@ def _shared_service_art_bridge_assertions(root: Path, connection: sqlite3.Connec
     )
     for stage, building, source in (
         (2, "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP", "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION"),
-        (3, "BUILDING_CSC_TAILORS_TAILOR", "CSC_TAILORS_STAGE_3_CUSTOMERS"),
+        (3, "BUILDING_CSC_TAILORS_TAILOR", "CSC_TAILORS_STAGE_3_EFFECT_FAITH"),
     ):
         modifier = f"MOD_CSC_TAILORS_STAGE_{stage}_ART_PROPERTY"
         _expect(failures, connection.execute(
@@ -1665,7 +1613,6 @@ def _shared_service_art_bridge_assertions(root: Path, connection: sqlite3.Connec
             "SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?", (modifier,)
         ).fetchall(), [(building,)], f"{modifier} Quarter ownership")
     obsolete = {
-        "MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY",
         *(f"MOD_CSC_TAILORS_STAGE_{stage}_ART_ATTACH_QUARTER" for stage in (2, 3, 4)),
     }
     for table in ("Modifiers", "BuildingModifiers"):
@@ -1694,21 +1641,6 @@ def _shared_service_art_bridge_assertions(root: Path, connection: sqlite3.Connec
         bakers_sql,
     ):
         failures.append("Bakers Stage 3 adjacent-building transaction has a material-supply owner gate")
-    deferred_properties = {
-        "CSC_TAILORS_STAGE_4_CUSTOMERS",
-        "CSC_TAILORS_STAGE_4_CUSTOMERS_ART",
-    }
-    deferred_sql_count = _scalar(
-        connection,
-        "SELECT COUNT(*) FROM ModifierArguments WHERE Value IN (?, ?)",
-        tuple(sorted(deferred_properties)),
-    )
-    _expect(
-        failures,
-        deferred_sql_count,
-        0,
-        "Tailors deferred Stage 4 art properties absent from SQL",
-    )
     return failures
 
 
@@ -1750,6 +1682,9 @@ def validate_phase_assertions(
         return failures
     try:
         failures.extend(_foundation_assertions(root, connection))
+        from quarter_checks.qa_regressions import validate_qa_regressions, validate_mechanism_bindings
+        failures.extend(validate_qa_regressions(root, connection, phase_id))
+        failures.extend(validate_mechanism_bindings(connection, implementation, phase_id))
         if phase_id in {"materials_and_stage2", "stage3", "stage4"}:
             failures.extend(_stage2_assertions(root, connection))
             failures.extend(_shared_service_art_bridge_assertions(root, connection))

@@ -64,7 +64,7 @@ for _,name in ipairs({
     'DistrictRemovedFromMap','BuildingAddedToMap','BuildingRemovedFromMap','BuildingChanged',
     'CityProductionCompleted','CityAddedToMap','CityRemovedFromMap','CityTransfered',
     'ImprovementAddedToMap','ImprovementRemovedFromMap','ImprovementChanged',
-    'ResourceAddedToMap','ResourceRemovedFromMap','ResourceChanged','PlotOwnershipChanged',
+    'ResourceAddedToMap','ResourceRemovedFromMap','ResourceChanged','CityTileOwnershipChanged',
     'ImprovementPillaged','DistrictPillaged','TerrainChanged','FeatureAddedToMap','FeatureRemovedFromMap',
     'RouteAddedToMap','RouteRemovedFromMap',
     'ResearchCompleted','CivicCompleted','PolicyChanged','GovernmentChanged'

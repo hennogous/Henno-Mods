@@ -115,7 +115,7 @@ A Service established in a Theater Square with an Amphitheater at Opera and Ball
 ## LOC_CSC_TAILORS_STAGE_4_AMPHITHEATER_EFFECT
 +1 [ICON_Culture] Culture per 5 [ICON_Citizen] Citizens from each adjacent Fashion House, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold per 5 [ICON_Citizen] Citizens to the Fashion House. Both sides use this city's population.
 
-At Opera and Ballet, an adjacent Fashion House supplied with both Base and Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} service here.
+At Opera and Ballet, an adjacent Fashion House supplied with both [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} service here.
 
 ## LOC_CSC_TAILORS_STAGE_4_AMPHITHEATER_EFFECT_APPEND
 text-prefix: [NEWLINE][NEWLINE]
@@ -123,7 +123,7 @@ text-prefix: [NEWLINE][NEWLINE]
 {LOC_CSC_TAILORS_STAGE_4_AMPHITHEATER_EFFECT}
 
 ## LOC_CSC_TAILORS_STAGE_4_CIVIC
-- An Amphitheater or one of the named Wonders adjacent to a Fashion House supplied with both Base and Specialty Materials establishes a performance service: {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} in the Theater Square, {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} at Bolshoi Theatre, {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} at Broadway, {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} at Sydney Opera House. Each provides +2 [ICON_Tourism] Tourism and +1 [ICON_GreatArtist] Great Artist point from each adjacent supplied Fashion House. Only the Theater Square service provides +1 [ICON_Citizen] Citizen slot.
+- An Amphitheater or one of the named Wonders adjacent to a Fashion House supplied with both [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials establishes a performance service: {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} in the Theater Square, {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} at Bolshoi Theatre, {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} at Broadway, {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} at Sydney Opera House. Each provides +2 [ICON_Tourism] Tourism and +1 [ICON_GreatArtist] Great Artist point from each adjacent supplied Fashion House. Only the Theater Square service provides +1 [ICON_Citizen] Citizen slot.
 
 ## LOC_CSC_TAILORS_STAGE_4_CIVIC_APPEND
 text-prefix: [NEWLINE][NEWLINE]
@@ -147,52 +147,52 @@ a new {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} service: {1_NewAmount} [IC
 {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} effects deactivated: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}. The established service and its [ICON_Citizen] Citizen slot remain
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BOLSHOI
-- {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} at Bolshoi Theatre: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatArtist] Great Artist {3_TotalStackCount : plural 1?point; other?points;}.
+- {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME}: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatArtist] Great Artist {3_TotalStackCount : plural 1?point; other?points;}.
 - Supply Chain: {3_TotalStackCount} supplied {3_TotalStackCount : plural 1?Fashion House; other?Fashion Houses;} [ICON_ARROW] adjacent Bolshoi Theatre.
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BOLSHOI_NEW
-a new {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service at Bolshoi Theatre: {1_NewAmount} [ICON_Tourism] Tourism and {2_NewStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+a new {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service: {1_NewAmount} [ICON_Tourism] Tourism and {2_NewStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BOLSHOI_INCREASED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service at Bolshoi Theatre increased: {1_IncreaseAmount} [ICON_Tourism] Tourism and {2_IncreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service increased: {1_IncreaseAmount} [ICON_Tourism] Tourism and {2_IncreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BOLSHOI_DECREASED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service at Bolshoi Theatre decreased: {1_DecreaseAmount} [ICON_Tourism] Tourism and {2_DecreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service decreased: {1_DecreaseAmount} [ICON_Tourism] Tourism and {2_DecreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BOLSHOI_REMOVED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} at Bolshoi Theatre effects deactivated: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}. The established service remains
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} effects deactivated: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}. The established service remains
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BROADWAY
-- {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} at Broadway: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatArtist] Great Artist {3_TotalStackCount : plural 1?point; other?points;}.
+- {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME}: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatArtist] Great Artist {3_TotalStackCount : plural 1?point; other?points;}.
 - Supply Chain: {3_TotalStackCount} supplied {3_TotalStackCount : plural 1?Fashion House; other?Fashion Houses;} [ICON_ARROW] adjacent Broadway.
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BROADWAY_NEW
-a new {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service at Broadway: {1_NewAmount} [ICON_Tourism] Tourism and {2_NewStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+a new {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service: {1_NewAmount} [ICON_Tourism] Tourism and {2_NewStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BROADWAY_INCREASED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service at Broadway increased: {1_IncreaseAmount} [ICON_Tourism] Tourism and {2_IncreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service increased: {1_IncreaseAmount} [ICON_Tourism] Tourism and {2_IncreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BROADWAY_DECREASED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service at Broadway decreased: {1_DecreaseAmount} [ICON_Tourism] Tourism and {2_DecreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service decreased: {1_DecreaseAmount} [ICON_Tourism] Tourism and {2_DecreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_BROADWAY_REMOVED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} at Broadway effects deactivated: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}. The established service remains
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} effects deactivated: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}. The established service remains
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_SYDNEY
-- {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} at Sydney Opera House: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatArtist] Great Artist {3_TotalStackCount : plural 1?point; other?points;}.
+- {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME}: {1_TotalAmount} [ICON_Tourism] Tourism and {2_TotalStack} [ICON_GreatArtist] Great Artist {3_TotalStackCount : plural 1?point; other?points;}.
 - Supply Chain: {3_TotalStackCount} supplied {3_TotalStackCount : plural 1?Fashion House; other?Fashion Houses;} [ICON_ARROW] adjacent Sydney Opera House.
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_SYDNEY_NEW
-a new {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service at Sydney Opera House: {1_NewAmount} [ICON_Tourism] Tourism and {2_NewStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+a new {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service: {1_NewAmount} [ICON_Tourism] Tourism and {2_NewStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_SYDNEY_INCREASED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service at Sydney Opera House increased: {1_IncreaseAmount} [ICON_Tourism] Tourism and {2_IncreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service increased: {1_IncreaseAmount} [ICON_Tourism] Tourism and {2_IncreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_SYDNEY_DECREASED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service at Sydney Opera House decreased: {1_DecreaseAmount} [ICON_Tourism] Tourism and {2_DecreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service decreased: {1_DecreaseAmount} [ICON_Tourism] Tourism and {2_DecreasedStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION_SYDNEY_REMOVED
-{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} at Sydney Opera House effects deactivated: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}. The established service remains
+{LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} effects deactivated: {1_LostAmount} [ICON_Tourism] Tourism and {2_LostStack} [ICON_GreatArtist] Great Artist {3_StackCount : plural 1?point; other?points;}. The established service remains
 
 ## LOC_CSC_WONDER_SERVICES_PLOT_TOOLTIP_HEADER
 Services:
@@ -324,7 +324,7 @@ Sacristans cared for vestments, sacred furnishings, records and the daily materi
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_FASHION_HOUSE_CHAPTER_CSCHAIN_PARA_1
-The Fashion House brings the Textile Workshop's cloth together with improved Specialty Materials: dyes give it colour, silk lends lustre and fine metalwork finishes the garment. Designers, cutters and embroiderers turn these supplies into distinctive dress for the audiences and performers of nearby Amphitheaters, the Bolshoi Theatre, Broadway and Sydney Opera House. Demand grows with the population of each customer city, while domestic trade routes carry fashionable goods to cities without a Tailors' Quarter of their own.
+The Fashion House brings the Textile Workshop's cloth together with improved [ICON_CSC_SPEC] Specialty Materials: dyes give it colour, silk lends lustre and fine metalwork finishes the garment. Designers, cutters and embroiderers turn these supplies into distinctive dress for the audiences and performers of nearby Amphitheaters, the Bolshoi Theatre, Broadway and Sydney Opera House. Demand grows with the population of each customer city, while domestic trade routes carry fashionable goods to cities without a Tailors' Quarter of their own.
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_FASHION_HOUSE_CHAPTER_HISTORY_TITLE
 Historical Context
@@ -342,7 +342,7 @@ Performance made clothing a public art. Theater and opera workshops used costume
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_CHAPTER_CSCHAIN_PARA_1
-The Fashion House draws on cloth from the local Textile Workshop and improved Base and Specialty Materials nearby, turns them into costumes and performance dress, and supplies the adjacent Amphitheater.
+The Fashion House draws on cloth from the local Textile Workshop and improved [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials nearby, turns them into costumes and performance dress, and supplies the adjacent Amphitheater.
 
 This gives a Citizen the opportunity to take up employment as a Stage Manager in the Theater Square at Opera and Ballet, coordinating performers, costumes and production work so that each performance contributes to the city's Tourism and the development of Great Artists.
 
@@ -363,7 +363,7 @@ A Service established on Bolshoi Theatre at Opera and Ballet when an adjacent Fa
 ## LOC_CSC_TAILORS_STAGE_4_BOLSHOI_EFFECT
 +1 [ICON_Culture] Culture per 5 [ICON_Citizen] Citizens from each adjacent Fashion House, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold per 5 [ICON_Citizen] Citizens to the Fashion House. Both sides use this city's population.
 
-At Opera and Ballet, an adjacent Fashion House supplied with both Base and Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service on this Wonder.
+At Opera and Ballet, an adjacent Fashion House supplied with both [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_NAME} service on this Wonder.
 
 ## LOC_CSC_TAILORS_STAGE_4_BOLSHOI_EFFECT_APPEND
 text-prefix: [NEWLINE][NEWLINE]
@@ -381,7 +381,7 @@ A Service established on Broadway at Opera and Ballet when an adjacent Fashion H
 ## LOC_CSC_TAILORS_STAGE_4_BROADWAY_EFFECT
 +1 [ICON_Culture] Culture per 5 [ICON_Citizen] Citizens from each adjacent Fashion House, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold per 5 [ICON_Citizen] Citizens to the Fashion House. Both sides use this city's population.
 
-At Opera and Ballet, an adjacent Fashion House supplied with both Base and Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service on this Wonder.
+At Opera and Ballet, an adjacent Fashion House supplied with both [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_NAME} service on this Wonder.
 
 ## LOC_CSC_TAILORS_STAGE_4_BROADWAY_EFFECT_APPEND
 text-prefix: [NEWLINE][NEWLINE]
@@ -399,7 +399,7 @@ A Service established on Sydney Opera House at Opera and Ballet when an adjacent
 ## LOC_CSC_TAILORS_STAGE_4_SYDNEY_EFFECT
 +1 [ICON_Culture] Culture per 5 [ICON_Citizen] Citizens from each adjacent Fashion House, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold per 5 [ICON_Citizen] Citizens to the Fashion House. Both sides use this city's population.
 
-At Opera and Ballet, an adjacent Fashion House supplied with both Base and Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service on this Wonder.
+At Opera and Ballet, an adjacent Fashion House supplied with both [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials establishes a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_NAME} service on this Wonder.
 
 ## LOC_CSC_TAILORS_STAGE_4_SYDNEY_EFFECT_APPEND
 text-prefix: [NEWLINE][NEWLINE]
@@ -410,7 +410,7 @@ text-prefix: [NEWLINE][NEWLINE]
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BOLSHOI_CHAPTER_CSCHAIN_PARA_1
-The Fashion House draws on cloth from the local Textile Workshop and improved Base and Specialty Materials nearby, turns them into ballet costumes and ribbons, and supplies the adjacent Bolshoi Theatre.
+The Fashion House draws on cloth from the local Textile Workshop and improved [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials nearby, turns them into ballet costumes and ribbons, and supplies the adjacent Bolshoi Theatre.
 
 This gives a Citizen the opportunity to take up employment as a Ballet Dancer at the Bolshoi Theatre at Opera and Ballet, bringing movement and costume together in performances that contribute to the city's Tourism and the development of Great Artists.
 
@@ -426,7 +426,7 @@ Ballet developed from European court entertainments into a professional stage ar
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_SYDNEY_CHAPTER_CSCHAIN_PARA_1
-The Fashion House draws on cloth from the local Textile Workshop and improved Base and Specialty Materials nearby, turns them into operatic costumes and performance dress, and supplies the adjacent Sydney Opera House.
+The Fashion House draws on cloth from the local Textile Workshop and improved [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials nearby, turns them into operatic costumes and performance dress, and supplies the adjacent Sydney Opera House.
 
 This gives a Citizen the opportunity to take up employment as an Opera Singer at Sydney Opera House at Opera and Ballet, giving voice and character to staged works that contribute to the city's Tourism and the development of Great Artists.
 
@@ -442,7 +442,7 @@ Opera grew into a distinctive form of theater during the seventeenth century, pl
 Supply Chains
 
 ## LOC_PEDIA_BUILDINGS_PAGE_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_CHAPTER_CSCHAIN_PARA_1
-The Fashion House draws on cloth from the local Textile Workshop and improved Base and Specialty Materials nearby, turns them into theatrical costumes, and supplies the adjacent Broadway.
+The Fashion House draws on cloth from the local Textile Workshop and improved [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials nearby, turns them into theatrical costumes, and supplies the adjacent Broadway.
 
 This gives a Citizen the opportunity to take up employment as a Musical Actor at Broadway at Opera and Ballet, joining acting, song and movement in performances that contribute to the city's Tourism and the development of Great Artists.
 
@@ -472,7 +472,7 @@ FROM TAILORS_STAGE4_CUSTOMERS;
 
 INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
 SELECT 'en_US', 'LOC_PEDIA_BUILDINGS_PAGE_' || BuildingType || '_CHAPTER_CSCHAIN_PARA_1',
-    Overview || '[NEWLINE][NEWLINE]+1 [ICON_Culture] Culture per 5 [ICON_Citizen] Citizens from each adjacent Fashion House, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold per 5 [ICON_Citizen] Citizens to the Fashion House. Both sides use this city''s population.[NEWLINE][NEWLINE]At Opera and Ballet, an adjacent Fashion House supplied with both Base and Specialty Materials can establish a {' || ServiceNameTag || '} service here.'
+    Overview || '[NEWLINE][NEWLINE]+1 [ICON_Culture] Culture per 5 [ICON_Citizen] Citizens from each adjacent Fashion House, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold per 5 [ICON_Citizen] Citizens to the Fashion House. Both sides use this city''s population.[NEWLINE][NEWLINE]At Opera and Ballet, an adjacent Fashion House supplied with both [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials can establish a {' || ServiceNameTag || '} service here.'
 FROM TAILORS_STAGE4_CUSTOMERS;
 DROP TABLE TAILORS_STAGE4_CUSTOMERS;
 ```
@@ -537,8 +537,8 @@ FROM TAILORS_RESOURCES;
 INSERT OR IGNORE INTO LocalizedText (Language, Tag, Text)
 SELECT 'en_US', 'LOC_PEDIA_RESOURCES_PAGE_' || ResourceName || '_CHAPTER_CSCQUAR_PARA_1',
     CASE ResourceCategory
-        WHEN 'CLASS_CSC_TAILORS_BASE' THEN 'Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_TAILORS] Tailors'' Quarter'
-        WHEN 'CLASS_CSC_TAILORS_SPEC' THEN 'Specialty Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_TAILORS] Tailors'' Quarter'
+        WHEN 'CLASS_CSC_TAILORS_BASE' THEN '[ICON_CSC_BASE] Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_TAILORS] Tailors'' Quarter'
+        WHEN 'CLASS_CSC_TAILORS_SPEC' THEN '[ICON_CSC_SPEC] Specialty Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_TAILORS] Tailors'' Quarter'
     END
 FROM TAILORS_RESOURCES;
 
@@ -618,7 +618,7 @@ DROP TABLE TAILORS_STAGE3_CUSTOMERS;
 
 -- Keep the Theater Square's existing Quarter overview and add one service pointer.
 UPDATE LocalizedText
-SET Text = Text || '[NEWLINE][NEWLINE]At Opera and Ballet, an Amphitheater served by an adjacent Fashion House supplied with both Base and Specialty Materials can establish a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} service.'
+SET Text = Text || '[NEWLINE][NEWLINE]At Opera and Ballet, an Amphitheater served by an adjacent Fashion House supplied with both [ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials can establish a {LOC_BUILDING_CSC_TAILORS_STAGE_4_SERVICE_NAME} service.'
 WHERE Language = 'en_US' AND Tag = 'LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_THEATER_CHAPTER_CSCHAIN_PARA_1';
 
 INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)

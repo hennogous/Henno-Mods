@@ -31,7 +31,7 @@ class MappedResourcePediaTests(unittest.TestCase):
         (self.mod / "mapping.sql").write_text("INSERT INTO TypeTags(Type,Tag) SELECT ResourceType,'CLASS_CSC_TEST_SPEC' FROM Resources WHERE ResourceType IN ('RESOURCE_NOVEL');")
         self.text = """INSERT INTO LocalizedText VALUES
             ('en_US','LOC_PEDIA_RESOURCES_PAGE_RESOURCE_NOVEL_CHAPTER_CSCQUAR_TITLE','Supply Chains'),
-            ('en_US','LOC_PEDIA_RESOURCES_PAGE_RESOURCE_NOVEL_CHAPTER_CSCQUAR_PARA_1','Specialty Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_TEST] Test Quarter'),
+            ('en_US','LOC_PEDIA_RESOURCES_PAGE_RESOURCE_NOVEL_CHAPTER_CSCQUAR_PARA_1','[ICON_CSC_SPEC] Specialty Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_TEST] Test Quarter'),
             ('en_US','LOC_PEDIA_DISTRICTS_PAGE_DISTRICT_CSC_TEST_QUARTER_CHAPTER_CSCSPEC_PARA_1','[ICON_RESOURCE_NOVEL] Novel');"""
         (self.mod / "text.sql").write_text(self.text)
         import yaml
@@ -86,7 +86,7 @@ class MappedResourcePediaTests(unittest.TestCase):
         self.assertTrue(any('RESOURCE_NOVEL' in failure and 'reciprocal' in failure for failure in ASSERTIONS._validate_mapped_resource_pedia(self.root)))
 
     def test_wrong_role_is_rejected(self) -> None:
-        (self.mod / "text.sql").write_text(self.text.replace('Specialty Materials:', 'Base Materials:'))
+        (self.mod / "text.sql").write_text(self.text.replace('[ICON_CSC_SPEC] Specialty Materials:', '[ICON_CSC_BASE] Base Materials:'))
         self.assertTrue(any('wrong material role' in failure for failure in ASSERTIONS._validate_mapped_resource_pedia(self.root)))
 
     def test_missing_quarter_entry_is_rejected(self) -> None:

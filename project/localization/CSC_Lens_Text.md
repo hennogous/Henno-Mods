@@ -12,7 +12,7 @@ Choose a Quarter to highlight its materials and points of sale. Outlines mark im
 Bakers' Quarter
 
 ## LOC_HUD_CSC_BAKERS_LENS_TOOLTIP
-Shows Bakers' Quarters in their icon colour, base materials in brown-orange, specialty materials in bright orange, and points of sale in yellow. Outlined resources are improved.
+Shows Bakers' Quarters in their icon colour, [ICON_CSC_BASE] base materials in brown-orange, [ICON_CSC_SPEC] specialty materials in bright orange, and points of sale in yellow. Outlined resources are improved.
 
 ## LOC_TOOLTIP_CSC_LENS_BAKERS_QUARTER
 Bakers' Quarter
@@ -21,16 +21,16 @@ Bakers' Quarter
 Tailors' Quarter
 
 ## LOC_HUD_CSC_TAILORS_LENS_TOOLTIP
-Shows Tailors' Quarters in their icon colour, base materials in brown-orange, specialty materials in bright orange, and points of sale in yellow. Outlined resources are improved.
+Shows Tailors' Quarters in their icon colour, [ICON_CSC_BASE] base materials in brown-orange, [ICON_CSC_SPEC] specialty materials in bright orange, and points of sale in yellow. Outlined resources are improved.
 
 ## LOC_TOOLTIP_CSC_LENS_TAILORS_QUARTER
 Tailors' Quarter
 
 ## LOC_TOOLTIP_CSC_LENS_BASE
-Base Materials (Outlined = Improved)
+[ICON_CSC_BASE] Base Materials (Outlined = Improved)
 
 ## LOC_TOOLTIP_CSC_LENS_SPEC
-Specialty Materials (Outlined = Improved)
+[ICON_CSC_SPEC] Specialty Materials (Outlined = Improved)
 
 ## LOC_TOOLTIP_CSC_LENS_SALE_DISTRICT
 Points of Sale

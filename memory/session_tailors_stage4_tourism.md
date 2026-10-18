@@ -46,3 +46,12 @@ the running session was the baseline build; re-enabled Tourism is not live
 validated. Details in the Stage4 review doc. Resolve debug context IDs with
 LSQ rather than assuming state 3. Enumerate player:GetDistricts():Members();
 CityDistricts has no Members API in gameplay. Henno authorized closing FireTuner.
+
+
+14 October: Henno asked to prevent SQL/Lua service-gate drift. Factored Stage4
+SQL producer eligibility into nested supply AND Opera/Ballet; normal grants and
+all Tourism/GPP wrappers reuse it through EFFECT_PREREQ. A non-circular SQL city
+property exposes producer eligibility to Wonder placement. Removed Lua civic
+and supply-rule duplication, retaining physical plot/owner/pillage checks.
+21 executable Lua scenarios and cumulative Stage4 checks pass; live engine
+review pending rebuild. Details in the Stage4 review doc. No design/text changes.

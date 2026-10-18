@@ -48,6 +48,37 @@ class DesignReferenceTests(unittest.TestCase):
         )
 
 
+class ArtPropertyNamingTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.design = VALIDATOR.load_yaml(VALIDATOR.SPEC_ROOT / "tailors" / "design.yaml")
+
+    def check(self):
+        result = VALIDATOR.Validation()
+        VALIDATOR.validate_art_property_naming(self.design, result)
+        return result.errors
+
+    def test_current_art_flags_follow_effect_semantic_names(self):
+        self.assertEqual(self.check(), [])
+
+    def test_customer_only_name_is_rejected(self):
+        prop = self.design['art']['properties'][1]
+        prop['source_property'] = 'CSC_TAILORS_STAGE_3_CUSTOMERS'
+        prop['art_property'] = 'CSC_TAILORS_STAGE_3_CUSTOMERS_ART'
+        self.assertTrue(any('source_property must be' in error for error in self.check()))
+
+    def test_missing_effect_content_is_rejected(self):
+        self.design['art']['properties'][2].pop('effect_content', None)
+        self.assertTrue(any('requires explicit effect_content' in error for error in self.check()))
+
+    def test_wrong_bonus_semantics_are_rejected(self):
+        self.design['art']['properties'][2]['effect_content'] = 'CULTURE'
+        self.assertTrue(any('STAGE_4_EFFECT_CULTURE' in error for error in self.check()))
+
+    def test_interval_suffix_must_match_source(self):
+        self.design['art']['properties'][0]['interval_property'] = 'CSC_TAILORS_STAGE_2_PRODUCTION_ACTIVE'
+        self.assertTrue(any('interval_property must be' in error for error in self.check()))
+
+
 class TailorsContractTests(unittest.TestCase):
     def test_current_contracts_pass(self) -> None:
         result = VALIDATOR.validate_quarter("tailors", check_clean_start=True)

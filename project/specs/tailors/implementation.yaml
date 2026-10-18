@@ -16,6 +16,25 @@ authority_order:
   - "Applicable reusable Bakers patterns decide implementation shape and wording."
   - "An approved exception is required when the design and an applicable pattern cannot both be satisfied."
 
+mechanism_bindings:
+  material_producer_returns:
+    implementation: bakers_modifier_pattern
+    participants: [BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP, BUILDING_CSC_TAILORS_FASHION_HOUSE]
+    tier_totals: [1, 2, 3]
+    yields: [YIELD_PRODUCTION, YIELD_GOLD]
+  customer_population_sales:
+    implementation: shared_registry
+    registry: CSC_Stage3CustomerTransactions
+    gameplay_output: customer_population_gameplay
+    participants: [CSC_TAILORS_TAILOR_MARKET, CSC_TAILORS_TAILOR_TEMPLE]
+    customer_delivery: customer_owned_property_bits
+  ownership_refresh:
+    implementation: shared_adjacency_gameplay
+    native_event: CityTileOwnershipChanged
+  service_notifications:
+    implementation: shared_notifications_handler
+    cache_keys: live_strings_or_serialized_hashes
+
 planned_outputs:
   shared_stage3_registry: Civ Supply Chains/Data/CSC_Q_ALL.sql
   customer_population_gameplay: Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua
@@ -353,6 +372,7 @@ phases:
         localization_patterns: [LP.NAMES.COMPLETE]
         outputs: [core, localization_source]
         static_assertions:
+          - "The localization generator validates matching relationship-class texticons on visible body text, including resource role labels; native Civilopedia chapter headings must stay plain without texticons; raw SQL display literals follow the same rule. Search predicates and SQL comments are excluded from display-text checks."
           - "Every district, stage building, and service Type exists exactly once."
           - "No Water/Wind variants or river flag buildings are introduced."
         runtime_scenarios:
@@ -389,6 +409,7 @@ phases:
         static_assertions:
           - "BASE and SPEC each provide exactly +1 Production adjacency."
         runtime_scenarios:
+          - "Buy an adjacent material through the real city command; native adjacency must update immediately, without a forced refresh or next turn."
           - "Each adjacent matching resource adds 1 Production; unrelated resources add none."
 
       - id: I.DISTRICT_CUSTOMER_ADJACENCIES
@@ -426,10 +447,12 @@ phases:
         localization_patterns: [LP.MATERIAL.BULLET, LP.MC.SUB_BULLET]
         outputs: [core, gold, monopolies, monopolies_gold, localization_source, monopolies_localization_generated]
         static_assertions:
+          - "Shared material compiler runs after Quarter declarations and before adjacency compilation. Gold effects remain in its separate Gold output. Check complete modifier graphs and tier totals, not isolated modifier arguments."
           - "Base-material standard totals are 1 Production and 1 Gold."
           - "Industry totals are 2/2 and Corporation totals are 3/3."
           - "Industry and Corporation wording is emitted only by a Monopolies_Mode-gated UpdateText action."
         runtime_scenarios:
+          - "Regression CSC-QA-004/005: follow the existing Bakers attach-modifier pattern, with +1 ordinary and additional +1 Industry/+2 Corporation returns. Evaluate all attachments together: ordinary/Industry/Corporation plots receive exactly +1/+1, +2/+2, +3/+3 Production/Gold per source, for Base/Workshop and Specialty/Fashion House. Wrong classes, nonadjacent and foreign plots receive zero; two sources stack."
           - "Test standard improvement, Industry, and Corporation adjacent to the correct stage building."
 
       - id: I.STAGE2_DEFINITION
@@ -484,10 +507,11 @@ phases:
 
       - id: I.DOCKMASTER
         design_refs: [buildings.D.STAGE2.effects.D.STAGE2.SERVICE, art.properties.D.ART.STAGE2.LIGHTHOUSE]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL, GP.ART.PROPERTY_BRIDGE]
         localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.SERVICE.STACKING_CIVIC, LP.PEDIA.SERVICE_CHAPTERS, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
         outputs: [core, localization_source]
         static_assertions:
+          - "Art source, mirror and interval identifiers follow GP.ART.PROPERTY_BRIDGE, with explicit effect_content=PRODUCTION and the suffixes _ART and _ACTIVE. Customer-only property names are forbidden."
           - "Requires Naval Tradition, supplied BASE, adjacent Harbor, functioning Lighthouse."
           - "The Textile Workshop description says it establishes a Dockmaster service in an adjacent Harbor with a Lighthouse at Naval Tradition; the word 'service' follows the localized Dockmaster name."
           - "Effect is +20% Production to naval units through Renaissance, +1 slot, and +1 Admiral point."
@@ -543,6 +567,7 @@ phases:
           service_and_CSC_source_buildings: never_expand
           customer_description_append: explicit_direct_one_level
         runtime_scenarios:
+          - "Save with established Service stacks, reload unchanged, then add/remove a supplier. No cache error or false notification transition is allowed."
           - "Prove each prerequisite gate independently and verify Ancient through Renaissance naval melee, ranged, and raider units receive exactly +20%, while Industrial and later units receive none."
           - "Verify one Dockmaster MCUIS icon and one notification transition, never one per era or promotion class."
 
@@ -595,7 +620,8 @@ phases:
           declared_seller_total_each_yield: "0.1 * sum(customer_city_population * qualifying_adjacent_market_or_temple_count_in_customer_city)"
           declared_customer_city_culture: "0.1 * customer_city_population * qualifying_adjacent_market_or_temple_count_in_customer_city"
           customer_side:
-            method: direct_per_population_modifier
+            method: shared_population_property_bit_bridge
+            customer_properties: [CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT, CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT]
             modifier_type: MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION
             distinct_child_modifier_per_family: true
             declared_amount_per_citizen: 0.1
@@ -609,13 +635,14 @@ phases:
             declared_amount_per_customer_citizen: 0.1
             bakers_engine_amount: 0.105
             amount_scale: 10000
-          invariant: "Stage 3 population returns use the shared registry scanner and property-bit bridge. Direct one-level customer replacements are expanded by the shared scanner; customer Culture remains on distinct SQL attach modifiers."
+          invariant: "Stage 3 population returns use the shared registry scanner and property-bit bridge. Direct one-level customer replacements are expanded by the shared scanner; customer Culture uses distinct Market and Temple property-bit families owned by the customer city centre, so supplier changes invalidate delivery immediately."
         replacement_binding:
           market_and_temple_presence_requirements: engine_inherited
           customer_city_yield_effects: engine_inherited
           customer_population_Lua_lookups: explicit_direct_one_level
           customer_description_appends: explicit_direct_one_level
         runtime_scenarios:
+          - "Purchase and remove a Tailor beside existing Market/Temple customers; Culture updates immediately before population or turn changes."
           - "Test both customers at populations 1, 5, 10, including direct replacements."
           - "With both Market and Temple adjacent to the Tailor inside its own city, verify that city gets 0.2 Culture, 0.2 Production, and 0.2 Gold per citizen from the two transactions."
           - "With the Market and Temple in separate adjacent customer cities, verify that each city receives its own Culture effect and the Tailor receives the sum of both cities' population-based Production and Gold returns."
@@ -624,10 +651,11 @@ phases:
 
       - id: I.SACRISTAN
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.SERVICE, art.properties.D.ART.STAGE3.CUSTOMERS]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.REPLACEMENT.DIRECT_ONE_LEVEL, GP.ART.PROPERTY_BRIDGE]
         localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.PEDIA.SERVICE_CHAPTERS, LP.PEDIA.CUSTOMER_APPEND, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
         outputs: [core, localization_source, icons]
         static_assertions:
+          - "Art source, mirror and interval identifiers follow GP.ART.PROPERTY_BRIDGE, with explicit effect_content=FAITH and the suffixes _ART and _ACTIVE. Customer-only property names are forbidden."
           - "Requires Divine Right, supplied BASE, adjacent Holy Site, functioning Temple."
           - "Effect is +10% Faith, +1 slot, and +1 Prophet point."
           - "Exactly one mechanically real Sacristan attach/effect pair is the MCUIS presentation anchor; one aggregate preview and NEW/INCREASED/DECREASED/REMOVED notification family describes the complete live ability without multiplying its mechanics."
@@ -636,7 +664,7 @@ phases:
           - "The Sacristan Civilopedia page has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
           - "Its Supply Chains entry follows the Storekeeper/Innkeeper structure: the Tailor draws on cloth from the Textile Workshop, creates garments or vestments for the adjacent Temple, then after one paragraph break gives a Citizen employment as a Sacristan in the Holy Site and expresses Faith and Great Prophet development in-world."
           - "Its Historical Context entry explains the care of vestments, sacred furnishings, records, and daily material needs that connected textile crafts to religious institutions."
-          - "CSC retains REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ as the complete Sacristan activation gate. CSC owns CSC_TAILORS_STAGE_3_CUSTOMERS and its building attachment in Quarter SQL, reusing that exact Service requirement set. The shared Lua mirror and alternate model are integrated in CSC. Markets retain their independent transaction gates; physical art is checked separately from gameplay phase outputs."
+          - "CSC retains REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ as the complete Sacristan activation gate. CSC owns CSC_TAILORS_STAGE_3_EFFECT_FAITH and its building attachment in Quarter SQL, reusing that exact Service requirement set. The shared Lua mirror and alternate model are integrated in CSC. Markets retain their independent transaction gates; physical art is checked separately from gameplay phase outputs."
           - "The Holy Site and Temple pages keep one integrated Supply Chains section, state that an adjacent supplied Tailor can establish a Sacristan at Divine Right, and point to the Sacristan page; direct one-level replacements receive equivalent text."
           - "Divine Right description composition uses the bare service text only for NULL/empty base descriptions and a `[NEWLINE][NEWLINE]`-prefixed variant when visible base text exists."
         replacement_binding:
@@ -751,11 +779,15 @@ phases:
 
       - id: I.STAGE_MANAGER
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.SERVICE, art.properties.D.ART.STAGE4.CUSTOMERS]
-        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.SERVICE.WONDER_HOSTED_EXACT_PLACEMENT, GP.REPLACEMENT.DIRECT_ONE_LEVEL]
+        gameplay_patterns: [GP.SERVICE.HIDDEN_BUILDING, GP.SERVICE.EFFECTS, GP.SERVICE.PRESENTATION_ANCHOR, GP.SERVICE.WONDER_HOSTED_EXACT_PLACEMENT, GP.REPLACEMENT.DIRECT_ONE_LEVEL, GP.ART.PROPERTY_BRIDGE]
         localization_patterns: [LP.SERVICE.INTRO, LP.SERVICE.EFFECT, LP.PEDIA.SERVICE_CHAPTERS, LP.PEDIA.CUSTOMER_APPEND, LP.CIVIC.APPEND, LP.NOTIFICATION.SERVICE_STATE]
         outputs: [core, localization_source, icons, wonder_service_gameplay, wonder_service_city_breakdown, wonder_service_city_breakdown_lua, wonder_service_plot_tooltip_base, wonder_service_plot_tooltip_suk]
         static_assertions:
+          - "MCUIS Preview effect labels are exactly the canonical Stage Manager, Ballet Dancer, Musical Actor or Opera Singer name without at/on/in venue suffixes. NEW/INCREASED/DECREASED/REMOVED service labels follow the same rule. The distinct venue-specific keys/icons and Preview supply-chain destination line remain separate and explicit."
+          - "Art source, mirror and interval identifiers follow GP.ART.PROPERTY_BRIDGE, with explicit effect_content=TOURISM and the suffixes _ART and _ACTIVE. Customer-only property names are forbidden."
           - "Requires Opera and Ballet plus supplied BASE and SPEC."
+          - "Stage 4 normal grants and all service effect attachments reuse REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ, which ANDs a nested shared producer gate with eligible-customer presence. REQSET_CSC_TAILORS_STAGE_4_PRODUCER_PREREQ ANDs Opera and Ballet with the nested existing Base-and-Specialty supply gate. It contains no customer READY property or customer-presence condition."
+          - "The Fashion House owns MOD_CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE_PROPERTY, which writes CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE=1 under that exact shared SQL producer gate. Wonder placement consumes this property instead of duplicating civic or material checks in Lua. Lua still checks functioning producer/host objects, same-owner adjacency and actual host location, then maintains host-specific READY markers and persistent exact-plot placement."
           - "The normal Stage Manager uses the persistent SQL-grant path and is established in a Theater Square with an Amphitheater."
           - "Bolshoi Theatre, Broadway, and Sydney Opera House each map to a distinct internal Stage Manager building type and activation property; their visible names are Ballet Dancer, Musical Actor, and Opera Singer respectively, with venue-specific building icons. Each adjacent supplied Fashion House contributes +2 Tourism and +1 Artist point."
           - "Wonder-hosted variants have PrereqDistrict=DISTRICT_WONDER, MustPurchase=1, and CitizenSlots=0. They are never created by a SQL grant modifier."
@@ -773,7 +805,7 @@ phases:
           - "Each of the four service Civilopedia pages has exactly one Supply Chains chapter and one Historical Context chapter, with no separate Description chapter."
           - "Each Supply Chains entry follows the service-page structure: the Fashion House draws on workshop cloth and improved Base and Specialty Materials, creates performance dress for the relevant destination, then after one paragraph break explains employment in the named profession and its contribution to Tourism and Great Artist development. Only the Theater Square service exposes an assignable Citizen slot."
           - "The Historical Context entries describe stage management, ballet dancing, musical acting, and operatic singing respectively, connecting each profession to performance dress and its venue."
-          - "CSC retains the complete Stage Manager activation requirement set for optional consumers. The Fashion House has no alternate model yet, so its art source property, building attachment, Lua mapping, GamePropertyRanges and selection rule remain deferred. Future art integration belongs in CSC and must reuse the complete Stage Manager gate."
+          - "The Fashion House owns MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY, which exposes CSC_TAILORS_STAGE_4_EFFECT_TOURISM under the exact complete Stage Manager effect gate. The shared Lua art mirror publishes its binary art flag. Physical art selection is integrated separately; the completed district base uses the conjunction of all three Stage 2/3/4 flags, without a parallel art-only gameplay gate."
           - "The Theater Square, Amphitheater, and direct one-level replacements keep one integrated Supply Chains section with the Stage Manager pointer; Bolshoi Theatre, Broadway, and Sydney Opera House each receive equivalent named-Wonder prose without replacement expansion."
           - "Opera and Ballet description composition uses the bare service text only for NULL/empty base descriptions and a `[NEWLINE][NEWLINE]`-prefixed variant when visible base text exists."
         replacement_binding:
@@ -821,6 +853,7 @@ phases:
             base_plot_tooltip_output: wonder_service_plot_tooltip_base
             suk_plot_tooltip_output: wonder_service_plot_tooltip_suk
         runtime_scenarios:
+          - "After rebuilding, check that the SQL service-eligibility property activates only with Opera and Ballet plus Base and Specialty supply. Verify normal Stage Manager and Wonder services respond consistently to unlocking the civic, loss/restoration of either material, producer pillage and reload; READY clears while established service buildings persist."
           - "Prove both material gates and the normal Theater Square destination; verify the usable Citizen slot, a separate MCUIS icon/notification stream for each venue type, and all Stage Manager pedia integrations."
           - "Build Bolshoi Theatre, Broadway, and Sydney Opera House in different orders in one city. Each eligible Wonder must receive exactly its own internal Stage Manager on the same plot, with no first-Wonder capture and no Citizen slot."
           - "Save/reload and advance a turn. The reconciler must keep correct locations, repair deliberately misplaced legacy instances, and remain deterministic. City Breakdown and both supported plot-tooltip paths must show only the actual co-located Service under/on its host Wonder."
@@ -917,9 +950,9 @@ phases:
           - "Every implemented effect appears once in gameplay text and no unimplemented effect is claimed."
           - "Pedia customer and Civic append coverage is complete."
           - "Every replacement-sensitive customer description is appended to the base type and each direct replacement exactly once."
-          - "Tailors district pedia has the unadorned headers Base Materials, Specialty Materials, Goods Providers, Sales Districts, and Historical Context in the Bakers order; no pedia section header contains a text icon."
+          - "Tailors district pedia has the plain headers Base Materials, Specialty Materials, Goods Providers, Sales Districts, and Historical Context in the Bakers order. Native Civilopedia chapter headings never contain texticons. Other visible relationship-class references carry their matching texticon, including prose, material shorthand, resource roles and lens text."
           - "Core and conditional modded Tailors resources each receive a Supply Chains reverse entry identifying their Base or Specialty material role."
-          - "Every resource page contains at most one `Base Materials:` group and at most one `Specialty Materials:` group; each Quarter is one bullet beneath its applicable group."
+          - "Every resource page contains at most one `[ICON_CSC_BASE] Base Materials:` group and at most one `[ICON_CSC_SPEC] Specialty Materials:` group; each Quarter is one bullet beneath its applicable group."
           - "Each resource role label is followed by exactly one open line (`[NEWLINE][NEWLINE]`) before its first Quarter bullet; additional bullets in that role use one `[NEWLINE]`."
           - "Flax composes as one Base Materials group containing separate Bakers' Quarter and Tailors' Quarter bullets, never two singular Base material lines."
           - "Tailors' Quarter Historical Context lets the supply chain progression emerge through original prose and never labels or announces it as an arc."
@@ -945,7 +978,7 @@ phases:
 resolved_engine_decisions:
   - id: E.DECIMAL_POPULATION
     affects: I.STAGE3_POP_CUSTOMERS
-    resolution: "Use the Bakers direct customer-side per-population modifier and extend the shared customer-population Lua/property-bit bridge for the cross-city Tailor returns. Preserve the Bakers 0.105 engine amount while presenting the designed 0.1 value."
+    resolution: "Use the Bakers direct customer-side per-population effect through customer-owned property-bit modifiers and extend the shared customer-population Lua/property-bit bridge for the cross-city Tailor returns. Preserve the Bakers 0.105 engine amount while presenting the designed 0.1 value."
     evidence:
       - Civ Supply Chains/Data/CSC_Q_BAKERS.sql
       - Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
@@ -965,7 +998,7 @@ resolved_engine_decisions:
 
   - id: E.WONDER_SERVICE_EXACT_PLACEMENT
     affects: I.STAGE_MANAGER
-    resolution: "A Service whose customer is a Wonder is represented by one distinct internal hidden building type per eligible Wonder, hosted directly in DISTRICT_WONDER with no Citizen slot. SQL grant modifiers are forbidden for these variants because they choose the city's first Wonder district. A deterministic gameplay reconciler instead creates each variant on its mapped Wonder's exact stored plot, repairs misplaced legacy instances, and removes orphans. City Breakdown and plot tooltips report the actual stored plot and never spoof location. The normal Amphitheater destination remains a conventional persistent SQL-granted Service with its Citizen slot."
+    resolution: "A Service whose customer is a Wonder is represented by one distinct internal hidden building type per eligible Wonder, hosted directly in DISTRICT_WONDER with no Citizen slot. SQL grant modifiers are forbidden for these variants because they choose the city's first Wonder district. A deterministic gameplay reconciler instead creates each variant on its mapped Wonder's exact stored plot, repairs misplaced legacy instances, and removes orphans. City Breakdown and plot tooltips report the actual stored plot and never spoof location. The normal Amphitheater destination remains a conventional persistent SQL-granted Service with its Citizen slot. Unlock and supply eligibility is owned by a shared nested SQL producer requirement set; an independently gated city-property modifier exposes that result to Wonder placement Lua. The producer set excludes customer readiness to avoid a circular dependency."
     decided_by: user
     evidence:
       - project/tests/wonder-service-hosting-spike/README.md

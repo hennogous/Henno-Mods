@@ -52,12 +52,12 @@ class Stage3CustomerRegistryTests(unittest.TestCase):
                 (
                     "CSC_TAILORS_TAILOR_MARKET", "BUILDING_CSC_TAILORS_TAILOR", "DISTRICT_COMMERCIAL_HUB",
                     "BUILDING_MARKET", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
-                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", None, 0.105,
+                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", "CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT", 0.105,
                 ),
                 (
                     "CSC_TAILORS_TAILOR_TEMPLE", "BUILDING_CSC_TAILORS_TAILOR", "DISTRICT_HOLY_SITE",
                     "BUILDING_TEMPLE", "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
-                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", None, 0.105,
+                    "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT", "CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT", 0.105,
                 ),
             ],
         )

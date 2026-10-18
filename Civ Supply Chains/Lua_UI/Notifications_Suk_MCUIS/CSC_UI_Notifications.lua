@@ -118,6 +118,30 @@ local function GetSignedAmountText(iAmount)
 	return tostring(iAmount)
 end
 
+-- UI CustomData hashes table keys during save serialization, including nested
+-- field names. Normalize both old hashed saves and live string-keyed caches.
+local function ReadAbilityCache(key)
+	local saved = ReadCustomData(key);
+	if type(saved) ~= "table" then return nil; end
+	local namesByHash = {};
+	for name in pairs(mCSC_AbilityEffectModifiers) do
+		namesByHash[DB.MakeHash(name)] = name;
+	end
+	local normalized = {};
+	for cityID, entries in pairs(saved) do
+		local city = {};
+		if type(entries) == "table" then
+			for key, entry in pairs(entries) do
+				local name = mCSC_AbilityEffectModifiers[key] and key or namesByHash[key];
+				local count = type(entry) == "table" and tonumber(entry.StackAmount or entry[DB.MakeHash("StackAmount")]);
+				if name and count and count > 0 then city[name] = {StackAmount = count}; end
+			end
+		end
+		normalized[tonumber(cityID) or cityID] = city;
+	end
+	return normalized;
+end
+
 --==========================================================================================================================
 -- OnRefreshCityQuarters
 --==========================================================================================================================
@@ -129,7 +153,7 @@ function OnRefreshCityQuarters()
 		-- Each Player has his own cached table for City Modifiers. We use it to get access to data from player's last turn (or cache update) to compare them with current turn. 
 		-- mostly useful for triggering notifications for things happened during other players' turn, but also very improtant for game save/load compatibility.
 		local sCSC_CitiesAbilitiesStringKey = 'CSC_AbilitiesCaching_Player'..tostring(iPlayerID);
-		local tCSC_CitiesAbilitiesCache = ReadCustomData(sCSC_CitiesAbilitiesStringKey); -- this function reads specific cached data (if it exists) using its relevant specific string key.
+		local tCSC_CitiesAbilitiesCache = ReadAbilityCache(sCSC_CitiesAbilitiesStringKey);
 																   		 				 -- we add ID of the Player at the end of the string so we only read/load this player's cached data		
 		local tCSC_CitiesAbilitiesCurrent = {} -- holds data for all Cities of the Player. Later cached in sCSC_CitiesAbilitiesStringKey custom data.
 		local bCSC_AbilitiesHaveChanged = false -- if we notice any changes compared to last cached state then we cache the new changes.

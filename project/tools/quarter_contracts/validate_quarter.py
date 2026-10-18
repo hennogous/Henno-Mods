@@ -492,6 +492,28 @@ def validate_trade_route_yield_presentation_uniqueness(
                 owners[value] = requirement_id
 
 
+def validate_art_property_naming(design: dict[str, Any], result: Validation) -> None:
+    """Enforce GP.ART.PROPERTY_BRIDGE effect-semantic names for every art flag."""
+    for prop in design.get("art", {}).get("properties", []):
+        property_id = str(prop.get("id", "<unknown>"))
+        stage = re.search(r"\.STAGE(\d+)(?:\.|$)", property_id)
+        effect_content = prop.get("effect_content")
+        if stage is None:
+            result.error(f"{property_id}: art property ID must identify its stage")
+            continue
+        if not isinstance(effect_content, str) or not re.fullmatch(r"[A-Z][A-Z0-9_]*", effect_content):
+            result.error(f"{property_id}: art property requires explicit effect_content")
+            continue
+        source = f"CSC_{str(design.get('quarter', '')).upper()}_STAGE_{stage[1]}_EFFECT_{effect_content}"
+        for field, expected in (
+            ("source_property", source),
+            ("art_property", source + "_ART"),
+            ("interval_property", source + "_ACTIVE"),
+        ):
+            if prop.get(field) != expected:
+                result.error(f"{property_id}: {field} must be {expected} under GP.ART.PROPERTY_BRIDGE")
+
+
 def wonder_service_destinations(value: Any) -> list[dict[str, Any]]:
     """Return explicit Wonder-tile destinations from a referenced Service design node."""
     if not isinstance(value, dict) or not value.get("service"):
@@ -729,6 +751,7 @@ def validate_quarter(quarter: str, check_clean_start: bool) -> Validation:
         return result
 
     validate_schema(design, "quarter-design.schema.json", result)
+    validate_art_property_naming(design, result)
     validate_schema(implementation, "quarter-implementation.schema.json", result)
     validate_schema(control, "quarter-control.schema.json", result)
     localization_catalog_path = ROOT / implementation["localization_catalog"]

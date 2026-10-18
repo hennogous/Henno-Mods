@@ -15,6 +15,7 @@ global_rules:
   - "Adjacency transactions say `from each adjacent` by default so their stackability is explicit. Use `an adjacent` only when gameplay guarantees at most one participant or the owning implementation contract declares a non-stacking exception."
   - "Gold-only generated rows remain in the Gold localization output when the generator supports a split."
   - "Use existing icon tokens and Civ VI typography exactly."
+  - "Every visible mention of Base Materials, Specialty Materials, Sales Districts and Goods Providers is immediately preceded by its matching ICON_CSC_BASE, ICON_CSC_SPEC, ICON_CSC_SALES or ICON_CSC_GOODS texticon. This includes prose, descriptions, lens labels and resource role labels, in any case or grammatical number. Native Civilopedia chapter headings stay plain and must never contain texticons. Shared-noun Base and Specialty Materials references require both icons. SQL search needles and comments are not visible text."
   - "Authored building descriptions omit CitizenSlots, Building_CitizenYieldChanges, and intrinsic local/regional Amenity fields because Civ VI renders them automatically; cross-city transaction effects such as a trade-route origin Amenity remain explicit."
   - "MCUIS and notification state strings receive already-signed amount values from Lua; never prefix a dynamic amount placeholder with a literal sign or directional word such as 'less', 'lost', or 'fewer'."
   - "Classification describes the relationship to the Bakers reference; authorship_mode is the binding rule for how literally wording is reused."
@@ -250,7 +251,7 @@ patterns:
       - "Core resource mappings are emitted with the Quarter's core text; optional mappings are emitted only by a text action with the same criteria as their mapping."
       - "If a resource participates in multiple Quarters, its one Supply Chains section is appended/composed rather than replaced."
       - "Group all Base-material Quarter entries under one Base Materials list and all Specialty-material Quarter entries under one Specialty Materials list; never repeat one-line role labels."
-      - "The exact group labels are `Base Materials:` and `Specialty Materials:`. Each mapped Quarter is a separate `[ICON_BULLET] [ICON_<QUARTER>] <Quarter name>` line beneath the applicable label."
+      - "The exact group labels are `[ICON_CSC_BASE] Base Materials:` and `[ICON_CSC_SPEC] Specialty Materials:`. Each mapped Quarter is a separate `[ICON_BULLET] [ICON_<QUARTER>] <Quarter name>` line beneath the applicable label."
       - "Put exactly `[NEWLINE][NEWLINE]` between each role label and its first bullet; use one `[NEWLINE]` between subsequent Quarter bullets in the same list."
       - "A role label appears at most once per resource page and a Quarter appears at most once beneath that role, even when several Quarter text actions contribute to the same resource."
       - "The Quarter-side material list and the resource-side reciprocal list are an inseparable pair: the same conditional UpdateText action must add both or neither."
@@ -340,7 +341,7 @@ patterns:
     variants: [NEW, INCREASED, DECREASED, REMOVED]
     invariant:
       - "Only include if the shared service notification subsystem will surface the service."
-      - "Every state names the source and destination unambiguously."
+      - "MCUIS effect labels and notification labels use the canonical Service name alone, without an at/on/in venue qualifier. The separate Preview supply-chain line retains the actual customer destination; service descriptions and Civilopedia prose may identify the host venue."
       - "For a Service with an intrinsic Citizen slot, NEW explicitly states the slot count and destination district. A persistent Service's REMOVED fragment states that its established building and Citizen slot remain while gated effects deactivate. INCREASED and DECREASED describe only the stackable effect change; they must not imply another slot, a multiplied slot or a removed slot. Zero-slot Wonder services must not claim a Citizen slot."
       - "The aggregate MCUIS Preview supply-chain line displays the total contributing-source count and pluralizes the source noun from `{3_TotalStackCount}`. Omit the count only when gameplay mechanically limits the service to one source and the owning implementation contract explicitly declares that non-stacking exception."
       - "The first dynamic amount placeholder is pre-signed by the UI; present it directly (for example, '{1_NewAmount}%'), without a literal sign or directional qualifier."

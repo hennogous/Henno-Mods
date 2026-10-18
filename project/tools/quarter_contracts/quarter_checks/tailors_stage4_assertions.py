@@ -77,17 +77,36 @@ def validate(root, db, implementation):
             expect(property_name,f'CSC_TAILORS_STAGE_4_{branch}_BIT_{bit}',mid+' property')
 
     expect(members('REQSET_CSC_TAILORS_STAGE_4_SUPPLY_PREREQ'),{'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE','REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC'},'Stage 4 Base AND Specialty supply')
-    expect(members('REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ'),{'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_BASE','REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC','REQ_CSC_TAILORS_PLAYER_HAS_OPERA_BALLET','REQ_CSC_TAILORS_HAS_ADJ_STAGE_4_SERVICE_CUSTOMER'},'Stage Manager complete activation gate')
+    expect(members('REQSET_CSC_TAILORS_STAGE_4_PRODUCER_PREREQ'),{'REQ_CSC_TAILORS_STAGE_4_SUPPLY_PREREQ','REQ_CSC_TAILORS_PLAYER_HAS_OPERA_BALLET'},'shared non-circular producer eligibility')
+    expect(members('REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ'),{'REQ_CSC_TAILORS_STAGE_4_PRODUCER_PREREQ','REQ_CSC_TAILORS_HAS_ADJ_STAGE_4_SERVICE_CUSTOMER'},'Stage Manager complete activation gate reuses producer eligibility')
+    for branch in ('SUPPLY','PRODUCER'):
+        req='REQ_CSC_TAILORS_STAGE_4_'+branch+'_PREREQ'
+        sid='REQSET_CSC_TAILORS_STAGE_4_'+branch+'_PREREQ'
+        expect(db.execute('SELECT RequirementType,Inverse FROM Requirements WHERE RequirementId=?',(req,)).fetchone(),('REQUIREMENT_REQUIREMENTSET_IS_MET',0),'nested Stage4 '+branch+' requirement')
+        expect(one("SELECT Value FROM RequirementArguments WHERE RequirementId=? AND Name='RequirementSetId'",req),sid,'nested Stage4 '+branch+' target')
+        expect(one('SELECT RequirementSetType FROM RequirementSets WHERE RequirementSetId=?',sid),'REQUIREMENTSET_TEST_ALL','Stage4 '+branch+' AND gate')
+    bridge='MOD_CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE_PROPERTY'
+    expect(one('SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?',bridge),fashion,'Fashion House owns SQL service eligibility property')
+    expect(db.execute('SELECT ModifierType,OwnerRequirementSetId,SubjectRequirementSetId FROM Modifiers WHERE ModifierId=?',(bridge,)).fetchone(),('MODIFIER_SINGLE_CITY_ADJUST_PROPERTY','REQSET_CSC_TAILORS_STAGE_4_PRODUCER_PREREQ',None),'SQL service eligibility uses shared producer gate without customer readiness')
+    expect(arguments(bridge),{'Key':'CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE','Amount':'1'},'SQL service eligibility property output')
+    wonder_source=(root/'Civ Supply Chains/Lua_UI/WonderServices/CSC_WonderServicePlacement.lua').read_text()
+    expect('CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE' in wonder_source,True,'Wonder placement consumes SQL source eligibility')
+    expect(any(token in wonder_source for token in ('HasCivic(', 'CSC_TAILORS_FASHION_HOUSE_SUPPLIED', 'CIVIC_OPERA_BALLET')),False,'Wonder placement has no duplicate unlock/material rule')
     expect(one("SELECT Value FROM RequirementArguments WHERE RequirementId='REQ_CSC_TAILORS_PLAYER_HAS_OPERA_BALLET' AND Name='CivicType'"),effects['D.STAGE4.SERVICE']['unlock'],'Stage Manager civic')
     expect(members('REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER'),{'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER','REQ_CSC_TAILORS_DISTRICT_IS_THEATER','REQ_CSC_TAILORS_CITY_HAS_AMPHITHEATER'},'normal service destination')
     expect(one("SELECT Value FROM RequirementArguments WHERE RequirementId='REQ_CSC_TAILORS_CITY_HAS_AMPHITHEATER' AND Name='MustBeFunctioning'"),'1','functioning Amphitheater')
     expect(db.execute('SELECT PrereqDistrict,MustPurchase,CitizenSlots,Cost,Maintenance FROM Buildings WHERE BuildingType=?',(service,)).fetchone(),('DISTRICT_THEATER',1,1,0,0),'normal Stage Manager')
     expect(arguments('MOD_CSC_TAILORS_STAGE_4_SERVICE_GRANT'),{'BuildingType':service},'normal persistent SQL grant')
+    expect(db.execute("SELECT OwnerRequirementSetId,SubjectRequirementSetId FROM Modifiers WHERE ModifierId='MOD_CSC_TAILORS_STAGE_4_SERVICE_ATTACH_THEATER'").fetchone(),('REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ','REQSET_CSC_TAILORS_ADJ_THEATER_AMPHITHEATER'),'normal grant shares producer/effect gate')
     for v in variants:
         expect(db.execute('SELECT PrereqDistrict,MustPurchase,CitizenSlots,Cost,Maintenance,Name FROM Buildings WHERE BuildingType=?',(v['service_building_type'],)).fetchone(),('DISTRICT_WONDER',1,0,0,0,'LOC_'+v['service_building_type']+'_NAME'),'Wonder Stage Manager '+v['host_wonder_type'])
         expect(one("SELECT COUNT(*) FROM ModifierArguments MA JOIN Modifiers M ON M.ModifierId=MA.ModifierId WHERE MA.Name='BuildingType' AND MA.Value=? AND M.ModifierType LIKE '%GRANT_BUILDING%'",v['service_building_type']),0,'no SQL grant for '+v['host_wonder_type'])
         expect(one('SELECT Pillage FROM Buildings_XP2 WHERE BuildingType=?',v['service_building_type']),0,'Wonder service cannot be pillaged')
     expect(arguments('MOD_CSC_TAILORS_STAGE_MANAGER_GPP'),{'GreatPersonClassType':'GREAT_PERSON_CLASS_ARTIST','Amount':'1'},'Stage Manager Artist point')
+    art_modifier='MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY'
+    expect(one('SELECT BuildingType FROM BuildingModifiers WHERE ModifierId=?',art_modifier),fashion,'Fashion House owns Stage4 art state')
+    expect(db.execute('SELECT ModifierType,OwnerRequirementSetId,SubjectRequirementSetId FROM Modifiers WHERE ModifierId=?',(art_modifier,)).fetchone(),('MODIFIER_SINGLE_CITY_ADJUST_PROPERTY','REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ',None),'Stage4 art source shares complete Service gate')
+    expect(arguments(art_modifier),{'Key':'CSC_TAILORS_STAGE_4_EFFECT_TOURISM','Amount':'1'},'Stage4 art source arguments')
     anchors=[]
     for venue in ('','BOLSHOI','BROADWAY','SYDNEY'):
         suffix='_'+venue if venue else ''
@@ -141,11 +160,14 @@ def validate(root, db, implementation):
             suffix='_'+venue if venue else ''
             citizen_slots=one('SELECT CitizenSlots FROM Buildings WHERE BuildingType=?',service+suffix)
             failures.extend(validate_service_slot_notifications(texts,'LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION'+suffix,citizen_slots,'Theater Square'))
+            preview=texts.get('LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION'+suffix,'')
+            expect(preview.startswith('{LOC_'+service+suffix+'_NAME}:'),True,'MCUIS service label has canonical name only '+venue)
             for state in ('NEW','INCREASED','DECREASED','REMOVED'):
                 fragment=texts.get('LOC_CSC_TAILORS_STAGE_4_EFFECT_DESCRIPTION'+suffix+'_'+state,'')
                 expect(bool(fragment),True,'Stage Manager notification '+venue+' '+state)
                 expect('[ICON_Tourism] Tourism' in fragment and '% [ICON_Culture]' not in fragment,True,'flat Tourism notification '+venue+' '+state)
                 expect('LOC_'+service+suffix+'_NAME' in fragment,True,'venue service notification name '+venue+' '+state)
+                expect(bool(re.search(r'\{LOC_'+service+suffix+r'_NAME\}(?:\s+service)?\s+(?:at|on|in)\b',fragment)),False,'notification service label has no venue suffix '+venue+' '+state)
                 expect(bool(re.search(r'[+-]\s*\{[12]_',fragment)),False,'MCUIS signs dynamic amounts '+venue+' '+state)
         text_db.executescript((root/'Civ Supply Chains/Text/CSC_TAILORS_MC_MODE_TEXT.sql').read_text(encoding='utf-8-sig'))
         mc_desc=text_db.execute('SELECT Text FROM LocalizedText WHERE Tag=?',('LOC_'+fashion+'_DESCRIPTION',)).fetchone()[0]

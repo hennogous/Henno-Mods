@@ -5,7 +5,7 @@ status: implementing
 locked_sources:
   - path: docs/content/quarters/tailors.md
     role: canonical_design
-    sha256: e933a57404fa04ef8d9fbb6283690293d195bc43e6c2501e2f7fab4d740747a9
+    sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
     sha256: da5bfd414342dec80674ec52f81949b16ed07c446878cb8168cb8f848ec16dd9
@@ -20,7 +20,7 @@ locked_sources:
     sha256: 8247353b8cfd5b4c0311844b0e921140c1eefa20c22b58cdb19d7ef7a4aed415
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
-    sha256: 3ebab1555992b176f192b1801c17a39ab7829534aa3bfe381463121d1c47f687
+    sha256: cded7d3fab814dbda1b06c2ecf661a5a9a8e1df77e9476834956d2143171e520
 
 contract_approvals:
   design_transcription:
@@ -57,8 +57,8 @@ contract_approvals:
 phase_gates:
   foundation: {status: ready_for_review, approved_by: user, approved_at: '2026-10-13T19:26:32+02:00', design_sha256: a34c5a9edac0bee21e08bd1cbcfebb0d08d19bdbec2e5e4401654c89604a2c60, ready_at: '2026-10-05T12:17:05+02:00', accepted_by: null, accepted_at: null}
   materials_and_stage2: {status: ready_for_review, approved_by: user, approved_at: '2026-08-23T17:01:58.6608173+02:00', design_sha256: fa1db2c48baef16595b30497625875ae1410e95c489bd3d4c8ceba8219d6b6e2, ready_at: '2026-08-23T17:23:07.2585657+02:00', accepted_by: null, accepted_at: null}
-  stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-10-05T10:25:55+02:00', design_sha256: 15cc8114176a6469faf803e76ef772f873552124c7966554be9699a85057be64, ready_at: '2026-09-07T20:20:38.5400390+02:00', accepted_by: null, accepted_at: null}
-  stage4: {status: ready_for_review, approved_by: user, approved_at: '2026-10-13T19:26:32+02:00', design_sha256: f48bf9383b070b0833c309bce78423f37ab5a0f17e57a10f65eb66ba46325b50, ready_at: '2026-10-13T19:48:31+02:00', accepted_by: null, accepted_at: null}
+  stage3: {status: ready_for_review, approved_by: user, approved_at: '2026-10-14T19:58:33+02:00', design_sha256: 1a2181cd04a5148fab345a6702e3c72ccccc07eda5039a5653995f54689a6fdc, ready_at: '2026-10-15T19:49:40+02:00', accepted_by: null, accepted_at: null}
+  stage4: {status: ready_for_review, approved_by: user, approved_at: '2026-10-14T19:58:33+02:00', design_sha256: c0f5dcfb69a19a336522ae1d66e25612e82d18985d1b1b9c144e8340022ce13c, ready_at: '2026-10-15T19:49:40+02:00', accepted_by: null, accepted_at: null}
   compatibility: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
   localization_and_integration: {status: blocked_by_contract_review, approved_by: null, approved_at: null, design_sha256: null, ready_at: null, accepted_by: null, accepted_at: null}
 

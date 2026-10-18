@@ -186,3 +186,37 @@ CSC_UI_Notifications was 140 in this session. CityDistricts had no Members
 method; the player's district collection supplied the actual instances.
 The requested FireTuner2 process was closed to free the connection. All queries
 were read-only; no building, property or save changes were made.
+
+## Shared SQL eligibility for normal and Wonder services — 14 October 2026
+
+To prevent unlock/supply drift, normal Stage Manager and Wonder service effects
+share this SQL gate graph:
+
+- `REQSET_CSC_TAILORS_STAGE_4_SUPPLY_PREREQ`: improved Base AND Specialty supply.
+- `REQSET_CSC_TAILORS_STAGE_4_PRODUCER_PREREQ`: nested supply set AND Opera and Ballet.
+- `REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ`: nested producer set AND an eligible
+  adjacent service customer.
+
+The existing normal-service grant and all Tourism/Artist-point attachment
+modifiers retain that complete EFFECT_PREREQ owner gate. Their subject gates
+select the appropriate Theater Square or exact ready Wonder plot.
+
+A Fashion House-owned SQL modifier uses only PRODUCER_PREREQ to write
+`CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE=1`. Wonder placement Lua consumes
+that authoritative result; it no longer names Opera and Ballet or separately
+reads the material-supply flag. Lua retains physical producer/host functioning,
+same-owner adjacency, exact Wonder location and persistent-building handling.
+It then writes the existing venue-specific READY markers.
+
+The producer gate deliberately excludes customer readiness, since readiness is
+computed from producer eligibility. Using the full effect gate for the source
+property would create a circular dependency and prevent initial establishment.
+
+All 21 Fashion House executable Lua scenarios and the cumulative Stage 4
+validator pass. SQL graph assertions enforce both nested set targets, the exact
+producer property modifier and shared normal/effect owner gates. New scenarios
+prove that the Lua follows SQL output without a duplicate civic/supply rule,
+and preserves services when eligibility clears. The fixture simulates SQL
+property outputs; live nested-set/property evaluation still requires a rebuilt
+Civ VI game. Review unlock, either material loss/restoration, producer pillage,
+and reload against both normal and Wonder services.

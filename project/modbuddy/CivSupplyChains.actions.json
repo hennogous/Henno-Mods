@@ -1030,6 +1030,16 @@
         ]
       },
       {
+        "type": "UpdateText",
+        "id": "CSC_QUARTERS_TEXT",
+        "properties": {
+          "LoadOrder": "101"
+        },
+        "files": [
+          "Text/CSC_QUARTERS_TEXT.sql"
+        ]
+      },
+      {
         "type": "UpdateDatabase",
         "id": "CSC_QUARTERS_PEDIA",
         "properties": {

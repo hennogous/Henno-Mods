@@ -87,3 +87,31 @@ For existing loaded files, migrate one file at a time:
 5. Run `py -3 project\tools\localization\loc_md_to_sql.py --check` before committing generated SQL.
 
 The example at `project/localization/examples/CSC_MC_MODE_TEXT.md` writes only to `project/localization/examples/generated/` and is not loaded by ModBuddy.
+
+
+## Relationship icons and MCUIS service labels
+
+Henno's 15 October 2026 correction applies across Quarters and compatibility text:
+every visible reference to Base Materials, Specialty Materials, Sales Districts
+or Goods Providers carries its matching category icon immediately before the
+term. This includes singular/plural and lowercase references, reverse resource-role
+labels, descriptions, narrative prose and lens labels. Native Civilopedia chapter
+headings stay plain and must never contain texticons. Shared-noun references use both icons, for example
+`[ICON_CSC_BASE] Base and [ICON_CSC_SPEC] Specialty Materials`.
+Resource role labels inside chapter body text keep their category icons; they
+are not native chapter headings.
+
+MCUIS effect labels use the canonical service name without a host suffix:
+Ballet Dancer, Musical Actor and Opera Singer. Notification labels follow the
+same rule. The separate Preview Supply Chain line still identifies the customer
+Wonder, and service descriptions/Civilopedia prose may explain the location.
+Venue-specific ability keys, icons and service objects remain distinct.
+
+`loc_md_to_sql.py` rejects missing/wrong category icons and venue-qualified MCUIS
+service labels before writing generated text. Raw SQL display literals are also
+checked; SQL comments and INSTR search needles are not display text. The shared
+localization pattern catalog records both rules, and Tailors phase assertions
+verify decorated resource groups, plain chapter headings and generated MCUIS label prefixes.
+Regression coverage lives in `test_localization_editorial_rules.py`; the tests
+also exercise comments/search predicates, raw display strings, shared material
+nouns and all three Wonder service notification families.

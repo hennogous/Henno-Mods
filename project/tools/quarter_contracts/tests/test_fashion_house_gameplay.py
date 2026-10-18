@@ -99,12 +99,40 @@ class WonderPlacementTests(FashionWorld):
     def active(self):
         self.execute("hasOpera=true;seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SUPPLIED',1)");self.refresh()
     def present(self,suffix):return self.eval(f"customer:GetBuildings():HasBuilding(GameInfo.Buildings.BUILDING_CSC_TAILORS_STAGE_4_SERVICE_{suffix}.Index)")
+    def test_sql_source_eligibility_is_authoritative_without_lua_civic_or_supply_checks(self):
+        # SQL is authoritative: Lua must use its result, not a second rule copy.
+        self.execute("seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE',1)")
+        self.refresh()
+        self.assertTrue(self.present('BROADWAY'))
+        self.assertEqual(self.eval('#capturedPrints'),0)
+
+    def test_sql_source_eligibility_blocks_even_when_legacy_lua_conditions_pass(self):
+        self.execute("hasOpera=true;seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SUPPLIED',1);seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE',0)")
+        self.refresh()
+        self.assertFalse(self.present('BROADWAY'))
+        self.assertEqual(self.eval('#capturedPrints'),0)
+
+    def test_sql_eligibility_loss_clears_ready_and_preserves_established_service(self):
+        self.execute("seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE',1)")
+        self.refresh();self.assertTrue(self.present('BROADWAY'))
+        self.execute("seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE',0)")
+        self.refresh()
+        self.assertEqual(self.eval("customer:GetProperty('CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY')"),0)
+        self.assertEqual(self.eval("Map.GetPlot(0,1):GetProperty('CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY')"),0)
+        self.assertTrue(self.present('BROADWAY'))
+        self.execute("seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE',1)")
+        self.refresh()
+        self.assertEqual(self.eval("customer:GetProperty('CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY')"),1)
+        self.assertEqual(self.eval('#placementCalls'),3)
+
     def test_native_unset_properties_can_return_no_values(self):
         self.execute("""
             for _,city in ipairs(fashionCities) do
                 city.properties={};
+                local base=city.GetProperty;
                 city.GetProperty=function(self,key)
-                    if self.properties[key]~=nil then return self.properties[key];end;
+                    local value=base(self,key);
+                    if value~=nil then return value;end;
                 end;
             end;
             for _,xy in ipairs({{0,1},{-1,1},{-1,0}}) do

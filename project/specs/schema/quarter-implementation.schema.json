@@ -23,6 +23,7 @@
     "open_engine_decisions"
   ],
   "properties": {
+    "mechanism_bindings": {"type": "object", "additionalProperties": {"type": "object"}},
     "schema_version": {"const": 1},
     "quarter": {"type": "string", "minLength": 1},
     "status": {"enum": ["proposed", "approved", "implementing", "complete", "superseded"]},
