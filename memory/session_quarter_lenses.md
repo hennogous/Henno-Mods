@@ -131,3 +131,19 @@ manual chooser yellow fills, fill-only placement, edge lifecycle and palette
 schema passed. Native cook and 487-file review build in Desktop/Codex/
 csc-lens-fill-only-20261012 passed; installed mod untouched. Normal ModBuddy build
 with art cooking plus restart still needed for visual verification.
+
+## More Lenses nil active-name crash — 15 October 2026
+
+Henno asked about current Lua.log. Eight repeated ModalLensPanel.lua:206
+nil-name concatenation errors, each preceded by MinimapPanel's no-entry warning.
+Confirmed CSC placement's Appeal layer-on triggers actual More Lenses callbacks
+while m_CurrentModdedLensOn remains nil before any manual selection. Reproduced
+the exact crash using read-only installed Workshop callback source in regression.
+PlotInfo wrapper now temporarily supplies existing Supply Chains parent + Quarter
+legend for synchronous layer-on if previous name is nil/NONE, then restores prior
+name or NONE for initial nil. No mode/menu activation, new entry or dependency.
+Existing selected lens preserved. No art change needed. Regression extended with
+--more-lenses; native callbacks now pass with zero warnings/errors. Full existing
+checks and palette schema pass. Source-only fix: installed mod/Workshop untouched.
+Lua.log also has duplicate CSC MCUIS registration warnings on load; separate
+existing issue, not investigated/fixed in this lens-focused turn.

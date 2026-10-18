@@ -1,5 +1,6 @@
 -- Stock/CQUI Gathering Storm PlotToolTip wrapper for the Wonder-hosted Services. Prefer CQUI when present, using the same fallback chain as Sukritact's
 -- Simple UI Adjustments.
+include('CSC_AI_UIFilter');
 local BASE_FILES:table = {
     'plottooltip_CQUI_expansion2.lua',
     'PlotTooltip_Expansion2.lua',

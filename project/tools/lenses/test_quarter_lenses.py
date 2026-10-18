@@ -26,6 +26,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dependencies", type=Path)
     parser.add_argument("--game", type=Path, help="Also exercise the placement override against the installed native PlotInfo")
+    parser.add_argument("--more-lenses", type=Path, help="Also run installed More Lenses layer listeners during placement")
     parser.add_argument("--gameplay-database", type=Path, help="Validate palette SQL against a read-only runtime gameplay Colors schema")
     args = parser.parse_args()
     if args.dependencies:
@@ -234,7 +235,7 @@ def main():
     db.execute("UPDATE CSC_QuarterMaterialAdjacencyConfig SET SourceFilter='' WHERE QuarterKey='TAILORS'")
     test_wonder_sales(runtime, colors, wonder_rows)
     if args.game:
-        test_placement(args.game, runtime, colors)
+        test_placement(args.game, runtime, colors, args.more_lenses)
     test_supply_chains_panel(runtime, colors)
     test_improved_borders(runtime, colors)
     if args.gameplay_database:
@@ -441,7 +442,52 @@ def test_supply_chains_panel(runtime, colors):
     print("Passed Supply Chains chooser: single parent, data-driven Quarter choices, initial activation, palette/legend switching, selection retention, dismissal and placement isolation.")
 
 
-def test_placement(game, runtime, colors):
+def install_more_lenses_listeners(lua, root):
+    """Execute actual Workshop callbacks in isolated contexts; files stay read-only."""
+    def function(path, name):
+        source = path.read_text(encoding="utf-8-sig")
+        start = source.index(f"function {name}(")
+        end = re.search(r"\n(?:function |-- ?={5,})", source[start:])
+        assert end, name
+        return untype(source[start:start + end.start()])
+
+    mini = root / "Base/Assets/UI/minimappanel.lua"
+    modal = root / "Base/Assets/UI/Panels/modallenspanel.lua"
+    sources = {
+        "mini": "\n".join(function(mini, name) for name in
+                           ("SetModLens", "SetActiveModdedLens", "GetActiveModdedLens", "OnLensLayerOn")),
+        "modal": "\n".join(function(modal, name) for name in
+                            ("ShowModLensKey", "OnLensLayerOn", "AddLensEntry")),
+    }
+    lua.execute('''
+        local control={SetText=function() end,SetHide=function() end,CalculateSize=function() end}
+        moreMini=setmetatable({m_HexColoringAppeal='Hex_Coloring_Appeal_Level',
+            m_AttackRange='Attack_Range',m_HexColoringGreatPeople='Great_People',m_MovementZoneOfControl='Zone_Control',
+            g_ModLenses={ML_CSC_SUPPLY_CHAINS={NonStandardFunction=function() morePaints=morePaints+1 end}},
+            print=function(message) moreDiagnostics[#moreDiagnostics+1]=message end}, {__index=_G})
+        moreModal=setmetatable({m_HexColoringAppeal='Hex_Coloring_Appeal_Level',g_ModLensModalPanel={},
+            unpack=table.unpack,
+            Controls={LensText=control,KeyPanel=control,KeyScrollPanel=control},
+            ResetKeyStackIM=function() end,AddKeyEntry=function() end,
+            print=function(message) error('More Lenses diagnostic: '..message) end}, {__index=_G})
+        morePaints=0; moreDiagnostics={}
+        UI.GetHeadSelectedUnit=function() return nil end
+        UI.PlaySound=function() end
+        Locale={Lookup=function(s) return s end,ToUpper=function(s) return s end}
+    ''')
+    for context, source in sources.items():
+        lua.globals().native_listener_source = source
+        lua.execute(f"assert(load(native_listener_source, 'More Lenses {context}', 't', more{context.title()}))()")
+    lua.execute('''
+        LuaEvents.MinimapPanel_GetActiveModLens.Add(moreMini.GetActiveModdedLens)
+        LuaEvents.MinimapPanel_SetActiveModLens.Add(moreMini.SetActiveModdedLens)
+        LuaEvents.ModalLensPanel_AddLensEntry.Add(moreModal.AddLensEntry)
+        Events.LensLayerOn.Add(moreMini.OnLensLayerOn)
+        Events.LensLayerOn.Add(moreModal.OnLensLayerOn)
+    ''')
+
+
+def test_placement(game, runtime, colors, more_lenses=None):
     """Load the complete native panel so event rebinding/masking use Firaxis code."""
     # The native placement lens permits only fixed-colour hex layers by default.
     # Check our additive permission patch and its project/consumer registrations.
@@ -525,6 +571,8 @@ def test_placement(game, runtime, colors):
         # Native panel includes: initialization uses only the provided UI mocks.
     g.include = include
     lua.execute(wrapper)
+    if more_lenses:
+        install_more_lenses_listeners(lua, more_lenses)
     lua.execute('''
         -- Model native/More Lenses listeners: turning Appeal on paints its own
         -- contents; turning it off clears the map mask. CSC must repaint after.
@@ -557,6 +605,8 @@ def test_placement(game, runtime, colors):
     assert list(plots[colors["COLOR_CSC_LENS_SALE_DISTRICT"]].values()) == [2]
     assert 100 not in plots.keys()
     assert 999 not in plots.keys()
+    if more_lenses:
+        lua.execute("assert(moreMini.m_CurrentModdedLensOn=='NONE' and #moreDiagnostics==0)")
     lua.execute('''
         world[4].hidden=false; world[4].resource=-1
         world[4].district=GameInfo.Districts.DISTRICT_WONDER.Index
@@ -605,6 +655,7 @@ def test_placement(game, runtime, colors):
         mode=InterfaceModeTypes.DISTRICT_PLACEMENT; activeLens='DistrictPlacement'
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
         activeLens='Appeal'; areas.Hex_Coloring_Appeal_Level={[999]={3}}
+        if moreMini then moreMini.SetActiveModdedLens('ML_CSC_SUPPLY_CHAINS') end
         CSC_QuarterLensSupport.DrawImprovedBorders('Lens','BAKERS')
         mode=InterfaceModeTypes.VIEW_MODAL_LENS
         Events.InterfaceModeChanged(InterfaceModeTypes.DISTRICT_PLACEMENT, mode)
@@ -643,6 +694,12 @@ def test_placement(game, runtime, colors):
         assert(Events.InterfaceModeChanged.Count()==0)
         assert(Events.LensLayerOff.Count()==2) -- Native panel plus fixture; CSC removed.
     ''')
+    if more_lenses:
+        lua.execute('''
+            assert(morePaints>0 and #moreDiagnostics==0)
+            assert(moreMini.m_CurrentModdedLensOn=='ML_CSC_SUPPLY_CHAINS')
+        ''')
+        print("Passed installed More Lenses callbacks: initial nil lens, repeated placement from NONE, valid legend and no warnings/errors.")
     print("Passed native PlotInfo placement: colour layer/permissions, both Quarters, normal districts/wonders, masks, redraw/pillage, confirmation/cancellation, manual lens takeover and shutdown.")
 
 

@@ -133,9 +133,37 @@ wrapper clears/repaints after that notification, then redraws the native placeme
 mask. On cleanup it redraws the mask after turning the layer off, since More
 Lenses clears the shadow mask in its off handler.
 
-The placement overlay does not activate a More Lenses lens or use its grey colour.
+The placement overlay does not enter a manual More Lenses mode, open its chooser,
+or use its grey colour.
 Irrelevant plots keep their native appearance. Valid/purchaseable tile indicators,
 adjacency previews, placement validation and queue operations remain native.
+
+### More Lenses startup state — 15 October 2026
+
+Live `Lua.log` showed eight identical `ModalLensPanel.lua:206` failures preceded
+by `MinimapPanel: WARN: Given lens has no entry`. More Lenses initializes its
+current modded lens name to nil. Our placement override turned Appeal's colour
+layer on before any manual lens had been selected. Its minimap listener warned;
+its modal listener passed nil to `ShowModLensKey`, whose error message attempted
+to concatenate that nil name. The failure is inside More Lenses but CSC triggers
+it through the layer-on event.
+
+Before placement turns the layer on, the wrapper queries More Lenses' public
+active-lens event. For nil/`NONE`, it supplies the selected Quarter's legend under
+the existing Supply Chains entry and temporarily sets that entry active. After
+the synchronous layer listeners complete, it restores the previous name, using
+More Lenses' `NONE` sentinel for an uninitialized name. Existing manual selections
+are preserved. No chooser is opened and no interface mode changes. These events
+are inert when More Lenses is absent; no new dependency or menu entry is added.
+
+The regression's optional `--more-lenses <Workshop-directory>` executes the actual
+installed minimap/modal layer-on, active-name and legend callbacks in isolated Lua
+contexts. Before the fix it reproduced the same nil-name concatenation error.
+Afterward it verifies initial nil, repeated placement from `NONE`, valid legends,
+existing manual selection preservation and absence of warnings/errors. The
+original native PlotInfo/classification/chooser tests also pass without these
+listeners. The installed mod and Workshop files remain unchanged; rebuild/reload
+is needed to apply this source-only Lua fix in game.
 
 ## Minimal palette and improved-resource outlines
 

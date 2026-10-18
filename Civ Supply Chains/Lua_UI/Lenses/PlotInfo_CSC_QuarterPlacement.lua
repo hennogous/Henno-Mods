@@ -1,5 +1,6 @@
 -- Preserve native PlotInfo and augment its district placement event only for
 -- configured CSC Quarters. Native valid/purchase tiles and adjacency art remain.
+include("CSC_AI_UIFilter")
 include("PlotInfo")
 include("CSC_QuarterLensSupport")
 
@@ -54,7 +55,22 @@ function OnAddDistrictPlacementShadowHexes(hexes)
     for _, plots in pairs(colorPlots) do for _, index in ipairs(plots) do add(index) end end
     stockAdd(combined)
     ownsPlacementLayer = true
+    -- More Lenses assumes any Appeal layer-on has an active registered lens.
+    -- Its initial name is nil: ShowModLensKey then fails while reporting it.
+    -- Give its synchronous listeners our existing parent/legend during startup;
+    -- this does not toggle the manual lens, open its chooser or enter modal mode.
+    -- Without More Lenses these public LuaEvents have no listeners.
+    local previousLens = {}
+    LuaEvents.MinimapPanel_GetActiveModLens(previousLens)
+    local needsLensEntry = previousLens[1] == nil or previousLens[1] == "NONE"
+    if needsLensEntry then
+        LuaEvents.ModalLensPanel_AddLensEntry("ML_CSC_SUPPLY_CHAINS", S.GetLensLegend(quarter.id), false)
+        LuaEvents.MinimapPanel_SetActiveModLens("ML_CSC_SUPPLY_CHAINS")
+    end
     UILens.ToggleLayerOn(placementLayer)
+    if needsLensEntry then
+        LuaEvents.MinimapPanel_SetActiveModLens(previousLens[1] or "NONE")
+    end
     -- Native/More Lenses listeners may paint Appeal when it turns on. Replace
     -- their contents afterwards, then restore the native placement shadow mask.
     UILens.ClearLayerHexes(placementLayer)

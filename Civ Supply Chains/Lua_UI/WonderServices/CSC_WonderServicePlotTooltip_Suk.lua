@@ -1,4 +1,5 @@
 -- Sukritact Simple UI PlotToolTip wrapper for the Wonder-hosted Services.
+include('CSC_AI_UIFilter');
 --
 -- Do not include Suk_PlotTooltips here: it is registered as another mod's
 -- LuaReplace source, not as an includeable support file. Reproduce its small,

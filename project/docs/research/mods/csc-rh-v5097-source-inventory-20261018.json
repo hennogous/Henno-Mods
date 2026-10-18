@@ -1,0 +1,23 @@
+{
+  "source_root": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\289070\\3792072489",
+  "version": "5.097 Patreon Beta",
+  "review_date": "2026-10-18",
+  "review_mode": "read-only static review, no native game or Tuner connection",
+  "sha256": {
+    "RHAI_V5_Beta.modinfo": "be4a4e4ef1bad904224cb0a307547c84e4beaf1f86a90c97b152c3429fb67739",
+    "README.md": "21bee84a0ef7aa8b787729358095592c05694c6367ba597b2b5d72d8b3bfaa69",
+    "core/Main/RH_LAI_Main.sql": "78eca933abea7d83a0a41168bed799e52bb8e736d0ec81209b3329e73cb5d9b7",
+    "core/Ops/RH_Ops.sql": "1a4187b299ae47f218257d2c90b02b697b2104f7d82c241882b8bc30d8295ddc",
+    "core/Main/RH_LAI_Main2.sql": "74461371b3e02082898b48b1dd37ba8fbbd4fae93bbd26af1de564a19f78dc36",
+    "core/Main/RH_LAI_Main3.sql": "5e391a9adff12b1fd127bb26e8ae296142b86b86c6c557fe7f2c4281e64ec576",
+    "core/Strategies/Supporting_Systems/RH_Improvements.sql": "f45108cdbbf454d5fcc290d147d477bff973f82ababaf6c0a633659353853361",
+    "core/Strategies/Supporting_Systems/RH_Districts.sql": "c5dc76ae721b4de196a948761181c1958fd72d81a7b0363dc26efd70a1bb33b6",
+    "core/Strategies/Supporting_Systems/RH_Congress.sql": "0f3604ea7b033c60d23cf2e2ef1202b578f88cb45f498f4bb28839675912d80a",
+    "core/Strategies/Supporting_Systems/RH_General_Buildings.sql": "4a6d02647cff23d6a6a39202654fc801dad5cdaa541eacd6c6fea9cdbd022cb3",
+    "core/Strategies/Supporting_Systems/RH_Culture.sql": "44fa9d76b1de0f655212491d19edbe21f37870143153c8fd5c10fd78197216de",
+    "core/Strategies/Advanced_Thinking/Features/AutoPurchase/RH_AutoPurchase.lua": "b7f9d6f385b23d859d7f4c27ce1111e2851a39f5ad47d08da4b02632f69e9ed9",
+    "core/Strategies/Advanced_Thinking/MicroStrategies/RH_Economy.sql": "fd5277295e0ea5b84da654a7a1c04b3af4118d29312dd6314190886516e86e36",
+    "core/Strategies/Advanced_Thinking/MicroStrategies/RH_MicroStrategies.lua": "831d31db3611e4091d61c44819a42007f630b7a2f7c1cf2f3da11baf274a1faa",
+    "core/Other/Mod_Support/RH_Overhaul_Yields.sql": "835afaec87e4099a6b8cedccaed779c6bec6ae517ef53255e3f07ece0a8bbddf"
+  }
+}

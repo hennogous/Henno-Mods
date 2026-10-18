@@ -368,6 +368,44 @@
     "inGameActions": [
       {
         "type": "ImportFiles",
+        "id": "CSC_AI_UI",
+        "properties": {
+          "LoadOrder": "480"
+        },
+        "files": [
+          "Lua_UI/AI/CSC_AI_UIFilter.lua",
+          "Lua_UI/AI/ToolTipLoader_CSC_AI.lua",
+          "Lua_UI/AI/CivilopediaPage_CSC_AI.lua"
+        ]
+      },
+      {
+        "type": "ReplaceUIScript",
+        "id": "CSC_AI_ReportScreen",
+        "properties": {
+          "LoadOrder": "505",
+          "LuaContext": "ReportScreen",
+          "LuaReplace": "Lua_UI/AI/CSC_AI_ReportScreen.lua"
+        }
+      },
+      {
+        "type": "UpdateText",
+        "id": "CSC_AI_Text",
+        "files": [
+          "Text/CSC_AI_TEXT.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AI",
+        "properties": {
+          "LoadOrder": "3500"
+        },
+        "files": [
+          "Data/CSC_AI.sql"
+        ]
+      },
+      {
+        "type": "ImportFiles",
         "id": "CSC_QuarterOverlaySupport",
         "properties": {
           "LoadOrder": "490"
