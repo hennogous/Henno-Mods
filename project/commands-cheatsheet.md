@@ -41,12 +41,12 @@ node project/tools/blender/csc_generate_pbr_maps.mjs `
 py -3 "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\blender\render_ae_asset.py" `
   "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\Civ Supply Chains\Assets\CSC_TAILORS_Textile_Workshop.ast"
 
-mean curvature blur 25 steps
+mean curvature blur 20 steps
 sharpen amount 1.5
 brightness -20
 
 grow selection 8px, exterior stroke 22px
-interior stroke 6px
+interior stroke 7px
 
 ### Building SV sprites
 
@@ -58,7 +58,7 @@ stroke 8px
 brightness +3
 contrast -3
 
-py sv_postprocess.py "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Water_Mill_Test_Visible_PreShadow.png"
+py "C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\tools\comfyui\sv_pipeline\sv_postprocess.py" "C:\Users\Shadow\Desktop\Working Files\2D Art\Quarters\Bakers\StrategicView\CSC_BAKERS_SV_Water_Mill_Test_Visible_PreShadow.png"
 
 ### Quarter SV sprites
 

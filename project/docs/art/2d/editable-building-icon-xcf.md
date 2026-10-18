@@ -39,8 +39,10 @@ span distance, Standard view transform at exposure 0, near-neutral world
 `(1, 1, 0.9)` at strength 0.8, and front-left sun energy 3. The script's
 stage 2/3/4 camera mapping currently uses this same tested setup with automatic
 scene-span framing. The stage matters today for template selection. Distinct
-stage camera presets have not been calibrated and should be added to
-`CAMERA_BY_STAGE` only after a visual comparison. A missing stage template is
+stage camera presets have not been calibrated in that older wrapper. For saved
+AE assets, the 14 October `render_ae_asset.py --L1/--L2/--L3` presets now lock
+absolute camera/framing for reusable paths; see [the AE renderer](ae-asset-renderer.md).
+A missing stage template is
 reported before Blender starts. `--template` can override the selected file.
 
 The Blender helper hides terrain/decals, clips the buried foundation below

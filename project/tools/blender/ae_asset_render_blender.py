@@ -8,6 +8,7 @@ import sys
 import bpy
 import bmesh
 from mathutils import Euler, Matrix, Vector
+from bpy_extras.object_utils import world_to_camera_view
 
 
 def bone_world(raw, name):
@@ -226,7 +227,10 @@ class Builder:
             raise ValueError("Assembly has no visible Worked geometry")
         low = Vector([min(p[i] for p in points) for i in range(3)])
         high = Vector([max(p[i] for p in points) for i in range(3)])
-        target, span = (low + high) * 0.5, max(high - low)
+        scene_span = max(high - low)
+        locked = settings.get("fixed_camera")
+        target = Vector(locked["target"]) if locked else (low + high) * 0.5
+        span = locked["frame_span"] if locked else scene_span
         camera = bpy.data.objects.new("CSC_" + self.mode + "_Camera", bpy.data.cameras.new("CSC_Camera"))
         scene.collection.objects.link(camera)
         camera.data.type = preset["projection"]
@@ -238,9 +242,22 @@ class Builder:
         else:
             camera.data.ortho_scale = preset["ortho_span"] * span
             distance = 800
-        camera.location = target + direction * distance
-        camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
-        camera.data.clip_end = max(5000, distance + span * 3)
+        if locked:
+            fixed = locked[self.mode]
+            camera.data.type = fixed["projection"]
+            camera.data.lens = fixed.get("lens", 50.0)
+            camera.data.sensor_width = fixed.get("sensor_width", 36.0)
+            camera.data.sensor_fit = "AUTO"
+            camera.data.shift_x = fixed.get("shift_x", 0.0)
+            camera.data.shift_y = fixed.get("shift_y", 0.0)
+            if self.mode == "sv":
+                camera.data.ortho_scale = fixed["ortho_scale"]
+            camera.matrix_world = Matrix(fixed["matrix_world"])
+            camera.data.clip_start, camera.data.clip_end = 0.1, 5000
+        else:
+            camera.location = target + direction * distance
+            camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
+            camera.data.clip_end = max(5000, distance + span * 3)
         scene.camera = camera
         world = bpy.data.worlds.new("CSC_" + self.mode + "_World")
         world.use_nodes = True
@@ -296,7 +313,22 @@ class Builder:
         main = group.nodes.new("NodeGroupOutput")
         group.links.new(render.outputs["Image"], main.inputs["Image"])
         bpy.context.view_layer.update()
+        outside = []
+        if locked:
+            for obj in self.objects:
+                for vertex in obj.data.vertices:
+                    point = world_to_camera_view(scene, camera, obj.matrix_world @ vertex.co)
+                    if point.z <= 0 or not (0 <= point.x <= 1 and 0 <= point.y <= 1):
+                        outside.append(obj.name)
+                        break
+            if outside:
+                self.warnings.append(f"{len(outside)} mesh groups extend beyond the fixed {settings['camera_class']} frame; camera registration retained")
         return {"bounds": [list(low), list(high)], "target": list(target), "span": span,
+                "scene_span": scene_span, "camera_class": settings.get("camera_class", "auto"),
+                "framing": "fixed" if locked else "automatic", "outside_frame_objects": outside,
+                "lens_mm": camera.data.lens, "sensor_width": camera.data.sensor_width,
+                "camera_shift": [camera.data.shift_x, camera.data.shift_y],
+                "ortho_scale": camera.data.ortho_scale if self.mode == "sv" else None,
                 "camera_matrix": [list(row) for row in camera.matrix_world],
                 "preset": preset, "objects": len(self.objects)}
 

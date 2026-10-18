@@ -1,6 +1,6 @@
 """Read a saved Asset Editor AST and render reproducible icon/SV Blender inputs.
 
-Usage: py -3 project/tools/blender/render_ae_asset.py "Civ Supply Chains/Assets/NAME.ast"
+Usage: py -3 project/tools/blender/render_ae_asset.py "Civ Supply Chains/Assets/NAME.ast" --L1
 Only generated output is written. AE files and authoring blends are never modified.
 """
 from __future__ import annotations
@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[3]
 TOOLS = ROOT / "project/tools"
 DEFAULT_SDK = Path("C:/Program Files (x86)/Steam/steamapps/common/Sid Meier's Civilization VI SDK Assets")
 DEFAULT_BLENDER = Path("C:/Program Files/Blender Foundation/Blender 5.1/blender.exe")
+CAMERA_PRESETS = Path(__file__).with_name("ae_render_camera_presets.json")
 PRESETS = {
     "icon": {"projection": "PERSP", "elevation": 23.0, "lens": 37.0,
              "distance_span": 1.5, "turn": 0.0, "sun_direction": [-240, -280, 360],
@@ -275,7 +276,7 @@ def helper(cache):
             shutil.copy2(path, runtime / path.name)
         csc = Path(os.environ.get("WINDIR", "C:/Windows")) / "Microsoft.NET/Framework64/v4.0.30319/csc.exe"
         refs = ["System.Web.Extensions.dll", *[str(p) for p in libs.glob("Firaxis.*.dll")]]
-        result = subprocess.run([str(csc), "/nologo", "/target:exe", "/platform:x64", "/out:" + str(exe),
+        result = subprocess.run([str(csc), "/nologo", "/unsafe", "/target:exe", "/platform:x64", "/out:" + str(exe),
                                  *["/reference:" + r for r in refs], str(source)], capture_output=True, text=True)
         if result.returncode:
             raise RuntimeError(result.stdout + result.stderr)
@@ -307,6 +308,9 @@ def publish_images(report, asset, directory):
     directory.mkdir(parents=True, exist_ok=True)
     published = {}
     for mode, rendering in report.items():
+        outside = rendering.get("outside_frame_objects", [])
+        if outside:
+            print(f"{mode.upper()} fixed {rendering['camera_class']}: {len(outside)} mesh groups outside frame; camera retained", flush=True)
         source = Path(rendering["image"])
         destination = directory / f"{asset.stem}_{mode.upper() if mode == 'sv' else 'Icon'}_Input.png"
         data = source.read_bytes()
@@ -328,6 +332,12 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("asset", type=Path)
     p.add_argument("--mode", choices=("both", "icon", "sv"), default="both")
+    framing = p.add_mutually_exclusive_group(required=True)
+    for level in ("L1", "L2", "L3"):
+        framing.add_argument("--" + level, dest="camera_class", action="store_const", const=level,
+                             help=f"Locked {level} camera and framing, independent of prop layout")
+    framing.add_argument("--auto-frame", dest="camera_class", action="store_const", const="auto",
+                         help="Explicit legacy bounds-based framing; unsuitable for reusable XCF paths")
     p.add_argument("--output", type=Path, help="Render package/cache root; default Desktop/Codex/asset-renders")
     p.add_argument("--image-output-dir", type=Path, help="Final PNG folder; default is the input AST's folder")
     p.add_argument("--mod-root", type=Path, default=ROOT / "Civ Supply Chains")
@@ -368,10 +378,13 @@ def main():
             raise ValueError("No CSC Quarter building atlas to switch; use --icon-texture runtime explicitly")
     blender_version = subprocess.run([str(args.blender), "--version"], capture_output=True, text=True, check=True).stdout.splitlines()[0]
     # Code, dependencies, render settings and all consumed sources invalidate reuse.
-    scripts = [Path(__file__), TOOLS / "blender/ae_asset_render_blender.py", TOOLS / "blender/ExtractPropFgx.cs"]
+    scripts = [Path(__file__), TOOLS / "blender/ae_asset_render_blender.py", TOOLS / "blender/ExtractPropFgx.cs", CAMERA_PRESETS]
     settings = {"modes": modes, "presets": PRESETS, "resolution": args.resolution, "samples": args.samples,
                 "icon_texture": args.icon_texture, "blender": blender_version, "state": "Worked", "seed": 0,
                 "render_emission_enabled": False}
+    settings["camera_class"] = args.camera_class
+    if args.camera_class != "auto":
+        settings["fixed_camera"] = json.loads(CAMERA_PRESETS.read_text())["classes"][args.camera_class]
     settings["extractor_runtime"] = helper(output / "_cache")[1]
     signature = {"inputs": resolver.inputs, "settings": settings, "tools": {str(x): digest(x) for x in scripts}}
     fingerprint = hashlib.sha256(json.dumps(signature, sort_keys=True).encode()).hexdigest()

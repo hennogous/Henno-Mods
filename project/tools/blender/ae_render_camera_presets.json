@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "notes": "Frozen camera registration; never recompute from an input asset or its props. Matrices use source geometry world units. L1/L2 preserve saved Workshop/Tailor views; L3 is calibrated from the shared Level 3 starter with 25% framing reserve.",
+  "classes": {
+    "L1": {
+      "reference": "Textile Workshop accepted view, 13 October 2026; L1 icon adjusted 14 October: centred 1050/1024 enlargement and 35 px upward shift at 1024 px canvas",
+      "target": [37.057518005371094, -175.6929931640625, 37.14163589477539],
+      "frame_span": 153.51939392089844,
+      "icon": {
+        "projection": "PERSP", "lens": 37.939453125, "sensor_width": 36.0,
+        "shift_x": 0.0, "shift_y": -0.0341796875,
+        "matrix_world": [[1, 0, 0, 37.057518005371094], [0, 0.39073097705841064, -0.9205049276351929, -387.666015625], [0, 0.9205049276351929, 0.39073097705841064, 127.11883544921875], [0, 0, 0, 1]]
+      },
+      "sv": {
+        "projection": "ORTHO", "ortho_scale": 260.9829696655273,
+        "matrix_world": [[1, 0, 0, 37.057518005371094], [0, 0.6340795755386353, -0.7732678055763245, -794.3072509765625], [0, 0.7732678055763245, 0.6340795755386353, 544.4053344726562], [0, 0, 0, 1]]
+      }
+    },
+    "L2": {
+      "reference": "Tailor saved view, 13 October 2026; L2 icon adjusted 14 October: 47 px upward shift at 1024 px canvas",
+      "target": [-168.8041534423828, -44.882667541503906, 54.522212982177734],
+      "frame_span": 147.8255615234375,
+      "icon": {
+        "projection": "PERSP", "lens": 37.0, "sensor_width": 36.0,
+        "shift_x": 0.0, "shift_y": -0.0458984375,
+        "matrix_world": [[1, 0, 0, -168.8041534423828], [0, 0.39073097705841064, -0.9205049276351929, -248.993896484375], [0, 0.9205049276351929, 0.39073097705841064, 141.16229248046875], [0, 0, 0, 1]]
+      },
+      "sv": {
+        "projection": "ORTHO", "ortho_scale": 251.30345458984375,
+        "matrix_world": [[1, 0, 0, -168.8041534423828], [0, 0.6340795755386353, -0.7732678055763245, -663.4969482421875], [0, 0.7732678055763245, 0.6340795755386353, 561.785888671875], [0, 0, 0, 1]]
+      }
+    },
+    "L3": {
+      "reference": "CSC_Level_3.fgx starter; L3 icon adjusted 14 October: X +41, Y -71 px at 1024 px canvas",
+      "target": [153.0471775, 76.2146453, 56.4746285],
+      "frame_span": 165.29251875,
+      "icon": {
+        "projection": "PERSP", "lens": 37.0, "sensor_width": 36.0,
+        "shift_x": -0.0400390625, "shift_y": -0.0693359375,
+        "matrix_world": [[1, 0, 0, 153.0471775], [0, 0.39073112848927377, -0.9205048534524404, -152.01420332313026], [0, 0.9205048534524404, 0.39073112848927377, 153.35202707303293], [0, 0, 0, 1]]
+      },
+      "sv": {
+        "projection": "ORTHO", "ortho_scale": 280.997281875,
+        "matrix_world": [[1, 0, 0, 153.0471775], [0, 0.6340795882070467, -0.7732677904963985, -542.3995870971188], [0, 0.7732677904963985, 0.6340795882070467, 563.7382990656374], [0, 0, 0, 1]]
+      }
+    }
+  }
+}
