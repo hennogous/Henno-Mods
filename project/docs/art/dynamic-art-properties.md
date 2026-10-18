@@ -67,13 +67,31 @@ Physical package verification remains separate from the gameplay phase handoff.
 
 ## Tailors' Stage 3 bridge
 
-`CSC_TAILORS_STAGE_3_CUSTOMERS` is attached to the Tailor through
+`CSC_TAILORS_STAGE_3_EFFECT_FAITH` is attached to the Tailor through
 `MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY`, using the full
 `REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ` Sacristan gate. The shared Lua mirror
-writes `CSC_TAILORS_STAGE_3_CUSTOMERS_ART`; classifier
-`CSC_TAILORS_STAGE_3_CUSTOMERS_ACTIVE` selects `CSC_TAILORS_Tailor_2`.
-Markets keep their independent transaction gates. Fashion House art remains
-deferred until an alternate scene exists.
+writes `CSC_TAILORS_STAGE_3_EFFECT_FAITH_ART`; classifier
+`CSC_TAILORS_STAGE_3_EFFECT_FAITH_ACTIVE` selects `CSC_TAILORS_Tailor_2`.
+Markets keep their independent transaction gates.
+
+## Tailors' Stage 4 and completed Quarter base
+
+The Fashion House owns `MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY`, using the complete
+`REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ`. Its SQL source
+`CSC_TAILORS_STAGE_4_EFFECT_TOURISM` is mirrored to
+`CSC_TAILORS_STAGE_4_EFFECT_TOURISM_ART`; the classifier interval
+`CSC_TAILORS_STAGE_4_EFFECT_TOURISM_ACTIVE` selects `CSC_TAILORS_Fashion_House_2`.
+Any eligible Stage 4 Theater Square or Wonder service activates this flag.
+
+The completed `CSC_TAILORS_Classical_Base_06` uses this priority-1 selection rule:
+
+```text
+[CITYPROP:CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION_ACTIVE] and [CITYPROP:CSC_TAILORS_STAGE_3_EFFECT_FAITH_ACTIVE] and [CITYPROP:CSC_TAILORS_STAGE_4_EFFECT_TOURISM_ACTIVE]
+```
+
+All three service flags must be active in the same city. The full normal
+three-building base stays eligible at priority 0. No new material/unlock rules
+are duplicated in Lua or the ArtDef.
 
 ## SQL remains authoritative
 
@@ -132,3 +150,24 @@ Civ Supply Chains/ModSupport/ModSupport_LGD.sql
 The LGD Service customer path contributes through the current shared Service gate.
 Inspect `ModSupport_LGD.sql` with the core Stage 4 prerequisites when changing it;
 do not restore the removed Garden-owned reverse property attachment.
+
+
+## Naming enforcement — 14 October 2026
+
+GP.ART.PROPERTY_BRIDGE already required a source named
+`CSC_<QUARTER>_STAGE_<NUMBER>_EFFECT_<EFFECT_CONTENT>`, with `_ART` and `_ACTIVE`
+suffixes for the mirror and classifier interval. Tailors Stage3/4 retained stale
+customer-based names and lacked explicit effect_content/interval metadata.
+Those names are now corrected to EFFECT_FAITH and EFFECT_TOURISM throughout SQL,
+Lua, GamePropertyRanges and every building/base selection rule. Stage2 remains
+EFFECT_PRODUCTION. Stable design-reference IDs were retained.
+
+The three service requirements explicitly bind GP.ART.PROPERTY_BRIDGE, and the
+Quarter validator now checks every art declaration for explicit effect_content
+and exact source/mirror/interval names. Five regression cases cover current
+names, old customer-only identifiers, missing effect_content, mismatched bonus
+semantics and a mismatched interval suffix. All 29 Quarter-validator regressions
+and eight art-flag combinations pass. Tailors semantic checks, local text
+freshness and ModBuddy action checks pass. The full cumulative run currently
+reports an unrelated stale generated CSC_QUARTERS_PEDIA.sql file; no Quarter
+Civilopedia text was changed as part of this naming correction.

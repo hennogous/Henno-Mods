@@ -1,6 +1,6 @@
 # Expanded building art in CSC
 
-Current setup: 7 October 2026. The optional Art Pack trial is retired; normal
+Current setup: 14 October 2026. The optional Art Pack trial is retired; normal
 and expanded building art now ship together in Civ Supply Chains.
 
 ## Ownership and activation
@@ -11,9 +11,10 @@ and expanded building art now ship together in Civ Supply Chains.
 | Bakery | `CSC_BAKERS_Bakery_2` | `CSC_BAKERS_STAGE_3_EFFECT_HOUSING` | `REQSET_CSC_STAGE_3_EFFECT_PREREQ` |
 | Café | `CSC_BAKERS_Cafe_2` | `CSC_BAKERS_STAGE_4_EFFECT_TOURISM` | `REQSET_CSC_STAGE_4_EFFECT_PREREQ` |
 | Textile Workshop | `CSC_TAILORS_Textile_Workshop_2` | `CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION` | `REQSET_CSC_TAILORS_STAGE_2_EFFECT_PREREQ` |
-| Tailor | `CSC_TAILORS_Tailor_2` | `CSC_TAILORS_STAGE_3_CUSTOMERS` | `REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ` |
+| Tailor | `CSC_TAILORS_Tailor_2` | `CSC_TAILORS_STAGE_3_EFFECT_FAITH` | `REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ` |
+| Fashion House | `CSC_TAILORS_Fashion_House_2` | `CSC_TAILORS_STAGE_4_EFFECT_TOURISM` | `REQSET_CSC_TAILORS_STAGE_4_EFFECT_PREREQ` |
 
-Five property modifiers, attached to six Quarter buildings, live in
+Six property modifiers, attached to seven Quarter buildings, live in
 `Civ Supply Chains/Data/CSC_Q_BAKERS.sql` and `CSC_Q_TAILORS.sql`. Each uses the
 same complete OwnerRequirementSetId as its related gameplay Service.
 There are no parallel art-only requirement sets or inverse customer attaches.
@@ -26,13 +27,22 @@ criteria. The `CSC_ArtProperties` AddGameplayScripts action loads it at 501.
 
 `CSC_GamePropertyRanges.artdef` maps each `_ART` value to the existing `_ACTIVE`
 interval. It is registered with `WorldView_Translate` in
-`Civ Supply Chains.Art.xml`. Six priority-1 entries in `CSC_Landmarks.artdef`
+`Civ Supply Chains.Art.xml`. Seven priority-1 building entries in `CSC_Landmarks.artdef`
 select expanded models through CITYPROP; the existing priority-0 baseline
 variants and current district layouts remain intact. All models belong to
 `XLPs/CSC_Tilebases.xlp`, package `Landmarks/CSC_Tilebases`.
 
-The Fashion House has no alternate model yet. Its art property, mapping and
-variant remain deferred. An alternate export is still optional in the exporter.
+The Fashion House alternate is now ready and selects whenever any eligible
+Stage 4 service is active: Stage Manager at a Theater Square or any of the three
+Wonder performance services. Its source modifier reuses the complete Stage 4
+Service gate, including unlock, both materials and an eligible adjacent customer.
+
+`CSC_TAILORS_Classical_Base_06` is the completed Quarter base. Its existing
+three-building set and Classical era/culture tags are preserved. The priority-1
+selection rule ANDs the Stage 2, Stage 3 and Stage 4 active CITYPROP intervals;
+all three must be active in the same city. The existing priority-0 full base
+remains the fallback when any stage is inactive. This uses native `and` syntax,
+as demonstrated in the shipped Black Death scenario Landmarks ArtDef.
 
 ## Build in ModBuddy
 
@@ -113,3 +123,40 @@ Do not record runtime acceptance from cook or offline checks alone.
 The [historical split trial](optional-art-pack-test.md) retains the evidence about
 additive ArtDef merging between separate mods. The current package uses one
 CSC Landmarks file, so it no longer depends on that cross-mod merge behavior.
+
+
+## 14 October 2026 art wiring checks
+
+Source XML checks confirm the completed base uses an AND of exactly the three
+Tailors active intervals and priority 1, with the existing full building set.
+The Fashion House alternate uses the Stage 4 interval alone, priority 1 and the
+correct HeroBuilding reference. Both assets are registered once in CSC_Tilebases.
+The new Stage 4 classifier reads the binary Lua art property in the same way
+as Stages 2 and 3. Its SQL source uses the complete existing Stage 4 effect gate.
+Eight executable flag combinations select the completed base only for 111;
+source deactivation clears the Stage 4 mirror. Stage 4 contract checks pass.
+These are source/logic checks; rebuild/cook and in-game appearance remain to be
+reviewed with the current art.
+
+## Bakers completed Quarter bases — 16 October 2026
+
+The two completed Bakers bases reuse the existing three-service city flags and
+the same native AND selection pattern as the completed Tailors base:
+
+```text
+[CITYPROP:CSC_BAKERS_STAGE_2_EFFECT_GROWTH_ACTIVE] and [CITYPROP:CSC_BAKERS_STAGE_3_EFFECT_HOUSING_ACTIVE] and [CITYPROP:CSC_BAKERS_STAGE_4_EFFECT_TOURISM_ACTIVE]
+```
+
+- `CSC_BAKERS_Classical_Base_10`: WIND MILL, BAKERY, CAFE building set.
+- `CSC_BAKERS_Classical_Base_11`: WATER MILL, BAKERY, CAFE building set.
+
+Both entries use priority 1; their respective ordinary full bases (05 and 08)
+retain priority 0. Each city's existing building set chooses the correct mill
+branch, and all three Service flags must be active in that city. No new SQL,
+Lua mirror, aggregate property or classifier is needed. The shared
+CSC_ArtProperties.lua and CSC_GamePropertyRanges.artdef already support both
+Quarters. Asset assemblies and the remaining Landmark fields are preserved.
+
+Source checks cover all eight flag combinations for each branch, deactivation,
+classifier references, priorities, AST identities and XLP registration. Both
+select only for 111. Rebuild/cook and in-game visual review remain pending.

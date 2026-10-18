@@ -173,58 +173,6 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="Tree_B_Lg_Dirt"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="tilebases.xlp"/>
-									<m_BLPPackage text="landmarks/tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="OPTIONAL"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>2.607337</x>
-							<y>8.249411</y>
-							<z>0.000000</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_17"/>
-						<m_BoneName text="CSC_ALL_District_Base"/>
-						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>0.800000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
 									<m_EntryName text="Tree_B_Sm_Dirt"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="tilebases.xlp"/>
@@ -316,9 +264,9 @@
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>3.123438</z>
+							<x>-0.021411</x>
+							<y>-0.159857</y>
+							<z>3.119882</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_25"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
@@ -2131,14 +2079,14 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-2.758465</x>
-							<y>17.207790</y>
+							<x>0.000000</x>
+							<y>0.000000</y>
 							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
 							<y>0.000000</y>
-							<z>1.153036</z>
+							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_18"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
@@ -2565,58 +2513,6 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="PROP_Haypile"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="tilebases.xlp"/>
-									<m_BLPPackage text="landmarks/tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text=""/>
-									<m_CollectionIsLocked>false</m_CollectionIsLocked>
-									<m_TemplateName text=""/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="OPTIONAL"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>-13.715259</x>
-							<y>13.468748</y>
-							<z>0.000004</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
-						</m_orientation>
-						<m_Name text="Tree_B_Lg003_6"/>
-						<m_BoneName text="CSC_ALL_District_Base"/>
-						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>1.000000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
 									<m_EntryName text="PROP_Ancient_Haycart"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="tilebases.xlp"/>
@@ -2703,14 +2599,14 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-7.021015</x>
-							<y>10.856650</y>
-							<z>0.080772</z>
+							<x>3.104834</x>
+							<y>7.856816</y>
+							<z>0.022972</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.018411</x>
-							<y>-0.010197</y>
-							<z>-2.958928</z>
+							<x>-0.208624</x>
+							<y>-0.057053</y>
+							<z>-1.280586</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_35"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
@@ -2755,14 +2651,14 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-7.291998</x>
-							<y>10.156216</y>
-							<z>0.755825</z>
+							<x>-13.760263</x>
+							<y>17.959875</y>
+							<z>-0.265856</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.425427</x>
-							<y>-0.016302</y>
-							<z>0.835633</z>
+							<x>0.091869</x>
+							<y>0.136443</y>
+							<z>2.512988</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_1"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
@@ -2807,14 +2703,14 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-6.894962</x>
-							<y>11.113913</y>
-							<z>0.655153</z>
+							<x>3.212909</x>
+							<y>7.816083</y>
+							<z>0.679667</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.376804</x>
-							<y>-0.000583</y>
-							<z>0.000034</z>
+							<x>-0.181389</x>
+							<y>0.011387</y>
+							<z>1.683733</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_2"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
@@ -3182,6 +3078,58 @@
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_9"/>
 						<m_BoneName text="CSC_ALL_Road_CP_06"/>
+						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
+						<m_scale>1.000000</m_scale>
+					</Element>
+					<Element>
+						<m_CookParams>
+							<m_Values>
+								<Element class="AssetObjects..BLPEntryValue">
+									<m_EntryName text="CSC_BAKERS_Flour_Closed"/>
+									<m_XLPClass text="TileBase"/>
+									<m_XLPPath text="csc_tilebases.xlp"/>
+									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
+									<m_LibraryName text="TileBase"/>
+									<m_ParamName text="Asset"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="NONE"/>
+									<m_ParamName text="ConnectionType"/>
+								</Element>
+								<Element class="AssetObjects..ArtDefReferenceValue">
+									<m_ElementName text="DON'T CARE"/>
+									<m_RootCollectionName text="ResourceTags"/>
+									<m_ArtDefPath text="Landmarks.artdef"/>
+									<m_CollectionIsLocked>true</m_CollectionIsLocked>
+									<m_TemplateName text="Landmarks"/>
+									<m_ParamName text="ResourceType"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="Pivot Height"/>
+									<m_ParamName text="TerrainFollowMode"/>
+								</Element>
+								<Element class="AssetObjects..StringValue">
+									<m_Value text="OPTIONAL"/>
+									<m_ParamName text="Cull Mode"/>
+								</Element>
+								<Element class="AssetObjects..BoolValue">
+									<m_bValue>true</m_bValue>
+									<m_ParamName text="RandomizeAnims"/>
+								</Element>
+							</m_Values>
+						</m_CookParams>
+						<m_position>
+							<x>2.528419</x>
+							<y>7.985584</y>
+							<z>0.646749</z>
+						</m_position>
+						<m_orientation>
+							<x>-0.045869</x>
+							<y>0.136443</y>
+							<z>2.512988</z>
+						</m_orientation>
+						<m_Name text="newAttachmentPoint_10"/>
+						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
 						<m_scale>1.000000</m_scale>
 					</Element>

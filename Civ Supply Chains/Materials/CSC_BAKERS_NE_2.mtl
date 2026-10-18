@@ -18,7 +18,7 @@
 				<m_ParamName text="AO"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_Atlas_M_2"/>
+				<m_ObjectName text="CSC_Atlas_M"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Metalness"/>
 			</Element>
@@ -28,7 +28,7 @@
 				<m_ParamName text="Opacity"/>
 			</Element>
 			<Element class="AssetObjects..ObjectValue">
-				<m_ObjectName text="CSC_Atlas_G_2"/>
+				<m_ObjectName text="CSC_Atlas_G"/>
 				<m_eObjectType>TEXTURE</m_eObjectType>
 				<m_ParamName text="Gloss"/>
 			</Element>
@@ -74,3 +74,4 @@
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..MaterialInstance>
+

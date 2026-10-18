@@ -1,0 +1,5 @@
+from bakery_props_atlas import *
+assert json.loads((LIB/'CURRENT.json').read_text())['release']=='2026-10-17_Shared_01_r034';OUT.mkdir(exist_ok=True);assert not STAGE.exists();shutil.copytree(LIB/'Current',STAGE);shutil.copytree(SOURCE.parent/'revision-07-prop-kit',SOURCE);shutil.copytree(STAGE/'textures',SOURCE/'textures',dirs_exist_ok=True)
+for p in (OUT.parent/'revision07').glob('*'):
+ if p.is_file() and p.name.startswith('CSC_BAKERS_') and (p.suffix in ['.cn6','.fgx','.geo','.ast'] or p.name.endswith(('-export.json','-validation.json'))):shutil.copy2(p,OUT/p.name)
+pre=OUT/'before';pre.mkdir(exist_ok=True);shutil.copy2(ROOT/'Civ Supply Chains/Geometries/CSC_BAKERS_Oven_v2.fgx',pre/'CSC_BAKERS_Oven_v2.fgx');shutil.copy2(Path(r'C:/Users/Shadow/.codex/visualizations/2026/10/16/01a1452f-aa45-7fc2-afee-df3453b410c1/oven-live-uv3.cn6'),pre/'CSC_BAKERS_Oven_v2.cn6');(pre/'baseline.json').write_text(json.dumps(dict(release='2026-10-17_Shared_01_r034',fgx_sha256=sha(pre/'CSC_BAKERS_Oven_v2.fgx')),indent=2))

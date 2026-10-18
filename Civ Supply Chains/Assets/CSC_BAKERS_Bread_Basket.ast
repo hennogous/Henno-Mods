@@ -23,14 +23,14 @@
 	<m_GeometrySet>
 		<m_ModelInstances>
 			<Element>
-				<m_Name text="PROP_Stone_A"/>
-				<m_GeoName text="PROP_Stone_A"/>
+				<m_Name text="CSC_BAKERS_Bread_Basket_Long"/>
+				<m_GeoName text="CSC_BAKERS_Bread_Basket_Long"/>
 				<m_GroupStates>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Construction_props"/>
+									<m_ObjectName text="CSC_ALL_Props_01"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -63,20 +63,20 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Construction_props"/>
-						<m_MeshName text="PROP_Stone_A"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_BAKERS_Bread_Basket_Long"/>
 						<m_StateName text="Worked"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Construction_props"/>
+									<m_ObjectName text="CSC_ALL_Props_01"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
@@ -95,7 +95,7 @@
 									<m_ParamName text="SnowMaterial"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
+									<m_bValue>false</m_bValue>
 									<m_ParamName text="EmissiveEnabled"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
@@ -104,15 +104,15 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Construction_props"/>
-						<m_MeshName text="PROP_Stone_A"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_BAKERS_Bread_Basket_Long"/>
 						<m_StateName text="Unworked"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Construction_props"/>
+									<m_ObjectName text="CSC_ALL_Props_01"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -126,7 +126,7 @@
 									<m_ParamName text="FOWMaterial"/>
 								</Element>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="DefaultBurnMaterial"/>
+									<m_ObjectName text=""/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="BurnMaterial"/>
 								</Element>
@@ -136,7 +136,7 @@
 									<m_ParamName text="SnowMaterial"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
+									<m_bValue>false</m_bValue>
 									<m_ParamName text="EmissiveEnabled"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
@@ -145,15 +145,15 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Construction_props"/>
-						<m_MeshName text="PROP_Stone_A"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_BAKERS_Bread_Basket_Long"/>
 						<m_StateName text="Pillaged"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Construction_props"/>
+									<m_ObjectName text="CSC_ALL_Props_01"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -177,7 +177,7 @@
 									<m_ParamName text="SnowMaterial"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
+									<m_bValue>false</m_bValue>
 									<m_ParamName text="EmissiveEnabled"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
@@ -186,15 +186,15 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Construction_props"/>
-						<m_MeshName text="PROP_Stone_A"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_BAKERS_Bread_Basket_Long"/>
 						<m_StateName text="Construction"/>
 					</Element>
 					<Element>
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="Construction_props"/>
+									<m_ObjectName text="CSC_ALL_Props_01"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -218,7 +218,7 @@
 									<m_ParamName text="SnowMaterial"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
+									<m_bValue>false</m_bValue>
 									<m_ParamName text="EmissiveEnabled"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
@@ -227,8 +227,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Construction_props"/>
-						<m_MeshName text="PROP_Stone_A"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_BAKERS_Bread_Basket_Long"/>
 						<m_StateName text="Unbuilt"/>
 					</Element>
 				</m_GroupStates>
@@ -302,7 +302,7 @@
 				<m_ParamName text="SnowGloss"/>
 			</Element>
 			<Element class="AssetObjects..StringValue">
-				<m_Value text="PIVOT"/>
+				<m_Value text="PERMANENT"/>
 				<m_ParamName text="CullingMode"/>
 			</Element>
 			<Element class="AssetObjects..BoolValue">
@@ -337,10 +337,8 @@
 	<m_Materials/>
 	<m_ClassName text="TileBase"/>
 	<m_DataFiles/>
-	<m_Name text="CSC_BAKERS_Bread"/>
-	<m_Description text=""/>
-	<m_Tags>
-		<Element text="TileBase"/>
-	</m_Tags>
+	<m_Name text="CSC_BAKERS_Bread_Basket"/>
+	<m_Description text="Bakery prop; shared atlas r025; intact states only."/>
+	<m_Tags/>
 </AssetObjects..AssetInstance>
 

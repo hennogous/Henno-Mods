@@ -1054,6 +1054,23 @@
 					<Element>
 						<m_CollectionName text="Buildings (Level 3)"/>
 						<m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+						<Element>
+							<m_Fields>
+								<m_Values>
+									<Element class="AssetObjects..ArtDefReferenceValue">
+										<m_ElementName text="BUILDING_CSC_TAILORS_FASHION_HOUSE"/>
+										<m_RootCollectionName text="Building"/>
+										<m_ArtDefPath text="CSC_Buildings.artdef"/>
+										<m_CollectionIsLocked>true</m_CollectionIsLocked>
+										<m_TemplateName text="Buildings"/>
+										<m_ParamName text="Building"/>
+									</Element>
+								</m_Values>
+							</m_Fields>
+							<m_ChildCollections/>
+							<m_Name text="3_Fashion_House"/>
+							<m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+						</Element>
 					</Element>
 				</m_ChildCollections>
 				<m_Name text="CSC_TAILORS_BuildingChain"/>

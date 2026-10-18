@@ -1352,7 +1352,7 @@
 									<m_ParamName text="SnowMaterial"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
+									<m_bValue>false</m_bValue>
 									<m_ParamName text="EmissiveEnabled"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
@@ -1557,7 +1557,7 @@
 									<m_ParamName text="SnowMaterial"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
+									<m_bValue>false</m_bValue>
 									<m_ParamName text="EmissiveEnabled"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
@@ -1762,7 +1762,7 @@
 									<m_ParamName text="SnowMaterial"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
+									<m_bValue>false</m_bValue>
 									<m_ParamName text="EmissiveEnabled"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">

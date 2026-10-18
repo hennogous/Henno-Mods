@@ -11,10 +11,10 @@
 </m_Version>
 <m_Meshes>
 <Element>
-<m_Name text="CSC_BAKERS_Oven_Bldg"/>
+<m_Name text="CSC_BAKERS_Oven_v2.001"/>
 <m_Groups>
 <Element>
-<m_Name text="CSC_BAKERS_Oven_Bldg"/>
+<m_Name text="CSC_ALL_Props_01"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>427</m_nPrims>
 </Element>
@@ -25,10 +25,10 @@
 </Element>
 </m_Meshes>
 <m_Bones>
-<Element text="CSC_BAKERS_Oven_v2"/>
+<Element text="CSC_BAKERS_Oven_v2_Rig"/>
 <Element text="Bone"/>
 </m_Bones>
-<m_ModelName text="CSC_BAKERS_Oven_v2"/>
+<m_ModelName text="CSC_BAKERS_Oven_v2_Rig"/>
 <m_SourceFilePath text=""/>
 <m_SourceObjectName text=""/>
 <m_ImportedTime>0</m_ImportedTime>

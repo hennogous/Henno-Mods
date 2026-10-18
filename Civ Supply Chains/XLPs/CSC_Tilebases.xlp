@@ -206,10 +206,6 @@
 			<m_ObjectName text="CSC_ALL_Plaza_Outer"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_BAKERS_Storage_L"/>
-			<m_ObjectName text="CSC_BAKERS_Storage_L"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_BAKERS_Storage_M"/>
 			<m_ObjectName text="CSC_BAKERS_Storage_M"/>
 		</Element>
@@ -228,10 +224,6 @@
 		<Element>
 			<m_EntryID text="CSC_ALL_Stand"/>
 			<m_ObjectName text="CSC_ALL_Stand"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_Bread"/>
-			<m_ObjectName text="CSC_BAKERS_Bread"/>
 		</Element>
 		<Element>
 			<m_EntryID text="CSC_BAKERS_Classical_Base_09"/>
@@ -370,16 +362,8 @@
 			<m_ObjectName text="CSC_ALL_Vine"/>
 		</Element>
 		<Element>
-			<m_EntryID text="CSC_ALL_Shrug_Tall"/>
-			<m_ObjectName text="CSC_ALL_Shrug_Tall"/>
-		</Element>
-		<Element>
 			<m_EntryID text="CSC_BAKERS_Wind_Mill_2"/>
 			<m_ObjectName text="CSC_BAKERS_Wind_Mill_2"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_Bakery_2"/>
-			<m_ObjectName text="CSC_BAKERS_Bakery_2"/>
 		</Element>
 		<Element>
 			<m_EntryID text="CSC_BAKERS_Cafe_2"/>
@@ -457,6 +441,114 @@
 			<m_EntryID text="CSC_TAILORS_Fashion_Coach"/>
 			<m_ObjectName text="CSC_TAILORS_Fashion_Coach"/>
 		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Fashion_House_2"/>
+			<m_ObjectName text="CSC_TAILORS_Fashion_House_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Storage_L_2"/>
+			<m_ObjectName text="CSC_TAILORS_Storage_L_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_TAILORS_Classical_Base_06"/>
+			<m_ObjectName text="CSC_TAILORS_Classical_Base_06"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Storage_L"/>
+			<m_ObjectName text="CSC_BAKERS_Storage_L"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Storage_L_No_Delivery"/>
+			<m_ObjectName text="CSC_BAKERS_Storage_L_No_Delivery"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Storage_L_No_Delivery_2"/>
+			<m_ObjectName text="CSC_BAKERS_Storage_L_No_Delivery_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Storage_L_2"/>
+			<m_ObjectName text="CSC_BAKERS_Storage_L_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Classical_Base_11"/>
+			<m_ObjectName text="CSC_BAKERS_Classical_Base_11"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Classical_Base_10"/>
+			<m_ObjectName text="CSC_BAKERS_Classical_Base_10"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Peel"/>
+			<m_ObjectName text="CSC_BAKERS_Peel"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Dough_Set"/>
+			<m_ObjectName text="CSC_BAKERS_Dough_Set"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Bread_Cart"/>
+			<m_ObjectName text="CSC_BAKERS_Bread_Cart"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Oven_v2"/>
+			<m_ObjectName text="CSC_BAKERS_Oven_v2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Bread_Basket"/>
+			<m_ObjectName text="CSC_BAKERS_Bread_Basket"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Shrub_Tall"/>
+			<m_ObjectName text="CSC_ALL_Shrub_Tall"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Cafe_Chair"/>
+			<m_ObjectName text="CSC_BAKERS_Cafe_Chair"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Cafe_Counter"/>
+			<m_ObjectName text="CSC_BAKERS_Cafe_Counter"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Cafe_Brewing_Set"/>
+			<m_ObjectName text="CSC_BAKERS_Cafe_Brewing_Set"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Cafe_Pastry_Tray"/>
+			<m_ObjectName text="CSC_BAKERS_Cafe_Pastry_Tray"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Cafe_Table_Service"/>
+			<m_ObjectName text="CSC_BAKERS_Cafe_Table_Service"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Cafe_Reading_Set"/>
+			<m_ObjectName text="CSC_BAKERS_Cafe_Reading_Set"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Garden_Wall_Curve"/>
+			<m_ObjectName text="CSC_ALL_Garden_Wall_Curve"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Stage_4_Cobble_Decals"/>
+			<m_ObjectName text="CSC_ALL_Stage_4_Cobble_Decals"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Oval_Table"/>
+			<m_ObjectName text="CSC_ALL_Oval_Table"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_BAKERS_Bakery_2"/>
+			<m_ObjectName text="CSC_BAKERS_Bakery_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Garden_Wall_Curve_2"/>
+			<m_ObjectName text="CSC_ALL_Garden_Wall_Curve_2"/>
+		</Element>
+		<Element>
+			<m_EntryID text="CSC_ALL_Stage_4_Wall"/>
+			<m_ObjectName text="CSC_ALL_Stage_4_Wall"/>
+		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>
@@ -469,3 +561,4 @@
 		<Element>STADIA</Element>
 	</m_AllowedPlatforms>
 </AssetObjects..XLP>
+

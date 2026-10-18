@@ -6,10 +6,25 @@ composition, replacement-prop alternates and layout-wide prop-pillage guidance.
 - **AE owns final assembly and placement**, including attachment copies,
   rotations and scales. Blender review compositions are optional proposals.
   Geometry/UV/material updates must preserve the saved AE assembly and settings.
-- Deliver an editable building-specific **prop-kit blend**, containing the
-  standard and alternate custom props, with individual identities and useful
-  support pivots. Continue using/extending the canonical shared prop material.
-  Native pantry props retain native identities, geometry and materials.
+- **Per-prop Blender delivery (Henno, 17 October 2026):** deliver one editable
+  `.blend` per independently exported prop/model identity, including reusable
+  wall assets; each file contains only that model's exportable geometry and rig,
+  with its own identity, useful support pivot and material bindings. The current
+  FGX exporter works best with one model per file. Multiple editable mesh parts
+  belonging to that model are fine; repeated placements reuse the same master.
+  A combined scene may be supplied for review, but is optional and never replaces
+  the individual export masters. This supersedes the combined prop-kit blend
+  requirement. Preserve the separate custom-decal masters below.
+  Continue using/extending the canonical shared prop material/atlas; native
+  pantry props retain their identities, source geometry and materials.
+- **New texture artwork (17 October 2026):** use ImageGen for new custom prop
+  texture artwork, then pack the approved patches into verified empty slots of
+  the canonical shared prop atlas. Reuse existing textures when suitable; the
+  new shared cobbles decal reuses the existing cobble texture/material. Preserve
+  occupied atlas regions and existing UVs. Companion-map derivation, geometric
+  AO baking, packing and validation remain deterministic technical operations.
+  Publish accepted patches, maps and allocation/hash manifests together through
+  the existing shared-atlas release workflow.
 - **Bundled one-off props remain an option (13 October clarification).** A
   CSC-authored prop very close to/integrated with the building and not reused
   elsewhere may be part of its main geometry. In that case the AST references
@@ -48,6 +63,11 @@ composition, replacement-prop alternates and layout-wide prop-pillage guidance.
 - Icon/SV render materials omit emissive image textures and use zero emission
   for buildings and props (Henno, 13 October 2026). Runtime AE materials retain
   their authored emission.
+- For reusable XCF main-building paths, select fixed `--L1`, `--L2` or `--L3`
+  camera registration (14 October 2026). Camera position/rotation, target,
+  perspective lens and orthographic scale are independent of prop layout.
+  Keep the same level/mode/resolution; assemblies outside the frame are reported
+  instead of automatically reframed. `--auto-frame` is an explicit legacy option.
 
 Use [the standardized render runner](2d/ae-asset-renderer.md). The existing
 `export_assets.py` still implements legacy whole-scene export: do not use it to

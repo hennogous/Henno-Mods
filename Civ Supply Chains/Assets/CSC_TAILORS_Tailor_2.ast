@@ -576,9 +576,9 @@
 							<z>0.553391</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.002656</x>
-							<y>-0.004254</y>
-							<z>2.668458</z>
+							<x>-0.000337</x>
+							<y>-0.005004</y>
+							<z>-3.123828</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_3"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
@@ -1972,7 +1972,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 							</m_Values>
@@ -1990,7 +1990,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 							</m_Values>
@@ -2008,7 +2008,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 							</m_Values>
@@ -2026,7 +2026,7 @@
 									<m_ParamName text="Material"/>
 								</Element>
 								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
+									<m_bValue>true</m_bValue>
 									<m_ParamName text="Visible"/>
 								</Element>
 							</m_Values>
