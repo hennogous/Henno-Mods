@@ -4,6 +4,10 @@
 print("NotificationPanel_CivSupplyChains script loaded!!!")
 local BASE_RegisterHandlers = RegisterHandlers;
 
+-- Extend the host NotificationPanel's handler registry after its normal setup.
+-- Default handlers retain native location/click behavior; CSC only chooses the
+-- sound for a gain/increase versus a loss/decrease.
+
 local NewBakersEffectNotifcation 	= DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFECT_NEW")
 local IncreasedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFECT_INCREASED")
 local DecreasedBakersEffectNotifcation = DB.MakeHash("NOTIFICATION_CSC_BAKERS_EFFECT_DECREASED")

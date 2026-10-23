@@ -65,6 +65,8 @@ function CSC_UnitPanel_CityHasFunctioningBakersQuarter(pCity:table)
 end
 
 function CSC_UnitPanel_GetBakersTradeRouteCount(pOriginCity:table, pDestinationCity:table)
+	-- Count eligible goods channels for this one active route. This is unrelated
+	-- to the city's accumulated import/export counters used by gameplay SQL.
 	if pOriginCity == nil or pDestinationCity == nil then return 0; end
 
 	-- First implementation is domestic-only. If this changes in gameplay, update

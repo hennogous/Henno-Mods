@@ -98,6 +98,8 @@ local CSC_DISPLAY_BUCKET_OUTGOING_ROUTES = "OUTGOING_TRADE_ROUTES";
 local m_CSCOutgoingRouteYieldRules = {};
 
 if GameInfo.CSC_TradeRouteYieldPresentation ~= nil then
+	-- Only explicit registry entries qualify for reclassification. Modifier names
+	-- and generic city properties are not a reliable way to identify route yields.
 	for row in GameInfo.CSC_TradeRouteYieldPresentation() do
 		if row.PropertyScope == CSC_PROPERTY_SCOPE_CITY_CENTER_PLOT
 			and row.DisplayBucket == CSC_DISPLAY_BUCKET_OUTGOING_ROUTES then
@@ -135,6 +137,8 @@ local function CSC_GetOutgoingRouteYieldAmount(sYieldName)
 end
 
 local function CSC_GetTooltipLabel(localizationKey)
+	-- Parse the localized native heading with a dummy amount rather than matching
+	-- English text, so the same bucket lookup works in other UI languages.
 	local entries = TTtoTable(Locale.Lookup(localizationKey, {Name = "Value", Value = 0}));
 	if entries == nil or entries[1] == nil then return nil; end
 	return entries[1][3];
@@ -145,6 +149,9 @@ local function CSC_FormatSignedYield(value)
 end
 
 local function CSC_ReclassifyOutgoingRouteYield(tEntries, amount)
+	-- Move an already-counted amount between display buckets. The underlying
+	-- yield total stays unchanged; adding a new route line without subtracting
+	-- the flat-modifier line would report the same bonus twice.
 	if tEntries == nil or amount == nil or amount <= 0 then return; end
 
 	local modifierLabel = CSC_GetTooltipLabel(CSC_LOC_GAME_EFFECTS);
@@ -198,6 +205,8 @@ function UpdateSuk_YieldTooltip(tControl, iYieldFilter, iYieldIncome, sTooltip_B
 	local sYieldName = string.match(tControl:GetID(), "(.+)Grid")
 	local iCSCOutgoingRouteYield = CSC_GetOutgoingRouteYieldAmount(sYieldName);
 	local sTooltipCacheKey = tostring(tControl:GetID()) .. "|" .. tostring(iCSCOutgoingRouteYield) .. "|" .. tostring(sTooltip_Base);
+	-- Native tooltip text can stay unchanged when only the classification moves;
+	-- include the route amount and yield control so neither reuses a stale layout.
 	if sTooltip_Base_Cache == sTooltipCacheKey then return end
 	sTooltip_Base_Cache = sTooltipCacheKey
 

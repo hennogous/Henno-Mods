@@ -102,6 +102,8 @@ function CSC_BTS_GetBakersTradeRouteState(routeInfo)
 end
 
 function CSC_BTS_GetTailorsTradeRouteState(routeInfo)
+	-- Tailors imports are independent of Bakers imports. Having one Quarter
+	-- suppresses only that industry's imports at the origin, not the other industry.
 	if routeInfo == nil then return false, false; end
 	local pOriginCity = CSC_BTS_GetCity(routeInfo.OriginCityPlayer, routeInfo.OriginCityID);
 	local pDestinationCity = CSC_BTS_GetCity(routeInfo.DestinationCityPlayer, routeInfo.DestinationCityID);
@@ -195,6 +197,8 @@ end
 -- Amenities are not a BTS yield column, so the first implementation adds them to the last positive yield
 -- tooltip. That keeps the aggregate tooltip ordered after yields without rewriting BTS' tooltip renderer.
 function CSC_BTS_ApplyBakersTradeRoutePreview(routeInfo, yieldValues, yieldTooltips, buildTooltip, target)
+	-- Work with this candidate route's eligibility, not accumulated live route
+	-- counts. Origin and destination arrays are separate calls for the same route.
 	if yieldValues == nil then return; end
 
 	local bBakeryRoute, bCafeRoute = CSC_BTS_GetBakersTradeRouteState(routeInfo);

@@ -85,6 +85,8 @@ local function ReconcilePair(city, pair)
 		return;
 	end
 	local active = IsEligible(city, hostPlot, host.Index);
+	-- READY controls current benefits; ESTABLISHED remembers a granted Service.
+	-- Losing supply disables its effects without removing the persistent building.
 	local markerKey = tostring(hostPlot) .. ":" .. pair.ActivationProperty;
 	m_CurrentHostPlots[markerKey] = { Plot = hostPlot, Property = pair.ActivationProperty, Owner = city:GetOwner() };
 	SetProperty(Map.GetPlotByIndex(hostPlot), pair.ActivationProperty, active and 1 or 0);
@@ -93,6 +95,8 @@ local function ReconcilePair(city, pair)
 	if active or (servicePlot ~= nil and servicePlot >= 0) then SetProperty(city, establishedProperty, 1); end
 	if (PropertyNumber(city, establishedProperty) or 0) <= 0 then return; end
 	if servicePlot == hostPlot then return; end
+	-- Also repair legacy grants stored on another Wonder. A city-wide SQL grant
+	-- cannot pick the correct plot when several DISTRICT_WONDER instances exist.
 	if servicePlot ~= nil and servicePlot >= 0 then buildings:RemoveBuilding(service.Index); end
 	city:GetBuildQueue():CreateBuilding(service.Index, hostPlot);
 end
@@ -129,9 +133,15 @@ local function ReconcileAll()
 		end
 		-- A removed city no longer has an object from which to read its last plot.
 		-- Clear markers remembered by the preceding pass after processing survivors.
-		for key, marker in pairs(m_HostPlots) do
+		local oldKeys = {};
+		for key in pairs(m_HostPlots) do oldKeys[#oldKeys+1] = key; end
+		table.sort(oldKeys);
+		for _, key in ipairs(oldKeys) do
+			local marker = m_HostPlots[key];
 			if m_CurrentHostPlots[key] == nil then
 				if unavailable[marker.Owner] then
+					-- A temporarily unavailable city collection is not proof of razing;
+					-- retain its remembered marker until the owner can be inspected.
 					m_CurrentHostPlots[key] = marker;
 				else
 					SetProperty(Map.GetPlotByIndex(marker.Plot), marker.Property, 0);
@@ -146,7 +156,9 @@ end
 
 -- Exposed for focused gameplay tests and diagnostics.
 function CSC_RefreshWonderServices() ReconcileAll(); end
-for _, name in ipairs({"PlayerTurnActivated", "LoadScreenClose", "WonderCompleted", "BuildingAddedToMap", "BuildingChanged", "BuildingRemovedFromMap", "CityTransfered", "CityRemovedFromMap", "ImprovementAddedToMap", "ImprovementChanged", "ImprovementRemovedFromMap", "ImprovementPillaged", "DistrictAddedToMap", "DistrictChanged", "DistrictRemovedFromMap", "CityTileOwnershipChanged", "CivicCompleted"}) do
+for _, name in ipairs({"WonderCompleted", "BuildingAddedToMap", "BuildingChanged", "BuildingRemovedFromMap", "CityTransfered", "CityRemovedFromMap", "ImprovementAddedToMap", "ImprovementChanged", "ImprovementRemovedFromMap", "ImprovementPillaged", "DistrictAddedToMap", "DistrictChanged", "DistrictRemovedFromMap", "CityTileOwnershipChanged", "CivicCompleted"}) do
 	if Events[name] ~= nil then Events[name].Add(ReconcileAll); end
 end
-ReconcileAll();
+-- No building grants/removals during client-local loading or script creation.
+if GameEvents and GameEvents.PlayerTurnStarted then GameEvents.PlayerTurnStarted.Add(ReconcileAll); end
+if GameEvents and GameEvents.OnGameTurnStarted then GameEvents.OnGameTurnStarted.Add(ReconcileAll); end

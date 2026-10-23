@@ -12,6 +12,29 @@
 -- Fractional returns are scaled by AMOUNT_SCALE and decomposed into bit flags
 -- because Civ requirements can test exact property matches, but not numeric ranges.
 
+local function CSC_OrderedKeys(items)
+	-- These helpers establish mutation order across peers. Native collections
+	-- and Lua hash tables can enumerate identical state in different orders.
+	local keys = {};
+	for key in pairs(items) do keys[#keys+1] = key; end
+	table.sort(keys);
+	return keys;
+end
+
+local function CSC_OrderedCities(player)
+	local cities = {};
+	for _, city in player:GetCities():Members() do cities[#cities+1] = city; end
+	table.sort(cities, function(a,b) return a:GetID() < b:GetID(); end);
+	return cities;
+end
+
+local function CSC_OrderedPlayers()
+	local players = {};
+	for _, player in ipairs(PlayerManager.GetAlive()) do players[#players+1] = player; end
+	table.sort(players, function(a,b) return a:GetID() < b:GetID(); end);
+	return players;
+end
+
 local function CSC_AddDistrictIndex(districtIndexes, districtTypes, districtType)
 	if districtType == nil or districtTypes[districtType] then return false; end
 
@@ -46,6 +69,7 @@ local function CSC_CreateDistrictReplacementFamily(baseDistrictType)
 		end
 	end
 
+	table.sort(districtIndexes);
 	return districtIndexes;
 end
 
@@ -61,6 +85,7 @@ local function CSC_CreateBuildingReplacementFamily(baseBuildingType)
 		end
 	end
 
+	table.sort(buildingIndexes);
 	return buildingIndexes;
 end
 
@@ -212,6 +237,8 @@ local function CSC_AddStage4CustomerCity(stage4CustomerCitiesByPlotKey, pCity, d
 end
 
 local function CSC_LoadStage3Transactions()
+	-- Resolve the SQL registry once, including direct unique replacements.
+	-- Keep every registered output name so a later pass can also write zeroes.
 	local transactions = {};
 	local populationProperties = {};
 	local amountProperties = {};
@@ -253,6 +280,7 @@ local function CSC_LoadStage3Transactions()
 		end
 	end
 
+	table.sort(transactions, function(a,b) return a.Id < b.Id; end);
 	return transactions, populationProperties, amountProperties;
 end
 
@@ -290,8 +318,11 @@ local function CSC_GetFashionCustomerPlot(pCity, branch)
 end
 
 local function CSC_ScanFashionStage4Transactions(cityStates)
+	-- Index actual customer plots first. Several Wonder/venue branches can share
+	-- a city, and each seller-to-site-to-branch relationship contributes separately.
 	local customers = {};
-	for _, state in pairs(cityStates) do
+	for _, stateKey in ipairs(CSC_OrderedKeys(cityStates)) do
+		local state = cityStates[stateKey];
 		state.FashionReturns = { FASHION_HOUSE_RETURN = 0 };
 		for _, branch in ipairs(FASHION_CUSTOMERS) do
 			state.FashionReturns[branch.Branch .. "_CULTURE_RETURN"] = 0;
@@ -304,7 +335,8 @@ local function CSC_ScanFashionStage4Transactions(cityStates)
 		end
 	end
 	if FASHION_DISTRICT == nil or FASHION_BUILDING == nil then return; end
-	for _, seller in pairs(cityStates) do
+	for _, stateKey in ipairs(CSC_OrderedKeys(cityStates)) do
+		local seller = cityStates[stateKey];
 		local city = seller.City;
 		if CSC_CityHasFunctioningBuilding(city, FASHION_BUILDING.Index)
 			and CSC_CityHasFunctioningDistrict(city, FASHION_DISTRICT.Index) then
@@ -319,6 +351,8 @@ local function CSC_ScanFashionStage4Transactions(cityStates)
 						local key = CSC_GetCityStateKey(customerCity:GetOwner(), customerCity:GetID()) .. ":" .. plotKey .. ":" .. customer.Branch;
 						if customerCity:GetOwner() == city:GetOwner() and not seen[key] then
 							seen[key] = true;
+							-- Round this customer's population before adding its stacks.
+							-- Combining populations first would create extra cross-city stacks.
 							local stacks = math.floor((customerCity:GetPopulation() or 0) / 5);
 							seller.FashionReturns.FASHION_HOUSE_RETURN = seller.FashionReturns.FASHION_HOUSE_RETURN + stacks;
 							local property = customer.Branch .. "_CULTURE_RETURN";
@@ -342,12 +376,12 @@ local function CSC_CreateReturnStates()
 		stage3CustomerCitiesByTransaction[transaction.Id] = {};
 	end
 
-	for iPlayerID = 0, PlayerManager.GetWasEverAliveCount() - 1 do
-		local pPlayer = Players[iPlayerID];
+	for _, pPlayer in ipairs(CSC_OrderedPlayers()) do
+		local iPlayerID = pPlayer:GetID();
 		if pPlayer ~= nil then
 			local pCities = pPlayer:GetCities();
 			if pCities ~= nil then
-				for _, pCity in pCities:Members() do
+				for _, pCity in ipairs(CSC_OrderedCities(pPlayer)) do
 					local cityState = {
 						City = pCity,
 						BakersQuarterPlot = CSC_GetCityDistrictPlot(pCity, DISTRICT_BAKERS_QUARTER),
@@ -485,7 +519,8 @@ end
 local function CSC_ScanCafeStage4Transactions(cityStates, stage4CustomerCitiesByPlotKey)
 	if DISTRICT_BAKERS_QUARTER < 0 then return; end
 
-	for _, sellerState in pairs(cityStates) do
+	for _, stateKey in ipairs(CSC_OrderedKeys(cityStates)) do
+		local sellerState = cityStates[stateKey];
 		local pSellerPlot = sellerState.BakersQuarterPlot;
 		if pSellerPlot ~= nil then
 			for direction = 0, NUM_DIRECTIONS - 1 do
@@ -503,6 +538,8 @@ end
 local function CSC_GetScaledPerPopulationAmount(targetYield, population)
 	-- Convert a city-total target into the per-population amount expected by
 	-- MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION.
+	-- Divide by the receiving city's population because the native modifier will
+	-- multiply by that population again. Customer population set the target earlier.
 	targetYield = tonumber(targetYield) or 0;
 	population = tonumber(population) or 0;
 
@@ -534,17 +571,20 @@ local function CSC_WriteAmountBits(pCity, pCityCenterPlot, propertyName, scaledA
 end
 
 local function CSC_WriteReturnState(cityState)
+	-- Stage 3 properties encode a scaled per-population rate; Stage 4 properties
+	-- encode whole transaction stacks. They share bit helpers but different SQL
+	-- consumers, so their units must stay distinct.
 	local pCity = cityState.City;
 	if pCity == nil then return; end
 
 	local pCityCenterPlot = Map.GetPlot(pCity:GetX(), pCity:GetY());
 	local cityPopulation = pCity:GetPopulation() or 0;
-	for propertyName in pairs(STAGE3_POPULATION_PROPERTIES) do
+	for _, propertyName in ipairs(CSC_OrderedKeys(STAGE3_POPULATION_PROPERTIES)) do
 		local population = cityState.Stage3PopulationByProperty[propertyName] or 0;
 		CSC_SetPropertyIfChanged(pCityCenterPlot, propertyName, population);
 		CSC_SetPropertyIfChanged(pCity, propertyName, population);
 	end
-	for propertyName in pairs(STAGE3_AMOUNT_PROPERTIES) do
+	for _, propertyName in ipairs(CSC_OrderedKeys(STAGE3_AMOUNT_PROPERTIES)) do
 		local targetYield = cityState.Stage3TargetYieldByProperty[propertyName] or 0;
 		local scaledAmount = CSC_GetScaledPerPopulationAmount(targetYield, cityPopulation);
 		CSC_WriteAmountBits(pCity, pCityCenterPlot, propertyName, scaledAmount);
@@ -553,7 +593,8 @@ local function CSC_WriteReturnState(cityState)
 	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_ZOO_CULTURE_RETURN, cityState.Stage4ZooCultureReturn);
 	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_FERRIS_CULTURE_RETURN, cityState.Stage4FerrisCultureReturn);
 	CSC_WriteAmountBits(pCity, pCityCenterPlot, PROP_BAKERS_STAGE_4_CONSERVATORY_CULTURE_RETURN, cityState.Stage4ConservatoryCultureReturn);
-	for branch, amount in pairs(cityState.FashionReturns) do
+	for _, branch in ipairs(CSC_OrderedKeys(cityState.FashionReturns)) do
+		local amount = cityState.FashionReturns[branch];
 		CSC_WriteAmountBits(pCity, pCityCenterPlot, "CSC_TAILORS_STAGE_4_" .. branch, amount);
 	end
 end
@@ -567,7 +608,8 @@ function CSC_RefreshCustomerPopulationReturns()
 	CSC_ScanCafeStage4Transactions(cityStates, stage4CustomerCitiesByPlotKey);
 	CSC_ScanFashionStage4Transactions(cityStates);
 
-	for _, cityState in pairs(cityStates) do
+	for _, stateKey in ipairs(CSC_OrderedKeys(cityStates)) do
+		local cityState = cityStates[stateKey];
 		CSC_WriteReturnState(cityState);
 	end
 end
@@ -592,7 +634,12 @@ function CSC_OnCustomerPopulationDistrictEvent(iPlayerID, iDistrictID, iCityID, 
 	CSC_RefreshCustomerPopulationReturns();
 end
 
-Events.PlayerTurnActivated.Add(CSC_OnCustomerPopulationPlayerRefresh);
+if GameEvents and GameEvents.PlayerTurnStarted then
+	GameEvents.PlayerTurnStarted.Add(CSC_OnCustomerPopulationPlayerRefresh);
+end
+if GameEvents and GameEvents.OnGameTurnStarted then
+	GameEvents.OnGameTurnStarted.Add(CSC_RefreshCustomerPopulationReturns);
+end
 if Events.BuildingAddedToMap ~= nil then
 	Events.BuildingAddedToMap.Add(CSC_OnCustomerPopulationBuildingEvent);
 end
@@ -626,14 +673,12 @@ end
 if Events.CityTransfered ~= nil then
 	Events.CityTransfered.Add(CSC_OnCustomerPopulationCityRefresh);
 end
-if Events.LoadGameViewStateDone ~= nil then
-	Events.LoadGameViewStateDone.Add(CSC_RefreshCustomerPopulationReturns);
-end
 if GameEvents ~= nil and GameEvents.BuildingConstructed ~= nil then
 	GameEvents.BuildingConstructed.Add(CSC_OnCustomerPopulationCityRefresh);
 end
 
-CSC_RefreshCustomerPopulationReturns();
+-- Saved properties remain intact during local loading/rejoining. The next
+-- synchronized turn or relevant gameplay change recomputes them on every peer.
 
 --=================================================================================================================
 --=================================================================================================================

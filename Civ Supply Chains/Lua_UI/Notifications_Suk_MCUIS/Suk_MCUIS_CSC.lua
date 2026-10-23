@@ -6,6 +6,10 @@
 
 print('Suk_MCUIS_CSC UI Script loaded!!!')
 
+-- City-panel counterpart to CSC_UI_Notifications.lua: the same SQL registry
+-- supplies effect identity, per-stack text and icons. This view displays current
+-- active subjects; the notification script separately compares saved counts.
+
 --==========================================================================================================================
 -- CONSTANTS
 --==========================================================================================================================
@@ -209,6 +213,8 @@ function OnSuk_MCUIS_RequestedIcon(sContext, sName, tInstance)
             end)
         end
 
+        -- MCUIS pools icon instances. Clear this callback before reuse so a later
+        -- icon cannot inherit the previous Service's Civilopedia target.
         tInstance.OnResetting = function(tSelf)
             tSelf.IconFrame:ClearCallback(Mouse.eRClick)
             tSelf.OnResetting = nil

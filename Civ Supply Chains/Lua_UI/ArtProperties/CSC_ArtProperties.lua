@@ -6,6 +6,8 @@
 print("CSC Art Properties - Gameplay Script loaded!");
 
 local m_CityArtProperties:table = {
+	-- Source properties come from SQL's complete Service requirements. Lua only
+	-- mirrors them into binary ArtDef flags; keep eligibility logic on the SQL side.
 	{
 		Source = "CSC_BAKERS_STAGE_2_EFFECT_GROWTH",
 		Art = "CSC_BAKERS_STAGE_2_EFFECT_GROWTH_ART",
@@ -61,7 +63,10 @@ function CSC_RefreshPlayerArtProperties(iPlayerID:number)
 	local pCities = pPlayer:GetCities();
 	if pCities == nil then return; end
 
-	for _, pCity in pCities:Members() do
+	local cities = {};
+	for _, pCity in pCities:Members() do cities[#cities+1] = pCity; end
+	table.sort(cities, function(a,b) return a:GetID() < b:GetID(); end);
+	for _, pCity in ipairs(cities) do
 		CSC_RefreshCityArtProperties(pCity);
 	end
 end
@@ -80,8 +85,13 @@ function CSC_RefreshCityArtPropertiesByID(iPlayerID:number, iCityID:number)
 end
 
 function CSC_RefreshAllArtProperties()
-	for iPlayerID = 0, PlayerManager.GetWasEverAliveCount() - 1 do
-		CSC_RefreshPlayerArtProperties(iPlayerID);
+	-- City-property writes must visit the same players/cities in the same order
+	-- on every peer, even when native collections enumerate them differently.
+	local players = {};
+	for _, player in ipairs(PlayerManager.GetAlive()) do players[#players+1] = player; end
+	table.sort(players, function(a,b) return a:GetID() < b:GetID(); end);
+	for _, player in ipairs(players) do
+		CSC_RefreshPlayerArtProperties(player:GetID());
 	end
 end
 
@@ -201,7 +211,12 @@ function CSC_OnUnitOperationEvent(iPlayerID, iUnitID)
 	CSC_OnPlayerRefreshEvent(iPlayerID);
 end
 
-Events.PlayerTurnActivated.Add(CSC_OnPlayerTurnActivated);
+if GameEvents and GameEvents.PlayerTurnStarted then
+	GameEvents.PlayerTurnStarted.Add(CSC_OnPlayerTurnActivated);
+end
+if GameEvents and GameEvents.OnGameTurnStarted then
+	GameEvents.OnGameTurnStarted.Add(CSC_RefreshAllArtProperties);
+end
 if Events.BuildingAddedToMap ~= nil then
 	Events.BuildingAddedToMap.Add(CSC_OnBuildingAddedToMap);
 end
@@ -277,10 +292,7 @@ end
 if GameEvents ~= nil and GameEvents.OnImprovementPillaged ~= nil then
 	GameEvents.OnImprovementPillaged.Add(CSC_OnImprovementPillaged);
 end
-if Events.LoadGameViewStateDone ~= nil then
-	Events.LoadGameViewStateDone.Add(CSC_RefreshAllArtProperties);
-end
-CSC_RefreshAllArtProperties();
+-- Do not write persistent properties from client-local loading callbacks.
 
 --=================================================================================================================
 --=================================================================================================================

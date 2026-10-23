@@ -126,6 +126,8 @@ local function Render()
     end
 
     local wonders:table = CollectCompletedWonders(pCity);
+    -- Leave gaps between native Wonder sort keys so Service rows can sit under
+    -- their actual host without rebuilding or replacing the native Wonder rows.
     for index = 1, math.min(#wonders, #visibleChildren) do
         visibleChildren[index]:SetVoid1(index * 100);
     end
@@ -153,6 +155,8 @@ local function Render()
 end
 
 local function QueueRender(pCity:table)
+    -- Wait for the native panel to finish rebuilding its children, then insert
+    -- our rows. Several selection/panel events can share the same refresh.
     m_PendingCity = pCity or UI.GetHeadSelectedCity();
     ContextPtr:RequestRefresh();
 end

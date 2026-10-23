@@ -914,6 +914,8 @@ end
 
 -- ===========================================================================
 function GetCSCQuarterImportAmenityAmount(routeInfo)
+    -- Share the preview helper's eligibility so the list and selected-route
+    -- detail panel show the same import Amenities for this origin/destination.
     if CSC_BTS_GetQuarterImportAmenityAmount ~= nil then
         return CSC_BTS_GetQuarterImportAmenityAmount(routeInfo) or 0;
     end
@@ -923,6 +925,8 @@ end
 
 -- ===========================================================================
 function SetRouteInstanceAmenities(yieldsInstance, amenityAmount)
+    -- Some compatible row templates omit the Amenities control. Keep the rest
+    -- of the native/BTS yield row usable when that optional column is absent.
     if yieldsInstance == nil or yieldsInstance.YieldAmenityLabel == nil then
         return;
     end

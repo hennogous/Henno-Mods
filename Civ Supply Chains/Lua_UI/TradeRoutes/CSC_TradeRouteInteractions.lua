@@ -40,6 +40,35 @@ local PROP_IMPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUT
 local PROP_EXPORT_TAILOR_ROUTE			= "CSC_TAILORS_EXPORT_TAILOR_ROUTE";
 local PROP_EXPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE";
 local ROUTE_STACK_BITS					= { 1, 2, 4, 8, 16 };
+local ROUTE_REVISION = "CSC_TRADE_ROUTE_REVISION";
+local m_HasPendingRequests = false;
+local m_RefreshRequested = false;
+
+-- Only this machine's local player may submit an operation. In a network game
+-- the current host submits ALL cities, including AI cities. Re-evaluate host
+-- identity on every pass so a migrated host takes over without a saved lock.
+local function CSC_GetRouteAuthority()
+	local localPlayer = Game.GetLocalPlayer();
+	if localPlayer == nil or localPlayer < 0 then return nil; end
+	if GameConfiguration.IsNetworkMultiplayer() then
+		if Network.GetGameHostPlayerID() ~= localPlayer then return nil; end
+	end
+	return localPlayer;
+end
+
+local function CSC_OrderedCities(player)
+	local cities = {};
+	for _, city in player:GetCities():Members() do cities[#cities+1] = city; end
+	table.sort(cities, function(a,b) return a:GetID() < b:GetID(); end);
+	return cities;
+end
+
+local function CSC_OrderedPlayers()
+	local players = {};
+	for _, player in ipairs(PlayerManager.GetAlive()) do players[#players+1] = player; end
+	table.sort(players, function(a,b) return a:GetID() < b:GetID(); end);
+	return players;
+end
 local BUILDING_BAKERY = GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_BAKERY"].Index or -1;
 local BUILDING_CAFE = GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_BAKERS_CAFE"].Index or -1;
 local BUILDING_FASHION_HOUSE = GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"] ~= nil and GameInfo.Buildings["BUILDING_CSC_TAILORS_FASHION_HOUSE"].Index or -1;
@@ -150,6 +179,8 @@ function CSC_GetTailorsTradeRouteState(pOriginCity, pDestinationCity)
 end
 
 local function CSC_GetCityStateKey(iPlayerID, iCityID)
+	-- City IDs are only unique within a player; captures and AI targets must not
+	-- collide with a local city that happens to have the same ID.
 	return tostring(iPlayerID) .. ":" .. tostring(iCityID);
 end
 
@@ -169,6 +200,7 @@ local function CSC_CreateBakersCityState(pCity)
 	return {
 		PlayerID = pCity:GetOwner(),
 		CityID = pCity:GetID(),
+		Revision = pCity:GetProperty(ROUTE_REVISION) or 0,
 		X = pCity:GetX(),
 		Y = pCity:GetY(),
 		HasBakersQuarter = CSC_CityHasFunctioningBakersQuarter(pCity) and 1 or 0,
@@ -194,12 +226,12 @@ local function CSC_CollectBakersCityStates()
 	local iCitiesSeen = 0;
 	local iCitiesWithBakersQuarter = 0;
 
-	for iPlayerID = 0, PlayerManager.GetWasEverAliveCount() - 1 do
-		local pPlayer = Players[iPlayerID];
+	for _, pPlayer in ipairs(CSC_OrderedPlayers()) do
+		local iPlayerID = pPlayer:GetID();
 		if pPlayer ~= nil then
 			local pCities = pPlayer:GetCities();
 			if pCities ~= nil then
-				for _, pCity in pCities:Members() do
+				for _, pCity in ipairs(CSC_OrderedCities(pPlayer)) do
 					local cityState = CSC_CreateBakersCityState(pCity);
 					iCitiesSeen = iCitiesSeen + 1;
 					if cityState.HasBakersQuarter > 0 then
@@ -277,12 +309,12 @@ local function CSC_ScanBakersTradeRoutes(cityStates)
 	local iEligibleCafeRoutes = 0;
 	local routeDebugLines = {};
 
-	for iPlayerID = 0, PlayerManager.GetWasEverAliveCount() - 1 do
-		local pPlayer = Players[iPlayerID];
+	for _, pPlayer in ipairs(CSC_OrderedPlayers()) do
+		local iPlayerID = pPlayer:GetID();
 		if pPlayer ~= nil then
 			local pCities = pPlayer:GetCities();
 			if pCities ~= nil then
-				for _, pOriginCity in pCities:Members() do
+				for _, pOriginCity in ipairs(CSC_OrderedCities(pPlayer)) do
 					local pTrade = pOriginCity:GetTrade();
 					if pTrade ~= nil then
 						local outgoingRoutes = pTrade:GetOutgoingRoutes();
@@ -357,10 +389,17 @@ end
 
 -- UI-to-gameplay bridge. The gameplay function name goes in OnStart; the remaining
 -- parameters are passed through to CSC_SetBakersTradeRouteProperties in the gameplay script.
-local function CSC_RequestBakersCityState(cityState)
+local function CSC_RequestBakersCityState(cityState, senderID)
+	-- The authority submits as itself, with the target owner carried separately.
+	-- The saved revision lets gameplay reject a duplicate or superseded snapshot.
 	if cityState == nil or CSC_CityStateMatchesPlotProperties(cityState) then return; end
 
 	local parameters = {};
+	parameters.Version = 2;
+	parameters.Turn = Game.GetCurrentGameTurn();
+	parameters.CityPlayerID = cityState.PlayerID;
+	parameters.CityID = cityState.CityID;
+	parameters.Revision = cityState.Revision;
 	parameters.CityX = cityState.X;
 	parameters.CityY = cityState.Y;
 	parameters.HasBakersQuarter = cityState.HasBakersQuarter;
@@ -372,47 +411,41 @@ local function CSC_RequestBakersCityState(cityState)
 	parameters.ImportFashionHouseRoute = cityState.ImportFashionHouseRoute;
 	parameters.ExportTailorRoute = cityState.ExportTailorRoute;
 	parameters.ExportFashionHouseRoute = cityState.ExportFashionHouseRoute;
-	parameters.ExportBakeryRouteBit1 = cityState.ExportBakeryRouteBits[1] or 0;
-	parameters.ExportBakeryRouteBit2 = cityState.ExportBakeryRouteBits[2] or 0;
-	parameters.ExportBakeryRouteBit4 = cityState.ExportBakeryRouteBits[4] or 0;
-	parameters.ExportBakeryRouteBit8 = cityState.ExportBakeryRouteBits[8] or 0;
-	parameters.ExportBakeryRouteBit16 = cityState.ExportBakeryRouteBits[16] or 0;
-	parameters.ExportCafeRouteBit1 = cityState.ExportCafeRouteBits[1] or 0;
-	parameters.ExportCafeRouteBit2 = cityState.ExportCafeRouteBits[2] or 0;
-	parameters.ExportCafeRouteBit4 = cityState.ExportCafeRouteBits[4] or 0;
-	parameters.ExportCafeRouteBit8 = cityState.ExportCafeRouteBits[8] or 0;
-	parameters.ExportCafeRouteBit16 = cityState.ExportCafeRouteBits[16] or 0;
-	parameters.ExportTailorRouteBit1 = cityState.ExportTailorRouteBits[1] or 0;
-	parameters.ExportFashionHouseRouteBit1 = cityState.ExportFashionHouseRouteBits[1] or 0;
-	parameters.ExportTailorRouteBit2 = cityState.ExportTailorRouteBits[2] or 0;
-	parameters.ExportFashionHouseRouteBit2 = cityState.ExportFashionHouseRouteBits[2] or 0;
-	parameters.ExportTailorRouteBit4 = cityState.ExportTailorRouteBits[4] or 0;
-	parameters.ExportFashionHouseRouteBit4 = cityState.ExportFashionHouseRouteBits[4] or 0;
-	parameters.ExportTailorRouteBit8 = cityState.ExportTailorRouteBits[8] or 0;
-	parameters.ExportFashionHouseRouteBit8 = cityState.ExportFashionHouseRouteBits[8] or 0;
-	parameters.ExportTailorRouteBit16 = cityState.ExportTailorRouteBits[16] or 0;
-	parameters.ExportFashionHouseRouteBit16 = cityState.ExportFashionHouseRouteBits[16] or 0;
 	parameters.OnStart = "CSC_SetBakersTradeRouteProperties";
 
-	UI.RequestPlayerOperation(cityState.PlayerID, PlayerOperations.EXECUTE_SCRIPT, parameters);
+	UI.RequestPlayerOperation(senderID, PlayerOperations.EXECUTE_SCRIPT, parameters);
+	m_HasPendingRequests = true;
 end
 
 -- Full refresh pipeline:
 --   1. collect every city and its live Bakers' Quarter status
 --   2. scan active outgoing trade routes
 --   3. write only changed city-center plot properties
+-- Historical Bakers names cover the independent Bakers and Tailors channels.
+-- The final step submits operations; only the synchronized gameplay receiver writes.
 function CSC_RefreshBakersTradeRouteProperties()
+	local senderID = CSC_GetRouteAuthority();
+	m_HasPendingRequests = false;
+	if senderID == nil then return; end
 	local cityStates = CSC_CollectBakersCityStates();
 	CSC_ScanBakersTradeRoutes(cityStates);
 
-	for _, cityState in pairs(cityStates) do
+	local ordered = {};
+	for _, cityState in pairs(cityStates) do ordered[#ordered+1] = cityState; end
+	table.sort(ordered, function(a,b)
+		if a.PlayerID ~= b.PlayerID then return a.PlayerID < b.PlayerID; end
+		return a.CityID < b.CityID;
+	end);
+	for _, cityState in ipairs(ordered) do
 		CSC_ApplyBakersRouteBitState(cityState);
-		CSC_RequestBakersCityState(cityState);
+		CSC_RequestBakersCityState(cityState, senderID);
 	end
 end
 
 local function CSC_OnBakersRouteRefreshEvent()
-	CSC_RefreshBakersTradeRouteProperties();
+	-- Coalesce property/building events until the next UI update. A snapshot
+	-- must not be assembled midway through a gameplay modifier/property batch.
+	m_RefreshRequested = true;
 end
 
 -- Route changes are the important trigger, but several city/building/district events
@@ -459,8 +492,31 @@ end
 if Events.LoadGameViewStateDone ~= nil then
 	Events.LoadGameViewStateDone.Add(CSC_OnBakersRouteRefreshEvent);
 end
+if Events.MultiplayerHostMigrated ~= nil then
+	Events.MultiplayerHostMigrated.Add(CSC_OnBakersRouteRefreshEvent);
+end
+for _, name in ipairs({"CityPropertyChanged", "ResearchCompleted", "CivicCompleted"}) do
+	if Events[name] then Events[name].Add(CSC_OnBakersRouteRefreshEvent); end
+end
 
-CSC_RefreshBakersTradeRouteProperties();
+-- Loading only asks the authority to send network operations; it never invokes
+-- a gameplay function locally. Delayed/rejected snapshots are retried from fresh
+-- state until properties agree, including when a route changed while in flight.
+local retryElapsed = 0;
+ContextPtr:SetUpdate(function(delta)
+	if m_RefreshRequested then
+		m_RefreshRequested = false;
+		retryElapsed = 0;
+		CSC_RefreshBakersTradeRouteProperties();
+		return;
+	end
+	if not m_HasPendingRequests then retryElapsed = 0; return; end
+	retryElapsed = retryElapsed + delta;
+	if retryElapsed >= 1 then
+		retryElapsed = 0;
+		CSC_RefreshBakersTradeRouteProperties();
+	end
+end);
 
 --=================================================================================================================
 --=================================================================================================================

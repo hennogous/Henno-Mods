@@ -1,120 +1,61 @@
---=================================================================================================================
---=================================================================================================================
---	Civ Supply Chains - Trade Route Interactions
---=================================================================================================================
---=================================================================================================================
--- This file runs as a gameplay script. It does not discover routes itself; the UI
--- script does that, then calls this script through PlayerOperations.EXECUTE_SCRIPT.
---
--- The gameplay side has the authority to mutate persistent state. Here that means
--- writing city-center plot properties, which SQL can read with REQUIREMENT_PLOT_PROPERTY_MATCHES.
-
-local PROP_HAS_BAKERS_QUARTER			= "CSC_HAS_BAKERS_QUARTER";
-local PROP_IMPORT_CONSUMER_ROUTE			= "CSC_BAKERS_IMPORT_CONSUMER_ROUTE";
-local PROP_IMPORT_SPECIALTY_ROUTE		= "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE";
-local PROP_EXPORT_BAKERY_ROUTE			= "CSC_BAKERS_EXPORT_BAKERY_ROUTE";
-local PROP_EXPORT_CAFE_ROUTE				= "CSC_BAKERS_EXPORT_CAFE_ROUTE";
-local PROP_IMPORT_TAILOR_ROUTE			= "CSC_TAILORS_IMPORT_TAILOR_ROUTE";
-local PROP_IMPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE";
-local PROP_EXPORT_TAILOR_ROUTE			= "CSC_TAILORS_EXPORT_TAILOR_ROUTE";
-local PROP_EXPORT_FASHION_HOUSE_ROUTE			= "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE";
-
-local function CSC_GetRouteBitProperty(basePropertyName, bit)
-	return basePropertyName .. "_BIT_" .. tostring(bit);
+-- Network-operation receiver for the host UI's complete per-city route snapshot.
+-- Do not consult local UI/Network state here: this callback executes identically
+-- on every peer through PlayerOperations.EXECUTE_SCRIPT, including AI targets.
+local REVISION = "CSC_TRADE_ROUTE_REVISION";
+local BITS = {1, 2, 4, 8, 16};
+-- This fixed schema is also the mutation order. Bit flags are derived here rather
+-- than trusted as independent UI input. Counts retain the existing 5-bit encoding.
+local FIELDS = {
+    {"HasBakersQuarter", "CSC_HAS_BAKERS_QUARTER"},
+    {"ImportConsumerRoute", "CSC_BAKERS_IMPORT_CONSUMER_ROUTE"},
+    {"ImportSpecialtyRoute", "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE"},
+    {"ExportBakeryRoute", "CSC_BAKERS_EXPORT_BAKERY_ROUTE", true},
+    {"ExportCafeRoute", "CSC_BAKERS_EXPORT_CAFE_ROUTE", true},
+    {"ImportTailorRoute", "CSC_TAILORS_IMPORT_TAILOR_ROUTE"},
+    {"ImportFashionHouseRoute", "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE"},
+    {"ExportTailorRoute", "CSC_TAILORS_EXPORT_TAILOR_ROUTE", true},
+    {"ExportFashionHouseRoute", "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE", true},
+};
+local function integer(value)
+    return type(value) == "number" and value >= 0 and value <= 2147483647 and value == math.floor(value);
+end
+local function set(owner, name, value)
+    if (owner:GetProperty(name) or 0) ~= value then owner:SetProperty(name, value); end
 end
 
--- Properties are only written when they actually change. That avoids extra modifier
--- churn and makes repeated refresh events harmless.
-local function CSC_SetPropertyIfChanged(owner, propertyName, value)
-	if owner == nil then return; end
-
-	local currentValue = owner:GetProperty(propertyName) or 0;
-	if currentValue ~= value then
-		owner:SetProperty(propertyName, value);
-	end
+function CSC_SetBakersTradeRouteProperties(senderID, parameters)
+    -- Validate the entire snapshot before any property write. Otherwise a bad
+    -- later field could leave SQL seeing a mixture of old and new route counts.
+    if Players[senderID] == nil or type(parameters) ~= "table" or parameters.Version ~= 2 then return; end
+    if parameters.Turn ~= Game.GetCurrentGameTurn() then return; end
+    for _, name in ipairs({"CityPlayerID", "CityID", "CityX", "CityY", "Revision"}) do
+        if not integer(parameters[name]) then return; end
+    end
+    local plot = Map.GetPlot(parameters.CityX, parameters.CityY);
+    local city = CityManager.GetCityAt(parameters.CityX, parameters.CityY);
+    if plot == nil or city == nil or city:GetOwner() ~= parameters.CityPlayerID or city:GetID() ~= parameters.CityID then return; end
+    -- A capture/raze/replacement or already accepted newer snapshot invalidates
+    -- queued input. Revision is saved with the city, so reloads preserve it.
+    if (city:GetProperty(REVISION) or 0) ~= parameters.Revision then return; end
+    for _, field in ipairs(FIELDS) do
+        local value = parameters[field[1]];
+        if not integer(value) or (field[1] == "HasBakersQuarter" and value > 1) then return; end
+    end
+    for _, field in ipairs(FIELDS) do
+        local value, name = parameters[field[1]], field[2];
+        set(plot, name, value);
+        set(city, name, value);
+        if field[3] then
+            for _, bit in ipairs(BITS) do
+                local flag = math.floor(value / bit) % 2;
+                set(plot, name .. "_BIT_" .. bit, flag);
+                set(city, name .. "_BIT_" .. bit, flag);
+            end
+        end
+    end
+    -- Publish acknowledgement only after all flag writes; duplicates with this
+    -- revision become no-ops on every peer, independent of UI event timing.
+    set(city, REVISION, parameters.Revision + 1);
 end
 
--- Entry point called from the UI script.
--- The incoming parameters describe one city's complete route state for this refresh.
--- We write every flag, including 0 values, so stale route bonuses are removed when
--- a trade route ends or a city gains a functioning Bakers' Quarter.
-function CSC_SetBakersTradeRouteProperties(iPlayerID, parameters)
-	if parameters == nil then return; end
-
-	local iX = parameters.CityX;
-	local iY = parameters.CityY;
-	if iX == nil or iY == nil then return; end
-
-	local pPlot = Map.GetPlot(iX, iY);
-	if pPlot == nil then return; end
-
-	local pCity = CityManager.GetCityAt(iX, iY);
-
-	CSC_SetPropertyIfChanged(pPlot, PROP_HAS_BAKERS_QUARTER, parameters.HasBakersQuarter or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_IMPORT_CONSUMER_ROUTE, parameters.ImportConsumerRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_IMPORT_SPECIALTY_ROUTE, parameters.ImportSpecialtyRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_BAKERY_ROUTE, parameters.ExportBakeryRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_CAFE_ROUTE, parameters.ExportCafeRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_IMPORT_TAILOR_ROUTE, parameters.ImportTailorRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_IMPORT_FASHION_HOUSE_ROUTE, parameters.ImportFashionHouseRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_TAILOR_ROUTE, parameters.ExportTailorRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, PROP_EXPORT_FASHION_HOUSE_ROUTE, parameters.ExportFashionHouseRoute or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 1), parameters.ExportBakeryRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 2), parameters.ExportBakeryRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 4), parameters.ExportBakeryRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 8), parameters.ExportBakeryRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 16), parameters.ExportBakeryRouteBit16 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 1), parameters.ExportCafeRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 2), parameters.ExportCafeRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 4), parameters.ExportCafeRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 8), parameters.ExportCafeRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 16), parameters.ExportCafeRouteBit16 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 1), parameters.ExportTailorRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 1), parameters.ExportFashionHouseRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 2), parameters.ExportTailorRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 2), parameters.ExportFashionHouseRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 4), parameters.ExportTailorRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 4), parameters.ExportFashionHouseRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 8), parameters.ExportTailorRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 8), parameters.ExportFashionHouseRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 16), parameters.ExportTailorRouteBit16 or 0);
-	CSC_SetPropertyIfChanged(pPlot, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 16), parameters.ExportFashionHouseRouteBit16 or 0);
-
-	-- Mirror the same values onto the city object for FireTuner/debug inspection.
-	-- SQL still consumes the plot properties above.
-	CSC_SetPropertyIfChanged(pCity, PROP_HAS_BAKERS_QUARTER, parameters.HasBakersQuarter or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_IMPORT_CONSUMER_ROUTE, parameters.ImportConsumerRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_IMPORT_SPECIALTY_ROUTE, parameters.ImportSpecialtyRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_BAKERY_ROUTE, parameters.ExportBakeryRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_CAFE_ROUTE, parameters.ExportCafeRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_IMPORT_TAILOR_ROUTE, parameters.ImportTailorRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_IMPORT_FASHION_HOUSE_ROUTE, parameters.ImportFashionHouseRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_TAILOR_ROUTE, parameters.ExportTailorRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, PROP_EXPORT_FASHION_HOUSE_ROUTE, parameters.ExportFashionHouseRoute or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 1), parameters.ExportBakeryRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 2), parameters.ExportBakeryRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 4), parameters.ExportBakeryRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 8), parameters.ExportBakeryRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_BAKERY_ROUTE, 16), parameters.ExportBakeryRouteBit16 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 1), parameters.ExportCafeRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 2), parameters.ExportCafeRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 4), parameters.ExportCafeRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 8), parameters.ExportCafeRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_CAFE_ROUTE, 16), parameters.ExportCafeRouteBit16 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 1), parameters.ExportTailorRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 1), parameters.ExportFashionHouseRouteBit1 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 2), parameters.ExportTailorRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 2), parameters.ExportFashionHouseRouteBit2 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 4), parameters.ExportTailorRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 4), parameters.ExportFashionHouseRouteBit4 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 8), parameters.ExportTailorRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 8), parameters.ExportFashionHouseRouteBit8 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_TAILOR_ROUTE, 16), parameters.ExportTailorRouteBit16 or 0);
-	CSC_SetPropertyIfChanged(pCity, CSC_GetRouteBitProperty(PROP_EXPORT_FASHION_HOUSE_ROUTE, 16), parameters.ExportFashionHouseRouteBit16 or 0);
-end
-
--- Register the function name used by parameters.OnStart in the UI script.
 GameEvents.CSC_SetBakersTradeRouteProperties.Add(CSC_SetBakersTradeRouteProperties);
-
---=================================================================================================================
---=================================================================================================================

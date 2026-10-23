@@ -1,3 +1,6 @@
+-- Better Trade Screen support with CSC preview hooks in its origin/destination
+-- yield builders. Those hooks run before BTS caches and ranks candidate routes,
+-- so the numbers used for sorting agree with the numbers shown to the player.
 include( "Colors" );
 include( "CSC_BTS_TradeRoutePreviewSupport" );
 
@@ -1109,6 +1112,8 @@ function GetTradeRouteYieldString(routeInfo:table)
 end
 
 function CSC_BTS_FormatSignedTooltipAmount(amount)
+    -- These tooltip templates receive literal signed amounts. Supplying the '+'
+    -- here avoids relying on descriptive localization placeholder suffixes.
     if amount == nil then
         return "0";
     end

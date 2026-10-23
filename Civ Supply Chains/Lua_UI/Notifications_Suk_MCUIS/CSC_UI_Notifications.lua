@@ -6,6 +6,10 @@
 --==========================================================================================================================
 print('CivSupplyChains_Notifications_UI script loaded!!!')
 
+-- Presentation only: SQL's live attach-modifier subjects determine the stacks.
+-- Compare them with the local player's saved UI cache to describe changes;
+-- notification delivery never grants or removes the gameplay effects themselves.
+
 include("Civ6Common"); --  we include this so we can use the ReadCustomData() and WriteCustomData() functions
 
 function PrintTable(t, indent)
@@ -33,7 +37,8 @@ end
 --===========================================================================================
 -- CONSTANTS
 --===========================================================================================
--- we faster processing, we cache all data in CSC_AbilityAttachModifiers in mCSC_AbilityAttachModifiers to access them faster in this script
+-- Index the SQL registry by attach modifier, then by displayed ability below.
+-- Several attachments can contribute stacks to one shared ability description.
 local mCSC_AbilityAttachModifiers = {};
 for row in GameInfo.CSC_AbilityAttachModifiers() do
 	mCSC_AbilityAttachModifiers[row.ModifierId] = {};
@@ -112,6 +117,8 @@ function tableLength(t)
 end
 
 local function GetSignedAmountText(iAmount)
+	-- Localization receives pre-signed strings here; the placeholder suffix is
+	-- descriptive and does not add a '+' automatically.
 	if iAmount > 0 then
 		return '+' .. tostring(iAmount)
 	end
@@ -146,6 +153,8 @@ end
 -- OnRefreshCityQuarters
 --==========================================================================================================================
 function OnRefreshCityQuarters()
+	-- Identity is (owner, city), and counts represent active district subjects.
+	-- Comparing presence alone would miss an extra supplied neighbor or a lost stack.
 	
 	local iPlayerID = Game.GetLocalPlayer();
 	if (iPlayerID and iPlayerID >= 0) then		-- Check to see if there is any local player

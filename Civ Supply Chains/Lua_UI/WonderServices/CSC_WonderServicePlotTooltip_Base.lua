@@ -23,6 +23,8 @@ end
 local BASE_CSC_WONDER_SERVICES_GetDetails = GetDetails;
 
 function GetDetails(data:table)
+    -- Read the buildings stored on this plot, rather than predicting which
+    -- Service its Wonder type ought to host. Inactive persistent Services still show.
     local details:table = BASE_CSC_WONDER_SERVICES_GetDetails(data);
     local foundService:boolean = false;
 

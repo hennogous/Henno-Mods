@@ -27,6 +27,8 @@ end
 local BASE_CSC_WONDER_SERVICES_FetchData = FetchData;
 
 function FetchData(pPlot:table)
+    -- Retain Simple UI's river-name enrichment while wrapping its native base;
+    -- the Service additions below then receive the same plot data as other details.
     local data:table = BASE_CSC_WONDER_SERVICES_FetchData(pPlot);
     local rivers:table = RiverManager.GetRiverTypes(pPlot);
 
@@ -52,6 +54,8 @@ end
 local BASE_CSC_WONDER_SERVICES_GetDetails = GetDetails;
 
 function GetDetails(data:table)
+    -- Show actual co-located Service buildings, including persistent inactive
+    -- ones. Eligibility belongs to gameplay and is not inferred by this tooltip.
     local details:table = BASE_CSC_WONDER_SERVICES_GetDetails(data);
     local foundService:boolean = false;
 

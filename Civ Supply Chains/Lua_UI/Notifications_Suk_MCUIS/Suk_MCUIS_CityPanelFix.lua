@@ -27,6 +27,8 @@ local function SortMCUISCityPanel(pParent_City, pChild_City)
 end
 
 local function OnMCUISFix_LoadScreenClose()
+	-- MCUIS may retry parenting during loading. Inspect the live tree on each
+	-- callback so either event order can converge on the available CityPanel parent.
 	local pChild_City = Controls.MCUIS_CityPanel and Controls.MCUIS_CityPanel.Root
 	if not pChild_City then
 		print('[MCUIS_FIX] FAILED: MCUIS_CityPanel.Root not found')
