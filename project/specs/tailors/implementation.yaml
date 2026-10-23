@@ -31,6 +31,13 @@ mechanism_bindings:
   ownership_refresh:
     implementation: shared_adjacency_gameplay
     native_event: CityTileOwnershipChanged
+  policy_return_adjacencies:
+    implementation: policy_owned_shared_adjacency_rules
+    registry: CSC_QuarterPolicyAdjacencyConfig
+    validation: project/tools/adjacencies/test_policy_returns.py
+    approval: "User amendment, 20 October 2026: double actual customer return yields under the corresponding vanilla adjacency policy, count every adjacent Quarter, and merge custom/native UI totals."
+    scope: [DISTRICT_HARBOR, DISTRICT_COMMERCIAL_HUB, DISTRICT_HOLY_SITE, DISTRICT_THEATER]
+    replacement_binding: explicit_direct_one_level
   service_notifications:
     implementation: shared_notifications_handler
     cache_keys: live_strings_or_serialized_hashes
@@ -284,6 +291,7 @@ implementation_rules:
   - "Every referenced LP.* pattern's authorship_mode is binding: strict_template wording is substituted, deterministic_composition is generated from implementation data, structured_original_prose preserves architecture but must be freshly written, and curated_integrated_prose requires editorial integration across all participating Quarters."
   - "Never treat a Bakers source_anchor as prose to reskin when its authorship_mode requires original or curated writing."
   - "No Bakers-only pattern may be used."
+  - "LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED applies to every production-building description independently, including M&C, compatibility and combined overrides, suffixed tags, raw literal patches and examples. Never repeat the owning building's CitizenSlots, Building_CitizenYieldChanges or intrinsic local/regional Amenities in authored text. Keep service destination-slot effects, notifications, Civilopedia explanations and cross-city transaction effects explicit. The shared localization generator/check and pattern validator enforce this across all Quarter sources, not only the base Tailors descriptions."
   - "No Tailors gameplay output may be written until its phase is approved in control.yaml."
   - "Adjacent-building transactions are not gated by adjacent material supply; only Stage 2 material-supplier transactions use material availability as part of the transaction itself."
   - "Art bridge properties share the complete owner requirement set of the related Service, including unlock, material supply, and at least one eligible adjacent Service customer."
@@ -423,10 +431,13 @@ phases:
           - "Harbor: Tailors +1 Gold; Harbor +1 Production."
           - "Commercial Hub/Holy Site/Theater: Tailors +1 Gold; customer +1 Culture."
           - "MAB customer tags and generated return adjacencies explicitly include each direct unique district replacement exactly once."
+          - "Seven Tailors policy mappings add one extra return per adjacent owned Quarter: Harbor Production for Naval Infrastructure/Economic Union; Commercial Hub Culture for Town Charters/Economic Union; Holy Site Culture for Scripture; Theater Culture for Aesthetics/Sports Media. Direct unique replacements inherit exactly once."
+          - "Shared policy-return regression verifies compiled policy attachments, all six neighboring Quarter counts, policy slot/removal/obsoletion refresh, and one native-plus-custom placement total per yield with combined Quarter source sentences."
         replacement_binding:
           MAB_TypeTags_and_generated_return_adjacencies: explicit_direct_one_level
         runtime_scenarios:
           - "Test every customer district separately and verify both transaction directions."
+          - "Slot/remove each relevant policy beside two owned Quarters: customer returns change from +2 to +4 and back, while Quarter sales remain unchanged. Check a direct unique replacement and native-plus-custom placement totals."
 
       - id: I.DISTRICT_RIVER
         design_refs: [district.effects.D.DISTRICT.LOGISTICS]
@@ -458,10 +469,11 @@ phases:
       - id: I.STAGE2_DEFINITION
         design_refs: [buildings.D.STAGE2]
         gameplay_patterns: [GP.BUILDING.DEFINITION]
-        localization_patterns: [LP.PEDIA.BUILDING_CHAPTERS]
+        localization_patterns: [LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED, LP.PEDIA.BUILDING_CHAPTERS]
         outputs: [core, localization_source]
         static_assertions:
           - "Unlock=Construction, Cost=80, Maintenance=2."
+          - "The base Textile Workshop description and every conditional patch obey LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED."
           - "ICON_BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP uses the shared Quarter atlas stage-2-building index 4."
           - "Following the Water Mill and Wind Mill pages, the Textile Workshop Civilopedia has exactly one Supply Chains title and narrative paragraph, followed by a Historical Context title and two substantive history paragraphs; it has no Description chapter."
           - "Its Supply Chains prose traces cotton, flax and available wool through spinning and weaving to cloth for the local Tailor and Fashion House, then canvas for an adjacent Lighthouse. Historical Context explains the sequence of textile work and the town and harbor demand for its output without listing modifier yields."
@@ -722,6 +734,7 @@ phases:
           - "One slot; specialists +1 Culture/+2 Gold; +1 Amenity within 6."
           - "The completed Fashion House description omits its Citizen slot, specialist yields, and intrinsic regional Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 4 relationships in shared order: Specialty Material inputs; local Textile Workshop exchange; Amphitheater/Wonder population exchange; domestic trade exchange; Stage Manager establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
           - "Industry and Corporation Specialty Material sub-bullets appear only through the Monopolies_Mode text action; the always-loaded Fashion House description contains only the standard-improvement line."
+          - "The M&C Fashion House text and any combined compatibility override retain the omission of owning-building Citizen slots, specialist yields and intrinsic Amenities. Validate each variant after its conditional UpdateText actions run in load order."
           - "The Fashion House Civilopedia page matches the CafÃ©'s format and breadth: exactly one Supply Chains title/paragraph followed by one Historical Context title with three history paragraphs, and no Civilopedia Description chapter."
           - "Fashion House Supply Chains prose follows workshop cloth plus improved Specialty Materials into fashionable goods for Amphitheaters and the three named Wonders; its history separately covers the emergence of fashion houses, specialty materials and status, and the relationship between dress, performance, and civic display."
           - "ICON_BUILDING_CSC_TAILORS_FASHION_HOUSE uses the Tailors atlas index 6, and Icons/CSC_TAILORS_ICONS.sql is Content loaded by the shared UpdateIcons action."
@@ -937,6 +950,7 @@ phases:
         gameplay_patterns: [GP.REPLACEMENT.DIRECT_ONE_LEVEL]
         localization_patterns:
           - LP.NAMES.COMPLETE
+          - LP.BUILDING.ENGINE_RENDERED_STATS_OMITTED
           - LP.DISTRICT.SUMMARY
           - LP.PEDIA.DISTRICT_CHAPTERS
           - LP.PEDIA.BUILDING_CHAPTERS
@@ -947,7 +961,8 @@ phases:
           - LP.CIVIC.APPEND
         outputs: [localization_source, localization_generated, hemp_localization_source, hemp_localization_generated, llamas_localization_source, llamas_localization_generated, r2_localization_source, r2_localization_generated, cashmere_localization_source, cashmere_localization_generated, sukritact_gold_localization_source, sukritact_gold_localization_generated, city_lights_localization_source, city_lights_localization_generated]
         static_assertions:
-          - "Every implemented effect appears once in gameplay text and no unimplemented effect is claimed."
+          - "Every implemented effect appears once across authored and engine-rendered gameplay tooltip text and no unimplemented effect is claimed; owning-building stats rendered by Civ VI must not be repeated in the authored description."
+          - "All production-building text variants pass the shared omission validator, including base, M&C, compatibility, combined mode-plus-mod overrides and example sources; validate raw literal patches as well as ordinary and grouped entries."
           - "Pedia customer and Civic append coverage is complete."
           - "Every replacement-sensitive customer description is appended to the base type and each direct replacement exactly once."
           - "Tailors district pedia has the plain headers Base Materials, Specialty Materials, Goods Providers, Sales Districts, and Historical Context in the Bakers order. Native Civilopedia chapter headings never contain texticons. Other visible relationship-class references carry their matching texticon, including prose, material shorthand, resource roles and lens text."
@@ -976,6 +991,15 @@ phases:
           - "Database and localization logs show every Tailors action loaded without errors; each UpdateText action must log its declared SQL/XML file load, not merely the component name."
 
 resolved_engine_decisions:
+  - id: E.POLICY_RETURN_ADJACENCIES
+    affects: I.DISTRICT_CUSTOMER_ADJACENCIES
+    resolution: "User-approved amendment on 20 October 2026: the receiving district's adjacency policy doubles the actual Production/Culture supplied by adjacent Tailors Quarters. Generate policy-owned additive copies of the shared return rules, retaining rings, ownership and direct replacements. Merge numeric custom amounts with the native adjacency API result before formatting the placement label; the native result already includes its own policy modifiers."
+    decided_by: user
+    evidence:
+      - Civ Supply Chains/Data/CSC_Q_TAILORS.sql
+      - Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql
+      - project/tools/adjacencies/test_policy_returns.py
+
   - id: E.DECIMAL_POPULATION
     affects: I.STAGE3_POP_CUSTOMERS
     resolution: "Use the Bakers direct customer-side per-population effect through customer-owned property-bit modifiers and extend the shared customer-population Lua/property-bit bridge for the cross-city Tailor returns. Preserve the Bakers 0.105 engine amount while presenting the designed 0.1 value."

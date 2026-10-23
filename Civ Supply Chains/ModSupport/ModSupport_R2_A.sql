@@ -12,11 +12,10 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Tags
-
-		(   Tag,							    Vocabulary			)
-VALUES	(	'CLASS_CSC_TAILORS_SPEC',	        'RESOURCE_CLASS'	),
-        (   'CLASS_CSC_APOTHECARIES_BASE',      'RESOURCE_CLASS'    ),
-        (   'CLASS_CSC_GOLDSMITHS_BASE',        'RESOURCE_CLASS'    );
+        (   Tag,                             Vocabulary   )
+VALUES  (   'CLASS_CSC_TAILORS_SPEC',        'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_APOTHECARIES_BASE',   'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_GOLDSMITHS_BASE',     'RESOURCE_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -24,8 +23,7 @@ VALUES	(	'CLASS_CSC_TAILORS_SPEC',	        'RESOURCE_CLASS'	),
 
 --	TAILORS' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-	(	Type,							Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,					'CLASS_CSC_TAILORS_SPEC'
 FROM	Resources
 WHERE	ResourceType 					IN
@@ -35,8 +33,7 @@ WHERE	ResourceType 					IN
 
 -- Apothecaries' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_APOTHECARIES_BASE'
 FROM	Resources
 WHERE	ResourceType                IN
@@ -47,8 +44,7 @@ WHERE	ResourceType                IN
 
 -- Apothecaries' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_GOLDSMITHS_BASE'
 FROM	Resources
 WHERE	ResourceType                IN

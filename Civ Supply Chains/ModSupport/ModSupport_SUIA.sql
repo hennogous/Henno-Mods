@@ -19,11 +19,67 @@ CREATE TABLE IF NOT EXISTS CSC_TradeRouteYieldPresentation
     );
 
 INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
-        (   EntryId,                                 QuarterKey,   ModifierId,                                PropertyName,                          PropertyScope,        YieldType,         Amount,   DisplayBucket   )
-VALUES  (   'CSC_BAKERS_IMPORT_CONSUMER_FOOD',       'BAKERS',     'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',     'CSC_BAKERS_IMPORT_CONSUMER_ROUTE',    'CITY_CENTER_PLOT',   'YIELD_FOOD',      1,        'OUTGOING_TRADE_ROUTES'   ),
-        (   'CSC_BAKERS_IMPORT_SPECIALTY_FOOD',      'BAKERS',     'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',    'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',   'CITY_CENTER_PLOT',   'YIELD_FOOD',      1,        'OUTGOING_TRADE_ROUTES'   ),
-        (   'CSC_TAILORS_IMPORT_CONSUMER_CULTURE',   'TAILORS',    'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',   'CSC_TAILORS_IMPORT_TAILOR_ROUTE',     'CITY_CENTER_PLOT',   'YIELD_CULTURE',   1,        'OUTGOING_TRADE_ROUTES'   );
+    (
+        EntryId,
+        QuarterKey,
+        ModifierId,
+        PropertyName,
+        PropertyScope,
+        YieldType,
+        Amount,
+        DisplayBucket
+    )
+VALUES
+    (
+        'CSC_BAKERS_IMPORT_CONSUMER_FOOD',
+        'BAKERS',
+        'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',
+        'CSC_BAKERS_IMPORT_CONSUMER_ROUTE',
+        'CITY_CENTER_PLOT',
+        'YIELD_FOOD',
+        1,
+        'OUTGOING_TRADE_ROUTES'
+    ),
+    (
+        'CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
+        'BAKERS',
+        'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
+        'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',
+        'CITY_CENTER_PLOT',
+        'YIELD_FOOD',
+        1,
+        'OUTGOING_TRADE_ROUTES'
+    ),
+    (
+        'CSC_TAILORS_IMPORT_CONSUMER_CULTURE',
+        'TAILORS',
+        'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',
+        'CSC_TAILORS_IMPORT_TAILOR_ROUTE',
+        'CITY_CENTER_PLOT',
+        'YIELD_CULTURE',
+        1,
+        'OUTGOING_TRADE_ROUTES'
+    );
 
 INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
-        (   EntryId,                                  QuarterKey,   ModifierId,                                       PropertyName,                               PropertyScope,        YieldType,         Amount,   DisplayBucket   )
-VALUES  (   'CSC_TAILORS_IMPORT_SPECIALTY_CULTURE',   'TAILORS',    'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',   'CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',   'CITY_CENTER_PLOT',   'YIELD_CULTURE',   1,        'OUTGOING_TRADE_ROUTES'   );
+    (
+        EntryId,
+        QuarterKey,
+        ModifierId,
+        PropertyName,
+        PropertyScope,
+        YieldType,
+        Amount,
+        DisplayBucket
+    )
+VALUES
+    (
+        'CSC_TAILORS_IMPORT_SPECIALTY_CULTURE',
+        'TAILORS',
+        'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',
+        'CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',
+        'CITY_CENTER_PLOT',
+        'YIELD_CULTURE',
+        1,
+        'OUTGOING_TRADE_ROUTES'
+    );

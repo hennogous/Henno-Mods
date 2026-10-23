@@ -34,7 +34,7 @@ class FashionWorld(unittest.TestCase):
 
 class FashionPopulationTests(FashionWorld):
     def setUp(self):
-        super().setUp();self.load('CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua')
+        super().setUp();self.load('CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua');self.refresh()
     def refresh(self):self.lua.globals().CSC_RefreshCustomerPopulationReturns()
 
     def test_customer_threshold_controls_both_sides(self):
@@ -94,7 +94,7 @@ class WonderPlacementTests(FashionWorld):
             addWonder(customer,'BUILDING_BROADWAY',0,1);
             addWonder(customer,'BUILDING_BOLSHOI_THEATRE',-1,1);
             addWonder(customer,'BUILDING_SYDNEY_OPERA_HOUSE',-1,0);
-        """);self.load('WonderServices/CSC_WonderServicePlacement.lua')
+        """);self.load('WonderServices/CSC_WonderServicePlacement.lua');self.lua.globals().CSC_RefreshWonderServices()
     def refresh(self):self.lua.globals().CSC_RefreshWonderServices()
     def active(self):
         self.execute("hasOpera=true;seller:SetProperty('CSC_TAILORS_FASHION_HOUSE_SUPPLIED',1)");self.refresh()
@@ -149,7 +149,7 @@ class WonderPlacementTests(FashionWorld):
 
     def test_city_collections_not_available_during_startup(self):
         self.execute("savedGetCities=Players[0].GetCities;Players[0].GetCities=function()end;capturedPrints={}")
-        self.load('WonderServices/CSC_WonderServicePlacement.lua')
+        self.load('WonderServices/CSC_WonderServicePlacement.lua');self.lua.globals().CSC_RefreshWonderServices()
         self.assertEqual(self.eval('#capturedPrints'),0)
         self.execute('Players[0].GetCities=savedGetCities')
         self.active();self.assertTrue(self.present('BROADWAY'))
@@ -212,7 +212,7 @@ class WonderPlacementTests(FashionWorld):
         self.refresh()
         self.assertEqual(self.eval('customer.locations[GameInfo.Buildings.BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY.Index]'),self.eval('customer.locations[GameInfo.Buildings.BUILDING_BROADWAY.Index]'))
         self.execute("customer:GetBuildings():RemoveBuilding(GameInfo.Buildings.BUILDING_CSC_TAILORS_STAGE_4_SERVICE_BROADWAY.Index)")
-        self.load('WonderServices/CSC_WonderServicePlacement.lua');self.assertTrue(self.present('BROADWAY'))
+        self.load('WonderServices/CSC_WonderServicePlacement.lua');self.lua.globals().CSC_RefreshWonderServices();self.assertTrue(self.present('BROADWAY'))
         self.execute("customer:GetBuildings():RemoveBuilding(GameInfo.Buildings.BUILDING_BROADWAY.Index)");self.refresh()
         self.assertFalse(self.present('BROADWAY'))
         self.assertEqual(self.eval("Map.GetPlot(0,1):GetProperty('CSC_TAILORS_STAGE_4_SERVICE_BROADWAY_READY')"),0)
@@ -231,7 +231,7 @@ class WonderPresentationTests(FashionWorld):
             addWonder(customer,'BUILDING_BOLSHOI_THEATRE',-1,1);
             addWonder(customer,'BUILDING_SYDNEY_OPERA_HOUSE',-1,0);
         """)
-        self.load('WonderServices/CSC_WonderServicePlacement.lua')
+        self.load('WonderServices/CSC_WonderServicePlacement.lua');self.lua.globals().CSC_RefreshWonderServices()
         self.lua.execute((FIXTURES/'wonder_service_presentation.lua').read_text())
         for filename in ('Suk_MCUIS_CSC.lua','CSC_UI_Notifications.lua'):
             source=(LUA/'Notifications_Suk_MCUIS'/filename).read_text(encoding='utf-8-sig')
@@ -299,7 +299,7 @@ class FashionTradeTests(FashionWorld):
             customer.routes={{DestinationCityPlayer=0,DestinationCityID=1}};
         """)
         self.load('TradeRoutes/CSC_TradeRouteInteractions_Gameplay.lua')
-        self.load('TradeRoutes/CSC_TradeRouteInteractions.lua')
+        self.load('TradeRoutes/CSC_TradeRouteInteractions.lua');self.refresh()
     def refresh(self):self.lua.globals().CSC_RefreshBakersTradeRouteProperties()
     def test_tailor_and_fashion_route_channels_stack_and_clear(self):
         self.assertEqual(self.eval("customer:GetProperty('CSC_TAILORS_IMPORT_TAILOR_ROUTE')"),1)

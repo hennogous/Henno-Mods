@@ -88,6 +88,44 @@ For existing loaded files, migrate one file at a time:
 
 The example at `project/localization/examples/CSC_MC_MODE_TEXT.md` writes only to `project/localization/examples/generated/` and is not loaded by ModBuddy.
 
+## Building stats supplied by the engine
+
+Production-building descriptions omit the owning building's `CitizenSlots`,
+`Building_CitizenYieldChanges` and intrinsic local/regional Amenities. Civ VI
+already displays those fields below the authored text. Keep the actual database
+effects; remove only their redundant authored lines. Order the remaining text as
+material/input, local exchange, downstream output, customer output, trade output,
+then Services.
+
+This rule applies independently to every variant: base, M&C, compatibility and
+combined overrides, including suffixed description tags and example sources.
+Full-text replacements must preserve the omission. Service grants in another
+district, Service descriptions, notification fragments, explanatory Civilopedia
+prose and cross-city transaction effects still state their relevant information.
+
+`loc_md_to_sql.py` checks ordinary entries, grouped tags, explicit `WHERE` targets
+and raw SQL literal patches before generation, including in `--check` mode. The
+pattern validator uses the same rule, checks catalog templates and rendered
+patterns, and audits `project/localization/` recursively. Raw SQL comments and
+`INSTR`/`REPLACE` search arguments are not display text. Computed SQL remains
+subject to effective-text checks after the applicable actions execute.
+
+The 20 October 2026 audit found one active omission regression: the Café's
+`ModSupport_LGD_MC_MODE_TEXT` override, used with both M&C and Leugi's Garden.
+It replaced the complete Garden description at load order 3001, after the
+already-clean ordinary M&C text at 3000. The redundant Citizen-slot/specialist
+line was also present in two non-loaded example entries. All three source lines
+and their generated SQL were corrected. Base Bakers descriptions, the ordinary
+Garden and M&C variants, and Tailors base/M&C descriptions already omitted the
+owning-building stats.
+
+`project/tools/quarter_contracts/tests/test_building_description_variants.py`
+executes the generated Bakers text actions in manifest load order with M&C and
+Garden independently on/off. It checks each selected Café description, retains
+population/Service text, and proves that restoring the screenshot's line fails
+generation. This is an automated localization check; an in-game visual review
+still follows a ModBuddy rebuild and game reload.
+
 
 ## Relationship icons and MCUIS service labels
 

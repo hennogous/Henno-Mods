@@ -17,6 +17,7 @@ global_rules:
   - "Use existing icon tokens and Civ VI typography exactly."
   - "Every visible mention of Base Materials, Specialty Materials, Sales Districts and Goods Providers is immediately preceded by its matching ICON_CSC_BASE, ICON_CSC_SPEC, ICON_CSC_SALES or ICON_CSC_GOODS texticon. This includes prose, descriptions, lens labels and resource role labels, in any case or grammatical number. Native Civilopedia chapter headings stay plain and must never contain texticons. Shared-noun Base and Specialty Materials references require both icons. SQL search needles and comments are not visible text."
   - "Authored building descriptions omit CitizenSlots, Building_CitizenYieldChanges, and intrinsic local/regional Amenity fields because Civ VI renders them automatically; cross-city transaction effects such as a trade-route origin Amenity remain explicit."
+  - "The engine-rendered-stat omission rule applies independently to every production-building description variant: base, M&C, compatibility, combined mode-plus-mod overrides, suffixed tags, raw SQL patches, and examples. A later full-text override must never reintroduce omitted stats. Service destination-slot disclosures, notifications and explanatory Civilopedia prose remain explicit."
   - "MCUIS and notification state strings receive already-signed amount values from Lua; never prefix a dynamic amount placeholder with a literal sign or directional word such as 'less', 'lost', or 'fewer'."
   - "Classification describes the relationship to the Bakers reference; authorship_mode is the binding rule for how literally wording is reused."
   - "A source_anchor is evidence for structure and tone, not permission to transplant Bakers nouns or prose into a different Quarter when original prose is required."
@@ -172,9 +173,12 @@ patterns:
     authorship_guidance:
       - "Omit the described building's CitizenSlots, Building_CitizenYieldChanges, and intrinsic local or regional Amenity fields: Civ VI renders them automatically below the authored description."
       - "Keep transaction effects granted to another city explicit, including an Amenity granted to a trade-route origin city."
+      - "Apply the omission to every conditional variant and override, including combined M&C plus compatibility text and example sources; validate the final text after conditional actions execute in load order."
+      - "Service-grant effects in other districts, Service descriptions, notifications and Civilopedia explanations are separate surfaces, not owning-production-building stats."
     invariant:
       - "The authored building description contains no Citizen-slot/specialist-yield bullet sourced from engine-rendered building fields."
       - "The authored building description contains no standalone local or regional Amenity bullet sourced from engine-rendered building fields."
+      - "Localization generation and --check reject duplicate stats in every production-building variant, including grouped tags, explicit WHERE targets and raw literal patches; the catalog validator audits all sources recursively."
 
   - id: LP.SERVICE.INTRO
     classification: exact_bakers_parameterized

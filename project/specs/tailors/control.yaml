@@ -8,19 +8,21 @@ locked_sources:
     sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    sha256: da5bfd414342dec80674ec52f81949b16ed07c446878cb8168cb8f848ec16dd9
+    # User-authorized mill unlock amendment, 21 October 2026: Water/Engineering, Wind/Machinery.
+    sha256: 45093f3ef07bb5449719b3ac033c8516350afa19ff40555b3f2c3b9dcfadc70e
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
-    sha256: 7abdbbca5ee4ea862a897dc38794436667a832009e033e5365b565b43c274114
+    sha256: ae289c5dd0e9d0382e4d8f4dcf19dee837b4589ac822ffaf688bda31acbc1f1c
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE.sql
     role: gameplay_reference_monopolies
-    sha256: a73939837c97c69b0b02cc6b2911a6e780b855f1f657d5eac5e828c0450d5e59
+    sha256: ad9e47f18d5d8148b2c0ef8f7c22ae019456405afdc5cda900f911ceff83feeb
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_MC_MODE_GOLD.sql
     role: gameplay_reference_monopolies_gold
-    sha256: 8247353b8cfd5b4c0311844b0e921140c1eefa20c22b58cdb19d7ef7a4aed415
+    sha256: 91aa79aaadd6f063cd5a6fbdf4ff65c419c6b8af00e9e9ca1f5773e3ca5c6070
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
-    sha256: cded7d3fab814dbda1b06c2ecf661a5a9a8e1df77e9476834956d2143171e520
+    # Reviewed wording-only omission of the repeated Mill destination, 23 October.
+    sha256: 2bec90585d8555df20aa867036e89abbf7fa1b72aaca3528ba801e605dad18bb
 
 contract_approvals:
   design_transcription:

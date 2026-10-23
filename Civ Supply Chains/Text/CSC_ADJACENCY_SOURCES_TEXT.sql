@@ -4,7 +4,6 @@
 --------------------------------------------------------------
 
 INSERT OR REPLACE INTO LocalizedText
-    (Language, Tag, Text)
-VALUES
-    ('en_US', 'LOC_CSC_ADJ_SOURCE_FROM_RIVER_CROSSING', '{1_Count : plural 1?River edge; other?River edges;}'),
-    ('en_US', 'LOC_CSC_ADJ_TERRAIN_IsHills', 'Hills');
+        (   Language,   Tag,                                        Text   )
+VALUES  (   'en_US',    'LOC_CSC_ADJ_SOURCE_FROM_RIVER_CROSSING',   '{1_Count : plural 1?River edge; other?River edges;}'   ),
+        (   'en_US',    'LOC_CSC_ADJ_TERRAIN_IsHills',              'Hills'   );

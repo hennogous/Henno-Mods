@@ -8,23 +8,20 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Vocabularies
-
-		(    Vocabulary			)
-VALUES	(	'DISTRICT_CLASS'	);
+        (   Vocabulary   )
+VALUES  (   'DISTRICT_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Shared CSC modifier types
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Types
-
         (   Type,                                                 Kind   )
 VALUES  (   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      'KIND_MODIFIER'   ),
         (   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'KIND_MODIFIER'   ),
         (   'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',     'KIND_MODIFIER'   );
 
 INSERT OR IGNORE INTO DynamicModifiers
-
         (   ModifierType,                                         CollectionType,                     EffectType   )
 VALUES  (   'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',      'COLLECTION_PLAYER_DISTRICTS',      'EFFECT_ATTACH_MODIFIER'   ),
         (   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'COLLECTION_PLAYER_IMPROVEMENTS',   'EFFECT_ATTACH_MODIFIER'   ),
@@ -105,48 +102,48 @@ CREATE TABLE IF NOT EXISTS CSC_PopulationLevels
     );
 
 INSERT OR IGNORE INTO CSC_PopulationLevels
-		(Pop)
-VALUES	('5'), ('10'), ('15'), ('20'), ('25'), ('30'), ('35'), ('40'), ('45'), ('50');
+        (   Pop   )
+VALUES  (   '5'   ),
+        (   '10'   ),
+        (   '15'   ),
+        (   '20'   ),
+        (   '25'   ),
+        (   '30'   ),
+        (   '35'   ),
+        (   '40'   ),
+        (   '45'   ),
+        (   '50'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Shared city population requirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO RequirementSets (
-	RequirementSetId,
-	RequirementSetType
-)
+INSERT OR IGNORE INTO RequirementSets
+        (   RequirementSetId,   RequirementSetType   )
 SELECT
 	'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
 	'REQUIREMENTSET_TEST_ALL'
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
 
-INSERT OR IGNORE INTO RequirementSetRequirements (
-	RequirementSetId,
-	RequirementId
-)
+INSERT OR IGNORE INTO RequirementSetRequirements
+        (   RequirementSetId,   RequirementId   )
 SELECT
 	'REQSET_CSC_CITY_HAS_POPULATION_' || Pop,
 	'REQ_CSC_CITY_HAS_POPULATION_' || Pop
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
 
-INSERT OR IGNORE INTO Requirements (
-	RequirementId,
-	RequirementType
-)
+INSERT OR IGNORE INTO Requirements
+        (   RequirementId,   RequirementType   )
 SELECT
 	'REQ_CSC_CITY_HAS_POPULATION_' || Pop,
 	'REQUIREMENT_CITY_HAS_X_POPULATION'
 FROM CSC_PopulationLevels
 WHERE Pop > 0;
 
-INSERT OR IGNORE INTO RequirementArguments (
-	RequirementId,
-	Name,
-	Value
-)
+INSERT OR IGNORE INTO RequirementArguments
+        (   RequirementId,   Name,   Value   )
 SELECT
 	'REQ_CSC_CITY_HAS_POPULATION_' || Pop,
 	'Amount',
@@ -171,8 +168,11 @@ CREATE TABLE IF NOT EXISTS CSC_RouteStackBits
     );
 
 INSERT OR IGNORE INTO CSC_RouteStackBits
-        (   Bit )
-VALUES  (   2   ), (   4   ), (   8   ), (   16  );
+        (   Bit   )
+VALUES  (   2   ),
+        (   4   ),
+        (   8   ),
+        (   16   );
 
 -- Scaled amount bits used for fractional per-population yields. Lua stores
 -- amount * 10000 as an integer so SQL can reconstruct small decimal values with
@@ -183,10 +183,27 @@ CREATE TABLE IF NOT EXISTS CSC_ScaledAmountBits
     );
 
 INSERT OR IGNORE INTO CSC_ScaledAmountBits
-        (   Bit )
-VALUES  (   1       ), (   2       ), (   4       ), (   8       ), (   16      ), (   32      ), (   64      ), (   128     ),
-        (   256     ), (   512     ), (   1024    ), (   2048    ), (   4096    ), (   8192    ), (   16384   ), (   32768   ),
-        (   65536   ), (   131072  ), (   262144  ), (   524288  );
+        (   Bit   )
+VALUES  (   1   ),
+        (   2   ),
+        (   4   ),
+        (   8   ),
+        (   16   ),
+        (   32   ),
+        (   64   ),
+        (   128   ),
+        (   256   ),
+        (   512   ),
+        (   1024   ),
+        (   2048   ),
+        (   4096   ),
+        (   8192   ),
+        (   16384   ),
+        (   32768   ),
+        (   65536   ),
+        (   131072   ),
+        (   262144   ),
+        (   524288   );
 
 -- Stage/customer return stack bits used by thresholded customer-building effects,
 -- where the game-facing amount is an integer such as +1 per 5 customer Citizens.
@@ -196,10 +213,18 @@ CREATE TABLE IF NOT EXISTS CSC_Stage4StackBits
     );
 
 INSERT OR IGNORE INTO CSC_Stage4StackBits
-        (   Bit )
-VALUES  (   1   ), (   2   ), (   4   ), (   8   ), (   16  ), (   32  ), (   64  ), (   128 );
+        (   Bit   )
+VALUES  (   1   ),
+        (   2   ),
+        (   4   ),
+        (   8   ),
+        (   16   ),
+        (   32   ),
+        (   64   ),
+        (   128   );
 
-INSERT OR IGNORE INTO CSC_Stage4StackBits (Bit)
+INSERT OR IGNORE INTO CSC_Stage4StackBits
+        (   Bit   )
 SELECT Bit FROM CSC_ScaledAmountBits WHERE Bit > 128;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

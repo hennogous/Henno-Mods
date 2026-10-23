@@ -162,11 +162,22 @@ Rendering rejects missing and extra slots. Exact matching normalizes only line
 wrapping, repeated whitespace, and Markdown's interchangeable `-`/`*` bullet
 marker; wording, punctuation, icon tokens, and transaction direction remain
 significant. Building-description pattern sequences are checked in this order:
-material/input, local exchange, customer output, trade output, then service
+material/input, local exchange, downstream output, customer output, trade output, then service
 text. Citizen slots, specialist yields, and intrinsic local/regional Amenities
 are omitted from authored building descriptions because Civ VI renders those
 database fields automatically below the description. Transaction effects on a
 different city, such as a trade-route origin Amenity, remain explicit.
+
+The omission applies to every production-building variant: base, M&C,
+compatibility and combined overrides, suffixed tags, grouped targets, raw literal
+patches and examples. `loc_md_to_sql.py` enforces the shared rule before generating
+SQL and during `--check`; the pattern validator also audits all localization
+sources recursively and rejects templates/rendered slots that repeat those stats.
+Service destination-slot disclosures, notification fragments and explanatory
+Civilopedia prose keep their information. Tests in
+`tests/test_building_description_variants.py` execute the generated Bakers text
+actions in manifest load order for all four M&C/Garden combinations and inspect
+the selected Café description, including the late combined override.
 
 Run the SQL style test directly with:
 
@@ -183,9 +194,20 @@ py -3 project/tools/quarter_contracts/format_sql_layout.py `
   "Civ Supply Chains/Data/CSC_Q_TAILORS.sql"
 ```
 
-The formatter aligns simple tuple columns and the values following wide
-`/* ColumnName, */` comments. It is deterministic and idempotent; new Quarter
-SQL must already match its output for validation to pass.
+The CSC skill's SQL formatting section owns the readability convention across
+active CSC SQL: 1–6 columns use horizontal aligned rows; 7+ columns use vertical
+column/value lists and one selected expression per line. Existing per-value
+`/* ColumnName, */` comments retain aligned values; annotated short rows may also
+remain vertical. The formatter supports inline and multiline insert headers and
+preserves every SQL token, comment and quoted value. It is deterministic and
+idempotent; Quarter SQL must already match its output for validation to pass.
+Pass multiple paths to format/check more than one file, or add `--check` to check
+without writing. Its CLI preserves the existing UTF-8 BOM and line endings.
+
+The localization generator applies the same formatter before writing SQL, so
+regeneration preserves the layout. SQL formatting regression tests execute both
+versions in SQLite and cover comments, multiline strings, nested expressions,
+wide selects, upserts and triggers (`tests/test_sql_layout.py`).
 
 `validate_quarter.py` remains the contract/preflight command. Use
 `validate_phase.py` for all implementation and handoff checks once a phase is

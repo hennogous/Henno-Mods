@@ -865,6 +865,22 @@ def _foundation_assertions(root: Path, connection: sqlite3.Connection) -> list[s
         1,
         "river-edge adjacency",
     )
+    _expect(
+        failures,
+        connection.execute(
+            "SELECT DistrictType,PolicyType FROM CSC_QuarterPolicyAdjacencyConfig WHERE QuarterKey='TAILORS' ORDER BY DistrictType,PolicyType"
+        ).fetchall(),
+        [
+            ("DISTRICT_COMMERCIAL_HUB", "POLICY_ECONOMIC_UNION"),
+            ("DISTRICT_COMMERCIAL_HUB", "POLICY_TOWN_CHARTERS"),
+            ("DISTRICT_HARBOR", "POLICY_ECONOMIC_UNION"),
+            ("DISTRICT_HARBOR", "POLICY_NAVAL_INFRASTRUCTURE"),
+            ("DISTRICT_HOLY_SITE", "POLICY_SCRIPTURE"),
+            ("DISTRICT_THEATER", "POLICY_AESTHETICS"),
+            ("DISTRICT_THEATER", "POLICY_SPORTS_MEDIA"),
+        ],
+        "Tailors adjacency policy mappings",
+    )
     source = (root / "project/localization/CSC_TAILORS_TEXT.md").read_text(encoding="utf-8")
     for exact in (
         "A district in your city specializing in tailoring.",
@@ -1543,7 +1559,7 @@ def _stage3_assertions(
     for token in ("CSC_GetTailorsTradeRouteState", "CSC_TAILORS_TAILOR_SUPPLIED", "CSC_TAILORS_IMPORT_TAILOR_ROUTE", "CSC_TAILORS_EXPORT_TAILOR_ROUTE"):
         if token not in route_ui:
             failures.append(f"Tailors route UI bridge missing {token}")
-    for token in ("CSC_TAILORS_IMPORT_TAILOR_ROUTE", "CSC_TAILORS_EXPORT_TAILOR_ROUTE", "ExportTailorRouteBit16"):
+    for token in ("CSC_TAILORS_IMPORT_TAILOR_ROUTE", "CSC_TAILORS_EXPORT_TAILOR_ROUTE", '"ExportTailorRoute"', "local BITS = {1, 2, 4, 8, 16}"):
         if token not in route_gameplay:
             failures.append(f"Tailors route gameplay bridge missing {token}")
     preview_lua = (root / "Civ Supply Chains/Lua_UI/TradeRoutes/CSC_BTS_TradeRoutePreviewSupport.lua").read_text(encoding="utf-8")

@@ -22,7 +22,6 @@ title: Bakers' Quarter
 * +1 {{production}} Production from each adjacent {{base}} Base or {{spec}} Specialty Materials resource from this supply chain.
 * +1 {{gold}} Gold from each adjacent {{sales}} City Center and Commercial Hub, and +1 {{food}} Food in return.
 * +1 {{gold}} Gold from each adjacent {{sales}} Entertainment Complex, Water Park and Garden district (Leugi), and +1 {{culture}} Culture in return.
-* +1 {{production}} Production from each adjacent Brewers' Quarter, and +1 {{gold}} Gold in return.
 * with City Lights:
    * +1 {{production}} Production from each adjacent {{goods}} Rural Community, and +1 {{food}} Food in return.
    * +1 {{gold}} Gold from each adjacent {{sales}} Urban Borough, and +1 {{food}} Food in return.
@@ -38,7 +37,10 @@ title: Bakers' Quarter
 
 The Water Mill has moved from the City Center to the Bakers' Quarter, and is only available if the Quarter has an adjacent river. The Wind Mill fills the same stage 2 role when the Quarter is not river-adjacent, and receives its terrain logistics bonus from Hills instead.
 
-* Unlocks at Wheel
+River-powered milling becomes available in the Classical era. Wind power extends milling to non-river Bakers' Quarters in the Medieval era.
+
+* Water Mill unlocks at Engineering (Classical era)
+* Wind Mill unlocks at Machinery (Medieval era)
 * Costs 80 {{production}} Production
 * Maintenance: -2 {{gold}} Gold
 
@@ -49,7 +51,7 @@ The Water Mill has moved from the City Center to the Bakers' Quarter, and is onl
 * +1 {{food}} Food to an adjacent Granary, and +1 {{production}} Production and +1 {{gold}} Gold to the Water Mill or Wind Mill in return.
 * At Feudalism, a Water Mill or Wind Mill adjacent to an improved {{base}} Base Materials resource unlocks:
    * A Storekeeper is established in the adjacent City Center if it has a Granary.
-   * The Storekeeper provides the city with +10% growth, +1 {{citizen}} Citizen slot and +1 {{engineer}} Great Engineer point per turn.
+   * The Storekeeper provides the city with +10% growth and +1 {{engineer}} Great Engineer point per turn.
 
 ## 3. Bakery
 

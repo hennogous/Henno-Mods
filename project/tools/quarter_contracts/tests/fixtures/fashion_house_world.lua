@@ -100,3 +100,8 @@ end};
 GameEvents={CSC_SetBakersTradeRouteProperties={Add=function()end}};
 FOOD_INDEX=0;PRODUCTION_INDEX=1;GOLD_INDEX=2;SCIENCE_INDEX=3;CULTURE_INDEX=4;FAITH_INDEX=5;
 Locale={Lookup=function(key)return key;end};
+
+-- Native lifecycle/operation APIs used by the multiplayer-hardened bridge.
+Game={GetLocalPlayer=function()return 0;end, GetCurrentGameTurn=function()return 1;end};
+GameConfiguration={IsNetworkMultiplayer=function()return false;end};
+ContextPtr={SetUpdate=function(_,callback)routeUpdate=callback;end};

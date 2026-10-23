@@ -12,23 +12,22 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Tags
-
-	(       Tag,                                    Vocabulary          )
-VALUES	(	'CLASS_CSC_BAKERS_BASE',                'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BAKERS_SPEC',	            'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_TAILORS_BASE',	            'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_TAILORS_SPEC',	            'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_APOTHECARIES_BASE',          'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_APOTHECARIES_SPEC',          'RESOURCE_CLASS'	),        
-        (	'CLASS_CSC_STONEMASONS_BASE',           'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_STONEMASONS_SPEC',           'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_CARPENTERS_BASE',            'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_CARPENTERS_SPEC',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BLACKSMITHS_BASE',           'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BLACKSMITHS_SPEC',           'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_GOLDSMITHS_BASE',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_GOLDSMITHS_SPEC',	        'RESOURCE_CLASS'	), 
-        (	'CLASS_CSC_BREWERS_BASE',               'RESOURCE_CLASS'	);
+        (   Tag,                             Vocabulary   )
+VALUES  (   'CLASS_CSC_BAKERS_BASE',         'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BAKERS_SPEC',         'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_TAILORS_BASE',        'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_TAILORS_SPEC',        'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_APOTHECARIES_BASE',   'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_APOTHECARIES_SPEC',   'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_STONEMASONS_BASE',    'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_STONEMASONS_SPEC',    'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_CARPENTERS_BASE',     'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_CARPENTERS_SPEC',     'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BLACKSMITHS_BASE',    'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BLACKSMITHS_SPEC',    'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_GOLDSMITHS_BASE',     'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_GOLDSMITHS_SPEC',     'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BREWERS_BASE',        'RESOURCE_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -36,8 +35,7 @@ VALUES	(	'CLASS_CSC_BAKERS_BASE',                'RESOURCE_CLASS'	),
 
 -- Bakers' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                           Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,			'CLASS_CSC_BAKERS_BASE'
 FROM	Resources
 WHERE	ResourceType 			IN
@@ -46,8 +44,7 @@ WHERE	ResourceType 			IN
 
 -- Bakers' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,				Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,			'CLASS_CSC_BAKERS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			IN
@@ -63,8 +60,7 @@ WHERE	ResourceType 			IN
 
 -- TAILORS' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,			    'CLASS_CSC_TAILORS_BASE'
 FROM	Resources
 WHERE	ResourceType 			    IN
@@ -72,8 +68,7 @@ WHERE	ResourceType 			    IN
 
 -- TAILORS' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,			    'CLASS_CSC_TAILORS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			    IN
@@ -83,8 +78,7 @@ WHERE	ResourceType 			    IN
 
 -- Apothecaries' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_APOTHECARIES_BASE'
 FROM	Resources
 WHERE	ResourceType                IN
@@ -98,8 +92,7 @@ WHERE	ResourceType                IN
 
 -- Apothecaries' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,			    'CLASS_CSC_APOTHECARIES_SPEC'
 FROM	Resources
 WHERE	ResourceType 			    IN
@@ -109,8 +102,7 @@ WHERE	ResourceType 			    IN
 
 -- Stonemasons' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_STONEMASONS_BASE'
 FROM	Resources
 WHERE	ResourceType                IN
@@ -120,8 +112,7 @@ WHERE	ResourceType                IN
 
 -- Stonemasons' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,			    'CLASS_CSC_STONEMASONS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			    IN
@@ -132,8 +123,7 @@ WHERE	ResourceType 			    IN
 
 -- Carpenters' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_CARPENTERS_BASE'
 FROM	Resources
 WHERE	ResourceType                IN
@@ -144,8 +134,7 @@ WHERE	ResourceType                IN
 
 -- Carpenters' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,			    'CLASS_CSC_CARPENTERS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			    IN
@@ -158,8 +147,7 @@ WHERE	ResourceType 			    IN
 
 -- Blacksmiths' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_BLACKSMITHS_BASE'
 FROM	Resources
 WHERE	ResourceType                IN
@@ -168,8 +156,7 @@ WHERE	ResourceType                IN
 
 -- Blacksmiths' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,			    'CLASS_CSC_BLACKSMITHS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			    IN
@@ -180,8 +167,7 @@ WHERE	ResourceType 			    IN
 
 -- Goldsmiths' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_GOLDSMITHS_BASE'
 FROM	Resources
 WHERE	ResourceType                IN
@@ -192,8 +178,7 @@ WHERE	ResourceType                IN
 
 -- Goldsmiths' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,			    'CLASS_CSC_GOLDSMITHS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			    IN
@@ -204,8 +189,7 @@ WHERE	ResourceType 			    IN
 
 -- Brewers' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                       Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,               'CLASS_CSC_BREWERS_BASE'
 FROM	Resources
 WHERE	ResourceType                IN

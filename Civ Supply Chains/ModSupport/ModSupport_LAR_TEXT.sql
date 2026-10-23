@@ -4,10 +4,9 @@
 --------------------------------------------------------------
 
 INSERT OR REPLACE INTO LocalizedText
-    (Language, Tag, Text)
-VALUES
-    ('en_US', 'LOC_PEDIA_RESOURCES_PAGE_RESOURCE_LEU_P0K_QUINOA_CHAPTER_CSCQUAR_TITLE', 'Supply Chains'),
-    ('en_US', 'LOC_PEDIA_RESOURCES_PAGE_RESOURCE_LEU_P0K_QUINOA_CHAPTER_CSCQUAR_PARA_1', '[ICON_CSC_BASE] Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter');
+        (   Language,   Tag,                                                                         Text   )
+VALUES  (   'en_US',    'LOC_PEDIA_RESOURCES_PAGE_RESOURCE_LEU_P0K_QUINOA_CHAPTER_CSCQUAR_TITLE',    'Supply Chains'   ),
+        (   'en_US',    'LOC_PEDIA_RESOURCES_PAGE_RESOURCE_LEU_P0K_QUINOA_CHAPTER_CSCQUAR_PARA_1',   '[ICON_CSC_BASE] Base Materials:[NEWLINE][NEWLINE][ICON_BULLET] [ICON_BAKERS] Bakers'' Quarter'   );
 
 -- Raw SQL 1
 UPDATE LocalizedText

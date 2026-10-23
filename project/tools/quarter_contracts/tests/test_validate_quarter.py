@@ -176,6 +176,7 @@ class TailorsContractTests(unittest.TestCase):
                 "E.TRADE_STACKING",
                 "E.SERVICE_PERSISTENCE",
                 "E.WONDER_SERVICE_EXACT_PLACEMENT",
+                "E.POLICY_RETURN_ADJACENCIES",
             },
         )
 

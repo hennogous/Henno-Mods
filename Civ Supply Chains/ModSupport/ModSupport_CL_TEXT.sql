@@ -4,9 +4,8 @@
 --------------------------------------------------------------
 
 INSERT OR REPLACE INTO LocalizedText
-    (Language, Tag, Text)
-VALUES
-    ('en_US', 'LOC_CLASS_CSC_GOODS_PROVIDER_NAME', '[ICON_CSC_GOODS] Rural Community');
+        (   Language,   Tag,                                   Text   )
+VALUES  (   'en_US',    'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',   '[ICON_CSC_GOODS] Rural Community'   );
 
 UPDATE LocalizedText
 SET Text = 'Effects apply to this city only.[NEWLINE][NEWLINE]Grants the Classical Borough +2 [ICON_PRODUCTION] Production for every adjacent unique Engineering district (Aqueduct, Dam, Canal, or Neighborhood). Allows the Prospectors'' Guild Urban improvement to be built by Builder units.[NEWLINE][NEWLINE]The Prospectors'' Guild provides +1 [ICON_Production] Production and an additional +1 [ICON_PRODUCTION] Production for every 2 adjacent districts. If built on a Mine or Quarry Strategic or Luxury resources, the city will gain use of that resource. Cannot be built adjacent to other Prospectors'' Guilds.'
@@ -90,29 +89,32 @@ CREATE TEMP TABLE CSC_CL_SUPPLY_CHAIN_PEDIA (
     DistrictRole TEXT
 );
 
-INSERT INTO CSC_CL_SUPPLY_CHAIN_PEDIA (DistrictType, DistrictRole) VALUES
-    ('DISTRICT_RURALCOMMUNITYA', 'RURAL'),
-    ('DISTRICT_COREX_FRONTIER_TOWN', 'RURAL'),
-    ('DISTRICT_RURALCOMMUNITYB', 'RURAL'),
-    ('DISTRICT_COREX_TROYU', 'RURAL'),
-    ('DISTRICT_COREX_TSIKHE', 'RURAL'),
-    ('DISTRICT_RURALCOMMUNITYC', 'RURAL'),
-    ('DISTRICT_COREX_GYOSON', 'RURAL'),
-    ('DISTRICT_COREEXPANSIONA', 'URBAN'),
-    ('DISTRICT_COREX_XIAN', 'URBAN'),
-    ('DISTRICT_COREX_UPAPITHA', 'URBAN'),
-    ('DISTRICT_COREX_VENICE_01', 'URBAN'),
-    ('DISTRICT_COREEXPANSIONB', 'URBAN'),
-    ('DISTRICT_COREX_VENICE_02', 'URBAN'),
-    ('DISTRICT_COREX_FUERTE', 'URBAN'),
-    ('DISTRICT_COREEXPANSIONC', 'URBAN'),
-    ('DISTRICT_COREX_ELYSEE', 'URBAN');
+INSERT INTO CSC_CL_SUPPLY_CHAIN_PEDIA
+        (   DistrictType,                     DistrictRole   )
+VALUES  (   'DISTRICT_RURALCOMMUNITYA',       'RURAL'   ),
+        (   'DISTRICT_COREX_FRONTIER_TOWN',   'RURAL'   ),
+        (   'DISTRICT_RURALCOMMUNITYB',       'RURAL'   ),
+        (   'DISTRICT_COREX_TROYU',           'RURAL'   ),
+        (   'DISTRICT_COREX_TSIKHE',          'RURAL'   ),
+        (   'DISTRICT_RURALCOMMUNITYC',       'RURAL'   ),
+        (   'DISTRICT_COREX_GYOSON',          'RURAL'   ),
+        (   'DISTRICT_COREEXPANSIONA',        'URBAN'   ),
+        (   'DISTRICT_COREX_XIAN',            'URBAN'   ),
+        (   'DISTRICT_COREX_UPAPITHA',        'URBAN'   ),
+        (   'DISTRICT_COREX_VENICE_01',       'URBAN'   ),
+        (   'DISTRICT_COREEXPANSIONB',        'URBAN'   ),
+        (   'DISTRICT_COREX_VENICE_02',       'URBAN'   ),
+        (   'DISTRICT_COREX_FUERTE',          'URBAN'   ),
+        (   'DISTRICT_COREEXPANSIONC',        'URBAN'   ),
+        (   'DISTRICT_COREX_ELYSEE',          'URBAN'   );
 
-INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
+INSERT OR REPLACE INTO LocalizedText
+        (   Language,   Tag,   Text   )
 SELECT 'en_US', 'LOC_PEDIA_DISTRICTS_PAGE_' || DistrictType || '_CHAPTER_CSCHAIN_TITLE', 'Supply Chains'
 FROM CSC_CL_SUPPLY_CHAIN_PEDIA;
 
-INSERT OR REPLACE INTO LocalizedText (Language, Tag, Text)
+INSERT OR REPLACE INTO LocalizedText
+        (   Language,   Tag,   Text   )
 SELECT
     'en_US',
     'LOC_PEDIA_DISTRICTS_PAGE_' || DistrictType || '_CHAPTER_CSCHAIN_PARA_1',

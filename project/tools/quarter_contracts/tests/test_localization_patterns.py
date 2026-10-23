@@ -169,6 +169,21 @@ class LocalizationPatternCatalogTests(unittest.TestCase):
                 {},
             )
 
+    def test_catalog_rejects_engine_stats_under_a_new_pattern_name(self) -> None:
+        catalog = copy.deepcopy(self.catalog)
+        pattern = next(item for item in catalog["patterns"] if item["id"] == "LP.LOCAL.EXCHANGE_BULLET")
+        pattern["template"] += " +1 [ICON_Citizen] Citizen slot."
+        self.assertTrue(any("engine-rendered Citizen slot" in failure
+                            for failure in PATTERNS.validate_catalog(catalog)))
+
+    def test_rendered_pattern_cannot_inject_owning_building_stats_through_slots(self) -> None:
+        with self.assertRaisesRegex(PATTERNS.PatternError, "engine-rendered Citizen slot"):
+            PATTERNS.render_pattern(self.catalog, "LP.LOCAL.EXCHANGE_BULLET", {
+                "received": "1 [ICON_Culture] Culture",
+                "target": "Workshop",
+                "provided": "1 [ICON_Citizen] Citizen slot",
+            })
+
     def test_engine_rendered_stat_validator_preserves_cross_city_amenity(self) -> None:
         duplicated = (
             "- +1 [ICON_Citizen] Citizen slot, and +2 [ICON_Culture] Culture to "

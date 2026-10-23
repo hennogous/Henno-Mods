@@ -12,10 +12,9 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Tags
-
-		(   Tag,							    Vocabulary			)
-VALUES	(	'CLASS_CSC_APOTHECARIES_BASE',      'RESOURCE_CLASS'	),
-		(	'CLASS_CSC_GOLDSMITHS_BASE',        'RESOURCE_CLASS'	);
+        (   Tag,                             Vocabulary   )
+VALUES  (   'CLASS_CSC_APOTHECARIES_BASE',   'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_GOLDSMITHS_BASE',     'RESOURCE_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -23,8 +22,7 @@ VALUES	(	'CLASS_CSC_APOTHECARIES_BASE',      'RESOURCE_CLASS'	),
 
 --	Apothecaries' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-	(	Type,							Tag			        )
+        (   Type,   Tag   )
 SELECT	FeatureType,					'CLASS_CSC_APOTHECARIES_BASE'
 FROM	Features
 WHERE	FeatureType 					IN

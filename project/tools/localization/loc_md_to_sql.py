@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import re
 import sys
 from dataclasses import dataclass
@@ -12,6 +13,12 @@ from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[3]
+_LAYOUT_SPEC = importlib.util.spec_from_file_location(
+    "csc_sql_layout", ROOT / "project/tools/quarter_contracts/format_sql_layout.py"
+)
+assert _LAYOUT_SPEC and _LAYOUT_SPEC.loader
+SQL_LAYOUT = importlib.util.module_from_spec(_LAYOUT_SPEC)
+_LAYOUT_SPEC.loader.exec_module(SQL_LAYOUT)
 
 
 @dataclass
@@ -270,7 +277,9 @@ RELATIONSHIP_ICONS = (
     (re.compile(r"\bSales(?=\s+districts?\b)", re.I), "ICON_CSC_SALES"),
     (re.compile(r"\bGoods(?=\s+providers?\b)", re.I), "ICON_CSC_GOODS"),
 )
-SQL_TEXT_TOKENS = re.compile(r"--[^\n]*|/\*[\s\S]*?\*/|'(?:''|[^'])*'")
+SQL_EXPRESSION_TOKENS = re.compile(
+    r"--[^\n]*|/\*[\s\S]*?\*/|'(?:''|[^'])*'|\b\w+\b|[(),;]"
+)
 SERVICE_VENUE_SUFFIX = re.compile(
     r"\{LOC_BUILDING_CSC_[A-Z0-9_]*SERVICE[A-Z0-9_]*_NAME\}(?:\s+service)?\s+(?:at|on|in)\b", re.I
 )
@@ -286,13 +295,79 @@ def relationship_icon_errors(text: str) -> list[str]:
 
 
 def raw_localization_literals(sql: str):
-    """Read text literals, excluding comments and INSTR search needles."""
-    for match in SQL_TEXT_TOKENS.finditer(sql):
-        if not match.group(0).startswith("'"):
+    """Read literals, excluding comments and INSTR/REPLACE search arguments."""
+    calls: list[list] = []
+    previous = ""
+    for match in SQL_EXPRESSION_TOKENS.finditer(sql):
+        token = match.group(0)
+        if token.startswith(("--", "/*")):
             continue
-        if re.search(r"\binstr\s*\([^,]*,\s*$", sql[:match.start()], re.I):
-            continue
-        yield match.group(0)[1:-1].replace("''", "'")
+        if token == "(":
+            calls.append([previous.upper(), 0])
+        elif token == ")" and calls:
+            calls.pop()
+        elif token == "," and calls:
+            calls[-1][1] += 1
+        elif token.startswith("'"):
+            if not any(name in {"INSTR", "REPLACE"} and argument == 1 for name, argument in calls):
+                yield token[1:-1].replace("''", "'")
+        previous = token
+
+
+def is_production_building_description(tag: str) -> bool:
+    """Include suffixed mode/compatibility variants, excluding hidden Services."""
+    return bool(
+        re.fullmatch(r"LOC_BUILDING_CSC_[A-Z0-9_]+_DESCRIPTION(?:_[A-Z0-9_]+)?", tag)
+        and not re.search(r"_SERVICE(?:_|$)", tag)
+    )
+
+
+def validate_engine_rendered_building_stats_omitted(description: str) -> list[str]:
+    """Reject owning-building stats that Civ VI adds below authored descriptions."""
+    failures: list[str] = []
+    # Generation strips Markdown bullets; validate both source and rendered forms.
+    for line in description.replace("[NEWLINE]", "\n").splitlines():
+        for slot in re.finditer(r"(?:\[ICON_Citizen\]\s*)?Citizen slots?\b", line, re.I):
+            sentence = re.split(r"[.!?]", line[:slot.start()])[-1]
+            destination = re.match(r"\s+in\s+(?:the\s+)?([^.,;]+)", line[slot.end():], re.I)
+            # Service grants in another district are not the owning building's stats.
+            if re.search(r"\bservice\b|_SERVICE(?:_|\})", sentence, re.I):
+                continue
+            if destination and not re.search(r"\bQuarter\b|\bdistrict\b", destination[1], re.I):
+                continue
+            failures.append("authored description repeats an engine-rendered Citizen slot")
+            break
+        if re.search(
+            r"\b(?:to|per|each)\s+(?:\[ICON_Citizen\]\s*)?Citizens?\s+in\s+"
+            r"(?:(?:the|this|its)\s+)?(?:Quarter|district)\b",
+            line,
+            re.I,
+        ):
+            failures.append("authored description repeats engine-rendered specialist yields")
+        if re.search(
+            r"^\s*(?:(?:[-*]|\[ICON_Bullet\])\s*)?\+\d+(?:\.\d+)?\s+"
+            r"\[ICON_Amenities\]\s+Amenit(?:y|ies)\b",
+            line,
+            re.I,
+        ) and not re.search(r"\b(?:origin|another|other)\s+cit(?:y|ies)\b", line, re.I):
+            failures.append("authored description repeats an engine-rendered intrinsic Amenity")
+    return failures
+
+
+def building_stat_errors(entry: Entry) -> list[str]:
+    tags = [tag for tag in [entry.tag, *entry.tags] if tag]
+    # Explicit WHERE targets and raw literal patches must obey the same rule.
+    tags.extend(raw_localization_literals(entry.where or ""))
+    fragments = [entry.text_prefix + entry.text + entry.text_suffix]
+    if entry.mode == "raw":
+        fragments = list(raw_localization_literals(entry.text))
+        tags.extend(fragments)
+    if not any(is_production_building_description(tag) for tag in tags):
+        return []
+    return list(dict.fromkeys(
+        failure for text in fragments
+        for failure in validate_engine_rendered_building_stats_omitted(text)
+    ))
 
 
 def validate_editorial_entry(entry: Entry) -> list[str]:
@@ -307,6 +382,7 @@ def validate_editorial_entry(entry: Entry) -> list[str]:
     tags = [entry.heading, *tags]
     if any("EFFECT_DESCRIPTION" in tag for tag in tags) and SERVICE_VENUE_SUFFIX.search(entry.text):
         failures.append("MCUIS service labels use the service name alone; omit venue suffixes")
+    failures.extend(building_stat_errors(entry))
     return failures
 
 
@@ -367,7 +443,7 @@ def render_sql(source: SourceFile) -> str:
             ]
         )
 
-    return "\n".join(out).rstrip() + "\n"
+    return SQL_LAYOUT.format_sql_layout_text("\n".join(out).rstrip() + "\n")
 
 
 def iter_sources(paths: Iterable[Path]) -> list[Path]:

@@ -12,6 +12,7 @@ purpose: >
   gameplay correctness validation.
 
 visual_rules:
+  - "CSC-wide layout: 1–6 columns use horizontal aligned rows; 7+ use vertical column/value lists and one selected expression per line. Annotated short rows may remain vertical."
   - "File begins with a CSC_Q_<QUARTER> identity comment and Author: Henno."
   - "Major headings use /* TAB TITLE */ between matching long equals delimiters; nested block headings may use matching hyphen delimiters as Bakers does."
   - "Named table subsections use -- TAB Title between matching long hyphen delimiters."

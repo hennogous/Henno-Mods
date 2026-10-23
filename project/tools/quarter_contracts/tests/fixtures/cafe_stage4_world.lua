@@ -56,6 +56,8 @@ Players={[0]={GetCities=function()
     end};
 end}};
 PlayerManager={GetWasEverAliveCount=function() return 1; end};
+Players[0].GetID=function()return 0;end;
+PlayerManager.GetAlive=function()return {Players[0]};end;
 Events={PlayerTurnActivated={Add=function() end}};
 
 function addCity(id,population)

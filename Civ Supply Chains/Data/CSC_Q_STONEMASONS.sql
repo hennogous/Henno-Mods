@@ -8,9 +8,8 @@
 --===========================================================================================================================================================================--
 
 INSERT INTO Types
-
-		(	Type,																Kind					)
-VALUES	( 	'DISTRICT_CSC_STONEMASONS_QUARTER',                                 'KIND_DISTRICT'         );
+        (   Type,                                 Kind   )
+VALUES  (   'DISTRICT_CSC_STONEMASONS_QUARTER',   'KIND_DISTRICT'   );
 
 
 
@@ -23,10 +22,9 @@ VALUES	( 	'DISTRICT_CSC_STONEMASONS_QUARTER',                                 'K
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Tags
-
-	(       Tag,                                    Vocabulary                  )
-VALUES	(	'CLASS_CSC_STONEMASONS_BASE',           'RESOURCE_CLASS'	        ),
-        (	'CLASS_CSC_STONEMASONS_SPEC',           'RESOURCE_CLASS'	        );
+        (   Tag,                            Vocabulary   )
+VALUES  (   'CLASS_CSC_STONEMASONS_BASE',   'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_STONEMASONS_SPEC',   'RESOURCE_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -34,24 +32,21 @@ VALUES	(	'CLASS_CSC_STONEMASONS_BASE',           'RESOURCE_CLASS'	        ),
 
 -- Stonemasons' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                           Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,			        'CLASS_CSC_STONEMASONS_BASE'
 FROM	Resources
 WHERE	ResourceType 			        IN
     (	'RESOURCE_STONE'                );
 
 INSERT OR IGNORE INTO TypeTags
-
-	(	Type,							Tag			        )
+        (   Type,   Tag   )
 SELECT	TerrainType,					'CLASS_CSC_STONEMASONS_BASE'
 FROM	Terrains
 WHERE	Hills = 1;
 
 -- Stonemasons' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                           Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,			        'CLASS_CSC_STONEMASONS_SPEC'
 FROM    Resources
 WHERE	ResourceType 			        IN
@@ -69,74 +64,105 @@ WHERE	ResourceType 			        IN
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO Districts
-
-		(  	DistrictType,
-			Name,
-			Description,
-			PrereqTech,
-			PrereqCivic,
-			Cost,
-			CostProgressionModel,
-			CostProgressionParam1,
-			MilitaryDomain,
-			RequiresPlacement,
-			Coast,
-			RequiresPopulation,
-			Aqueduct,
-			InternalOnly,
-			NoAdjacentCity,
-			PlunderType,
-			PlunderAmount,
-			Appeal,
-			OnePerCity,
-			CaptureRemovesBuildings,
-			CaptureRemovesCityDefenses,
-			Maintenance,
-			CityStrengthModifier,
-			AdvisorType                     		)
-VALUES	(
-		/*  DistrictType, */						'DISTRICT_CSC_STONEMASONS_QUARTER',
-		/*  Name, */								'LOC_DISTRICT_CSC_STONEMASONS_QUARTER_NAME',
-		/*  Description, */							'LOC_DISTRICT_CSC_STONEMASONS_QUARTER_DESCRIPTION',
-		/*  PrereqTech, */							NULL,
-		/*  PrereqCivic, */							'CIVIC_CRAFTSMANSHIP',
-		/*  Cost, */								60,
-		/*  CostProgressionModel, */    			'COST_PROGRESSION_PREVIOUS_COPIES',
-		/*  CostProgressionParam1, */				100,
-		/*  MilitaryDomain, */						'NO_DOMAIN',
-		/*  RequiresPlacement, */					1,
-		/*  Coast, */								0,
-		/*  RequiresPopulation, */	    			0,
-		/*  Aqueduct, */							0,
-		/*  InternalOnly, */						0,
-		/*  NoAdjacentCity, */						0,
-		/*  PlunderType, */							'PLUNDER_GOLD',
-		/*  PlunderAmount, */						50,
-		/*  Appeal, */								1,
-		/*  OnePerCity, */							1,
-		/*  CaptureRemovesBuildings, */	   			0,
-		/*  CaptureRemovesCityDefenses, */			0,
-		/*  Maintenance, */							0,
-		/*  CityStrengthModifier */					2,
-		/*  AdvisorType */							'ADVISOR_GENERIC'
-													);
+    (
+        DistrictType,
+        Name,
+        Description,
+        PrereqTech,
+        PrereqCivic,
+        Cost,
+        CostProgressionModel,
+        CostProgressionParam1,
+        MilitaryDomain,
+        RequiresPlacement,
+        Coast,
+        RequiresPopulation,
+        Aqueduct,
+        InternalOnly,
+        NoAdjacentCity,
+        PlunderType,
+        PlunderAmount,
+        Appeal,
+        OnePerCity,
+        CaptureRemovesBuildings,
+        CaptureRemovesCityDefenses,
+        Maintenance,
+        CityStrengthModifier,
+        AdvisorType
+    )
+VALUES
+    (
+        /*  DistrictType, */                'DISTRICT_CSC_STONEMASONS_QUARTER',
+        /*  Name, */                        'LOC_DISTRICT_CSC_STONEMASONS_QUARTER_NAME',
+        /*  Description, */                 'LOC_DISTRICT_CSC_STONEMASONS_QUARTER_DESCRIPTION',
+        /*  PrereqTech, */                  NULL,
+        /*  PrereqCivic, */                 'CIVIC_CRAFTSMANSHIP',
+        /*  Cost, */                        60,
+        /*  CostProgressionModel, */        'COST_PROGRESSION_PREVIOUS_COPIES',
+        /*  CostProgressionParam1, */       100,
+        /*  MilitaryDomain, */              'NO_DOMAIN',
+        /*  RequiresPlacement, */           1,
+        /*  Coast, */                       0,
+        /*  RequiresPopulation, */          0,
+        /*  Aqueduct, */                    0,
+        /*  InternalOnly, */                0,
+        /*  NoAdjacentCity, */              0,
+        /*  PlunderType, */                 'PLUNDER_GOLD',
+        /*  PlunderAmount, */               50,
+        /*  Appeal, */                      1,
+        /*  OnePerCity, */                  1,
+        /*  CaptureRemovesBuildings, */     0,
+        /*  CaptureRemovesCityDefenses, */  0,
+        /*  Maintenance, */                 0,
+        /*  CityStrengthModifier */         2,
+        /*  AdvisorType */                  'ADVISOR_GENERIC'
+    );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Adjacency_YieldChanges
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
 
 INSERT INTO Adjacency_YieldChanges
-
-		(	ID,											    Description,									    YieldType,				YieldChange,	AdjacentFeature,	AdjacentImprovement,	AdjacentDistrict,						AdjacentResourceClass,		PrereqTech			)
-VALUES	(	'CSC_COMMERCIAL_HUB_GOLD_TO_STONEMASONS',		'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_STONEMASONS',		'YIELD_GOLD',			1,				NULL,				NULL,					'DISTRICT_COMMERCIAL_HUB',				'NO_RESOURCECLASS',			NULL				),
-		(	'CSC_STONEMASONS_PRODUCTION_TO_COMMERCIAL_HUB',	'LOC_CSC_STONEMASONS_PRODUCTION_TO_COMMERCIAL_HUB',	'YIELD_PRODUCTION',		1,				NULL,				NULL,					'DISTRICT_CSC_STONEMASONS_QUARTER',     'NO_RESOURCECLASS',			NULL				);
+    (
+        ID,
+        Description,
+        YieldType,
+        YieldChange,
+        AdjacentFeature,
+        AdjacentImprovement,
+        AdjacentDistrict,
+        AdjacentResourceClass,
+        PrereqTech
+    )
+VALUES
+    (
+        'CSC_COMMERCIAL_HUB_GOLD_TO_STONEMASONS',
+        'LOC_CSC_COMMERCIAL_HUB_GOLD_TO_STONEMASONS',
+        'YIELD_GOLD',
+        1,
+        NULL,
+        NULL,
+        'DISTRICT_COMMERCIAL_HUB',
+        'NO_RESOURCECLASS',
+        NULL
+    ),
+    (
+        'CSC_STONEMASONS_PRODUCTION_TO_COMMERCIAL_HUB',
+        'LOC_CSC_STONEMASONS_PRODUCTION_TO_COMMERCIAL_HUB',
+        'YIELD_PRODUCTION',
+        1,
+        NULL,
+        NULL,
+        'DISTRICT_CSC_STONEMASONS_QUARTER',
+        'NO_RESOURCECLASS',
+        NULL
+    );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	District_Adjacencies
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------												
 
 INSERT INTO District_Adjacencies
-
-		(	DistrictType,						        YieldChangeId		)
-VALUES	(	'DISTRICT_CSC_STONEMASONS_QUARTER',		    'CSC_COMMERCIAL_HUB_GOLD_TO_STONEMASONS'		    ),
-		(	'DISTRICT_COMMERCIAL_HUB',			        'CSC_STONEMASONS_PRODUCTION_TO_COMMERCIAL_HUB'		);
+        (   DistrictType,                         YieldChangeId   )
+VALUES  (   'DISTRICT_CSC_STONEMASONS_QUARTER',   'CSC_COMMERCIAL_HUB_GOLD_TO_STONEMASONS'   ),
+        (   'DISTRICT_COMMERCIAL_HUB',            'CSC_STONEMASONS_PRODUCTION_TO_COMMERCIAL_HUB'   );

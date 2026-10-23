@@ -4,7 +4,6 @@
 --------------------------------------------------------------
 
 INSERT OR REPLACE INTO LocalizedText
-    (Language, Tag, Text)
-VALUES
-    ('en_US', 'LOC_HUD_CITY_BUILDINGS_AND_DISTRICTS', 'Infrastructure and Services'),
-    ('en_US', 'LOC_PRODUCTION_PANEL_SCROLL_TO_BUILDINGS', 'Scroll to Infrastructure and Services');
+        (   Language,   Tag,                                          Text   )
+VALUES  (   'en_US',    'LOC_HUD_CITY_BUILDINGS_AND_DISTRICTS',       'Infrastructure and Services'   ),
+        (   'en_US',    'LOC_PRODUCTION_PANEL_SCROLL_TO_BUILDINGS',   'Scroll to Infrastructure and Services'   );

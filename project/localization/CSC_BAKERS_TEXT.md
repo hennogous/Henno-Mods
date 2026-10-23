@@ -171,7 +171,7 @@ a new {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_NewAmount}% gro
 {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: {1_LostAmount}% growth and {2_LostStack} [ICON_GreatEngineer] Great Engineer {3_StackCount : plural 1?point; other?points;}
 
 ## LOC_CSC_BAKERS_STAGE_2_EFFECT
-+1 [ICON_Food] Food from an adjacent Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Water Mill or Wind Mill.
++1 [ICON_Food] Food from an adjacent Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 
 At Feudalism, a Granary adjacent to a supplied Water Mill or Wind Mill establishes a {LOC_BUILDING_CSC_BAKERS_STAGE_2_SERVICE_NAME} service: +10% growth and +1 [ICON_GreatEngineer] Great Engineer point from each adjacent supplied mill.
 

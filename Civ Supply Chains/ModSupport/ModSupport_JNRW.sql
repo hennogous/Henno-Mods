@@ -12,10 +12,9 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Tags
-
-	    (   Tag,                                    Vocabulary          )
-VALUES  (	'CLASS_CSC_BLACKSMITHS_BASE',           'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BREWERS_SPEC',               'RESOURCE_CLASS'	);
+        (   Tag,                            Vocabulary   )
+VALUES  (   'CLASS_CSC_BLACKSMITHS_BASE',   'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BREWERS_SPEC',       'RESOURCE_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -23,8 +22,7 @@ VALUES  (	'CLASS_CSC_BLACKSMITHS_BASE',           'RESOURCE_CLASS'	),
 
 -- Blacksmiths' Quarter base materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                           Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,			        'CLASS_CSC_BLACKSMITHS_BASE'
 FROM	Resources
 WHERE	ResourceType 			        IN
@@ -32,8 +30,7 @@ WHERE	ResourceType 			        IN
 
 -- Brewers' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                           Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,			        'CLASS_CSC_BREWERS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			        IN

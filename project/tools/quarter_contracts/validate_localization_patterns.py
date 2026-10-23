@@ -16,6 +16,14 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "project/tools/localization"))
+import loc_md_to_sql as LOCALIZATION
+
+# Keep catalog consumers and generation on the same executable omission rule.
+validate_engine_rendered_building_stats_omitted = (
+    LOCALIZATION.validate_engine_rendered_building_stats_omitted
+)
+
 SPEC_ROOT = ROOT / "project" / "specs"
 DEFAULT_CATALOG = SPEC_ROOT / "reference" / "bakers-localization-patterns.yaml"
 SCHEMA_PATH = SPEC_ROOT / "schema" / "localization-pattern-catalog.schema.json"
@@ -98,6 +106,11 @@ def validate_catalog(catalog: dict[str, Any], path: Path = DEFAULT_CATALOG) -> l
         pattern_id = str(pattern.get("id", "<unknown>"))
         template = pattern.get("template")
         if isinstance(template, str):
+            if pattern.get("applies_to") == "building_description":
+                failures.extend(
+                    f"{pattern_id}: {failure}"
+                    for failure in validate_engine_rendered_building_stats_omitted(template)
+                )
             try:
                 actual_slots = list(dict.fromkeys(template_slots(template)))
             except PatternError as failure:
@@ -174,6 +187,10 @@ def render_pattern(
     rendered = _compact(template).format(**{key: str(value) for key, value in slots.items()})
     if rendered.startswith("* "):
         rendered = bullet_marker + rendered[1:]
+    if pattern.get("applies_to") == "building_description":
+        failures = validate_engine_rendered_building_stats_omitted(rendered)
+        if failures:
+            raise PatternError(f"{pattern_id}: " + "; ".join(failures))
     return rendered
 
 
@@ -191,28 +208,15 @@ def source_contains_exact_text(source: str, rendered: str) -> bool:
     return normalize_match_text(rendered) in normalize_match_text(source)
 
 
-def validate_engine_rendered_building_stats_omitted(description: str) -> list[str]:
-    """Reject owning-building stats that Civ VI adds below authored descriptions."""
+def validate_localization_sources(source_root: Path = ROOT / "project/localization") -> list[str]:
+    """Audit every variant, including examples, rather than only catalog anchors."""
     failures: list[str] = []
-    lines = description.replace("[NEWLINE]", "\n").splitlines()
-    for line in lines:
-        if re.search(r"\[ICON_Citizen\]\s+Citizen slots?", line, re.IGNORECASE):
-            failures.append("authored description repeats an engine-rendered Citizen slot")
-        if re.search(
-            r"\[ICON_Citizen\]\s+Citizens?\s+in\s+(?:the\s+)?(?:Quarter|district)",
-            line,
-            re.IGNORECASE,
-        ):
-            failures.append(
-                "authored description repeats engine-rendered specialist yields"
-            )
-        if re.search(
-            r"^\s*[-*]\s*\+\d+(?:\.\d+)?\s+\[ICON_Amenities\]\s+Amenit(?:y|ies)\b",
-            line,
-            re.IGNORECASE,
-        ):
-            failures.append(
-                "authored description repeats an engine-rendered intrinsic Amenity"
+    for path in LOCALIZATION.iter_sources([source_root]):
+        source = LOCALIZATION.parse_source(path)
+        for entry in source.entries:
+            failures.extend(
+                f"{LOCALIZATION.rel(path)}:{entry.line} {entry.heading}: {failure}"
+                for failure in LOCALIZATION.building_stat_errors(entry)
             )
     return failures
 
@@ -271,6 +275,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         catalog = load_catalog(args.catalog.resolve())
         failures = validate_catalog(catalog, args.catalog)
+        failures.extend(validate_localization_sources())
         if failures:
             for failure in failures:
                 print(f"ERROR: {failure}")
@@ -296,9 +301,9 @@ def main(argv: list[str] | None = None) -> int:
                 )
             )
         else:
-            print(f"PASS: localization pattern catalog ({len(catalog['patterns'])} patterns)")
+            print(f"PASS: localization pattern catalog ({len(catalog['patterns'])} patterns) and building-description source variants")
         return 0
-    except (OSError, PatternError, json.JSONDecodeError, yaml.YAMLError) as failure:
+    except (OSError, PatternError, LOCALIZATION.LocError, json.JSONDecodeError, yaml.YAMLError) as failure:
         print(f"ERROR: {failure}")
         return 2
 

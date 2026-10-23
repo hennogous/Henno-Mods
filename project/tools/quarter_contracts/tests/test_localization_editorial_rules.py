@@ -12,7 +12,7 @@ class LocalizationEditorialTests(unittest.TestCase):
         return LOC.Entry(heading=tag, line=1, mode=mode, language='en_US', tag=tag, tags=[], where=None, text=text)
 
     def test_current_localization_sources_follow_rules(self):
-        for path in sorted((ROOT/'project/localization').glob('*.md')):
+        for path in sorted((ROOT/'project/localization').rglob('*.md')):
             source = LOC.parse_source(path)
             for entry in source.entries:
                 with self.subTest(source=path.name, entry=entry.heading):

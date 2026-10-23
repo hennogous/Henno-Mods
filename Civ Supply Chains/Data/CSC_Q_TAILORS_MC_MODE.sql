@@ -3,6 +3,11 @@
 -- DateCreated: 2026-08-23
 --------------------------------------------------------------
 
+-- Tailors: Monopolies & Corporations layer
+-- Loaded only with M&C. These rows augment ordinary material exchanges rather
+-- than replacing core SQL. An Industry/Corporation still needs the matching
+-- material, adjacency and ownership supplied by its selected collection.
+-- Product commissioning/Great Works belong to Taxes & Politics, outside CSC.
 --===========================================================================================================================================================================--
 /*	INDUSTRIES & CORPORATIONS */
 --===========================================================================================================================================================================--
@@ -11,6 +16,9 @@
 --	ImprovementModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+-- Improvement -> producer pays the full M&C input: Industry sends 2 and
+-- Corporation sends 3 to the adjacent producer. These improvement types use
+-- separate input attachments from ordinary Farms/Mines/Pastures.
 INSERT INTO ImprovementModifiers
         (   ImprovementType,             ModifierId   )
 VALUES  (   'IMPROVEMENT_INDUSTRY',      'MOD_CSC_TAILORS_BASE_INDUSTRY_ATTACH_QUARTER'   ),
@@ -20,6 +28,9 @@ VALUES  (   'IMPROVEMENT_INDUSTRY',      'MOD_CSC_TAILORS_BASE_INDUSTRY_ATTACH_Q
 --	BuildingModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+-- Producer -> improvement adds a marginal return to the ordinary +1 already
+-- attached in core: Industry adds 1 and Corporation adds 2, yielding totals
+-- of 2 and 3. Adding the advertised total here would count that base +1 twice.
 INSERT INTO BuildingModifiers
         (   BuildingType,                              ModifierId   )
 VALUES  (   'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IND_BASE_PROD'   ),
@@ -74,6 +85,9 @@ VALUES  (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_BASE',    'REQUIREMENTSET_TEST_
 --	RequirementSetRequirements
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+-- Return sets require adjacency, the correct BASE/SPEC material tag, and the
+-- exact Industry/Corporation improvement. An Industry on an unrelated luxury
+-- does not qualify just because it is an Industry.
 INSERT OR IGNORE INTO RequirementSetRequirements
         (   RequirementSetId,                              RequirementId   )
 VALUES  (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
@@ -127,29 +141,39 @@ VALUES  (   'MOD_CSC_TAILORS_SPEC_INDUSTRY_ATTACH_QUARTER',                'Modi
         (   'MOD_CSC_TAILORS_SPEC_CORPORATION_CULTURE_TO_FASHION_HOUSE',   'Amount',         3   );
 
 -- Additional +1 on top of the ordinary +1 return.
-INSERT INTO BuildingModifiers (BuildingType, ModifierId)
-VALUES ('BUILDING_CSC_TAILORS_FASHION_HOUSE', 'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD');
-INSERT INTO Modifiers (ModifierId, ModifierType, SubjectRequirementSetId)
-VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD', 'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER', 'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC');
-INSERT INTO ModifierArguments (ModifierId, Name, Value)
-VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD', 'ModifierId', 'MOD_CSC_TAILORS_PROD_TO_ADJ_IND');
-INSERT INTO RequirementSets (RequirementSetId, RequirementSetType)
-VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQUIREMENTSET_TEST_ALL');
-INSERT INTO RequirementSetRequirements (RequirementSetId, RequirementId)
-VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'),
-       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'),
-       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_INDUSTRY');
+INSERT INTO BuildingModifiers
+        (   BuildingType,                           ModifierId   )
+VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD'   );
+INSERT INTO Modifiers
+        (   ModifierId,                                                 ModifierType,                                         SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC'   );
+INSERT INTO ModifierArguments
+        (   ModifierId,                                                 Name,           Value   )
+VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_PROD',   'ModifierId',   'MOD_CSC_TAILORS_PROD_TO_ADJ_IND'   );
+INSERT INTO RequirementSets
+        (   RequirementSetId,                             RequirementSetType   )
+VALUES  (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC',   'REQUIREMENTSET_TEST_ALL'   );
+INSERT INTO RequirementSetRequirements
+        (   RequirementSetId,                             RequirementId   )
+VALUES  (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_INDUSTRY'   );
 
 -- Additional +2 on top of the ordinary +1 return.
-INSERT INTO BuildingModifiers (BuildingType, ModifierId)
-VALUES ('BUILDING_CSC_TAILORS_FASHION_HOUSE', 'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD');
-INSERT INTO Modifiers (ModifierId, ModifierType, SubjectRequirementSetId)
-VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD', 'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER', 'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC');
-INSERT INTO ModifierArguments (ModifierId, Name, Value)
-VALUES ('MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD', 'ModifierId', 'MOD_CSC_TAILORS_PROD_TO_ADJ_CORP');
-INSERT INTO RequirementSets (RequirementSetId, RequirementSetType)
-VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQUIREMENTSET_TEST_ALL');
-INSERT INTO RequirementSetRequirements (RequirementSetId, RequirementId)
-VALUES ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'),
-       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'),
-       ('REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC', 'REQ_CSC_TAILORS_PLOT_HAS_CORPORATION');
+INSERT INTO BuildingModifiers
+        (   BuildingType,                           ModifierId   )
+VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD'   );
+INSERT INTO Modifiers
+        (   ModifierId,                                                  ModifierType,                                         SubjectRequirementSetId   )
+VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC'   );
+INSERT INTO ModifierArguments
+        (   ModifierId,                                                  Name,           Value   )
+VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_PROD',   'ModifierId',   'MOD_CSC_TAILORS_PROD_TO_ADJ_CORP'   );
+INSERT INTO RequirementSets
+        (   RequirementSetId,                              RequirementSetType   )
+VALUES  (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC',   'REQUIREMENTSET_TEST_ALL'   );
+INSERT INTO RequirementSetRequirements
+        (   RequirementSetId,                              RequirementId   )
+VALUES  (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC'   ),
+        (   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_CORPORATION'   );

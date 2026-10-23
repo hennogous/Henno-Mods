@@ -12,10 +12,9 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO Tags
-
-	    (   Tag,                                    Vocabulary          )
-VALUES  (	'CLASS_CSC_GOLDSMITHS_SPEC',	        'RESOURCE_CLASS'	),
-        (	'CLASS_CSC_BREWERS_SPEC',               'RESOURCE_CLASS'	);
+        (   Tag,                           Vocabulary   )
+VALUES  (   'CLASS_CSC_GOLDSMITHS_SPEC',   'RESOURCE_CLASS'   ),
+        (   'CLASS_CSC_BREWERS_SPEC',      'RESOURCE_CLASS'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	TypeTags
@@ -23,8 +22,7 @@ VALUES  (	'CLASS_CSC_GOLDSMITHS_SPEC',	        'RESOURCE_CLASS'	),
 
 -- Goldsmiths' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                           Tag			        )
+        (   Type,   Tag   )
 SELECT	ResourceType,			        'CLASS_CSC_GOLDSMITHS_SPEC'
 FROM	Resources
 WHERE	ResourceType 			        IN
@@ -34,8 +32,7 @@ WHERE	ResourceType 			        IN
 
 -- Brewers' Quarter specialty materials
 INSERT OR IGNORE INTO TypeTags
-
-    (	Type,                           Tag     )
+        (   Type,   Tag   )
 SELECT	ResourceType,                   'CLASS_CSC_BREWERS_SPEC'
 FROM	Resources
 WHERE	ResourceType                    IN
