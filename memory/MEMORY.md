@@ -1,3 +1,53 @@
+# Material-care log synthesis and revised source candidate —23October
+Human-stopped pilot remains CLOSED partial170; monitor deleted, no new game.
+Native original pins preserved; source candidate intentionally changed AFTER owners
+exited. Reusable offline log_intelligence reconstructs accepted parent1..24 plus
+child25..169; inspected bytecoverage no gaps/conflicts.127 actual Builder training
+completions+18purchases,266 deduplicated Buildercontracts(227multicity),99CSCbuilding
+contracts/42complete. Repeated FindAvailable777/Move146/Protect402 failures are
+EVALUATIONS, not unique CSCjobs.150:36producers13improvedBase4improvedBoth,
+11/13functioning with structural saleslinks; no actualpaymentledger.
+Revised carev2/Luaversion3: blanket improvement90->30, generalBuilder50 unchanged,
+remove extraBuilder100; sustainedwork +100% improvement(30->60) after safe/actionable
+lastBase repair1/otherrepair2/Base develop3/Spec5/redundant8 turns. Readyage resets
+on nonactionable transitions/reload; nearbyBuilder6 diagnostics NOTavailability/path.
+Continuous strategy true/false counters; old empirecapacity gate diagnosticonly.
+160/80/20 unchanged; native mappedresource/noDistrict guards block stale marks.
+25care checks(23Lua51+2SQLreplay)+4logtestsPASS. Cold exact170 scoreprobe verified
+nativebase30/newcallback/worldGold but identical recommendationrecords(cache or
+serialized limit, no AI decisionproof). Separate exact170guardprobe verified
+empty/district0 vs validmaterial160 privateyield, propertiesrestored/worldGoldsame.
+ZERO AIturns advanced each; no rehost/reconstruction/purchase/unit/resource effects.
+Latest guardhelper shadowed delta variable during filecleanup AFTERnormalexit;
+independent-package-cleanup.json proves finalallCivabsent/exactoriginal510 hashes/
+144prefs/autostartfalse; rawfailurepreserved. No deployment/newgame/outcomeclaim.
+Durable project/docs/research/mods/csc-ai-material-care-decision-paths-20261023.md;
+Desktop study guidance-v2-{score-probe,native-guard-probe}/final-restoration.json.
+Earlier single-probe/running labels below HISTORY; no native work pending.
+
+# CLOSED material-care pilot and zero-turn decision checks —23October
+Human stopped native170; NOT225/250. Eight foundations/allpresent7complete,
+13paid assignments685Gold=297own388fallback;845research1..169/no gaps.
+Originalworker3588/sup12264 exited0; no nativefault. Same170save loaded ONCE
+for isolated diagnostics: ZERO AIturns/economic/unit/resource/production effects.
+31materialplots nativeprivateyield on/off/restored exact160/80/20; ordinary
+sixyields/gold/world preserved.37cities/52Builderrecommendationrows incl two
+marked supplies: no exposedscorechange. Recommendations maycache; no district-
+site/harvest score/cacheinvalidate API found. This is NOT proof AIignores yield.
+Marginal improvement80 wasn't isolated. Native logs: Campuscontract134->placed145
+removed repairedWheat; many FindAvailableUnit/Move/Protect failures despiteglobal
+capacity. Shortagefalse at allcheckpoints, not continuousactivationproof.
+RandomEvents125 Capelinhoseruption55,19 supports lostBanana56,19 disastercause.
+Through1507matchednative materialrepairs,9resourcelosses(5directdistrict,3unknown,
+1probablevolcano). Post150finecarehistoryUNOBSERVED; terminal170census preserved.
+NormalMenu/ExitOK/allCivabsent; exactPRETEST510 restored(3deltas),144prefs/
+autostartfalse verified. No old528/artsource rollback. No currentgame/newtest.
+Study Desktop/Codex/csc-material-care-v1-20261023; decision-path-verification/
+decision-path-findings.json +fresh-final-parity +final-restoration authoritative.
+Durable project/docs/research/mods/csc-ai-material-care-decision-paths-20261023.md.
+Automation csc-material-care-test deletion receipt recorded after finalclosure.
+Earlier running labels below are HISTORY; NEVER resume this human-stopped pilot.
+
 # CURRENT recovered material care —23October
 Study active-run points run01/resume-025-district-iterator-v2. Native60+ confirmed;
 worker3588/sup12264/DX12Civ8996,91pins FROZEN/exclusiveTuner. Parentfailed25 on

@@ -13,7 +13,9 @@
 -- The planning yield has no Gold/Science/etc conversion. These weights are not
 -- player-facing yields. A preference declaration alone does not prove a native
 -- research choice or reliable strategy restart; see the investigation evidence.
--- Keep the RH improvement base90; Builder priority reduced to50 for the Quarter-resource trial.
+-- Material-care v2 calibration uses current RH's improvement base30 instead of
+-- the older90. The stopped v1 remains archived with90. Native logs showed high
+-- Builder throughput alongside unresolved jobs; avoid another blanket unit boost.
 -- Remove CSC's former +50% layer before setting the base.
 -- Remove the retired CSC percentage-bias list before applying the improvement
 -- base. Delete dependent items/list before its type registration, so replay
@@ -21,12 +23,12 @@
 DELETE FROM AiFavoredItems WHERE ListType='CSC_AI_ImprovementPriorities';
 DELETE FROM AiLists WHERE ListType='CSC_AI_ImprovementPriorities';
 DELETE FROM AiListTypes WHERE ListType='CSC_AI_ImprovementPriorities';
-UPDATE PseudoYields SET DefaultValue=90
+UPDATE PseudoYields SET DefaultValue=30
 WHERE PseudoYieldType='PSEUDOYIELD_IMPROVEMENT';
 
 -- Stock major-civ Units list, also used directly by RH's Ops.sql.
 -- Builder preference and improvement valuation are different levers. This row
--- changes a Units-system list; DefaultValue=90 above changes the improvement
+-- changes a Units-system list; DefaultValue=30 above changes the improvement
 -- pseudo-yield. The values do not share one scale and are not Builder counts.
 -- Insert only if the native list exists, then also update an existing Builder row.
 INSERT INTO AiFavoredItems

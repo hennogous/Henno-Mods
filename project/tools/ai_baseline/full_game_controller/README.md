@@ -279,3 +279,23 @@ label it zero raw AI replay. A simulated guard test does not establish native ro
 switching safety. Recovery remains autonomous; this guard is not an approval rule.
 
 Checkpoint/performance hardening (23 October): exact-save names include a stable hash of the resolved archive path; existing namespaced native files or archives still block before any SaveGame command. This preserves other runs and makes ambiguous same-boundary saves one-shot. Inactive handoff confirmation still needs three separate replies, now separated by 0.15s idle spacing; progress polling starts at 0.5s, then1s. The finite play command is unchanged. Same-world native100 checkpoint/SaveComplete/hash and subsequent101+ advancement verified. Initial local normal-turn timings: 26.1s before, 19.9s after; small sample, not player-install latency.
+
+Material-care pilot (23 October) was human-stopped partial170, not a225/250 pass.
+An isolated same-save zero-turn probe used this maintained transport, verified
+exact native160/80/20 plot-yield deltas, and restored all private properties and
+world/treasury state. Cached production/Builder recommendations did not change;
+native district-site/harvest decision response remains unverified. Use a fresh
+primary capture for post-probe parity, not a frozen `snapshot(turn)`. Full evidence
+and restoration limits are in `project/docs/research/mods/csc-ai-material-care-decision-paths-20261023.md`.
+
+
+The follow-up candidate uses sustained actionable material-work urgency rather
+than total empire Builder charges to activate work demand. Native resource/no-
+district guards were verified on the same170 save: stale private marks added0
+on empty/district tiles and160 on a valid material. No turn advanced. Saved-turn
+recommendation scores remained unchanged after lower blanket improvement pressure;
+this is not a fresh native decision test. Both diagnostic packages were removed
+and original510/preferences restored. The separate offline `log_intelligence.py`
+reconstructs archived byte-offset segments, deduplicates production contracts and
+keeps repeated tree evaluations, unit events and current cohorts distinct. It
+never connects to the game. See the decision-path report for evidence and limits.

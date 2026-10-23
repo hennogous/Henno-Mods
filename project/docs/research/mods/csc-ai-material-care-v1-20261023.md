@@ -1,5 +1,13 @@
 # Material care v1: first native-incentive pilot
 
+**Closed by human direction at170, not225.** Eight foundations/seven complete,
+13tiles685Gold=297own388fallback. Same-save zero-turn diagnostics verified
+160/80/20 native plot-yield deltas, but no exposed recommendation-score change;
+cache/decision-path limits remain. Original510 runtime/144preferences restored,
+normal exit/all Civ absent. See [decision-path findings](csc-ai-material-care-decision-paths-20261023.md)
+for accepted evidence, repair/loss causes and the revised source-only work-demand candidate. Earlier
+running/pending labels below are historical.
+
 Authorized23October after the own-first pilot and the tuning-only comparison.
 Earlier work is committed/pushed; old games and monitors remain closed.
 
