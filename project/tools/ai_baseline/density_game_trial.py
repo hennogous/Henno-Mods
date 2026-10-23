@@ -20,7 +20,7 @@ from run import ROOT,Runner,write
 class DensityRunner(DensityMethods,TrialRunner):
     def cmd(self,code,state='GameCore_Tuner',label='command',wait=2,check=True):
         if label.startswith('start-'):
-            code=code.replace('ReleasePlayerParameters();',"GameConfiguration.SetValue('CSC_MATERIAL_MAP_ASSISTANCE',1);GameConfiguration.SetValue('CSC_MATERIAL_MAP_DIAGNOSTICS',false);ReleasePlayerParameters();")
+            code=code.replace('ReleasePlayerParameters();',"GameConfiguration.SetValue('CSC_RESOURCE_MAP_ASSISTANCE',1);GameConfiguration.SetValue('CSC_MATERIAL_MAP_DIAGNOSTICS',false);ReleasePlayerParameters();")
         for attempt in range(4):
             try:return Runner.cmd(self,code,state,label,wait,check)
             except (OSError,EOFError,RuntimeError,KeyError) as exc:

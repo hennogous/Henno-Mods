@@ -4,6 +4,5 @@
 --------------------------------------------------------------
 
 INSERT OR REPLACE INTO LocalizedText
-    (Language, Tag, Text)
-VALUES
-    ('en_US', 'LOC_CSC_AI_PLACEMENT_NAME', 'CSC AI placement');
+        (   Language,   Tag,                           Text   )
+VALUES  (   'en_US',    'LOC_CSC_AI_PLACEMENT_NAME',   'CSC AI placement'   );

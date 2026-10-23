@@ -40,7 +40,7 @@ class PairedRunner(survey.Survey):
 
     def cmd(self,code,state='GameCore_Tuner',label='command',wait=2,check=True):
         if label.startswith('start-'):
-            code=code.replace('ReleasePlayerParameters();',"GameConfiguration.SetValue('CSC_MATERIAL_MAP_ASSISTANCE',1);GameConfiguration.SetValue('CSC_MATERIAL_MAP_DIAGNOSTICS',false);ReleasePlayerParameters();")
+            code=code.replace('ReleasePlayerParameters();',"GameConfiguration.SetValue('CSC_RESOURCE_MAP_ASSISTANCE',1);GameConfiguration.SetValue('CSC_MATERIAL_MAP_DIAGNOSTICS',false);ReleasePlayerParameters();")
         for attempt in range(8):
             try:return super().cmd(code,state,label,wait,check)
             except (RuntimeError,KeyError,OSError,EOFError) as exc:

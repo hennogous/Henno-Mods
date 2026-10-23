@@ -98,3 +98,48 @@ Raw evidence: `C:/Users/Shadow/Desktop/Codex/csc-ai-paired-standard-20261016/`. 
 Source tools: [runner](../../../tools/ai_baseline/paired_standard.py), [observer](../../../tools/ai_baseline/paired_observer.lua), [analysis](../../../tools/ai_baseline/paired_analysis.py), [verification/reproduction instructions](../../../tools/ai_baseline/README.md).
 
 Five games per setup are a descriptive baseline. They do not establish causal AI understanding of CSC adjacency or statistical superiority of either resource setup. The earlier Standard-speed study used a different setup and boundary-neighbour enumeration and is retained as historical evidence. No AI optimisation has been applied yet.
+
+
+## Sales transaction prevalence — retrospective19October2026
+
+### Sales relationships
+
+Functioning same-owner adjacent building-pair relationships at250, reconstructed from checkpoints; not individually logged payments or cumulative transaction counts. No material or Service-civic gate for ordinary sales. Stage4 requires customer population>=5. CityCenter defense pillage flag ignored for Granary; building pillage respected. One-level native district/building replacements included.
+
+Ten baseline games (five vanillaStandard, fiveTARStandard), plus three completed250-turn tuning games. AllOnline. Earlier400-turn maps and incomplete runs excluded from this comparison.
+
+Entries are producers selling / functioning producers, followed by number of distinct producer-customer links in parentheses.
+
+| Route | 10 baseline games | Placement v1 | Native v3 | Density v4 |
+|---|---:|---:|---:|---:|
+| Wind Mill → Granary | 121/398 (121) | 26/37 (26) | 25/33 (25) | 22/33 (22) |
+| Water Mill → Granary | 31/78 (31) | 6/8 (6) | 7/13 (7) | 8/10 (8) |
+| Bakery → Market | 25/201 (28) | 21/30 (21) | 16/27 (18) | 15/33 (16) |
+| Café → Zoo | 3/83 (3) | 1/16 (1) | 3/15 (3) | 1/15 (1) |
+| Café → Ferris Wheel | 0/83 (0) | 2/16 (2) | 3/15 (3) | 0/15 (0) |
+| Textile Workshop → Lighthouse | 10/216 (10) | 3/26 (3) | 7/30 (7) | 3/23 (3) |
+| Tailor → Market | 14/123 (14) | 12/15 (12) | 12/22 (13) | 4/15 (7) |
+| Tailor → Temple | 6/123 (6) | 5/15 (6) | 12/22 (12) | 6/15 (6) |
+| Fashion House → Amphitheater | 15/69 (15) | 3/9 (4) | 8/14 (8) | 6/10 (6) |
+| Fashion House → Bolshoi | 0/69 (0) | 0/9 (0) | 0/14 (0) | 0/10 (0) |
+| Fashion House → Broadway | 0/69 (0) | 0/9 (0) | 0/14 (0) | 0/10 (0) |
+| Fashion House → Sydney Opera House | 0/69 (0) | 0/9 (0) | 0/14 (0) | 0/10 (0) |
+
+### Quarter coverage
+
+| Group | Completed Quarters selling | Links |
+|---|---:|---:|
+| Vanilla baseline | 119/391 | 132 |
+| TAR baseline | 92/385 | 96 |
+| Placement v1 | 48/78 | 81 |
+| Native bonus/river v3 | 59/84 | 96 |
+| Density v4 / Builder900 | 48/71 | 69 |
+
+Resource support is not required for these sales; material access instead enables additional extraction interactions and Services. Counts establish structural eligibility; actual applied economic-yield/payment amounts were not recorded in these censuses. Detailed per-game and per-link results in sales.json.
+
+
+Additional bottleneck check: across the ten baseline games,28 of201 functioning Bakeries were adjacent to a functioning same-owner Commercial Hub, and25 had a Market customer. Only14 of216 Textile Workshops were adjacent to a functioning Harbor,10 with a Lighthouse. Eight of123 Tailors were adjacent to a functioning Holy Site,6 with a Temple. In completed density-v4,15 of33 Bakeries had the Hub adjacency and all15 had a Market;3 of23 Workshops had Harbor adjacency and all3 had Lighthouses;7 of15 Tailors had Holy Site adjacency,6 with Temples. Much missing sales access is district geography rather than missing customer buildings.
+
+Of211 baseline Quarters with a qualifying sales relationship,172 lacked owned visible Base materials (133 Bakers/39 Tailors). This confirms structural sales eligibility can coexist with poor material access; actual yield receipt was not instrumented in these snapshots. Comparison groups pool10 baseline games versus one game per tuning variant; map/resource assistance, AI treatments and later war/expansion differ, so differences are descriptive, not isolated causal effects. Stage4 Wonder routes allzero across these13 endpoints; Cafe Zoo/Ferris counts remain tiny.
+
+Reproduction: project/tools/ai_baseline/sales_prevalence.py, archived native diagnostic11 definitions only for direct replacement families; original source SQL and CustomerPopulationReturns script inspected for adjacency, ownership, pillage and material-independent sales rules. Scope is external customer-building sales; internal Mill→Bakery/Workshop→Tailor/FashionHouse exchanges and trade-route exports are not included. All10 baseline game endpoints plus three validated completed tuning endpoints at250; older400 games and incomplete runs omitted.

@@ -1,5 +1,14 @@
 # CSC natural autoplay baseline
 
+## Maintained full-game controller
+
+New CSC full-game drivers should compose the reusable
+[controller core](full_game_controller/README.md). It owns bounded one-send
+transport, read-only state retries, native handoff checks, the known observer
+playback handlers and failure telemetry preservation. Experiment-specific world
+setup, foundation logic and audit policy remain in the driver. Historical runners
+below retain their original methods and results.
+
 ## AI tuning trial
 
 See [AI tuning v1](../../docs/integrations/csc-ai-tuning.md). `tuning_trial.py` subclasses the paired controller with distinct saves/output and native UI smoke checks. The observer/original baseline remain unchanged. `deploy_ai.py` installs only its allowed AI/UI delta with SDK-generated manifest/backups.

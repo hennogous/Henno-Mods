@@ -44,7 +44,7 @@ def main():
     changed = sorted(name for name, digest in inventory(db).items() if before.get(name) != digest)
     allowed = {'PseudoYields','AiFavoredItems','AiListTypes','AiLists','Types','Yields','Technologies','TechnologyPrereqs',
                'Technologies_XP2','Requirements','RequirementSets','RequirementSetRequirements','RequirementArguments',
-               'Modifiers','ModifierArguments','TraitModifiers','Adjacency_YieldChanges','District_Adjacencies','DistrictModifiers'}
+               'Modifiers','ModifierArguments','TraitModifiers','Adjacency_YieldChanges','District_Adjacencies','DistrictModifiers','ImprovementModifiers','Strategies','StrategyConditions','Strategy_Priorities','CSC_AI_ServiceResearch','CSC_AI_ResearchItems'}
     assert not set(changed)-allowed, changed
     assert not a.loaded or not changed, changed
     if a.loaded:
@@ -71,15 +71,26 @@ def main():
     assert 'INSERT OR IGNORE INTO Features' not in sql
     supply=db.execute("SELECT d.DistrictType,m.ModifierId,m.ModifierType,m.OwnerRequirementSetId,m.SubjectRequirementSetId FROM DistrictModifiers d JOIN Modifiers m USING(ModifierId) WHERE m.ModifierId LIKE 'MOD_CSC_AI_SUPPLY_%'").fetchall()
     expected=db.execute("SELECT DISTINCT d.DistrictType,r.ResourceType FROM Districts d JOIN TypeTags t ON t.Tag IN (CASE d.DistrictType WHEN 'DISTRICT_CSC_BAKERS_QUARTER' THEN 'CLASS_CSC_BAKERS_BASE' ELSE 'CLASS_CSC_TAILORS_BASE' END,CASE d.DistrictType WHEN 'DISTRICT_CSC_BAKERS_QUARTER' THEN 'CLASS_CSC_BAKERS_SPEC' ELSE 'CLASS_CSC_TAILORS_SPEC' END) JOIN Resources r ON r.ResourceType=t.Type WHERE d.DistrictType IN ('DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_CSC_TAILORS_QUARTER')").fetchall()
-    assert len(supply)==2*len(expected) and len(supply)==len(set(supply))
+    assert len(supply)==len(expected) and len(supply)==len(set(supply))
+    improvements=db.execute("SELECT i.ImprovementType,m.ModifierId,m.ModifierType,m.OwnerRequirementSetId,m.SubjectRequirementSetId FROM ImprovementModifiers i JOIN Modifiers m USING(ModifierId) WHERE m.ModifierId LIKE 'MOD_CSC_AI_IMPROVE_%'").fetchall()
+    expected_improvements=db.execute("SELECT DISTINCT v.ImprovementType,d.DistrictType,r.ResourceType FROM Districts d JOIN TypeTags t ON t.Tag IN (CASE d.DistrictType WHEN 'DISTRICT_CSC_BAKERS_QUARTER' THEN 'CLASS_CSC_BAKERS_BASE' ELSE 'CLASS_CSC_TAILORS_BASE' END,CASE d.DistrictType WHEN 'DISTRICT_CSC_BAKERS_QUARTER' THEN 'CLASS_CSC_BAKERS_SPEC' ELSE 'CLASS_CSC_TAILORS_SPEC' END) JOIN Resources r ON r.ResourceType=t.Type JOIN Improvement_ValidResources v USING(ResourceType) WHERE d.DistrictType IN ('DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_CSC_TAILORS_QUARTER')").fetchall()
+    assert len(improvements)==len(expected_improvements)==len(set(improvements))
     for quarter,resource in expected:
-        for stage,amount in [('PRESENT',40),('IMPROVED',80)]:
-            mid='MOD_CSC_AI_SUPPLY_'+quarter+'__'+resource+'_'+stage
-            expected_args=[('Amount',str(amount)),('YieldType','YIELD_CSC_AI_PLACEMENT')] if stage=='PRESENT' else [('ModifierId','MOD_CSC_AI_SUPPLY_IMPROVED_VALUE')]
-            assert db.execute('SELECT Name,Value FROM ModifierArguments WHERE ModifierId=? ORDER BY Name',(mid,)).fetchall()==expected_args
-    assert all(row[2]==('MODIFIER_PLAYER_ADJUST_PLOT_YIELD' if row[1].endswith('_PRESENT') else 'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER') and row[3]=='REQSET_CSC_AI_SUPPLY_AI' for row in supply)
-    assert db.execute("SELECT ModifierType FROM Modifiers WHERE ModifierId='MOD_CSC_AI_SUPPLY_IMPROVED_VALUE'").fetchone()==('MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS',)
-    assert db.execute("SELECT Name,Value FROM ModifierArguments WHERE ModifierId='MOD_CSC_AI_SUPPLY_IMPROVED_VALUE' ORDER BY Name").fetchall()==[('Amount','80'),('YieldType','YIELD_CSC_AI_PLACEMENT')]
+        mid='MOD_CSC_AI_SUPPLY_'+quarter+'__'+resource+'_PRESENT'
+        assert db.execute('SELECT Name,Value FROM ModifierArguments WHERE ModifierId=? ORDER BY Name',(mid,)).fetchall()==[('Amount','40'),('YieldType','YIELD_CSC_AI_PLACEMENT')]
+        mid='MOD_CSC_AI_IMPROVE_'+quarter+'__'+resource
+        assert db.execute('SELECT Name,Value FROM ModifierArguments WHERE ModifierId=? ORDER BY Name',(mid,)).fetchall()==[('Amount','80'),('YieldType','YIELD_CSC_AI_PLACEMENT')]
+        assert db.execute('SELECT ModifierType,OwnerRequirementSetId,SubjectRequirementSetId FROM Modifiers WHERE ModifierId=?',(mid,)).fetchone()==('MODIFIER_SINGLE_PLOT_ADJUST_PLOT_YIELDS','REQSET_CSC_AI_IMPROVE_'+quarter+'__'+resource,None)
+        required={'REQ_CSC_AI_SUPPLY_AI','REQ_CSC_AI_SUPPLY_VISIBLE','REQ_CSC_AI_SUPPLY_'+resource,'REQ_CSC_AI_IMPROVE_HAS_QUARTER_'+quarter}
+        assert {r[0] for r in db.execute('SELECT RequirementId FROM RequirementSetRequirements WHERE RequirementSetId=?',('REQSET_CSC_AI_IMPROVE_'+quarter+'__'+resource,))}==required
+    assert all(row[2]=='MODIFIER_PLAYER_ADJUST_PLOT_YIELD' and row[3]=='REQSET_CSC_AI_SUPPLY_AI' for row in supply)
+    assert not db.execute("SELECT * FROM DistrictModifiers WHERE ModifierId LIKE 'MOD_CSC_AI_SUPPLY_%_IMPROVED'").fetchall()
+    assert db.execute('SELECT COUNT(*) FROM CSC_AI_ServiceResearch').fetchone()[0]==6
+    for plan, in db.execute('SELECT Id FROM CSC_AI_ServiceResearch').fetchall():
+        sid='STRATEGY_CSC_AI_SERVICE_'+str(plan)
+        assert db.execute("SELECT StringValue,ThresholdValue FROM StrategyConditions WHERE StrategyType=? AND ConditionFunction='Call Lua Function'",(sid,)).fetchone()==('CSC_AI_ServiceResearchReady',plan)
+    for plan,system,item in db.execute('SELECT PlanId,System,Item FROM CSC_AI_ResearchItems'):
+        assert db.execute('SELECT Favored,Value FROM AiFavoredItems WHERE ListType=? AND Item=?',('CSC_AI_SERVICE_'+str(plan)+'_'+system,item)).fetchall()==[(1,0)]
     once = inventory(db)
     db.executescript((ROOT/'Civ Supply Chains/Data/CSC_AI.sql').read_text())
     assert inventory(db) == once, 'Repeated component creates duplicate rows'
@@ -89,7 +100,7 @@ def main():
     default = db.execute("SELECT DefaultValue FROM PseudoYields WHERE PseudoYieldType='PSEUDOYIELD_IMPROVEMENT'").fetchone()[0]
     assert default == 90, default
     result = {'status': 'passed', 'loaded_native_database': a.loaded, 'changed_tables': changed,
-              'supply_modifiers': len(supply), 'supply_present': 40, 'supply_improved_extra': 80, 'global_improvement_default': default, 'reapplication_identical': True,
+              'supply_modifiers': len(supply), 'improvement_attachments':len(improvements),'dynamic_research_plans':6, 'supply_present': 40, 'supply_improved_extra': 80, 'global_improvement_default': default, 'reapplication_identical': True,
               'ai_list': 'UnitPriorityBoosts', 'item': 'UNIT_BUILDER', 'value': 50, 'own_improvement_bias_removed': True,
               'sales_edges': len(edges), 'sales_strength': 10,
               'guidance_edges': len(guidance), 'bonus_resource_strength': 12, 'river_strength': 4,

@@ -14,15 +14,19 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('output','captures','baseline','previous'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--resume-from',type=Path)
+    p.add_argument('--improvement-research',action='store_true')
+    p.add_argument('--resume-setup',type=Path)
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=True);here=Path(__file__).resolve().parent
     def status(state,**extra):
         target=a.output/'job-status.json';temp=a.output/'job-status.tmp'
         temp.write_text(json.dumps({'status':state,'updated_unix':time.time(),**extra},indent=2)+'\n',encoding='utf-8');temp.replace(target)
     phase='game';status('starting');child=None
     try:
-        args=[sys.executable,'-X','utf8','-u',str(here/('quarter_resource_resume.py' if a.resume_from else 'quarter_resource_trial.py'))]
+        worker='improvement_research_trial.py' if a.improvement_research else ('quarter_resource_resume.py' if a.resume_from else 'quarter_resource_trial.py')
+        args=[sys.executable,'-X','utf8','-u',str(here/worker)]
         for name in ('output','captures','baseline','previous'):args+=['--'+name,str(getattr(a,name))]
         if a.resume_from:args+=['--resume-from',str(a.resume_from)]
+        if a.resume_setup:args+=['--resume-setup',str(a.resume_setup)]
         child=subprocess.Popen(args);missing=0
         while child.poll() is None:
             time.sleep(30)
@@ -36,7 +40,8 @@ def main():
                 raise RuntimeError('Civ process absent on two checks; worker stopped, no restart attempted')
         if child.returncode:raise RuntimeError('Native test worker exited '+str(child.returncode))
         phase='analysis';status('analyzing')
-        subprocess.run([sys.executable,'-X','utf8',str(here/'quarter_resource_analyze.py'),'--trial',str(a.output),'--previous',str(a.previous)],check=True)
+        analysis='improvement_research_analyze.py' if a.improvement_research else 'quarter_resource_analyze.py'
+        subprocess.run([sys.executable,'-X','utf8',str(here/analysis),'--trial',str(a.output),'--previous',str(a.previous)],check=True)
         status('complete',report=str(a.output/'report.md'))
     except BaseException as exc:
         logs=Path.home()/"AppData/Local/Firaxis Games/Sid Meier's Civilization VI/Logs"

@@ -15,6 +15,8 @@ local function filter(name, keep)
     overrides[name] = setmetatable({}, {
         __index = function(_, key) return original[key] end,
         __call = function(_, ...)
+            -- Preserve the native iterator's state/control progression even for
+            -- skipped rows; indexed GameInfo lookups above stay unfiltered.
             local nextRow, state, control = original(...)
             return function()
                 local row = nextRow(state, control)
