@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AssetObjects:GeometryInstance>
+<AssetObjects..GeometryInstance>
 <m_CookParams>
 <m_Values/>
 </m_CookParams>
@@ -49,7 +49,189 @@
 <m_nPrimitiveCount>96</m_nPrimitiveCount>
 <m_nVertexCount>144</m_nVertexCount>
 </Element>
-</m_Meshes>
+<Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_01"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_02"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_03"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_04"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_05"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_06"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_07"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_08"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_09"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>190</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>190</m_nPrimitiveCount>
+      <m_nVertexCount>122</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_10"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>190</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>190</m_nPrimitiveCount>
+      <m_nVertexCount>122</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_11"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_12"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_13"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_Mill_Flour_Variant_2"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_ALL_Props_01_TextureReuseTrial"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>178</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>178</m_nPrimitiveCount>
+      <m_nVertexCount>140</m_nVertexCount>
+    </Element>
+  </m_Meshes>
 <m_Bones>
 <Element text="CSC_BAKERS_Water_Mill"/>
 <Element text="Bone"/>
@@ -72,4 +254,4 @@
 <Element text="LandmarkModel"/>
 </m_Tags>
 <m_Groups/>
-</AssetObjects:GeometryInstance>
+</AssetObjects..GeometryInstance>

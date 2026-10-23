@@ -102,7 +102,11 @@ def validate_snapshot(snapshot):
             direct.append(ob)
             state_materials = [name for name in ob.get('used_materials', [])
                                if 'CON+PIL' in name or name == 'Pillage_Construction_01']
-            if state_materials:
+            # Separate CON+PIL masters legitimately include scaffold geometry;
+            # only intact source scenes must reject those material groups.
+            asset_id=scenes.get('Export', {}).get('asset_id', '')
+            separate_state=asset_id.endswith('_CON+PIL') and ob.get('source_asset_id')==asset_id
+            if state_materials and not separate_state:
                 add('STATE_GEOMETRY_IN_INTACT', 'Construction/pillage material faces belong in the separate state model: '
                     + ', '.join(state_materials), [ob['name']])
             if ob.get('uv_layers') != 3:
@@ -287,7 +291,7 @@ def collect_snapshot():
                 world = {'color':list(node.inputs['Color'].default_value)[:3],
                          'strength':node.inputs['Strength'].default_value,
                          'dynamic':bool(node.inputs['Color'].is_linked or node.inputs['Strength'].is_linked)}
-        snapshot['scenes'][scene.name] = {'world':world, 'engine':scene.render.engine,
+        snapshot['scenes'][scene.name] = {'asset_id':scene.get('asset_id',''), 'world':world, 'engine':scene.render.engine,
             'view_transform':scene.view_settings.view_transform, 'exposure':scene.view_settings.exposure,
             'gamma':scene.view_settings.gamma}
         key = scene.objects.get('Review_Key')

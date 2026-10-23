@@ -374,9 +374,7 @@
 		</Element>
 		<Element>
 			<ConsumerName text="Lenses"/>
-			<ArtDefDependencyPaths>
-				<Element text="CSC_Lenses.artdef"/>
-			</ArtDefDependencyPaths>
+			<ArtDefDependencyPaths/>
 			<LibraryDependencies/>
 			<LoadsLibraries>false</LoadsLibraries>
 		</Element>
@@ -516,10 +514,6 @@
 		</Element>
 		<Element>
 			<ArtDefPath text="CSC_GamePropertyRanges.artdef"/>
-			<ArtDefDependencyPaths/>
-		</Element>
-		<Element>
-			<ArtDefPath text="CSC_Lenses.artdef"/>
 			<ArtDefDependencyPaths/>
 		</Element>
 	</ArtDefDependencies>

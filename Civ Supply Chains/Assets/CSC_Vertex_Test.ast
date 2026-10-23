@@ -901,7 +901,7 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Level_3_CON+PIL_Bldg"/>
+						<m_GroupName text="CSC_Level_3_Interior"/>
 						<m_MeshName text="CSC_Level_3_Bldg"/>
 						<m_StateName text="Worked"/>
 					</Element>
@@ -942,7 +942,7 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Level_3_CON+PIL_Bldg"/>
+						<m_GroupName text="CSC_Level_3_Interior"/>
 						<m_MeshName text="CSC_Level_3_Bldg"/>
 						<m_StateName text="Unworked"/>
 					</Element>
@@ -983,7 +983,7 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Level_3_CON+PIL_Bldg"/>
+						<m_GroupName text="CSC_Level_3_Interior"/>
 						<m_MeshName text="CSC_Level_3_Bldg"/>
 						<m_StateName text="Pillaged"/>
 					</Element>
@@ -1024,7 +1024,7 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Level_3_CON+PIL_Bldg"/>
+						<m_GroupName text="CSC_Level_3_Interior"/>
 						<m_MeshName text="CSC_Level_3_Bldg"/>
 						<m_StateName text="Construction"/>
 					</Element>
@@ -1065,7 +1065,7 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="CSC_Level_3_CON+PIL_Bldg"/>
+						<m_GroupName text="CSC_Level_3_Interior"/>
 						<m_MeshName text="CSC_Level_3_Bldg"/>
 						<m_StateName text="Unbuilt"/>
 					</Element>

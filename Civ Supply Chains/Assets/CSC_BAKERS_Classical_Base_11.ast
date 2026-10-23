@@ -3015,19 +3015,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
+							<x>-3.139355278</x>
+							<y>16.799298096</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>-0.386454580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_20"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>1.000000002</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -8098,4 +8098,3 @@
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..AssetInstance>
-

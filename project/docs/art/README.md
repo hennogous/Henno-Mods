@@ -10,6 +10,7 @@ Building concepts, 3D production, materials, export and art integration. Status 
 - [Export Pipeline Reference](export-pipeline.md) — **Needs refresh**.
 - [Quarter building art plan](quarter-building-art-plan.md) — **Current**.
 - [AE owns assembly and placement](ae-owned-assembly-workflow.md) — **Current workflow override, 13 October 2026**.
+- [Plaster windmill tower and storage atlas](windmill-tower.md) — **Tapered sails and GEO load repair installed; both assemblies pass focused native cooks, fresh-session AE/game review pending**.
 - [Saved AE asset renderer](2d/ae-asset-renderer.md) — **Automated icon/SV inputs and registered outlining passes**.
 - [Storage crane animation](storage-crane-animation.md) — **Native references and Blender conversion verified; AE/cook/game checks pending**.
 - [Optional CSC Art Pack](optional-art-pack-test.md) — **Six-model source split built; five newly moved variants need in-game checks**.

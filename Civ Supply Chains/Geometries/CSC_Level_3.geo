@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AssetObjects..GeometryInstance>
+<AssetObjects:GeometryInstance>
 <m_CookParams>
 <m_Values/>
 </m_CookParams>
@@ -19,7 +19,7 @@
 <m_nPrims>1050</m_nPrims>
 </Element>
 <Element>
-<m_Name text="CSC_Level_3_CON+PIL_Bldg"/>
+<m_Name text="CSC_Level_3_Interior"/>
 <m_nFirstPrim>1050</m_nFirstPrim>
 <m_nPrims>8</m_nPrims>
 </Element>
@@ -51,4 +51,4 @@
 <Element text="LandmarkModel"/>
 </m_Tags>
 <m_Groups/>
-</AssetObjects..GeometryInstance>
+</AssetObjects:GeometryInstance>

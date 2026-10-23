@@ -45,6 +45,14 @@ def add_crate(snapshot):
 
 
 class AuthoringTests(unittest.TestCase):
+    def test_scaffold_is_valid_only_in_explicit_matching_state_master(self):
+        data=scene();data['objects'][0].update(used_materials=['Pillage_Construction_01'],source_asset_id='CSC_Tower_CON+PIL')
+        self.assertIn('STATE_GEOMETRY_IN_INTACT',self.codes(data))
+        data['scenes']['Export']['asset_id']='CSC_Tower_CON+PIL'
+        self.assertNotIn('STATE_GEOMETRY_IN_INTACT',self.codes(data))
+        data['objects'][0]['source_asset_id']='CSC_Other_CON+PIL'
+        self.assertIn('STATE_GEOMETRY_IN_INTACT',self.codes(data))
+
     def test_independent_support_requires_explicit_export_policy(self):
         data = scene()
         root, _ = add_crate(data)

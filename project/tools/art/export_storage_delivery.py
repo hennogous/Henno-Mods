@@ -1,10 +1,20 @@
 """Bake isolated native export copies and validate the converted delivery models."""
-import bpy,json,subprocess,sys
+import argparse,bpy,json,subprocess,sys
 from pathlib import Path
 from mathutils import Matrix,Vector
 from civ6_animation import core,backend
 import io_export_cn6 as cn6
 OUT=Path(r'C:\Users\Shadow\Desktop\Codex\CSC_Storage_L\delivery-01')
+parser=argparse.ArgumentParser()
+parser.add_argument('--output',type=Path,default=OUT)
+parser.add_argument('--source',type=Path)
+parser.add_argument('--rebase-transform',type=Path)
+parser.add_argument('--bridge',type=Path,default=OUT/'bridge/CN6ToFGX.exe')
+args,_=parser.parse_known_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+OUT=args.output
+OUT.mkdir(parents=True,exist_ok=True)
+SOURCE=args.source or OUT/'CSC_TAILORS_Storage_Delivery.blend'
+REBASE=Matrix(json.loads(args.rebase_transform.read_text())['district_to_local']) if args.rebase_transform else Matrix.Identity(4)
 NEXUS=r'C:\Program Files (x86)\CivNexus6_Release-1.3.3\CivNexus6'
 SAMPLES=[1,113,151,163,301,601,721,811,841,901,991,1081,1201,1261,1279,1300,1321,1366,1411,1561,1617,1629,1701,1741,1891,2041]
 ATTACH_BONES=('Cargo','Cargo_TipUpright','DonkeyPath')
@@ -13,7 +23,7 @@ C=Matrix(((0,1,0,0),(0,0,1,0),(1,0,0,0),(0,0,0,1)))
 for event in ('load_post','depsgraph_update_post'):
  for cb in list(getattr(bpy.app.handlers,event)):
   if cb.__module__.rsplit('.',1)[-1]=='csc_scene_tools':getattr(bpy.app.handlers,event).remove(cb)
-bpy.ops.wm.open_mainfile(filepath=str(OUT/'CSC_TAILORS_Storage_Delivery.blend'))
+bpy.ops.wm.open_mainfile(filepath=str(SOURCE))
 source=bpy.data.scenes['Export'];bpy.context.window.scene=source
 master=bpy.data.objects['CSC_Storage_Crane_Rig'];donkey=bpy.data.objects['CSC_Delivery_Donkey_Rig']
 body_scale=float(donkey['delivery_body_scale'])
@@ -30,9 +40,17 @@ for f in ([811] if '--bind-only' in sys.argv else range(1,2042)):
   expected[f]=[p for o in crane for p in vertices(o)]
   body_expected[f]=vertices(dm)
  if f in ATTACH_SAMPLES:attachments[f]={n:poses[f][n].copy() for n in ATTACH_BONES if n in poses[f]}
+if args.rebase_transform:
+ poses={f:{n:REBASE@m for n,m in row.items()} for f,row in poses.items()}
+ expected={f:[REBASE@p for p in row] for f,row in expected.items()}
+ body_expected={f:[REBASE@p for p in row] for f,row in body_expected.items()}
+ attachments={f:{n:REBASE@m for n,m in row.items()} for f,row in attachments.items()}
 source.frame_set(31);bpy.context.view_layer.update();P=master.matrix_world.copy()
 B=Matrix.LocRotScale(donkey.matrix_world.translation,donkey.matrix_world.to_quaternion(),Vector((body_scale,)*3))
 body_mesh_transform=B@donkey.matrix_world.inverted()@dm.matrix_world
+P=REBASE@P
+B=REBASE@B
+body_mesh_transform=REBASE@body_mesh_transform
 scene=bpy.data.scenes.new('Native_Master');scene.render.fps=30;scene.frame_start=1;scene.frame_end=2041
 rig=bpy.data.objects.new('CSC_ALL_Delivery_Rig',master.data.copy());scene.collection.objects.link(rig)
 rig.data.transform(P);rig.data.pose_position='POSE';bpy.context.window.scene=scene
@@ -61,7 +79,7 @@ from delivery_pose_adjustments import linearize_baked_keys
 linearize_baked_keys(rig)
 meshes=[]
 for o in crane:
- c=o.copy();c.data=o.data.copy();c.animation_data_clear();c.parent=None;c.data.transform(o.matrix_world);c.matrix_world=Matrix.Identity(4)
+ c=o.copy();c.data=o.data.copy();c.animation_data_clear();c.parent=None;c.data.transform(REBASE@o.matrix_world);c.matrix_world=Matrix.Identity(4)
  c.name=o.name+'_Delivery';scene.collection.objects.link(c)
  for m in list(c.modifiers):c.modifiers.remove(m)
  if 'Mount_Hardware' in c.name:
@@ -87,7 +105,7 @@ def export_pair(label,scene,rig,meshes):
    layer=o.data.uv_layers.new(name='UV'+str(len(o.data.uv_layers)+1))
    for a,b in zip(o.data.uv_layers[0].data,layer.data):b.uv=a.uv
  cn6.csc_do_export_selected(str(OUT/(model+'.cn6')),[rig]+meshes)
- exe=OUT/'bridge/CN6ToFGX.exe'
+ exe=args.bridge
  r=subprocess.run([str(exe),str(OUT/(model+'.cn6')),str(OUT/(model+'.fgx')),'2','--skinned'],cwd=exe.parent,capture_output=True,text=True)
  (OUT/(label+'-geometry.log')).write_text(r.stdout+r.stderr);assert r.returncode==0,r.stdout+r.stderr
  cn6.csc_write_geo(str(OUT/(model+'.geo')),model,str(OUT/(model+'.cn6')),'LandmarkModel')

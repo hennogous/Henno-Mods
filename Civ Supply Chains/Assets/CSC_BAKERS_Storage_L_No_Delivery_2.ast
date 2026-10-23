@@ -4,11 +4,7 @@
 		<m_behaviorDataSets>
 			<m_animationBindings>
 				<m_Bindings>
-					<Element>
-						<m_SlotName text="WORKED_A"/>
-						<m_AnimationName text="CSC_ALL_Delivery"/>
-					</Element>
-				</m_Bindings>
+					</m_Bindings>
 			</m_animationBindings>
 			<m_timelineBindings>
 				<m_Bindings>
@@ -107,19 +103,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-13.254457</x>
-							<y>15.515947</y>
-							<z>-0.153205</z>
+							<x>-9.852828614</x>
+							<y>2.623745581</y>
+							<z>-0.153205000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.352427</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.034027580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_1"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -159,19 +155,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-1.184320</x>
-							<y>15.316951</y>
-							<z>0.000000</z>
+							<x>1.252146953</x>
+							<y>-2.109891902</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>1.661484</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>2.047938580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_15"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -211,19 +207,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-6.210811</x>
-							<y>13.305152</y>
-							<z>0.000000</z>
+							<x>-4.161907023</x>
+							<y>-2.078804237</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.117714</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.268740580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_17"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -263,19 +259,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-9.897912</x>
-							<y>17.763273</y>
-							<z>0.070850</z>
+							<x>-5.896792337</x>
+							<y>3.440229146</y>
+							<z>0.070850000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.505943</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>-0.119488420</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_5"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -315,19 +311,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-11.215858</x>
-							<y>17.298862</y>
-							<z>0.098222</z>
+							<x>-7.292581044</x>
+							<y>3.506810777</y>
+							<z>0.098222000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.386454580</z>
 						</m_orientation>
 						<m_Name text="DIS_Pot002_5"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -367,19 +363,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-0.555412</x>
-							<y>14.649113</y>
-							<z>3.390077</z>
+							<x>1.582961013</x>
+							<y>-2.965517359</y>
+							<z>3.390077000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.386454580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_13"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -419,19 +415,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-8.281758</x>
-							<y>18.505045</y>
-							<z>0.000000</z>
+							<x>-4.120248862</x>
+							<y>3.518156830</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.218000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.168454580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_14"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -471,19 +467,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-3.640153</x>
-							<y>18.033367</y>
-							<z>4.891305</z>
+							<x>0.001264536</x>
+							<y>1.331811854</y>
+							<z>4.891305000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.386454580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_8"/>
 						<m_BoneName text="CSC_Storage_L_CON+PIL"/>
 						<m_ModelInstanceName text="CSC_Storage_L_CON+PIL"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -523,19 +519,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-9.774144</x>
-							<y>12.423270</y>
-							<z>0.226567</z>
+							<x>-7.794835743</x>
+							<y>-1.552603888</y>
+							<z>0.226567000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.275314</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.111140580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_29"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>0.845975</m_scale>
+						<m_scale>0.845974999</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -575,19 +571,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-5.983515</x>
-							<y>19.180738</y>
-							<z>4.978945</z>
+							<x>-1.736825280</x>
+							<y>3.277794754</y>
+							<z>4.978945000</z>
 						</m_position>
 						<m_orientation>
-							<x>1.504810</x>
-							<y>-0.005689</y>
-							<z>-0.553505</z>
+							<x>1.504810000</x>
+							<y>-0.005689000</y>
+							<z>-0.167050420</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_7"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -627,19 +623,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-8.129692</x>
-							<y>17.273771</y>
-							<z>0.093744</z>
+							<x>-4.443473145</x>
+							<y>2.320373131</y>
+							<z>0.093744000</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.251296</x>
-							<y>0.000000</y>
-							<z>0.550392</z>
+							<x>-0.251296000</x>
+							<y>-0.000000000</y>
+							<z>0.936846580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_9"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>0.900000</m_scale>
+						<m_scale>0.899999999</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -679,19 +675,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-5.966348</x>
-							<y>11.976841</y>
-							<z>-0.001996</z>
+							<x>-4.436122386</x>
+							<y>-3.401293632</y>
+							<z>-0.001996000</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.281440</x>
-							<y>-0.012904</y>
-							<z>-0.180274</z>
+							<x>-0.281440000</x>
+							<y>-0.012904000</y>
+							<z>0.206180580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_10"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>0.900000</m_scale>
+						<m_scale>0.899999999</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -731,19 +727,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-10.214299</x>
-							<y>10.976345</y>
-							<z>0.026989</z>
+							<x>-8.747885757</x>
+							<y>-2.726922431</y>
+							<z>0.026989000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>1.045758</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>1.432212580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_11"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -783,19 +779,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-10.988243</x>
-							<y>11.754972</y>
-							<z>-0.201401</z>
+							<x>-9.171282450</x>
+							<y>-1.714013474</y>
+							<z>-0.201401000</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.285267</x>
-							<y>-0.061854</y>
-							<z>1.374623</z>
+							<x>-0.285267000</x>
+							<y>-0.061854000</y>
+							<z>1.761077580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_12"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>0.900000</m_scale>
+						<m_scale>0.899999999</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -835,19 +831,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-0.641013</x>
-							<y>15.935114</y>
-							<z>0.030425</z>
+							<x>1.988375561</x>
+							<y>-1.742093825</y>
+							<z>0.030425000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.039735</x>
-							<y>0.012753</y>
-							<z>-0.346015</z>
+							<x>0.039735000</x>
+							<y>0.012753000</y>
+							<z>0.040439580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_16"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -887,19 +883,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-6.550683</x>
-							<y>18.879652</y>
-							<z>4.188410</z>
+							<x>-2.375646676</x>
+							<y>3.212682993</y>
+							<z>4.188410000</z>
 						</m_position>
 						<m_orientation>
-							<x>1.624139</x>
-							<y>-0.005689</y>
-							<z>-0.553505</z>
+							<x>1.624139000</x>
+							<y>-0.005689000</y>
+							<z>-0.167050420</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_18"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -939,19 +935,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-5.569892</x>
-							<y>19.485722</y>
-							<z>4.194969</z>
+							<x>-1.238755936</x>
+							<y>3.404389202</y>
+							<z>4.194969000</z>
 						</m_position>
 						<m_orientation>
-							<x>1.624139</x>
-							<y>-0.005689</y>
-							<z>-0.553505</z>
+							<x>1.624139000</x>
+							<y>-0.005689000</y>
+							<z>-0.167050420</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_19"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -991,19 +987,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-4.938836</x>
-							<y>12.104001</y>
-							<z>-0.005069</z>
+							<x>-3.436460720</x>
+							<y>-3.670787835</y>
+							<z>-0.005069000</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.251296</x>
-							<y>0.000000</y>
-							<z>0.550392</z>
+							<x>-0.251296000</x>
+							<y>-0.000000000</y>
+							<z>0.936846580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_20"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>0.900000</m_scale>
+						<m_scale>0.899999999</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -1043,71 +1039,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-10.436635</x>
-							<y>17.719059</y>
-							<z>1.370209</z>
+							<x>-6.412449705</x>
+							<y>3.602324261</y>
+							<z>1.370209000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.646833</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>-0.260378420</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_21"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_BAKERS_Flour_Closed"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="csc_tilebases.xlp"/>
-									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text=""/>
-									<m_CollectionIsLocked>false</m_CollectionIsLocked>
-									<m_TemplateName text=""/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="PERMANENT"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>false</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>0.157433</x>
-							<y>0.020010</y>
-							<z>-0.401371</z>
-						</m_position>
-						<m_orientation>
-							<x>-0.046422</x>
-							<y>0.103055</y>
-							<z>1.708996</z>
-						</m_orientation>
-						<m_Name text="Delivery_Cargo_2"/>
-						<m_BoneName text="Cargo_TipUpright"/>
-						<m_ModelInstanceName text="CSC_ALL_Delivery_Rig"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -1147,19 +1091,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-4.575850</x>
-							<y>11.484865</y>
-							<z>0.151057</z>
+							<x>-3.333601106</x>
+							<y>-4.381075186</y>
+							<z>0.151057000</z>
 						</m_position>
 						<m_orientation>
-							<x>1.357458</x>
-							<y>0.051207</y>
-							<z>1.426336</z>
+							<x>1.357458000</x>
+							<y>0.051207000</y>
+							<z>1.812790580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_22"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -1199,19 +1143,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>0.636044</x>
-							<y>15.100104</y>
-							<z>0.668536</z>
+							<x>2.856530121</x>
+							<y>-2.996854334</y>
+							<z>0.668536000</z>
 						</m_position>
 						<m_orientation>
-							<x>1.620944</x>
-							<y>0.040253</y>
-							<z>1.181429</z>
+							<x>1.620944000</x>
+							<y>0.040253000</y>
+							<z>1.567883580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_23"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -1251,19 +1195,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-8.894623</x>
-							<y>16.897034</y>
-							<z>0.000000</z>
+							<x>-5.293986131</x>
+							<y>2.259727771</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.386454580</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_24"/>
 						<m_BoneName text="CSC_Storage_L"/>
 						<m_ModelInstanceName text="CSC_Storage_L"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>0.999999998</m_scale>
 					</Element>
 				</m_Points>
 			</m_attachmentPoints>
@@ -2466,4 +2410,3 @@
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..AssetInstance>
-

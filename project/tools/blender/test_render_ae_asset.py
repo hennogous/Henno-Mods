@@ -7,7 +7,23 @@ import zlib
 import unittest
 import xml.etree.ElementTree as ET
 
-from render_ae_asset import Assembly, Resolver, stable_png
+from render_ae_asset import Assembly, Resolver, read_xml, stable_png
+
+
+class XmlTests(unittest.TestCase):
+    def test_native_descriptor_with_terminal_null_padding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "native.mtl"
+            path.write_bytes(b'<AssetObjects:MaterialInstance><m_ClassName text="Landmark"/>'
+                             b'</AssetObjects:MaterialInstance>\n\x00\n')
+            self.assertEqual(read_xml(path).find("m_ClassName").get("text"), "Landmark")
+
+    def test_embedded_null_is_still_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "invalid.mtl"
+            path.write_bytes(b'<Material>\x00</Material>')
+            with self.assertRaises(ET.ParseError):
+                read_xml(path)
 
 
 class PngTests(unittest.TestCase):

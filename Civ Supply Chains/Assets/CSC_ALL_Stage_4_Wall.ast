@@ -51,9 +51,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>14.804994</x>
-							<y>15.011473</y>
-							<z>0.000000</z>
+							<x>-0.493151825</x>
+							<y>6.682666795</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -103,9 +103,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>22.248934</x>
-							<y>10.908275</y>
-							<z>0.000000</z>
+							<x>6.950788175</x>
+							<y>2.579468795</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -155,9 +155,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>17.458620</x>
-							<y>14.099034</y>
-							<z>0.000000</z>
+							<x>2.160474175</x>
+							<y>5.770227795</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -207,9 +207,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>19.927828</x>
-							<y>12.806405</y>
-							<z>0.000000</z>
+							<x>4.629682175</x>
+							<y>4.477598795</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -259,9 +259,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>6.464274</x>
-							<y>8.302371</y>
-							<z>0.000000</z>
+							<x>-8.833871825</x>
+							<y>-0.026435205</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -311,9 +311,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>6.885822</x>
-							<y>11.431431</y>
-							<z>0.000000</z>
+							<x>-8.412323825</x>
+							<y>3.102624795</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -363,9 +363,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>8.732620</x>
-							<y>13.919360</y>
-							<z>0.000000</z>
+							<x>-6.565525825</x>
+							<y>5.590553795</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -415,9 +415,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>11.581531</x>
-							<y>15.236154</y>
-							<z>0.000000</z>
+							<x>-3.716614825</x>
+							<y>6.907347795</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -467,9 +467,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>23.903517</x>
-							<y>8.296516</y>
-							<z>0.000000</z>
+							<x>8.605371175</x>
+							<y>-0.032290205</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -519,9 +519,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>24.041641</x>
-							<y>5.119472</y>
-							<z>0.000000</z>
+							<x>8.743495175</x>
+							<y>-3.209334205</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -571,9 +571,9 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>22.651781</x>
-							<y>2.382083</y>
-							<z>0.000000</z>
+							<x>7.353635175</x>
+							<y>-5.946723205</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
 							<x>0.000000</x>
@@ -708,4 +708,3 @@
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..AssetInstance>
-

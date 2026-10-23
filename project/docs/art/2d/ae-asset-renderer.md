@@ -4,6 +4,16 @@
 geometry groups, material/texture overrides and recursive attachment transforms.
 Save changes in AE before running. [AE owns placement](../ae-owned-assembly-workflow.md).
 
+Geometry re-exports do not update existing AST bindings. The Blender mesh name
+and each used material-slot name become the GEO mesh/group identifiers; keep
+them stable after assembly, or migrate matching AST rows in every state when
+renaming. For example, the Level 3 intact interior group is now
+`CSC_Level_3_Interior`, formerly `CSC_Level_3_CON+PIL_Bldg`. This rename applies
+only to the `CSC_Level_3` geometry, not the separate construction/pillage model.
+The renderer rejects unmatched visible groups rather than silently losing faces.
+Native SDK XML descriptors may have terminal null padding; the reader strips
+that padding without changing the source or accepting nulls inside XML.
+
 From the Henno Mods repository root on Shadow:
 
 ```powershell

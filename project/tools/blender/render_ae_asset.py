@@ -66,7 +66,9 @@ def txt(element, path, default=""):
 
 def read_xml(path):
     # Some Firaxis GEOs use unbound dotted-prefix tags (not XML namespaces).
-    content = Path(path).read_text(encoding="utf-8-sig")
+    # Some native SDK descriptors include a C-string terminator after the XML.
+    # Strip terminal padding only; invalid bytes inside the document still fail.
+    content = Path(path).read_text(encoding="utf-8-sig").rstrip("\x00\r\n\t ")
     return ET.fromstring(re.sub(r"(<\/?)([\w.]+):", r"\1\2.", content))
 
 
