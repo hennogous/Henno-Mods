@@ -427,3 +427,11 @@ project/docs/research/mods/csc-tailor-density-native-20261017.md includes
 fullinventory/percontinent coverage/recoverynotes. Main140-entryviewerunchanged.
 No further native work authorized/needed this request. NativeMenu willbeclosed
 afterfinalcleanupverification toreleaseRAM; no activecontroller/heartbeat.
+
+## Setting rename — 20 October 2026
+
+Henno renamed the setup option to `CSC_RESOURCE_MAP_ASSISTANCE` / Additional Quarter resources (bool, default 1, SortIndex 305; notifications 306). Updated gameplay reader and nine map-lab/AI tool consumers; current integration docs reflect the new name. Keep `CSC_MATERIAL_MAP_ASSISTANCE_DONE` / `_AUDIT`, diagnostics, Lua filenames and action IDs unchanged: those are internal persistence/implementation identities. Canonical actions and generated civ6proj already match and register both setting files; no action edit was needed. Installed the three changed setting/Lua files and regenerated installed modinfo through Firaxis SDK, preserving unrelated actions/metadata (SDK omits the old empty CustomProperties node). Actual Lua 5.1 entry-point smoke checks passed for false/0, true/1/default and re-entry. No game launched. Deployment backup/logs: `C:/Users/Shadow/Desktop/Codex/csc-resource-map-setting-20261020/`.
+
+### Native On/Off follow-up — 20 October 2026
+
+User explicitly resumed native tests and requested closing FireTuner; GUI closed. New `test_setting_native.py` completed exactly two fresh same-seed Small/Continents/Abundant/Online maps (830102/940104), no autoplay/turn advance. Off skipped disabled/0 additions; On completed once at turn1/23 additions. All3404Off plots exactly equal On debug pre-pass; only23audited resources/quantity1 differ afterward; starts/terrain/original deposits preserved. Existing turn3 game saved as `CSC before resource setting test 20261020-212102.Civ6Save` (hash130312fc368000f1241c6ba6149b66e43d748805447fcca250570745ddcfef15). Initial read-only preflight needed a local variable for zero-return/unset config values; no map/game mutation occurred in that failed attempt. Native results+restoration passed; original mod flags/autostart/assistance+diagnostic values restored,122installed files unchanged. Controller exited0; Civ at main menu, FireTuner remains closed. Evidence `Desktop/Codex/csc-resource-setting-native-20261020/`; no monitoring scheduled.

@@ -366,7 +366,6 @@
 		<Element>
 			<consumerName text="Lenses"/>
 			<relativeArtDefPaths>
-				<Element text="CSC_Lenses.artdef"/>
 			</relativeArtDefPaths>
 			<libraryDependencies>
 			</libraryDependencies>

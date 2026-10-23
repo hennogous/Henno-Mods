@@ -147,3 +147,90 @@ Existing selected lens preserved. No art change needed. Regression extended with
 checks and palette schema pass. Source-only fix: installed mod/Workshop untouched.
 Lua.log also has duplicate CSC MCUIS registration warnings on load; separate
 existing issue, not investigated/fixed in this lens-focused turn.
+
+## Overlay unresponsiveness investigation — 19 October 2026
+
+Henno reports map yields, Empire and other overlays becoming unresponsive after
+Quarter placement highlighting. Latest Lua.log contains four
+`MinimapPanel: WARN: Given lens has no entry` warnings (lines 728, 730, 805, 806
+at inspection), around placement activity. No corresponding lens/PlotInfo Lua
+exception; the one runtime exception is the startup TunerMapPanel.lua:136 nil
+access. Duplicate MCUIS registrations and official Clickout localization
+duplicates are separate observations, not established causes.
+
+Installed/source PlotInfo_CSC_QuarterPlacement.lua SHA256 both
+`d25082b905544efef413117e45ec8cb14b29d9ba93b022a3adf1d668bf67b3a9`.
+The 15 October workaround temporarily supplies the CSC More Lenses identity
+only during ToggleLayerOn, then immediately restores NONE/previous selection.
+Current native PlotInfo + installed More Lenses regression passes, including
+254 classifications, but assumes immediate layer callbacks. An in-memory test
+variant queuing the real installed More Lenses OnLensLayerOn handlers until
+after placement returns reproduces the exact logged warning and fails the
+existing zero-diagnostics assertion. This proves the workaround is vulnerable
+to deferred callbacks; it does NOT prove native events were deferred in Henno's
+session or reproduce the full yield/Empire freeze. Treat shared Appeal-layer
+ownership/timing as a suspect, not a confirmed root cause. Do not call it fixed.
+
+Native StrategicView_MapPlacement sets DistrictPlacement active before emitting
+the placement shadow-add event. PlotInfo's yield toggle independently calls
+ToggleLayerOn/Off for Yield_Icons; the warning itself is a print, not an exception
+that directly aborts those handlers. Need affected-session state or a controlled
+native comparison to establish the broader failure mechanism.
+
+Debug port 4318 refused; host listener is 4319, but LSQ returned an empty payload,
+so no stuck-state inspection was possible. No game state/preferences, installed
+scripts or production code changed during this investigation. Optional user
+clarification pending: do buttons change their checked state while the map stays
+unchanged, or do the controls themselves stop reacting?
+
+## Independent placement overlay — 19 October 2026
+
+Henno explicitly requested that district placement not depend on More Lenses.
+Replaced the shared Appeal-layer integration with CSC's own initially hidden
+`CSC_QuarterPlacement` BorderOverlay, registered alongside manual resource edges
+in `CSC_QuarterResourceBorders.artdef`. Uses native MapSearch highlight colours
+and plot channels, with borders disabled. No lens toggles, active-lens events,
+legend registration or framework state changes. Deleted `CSC_Lenses.artdef`
+and removed its source project/art-manifest registrations. Optional manual Supply
+Chains lens remains on More Lenses. Shared classification/palette unchanged.
+
+Native PlotInfo regression now runs without More Lenses and with immediate and
+deferred real installed callbacks, rejects framework/shared-colour calls, checks
+all exits/missing art/manual-overlay preservation and exercises native yield
+toggle/Empire dispatch (Empire control rendering stubbed). All tests pass plus
+254 classifications and nine colours on runtime gameplay schema. Action wiring
+check passes. Native cooker with SDK `Civ6/pantry` cooks both overlay entries
+and regenerates dependency without missing-reference warnings; dependency no
+longer includes CSC_Lenses. Separate 496-file native-manifest review package:
+`C:\Users\Shadow\Desktop\Codex\csc-placement-independent-20261019`.
+
+No installed mod, Workshop files, game state/preferences or unrelated source
+changed. Requires normal ModBuddy art cook and full game restart. Native visual
+appearance and whether this resolves the reported yield/Empire freeze remain
+unverified. Current durable description: `project/docs/integrations/csc-quarter-lenses.md`.
+
+## Quarter selector checked appearance — 19 October 2026
+
+Henno reports Quarter choices not visibly showing the active selection. Existing
+SelectQuarter already sets exactly one checked button and retains it on reopen;
+the XML used `CheckTextureOffset="0,35"` on Controls_RadioButtonLarge.dds. Changed
+to `0,140`, matching the native MinimapPanel lens buttons (and its 35x35 checked
+sprite). No selection/activation behavior changed. Existing chooser/native
+placement regressions pass; native button appearance still needs a rebuild/reload
+and visual confirmation. Source-only UI change; no installed or Workshop edits.
+
+## Placement outside focused city only — 20 October 2026
+
+Henno requested excluding the currently focused city's tiles from automatic
+placement highlights. Wrapper filters shared colour buckets using native
+Cities.GetPlotPurchaseCity and the focused city's owner+ID before colouring or
+extending the shadow mask. Unclaimed and other-city tiles (same or other player)
+remain eligible. Native valid/purchase tile mask stays intact; manual lens and
+shared classifier unchanged. Ownership/focus is read afresh on each redraw.
+
+Full regression passes with More Lenses absent and immediate/deferred callbacks.
+New cases cover both Quarters, all highlight categories, same-player different
+cities, cross-player city-ID collisions, unclaimed plots, focus/tile changes,
+all-filtered cleanup, manual-lens coverage and native-mask preservation. No new
+art cook needed for this filter; rebuild/reload Lua, visual review still pending.
+Installed mod, game state/preferences and Workshop files unchanged.

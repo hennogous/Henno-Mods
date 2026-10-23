@@ -1,5 +1,7 @@
 # SV interior outlines
 
+19 October 2026: Bakery and Cafe painted sprites received a directional-shadow study. Henno rejected the first strong top-left lighting pass as too much and requested a midpoint. Keep readable, moderate dormer/eave shadows and natural original highlight brightness; avoid deep navy side walls, yellow rim light and dramatic contrast. The medium-strength review PNGs and editable XCFs are under `C:\Users\Shadow\Desktop\Codex\art-work\sv-painted-20261019\medium-shadows-02\`; user acceptance is still pending. Original paintings remain in sibling `bakery-01` and `cafe-01` folders.
+
 14 October 2026: Henno asked for thicker black outlines around the interior objects in both the Tailor and Fashion House painted SV sprites.
 
 Henno accepted the thick interior outline treatment as the standard for all CSC SV sprites, and chose the Tailor's restrained saturation/tonal balance as the colour standard. The installed CSC skill now owns the directive in `references/art-strategic-view-production.md` and bundles the approved Tailor PNG in `assets/sv-style/CSC_TAILORS_SV_Tailor.png`. Preserve each Quarter's intended hues while matching that saturation and tonal treatment.

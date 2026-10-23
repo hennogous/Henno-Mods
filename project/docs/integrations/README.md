@@ -8,6 +8,7 @@ CSC adjacency engine, historical MAB/Ruivo integration and Bakers service/notifi
 - [MAB Manual — Modular Adjacency Bonuses Core (Ruivo)](MAB_MANUAL.md) — **Needs refresh**.
 - [Bakers Service Notification UI](bakers-service-notification-ui.md) — **Needs refresh**.
 - [CSC bundled adjacencies](csc-adjacencies.md) — **Current first implementation and test results**.
+- [CSC multiplayer runtime hardening](csc-multiplayer-hardening.md) — **Source and offline checks complete**; deterministic writes, trade-route authority and shared gameplay reconciliation. Native multiplayer pending.
 - [CSC Quarter lenses and placement](csc-quarter-lenses.md) — **Automatic native placement and optional More Lenses buttons; shared data and test results**.
 - [CSC material map assistance](csc-material-map-assistance.md) — **Implemented**; one-time automatic Lua resource help across vanilla/TAR abundance levels, scaled aims and limits, native eligibility, continental palettes and guards.
 - [CSC AI tuning v1](csc-ai-tuning.md) — **Experimental**; native reciprocal sales signals, exact-material modifier prototype and improvement preference, with RomanHoliday code references and matched-seed testing.

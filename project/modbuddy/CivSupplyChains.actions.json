@@ -405,6 +405,16 @@
         ]
       },
       {
+        "type": "AddGameplayScripts",
+        "id": "CSC_AI_Research",
+        "properties": {
+          "LoadOrder": "505"
+        },
+        "files": [
+          "Lua_UI/AI/CSC_AI_Research.lua"
+        ]
+      },
+      {
         "type": "ImportFiles",
         "id": "CSC_QuarterOverlaySupport",
         "properties": {
