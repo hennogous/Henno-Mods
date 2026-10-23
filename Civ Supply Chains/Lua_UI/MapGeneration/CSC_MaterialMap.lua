@@ -9,12 +9,14 @@ local AUDIT='CSC_MATERIAL_MAP_ASSISTANCE_AUDIT';
 local function flag(value) return value==true or value==1;end
 
 function CSC_InitializeMaterialMap()
+    -- This is map initialization, not a recurring gameplay repair. Record skips
+    -- as completed too, so loading a save cannot reconsider an earlier decision.
     if Game:GetProperty(DONE) then return;end
     local function skip(reason)
         Game:SetProperty(DONE,true);Game:SetProperty(AUDIT,{version=C.Version,status='skipped',reason=reason});
         print('CSC_MATERIAL_MAP_SKIPPED',reason);
     end
-    local configured=GameConfiguration.GetValue('CSC_MATERIAL_MAP_ASSISTANCE');
+    local configured=GameConfiguration.GetValue('CSC_RESOURCE_MAP_ASSISTANCE');
     if configured~=nil and not flag(configured) then skip('disabled');return;end
     local densityRow=GameInfo.GlobalParameters['CSC_MATERIAL_MAP_STANDARD_DENSITY'];
     local profile=C.ResourceProfile(MapConfiguration.GetValue('resources'),densityRow and tonumber(densityRow.Value) or 30);
@@ -33,6 +35,8 @@ function CSC_InitializeMaterialMap()
     end;end;end
     for r in pairs(mapped) do eligible[r]={};end
     local startingPlots={};
+    -- Capture the engine's current map and eligibility before planning. The pure
+    -- planner never approximates CanHaveResource or mutates native plot objects.
     for i=0,Map.GetPlotCount()-1 do
         local p=Map.GetPlotByIndex(i);local neighbors={};
         for d=0,5 do local n=Map.GetAdjacentPlot(p:GetX(),p:GetY(),d);if n then neighbors[#neighbors+1]=n:GetIndex();end;end
@@ -59,6 +63,8 @@ function CSC_InitializeMaterialMap()
     -- Preflight the complete plan, then check each write again. Unexpected
     -- incompatibilities roll back every addition; original deposits are intact.
     Game:SetProperty(DONE,true);
+    -- Set the once-only guard before writes can raise events. A failed pass is
+    -- rolled back and audited rather than retried against a partly changed map.
     local applied={};
     local ok,message=pcall(function()
         for _,a in ipairs(plan.additions) do local p=Map.GetPlotByIndex(a.plot);assert(p:GetResourceType()==-1 and p:GetImprovementType()==-1 and ResourceBuilder.CanHaveResource(p,mapped[a.resource]),'Material map preflight '..a.resource);end

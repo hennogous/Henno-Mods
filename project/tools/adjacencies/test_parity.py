@@ -265,6 +265,7 @@ def main():
     gameplay_rule['DistrictType']='DISTRICT_TEST'
     lua.execute('GameInfo.CSC_AdjacencyRules=info({'+lua_value(gameplay_rule)+'}); resetWorld(); center.district=0; center.complete=true')
     include('CSC_AdjacencyGameplay')
+    g.CSC_RefreshAdjacencies()  # simulate a synchronized gameplay refresh
     assert g.center.properties['CSC_ADJ_FIXTURE_1']==1
     g.center.complete=False
     g.CSC_RefreshAdjacencies()

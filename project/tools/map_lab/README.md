@@ -42,7 +42,7 @@ compares all eight setups for the selected Quarter/filter. Run
 ## Automatic CSC Lua pass
 
 CSC's installed `CSC_MaterialMap` gameplay context now runs the complete helper
-automatically during loading. The setup option Additional industry materials
+automatically during loading. The setup option Additional Quarter resources
 defaults On for new maps at every vanilla/TAR resource level. Version 2 scales
 coverage aims and deposit limits against the vanilla Abundant calibration; Random
 uses expected Standard density. See the [scaling factors](../../docs/research/mods/csc-material-abundance-scaling-20261016.md),
@@ -71,6 +71,16 @@ Like the previous runner, `--first-only` checks one map before continuing and
 `CSC_MATERIAL_MAP_DIAGNOSTICS` configuration after a test batch; normal play uses
 only a compact persistent audit. The installed native pass owns its Lua random
 stream; exact draws intentionally differ from the original Python stream.
+
+`test_setting_native.py --output <fresh review folder>` checks
+`CSC_RESOURCE_MAP_ASSISTANCE` on two fresh Small/Continents/Abundant maps with
+identical seeds and leaders. It saves any current game first, checks native
+Off/On audits and logs, and compares every Off tile with On's captured pre-pass
+world. Final differences must be audited resource additions. It advances no
+turns and restores mod preferences, auto-start and the assistance/diagnostic
+values, leaving the main menu. No controller command calls a resource setter or
+planner. Evidence includes `results.json`, `restoration.json`, both complete
+maps and command transcripts.
 
 ## Native helper comparison
 

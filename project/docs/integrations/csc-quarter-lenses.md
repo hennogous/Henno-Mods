@@ -1,11 +1,16 @@
 # CSC Quarter lenses and placement overlay
 
-_Updated 12 October 2026. Placement sampler retired at Henno's request. Minimal shared palette and improved-resource outlines pass automated checks and native cooking; visual review remains open._
+_Updated 20 October 2026. Placement uses its own native tile-fill overlay, excludes tiles owned by the focused city, and has no More Lenses event or layer dependency. Automated checks and native cooking pass; in-game visual review remains open._
 
 Selecting a CSC Quarter for placement automatically highlights its existing
 Quarters, discovered base/specialty materials and points of sale. Bakers' and
 Tailors' are implemented. Standard district and Wonder placement retain native
 behaviour. Automatic placement highlights work without More Lenses.
+
+Automatic placement highlights only relevant tiles outside the focused city's
+territory: unclaimed tiles and tiles belonging to other cities, including other
+cities of the same player. Revealed/known-resource restrictions still apply.
+The manual Supply Chains lens continues to include all relevant revealed tiles.
 
 The manual **Supply Chains** lens remains optional integration with astog's
 **More Lenses** (`35f33319-ad93-4d6b-bf27-406fac382d06`). Both features use one
@@ -25,6 +30,10 @@ selected Quarter and updates the modal legend/title. The panel closes when
 another lens is chosen or modal-lens mode ends. Selecting Supply Chains again
 reopens it with the previous choice. District placement still chooses its Quarter
 from the selected production item, independently of this manual choice.
+
+Quarter radio buttons use the native lens menu's checked texture frame
+(`Controls_RadioButtonLarge.dds`, offset `0,140`). The earlier `0,35` frame did
+not visibly mark the selected choice despite the Lua checked state changing.
 
 `ModLens_CSC_Quarters.lua` registers the parent button and initial legend.
 `CSC_SupplyChainsLensPanel.lua/.xml` owns the selector and selected Quarter, using
@@ -102,68 +111,55 @@ No Lua Quarter/resource/customer list needs to be extended.
 
 The replacement includes Firaxis' original `PlotInfo` script before adding the
 Quarter behaviour. It rebinds the existing placement-shadow add/clear and
-interface-mode callbacks, which the native script registers during initialization,
-and listens for the colour layer turning off.
+interface-mode callbacks, which the native script registers during initialization.
 
 `StrategicView_MapPlacement` emits the add callback after building native valid
 and purchaseable tiles, adjacency art and preview data. When the current mode is
 district placement and the selected district is a configured Quarter, CSC paints
-relevant plots using `Hex_Coloring_Appeal_Level`, the same colour-capable layer as
-More Lenses. `ArtDefs/CSC_Lenses.artdef` adds that layer to the native
-`DistrictPlacement_PermissionMask`; the Lenses consumer in the art specification
-loads it. This is an additive permission, preserving native placement layers and
-not activating Appeal for standard districts. The wrapper extends the
-native unshadowed plot list with those highlights and asks native `RealizeShadowMask`
-to redraw, preserving all other mask categories. It copies/deduplicates the list
-and does not change the caller's native placement data.
+relevant plots through the independent `CSC_QuarterPlacement` BorderOverlay.
+It uses the native Map Search highlight API: `SetHighlightColor`, `SetPlotChannel`,
+`ShowHighlights(true)` and `ShowBorders(false)`. One channel per nonempty colour
+bucket preserves the shared Quarter/material/sales palette. The overlay is
+registered, initially hidden, in `ArtDefs/CSC_QuarterResourceBorders.artdef`, which
+is loaded by the Overlay art consumer. It uses the game's `MapSearchBorder`
+material; no new textures or BLP assets are required.
 
-For a standard district or a Wonder, the callback passes through to the original
-handler. No extra colouring calls are made unless an existing CSC highlight layer
-needs to be cleared. Native plot-purchase redraws also refresh the Quarter colours.
-The native clear event removes CSC's highlights; an explicit mode-change handler
-also clears them on confirmation/cancellation even if that event is absent.
-Switching directly to a standard district also clears them. Native lens changes
-release ownership as soon as the colour layer turns off. If a manual Appeal/More
-Lenses lens has already taken over the layer, later mode cleanup preserves its
-contents. The context shutdown clears owned highlights and unregisters the
-replacement callbacks before invoking native shutdown.
+Placement never toggles a native lens layer, activates Appeal, queries or changes
+More Lenses' active selection, or registers its legend. The old
+`CSC_Lenses.artdef` permission patch and its source registrations are removed.
+More Lenses remains optional only for the manual Supply Chains lens.
 
-Native and More Lenses listeners may fill Appeal when its layer turns on. The
-wrapper clears/repaints after that notification, then redraws the native placement
-mask. On cleanup it redraws the mask after turning the layer off, since More
-Lenses clears the shadow mask in its off handler.
+The wrapper extends the native unshadowed plot list with the highlights and asks
+native `RealizeShadowMask` to redraw, preserving other mask categories. It
+copies/deduplicates the list without changing the caller's native placement data.
+Before colouring or extending that mask, placement removes plots whose purchase
+city matches both the focused city's owner and city ID, using native
+`Cities.GetPlotPurchaseCity`. It rechecks ownership on every redraw so changing
+cities or swapping tiles updates the highlights. Native valid/purchaseable tiles
+remain in the original placement mask even when they belong to the focused city.
+For a standard district, Wonder or missing cooked overlay, the callback passes
+through to the original handler. Native plot-purchase redraws refresh Quarter
+colours. Native placement validation, adjacency previews and queue handling
+remain native.
 
-The placement overlay does not enter a manual More Lenses mode, open its chooser,
-or use its grey colour.
-Irrelevant plots keep their native appearance. Valid/purchaseable tile indicators,
-adjacency previews, placement validation and queue operations remain native.
+Cancellation, confirmation, switching to another district or interface mode,
+and context shutdown clear only CSC's own overlay and placement-mask entry.
+Manual More Lenses colours and resource borders, yield icons and Empire details
+are separate and are never cleared by placement cleanup. Missing overlay art
+falls back to ordinary placement without extra highlighting.
 
-### More Lenses startup state — 15 October 2026
+### Retired Appeal-layer integration — 19 October 2026
 
-Live `Lua.log` showed eight identical `ModalLensPanel.lua:206` failures preceded
-by `MinimapPanel: WARN: Given lens has no entry`. More Lenses initializes its
-current modded lens name to nil. Our placement override turned Appeal's colour
-layer on before any manual lens had been selected. Its minimap listener warned;
-its modal listener passed nil to `ShowModLensKey`, whose error message attempted
-to concatenate that nil name. The failure is inside More Lenses but CSC triggers
-it through the layer-on event.
-
-Before placement turns the layer on, the wrapper queries More Lenses' public
-active-lens event. For nil/`NONE`, it supplies the selected Quarter's legend under
-the existing Supply Chains entry and temporarily sets that entry active. After
-the synchronous layer listeners complete, it restores the previous name, using
-More Lenses' `NONE` sentinel for an uninitialized name. Existing manual selections
-are preserved. No chooser is opened and no interface mode changes. These events
-are inert when More Lenses is absent; no new dependency or menu entry is added.
-
-The regression's optional `--more-lenses <Workshop-directory>` executes the actual
-installed minimap/modal layer-on, active-name and legend callbacks in isolated Lua
-contexts. Before the fix it reproduced the same nil-name concatenation error.
-Afterward it verifies initial nil, repeated placement from `NONE`, valid legends,
-existing manual selection preservation and absence of warnings/errors. The
-original native PlotInfo/classification/chooser tests also pass without these
-listeners. The installed mod and Workshop files remain unchanged; rebuild/reload
-is needed to apply this source-only Lua fix in game.
+Earlier versions reused `Hex_Coloring_Appeal_Level` and extended
+`DistrictPlacement_PermissionMask`. That triggered More Lenses layer listeners,
+including a nil-active-name crash reported on 15 October. A temporary active-name
+workaround fixed the immediate-callback test but remained vulnerable to delayed
+callbacks: queuing the real installed callbacks reproduced the 19 October
+`WARN: Given lens has no entry` warning. Henno also reported yield/Empire overlay
+unresponsiveness; that broader native failure was not reproduced or established
+as the warning's consequence. Independent overlay ownership removes this shared
+layer interaction. It still needs an in-game check of appearance and the reported
+freeze; automated tests cannot prove the renderer or session behavior.
 
 ## Minimal palette and improved-resource outlines
 
@@ -198,8 +194,10 @@ front edge, using native `MapSearchBorder` art. Unrevealed, undiscovered,
 unimproved, pillaged, Quarter and sale-district plots are excluded from this edge
 list. Changes are read again whenever the manual lens is redrawn.
 
-`ArtDefs/CSC_QuarterResourceBorders.artdef` registers one initially hidden
-BorderOverlay: `CSC_QuarterLens_Improved`. Placement never draws or clears it.
+`ArtDefs/CSC_QuarterResourceBorders.artdef` registers two initially hidden
+BorderOverlays: `CSC_QuarterLens_Improved` for manual resource edges and
+`CSC_QuarterPlacement` for automatic placement fills. Placement never draws or
+clears the manual overlay.
 More Lenses clears its edges on lens changes, layer-off,
 mode exit and shutdown. Closing its selector alone can retain edges while the
 Supply Chains lens remains active. Missing cooked border art falls back to the
@@ -233,7 +231,10 @@ It verifies nine named, nontransparent RGBA colours without changing the
 running database. A rebuild and full game restart are needed to load the corrected
 action; switching lenses in the existing session is insufficient.
 
-## Placement colour and cleanup correction
+## Historical placement colour and cleanup correction
+
+The following records the superseded Appeal implementation; current placement
+uses the independent BorderOverlay described above.
 
 Henno subsequently confirmed both features were visible, but placement painted
 all categories bright green and left those hexes behind after selecting production.
@@ -271,9 +272,12 @@ with mocked UI APIs and the replacement callback wiring. It checks both Quarters
 standard districts/Wonders, absence of More Lenses registries/colours, native mask
 preservation, unique sale districts, hidden resources, redraw/pillage, direct
 switching, cancellation, missing city and invalid district parameters. It also
-checks additive art permissions, pins colour calls to the More Lenses layer,
-models competing layer notifications and verifies confirmation, modal-lens
-takeover and shutdown. These pass; the mock does not render native shaders.
+checks the independent overlay registration, rejects any placement access to
+More Lenses events or shared lens colour calls, and verifies confirmation,
+modal-lens takeover, missing-art fallback and shutdown. With `--more-lenses`, it
+runs both immediate and deferred installed callbacks, verifies no active-name
+changes or diagnostics, and exercises native yield/Empire event handlers after
+placement cleanup. These pass; the mock does not render native shaders.
 The Supply Chains chooser regression also checks one parent registry entry in
 each framework context, dynamic choices, initial activation timing, palette/legend
 switching, retention, panel dismissal, placement isolation and event cleanup.
@@ -332,3 +336,20 @@ placement prerequisites. Unknown, incomplete and unrevealed Wonders are excluded
 Additional Wonder sales sites can be declared in Quarter/compatibility SQL through
 this table without changing Lua. Regression checks cover the declared sites,
 Quarter scope, visibility and completion, plus native placement's colour/mask path.
+
+## Independent placement validation — 19 October 2026
+
+The full regression passes 254 classifications and all Wonder/manual-chooser/edge
+checks, plus native PlotInfo placement with More Lenses absent and present
+(immediate and deferred callbacks). Placement tests reject calls to the framework
+selection/legend events and shared colour-layer API. They check masks, redraws,
+all mode exits, missing art, native yield toggles and Empire event dispatch,
+manual selection/overlay preservation, and shutdown. Empire control rendering
+is stubbed; no native visual or full freeze reproduction is claimed.
+
+Firaxis' native cooker successfully cooks both registered BorderOverlays against
+the SDK `Civ6/pantry` and generates the dependency file without missing-reference
+warnings. Review output: `C:\Users\Shadow\Desktop\Codex\csc-placement-independent-20261019`.
+The normal ModBuddy build must cook art, followed by a full game restart; a Lua-only
+copy does not register the new overlay or remove the old permission patch.
+Installed mod, Workshop files and game preferences are unchanged by this edit.

@@ -1,3 +1,5 @@
+-- UI readers share the gameplay evaluator so previews use the same eligibility,
+-- visibility, rounding and amount limits. This file only builds display data.
 include('CSC_AdjacencyCore');
 local A = CSC_Adjacency;
 A.Initialize();
@@ -99,8 +101,23 @@ function A.PreviewLine(rule,amount,count)
     return text;
 end
 
+function A.TotalIcons(totals, skipBaseYields)
+    local keys,icons = {},{};
+    for key,total in pairs(totals) do
+        if not skipBaseYields or total.Rule.ProvideType ~= 'SelfBonus' then keys[#keys+1]=key; end
+    end
+    table.sort(keys);
+    for _,key in ipairs(keys) do
+        local total=totals[key];
+        if total.Amount ~= 0 then icons[#icons+1]=A.ValueString(total.Rule,total.Amount); end
+    end
+    return table.concat(icons,'[NEWLINE]');
+end
+
 function A.Preview(districtType, plot, city)
-    local lines,totals = {},{};
+    -- Totals combine equal provider/yield pairs for the icons. Detail keys keep
+    -- distinct sources/ring bands separate while merging their policy additions.
+    local lines,totals,details,detailKeys = {},{},{},{};
     local playerID = city:GetOwner();
     for _,rule in ipairs(A.ByDistrict[districtType] or {}) do
         if A.Eligible(rule,city,playerID) then
@@ -110,21 +127,28 @@ function A.Preview(districtType, plot, city)
                 local key = rule.ProvideType .. ':' .. rule.YieldType;
                 totals[key] = totals[key] or {Rule=rule,Amount=0};
                 totals[key].Amount=totals[key].Amount+amount;
-                lines[#lines+1]=A.PreviewLine(rule,amount,count);
+                -- A policy adds to the same source sentence, rather than
+                -- displaying an indistinguishable second +1 Quarter line.
+                local first,last=A.Bounds(rule);
+                local detailKey=table.concat({key,rule.AdjacencyType,rule.CustomAdjacentObject,first,last,count},':');
+                if not details[detailKey] then
+                    details[detailKey]={Rule=rule,Amount=0,Count=count};
+                    detailKeys[#detailKeys+1]=detailKey;
+                end
+                details[detailKey].Amount=details[detailKey].Amount+amount;
             end
         end
     end
-    local keys,icons = {},{};
-    for key in pairs(totals) do keys[#keys+1]=key; end
-    table.sort(keys);
-    for _,key in ipairs(keys) do
-        local total=totals[key];
-        if total.Amount ~= 0 then icons[#icons+1]=A.ValueString(total.Rule,total.Amount); end
+    for _,key in ipairs(detailKeys) do
+        local detail=details[key];
+        if detail.Amount ~= 0 then lines[#lines+1]=A.PreviewLine(detail.Rule,detail.Amount,detail.Count); end
     end
-    return table.concat(icons,'[NEWLINE]'),table.concat(lines,'[NEWLINE]');
+    return A.TotalIcons(totals),table.concat(lines,'[NEWLINE]'),totals;
 end
 
 function A.RiverEdge(center, neighbor, direction)
+    -- A river edge is stored on only one of its two hexes. The opposite three
+    -- directions therefore query the neighbor's corresponding edge flag.
     if not center or not neighbor then return false; end
     if direction == DirectionTypes.DIRECTION_EAST then return center:IsWOfRiver(); end
     if direction == DirectionTypes.DIRECTION_SOUTHEAST then return center:IsNWOfRiver(); end

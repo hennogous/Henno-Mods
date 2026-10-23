@@ -9,40 +9,40 @@
 
 INSERT OR IGNORE INTO CSC_AdjacencyRules
     (
-    ID,
-    DistrictType,
-    ProvideType,
-    YieldType,
-    YieldChange,
-    AdjacencyType,
-    CustomAdjacentObject,
-    Rings,
-    MustOwn,
-    DistrictModifiers
+        ID,
+        DistrictType,
+        ProvideType,
+        YieldType,
+        YieldChange,
+        AdjacencyType,
+        CustomAdjacentObject,
+        Rings,
+        MustOwn,
+        DistrictModifiers
     )
 SELECT
-    'CSC_' || C.QuarterKey || '_' ||
+        'CSC_' || C.QuarterKey || '_' ||
+            CASE
+                WHEN C.SourceTag LIKE '%_BASE' THEN 'PRODUCTION_FROM_BASE'
+                WHEN C.SourceTag LIKE '%_SPEC' THEN 'PRODUCTION_FROM_SPEC'
+                ELSE 'PRODUCTION_FROM_' || REPLACE(C.SourceTag, 'CLASS_CSC_', '')
+            END ||
+            CASE
+                WHEN C.AdjacencyType = 'FROM_RINGS_TYPETAG_RESOURCE' THEN ''
+                ELSE '_' || TT.Type
+            END,
+        'DISTRICT_CSC_' || C.QuarterKey || '_QUARTER',
+        'SelfBonus',
+        C.YieldType,
+        C.YieldChange,
+        C.AdjacencyType,
         CASE
-            WHEN C.SourceTag LIKE '%_BASE' THEN 'PRODUCTION_FROM_BASE'
-            WHEN C.SourceTag LIKE '%_SPEC' THEN 'PRODUCTION_FROM_SPEC'
-            ELSE 'PRODUCTION_FROM_' || REPLACE(C.SourceTag, 'CLASS_CSC_', '')
-        END ||
-        CASE
-            WHEN C.AdjacencyType = 'FROM_RINGS_TYPETAG_RESOURCE' THEN ''
-            ELSE '_' || TT.Type
+            WHEN C.AdjacencyType = 'FROM_RINGS_TYPETAG_RESOURCE' THEN C.SourceTag
+            ELSE TT.Type
         END,
-    'DISTRICT_CSC_' || C.QuarterKey || '_QUARTER',
-    'SelfBonus',
-    C.YieldType,
-    C.YieldChange,
-    C.AdjacencyType,
-    CASE
-        WHEN C.AdjacencyType = 'FROM_RINGS_TYPETAG_RESOURCE' THEN C.SourceTag
-        ELSE TT.Type
-    END,
-    1,
-    1,
-    1
+        1,
+        1,
+        1
 FROM CSC_QuarterMaterialAdjacencyConfig AS C
 JOIN TypeTags AS TT
     ON TT.Tag = C.SourceTag
@@ -67,10 +67,7 @@ GROUP BY
 --  Base district tags propagate to unique replacement districts before typetag-driven rows are generated.
 --  Keep this limited to district-facing CSC adjacency tags; material/resource tags are handled separately above.
 INSERT OR IGNORE INTO TypeTags
-    (
-    Type,
-    Tag
-    )
+        (   Type,   Tag   )
 SELECT DISTINCT
     DR.CivUniqueDistrictType,
     TT.Tag
@@ -126,31 +123,31 @@ WITH QuarterFacingAdjacencyTags AS
     )
 INSERT OR IGNORE INTO CSC_AdjacencyRules
     (
-    ID,
-    DistrictType,
-    ProvideType,
-    YieldType,
-    YieldChange,
-    AdjacencyType,
-    CustomAdjacentObject,
-    Rings,
-    MustOwn,
-    DistrictModifiers
+        ID,
+        DistrictType,
+        ProvideType,
+        YieldType,
+        YieldChange,
+        AdjacencyType,
+        CustomAdjacentObject,
+        Rings,
+        MustOwn,
+        DistrictModifiers
     )
 SELECT
-    CASE
-        WHEN SourceKey = 'SALES' THEN 'CSC_CITY_ALL_SALES_GOLD_TO_' || QuarterKey
-        ELSE 'CSC_' || QuarterKey || '_' || SourceKey || '_' || REPLACE(YieldType, 'YIELD_', '') || '_TO_QUARTER'
-    END,
-    'DISTRICT_CSC_' || QuarterKey || '_QUARTER',
-    'SelfBonus',
-    YieldType,
-    1,
-    'FROM_RINGS_TYPETAG_DISTRICT',
-    Tag,
-    1,
-    1,
-    1
+        CASE
+            WHEN SourceKey = 'SALES' THEN 'CSC_CITY_ALL_SALES_GOLD_TO_' || QuarterKey
+            ELSE 'CSC_' || QuarterKey || '_' || SourceKey || '_' || REPLACE(YieldType, 'YIELD_', '') || '_TO_QUARTER'
+        END,
+        'DISTRICT_CSC_' || QuarterKey || '_QUARTER',
+        'SelfBonus',
+        YieldType,
+        1,
+        'FROM_RINGS_TYPETAG_DISTRICT',
+        Tag,
+        1,
+        1,
+        1
 FROM QuarterFacingAdjacencyTags
 ORDER BY QuarterKey, SourceKey, YieldType;
 
@@ -191,30 +188,79 @@ SalesReturnDistricts AS
     )
 INSERT OR IGNORE INTO CSC_AdjacencyRules
     (
-    ID,
-    DistrictType,
-    ProvideType,
-    YieldType,
-    YieldChange,
-    AdjacencyType,
-    CustomAdjacentObject,
-    Rings,
-    MustOwn,
-    DistrictModifiers
+        ID,
+        DistrictType,
+        ProvideType,
+        YieldType,
+        YieldChange,
+        AdjacencyType,
+        CustomAdjacentObject,
+        Rings,
+        MustOwn,
+        DistrictModifiers
     )
 SELECT
-    'CSC_' || QuarterKey || '_' || REPLACE(DistrictType, 'DISTRICT_', '') || '_' || REPLACE(YieldType, 'YIELD_', '') || '_FROM_QUARTER',
-    DistrictType,
-    'SelfBonus',
-    YieldType,
-    1,
-    'FROM_RINGS_CAO_DISTRICT',
-    'DISTRICT_CSC_' || QuarterKey || '_QUARTER',
-    1,
-    1,
-    1
+        'CSC_' || QuarterKey || '_' || REPLACE(DistrictType, 'DISTRICT_', '') || '_' || REPLACE(YieldType, 'YIELD_', '') || '_FROM_QUARTER',
+        DistrictType,
+        'SelfBonus',
+        YieldType,
+        1,
+        'FROM_RINGS_CAO_DISTRICT',
+        'DISTRICT_CSC_' || QuarterKey || '_QUARTER',
+        1,
+        1,
+        1
 FROM SalesReturnDistricts
 ORDER BY QuarterKey, DistrictType, YieldType;
+
+-- Add the same return again while the receiving player's policy is active.
+-- Copy the generated return, including its yield, rings and ownership, so every
+-- adjacent Quarter counts and unique districts use the same rule as their base.
+-- Policy-owned modifiers are compiled and attached through PolicyModifiers.
+INSERT OR IGNORE INTO CSC_AdjacencyRules
+    (
+        ID,
+        DistrictType,
+        ProvideType,
+        YieldType,
+        YieldChange,
+        AdjacencyType,
+        CustomAdjacentObject,
+        Rings,
+        MinRings,
+        MaxRings,
+        MustOwn,
+        DistrictModifiers,
+        ModifierOwner,
+        WhoIsTheOwner,
+        CollectionType
+    )
+SELECT
+        R.ID || '_' || C.PolicyType,
+        R.DistrictType,
+        R.ProvideType,
+        R.YieldType,
+        R.YieldChange,
+        R.AdjacencyType,
+        R.CustomAdjacentObject,
+        R.Rings,
+        R.MinRings,
+        R.MaxRings,
+        R.MustOwn,
+        R.DistrictModifiers,
+        'PolicyModifiers',
+        C.PolicyType,
+        'COLLECTION_PLAYER_DISTRICTS'
+FROM CSC_QuarterPolicyAdjacencyConfig AS C
+JOIN CSC_AdjacencyRules AS R
+    ON R.CustomAdjacentObject = 'DISTRICT_CSC_' || C.QuarterKey || '_QUARTER'
+    AND R.AdjacencyType = 'FROM_RINGS_CAO_DISTRICT'
+    AND R.ProvideType = 'SelfBonus'
+    AND R.ModifierOwner = 'DistrictModifiers'
+    AND (R.DistrictType = C.DistrictType OR EXISTS
+        (SELECT 1 FROM DistrictReplaces AS D
+         WHERE D.ReplacesDistrictType = C.DistrictType
+         AND D.CivUniqueDistrictType = R.DistrictType));
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	Bakers' building-specific terrain/river adjacencies
@@ -222,32 +268,32 @@ ORDER BY QuarterKey, DistrictType, YieldType;
 
 INSERT OR IGNORE INTO CSC_AdjacencyRules
     (
-    ID,
-    DistrictType,
-    ProvideType,
-    YieldType,
-    YieldChange,
-    AdjacencyType,
-    CustomAdjacentObject,
-    MinRings,
-    Rings,
-    DistrictModifiers,
-    ModifierOwner,
-    WhoIsTheOwner
+        ID,
+        DistrictType,
+        ProvideType,
+        YieldType,
+        YieldChange,
+        AdjacencyType,
+        CustomAdjacentObject,
+        MinRings,
+        Rings,
+        DistrictModifiers,
+        ModifierOwner,
+        WhoIsTheOwner
     )
 SELECT
-    'CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS',
-    'DISTRICT_CSC_BAKERS_QUARTER',
-    'SelfBonus',
-    'YIELD_PRODUCTION',
-    1,
-    'FROM_RINGS_CAO_TERRAIN_SETS',
-    'IsHills',
-    0,
-    0,
-    1,
-    'BuildingModifiers',
-    'BUILDING_CSC_BAKERS_WIND_MILL'
+        'CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS',
+        'DISTRICT_CSC_BAKERS_QUARTER',
+        'SelfBonus',
+        'YIELD_PRODUCTION',
+        1,
+        'FROM_RINGS_CAO_TERRAIN_SETS',
+        'IsHills',
+        0,
+        0,
+        1,
+        'BuildingModifiers',
+        'BUILDING_CSC_BAKERS_WIND_MILL'
 WHERE EXISTS
     (
     SELECT 1
@@ -260,15 +306,25 @@ WHERE EXISTS
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO CSC_AdjacencyRules
-		( ID, DistrictType, ProvideType, YieldType, YieldChange, AdjacencyType, Rings, DistrictModifiers )
-SELECT 'CSC_TAILORS_PRODUCTION_FROM_RIVER_EDGES',
-	'DISTRICT_CSC_TAILORS_QUARTER',
-	'SelfBonus',
-	'YIELD_PRODUCTION',
-	0.5,
-	'FROM_RIVER_CROSSING',
-	1,
-	1
+    (
+        ID,
+        DistrictType,
+        ProvideType,
+        YieldType,
+        YieldChange,
+        AdjacencyType,
+        Rings,
+        DistrictModifiers
+    )
+SELECT
+        'CSC_TAILORS_PRODUCTION_FROM_RIVER_EDGES',
+        'DISTRICT_CSC_TAILORS_QUARTER',
+        'SelfBonus',
+        'YIELD_PRODUCTION',
+        0.5,
+        'FROM_RIVER_CROSSING',
+        1,
+        1
 WHERE EXISTS
 	(
 SELECT 1
@@ -278,28 +334,28 @@ WHERE DistrictType = 'DISTRICT_CSC_TAILORS_QUARTER'
 
 INSERT OR IGNORE INTO CSC_AdjacencyRules
     (
-    ID,
-    DistrictType,
-    ProvideType,
-    YieldType,
-    YieldChange,
-    AdjacencyType,
-    Rings,
-    DistrictModifiers,
-    ModifierOwner,
-    WhoIsTheOwner
+        ID,
+        DistrictType,
+        ProvideType,
+        YieldType,
+        YieldChange,
+        AdjacencyType,
+        Rings,
+        DistrictModifiers,
+        ModifierOwner,
+        WhoIsTheOwner
     )
 SELECT
-    'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER',
-    'DISTRICT_CSC_BAKERS_QUARTER',
-    'SelfBonus',
-    'YIELD_PRODUCTION',
-    0.5,
-    'FROM_RIVER_CROSSING',
-    1,
-    1,
-    'BuildingModifiers',
-    'BUILDING_CSC_BAKERS_WATER_MILL'
+        'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER',
+        'DISTRICT_CSC_BAKERS_QUARTER',
+        'SelfBonus',
+        'YIELD_PRODUCTION',
+        0.5,
+        'FROM_RIVER_CROSSING',
+        1,
+        1,
+        'BuildingModifiers',
+        'BUILDING_CSC_BAKERS_WATER_MILL'
 WHERE EXISTS
     (
     SELECT 1
@@ -308,19 +364,20 @@ WHERE EXISTS
     );
 
 INSERT OR IGNORE INTO CSC_AdjacencyObjects
-    (CustomAdjacentObject,                      Name,                                       ArtdefOverlayEntry      )     VALUES
+        (   CustomAdjacentObject,                Name,                                     ArtdefOverlayEntry   )
+VALUES
     
 --  Bakers' Quarter
-    ('CLASS_CSC_BAKERS_BASE',                   'LOC_CLASS_CSC_BASE_NAME',                  'CSC_Base_Materials'    ),
-    ('CLASS_CSC_BAKERS_SPEC',                   'LOC_CLASS_CSC_SPEC_NAME',                  'CSC_Spec_Materials'    ),
-    ('CLASS_CSC_BAKERS_SALES',                  'LOC_CLASS_CSC_SALES_NAME',                 'CSC_Sales'             ),
-    ('DISTRICT_CSC_BAKERS_QUARTER',             'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',     'CSC_Goods'             ),
-    ('CLASS_CSC_BAKERS_GOODS_PROVIDER',		    'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',		'CSC_Goods_Provider'    );
+        (   'CLASS_CSC_BAKERS_BASE',             'LOC_CLASS_CSC_BASE_NAME',                'CSC_Base_Materials'   ),
+        (   'CLASS_CSC_BAKERS_SPEC',             'LOC_CLASS_CSC_SPEC_NAME',                'CSC_Spec_Materials'   ),
+        (   'CLASS_CSC_BAKERS_SALES',            'LOC_CLASS_CSC_SALES_NAME',               'CSC_Sales'   ),
+        (   'DISTRICT_CSC_BAKERS_QUARTER',       'LOC_DISTRICT_CSC_BAKERS_QUARTER_NAME',   'CSC_Goods'   ),
+        (   'CLASS_CSC_BAKERS_GOODS_PROVIDER',   'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',      'CSC_Goods_Provider'   );
 
 INSERT OR IGNORE INTO CSC_AdjacencyObjects
-		( CustomAdjacentObject, Name, ArtdefOverlayEntry )
-VALUES	( 'CLASS_CSC_TAILORS_BASE', 'LOC_CLASS_CSC_BASE_NAME', 'CSC_Base_Materials' ),
-		( 'CLASS_CSC_TAILORS_SPEC', 'LOC_CLASS_CSC_SPEC_NAME', 'CSC_Spec_Materials' ),
-		( 'CLASS_CSC_TAILORS_SALES', 'LOC_CLASS_CSC_SALES_NAME', 'CSC_Sales' ),
-		( 'DISTRICT_CSC_TAILORS_QUARTER', 'LOC_DISTRICT_CSC_TAILORS_QUARTER_NAME', 'CSC_Goods' ),
-		( 'CLASS_CSC_TAILORS_GOODS_PROVIDER', 'LOC_CLASS_CSC_GOODS_PROVIDER_NAME', 'CSC_Goods_Provider' );
+        (   CustomAdjacentObject,                 Name,                                      ArtdefOverlayEntry   )
+VALUES  (   'CLASS_CSC_TAILORS_BASE',             'LOC_CLASS_CSC_BASE_NAME',                 'CSC_Base_Materials'   ),
+        (   'CLASS_CSC_TAILORS_SPEC',             'LOC_CLASS_CSC_SPEC_NAME',                 'CSC_Spec_Materials'   ),
+        (   'CLASS_CSC_TAILORS_SALES',            'LOC_CLASS_CSC_SALES_NAME',                'CSC_Sales'   ),
+        (   'DISTRICT_CSC_TAILORS_QUARTER',       'LOC_DISTRICT_CSC_TAILORS_QUARTER_NAME',   'CSC_Goods'   ),
+        (   'CLASS_CSC_TAILORS_GOODS_PROVIDER',   'LOC_CLASS_CSC_GOODS_PROVIDER_NAME',       'CSC_Goods_Provider'   );

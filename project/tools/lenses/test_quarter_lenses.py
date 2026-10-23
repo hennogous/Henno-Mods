@@ -117,6 +117,7 @@ def main():
                     ShowHighlights=function(self,v) self.highlights=v end,
                     ShowBorders=function(self,v) self.borders=v end,
                     SetBorderColors=function(self,ch,back,front) self.colors[ch]={back,front} end,
+                    SetHighlightColor=function(self,ch,color) self.colors[ch]=color end,
                     SetPlotChannel=function(self,plots,ch) self.channels[ch]=plots end} end
                 return outlines[name]
             end
@@ -235,7 +236,10 @@ def main():
     db.execute("UPDATE CSC_QuarterMaterialAdjacencyConfig SET SourceFilter='' WHERE QuarterKey='TAILORS'")
     test_wonder_sales(runtime, colors, wonder_rows)
     if args.game:
-        test_placement(args.game, runtime, colors, args.more_lenses)
+        test_placement(args.game, runtime, colors)
+        if args.more_lenses:
+            for deferred in (False, True):
+                test_placement(args.game, runtime, colors, args.more_lenses, deferred)
     test_supply_chains_panel(runtime, colors)
     test_improved_borders(runtime, colors)
     if args.gameplay_database:
@@ -324,7 +328,7 @@ def test_improved_borders(runtime, colors):
     assert not any("QuarterPlacementPrototype" in row.get("Include", "") for row in project.findall(".//{*}Content"))
     art = ET.parse(MOD / "ArtDefs/CSC_QuarterResourceBorders.artdef")
     names = {row.get("text") for row in art.findall(".//m_Name")}
-    assert names == {"CSC_QuarterLens_Improved"}
+    assert names == {"CSC_QuarterLens_Improved", "CSC_QuarterPlacement"}
     placement = (LENSES / "PlotInfo_CSC_QuarterPlacement.lua").read_text()
     assert "ImprovedBorders" not in placement
     assert all(row.get("text") == "BorderOverlay" for row in art.findall('.//m_Value') if row.get("text") != "MapSearchBorder")
@@ -442,7 +446,7 @@ def test_supply_chains_panel(runtime, colors):
     print("Passed Supply Chains chooser: single parent, data-driven Quarter choices, initial activation, palette/legend switching, selection retention, dismissal and placement isolation.")
 
 
-def install_more_lenses_listeners(lua, root):
+def install_more_lenses_listeners(lua, root, deferred=False):
     """Execute actual Workshop callbacks in isolated contexts; files stay read-only."""
     def function(path, name):
         source = path.read_text(encoding="utf-8-sig")
@@ -478,47 +482,52 @@ def install_more_lenses_listeners(lua, root):
     for context, source in sources.items():
         lua.globals().native_listener_source = source
         lua.execute(f"assert(load(native_listener_source, 'More Lenses {context}', 't', more{context.title()}))()")
+    lua.globals().deferMoreCallbacks = deferred
     lua.execute('''
+        delayedMore={}
+        function FlushMoreCallbacks()
+            local pending=delayedMore; delayedMore={}
+            for _,callback in ipairs(pending) do callback() end
+        end
+        local function listen(callback)
+            Events.LensLayerOn.Add(function(layer)
+                if deferMoreCallbacks then
+                    delayedMore[#delayedMore+1]=function() callback(layer) end
+                else callback(layer) end
+            end)
+        end
         LuaEvents.MinimapPanel_GetActiveModLens.Add(moreMini.GetActiveModdedLens)
         LuaEvents.MinimapPanel_SetActiveModLens.Add(moreMini.SetActiveModdedLens)
         LuaEvents.ModalLensPanel_AddLensEntry.Add(moreModal.AddLensEntry)
-        Events.LensLayerOn.Add(moreMini.OnLensLayerOn)
-        Events.LensLayerOn.Add(moreModal.OnLensLayerOn)
+        listen(moreMini.OnLensLayerOn)
+        listen(moreModal.OnLensLayerOn)
     ''')
 
 
-def test_placement(game, runtime, colors, more_lenses=None):
-    """Load the complete native panel so event rebinding/masking use Firaxis code."""
-    # The native placement lens permits only fixed-colour hex layers by default.
-    # Check our additive permission patch and its project/consumer registrations.
-    native_art = ET.parse(game / "Base/ArtDefs/Lenses.artdef").getroot()
-    patch_art = ET.parse(MOD / "ArtDefs/CSC_Lenses.artdef").getroot()
-    def permission(root):
-        return next(row for row in root.findall("m_RootCollections/Element/Element")
-                    if row.find("m_Name").get("text") == "DistrictPlacement_PermissionMask")
-    base_permission, patch_permission = permission(native_art), permission(patch_art)
-    allowed = {row.get("text") for row in base_permission.findall(".//m_ElementName")}
-    additions = {row.get("text") for row in patch_permission.findall(".//m_ElementName")}
-    assert "Hex_Coloring_Appeal_Level" not in allowed
-    assert additions == {"Hex_Coloring_Appeal_Level"}
-    assert all(row.text == "false" for row in patch_art.findall(".//m_ReplaceMergedCollectionElements"))
-    base_names = {row.get("text") for row in base_permission.findall("m_ChildCollections/Element/Element/m_Name")}
-    patch_names = {row.get("text") for row in patch_permission.findall("m_ChildCollections/Element/Element/m_Name")}
-    assert not base_names & patch_names  # Append a unique child, preserve native permissions.
+def test_placement(game, runtime, colors, more_lenses=None, deferred=False):
+    """Exercise native PlotInfo; placement must never touch lens/framework state."""
+    art = ET.parse(MOD / "ArtDefs/CSC_QuarterResourceBorders.artdef")
+    entry = next(row for row in art.findall("m_RootCollections/Element/Element")
+                 if row.find("m_Name").get("text") == "CSC_QuarterPlacement")
+    fields = {row.find("m_ParamName").get("text"): row for row in entry.findall("m_Fields/m_Values/Element")}
+    assert fields["Type"].find("m_Value").get("text") == "BorderOverlay"
+    assert fields["Material"].find("m_Value").get("text") == "MapSearchBorder"
+    assert fields["Visible"].find("m_bValue").text == "false"
+    assert all(row.text == "false" for row in art.findall(".//m_ReplaceMergedCollectionElements"))
     project = ET.parse(MOD / "Civ Supply Chains.civ6proj")
-    assert any(row.get("Include") == "ArtDefs\\CSC_Lenses.artdef" for row in project.findall(".//{*}Content"))
+    assert any(row.get("Include") == "ArtDefs\\CSC_QuarterResourceBorders.artdef" for row in project.findall(".//{*}Content"))
+    assert not any("CSC_Lenses.artdef" in row.get("Include", "") for row in project.findall(".//{*}Content"))
     spec = ET.fromstring((MOD / "Civ Supply Chains.Art.xml").read_text(encoding="utf-8-sig").replace("AssetObjects::", "AssetObjects.."))
-    consumer = next(row for row in spec.findall("artConsumers/Element") if row.find("consumerName").get("text") == "Lenses")
-    assert any(row.get("text") == "CSC_Lenses.artdef" for row in consumer.findall("relativeArtDefPaths/Element"))
+    consumer = next(row for row in spec.findall("artConsumers/Element") if row.find("consumerName").get("text") == "Overlay")
+    assert any(row.get("text") == "CSC_QuarterResourceBorders.artdef" for row in consumer.findall("relativeArtDefPaths/Element"))
+    assert not any(row.get("text") == "CSC_Lenses.artdef" for row in spec.findall(".//relativeArtDefPaths/Element"))
+    assert not (MOD / "ArtDefs/CSC_Lenses.artdef").exists()
     native = (game / "Base/Assets/UI/WorldView/PlotInfo.lua").read_text(encoding="utf-8-sig")
     wrapper = (LENSES / "PlotInfo_CSC_QuarterPlacement.lua").read_text(encoding="utf-8-sig")
     lua = runtime()
     g = lua.globals()
-    # No framework registries or grey colour are available to the placement UI.
     lua.execute("g_ModLenses=nil; g_ModLensModalPanel=nil")
-    placement_colors = {key: value for key, value in colors.items() if key != "COLOR_MORELENSES_GREY"}
-    g.UI.GetColorValue = lambda key: placement_colors[key]
-    g.permitted = lua.table_from({name: True for name in allowed | additions})
+    g.UI.GetColorValue = lambda key: {k: v for k, v in colors.items() if k != "COLOR_MORELENSES_GREY"}[key]
     lua.execute('''
         log={}; areas={}; layers={}; mode=7; chosen=nil; citySelected=true; activeLens='DistrictPlacement'
         local function event()
@@ -531,33 +540,38 @@ def test_placement(game, runtime, colors, more_lenses=None):
         end
         local function events() return setmetatable({}, {__index=function(t,k) local e=event(); rawset(t,k,e); return e end}) end
         Events=events(); LuaEvents=events()
+        -- Any attempt to borrow More Lenses state fails even when it is absent.
+        for _,name in ipairs({'MinimapPanel_GetActiveModLens','MinimapPanel_SetActiveModLens','ModalLensPanel_AddLensEntry'}) do
+            LuaEvents[name].Add(function() error('Placement called More Lenses: '..name) end)
+        end
         UILens={GetOverlay=GetTestOverlay,
             CreateLensLayerHash=function(name) return name end,
             ClearLayerHexes=function(layer) log[#log+1]='clear:'..layer; areas[layer]={} end,
             ToggleLayerOn=function(layer)
-                assert(permitted[layer]); log[#log+1]='on:'..layer
+                log[#log+1]='on:'..layer
                 if not layers[layer] then layers[layer]=true; Events.LensLayerOn(layer) end
             end,
             ToggleLayerOff=function(layer)
                 log[#log+1]='off:'..layer
                 if layers[layer] then layers[layer]=false; Events.LensLayerOff(layer) end
             end,
+            IsLayerOn=function(layer) return layers[layer] or false end,
             IsLensActive=function(name) return activeLens==name end,
             SetLayerHexesArea=function(layer,player,plots) areas[layer]=plots end,
-            SetLayerHexesColoredArea=function(layer,player,plots,color)
-                assert(layer=='Hex_Coloring_Appeal_Level', 'Quarter colours require the same layer as More Lenses')
-                log[#log+1]='paint:'..layer; areas[layer]=areas[layer] or {}; areas[layer][color]=plots
-            end,
+            SetLayerHexesColoredArea=function() error('Placement painted a shared lens layer') end,
         }
         ContextPtr={SetInitHandler=function() end, SetShutdown=function(_,fn) shutdown=fn end}
         InstanceManager={new=function() return {DestroyInstances=function() end} end}
         Controls={PlotInfoContainer={}}
         UserConfiguration={ShowMapYield=function() return false end}
+        GameInfo.GameCapabilities={CAPABILITY_DISPLAY_PLOT_YIELDS={}}
         InterfaceModeTypes={DISTRICT_PLACEMENT=7,BUILDING_PLACEMENT=8,SELECTION=0,VIEW_MODAL_LENS=9}
         CityOperationTypes={PARAM_DISTRICT_TYPE='district'}
         UI.GetInterfaceMode=function() return mode end
         UI.GetInterfaceModeParameter=function() return chosen end
-        UI.GetHeadSelectedCity=function() return citySelected and city or nil end
+        focusedCity=city
+        UI.GetHeadSelectedCity=function() return citySelected and focusedCity or nil end
+        Cities={GetPlotPurchaseCity=function(plot) return plot.purchaseCity end}
         resetWorld(4,1)
         for _,p in ipairs(world) do p.resource=-1; p.district=-1 end
     ''')
@@ -568,139 +582,170 @@ def test_placement(game, runtime, colors, more_lenses=None):
             lua.execute(re.sub(r"\s*:\s*object\b", "", untype(native)))
         elif name in ("CSC_QuarterLensSupport", "CSC_AdjacencyCore"):
             original_include(name)
-        # Native panel includes: initialization uses only the provided UI mocks.
     g.include = include
     lua.execute(wrapper)
     if more_lenses:
-        install_more_lenses_listeners(lua, more_lenses)
+        install_more_lenses_listeners(lua, more_lenses, deferred)
     lua.execute('''
-        -- Model native/More Lenses listeners: turning Appeal on paints its own
-        -- contents; turning it off clears the map mask. CSC must repaint after.
-        Events.LensLayerOn.Add(function(layer)
-            if layer=='Hex_Coloring_Appeal_Level' then areas[layer]={[999]={3}} end
-        end)
-        Events.LensLayerOff.Add(function(layer)
-            if layer=='Hex_Coloring_Appeal_Level' then areas.Map_Hex_Mask={} end
-        end)
-    ''')
-    lua.execute('''
+        function CheckPlacementIsolation()
+            if FlushMoreCallbacks then FlushMoreCallbacks() end
+            assert(not layers.Hex_Coloring_Appeal_Level)
+            assert(activeLens=='DistrictPlacement')
+            if moreMini then assert(moreMini.m_CurrentModdedLensOn==nil and morePaints==0 and #moreDiagnostics==0) end
+            for _,call in ipairs(log) do assert(call=='clear:Map_Hex_Mask',call) end
+        end
+        function PlacementPlots(color)
+            local result={}
+            for channel,plots in pairs(outlines.CSC_QuarterPlacement.channels) do
+                if outlines.CSC_QuarterPlacement.colors[channel]==color then
+                    for _,index in ipairs(plots) do result[#result+1]=index end
+                end
+            end
+            return result
+        end
         assert(LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes.Count()==1)
         assert(LuaEvents.StrategicView_MapPlacement_ClearDistrictPlacementShadowHexes.Count()==1)
         chosen=GameInfo.Districts.DISTRICT_CAMPUS.Index
-        original={0}; LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes(original)
-        assert(#log==0) -- A standard district causes no extra lens calls.
+        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+        assert(#log==0 and outlines.CSC_QuarterPlacement==nil)
         RealizeShadowMask(); assert(areas.Map_Hex_Mask[1]==0 and #areas.Map_Hex_Mask==1)
         chosen=GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER.Index
         world[2].resource=GameInfo.Resources.RESOURCE_COTTON.Index; world[2].improvement=0
         world[3].district=GameInfo.Districts.DISTRICT_ROYAL_NAVY_DOCKYARD.Index
         world[4].resource=GameInfo.Resources.RESOURCE_DYES.Index; world[4].hidden=true
-        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes(original)
-        assert(layers.Hex_Coloring_Appeal_Level)
-        assert(#original==1 and original[1]==0) -- Never mutate the caller's native list.
-        assert(#areas.Map_Hex_Mask==3) -- Valid plot plus material and unique customer.
+        original={0}; LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes(original)
+        assert(#original==1 and original[1]==0)
+        assert(#areas.Map_Hex_Mask==3)
+        fill=outlines.CSC_QuarterPlacement
+        assert(fill.visible and fill.highlights and not fill.borders)
         assert(outlines.CSC_QuarterPlacement_Improved==nil)
-    ''')
-    plots = g.areas.Hex_Coloring_Appeal_Level
-    assert list(plots[colors["COLOR_CSC_LENS_BASE_IMPROVED"]].values()) == [1]
-    assert list(plots[colors["COLOR_CSC_LENS_SALE_DISTRICT"]].values()) == [2]
-    assert 100 not in plots.keys()
-    assert 999 not in plots.keys()
-    if more_lenses:
-        lua.execute("assert(moreMini.m_CurrentModdedLensOn=='NONE' and #moreDiagnostics==0)")
-    lua.execute('''
+        assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))[1]==1)
+        assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_DISTRICT'))[1]==2)
+        CheckPlacementIsolation()
+        -- City ownership filters only placement fills, across all categories.
+        local function ownerCity(owner,id)
+            return {GetOwner=function() return owner end,GetID=function() return id end}
+        end
+        local firstCity=ownerCity(0,101)
+        local secondCity=ownerCity(0,102)
+        local foreignCity=ownerCity(1,101) -- Same ID as firstCity, different player.
+        for _,key in ipairs({'BAKERS','TAILORS'}) do
+            local quarter=CSC_QuarterLensSupport.Quarters[key]
+            chosen=GameInfo.Districts[quarter.districtType].Index
+            world[1].district=chosen; world[1].purchaseCity=firstCity
+            world[2].resource=GameInfo.Resources[next(quarter.baseSet)].Index; world[2].purchaseCity=firstCity
+            world[3].district=GameInfo.Districts[next(quarter.saleSet)].Index; world[3].purchaseCity=secondCity
+            world[4].hidden=false; world[4].resource=GameInfo.Resources[next(quarter.specSet)].Index
+            world[4].purchaseCity=foreignCity
+            focusedCity=firstCity
+            LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+            assert(#PlacementPlots(UI.GetColorValue(quarter.quarterColor))==0)
+            assert(#PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))==0)
+            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_DISTRICT'))[1]==2)
+            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SPEC_IMPROVED'))[1]==3)
+            assert(#areas.Map_Hex_Mask==3) -- Native own-city plot 0 remains valid/unshadowed.
+            assert(areas.Map_Hex_Mask[1]==0)
+            local manualCount=0
+            for _,plots in pairs(CSC_QuarterLensSupport.GetColorPlotTable(key,false)) do manualCount=manualCount+#plots end
+            assert(manualCount==4) -- Manual lens still includes this city's materials/districts.
+            world[4].purchaseCity=nil -- Unclaimed material remains highlighted.
+            LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SPEC_IMPROVED'))[1]==3)
+            focusedCity=secondCity -- Re-evaluate when focus changes, even for the same player.
+            LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+            assert(#PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_DISTRICT'))==0)
+            assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))[1]==1)
+            assert(PlacementPlots(UI.GetColorValue(quarter.quarterColor))[1]==0)
+            assert(#areas.Map_Hex_Mask==3)
+            world[2].purchaseCity=secondCity -- Tile swap updates on the next native redraw.
+            LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+            assert(#PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))==0)
+            focusedCity=firstCity
+            for _,plot in ipairs(world) do plot.purchaseCity=firstCity end
+            LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+            assert(not fill.visible and table.count(fill.channels)==0 and #areas.Map_Hex_Mask==1)
+        end
+        focusedCity=city; chosen=GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER.Index
+        for _,plot in ipairs(world) do plot.purchaseCity=nil end
+        world[1].district=-1
+        world[2].resource=GameInfo.Resources.RESOURCE_COTTON.Index
+        world[3].district=GameInfo.Districts.DISTRICT_ROYAL_NAVY_DOCKYARD.Index
+        world[4].resource=GameInfo.Resources.RESOURCE_DYES.Index; world[4].hidden=true
+        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+        CheckPlacementIsolation()
         world[4].hidden=false; world[4].resource=-1
         world[4].district=GameInfo.Districts.DISTRICT_WONDER.Index
         world[4].wonder=GameInfo.Buildings.BUILDING_BROADWAY.Index; world[4].complete=true
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
         assert(#areas.Map_Hex_Mask==4)
-    ''')
-    assert list(g.areas.Hex_Coloring_Appeal_Level[colors["COLOR_CSC_LENS_SALE_DISTRICT"]].values()) == [2, 3]
-    lua.execute('''
-        world[4].complete=false
+        assert(#PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_SALE_DISTRICT'))==2)
+        world[4].complete=false; world[2].pillaged=true
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
         assert(#areas.Map_Hex_Mask==3)
-    ''')
-    lua.execute('''
-        -- Native plot-purchase redraw is the same event; pillage is read afresh.
-        world[2].pillaged=true
-        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-    ''')
-    assert list(g.areas.Hex_Coloring_Appeal_Level[colors["COLOR_CSC_LENS_BASE_UNIMPROVED"]].values()) == [1]
-    lua.execute("assert(outlines.CSC_QuarterPlacement_Improved==nil)")
-    lua.execute('''
-        -- Switching directly to a standard district clears only CSC's layer.
+        assert(PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_UNIMPROVED'))[1]==1)
+        assert(#PlacementPlots(UI.GetColorValue('COLOR_CSC_LENS_BASE_IMPROVED'))==0)
         chosen=GameInfo.Districts.DISTRICT_CAMPUS.Index
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-        assert(not layers.Hex_Coloring_Appeal_Level and #areas.Hex_Coloring_Appeal_Level==0)
-        assert(#areas.Map_Hex_Mask==1) -- Mask restoration is immediate on a direct switch.
-        local before=#log
-        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-        assert(#log==before)
-        -- Re-enter Bakers, then clear/cancel placement via the native event.
+        assert(not fill.visible and table.count(fill.channels)==0 and #areas.Map_Hex_Mask==1)
+        -- Cancellation, confirmation, Wonder placement and direct modal takeover.
         chosen=GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER.Index
-        world[2].resource=GameInfo.Resources.RESOURCE_WHEAT.Index
-        world[2].pillaged=false
+        world[2].resource=GameInfo.Resources.RESOURCE_WHEAT.Index; world[2].pillaged=false
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-        assert(layers.Hex_Coloring_Appeal_Level)
+        assert(fill.visible)
         LuaEvents.StrategicView_MapPlacement_ClearDistrictPlacementShadowHexes()
-        assert(not layers.Hex_Coloring_Appeal_Level and #areas.Map_Hex_Mask==0)
-        -- Confirm production without any native clear event.
-        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-        mode=InterfaceModeTypes.SELECTION
-        Events.InterfaceModeChanged(InterfaceModeTypes.DISTRICT_PLACEMENT, mode)
-        assert(not layers.Hex_Coloring_Appeal_Level and #areas.Hex_Coloring_Appeal_Level==0)
-        assert(#areas.Map_Hex_Mask==0)
-        assert(outlines.CSC_QuarterPlacement_Improved==nil)
-        -- A new manual lens can take the layer before the mode event arrives.
-        mode=InterfaceModeTypes.DISTRICT_PLACEMENT; activeLens='DistrictPlacement'
-        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-        activeLens='Appeal'; areas.Hex_Coloring_Appeal_Level={[999]={3}}
-        if moreMini then moreMini.SetActiveModdedLens('ML_CSC_SUPPLY_CHAINS') end
-        CSC_QuarterLensSupport.DrawImprovedBorders('Lens','BAKERS')
-        mode=InterfaceModeTypes.VIEW_MODAL_LENS
-        Events.InterfaceModeChanged(InterfaceModeTypes.DISTRICT_PLACEMENT, mode)
-        assert(layers.Hex_Coloring_Appeal_Level and areas.Hex_Coloring_Appeal_Level[999][1]==3)
-        assert(outlines.CSC_QuarterLens_Improved.visible and outlines.CSC_QuarterPlacement_Improved==nil)
-        -- Native SetActive can first turn off the layer, then reuse it. Cleanup
-        -- must release ownership at that first off event and preserve new art.
-        mode=InterfaceModeTypes.DISTRICT_PLACEMENT; activeLens='DistrictPlacement'
-        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-        UILens.ToggleLayerOff('Hex_Coloring_Appeal_Level')
-        activeLens='Appeal'; UILens.ToggleLayerOn('Hex_Coloring_Appeal_Level')
-        mode=InterfaceModeTypes.VIEW_MODAL_LENS
-        Events.InterfaceModeChanged(InterfaceModeTypes.DISTRICT_PLACEMENT, mode)
-        assert(layers.Hex_Coloring_Appeal_Level and areas.Hex_Coloring_Appeal_Level[999][1]==3)
-        UILens.ToggleLayerOff('Hex_Coloring_Appeal_Level')
-        -- Leaving for Wonder placement also clears Quarter highlights.
-        mode=InterfaceModeTypes.DISTRICT_PLACEMENT; activeLens='DistrictPlacement'
-        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
-        mode=InterfaceModeTypes.BUILDING_PLACEMENT
-        Events.InterfaceModeChanged(InterfaceModeTypes.DISTRICT_PLACEMENT, mode)
-        assert(not layers.Hex_Coloring_Appeal_Level and #areas.Map_Hex_Mask==0)
-        -- Wonders and a missing selected city never receive Quarter highlights.
-        mode=InterfaceModeTypes.BUILDING_PLACEMENT
-        before=#log; LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0}); assert(#log==before)
-        mode=InterfaceModeTypes.DISTRICT_PLACEMENT; citySelected=false
-        before=#log; LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0}); assert(#log==before)
+        assert(not fill.visible and #areas.Map_Hex_Mask==0)
+        for _,nextMode in ipairs({InterfaceModeTypes.SELECTION,InterfaceModeTypes.BUILDING_PLACEMENT,InterfaceModeTypes.VIEW_MODAL_LENS}) do
+            mode=InterfaceModeTypes.DISTRICT_PLACEMENT
+            LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+            assert(fill.visible)
+            -- Another overlay may already be painted before the mode event.
+            areas.Hex_Coloring_Appeal_Level={[999]={3}}
+            areas.Empire_Details={2}; areas.Yield_Icons={1}
+            mode=nextMode; Events.InterfaceModeChanged(InterfaceModeTypes.DISTRICT_PLACEMENT,mode)
+            assert(not fill.visible and table.count(fill.channels)==0 and #areas.Map_Hex_Mask==0)
+            assert(areas.Hex_Coloring_Appeal_Level[999][1]==3 and areas.Empire_Details[1]==2 and areas.Yield_Icons[1]==1)
+        end
+        mode=InterfaceModeTypes.DISTRICT_PLACEMENT
+        citySelected=false; LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0}); assert(not fill.visible)
         citySelected=true; chosen=-1
-        before=#log; LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0}); assert(#log==before)
-        -- Shutdown releases the layer and all CSC event bindings.
+        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0}); assert(not fill.visible)
         chosen=GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER.Index
+        missingArt=true
+        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+        RealizeShadowMask(); assert(#areas.Map_Hex_Mask==1 and not fill.visible)
+        missingArt=false
+        CheckPlacementIsolation()
+        -- Actual native yield handlers still toggle their own layer afterward.
+        LuaEvents.PlotInfo_ShowYieldIcons(); assert(layers.Yield_Icons)
+        LuaEvents.PlotInfo_HideYieldIcons(); assert(not layers.Yield_Icons)
+        if FlushMoreCallbacks then FlushMoreCallbacks() end
+        -- Exercise native Empire dispatch, replacing only city-control rendering.
+        empireShows=0; empireHides=0
+        ShowEmpireDetails=function() empireShows=empireShows+1 end
+        HideEmpireDetails=function() empireHides=empireHides+1 end
+        UILens.ToggleLayerOn('Empire_Details'); UILens.ToggleLayerOff('Empire_Details')
+        assert(empireShows==1 and empireHides==1)
+        if FlushMoreCallbacks then FlushMoreCallbacks() end
+        if moreMini then assert(moreMini.m_CurrentModdedLensOn==nil and morePaints==0 and #moreDiagnostics==0) end
+        -- Existing manual selection and its independent resource edges survive.
+        if moreMini then moreMini.m_CurrentModdedLensOn='ML_BUILDER' end
+        CSC_QuarterLensSupport.DrawImprovedBorders('Lens','BAKERS')
+        LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
+        assert(fill.visible and outlines.CSC_QuarterLens_Improved.visible)
+        LuaEvents.StrategicView_MapPlacement_ClearDistrictPlacementShadowHexes()
+        assert(not fill.visible and outlines.CSC_QuarterLens_Improved.visible)
+        if moreMini then assert(moreMini.m_CurrentModdedLensOn=='ML_BUILDER') end
+        -- Shutdown clears only the placement overlay and unregisters its hooks.
         LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes({0})
         shutdown()
-        assert(not layers.Hex_Coloring_Appeal_Level)
+        assert(not fill.visible and table.count(fill.channels)==0)
         assert(LuaEvents.StrategicView_MapPlacement_AddDistrictPlacementShadowHexes.Count()==0)
         assert(LuaEvents.StrategicView_MapPlacement_ClearDistrictPlacementShadowHexes.Count()==0)
         assert(Events.InterfaceModeChanged.Count()==0)
-        assert(Events.LensLayerOff.Count()==2) -- Native panel plus fixture; CSC removed.
+        assert(Events.LensLayerOff.Count()==1) -- Only native PlotInfo; CSC adds none.
     ''')
-    if more_lenses:
-        lua.execute('''
-            assert(morePaints>0 and #moreDiagnostics==0)
-            assert(moreMini.m_CurrentModdedLensOn=='ML_CSC_SUPPLY_CHAINS')
-        ''')
-        print("Passed installed More Lenses callbacks: initial nil lens, repeated placement from NONE, valid legend and no warnings/errors.")
-    print("Passed native PlotInfo placement: colour layer/permissions, both Quarters, normal districts/wonders, masks, redraw/pillage, confirmation/cancellation, manual lens takeover and shutdown.")
+    framework = ("with deferred" if deferred else "with immediate") + " More Lenses callbacks" if more_lenses else "without More Lenses"
+    print(f"Passed independent native placement {framework}: both Quarters, palette/masks, redraw, exits, missing art, yield/Empire handlers, manual overlay preservation and shutdown.")
 
 
 if __name__ == "__main__":

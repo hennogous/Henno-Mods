@@ -95,8 +95,60 @@ individual effects have not all been exercised in a live game.
   managers use `GetNumDistricts()/GetDistrictByIndex()`, not `Members()`.
 - UI previews evaluate without writing gameplay properties. Unit-level reads
   use a bundled InGame UI bridge because native gameplay lacks `GetLevel()`.
+- Multiplayer hardening (20 October): mutation and stale-clear order is sorted;
+  script initialization only builds caches. Reconciliation uses shared
+  `GameEvents.PlayerTurnStarted` / `OnGameTurnStarted` and gameplay changes,
+  without local load callbacks. See [runtime hardening](csc-multiplayer-hardening.md)
+  for validation evidence and the unverified dormant unit-level bridge boundary.
 - The property argument forwarding, empty-key handling and stale-bit clearing
   are deliberate corrections. Do not preserve fork crashes as parity behavior.
+
+### Policy cards and unified placement totals — 20 October 2026
+
+Quarter SQL declares `CSC_QuarterPolicyAdjacencyConfig` rows. The late processor
+copies each matching customer return into a policy-owned `SelfBonus` rule,
+retaining its actual yield, rings, ownership and direct unique replacements.
+The existing compiler attaches the additional property-bit modifiers through
+`PolicyModifiers`. Each adjacent owned Quarter contributes independently: two
+sites return +2 normally and +4 with the corresponding card. Foreign Quarters
+do not count. Quarter-side sales and building/population transactions are unchanged.
+
+| Receiving district | Quarter return doubled | Policies |
+|---|---|---|
+| Commercial Hub | Bakers Food; Tailors Culture | Town Charters, Economic Union |
+| Harbor | Tailors Production | Naval Infrastructure, Economic Union |
+| Holy Site | Tailors Culture | Scripture |
+| Theater Square | Tailors Culture | Aesthetics, Sports Media |
+
+The shared core already checks the receiving player's active policy. Gameplay
+now refreshes on native `GovernmentPolicyChanged` and `GovernmentPolicyObsoleted`
+events as well as `GovernmentChanged`; the old `PolicyChanged` name was incorrect.
+The policy-owned attachment also supplies the native activation/removal gate.
+
+Placement previews expose numeric custom totals to the Firaxis yield formatter
+through an optional fourth argument. It adds them to `GetAdjacencyYield` before
+formatting one icon/amount per yield; the native API remains responsible for its
+own policy multipliers. No localized strings are parsed. Quarter base and policy
+contributions share one source-detail sentence. Non-yield providers stay separate;
+ordinary native-only callers and Housing previews retain their existing behavior.
+The retired district tooltip appendix remains absent.
+
+`project/tools/adjacencies/test_policy_returns.py --database <read-only-gameplay-db>
+--dependencies <lupa-folder>` verifies SQL policy graphs, duplicate-safe generation,
+native modifier preservation, policy events, 0–6 adjacent sites, ownership/removal,
+unique replacements, mixed Bakers/Tailors returns and merged native/custom UI.
+Against both the frozen optional-mod fixture and the current gameplay cache,
+the focused suite passes **9 mappings, 20 base/unique policy rules, 200 bit
+modifiers and 220 gameplay/UI cases**, plus mixed-return/native/Housing checks.
+The historical **61-rule / 1,465-comparison parity suite** and the six placement
+text comparisons also pass. These are offline SQL and executed-Lua checks;
+ModBuddy rebuild and native in-game confirmation of this change remain pending.
+
+Tailors records this user-authorized amendment in its implementation contract.
+The Bakers gameplay-reference hash was refreshed only for the authorized SQL
+change. Full Tailors validation still has the pre-existing Bakers localization
+source-lock mismatch and unreconciled canonical Bakers material declaration;
+these are not policy-return failures.
 
 ## Tests and reproducibility
 

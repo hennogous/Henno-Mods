@@ -7,10 +7,18 @@ local stockBonuses=AddAdjacentPlotBonuses;
 local stockIcon=GetAdjacentIconArtdefName;
 
 function GetAdjacentYieldBonusString(districtIndex,city,plot)
-    local icons,tooltip,required=stockYieldString(districtIndex,city,plot);
     local definition=GameInfo.Districts[districtIndex];
-    if not definition or not A.ByDistrict[definition.DistrictType] then return icons,tooltip,required; end
-    local customIcons,customTooltip=A.Preview(definition.DistrictType,plot,city);
+    if not definition or not A.ByDistrict[definition.DistrictType] then return stockYieldString(districtIndex,city,plot); end
+    local _,customTooltip,totals=A.Preview(definition.DistrictType,plot,city);
+    local baseYields={};
+    for _,total in pairs(totals) do
+        if total.Rule.ProvideType=='SelfBonus' then baseYields[total.Rule.YieldType]=total.Amount; end
+    end
+    -- Supply numeric additions before Firaxis formats its icons. Native policy
+    -- multipliers are already included by GetAdjacencyYield; never apply them
+    -- again to either the native total or the policy-owned CSC additions.
+    local icons,tooltip,required=stockYieldString(districtIndex,city,plot,baseYields);
+    local customIcons=A.TotalIcons(totals,true);
     if customIcons~='' then icons=(icons~='' and icons..'[NEWLINE]' or '')..customIcons; end
     if customTooltip~='' then tooltip=(tooltip~='' and tooltip..'[NEWLINE]' or '')..customTooltip; end
     return icons,tooltip,required;
@@ -25,6 +33,8 @@ function GetAdjacentIconArtdefName(districtType,neighbor,city,direction,center)
 end
 
 local opposite = {
+    -- Native overlay records belong to the neighbor, so its face points back
+    -- toward the selected district rather than using the center's direction.
     [DirectionTypes.DIRECTION_NORTHEAST]=DirectionTypes.DIRECTION_SOUTHWEST,
     [DirectionTypes.DIRECTION_EAST]=DirectionTypes.DIRECTION_WEST,
     [DirectionTypes.DIRECTION_SOUTHEAST]=DirectionTypes.DIRECTION_NORTHWEST,

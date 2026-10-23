@@ -1,6 +1,6 @@
 # CSC material map assistance
 
-CSC includes a one-time Lua pass that adds suitable material deposits on new maps at all vanilla and Truly Abundant Resources abundance levels. The setup option **Additional industry materials** defaults to On. **Version 4 retains the version-3 scope of Bakers and Tailors**, the two implemented Quarters. Bakers already exceed the calibrated coverage aim and receive no direct repair draws; Tailors retain their scaled missing-continent assistance, followed by a temporary site-density increase: twice the Base-only sites and four times the both-material sites relative to that map after its original repair. Existing deposits remain in place. Version 2's broader eight-Quarter research is historical; its abundance factors still define scaling for the implemented scope. See [the factors and scaling policy](../research/mods/csc-material-abundance-scaling-20261016.md).
+CSC includes a one-time Lua pass that adds suitable material deposits on new maps at all vanilla and Truly Abundant Resources abundance levels. The setup option **Additional Quarter resources** defaults to On (`CSC_RESOURCE_MAP_ASSISTANCE`, boolean, default `1`; setup sort index `305`). **Version 4 retains the version-3 scope of Bakers and Tailors**, the two implemented Quarters. Bakers already exceed the calibrated coverage aim and receive no direct repair draws; Tailors retain their scaled missing-continent assistance, followed by a temporary site-density increase: twice the Base-only sites and four times the both-material sites relative to that map after its original repair. Existing deposits remain in place. Version 2's broader eight-Quarter research is historical; its abundance factors still define scaling for the implemented scope. See [the factors and scaling policy](../research/mods/csc-material-abundance-scaling-20261016.md).
 
 ## Temporary Tailor density emphasis (v4)
 
@@ -76,6 +76,17 @@ The live audit is `Game:GetProperty('CSC_MATERIAL_MAP_ASSISTANCE_AUDIT')`. It st
 Normal ModBuddy builds include the new files. The test deployment used `deploy_material_map.py` to copy only the three Lua files and two setting files, then generated the installed manifest with Firaxis's **Civ6.Tasks.GenerateModInfo** task. This preserved unrelated installed gameplay, art, action trees, dependencies and references. It did not invoke Clean or the art cooker. Backups and a deployment inventory remain with the test evidence.
 
 ## Validation and results
+
+The renamed `CSC_RESOURCE_MAP_ASSISTANCE` passed a native On/Off pair on
+20 October 2026 (`test_setting_native.py`; map/game seeds 830102/940104,
+Small Continents, vanilla Abundant, Online). Off skipped as disabled and added
+0 deposits; On completed once at turn 1 and added 23. All 3,404 Off tiles exactly
+matched On's pre-pass capture; the only final differences were the 23 audited
+additions. Original deposits, quantities, terrain and starts were preserved.
+Preferences and both temporary configuration values were restored, and all
+122 installed code/manifest files retained their hashes. Evidence is in
+`Desktop/Codex/csc-resource-setting-native-20261020/`. This is one paired map,
+not a new abundance calibration.
 
 Current v3 native evidence: [fifteen-map implemented-Quarter study](../research/mods/csc-implemented-materials-native-20261016.md). Five each at vanilla Sparse/Standard/Abundant added 5/6/6 individual resource copies. Tailor both-class continent coverage changed 1→6, 4→9 and 3→9 out of15 per level; Bakers stayed11/15,11/15 and12/15. All original quantities survived, all17 additions have native quantity1, and every map passed automatic startup and exact offline replay. Original preferences are restored. The older v1/v2 reports below retain their historical broader scope.
 

@@ -12,6 +12,7 @@ table.sort(quarters, function(a, b) return a.id < b.id end)
 local selected = quarters[1] and quarters[1].id
 
 local function IsActive()
+    -- More Lenses returns its active name through a mutable response table.
     local lens = {}
     LuaEvents.MinimapPanel_GetActiveModLens(lens)
     return lens[1] == parent
@@ -24,8 +25,8 @@ local function SetLegend()
 end
 
 local function Refresh()
-    -- Placement can temporarily use the same native colour layer. Its own
-    -- wrapper owns painting there; refresh only the actual manual lens.
+    -- Refresh only the active manual lens. District placement owns a separate
+    -- overlay and never uses this Appeal layer.
     if not IsActive() or UI.GetInterfaceMode() ~= InterfaceModeTypes.VIEW_MODAL_LENS
         or not UILens.IsLayerOn(layer) or selected == nil then
         S.ClearImprovedBorders("Lens")
@@ -104,6 +105,8 @@ local function OnLoaded()
 end
 
 local function OnShutdown()
+    -- The panel was reparented into the HUD. Remove its external listeners and
+    -- HUD child explicitly so context reloads cannot leave duplicate controls.
     S.ClearImprovedBorders("Lens")
     LuaEvents.CSC_SupplyChainsLens_OpenPanel.Remove(Open)
     LuaEvents.CSC_SupplyChainsLens_Refresh.Remove(Refresh)

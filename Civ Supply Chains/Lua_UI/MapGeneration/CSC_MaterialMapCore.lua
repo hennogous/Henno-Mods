@@ -17,6 +17,8 @@ C.NaturalCoverage = {TAILORS=3/15};
 C.SiteMultipliers = {TAILORS={base_only=2,both=4}};
 C.SiteMinimums = {TAILORS={both=4}}; -- scaled from the Abundant reference density
 function C.ResourceProfile(setting,standard)
+    -- Convert the resource setting into abundance-scaled coverage and budgets.
+    -- Random uses expected density; the planner does not reroll the map setting.
     standard=standard or 30;
     local offsets={[1]=-3,[2]=0,[3]=3,[4]=0};
     if standard==29 then offsets[25]=25;offsets[45]=45;end
@@ -43,6 +45,8 @@ function C.Seed(text)
     return math.max(1,value);
 end
 local function random(seed)
+    -- Own the whole random stream so assistance cannot perturb the game's RNG
+    -- or another mod's later draws. Stable inputs must consume draws in order.
     local state=seed;
     -- Diffuse similar continent/configuration keys before the first draw.
     for _=1,4 do state=(state*48271)%MODULUS;end
@@ -76,6 +80,8 @@ function C.Json(v)
 end
 
 function C.Plan(data,definitions,eligible,mapSeed,profile)
+    -- Plan against copied plot records. The adapter supplies native eligibility
+    -- and applies the returned additions only after this calculation succeeds.
     profile=profile or C.ResourceProfile(3,30);
     local plots,regions,localTypes,classes,features={},{},{},{},{};
     for _,r in ipairs(data.resources) do classes[r.type]=r.class;end
@@ -123,6 +129,8 @@ function C.Plan(data,definitions,eligible,mapSeed,profile)
     end
     local both,base=sites('both'),sites('base');local beforeBoth,beforeBase=both,base;
     local function localSites(deposits,old,mode)
+        -- A new deposit can support neighbors but also occupy a potential
+        -- Quarter tile. Re-evaluate both the deposit tiles and their neighbors.
         local affected={};for _,d in ipairs(deposits) do affected[d.plot]=true;for _,i in ipairs(plots[d.plot].neighbors) do affected[i]=true;end;end
         local out={};for k,set in pairs(old) do out[k]=copy(set);for i in pairs(affected) do out[k][i]=nil;end;end
         for i in pairs(affected) do local p=plots[i];if regions[p.continent] then
@@ -131,6 +139,8 @@ function C.Plan(data,definitions,eligible,mapSeed,profile)
         return out;
     end
     local function retains(old,new)
+        -- Reject a repair that removes the last opportunity for any implemented
+        -- Quarter on a continent, including a Quarter that did not request it.
         for k,set in pairs(old) do if next(set) and not next(new[k]) then return false;end;end
         return true;
     end
@@ -175,6 +185,9 @@ function C.Plan(data,definitions,eligible,mapSeed,profile)
         return out;
     end
     local function choose(cid,q,cost)
+        -- Trial placements only touch the copied map and are undone after the
+        -- safety check. Group by resource combination before selecting a site
+        -- so resources with more eligible locations do not win by count alone.
         if (budget[cid] or 0)+cost>result.max_per_continent or #result.additions+cost>result.max_per_map then return nil;end
         local groups,types={},{ };
         for _,option in ipairs(options(cid,q,cost)) do
@@ -228,6 +241,8 @@ function C.Plan(data,definitions,eligible,mapSeed,profile)
     if C.SiteMultipliers and C.SiteMultipliers.TAILORS then
         local q='TAILORS';local multipliers=C.SiteMultipliers[q];
         local function totals()
+            -- 'base' includes both-class sites; subtract them to measure the
+            -- separate Base-only target without counting a site in both buckets.
             local b,s=0,0;for _,cid in ipairs(continents) do b=b+count(base[key(cid,q)]);s=s+count(both[key(cid,q)]);end
             return {base_only=b-s,both=s};
         end

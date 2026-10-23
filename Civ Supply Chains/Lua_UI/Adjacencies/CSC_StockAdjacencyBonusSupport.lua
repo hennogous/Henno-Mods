@@ -1,4 +1,4 @@
--- Firaxis stock UI support, retained unchanged below this header for CSC wrappers.
+-- Firaxis UI support with optional numeric CSC additions in the yield formatter.
 -- ===========================================================================
 --	Functions related to finding the yield bonuses (district) plots are given
 --	due to some attribute of an adjacent plot.
@@ -175,7 +175,9 @@ end
 --		2. parameter is a tooltip with detailed bonus informatin
 --		3. NIL if can be used or a string explaining what needs to be done for plot to be usable.
 -- ===========================================================================
-function GetAdjacentYieldBonusString( eDistrict:number, pkCity:table, plot:table )
+-- Optional CSC additions are numeric base yields, evaluated by the shared core.
+-- Omitting them preserves Firaxis' original callers and housing behavior.
+function GetAdjacentYieldBonusString( eDistrict:number, pkCity:table, plot:table, additionalYields:table )
 
 	local tooltipText	:string = "";
 	local totalBonuses	:string = "";
@@ -208,7 +210,14 @@ function GetAdjacentYieldBonusString( eDistrict:number, pkCity:table, plot:table
 				-- There is always only one requiredText so just replace it
 				requiredText = yieldRequireText;
 
-				local yieldString:string = GetYieldString( GameInfo.Yields[iBonusYield].YieldType, iBonus );
+			end
+
+			local yieldType:string = GameInfo.Yields[iBonusYield].YieldType;
+			-- CSC supplies numeric additions here so cancellation and negative totals
+			-- are resolved before the shared icon formatter renders the final amount.
+			iBonus = iBonus + (additionalYields and additionalYields[yieldType] or 0);
+			if (iBonus > 0 or (additionalYields ~= nil and iBonus ~= 0)) then
+				local yieldString:string = GetYieldString( yieldType, iBonus );
 				if iconString == "" then
 					iconString = yieldString;
 				else

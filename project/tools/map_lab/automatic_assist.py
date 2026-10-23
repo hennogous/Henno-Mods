@@ -32,7 +32,7 @@ def list_fields(plan):
 class AutomaticSurvey(NativeSurvey):
     def cmd(self,code,state='GameCore_Tuner',label='command',wait=2,check=True):
         if label.startswith('start-'):
-            code=code.replace('ReleasePlayerParameters();',"GameConfiguration.SetValue('CSC_MATERIAL_MAP_ASSISTANCE',1);GameConfiguration.SetValue('CSC_MATERIAL_MAP_DIAGNOSTICS',true);ReleasePlayerParameters();")
+            code=code.replace('ReleasePlayerParameters();',"GameConfiguration.SetValue('CSC_RESOURCE_MAP_ASSISTANCE',1);GameConfiguration.SetValue('CSC_MATERIAL_MAP_DIAGNOSTICS',true);ReleasePlayerParameters();")
         return super().cmd(code,state,label,wait,check)
 
     def assist_current(self,folder):

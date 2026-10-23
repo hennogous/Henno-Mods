@@ -47,6 +47,8 @@ function A.Bounds(rule)
 end
 
 function A.PlotsInBand(center, first, last)
+    -- Visit each plot once, even on wrapped maps where several paths reach it.
+    -- The caller chooses whether the placement tile itself belongs to the band.
     if not center then return {}; end
     if last == 0 then return {center}; end
     local queue = {center};
@@ -109,6 +111,9 @@ local function cityHasBuilding(city, buildingType)
 end
 
 function A.Eligible(rule, city, playerID)
+    -- Check the source that owns the modifier before counting nearby objects.
+    -- Collection scope decides whether a qualifying building must be in this
+    -- city, anywhere in this player's empire, or in any living major's empire.
     local player = Players[playerID];
     if not player then return false; end
     if rule.Only == 'OnlyHuman' and not player:IsHuman() then return false; end
@@ -301,8 +306,8 @@ source('FROM_UI_RINGS_UNIT_LEVELS',function(p)
         if level == nil and bridge and bridge.GetUnitLevel then
             level = bridge.GetUnitLevel(unit:GetOwner(),unit:GetID());
         end
-        -- Before UI initialization there is no bridge yet. LoadGameViewStateDone
-        -- refreshes again once the game has finished creating its UI contexts.
+        -- Before UI initialization there is no bridge yet. A later synchronized
+        -- gameplay refresh can read it; local loading events do not write state.
         count=count+(level or 0);
     end
     return count;
@@ -337,6 +342,8 @@ source('FROM_RIVER_CROSSING',function(p) return p:GetRiverCrossingCount(); end,f
 source('FROM_UNCONDITIONAL_BONUS',function() return 1; end,false);
 
 function A.Count(rule, center, city, playerID)
+    -- Return source quantity, before YieldChange multiplication or bit encoding.
+    -- A source may contribute a quantity (workers, property value), not just 0/1.
     local entry = A.Sources[rule.AdjacencyType];
     assert(entry,'CSC adjacency: unsupported source ' .. tostring(rule.AdjacencyType));
     if not center then return 0; end
@@ -360,11 +367,15 @@ function A.Count(rule, center, city, playerID)
 end
 
 function A.Amount(rule, count)
+    -- SQL has a fixed ten-bit magnitude ladder. Keep the unclamped amount for
+    -- diagnostics, but use the encoded amount in both gameplay and previews.
     local raw = A.Truncate(count * rule.YieldChange);
     return math.max(-A.Limit,math.min(A.Limit,raw)),raw;
 end
 
 function A.Write(plot, rule, count)
+    -- These names are the contract with CSC_AdjacencyModifiers.sql. Bits carry
+    -- magnitude; SQL gives each bit modifier the sign of the rule's YieldChange.
     local amount,raw = A.Amount(rule,count);
     local key = 'CSC_ADJ_' .. rule.ID;
     local function set(name,value)
@@ -378,6 +389,8 @@ function A.Write(plot, rule, count)
 end
 
 function A.Initialize()
+    -- Cache database definitions only. Player knowledge, policies and map state
+    -- are evaluated live; sorting rules also fixes gameplay property-write order.
     A.Rules={}; A.ByDistrict={}; A.Tags={}; A.Objects={}; A.SourceInfo={}; A.Providers={};
     for item in GameInfo.TypeTags() do
         A.Tags[item.Tag] = A.Tags[item.Tag] or {};

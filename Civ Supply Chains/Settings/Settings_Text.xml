@@ -49,11 +49,11 @@
         <Replace Tag="LOC_CSC_FOOTER_INTERNAL_NAME" Language="en_US">
             <Text>[COLOR:ResProductionLabelCS]CIV SUPPLY CHAINS: SETTINGS[ENDCOLOR]</Text>
         </Replace>
-        <Replace Tag="LOC_CSC_MATERIAL_MAP_ASSISTANCE_NAME" Language="en_US">
-            <Text>Additional industry materials</Text>
+        <Replace Tag="LOC_CSC_RESOURCE_MAP_ASSISTANCE_NAME" Language="en_US">
+            <Text>Additional Quarter resources</Text>
         </Replace>
-        <Replace Tag="LOC_CSC_MATERIAL_MAP_ASSISTANCE_DESCRIPTION" Language="en_US">
-            <Text>On new maps, add suitable material deposits to increase opportunities for the implemented Quarters. Assistance scales with the resource abundance setting. Existing resources remain in place, and continents retain different opportunities.</Text>
+        <Replace Tag="LOC_CSC_RESOURCE_MAP_ASSISTANCE_DESCRIPTION" Language="en_US">
+            <Text>On new maps, add suitable material deposits to increase favorable placement opportunities for Quarters. Assistance scales with the resource abundance setting. Existing resources remain in place, and continents retain different opportunities.</Text>
         </Replace>
         <Replace Tag="LOC_CSC_FOOTER_INTERNAL_DESCRIPTION" Language="en_US">
             <Text></Text>

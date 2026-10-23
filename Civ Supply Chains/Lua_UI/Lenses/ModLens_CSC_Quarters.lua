@@ -19,5 +19,7 @@ if g_ModLenses ~= nil then
     }
 end
 if g_ModLensModalPanel ~= nil then
+    -- Both More Lenses contexts load this file. Seed a legend here; the options
+    -- panel replaces it with the selected Quarter when the manual lens opens.
     g_ModLensModalPanel[parent] = S.GetLensLegend(quarters[1].id)
 end

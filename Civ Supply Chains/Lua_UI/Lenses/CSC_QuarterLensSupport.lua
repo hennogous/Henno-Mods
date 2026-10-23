@@ -121,6 +121,8 @@ function S.GetPlotEntries(key, includeIgnored)
             if CSC_Adjacency.ResourceVisible(playerID, plot:GetResourceType()) then
                 resourceType = GameInfo.Resources[plot:GetResourceType()].ResourceType
             end
+            -- Specificity wins: Quarter/customer sites take precedence over a
+            -- resource on the same plot, and Base wins a shared Base/Spec match.
             local category = nil
             if districtType == quarter.districtType then category = "QUARTER"
             elseif wonderSale or quarter.saleSet[districtType] then category = "SALE"
@@ -147,6 +149,8 @@ function S.GetPlotEntries(key, includeIgnored)
 end
 
 function S.GetColorPlotTable(key, includeIgnored)
+    -- Adapt the shared per-plot records to More Lenses' color -> plot-list API.
+    -- Placement uses the same buckets but omits the grey background category.
     local quarter = S.Quarters[key]
     if quarter == nil or PlayersVisibility[Game.GetLocalPlayer()] == nil then return {} end
     local result = {}
