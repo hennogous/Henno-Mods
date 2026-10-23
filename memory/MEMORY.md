@@ -1,3 +1,29 @@
+# ACTIVE overnight material-access investigation
+See session_csc_ai_tuning.md and project/docs/research/mods/csc-ai-material-access-overnight-20261023.md. Current frozen v2game must finish225/audit/cleanup before any bounded follow-up. Offline harvest attribution/probe SQL is new unpinned work, not a live treatment.
+
+# VERIFIED current startup: native completed cycle 4, endpoint225
+Supervisor18868/worker10500/trueDX12Civ16996; exact CIM identities verified.
+All91 executed pins FROZEN and all512 runtime hashes verified. Native improvement30/new work callback/Lua3 loaded, zero care errors. Worker EXCLUSIVELY owns Tuner. Native advancement confirmed; no preservation outcome claimed. Monitor csc-material-care-v2-test ACTIVE15min, progress update EACH check. Read later actual artifacts for current progress.
+
+# CURRENT material-care v2 fresh test —23October
+Human: "test game pls,15min checks". One fresh225 endpoint world830405/940411,
+Tomyris0;Amanitore,Tamar,Genghis_Khan,Joao_III,Hojo; native startup/progress must
+be read, not inferred from dispatch. Study Desktop/Codex/csc-material-care-v2-20261023,
+active-run.json then current monitor-context/status/logs. Monitor actualid
+csc-material-care-v2-test ACTIVE15min; human wants a progress update EACH check.
+All executed sources FROZEN/exclusiveworkerTuner/no other nativeclient/UI/assets.
+Candidate512 FOUR deltas overpretest510 (CSC_AI.sql+careSQL+careLua+modinfo).
+Base30/generalBuilder50/noextraBuilder100; sustained actionablework urgency and
+native material/noDistrict guards; same160/80/20. Ownfirst shortfallfallback and
+0%foundations unchanged, assistedassignment not proven nativePURCHASE. LIGHT
+outcomes25+225, native work/strategy/research/Builder histories. No perturn deep
+profiling/newweights/orders/grants. Recovery authorized preserve/reconcile first,
+never ambiguouseconomicresends/rehost. Prior v1partial170/probes/studies CLOSED.
+Final225+ownerscomplete+offlineaudit/report/normalExit/allCivabsent then restore
+THISpretest510 FOURdeltas/preferences144/autostartfalse, human,actualmonitordelete
+and receipt. Design project/docs/research/mods/csc-ai-material-care-v2-20261023.md.
+Earlier no-newgame/current labels below HISTORY where conflicting.
+
 # Material-care log synthesis and revised source candidate —23October
 Human-stopped pilot remains CLOSED partial170; monitor deleted, no new game.
 Native original pins preserved; source candidate intentionally changed AFTER owners
