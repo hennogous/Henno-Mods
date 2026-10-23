@@ -77,3 +77,25 @@ Before advancing require complete world/gold/2physical+UI/nativeDB/512package/
 120research rows through24 and observer prefixes. Cycle25 already completed with
 no economic/foundation action; first new cycle26. Label25censuses as reload source.
 Continuation native validation is pending until actual readbacks.
+
+## Recovery and first post-fix observations
+
+Exact25 recovery PASSED fullworld, treasury, both physical/UI sites, five saved
+economic ledgers, nativeDB and120research prefix. Builder units/charges/positions
+also match the archived25 reply; restored Builder event prefix is verified at50.
+One load, no earlier AI-turn replay or recreated site; first new cycle26.
+Current91pins frozen; worker3588/supervisor12264/DX12Civ8996. Native60+ observed.
+
+Care50: zero errors,151native strategy callback invocations. Native operation
+records identify actual AI UNITOPERATION_REPAIR (nativeTypes.Hash147469951) at
+JoaoFlax2489turn28 and GenghisRice1619turn36, matching repair-to-working state
+changes. RiceFarm remains intact50; Flax improvement is absent again50. These
+prove repairs occurred, not that this candidate caused them or ensured retention.
+
+Two supporting resources were lost despite the soft signal: Maize2563 under a
+natural Tailors Quarter31, and TamarRice1353 gone35. The latter reported raw
+district13 at loss, with no district remaining50; do not infer a harvest actor or
+a permanent Wonder from that alone. No preservation guarantee or causal gain.
+Proof: current child independent-recovery-and-care50-confirmation.json.
+Continue the unchanged225 test; no midrun coefficient tuning. Generic state-read
+metadata may say endpoint250; declared225/supervisor/driver loop remain authority.

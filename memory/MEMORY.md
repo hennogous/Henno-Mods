@@ -1,3 +1,26 @@
+# CURRENT recovered material care —23October
+Study active-run points run01/resume-025-district-iterator-v2. Native60+ confirmed;
+worker3588/sup12264/DX12Civ8996,91pins FROZEN/exclusiveTuner. Parentfailed25 on
+invalid CityDistricts.Members; HOSTpoweredoff16:35UTC,boot17:13UTC/noCivcrashrecord.
+Fixed native indexed iteration + realistic15Lua51fixtures, commitd08e31e pushed.
+Strict exact25SHAf371f302c5837bb124c223754853d7b28e307235dd67b9d82673db7529e6c8c2
+passed fullworld/gold/2physical+UI/5savedledgers/120research/nativeDB/current512.
+ONEload/noAIturnreplay/recreation/newworld;25cycle completed(noactions), starts26.
+Materialcare INVALID1..24; validfrom25 only. Builder25unit/charge/position parity;
+oldBuilder eventprefix proved50. Firstcare50 has0errors/151nativecallbacks.
+Two nativeAI REPAIR opsHash147469951: JoãoFlax2489turn28, GenghisRice1619turn36.
+Flaximprovementgoneagain50; RiceFarmintact50. Preservationstillfails: Maize2563
+under naturalTailors31, TamarRice1353gone35/rawdistrict13/no remainingdistrict50;
+DO NOTclaimharvest or permanentWonder. No causal efficacy claim.
+Independentproof currentR/independent-recovery-and-care50-confirmation.json.
+Inherited2foundations/5tiles170Gold=76own94fallback. Latercountsreadartifacts.
+Target225 not250; generic state live-status endpoint250 metadata is stale.
+Light25outcomes, currentfunding/planner unchanged. Automationcsc-material-care-test
+ACTIVE/requested15minuteupdates. Final225/audit/report/normalMenuExit/allCivabsent,
+restore PARENT run01/pretest-runtime-package510 +manifest, original144prefs,
+autostartfalse. Childoriginalmanifest512 is candidate, notfinalrestoration.
+Keepcurrentgamegoing;noextraWorld/pinnededits/competingTuner/ComputerUse/subagents.
+
 # CURRENT material-care v1 test —23 October
 Human requested clean commits/push, strongest reviewed material-care ideas and
 one fresh game with explicit15-minute updates. CSC cleanup six commits through
