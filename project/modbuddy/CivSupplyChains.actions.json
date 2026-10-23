@@ -415,6 +415,26 @@
         ]
       },
       {
+        "type": "UpdateDatabase",
+        "id": "CSC_AI_MaterialCare_DB",
+        "properties": {
+          "LoadOrder": "506"
+        },
+        "files": [
+          "Data/CSC_AI_MaterialCare.sql"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_AI_MaterialCare",
+        "properties": {
+          "LoadOrder": "507"
+        },
+        "files": [
+          "Lua_UI/AI/CSC_AI_MaterialCare.lua"
+        ]
+      },
+      {
         "type": "ImportFiles",
         "id": "CSC_QuarterOverlaySupport",
         "properties": {
