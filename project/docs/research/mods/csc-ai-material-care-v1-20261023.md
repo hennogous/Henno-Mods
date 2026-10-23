@@ -58,3 +58,22 @@ Independent-startup-verification.json retains the details. Automation
 csc-material-care-test is active for the human-requested15-minute updates.
 Offline15actualLua5.1 guards and SQL replay/native-schema checks pass; unchanged
 shared planner203/controller78 and contract167 checks passed before launch.
+
+## Turn25 interruption and iterator correction
+
+The first worker stopped at25 because CityDistricts has indexed GetNumDistricts/
+GetDistrictByIndex, not Members. The mock had incorrectly provided Members; it
+now uses the native interface. Fifteen Lua5.1 checks pass after correction.
+Do not call material care active through1–24: callback errors prevented a valid
+city scan. Original Lua/errors/pins remain archived. Buying/foundation receipts
+are independently retained:2sites,5tiles,170Gold=76own+94fallback. The host then
+powered off18:35:22Europe/Warsaw and rebooted19:13:37. No corresponding Civ
+Application crash record was found. All old controller/native identities absent.
+
+Prepare same-world resume-025-district-iterator-v2 from exact AutoSave0025
+SHA256 f371f302c5837bb124c223754853d7b28e307235dd67b9d82673db7529e6c8c2.
+Before advancing require complete world/gold/2physical+UI/nativeDB/512package/
+5native ledgers parity. No recreated sites, new world or AI-turn replay. Inherit
+120research rows through24 and observer prefixes. Cycle25 already completed with
+no economic/foundation action; first new cycle26. Label25censuses as reload source.
+Continuation native validation is pending until actual readbacks.

@@ -21,7 +21,7 @@ plots[1].resource=1;plots[2].resource=2;plots[0].district=10;
 Map={GetPlotCount=function()return 9 end,GetPlotByIndex=function(i)return plots[i]end,GetPlot=function(x,y)return plots[x]end,GetAdjacentPlot=function(x,y,dir)if dir<2 then return plots[dir+1]end end};
 local q={};function q:GetType()return 10 end;function q:GetX()return 0 end;function q:GetY()return 0 end;
 districts={q};units={};human=false;unlocked=true;legal=true;revealed=true;resourceVisible=true;
-local city={};function city:GetDistricts()return {Members=function()return ipairs(districts)end}end;
+local city={};function city:GetDistricts()return {GetNumDistricts=function()return #districts end,GetDistrictByIndex=function(_,i)return districts[i+1]end}end;
 local p={};function p:GetID()return 1 end;function p:IsAlive()return true end;function p:IsMajor()return true end;function p:IsHuman()return human end;
 function p:GetCities()return {Members=function()return ipairs({city})end}end;
 function p:GetUnits()return {Members=function()return ipairs(units)end}end;

@@ -2,7 +2,7 @@
 -- repairs improvements, changes resources, spends Gold or changes production.
 -- Independent implementation of live demand, inspired by the reviewed AI mods.
 include('CSC_AdjacencyCore');
-CSC_AI_MaterialCare={version=1,players={},errors={},events={},calls=0,dirty={}};
+CSC_AI_MaterialCare={version=2,players={},errors={},events={},calls=0,dirty={}};
 local M=CSC_AI_MaterialCare;
 local generation=0;
 local keys={'LAST_BASE','LAST_SPEC','REDUNDANT'};
@@ -76,7 +76,9 @@ function M.Refresh(pid)
     local marks={};
     if eligible(pid) then
         for _,city in Players[pid]:GetCities():Members() do
-            for _,district in city:GetDistricts():Members() do
+            local districts=city:GetDistricts();
+            for i=0,districts:GetNumDistricts()-1 do
+                local district=districts:GetDistrictByIndex(i);
                 local cls=classes[district:GetType()];
                 if cls then
                     local neighbors={base={},spec={}};
