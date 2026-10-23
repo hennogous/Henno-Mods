@@ -1,3 +1,29 @@
+# CURRENT material-care v1 test —23 October
+Human requested clean commits/push, strongest reviewed material-care ideas and
+one fresh game with explicit15-minute updates. CSC cleanup six commits through
+0d5becd; candidate71b005b pushed; civ-supply-chains skilld3a7f99/art646e007
+pushed; gameplay skill unchanged/clean. All repos clean before native launch.
+R=Desktop/Codex/csc-material-care-v1-20261023/run-01; declared endpoint225,
+not250, common comparison and before previous observer defeat232. Native2+
+verified, worker15460/sup21440/DX12Civ20880.88sourcepins FROZEN/exclusiveTuner.
+Native3preservation attachments,2Builderproductioncontracts and callback1
+observed; no care errors; actual AI preservation/repair response UNPROVEN.
+Candidate512 over backed-up pretest510: only newSQL/Lua+modinfo. No art swap.
+Own-first fallback, assisted quoted acquisition,0%foundations and light25-turn
+outcomes unchanged. LastBase160/lastSpec80/redundant20 private signal; original
+improvement80; live capacity-shortage strategy and any-city Builder contracts.
+No direct Builder orders/grants. Work/pillage/repair/loss compact events retained.
+Automation csc-material-care-test ACTIVE,15-minute requested progress updates.
+Recover autonomously only after preservation/reconciliation; no ambiguous resends
+or extra worlds. After225+ownerscomplete/absent independentofflineaudit/report,
+normalMenuExit/allCivabsent/pretest510restore/prefs144+autostartfalse verify,
+humanreport then delete newmonitor and recordreceipt. Old games remain CLOSED.
+Design project/docs/research/mods/csc-ai-material-care-v1-20261023.md.
+Customer comparison same225: baseline stock5worlds pooled80/325noncenteradj,
+99/325eligibleQ/106links; firsttuning51/65,42/65,69links; latertuning37/56,
+34/56,46links; lastown-first45/67,36/67,47links. Payments UNOBSERVED.
+See csc-ai-customer-comparison-20261023.md. Do not claim general improvement.
+
 # Final closure confirmed —23 October
 Automation csc-own-first-fresh-game DELETED; app returned deleteStatus=deleted,
 exactreceipt currentR/monitor.json. Partial232 independentlyaudited/reportedsaved,

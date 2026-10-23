@@ -47,3 +47,14 @@ Run evidence: Desktop/Codex/csc-material-care-v1-20261023/run-01. Installation i
 an isolated512-file candidate over the preserved current510-file package. After
 audit, normal exit and all Civ processes absent, restore the pretest510 package
 and original144 preferences. Preserve source fixes and unrelated work.
+
+## Startup evidence
+
+Native turn2+ verified. Supervisor21440/worker15460/exactDX12Civ20880; all88
+executed source pins unchanged. Loaded native3trait modifiers/2production tree
+rows and a real material-care strategy callback were verified with zero care
+errors. This is startup/plumbing proof, not decision-level preservation evidence.
+Independent-startup-verification.json retains the details. Automation
+csc-material-care-test is active for the human-requested15-minute updates.
+Offline15actualLua5.1 guards and SQL replay/native-schema checks pass; unchanged
+shared planner203/controller78 and contract167 checks passed before launch.
