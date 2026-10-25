@@ -358,11 +358,10 @@ FROM CSC_RouteStackBits;
 /*	WATER MILL & PALGUM */
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Remove the standard game Water Mill
 -- The CSC Water Mill replaces the vanilla building's role rather than using a
--- BuildingReplaces entry. Detach Palgum's old replacement link as part of removing
--- the vanilla Water Mill; Palgum otherwise remains its own building.
-DELETE FROM Buildings WHERE BuildingType='BUILDING_WATER_MILL';
+-- BuildingReplaces entry. The vanilla Water Mill itself is removed late, in
+-- CSC_Q_BAKERS_REMOVE_WATER_MILL.sql, so other mods can still edit it safely.
+-- Detach Palgum's old replacement link here; Palgum otherwise remains its own building.
 
 -- Palgum no longer replaces the Water Mill
 DELETE FROM BuildingReplaces WHERE CivUniqueBuildingType='BUILDING_PALGUM';

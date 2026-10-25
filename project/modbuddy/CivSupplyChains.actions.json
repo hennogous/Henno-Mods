@@ -537,6 +537,16 @@
       },
       {
         "type": "UpdateDatabase",
+        "id": "CSC_Q_BAKERS_REMOVE_WATER_MILL",
+        "properties": {
+          "LoadOrder": "200000001"
+        },
+        "files": [
+          "Data/CSC_Q_BAKERS_REMOVE_WATER_MILL.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
         "id": "CSC_Q_TAILORS",
         "properties": {
           "LoadOrder": "100"
