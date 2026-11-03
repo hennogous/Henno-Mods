@@ -95,7 +95,7 @@ or independent GameCore carrier would need separate packaging, loader, version,
 save/lifecycle and compatibility qualification. It is a larger deployment choice
 than ordinary SQL/Lua content.
 
-## The next useful proof
+## What the live prototypes establish
 
 The first nonzero trial now establishes delivery through the ordinary path:
 
@@ -124,8 +124,19 @@ generation labels are not native analysis epochs. VirtualQuery checks readable
 and writable regions but does not pin game-object lifetime. Neither mechanism
 constitutes a general shipping lifecycle solution.
 
-A future choice test needs genuinely competing candidates and an untreated
-ranking, so a deliberate site/type change can be attributed to the incentive.
+After retiring the old CSC tuning, the Sydney test established a changed
+**district type at the same tile**. Without an adjustment, Neighborhood won
+plot2272 at585,676 Q8; Tailors scored243,277. Adding the measured gap plus256
+made Tailors win at585,932, and the AI submitted its ordinary Quarter request
+with logged value2288.0. Pre-decision physical, production and research facts
+matched. Only one definitely unreserved Tailors site qualified, so this was
+not a move between two Quarter sites. [AI-N064]
+
+The first follow-through observed no Quarter foundation through253, then
+stalled while attempting254 and closed normally. A guarded
+replay is tracked in the [placement-choice report](../../../research/mods/civ6-district-placement-choice-20261103.md).
+Selection and request submission therefore remain distinct from construction.
+
 Policy refresh, native generations, saved influence and a useful material/customer
 formula remain separate work. Chain outcomes and empire benefit come later.
 [Open questions](../history/open-questions.md)

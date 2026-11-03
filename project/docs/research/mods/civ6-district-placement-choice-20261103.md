@@ -97,8 +97,78 @@ Pre-decision physical/queue/research facts must match the baseline prefix.
 Selection, request, preferred-site foundation and completed Quarter are recorded
 separately. No observed choice within the baseline window means no treatment.
 
-The revised experiment is in progress; its results will be added from the
-retained native receipts. No changed site or construction is claimed here yet.
+## A district-type switch at the same tile
+
+The second baseline reached its first new district decision at turn252. It
+captured one Best return, the matching reservation snapshot and the immediately
+preceding fresh calculation. Only plot2272, coordinates52,30, was definitely
+unreserved. The other reservation identifiers were not resolved as live or dead;
+they were excluded rather than cleared.
+
+The untreated winner was **Neighborhood at2272**. A different district type
+provides a real competing alternative even though there is only one qualified
+unreserved Tailors site. The planner was revised to distinguish this case from
+a same-type site switch, which still requires two qualified sites. The archived
+baseline driver was verified; its only revised functions were the offline
+planner and baseline compatibility check. Native bridge inputs were unchanged.
+
+| At the decision | Untreated | Tailors incentive |
+|---|---:|---:|
+| Tailors fresh output and completed cache |243,277|585,932|
+| Winning type |Neighborhood|Tailors' Quarter|
+| Winning plot |2272|2272|
+| Winner's Q8 value |585,676|585,932|
+| Tailors plot-specific present value |not captured|585,932|
+
+The declared addition was **342,655 Q8**: the measured342,399 gap plus256.
+It was applied to fresh outputs, not incremented into an existing cache. The
+turn251 physical, queue and research prefix exactly matched the untreated arm.
+The AI accepted a new Tailors request, contract6527, and CityBuild logged its
+submission with value2288.0. The untreated tree selected Neighborhood, but the
+logs do not show a submitted Sydney Neighborhood contract. The later build
+step reported `Not Building`; its underlying cause was not established.
+
+This establishes a **district-type choice change and submitted native Quarter
+request at a declared tile**. It does not establish moving an already preferred
+Quarter to a different tile. Nor does request value equal production priority.
+Sydney was producing a Bomber and had no Tailors foundation through turn253.
+The retained native-turn252 logs still list contract6527 as waiting and accepted;
+the Bomber's production entry is264/280. No cancellation or expiry of this
+Tailors contract was observed. The logs do not expose the numeric control-priority
+comparison, so the Bomber's logged value2817 versus Tailors2288 does not by itself
+explain why production chose it.
+
+```mermaid
+flowchart LR
+  A["Untreated: Neighborhood at 2272"] --> B["Measured gap: 342,399 Q8"]
+  B --> C["Add gap + 256 to fresh Tailors value"]
+  C --> D["Tailors wins at 2272"]
+  D --> E["Native Tailors request submitted"]
+  E --> F["Production and construction remain separate"]
+```
+
+## Follow-through interruption and presentation recovery
+
+The first treatment stalled at turn253 while attempting254 and reached the
+controller's600-second limit. It was not a completed260 endpoint. Normal
+cleanup nevertheless succeeded: native exit0, preferences restored, no owners,
+and unchanged original save, package and frozen inputs. No construction outcome
+may be inferred from that timeout.
+
+The retained Lua log contains a NaturalWonderPopup event lock59896 and no
+matching unlock. This is a different shipped popup from WonderBuiltPopup,
+which the controller already handled. Source inspection shows that its own
+`Close()` routine advances the popup queue or releases its presentation lock;
+it submits no district order or diplomatic response.
+
+An opt-in presentation guard now requires fresh, finite Core observer proof,
+matching UI clock, the visible exact source context, and a retained popup-stack
+read before calling that shipped routine. Stack membership or topness is not
+an admission condition. It has an eight-acknowledgement
+interval cap and refuses to replay an ambiguous acknowledgement. Sixteen Lua5.1
+cases and six Python controller mocks passed. A no-adjustment250→254 control
+is checking this recovery before a guarded follow-through replay. That control
+is not a new scoring policy or proof of popup causality by itself.
 
 Evidence: `Desktop/Codex/csc-native-placement-choice-20261103/`, staged in this
 chat's visualization root. Original binaries and saves remain hash/path references.

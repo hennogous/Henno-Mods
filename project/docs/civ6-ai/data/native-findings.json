@@ -1225,6 +1225,19 @@
     "sources": ["project/docs/research/mods/civ6-district-placement-choice-20261103.md"],
     "topic": "topics/native/district-choice.md",
     "depends_on": ["AI-N011", "AI-N061"],
-    "related": ["AI-N062"]
+    "related": ["AI-N062", "AI-N064"]
+  },
+  {
+    "id": "AI-N064",
+    "title": "A native incentive changes district type and produces a Quarter request",
+    "statement": "After the legacy CSC tuning reset, Sydney's untreated joint selector chose Neighborhood at plot2272. Adding the measured gap plus256 Q8 to fresh Tailors outputs changed the winner to Tailors at the same plot; its completed cache and present value reached585932, and the AI submitted a native Tailors contract logged at2288.0.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Pinned Windows XP2 build, Frida17.24.3 CModule, original AI P5/city131073. Same original game04 turn250 save and exact turn251 physical/queue/research prefix. At252, untreated winner585676 and Tailors243277; declared delta342655. Only one definitely unreserved Tailors site qualified.",
+    "limits": "This changes district type at the same tile, not a Quarter's site. Request value is not production priority. No Tailors foundation through253 in the first treatment; follow-through then timed out and closed normally. The experiment supplies a deliberate preference, not a calibrated site-quality model, economic benefit or shipping lifecycle solution.",
+    "sources": ["project/docs/research/mods/civ6-district-placement-choice-20261103.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N006", "AI-N011", "AI-N055", "AI-N062"],
+    "related": ["AI-N063"]
   }
 ]

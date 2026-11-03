@@ -282,6 +282,16 @@
       "site_path": "sources/memory/session_csc_ai_feasibility.md"
     },
     {
+      "path": "memory/session_csc_ai_native_choice_20261103.md",
+      "title": "Fresh CSC AI tuning and native choice test — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 3846,
+      "sha256": "2345d5804e6dad883e4da987e23e5b2ac48d4178d2a669b56bca4da585a0d59d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_csc_ai_native_choice_20261103.md"
+    },
+    {
       "path": "memory/session_csc_ai_tuning.md",
       "title": "25 October: authorized foundation/customer combined200 pilot",
       "kind": "agent-note",
@@ -336,8 +346,8 @@
       "title": "Fresh start for CSC AI tuning",
       "kind": "integration",
       "date": "20261103",
-      "bytes": 2573,
-      "sha256": "96cca9abc07a791f2b402920a0f0d9c2bd50075c6319ccc51268164cde1f4256",
+      "bytes": 2929,
+      "sha256": "a20358e28be82c1c785376d2761c3db73fe8f270ffa0865b50c6a8243cb8cb07",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-reset-20261103.md"
     },
@@ -396,8 +406,8 @@
       "title": "Native Quarter placement choice after the AI reset",
       "kind": "report",
       "date": "20261103",
-      "bytes": 5937,
-      "sha256": "98937b9053e7ef78e6eb84039531d3e0e8639f3326128375d1224a27c9bf119a",
+      "bytes": 9799,
+      "sha256": "4b6a9d0240405816cd542961b450f2fd1acea15d9d112b313ab854b6b7c3e89f",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-placement-choice-20261103.md"
     },

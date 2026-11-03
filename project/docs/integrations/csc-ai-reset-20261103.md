@@ -34,8 +34,12 @@ map development is retained, not erased or called a fresh-world comparison.
 
 Source archive application and restoration passed an isolated filesystem test.
 Installed two-/three-file reset and restore, owner refusal and preservation of
-later edits passed isolated package tests. Actual runtime absence of old inputs
-is a separate source gate before the native experiment.
+later edits passed isolated package tests. The subsequent native baselines and
+treatment passed the loaded-state gate: no old private planning yield, AI profile
+table, CSC AI lists/adjacencies/modifiers, legacy assistance properties, pending
+work or exposed hosts were present. The new score incentive changed a native
+district-type choice and generated a Quarter request; construction is tracked
+separately in the [trial report](../research/mods/civ6-district-placement-choice-20261103.md).
 
 Evidence: `Desktop/Codex/csc-native-placement-choice-20261103/` (staged under the
 current chat's visualization directory). The source archive manifest is versioned

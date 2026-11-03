@@ -47,4 +47,9 @@ captured that interval. A site score alone therefore does not prove that a
 new district proposal was compared. [AI-N063] See the
 [placement-choice test](../../../research/mods/civ6-district-placement-choice-20261103.md).
 
+The later matched decision provides direct causal evidence for joint type/site
+comparison: a scoped Tailors incentive changed Sydney's winner from Neighborhood
+to Tailors **at the same tile** and generated a native Quarter request. This is
+not yet proof of site relocation or completed construction. [AI-N064]
+
 The Lua query plot:CanHaveDistrict(districtIndex, playerID, cityID) reads three numeric arguments after self in this build. No fourth future/ignore flag was found. Its result expresses bounded plot potential, not complete city permission, an economic quote or material preservation: an auto-harvest path can admit resource-bearing land. [AI-N012] See the [legality investigation](../../../research/mods/csc-native-future-customer-legality-20261101.md).

@@ -19,7 +19,13 @@ new-request integer value1326→1327. The winner stayed the same and the Quarter
 remained unbuilt. The implementation uses one immutable single-load window,
 not an observed native generation API. [AI-N061] [AI-N062]
 
-**Useful next evidence:** qualify policy freshness/lifetime and develop the material/customer formula offline. A changed-choice trial needs a real competing candidate and untreated ranking; score delivery into an already winning candidate does not answer that question. Shipping integration and useful chain outcomes remain later gates.
+The subsequent clean-rules Sydney trial changed the winning type from
+Neighborhood to Tailors at the same plot and produced a native Tailors request.
+The pre-decision facts matched, and the declared bonus was the observed score
+gap plus256 Q8. This establishes a type switch, not a Quarter site relocation
+or completed construction. [AI-N064]
+
+**Useful next evidence:** observe construction separately, qualify policy freshness/lifetime and develop the material/customer formula offline. A Quarter site-switch trial still needs two qualified competing sites. Shipping integration and useful chain outcomes remain later gates.
 
 Source: [custom-incentive boundary](../../../research/mods/civ6-district-choice-placement-and-incentives-20261103.md#fully-arbitrary-per-site-incentives-remain-a-separate-integration-problem).
 
@@ -35,11 +41,11 @@ Sources: [forecast channels](../../../research/mods/csc-future-economy-forecast-
 
 ## 3. Can we observe a complete natural district decision at reasonable cost?
 
-**Known:** the static route and weight units are established. The two early-turn observers captured too many unrelated evaluations and no useful target decision. There was no changed-weight experiment.
+**Known:** the static route and weight units are established. The two early-turn observers captured too many unrelated evaluations and no useful target decision. The later native-filtered prototype captured a complete scoped choice through cache, winner, present value and native request. A matched incentive then changed the selected district type at one tile. [AI-N061] [AI-N062] [AI-N064]
 
-**Open:** an affordable capture linking fresh candidate components, final cached values, natural winning type/site, reservation and production request. Partial visibility must not be presented as an exhaustive ranking.
+**Open:** broader component attribution and physical follow-through beyond this bounded single-city case. Partial visibility must not be presented as an exhaustive ranking or complete native reservation interpretation.
 
-**Useful next evidence:** demonstrate filtering before expensive JavaScript callbacks, using offline accepted/rejected scope and budget checks. The closed runs do not justify another address-only retry or a larger cap. An eventual bounded existing-save observation should target the remaining decision question rather than re-prove already established arithmetic. **[AI-H008]**
+**Useful next evidence:** retain native filtering and finite budgets, then choose a case that resolves a remaining decision or construction question. The earlier failed observers do not justify another address-only retry or a larger cap. **[AI-H008]**
 
 Source: [observer closure and measurement limit](../../../research/mods/csc-native-quarter-placement-control-evidence-20261101.md).
 
