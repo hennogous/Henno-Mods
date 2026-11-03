@@ -34,7 +34,7 @@ VALUES
         'CSC_BAKERS_IMPORT_CONSUMER_FOOD',
         'BAKERS',
         'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',
-        'CSC_BAKERS_IMPORT_CONSUMER_ROUTE',
+        'CSC_BAKERS_IMPORT_CONSUMER_ROUTE_BIT_1',
         'CITY_CENTER_PLOT',
         'YIELD_FOOD',
         1,
@@ -44,7 +44,7 @@ VALUES
         'CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
         'BAKERS',
         'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
-        'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE',
+        'CSC_BAKERS_IMPORT_SPECIALTY_ROUTE_BIT_1',
         'CITY_CENTER_PLOT',
         'YIELD_FOOD',
         1,
@@ -54,12 +54,13 @@ VALUES
         'CSC_TAILORS_IMPORT_CONSUMER_CULTURE',
         'TAILORS',
         'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',
-        'CSC_TAILORS_IMPORT_TAILOR_ROUTE',
+        'CSC_TAILORS_IMPORT_TAILOR_ROUTE_BIT_1',
         'CITY_CENTER_PLOT',
         'YIELD_CULTURE',
         1,
         'OUTGOING_TRADE_ROUTES'
     );
+
 
 INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
     (
@@ -77,9 +78,35 @@ VALUES
         'CSC_TAILORS_IMPORT_SPECIALTY_CULTURE',
         'TAILORS',
         'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',
-        'CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE',
+        'CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE_BIT_1',
         'CITY_CENTER_PLOT',
         'YIELD_CULTURE',
         1,
         'OUTGOING_TRADE_ROUTES'
     );
+
+-- Match the per-route Food/Culture modifier bits exactly. The tooltip sums only active
+-- flags, moving the already-paid total from Modifiers to Outgoing Trade Routes.
+INSERT OR IGNORE INTO CSC_TradeRouteYieldPresentation
+    (
+        EntryId,
+        QuarterKey,
+        ModifierId,
+        PropertyName,
+        PropertyScope,
+        YieldType,
+        Amount,
+        DisplayBucket
+    )
+SELECT
+        EntryId || '_BIT_' || Bit,
+        QuarterKey,
+        ModifierId || '_BIT_' || Bit,
+        REPLACE(PropertyName, '_BIT_1', '_BIT_' || Bit),
+        PropertyScope,
+        YieldType,
+        Bit,
+        DisplayBucket
+FROM CSC_TradeRouteYieldPresentation CROSS JOIN CSC_RouteStackBits
+WHERE EntryId IN ('CSC_BAKERS_IMPORT_CONSUMER_FOOD', 'CSC_BAKERS_IMPORT_SPECIALTY_FOOD',
+                  'CSC_TAILORS_IMPORT_CONSUMER_CULTURE', 'CSC_TAILORS_IMPORT_SPECIALTY_CULTURE');

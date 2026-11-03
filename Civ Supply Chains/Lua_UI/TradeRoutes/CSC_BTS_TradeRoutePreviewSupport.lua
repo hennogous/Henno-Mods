@@ -86,11 +86,9 @@ function CSC_BTS_GetBakersTradeRouteState(routeInfo)
 		return false, false;
 	end
 
-	-- First implementation is domestic-only. The gameplay scanner uses the same gate, so BTS should not
-	-- preview benefits for routes the modifier system will never apply.
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then
-		return false, false;
-	end
+	-- CSC's fixed exchange is identical for domestic and international routes.
+	-- Native international route multipliers are handled before this additive
+	-- preview; they do not multiply CSC's city/building modifier payouts.
 
 	-- Origin cities with their own functioning Bakers' Quarter do not import Bakers goods by trade route.
 	if CSC_BTS_CityHasFunctioningBakersQuarter(pOriginCity) then
@@ -108,7 +106,6 @@ function CSC_BTS_GetTailorsTradeRouteState(routeInfo)
 	local pOriginCity = CSC_BTS_GetCity(routeInfo.OriginCityPlayer, routeInfo.OriginCityID);
 	local pDestinationCity = CSC_BTS_GetCity(routeInfo.DestinationCityPlayer, routeInfo.DestinationCityID);
 	if pOriginCity == nil or pDestinationCity == nil then return false, false; end
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return false, false; end
 	if CSC_BTS_CityHasFunctioningTailorsQuarter(pOriginCity) then return false, false; end
 	return CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED),
 		CSC_BTS_IsPositiveProperty(pDestinationCity, PROP_FASHION_HOUSE_SUPPLIED);

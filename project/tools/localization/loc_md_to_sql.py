@@ -374,9 +374,12 @@ def validate_editorial_entry(entry: Entry) -> list[str]:
     tags = [tag for tag in [entry.tag, *entry.tags] if tag] or [entry.heading]
     # Native Civilopedia chapter headings stay plain, including grouped tags.
     chapter_title = any(re.fullmatch(r"LOC_PEDIA_.*_CHAPTER_.*_TITLE", tag) for tag in tags)
+    # Lens keys already supply coloured swatches; their labels are plain text.
+    lens_legend = all(tag.startswith("LOC_TOOLTIP_CSC_LENS_") for tag in tags)
     fragments = list(raw_localization_literals(entry.text)) if entry.mode == "raw" else [entry.text_prefix + entry.text + entry.text_suffix]
-    if chapter_title and entry.mode != "raw":
-        failures = ["Civilopedia chapter headings must not contain texticons"] if any(re.search(r"\[ICON_[^\]]+\]", text) for text in fragments) else []
+    if (chapter_title or lens_legend) and entry.mode != "raw":
+        scope = "Lens legend labels" if lens_legend else "Civilopedia chapter headings"
+        failures = [f"{scope} must not contain texticons"] if any(re.search(r"\[ICON_[^\]]+\]", text) for text in fragments) else []
     else:
         failures = [failure for text in fragments for failure in relationship_icon_errors(text)]
     tags = [entry.heading, *tags]

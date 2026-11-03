@@ -101,6 +101,22 @@ VALUES
         (   'BAKERS',     'CLASS_CSC_BAKERS_BASE',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   ),
         (   'BAKERS',     'CLASS_CSC_BAKERS_SPEC',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   );
 
+-- Stage 2/4 venues for the shared planning UI. Market is already declared by
+-- CSC_Stage3CustomerTransactions and is not duplicated here.
+INSERT OR IGNORE INTO CSC_QuarterCustomerBuildings
+        (   QuarterKey,   DistrictType,                             BuildingType,              ProducerStage   )
+VALUES  (   'BAKERS',     'DISTRICT_CITY_CENTER',                   'BUILDING_GRANARY',        2   ),
+        (   'BAKERS',     'DISTRICT_ENTERTAINMENT_COMPLEX',         'BUILDING_ZOO',            4   ),
+        (   'BAKERS',     'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',   'BUILDING_FERRIS_WHEEL',   4   );
+
+-- Exact building stages for animated, existing supply-chain connections.
+INSERT OR IGNORE INTO CSC_QuarterFlowBuildings
+        (   QuarterKey,   Stage,   BuildingType   )
+VALUES  (   'BAKERS',     2,       'BUILDING_CSC_BAKERS_WATER_MILL'   ),
+        (   'BAKERS',     2,       'BUILDING_CSC_BAKERS_WIND_MILL'   ),
+        (   'BAKERS',     3,       'BUILDING_CSC_BAKERS_BAKERY'   ),
+        (   'BAKERS',     4,       'BUILDING_CSC_BAKERS_CAFE'   );
+
 -- Commercial Hub adjacency cards also double its Food return from Bakers.
 -- This registry doubles the customer district's reciprocal return under its
 -- normal adjacency policy. It is separate from doubling the Quarter's own Gold;
@@ -481,7 +497,7 @@ VALUES
         /*  PrereqDistrict, */  'DISTRICT_CITY_CENTER',
         /*  PurchaseYield,  */  NULL,
         /*  Maintenance,    */  0,
-        /*  CitizenSlots    */  1,
+        /*  CitizenSlots    */  0,
         /*  Entertainment   */  0,
         /*  AdvisorType     */  'ADVISOR_GENERIC'
     ),
@@ -901,10 +917,10 @@ VALUES
 -- Moved to CSC_Q_BAKERS_GOLD.sql: +1 Gold to the Flour Mill in the Quarter
 
 --  Import/export route effects. Lua sets the route properties on city-center plots.
-        (   'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',                    'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',                NULL,                                              'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE'   ),
-        (   'MOD_CSC_BAKERS_IMPORT_CONSUMER_AMENITY',                 'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',          NULL,                                              'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE'   ),
-        (   'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',                   'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',                NULL,                                              'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE'   ),
-        (   'MOD_CSC_BAKERS_IMPORT_SPECIALTY_AMENITY',                'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',          NULL,                                              'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE'   ),
+        (   'MOD_CSC_BAKERS_IMPORT_CONSUMER_FOOD',                    'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',                NULL,                                              'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE_BIT_1'   ),
+        (   'MOD_CSC_BAKERS_IMPORT_CONSUMER_AMENITY',                 'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',          NULL,                                              'REQSET_CSC_BAKERS_IMPORT_CONSUMER_ROUTE_BIT_1'   ),
+        (   'MOD_CSC_BAKERS_IMPORT_SPECIALTY_FOOD',                   'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',                NULL,                                              'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE_BIT_1'   ),
+        (   'MOD_CSC_BAKERS_IMPORT_SPECIALTY_AMENITY',                'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',          NULL,                                              'REQSET_CSC_BAKERS_IMPORT_SPECIALTY_ROUTE_BIT_1'   ),
         (   'MOD_CSC_BAKERS_EXPORT_BAKERY_PRODUCTION',                'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                              'REQSET_CSC_BAKERS_EXPORT_BAKERY_ROUTE_BIT_1'   ),
         (   'MOD_CSC_BAKERS_EXPORT_CAFE_PRODUCTION',                  'MODIFIER_BUILDING_YIELD_CHANGE',                          NULL,                                              'REQSET_CSC_BAKERS_EXPORT_CAFE_ROUTE_BIT_1'   );
 
@@ -1837,3 +1853,75 @@ VALUES  (   'BUILDING_CSC_BAKERS_WATER_MILL',   'MOD_CSC_BAKERS_STAGE_2_PROP'   
         (   'BUILDING_CSC_BAKERS_WIND_MILL',    'MOD_CSC_BAKERS_STAGE_2_PROP'   ),
         (   'BUILDING_CSC_BAKERS_BAKERY',       'MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING'   ),
         (   'BUILDING_CSC_BAKERS_CAFE',         'MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM'   );
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Per-route imports: each supplied destination contributes its full return.
+-- Lua counts eligible outgoing routes separately for Bakery and Cafe imports,
+-- then writes binary flags on the origin's City Center plot. The existing +1
+-- modifiers above consume bit 1; these companions pay bits 2/4/8/16. Food and
+-- Amenities use the same gates and amounts. Supply/origin eligibility stays in
+-- the scanner; these requirements only consume its synchronized route counts.
+-- The original positive-count requirements remain available as legacy metadata.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TEMP TABLE CSC_BakersImportChannels (Channel TEXT PRIMARY KEY);
+INSERT INTO CSC_BakersImportChannels
+        (   Channel   )
+VALUES  (   'CONSUMER'   ),
+        (   'SPECIALTY'   );
+
+CREATE TEMP TABLE CSC_BakersImportEffects (Effect TEXT PRIMARY KEY, ModifierType TEXT);
+INSERT INTO CSC_BakersImportEffects
+        (   Effect,      ModifierType   )
+VALUES  (   'FOOD',      'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE'   ),
+        (   'AMENITY',   'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY'   );
+
+INSERT OR IGNORE INTO DistrictModifiers
+        (   DistrictType,   ModifierId   )
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_BAKERS_IMPORT_' || Channel || '_' || Effect || '_BIT_' || Bit
+FROM CSC_BakersImportChannels CROSS JOIN CSC_BakersImportEffects CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO Modifiers
+        (   ModifierId,   ModifierType,   SubjectRequirementSetId   )
+SELECT 'MOD_CSC_BAKERS_IMPORT_' || Channel || '_' || Effect || '_BIT_' || Bit,
+       ModifierType, 'REQSET_CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit
+FROM CSC_BakersImportChannels CROSS JOIN CSC_BakersImportEffects CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,   Name,   Value   )
+SELECT 'MOD_CSC_BAKERS_IMPORT_' || Channel || '_' || Effect || '_BIT_' || Bit, 'Amount', Bit
+FROM CSC_BakersImportChannels CROSS JOIN CSC_BakersImportEffects CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,   Name,   Value   )
+SELECT 'MOD_CSC_BAKERS_IMPORT_' || Channel || '_FOOD_BIT_' || Bit, 'YieldType', 'YIELD_FOOD'
+FROM CSC_BakersImportChannels CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO Requirements
+        (   RequirementId,   RequirementType   )
+SELECT 'REQ_CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES'
+FROM CSC_BakersImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementSets
+        (   RequirementSetId,   RequirementSetType   )
+SELECT 'REQSET_CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_BakersImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+        (   RequirementSetId,   RequirementId   )
+SELECT 'REQSET_CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit,
+       'REQ_CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit
+FROM CSC_BakersImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementArguments
+        (   RequirementId,   Name,   Value   )
+SELECT 'REQ_CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit,
+       'PropertyName', 'CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit
+FROM CSC_BakersImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementArguments
+        (   RequirementId,   Name,   Value   )
+SELECT 'REQ_CSC_BAKERS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_BakersImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+DROP TABLE CSC_BakersImportEffects;
+DROP TABLE CSC_BakersImportChannels;

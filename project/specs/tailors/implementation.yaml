@@ -584,7 +584,7 @@ phases:
           - "Verify one Dockmaster MCUIS icon and one notification transition, never one per era or promotion class."
 
   - id: stage3
-    purpose: Tailor, population transaction, Sacristan, and domestic trade.
+    purpose: Tailor, population transaction, Sacristan, and trade-route.
     requirements:
       - id: I.STAGE3_DEFINITION_LOCAL_SPECIALISTS
         design_refs:
@@ -602,9 +602,9 @@ phases:
         static_assertions:
           - "Unlock=Guilds, prerequisite Textile Workshop, Cost=160, Maintenance=2."
           - "One slot; specialists +2 Culture/+1 Gold; city +1 Amenity."
-          - "The completed Tailor description omits its Citizen slot, specialist yields, and intrinsic city Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 3 relationships in shared order: local Textile Workshop exchange; adjacent Temple/Market population exchange; domestic trade exchange; Sacristan service establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
+          - "The completed Tailor description omits its Citizen slot, specialist yields, and intrinsic city Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 3 relationships in shared order: local Textile Workshop exchange; adjacent Temple/Market population exchange; trade-route exchange; Sacristan service establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
           - "The Tailor description says a supplied Tailor establishes a Sacristan service in an adjacent Holy Site with a Temple at Divine Right; the word 'service' follows the localized Sacristan name."
-          - "Like the Bakery, the Tailor's domestic trade bullet leads with the Tailor's +1 Production and +1 Gold demand yields from each incoming Trade Route, then states the +1 Culture bonus to that route in exchange, the no-Tailors'-Quarter origin condition, and the +1 Amenity to the origin city."
+          - "Like the Bakery, the Tailor's trade-route bullet leads with the Tailor's +1 Production and +1 Gold demand yields from each incoming Trade Route, then states the +1 Culture bonus to that route in exchange, the no-Tailors'-Quarter origin condition, and the +1 Amenity to the origin city."
           - "The Tailor Civilopedia page matches the Bakery's format: exactly one Supply Chains title/paragraph followed by one Historical Context title with two history paragraphs, and no Civilopedia Description chapter."
           - "Tailor Supply Chains prose follows cloth from the local Textile Workshop into finished garments for adjacent Temples and Markets; its history covers the specialized urban tailoring trade and its expansion through guild, religious, and market demand."
           - "ICON_BUILDING_CSC_TAILORS_TAILOR uses the Tailors atlas index 5, and Icons/CSC_TAILORS_ICONS.sql is Content loaded by the shared UpdateIcons action."
@@ -689,14 +689,14 @@ phases:
 
       - id: I.STAGE3_TRADE
         design_refs: [buildings.D.STAGE3.effects.D.STAGE3.TRADE]
-        gameplay_patterns: [GP.TRADE.DOMESTIC_SUPPLY, GP.TRADE.CITY_YIELD_PRESENTATION]
+        gameplay_patterns: [GP.TRADE.SUPPLIED_ROUTE, GP.TRADE.CITY_YIELD_PRESENTATION]
         localization_patterns: [LP.TRADE.DOMESTIC_DEMAND_FIRST_BULLET]
         outputs: [core, gold, localization_source, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk]
         static_assertions:
           - "Destination +1 Culture; origin Quarter +1 Production/+1 Gold only without Tailors; origin +1 Amenity."
           - "The Tailor building description presents its incoming Trade Route transaction in recipient-first order: Quarter +1 Production/+1 Gold, then route +1 Culture, followed by the origin condition and Amenity."
           - "The Tailor contributes one complete route transaction and stacks additively with the Fashion House transaction."
-          - "The origin +1 Culture modifier has one explicit CSC_TradeRouteYieldPresentation row and Sukritact's city-yield tooltip moves exactly that active amount from Modifiers to Outgoing Trade Routes without modifier-name inference."
+          - "Each eligible route to a distinct supplied Tailor destination pays its full +1 Culture and +1 Amenity. The 1/2/4/8/16 import bits and their explicit CSC_TradeRouteYieldPresentation rows sum the route count; the base +1 Culture modifier has one explicit registry row and Sukritact's city-yield tooltip moves exactly that active amount from Modifiers to Outgoing Trade Routes without modifier-name inference."
         trade_route_yield_presentation:
           registry_table: CSC_TradeRouteYieldPresentation
           registry_output: trade_route_yield_presentation_suk
@@ -705,16 +705,16 @@ phases:
             - entry_id: CSC_TAILORS_IMPORT_CONSUMER_CULTURE
               quarter_key: TAILORS
               modifier_id: MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE
-              property_name: CSC_TAILORS_IMPORT_TAILOR_ROUTE
+              property_name: CSC_TAILORS_IMPORT_TAILOR_ROUTE_BIT_1
               property_scope: CITY_CENTER_PLOT
               yield_type: YIELD_CULTURE
               amount: 1
               display_bucket: OUTGOING_TRADE_ROUTES
         runtime_scenarios:
-          - "Compare domestic routes with/without Tailor supply and with/without a Tailors' Quarter at origin; with Simple UI Adjustments active, the origin +1 Culture appears under Outgoing Trade Routes rather than Modifiers."
+          - "Compare domestic and international routes with/without Tailor supply and with/without a Tailors' Quarter at origin; send routes to two distinct supplied Tailor cities and expect +2 Culture/+2 Amenities at origin, dropping to +1/+1 when one destination loses supply. With Simple UI Adjustments active, the full origin Culture amount appears under Outgoing Trade Routes rather than Modifiers."
 
   - id: stage4
-    purpose: Fashion House, population transaction, Stage Manager, and domestic trade.
+    purpose: Fashion House, population transaction, Stage Manager, and trade-route.
     requirements:
       - id: I.STAGE4_DEFINITION_LOCAL_SPECIALISTS
         design_refs:
@@ -732,7 +732,7 @@ phases:
         static_assertions:
           - "Unlock=Humanism, prerequisite Textile Workshop, Cost=250, Maintenance=3."
           - "One slot; specialists +1 Culture/+2 Gold; +1 Amenity within 6."
-          - "The completed Fashion House description omits its Citizen slot, specialist yields, and intrinsic regional Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 4 relationships in shared order: Specialty Material inputs; local Textile Workshop exchange; Amphitheater/Wonder population exchange; domestic trade exchange; Stage Manager establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
+          - "The completed Fashion House description omits its Citizen slot, specialist yields, and intrinsic regional Amenity because Civ VI renders those database fields below the authored description; it contains the remaining Stage 4 relationships in shared order: Specialty Material inputs; local Textile Workshop exchange; Amphitheater/Wonder population exchange; trade-route exchange; Stage Manager establishment. Transaction effects granted to another city, including the trade-route origin Amenity, remain explicit."
           - "Industry and Corporation Specialty Material sub-bullets appear only through the Monopolies_Mode text action; the always-loaded Fashion House description contains only the standard-improvement line."
           - "The M&C Fashion House text and any combined compatibility override retain the omission of owning-building Citizen slots, specialist yields and intrinsic Amenities. Validate each variant after its conditional UpdateText actions run in load order."
           - "The Fashion House Civilopedia page matches the CafÃ©'s format and breadth: exactly one Supply Chains title/paragraph followed by one Historical Context title with three history paragraphs, and no Civilopedia Description chapter."
@@ -874,13 +874,13 @@ phases:
 
       - id: I.STAGE4_TRADE
         design_refs: [buildings.D.STAGE4.effects.D.STAGE4.TRADE]
-        gameplay_patterns: [GP.TRADE.DOMESTIC_SUPPLY, GP.TRADE.CITY_YIELD_PRESENTATION]
+        gameplay_patterns: [GP.TRADE.SUPPLIED_ROUTE, GP.TRADE.CITY_YIELD_PRESENTATION]
         localization_patterns: [LP.TRADE.DOMESTIC_BULLET]
         outputs: [core, gold, localization_source, trade_route_yield_presentation_suk, trade_route_yield_tooltip_suk, trade_route_state_ui, trade_route_state_context, trade_route_state_gameplay, trade_route_preview_bts, trade_route_preview_unit_panel]
         static_assertions:
           - "Destination +1 Culture; origin Quarter +1 Production/+1 Gold only without Tailors; origin +1 Amenity."
           - "The Fashion House contributes one complete route transaction and stacks additively with the Tailor transaction."
-          - "The Fashion House origin Culture modifier receives its own explicit presentation-registry row; when Tailor and Fashion House transactions both apply, their active registry entries add under Outgoing Trade Routes."
+          - "Each eligible route to a distinct supplied Fashion House destination pays its full +1 Culture and +1 Amenity through 1/2/4/8/16 import bits. Each Culture bit receives its own explicit presentation-registry row; when Tailor and Fashion House transactions both apply, their active registry entries add under Outgoing Trade Routes."
         trade_route_yield_presentation:
           registry_table: CSC_TradeRouteYieldPresentation
           registry_output: trade_route_yield_presentation_suk
@@ -889,13 +889,13 @@ phases:
             - entry_id: CSC_TAILORS_IMPORT_SPECIALTY_CULTURE
               quarter_key: TAILORS
               modifier_id: MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE
-              property_name: CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE
+              property_name: CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE_BIT_1
               property_scope: CITY_CENTER_PLOT
               yield_type: YIELD_CULTURE
               amount: 1
               display_bucket: OUTGOING_TRADE_ROUTES
         runtime_scenarios:
-          - "Compare Stage 3 only, Stage 4 only, and both buildings to confirm designed stacking; with Simple UI Adjustments active, Culture is reclassified as +1, +1, and +2 Outgoing Trade Routes respectively."
+          - "Compare domestic and international routes with Stage 3 only, Stage 4 only, and both buildings to confirm designed stacking; with Simple UI Adjustments active, Culture is reclassified as +1, +1, and +2 Outgoing Trade Routes respectively. Send routes to two distinct cities with both buildings supplied and expect +4 Culture/+4 Amenities at origin; remove one supply channel and expect +3/+3."
 
   - id: compatibility
     purpose: Conditional integrations retained or rebuilt outside core.
@@ -1010,8 +1010,10 @@ resolved_engine_decisions:
 
   - id: E.TRADE_STACKING
     affects: [I.STAGE3_TRADE, I.STAGE4_TRADE]
-    resolution: "Yes. Tailor and Fashion House each contribute their complete trade-route transaction independently; when both apply to the same eligible route, their route bonuses and paired returns stack additively."
+    resolution: "Yes. Tailor and Fashion House each contribute their complete trade-route transaction independently; when both apply to the same eligible route, their route bonuses and paired returns stack additively. User clarifications on 24 October 2026: domestic and international routes pay identical CSC bonuses and use the same gameplay/UI handling; each route to a distinct supplied destination also grants its full Culture and Amenity benefit. Origin imports therefore consume 1/2/4/8/16 count bits, matching destination returns. Each Culture bit has explicit SUIA presentation metadata; the base bit-1 row remains the per-route amount declaration."
     decided_by: user
+    evidence:
+      - project/docs/integrations/csc-trade-route-yields.md
 
   - id: E.SERVICE_PERSISTENCE
     affects: [I.DOCKMASTER, I.SACRISTAN, I.STAGE_MANAGER]

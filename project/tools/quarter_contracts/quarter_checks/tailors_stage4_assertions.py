@@ -132,7 +132,7 @@ def validate(root, db, implementation):
         expect(arguments(mid).get('YieldType'),yield_type,'Stage 4 trade '+suffix+' yield')
         if building_target:expect(arguments(mid).get('BuildingType'),building_target,'Stage 4 trade seller target '+suffix)
     expect(arguments('MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_AMENITY'),{'Amount':'1'},'Stage 4 trade origin Amenity')
-    expect(one("SELECT COUNT(*) FROM CSC_TradeRouteYieldPresentation WHERE EntryId='CSC_TAILORS_IMPORT_SPECIALTY_CULTURE' AND ModifierId='MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE' AND PropertyName='CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE' AND YieldType='YIELD_CULTURE' AND Amount=1"),1,'Stage 4 outgoing trade presentation registry')
+    expect(one("SELECT COUNT(*) FROM CSC_TradeRouteYieldPresentation WHERE EntryId='CSC_TAILORS_IMPORT_SPECIALTY_CULTURE' AND ModifierId='MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE' AND PropertyName='CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE_BIT_1' AND YieldType='YIELD_CULTURE' AND Amount=1"),1,'Stage 4 outgoing trade presentation registry')
 
     # Generate/check the actual text database, including raw integration SQL.
     text_db=sqlite3.connect(':memory:')

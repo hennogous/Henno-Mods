@@ -15,6 +15,7 @@
             <Row ConfigurationGroup="Game" ConfigurationId="CSC_RESOURCE_MAP_ASSISTANCE" DefaultValue="1" Description="LOC_CSC_RESOURCE_MAP_ASSISTANCE_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_RESOURCE_MAP_ASSISTANCE_NAME" ParameterId="CSC_RESOURCE_MAP_ASSISTANCE" SortIndex="305"/>
             <Row ConfigurationGroup="Game" ConfigurationId="CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS" DefaultValue="0" Description="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_NAME" ParameterId="CSC_Suppress_Supply_Chain_Notifications" SortIndex="306"/>
 
+
         <Row ConfigurationGroup="Game" ConfigurationId="CSC_FOOTER_INTERNAL" DefaultValue="1" Description="LOC_CSC_FOOTER_INTERNAL_DESCRIPTION" Domain="bool" GroupId="AdvancedOptions" Hash="0" Name="LOC_CSC_FOOTER_INTERNAL_NAME" ParameterId="CSCFooter" ReadOnly="1" SortIndex="309"/>
     </Parameters>
 

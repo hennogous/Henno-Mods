@@ -273,13 +273,13 @@ patterns:
       - "A conventional customer building whose district is unique in the city retains the normal persistent SQL-grant path; the exact-plot Lua path is only for Wonder-hosted variants."
       - "Wonder-only Great Person effects cannot leak to normal customers."
 
-  - id: GP.TRADE.DOMESTIC_SUPPLY
+  - id: GP.TRADE.SUPPLIED_ROUTE
     classification: specialized_optional
     source_anchor: "CSC_Q_BAKERS.sql plus Quarter trade-route Lua/UI consumers"
     parameters: [source_buildings, destination_yield, quarter_return_yields, origin_amenity, exclusion]
     invariant:
-      - "Route is domestic and destination is supplied by the source building."
-      - "Quarter return applies only if the origin lacks the Quarter."
+      - "Domestic and international routes pay the same fixed CSC amounts when the destination source building is supplied. Native international route multipliers do not multiply these city/building modifier payouts."
+      - "Quarter return applies only if the origin lacks a functioning Quarter; the cities may belong to different players."
       - "Amenity applies to the origin city."
       - "Gameplay, route preview, and UnitPanel display use the same property-bit contract."
     risk: high

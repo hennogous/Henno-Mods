@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Screen-space, camera-facing UI: buildings cannot cover these markers.
+     Native gold medallion chrome; no player map-pin objects are created. -->
+<Context Layer="WorldAnchor">
+  <Container ID="ServicePins"/>
+  <Instance Name="QuarterServicePin">
+    <WorldAnchor ID="Anchor">
+      <Container ID="PinRoot" Anchor="C,B" Size="80,80">
+        <Image Texture="CityBannerProdCircle" Size="60,60" Anchor="C,C"/>
+        <Button ID="ServiceButton" Size="60,60" Anchor="C,C" NoDefaultSound="1">
+          <!-- Keep the smaller Service glyph; centre it in the new circular
+               frame with the requested 2px leftward adjustment. -->
+          <Image ID="ServiceIcon" Size="38,38" Anchor="C,C" Offset="-2,0"/>
+        </Button>
+      </Container>
+    </WorldAnchor>
+  </Instance>
+</Context>

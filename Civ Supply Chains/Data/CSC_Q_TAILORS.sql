@@ -105,13 +105,25 @@ VALUES  (   'TAILORS',    'DISTRICT_HARBOR',           'POLICY_NAVAL_INFRASTRUCT
         (   'TAILORS',    'DISTRICT_THEATER',          'POLICY_AESTHETICS'   ),
         (   'TAILORS',    'DISTRICT_THEATER',          'POLICY_SPORTS_MEDIA'   );
 
+-- Stage 2/4 venues supplement the Stage 3 Market/Temple transaction mappings.
+INSERT OR IGNORE INTO CSC_QuarterCustomerBuildings
+        (   QuarterKey,   DistrictType,         BuildingType,              ProducerStage   )
+VALUES  (   'TAILORS',    'DISTRICT_HARBOR',    'BUILDING_LIGHTHOUSE',     2   ),
+        (   'TAILORS',    'DISTRICT_THEATER',   'BUILDING_AMPHITHEATER',   4   );
+
+INSERT OR IGNORE INTO CSC_QuarterFlowBuildings
+        (   QuarterKey,   Stage,   BuildingType   )
+VALUES  (   'TAILORS',    2,       'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
+        (   'TAILORS',    3,       'BUILDING_CSC_TAILORS_TAILOR'   ),
+        (   'TAILORS',    4,       'BUILDING_CSC_TAILORS_FASHION_HOUSE'   );
+
 -- Wonder customers hosted by the Fashion House's Stage 4 Services. Both map
 -- planning views highlight their completed Wonder plots as points of sale.
 INSERT OR IGNORE INTO CSC_QuarterWonderSales
-        (   QuarterKey,   BuildingType   )
-VALUES  (   'TAILORS',    'BUILDING_BOLSHOI_THEATRE'   ),
-        (   'TAILORS',    'BUILDING_BROADWAY'   ),
-        (   'TAILORS',    'BUILDING_SYDNEY_OPERA_HOUSE'   );
+        (   QuarterKey,   BuildingType,                    ProducerStage,   CustomerYieldType   )
+VALUES  (   'TAILORS',    'BUILDING_BOLSHOI_THEATRE',      4,               'YIELD_CULTURE'   ),
+        (   'TAILORS',    'BUILDING_BROADWAY',             4,               'YIELD_CULTURE'   ),
+        (   'TAILORS',    'BUILDING_SYDNEY_OPERA_HOUSE',   4,               'YIELD_CULTURE'   );
 
 -- Each Stage 3 customer family is a separate sale, even when its Market and
 -- Temple belong to the same city. Customer-owned property modifiers pay Culture.
@@ -757,8 +769,8 @@ FROM CSC_Stage4StackBits;
 -- routes, then the synchronized gameplay receiver writes the city/plot properties.
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,                                          ModifierType,                                       OwnerRequirementSetId,   SubjectRequirementSetId   )
-VALUES  (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',      'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',         NULL,                    'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE'   ),
-        (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_AMENITY',      'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',   NULL,                    'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE'   ),
+VALUES  (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_CULTURE',      'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',         NULL,                    'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE_BIT_1'   ),
+        (   'MOD_CSC_TAILORS_IMPORT_FASHION_HOUSE_AMENITY',      'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',   NULL,                    'REQSET_CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE_BIT_1'   ),
         (   'MOD_CSC_TAILORS_EXPORT_FASHION_HOUSE_PRODUCTION',   'MODIFIER_BUILDING_YIELD_CHANGE',                   NULL,                    'REQSET_CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE_BIT_1'   );
 
 INSERT OR IGNORE INTO Modifiers
@@ -797,8 +809,8 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'MODIFIER_CSC
         (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                     'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_MODIFIER',       NULL,                                         NULL   ),
         (   'MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE',      'MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER',         'REQSET_CSC_TAILORS_STAGE_3_EFFECT_PREREQ',   'REQSET_CSC_TAILORS_ADJ_HOLY_SITE_TEMPLE'   ),
         (   'MOD_CSC_TAILORS_SACRISTAN_GPP',                       'MODIFIER_PLAYER_DISTRICT_ADJUST_GREAT_PERSON_POINTS',   NULL,                                         NULL   ),
-        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',               'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',              NULL,                                         'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE'   ),
-        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY',               'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',        NULL,                                         'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE'   ),
+        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',               'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE',              NULL,                                         'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE_BIT_1'   ),
+        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY',               'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY',        NULL,                                         'REQSET_CSC_TAILORS_IMPORT_TAILOR_ROUTE_BIT_1'   ),
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'MODIFIER_BUILDING_YIELD_CHANGE',                        NULL,                                         'REQSET_CSC_TAILORS_EXPORT_TAILOR_ROUTE_BIT_1'   );
 
 -- Stage 3 bits encode a rate scaled by 10,000. Lua divides a target city-total
@@ -1756,3 +1768,75 @@ VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_PROD',   'MODIFIE
 INSERT INTO ModifierArguments
         (   ModifierId,                                                 Name,           Value   )
 VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_PROD',   'ModifierId',   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE'   );
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Per-route imports: each supplied destination contributes its full return.
+-- Lua counts eligible outgoing routes separately for Tailor and Fashion House imports,
+-- then writes binary flags on the origin's City Center plot. The existing +1
+-- modifiers above consume bit 1; these companions pay bits 2/4/8/16. Culture and
+-- Amenities use the same gates and amounts. Supply/origin eligibility stays in
+-- the scanner; these requirements only consume its synchronized route counts.
+-- The original positive-count requirements remain available as legacy metadata.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TEMP TABLE CSC_TailorsImportChannels (Channel TEXT PRIMARY KEY);
+INSERT INTO CSC_TailorsImportChannels
+        (   Channel   )
+VALUES  (   'TAILOR'   ),
+        (   'FASHION_HOUSE'   );
+
+CREATE TEMP TABLE CSC_TailorsImportEffects (Effect TEXT PRIMARY KEY, ModifierType TEXT);
+INSERT INTO CSC_TailorsImportEffects
+        (   Effect,      ModifierType   )
+VALUES  (   'CULTURE',   'MODIFIER_SINGLE_CITY_ADJUST_YIELD_CHANGE'   ),
+        (   'AMENITY',   'MODIFIER_CSC_SINGLE_CITY_ADJUST_IMPORT_AMENITY'   );
+
+INSERT OR IGNORE INTO DistrictModifiers
+        (   DistrictType,   ModifierId   )
+SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_IMPORT_' || Channel || '_' || Effect || '_BIT_' || Bit
+FROM CSC_TailorsImportChannels CROSS JOIN CSC_TailorsImportEffects CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO Modifiers
+        (   ModifierId,   ModifierType,   SubjectRequirementSetId   )
+SELECT 'MOD_CSC_TAILORS_IMPORT_' || Channel || '_' || Effect || '_BIT_' || Bit,
+       ModifierType, 'REQSET_CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit
+FROM CSC_TailorsImportChannels CROSS JOIN CSC_TailorsImportEffects CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,   Name,   Value   )
+SELECT 'MOD_CSC_TAILORS_IMPORT_' || Channel || '_' || Effect || '_BIT_' || Bit, 'Amount', Bit
+FROM CSC_TailorsImportChannels CROSS JOIN CSC_TailorsImportEffects CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO ModifierArguments
+        (   ModifierId,   Name,   Value   )
+SELECT 'MOD_CSC_TAILORS_IMPORT_' || Channel || '_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
+FROM CSC_TailorsImportChannels CROSS JOIN CSC_RouteStackBits;
+
+INSERT OR IGNORE INTO Requirements
+        (   RequirementId,   RequirementType   )
+SELECT 'REQ_CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit, 'REQUIREMENT_PLOT_PROPERTY_MATCHES'
+FROM CSC_TailorsImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementSets
+        (   RequirementSetId,   RequirementSetType   )
+SELECT 'REQSET_CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL'
+FROM CSC_TailorsImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementSetRequirements
+        (   RequirementSetId,   RequirementId   )
+SELECT 'REQSET_CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit,
+       'REQ_CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit
+FROM CSC_TailorsImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementArguments
+        (   RequirementId,   Name,   Value   )
+SELECT 'REQ_CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit,
+       'PropertyName', 'CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit
+FROM CSC_TailorsImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+INSERT OR IGNORE INTO RequirementArguments
+        (   RequirementId,   Name,   Value   )
+SELECT 'REQ_CSC_TAILORS_IMPORT_' || Channel || '_ROUTE_BIT_' || Bit, 'PropertyMinimum', 1
+FROM CSC_TailorsImportChannels CROSS JOIN (SELECT 1 AS Bit UNION ALL SELECT Bit FROM CSC_RouteStackBits);
+
+DROP TABLE CSC_TailorsImportEffects;
+DROP TABLE CSC_TailorsImportChannels;

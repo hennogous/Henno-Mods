@@ -59,10 +59,14 @@ CREATE TABLE IF NOT EXISTS CSC_QuarterMaterialAdjacencyConfig
 -- Explicit Wonder points of sale for Quarter planning UI. A Wonder occupies its
 -- own plot rather than its associated district's plot. This mapping grants no
 -- adjacency or Service; the Quarter's gameplay rules remain authoritative.
+-- CustomerYieldType describes what the Wonder receives, for outgoing arrow
+-- colour only. ProducerStage gates the supplying Quarter building as before.
 CREATE TABLE IF NOT EXISTS CSC_QuarterWonderSales
     (
     QuarterKey TEXT NOT NULL,
     BuildingType TEXT NOT NULL,
+    ProducerStage INTEGER,
+    CustomerYieldType TEXT,
     PRIMARY KEY (QuarterKey, BuildingType)
     );
 
@@ -87,6 +91,30 @@ CREATE TABLE IF NOT EXISTS CSC_Stage3CustomerTransactions
     CustomerYieldAmountProperty  TEXT DEFAULT NULL,
     EngineAmountPerPopulation    REAL NOT NULL CHECK (EngineAmountPerPopulation > 0),
     UNIQUE (SellerDistrictType, SellerBuildingType, CustomerDistrictType, CustomerBuildingType)
+    );
+
+-- Supplemental planning-UI venues for stages not represented by the transaction
+-- table above. Stage 3 mappings are read directly from that gameplay registry.
+-- This table changes no economic effects or Service activation requirements.
+CREATE TABLE IF NOT EXISTS CSC_QuarterCustomerBuildings
+    (
+    QuarterKey TEXT NOT NULL,
+    DistrictType TEXT NOT NULL,
+    BuildingType TEXT NOT NULL,
+    ProducerStage INTEGER,
+    PRIMARY KEY (QuarterKey, DistrictType, BuildingType)
+    );
+
+-- Planning-UI stage membership, used to gate animated links on the actual
+-- buyer/producer in a completed Quarter. Stage 3 sales still read their exact
+-- seller/customer pairs from CSC_Stage3CustomerTransactions. This metadata
+-- grants no yields and does not replace gameplay Service requirements.
+CREATE TABLE IF NOT EXISTS CSC_QuarterFlowBuildings
+    (
+    QuarterKey TEXT NOT NULL,
+    Stage INTEGER NOT NULL CHECK (Stage IN (2, 3, 4)),
+    BuildingType TEXT NOT NULL,
+    PRIMARY KEY (QuarterKey, Stage, BuildingType)
     );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

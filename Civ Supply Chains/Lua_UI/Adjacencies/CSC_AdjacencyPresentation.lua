@@ -173,6 +173,7 @@ local edgeSources = {
 };
 
 function A.EdgeIcon(districtType, center, neighbor, city, direction)
+    local fallback='';
     for _,rule in ipairs(A.ByDistrict[districtType] or {}) do
         local first,last = A.Bounds(rule);
         if first <= 1 and last >= 1 and A.Eligible(rule,city,city:GetOwner())
@@ -187,10 +188,13 @@ function A.EdgeIcon(districtType, center, neighbor, city, direction)
                 local object=A.Objects[rule.CustomAdjacentObject];
                 local info=A.SourceInfo[rule.AdjacencyType];
                 local icon=object and object.ArtdefOverlayEntry;
-                if not icon or icon == '' then icon=info and info.ArtdefOverlayEntry; end
-                if icon and icon ~= '' then return icon; end
+                if icon and icon~='' then return icon; end
+                -- A generic source (for example a river edge) must not hide a
+                -- matching material/Sales object just because its rule sorts first.
+                icon=info and info.ArtdefOverlayEntry;
+                if fallback=='' and icon and icon~='' then fallback=icon; end
             end
         end
     end
-    return '';
+    return fallback;
 end

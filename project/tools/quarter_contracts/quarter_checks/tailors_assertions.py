@@ -1212,6 +1212,22 @@ def _validate_trade_route_yield_presentation(
         return [f"{requirement_id}: trade-route presentation requirement is missing"]
     binding = requirement.get("trade_route_yield_presentation", {})
     entries = binding.get("entries", []) if isinstance(binding, dict) else []
+    # A count-bit base entry also owns its four companion presentation rows.
+    # Check their exact modifier arguments and property gates with the same
+    # assertions below, so a correct +1 row cannot conceal broken route stacking.
+    expanded_entries = []
+    for entry in entries:
+        expanded_entries.append(entry)
+        if entry["property_name"].endswith("_BIT_1"):
+            for bit in (2, 4, 8, 16):
+                expanded_entries.append({
+                    **entry,
+                    "entry_id": entry["entry_id"] + f"_BIT_{bit}",
+                    "modifier_id": entry["modifier_id"] + f"_BIT_{bit}",
+                    "property_name": entry["property_name"][:-1] + str(bit),
+                    "amount": bit,
+                })
+    entries = expanded_entries
     for entry in entries:
         expected = (
             entry["entry_id"],

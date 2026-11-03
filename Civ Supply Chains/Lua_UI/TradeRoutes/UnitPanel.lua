@@ -69,9 +69,7 @@ function CSC_UnitPanel_GetBakersTradeRouteCount(pOriginCity:table, pDestinationC
 	-- to the city's accumulated import/export counters used by gameplay SQL.
 	if pOriginCity == nil or pDestinationCity == nil then return 0; end
 
-	-- First implementation is domestic-only. If this changes in gameplay, update
-	-- this UI mirror and the BTS preview helper together.
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return 0; end
+	-- Domestic and international routes receive the same fixed CSC import bonus.
 
 	-- Cities with their own functioning Bakers' Quarter do not import Bakers goods.
 	if CSC_UnitPanel_CityHasFunctioningBakersQuarter(pOriginCity) then return 0; end
@@ -89,7 +87,6 @@ end
 
 function CSC_UnitPanel_GetTailorsTradeRouteCount(pOriginCity:table, pDestinationCity:table)
 	if pOriginCity == nil or pDestinationCity == nil then return 0; end
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return 0; end
 	if CSC_DISTRICT_TAILORS_QUARTER >= 0 then
 		local pDistricts:table = pOriginCity:GetDistricts();
 		if pDistricts ~= nil and pDistricts:HasDistrict(CSC_DISTRICT_TAILORS_QUARTER) then

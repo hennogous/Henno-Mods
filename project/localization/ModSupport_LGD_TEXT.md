@@ -27,7 +27,7 @@ WHERE Tag = 'LOC_DISTRICT_CSC_BAKERS_QUARTER_DESCRIPTION'
 - +1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Food] Food from each adjacent [ICON_CSC_SPEC] Specialty Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold for every 5 [ICON_Citizen] Citizens in the city from each adjacent Zoo, Ferris Wheel and Garden, in exchange for +1 [ICON_Culture] Culture.
-- +1 [ICON_Food] Food bonus to [ICON_TradeRoute] Trade Routes to the city, in exchange for +2 [ICON_Gold] Gold to the Quarter, if the origin city does not have a Bakers' Quarter.
+- +1 [ICON_Food] Food and +1 [ICON_Amenity] Amenity bonus to trade routes to the city, and +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Quarter in return, if the Café is locally supplied and the origin city does not have a Bakers' Quarter.
 
 At Urbanization, a supplied Café can establish services in adjacent Entertainment Complexes with Zoos, Water Parks with Ferris Wheels and Gardens with Conservatories.
 

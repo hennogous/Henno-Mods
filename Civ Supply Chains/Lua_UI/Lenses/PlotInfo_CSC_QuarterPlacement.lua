@@ -5,9 +5,10 @@ include("PlotInfo")
 include("CSC_QuarterLensSupport")
 
 local S = CSC_QuarterLensSupport
--- An independent native BorderOverlay supplies tile fills without changing any
--- lens layer or More Lenses state. MapSearch uses this same highlight API.
-local placementOverlayName = "CSC_QuarterPlacement"
+-- Private direct RGBA hexes use the same readiness palette as manual lenses,
+-- without changing any lens layer or More Lenses state. Older cooked art falls
+-- back to texture sprites, then the legacy independent BorderOverlay.
+local placementOverlayName = "CSC_QuarterPlacement_Tint"
 local hasHighlights = false
 local stockAdd = OnAddDistrictPlacementShadowHexes
 local stockClear = OnClearDistrictPlacementShadowHexes
@@ -17,11 +18,7 @@ local stockModeChanged = OnInterfaceModeChanged
 local function ClearQuarterHighlights()
     if hasHighlights then
         hasHighlights = false
-        local overlay = UILens.GetOverlay(placementOverlayName)
-        if overlay then
-            overlay:ClearPlotChannel()
-            overlay:SetVisible(false)
-        end
+        S.ClearOverlay("Placement")
         return true
     end
     return false
@@ -34,7 +31,7 @@ function OnAddDistrictPlacementShadowHexes(hexes)
         and city ~= nil then
         quarter = S.GetQuarter(UI.GetInterfaceModeParameter(CityOperationTypes.PARAM_DISTRICT_TYPE))
     end
-    local overlay = quarter and UILens.GetOverlay(placementOverlayName)
+    local overlay = quarter and (UILens.GetOverlay(placementOverlayName) or UILens.GetOverlay("CSC_QuarterPlacement_Fill") or UILens.GetOverlay("CSC_QuarterPlacement"))
     -- Missing cooked art leaves native placement fully usable.
     if overlay == nil then
         local hadHighlights = ClearQuarterHighlights()
@@ -45,22 +42,12 @@ function OnAddDistrictPlacementShadowHexes(hexes)
         return result
     end
 
-    -- Placement highlights opportunities outside this city's territory. Compare
-    -- both owner and city ID: IDs alone can coincide across different players.
-    -- Leave the shared classifier/manual lens and native placement tiles intact.
-    local owner, cityID = city:GetOwner(), city:GetID()
-    local colorPlots = {}
-    for color, plots in pairs(S.GetColorPlotTable(quarter.id, false)) do
-        local externalPlots = {}
-        for _, index in ipairs(plots) do
-            local plotCity = Cities.GetPlotPurchaseCity(Map.GetPlotByIndex(index))
-            if plotCity == nil or plotCity:GetOwner() ~= owner or plotCity:GetID() ~= cityID then
-                table.insert(externalPlots, index)
-            end
-        end
-        colorPlots[color] = externalPlots
-    end
-    -- Extend the existing mask so highlighted materials/customers remain bright.
+    -- Show relevant sites in the selected city as well as other territories.
+    -- Shared discovery/readiness rules still apply; only the native placement
+    -- system decides which plots can actually receive the district.
+    local entries = S.GetPlotEntries(quarter.id, false)
+    -- Keep all coloured planning sites outside the native background fade,
+    -- including the faint 20% fills on unimproved/empty sites.
     -- Preserve every native placement tile and other PlotInfo mask categories.
     local combined, seen = {}, {}
     -- This list controls brightness only. Extra planning plots never become
@@ -69,21 +56,9 @@ function OnAddDistrictPlacementShadowHexes(hexes)
         if not seen[index] then seen[index] = true; table.insert(combined, index) end
     end
     for _, index in ipairs(hexes) do add(index) end
-    for _, plots in pairs(colorPlots) do for _, index in ipairs(plots) do add(index) end end
+    for _, entry in ipairs(entries) do add(entry.index) end
     stockAdd(combined)
-    overlay:ClearPlotChannel()
-    overlay:ShowHighlights(true)
-    overlay:ShowBorders(false)
-    local channel = 0
-    for color, plots in pairs(colorPlots) do
-        if #plots > 0 then
-            overlay:SetHighlightColor(channel, color)
-            overlay:SetPlotChannel(plots, channel)
-            channel = channel + 1
-        end
-    end
-    hasHighlights = channel > 0
-    overlay:SetVisible(hasHighlights)
+    hasHighlights = S.DrawOverlay("Placement", entries)
     RealizeShadowMask()
 end
 

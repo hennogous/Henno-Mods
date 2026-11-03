@@ -7,12 +7,12 @@ local BITS = {1, 2, 4, 8, 16};
 -- than trusted as independent UI input. Counts retain the existing 5-bit encoding.
 local FIELDS = {
     {"HasBakersQuarter", "CSC_HAS_BAKERS_QUARTER"},
-    {"ImportConsumerRoute", "CSC_BAKERS_IMPORT_CONSUMER_ROUTE"},
-    {"ImportSpecialtyRoute", "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE"},
+    {"ImportConsumerRoute", "CSC_BAKERS_IMPORT_CONSUMER_ROUTE", true},
+    {"ImportSpecialtyRoute", "CSC_BAKERS_IMPORT_SPECIALTY_ROUTE", true},
     {"ExportBakeryRoute", "CSC_BAKERS_EXPORT_BAKERY_ROUTE", true},
     {"ExportCafeRoute", "CSC_BAKERS_EXPORT_CAFE_ROUTE", true},
-    {"ImportTailorRoute", "CSC_TAILORS_IMPORT_TAILOR_ROUTE"},
-    {"ImportFashionHouseRoute", "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE"},
+    {"ImportTailorRoute", "CSC_TAILORS_IMPORT_TAILOR_ROUTE", true},
+    {"ImportFashionHouseRoute", "CSC_TAILORS_IMPORT_FASHION_HOUSE_ROUTE", true},
     {"ExportTailorRoute", "CSC_TAILORS_EXPORT_TAILOR_ROUTE", true},
     {"ExportFashionHouseRoute", "CSC_TAILORS_EXPORT_FASHION_HOUSE_ROUTE", true},
 };

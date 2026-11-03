@@ -91,7 +91,7 @@ Bakery
 ## LOC_BUILDING_CSC_BAKERS_BAKERY_DESCRIPTION
 - +1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +0.1 [ICON_Production] Production and +0.1 [ICON_Gold] Gold per [ICON_Citizen] Citizen from each adjacent Market, in exchange for +0.1 [ICON_Food] Food per [ICON_Citizen] Citizen to the Market city.
-- +1 [ICON_Production] Production and +1 [ICON_Gold] Gold from each incoming [ICON_TradeRoute] Trade Route, in exchange for a +1 [ICON_Food] Food bonus to the [ICON_TradeRoute] Trade Route, if the origin city itself does not have a Bakers' Quarter. +1 [ICON_Amenities] Amenity to the origin city.
+- +1 [ICON_Food] Food and +1 [ICON_Amenity] Amenity bonus to trade routes to the city, and +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Quarter in return, if the Bakery is locally supplied and the origin city does not have a Bakers' Quarter.
 
 At Medieval Faires, a supplied Bakery establishes an {LOC_BUILDING_CSC_BAKERS_STAGE_3_SERVICE_NAME} service in an adjacent Commercial Hub with a Market.
 
@@ -102,7 +102,7 @@ Café
 - +1 [ICON_Food] Food from the local Water Mill or Wind Mill, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Food] Food from each adjacent [ICON_CSC_SPEC] Specialty Materials improvement, in exchange for +1 [ICON_Production] Production and +1 [ICON_Gold] Gold.
 - +1 [ICON_Production] Production and +1 [ICON_Gold] Gold for every 5 [ICON_Citizen] Citizens in the city from each adjacent Zoo and Ferris Wheel, in exchange for +1 [ICON_Culture] Culture.
-- +1 [ICON_Food] Food bonus to [ICON_TradeRoute] Trade Routes to the city, in exchange for +2 [ICON_Gold] Gold to the Quarter, if the origin city does not have a Bakers' Quarter.
+- +1 [ICON_Food] Food and +1 [ICON_Amenity] Amenity bonus to trade routes to the city, and +1 [ICON_Production] Production and +1 [ICON_Gold] Gold to the Quarter in return, if the Café is locally supplied and the origin city does not have a Bakers' Quarter.
 
 At Urbanization, a supplied Café can establish services in adjacent Entertainment Complexes with Zoos and Water Parks with Ferris Wheels.
 

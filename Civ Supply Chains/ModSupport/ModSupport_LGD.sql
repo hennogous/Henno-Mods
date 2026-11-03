@@ -13,7 +13,12 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_LEU_GARDEN_DESC}' || '{LOC_CSC
 --	TypeTags
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
---  Garden acts as a Bakers sales/customer district and receives Culture in return.
+-- Supplemental planning-UI venue; economic effects remain below.
+INSERT OR IGNORE INTO CSC_QuarterCustomerBuildings
+        (   QuarterKey,   DistrictType,            BuildingType,                  ProducerStage   )
+VALUES  (   'BAKERS',     'DISTRICT_LEU_GARDEN',   'BUILDING_LEU_CONSERVATORY',   4   );
+
+-- Garden acts as a Bakers sales/customer district and receives Culture in return.
 INSERT OR IGNORE INTO TypeTags
         (   Type,                    Tag   )
 VALUES  (   'DISTRICT_LEU_GARDEN',   'CLASS_CSC_BAKERS_SALES'   ),

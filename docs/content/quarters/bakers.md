@@ -39,8 +39,8 @@ The Water Mill has moved from the City Center to the Bakers' Quarter, and is onl
 
 River-powered milling becomes available in the Classical era. Wind power extends milling to non-river Bakers' Quarters in the Medieval era.
 
-* Water Mill unlocks at Engineering (Classical era)
-* Wind Mill unlocks at Machinery (Medieval era)
+* Water Mill unlocks at Engineering
+* Wind Mill unlocks at Machinery
 * Costs 80 {{production}} Production
 * Maintenance: -2 {{gold}} Gold
 
@@ -67,7 +67,7 @@ River-powered milling becomes available in the Classical era. Wind power extends
 * At Medieval Faires, a Bakery adjacent to an improved {{base}} Base Materials resource unlocks:
    * An Innkeeper is established in an adjacent Commercial Hub with a Market.
    * The Innkeeper provides the city with +2 {{housing}} Housing, +1 {{citizen}} Citizen slot and +1 {{merchant}} Great Merchant point per turn.
-* +1 {{food}} Food bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Bakers' Quarter. +1 {{amenity}} Amenity to the origin city.
+* +1 {{food}} Food and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Bakery is locally supplied and the origin city does not have a Bakers' Quarter.
 
 ## 4. Café
 
@@ -86,4 +86,4 @@ River-powered milling becomes available in the Classical era. Wind power extends
    * A Groundskeeper is established in an adjacent Entertainment Complex with a Zoo, a Ride Technician in a Water Park with a Ferris Wheel, and a Horticulturist in a Garden district with a Conservatory (Leugi).
    * The Groundskeeper, Ride Technician and Horticulturist each provide the city with +2 {{tourism}} Tourism and +1 {{citizen}} Citizen slot.
    * The Groundskeeper and Ride Technician provide +1 {{engineer}} Great Engineer point per turn, while the Horticulturist provides +1 {{artist}} Great Artist point per turn.
-* +1 {{food}} Food bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the origin city does not have a Bakers' Quarter. +1 {{amenity}} Amenity to the origin city.
+* +1 {{food}} Food and +1 {{amenity}} Amenity bonus to trade routes to the city, and +1 {{production}} Production and +1 {{gold}} Gold to the Quarter in return, if the Café is locally supplied and the origin city does not have a Bakers' Quarter.

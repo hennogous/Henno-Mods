@@ -104,4 +104,9 @@ Locale={Lookup=function(key)return key;end};
 -- Native lifecycle/operation APIs used by the multiplayer-hardened bridge.
 Game={GetLocalPlayer=function()return 0;end, GetCurrentGameTurn=function()return 1;end};
 GameConfiguration={IsNetworkMultiplayer=function()return false;end};
-ContextPtr={SetUpdate=function(_,callback)routeUpdate=callback;end};
+-- Native empty UI contexts start hidden and suppress update callbacks.
+ContextPtr={hidden=true,
+    SetHide=function(self,hidden)self.hidden=hidden;end,
+    SetUpdate=function(self,callback)
+        routeUpdate=function(delta)if not self.hidden then callback(delta);end;end;
+    end};

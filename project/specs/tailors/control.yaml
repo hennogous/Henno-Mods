@@ -8,8 +8,8 @@ locked_sources:
     sha256: df07d4e1f8802f2cbbcee47d66663a9916b66eb9bd8e745b2adf598b69a329ef
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS.sql
     role: gameplay_reference_core
-    # User-authorized mill unlock amendment, 21 October 2026: Water/Engineering, Wind/Machinery.
-    sha256: 45093f3ef07bb5449719b3ac033c8516350afa19ff40555b3f2c3b9dcfadc70e
+    # Reviewed 3 November: existing lens registries and supplied-route bit receipts; reference-only synchronization.
+    sha256: ac9c01aadfad575e2269b8cbde3360a0488c5f4f432e4d37e2caab6196fb76e7
   - path: Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql
     role: gameplay_reference_gold
     sha256: ae289c5dd0e9d0382e4d8f4dcf19dee837b4589ac822ffaf688bda31acbc1f1c
@@ -21,8 +21,8 @@ locked_sources:
     sha256: 91aa79aaadd6f063cd5a6fbdf4ff65c419c6b8af00e9e9ca1f5773e3ca5c6070
   - path: project/localization/CSC_BAKERS_TEXT.md
     role: localization_reference
-    # Reviewed wording-only omission of the repeated Mill destination, 23 October.
-    sha256: 2bec90585d8555df20aa867036e89abbf7fa1b72aaca3528ba801e605dad18bb
+    # Reviewed 3 November: supplied-route wording; remove obsolete duplicate Cafe trade bullet.
+    sha256: 0a32e15e43095f3db8c6af3874a486141c7387c63a4b8661ac2f7320ba6ad199
 
 contract_approvals:
   design_transcription:

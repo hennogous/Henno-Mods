@@ -6,18 +6,6 @@
       {
         "tag": "Criteria",
         "attributes": {
-          "id": "MoreLensesMod"
-        },
-        "children": [
-          {
-            "tag": "ModInUse",
-            "text": "35f33319-ad93-4d6b-bf27-406fac382d06"
-          }
-        ]
-      },
-      {
-        "tag": "Criteria",
-        "attributes": {
           "id": "Monopolies_Mode"
         },
         "children": [
@@ -377,16 +365,6 @@
         ]
       },
       {
-        "type": "UpdateDatabase",
-        "id": "CSC_AI",
-        "properties": {
-          "LoadOrder": "3500"
-        },
-        "files": [
-          "Data/CSC_AI.sql"
-        ]
-      },
-      {
         "type": "ImportFiles",
         "id": "CSC_QuarterOverlaySupport",
         "properties": {
@@ -394,7 +372,10 @@
         },
         "files": [
           "Lua_UI/Lenses/CSC_QuarterLensSupport.lua",
-          "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua"
+          "Lua_UI/Lenses/PlotInfo_CSC_QuarterPlacement.lua",
+          "Lua_UI/Lenses/CSC_QuarterFlowTrial.lua",
+          "Lua_UI/Notifications_Suk_MCUIS/CSC_ServicePresentation.lua",
+          "Lua_UI/Lenses/CSC_QuarterServicePins.lua"
         ]
       },
       {
@@ -412,11 +393,7 @@
         "properties": {
           "LoadOrder": "501"
         },
-        "criteria": [
-          "MoreLensesMod"
-        ],
         "files": [
-          "Lua_UI/Lenses/ModLens_CSC_Quarters.lua",
           "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.lua"
         ]
       },
@@ -427,11 +404,30 @@
           "Context": "InGame",
           "LoadOrder": "501"
         },
-        "criteria": [
-          "MoreLensesMod"
-        ],
         "files": [
           "Lua_UI/Lenses/CSC_SupplyChainsLensPanel.xml"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_QuarterFlowTrial",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "502"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_QuarterFlowTrial.xml"
+        ]
+      },
+      {
+        "type": "AddUserInterfaces",
+        "id": "CSC_QuarterServicePins",
+        "properties": {
+          "Context": "InGame",
+          "LoadOrder": "503"
+        },
+        "files": [
+          "Lua_UI/Lenses/CSC_QuarterServicePins.xml"
         ]
       },
       {
@@ -450,9 +446,6 @@
         "properties": {
           "LoadOrder": "501"
         },
-        "criteria": [
-          "MoreLensesMod"
-        ],
         "files": [
           "Lua_UI/Lenses/CSC_Lens_Text.sql"
         ]

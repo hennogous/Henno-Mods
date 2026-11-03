@@ -24,12 +24,15 @@ function GetAdjacentYieldBonusString(districtIndex,city,plot)
     return icons,tooltip,required;
 end
 
--- Keep the optional center argument for direct callers as well as this wrapper.
+-- The placement plot is needed for directional river tests. An eligible CSC
+-- source's authored icon identifies the supply-chain role more precisely than
+-- the native district/resource icon; native art is the fallback for other edges.
 function GetAdjacentIconArtdefName(districtType,neighbor,city,direction,center)
-    local icon=stockIcon(districtType,neighbor,city,direction);
-    if icon and icon~='' then return icon; end
-    if not center then return ''; end
-    return A.EdgeIcon(districtType,center,neighbor,city,direction);
+    if center then
+        local icon=A.EdgeIcon(districtType,center,neighbor,city,direction);
+        if icon~='' then return icon; end
+    end
+    return stockIcon(districtType,neighbor,city,direction);
 end
 
 local opposite = {
@@ -44,18 +47,33 @@ local opposite = {
 };
 
 function AddAdjacentPlotBonuses(center,districtType,city,current)
-    local bonuses=stockBonuses(center,districtType,city,current);
-    if not A.ByDistrict[districtType] then return bonuses; end
+    if not A.ByDistrict[districtType] then return stockBonuses(center,districtType,city,current); end
+    -- Do not call the native collector first: it calls the icon picker without
+    -- the center and can reserve the same face with a generic icon. Select once,
+    -- with the placement context, just as the fork's five-argument path did.
+    local bonuses={};
     for direction,reverse in pairs(opposite) do
         local neighbor=Map.GetAdjacentPlot(center:GetX(),center:GetY(),direction);
         if neighbor then
-            local icon=A.EdgeIcon(districtType,center,neighbor,city,direction);
-            if icon~='' then
-                -- Native icons take priority; each face has only one art slot.
+            local icon=GetAdjacentIconArtdefName(districtType,neighbor,city,direction,center);
+            if icon and icon~='' then
                 local view=bonuses[neighbor:GetIndex()] or GetViewPlotInfo(neighbor,current);
-                local occupied=false;
-                for _,edge in ipairs(view.adjacent) do if edge.direction==reverse then occupied=true; break; end end
-                if not occupied then
+                local existing=nil;
+                for index=#view.adjacent,1,-1 do
+                    local edge=view.adjacent[index];
+                    if edge.direction==reverse then
+                        if existing then
+                            -- Preserve an incoming marker while collapsing old
+                            -- duplicate records for this same geometric face.
+                            existing.inBonus=existing.inBonus or edge.inBonus;
+                            table.remove(view.adjacent,index);
+                        else existing=edge; end
+                    end
+                end
+                if existing then
+                    existing.iconArtdef=icon;
+                    existing.outBonus=true;
+                else
                     view.adjacent[#view.adjacent+1]={direction=reverse,iconArtdef=icon,inBonus=false,outBonus=true};
                 end
                 bonuses[neighbor:GetIndex()]=view;

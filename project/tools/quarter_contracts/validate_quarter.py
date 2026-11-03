@@ -281,7 +281,7 @@ def flatten_requirements(implementation: dict[str, Any]) -> list[dict[str, Any]]
     ]
 
 
-DOMESTIC_TRADE_PATTERN = "GP.TRADE.DOMESTIC_SUPPLY"
+SUPPLIED_ROUTE_PATTERN = "GP.TRADE.SUPPLIED_ROUTE"
 TRADE_YIELD_PRESENTATION_PATTERN = "GP.TRADE.CITY_YIELD_PRESENTATION"
 WONDER_SERVICE_PATTERN = "GP.SERVICE.WONDER_HOSTED_EXACT_PLACEMENT"
 
@@ -316,17 +316,17 @@ def validate_trade_route_yield_presentation_requirement(
     requirement_id = str(requirement.get("id", "<unknown>"))
     patterns = set(requirement.get("gameplay_patterns", []))
     binding = requirement.get("trade_route_yield_presentation")
-    is_domestic_trade = DOMESTIC_TRADE_PATTERN in patterns
+    is_supplied_route = SUPPLIED_ROUTE_PATTERN in patterns
     has_pattern = TRADE_YIELD_PRESENTATION_PATTERN in patterns
 
-    if is_domestic_trade and origin_yields and not has_pattern:
+    if is_supplied_route and origin_yields and not has_pattern:
         result.error(
-            f"{requirement_id}: domestic trade origin_yields require "
+            f"{requirement_id}: supplied trade-route origin_yields require "
             f"{TRADE_YIELD_PRESENTATION_PATTERN}"
         )
-    if is_domestic_trade and origin_yields and not isinstance(binding, dict):
+    if is_supplied_route and origin_yields and not isinstance(binding, dict):
         result.error(
-            f"{requirement_id}: domestic trade origin_yields require "
+            f"{requirement_id}: supplied trade-route origin_yields require "
             "trade_route_yield_presentation"
         )
     if binding is not None and not has_pattern:

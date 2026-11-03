@@ -65,8 +65,8 @@ is unregistered and absent from the new package, including `patch_mab.py`.
 | District TypeTags and vocabulary | Cached tags plus district/resource vocabulary validation | Synthetic tags and real frozen database tags |
 | Unique clones retain options, including DistrictModifiers/NewMethod | Copy complete authoring row before modifier generation | Dormant SQL clone fixture |
 | Negative provider amounts and ten-bit encoding | Signed modifier amounts; magnitude bits; cap 1023 | Negative SQL fixture, fractional values, overflow, decreasing to zero |
-| Signed details and negative loyalty icon | Shared presentation helpers | Negative loyalty text fixture and live district tooltip dispatcher |
-| Overlay priority and ring-1 applicability | Object icon before source fallback; native icons retain priority | Synthetic priority/ownership/visibility/band tests; native face deduplication |
+| Signed previews and negative loyalty icon | Shared presentation helpers | Signed formatting fixtures; district tooltip appendix intentionally removed |
+| Overlay priority and ring-1 applicability | Eligible object icon before source fallback and native art | Full collector regression, ownership/visibility/bands and cached-face deduplication |
 | River overlay on all six directions | Shared geometric edge matcher | Six-direction fixture; native overlay call |
 | Resource visibility changes | Query current tech/civic knowledge on each evaluation | Discovery transition without cache rebuilding |
 | Exact named Wonder | Completed, player-owned BuildingType presence in band, capped at one | Wrong/incomplete/foreign/out-of-band dormant fixture; no external helper |
@@ -149,6 +149,54 @@ The Bakers gameplay-reference hash was refreshed only for the authorized SQL
 change. Full Tailors validation still has the pre-existing Bakers localization
 source-lock mismatch and unreconciled canonical Bakers material declaration;
 these are not policy-return failures.
+
+## Edge-icon parity audit — 28 October 2026
+
+Henno reported missing Base Materials icons and generic district icons in place
+of Sales, while the shown yields remained correct. The previous wrapper collected
+native icons first, without the placement plot, then skipped faces already occupied
+when adding CSC art. It could therefore mask the authored material/Sales role.
+
+The CSC collector now selects once per direction with the placement plot, following
+the fork's five-argument call path. An eligible object's authored art takes priority
+over source fallbacks and native art; an existing face is updated rather than
+blocking the custom icon. Incoming flags and unrelated faces are preserved,
+duplicate records are collapsed, and repeated wrapped-map neighbors retain their
+distinct faces. Native-only districts still use the native collector.
+Giving CSC role icons priority over native art is an intentional correction to
+the older native-first behavior, including that legacy behavior in the fork.
+
+The six-direction river mapping already matches `test/all-features` at `d852b84`
+and is retained. Counts still use the same native `GetRiverCrossingCount()` as
+MAB; fractional signed totals retain truncation toward zero. Ring zero, inclusive
+bands, MustOwn, current tech/civic resource visibility and owner-building gates
+remain shared with the gameplay evaluator. The district-tooltip appendix remains
+removed as requested; this audit does not reinstate it.
+
+`project/tools/adjacencies/test_edge_icons.py --reference <fork> --dependencies
+<test-deps>` runs entirely offline using the real CSC wrapper and native support:
+
+- 48 role/native-conflict cases cover Base, Specialty, Sales and reciprocal Goods
+  on all six faces. The previous wrapper fails the Base/native-resource-class case.
+- 48 combinations cover ownership, visibility and ring bounds; civic discovery,
+  negative rules, cached empty/generic faces, repeat calls and wrapped faces are
+  checked separately. Explicit object art also outranks an earlier river fallback.
+- All 64 river-edge layouts produce **384 comparisons to the fork's actual
+  matcher**, plus native aggregate counts, positive/negative half-yield totals
+  and remote-city mill activation.
+- Both Quarters' Base/Spec/Sales mappings and all four role art chains are checked
+  through Overlay, XLP, AST, material and texture sources. No art edits were needed.
+
+All pass. The broader offline MAB suite also passes **61 frozen rules, 610 bit
+modifiers, 55 sources and 1,465 comparisons**, retaining negative providers,
+clone flags, ownership and ring coverage. The policy-return suite passes **20
+base/unique rules, 200 policy modifiers and 220 gameplay/UI cases**; placement
+sentence and removed-tooltip-hook checks pass too.
+
+This is source-level evidence. The running human-QA game, installed package,
+preferences and settings were not accessed or changed; no live controller or
+new game was started. Normal ModBuddy rebuild and in-game visual confirmation
+are pending. The screenshot's native classifier and cooked art were not inspected.
 
 ## Tests and reproducibility
 

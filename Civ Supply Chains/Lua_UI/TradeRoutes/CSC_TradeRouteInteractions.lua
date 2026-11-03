@@ -152,11 +152,8 @@ function CSC_GetBakersTradeRouteState(pOriginCity, pDestinationCity)
 		return false, false;
 	end
 
-	-- First implementation follows Leugi's domestic-route pattern. If we later want
-	-- international imports, this is the narrow point where that rule changes.
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then
-		return false, false;
-	end
+	-- Ownership does not change CSC's exchange: domestic and international
+	-- routes pay the same fixed amount to their respective origin/destination.
 
 	if CSC_CityHasFunctioningBakersQuarter(pOriginCity) then
 		return false, false;
@@ -170,7 +167,6 @@ end
 
 function CSC_GetTailorsTradeRouteState(pOriginCity, pDestinationCity)
 	if pOriginCity == nil or pDestinationCity == nil then return false, false; end
-	if pOriginCity:GetOwner() ~= pDestinationCity:GetOwner() then return false, false; end
 	if CSC_CityHasFunctioningTailorsQuarter(pOriginCity) then return false, false; end
 	return CSC_CityHasBuilding(pDestinationCity, BUILDING_TAILOR)
 		and CSC_IsPositiveProperty(pDestinationCity, PROP_TAILOR_SUPPLIED),
@@ -355,6 +351,19 @@ end
 local function CSC_CityStateMatchesPlotProperties(cityState)
 	local pPlot = Map.GetPlot(cityState.X, cityState.Y);
 	if pPlot == nil then return false; end
+	-- Import counts also pay per route. Check their derived bits so an existing
+	-- save with the right count but no import bits is reconciled on first refresh.
+	for _, entry in ipairs({
+		{PROP_IMPORT_CONSUMER_ROUTE, cityState.ImportConsumerRoute},
+		{PROP_IMPORT_SPECIALTY_ROUTE, cityState.ImportSpecialtyRoute},
+		{PROP_IMPORT_TAILOR_ROUTE, cityState.ImportTailorRoute},
+		{PROP_IMPORT_FASHION_HOUSE_ROUTE, cityState.ImportFashionHouseRoute},
+	}) do
+		for _, bit in ipairs(ROUTE_STACK_BITS) do
+			if (pPlot:GetProperty(CSC_GetRouteBitProperty(entry[1], bit)) or 0)
+				~= CSC_GetRouteBitValue(entry[2], bit) then return false; end
+		end
+	end
 
 	return (pPlot:GetProperty(PROP_HAS_BAKERS_QUARTER) or 0) == cityState.HasBakersQuarter
 		and (pPlot:GetProperty(PROP_IMPORT_CONSUMER_ROUTE) or 0) == cityState.ImportConsumerRoute
@@ -492,6 +501,9 @@ end
 if Events.LoadGameViewStateDone ~= nil then
 	Events.LoadGameViewStateDone.Add(CSC_OnBakersRouteRefreshEvent);
 end
+if Events.LoadScreenClose ~= nil then
+	Events.LoadScreenClose.Add(CSC_OnBakersRouteRefreshEvent);
+end
 if Events.MultiplayerHostMigrated ~= nil then
 	Events.MultiplayerHostMigrated.Add(CSC_OnBakersRouteRefreshEvent);
 end
@@ -503,6 +515,10 @@ end
 -- a gameplay function locally. Delayed/rejected snapshots are retried from fresh
 -- state until properties agree, including when a route changed while in flight.
 local retryElapsed = 0;
+-- Empty AddUserInterfaces contexts start hidden. Hidden contexts do not receive
+-- SetUpdate callbacks, so queued route changes would never reach gameplay.
+-- There are no visual controls here; showing the context only enables its update.
+ContextPtr:SetHide(false);
 ContextPtr:SetUpdate(function(delta)
 	if m_RefreshRequested then
 		m_RefreshRequested = false;

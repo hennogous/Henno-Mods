@@ -92,7 +92,7 @@ outputs for City Breakdown plus the base and Simple UI Adjustments plot tooltips
 
 ## Trade-route city-yield presentation
 
-When a domestic-trade design node declares `origin_yields`, the owning
+When a supplied trade-route design node declares `origin_yields`, the owning
 implementation requirement must use `GP.TRADE.CITY_YIELD_PRESENTATION` and
 declare `trade_route_yield_presentation`. Each reclassified modifier gets one
 explicit `CSC_TradeRouteYieldPresentation` entry; the UI must consume that

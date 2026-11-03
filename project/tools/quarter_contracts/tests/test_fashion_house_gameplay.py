@@ -233,6 +233,7 @@ class WonderPresentationTests(FashionWorld):
         """)
         self.load('WonderServices/CSC_WonderServicePlacement.lua');self.lua.globals().CSC_RefreshWonderServices()
         self.lua.execute((FIXTURES/'wonder_service_presentation.lua').read_text())
+        self.load('Notifications_Suk_MCUIS/CSC_ServicePresentation.lua')
         for filename in ('Suk_MCUIS_CSC.lua','CSC_UI_Notifications.lua'):
             source=(LUA/'Notifications_Suk_MCUIS'/filename).read_text(encoding='utf-8-sig')
             # Civ's Lua accepts typed local declarations; stock Lua does not.
