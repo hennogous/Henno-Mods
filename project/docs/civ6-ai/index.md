@@ -27,6 +27,7 @@ provides stable references for individual conclusions.
 5. [What hypothetical effect evaluation can understand](topics/native/modifier-forecasts.md)
 6. [Modding controls and possible native extensions](topics/native/modding-controls.md)
 7. [How we know: evidence and instrumentation](topics/native/evidence-and-instrumentation.md)
+8. [Native placement-score extension](topics/native/native-placement-extension.md): the identified integration point, persistence and proposed bridge
 
 ## Understand the CSC experiments
 

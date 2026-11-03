@@ -132,6 +132,16 @@
       "site_path": "sources/memory/session_ai_material_recommendations_20261031.md"
     },
     {
+      "path": "memory/session_ai_native_district_extension_20261103.md",
+      "title": "Native district-score extension — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 3162,
+      "sha256": "79902474893de049c4196b02987968984d847ff022df0853bea04aaa8e1fff6a",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_native_district_extension_20261103.md"
+    },
+    {
       "path": "memory/session_ai_native_material_feasibility_20261030.md",
       "title": "Material-job offline pass + source110 capture —30 October2026",
       "kind": "agent-note",
@@ -360,6 +370,16 @@
       "sha256": "409b5a18cdb94337bc29a15fb65a75201329c4278db5fd8e6b5f55d6c5a477e8",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    },
+    {
+      "path": "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "title": "Native district-score extension: offline feasibility and integration contract",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 16349,
+      "sha256": "eeb7e16fe9a3dfce7b7a51c3b70e20351cc87fcfac92dbdec10342da6d744368",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-district-score-extension-20261103.md"
     },
     {
       "path": "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md",

@@ -34,7 +34,12 @@ The older “inert virtual human output” description is **superseded**. [AI-N0
 
 ## A fully custom per-site formula needs a bridge
 
-A native extension could in principle introduce F(player,city,district,plot,state) at a verified value/cache boundary. Selection, cached present value and later request priority must agree; merely replacing a reported winner can leave downstream values inconsistent. No such score extension was implemented or validated in the district study. [AI-N036]
+A native extension could in principle introduce F(player,city,district,plot,state) at a verified value/cache boundary. Selection, cached present value and downstream request valuation need a coherent contract; request priority and extra present value are separate fields. Merely replacing a reported winner can leave downstream values inconsistent. No such score extension was implemented or validated in the district study. [AI-N036]
+
+The subsequent [extension feasibility investigation](native-placement-extension.md)
+identifies a concrete pre-cache candidate boundary and additional consumers.
+It also finds zero early-outs, serialized scores and retained request values that
+an implementation must handle. A hook or gameplay prototype remains untested.
 
 A separate integration problem is submitting a planner-selected economic job. Native build/repair consumers exist, but the inspected operation/tree routes did not establish a general typed player/city/plot/improvement payload writer. Target/rally coordinates and externally reported callbacks are insufficient proof of that bridge. [AI-N037] See the [material-job feasibility assessment](../../../research/mods/csc-ai-native-material-job-feasibility-20261030.md).
 

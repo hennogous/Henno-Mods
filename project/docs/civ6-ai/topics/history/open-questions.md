@@ -8,6 +8,13 @@ We now know enough to ask narrower questions. The priorities below are a researc
 
 **Open:** whether a native extension could add a function of player, city, district, plot and current state at the right score/cache boundary, while keeping downstream present value and request priority consistent. This is a design possibility, not an implemented or tested feature. **[AI-H012]**
 
+**Offline progress,3 November:** the [extension study](../native/native-placement-extension.md)
+identifies the NetValue output/canonical-store boundary, observes six direct
+present-value call sites, and traces saved-cache and retained-request risks.
+It also confirms existing CE processor names do not supply ordinary scoring.
+The remaining question is implementation and measured behaviour, including
+successful-candidate discrimination and lifecycle; no live hook was tested.
+
 **Useful next evidence:** map the relevant cache writes and downstream readers offline; specify the intended score units, available context, lifetime and invalidation behaviour. A first prototype would need a zero-change control and a bounded nonzero input demonstrating consistent candidate, winner and request values. Altering only the final winner would not establish a coherent valuation mechanism.
 
 Source: [custom-incentive boundary](../../../research/mods/civ6-district-choice-placement-and-incentives-20261103.md#fully-arbitrary-per-site-incentives-remain-a-separate-integration-problem).

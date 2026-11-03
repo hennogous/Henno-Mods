@@ -688,13 +688,24 @@
     "scope": "Proposed extension boundary from November 3 reconstruction.",
     "limits": "No custom native score patch or validated arbitrary per-site integration was implemented.",
     "sources": [
-      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md"
     ],
     "topic": "topics/native/modding-controls.md",
     "depends_on": [
       "AI-N006",
       "AI-N008",
       "AI-N025"
+    ],
+    "related": [
+      "AI-N053",
+      "AI-N054",
+      "AI-N055",
+      "AI-N056",
+      "AI-N057",
+      "AI-N058",
+      "AI-N059",
+      "AI-N060"
     ]
   },
   {
@@ -1009,6 +1020,169 @@
     "depends_on": [
       "AI-N001",
       "AI-N005"
+    ]
+  },
+  {
+    "id": "AI-N053",
+    "title": "Concrete district score output and cache boundary",
+    "statement": "The ordinary per-plot caller invokes district NetValue52a440 at3e30b9; the returned output pointer is dereferenced and the signed score is stored at3e30c5 before district preference processing.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore324c51e9...; complete caller/wrapper code and PE-matched instructions.",
+    "limits": "This reconstructs the pointer/output ABI and candidate boundary; no detour, trampoline or live adapter was tested.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [
+      "AI-N006",
+      "AI-N009"
+    ]
+  },
+  {
+    "id": "AI-N054",
+    "title": "Non-sentinel score is not sufficient eligibility",
+    "statement": "District NetValue and DistrictValue contain zero early-outs in addition to invalid-sentinel returns. A generic bonus on every non-sentinel result can promote an unevaluated/vetoed case; legitimate negative scores remain distinct from invalidity.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Inspected feature/resource/horizon branches in52a440 and52d500 on the pinned binary.",
+    "limits": "Zero can also be a legitimate result. Skipping all zero outputs is only a conservative limited prototype contract, not complete candidate support.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [
+      "AI-N053"
+    ]
+  },
+  {
+    "id": "AI-N055",
+    "title": "Extension stage determines incentive semantics",
+    "statement": "An addition before the canonical NetValue store participates in later district preference processing and the positive-score future-building gate; post-preference or post-aggregation additions have different semantics.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "inference"
+    ],
+    "scope": "Ordinary per-plot and CalculateDistrictValues paths, not all native scoring contexts.",
+    "limits": "Q8 AI utility is not a gameplay yield or request priority; no policy amount or efficacy was calibrated. Qualifying positive first compact-row entries can be reset before adding building value, replacing an earlier delta.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [
+      "AI-N009",
+      "AI-N053"
+    ]
+  },
+  {
+    "id": "AI-N056",
+    "title": "Additional consumers share district present value",
+    "statement": "Six observed direct PresentValueOf call sites occur in threat/queue review, request updates, trigger decoding and CityDistrictProductionEffect analysis. The latter passes its best plot inR9, reads that cached score and adds its arithmetic-shifted integer to the accumulator.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Complete incoming-reference view and fresh480540 C/ASM for the pinned binary.",
+    "limits": "Indirect callers and the analyser SQL effect registration remain untraced. Different readers can floor or convert the raw value; equal raw numbers are not a universal invariant.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [
+      "AI-N006",
+      "AI-N011"
+    ]
+  },
+  {
+    "id": "AI-N057",
+    "title": "District cached values survive serialization",
+    "statement": "CityBuild.Write serializes district cached values and Read restores them after plot-analyser initialization. A modified cache can therefore be carried by a save independently of an external policy table.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "inference"
+    ],
+    "scope": "Fresh3eaac0/3e8b30 code and complete PE-matched disassembly on the pinned binary.",
+    "limits": "No modified save was created or loaded; refresh, extension-disable and saved-policy behaviour require an implementation contract.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [
+      "AI-N053"
+    ]
+  },
+  {
+    "id": "AI-N058",
+    "title": "Removing a score incentive does not imply request withdrawal",
+    "statement": "The traced request update can retain a higher earlier extra present value, and cached district value participates in current-production interruption review. A reduced bonus need not immediately reverse an existing commitment.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "inference"
+    ],
+    "scope": "Existing native request/queue reconstruction applied to the proposed cache extension.",
+    "limits": "Request priority remains separate from extra present value; no live incentive withdrawal or cancellation mechanism was tested.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [
+      "AI-N004",
+      "AI-N056"
+    ]
+  },
+  {
+    "id": "AI-N059",
+    "title": "Existing CE callback APIs do not expose ordinary district score override",
+    "statement": "Pinned CE source requests zero Lua results in RegisterCallEvent, registers processor handlers separately from native callers, and uses DistrictTargetChooser for Congress. Ordinary city placement needs new compiled score integration.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "CE sourcecommit e59b5aa910c8a0fcab9b31973ffa477443de0e09,15 pinned files; installed CE1.3 has a separate identity.",
+    "limits": "Source-to-installed-binary correspondence, current compatibility, thread affinity and a general addon loader were not established.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-N060",
+    "title": "Immutable numeric bridge is a proposed extension design",
+    "statement": "Prepare a bounded policy from copied facts, publish one immutable session/analysis-qualified generation, then use a fast native candidate-scoped lookup. Author logic may run beforehand at a verified Lua/native ownership boundary.",
+    "status": "provisional",
+    "evidence_types": [
+      "source",
+      "inference"
+    ],
+    "scope": "Proposed F(player,city,district,plot,copied-state) architecture for the identified candidate boundary.",
+    "limits": "No kernel, native test host, Lua binding, detour, concurrency/lifetime or gameplay prototype was implemented or executed. Shipping carrier/save/platform compatibility remain separate work.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [
+      "AI-N053",
+      "AI-N054",
+      "AI-N055",
+      "AI-N057",
+      "AI-N058",
+      "AI-N059"
     ]
   }
 ]
