@@ -83,3 +83,32 @@ native utility. Read the report before interpreting a number as a recommendation
 The evaluator supports the next **review** of good-site logic. Native multi-entry
 policy publication, refresh, persistence, actual AI choice and economic benefit
 are separate roadmap phases.
+
+## Simple full-adjacency native policy
+
+The separately authorized first native placement policy is in
+`adjacency_policy/`. It evaluates Bakers and Tailors with the loaded shared
+adjacency rules, including planned first-Mill terrain/river bonuses. It promotes
+one highest-scoring >=4 Production+Gold pair per city, without banning other
+sites. This is a strong priority experiment, not the investment utility above.
+
+Read [the policy and Online100 evidence](../../docs/research/mods/csc-ai-adjacency-policy-20261103.md)
+before running it. Its driver uses `full_game_controller` and `NativeSession`,
+with exact native identity/fingerprints, original-AI scope and normal cleanup.
+A machine-interruption recovery uses an explicitly pinned supported native save
+and retains the original run's player identities and preferences. Turn100 is a
+hard upper bound; importing a module never launches or attaches to a game.
+
+Offline checks:
+
+```text
+python -B -m unittest discover -s project/tools/ai_site_planner/adjacency_policy -p test_policy.py -v
+python -B project/tools/ai_site_planner/adjacency_policy/test_scanner.py --dependencies LUA_TEST_DEPS --output NEW_RECEIPT.json
+python -B project/tools/ai_site_planner/adjacency_policy/run_synthetic.py --dependencies FRIDA_17_24_3_DEPS --output NEW_RECEIPT.json
+```
+
+`analyze_adjacency_trial.py --base EVIDENCE_BUNDLE --output REVIEW.json` is
+read-only. It joins accepted scans, preceding-site scores, promotion history,
+physical observations, native windows and timestamped operation journals.
+Original interrupted intervals remain partial; no unseen events are fabricated.
+The normalized fixture/evaluator remains runnable independently of these tools.

@@ -69,6 +69,21 @@ The copied worlds include earlier treatments. Comparisons stay within their
 world/player/city identities. The Sydney native bridge result is not turned
 into a site-quality case by joining another world's material catalogue.
 
+## Simple full-adjacency policy
+
+Henno separately requested a simpler first native policy: promote Bakers/Tailors
+sites with at least +4 combined Production/Gold adjacency. Include every designed
+adjacency source, including rivers and the appropriate first Bakers Mill before
+it exists. This is a priority rule, not the offline investment utility above.
+The [policy implementation and Online100 test](../../../research/mods/csc-ai-adjacency-policy-20261103.md)
+record its mechanics, native bridge, interruption/recovery and observed results.
+The Online100 game recorded52 native adjustments with no errors. All7 promoted
+Bakers sites founded and completed;23 other Quarters founded below4 in their
+preceding scans. No Tailors site qualified in this world. The machine interruption
+and recovery are retained in the evidence, not treated as uninterrupted parity.
+This is placement follow-through, not causal or economic-benefit proof. [AI-C049]
+The richer investment evaluator remains available for later refinement.
+
 ## Next decision
 
 Review the assumptions and case explanations. Extend profiles to Bakers and

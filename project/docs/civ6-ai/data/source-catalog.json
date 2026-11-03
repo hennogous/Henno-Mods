@@ -12,6 +12,16 @@
       "site_path": "sources/memory/feedback_ai_publishing.md"
     },
     {
+      "path": "memory/feedback_ai_test_game_reporting.md",
+      "title": "AI test-game reporting and unattended evidence",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 1213,
+      "sha256": "8a8a23f387e2e1576605f13d687e338a9976b1380430ccb5a63a93386d4f5710",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/feedback_ai_test_game_reporting.md"
+    },
+    {
       "path": "memory/feedback_ai_thread_model_split.md",
       "title": "Model allocation for the CSC AI research thread",
       "kind": "agent-note",
@@ -50,6 +60,16 @@
       "sha256": "8e9999e45d9b4705bcfb52caae2813d15c07f71e180c15a4f6df7f2426beb8a3",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/feedback_shadow_native_game_control.md"
+    },
+    {
+      "path": "memory/session_ai_adjacency_policy_20261103.md",
+      "title": "Full-adjacency policy and recovered Online100 test",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 2513,
+      "sha256": "cbe420d6e5e9a7ce91c144d646036c5978c8a63c0143353b97333269c00b69eb",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_adjacency_policy_20261103.md"
     },
     {
       "path": "memory/session_ai_astra_rea_next_20261030.md",
@@ -490,6 +510,16 @@
       "sha256": "34049f92afe963519e81bdc585011af480dbd6f2ca3781e8cf7178b8da3c2e85",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-acquisition-signal-delivery-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-adjacency-policy-20261103.md",
+      "title": "Full-adjacency Quarter placement policy",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 12278,
+      "sha256": "9be07857c1177b19a41c9b3cf7f32f164445b006309a453ce86b8559c2951396",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-adjacency-policy-20261103.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-baseline-20261015.md",
@@ -1856,8 +1886,8 @@
       "title": "Offline CSC site planner",
       "kind": "tool-reference",
       "date": null,
-      "bytes": 4796,
-      "sha256": "f72f6fcb725ae4372dbaf63b82956531899113d6adb800c39fd8dfdafda04400",
+      "bytes": 6491,
+      "sha256": "16a2b01cc7a99a44aea94bb9e537cf23a87679c1d24f7e745d5375aa7f2ca0ac",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/tools/ai_site_planner/README.md"
     },

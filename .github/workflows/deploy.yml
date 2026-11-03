@@ -28,6 +28,7 @@ jobs:
         run: |
           python3 -B -m unittest discover -s project/tools/ai_knowledge -p test_prepare.py -v
           python3 -B -m unittest discover -s project/tools/ai_site_planner -p test_evaluator.py -v
+          python3 -B -m unittest discover -s project/tools/ai_site_planner/adjacency_policy -p test_policy.py -v
           python3 -B project/tools/ai_knowledge/prepare.py
       - name: Install Quartz dependencies
         run: cd docs && npm ci

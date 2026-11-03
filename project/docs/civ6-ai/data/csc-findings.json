@@ -911,5 +911,31 @@
     "topic": "topics/csc/site-planner.md",
     "depends_on": ["AI-C001", "AI-C004", "AI-C016", "AI-C028", "AI-C030"],
     "related": ["AI-N065"]
+  },
+  {
+    "id": "AI-C049",
+    "title": "A full-adjacency +4 policy delivers promoted Bakers sites while other sites remain selectable",
+    "statement": "A fresh per-turn Bakers/Tailors policy reuses loaded adjacency rules, includes rivers and the appropriate planned first Bakers Mill, and promotes the highest qualifying Production+Gold >=4 pair per original-AI city. In a recovered Online-speed game ending at100,52 fresh native additions reached9 Best returns covering7 distinct promoted Bakers pairs; all7 later founded and completed. Another23 Quarters founded below4 in their preceding scans.",
+    "status": "provisional",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "One CSC-only Ancient/Prince/Small Continents world, original AI1–5. Machine interruption after accepted5; archived autosave6 recovered with original identities/preferences. Accepted scans1–100,95 finalized native windows,0 native errors, normal game/daemon exit0 and installed content/preferences verified. All qualifying pairs were Bakers; Tailors never reached4.",
+    "limits": "No matched untreated control, caused-choice-change claim, release carrier, first-Mill construction incentive or economic-benefit proof. Other sites are not banned. Prior-scan adjacency is not exact construction-tick value. Conditional Mill bonus is not immediate income or a building grant. Removing a table entry does not roll back caches/requests. Timing is coarse, not a CPU benchmark.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-adjacency-policy-20261103.md"
+    ],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": [
+      "AI-N006",
+      "AI-N007",
+      "AI-N061"
+    ],
+    "related": [
+      "AI-C048",
+      "AI-N064",
+      "AI-N065"
+    ]
   }
 ]

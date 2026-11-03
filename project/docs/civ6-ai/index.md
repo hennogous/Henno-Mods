@@ -47,6 +47,10 @@ experiments and the decisions that changed direction.
 
 The [fresh site planner](topics/csc/site-planner.md) now provides a first
 offline Tailors comparison with actual captured cases and explicit assumptions.
+The separate [full-adjacency +4 pilot](../research/mods/csc-ai-adjacency-policy-20261103.md)
+now has an Online100 treated-game result:7 promoted Bakers sites completed,
+while23 other Quarters still founded below the cutoff. See the site-planner topic
+for scope, interruption/recovery and remaining work.
 
 ## See the whole decision
 

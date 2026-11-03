@@ -17,6 +17,23 @@ Both standalone CSC and RomanHoliday integration should meet that objective.
 Success means realised benefit after investment and displaced opportunities.
 More Quarters, higher scores or a single completed chain are intermediate results.
 
+## Current bounded policy
+
+Henno authorized the [full-adjacency +4 pilot](../research/mods/csc-ai-adjacency-policy-20261103.md):
+Bakers/Tailors, all designed adjacency including the planned first Mill, cached
+city geography and per-turn scoring. Promote the highest qualifying pair per
+city through native values, leave other sites selectable, and observe an
+Online-speed game no later than turn100. First-Mill construction incentives
+follow separately. This explicit new rule does not restore the old tuning,
+subsidies or scripted foundations. The richer investment model is a later
+refinement rather than a prerequisite for this deliberately simple test.
+
+The recovered Online100 run is now closed:52 native score additions, zero native
+errors,7 promoted Bakers foundations/completions, and23 other foundations below4
+in their preceding scans. No Tailors site qualified. This confirms treated
+follow-through and the absence of a weak-site ban, not a caused choice change
+or empire benefit. First-Mill construction remains the next distinct decision.
+
 ## Starting point
 
 - Legacy CSC AI tuning is [archived and retired](../integrations/csc-ai-reset-20261103.md).
@@ -70,7 +87,8 @@ Reuse captured cases and current mechanics, rather than copying the retired
 planner. Compare contrasting cases: working Base/customer; Both without useful
 customers; a missing customer building; credible future customers; blocked or
 contested footprints; strong competing native sites; and repair versus expansion.
-Do not turn the former Both-or-+4 trial threshold into a new rule by default.
+The earlier Both-or-+4 experiment is not a default; the new adjacency-only +4
+pilot above is separately authorized and has its own implementation/evidence.
 
 **Deliverable:** ranked examples with explanations and sensitivity to the main
 assumptions. The model should explain why one investment is preferable and what
