@@ -401,3 +401,23 @@ Tests: `python -B -m unittest -v full_game_controller.test_session` (24 cases,
 no native connections). Actual zero-turn110 integration and limits are recorded
 in `project/docs/research/mods/csc-shared-native-session-20261030.md`. This is
 not a new full-game or instrumentation-neutrality validation.
+
+## Standard presentation recovery — 3 November 2026
+
+Every controller constructed by `make_controller` now installs the shared
+`presentation_playback` handlers. Probe and full-game callers receive them
+automatically; individual trials do not need a special adapter. Existing
+disaster, diplomacy and wonder-built handling is preserved. The additional
+handlers acknowledge Natural Wonder discoveries and project-completion
+cinematics through their shipped `Close()` routines.
+
+Each acknowledgement needs fresh Core proof of an active, finite observer
+operation, a matching UI clock and a visible exact popup context. Project-built
+also requires its unique highest-priority popup-stack entry. Receipts preserve
+the pre-call proof, result and stack read. Each handler has a per-interval cap
+of eight acknowledgements and refuses to replay an ambiguous response. These
+handlers issue no gameplay choices, production orders or turn activation.
+
+Focused regressions: `python -B -m unittest -v full_game_controller.test_presentation_playback`
+from `project/tools/ai_baseline`. The actual saved-game verification and its
+limits are recorded in the native Quarter placement-choice report.

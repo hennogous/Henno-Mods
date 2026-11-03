@@ -7,8 +7,9 @@ assets, place foundations or implement restart policy.
 import json,os,re,time
 from pathlib import Path
 from .transport import receive_command,MissingAcknowledgment,NativeLuaFailure
+from .presentation_playback import install as install_playback_guard
 RESOURCE_ROOT=Path(__file__).resolve().parent
-HANDOFF='print("CSC_SHARED_STATE",Game.GetCurrentGameTurn(),AutoplayManager.IsActive(),AutoplayManager.GetTurns(),Game.GetLocalPlayer(),Players[0]:IsHuman());'
+HANDOFF='print("CSC_SHARED_STATE",Game.GetCurrentGameTurn(),AutoplayManager.IsActive(),AutoplayManager.GetTurns(),Game.GetLocalPlayer(),Players[0]:IsHuman(),Players[0]:IsAlive());'
 GUARD=(RESOURCE_ROOT/'disaster_playback.lua').read_text(encoding='utf-8')
 DIPLOMACY_GUARD=(RESOURCE_ROOT/'diplomacy_playback.lua').read_text(encoding='utf-8')
 WONDER_GUARD=(RESOURCE_ROOT/'wonder_playback.lua').read_text(encoding='utf-8')
@@ -37,6 +38,7 @@ class FullGameController:
   out=Path(out).resolve();self.prepare_output(out)
   super().__init__(out);self.root=out;self.last_interval_turn=1
   self.session_token='CSC_FULL_ACK_'+str(os.getpid())+'_'
+  install_playback_guard(self)
  def states(self):
   if self.state_discovery is None:return super().states()
   # Fresh discovery for EVERY command; only its fixed receive delay is removed.
@@ -133,8 +135,10 @@ class FullGameController:
   for attempt in range(3):
    try:
     raw=self.cmd(HANDOFF,'GameCore_Tuner',label+'-'+str(attempt),wait=1)
-    t,a,n,p,h=re.findall(r'CSC_SHARED_STATE\s+(\d+)\s+(true|false)\s+(-?\d+)\s+(-?\d+)\s+(true|false)',raw)[-1]
-    return {'turn':int(t),'active':a=='true','remaining':int(n),'local_player':int(p),'player0_human':h=='true','time':time.time()}
+    t,a,n,p,h,alive=re.findall(r'CSC_SHARED_STATE\s+(\d+)\s+(true|false)\s+(-?\d+)\s+(-?\d+)\s+(true|false)(?:[ \t]+(true|false))?',raw)[-1]
+    row={'turn':int(t),'active':a=='true','remaining':int(n),'local_player':int(p),'player0_human':h=='true','time':time.time()}
+    if alive:row['player0_alive']=alive=='true'
+    return row
    except(MissingAcknowledgment,OSError,EOFError,IndexError):
     if attempt==2:raise
     self.diagnostics.journal('readonly-state-query-retry',label=label,attempt=attempt+1,no_control_replayed=True);time.sleep(2)
