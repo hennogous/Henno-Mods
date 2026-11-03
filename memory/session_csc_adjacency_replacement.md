@@ -1,5 +1,30 @@
 # CSC adjacency replacement — 2 October 2026
 
+## Current 28 October — edge-icon parity correction, source only
+
+Henno reported Base missing/Sales generic/Spec working, yields apparently correct,
+and requested recovery of all fork fixes including river edges. The wrapper used
+a native-first collection followed by an occupied-face skip. Changed to a single
+placement-aware collection; eligible authored CSC object icons outrank generic
+source/native art, and existing faces update/deduplicate while incoming flags and
+other faces survive. Preserves repeated wrapped-neighbor faces. River mapping
+already matched the fork and stays unchanged; Count retains native river aggregate.
+
+New offline test_edge_icons.py uses actual wrapper/native support and the read-only
+fork matcher: 48 role/native-conflict +48 ownership/visibility/band combinations,
+384 river comparisons (all64layouts), signed half-yield totals, remote mill gate,
+civic visibility, cache duplicates, wrapped faces, and four art source chains.
+Previous HEAD wrapper independently fails Base/native-resource-class conflict;
+fixed wrapper passes. Existing frozen parity:61rules/610mods/55sources/1465cases;
+policy returns:20base/unique/200mods/220cases; placement text checks pass. Both
+Quarters' Base/Spec/Sales metadata verified. No art changes needed.
+
+Current human QA restrictions respected: no live connection, launches, settings,
+deployment or installed CSC edits. Source ready for next normal ModBuddy build;
+native visual confirmation still pending. Exact screenshot native classification
+and active installed cooked art not read. Do not claim observed in-game recovery.
+See durable integration doc's 28 October audit for semantics and reproducibility.
+
 User authorized building the first version after the source audit. Scope is current
 Bakers/Tailors plus all fork additions/fixes and the self-contained exact-Wonder
 matcher. Future Quarter design docs are stale/speculative; do not implement them.

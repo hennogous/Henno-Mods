@@ -1,5 +1,24 @@
 # Storage ground pivot — 20 October 2026
 
+## Current delivery cleanup — 24 October
+
+User requested canonical names CSC_BAKERS_Delivery and CSC_ALL_Delivery_Donkey;
+his temporary copies were removed by him before execution. Accepted TRIAL
+behavior retained (NoRandomOffset; temporary copies had Standard_Landmark).
+Consolidated duplicate Bakers/Tailors parents to CSC_BAKERS_Delivery and
+CSC_TAILORS_Delivery; shared child CSC_ALL_Delivery_Donkey. Eight district refs
+updated;18obsoletefiles removed with Desktop backups, including unused combined
+and TEST resources. Public geometry/clip resources now CSC_ALL_Delivery and
+CSC_ALL_Delivery_Donkey. Four FGXs byte-identical; internal native TRIAL bone/model
+names deliberately retained for matching clips. No re-export or placement change.
+XLP/project/AssetCloud cleaned; five-state checks and isolated Windows/MacOS cooks
+pass. Installed human-game files all hash-unchanged; NO normal build/deployment,
+per current24Oct protected-game handoff. Source ready for later authorized build.
+Durable project/docs/art/delivery-assets.md; Desktop evidence
+CSC_Storage_L/delivery-cleanup-20261024. Historical installers below are obsolete.
+
+## Historical work
+
 User authorized direct shared master changes despite temporarily unmigrated
 consumers. Installed centered/unrotated storage main, CON+PIL and PIL decals;
 all four supplied Blender originals updated with backups. Fully migrated only

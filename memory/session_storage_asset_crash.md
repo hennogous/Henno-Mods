@@ -288,3 +288,34 @@ successfully installed/hash-verified patched Firaxis.AssetPreviewing.dll in SDK.
 install-result.json and original DLL retained in repair package. User asked to
 manually test parent Base03 plus child L edit/save/close/reopen cycle. Runtime
 validation pending; do not call all AE crashes fixed. Automatic monitors active.
+# 26 October 2026 — bounded captures and full-dump cleanup
+
+Human requested smaller AE crash logging/dumps and cleanup, then explicitly
+authorized removing **all full dumps**. Routine native and assertion monitors now
+default to explicit ProcDump `-mm`; `-Full` is a targeted manual opt-in, with a
+`keep-dumps.txt` retention exemption. Shared source
+`project/tools/asset_editor/ae_capture_storage.ps1` retains at most 10 completed
+routine dumps / 512 MiB total / 14 days, skips active/locked/unrecognized/linked
+items, and removes only dump files with receipts. Latest two AE source logs per
+collection are copied as 256 KiB tails; ProcDump/watcher/error logs are bounded
+at about 1 MiB. Source AE/game logging settings remain unchanged.
+
+Storage checks: 26 PASS under Windows PowerShell 5.1. Two consecutive disposable
+native crashes captured/re-armed in default-mini mode; hidden assertion test
+captured once without duplicate and honored pause. Test evidence:
+`Desktop/Codex/AE-small-capture-native-tests-20261026/` and
+`AE-storage-policy-tests-20261026-v2/`.
+
+Full-memory header bit verified before cleanup: 19 full dumps removed, 68.622
+GiB reclaimed (including a cooker dump). Each has a compact module/thread/raw
+stack summary and removal receipt; existing diagnoses, logs and mini dumps were
+preserved. No full dump was deliberately kept after the human's clarification.
+Historical full-dump paths in older notes are provenance, not existing files.
+Receipt: `Desktop/Codex/AE-storage-cleanup-20261026_153701/cleanup.json`.
+
+Old watchers 7816/4080 paused and ended gracefully via ProcDump `-cancel`, with
+the same open AE PID 12592/start identity preserved. Updated installed scripts
+match source hashes; both scheduled tasks running in mini mode (native watcher
+18164, assertion 11296, ProcDump 2544). Settings backups and verification:
+`Desktop/Codex/AE-storage-settings-20261026/installed-verification.json`.
+Durable workflow: `project/docs/art/asset-editor-crash-diagnostics.md`.

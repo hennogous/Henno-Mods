@@ -1,5 +1,41 @@
 # Windmill plaster tower — 21 October 2026
 
+CURRENT 26 October: tower bundled into ONE shared intact Wind Mill master plus
+CON+PIL companion under BAKERS/Wind Mill. Both runtime variants use these geos;
+extra props/material/state settings remain in AE. User explicitly standardized
+onto regular layout, then saved new regular position (2.035524,-21.555544,-.136043),
+Z-.731351, scale1.158080; final models use that latest position.
+Standalone Tower AST+2GEO/FGX pairs archived Desktop/Archive/CSC-windmill-tower-bundled-20261026.
+XLP114→113. Component tower source folder preserved. Native Turn ANM/FGX unchanged;
+keep original internal model name Tower to bind clip (different model name caused
+native SampleBone access violation in discarded staging). Root/Sails unchanged,
+new static Mount + Sail_Pivot_Offset preserve original8s motion at placement scale.
+Both savedmasters/exports/rigs verified, all241frames matched<.000076; base stays
+static. 569 other runtime files unchanged; both cooks pass RigidModel24. Native
+vertices2512intact/2751CONPIL, advisorywarnings only. LiveAE/game unverified.
+Durable contract project/docs/art/windmill-tower.md. OUT Desktop/Codex/Windmill-bundled-tower-20261026.
+Legacy CN6 importer duplicates final triangle per mesh: new worker retains imported
+rig axes but reconstructs exact mesh topology from native JSON before saving.
+Earlier standalone tower delivery details below are historical.
+
+Latest follow-up24October r044: removed two cloth-covered rungs per blade at radii
+23.6/39.2, eight total. Keep4visiblefrombothsides/blade (8,15.8,31.4,48.2). All
+retainedgeometry/weights/UV1/3 unchanged. RebakedsailAOonly; surface/tower/CONPIL/
+placements/8sclip preserved. 398v388f source sails;1050v592tri native sails,
+1584v totalintact/1034CONPIL. Source/native/motion241/clearance/cookPASS,
+frontbacknativepreviewinspected. Installedmaster/CN6/FGX/GEO/AO r044; liveAEpending.
+Evidence/backups Desktop/Codex/windmill-visible-rungs-20261024.
+
+Latest, 24 October: split each blade into two separate textile panels with exposed
+inner/middle/tip rungs. Three rungs thickened 1.55->2.2, tip radius47->48.2; cloth
+ranges17.2..29.9 and32.9..47.0. Retains taper/weathered slot39. Sail mesh now462v420f;
+native1178v656tri, total1712v intact /1034v CON+PIL. r043 only sail AO cell rebaked;
+surface pixels, other AO, tower, CON+PIL, animation and AE placements unchanged.
+Saved source0errors/warnings, nativebindings1each, bothvariant cookRigid24, native
+motion241samples8s+clearance everyframe PASS. Preview inspected; liveAE/gamepending.
+Installed master/CN6/FGX/GEO/sharedAO, focusedAEcache. Evidence/backups:
+Desktop/Codex/windmill-split-sails-20261024. Source remains tower/Tower.
+
 Latest, 22 October: r042 weathered sail cloth installed. ImageGen canvas in free
 shared-props slot39, B/N/G/M registered, original ivory untouched. Only cloth UV1
 translated; native geometry/bindings/weights/UV2/UV3 exact, 1,512 native vertices.
@@ -222,3 +258,21 @@ oldnamekeys/recordsrenamed+deduplicated. LiveAE/gameunverified.
 Evidence Desktop/Codex/windmill-rename-8s-20261022. Renamer tool has stage/check/
 install/finish_library/cache/verify modes. Legacy one-shot authoring scripts have
 renamed IDs but old workflow assumptions; don't rerun them on current sources.
+## 30 October 2026 — human export animation repair
+
+Current intact master is BAKERS/Wind Mill/CSC_BAKERS_Wind_Mill.blend, shared by both
+historical variants. Human renamed armature to public asset ID; October 28 20:06
+FGX/GEO export changed native model/root from Tower to Wind_Mill, breaking unchanged
+Tower_Turn clip binding. Existing civ6_root_name was ignored by geometry exporter.
+Fix: explicit csc_native_model_name=CSC_BAKERS_Wind_Mill_Tower in saved source;
+maintained and installed io_export_cn6 now honors optional property only for native
+root identity. File names remain CSC_BAKERS_Wind_Mill. Default no-property naming
+control checked. Restart Blender/reopen source before next export to load addon.
+Actual latest native meshes/UV1/2/3/NBT/weights/groups/triangles identical, no rollback.
+All241 frames vs original combined reference max0.000170844; tower/base stationary;
+original8sec animation SHA unchanged. Both ASTs point to shared repaired geometry,
+both isolated cook pass RigidModel24. Candidate source validator0errors1budgetwarning.
+Installed FGX/GEO, source and local export copies; other mod files hash-protected.
+Evidence/backups Desktop/Codex/windmill-animation-repair-20261030. No AE UI/game
+deployment or playback claim. Durable current instructions in windmill-tower.md.
+

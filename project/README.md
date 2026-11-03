@@ -1,5 +1,8 @@
 # CSC Project Resources
 
+**CSC AI direction:** [Durable objective and decision principles](docs/integrations/csc-ai-objectives.md) — competent, worthwhile supply chains supporting empire priorities; confirmed 28 October 2026.
+
+
 Working docs, reference material, and tools that don't belong in the mod source tree.
 
 ## Documentation split
@@ -20,9 +23,15 @@ Start at the [internal documentation index](docs/README.md). The [full documenta
 |---|---|
 | Current Quarter building art direction | [Building art plan](docs/art/quarter-building-art-plan.md) |
 | AE placement authority and saved-asset renders | [AE-owned assembly](docs/art/ae-owned-assembly-workflow.md), [render runner](docs/art/2d/ae-asset-renderer.md) |
+| Current L2 position, paving and fixed building props | [25 October source and AE migration](docs/art/l2-placement-and-fixed-props.md) |
 | Art production, icons and strategic view | [Art plans and production](docs/art/README.md) |
 | Storage crane animation investigation | [Native animation and Blender conversion](docs/art/storage-crane-animation.md) |
 | Quarter implementation and validation | [Workflow references](docs/quarters/README.md) |
+| Native engine symbol reference | [GameCore map and Ghidra resource](docs/research/mods/csc-ai-gamecore-symbol-resource-20261029.md) |
+| Native AI prerequisite planning: Industrial Zone case | [Forecasts, requests and commitment](docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md) |
+| Industrial Zone runtime check | [Observed Factory-to-Workshop value and production boundary](docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md) |
+| CSC future materials and customers | [Forecast channels, interpreter limits and current Lua returns](docs/research/mods/csc-future-economy-forecast-20261103.md) |
+| District type, site choice and custom incentives | [Native selection, empire needs and available controls](docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md) |
 | Gameplay systems and related projects | [System references](docs/integrations/README.md) |
 | Automatic industry-material map assistance | [Runtime and build](docs/integrations/csc-material-map-assistance.md), [five-seed results](docs/research/mods/csc-continental-helper-lua-20261016.md) |
 | Art studies, trials and reference-mod research | [Research index](docs/research/README.md) |

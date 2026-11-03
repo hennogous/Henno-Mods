@@ -1,5 +1,15 @@
 # Research and investigations
 
+- [District choice, placement and custom incentives](mods/civ6-district-choice-placement-and-incentives-20261103.md) — **Offline native/source findings**; joint type/site comparison, score stages, strategic and current-performance catch-up inputs, native adjacency/custom-yield controls, Boolean Lua strategies and the unverified arbitrary per-site callback boundary. No game or tuning.
+
+- [CSC future material/customer forecasts](mods/csc-future-economy-forecast-20261103.md) — **Offline code/source findings**; existing and private producer inputs, ordinary customer-building gates, unsupported player-improvements collection, omitted AI requirements, current Lua population returns, and corrected plot-handler mapping. No game or tuning.
+
+- [Industrial Zone prerequisite architecture](mods/civ6-industrial-zone-planning-architecture-20261101.md) and [bounded runtime observation](mods/civ6-industrial-zone-decision-boundary-20261101.md) — **Code-backed and measured**; prerequisite forecasts, direct backward building value, item-level requests; three existing-save intervals confirm Factory contribution into missing Workshop and distinguish building selection from district-contract production. No tuning or fresh world.
+
+- [Native multi-value resource-class probe](mods/native-resourceclass-multivalue-probe-20261028.md) — **Measured**; comma variants, other separators and JSON match only as complete literal class identifiers. Single-class controls and all30 preview/district samples verified.
+
+- [Native custom resource-class probe](mods/native-custom-resourceclass-probe-20261028.md) — **Measured**; reclassified Wheat matches a new class for Campus Food adjacency; bonus-class Rice Faith control, preview and completed-district yields pass. Per-turn economic receipts untested.
+
 - [Tailor density v4 preview](mods/csc-tailor-density-20261017.md) — 2× Base-only/4× both targets; 15 offline captures plus [six fresh native maps](mods/csc-tailor-density-native-20261017.md) validated.
 - [CSC AI tuning v1](../integrations/csc-ai-tuning.md) â€” **Experimental**; Astra review, strong reciprocal sales signals, exact-material modifier prototype and matched-seed verification.
 - [CSC AI tuning v1 native trial](mods/csc-ai-tuning-v1-20261017.md) â€” **Exploratory result**; one matched seed through Online turn 250, strong sales co-location response, uncertain material planning, greater deposit loss, native activation/prospective probes and restored preferences.
