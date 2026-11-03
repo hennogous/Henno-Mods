@@ -20,7 +20,7 @@ HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(ROOT/'project/tools/ai_baseline'), str(HERE.parent)]
 from full_game_controller.windows_process import HeldProcess
 
-PROFILE = 'csc-adjacency-policy-v1'
+PROFILE = 'csc-adjacency-policy-v2'
 SHA = '324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c'
 FUNCTIONS = {
     'DistrictNetValue': (0x52a440, '8954241055535657415441554156488d6c24f14881eca0000000448b756f33c0'),
@@ -83,32 +83,32 @@ def validate_status(status, spec, config, *, enabled, allow_partial=False):
 
 
 def validate_entries(rows, config):
-    if not isinstance(rows,list) or len(rows)>128: raise ValueError('Policy capacity')
-    cities=set()
+    if not isinstance(rows,list) or len(rows)>4096: raise ValueError('Policy capacity')
+    pairs=set()
     for e in rows:
         if (set(e)!={'player','city','district','plot','delta'} or any(type(v) is not int for v in e.values())
             or e['player'] not in config['originalAI'] or e['city']<0 or e['district'] not in config['districtIndices']
-            or not 0<=e['plot']<config['width']*config['height'] or e['delta']!=1048576
-            or (e['player'],e['city']) in cities): raise ValueError('Invalid/duplicate city policy')
-        cities.add((e['player'],e['city']))
+            or not 0<=e['plot']<config['width']*config['height'] or not(e['delta']==1048576 or -262144<=e['delta']<0)
+            or (e['player'],e['city'],e['district'],e['plot']) in pairs): raise ValueError('Invalid/duplicate pair policy')
+        pairs.add((e['player'],e['city'],e['district'],e['plot']))
 
 
 def validate_snapshot(value, config, *, frozen=False, allow_faults=False):
     if value.get('profile')!=PROFILE or value.get('read_only') is not False: raise ValueError('Profile mismatch')
     stats,rows,entries=value['stats'],value['records'],value['entries'];validate_entries(entries,config)
-    if stats['records']!=len(rows) or len(rows)>4096 or stats['entryCount']!=len(entries): raise ValueError('Record framing')
+    if stats['records']!=len(rows) or len(rows)>16384 or stats['entryCount']!=len(entries): raise ValueError('Record framing')
     if frozen and (stats['mode']!=0 or stats['active']!=0): raise RuntimeError('Freeze not drained')
-    by_city={(e['player'],e['city']):e for e in entries};changes=0
+    by_pair={(e['player'],e['city'],e['district'],e['plot']):e for e in entries};cities={(e['player'],e['city']) for e in entries};changes=0
     for r in rows:
-        e=by_city.get((r['player'],r['city']))
-        if not e or r['k'] not in ('net','cache','best','pv'): raise ValueError('Out-of-scope record')
-        if r['k']!='best' and (r['district'],r['plot'])!=(e['district'],e['plot']): raise ValueError('Out-of-site record')
+        e=by_pair.get((r['player'],r['city'],r['district'],r['plot']))
+        if (r['player'],r['city']) not in cities or r['k'] not in ('net','cache','best','pv'): raise ValueError('Out-of-scope record')
+        if r['k']!='best' and not e: raise ValueError('Out-of-site record')
         if r['base']!=r['result']:
-            if r['k']!='net' or r['base'] in (0,-2559744) or r['result']-r['base']!=1048576 or r['reason']!=0: raise ValueError('Mutation contract')
+            if r['k']!='net' or r['base']==0 or r['base']<=-2559744 or r['result']!=(max(-1048576,r['base']+e['delta']) if e['delta']<0 else r['base']+e['delta']) or r['reason']!=0: raise ValueError('Mutation contract')
             changes+=1
     if changes!=stats['changed']: raise ValueError('Mutation count')
     if not allow_faults and (stats['fatal'] or stats['errors'] or stats['active']): raise RuntimeError('Native fault or active frame')
-    return bool(stats['fatal'] or len(rows)>=4096)
+    return bool(stats['fatal'] or len(rows)>=16384)
 
 
 class NativeExtension:

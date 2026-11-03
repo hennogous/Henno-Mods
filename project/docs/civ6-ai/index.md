@@ -51,6 +51,9 @@ The separate [full-adjacency +4 pilot](../research/mods/csc-ai-adjacency-policy-
 now has an Online100 treated-game result:7 promoted Bakers sites completed,
 while23 other Quarters still founded below the cutoff. See the site-planner topic
 for scope, interruption/recovery and remaining work.
+The [soft-penalty follow-up](../research/mods/csc-ai-placement-penalties-20261103.md)
+extends the same carrier to individual weak-site deductions; a fresh Online100
+test is in progress.
 
 ## See the whole decision
 

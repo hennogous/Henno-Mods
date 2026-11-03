@@ -14,7 +14,7 @@ from full_game_controller.windows_process import HeldProcess,native_inventory
 from full_game_controller.environment import launch,configure,manifest,restore_preferences,archive_sources,prove_loaded_module,write_json
 from full_game_controller.log_capture import capture_log_baseline,read_log_delta
 from daemon import NativeExtension,SHA,validate_contract,validate_snapshot
-from policy import shortlist,PROFILE
+from policy import shortlist,PROFILE,PENALTY_PER_POINT_Q8,MAX_PENALTY_Q8
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def read(path):return json.loads(Path(path).read_text(encoding='utf-8-sig'))
@@ -44,7 +44,7 @@ def run(args):
  pins={str(p.resolve()):sha(p) for p in files}
  write_json(out/'source-pins.json',pins);write_json(out/'source-archive.json',archive_sources(pins,out/'source-version'))
  write_json(out/'installed-before.json',installed);write_json(out/'dependency-pins.json',deps)
- write_json(out/'protocol.json',dict(profile=PROFILE,speed='GAMESPEED_ONLINE',start_turn=first,maximum_endpoint=100,fresh_worlds=0 if args.resume_save else 1,loads=1 if args.resume_save else 0,recovery_from=str(args.original_run)if args.resume_save else None,threshold=4,deltaQ8=1048576,delta_is_priority_not_economic_value=True,map_seed=16131103,game_seed=26131103,legacy_tuning=False,forced_orders=False,grants=False,native_callbacks='score/cache/best/PV; no game API calls',refresh='once each inactive turn; cached city geometry',planned_bakers_mill=True,stale_request_rollback_claimed=False))
+ write_json(out/'protocol.json',dict(profile=PROFILE,speed='GAMESPEED_ONLINE',start_turn=first,maximum_endpoint=100,fresh_worlds=0 if args.resume_save else 1,loads=1 if args.resume_save else 0,recovery_from=str(args.original_run)if args.resume_save else None,threshold=4,deltaQ8=1048576,penalty_per_missing_point_Q8=PENALTY_PER_POINT_Q8,maximum_penalty_Q8=MAX_PENALTY_Q8,penalty_floor_Q8=-1048576,weak_sites_remain_selectable=True,delta_is_priority_not_economic_value=True,map_seed=16131103,game_seed=26131103,legacy_tuning=False,forced_orders=False,grants=False,native_callbacks='score/cache/best/PV; no game API calls',refresh='once each inactive turn; cached city geometry',planned_bakers_mill=True,stale_request_rollback_claimed=False))
  controller=make_probe_controller(out,user_root=args.user_root)
  controller.allow_observer_warning_dismissal=controller.allow_observer_first_meet_dismissal=controller.allow_observer_congress_review=True
  controller.study_endpoint=100
@@ -92,8 +92,8 @@ def run(args):
   for turn in range(first,101):
    if value['turn']!=turn or value['speed']!='GAMESPEED_ONLINE':raise RuntimeError('Unexpected turn/speed')
    plan=shortlist(value);write_json(out/'plans'/('turn-'+str(turn)+'.json'),plan)
-   history.append(dict(turn=turn,cities=len(value['cities']),evaluated=value['sitesEvaluated'],geometryBuilt=value['geometryBuilt'],elapsedSeconds=value['elapsedSeconds'],qualified=len(plan['qualified']),selected=plan['selected'],quarters=[dict(player=c['player'],city=c['city'],**d)for c in value['cities']for d in c['districts']if d['type'].startswith('DISTRICT_CSC_')]))
-   write_json(out/'progress.json',dict(turn=turn,maximum_endpoint=100,qualified=len(plan['qualified']),selected=len(plan['selected']),quarters=len(history[-1]['quarters'])))
+   history.append(dict(turn=turn,cities=len(value['cities']),evaluated=value['sitesEvaluated'],geometryBuilt=value['geometryBuilt'],elapsedSeconds=value['elapsedSeconds'],qualified=len(plan['qualified']),selected=plan['selected'],penalized=len(plan['penalized']),quarters=[dict(player=c['player'],city=c['city'],**d)for c in value['cities']for d in c['districts']if d['type'].startswith('DISTRICT_CSC_')]))
+   write_json(out/'progress.json',dict(turn=turn,maximum_endpoint=100,qualified=len(plan['qualified']),selected=len(plan['selected']),penalized=len(plan['penalized']),updated_unix=time.time(),quarters=len(history[-1]['quarters'])))
    if turn==100:break
    publication=extension.publish(plan['entries'],turn+1);windows.append(publication['previous'])
    verify();controller.play(turn+1)
@@ -113,7 +113,7 @@ def run(args):
   final=read(out/'extension/trace-counts.json');
   if 'snapshot'in final:windows.append(final['snapshot'])
  write_json(out/'native-windows.json',windows)
- result=dict(profile=PROFILE,closed=session.closed,endpoint=last_turn,maximum_endpoint=100,originalAI=original_ai,windows=len(windows),mutations=sum(w['stats']['changed']for w in windows),native_errors=sum(w['stats']['errors']for w in windows),best_calls=sum(sum(r['k']=='best'for r in w['records'])for w in windows),qualified_city_turns=sum(bool(h['selected'])for h in history),observed_Quarters=history[-1]['quarters']if history else [],installed_unchanged=manifest(args.installed)==installed,economic_benefit_proven=False,changed_choice_proven=False,error=str(error)if error else None)
+ result=dict(profile=PROFILE,closed=session.closed,endpoint=last_turn,maximum_endpoint=100,originalAI=original_ai,windows=len(windows),mutations=sum(w['stats']['changed']for w in windows),penalty_mutations=sum(r['k']=='net'and r['result']<r['base'] for w in windows for r in w['records']),bonus_mutations=sum(r['k']=='net'and r['result']>r['base'] for w in windows for r in w['records']),native_errors=sum(w['stats']['errors']for w in windows),best_calls=sum(sum(r['k']=='best'for r in w['records'])for w in windows),qualified_city_turns=sum(bool(h['selected'])for h in history),observed_Quarters=history[-1]['quarters']if history else [],installed_unchanged=manifest(args.installed)==installed,economic_benefit_proven=False,changed_choice_proven=False,error=str(error)if error else None)
  write_json(out/'result.json',result);print(json.dumps(result),flush=True)
  if error:raise error
 

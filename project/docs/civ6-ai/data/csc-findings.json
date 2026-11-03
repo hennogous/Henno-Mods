@@ -937,5 +937,18 @@
       "AI-N064",
       "AI-N065"
     ]
+  },
+  {
+    "id": "AI-C050",
+    "title": "A signed native extension can discourage individual weak Quarter sites",
+    "statement": "The v2 adjacency policy retains the best >=4 pair promotion and supplies graded negative adjustments for every observed sub-4 Bakers/Tailors pair. Multiple exact tuples can share a city. Signed native selection permits negative winners, while crossing zero also removes later future-building uplift; a penalty is not a universal exclusion.",
+    "status": "provisional",
+    "evidence_types": ["source", "inference"],
+    "scope": "Exact pinned XP2 native comparison and current v2 implementation.19 policy/validation tests,40 real-kernel disposable-host checks,9 scanner checks,153 controller Python checks,100 historical scan replay. Fresh Online100 test in progress; no live outcome yet.",
+    "limits": "Priority amounts are not calibrated economic utility. Native zero/invalid values are preserved; penalties have a conservative floor. No request rollback, production orders, first-Mill incentive, release integration, matched causal comparison or economic-benefit proof.",
+    "sources": ["project/docs/research/mods/csc-ai-placement-penalties-20261103.md"],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": ["AI-C049", "AI-N006", "AI-N053"],
+    "related": ["AI-C048", "AI-N009", "AI-N061"]
   }
 ]

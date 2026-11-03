@@ -84,6 +84,17 @@ and recovery are retained in the evidence, not treated as uninterrupted parity.
 This is placement follow-through, not causal or economic-benefit proof. [AI-C049]
 The richer investment evaluator remains available for later refinement.
 
+## Discouraging weak sites
+
+The [soft-penalty extension](../../../research/mods/csc-ai-placement-penalties-20261103.md)
+keeps that good-site promotion and subtracts a graded priority from every observed
+sub-4 Bakers/Tailors pair:65,536 Q8 per missing point, capped262,144. Multiple
+district/tile entries can now share a city. These are experimental priorities,
+not calibrated yield prices. Native negative scores can still win, and crossing
+zero also removes the later future-building uplift. No unconditional poor-site
+ban is added. The fresh Online100 test is in progress; source/host checks alone
+do not establish a changed live placement or economic benefit. [AI-C050]
+
 ## Next decision
 
 Review the assumptions and case explanations. Extend profiles to Bakers and

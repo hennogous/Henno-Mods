@@ -90,7 +90,15 @@ The separately authorized first native placement policy is in
 `adjacency_policy/`. It evaluates Bakers and Tailors with the loaded shared
 adjacency rules, including planned first-Mill terrain/river bonuses. It promotes
 one highest-scoring >=4 Production+Gold pair per city, without banning other
-sites. This is a strong priority experiment, not the investment utility above.
+sites. That v1 result is preserved. The current v2 adds a soft penalty for every
+observed sub-4 pair, while retaining the same good-site promotion. Each missing
+point subtracts65,536 Q8, capped262,144; these are experimental priorities rather
+than yield prices. Negative values remain selectable. Native zero/invalid values
+are preserved, and negative adjustments stop at-1,048,576 Q8 to leave room for
+the later1.5 district-preference factor without creating a no-result sentinel.
+Tables now hold up to4096 exact pairs; windows allow4096 writes/16384 records.
+See [the penalty investigation](../../docs/research/mods/csc-ai-placement-penalties-20261103.md).
+This remains a priority experiment, separate from the investment utility above.
 
 Read [the policy and Online100 evidence](../../docs/research/mods/csc-ai-adjacency-policy-20261103.md)
 before running it. Its driver uses `full_game_controller` and `NativeSession`,

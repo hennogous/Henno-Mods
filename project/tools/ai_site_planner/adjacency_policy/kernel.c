@@ -3,8 +3,8 @@
 #include <string.h>
 /* Multi-city research policy. Native-only callbacks; no calls into the game,
  * Lua or JavaScript. Publishes only while disabled and drained. */
-#define LIMIT 4096
-#define ENTRIES 128
+#define LIMIT 16384
+#define ENTRIES 4096
 #define INVALID (-2559744)
 typedef struct {gint32 player,city,district,plot,delta;} Entry;
 typedef struct {gint32 player,city,district,plot,x,y,base,result,reason,eligible,kind;} Record;
@@ -31,7 +31,7 @@ static void fault(void){state.errors++;state.fatal=1;state.mode=0;}
 guint32 state_size(void){return sizeof(State);}
 void initialize(void){memset(&state,0,sizeof(State));g_mutex_init(&state.mutex);}
 /* header: width,height,districtCount,monotonicVersion,entryCount,64 AI flags.
- * One entry per city; a replacement never increments restored cache memory. */
+ * Exact pair keys may share a city; fresh values never increment old caches. */
 gint32 publish(const gint32 *h,const Entry *entries,gpointer caller){
  gint32 i,j,result=-1;g_mutex_lock(&state.mutex);
  if(state.mode||state.active||state.fatal)goto done;
@@ -41,8 +41,8 @@ gint32 publish(const gint32 *h,const Entry *entries,gpointer caller){
  if(h[4]&&!valid_span(entries,h[4]*sizeof(Entry),FALSE))goto done;
  for(i=0;i<h[4];i++){
   Entry e=entries[i];
-  if(e.player<0||e.player>63||!h[5+e.player]||e.city<0||e.district<1||e.district>=h[2]||e.plot<0||e.plot>=h[0]*h[1]||e.delta!=1048576)goto done;
-  for(j=0;j<i;j++)if(entries[j].player==e.player&&entries[j].city==e.city)goto done;
+  if(e.player<0||e.player>63||!h[5+e.player]||e.city<0||e.district<1||e.district>=h[2]||e.plot<0||e.plot>=h[0]*h[1]||!(e.delta==1048576||(e.delta<0&&e.delta>=-262144)))goto done;
+  for(j=0;j<i;j++)if(entries[j].player==e.player&&entries[j].city==e.city&&entries[j].district==e.district&&entries[j].plot==e.plot)goto done;
  }
  state.width=h[0];state.height=h[1];state.district_count=h[2];state.version=h[3];state.n=h[4];state.caller=caller;
  memcpy(state.allowed,h+5,64*4);if(state.n)memcpy(state.entries,entries,state.n*sizeof(Entry));
@@ -57,6 +57,10 @@ gint32 set_mode(gint32 mode){gint32 r=-1;g_mutex_lock(&state.mutex);
 static Entry *find_city(gint32 player,gint32 city){gint32 i;
  if(player<0||player>63||!state.allowed[player])return NULL;
  for(i=0;i<state.n;i++)if(state.entries[i].player==player&&state.entries[i].city==city)return &state.entries[i];return NULL;
+}
+static Entry *find_pair(gint32 player,gint32 city,gint32 district,gint32 plot){gint32 i;
+ if(player<0||player>63||!state.allowed[player])return NULL;
+ for(i=0;i<state.n;i++){Entry *e=&state.entries[i];if(e->player==player&&e->city==city&&e->district==district&&e->plot==plot)return e;}return NULL;
 }
 static Entry *object_entry(guint8 *object){guint8 *city;
  if(!valid_span(object,0x4dc,FALSE)){fault();return NULL;}
@@ -78,9 +82,9 @@ void on_enter(GumInvocationContext *ic){Invocation *v=GUM_IC_GET_INVOCATION_DATA
  for(i=0;i<state.n;i++)if(state.entries[i].district==d)break;if(i==state.n)goto done;
  city=gum_invocation_context_get_nth_argument(ic,6);plot=gum_invocation_context_get_nth_argument(ic,5);
  if(!valid_span(city,0xdc,FALSE)||!valid_span(plot,0x2c,FALSE)){fault();goto done;}
- e=find_city(*(gint32*)(city+0xd8),*(gint32*)(city+0xa8));if(!e||e->district!=d)goto done;
  x=*(gint16*)(plot+0x28);y=*(gint16*)(plot+0x2a);
- if(x<0||x>=state.width||y<0||y>=state.height||y*state.width+x!=e->plot)goto done;
+ if(x<0||x>=state.width||y<0||y>=state.height)goto done;
+ e=find_pair(*(gint32*)(city+0xd8),*(gint32*)(city+0xa8),d,y*state.width+x);if(!e)goto done;
  row=(guint8*)ic->cpu_context->r12;
  if(!valid_span(row,0x78,FALSE)||*(gint32*)(row+8)!=x||*(gint32*)(row+12)!=y||*(gint16*)(row+0x70)!=e->player||*(gint32*)(row+0x74)!=e->city){fault();goto done;}
  if(!row[0x55]||(!row[0x5a]&&!row[0x57]))goto done;
@@ -93,9 +97,13 @@ void on_leave(GumInvocationContext *ic){Invocation *v=GUM_IC_GET_INVOCATION_DATA
  if(gum_invocation_context_get_return_value(ic)!=v->out||!valid_span(v->out,4,TRUE)){fault();goto done;}
  base=*v->out;result=base;
  if(state.mode!=2||v->version!=state.version)reason=1;
- else if(base==0||base==INVALID)reason=2;
- else {sum=(gint64)base+v->entry.delta;if(sum>2147483647LL||sum<(-2147483647LL-1)||sum==INVALID)reason=3;else result=(gint32)sum;}
- if(state.count>=LIMIT||state.changed>=512){fault();goto done;}
+ else if(base==0||base<=INVALID||(v->entry.delta<0&&base<=-1048576))reason=2;
+ else {sum=(gint64)base+v->entry.delta;
+  /* Leave room for the later district-preference factor of 1.5. Do not
+   * manufacture an invalid result or raise an already lower native score. */
+  if(v->entry.delta<0&&sum<-1048576)sum=-1048576;
+  if(sum>2147483647LL||sum<(-2147483647LL-1)||sum==INVALID)reason=3;else result=(gint32)sum;}
+ if(state.count>=LIMIT||state.changed>=4096){fault();goto done;}
  if(!reason){*v->out=result;state.changed++;}
  record(v->entry,0,v->entry.district,v->entry.plot,base,result,reason,1);
  done:g_mutex_unlock(&state.mutex);
@@ -106,14 +114,15 @@ static void monitor_enter(GumInvocationContext *ic,gint32 kind){Invocation *v=GU
  v->object=gum_invocation_context_get_nth_argument(ic,0);e=object_entry(v->object);if(!e)goto done;
  v->out=NULL;
  if(kind==2){v->out=gum_invocation_context_get_nth_argument(ic,1);if(!valid_span(v->out,8,TRUE)){fault();goto done;}}
- if(kind==3){d=(gint32)(gintptr)gum_invocation_context_get_nth_argument(ic,2);if(d!=e->district)goto done;
+ if(kind==3){d=(gint32)(gintptr)gum_invocation_context_get_nth_argument(ic,2);
   p=gum_invocation_context_get_nth_argument(ic,3);if(!p)goto done;if(!valid_span(p,0x2c,FALSE)){fault();goto done;}
-  index=*(gint16*)(p+0x2a)*state.width+*(gint16*)(p+0x28);if(index!=e->plot)goto done;
+  index=*(gint16*)(p+0x2a)*state.width+*(gint16*)(p+0x28);
+  e=find_pair(e->player,e->city,d,index);if(!e)goto done;
   v->out=gum_invocation_context_get_nth_argument(ic,1);if(!valid_span(v->out,4,TRUE)){fault();goto done;}}
  v->entry=*e;v->version=state.version;v->kind=kind;v->accepted=1;state.active++;state.admitted++;
  done:g_mutex_unlock(&state.mutex);
 }
-static void monitor_leave(GumInvocationContext *ic){Invocation *v=GUM_IC_GET_INVOCATION_DATA(ic,Invocation);guint8 *rows,*row;gint32 *scores,d,plot,x,y,value;guint32 n,i;
+static void monitor_leave(GumInvocationContext *ic){Invocation *v=GUM_IC_GET_INVOCATION_DATA(ic,Invocation);guint8 *rows,*row;gint32 *scores,d,plot,x,y,value;guint32 n,i,j;Entry *e;
  if(!v||!v->accepted)return;v->accepted=0;g_mutex_lock(&state.mutex);state.active--;
  if(state.mode!=2||v->version!=state.version)goto done;
  d=v->entry.district;plot=v->entry.plot;
@@ -127,7 +136,15 @@ static void monitor_leave(GumInvocationContext *ic){Invocation *v=GUM_IC_GET_INV
  if(!valid_span(v->object,0x4dc,FALSE)){fault();goto done;}
  n=*(guint32*)(v->object+0x4d8);rows=*(guint8**)(v->object+0x4c8);
  if(n>37||(n&&!valid_span(rows,(gsize)n*0x78,FALSE))){fault();goto done;}
- for(i=0;i<n;i++){row=rows+i*0x78;x=*(gint32*)(row+8);y=*(gint32*)(row+12);if(y*state.width+x!=plot)continue;
+ for(i=0;i<n;i++){row=rows+i*0x78;x=*(gint32*)(row+8);y=*(gint32*)(row+12);
+  if(v->kind==1){
+   for(j=0;j<state.n;j++){e=&state.entries[j];if(e->player!=v->entry.player||e->city!=v->entry.city||e->plot!=y*state.width+x)continue;
+    scores=*(gint32**)(row+0x20);if(!valid_span(scores,state.district_count*4,FALSE)){fault();goto done;}
+    value=scores[e->district];record(*e,1,e->district,e->plot,value,value,0,row[0x55]&&(row[0x5a]||row[0x57]));
+    if(state.fatal)goto done;
+   }continue;
+  }
+  if(y*state.width+x!=plot)continue;
   scores=*(gint32**)(row+0x20);if(!valid_span(scores,state.district_count*4,FALSE)){fault();goto done;}
   value=scores[d];record(v->entry,v->kind,d,plot,value,value,0,row[0x55]&&(row[0x5a]||row[0x57]));break;
  }

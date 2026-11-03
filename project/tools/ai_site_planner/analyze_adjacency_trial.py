@@ -14,12 +14,14 @@ def analyze(base):
   for path in(directory/'plans').glob('*.json'):
    turn=int(path.stem.split('-')[-1]);plans[turn]=read(path)
  if not scans:raise ValueError('No completed scans')
- seen=set();foundations=[];promoted={};complete={};turns=sorted(scans)
+ seen=set();foundations=[];promoted={};penalized={};complete={};turns=sorted(scans)
  for i,turn in enumerate(turns):
   scan=scans[turn];prior=scans[turns[i-1]]if i else None
   prior_candidates={(r['player'],r['city'],r['quarter'],r['plot']):r for r in(prior or {}).get('candidates',[])}
   for r in plans.get(turns[i-1],{}).get('selected',[])if i else []:
    key=(r['player'],r['city'],r['quarter'],r['plot']);promoted.setdefault(key,[]).append(turns[i-1])
+  for r in plans.get(turns[i-1],{}).get('penalized',[])if i else []:
+   key=(r['player'],r['city'],r['quarter'],r['plot']);penalized.setdefault(key,[]).append(turns[i-1])
   for c in scan['cities']:
    for d in c['districts']:
     if d['type']not in('DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_CSC_TAILORS_QUARTER'):continue
@@ -27,7 +29,7 @@ def analyze(base):
     if d['complete']and key not in complete:complete[key]=turn
     if key in seen:continue
     seen.add(key);candidate=prior_candidates.get(key)
-    foundations.append(dict(player=c['player'],city=c['city'],cityName=c['name'],quarter=d['type'],plot=d['plot'],firstObserved=turn,completeAtFirstObservation=d['complete'],cityPresentInPreviousScan=any((x['player'],x['city'])==(c['player'],c['city'])for x in(prior or {}).get('cities',[])),previousScanTurn=prior['turn']if prior else None,previousAdjacency=candidate['total']if candidate else None,previousBreakdown=candidate['details']if candidate else None,everPromotedBefore=bool(promoted.get(key)),promotedTurns=promoted.get(key,[]).copy(),priorScanSource=sources[prior['turn']]if prior else None))
+    foundations.append(dict(player=c['player'],city=c['city'],cityName=c['name'],quarter=d['type'],plot=d['plot'],firstObserved=turn,completeAtFirstObservation=d['complete'],cityPresentInPreviousScan=any((x['player'],x['city'])==(c['player'],c['city'])for x in(prior or {}).get('cities',[])),previousScanTurn=prior['turn']if prior else None,previousAdjacency=candidate['total']if candidate else None,previousBreakdown=candidate['details']if candidate else None,everPromotedBefore=bool(promoted.get(key)),promotedTurns=promoted.get(key,[]).copy(),penalizedTurns=penalized.get(key,[]).copy(),penalizedInPreviousPlan=bool(prior and prior['turn']in penalized.get(key,[])),priorScanSource=sources[prior['turn']]if prior else None))
  for row in foundations:row['firstObservedComplete']=complete.get((row['player'],row['city'],row['quarter'],row['plot']))
  windows=[];results=[];timeline=[]
  for directory in base.iterdir():
@@ -41,9 +43,12 @@ def analyze(base):
   result=directory/'result.json'
   if result.is_file():results.append(read(result))
  records=[(w,r)for w in windows for r in w['records']]
- winners=[dict(version=w['version'],policyScanTurn=w['version']-1,**r,promoted=any((e['player'],e['city'],e['district'],e['plot'])==(r['player'],r['city'],r['district'],r['plot'])for e in w['entries']))for w,r in records if r['k']=='best']
+ def entry_for(w,r):
+  return next((e for e in w['entries']if(e['player'],e['city'],e['district'],e['plot'])==(r['player'],r['city'],r['district'],r['plot'])),None)
+ winners=[dict(version=w['version'],policyScanTurn=w['version']-1,**r,promoted=bool(entry_for(w,r)and entry_for(w,r)['delta']>0),penalized=bool(entry_for(w,r)and entry_for(w,r)['delta']<0),policyDelta=entry_for(w,r)['delta']if entry_for(w,r)else 0)for w,r in records if r['k']=='best']
+ adjustments=[dict(version=w['version'],policyScanTurn=w['version']-1,**r,policyDelta=entry_for(w,r)['delta'])for w,r in records if r['k']=='net'and r['base']!=r['result']]
  durations=[s['elapsedSeconds']for s in scans.values()]
- return dict(acceptedScanTurns=turns,missingScanTurns=sorted(set(range(min(turns),max(turns)+1))-set(turns)),speed=sorted({s['speed']for s in scans.values()}),originalAI=scans[turns[0]]['originalAI'],foundations=foundations,promotedFoundations=sum(r['everPromotedBefore']for r in foundations),otherFoundations=sum(not r['everPromotedBefore']for r in foundations),knownBelow4Foundations=sum(r['previousAdjacency']is not None and r['previousAdjacency']<4 for r in foundations),completedQuarters=sum(r['firstObservedComplete']is not None for r in foundations),scanCPUSeconds=dict(median=statistics.median(durations),maximum=max(durations),validTimingEstablished=any(v>0 for v in durations),note='All-zero samples are below resolution or unavailable, not proof of zero cost'),geometryBuilds=sum(s['geometryBuilt']for s in scans.values()),cityObservations=sum(len(s['cities'])for s in scans.values()),evaluatedSitePairs=sum(s['sitesEvaluated']for s in scans.values()),nativeWindows=len(windows),nativeWrites=sum(w['stats']['changed']for w in windows),nativeErrors=sum(w['stats']['errors']for w in windows),nativeWinnerCalls=winners,operationTimeline=sorted(timeline,key=lambda e:e['unix']or 0),nativeWindowSummaries=[dict(version=w['version'],sourceScanTurn=w['version']-1 if w['version']>1 else None,entries=w['entries'],stats=w['stats'])for w in windows],results=results,causedChoiceChangeProven=False,economicBenefitProven=False,classification='Adjacency is the preceding completed scan, not an exact construction-tick re-evaluation; promoted means selected by this policy before first physical observation.')
+ return dict(acceptedScanTurns=turns,missingScanTurns=sorted(set(range(min(turns),max(turns)+1))-set(turns)),speed=sorted({s['speed']for s in scans.values()}),originalAI=scans[turns[0]]['originalAI'],foundations=foundations,promotedFoundations=sum(r['everPromotedBefore']for r in foundations),otherFoundations=sum(not r['everPromotedBefore']for r in foundations),knownBelow4Foundations=sum(r['previousAdjacency']is not None and r['previousAdjacency']<4 for r in foundations),completedQuarters=sum(r['firstObservedComplete']is not None for r in foundations),scanCPUSeconds=dict(median=statistics.median(durations),maximum=max(durations),validTimingEstablished=any(v>0 for v in durations),note='All-zero samples are below resolution or unavailable, not proof of zero cost'),geometryBuilds=sum(s['geometryBuilt']for s in scans.values()),cityObservations=sum(len(s['cities'])for s in scans.values()),evaluatedSitePairs=sum(s['sitesEvaluated']for s in scans.values()),nativeWindows=len(windows),nativeWrites=sum(w['stats']['changed']for w in windows),nativePenaltyWrites=sum(r['result']<r['base']for r in adjustments),nativeBonusWrites=sum(r['result']>r['base']for r in adjustments),nativeErrors=sum(w['stats']['errors']for w in windows),nativeWinnerCalls=winners,nativeAdjustments=adjustments,operationTimeline=sorted(timeline,key=lambda e:e['unix']or 0),nativeWindowSummaries=[dict(version=w['version'],sourceScanTurn=w['version']-1 if w['version']>1 else None,entries=w['entries'],stats=w['stats'])for w in windows],results=results,causedChoiceChangeProven=False,economicBenefitProven=False,classification='Adjacency is the preceding completed scan, not an exact construction-tick re-evaluation; promoted means selected by this policy before first physical observation.')
 def main():
- p=argparse.ArgumentParser();p.add_argument('--base',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();result=analyze(a.base);a.output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items()if k not in('foundations','nativeWinnerCalls','results','operationTimeline','nativeWindowSummaries')}))
+ p=argparse.ArgumentParser();p.add_argument('--base',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();result=analyze(a.base);a.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps({k:v for k,v in result.items()if k not in('foundations','nativeWinnerCalls','nativeAdjustments','results','operationTimeline','nativeWindowSummaries')}))
 if __name__=='__main__':main()

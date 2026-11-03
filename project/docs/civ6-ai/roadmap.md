@@ -32,7 +32,11 @@ The recovered Online100 run is now closed:52 native score additions, zero native
 errors,7 promoted Bakers foundations/completions, and23 other foundations below4
 in their preceding scans. No Tailors site qualified. This confirms treated
 follow-through and the absence of a weak-site ban, not a caused choice change
-or empire benefit. First-Mill construction remains the next distinct decision.
+or empire benefit. Henno next authorized discouraging weak placements:
+the [v2 soft-penalty extension](../research/mods/csc-ai-placement-penalties-20261103.md)
+retains the promotion and subtracts a graded priority from every observed sub-4
+pair. Its fresh Online100 test is in progress. First-Mill construction remains
+a later distinct decision, not part of this placement penalty.
 
 ## Starting point
 
