@@ -898,5 +898,18 @@
       "AI-C041",
       "AI-C045"
     ]
+  },
+  {
+    "id": "AI-C048",
+    "title": "A fresh offline evaluator exposes conditional Tailors investment rankings",
+    "statement": "An independent Tailors review model evaluates 44 copied historical cases: six new-site alternatives and38 existing Quarters. It compares building bundles with retain/defer, separates yield/cost/timing ledgers, preserves material/customer gates and unknowns, and provides27 assumption scenarios plus priced future-customer branches.",
+    "status": "provisional",
+    "evidence_types": ["source", "inference"],
+    "scope": "First Tailors mechanics profile, current workspace source pins and four closed capture hashes.41 partial numerical reviews; three unfinished Quarters need remaining-production inputs. The six new sites have no owned mapped supply. Kerma's modeled Fashion House investment changes with horizon/cost assumptions. No game, installed content or native score was changed.",
+    "limits": "Partial review utility is not native Q8, actual profit, a bound on benefit or a deployed policy. Earlier treatments remain part of the captured worlds. Services, trade, specialists, growth, competing uses, queue delays and other effects remain unpriced; unsupported Quarters/integrations and native-overlap conversion need further work. Conditional future paths are not observed completions or permission to act.",
+    "sources": ["project/docs/research/mods/csc-ai-site-evaluator-20261103.md"],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": ["AI-C001", "AI-C004", "AI-C016", "AI-C028", "AI-C030"],
+    "related": ["AI-N065"]
   }
 ]

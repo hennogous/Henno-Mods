@@ -272,6 +272,16 @@
       "site_path": "sources/memory/session_ai_shared_controller_20261030.md"
     },
     {
+      "path": "memory/session_ai_site_evaluator_20261103.md",
+      "title": "Fresh offline site evaluator — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 3144,
+      "sha256": "a6634e87f2464c99056023c1ecbb87ca48427615168a643239af81a9a5e034cb",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_site_evaluator_20261103.md"
+    },
+    {
       "path": "memory/session_ai_work_admission_20261031.md",
       "title": "Native work admission CLOSED/AUDITED — 31 October 2026",
       "kind": "agent-note",
@@ -1392,6 +1402,16 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-service-aware-foundation-planning-20261022.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-site-evaluator-20261103.md",
+      "title": "First offline Tailors site review",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 11973,
+      "sha256": "3a61a1ebf70b044cb3d67775bce5de1f6861a8206caf453cee725da92735d892",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-site-evaluator-20261103.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-ai-supply-chain-astra-review-20261025.md",
       "title": "CSC AI supply-chain capability — Astra review, 25 October 2026",
       "kind": "report",
@@ -1830,6 +1850,16 @@
       "sha256": "80d249b22dce0a7db32d43e94c51c94a172434e4be941c659d11eac5862cac7e",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/tools/ai_baseline/full_game_controller/README.md"
+    },
+    {
+      "path": "project/tools/ai_site_planner/README.md",
+      "title": "Offline CSC site planner",
+      "kind": "tool-reference",
+      "date": null,
+      "bytes": 4796,
+      "sha256": "f72f6fcb725ae4372dbaf63b82956531899113d6adb800c39fd8dfdafda04400",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/tools/ai_site_planner/README.md"
     },
     {
       "path": "project/tools/native_ai/README.md",

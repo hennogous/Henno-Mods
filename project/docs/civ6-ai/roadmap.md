@@ -43,7 +43,7 @@ flowchart TD
   C -. "Revise estimates from evidence" .-> A
 ```
 
-## 1. Build an explainable site evaluator offline — next
+## 1. Build an explainable site evaluator offline — first Tailors review ready
 
 For each city, Quarter and candidate tile, describe the investment it enables:
 
@@ -75,6 +75,11 @@ Do not turn the former Both-or-+4 trial threshold into a new rule by default.
 **Deliverable:** ranked examples with explanations and sensitivity to the main
 assumptions. The model should explain why one investment is preferable and what
 would change that judgment, before another long game is needed.
+
+The [first Tailors review](topics/csc/site-planner.md) now covers44 copied cases,
+including conditional rankings and explicit missing terms. Next, review those
+assumptions, extend mechanics coverage and obtain the specific facts that can
+change a decision. This first profile does not complete the broader evaluator.
 
 ## 2. Translate that value into a native incentive
 

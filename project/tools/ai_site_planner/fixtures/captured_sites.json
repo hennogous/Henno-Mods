@@ -1,0 +1,6415 @@
+{
+  "schema": 1,
+  "sources": [
+    {
+      "id": "shadow",
+      "locator": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-native-shadow-planner-20261030\\run-02\\shadow-initial.json",
+      "sha256": "570d35d7828689ef0cbd0326d940f2da9efee00dfeb74030b2737dba1a634377"
+    },
+    {
+      "id": "census",
+      "locator": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-native-shadow-planner-20261030\\run-02\\initial-census.json",
+      "sha256": "f884197a6828bcec62dd319925934171d5f5e8e94a23cd171889d57bf708dfee"
+    },
+    {
+      "id": "candidate150",
+      "locator": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-paired-selective-chain-screen-20261101\\candidate\\run-01\\continue-live45\\compact\\turn-150.json",
+      "sha256": "e7f51b697191b1bc42c5deb8eb4622659903702d3b78611192ba98bc2b44ccb3"
+    },
+    {
+      "id": "reference150",
+      "locator": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-paired-selective-chain-screen-20261101\\reference\\run-02\\recovery-45-v2\\finish-145\\resume-150\\compact\\turn-150.json",
+      "sha256": "eabe002785f878d0862a5c6f78780914851bae8472be92704954b5a41eb5e066"
+    }
+  ],
+  "rules": {
+    "profile": "tailors-review-20261103-v1",
+    "district_cost": 60,
+    "district_maintenance": 1,
+    "buildings": {
+      "2": {
+        "cost": 80,
+        "maintenance": 2
+      },
+      "3": {
+        "cost": 160,
+        "maintenance": 2
+      },
+      "4": {
+        "cost": 250,
+        "maintenance": 3
+      }
+    },
+    "stage3_engine_amount_per_population": 0.105,
+    "note": "Current SQL uses engine coefficient0.105; design display0.1 is not substituted.",
+    "profile_assumptions": [
+      "CSC Gold companion enabled",
+      "Base district/building types; optional integrations unpriced"
+    ],
+    "primary_sources": [
+      {
+        "path": "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "sha256_lf": "88f827e5e48700d36c1cf638c46de61c759d4ccbec364976b0718d8922a313a1"
+      },
+      {
+        "path": "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
+        "sha256_lf": "12a3715af262606d358e8a4ed31d796635457563ff6f3699db2a7d5aac9c6f03"
+      },
+      {
+        "path": "Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua",
+        "sha256_lf": "b196d4f94f0ff4e6740ee881f4276166d8974de4c328c66401a0abc16042cef7"
+      },
+      {
+        "path": "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyCore.lua",
+        "sha256_lf": "813acb3de6750922ada38f1baa898833f2ca5e04d34014c62e6926c5b93e9f2b"
+      },
+      {
+        "path": "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyGameplay.lua",
+        "sha256_lf": "c93b6e4b3683b0ab7f9c06be4b3b5ee4da7dd893d3c209073a8d9bf1ed71fb15"
+      }
+    ]
+  },
+  "sites": [
+    {
+      "id": "shadow110:p3:c131073:TAILORS:2114",
+      "group": "shadow110:p3:c131073:TAILORS",
+      "name": "Captured turn110 city",
+      "identity": {
+        "world": "shadow110",
+        "turn": 110,
+        "player": 3,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 2114
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "shadow",
+        "pointer": "/candidates/6",
+        "interpretation": "Historical geometry under the current mechanics profile"
+      },
+      "quarter": {
+        "exists": false,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 9.59765625
+      },
+      "land": {
+        "legal": true,
+        "can_produce": true,
+        "district_cost": 45,
+        "reservation": null,
+        "improvement": "IMPROVEMENT_FARM",
+        "resource": "",
+        "worked": 0
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": 0,
+      "materials": [
+        {
+          "plot": 2039,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2040,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2113,
+          "resource": "RESOURCE_FISH",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2115,
+          "resource": "RESOURCE_DYES",
+          "base": false,
+          "specialty": true,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2187,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2188,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2188
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2115
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2040
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2039
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2113
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2187
+        }
+      ],
+      "unknowns": [
+        "Plot potential is not a fresh immediate CanZone/reservation receipt",
+        "Farm removal/lost worked yields and alternative district values are unpriced"
+      ]
+    },
+    {
+      "id": "shadow110:p3:c131073:TAILORS:2116",
+      "group": "shadow110:p3:c131073:TAILORS",
+      "name": "Captured turn110 city",
+      "identity": {
+        "world": "shadow110",
+        "turn": 110,
+        "player": 3,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 2116
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "shadow",
+        "pointer": "/candidates/7",
+        "interpretation": "Historical geometry under the current mechanics profile"
+      },
+      "quarter": {
+        "exists": false,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 9.59765625
+      },
+      "land": {
+        "legal": true,
+        "can_produce": true,
+        "district_cost": 45,
+        "reservation": null,
+        "improvement": "IMPROVEMENT_FARM",
+        "resource": "",
+        "worked": 1
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": 0,
+      "materials": [
+        {
+          "plot": 2041,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2042,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2115,
+          "resource": "RESOURCE_DYES",
+          "base": false,
+          "specialty": true,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2117,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2189,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2190,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": true,
+            "DISTRICT_SUGUBA": true,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": true,
+            "DISTRICT_HOLY_SITE": true,
+            "DISTRICT_COMMERCIAL_HUB": true,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2117
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2042
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2041
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2115
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": true,
+            "DISTRICT_SUGUBA": true,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": true,
+            "DISTRICT_HOLY_SITE": true,
+            "DISTRICT_COMMERCIAL_HUB": true,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2189
+        }
+      ],
+      "unknowns": [
+        "Plot potential is not a fresh immediate CanZone/reservation receipt",
+        "Farm removal/lost worked yields and alternative district values are unpriced"
+      ]
+    },
+    {
+      "id": "shadow110:p3:c131073:TAILORS:2189",
+      "group": "shadow110:p3:c131073:TAILORS",
+      "name": "Captured turn110 city",
+      "identity": {
+        "world": "shadow110",
+        "turn": 110,
+        "player": 3,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 2189
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "shadow",
+        "pointer": "/candidates/8",
+        "interpretation": "Historical geometry under the current mechanics profile"
+      },
+      "quarter": {
+        "exists": false,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 9.59765625
+      },
+      "land": {
+        "legal": true,
+        "can_produce": true,
+        "district_cost": 45,
+        "reservation": null,
+        "improvement": "IMPROVEMENT_FARM",
+        "resource": "",
+        "worked": 1
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": 0,
+      "materials": [
+        {
+          "plot": 2115,
+          "resource": "RESOURCE_DYES",
+          "base": false,
+          "specialty": true,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2116,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2188,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2190,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2263,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2264,
+          "resource": "RESOURCE_ALUMINUM",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": true,
+            "DISTRICT_SUGUBA": true,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": true,
+            "DISTRICT_HOLY_SITE": true,
+            "DISTRICT_COMMERCIAL_HUB": true,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2264
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": true,
+            "DISTRICT_SUGUBA": true,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": true,
+            "DISTRICT_HOLY_SITE": true,
+            "DISTRICT_COMMERCIAL_HUB": true,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2116
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2115
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2188
+        }
+      ],
+      "unknowns": [
+        "Plot potential is not a fresh immediate CanZone/reservation receipt",
+        "Farm removal/lost worked yields and alternative district values are unpriced"
+      ]
+    },
+    {
+      "id": "shadow110:p3:c131073:TAILORS:2264",
+      "group": "shadow110:p3:c131073:TAILORS",
+      "name": "Captured turn110 city",
+      "identity": {
+        "world": "shadow110",
+        "turn": 110,
+        "player": 3,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 2264
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "shadow",
+        "pointer": "/candidates/9",
+        "interpretation": "Historical geometry under the current mechanics profile"
+      },
+      "quarter": {
+        "exists": false,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 9.59765625
+      },
+      "land": {
+        "legal": true,
+        "can_produce": true,
+        "district_cost": 45,
+        "reservation": null,
+        "improvement": "IMPROVEMENT_FARM",
+        "resource": "RESOURCE_ALUMINUM",
+        "worked": 1
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": 0,
+      "materials": [
+        {
+          "plot": 2189,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2190,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2263,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2265,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2337,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2338,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": true,
+            "DISTRICT_SUGUBA": true,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": true,
+            "DISTRICT_HOLY_SITE": true,
+            "DISTRICT_COMMERCIAL_HUB": true,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2338
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": true,
+            "DISTRICT_SUGUBA": true,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": true,
+            "DISTRICT_HOLY_SITE": true,
+            "DISTRICT_COMMERCIAL_HUB": true,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2189
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2337
+        }
+      ],
+      "unknowns": [
+        "Plot potential is not a fresh immediate CanZone/reservation receipt",
+        "Farm removal/lost worked yields and alternative district values are unpriced"
+      ]
+    },
+    {
+      "id": "shadow110:p3:c131073:TAILORS:2338",
+      "group": "shadow110:p3:c131073:TAILORS",
+      "name": "Captured turn110 city",
+      "identity": {
+        "world": "shadow110",
+        "turn": 110,
+        "player": 3,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 2338
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "shadow",
+        "pointer": "/candidates/10",
+        "interpretation": "Historical geometry under the current mechanics profile"
+      },
+      "quarter": {
+        "exists": false,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 9.59765625
+      },
+      "land": {
+        "legal": true,
+        "can_produce": true,
+        "district_cost": 45,
+        "reservation": null,
+        "improvement": "IMPROVEMENT_FARM",
+        "resource": "",
+        "worked": 1
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": 1,
+      "materials": [
+        {
+          "plot": 2264,
+          "resource": "RESOURCE_ALUMINUM",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2265,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2337,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2339,
+          "resource": "RESOURCE_HONEY",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2412,
+          "resource": "RESOURCE_NITER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2413,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2413
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2339
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": true,
+            "DISTRICT_SUGUBA": true,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": true,
+            "DISTRICT_HOLY_SITE": true,
+            "DISTRICT_COMMERCIAL_HUB": true,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2264
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2337
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2412
+        }
+      ],
+      "unknowns": [
+        "Plot potential is not a fresh immediate CanZone/reservation receipt",
+        "Farm removal/lost worked yields and alternative district values are unpriced"
+      ]
+    },
+    {
+      "id": "shadow110:p3:c131073:TAILORS:2411",
+      "group": "shadow110:p3:c131073:TAILORS",
+      "name": "Captured turn110 city",
+      "identity": {
+        "world": "shadow110",
+        "turn": 110,
+        "player": 3,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 2411
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "shadow",
+        "pointer": "/candidates/11",
+        "interpretation": "Historical geometry under the current mechanics profile"
+      },
+      "quarter": {
+        "exists": false,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 9.59765625
+      },
+      "land": {
+        "legal": true,
+        "can_produce": true,
+        "district_cost": 45,
+        "reservation": null,
+        "improvement": "IMPROVEMENT_FARM",
+        "resource": "",
+        "worked": 0
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": 0,
+      "materials": [
+        {
+          "plot": 2336,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2337,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2410,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2412,
+          "resource": "RESOURCE_NITER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": true,
+          "intensity": 1
+        },
+        {
+          "plot": 2484,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        },
+        {
+          "plot": 2485,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": false,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2485
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": false,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": false,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": false
+          },
+          "plot": 2412
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2337
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2336
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2410
+        },
+        {
+          "native_potential": {
+            "DISTRICT_COTHON": true,
+            "DISTRICT_THEATER": false,
+            "DISTRICT_SUGUBA": false,
+            "DISTRICT_ACROPOLIS": false,
+            "DISTRICT_HARBOR": true,
+            "DISTRICT_LAVRA": false,
+            "DISTRICT_HOLY_SITE": false,
+            "DISTRICT_COMMERCIAL_HUB": false,
+            "DISTRICT_ROYAL_NAVY_DOCKYARD": true
+          },
+          "plot": 2484
+        }
+      ],
+      "unknowns": [
+        "Plot potential is not a fresh immediate CanZone/reservation receipt",
+        "Farm removal/lost worked yields and alternative district values are unpriced"
+      ]
+    },
+    {
+      "id": "candidate150:p1:c262147:TAILORS:2311",
+      "group": "candidate150:p1:c262147:TAILORS",
+      "name": "LOC_CITY_NAME_ABU_SIMBEL",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 1,
+        "city": 262147,
+        "quarter": "TAILORS",
+        "plot": 2311
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/3",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 11,
+        "production": 22.796875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2386,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2312,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2238,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2237,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2310,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2385,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:262147:2386:DISTRICT_COMMERCIAL_HUB",
+          "owner": 1,
+          "city": 262147,
+          "plot": 2386,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": "BUILDING_MARKET",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 11
+        },
+        {
+          "key": "1:262147:2238:DISTRICT_THEATER",
+          "owner": 1,
+          "city": 262147,
+          "plot": 2238,
+          "district": "DISTRICT_THEATER",
+          "building": "BUILDING_AMPHITHEATER",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 11
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p1:c393221:TAILORS:2165",
+      "group": "candidate150:p1:c393221:TAILORS",
+      "name": "LOC_CITY_NAME_KERMA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 1,
+        "city": 393221,
+        "quarter": "TAILORS",
+        "plot": 2165
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/5",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 9,
+        "production": 48,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": true,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2240,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2166,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2092,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2091,
+          "resource": "RESOURCE_SILK",
+          "base": false,
+          "specialty": true,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2164,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2239,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:393221:2164:DISTRICT_THEATER",
+          "owner": 1,
+          "city": 393221,
+          "plot": 2164,
+          "district": "DISTRICT_THEATER",
+          "building": "BUILDING_AMPHITHEATER",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 9
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p1:c524295:TAILORS:2392",
+      "group": "candidate150:p1:c524295:TAILORS",
+      "name": "LOC_CITY_NAME_HEH",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 1,
+        "city": 524295,
+        "quarter": "TAILORS",
+        "plot": 2392
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/8",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 4,
+        "production": 24,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2466,
+          "resource": "RESOURCE_WHEAT",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2393,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2318,
+          "resource": "RESOURCE_SILK",
+          "base": false,
+          "specialty": true,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2317,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2391,
+          "resource": "RESOURCE_WHEAT",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2465,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p2:c131073:TAILORS:1541",
+      "group": "candidate150:p2:c131073:TAILORS",
+      "name": "LOC_CITY_NAME_TELAVI",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 2,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 1541
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/10",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 17,
+        "production": 14,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1615,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1542,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1467,
+          "resource": "RESOURCE_HORSES",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1466,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1540,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1614,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "2:65536:1615:DISTRICT_HOLY_SITE",
+          "owner": 2,
+          "city": 65536,
+          "plot": 1615,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 18,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "2:131073:1540:DISTRICT_HOLY_SITE",
+          "owner": 2,
+          "city": 131073,
+          "plot": 1540,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 17,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "2:131073:1614:DISTRICT_COMMERCIAL_HUB",
+          "owner": 2,
+          "city": 131073,
+          "plot": 1614,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": null,
+          "population": 17,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p2:c458758:TAILORS:1472",
+      "group": "candidate150:p2:c458758:TAILORS",
+      "name": "LOC_CITY_NAME_BATUMI",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 2,
+        "city": 458758,
+        "quarter": "TAILORS",
+        "plot": 1472
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/15",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 8,
+        "production": 19.796875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1547,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1473,
+          "resource": "RESOURCE_WHEAT",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1399,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1398,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1471,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1546,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "2:65536:1471:DISTRICT_COMMERCIAL_HUB",
+          "owner": 2,
+          "city": 65536,
+          "plot": 1471,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": null,
+          "population": 18,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p2:c720906:TAILORS:800",
+      "group": "candidate150:p2:c720906:TAILORS",
+      "name": "LOC_CITY_NAME_BICHVINTA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 2,
+        "city": 720906,
+        "quarter": "TAILORS",
+        "plot": 800
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/19",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 5,
+        "production": 7.69921875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 874,
+          "resource": "RESOURCE_TOBACCO",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 801,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 726,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 725,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 799,
+          "resource": "RESOURCE_STONE",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 873,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p3:c65536:TAILORS:2562",
+      "group": "candidate150:p3:c65536:TAILORS",
+      "name": "LOC_CITY_NAME_QARAQORUM",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 3,
+        "city": 65536,
+        "quarter": "TAILORS",
+        "plot": 2562
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/20",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 12,
+        "production": 38.5,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2636,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2563,
+          "resource": "RESOURCE_MAIZE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2488,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2487,
+          "resource": "RESOURCE_HORSES",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2561,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2635,
+          "resource": "RESOURCE_MAIZE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "3:65536:2561:DISTRICT_HOLY_SITE",
+          "owner": 3,
+          "city": 65536,
+          "plot": 2561,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 12,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p3:c196610:TAILORS:3084",
+      "group": "candidate150:p3:c196610:TAILORS",
+      "name": "LOC_CITY_NAME_URUMQI",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 3,
+        "city": 196610,
+        "quarter": "TAILORS",
+        "plot": 3084
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/24",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 9,
+        "production": 27.5,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 3159,
+          "resource": "RESOURCE_DEER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3085,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3011,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3010,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3083,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3158,
+          "resource": "RESOURCE_DEER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p3:c327684:TAILORS:2045",
+      "group": "candidate150:p3:c327684:TAILORS",
+      "name": "LOC_CITY_NAME_KOOKEQOTA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 3,
+        "city": 327684,
+        "quarter": "TAILORS",
+        "plot": 2045
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/26",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 11,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2120,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2046,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1972,
+          "resource": "RESOURCE_FISH",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1971,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2044,
+          "resource": "RESOURCE_COCOA",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2119,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "3:327684:1971:DISTRICT_HARBOR",
+          "owner": 3,
+          "city": 327684,
+          "plot": 1971,
+          "district": "DISTRICT_HARBOR",
+          "building": null,
+          "population": 7,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p3:c393221:TAILORS:2114",
+      "group": "candidate150:p3:c393221:TAILORS",
+      "name": "LOC_CITY_NAME_QESHQER",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 3,
+        "city": 393221,
+        "quarter": "TAILORS",
+        "plot": 2114
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/27",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 8.796875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2188,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2115,
+          "resource": "RESOURCE_DYES",
+          "base": false,
+          "specialty": true,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2040,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2039,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2113,
+          "resource": "RESOURCE_FISH",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2187,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "3:393221:2188:DISTRICT_HARBOR",
+          "owner": 3,
+          "city": 393221,
+          "plot": 2188,
+          "district": "DISTRICT_HARBOR",
+          "building": null,
+          "population": 7,
+          "district_functioning": false,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p3:c458758:TAILORS:3232",
+      "group": "candidate150:p3:c458758:TAILORS",
+      "name": "LOC_CITY_NAME_KORLA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 3,
+        "city": 458758,
+        "quarter": "TAILORS",
+        "plot": 3232
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/28",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 4,
+        "production": 5.5,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 3307,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3233,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3159,
+          "resource": "RESOURCE_DEER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3158,
+          "resource": "RESOURCE_DEER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3231,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 3306,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p4:c65536:TAILORS:1346",
+      "group": "candidate150:p4:c65536:TAILORS",
+      "name": "LOC_CITY_NAME_LISBON_STK",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 4,
+        "city": 65536,
+        "quarter": "TAILORS",
+        "plot": 1346
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/33",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 11,
+        "production": 34.09765625,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1420,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1347,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1272,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1271,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1345,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1419,
+          "resource": "RESOURCE_ANTIQUITY_SITE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "4:65536:1272:DISTRICT_HOLY_SITE",
+          "owner": 4,
+          "city": 65536,
+          "plot": 1272,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": "BUILDING_TEMPLE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 11
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p4:c327684:TAILORS:1650",
+      "group": "candidate150:p4:c327684:TAILORS",
+      "name": "LOC_CITY_NAME_COIMBRA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 4,
+        "city": 327684,
+        "quarter": "TAILORS",
+        "plot": 1650
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/38",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 10,
+        "production": 9.8984375,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1724,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1651,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1576,
+          "resource": "RESOURCE_URANIUM",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1575,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1649,
+          "resource": "RESOURCE_BANANAS",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1723,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p4:c655369:TAILORS:1636",
+      "group": "candidate150:p4:c655369:TAILORS",
+      "name": "LOC_CITY_NAME_LEIRIA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 4,
+        "city": 655369,
+        "quarter": "TAILORS",
+        "plot": 1636
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/42",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 10,
+        "production": 12.09765625,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1710,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1637,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1562,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1561,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1635,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1709,
+          "resource": "RESOURCE_RICE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p5:c65536:TAILORS:1683",
+      "group": "candidate150:p5:c65536:TAILORS",
+      "name": "LOC_CITY_NAME_KYOTO",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 5,
+        "city": 65536,
+        "quarter": "TAILORS",
+        "plot": 1683
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/43",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 15,
+        "production": 26,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1757,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1684,
+          "resource": "RESOURCE_RICE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1609,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1608,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1682,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1756,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "5:65536:1608:DISTRICT_HOLY_SITE",
+          "owner": 5,
+          "city": 65536,
+          "plot": 1608,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 15,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "5:196610:1757:DISTRICT_HOLY_SITE",
+          "owner": 5,
+          "city": 196610,
+          "plot": 1757,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 12,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p5:c327684:TAILORS:1603",
+      "group": "candidate150:p5:c327684:TAILORS",
+      "name": "LOC_CITY_NAME_GIFU",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 5,
+        "city": 327684,
+        "quarter": "TAILORS",
+        "plot": 1603
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/46",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 9,
+        "production": 17.59765625,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1678,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1604,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1530,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1529,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1602,
+          "resource": "RESOURCE_WHEAT",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1677,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "5:65536:1678:DISTRICT_COMMERCIAL_HUB",
+          "owner": 5,
+          "city": 65536,
+          "plot": 1678,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": null,
+          "population": 15,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "5:327684:1529:DISTRICT_HOLY_SITE",
+          "owner": 5,
+          "city": 327684,
+          "plot": 1529,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 9,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "5:327684:1530:DISTRICT_THEATER",
+          "owner": 5,
+          "city": 327684,
+          "plot": 1530,
+          "district": "DISTRICT_THEATER",
+          "building": null,
+          "population": 9,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p5:c393221:TAILORS:1229",
+      "group": "candidate150:p5:c393221:TAILORS",
+      "name": "LOC_CITY_NAME_OKAYAMA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 5,
+        "city": 393221,
+        "quarter": "TAILORS",
+        "plot": 1229
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/49",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 6,
+        "production": 28.59765625,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1303,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1230,
+          "resource": "RESOURCE_COPPER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1155,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1154,
+          "resource": "RESOURCE_SHEEP",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1228,
+          "resource": "RESOURCE_CATTLE",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1302,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "candidate150:p5:c786442:TAILORS:1017",
+      "group": "candidate150:p5:c786442:TAILORS",
+      "name": "LOC_CITY_NAME_MORIOKA",
+      "identity": {
+        "world": "candidate150",
+        "turn": 150,
+        "player": 5,
+        "city": 786442,
+        "quarter": "TAILORS",
+        "plot": 1017
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "candidate150",
+        "pointer": "/physical/quarters/52",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 8,
+        "production": 3.296875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1092,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1018,
+          "resource": "RESOURCE_RICE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 944,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 943,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1016,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1091,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "5:786442:1016:DISTRICT_THEATER",
+          "owner": 5,
+          "city": 786442,
+          "plot": 1016,
+          "district": "DISTRICT_THEATER",
+          "building": null,
+          "population": 8,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "5:786442:943:DISTRICT_HARBOR",
+          "owner": 5,
+          "city": 786442,
+          "plot": 943,
+          "district": "DISTRICT_HARBOR",
+          "building": null,
+          "population": 8,
+          "district_functioning": false,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p1:c131073:TAILORS:2156",
+      "group": "reference150:p1:c131073:TAILORS",
+      "name": "LOC_CITY_NAME_EL_KURRU",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 1,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 2156
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/1",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 5,
+        "production": 13.19921875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2231,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2157,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2083,
+          "resource": "RESOURCE_NITER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2082,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2155,
+          "resource": "RESOURCE_ANTIQUITY_SITE",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2230,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:131073:2231:DISTRICT_HOLY_SITE",
+          "owner": 1,
+          "city": 131073,
+          "plot": 2231,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 5,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "1:327684:2083:DISTRICT_HOLY_SITE",
+          "owner": 1,
+          "city": 327684,
+          "plot": 2083,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 8,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p1:c196610:TAILORS:2752",
+      "group": "reference150:p1:c196610:TAILORS",
+      "name": "LOC_CITY_NAME_NURI",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 1,
+        "city": 196610,
+        "quarter": "TAILORS",
+        "plot": 2752
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/2",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 12,
+        "production": 29.69921875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2827,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2753,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2679,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2678,
+          "resource": "RESOURCE_IRON",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2751,
+          "resource": "RESOURCE_SILK",
+          "base": false,
+          "specialty": true,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2826,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:65536:2679:DISTRICT_THEATER",
+          "owner": 1,
+          "city": 65536,
+          "plot": 2679,
+          "district": "DISTRICT_THEATER",
+          "building": "BUILDING_AMPHITHEATER",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 16
+        },
+        {
+          "key": "1:196610:2827:DISTRICT_COMMERCIAL_HUB",
+          "owner": 1,
+          "city": 196610,
+          "plot": 2827,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": null,
+          "population": 12,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "1:196610:2753:DISTRICT_THEATER",
+          "owner": 1,
+          "city": 196610,
+          "plot": 2753,
+          "district": "DISTRICT_THEATER",
+          "building": null,
+          "population": 12,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "1:196610:2826:DISTRICT_HOLY_SITE",
+          "owner": 1,
+          "city": 196610,
+          "plot": 2826,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 12,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p1:c327684:TAILORS:2008",
+      "group": "reference150:p1:c327684:TAILORS",
+      "name": "LOC_CITY_NAME_NAPATA",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 1,
+        "city": 327684,
+        "quarter": "TAILORS",
+        "plot": 2008
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/5",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 8,
+        "production": 8.796875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2083,
+          "resource": "RESOURCE_NITER",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2009,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1935,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1934,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2007,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2082,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:327684:1935:DISTRICT_COMMERCIAL_HUB",
+          "owner": 1,
+          "city": 327684,
+          "plot": 1935,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": "BUILDING_MARKET",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 8
+        },
+        {
+          "key": "1:327684:2083:DISTRICT_HOLY_SITE",
+          "owner": 1,
+          "city": 327684,
+          "plot": 2083,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 8,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p1:c458758:TAILORS:2165",
+      "group": "reference150:p1:c458758:TAILORS",
+      "name": "LOC_CITY_NAME_BUHEN",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 1,
+        "city": 458758,
+        "quarter": "TAILORS",
+        "plot": 2165
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/7",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 6,
+        "production": 29.26953125,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": true,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2240,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2166,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2092,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2091,
+          "resource": "RESOURCE_SILK",
+          "base": false,
+          "specialty": true,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2164,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2239,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:458758:2164:DISTRICT_HOLY_SITE",
+          "owner": 1,
+          "city": 458758,
+          "plot": 2164,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": "BUILDING_TEMPLE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 6
+        }
+      ],
+      "service_unlocks": {
+        "3": true
+      },
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p1:c524295:TAILORS:2244",
+      "group": "reference150:p1:c524295:TAILORS",
+      "name": "LOC_CITY_NAME_QASR_IBRIM",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 1,
+        "city": 524295,
+        "quarter": "TAILORS",
+        "plot": 2244
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/9",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 8,
+        "production": 19.796875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2318,
+          "resource": "RESOURCE_SILK",
+          "base": false,
+          "specialty": true,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2245,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2170,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2169,
+          "resource": "RESOURCE_OIL",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2243,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2317,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p1:c589832:TAILORS:2683",
+      "group": "reference150:p1:c589832:TAILORS",
+      "name": "LOC_CITY_NAME_TOMBOS",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 1,
+        "city": 589832,
+        "quarter": "TAILORS",
+        "plot": 2683
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/11",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 16.5,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2757,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2684,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2609,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2608,
+          "resource": "RESOURCE_FURS",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2682,
+          "resource": "RESOURCE_FURS",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2756,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:589832:2684:DISTRICT_HARBOR",
+          "owner": 1,
+          "city": 589832,
+          "plot": 2684,
+          "district": "DISTRICT_HARBOR",
+          "building": "BUILDING_LIGHTHOUSE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 7
+        },
+        {
+          "key": "1:196610:2757:DISTRICT_HARBOR",
+          "owner": 1,
+          "city": 196610,
+          "plot": 2757,
+          "district": "DISTRICT_HARBOR",
+          "building": null,
+          "population": 12,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p2:c131073:TAILORS:1541",
+      "group": "reference150:p2:c131073:TAILORS",
+      "name": "LOC_CITY_NAME_TELAVI",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 2,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 1541
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/13",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 15,
+        "production": 21.59765625,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1615,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1542,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1467,
+          "resource": "RESOURCE_HORSES",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1466,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1540,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1614,
+          "resource": "RESOURCE_ANTIQUITY_SITE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "2:65536:1542:DISTRICT_THEATER",
+          "owner": 2,
+          "city": 65536,
+          "plot": 1542,
+          "district": "DISTRICT_THEATER",
+          "building": null,
+          "population": 15,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "2:131073:1540:DISTRICT_HOLY_SITE",
+          "owner": 2,
+          "city": 131073,
+          "plot": 1540,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 15,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "5:655369:1615:DISTRICT_HOLY_SITE",
+          "owner": 5,
+          "city": 655369,
+          "plot": 1615,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 5,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p2:c262147:TAILORS:1028",
+      "group": "reference150:p2:c262147:TAILORS",
+      "name": "LOC_CITY_NAME_POTI",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 2,
+        "city": 262147,
+        "quarter": "TAILORS",
+        "plot": 1028
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/16",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 13.19921875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1103,
+          "resource": "RESOURCE_ANTIQUITY_SITE",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1029,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 955,
+          "resource": "RESOURCE_FISH",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 954,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1027,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1102,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p2:c393221:TAILORS:1472",
+      "group": "reference150:p2:c393221:TAILORS",
+      "name": "LOC_CITY_NAME_GORI",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 2,
+        "city": 393221,
+        "quarter": "TAILORS",
+        "plot": 1472
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/19",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 9,
+        "production": 13.19921875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1547,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1473,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1399,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1398,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1471,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1546,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "2:65536:1471:DISTRICT_COMMERCIAL_HUB",
+          "owner": 2,
+          "city": 65536,
+          "plot": 1471,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": null,
+          "population": 15,
+          "district_functioning": true,
+          "functioning": false
+        },
+        {
+          "key": "2:393221:1473:DISTRICT_COMMERCIAL_HUB",
+          "owner": 2,
+          "city": 393221,
+          "plot": 1473,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": null,
+          "population": 9,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p3:c65536:TAILORS:2562",
+      "group": "reference150:p3:c65536:TAILORS",
+      "name": "LOC_CITY_NAME_QARAQORUM",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 3,
+        "city": 65536,
+        "quarter": "TAILORS",
+        "plot": 2562
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/22",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 12,
+        "production": 44.17578125,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": true,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2636,
+          "resource": "RESOURCE_CSC_FLAX",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2563,
+          "resource": "RESOURCE_MAIZE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2488,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2487,
+          "resource": "RESOURCE_HORSES",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2561,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2635,
+          "resource": "RESOURCE_MAIZE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "3:65536:2561:DISTRICT_HOLY_SITE",
+          "owner": 3,
+          "city": 65536,
+          "plot": 2561,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": "BUILDING_TEMPLE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 12
+        }
+      ],
+      "service_unlocks": {
+        "3": true
+      },
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p4:c65536:TAILORS:1346",
+      "group": "reference150:p4:c65536:TAILORS",
+      "name": "LOC_CITY_NAME_LISBON_STK",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 4,
+        "city": 65536,
+        "quarter": "TAILORS",
+        "plot": 1346
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/27",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 8,
+        "production": 59.7734375,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": true,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1420,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1347,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1272,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1271,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1345,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1419,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "4:65536:1272:DISTRICT_HOLY_SITE",
+          "owner": 4,
+          "city": 65536,
+          "plot": 1272,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": "BUILDING_TEMPLE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 8
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p4:c131073:TAILORS:1349",
+      "group": "reference150:p4:c131073:TAILORS",
+      "name": "LOC_CITY_NAME_VISEU",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 4,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 1349
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/30",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 10,
+        "production": 38.5,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1423,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1350,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1275,
+          "resource": "RESOURCE_SILK",
+          "base": false,
+          "specialty": true,
+          "owned": true,
+          "revealed": true,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1274,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1348,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1422,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "4:131073:1348:DISTRICT_HOLY_SITE",
+          "owner": 4,
+          "city": 131073,
+          "plot": 1348,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": "BUILDING_TEMPLE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 10
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p4:c196610:TAILORS:1789",
+      "group": "reference150:p4:c196610:TAILORS",
+      "name": "LOC_CITY_NAME_GUARDA",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 4,
+        "city": 196610,
+        "quarter": "TAILORS",
+        "plot": 1789
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/32",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 15,
+        "production": 13.19921875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1863,
+          "resource": "RESOURCE_MAIZE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1790,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1715,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1714,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1788,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1862,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "4:196610:1790:DISTRICT_HOLY_SITE",
+          "owner": 4,
+          "city": 196610,
+          "plot": 1790,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 15,
+          "district_functioning": true,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p4:c589832:TAILORS:1636",
+      "group": "reference150:p4:c589832:TAILORS",
+      "name": "LOC_CITY_NAME_BRAGA",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 4,
+        "city": 589832,
+        "quarter": "TAILORS",
+        "plot": 1636
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/38",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 7,
+        "production": 3.296875,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1710,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1637,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1562,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1561,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1635,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1709,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "1:393221:1709:DISTRICT_THEATER",
+          "owner": 1,
+          "city": 393221,
+          "plot": 1709,
+          "district": "DISTRICT_THEATER",
+          "building": null,
+          "population": 12,
+          "district_functioning": false,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p4:c786443:TAILORS:238",
+      "group": "reference150:p4:c786443:TAILORS",
+      "name": "LOC_CITY_NAME_GOA",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 4,
+        "city": 786443,
+        "quarter": "TAILORS",
+        "plot": 238
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/39",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 2,
+        "production": 4.3984375,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 313,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 239,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 165,
+          "resource": "RESOURCE_FISH",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 164,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 237,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 312,
+          "resource": "RESOURCE_IRON",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p5:c65536:TAILORS:1683",
+      "group": "reference150:p5:c65536:TAILORS",
+      "name": "LOC_CITY_NAME_KYOTO",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 5,
+        "city": 65536,
+        "quarter": "TAILORS",
+        "plot": 1683
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/40",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 18,
+        "production": 39.59765625,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1757,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1684,
+          "resource": "RESOURCE_RICE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1609,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1608,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1682,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1756,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "5:196610:1757:DISTRICT_COMMERCIAL_HUB",
+          "owner": 5,
+          "city": 196610,
+          "plot": 1757,
+          "district": "DISTRICT_COMMERCIAL_HUB",
+          "building": "BUILDING_MARKET",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 9
+        },
+        {
+          "key": "5:65536:1609:DISTRICT_THEATER",
+          "owner": 5,
+          "city": 65536,
+          "plot": 1609,
+          "district": "DISTRICT_THEATER",
+          "building": "BUILDING_AMPHITHEATER",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 18
+        },
+        {
+          "key": "5:65536:1608:DISTRICT_HOLY_SITE",
+          "owner": 5,
+          "city": 65536,
+          "plot": 1608,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": "BUILDING_TEMPLE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 18
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p5:c131073:TAILORS:1975",
+      "group": "reference150:p5:c131073:TAILORS",
+      "name": "LOC_CITY_NAME_TOKYO",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 5,
+        "city": 131073,
+        "quarter": "TAILORS",
+        "plot": 1975
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/43",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 13,
+        "production": 37.3984375,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": true,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2049,
+          "resource": "RESOURCE_COTTON",
+          "base": true,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1976,
+          "resource": "RESOURCE_DYES",
+          "base": false,
+          "specialty": true,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": true,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1901,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1900,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1974,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2048,
+          "resource": "RESOURCE_FISH",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p5:c262147:TAILORS:2195",
+      "group": "reference150:p5:c262147:TAILORS",
+      "name": "LOC_CITY_NAME_YOKOHAMA",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 5,
+        "city": 262147,
+        "quarter": "TAILORS",
+        "plot": 2195
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/46",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 10,
+        "production": 18.71484375,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": true,
+        "3": true,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 2270,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2196,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2122,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2121,
+          "resource": "RESOURCE_CRABS",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2194,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 2269,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "5:262147:2194:DISTRICT_THEATER",
+          "owner": 5,
+          "city": 262147,
+          "plot": 2194,
+          "district": "DISTRICT_THEATER",
+          "building": "BUILDING_AMPHITHEATER",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 10
+        },
+        {
+          "key": "5:262147:2269:DISTRICT_HOLY_SITE",
+          "owner": 5,
+          "city": 262147,
+          "plot": 2269,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": "BUILDING_TEMPLE",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 10
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p5:c393221:TAILORS:1155",
+      "group": "reference150:p5:c393221:TAILORS",
+      "name": "LOC_CITY_NAME_SHIZUOKA",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 5,
+        "city": 393221,
+        "quarter": "TAILORS",
+        "plot": 1155
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/48",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": true,
+        "pillaged": false
+      },
+      "city": {
+        "population": 6,
+        "production": 17.59765625,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1230,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1156,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1082,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1081,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": false,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1154,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1229,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [
+        {
+          "key": "5:393221:1230:DISTRICT_THEATER",
+          "owner": 5,
+          "city": 393221,
+          "plot": 1230,
+          "district": "DISTRICT_THEATER",
+          "building": "BUILDING_AMPHITHEATER",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 6
+        },
+        {
+          "key": "5:458758:1081:DISTRICT_THEATER",
+          "owner": 5,
+          "city": 458758,
+          "plot": 1081,
+          "district": "DISTRICT_THEATER",
+          "building": "BUILDING_AMPHITHEATER",
+          "functioning": true,
+          "district_functioning": true,
+          "population": 7
+        },
+        {
+          "key": "5:393221:1082:DISTRICT_HOLY_SITE",
+          "owner": 5,
+          "city": 393221,
+          "plot": 1082,
+          "district": "DISTRICT_HOLY_SITE",
+          "building": null,
+          "population": 6,
+          "district_functioning": false,
+          "functioning": false
+        }
+      ],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    },
+    {
+      "id": "reference150:p5:c720906:TAILORS:1088",
+      "group": "reference150:p5:c720906:TAILORS",
+      "name": "LOC_CITY_NAME_OTSU",
+      "identity": {
+        "world": "reference150",
+        "turn": 150,
+        "player": 5,
+        "city": 720906,
+        "quarter": "TAILORS",
+        "plot": 1088
+      },
+      "original_human": false,
+      "provenance": {
+        "source": "reference150",
+        "pointer": "/physical/quarters/52",
+        "interpretation": "Retrospective upgrade review; historical treatment, not a new placement comparison"
+      },
+      "quarter": {
+        "exists": true,
+        "complete": false,
+        "pillaged": false
+      },
+      "city": {
+        "population": 5,
+        "production": 5.5,
+        "production_turn": 150
+      },
+      "land": {
+        "legal": null,
+        "district_cost": 0,
+        "reservation": null
+      },
+      "existing_buildings": {
+        "2": false,
+        "3": false,
+        "4": false
+      },
+      "river_edges": null,
+      "pillaged_buildings": [],
+      "materials": [
+        {
+          "plot": 1162,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1089,
+          "resource": "RESOURCE_MARBLE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1014,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": false,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1013,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1087,
+          "resource": "RESOURCE_RICE",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": true,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        },
+        {
+          "plot": 1161,
+          "resource": "",
+          "base": false,
+          "specialty": false,
+          "owned": true,
+          "revealed": false,
+          "district_free": true,
+          "working": false,
+          "worked": null,
+          "intensity": 1
+        }
+      ],
+      "customers": [],
+      "service_unlocks": {},
+      "future_footprints": [],
+      "unknowns": [
+        "River-edge and citizen-working data absent from this capture",
+        "Missing producer/customer unlock and cost quotes need fresh confirmation"
+      ]
+    }
+  ],
+  "scope": "Copied historical observations, re-evaluated with an explicit current-mechanics subset. No old policy imports.",
+  "recent_bridge_case": "Sydney source250 trace lacks material type catalogue, buildings and river edges; not silently joined to older worlds."
+}

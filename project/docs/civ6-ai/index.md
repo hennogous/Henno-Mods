@@ -45,6 +45,9 @@ Browse [CSC research topics](topics/csc/index.md), then the
 [research journey](topics/history/research-journey.md) for the progression of
 experiments and the decisions that changed direction.
 
+The [fresh site planner](topics/csc/site-planner.md) now provides a first
+offline Tailors comparison with actual captured cases and explicit assumptions.
+
 ## See the whole decision
 
 ```mermaid

@@ -51,6 +51,7 @@ def collect() -> list[dict]:
                               "feedback_shadow_native_game_control.md")):
             selected[p] = "agent-note"
     for rel in ("project/tools/ai_baseline/full_game_controller/README.md",
+                "project/tools/ai_site_planner/README.md",
                 "project/tools/native_ai/README.md", "project/firetuner/FIRETUNER-PROTOCOL.md",
                 "project/firetuner/CE-API-REPORT.md", "project/docs/research/mods/community-extension-modding.md"):
         p = ROOT / rel

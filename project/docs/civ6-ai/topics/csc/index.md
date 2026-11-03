@@ -4,6 +4,7 @@ The objective is worthwhile, sustained supply-chain benefit, not more Quarters. 
 
 - [Objectives, baselines and success](objectives-and-baselines.md)
 - [Material opportunities and placement](placement-and-opportunity.md)
+- [Fresh offline site planner](site-planner.md)
 - [Materials, Builders, preservation and repair](materials-and-builders.md)
 - [Research guidance and strategies](research-and-strategies.md)
 - [Producer and customer follow-through](producers-and-customers.md)
@@ -12,4 +13,4 @@ The objective is worthwhile, sustained supply-chain benefit, not more Quarters. 
 - [Experiment interpretation and lessons](experiment-lessons.md)
 - [Complete source map and reconciliations](source-map.md)
 
-The stable finding IDs are AI-C 001–AI-C 047. An accepted finding accepts the **bounded statement**, not the tuning package as shipping policy. Original reports retain their executed conditions and historical status; the living synthesis records later corrections and closure.
+The stable finding IDs are AI-C 001–AI-C 048. An accepted finding accepts the **bounded statement**, not the tuning package as shipping policy. Original reports retain their executed conditions and historical status; the living synthesis records later corrections and closure.
