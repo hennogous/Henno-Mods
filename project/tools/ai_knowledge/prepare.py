@@ -23,7 +23,7 @@ REPORT_PREFIXES = ("csc-ai-", "csc-native-", "civ6-industrial-", "civ6-district-
                    "native-resourceclass-", "csc-tailor-density-", "csc-map-material-",
                    "csc-continental-", "csc-implemented-materials-", "csc-material-abundance-",
                    "csc-offline-abundance-", "csc-offline-generation-", "csc-native-luxury-",
-                   "csc-ui-exit-crash-", "csc-ancient-guidance-", "csc-civic-",
+                   "csc-ui-exit-crash-", "csc-lens-switch-crash-", "csc-ancient-guidance-", "csc-civic-",
                    "csc-long-guidance-comparison-", "csc-research-influence-findings-")
 INTEGRATIONS = ("csc-ai-", "csc-native-test-controller", "csc-material-map-assistance")
 
@@ -56,6 +56,11 @@ def collect() -> list[dict]:
         p = ROOT / rel
         if p.is_file():
             selected[p] = "tool-reference"
+    for rel in ("project/docs/research/mods/csc-ai-native-production-controls-20261028.json",
+                "project/docs/research/mods/csc-rh-v5097-source-inventory-20261018.json"):
+        p = ROOT / rel
+        if p.is_file():
+            selected[p] = "data-reference"
     rows = []
     for path, kind in sorted(selected.items(), key=lambda x: x[0].as_posix()):
         body = read(path)
@@ -64,7 +69,7 @@ def collect() -> list[dict]:
         canonical = body.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
         rel = path.relative_to(ROOT).as_posix()
         # Include the directory path in route identity so duplicate stems are safe.
-        route = "sources/" + rel.removesuffix(".md") + ".md"
+        route = "sources/" + rel if path.suffix == ".json" else "sources/" + rel.removesuffix(".md") + ".md"
         date = re.search(r"(20\d{6})", path.name)
         rows.append({"path": rel, "title": title_of(body, path.stem), "kind": kind,
                      "date": date.group(1) if date else None, "bytes": len(canonical),
@@ -146,6 +151,9 @@ def prepare(stage: Path, update_catalog: bool) -> dict:
         source = ROOT / row["path"]
         dest = stage / row["site_path"]
         dest.parent.mkdir(parents=True, exist_ok=True)
+        if source.suffix == ".json":
+            dest.write_text(read(source), encoding="utf-8")
+            continue
         banner = ("> [!warning] Historical evidence / implementation record\n"
                   "> This is an original source document. Its dated status, proposed next steps and live instructions are historical. "
                   "Use the [current handbook](/index) and [corrections](/topics/history/corrections-and-cautions) for reconciled understanding.\n\n")

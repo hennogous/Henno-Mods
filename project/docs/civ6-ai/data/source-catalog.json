@@ -1012,6 +1012,16 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-native-production-analysis-20261028.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-native-production-controls-20261028.json",
+      "title": "csc-ai-native-production-controls-20261028",
+      "kind": "data-reference",
+      "date": "20261028",
+      "bytes": 5036,
+      "sha256": "b066b8620e54c24d152cb6b7a12d239ca3398bf99f198e5f6091cb14985e2dc8",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-production-controls-20261028.json"
+    },
+    {
       "path": "project/docs/research/mods/csc-ai-native-shadow-sites-20261030.md",
       "title": "Native shadow site comparison —30 October2026",
       "kind": "report",
@@ -1472,6 +1482,16 @@
       "site_path": "sources/project/docs/research/mods/csc-implemented-materials-native-20261016.md"
     },
     {
+      "path": "project/docs/research/mods/csc-lens-switch-crash-20261031.md",
+      "title": "Lens-switch crash with a removed City Center — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 3984,
+      "sha256": "5a5fd60f5babcc6beb0b19cfd59a5018fd66d5057cd849f836dc8a6bded1299d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-lens-switch-crash-20261031.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-long-guidance-comparison-20261021.md",
       "title": "Longer natural CSC research-guidance comparison",
       "kind": "report",
@@ -1620,6 +1640,16 @@
       "sha256": "cfd429c2c301fb77baa05a4d712de87f7605c912f892e5e1b3526f5a410f69a9",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-rh-v5097-ai-review-20261018.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-rh-v5097-source-inventory-20261018.json",
+      "title": "csc-rh-v5097-source-inventory-20261018",
+      "kind": "data-reference",
+      "date": "20261018",
+      "bytes": 2052,
+      "sha256": "565f5eb5dcd3d66a75340c946e355ac56d21201678fe25847f160fe578c5d114",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-rh-v5097-source-inventory-20261018.json"
     },
     {
       "path": "project/docs/research/mods/csc-shared-native-session-20261030.md",

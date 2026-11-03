@@ -28,6 +28,9 @@ run(process.execPath, ["quartz/bootstrap-cli.mjs", "build", "-d", ".ai-handbook/
 // Keep diagrams available offline without editing Quartz's Mermaid implementation.
 // This replaces only the pinned CDN import emitted by this Quartz version.
 const site = path.join(docs, ".ai-handbook/site")
+fs.writeFileSync(path.join(docs, ".ai-handbook/build-profile.json"), JSON.stringify({
+  baseUrl, basePath: new URL(`https://${baseUrl}`).pathname.replace(/\/$/, ""),
+}, null, 2) + "\n")
 const vendor = path.join(root, "project/tools/ai_knowledge/vendor/mermaid-11.4.0.min.js")
 fs.copyFileSync(vendor, path.join(site, "static/mermaid-11.4.0.min.js"))
 fs.copyFileSync(path.join(root, "project/tools/ai_knowledge/vendor/MERMAID-LICENSE"), path.join(site, "static/MERMAID-LICENSE"))

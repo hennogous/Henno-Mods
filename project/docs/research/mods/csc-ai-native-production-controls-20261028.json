@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-28",
+  "evidence_level": "static machine-code tracing; selected assembly and vtable independently reviewed",
+  "dll_sha256": "324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c",
+  "mapping_commit": "7ddecbafa37b8d4598831f61ebc73538fd9fd987",
+  "analysis_root": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-native-ai-analysis-20261028",
+  "runtime_benefit_verified": false,
+  "report": "csc-ai-native-production-analysis-20261028.md",
+  "controls": [
+    {
+      "id": "buildings_favored",
+      "input": "AiFavoredItems/Favored; System=Buildings",
+      "rvas": [
+        "495170",
+        "4a2450",
+        "525970",
+        "4b4250",
+        "3e4710"
+      ],
+      "observed_semantics": "Signed accumulation; negative x0.5, positive x2 in GetBestBuilding; Value magnitude not consumed by this handler.",
+      "limits": "Other building gates/multipliers and runtime accumulator exposure remain."
+    },
+    {
+      "id": "districts_favored",
+      "input": "AiFavoredItems/Favored; System=Districts",
+      "rvas": [
+        "4969c0",
+        "4a2450",
+        "525970",
+        "4b4250",
+        "3e2aa0"
+      ],
+      "observed_semantics": "Signed accumulation; negative rejected, positive x1.5 in traced plot evaluation; Value magnitude not consumed by this handler.",
+      "limits": "Not every district evaluation route or historical active accumulator reconstructed."
+    },
+    {
+      "id": "queue_next_build",
+      "input": "Native queue arbitration",
+      "rvas": [
+        "3e8190"
+      ],
+      "observed_semantics": "Nonempty queue returns; eligible contracts compete before ordinary fallback; selected contract final gate uses unit minus1 and project, not best building.",
+      "limits": "Validation and execution still gate selection; no universal priority claim."
+    },
+    {
+      "id": "contract_value_update",
+      "input": "UnitRequestContract value",
+      "rvas": [
+        "3fa5e0",
+        "3f8310"
+      ],
+      "observed_semantics": "Building/unit/district update retains max(previous,current present value); execution passes retained value.",
+      "limits": "Other writers/resets not exhaustively traced."
+    },
+    {
+      "id": "reconsider_district",
+      "input": "ReconsiderDistrictConstruction",
+      "rvas": [
+        "3e9630"
+      ],
+      "observed_semantics": "Marks matching contracts numeric state6 and releases handles.",
+      "limits": "Enum label and all callers not fully catalogued; not direct queue promotion."
+    },
+    {
+      "id": "current_task_bias",
+      "input": "GlobalParameters/AI_CURRENT_TASK_BIAS",
+      "rvas": [
+        "1f02a0",
+        "46be0",
+        "63d1f0",
+        "3ea150"
+      ],
+      "observed_semantics": "Default80; threat-path threshold oldValue+max(oldValue,bias).",
+      "limits": "Final damage/attack/threat gates required; not proven generic switch bias."
+    },
+    {
+      "id": "discount_rate",
+      "input": "GlobalParameters/AI_DISCOUNT_RATE",
+      "rvas": [
+        "1f02a0",
+        "49c7c0",
+        "36f7b0",
+        "4b38f0",
+        "3e2aa0",
+        "528140",
+        "528310"
+      ],
+      "observed_semantics": "Default2.0 converted to fixed point, inverse game-speed adjustment, consumed by valuation.",
+      "limits": "Exact discount arithmetic and tuning effects not fully established."
+    },
+    {
+      "id": "district_net_value",
+      "input": "Native district economic valuation",
+      "rvas": [
+        "52a440",
+        "52d500"
+      ],
+      "observed_semantics": "Includes gated purchase cost, clearance credits, lost improvement/resource value, horizon and district value.",
+      "limits": "Full formula, private-yield normalization and CSC downstream cost understanding unresolved."
+    },
+    {
+      "id": "units_value",
+      "input": "AiFavoredItems/Value; System=Units",
+      "rvas": [
+        "499310",
+        "4a2360",
+        "525910",
+        "4a2400",
+        "4b39a0",
+        "4300c0",
+        "3f9300",
+        "3fd790",
+        "3fc9d0",
+        "55ba40"
+      ],
+      "observed_semantics": "Integer Value column3 accumulates per unit; applicable total adds to caller request priority at UnitRequestContract initialization, stored as m_priority+C8. Separate m_extraPresentValue+158 is not changed by this addition.",
+      "limits": "Priority-to-allocation scheduling remains untraced; not a percentage, not automatically added to logged VALUE. Runtime applicability and aggregate need observation.",
+      "report": "csc-ai-native-builder-priority-20261028.md"
+    },
+    {
+      "id": "required_city_gate",
+      "input": "UnitRequestContract field +0x1d8",
+      "rvas": [
+        "3fa8e0"
+      ],
+      "observed_semantics": "-1 bypasses candidate city identity restriction; ordinary eligibility validation continues.",
+      "limits": "BehaviorTree parameter-to-field setter and recruitment lifecycle not traced; no automatic allocation guarantee.",
+      "report": "csc-ai-native-builder-consumers-20261028.md"
+    }
+  ]
+}

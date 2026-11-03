@@ -7,6 +7,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../.
 const kb = path.join(root, "project/docs/civ6-ai")
 const site = path.join(root, "docs/.ai-handbook/site")
 const read = (p) => fs.readFileSync(p, "utf8").replace(/^\uFEFF/, "")
+const profile = JSON.parse(read(path.join(root, "docs/.ai-handbook/build-profile.json")))
 const sha = (p) => crypto.createHash("sha256").update(fs.readFileSync(p)).digest("hex")
 function walk(dir) { return fs.readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]) }
 const errors = []
@@ -39,6 +40,17 @@ for (const f of findings) {
 const maintained = walk(kb).filter(p => p.endsWith(".md"))
 for (const p of maintained) {
   for (const m of read(p).matchAll(/\[?(AI-[NCH]\d{3})\]?/g)) if (!ids.has(m[1])) errors.push(`Unknown finding in ${path.relative(kb,p)}: ${m[1]}`)
+  // A local-only source can otherwise turn into a broken GitHub link after push.
+  // Require curated document/data references outside the handbook to be catalogued.
+  for (const m of read(p).matchAll(/(?<!!)\[[^\]\n]+\]\(<?([^\n)]+?)>?\)/g)) {
+    const target = m[1]
+    if (/^[a-z][a-z0-9+.-]*:/i.test(target) || target.startsWith("#")) continue
+    const filePart = decodeURIComponent(target.split("#")[0])
+    const absolute = path.resolve(path.dirname(p), filePart)
+    if (absolute.startsWith(kb + path.sep) || !/\.(md|json)$/i.test(filePart)) continue
+    const rel = path.relative(root, absolute).replaceAll("\\", "/")
+    if (!sources.some(s => s.path === rel)) errors.push(`Uncatalogued maintained reference: ${path.relative(kb,p)} -> ${rel}`)
+  }
 }
 const html = walk(site).filter(p => p.endsWith(".html"))
 const anchors = new Map(html.map(p => [p, new Set([...read(p).matchAll(/\bid="([^"]+)"/g)].map(m => m[1]))]))
@@ -55,6 +67,9 @@ for (const file of html) {
     let pathname, fragment
     try { [pathname, fragment] = target.split("#").map(decodeURIComponent) } catch { continue }
     pathname = pathname.split("?")[0]
+    if (profile.basePath && (pathname === profile.basePath || pathname.startsWith(profile.basePath + "/"))) {
+      pathname = pathname.slice(profile.basePath.length) || "/"
+    }
     let resolved = pathname.startsWith("/") ? path.join(site, pathname) : path.resolve(path.dirname(file), pathname || path.basename(file))
     if (fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()) resolved = path.join(resolved, "index.html")
     if (!fs.existsSync(resolved) && !path.extname(resolved)) resolved += ".html"
