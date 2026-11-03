@@ -2,6 +2,16 @@
   "schema_version": 2,
   "sources": [
     {
+      "path": "memory/feedback_ai_publishing.md",
+      "title": "AI research publishing",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 409,
+      "sha256": "1205f6e2496209ae47cb71d182e93ae25b44164d627573435acaf2f1018f1660",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/feedback_ai_publishing.md"
+    },
+    {
       "path": "memory/feedback_ai_thread_model_split.md",
       "title": "Model allocation for the CSC AI research thread",
       "kind": "agent-note",
@@ -306,8 +316,8 @@
       "title": "CSC AI assistance: Basic and RH profiles",
       "kind": "integration",
       "date": null,
-      "bytes": 9262,
-      "sha256": "977e6b3bc4a0a10f505c3881078f02806dd054a18829271962e37fb07613f135",
+      "bytes": 9480,
+      "sha256": "ecfa1dd7181519cb7cb6ed0dcfe35f9eb36e252b30ff0d88e695c8f6676e575e",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-profiles.md"
     },
@@ -320,6 +330,16 @@
       "sha256": "2ea6d58526cc5316fb7e99f312edb767468bd4c62bf2bbf91668300d3f3ed5d3",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-progress-and-learnings-20261101.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-ai-reset-20261103.md",
+      "title": "Fresh start for CSC AI tuning",
+      "kind": "integration",
+      "date": "20261103",
+      "bytes": 2573,
+      "sha256": "96cca9abc07a791f2b402920a0f0d9c2bd50075c6319ccc51268164cde1f4256",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-ai-reset-20261103.md"
     },
     {
       "path": "project/docs/integrations/csc-ai-roadmap.md",
@@ -336,8 +356,8 @@
       "title": "CSC AI tuning",
       "kind": "integration",
       "date": null,
-      "bytes": 25856,
-      "sha256": "b53a81a1fc42da08fce0649f307401dbe6fde2957b5ea48a9b0bcd3f1f071ac9",
+      "bytes": 26108,
+      "sha256": "f4307c778686a94a3ce7284faa9fcd9084eab741e3694be2b540ac7bd70c290b",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-tuning.md"
     },

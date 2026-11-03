@@ -368,30 +368,12 @@
     "inGameActions": [
       {
         "type": "ImportFiles",
-        "id": "CSC_AI_UI",
+        "id": "CSC_YieldFilter_Compatibility",
         "properties": {
           "LoadOrder": "480"
         },
         "files": [
-          "Lua_UI/AI/CSC_AI_UIFilter.lua",
-          "Lua_UI/AI/ToolTipLoader_CSC_AI.lua",
-          "Lua_UI/AI/CivilopediaPage_CSC_AI.lua"
-        ]
-      },
-      {
-        "type": "ReplaceUIScript",
-        "id": "CSC_AI_ReportScreen",
-        "properties": {
-          "LoadOrder": "505",
-          "LuaContext": "ReportScreen",
-          "LuaReplace": "Lua_UI/AI/CSC_AI_ReportScreen.lua"
-        }
-      },
-      {
-        "type": "UpdateText",
-        "id": "CSC_AI_Text",
-        "files": [
-          "Text/CSC_AI_TEXT.sql"
+          "Lua_UI/AI/CSC_AI_UIFilter.lua"
         ]
       },
       {
@@ -402,36 +384,6 @@
         },
         "files": [
           "Data/CSC_AI.sql"
-        ]
-      },
-      {
-        "type": "AddGameplayScripts",
-        "id": "CSC_AI_Research",
-        "properties": {
-          "LoadOrder": "505"
-        },
-        "files": [
-          "Lua_UI/AI/CSC_AI_Research.lua"
-        ]
-      },
-      {
-        "type": "UpdateDatabase",
-        "id": "CSC_AI_MaterialCare_DB",
-        "properties": {
-          "LoadOrder": "506"
-        },
-        "files": [
-          "Data/CSC_AI_MaterialCare.sql"
-        ]
-      },
-      {
-        "type": "AddGameplayScripts",
-        "id": "CSC_AI_MaterialCare",
-        "properties": {
-          "LoadOrder": "507"
-        },
-        "files": [
-          "Lua_UI/AI/CSC_AI_MaterialCare.lua"
         ]
       },
       {

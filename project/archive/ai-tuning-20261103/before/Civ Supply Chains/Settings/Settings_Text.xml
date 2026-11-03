@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Settings_Text -->
+<!-- Author: Henno -->
+<!-- DateCreated: 2025-06-15 14:38:34 -->
+
+<GameData>
+    <LocalizedText>
+
+        <Replace Tag="LOC_CSC_HEADER_INTERNAL_NAME" Language="en_US">
+            <Text>[COLOR:ResProductionLabelCS]CIV SUPPLY CHAINS: SETTINGS[ENDCOLOR]</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_HEADER_INTERNAL_DESCRIPTION" Language="en_US">
+            <Text></Text>
+        </Replace>
+
+         <Replace Tag="LOC_CSC_MC_REMOVE_BONUSES_NAME" Language="en_US">
+            <Text>Remove M&amp;C City Bonuses</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_MC_REMOVE_BONUSES_DESCRIPTION" Language="en_US">
+            <Text>Streamline gameplay by reducing the sources of city bonuses, which can otherwise become hard to keep track of.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_INCLUDE_ANIMAL_RESOURCES_NAME" Language="en_US">
+            <Text>Include animal resources</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_INCLUDE_ANIMAL_RESOURCES_DESCRIPTION" Language="en_US">
+            <Text>Include animal resources for use in supply chains.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_REMOVE_UNUSED_MODDED_RESOURCES_NAME" Language="en_US">
+            <Text>Remove unused modded resources</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_REMOVE_UNUSED_MODDED_RESOURCES_DESCRIPTION" Language="en_US">
+            <Text>Declutter the map by removing modded resources that are not used in supply chains.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_NAME" Language="en_US">
+            <Text>Suppress supply chain notifications</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_SUPPRESS_SUPPLY_CHAIN_NOTIFICATIONS_DESCRIPTION" Language="en_US">
+            <Text>Disable pop-up notifications when supply chain effects are added, increased, decreased, or removed. City-panel integration remains available when the MCUIS mod is active.</Text>
+        </Replace>
+
+        <Replace Tag="LOC_CSC_FOOTER_INTERNAL_NAME" Language="en_US">
+            <Text>[COLOR:ResProductionLabelCS]CIV SUPPLY CHAINS: SETTINGS[ENDCOLOR]</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_RESOURCE_MAP_ASSISTANCE_NAME" Language="en_US">
+            <Text>Additional Quarter resources</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_RESOURCE_MAP_ASSISTANCE_DESCRIPTION" Language="en_US">
+            <Text>On new maps, add suitable material deposits to increase favorable placement opportunities for Quarters. Assistance scales with the resource abundance setting. Existing resources remain in place, and continents retain different opportunities.</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_FOOTER_INTERNAL_DESCRIPTION" Language="en_US">
+            <Text></Text>
+        </Replace>
+        
+        <Replace Tag="LOC_CSC_AI_ASSISTANCE_NAME" Language="en_US">
+            <Text>CSC AI assistance</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_AI_ASSISTANCE_DESCRIPTION" Language="en_US">
+            <Text>Help AI civilizations establish Quarters beside Base and Specialty materials, acquire the required tiles, and develop supply chains. Without RomanHoliday's AI, CSC also supplies basic improvement and Builder tuning. With a supported RomanHoliday release enabled, CSC automatically adds supply-chain support to its tuning instead. Turn this off to use the underlying AI without CSC's AI guidance or assistance. Automatic tile acquisition and Quarter foundations currently apply to single-player games.</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_AI_SUBSIDIES_NAME" Language="en_US">
+            <Text>Subsidise AI tile purchases</Text>
+        </Replace>
+        <Replace Tag="LOC_CSC_AI_SUBSIDIES_DESCRIPTION" Language="en_US">
+            <Text>Use the AI's Gold first. When its safe spending budget cannot cover the next tile toward a Base-and-Specialty Quarter location, fund only the shortfall. With this off, wait until the AI can afford the tile itself. Applies to both CSC basic tuning and RomanHoliday compatibility.</Text>
+        </Replace>
+
+    </LocalizedText>
+</GameData>

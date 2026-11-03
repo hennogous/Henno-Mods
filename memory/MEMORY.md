@@ -1,3 +1,5 @@
+- 3 November FRESH AI TUNING RESET: user authorizes native preferred-site/construction test and retirement of old tuning. Source17files/15actions archived at `project/archive/ai-tuning-20261103/`; installed3metadata files reset with all other bytes preserved. New trial `project/tools/native_ai/quarter_placement_trial/`, shared controller/environment only; no old site/subsidy/foundation heuristics. Existing game04/Sydney Tailors two-site test preparing; no new world authorized by this note. See `project/docs/integrations/csc-ai-reset-20261103.md`. User says publish findings by commit/push without extra website/link/deployment QA: `feedback_ai_publishing.md`. Broad older campaign remains paused; new test separately scoped.
+
 # ACTIVE overnight material-access investigation
 See session_csc_ai_tuning.md and project/docs/research/mods/csc-ai-material-access-overnight-20261023.md. Current frozen v2game must finish225/audit/cleanup before any bounded follow-up. Offline harvest attribution/probe SQL is new unpinned work, not a live treatment.
 

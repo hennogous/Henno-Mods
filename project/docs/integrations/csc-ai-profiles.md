@@ -1,3 +1,5 @@
+> **Retired, 3 November 2026:** these Basic/RH assistance profiles are archived and no longer load. See [the fresh-start record](csc-ai-reset-20261103.md). This page retains the previous implementation for reference.
+
 # CSC AI assistance: Basic and RH profiles
 
 Status: 24 October 2026 — source candidate, offline checks passing. No deployment

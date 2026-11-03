@@ -73,7 +73,10 @@ and configuration. No second Quartz installation is required.
 Henno requested regular commits and pushes of handbook work on 3 November 2026.
 At useful verified checkpoints, commit the affected handbook, cited report and
 publishing files, then push. Keep unrelated mod/art/tool changes out of those
-commits. Check the GitHub Pages result before reporting a published update.
+commits. Henno subsequently clarified: commit and push findings without extra
+website, link or deployment QA. Preserve checks needed for actual gameplay/native
+changes; publishing is not another experiment gate. Refresh the source catalogue
+when its inputs change so the normal build can consume the committed content.
 This is an ongoing research-completion convention, not a scheduled background job.
 
 The existing Pages workflow builds the CSC site and places this handbook under

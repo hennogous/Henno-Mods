@@ -1,0 +1,2575 @@
+{
+  "schema": 1,
+  "workspace": "C:\\Users\\Shadow\\Documents\\Firaxis ModBuddy\\Civilization VI\\Henno Mods",
+  "archive": "project/archive/ai-tuning-20261103",
+  "stage": "applied",
+  "runtime_inputs": 18,
+  "moved_runtime_and_localization": 17,
+  "metadata_files": 4,
+  "removed_actions": [
+    "CSC_AI_Mode_Basic_Assistance",
+    "CSC_AI_Mode_Basic_DB",
+    "CSC_AI_Mode_Basic_Imports",
+    "CSC_AI_Mode_Basic_Research",
+    "CSC_AI_Mode_Basic_UI",
+    "CSC_AI_Mode_RH_0_Assistance",
+    "CSC_AI_Mode_RH_0_CustomerRoles",
+    "CSC_AI_Mode_RH_0_DB",
+    "CSC_AI_Mode_RH_0_Imports",
+    "CSC_AI_Mode_RH_0_Research",
+    "CSC_AI_Mode_RH_0_UI",
+    "CSC_AI_Profile",
+    "CSC_AI_ReportScreen",
+    "CSC_AI_Text",
+    "CSC_AI_UI"
+  ],
+  "removed_criteria": [
+    "CSC_AI_Enabled",
+    "CSC_AI_RH_0",
+    "CSC_AI_RH_No_0"
+  ],
+  "compatibility_import": "CSC_YieldFilter_Compatibility",
+  "removed_content": [
+    "Data/CSC_AI.sql",
+    "Data/CSC_AI_Basic.sql",
+    "Data/CSC_AI_Profile.sql",
+    "Lua_UI/AI/CSC_AI_Assistance.lua",
+    "Lua_UI/AI/CSC_AI_AssistanceUI.lua",
+    "Lua_UI/AI/CSC_AI_AssistanceUI.xml",
+    "Lua_UI/AI/CSC_AI_OpportunityPolicy.lua",
+    "Lua_UI/AI/CSC_AI_ReportScreen.lua",
+    "Lua_UI/AI/CSC_AI_Research.lua",
+    "Lua_UI/AI/CivilopediaPage_CSC_AI.lua",
+    "Lua_UI/AI/ToolTipLoader_CSC_AI.lua",
+    "ModSupport/ModSupport_RH_AI.sql",
+    "ModSupport/ModSupport_RH_AI_Roles.lua",
+    "Text/CSC_AI_TEXT.sql"
+  ],
+  "operational_tools_copy_only": 335,
+  "skipped_oversized_code_files": [],
+  "dirty_untracked_status": " M \"Civ Supply Chains/Civ Supply Chains.civ6proj\"\n M \"Civ Supply Chains/Data/CSC_AI.sql\"\n M \"Civ Supply Chains/Settings/Settings.xml\"\n M \"Civ Supply Chains/Settings/Settings_Text.xml\"\n M project/modbuddy/CivSupplyChains.actions.json\n?? \"Civ Supply Chains/Data/CSC_AI_Basic.sql\"\n?? \"Civ Supply Chains/Data/CSC_AI_Profile.sql\"\n?? \"Civ Supply Chains/Lua_UI/AI/CSC_AI_Assistance.lua\"\n?? \"Civ Supply Chains/Lua_UI/AI/CSC_AI_AssistanceUI.lua\"\n?? \"Civ Supply Chains/Lua_UI/AI/CSC_AI_AssistanceUI.xml\"\n?? \"Civ Supply Chains/Lua_UI/AI/CSC_AI_OpportunityPolicy.lua\"\n?? \"Civ Supply Chains/ModSupport/ModSupport_RH_AI.sql\"\n?? \"Civ Supply Chains/ModSupport/ModSupport_RH_AI_Roles.lua\"\n",
+  "records": [
+    {
+      "path": "Civ Supply Chains/Civ Supply Chains.civ6proj",
+      "operation": "modify",
+      "bytes": 58476,
+      "before_sha256": "667ad6deb8c683850c2011ae5d24219093138f9e45f5ad1d7ab15beeaa18a912",
+      "after_sha256": "459cdecef4539c2986b3c81207571080055f7661c2e4b4dd9b5c0fbd3dbc9d88"
+    },
+    {
+      "path": "Civ Supply Chains/Data/CSC_AI.sql",
+      "operation": "move",
+      "bytes": 24202,
+      "before_sha256": "368be981c78fb69dbd1b6dece70bc02bdb76a2e6e7c9f73133fae2a6935499d7",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Data/CSC_AI_Basic.sql",
+      "operation": "move",
+      "bytes": 3490,
+      "before_sha256": "aff7268129eedddcf849d11c89c1e584ec152b3135a3f109f84f25ba3706d85c",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Data/CSC_AI_MaterialCare.sql",
+      "operation": "move",
+      "bytes": 9037,
+      "before_sha256": "4c5a6b1808a231549060f85702723521dc07780169d878c9dc30e78e9bd0aaf8",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Data/CSC_AI_Profile.sql",
+      "operation": "move",
+      "bytes": 436,
+      "before_sha256": "6e0fce9e372e59e82db67ff3757e0bc839121ef26642fc9e9fa4d1f5719ee4d0",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_Assistance.lua",
+      "operation": "move",
+      "bytes": 62582,
+      "before_sha256": "d1b02035e7f32de4044e3fe0c97ecd318dd0182d5683163e05bcf5fc9280c065",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_AssistanceUI.lua",
+      "operation": "move",
+      "bytes": 32753,
+      "before_sha256": "f3196fce044b1c786869ab81c25eb1fe12923289314c05be2d31ecf40b2179db",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_AssistanceUI.xml",
+      "operation": "move",
+      "bytes": 21,
+      "before_sha256": "01747ff488463e0b2cc9b47aa32fa1c9cc6fd86f7486e26784255ae3cf288e24",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_MaterialCare.lua",
+      "operation": "move",
+      "bytes": 14514,
+      "before_sha256": "8f2ca26343e0438b88ded9b024ad8c384f62cafa831787496dd704845bbe7773",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_OpportunityPolicy.lua",
+      "operation": "move",
+      "bytes": 24629,
+      "before_sha256": "298b9cecd3dcf7e6228814832e8ba42404539bc462b431ce326764bc07628702",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_ReportScreen.lua",
+      "operation": "move",
+      "bytes": 211,
+      "before_sha256": "4b3422f84263f31b917adc230b6ec034734561ca927e1a35b031e7104884b30c",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_Research.lua",
+      "operation": "move",
+      "bytes": 6708,
+      "before_sha256": "455f810b7d2524bef7abf6fd2ecc8c1fd92d39aa7333ef31e65aedb7000235c4",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CSC_AI_UIFilter.lua",
+      "operation": "retain",
+      "bytes": 1769,
+      "before_sha256": "a29fef4eb77e7fb46a72391bf8e648c963154edf21cb386245a5545f8018fcad",
+      "after_sha256": "a29fef4eb77e7fb46a72391bf8e648c963154edf21cb386245a5545f8018fcad"
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/CivilopediaPage_CSC_AI.lua",
+      "operation": "move",
+      "bytes": 90,
+      "before_sha256": "5a60814929437087b2c7c470213db95c27bba054fce2819c42ff9b6a51592229",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Lua_UI/AI/ToolTipLoader_CSC_AI.lua",
+      "operation": "move",
+      "bytes": 97,
+      "before_sha256": "1e5871012baaf8d10bcb444c3c079056450996143ec453015b9cc5f3a1a5b609",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/ModSupport/ModSupport_RH_AI.sql",
+      "operation": "move",
+      "bytes": 22722,
+      "before_sha256": "2a8df39870bd1111a915aef221e1121ac6da78c0fd453abaa9fbcab3150ec731",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/ModSupport/ModSupport_RH_AI_Roles.lua",
+      "operation": "move",
+      "bytes": 9927,
+      "before_sha256": "e14ee7df54438d30ed80a8a7b1dccb72ba596950ccf04103d6b3e71a8606f297",
+      "after_sha256": null
+    },
+    {
+      "path": "Civ Supply Chains/Settings/Settings.xml",
+      "operation": "modify",
+      "bytes": 3667,
+      "before_sha256": "d1e80b8284fc6fabb23179290ba886391f1158b323b9dc2a38458eb0e801edee",
+      "after_sha256": "f15738cb2aedea4595758213913b80df85e1a61b2a649047699a266ba93cd15f"
+    },
+    {
+      "path": "Civ Supply Chains/Settings/Settings_Text.xml",
+      "operation": "modify",
+      "bytes": 4270,
+      "before_sha256": "349e65a5def9b123452b5027054a1c4c81793e05c5e50f155d477fca863d806f",
+      "after_sha256": "e8becdefc1156c9fa6bc9f644e84754d0d49c26a62b94191cd5e4c3c77c9bd01"
+    },
+    {
+      "path": "Civ Supply Chains/Text/CSC_AI_TEXT.sql",
+      "operation": "move",
+      "bytes": 416,
+      "before_sha256": "ddf59ac590ae1864278389294324306768511382945c8496dbfd9b0fb0f37fba",
+      "after_sha256": null
+    },
+    {
+      "path": "project/localization/CSC_AI_TEXT.md",
+      "operation": "move",
+      "bytes": 124,
+      "before_sha256": "4e3d37c70a9abc0161aa35e14ff7a0506ed0209965b97cd26f8069c056afdbcd",
+      "after_sha256": null
+    },
+    {
+      "path": "project/modbuddy/CivSupplyChains.actions.json",
+      "operation": "modify",
+      "bytes": 42746,
+      "before_sha256": "59ad49d636f0c16a646337ba8b1e0542ab3977056a76360063907fcf3e13bc58",
+      "after_sha256": "24cf0ebb526f82360ae60fe840191ed2fe5dded1da33952c26c2b30a23f85eff"
+    },
+    {
+      "path": "project/tools/ai_baseline/README.md",
+      "operation": "copy-only",
+      "bytes": 18802,
+      "before_sha256": "9823e9bcd7346db3691d0832c796ffa1226677e124f7a8eb013c90ef6b47e71c",
+      "after_sha256": "9823e9bcd7346db3691d0832c796ffa1226677e124f7a8eb013c90ef6b47e71c"
+    },
+    {
+      "path": "project/tools/ai_baseline/analyze.py",
+      "operation": "copy-only",
+      "bytes": 25816,
+      "before_sha256": "520d8131218c2de58ece7e17092192678d0c138e86d81da98988ceb89ce65b11",
+      "after_sha256": "520d8131218c2de58ece7e17092192678d0c138e86d81da98988ceb89ce65b11"
+    },
+    {
+      "path": "project/tools/ai_baseline/analyze_builder_tuning.py",
+      "operation": "copy-only",
+      "bytes": 13967,
+      "before_sha256": "eed1f036c62cf9568f577c5903df224f461aeb08eda2ff6320b6ea64d293fe45",
+      "after_sha256": "eed1f036c62cf9568f577c5903df224f461aeb08eda2ff6320b6ea64d293fe45"
+    },
+    {
+      "path": "project/tools/ai_baseline/analyze_checkpoint_tuning.py",
+      "operation": "copy-only",
+      "bytes": 17489,
+      "before_sha256": "38fbf830b5bdcaff6bb9273fc81ccaabff8f168b943c07466214733edcee151b",
+      "after_sha256": "38fbf830b5bdcaff6bb9273fc81ccaabff8f168b943c07466214733edcee151b"
+    },
+    {
+      "path": "project/tools/ai_baseline/analyze_density_game.py",
+      "operation": "copy-only",
+      "bytes": 4429,
+      "before_sha256": "b96efaf33901a5a89a2a0d439a59f80c0aeec9879f45adfba2d3b3e1d35933b9",
+      "after_sha256": "b96efaf33901a5a89a2a0d439a59f80c0aeec9879f45adfba2d3b3e1d35933b9"
+    },
+    {
+      "path": "project/tools/ai_baseline/analyze_markers.py",
+      "operation": "copy-only",
+      "bytes": 2925,
+      "before_sha256": "4cabd15c4616cc7f3e302fc06397f904657229dcb4bbe2dacfbb2ac90312a695",
+      "after_sha256": "4cabd15c4616cc7f3e302fc06397f904657229dcb4bbe2dacfbb2ac90312a695"
+    },
+    {
+      "path": "project/tools/ai_baseline/analyze_native_tuning.py",
+      "operation": "copy-only",
+      "bytes": 12057,
+      "before_sha256": "120f17687411038c3214ed24b8bfc572b19962cbc8df863a9a06e6e7367a8c41",
+      "after_sha256": "120f17687411038c3214ed24b8bfc572b19962cbc8df863a9a06e6e7367a8c41"
+    },
+    {
+      "path": "project/tools/ai_baseline/analyze_tuning.py",
+      "operation": "copy-only",
+      "bytes": 10126,
+      "before_sha256": "5d084bb6482557f33722dba1a1f8f1ab8a1753ace51d7f7398cbf63b9e87b735",
+      "after_sha256": "5d084bb6482557f33722dba1a1f8f1ab8a1753ace51d7f7398cbf63b9e87b735"
+    },
+    {
+      "path": "project/tools/ai_baseline/builder_export.lua",
+      "operation": "copy-only",
+      "bytes": 1037,
+      "before_sha256": "bbe1bdd2d58bc09a542b11dfed18350299679cac5ffbbc7ae5e2414bc673a42f",
+      "after_sha256": "bbe1bdd2d58bc09a542b11dfed18350299679cac5ffbbc7ae5e2414bc673a42f"
+    },
+    {
+      "path": "project/tools/ai_baseline/builder_observer.lua",
+      "operation": "copy-only",
+      "bytes": 2971,
+      "before_sha256": "deabd0c1152a50ce17dd069dd99801db398ec3fb1d80f4d1b7b85c99514b8438",
+      "after_sha256": "deabd0c1152a50ce17dd069dd99801db398ec3fb1d80f4d1b7b85c99514b8438"
+    },
+    {
+      "path": "project/tools/ai_baseline/builder_tuning_trial.py",
+      "operation": "copy-only",
+      "bytes": 12233,
+      "before_sha256": "5a3642e6fa751811886f100e286d7a194ca3c34f7998c9955c06adf1393ea749",
+      "after_sha256": "5a3642e6fa751811886f100e286d7a194ca3c34f7998c9955c06adf1393ea749"
+    },
+    {
+      "path": "project/tools/ai_baseline/capture_reference.py",
+      "operation": "copy-only",
+      "bytes": 2037,
+      "before_sha256": "695e5bbbbb76b965ce7d5a719b85b37ae7d113362a70494708623b257fbce76f",
+      "after_sha256": "695e5bbbbb76b965ce7d5a719b85b37ae7d113362a70494708623b257fbce76f"
+    },
+    {
+      "path": "project/tools/ai_baseline/census_saved.py",
+      "operation": "copy-only",
+      "bytes": 2140,
+      "before_sha256": "4ed1522a52eaf3ff11dd6d1206874ba35cbf481366ff43b51c85d03afd100007",
+      "after_sha256": "4ed1522a52eaf3ff11dd6d1206874ba35cbf481366ff43b51c85d03afd100007"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_ancient_audit.py",
+      "operation": "copy-only",
+      "bytes": 11185,
+      "before_sha256": "5f6c1ba485a816a061b95ed19139a0a35acd78d4d92b191e363feec67ae67607",
+      "after_sha256": "5f6c1ba485a816a061b95ed19139a0a35acd78d4d92b191e363feec67ae67607"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_ancient_job.py",
+      "operation": "copy-only",
+      "bytes": 3487,
+      "before_sha256": "ccf153e0f156d14c322a836236a310e7ebf48b4976e0ea6231289269362be511",
+      "after_sha256": "ccf153e0f156d14c322a836236a310e7ebf48b4976e0ea6231289269362be511"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_ancient_results.py",
+      "operation": "copy-only",
+      "bytes": 14367,
+      "before_sha256": "1cb990b5590934e4f5b02bac2e841a1d41c04884950fb8288d61288a3b4c08c1",
+      "after_sha256": "1cb990b5590934e4f5b02bac2e841a1d41c04884950fb8288d61288a3b4c08c1"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_ancient_trial.py",
+      "operation": "copy-only",
+      "bytes": 22919,
+      "before_sha256": "c9781d34707accd2d126a3ac6680f8ed0e2ef493eb924ca859340c6dd355b095",
+      "after_sha256": "c9781d34707accd2d126a3ac6680f8ed0e2ef493eb924ca859340c6dd355b095"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_long_audit.py",
+      "operation": "copy-only",
+      "bytes": 11063,
+      "before_sha256": "c4aa2299c1ff3ab8ae347bcba2ed819303feb7253793454d3a20529ddb53fec7",
+      "after_sha256": "c4aa2299c1ff3ab8ae347bcba2ed819303feb7253793454d3a20529ddb53fec7"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_long_job.py",
+      "operation": "copy-only",
+      "bytes": 3415,
+      "before_sha256": "4276d567f5dbbbad78e771c3a26ce0d740f1d3d45646a606a4918355d49b106a",
+      "after_sha256": "4276d567f5dbbbad78e771c3a26ce0d740f1d3d45646a606a4918355d49b106a"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_long_results.py",
+      "operation": "copy-only",
+      "bytes": 13554,
+      "before_sha256": "2829ff587cdb9ee17029698b9535d58881e1cce7643e0fb33445dac9dff4a285",
+      "after_sha256": "2829ff587cdb9ee17029698b9535d58881e1cce7643e0fb33445dac9dff4a285"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_guidance_long_trial.py",
+      "operation": "copy-only",
+      "bytes": 24090,
+      "before_sha256": "f8858f209a4bae76481ce03dbbffb68b208e3479799e5d00b9f64018128157d1",
+      "after_sha256": "f8858f209a4bae76481ce03dbbffb68b208e3479799e5d00b9f64018128157d1"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_custom_yield_trial.py",
+      "operation": "copy-only",
+      "bytes": 4548,
+      "before_sha256": "e3bcea3b9cc12f6b4aa1b964231fd8f00670b2e670b410bfb474a47bd4e3da82",
+      "after_sha256": "e3bcea3b9cc12f6b4aa1b964231fd8f00670b2e670b410bfb474a47bd4e3da82"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_disqualifier_trial.py",
+      "operation": "copy-only",
+      "bytes": 5703,
+      "before_sha256": "3201e5d44f41e054468e232f6bf2df68af29cda4c5ead6fd5335af15331e2703",
+      "after_sha256": "3201e5d44f41e054468e232f6bf2df68af29cda4c5ead6fd5335af15331e2703"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_forbidden_trial.py",
+      "operation": "copy-only",
+      "bytes": 4149,
+      "before_sha256": "a6176dbfa934d9c5f08597dcc94e1178cb85e26c9cb3646c340aefc7f51604aa",
+      "after_sha256": "a6176dbfa934d9c5f08597dcc94e1178cb85e26c9cb3646c340aefc7f51604aa"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_inert_guard_trial.py",
+      "operation": "copy-only",
+      "bytes": 3582,
+      "before_sha256": "d4aeb66fbd826a1d499505e7dc9975a685a1efa861f4dc6664fa28791ee0eb73",
+      "after_sha256": "d4aeb66fbd826a1d499505e7dc9975a685a1efa861f4dc6664fa28791ee0eb73"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_lifecycle_audit.py",
+      "operation": "copy-only",
+      "bytes": 6506,
+      "before_sha256": "ddae7b482987a13a5bf597418dd1d9dab7be063d2c47b56377c9477d9a9e831f",
+      "after_sha256": "ddae7b482987a13a5bf597418dd1d9dab7be063d2c47b56377c9477d9a9e831f"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_lifecycle_trial.py",
+      "operation": "copy-only",
+      "bytes": 10344,
+      "before_sha256": "5ea7080a3cd0d7c8dc387ea0fd234add73ccb34e7d2b07691d4bcec7e92a42d2",
+      "after_sha256": "5ea7080a3cd0d7c8dc387ea0fd234add73ccb34e7d2b07691d4bcec7e92a42d2"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_material_audit.py",
+      "operation": "copy-only",
+      "bytes": 5920,
+      "before_sha256": "279451f5d568a61b40b241a838eaa12a3340bad3675feecf70136b71dae9e4af",
+      "after_sha256": "279451f5d568a61b40b241a838eaa12a3340bad3675feecf70136b71dae9e4af"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_material_fixture.lua",
+      "operation": "copy-only",
+      "bytes": 4171,
+      "before_sha256": "22144ca141c7d4395985f0c83537b816df1d0e13ef29cd3b1e0bdb602cb9a75e",
+      "after_sha256": "22144ca141c7d4395985f0c83537b816df1d0e13ef29cd3b1e0bdb602cb9a75e"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_material_yield_trial.py",
+      "operation": "copy-only",
+      "bytes": 8785,
+      "before_sha256": "cb2666ea29c28618658b99f83a7bb8a321e8bdf9322a19bc4fd5a5d717ec5100",
+      "after_sha256": "cb2666ea29c28618658b99f83a7bb8a321e8bdf9322a19bc4fd5a5d717ec5100"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_neutral_yield_trial.py",
+      "operation": "copy-only",
+      "bytes": 5457,
+      "before_sha256": "988cce21f38b16dd5a4441c0a19742ee01b7021ce2df7c9efbd86d9bdd11211f",
+      "after_sha256": "988cce21f38b16dd5a4441c0a19742ee01b7021ce2df7c9efbd86d9bdd11211f"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_owner_trial.py",
+      "operation": "copy-only",
+      "bytes": 5774,
+      "before_sha256": "28bcd04fc01a7cf725a10dcf40b28d3e5a4c370a069e55abbfc53fa9420efb6c",
+      "after_sha256": "28bcd04fc01a7cf725a10dcf40b28d3e5a4c370a069e55abbfc53fa9420efb6c"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_ready_fixture.lua",
+      "operation": "copy-only",
+      "bytes": 4413,
+      "before_sha256": "140813d34f4107758c4284170eba1400221b64fdf62f12e230d6dfb2755b4724",
+      "after_sha256": "140813d34f4107758c4284170eba1400221b64fdf62f12e230d6dfb2755b4724"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_strategy_yield_trial.py",
+      "operation": "copy-only",
+      "bytes": 8091,
+      "before_sha256": "9fe5ee5abe70f10c00c79678d5258bbf77dcec48cd5a7a2e25e137b796f8d9cd",
+      "after_sha256": "9fe5ee5abe70f10c00c79678d5258bbf77dcec48cd5a7a2e25e137b796f8d9cd"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_trial.py",
+      "operation": "copy-only",
+      "bytes": 19417,
+      "before_sha256": "8cf4d380d83fe9370a7a12282e3c7c556df4daabb178ee0eb0ba8ddafee53391",
+      "after_sha256": "8cf4d380d83fe9370a7a12282e3c7c556df4daabb178ee0eb0ba8ddafee53391"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_modifier_yield_preference_trial.py",
+      "operation": "copy-only",
+      "bytes": 5343,
+      "before_sha256": "e9313222c2b8e89d8b0afd56992a25ee2d19cbdee3c53257390216f59aa8df6a",
+      "after_sha256": "e9313222c2b8e89d8b0afd56992a25ee2d19cbdee3c53257390216f59aa8df6a"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_unlock_binding_trial.py",
+      "operation": "copy-only",
+      "bytes": 14967,
+      "before_sha256": "863369865c3a814681f1428d09719e7e76fd39064df800e84180f8a81d065a23",
+      "after_sha256": "863369865c3a814681f1428d09719e7e76fd39064df800e84180f8a81d065a23"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_unlock_dual_gate_trial.py",
+      "operation": "copy-only",
+      "bytes": 14464,
+      "before_sha256": "1274eb54ce4be3f9a28e8d7508607a27bc3e8fd45d7327bfceef41ac21da54ce",
+      "after_sha256": "1274eb54ce4be3f9a28e8d7508607a27bc3e8fd45d7327bfceef41ac21da54ce"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_unlock_goal_gate_probe.py",
+      "operation": "copy-only",
+      "bytes": 12930,
+      "before_sha256": "32a4ecf410f8597698c2e25d03b8e5270378ab6f5ed5565af973d996d10b25a6",
+      "after_sha256": "32a4ecf410f8597698c2e25d03b8e5270378ab6f5ed5565af973d996d10b25a6"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_unlock_goal_trial.py",
+      "operation": "copy-only",
+      "bytes": 14092,
+      "before_sha256": "0b3cd45f42297c82d222f4d4ae1b779599b1428f6059ad13edb284a0b6f4f0d7",
+      "after_sha256": "0b3cd45f42297c82d222f4d4ae1b779599b1428f6059ad13edb284a0b6f4f0d7"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_unlock_rst_trial.py",
+      "operation": "copy-only",
+      "bytes": 22921,
+      "before_sha256": "8aa0cd141e4fbfb1e8d1324db3de009627270abd7f6c74383fe55a6cbf19391e",
+      "after_sha256": "8aa0cd141e4fbfb1e8d1324db3de009627270abd7f6c74383fe55a6cbf19391e"
+    },
+    {
+      "path": "project/tools/ai_baseline/civic_unlock_score_trial.py",
+      "operation": "copy-only",
+      "bytes": 12954,
+      "before_sha256": "e735ee6418283c9b983647c38445e3beac4746740bade66df5158068f70e0938",
+      "after_sha256": "e735ee6418283c9b983647c38445e3beac4746740bade66df5158068f70e0938"
+    },
+    {
+      "path": "project/tools/ai_baseline/continue_saved.py",
+      "operation": "copy-only",
+      "bytes": 6718,
+      "before_sha256": "fd688d28e761c204e385f3a41f8a694e1aea19aafeb4ca6442143129ea4be655",
+      "after_sha256": "fd688d28e761c204e385f3a41f8a694e1aea19aafeb4ca6442143129ea4be655"
+    },
+    {
+      "path": "project/tools/ai_baseline/density_game_methods.py",
+      "operation": "copy-only",
+      "bytes": 6673,
+      "before_sha256": "e325c3274d86ef81221a63c67e9a2eaf6603314f7f9013b2a3843c361882a6b4",
+      "after_sha256": "e325c3274d86ef81221a63c67e9a2eaf6603314f7f9013b2a3843c361882a6b4"
+    },
+    {
+      "path": "project/tools/ai_baseline/density_game_trial.py",
+      "operation": "copy-only",
+      "bytes": 7498,
+      "before_sha256": "8f1eb737d5087d1123154ed78a97dc668610a2ac0f1cf6250efefa73c91d7a17",
+      "after_sha256": "8f1eb737d5087d1123154ed78a97dc668610a2ac0f1cf6250efefa73c91d7a17"
+    },
+    {
+      "path": "project/tools/ai_baseline/deploy_ai.py",
+      "operation": "copy-only",
+      "bytes": 1279,
+      "before_sha256": "ff6680b17ba8941676761cc9044f6f596f4a8c5a35d962e0c23422dcaf84d06c",
+      "after_sha256": "ff6680b17ba8941676761cc9044f6f596f4a8c5a35d962e0c23422dcaf84d06c"
+    },
+    {
+      "path": "project/tools/ai_baseline/experiments/material_backlog_boost_gate.sql",
+      "operation": "copy-only",
+      "bytes": 1458,
+      "before_sha256": "cb95500335d7d04358906dc7353613c1d9db1bebd3e0ab7cda394dcff99cc2b6",
+      "after_sha256": "cb95500335d7d04358906dc7353613c1d9db1bebd3e0ab7cda394dcff99cc2b6"
+    },
+    {
+      "path": "project/tools/ai_baseline/experiments/material_farm_resource_forecast.sql",
+      "operation": "copy-only",
+      "bytes": 2047,
+      "before_sha256": "341cc306ca26932455082f3dd40d2980b6a972b4ba23329343e15a1158d7d679",
+      "after_sha256": "341cc306ca26932455082f3dd40d2980b6a972b4ba23329343e15a1158d7d679"
+    },
+    {
+      "path": "project/tools/ai_baseline/experiments/material_improvement_forecast.sql",
+      "operation": "copy-only",
+      "bytes": 1156,
+      "before_sha256": "5652ef47487b879d864e7230039add671c04b2deb013a6e29e648ba02a53432a",
+      "after_sha256": "5652ef47487b879d864e7230039add671c04b2deb013a6e29e648ba02a53432a"
+    },
+    {
+      "path": "project/tools/ai_baseline/experiments/material_mapped_improvement_forecast.sql",
+      "operation": "copy-only",
+      "bytes": 4659,
+      "before_sha256": "304e492ebbe0bf54be8d347c018b47600450e76464f2afcfdd4b99237042921d",
+      "after_sha256": "304e492ebbe0bf54be8d347c018b47600450e76464f2afcfdd4b99237042921d"
+    },
+    {
+      "path": "project/tools/ai_baseline/experiments/material_native_harvest_guard.sql",
+      "operation": "copy-only",
+      "bytes": 1401,
+      "before_sha256": "bb6c66f998b3070c38a64616cd0406819878c7c2b699c584d2e746231a5180a7",
+      "after_sha256": "bb6c66f998b3070c38a64616cd0406819878c7c2b699c584d2e746231a5180a7"
+    },
+    {
+      "path": "project/tools/ai_baseline/experiments/material_resource_forecast.sql",
+      "operation": "copy-only",
+      "bytes": 1351,
+      "before_sha256": "4fb7469357fcc7aeb25bb53ef6d150f41c29e0d7593215aa077e5ffcdcd5eca4",
+      "after_sha256": "4fb7469357fcc7aeb25bb53ef6d150f41c29e0d7593215aa077e5ffcdcd5eca4"
+    },
+    {
+      "path": "project/tools/ai_baseline/experiments/rejected_CSC_AI_MaterialMarkers.lua",
+      "operation": "copy-only",
+      "bytes": 3450,
+      "before_sha256": "2c2e7ce1b0bd1039ede211e4b946260a6d5da554574db750504379d81c16f41a",
+      "after_sha256": "2c2e7ce1b0bd1039ede211e4b946260a6d5da554574db750504379d81c16f41a"
+    },
+    {
+      "path": "project/tools/ai_baseline/fixed_research_control.sql",
+      "operation": "copy-only",
+      "bytes": 715,
+      "before_sha256": "d3f6b3c2f30a785a4a46fc02db795f33df0e3aa8ad88a6ba8ae0935e3204f48e",
+      "after_sha256": "d3f6b3c2f30a785a4a46fc02db795f33df0e3aa8ad88a6ba8ae0935e3204f48e"
+    },
+    {
+      "path": "project/tools/ai_baseline/fixed_research_extreme_trial.py",
+      "operation": "copy-only",
+      "bytes": 17677,
+      "before_sha256": "ea2ce4111afec7310bed2312a5c1ad6ef7deab0ab57f4f7e3cdc9286f451e8c9",
+      "after_sha256": "ea2ce4111afec7310bed2312a5c1ad6ef7deab0ab57f4f7e3cdc9286f451e8c9"
+    },
+    {
+      "path": "project/tools/ai_baseline/fixed_research_trial.py",
+      "operation": "copy-only",
+      "bytes": 17405,
+      "before_sha256": "c979d372ee930db7ffb655b177fbf4460f7bad84140fb54f23752e41934a0ed8",
+      "after_sha256": "c979d372ee930db7ffb655b177fbf4460f7bad84140fb54f23752e41934a0ed8"
+    },
+    {
+      "path": "project/tools/ai_baseline/fixed_research_visible.py",
+      "operation": "copy-only",
+      "bytes": 10694,
+      "before_sha256": "1cdbf9ab8327fb8828ad148b35c3a0a0233d590ac902da6f1e175e71e7c956b9",
+      "after_sha256": "1cdbf9ab8327fb8828ad148b35c3a0a0233d590ac902da6f1e175e71e7c956b9"
+    },
+    {
+      "path": "project/tools/ai_baseline/fixed_research_visible_250.py",
+      "operation": "copy-only",
+      "bytes": 5804,
+      "before_sha256": "2a467554cb4b1002c8091be46d177b6a03ee56db3b740c29cd1656d40c284c69",
+      "after_sha256": "2a467554cb4b1002c8091be46d177b6a03ee56db3b740c29cd1656d40c284c69"
+    },
+    {
+      "path": "project/tools/ai_baseline/fixed_research_visible_continue.py",
+      "operation": "copy-only",
+      "bytes": 5854,
+      "before_sha256": "e04b92f52803651af5a6d5f038a2bf681d42667af4ac20cf375253f2a9308f9e",
+      "after_sha256": "e04b92f52803651af5a6d5f038a2bf681d42667af4ac20cf375253f2a9308f9e"
+    },
+    {
+      "path": "project/tools/ai_baseline/fixed_research_visible_reload.py",
+      "operation": "copy-only",
+      "bytes": 4756,
+      "before_sha256": "68c826c347724bdacd967af7aaa4ec660741d113940350a22ab1ff6bf3c4bbe9",
+      "after_sha256": "68c826c347724bdacd967af7aaa4ec660741d113940350a22ab1ff6bf3c4bbe9"
+    },
+    {
+      "path": "project/tools/ai_baseline/foundation_planner.lua",
+      "operation": "copy-only",
+      "bytes": 9365,
+      "before_sha256": "f9ff5574bc1ba7cad4f5ff9a044fbc104cda483250cff59b566a659e5caead93",
+      "after_sha256": "f9ff5574bc1ba7cad4f5ff9a044fbc104cda483250cff59b566a659e5caead93"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/README.md",
+      "operation": "copy-only",
+      "bytes": 27392,
+      "before_sha256": "d4016d066f2be4d466427061866bc0218ccb9e756d9b83233913067284f41981",
+      "after_sha256": "d4016d066f2be4d466427061866bc0218ccb9e756d9b83233913067284f41981"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/__init__.py",
+      "operation": "copy-only",
+      "bytes": 208,
+      "before_sha256": "754487d5ff7ab5ec39efce9913a8977b4c0a942ed1d81a8a57144d78c09cf63f",
+      "after_sha256": "754487d5ff7ab5ec39efce9913a8977b4c0a942ed1d81a8a57144d78c09cf63f"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/blocker_diagnostics.lua",
+      "operation": "copy-only",
+      "bytes": 1727,
+      "before_sha256": "17b78fd8ab59ad9a00ffe1b549d2e938b62d4eba477612c0d97327858f38d2db",
+      "after_sha256": "17b78fd8ab59ad9a00ffe1b549d2e938b62d4eba477612c0d97327858f38d2db"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/checkpoint.py",
+      "operation": "copy-only",
+      "bytes": 4839,
+      "before_sha256": "adaf95c67418029bf2712b434b3d183318a116576e5b47cd71ae1d00560692eb",
+      "after_sha256": "adaf95c67418029bf2712b434b3d183318a116576e5b47cd71ae1d00560692eb"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/command_actor.py",
+      "operation": "copy-only",
+      "bytes": 5042,
+      "before_sha256": "29082c6b43a065eacaa1edbb0463f9931437d75381f2af983e3f98c7780f8c0b",
+      "after_sha256": "29082c6b43a065eacaa1edbb0463f9931437d75381f2af983e3f98c7780f8c0b"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/congress_review.lua",
+      "operation": "copy-only",
+      "bytes": 1464,
+      "before_sha256": "7e432142512e9a9eb723ffced5e40e50da2921b59b45c5ff83bad92bbb87e59b",
+      "after_sha256": "7e432142512e9a9eb723ffced5e40e50da2921b59b45c5ff83bad92bbb87e59b"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/continuation.py",
+      "operation": "copy-only",
+      "bytes": 2964,
+      "before_sha256": "38a433b803da011b83933072be0f7fe62cc856704353d19f63de9e6d34aadd0a",
+      "after_sha256": "38a433b803da011b83933072be0f7fe62cc856704353d19f63de9e6d34aadd0a"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/controller.py",
+      "operation": "copy-only",
+      "bytes": 25932,
+      "before_sha256": "9a5d34e0037213a9ccbf7fcc4515b957286244900a48a918f7fe50d7001e44c2",
+      "after_sha256": "9a5d34e0037213a9ccbf7fcc4515b957286244900a48a918f7fe50d7001e44c2"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/diplomacy_playback.lua",
+      "operation": "copy-only",
+      "bytes": 974,
+      "before_sha256": "491c4b5130448b103784266ca8f6e0395822c775e82c27de6aba94e3537de1b3",
+      "after_sha256": "491c4b5130448b103784266ca8f6e0395822c775e82c27de6aba94e3537de1b3"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/disaster_playback.lua",
+      "operation": "copy-only",
+      "bytes": 1083,
+      "before_sha256": "a25e7148f9780e96f78828a77e4dba66857543cef99790b1fdd454ff91cad795",
+      "after_sha256": "a25e7148f9780e96f78828a77e4dba66857543cef99790b1fdd454ff91cad795"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/discovery.py",
+      "operation": "copy-only",
+      "bytes": 2335,
+      "before_sha256": "e69df3fc0023dd972df3b122877fe2380180bc446f5f1a491c2a5c24a1afb1df",
+      "after_sha256": "e69df3fc0023dd972df3b122877fe2380180bc446f5f1a491c2a5c24a1afb1df"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/endgame_playback.lua",
+      "operation": "copy-only",
+      "bytes": 1167,
+      "before_sha256": "4247df3efa7a31bfbf719b79bee185c13eca25e80be925bc1f72b91a0025ee81",
+      "after_sha256": "4247df3efa7a31bfbf719b79bee185c13eca25e80be925bc1f72b91a0025ee81"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/environment.py",
+      "operation": "copy-only",
+      "bytes": 9073,
+      "before_sha256": "df412eb7d099c9d37da72263e90ceac21b7605d7c4db30d521e505dbe9f9481f",
+      "after_sha256": "df412eb7d099c9d37da72263e90ceac21b7605d7c4db30d521e505dbe9f9481f"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/first_meet_session_dismissal.lua",
+      "operation": "copy-only",
+      "bytes": 2084,
+      "before_sha256": "0ac60a677eeac0a25f523b745360e402efa5c0f013da4ab24442603237b77d21",
+      "after_sha256": "0ac60a677eeac0a25f523b745360e402efa5c0f013da4ab24442603237b77d21"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/log_capture.py",
+      "operation": "copy-only",
+      "bytes": 2038,
+      "before_sha256": "77c33aa224ffde3fe1909535dfa706bcf9a466addb54dd3fd83eeff7bddb9940",
+      "after_sha256": "77c33aa224ffde3fe1909535dfa706bcf9a466addb54dd3fd83eeff7bddb9940"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/log_evidence.py",
+      "operation": "copy-only",
+      "bytes": 2147,
+      "before_sha256": "2cebf27cd8585dc74870ee12e8fdbfa2a46f4bae67a4237a099ed5c021ff7f43",
+      "after_sha256": "2cebf27cd8585dc74870ee12e8fdbfa2a46f4bae67a4237a099ed5c021ff7f43"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/probe.py",
+      "operation": "copy-only",
+      "bytes": 4190,
+      "before_sha256": "ab319625399ac6d3f3394a8e118d1c8d45d420019c49e7121a7a9385b0949202",
+      "after_sha256": "ab319625399ac6d3f3394a8e118d1c8d45d420019c49e7121a7a9385b0949202"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/renderer_evidence.py",
+      "operation": "copy-only",
+      "bytes": 4667,
+      "before_sha256": "f0ea369ba7122774a0ba8ad4ef163d3e254eb75eef7f805eea35643e9584e840",
+      "after_sha256": "f0ea369ba7122774a0ba8ad4ef163d3e254eb75eef7f805eea35643e9584e840"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/run_metadata.py",
+      "operation": "copy-only",
+      "bytes": 726,
+      "before_sha256": "1fe64f083278dfed2c1747c54b86ead901fc25c3790a1340f95931bd06a0671c",
+      "after_sha256": "1fe64f083278dfed2c1747c54b86ead901fc25c3790a1340f95931bd06a0671c"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/session.py",
+      "operation": "copy-only",
+      "bytes": 9472,
+      "before_sha256": "72a97bbb9a99bc76c03c75fb61953698dfc3e53ee431ab5016bcb167e860cd22",
+      "after_sha256": "72a97bbb9a99bc76c03c75fb61953698dfc3e53ee431ab5016bcb167e860cd22"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/session_dismissal.lua",
+      "operation": "copy-only",
+      "bytes": 1454,
+      "before_sha256": "bdc4bd1227465631d4880dec1516c544b26176c69d7a90e0c36504d050e58e52",
+      "after_sha256": "bdc4bd1227465631d4880dec1516c544b26176c69d7a90e0c36504d050e58e52"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_checkpoint_phase.py",
+      "operation": "copy-only",
+      "bytes": 1334,
+      "before_sha256": "d846d71ada17ea10d253ab620dcbbb61542f2c1c10eb1b9431ca6d0606927a37",
+      "after_sha256": "d846d71ada17ea10d253ab620dcbbb61542f2c1c10eb1b9431ca6d0606927a37"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_command_actor.py",
+      "operation": "copy-only",
+      "bytes": 3383,
+      "before_sha256": "0fd2f091a91294f580233d051c1a477f248c3ac555704500f26c3f49ffc5ecd7",
+      "after_sha256": "0fd2f091a91294f580233d051c1a477f248c3ac555704500f26c3f49ffc5ecd7"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_endgame.py",
+      "operation": "copy-only",
+      "bytes": 3839,
+      "before_sha256": "17400c2d2ccba4e366d70a3666ec32df41711c65cf9ddb4151bad92a4d5e1f3b",
+      "after_sha256": "17400c2d2ccba4e366d70a3666ec32df41711c65cf9ddb4151bad92a4d5e1f3b"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_endpoint_metadata.py",
+      "operation": "copy-only",
+      "bytes": 1300,
+      "before_sha256": "191ac441f77997dd3555c5cdd2765cffcf025adf1a5d5be65cf66b0e7a62df70",
+      "after_sha256": "191ac441f77997dd3555c5cdd2765cffcf025adf1a5d5be65cf66b0e7a62df70"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_json_publication.py",
+      "operation": "copy-only",
+      "bytes": 9974,
+      "before_sha256": "9c9a0b5cc7126340a0969b6945bc616cbe03ff0b2e79019720fdc2c9de8cc277",
+      "after_sha256": "9c9a0b5cc7126340a0969b6945bc616cbe03ff0b2e79019720fdc2c9de8cc277"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_log_capture.py",
+      "operation": "copy-only",
+      "bytes": 2732,
+      "before_sha256": "05eba55e7d5e509fea7efcf3ad93a51b57df3f928f835d92eb33e784c378919a",
+      "after_sha256": "05eba55e7d5e509fea7efcf3ad93a51b57df3f928f835d92eb33e784c378919a"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_offline.py",
+      "operation": "copy-only",
+      "bytes": 33572,
+      "before_sha256": "b8a77c834a966e1061a75d79e6e65e58bb095ecba30a7105cd3fbb83c9d66b80",
+      "after_sha256": "b8a77c834a966e1061a75d79e6e65e58bb095ecba30a7105cd3fbb83c9d66b80"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_probe.py",
+      "operation": "copy-only",
+      "bytes": 7015,
+      "before_sha256": "89d01827bbfeeeefeb2beb24cb2b0ecc386d57c307a2f9366928bb4cbcd9426f",
+      "after_sha256": "89d01827bbfeeeefeb2beb24cb2b0ecc386d57c307a2f9366928bb4cbcd9426f"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_recovery_exports.py",
+      "operation": "copy-only",
+      "bytes": 5115,
+      "before_sha256": "1220ea03b4eaad6281ce425eff6ff925c6a380ccacde54e890bceed83c555086",
+      "after_sha256": "1220ea03b4eaad6281ce425eff6ff925c6a380ccacde54e890bceed83c555086"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_session.py",
+      "operation": "copy-only",
+      "bytes": 9909,
+      "before_sha256": "8bb33c3bbafc377cb17970488570d27fe39143e9927ebd6e61b8babf7b8fa8ec",
+      "after_sha256": "8bb33c3bbafc377cb17970488570d27fe39143e9927ebd6e61b8babf7b8fa8ec"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_state_discovery_retry.py",
+      "operation": "copy-only",
+      "bytes": 4566,
+      "before_sha256": "d21becb080935a46f7cde672ac556872a85bcf31df5d8015f81f1ec6eb40edeb",
+      "after_sha256": "d21becb080935a46f7cde672ac556872a85bcf31df5d8015f81f1ec6eb40edeb"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/test_war_sessions.py",
+      "operation": "copy-only",
+      "bytes": 4276,
+      "before_sha256": "5042c88eea77b907bf5e00f90a13c7dbd5b51c5ddf81bbc3b8f562c61bdda03c",
+      "after_sha256": "5042c88eea77b907bf5e00f90a13c7dbd5b51c5ddf81bbc3b8f562c61bdda03c"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/transport.py",
+      "operation": "copy-only",
+      "bytes": 2504,
+      "before_sha256": "7b4fd78a68fa53df5b3b0a21a3500172cfa3a62bb7aaafa3d5071575c869d5e0",
+      "after_sha256": "7b4fd78a68fa53df5b3b0a21a3500172cfa3a62bb7aaafa3d5071575c869d5e0"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/war_session_dismissal.lua",
+      "operation": "copy-only",
+      "bytes": 1844,
+      "before_sha256": "9e0ed3440db94784de5bae4c5e77a0ef3e7b222d0306943d3d9c9d9fe2f2ce33",
+      "after_sha256": "9e0ed3440db94784de5bae4c5e77a0ef3e7b222d0306943d3d9c9d9fe2f2ce33"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/windows_process.py",
+      "operation": "copy-only",
+      "bytes": 4974,
+      "before_sha256": "089cf1f5dc2429c5c86489c69a97a42ab13c52901dcc04bc90e2cb796099104b",
+      "after_sha256": "089cf1f5dc2429c5c86489c69a97a42ab13c52901dcc04bc90e2cb796099104b"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/wonder_playback.lua",
+      "operation": "copy-only",
+      "bytes": 968,
+      "before_sha256": "975245b9f34eb7a552959c2d0e4157803ebe615f1e1cf10a02bf187b6654f785",
+      "after_sha256": "975245b9f34eb7a552959c2d0e4157803ebe615f1e1cf10a02bf187b6654f785"
+    },
+    {
+      "path": "project/tools/ai_baseline/improvement_research_analyze.py",
+      "operation": "copy-only",
+      "bytes": 3955,
+      "before_sha256": "18d42944c090d5ac963ca4ba37737f8dd93d897050839442261f46beba77d4d0",
+      "after_sha256": "18d42944c090d5ac963ca4ba37737f8dd93d897050839442261f46beba77d4d0"
+    },
+    {
+      "path": "project/tools/ai_baseline/improvement_research_trial.py",
+      "operation": "copy-only",
+      "bytes": 16250,
+      "before_sha256": "0401b255a04c3ce7db2b20abeca842546c2a30e2fb990fa169a20770a4b8f29f",
+      "after_sha256": "0401b255a04c3ce7db2b20abeca842546c2a30e2fb990fa169a20770a4b8f29f"
+    },
+    {
+      "path": "project/tools/ai_baseline/log_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 12059,
+      "before_sha256": "a5f99aa43c7353ff4024b7a4c60b348c053ed40464bba271bb9858c923cf650c",
+      "after_sha256": "a5f99aa43c7353ff4024b7a4c60b348c053ed40464bba271bb9858c923cf650c"
+    },
+    {
+      "path": "project/tools/ai_baseline/longitudinal.py",
+      "operation": "copy-only",
+      "bytes": 5021,
+      "before_sha256": "4e0b7a637f4268dd314ab01f1dfca7477fcc13ae0163e71e66554411b506adbe",
+      "after_sha256": "4e0b7a637f4268dd314ab01f1dfca7477fcc13ae0163e71e66554411b506adbe"
+    },
+    {
+      "path": "project/tools/ai_baseline/map_opportunities.py",
+      "operation": "copy-only",
+      "bytes": 4208,
+      "before_sha256": "c9901c899b54c555db7aa484f45c0b4564240bb5ed3ff673dc40f8e12bdc7148",
+      "after_sha256": "c9901c899b54c555db7aa484f45c0b4564240bb5ed3ff673dc40f8e12bdc7148"
+    },
+    {
+      "path": "project/tools/ai_baseline/mapped_improvement_values.lua",
+      "operation": "copy-only",
+      "bytes": 3608,
+      "before_sha256": "d7ae1d597bcf70c251e2e5d273c68ff1abc7c3c35c4a99e88a2df72b4cd5b5f9",
+      "after_sha256": "d7ae1d597bcf70c251e2e5d273c68ff1abc7c3c35c4a99e88a2df72b4cd5b5f9"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_ai_observer.lua",
+      "operation": "copy-only",
+      "bytes": 1301,
+      "before_sha256": "b650ec363f8268bd77486b549d1e9f94c9437426ae52dc157a11415e82458987",
+      "after_sha256": "b650ec363f8268bd77486b549d1e9f94c9437426ae52dc157a11415e82458987"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_build_ui.lua",
+      "operation": "copy-only",
+      "bytes": 1049,
+      "before_sha256": "ac7668cb95e8fb9f3a06641bcc3b6832852fcef98de5c5c3e33b36b972f60eb4",
+      "after_sha256": "ac7668cb95e8fb9f3a06641bcc3b6832852fcef98de5c5c3e33b36b972f60eb4"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_build_verify.lua",
+      "operation": "copy-only",
+      "bytes": 688,
+      "before_sha256": "4b365f0025f665d4aecba6a287bd4d7f31949a1a5a892f833a49cf751a2156d5",
+      "after_sha256": "4b365f0025f665d4aecba6a287bd4d7f31949a1a5a892f833a49cf751a2156d5"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_disable.lua",
+      "operation": "copy-only",
+      "bytes": 147,
+      "before_sha256": "78377f20a4f26c3386a460ecd6698ec24d2064e065f9859d5bac747fb9843443",
+      "after_sha256": "78377f20a4f26c3386a460ecd6698ec24d2064e065f9859d5bac747fb9843443"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_forest_control.lua",
+      "operation": "copy-only",
+      "bytes": 916,
+      "before_sha256": "3bc38b30a9d716d35379e05667c444453331ac1c275e3a782e92d48f61951d76",
+      "after_sha256": "3bc38b30a9d716d35379e05667c444453331ac1c275e3a782e92d48f61951d76"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_guard_observer.lua",
+      "operation": "copy-only",
+      "bytes": 1075,
+      "before_sha256": "8110d3cb087182b1b42a366cf450e88eecd9ee777f769255b1277a261ff8aa35",
+      "after_sha256": "8110d3cb087182b1b42a366cf450e88eecd9ee777f769255b1277a261ff8aa35"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_human_recover.lua",
+      "operation": "copy-only",
+      "bytes": 2010,
+      "before_sha256": "64c65d07d3adbb26cf7d5135102954d8aaa6303c6a68bf8bab3986263da6c024",
+      "after_sha256": "64c65d07d3adbb26cf7d5135102954d8aaa6303c6a68bf8bab3986263da6c024"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_human_setup.lua",
+      "operation": "copy-only",
+      "bytes": 2252,
+      "before_sha256": "b51a8382b5c4111de8153c118e7af3a0ec2f2ce7feccfacf8b6ff43f73f2b006",
+      "after_sha256": "b51a8382b5c4111de8153c118e7af3a0ec2f2ce7feccfacf8b6ff43f73f2b006"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_human_ui.lua",
+      "operation": "copy-only",
+      "bytes": 1236,
+      "before_sha256": "d68d9c1109ed7d46d5dad9ba3fcb7c914ab70e47aac44831193da078145c1ef4",
+      "after_sha256": "d68d9c1109ed7d46d5dad9ba3fcb7c914ab70e47aac44831193da078145c1ef4"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_probe_gameplay.lua",
+      "operation": "copy-only",
+      "bytes": 1067,
+      "before_sha256": "cd596273b9b774d1089e241fc1705db3f35eb8f83081c1b96b44128cee637bd2",
+      "after_sha256": "cd596273b9b774d1089e241fc1705db3f35eb8f83081c1b96b44128cee637bd2"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_probe_setup.lua",
+      "operation": "copy-only",
+      "bytes": 3380,
+      "before_sha256": "910d723f27a518cfe9f04fcda61e28252062aeac570540165f321800ebbd0de0",
+      "after_sha256": "910d723f27a518cfe9f04fcda61e28252062aeac570540165f321800ebbd0de0"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_probe_ui.lua",
+      "operation": "copy-only",
+      "bytes": 1990,
+      "before_sha256": "88013e7a9cfb63fb3a60cb0a48bf261dbfb583a94aebd328e1b782a65588b8a2",
+      "after_sha256": "88013e7a9cfb63fb3a60cb0a48bf261dbfb583a94aebd328e1b782a65588b8a2"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_recover_setup.lua",
+      "operation": "copy-only",
+      "bytes": 3323,
+      "before_sha256": "f35f3ae97a5584609dda0b21199c0ac212ddca2a8f5affcd52661def9e1db514",
+      "after_sha256": "f35f3ae97a5584609dda0b21199c0ac212ddca2a8f5affcd52661def9e1db514"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_remove_resource.lua",
+      "operation": "copy-only",
+      "bytes": 473,
+      "before_sha256": "a8b465d0c413c052123b4acc3c0d3c88aea1f0875b2aa0157e1bc1827fe3c059",
+      "after_sha256": "a8b465d0c413c052123b4acc3c0d3c88aea1f0875b2aa0157e1bc1827fe3c059"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_save.lua",
+      "operation": "copy-only",
+      "bytes": 236,
+      "before_sha256": "da336513e6246f5b50e577ee9f1f6cc8f022a87f81a3c4c6ae2dcdfa84d80b5b",
+      "after_sha256": "da336513e6246f5b50e577ee9f1f6cc8f022a87f81a3c4c6ae2dcdfa84d80b5b"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_trial.py",
+      "operation": "copy-only",
+      "bytes": 6622,
+      "before_sha256": "2cdb950785c74637bb2c347a449a408df93e57d9eb94034f95902d4f7ab14662",
+      "after_sha256": "2cdb950785c74637bb2c347a449a408df93e57d9eb94034f95902d4f7ab14662"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_unitpanel.lua",
+      "operation": "copy-only",
+      "bytes": 1033,
+      "before_sha256": "2b0e4ab872304fea70ed48d063808f206e7784aa95f9519a59a00091462688d9",
+      "after_sha256": "2b0e4ab872304fea70ed48d063808f206e7784aa95f9519a59a00091462688d9"
+    },
+    {
+      "path": "project/tools/ai_baseline/marker_verify_removal.lua",
+      "operation": "copy-only",
+      "bytes": 443,
+      "before_sha256": "5569d17ec84fc281c8793f2acd1f8bfa7c6428981b8b7a6c560ddd4b3489fe60",
+      "after_sha256": "5569d17ec84fc281c8793f2acd1f8bfa7c6428981b8b7a6c560ddd4b3489fe60"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_boost_activity.py",
+      "operation": "copy-only",
+      "bytes": 4646,
+      "before_sha256": "717672ad5920bde56e6225ab6b872adfed26a05f59a4eb1958bc3a042fed83f1",
+      "after_sha256": "717672ad5920bde56e6225ab6b872adfed26a05f59a4eb1958bc3a042fed83f1"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_boost_gate_comparison.py",
+      "operation": "copy-only",
+      "bytes": 7028,
+      "before_sha256": "806dd8bd4c4a24dd7b4f8133ed5e14e51322f585c3b8c07ea841a3620693650f",
+      "after_sha256": "806dd8bd4c4a24dd7b4f8133ed5e14e51322f585c3b8c07ea841a3620693650f"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_boost_log.py",
+      "operation": "copy-only",
+      "bytes": 1711,
+      "before_sha256": "a140a0856945f464f333f5db8e38a6097e9217346c145e6ec50a673a2c9682d9",
+      "after_sha256": "a140a0856945f464f333f5db8e38a6097e9217346c145e6ec50a673a2c9682d9"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_care_audit.py",
+      "operation": "copy-only",
+      "bytes": 17171,
+      "before_sha256": "64f374dd62d74872d8b5f0ca525c90f78128414c3c169f91c1d557fb47b926ad",
+      "after_sha256": "64f374dd62d74872d8b5f0ca525c90f78128414c3c169f91c1d557fb47b926ad"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_checkpoint_logs.py",
+      "operation": "copy-only",
+      "bytes": 1746,
+      "before_sha256": "5b119d640bc303d8f06b8e13876ca7b60afdcdb5012f0e655e39d4e5db6b5f68",
+      "after_sha256": "5b119d640bc303d8f06b8e13876ca7b60afdcdb5012f0e655e39d4e5db6b5f68"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_decision_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 7018,
+      "before_sha256": "2cdd74ccbd5d8ee6a54413cf2e5f0169ee9ac8f859aeba97e109566ff653810a",
+      "after_sha256": "2cdd74ccbd5d8ee6a54413cf2e5f0169ee9ac8f859aeba97e109566ff653810a"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_farm150_audit.py",
+      "operation": "copy-only",
+      "bytes": 19586,
+      "before_sha256": "fb7337f836107c3a3f8208d06486be7bf6e125df1bd052a56d108ed020f06f4f",
+      "after_sha256": "fb7337f836107c3a3f8208d06486be7bf6e125df1bd052a56d108ed020f06f4f"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_farm_resource_forecast.py",
+      "operation": "copy-only",
+      "bytes": 5844,
+      "before_sha256": "30d5861af76b0f9100463f202e4a298ca71fa261212ad213676a7a00654730e7",
+      "after_sha256": "30d5861af76b0f9100463f202e4a298ca71fa261212ad213676a7a00654730e7"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_farm_start1_audit.py",
+      "operation": "copy-only",
+      "bytes": 10516,
+      "before_sha256": "4282b7e7c47f872718f36034fd9762d231797a5f3056d804782f4a64ca050aba",
+      "after_sha256": "4282b7e7c47f872718f36034fd9762d231797a5f3056d804782f4a64ca050aba"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_forecast_audit.py",
+      "operation": "copy-only",
+      "bytes": 18960,
+      "before_sha256": "069dc5836435817bfcd1c5d6a641fe9f19e79b472d3439efe3b058c53d2b0f5c",
+      "after_sha256": "069dc5836435817bfcd1c5d6a641fe9f19e79b472d3439efe3b058c53d2b0f5c"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_forecast_comparison.py",
+      "operation": "copy-only",
+      "bytes": 11634,
+      "before_sha256": "04341e29eddf6c8afc5bd74c96dc614ca83201fcee09a7a94cf039a3b5058b72",
+      "after_sha256": "04341e29eddf6c8afc5bd74c96dc614ca83201fcee09a7a94cf039a3b5058b72"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_forecast_contract.py",
+      "operation": "copy-only",
+      "bytes": 4532,
+      "before_sha256": "d8249d9046d7e2d5b9080c305e5e03cfc4dfbb50a4ac3087562dca88723425c4",
+      "after_sha256": "d8249d9046d7e2d5b9080c305e5e03cfc4dfbb50a4ac3087562dca88723425c4"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_forecast_variants.py",
+      "operation": "copy-only",
+      "bytes": 7262,
+      "before_sha256": "d0f776654a3aefc63e1c75c0bf1e77b003d395bed5b551dba9bdaf3516d56547",
+      "after_sha256": "d0f776654a3aefc63e1c75c0bf1e77b003d395bed5b551dba9bdaf3516d56547"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_job_origin_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 3712,
+      "before_sha256": "247e7f7b453cf4b71f03893877d0be3445afd564afb1614d2bfc5ae2c60ecf45",
+      "after_sha256": "247e7f7b453cf4b71f03893877d0be3445afd564afb1614d2bfc5ae2c60ecf45"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_loss_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 6808,
+      "before_sha256": "323a1585a043685afa938684b0a5e1caf9ebf40d228953cbeebd4ed0e333fc0a",
+      "after_sha256": "323a1585a043685afa938684b0a5e1caf9ebf40d228953cbeebd4ed0e333fc0a"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_mapped_improvement_forecast.py",
+      "operation": "copy-only",
+      "bytes": 4737,
+      "before_sha256": "31e1ab84bf703cfa51a53e1b95a05e7e7b9fcc088977de6a6ef2f39a3b0698a5",
+      "after_sha256": "31e1ab84bf703cfa51a53e1b95a05e7e7b9fcc088977de6a6ef2f39a3b0698a5"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_mapped_start1_audit.py",
+      "operation": "copy-only",
+      "bytes": 11938,
+      "before_sha256": "2bdc623707f9a22e0e50581f3c628a57a3ffbd2402bee8cba3c494b4b5678b31",
+      "after_sha256": "2bdc623707f9a22e0e50581f3c628a57a3ffbd2402bee8cba3c494b4b5678b31"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_mature_audit.py",
+      "operation": "copy-only",
+      "bytes": 12377,
+      "before_sha256": "a5079814d9f3c590902cd2b4769d1244d3798e25ab9820cb5faa15565a5ead3f",
+      "after_sha256": "a5079814d9f3c590902cd2b4769d1244d3798e25ab9820cb5faa15565a5ead3f"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_mature_contract.py",
+      "operation": "copy-only",
+      "bytes": 5460,
+      "before_sha256": "8b70221c92c1e3f486b76d96c944a0a8a44a8a06500498320634e7a83854fa4c",
+      "after_sha256": "8b70221c92c1e3f486b76d96c944a0a8a44a8a06500498320634e7a83854fa4c"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_native_rule_checkpoint.py",
+      "operation": "copy-only",
+      "bytes": 3896,
+      "before_sha256": "2ff27e0626aa463399784adced0fb626ca43e59855c1f43d0500c485fad699b4",
+      "after_sha256": "2ff27e0626aa463399784adced0fb626ca43e59855c1f43d0500c485fad699b4"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_native_rule_comparison.py",
+      "operation": "copy-only",
+      "bytes": 12596,
+      "before_sha256": "83be963b0cd369ae71d122e0ec2ff73ec375a4367f9399db689f6d8315302c3a",
+      "after_sha256": "83be963b0cd369ae71d122e0ec2ff73ec375a4367f9399db689f6d8315302c3a"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_native_rule_legality.py",
+      "operation": "copy-only",
+      "bytes": 6929,
+      "before_sha256": "a143a0e0bb34c4912fd88fd6c4d9098c03bf583c585c9e527736e06c732f052b",
+      "after_sha256": "a143a0e0bb34c4912fd88fd6c4d9098c03bf583c585c9e527736e06c732f052b"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_pasture_forecast.py",
+      "operation": "copy-only",
+      "bytes": 3232,
+      "before_sha256": "5a680c2c85e33ec7e485ff259d22bbeffcb98cc232f4806165a1dd94413856d8",
+      "after_sha256": "5a680c2c85e33ec7e485ff259d22bbeffcb98cc232f4806165a1dd94413856d8"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_pasture_forecast_comparison.py",
+      "operation": "copy-only",
+      "bytes": 15473,
+      "before_sha256": "cc2d54720c24756d9c0bc91a73b5f470e891dde2317ff7ea2cd708f4cafd8566",
+      "after_sha256": "cc2d54720c24756d9c0bc91a73b5f470e891dde2317ff7ea2cd708f4cafd8566"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_rejected_work_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 8300,
+      "before_sha256": "04333cbdd8e23ca910f766beedab2f60ad6584e3cd3d7ea3e1986bd54193afa9",
+      "after_sha256": "04333cbdd8e23ca910f766beedab2f60ad6584e3cd3d7ea3e1986bd54193afa9"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_resource_forecast_comparison.py",
+      "operation": "copy-only",
+      "bytes": 14390,
+      "before_sha256": "11d19cf476166729345b3213a9ade7274312013c6cb0100f9ef47e70d7dd3998",
+      "after_sha256": "11d19cf476166729345b3213a9ade7274312013c6cb0100f9ef47e70d7dd3998"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_resource_improvement_forecast.py",
+      "operation": "copy-only",
+      "bytes": 3713,
+      "before_sha256": "2c14aa78f793cda5ed5136fd9f7ce426f15e256f66c32363029091ca8c2f23bd",
+      "after_sha256": "2c14aa78f793cda5ed5136fd9f7ce426f15e256f66c32363029091ca8c2f23bd"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_signal_delivery.py",
+      "operation": "copy-only",
+      "bytes": 2684,
+      "before_sha256": "6700cb8d4d2a40220cef28d26100f7c6729306e93ab79fc5c9e7d081f9bd1a82",
+      "after_sha256": "6700cb8d4d2a40220cef28d26100f7c6729306e93ab79fc5c9e7d081f9bd1a82"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_site_viability.py",
+      "operation": "copy-only",
+      "bytes": 4902,
+      "before_sha256": "e43b17622bb9a795dd1ac564790951c9cdb3565dbd8b1bec0fda78543254ff96",
+      "after_sha256": "e43b17622bb9a795dd1ac564790951c9cdb3565dbd8b1bec0fda78543254ff96"
+    },
+    {
+      "path": "project/tools/ai_baseline/material_worker_allocation_audit.py",
+      "operation": "copy-only",
+      "bytes": 4812,
+      "before_sha256": "2b98d1aa386b0dce5e4d7f9e4e471ab3fb9e763ce4c72f89849867d898a4dd55",
+      "after_sha256": "2b98d1aa386b0dce5e4d7f9e4e471ab3fb9e763ce4c72f89849867d898a4dd55"
+    },
+    {
+      "path": "project/tools/ai_baseline/native_guidance_probe.lua",
+      "operation": "copy-only",
+      "bytes": 2819,
+      "before_sha256": "8bfff339c9948608ef54666a8825ca527c677f99384cb56acd8cb8cf333cd355",
+      "after_sha256": "8bfff339c9948608ef54666a8825ca527c677f99384cb56acd8cb8cf333cd355"
+    },
+    {
+      "path": "project/tools/ai_baseline/native_harvest_rule.lua",
+      "operation": "copy-only",
+      "bytes": 3380,
+      "before_sha256": "50291161d122fee51480905e3d4c65598b7d8d063391fb3b7c0618d7c0901bab",
+      "after_sha256": "50291161d122fee51480905e3d4c65598b7d8d063391fb3b7c0618d7c0901bab"
+    },
+    {
+      "path": "project/tools/ai_baseline/native_harvest_rule.py",
+      "operation": "copy-only",
+      "bytes": 3044,
+      "before_sha256": "b97b19dffa02c03c01f4f1746ed3203481b5cb5bc4b573b65567ef6af0a098ca",
+      "after_sha256": "b97b19dffa02c03c01f4f1746ed3203481b5cb5bc4b573b65567ef6af0a098ca"
+    },
+    {
+      "path": "project/tools/ai_baseline/native_harvest_rule_ui.lua",
+      "operation": "copy-only",
+      "bytes": 1317,
+      "before_sha256": "8ec398f7bced6526369dae3ec954d0da4b0a6077f65d5ab794a7833e67b35b68",
+      "after_sha256": "8ec398f7bced6526369dae3ec954d0da4b0a6077f65d5ab794a7833e67b35b68"
+    },
+    {
+      "path": "project/tools/ai_baseline/native_tuning_trial.py",
+      "operation": "copy-only",
+      "bytes": 10802,
+      "before_sha256": "e7f2fef13cee6a322fc4e8babcc8f7da42822b0b2eec1119c5b982fde03549d0",
+      "after_sha256": "e7f2fef13cee6a322fc4e8babcc8f7da42822b0b2eec1119c5b982fde03549d0"
+    },
+    {
+      "path": "project/tools/ai_baseline/observer.lua",
+      "operation": "copy-only",
+      "bytes": 9960,
+      "before_sha256": "3f341f0c0eddef152f8c606865509be7dce004e71f5f609acda5c5fa8ce7d449",
+      "after_sha256": "3f341f0c0eddef152f8c606865509be7dce004e71f5f609acda5c5fa8ce7d449"
+    },
+    {
+      "path": "project/tools/ai_baseline/paired_analysis.py",
+      "operation": "copy-only",
+      "bytes": 9629,
+      "before_sha256": "e7bb1b6b534f99e0980388b0b5d9c3e1b96766cab379c11632ba5497c891709c",
+      "after_sha256": "e7bb1b6b534f99e0980388b0b5d9c3e1b96766cab379c11632ba5497c891709c"
+    },
+    {
+      "path": "project/tools/ai_baseline/paired_observer.lua",
+      "operation": "copy-only",
+      "bytes": 11348,
+      "before_sha256": "f314c67c3497292a471aa42926f76544efc9eebe28a18498b2bb510dd5e92f34",
+      "after_sha256": "f314c67c3497292a471aa42926f76544efc9eebe28a18498b2bb510dd5e92f34"
+    },
+    {
+      "path": "project/tools/ai_baseline/paired_standard.py",
+      "operation": "copy-only",
+      "bytes": 17167,
+      "before_sha256": "c738914c8f66c9f8e99622d6b5cb557933752909c41cdc208630a804fd168adc",
+      "after_sha256": "c738914c8f66c9f8e99622d6b5cb557933752909c41cdc208630a804fd168adc"
+    },
+    {
+      "path": "project/tools/ai_baseline/placement_probe.lua",
+      "operation": "copy-only",
+      "bytes": 4699,
+      "before_sha256": "06fc3656e65c82e1fe6bc452fd177cf202eb585e8401dab1812dfff5eebcef9b",
+      "after_sha256": "06fc3656e65c82e1fe6bc452fd177cf202eb585e8401dab1812dfff5eebcef9b"
+    },
+    {
+      "path": "project/tools/ai_baseline/publish_paired.py",
+      "operation": "copy-only",
+      "bytes": 12943,
+      "before_sha256": "d9e079441989f4190b3a7b0675834482797b34846cd14be9ce9a525092113e1b",
+      "after_sha256": "d9e079441989f4190b3a7b0675834482797b34846cd14be9ce9a525092113e1b"
+    },
+    {
+      "path": "project/tools/ai_baseline/quarter_resource_analyze.py",
+      "operation": "copy-only",
+      "bytes": 5573,
+      "before_sha256": "97b9513bd784939369015743ba0acacb177ce9259c273c4355b740806c30e401",
+      "after_sha256": "97b9513bd784939369015743ba0acacb177ce9259c273c4355b740806c30e401"
+    },
+    {
+      "path": "project/tools/ai_baseline/quarter_resource_detail.py",
+      "operation": "copy-only",
+      "bytes": 13373,
+      "before_sha256": "c62313491c30ae24fb84446fa25954cda506a53b153e4d402add243b2eb12077",
+      "after_sha256": "c62313491c30ae24fb84446fa25954cda506a53b153e4d402add243b2eb12077"
+    },
+    {
+      "path": "project/tools/ai_baseline/quarter_resource_fixture.lua",
+      "operation": "copy-only",
+      "bytes": 2452,
+      "before_sha256": "834589c1f9aab4cb1428c8f75ce1e1a0470d30f10b9e2b8d4d79b1f20967ff10",
+      "after_sha256": "834589c1f9aab4cb1428c8f75ce1e1a0470d30f10b9e2b8d4d79b1f20967ff10"
+    },
+    {
+      "path": "project/tools/ai_baseline/quarter_resource_job.py",
+      "operation": "copy-only",
+      "bytes": 3727,
+      "before_sha256": "0dc1854e4255524d217dd61ad8e86696e3b89a87c98ed0f09827d6171806e6b1",
+      "after_sha256": "0dc1854e4255524d217dd61ad8e86696e3b89a87c98ed0f09827d6171806e6b1"
+    },
+    {
+      "path": "project/tools/ai_baseline/quarter_resource_probe.lua",
+      "operation": "copy-only",
+      "bytes": 2532,
+      "before_sha256": "4cd051c8f3f2757e167977044e893f30866706079bafd1700483c2f2fc5e97cd",
+      "after_sha256": "4cd051c8f3f2757e167977044e893f30866706079bafd1700483c2f2fc5e97cd"
+    },
+    {
+      "path": "project/tools/ai_baseline/quarter_resource_resume.py",
+      "operation": "copy-only",
+      "bytes": 6616,
+      "before_sha256": "6fbb8b38d8dced4db6f603557a01171e1f85539730ac01ad33ebbf53bcfbebe7",
+      "after_sha256": "6fbb8b38d8dced4db6f603557a01171e1f85539730ac01ad33ebbf53bcfbebe7"
+    },
+    {
+      "path": "project/tools/ai_baseline/quarter_resource_trial.py",
+      "operation": "copy-only",
+      "bytes": 12664,
+      "before_sha256": "52260399836b38d6ded389f8d6c3230a09ed5245e667c8c4bb44fcd2e3080ad9",
+      "after_sha256": "52260399836b38d6ded389f8d6c3230a09ed5245e667c8c4bb44fcd2e3080ad9"
+    },
+    {
+      "path": "project/tools/ai_baseline/recover_endpoint.py",
+      "operation": "copy-only",
+      "bytes": 1470,
+      "before_sha256": "a40a590160f01d8a849274b035e414d5a72db28b3c4953588416109e44dd5bbd",
+      "after_sha256": "a40a590160f01d8a849274b035e414d5a72db28b3c4953588416109e44dd5bbd"
+    },
+    {
+      "path": "project/tools/ai_baseline/research_choice_fixture.lua",
+      "operation": "copy-only",
+      "bytes": 3341,
+      "before_sha256": "83239d07f2464c4384f55de25269ea0697de38f68fa0b0ff4b20195a3533cfe3",
+      "after_sha256": "83239d07f2464c4384f55de25269ea0697de38f68fa0b0ff4b20195a3533cfe3"
+    },
+    {
+      "path": "project/tools/ai_baseline/research_priorities_analyze.py",
+      "operation": "copy-only",
+      "bytes": 6988,
+      "before_sha256": "e7c74e5fd6dc4ec53ce66f4b6abff22998e6a273f2d6d518f858f5fdaa7630fc",
+      "after_sha256": "e7c74e5fd6dc4ec53ce66f4b6abff22998e6a273f2d6d518f858f5fdaa7630fc"
+    },
+    {
+      "path": "project/tools/ai_baseline/research_priorities_job.py",
+      "operation": "copy-only",
+      "bytes": 2231,
+      "before_sha256": "c00db15963fe522c5a943a2488247d5243f90f2d6d2599f0def4678705328560",
+      "after_sha256": "c00db15963fe522c5a943a2488247d5243f90f2d6d2599f0def4678705328560"
+    },
+    {
+      "path": "project/tools/ai_baseline/research_priorities_trial.py",
+      "operation": "copy-only",
+      "bytes": 15132,
+      "before_sha256": "aa03f5d51c5dae570be63e8a24dec9ded23c8da93d4727704c422b011f278a9d",
+      "after_sha256": "aa03f5d51c5dae570be63e8a24dec9ded23c8da93d4727704c422b011f278a9d"
+    },
+    {
+      "path": "project/tools/ai_baseline/run.py",
+      "operation": "copy-only",
+      "bytes": 13708,
+      "before_sha256": "cbec279adcb7d680d89798b1e63ee64a34849fc8cb9bbcc23a58de2ce500e1b1",
+      "after_sha256": "cbec279adcb7d680d89798b1e63ee64a34849fc8cb9bbcc23a58de2ce500e1b1"
+    },
+    {
+      "path": "project/tools/ai_baseline/run_builder_job.py",
+      "operation": "copy-only",
+      "bytes": 1750,
+      "before_sha256": "32f93d89e6828b578954f7181b0bfb144de0c857c82059c5f580d8ca52677849",
+      "after_sha256": "32f93d89e6828b578954f7181b0bfb144de0c857c82059c5f580d8ca52677849"
+    },
+    {
+      "path": "project/tools/ai_baseline/run_density_job.py",
+      "operation": "copy-only",
+      "bytes": 3124,
+      "before_sha256": "38fc72b40b5b31bc1d95ca3387959981916bfaee23a4c39128a11d4708e04b9e",
+      "after_sha256": "38fc72b40b5b31bc1d95ca3387959981916bfaee23a4c39128a11d4708e04b9e"
+    },
+    {
+      "path": "project/tools/ai_baseline/sales_prevalence.py",
+      "operation": "copy-only",
+      "bytes": 9021,
+      "before_sha256": "6f4cf1739a2a0f358f1132bd71aa1d07986bc95b5a9477e38bde4b467e06e5e8",
+      "after_sha256": "6f4cf1739a2a0f358f1132bd71aa1d07986bc95b5a9477e38bde4b467e06e5e8"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/README.md",
+      "operation": "copy-only",
+      "bytes": 28014,
+      "before_sha256": "97945df90dabdfc0c9d31becaef220593b731c540df75c90c96118d012ff4086",
+      "after_sha256": "97945df90dabdfc0c9d31becaef220593b731c540df75c90c96118d012ff4086"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/__init__.py",
+      "operation": "copy-only",
+      "bytes": 223,
+      "before_sha256": "a90ad955e8f7e1e815b13c9a5404a8d64476335f155a47c7387ec2a6f19d8ca2",
+      "after_sha256": "a90ad955e8f7e1e815b13c9a5404a8d64476335f155a47c7387ec2a6f19d8ca2"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/benchmark_report.py",
+      "operation": "copy-only",
+      "bytes": 4134,
+      "before_sha256": "95695b229196f9720099e8e9b4d8727e27ec6f5052d963be2b35ddc457da8c7e",
+      "after_sha256": "95695b229196f9720099e8e9b4d8727e27ec6f5052d963be2b35ddc457da8c7e"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/boundary_bundle.py",
+      "operation": "copy-only",
+      "bytes": 1716,
+      "before_sha256": "b6c77735b5916d39fb76cd0daf3f11f1101ec221c66ed663f9b0b4950849f549",
+      "after_sha256": "b6c77735b5916d39fb76cd0daf3f11f1101ec221c66ed663f9b0b4950849f549"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/capture_mode.py",
+      "operation": "copy-only",
+      "bytes": 1113,
+      "before_sha256": "7611069f81fb85463016eec262cf9d3132f1a5620453a38ba23eaa768f3e8783",
+      "after_sha256": "7611069f81fb85463016eec262cf9d3132f1a5620453a38ba23eaa768f3e8783"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/coordinator.py",
+      "operation": "copy-only",
+      "bytes": 5348,
+      "before_sha256": "30e3326624173f4d581eb5333086d60eccc8c63f8845a127241e38f2f9eb104e",
+      "after_sha256": "30e3326624173f4d581eb5333086d60eccc8c63f8845a127241e38f2f9eb104e"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/demo.py",
+      "operation": "copy-only",
+      "bytes": 1971,
+      "before_sha256": "3836bcf38eafae3dd4da9a0acd0e9c6f76e0badbd3475a69eeddd641e34b237c",
+      "after_sha256": "3836bcf38eafae3dd4da9a0acd0e9c6f76e0badbd3475a69eeddd641e34b237c"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/donation_bridge.lua",
+      "operation": "copy-only",
+      "bytes": 1912,
+      "before_sha256": "927620184b447cb6d0db3a9d3773743d610c429a10ec7b013955201bf942fa9e",
+      "after_sha256": "927620184b447cb6d0db3a9d3773743d610c429a10ec7b013955201bf942fa9e"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/donation_diagnostic.py",
+      "operation": "copy-only",
+      "bytes": 15597,
+      "before_sha256": "b839bafa4c59d2b366e4a68dc1723dc9ab86314d23f7023b2e3cc494b2123f2b",
+      "after_sha256": "b839bafa4c59d2b366e4a68dc1723dc9ab86314d23f7023b2e3cc494b2123f2b"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/donation_transaction.lua",
+      "operation": "copy-only",
+      "bytes": 8692,
+      "before_sha256": "7f75d0533dea5fbb3aa935c66a6e3a43ecac143717bb7d2c00f8a2da8e92885c",
+      "after_sha256": "7f75d0533dea5fbb3aa935c66a6e3a43ecac143717bb7d2c00f8a2da8e92885c"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/execution.py",
+      "operation": "copy-only",
+      "bytes": 7505,
+      "before_sha256": "22229f281813f2a7a19e624d4cc51bbe1980e68800e8ea1759aeea0b34ca7a0c",
+      "after_sha256": "22229f281813f2a7a19e624d4cc51bbe1980e68800e8ea1759aeea0b34ca7a0c"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/funded_acquisition.lua",
+      "operation": "copy-only",
+      "bytes": 7159,
+      "before_sha256": "1b4e9de1c6e939a1208595f89553f11d42acea85bd11e10eb57f9dbaa38a6d08",
+      "after_sha256": "1b4e9de1c6e939a1208595f89553f11d42acea85bd11e10eb57f9dbaa38a6d08"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/funded_acquisition.py",
+      "operation": "copy-only",
+      "bytes": 10994,
+      "before_sha256": "7864bef98ed7f9659ed0159953f5d48452ab0dc6962d2c218395c9f748525768",
+      "after_sha256": "7864bef98ed7f9659ed0159953f5d48452ab0dc6962d2c218395c9f748525768"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/metrics.py",
+      "operation": "copy-only",
+      "bytes": 4179,
+      "before_sha256": "423bfd3e095e2b298b21817666cd7b02854e08797cadfe14afcb977a1e12f0d0",
+      "after_sha256": "423bfd3e095e2b298b21817666cd7b02854e08797cadfe14afcb977a1e12f0d0"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_adapter.py",
+      "operation": "copy-only",
+      "bytes": 14278,
+      "before_sha256": "d57e61089565346b234b0ce5164d0fb69b7303e04a36115c15b3cbc7c1a37359",
+      "after_sha256": "d57e61089565346b234b0ce5164d0fb69b7303e04a36115c15b3cbc7c1a37359"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_chain_metrics.lua",
+      "operation": "copy-only",
+      "bytes": 1531,
+      "before_sha256": "6d7b11aed34ffd8e60af0a62f97b79ef5a5317b7eef46f99e10cba9f92ba99d4",
+      "after_sha256": "6d7b11aed34ffd8e60af0a62f97b79ef5a5317b7eef46f99e10cba9f92ba99d4"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_delta.lua",
+      "operation": "copy-only",
+      "bytes": 2870,
+      "before_sha256": "27b3715392787d4a84bc08a8e3e2e5eed5f7a1c2fa80d4cff6262dc6e3d28f03",
+      "after_sha256": "27b3715392787d4a84bc08a8e3e2e5eed5f7a1c2fa80d4cff6262dc6e3d28f03"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_observer.lua",
+      "operation": "copy-only",
+      "bytes": 13696,
+      "before_sha256": "fa7908a9001acabbd77934798ced33afd2ca7d94668c991ac0b10f2554fe8899",
+      "after_sha256": "fa7908a9001acabbd77934798ced33afd2ca7d94668c991ac0b10f2554fe8899"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_purchase.lua",
+      "operation": "copy-only",
+      "bytes": 8042,
+      "before_sha256": "eea892e25e42fa07c3d012831d9771f531fc8873bef6693c2e2a19932dc5bb92",
+      "after_sha256": "eea892e25e42fa07c3d012831d9771f531fc8873bef6693c2e2a19932dc5bb92"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_purchase_diagnostics.lua",
+      "operation": "copy-only",
+      "bytes": 3656,
+      "before_sha256": "c82ae634842fe3630b61e4e96627b6e7313bb0d46f247a565d588b89c7386328",
+      "after_sha256": "c82ae634842fe3630b61e4e96627b6e7313bb0d46f247a565d588b89c7386328"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_quarter_sites.lua",
+      "operation": "copy-only",
+      "bytes": 1763,
+      "before_sha256": "b8cd44f6ecbfd45b1d1d5b02fca47a0c27ee15238362c37a383cad7b89fa069f",
+      "after_sha256": "b8cd44f6ecbfd45b1d1d5b02fca47a0c27ee15238362c37a383cad7b89fa069f"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/native_venues.lua",
+      "operation": "copy-only",
+      "bytes": 745,
+      "before_sha256": "9438dd02be849d35401ff2bcc861687fc7678666bc4d63766ba5fd2882b06605",
+      "after_sha256": "9438dd02be849d35401ff2bcc861687fc7678666bc4d63766ba5fd2882b06605"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/needs.py",
+      "operation": "copy-only",
+      "bytes": 1698,
+      "before_sha256": "bd02827c63760754f8b186c7984564438e4c697714ffdd0657811d95c36d4c20",
+      "after_sha256": "bd02827c63760754f8b186c7984564438e4c697714ffdd0657811d95c36d4c20"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/observations.py",
+      "operation": "copy-only",
+      "bytes": 12059,
+      "before_sha256": "ac696540d6b4eacb379c0ce209887de99d304d41c671f4eb67e6170dcac548e2",
+      "after_sha256": "ac696540d6b4eacb379c0ce209887de99d304d41c671f4eb67e6170dcac548e2"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/policy.py",
+      "operation": "copy-only",
+      "bytes": 18259,
+      "before_sha256": "138524004e21350b4d146c3b164c2c8df921c807777ffbe5f4ebd1a7229707ab",
+      "after_sha256": "138524004e21350b4d146c3b164c2c8df921c807777ffbe5f4ebd1a7229707ab"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/routing.py",
+      "operation": "copy-only",
+      "bytes": 3538,
+      "before_sha256": "9c69e406e68a92b92e180a36538390564c9cdf124dfbacb3660dd4f22dc232a3",
+      "after_sha256": "9c69e406e68a92b92e180a36538390564c9cdf124dfbacb3660dd4f22dc232a3"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_benchmark_report.py",
+      "operation": "copy-only",
+      "bytes": 2087,
+      "before_sha256": "7d6e6b7a413657646ef2467663a26e9c9ff169867c12633306938cd57d233484",
+      "after_sha256": "7d6e6b7a413657646ef2467663a26e9c9ff169867c12633306938cd57d233484"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_capability.py",
+      "operation": "copy-only",
+      "bytes": 3147,
+      "before_sha256": "1a3e3a3664409683e3fba1da81069ffc2ac364920275a08ad38a2774b254ab70",
+      "after_sha256": "1a3e3a3664409683e3fba1da81069ffc2ac364920275a08ad38a2774b254ab70"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_capture_mode.py",
+      "operation": "copy-only",
+      "bytes": 1625,
+      "before_sha256": "7271225001f08f2743c59dadb07476c33a09f3541ea422b079d3b974c205ad2c",
+      "after_sha256": "7271225001f08f2743c59dadb07476c33a09f3541ea422b079d3b974c205ad2c"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_donation_diagnostic.py",
+      "operation": "copy-only",
+      "bytes": 12018,
+      "before_sha256": "1612425c8e15d0fb660d85a7cc3ba9f607a0995e4fe0574dc5378d7b2deb77eb",
+      "after_sha256": "1612425c8e15d0fb660d85a7cc3ba9f607a0995e4fe0574dc5378d7b2deb77eb"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_funded_acquisition.py",
+      "operation": "copy-only",
+      "bytes": 10918,
+      "before_sha256": "845c7d67390a3bccc8528202ea046c0b8e1aecdaf9ecdab62e971c9eaed50e68",
+      "after_sha256": "845c7d67390a3bccc8528202ea046c0b8e1aecdaf9ecdab62e971c9eaed50e68"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_material.py",
+      "operation": "copy-only",
+      "bytes": 14258,
+      "before_sha256": "c142492a3cc528bcc01ec46a27263b176158b41ec11b41162c916e7954ddaff8",
+      "after_sha256": "c142492a3cc528bcc01ec46a27263b176158b41ec11b41162c916e7954ddaff8"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_material_viability.py",
+      "operation": "copy-only",
+      "bytes": 7677,
+      "before_sha256": "c3387a80a5d44b180f47e1d30b5bc310e92a9548c7db61d7bf8c8adec2a0969b",
+      "after_sha256": "c3387a80a5d44b180f47e1d30b5bc310e92a9548c7db61d7bf8c8adec2a0969b"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_performance.py",
+      "operation": "copy-only",
+      "bytes": 14582,
+      "before_sha256": "30c1eb2a41d58ed285748f8f1cb3712800482e5e92dff17a0ea380bb3c01900c",
+      "after_sha256": "30c1eb2a41d58ed285748f8f1cb3712800482e5e92dff17a0ea380bb3c01900c"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_policy.py",
+      "operation": "copy-only",
+      "bytes": 28821,
+      "before_sha256": "2d0ebaf7b9e3d183444553288a7359ff1011b5810b0f7f45a35ffe842eb6e479",
+      "after_sha256": "2d0ebaf7b9e3d183444553288a7359ff1011b5810b0f7f45a35ffe842eb6e479"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_purchase_diagnostics.py",
+      "operation": "copy-only",
+      "bytes": 4159,
+      "before_sha256": "110ccc58b7f5afba1bfbb46ad256a75d90209100bf81886e79089333ca33867b",
+      "after_sha256": "110ccc58b7f5afba1bfbb46ad256a75d90209100bf81886e79089333ca33867b"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_routing.py",
+      "operation": "copy-only",
+      "bytes": 7474,
+      "before_sha256": "6f2714ac9b5dd9c4c2d0393327932d5323c25a0ab2aac48903820dd83fc22a7b",
+      "after_sha256": "6f2714ac9b5dd9c4c2d0393327932d5323c25a0ab2aac48903820dd83fc22a7b"
+    },
+    {
+      "path": "project/tools/ai_baseline/service_planner/test_stepwise.py",
+      "operation": "copy-only",
+      "bytes": 12726,
+      "before_sha256": "6dd8ca180d8aa7900207de92936fb76e2fc1f1375a324eeaf1429b6f1ab6866b",
+      "after_sha256": "6dd8ca180d8aa7900207de92936fb76e2fc1f1375a324eeaf1429b6f1ab6866b"
+    },
+    {
+      "path": "project/tools/ai_baseline/sparse_builder_controller.py",
+      "operation": "copy-only",
+      "bytes": 5631,
+      "before_sha256": "df7e657b7f750282e1db57c7e815b93cd843cadd7df3c2034b618609953103df",
+      "after_sha256": "df7e657b7f750282e1db57c7e815b93cd843cadd7df3c2034b618609953103df"
+    },
+    {
+      "path": "project/tools/ai_baseline/strategy_research_callbacks.lua",
+      "operation": "copy-only",
+      "bytes": 646,
+      "before_sha256": "5840e9e6d208b6c36d015642bc02fc9db6a5046af4f2ec5ed5807bf90288bdf4",
+      "after_sha256": "5840e9e6d208b6c36d015642bc02fc9db6a5046af4f2ec5ed5807bf90288bdf4"
+    },
+    {
+      "path": "project/tools/ai_baseline/strategy_research_control.sql",
+      "operation": "copy-only",
+      "bytes": 1615,
+      "before_sha256": "ac0ffda46b1b535d8548365f21e8063d27c93167cd309e7d0daf7c9ccdac612e",
+      "after_sha256": "ac0ffda46b1b535d8548365f21e8063d27c93167cd309e7d0daf7c9ccdac612e"
+    },
+    {
+      "path": "project/tools/ai_baseline/strategy_research_fixture.lua",
+      "operation": "copy-only",
+      "bytes": 3428,
+      "before_sha256": "e01fd27f062ed222153f9e1fbf22978379ae5fd93e3c37dd404a7496a87ebe62",
+      "after_sha256": "e01fd27f062ed222153f9e1fbf22978379ae5fd93e3c37dd404a7496a87ebe62"
+    },
+    {
+      "path": "project/tools/ai_baseline/strategy_research_observer.lua",
+      "operation": "copy-only",
+      "bytes": 2925,
+      "before_sha256": "cae930f4a2fea11d03b347e7f9810941d04f4a504befc680036c47c186a332f8",
+      "after_sha256": "cae930f4a2fea11d03b347e7f9810941d04f4a504befc680036c47c186a332f8"
+    },
+    {
+      "path": "project/tools/ai_baseline/strategy_research_trial.py",
+      "operation": "copy-only",
+      "bytes": 29562,
+      "before_sha256": "24802438b525fb0296842dd2a961360789f2090dbc5d00cb27473a7cb175a89f",
+      "after_sha256": "24802438b525fb0296842dd2a961360789f2090dbc5d00cb27473a7cb175a89f"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_ai_ui_filter.py",
+      "operation": "copy-only",
+      "bytes": 4441,
+      "before_sha256": "5b3d879e835bea7f562694b8219d41c077cfcd631ee72832c882a1270aa17f6f",
+      "after_sha256": "5b3d879e835bea7f562694b8219d41c077cfcd631ee72832c882a1270aa17f6f"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_foundation_planner.py",
+      "operation": "copy-only",
+      "bytes": 6911,
+      "before_sha256": "5d60d94b3282c2036a13e1178713aae2978a186bc15231a184d8a6c760b9219d",
+      "after_sha256": "5d60d94b3282c2036a13e1178713aae2978a186bc15231a184d8a6c760b9219d"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_log_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 2146,
+      "before_sha256": "1936e507bcd02079932121c3f0a348d14cf9c344c9c2a37e8c0301bd83c8a99a",
+      "after_sha256": "1936e507bcd02079932121c3f0a348d14cf9c344c9c2a37e8c0301bd83c8a99a"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_mapped_improvement_values.py",
+      "operation": "copy-only",
+      "bytes": 3319,
+      "before_sha256": "5599258148971c8e14614c0de338e1e60e5a7bc7388d4eb5133480a8f500380a",
+      "after_sha256": "5599258148971c8e14614c0de338e1e60e5a7bc7388d4eb5133480a8f500380a"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_boost_activity.py",
+      "operation": "copy-only",
+      "bytes": 2840,
+      "before_sha256": "d7b70129cd6ac52634af811d90fea1fdb8e3a47351b4828f4843ea26e205d00a",
+      "after_sha256": "d7b70129cd6ac52634af811d90fea1fdb8e3a47351b4828f4843ea26e205d00a"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_boost_gate_comparison.py",
+      "operation": "copy-only",
+      "bytes": 1744,
+      "before_sha256": "b62bdd24705b1f7e53e2a3df707b8b7d097460ce8598b3c01d0a8ff06af3805d",
+      "after_sha256": "b62bdd24705b1f7e53e2a3df707b8b7d097460ce8598b3c01d0a8ff06af3805d"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_care.py",
+      "operation": "copy-only",
+      "bytes": 12836,
+      "before_sha256": "49321bcde24a9e43b1aeac3f0f1bbb5cca3df75094a69ad0502c1f44f2b3271b",
+      "after_sha256": "49321bcde24a9e43b1aeac3f0f1bbb5cca3df75094a69ad0502c1f44f2b3271b"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_care_audit.py",
+      "operation": "copy-only",
+      "bytes": 3685,
+      "before_sha256": "443383aa511b77eaf262aaa7bb4a42e7a1b53144ea759e54080c2a07b6490951",
+      "after_sha256": "443383aa511b77eaf262aaa7bb4a42e7a1b53144ea759e54080c2a07b6490951"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_checkpoint_logs.py",
+      "operation": "copy-only",
+      "bytes": 2059,
+      "before_sha256": "46f437f4decc8ba92d276580082578bc460b61709d2139050f69ad90679fd1a0",
+      "after_sha256": "46f437f4decc8ba92d276580082578bc460b61709d2139050f69ad90679fd1a0"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_decision_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 2233,
+      "before_sha256": "91328319e669901be82d9387f67fd4dc53dc5bb20b49bf27c1d5a6075ca8099e",
+      "after_sha256": "91328319e669901be82d9387f67fd4dc53dc5bb20b49bf27c1d5a6075ca8099e"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_forecast_comparison.py",
+      "operation": "copy-only",
+      "bytes": 3668,
+      "before_sha256": "2a37de1a895614ed4190c9d64f7b5eaa714ae3f18b98b683fa9dd493a55d40fd",
+      "after_sha256": "2a37de1a895614ed4190c9d64f7b5eaa714ae3f18b98b683fa9dd493a55d40fd"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_forecast_contract.py",
+      "operation": "copy-only",
+      "bytes": 2324,
+      "before_sha256": "2f49dcfc0dc2ce5b7e6f7d863e71656f800b1a2c789245032f95a05cd86e4fc1",
+      "after_sha256": "2f49dcfc0dc2ce5b7e6f7d863e71656f800b1a2c789245032f95a05cd86e4fc1"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_forecast_variants.py",
+      "operation": "copy-only",
+      "bytes": 7576,
+      "before_sha256": "7d2dae28560b819920dcafe9978d8e74f3b4c3f7be98d39f103e06d8c60fb32e",
+      "after_sha256": "7d2dae28560b819920dcafe9978d8e74f3b4c3f7be98d39f103e06d8c60fb32e"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_job_origin_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 2245,
+      "before_sha256": "e708953e30f27a7bd02bbaa4e990ff601d7ef3f6b00680ac4ec03d417dd91ac8",
+      "after_sha256": "e708953e30f27a7bd02bbaa4e990ff601d7ef3f6b00680ac4ec03d417dd91ac8"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_loss_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 2924,
+      "before_sha256": "b86d4f86c4ab182fe8837f9611cf46f8537c8b854c8b34dffba56a59e38b2ef8",
+      "after_sha256": "b86d4f86c4ab182fe8837f9611cf46f8537c8b854c8b34dffba56a59e38b2ef8"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_mapped_improvement_forecast.py",
+      "operation": "copy-only",
+      "bytes": 7260,
+      "before_sha256": "199269bcfc0277347581ca1fb43fe22909c7660505606565a7fe4def78f1307c",
+      "after_sha256": "199269bcfc0277347581ca1fb43fe22909c7660505606565a7fe4def78f1307c"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_native_rule_comparison.py",
+      "operation": "copy-only",
+      "bytes": 3262,
+      "before_sha256": "8f917262903e8279577f9c54e9776477fa077042f97ec2c022c3a0c98874fa48",
+      "after_sha256": "8f917262903e8279577f9c54e9776477fa077042f97ec2c022c3a0c98874fa48"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_native_rule_legality.py",
+      "operation": "copy-only",
+      "bytes": 5821,
+      "before_sha256": "3d4b459a804a4efeb2ffce622ba4dd194320ff6610e187050e92b559999b1633",
+      "after_sha256": "3d4b459a804a4efeb2ffce622ba4dd194320ff6610e187050e92b559999b1633"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_pasture_forecast.py",
+      "operation": "copy-only",
+      "bytes": 6379,
+      "before_sha256": "4db5320ac60d87659d5b1646c5ed9cdeb8b2324153e0adf608cd1dbf2ac60fae",
+      "after_sha256": "4db5320ac60d87659d5b1646c5ed9cdeb8b2324153e0adf608cd1dbf2ac60fae"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_pasture_forecast_comparison.py",
+      "operation": "copy-only",
+      "bytes": 3106,
+      "before_sha256": "0a361c7074bf85c234dc7c69bb20ed0596110a39018bd6187a0f310dab7bdcea",
+      "after_sha256": "0a361c7074bf85c234dc7c69bb20ed0596110a39018bd6187a0f310dab7bdcea"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_rejected_work_intelligence.py",
+      "operation": "copy-only",
+      "bytes": 3461,
+      "before_sha256": "e393bf1c58e9fc9fd3e6bd26d794cd4d5d18212dceb8985e3b023fd63b328394",
+      "after_sha256": "e393bf1c58e9fc9fd3e6bd26d794cd4d5d18212dceb8985e3b023fd63b328394"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_resource_forecast.py",
+      "operation": "copy-only",
+      "bytes": 1952,
+      "before_sha256": "141df175156c645e6bc1879bd8995ee1a053eafa47b150de9e4ef079db8b5d22",
+      "after_sha256": "141df175156c645e6bc1879bd8995ee1a053eafa47b150de9e4ef079db8b5d22"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_resource_forecast_comparison.py",
+      "operation": "copy-only",
+      "bytes": 6049,
+      "before_sha256": "9a2517d9ca4c4ff301ab8309ac3599ad7b192591ef39cd5132fd1f09a7dccc6b",
+      "after_sha256": "9a2517d9ca4c4ff301ab8309ac3599ad7b192591ef39cd5132fd1f09a7dccc6b"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_resource_improvement_forecast.py",
+      "operation": "copy-only",
+      "bytes": 5424,
+      "before_sha256": "579c63c57aa2ab0d2e51d8f329494ff0564cbcc9133e11f7d25cc0a7ad6237e4",
+      "after_sha256": "579c63c57aa2ab0d2e51d8f329494ff0564cbcc9133e11f7d25cc0a7ad6237e4"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_signal_delivery.py",
+      "operation": "copy-only",
+      "bytes": 1892,
+      "before_sha256": "65df2896a08d03707642e0ed72f4a0486a1bc4218ede28920200269924d6207f",
+      "after_sha256": "65df2896a08d03707642e0ed72f4a0486a1bc4218ede28920200269924d6207f"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_site_viability.py",
+      "operation": "copy-only",
+      "bytes": 1874,
+      "before_sha256": "ec5c8580ef66f29c5dcfb387c7fd002b0080f8ae87b8c3f37e93013add909310",
+      "after_sha256": "ec5c8580ef66f29c5dcfb387c7fd002b0080f8ae87b8c3f37e93013add909310"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_material_worker_allocation_audit.py",
+      "operation": "copy-only",
+      "bytes": 2095,
+      "before_sha256": "52101bcb1108879fbaf81beb1bebe103034e279f2aa61f86288e9bd1817ed737",
+      "after_sha256": "52101bcb1108879fbaf81beb1bebe103034e279f2aa61f86288e9bd1817ed737"
+    },
+    {
+      "path": "project/tools/ai_baseline/test_native_harvest_rule.py",
+      "operation": "copy-only",
+      "bytes": 6047,
+      "before_sha256": "42bfd41eadaaa7ac2940a33dcefc18a929fe10cc6c83d41ca2232346628e9664",
+      "after_sha256": "42bfd41eadaaa7ac2940a33dcefc18a929fe10cc6c83d41ca2232346628e9664"
+    },
+    {
+      "path": "project/tools/ai_baseline/tuner_read_retry.py",
+      "operation": "copy-only",
+      "bytes": 999,
+      "before_sha256": "d5c3693ab1d1e4066aa5f3d0c41cdcbc5740deea9e9526286aa644db069e0231",
+      "after_sha256": "d5c3693ab1d1e4066aa5f3d0c41cdcbc5740deea9e9526286aa644db069e0231"
+    },
+    {
+      "path": "project/tools/ai_baseline/tuning_trial.py",
+      "operation": "copy-only",
+      "bytes": 9381,
+      "before_sha256": "67e58ec79ba7210c44adb4df28fbed4c3a36942a46f13aec99ab3a8b93cedd63",
+      "after_sha256": "67e58ec79ba7210c44adb4df28fbed4c3a36942a46f13aec99ab3a8b93cedd63"
+    },
+    {
+      "path": "project/tools/ai_baseline/validate_markers.py",
+      "operation": "copy-only",
+      "bytes": 2317,
+      "before_sha256": "46f716f8a2492fc5c43746eb8edde34d86748f63f359d78dfda0df83762182fe",
+      "after_sha256": "46f716f8a2492fc5c43746eb8edde34d86748f63f359d78dfda0df83762182fe"
+    },
+    {
+      "path": "project/tools/ai_baseline/validate_tuning.py",
+      "operation": "copy-only",
+      "bytes": 10875,
+      "before_sha256": "5e8a51facda21ffaf915930a11956491764685fec454f25cc0cfceb73a9c09e2",
+      "after_sha256": "5e8a51facda21ffaf915930a11956491764685fec454f25cc0cfceb73a9c09e2"
+    },
+    {
+      "path": "project/tools/ai_baseline/verify.py",
+      "operation": "copy-only",
+      "bytes": 4818,
+      "before_sha256": "8b9fbc588a7c1fa60e19be55db9f28b45db5e939fac1b74424c3db52cf952912",
+      "after_sha256": "8b9fbc588a7c1fa60e19be55db9f28b45db5e939fac1b74424c3db52cf952912"
+    },
+    {
+      "path": "project/tools/ai_baseline/worker_allocation_contract.py",
+      "operation": "copy-only",
+      "bytes": 3424,
+      "before_sha256": "655093e0faabf1dbc0a4482b2c91300743c495a9f00fbdf379080489a6bdf389",
+      "after_sha256": "655093e0faabf1dbc0a4482b2c91300743c495a9f00fbdf379080489a6bdf389"
+    },
+    {
+      "path": "project/tools/ai_tuning/COORDINATOR.md",
+      "operation": "copy-only",
+      "bytes": 6953,
+      "before_sha256": "c2f290662efc97948f0fece4a3c455354daa4b13f557a748a84f3e2d3d67a563",
+      "after_sha256": "c2f290662efc97948f0fece4a3c455354daa4b13f557a748a84f3e2d3d67a563"
+    },
+    {
+      "path": "project/tools/ai_tuning/EVALUATOR.md",
+      "operation": "copy-only",
+      "bytes": 10127,
+      "before_sha256": "4ba744b30c9c04476379478c48f9542d29b13bbdbac8ba41195d93f6e55ed2b7",
+      "after_sha256": "4ba744b30c9c04476379478c48f9542d29b13bbdbac8ba41195d93f6e55ed2b7"
+    },
+    {
+      "path": "project/tools/ai_tuning/OFFLINE_CASES.md",
+      "operation": "copy-only",
+      "bytes": 1125,
+      "before_sha256": "1016078452fe4a145f0cd0284fdf574dd5ebd75d8fe25dc742e8ed63775dc5f1",
+      "after_sha256": "1016078452fe4a145f0cd0284fdf574dd5ebd75d8fe25dc742e8ed63775dc5f1"
+    },
+    {
+      "path": "project/tools/ai_tuning/README.md",
+      "operation": "copy-only",
+      "bytes": 3555,
+      "before_sha256": "b52a71e69f12375fa36985d99443dd1fcaf11f527f3e747a7e021b6cd98d029e",
+      "after_sha256": "b52a71e69f12375fa36985d99443dd1fcaf11f527f3e747a7e021b6cd98d029e"
+    },
+    {
+      "path": "project/tools/ai_tuning/SHADOW-PLANNER.md",
+      "operation": "copy-only",
+      "bytes": 5843,
+      "before_sha256": "620a258fd5fd9eb7d9023706b01ae50e874fb439b620a8f7219d66d4b59cb3e3",
+      "after_sha256": "620a258fd5fd9eb7d9023706b01ae50e874fb439b620a8f7219d66d4b59cb3e3"
+    },
+    {
+      "path": "project/tools/ai_tuning/archived_site_cases.py",
+      "operation": "copy-only",
+      "bytes": 7204,
+      "before_sha256": "933c2f84309144627b678790a98b9d62bcd33c44738ac1c9ee53cdd627d786a6",
+      "after_sha256": "933c2f84309144627b678790a98b9d62bcd33c44738ac1c9ee53cdd627d786a6"
+    },
+    {
+      "path": "project/tools/ai_tuning/audit_profile_test.py",
+      "operation": "copy-only",
+      "bytes": 7718,
+      "before_sha256": "9a0480d4c416b243484584697f5cd8dbb66762b96ff338894d51d8d15233a15f",
+      "after_sha256": "9a0480d4c416b243484584697f5cd8dbb66762b96ff338894d51d8d15233a15f"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_direct_priority_v1/README.md",
+      "operation": "copy-only",
+      "bytes": 5398,
+      "before_sha256": "951d87f88c63dec32617740667114fc4a70c10af9b293d5665be65baabe215a2",
+      "after_sha256": "951d87f88c63dec32617740667114fc4a70c10af9b293d5665be65baabe215a2"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_direct_priority_v1/granary_direct_preflight.lua",
+      "operation": "copy-only",
+      "bytes": 6042,
+      "before_sha256": "a37679a57f681ede69761d7cee28bbd77eb1f4762092cd8830928141769323a1",
+      "after_sha256": "a37679a57f681ede69761d7cee28bbd77eb1f4762092cd8830928141769323a1"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_direct_priority_v1/granary_direct_priority.sql",
+      "operation": "copy-only",
+      "bytes": 1962,
+      "before_sha256": "e7539bb761a045e25aa6bbb604f8069ba8f838f4ebf101a99bba79a56bb5ad82",
+      "after_sha256": "e7539bb761a045e25aa6bbb604f8069ba8f838f4ebf101a99bba79a56bb5ad82"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_direct_priority_v1/test_granary_direct_priority.py",
+      "operation": "copy-only",
+      "bytes": 7953,
+      "before_sha256": "4f067bd28ed4d57019b657ffc3286e41f0978c646c561f63c9f53b4794a9da2e",
+      "after_sha256": "4f067bd28ed4d57019b657ffc3286e41f0978c646c561f63c9f53b4794a9da2e"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_priority_v1/README.md",
+      "operation": "copy-only",
+      "bytes": 4728,
+      "before_sha256": "c3c9b7f0b2eaa7dd63fafd93801a5211e86dcdc1d09b4e18a80f88bbc0d99030",
+      "after_sha256": "c3c9b7f0b2eaa7dd63fafd93801a5211e86dcdc1d09b4e18a80f88bbc0d99030"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_priority_v1/granary_priority.lua",
+      "operation": "copy-only",
+      "bytes": 8313,
+      "before_sha256": "a6ca6faebc573dcbf970ab64eebb30d1bc914bfd4fa526eca12f076dccbac293",
+      "after_sha256": "a6ca6faebc573dcbf970ab64eebb30d1bc914bfd4fa526eca12f076dccbac293"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_priority_v1/granary_priority.sql",
+      "operation": "copy-only",
+      "bytes": 3096,
+      "before_sha256": "9b5cfde9ac4a19957b0d87c2a13f71a36fb35a23390d3c311309e1ae5841c9cf",
+      "after_sha256": "9b5cfde9ac4a19957b0d87c2a13f71a36fb35a23390d3c311309e1ae5841c9cf"
+    },
+    {
+      "path": "project/tools/ai_tuning/candidates/granary_priority_v1/test_granary_priority.py",
+      "operation": "copy-only",
+      "bytes": 13865,
+      "before_sha256": "852c391b28d4b8acb4c646683a3bf51ad94280731a6dd5312cdc379b03244a4b",
+      "after_sha256": "852c391b28d4b8acb4c646683a3bf51ad94280731a6dd5312cdc379b03244a4b"
+    },
+    {
+      "path": "project/tools/ai_tuning/chain_coordinator.py",
+      "operation": "copy-only",
+      "bytes": 12825,
+      "before_sha256": "d6cf484a809f43ad0c42c10ed6af13b281052f3a5983387fb2723a553566739f",
+      "after_sha256": "d6cf484a809f43ad0c42c10ed6af13b281052f3a5983387fb2723a553566739f"
+    },
+    {
+      "path": "project/tools/ai_tuning/configure_profiles.py",
+      "operation": "copy-only",
+      "bytes": 5443,
+      "before_sha256": "89849cf0d284abfa1650e569ab4f8b4352e2e860be6687caeecfeb53b2352aa7",
+      "after_sha256": "89849cf0d284abfa1650e569ab4f8b4352e2e860be6687caeecfeb53b2352aa7"
+    },
+    {
+      "path": "project/tools/ai_tuning/deploy_frozen_reference.py",
+      "operation": "copy-only",
+      "bytes": 3278,
+      "before_sha256": "870f6a49006b4f0536cafee9e9add533bd5ff8820bb3c0b789d1ed3bb1c3a961",
+      "after_sha256": "870f6a49006b4f0536cafee9e9add533bd5ff8820bb3c0b789d1ed3bb1c3a961"
+    },
+    {
+      "path": "project/tools/ai_tuning/deploy_profile_test.py",
+      "operation": "copy-only",
+      "bytes": 6620,
+      "before_sha256": "8ca10187de3aa22e7217d11aa2bce55406bcecabd0154cdbb051e17e5ec4e511",
+      "after_sha256": "8ca10187de3aa22e7217d11aa2bce55406bcecabd0154cdbb051e17e5ec4e511"
+    },
+    {
+      "path": "project/tools/ai_tuning/fixtures/customer_planner_v2_actual150.json",
+      "operation": "copy-only",
+      "bytes": 33562,
+      "before_sha256": "1c5105253ae3bd7a63f1a7dab176e0f5ad264b99a9a28a027ecf2b26b68f6205",
+      "after_sha256": "1c5105253ae3bd7a63f1a7dab176e0f5ad264b99a9a28a027ecf2b26b68f6205"
+    },
+    {
+      "path": "project/tools/ai_tuning/investment_review.py",
+      "operation": "copy-only",
+      "bytes": 7889,
+      "before_sha256": "78649911b5bcb101ec6c9f6eab3b560d4a89d2cde53453b0138675f05b50fd14",
+      "after_sha256": "78649911b5bcb101ec6c9f6eab3b560d4a89d2cde53453b0138675f05b50fd14"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_material_probe.py",
+      "operation": "copy-only",
+      "bytes": 19992,
+      "before_sha256": "142f8ab9a5541abb28fcf665f83a5467ca48f769104048e3f6f9fe4615138e24",
+      "after_sha256": "142f8ab9a5541abb28fcf665f83a5467ca48f769104048e3f6f9fe4615138e24"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_material_reader.lua",
+      "operation": "copy-only",
+      "bytes": 7342,
+      "before_sha256": "4dc333e0f2783035b7f25dd079c6dc88024c092442c95bee0249c8b2ca5050ba",
+      "after_sha256": "4dc333e0f2783035b7f25dd079c6dc88024c092442c95bee0249c8b2ca5050ba"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_material_recommendations.lua",
+      "operation": "copy-only",
+      "bytes": 4067,
+      "before_sha256": "07e39658cfef7e35ca2915e73e8b6c8df4cd5cea2e3a88f4884d966b898cba59",
+      "after_sha256": "07e39658cfef7e35ca2915e73e8b6c8df4cd5cea2e3a88f4884d966b898cba59"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_probe_artifacts.py",
+      "operation": "copy-only",
+      "bytes": 10936,
+      "before_sha256": "a4ee09faaf03029d1cbbb695d102087bfe8b08c13e457df2f5081768694b1e4b",
+      "after_sha256": "a4ee09faaf03029d1cbbb695d102087bfe8b08c13e457df2f5081768694b1e4b"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_profile_test.py",
+      "operation": "copy-only",
+      "bytes": 43202,
+      "before_sha256": "92fec7f68df5d407fc2c2490ad7e5ade8952a27ba3a5afa3e36ab48090a45e23",
+      "after_sha256": "92fec7f68df5d407fc2c2490ad7e5ade8952a27ba3a5afa3e36ab48090a45e23"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_session_probe.py",
+      "operation": "copy-only",
+      "bytes": 8992,
+      "before_sha256": "dbe810350a7993a8189f49d93f137e76b6457967d41c7c3528499accdd716b96",
+      "after_sha256": "dbe810350a7993a8189f49d93f137e76b6457967d41c7c3528499accdd716b96"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_shadow_probe.py",
+      "operation": "copy-only",
+      "bytes": 2106,
+      "before_sha256": "f3217e0060b02a14988553d813e63ecf8155b494f7fbcd8e8e5440a3af18d94a",
+      "after_sha256": "f3217e0060b02a14988553d813e63ecf8155b494f7fbcd8e8e5440a3af18d94a"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_shadow_reader.lua",
+      "operation": "copy-only",
+      "bytes": 12353,
+      "before_sha256": "0cf020bef3d2e1db18300fcbf40889a28ac71bcc32dfc1f85319b742be948ebd",
+      "after_sha256": "0cf020bef3d2e1db18300fcbf40889a28ac71bcc32dfc1f85319b742be948ebd"
+    },
+    {
+      "path": "project/tools/ai_tuning/native_ui_exit_probe.py",
+      "operation": "copy-only",
+      "bytes": 12094,
+      "before_sha256": "7f48693bd3636402cc6bef8bec850ca7b153250613ebc3e02fe6a09e217b2990",
+      "after_sha256": "7f48693bd3636402cc6bef8bec850ca7b153250613ebc3e02fe6a09e217b2990"
+    },
+    {
+      "path": "project/tools/ai_tuning/offline_cases.py",
+      "operation": "copy-only",
+      "bytes": 6377,
+      "before_sha256": "dcbe546894b339248c58c6a922ba5ded432b7c3f2264654ae9b006f29079fb07",
+      "after_sha256": "dcbe546894b339248c58c6a922ba5ded432b7c3f2264654ae9b006f29079fb07"
+    },
+    {
+      "path": "project/tools/ai_tuning/profile_completion_observer.lua",
+      "operation": "copy-only",
+      "bytes": 2429,
+      "before_sha256": "585e79d75540ed6a96e18bb558276ca5a79331c2bb2dc9d4774c0722b758a883",
+      "after_sha256": "585e79d75540ed6a96e18bb558276ca5a79331c2bb2dc9d4774c0722b758a883"
+    },
+    {
+      "path": "project/tools/ai_tuning/profile_customer_forecast.lua",
+      "operation": "copy-only",
+      "bytes": 5951,
+      "before_sha256": "d8d19697486c02fbfdadf62c23179b8b2e4f7a572ab3de4285ff38e22a43c980",
+      "after_sha256": "d8d19697486c02fbfdadf62c23179b8b2e4f7a572ab3de4285ff38e22a43c980"
+    },
+    {
+      "path": "project/tools/ai_tuning/profile_foundation_priority.py",
+      "operation": "copy-only",
+      "bytes": 2059,
+      "before_sha256": "732242c6b39e66374c8fbfa336890fc84bec6b8082543c7db8e2e68ce6ac5d8e",
+      "after_sha256": "732242c6b39e66374c8fbfa336890fc84bec6b8082543c7db8e2e68ce6ac5d8e"
+    },
+    {
+      "path": "project/tools/ai_tuning/profile_initial_census.lua",
+      "operation": "copy-only",
+      "bytes": 1824,
+      "before_sha256": "ba4768edfdd567db42c6cf22279d9ff473888c43a363bf49a0c1362ab86af826",
+      "after_sha256": "ba4768edfdd567db42c6cf22279d9ff473888c43a363bf49a0c1362ab86af826"
+    },
+    {
+      "path": "project/tools/ai_tuning/profile_research_observer.lua",
+      "operation": "copy-only",
+      "bytes": 3252,
+      "before_sha256": "5026bea2aac29b998b16e4c137b95080a16b25a3be024ef779dc95def5dfe102",
+      "after_sha256": "5026bea2aac29b998b16e4c137b95080a16b25a3be024ef779dc95def5dfe102"
+    },
+    {
+      "path": "project/tools/ai_tuning/profile_strategy_coverage.py",
+      "operation": "copy-only",
+      "bytes": 2451,
+      "before_sha256": "c91e0a1e162d6c977b945de979e731fef69fc0bbf941e67f2b16c3f7c5b6b3b6",
+      "after_sha256": "c91e0a1e162d6c977b945de979e731fef69fc0bbf941e67f2b16c3f7c5b6b3b6"
+    },
+    {
+      "path": "project/tools/ai_tuning/profile_workshop_forecast.lua",
+      "operation": "copy-only",
+      "bytes": 7468,
+      "before_sha256": "769922aee32ec4972d53cd1f8ac1819700e5366e628523a643dc46afb7b65133",
+      "after_sha256": "769922aee32ec4972d53cd1f8ac1819700e5366e628523a643dc46afb7b65133"
+    },
+    {
+      "path": "project/tools/ai_tuning/reference_series.py",
+      "operation": "copy-only",
+      "bytes": 8112,
+      "before_sha256": "524a6c9466dbac970d3d0467603886716342aa9ce26cd3de8564b77f8a9831dd",
+      "after_sha256": "524a6c9466dbac970d3d0467603886716342aa9ce26cd3de8564b77f8a9831dd"
+    },
+    {
+      "path": "project/tools/ai_tuning/resume_profile_live.py",
+      "operation": "copy-only",
+      "bytes": 16174,
+      "before_sha256": "33967cb87bba95da89e90801c1a4c4d86d1dd96c87948d17a5c39992195dde55",
+      "after_sha256": "33967cb87bba95da89e90801c1a4c4d86d1dd96c87948d17a5c39992195dde55"
+    },
+    {
+      "path": "project/tools/ai_tuning/review_shadow_capture.py",
+      "operation": "copy-only",
+      "bytes": 4888,
+      "before_sha256": "d3501fe56bbe5c307a3f6f065e33ca010d3e8e287267920ed1d3431bfff0276e",
+      "after_sha256": "d3501fe56bbe5c307a3f6f065e33ca010d3e8e287267920ed1d3431bfff0276e"
+    },
+    {
+      "path": "project/tools/ai_tuning/selective_planner.py",
+      "operation": "copy-only",
+      "bytes": 4767,
+      "before_sha256": "dd67b1ecbd47c426dddd714c776665defa6b0ac13bcb5ad34d537b2a6289f280",
+      "after_sha256": "dd67b1ecbd47c426dddd714c776665defa6b0ac13bcb5ad34d537b2a6289f280"
+    },
+    {
+      "path": "project/tools/ai_tuning/shadow_geometry.py",
+      "operation": "copy-only",
+      "bytes": 6243,
+      "before_sha256": "681d4d16188be66dc35e42c1c0b7fedb1ba72920b66608f0bcee40602b13329e",
+      "after_sha256": "681d4d16188be66dc35e42c1c0b7fedb1ba72920b66608f0bcee40602b13329e"
+    },
+    {
+      "path": "project/tools/ai_tuning/shadow_projection.py",
+      "operation": "copy-only",
+      "bytes": 6748,
+      "before_sha256": "fa4635e54b09b92e50d3f0e0d9b8c375bf91937a026d05ad68ea960817bdfc98",
+      "after_sha256": "fa4635e54b09b92e50d3f0e0d9b8c375bf91937a026d05ad68ea960817bdfc98"
+    },
+    {
+      "path": "project/tools/ai_tuning/site_evaluator.py",
+      "operation": "copy-only",
+      "bytes": 15247,
+      "before_sha256": "b25c15262dfae21db00b2d5d32e31eb6a92667e2dd67d15ed4cb5ac95048a6f9",
+      "after_sha256": "b25c15262dfae21db00b2d5d32e31eb6a92667e2dd67d15ed4cb5ac95048a6f9"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_archived_site_cases.py",
+      "operation": "copy-only",
+      "bytes": 2481,
+      "before_sha256": "729170be18139d078affbea78fe6d44185c9f595d36a42ef61a18e715cc4210b",
+      "after_sha256": "729170be18139d078affbea78fe6d44185c9f595d36a42ef61a18e715cc4210b"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_chain_coordinator.py",
+      "operation": "copy-only",
+      "bytes": 7502,
+      "before_sha256": "e023ab2c85d0cddb97bbfe3f2e051810b40eb5fd7be30f8b80aa67c75bfa9be2",
+      "after_sha256": "e023ab2c85d0cddb97bbfe3f2e051810b40eb5fd7be30f8b80aa67c75bfa9be2"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_completion_observer.py",
+      "operation": "copy-only",
+      "bytes": 2892,
+      "before_sha256": "81dcd94faf3b34488fcf023b7ab0a27c62b8958da1d7e8621685efbb283fff17",
+      "after_sha256": "81dcd94faf3b34488fcf023b7ab0a27c62b8958da1d7e8621685efbb283fff17"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_customer_forecast.py",
+      "operation": "copy-only",
+      "bytes": 7740,
+      "before_sha256": "5e7a7f9588ce28c5c06fcd463fe57a83df4c9ae3b8ec1930ca0085702af3fedd",
+      "after_sha256": "5e7a7f9588ce28c5c06fcd463fe57a83df4c9ae3b8ec1930ca0085702af3fedd"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_customer_planner_v2.py",
+      "operation": "copy-only",
+      "bytes": 8340,
+      "before_sha256": "d066cc19394ccf8754c50ef558ab8c7808ab95a0147eb2a3f6228aa747a5c545",
+      "after_sha256": "d066cc19394ccf8754c50ef558ab8c7808ab95a0147eb2a3f6228aa747a5c545"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_customer_roles.py",
+      "operation": "copy-only",
+      "bytes": 10484,
+      "before_sha256": "292f3d42385652a2df42bdd0895128ec15ec9fea52a58fa909bd0dc5af0e256a",
+      "after_sha256": "292f3d42385652a2df42bdd0895128ec15ec9fea52a58fa909bd0dc5af0e256a"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_foundation_priority.py",
+      "operation": "copy-only",
+      "bytes": 6794,
+      "before_sha256": "d3c6b8f2d8d221b9b46a1a13fcdcecb87c50ee15b7e621312da0dae327ec0de1",
+      "after_sha256": "d3c6b8f2d8d221b9b46a1a13fcdcecb87c50ee15b7e621312da0dae327ec0de1"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_host_pilot.py",
+      "operation": "copy-only",
+      "bytes": 14661,
+      "before_sha256": "145fe9ba612a1dd5f70d6a8accb6f8efb22d4409fdec474b12a721b56a5e2527",
+      "after_sha256": "145fe9ba612a1dd5f70d6a8accb6f8efb22d4409fdec474b12a721b56a5e2527"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_initial_census.py",
+      "operation": "copy-only",
+      "bytes": 3453,
+      "before_sha256": "3398bd4206eafa954375e0322c897e752c2877276a65465ba9b6288ae2d85264",
+      "after_sha256": "3398bd4206eafa954375e0322c897e752c2877276a65465ba9b6288ae2d85264"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_investment_review.py",
+      "operation": "copy-only",
+      "bytes": 4622,
+      "before_sha256": "cc53bbaeeea02be2abd41b58f4cefbc80bf64a408a004fb5c64c67a706b8bebe",
+      "after_sha256": "cc53bbaeeea02be2abd41b58f4cefbc80bf64a408a004fb5c64c67a706b8bebe"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_native_material.py",
+      "operation": "copy-only",
+      "bytes": 7105,
+      "before_sha256": "5b0c6b94620116343b1ca7068f12fd18d4a6d264aafc15a9315c47841af3fcb6",
+      "after_sha256": "5b0c6b94620116343b1ca7068f12fd18d4a6d264aafc15a9315c47841af3fcb6"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_native_material_recommendations.py",
+      "operation": "copy-only",
+      "bytes": 6327,
+      "before_sha256": "13769fc8304e2ea4cf03d8555b7fd46160979bbbb0dd331cd5b15a2d7253f28c",
+      "after_sha256": "13769fc8304e2ea4cf03d8555b7fd46160979bbbb0dd331cd5b15a2d7253f28c"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_native_probe_artifacts.py",
+      "operation": "copy-only",
+      "bytes": 11647,
+      "before_sha256": "f894eafdd3092a8374c0d0ae83f0d2e88f82c129479b0999de5a27ed8ae36402",
+      "after_sha256": "f894eafdd3092a8374c0d0ae83f0d2e88f82c129479b0999de5a27ed8ae36402"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_native_probe_artifacts_v2.py",
+      "operation": "copy-only",
+      "bytes": 5027,
+      "before_sha256": "2406cd05ef21aa7ac61807b1301b58d4f5c37e154664c5a4a41eada1c520b00c",
+      "after_sha256": "2406cd05ef21aa7ac61807b1301b58d4f5c37e154664c5a4a41eada1c520b00c"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_native_session_probe.py",
+      "operation": "copy-only",
+      "bytes": 2255,
+      "before_sha256": "a071315a6f54f55914184bfee70435881060e481241d41a6bbee9687de92704d",
+      "after_sha256": "a071315a6f54f55914184bfee70435881060e481241d41a6bbee9687de92704d"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_native_shadow_reader.py",
+      "operation": "copy-only",
+      "bytes": 7544,
+      "before_sha256": "f02b1b00fad0254108c49608e2f72f78ab8bfae8b167876a6640311fb9aa9573",
+      "after_sha256": "f02b1b00fad0254108c49608e2f72f78ab8bfae8b167876a6640311fb9aa9573"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_native_ui_exit.py",
+      "operation": "copy-only",
+      "bytes": 3562,
+      "before_sha256": "1ea4ff6eb493e781603af00efc02e7d0ac6867897548dc78ad4534e38f7332d9",
+      "after_sha256": "1ea4ff6eb493e781603af00efc02e7d0ac6867897548dc78ad4534e38f7332d9"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_observer_elimination.py",
+      "operation": "copy-only",
+      "bytes": 3643,
+      "before_sha256": "8f4f900f1523ce3c44553be4f3c92287d2e687ff3e4bd6895dd2be222b4f7d10",
+      "after_sha256": "8f4f900f1523ce3c44553be4f3c92287d2e687ff3e4bd6895dd2be222b4f7d10"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_observer_firstmeet.py",
+      "operation": "copy-only",
+      "bytes": 2990,
+      "before_sha256": "237ba9e0a8f9c5d2c6def92512c1ea30eabf2b010f51e61ee3fbeba8ae3afd2a",
+      "after_sha256": "237ba9e0a8f9c5d2c6def92512c1ea30eabf2b010f51e61ee3fbeba8ae3afd2a"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_offline_cases.py",
+      "operation": "copy-only",
+      "bytes": 1735,
+      "before_sha256": "933edcd4886b8adfbd4392c49453fb5970112186581f74b8852fc51b13ad8b7e",
+      "after_sha256": "933edcd4886b8adfbd4392c49453fb5970112186581f74b8852fc51b13ad8b7e"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_profile_light_observation.py",
+      "operation": "copy-only",
+      "bytes": 4622,
+      "before_sha256": "693f71b967c9bd5abc3f8f380503f853c303ce5b19d3b47a1789c5c213b38e29",
+      "after_sha256": "693f71b967c9bd5abc3f8f380503f853c303ce5b19d3b47a1789c5c213b38e29"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_profiles.py",
+      "operation": "copy-only",
+      "bytes": 23883,
+      "before_sha256": "38765a2d0279f43414adc7d03c64387263970fbbf13953dabac1fa47cd1d62e9",
+      "after_sha256": "38765a2d0279f43414adc7d03c64387263970fbbf13953dabac1fa47cd1d62e9"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_runtime_customer_v2.py",
+      "operation": "copy-only",
+      "bytes": 25473,
+      "before_sha256": "f2f64142d235f74339be43a8d0a1ae27bb45d6672d464d2b61dedcc07f88a22e",
+      "after_sha256": "f2f64142d235f74339be43a8d0a1ae27bb45d6672d464d2b61dedcc07f88a22e"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_screen_route_preflight.py",
+      "operation": "copy-only",
+      "bytes": 10857,
+      "before_sha256": "4af9a6dc249bedd29b3159ae1253502e8bb6891e2ae59c862c0cca4525026575",
+      "after_sha256": "4af9a6dc249bedd29b3159ae1253502e8bb6891e2ae59c862c0cca4525026575"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_selective_planner.py",
+      "operation": "copy-only",
+      "bytes": 3245,
+      "before_sha256": "82e2bc263df938905cfe3a2e852b8ee7c7cd5ac55cde932ce79535fbb85de1d8",
+      "after_sha256": "82e2bc263df938905cfe3a2e852b8ee7c7cd5ac55cde932ce79535fbb85de1d8"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_selective_screen.py",
+      "operation": "copy-only",
+      "bytes": 24896,
+      "before_sha256": "f2d95c2cfe0751ed79e851820296b8327397f9775ec06fe1b100df9f25116237",
+      "after_sha256": "f2d95c2cfe0751ed79e851820296b8327397f9775ec06fe1b100df9f25116237"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_selective_stage23.py",
+      "operation": "copy-only",
+      "bytes": 25122,
+      "before_sha256": "8d6ae53170d5fff2a065ade86726bd47972705f54b98d0df6d31f3170af3b044",
+      "after_sha256": "8d6ae53170d5fff2a065ade86726bd47972705f54b98d0df6d31f3170af3b044"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_shadow_geometry.py",
+      "operation": "copy-only",
+      "bytes": 4079,
+      "before_sha256": "10cce162de32ffeeced76a909d8e3b13ed4633f7859fdae909ce64f526f4c556",
+      "after_sha256": "10cce162de32ffeeced76a909d8e3b13ed4633f7859fdae909ce64f526f4c556"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_shadow_projection.py",
+      "operation": "copy-only",
+      "bytes": 4272,
+      "before_sha256": "d90d6898bc437e580e13d189d6f41f9d45987c13b9a734da58c7fb28d1fbac2d",
+      "after_sha256": "d90d6898bc437e580e13d189d6f41f9d45987c13b9a734da58c7fb28d1fbac2d"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_site_evaluator.py",
+      "operation": "copy-only",
+      "bytes": 10189,
+      "before_sha256": "67c3e5bc5712fd3023bca1bb7683b790d50ecf374a988b8eb52d41748b0cd2fb",
+      "after_sha256": "67c3e5bc5712fd3023bca1bb7683b790d50ecf374a988b8eb52d41748b0cd2fb"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_strategy_coverage.py",
+      "operation": "copy-only",
+      "bytes": 6121,
+      "before_sha256": "01d7129be352ddaa4b6f4f273d6e19c38e0d7fe3d4dda8721dec252cc2251aa9",
+      "after_sha256": "01d7129be352ddaa4b6f4f273d6e19c38e0d7fe3d4dda8721dec252cc2251aa9"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_ui_planner_bootstrap.py",
+      "operation": "copy-only",
+      "bytes": 7269,
+      "before_sha256": "00f64830239261db13212740468cb21da2645115ce7b6c9f583f31902557d3e3",
+      "after_sha256": "00f64830239261db13212740468cb21da2645115ce7b6c9f583f31902557d3e3"
+    },
+    {
+      "path": "project/tools/ai_tuning/test_workshop_forecast.py",
+      "operation": "copy-only",
+      "bytes": 11619,
+      "before_sha256": "67d6e22c13e7892b047b120e2d1a5dbe5556c920f112b030a670d6e887da558e",
+      "after_sha256": "67d6e22c13e7892b047b120e2d1a5dbe5556c920f112b030a670d6e887da558e"
+    },
+    {
+      "path": "project/tools/modbuddy/civ6proj_actions.py",
+      "operation": "copy-only",
+      "bytes": 10548,
+      "before_sha256": "16a554a0ea82998d58ab4bc62a6f892396fce0c522f2e081926e1dc8ca411398",
+      "after_sha256": "16a554a0ea82998d58ab4bc62a6f892396fce0c522f2e081926e1dc8ca411398"
+    },
+    {
+      "path": "project/tools/native_ai/archive_legacy_tuning.py",
+      "operation": "copy-only",
+      "bytes": 16088,
+      "before_sha256": "b9ea4990b503cc1ad8a23aca93f9b027bce5e7381d96bc9439eb9c33b4bc1a6d",
+      "after_sha256": "b9ea4990b503cc1ad8a23aca93f9b027bce5e7381d96bc9439eb9c33b4bc1a6d"
+    }
+  ],
+  "preserve": [
+    "actual Quarter gameplay and ordinary ModSupport",
+    "bundled adjacency engine",
+    "independent resource-map assistance",
+    "shared controller and new native bridge",
+    "research/evidence/knowledge base",
+    "old tools stay at original paths for historical imports"
+  ],
+  "effects": "future loaded rules/runtime wiring only; does not undo saved map/treasury/research/cache history"
+}

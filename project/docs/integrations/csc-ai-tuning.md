@@ -1,3 +1,5 @@
+> **Retired, 3 November 2026:** the earlier tuning and assistance were archived and removed from active source/installed wiring. See [the fresh-start record](csc-ai-reset-20261103.md). The implementation and “current” labels below are historical.
+
 # CSC AI tuning
 
 **Current placement status (1 November 2026):** the all-BONUS12 cue is removed from
