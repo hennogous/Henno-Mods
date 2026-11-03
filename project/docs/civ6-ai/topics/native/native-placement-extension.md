@@ -7,6 +7,12 @@ and new district request. The isolated Win64 host also passed167 checks.
 General arbitrary-policy authoring and a shipping extension remain future work.
 [AI-N036] [AI-N061] [AI-N062]
 
+The [next controlled trial](../../../research/mods/civ6-district-placement-choice-20261103.md)
+tests a distinct preferred Tailors site and natural construction, with the old
+CSC tuning [retired](../../../integrations/csc-ai-reset-20261103.md). Its first
+interval captured fresh values while Sydney finished an existing Aerodrome;
+a new selection needs its own observed opportunity. [AI-N063]
+
 The [offline feasibility report](../../../research/mods/civ6-district-score-extension-20261103.md)
 contains the current-build code, ABI and source details. The
 [prototype report](../../../research/mods/civ6-district-score-prototype-20261103.md)

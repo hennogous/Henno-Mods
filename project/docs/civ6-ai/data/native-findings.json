@@ -1213,5 +1213,18 @@
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N053", "AI-N055", "AI-N061"],
     "related": ["AI-N036", "AI-N060"]
+  },
+  {
+    "id": "AI-N063",
+    "title": "Fresh district values do not establish a new selection",
+    "statement": "In the clean Sydney baseline, the four-hook observer captured eleven fresh Tailors NetValue outputs and twelve completed cache entries but no scoped GetBestDistrict return or PresentValueOf call during250-to251. The existing district tree completed its Aerodrome and the city selected Research Lab production.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "inference"],
+    "scope": "Pinned Windows XP2 build, current CSC with legacy tuning removed, P5/Sydney city131073, game04 save rebased at250. Baseline3086interceptions/12admitted/23records/zero writes/errors; normal closure and restoration verified.",
+    "limits": "This is limited exposure for the ordinary scoped selector, not rejection of Tailors or an engine-wide absence of consumers. The outstanding-tree gate explains the delayed new-choice opportunity; treatment must qualify a fresh observed comparison and reservation state separately.",
+    "sources": ["project/docs/research/mods/civ6-district-placement-choice-20261103.md"],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": ["AI-N011", "AI-N061"],
+    "related": ["AI-N062"]
   }
 ]

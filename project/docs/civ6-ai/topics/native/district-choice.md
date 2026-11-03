@@ -40,4 +40,11 @@ A custom adjacency cue can therefore affect its recipient and competing uses of 
 
 The selected pair seeds a behavior tree. Purchase, reservation, clearance, contract competition and immediate CanZone still follow; a forecast winner is not a construction receipt. [AI-N011] See [production and prerequisites](production-and-prerequisites.md).
 
+Fresh valuation can also happen before the city asks for its next district.
+In the clean Sydney trial, eleven Tailors outputs reached the cache while an
+existing Aerodrome tree finished; no new ordinary GetBestDistrict return was
+captured that interval. A site score alone therefore does not prove that a
+new district proposal was compared. [AI-N063] See the
+[placement-choice test](../../../research/mods/civ6-district-placement-choice-20261103.md).
+
 The Lua query plot:CanHaveDistrict(districtIndex, playerID, cityID) reads three numeric arguments after self in this build. No fourth future/ignore flag was found. Its result expresses bounded plot potential, not complete city permission, an economic quote or material preservation: an auto-harvest path can admit resource-bearing land. [AI-N012] See the [legality investigation](../../../research/mods/csc-native-future-customer-legality-20261101.md).

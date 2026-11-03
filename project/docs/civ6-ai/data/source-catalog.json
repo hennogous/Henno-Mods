@@ -392,6 +392,16 @@
       "site_path": "sources/project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
     },
     {
+      "path": "project/docs/research/mods/civ6-district-placement-choice-20261103.md",
+      "title": "Native Quarter placement choice after the AI reset",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 5937,
+      "sha256": "98937b9053e7ef78e6eb84039531d3e0e8639f3326128375d1224a27c9bf119a",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-district-placement-choice-20261103.md"
+    },
+    {
       "path": "project/docs/research/mods/civ6-district-score-extension-20261103.md",
       "title": "Native district-score extension: offline feasibility and integration contract",
       "kind": "report",
