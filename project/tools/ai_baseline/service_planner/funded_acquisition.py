@@ -36,6 +36,8 @@ def funding(c,budget,planner,turn):
 
 class FundedDiagnostic(Diagnostic):
     def install(self):
+        self.r.cmd("assert(not (ExposedMembers and ExposedMembers.CSC_AI_Assistance), 'Installed CSC assistance owns mutations; use an observation-only driver');",
+                   'CSC_AdjacencyGameplay','verify-no-installed-acquisition-owner')
         super().install()
         self.r.cmd(Path(__file__).with_suffix('.lua').read_text(encoding='utf-8'),
                    'CSC_AdjacencyGameplay','install-own-first-acquisition')

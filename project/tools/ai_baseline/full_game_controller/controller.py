@@ -28,10 +28,18 @@ def make_controller(base_class,*,diagnostics,boundary_decision,tuner_port,prepar
   'tuner_port':staticmethod(tuner_port)if callable(tuner_port)else tuner_port,'prepare_output':staticmethod(prepare_output or(lambda out:None)),
   'state_discovery':staticmethod(state_discovery)if state_discovery else None})
 
+EXIT_ONLY_OBSERVER_WARS=frozenset(('DECLARE_SURPRISE_WAR','DECLARE_FORMAL_WAR'))
+FIRST_MEET_OBSERVER_STATEMENTS=frozenset(('FIRST_MEET_NEAR_RECIPIENT',))
 PASSIVE_OBSERVER_STATEMENTS=frozenset(('WARNING_TOO_MANY_TROOPS_NEAR_ME','DIPLOMATIC_KUDO','DIPLOMATIC_WARNING','DIPLOMATIC_HIDDEN_AGENDA_KUDO','DIPLOMATIC_HIDDEN_AGENDA_WARNING'))
+
+class ObserverEliminated(RuntimeError):
+ """The original return player is dead; an inactive counter cannot stop AI-only flow."""
 
 class SourceUpdateHandoff(Exception):
  """Validated read-only ownership handoff, not native failure."""
+
+class StateDiscoveryUnavailable(RuntimeError):
+ """Reviewed state discovery exhausted before any Lua command was transmitted."""
 
 class FullGameController:
  def __init__(self,out):
@@ -49,21 +57,23 @@ class FullGameController:
     self.discovery_port,self.state=self.state_discovery(self.required_state)
     return self.state
    except RuntimeError as error:
-    if str(error)!='No responsive tuner states'or attempt==2:raise
+    if str(error)!='No responsive tuner states':raise
+    if attempt==2:raise StateDiscoveryUnavailable(str(error))from error
     self.diagnostics.journal('readonly-state-discovery-retry',attempt=attempt+1,no_command_sent=True)
     time.sleep(2)
- def publish_active(self,value):
-  # Windows readers can briefly deny atomic replacement. This status index is
-  # optional: the fsynced command journal and unique command/reply files remain
-  # authoritative. Retry only metadata I/O; never repeat a native command.
+ def _metadata(self,path,value,warning_event):
+  # Optional metadata only. The fsynced journal and unique raw command/reply
+  # artifacts remain authoritative; no native command is retried here.
   for attempt in range(5):
    try:
-    self.diagnostics.write(self.root/'active-command.json',value)
+    self.diagnostics.write(path,value)
     return True
    except PermissionError as error:
     if attempt<4:time.sleep(.1)
-    else:self.diagnostics.journal('active-command-metadata-warning',number=value.get('number'),phase=value.get('phase'),error=str(error),no_native_command_replayed=True)
+    else:self.diagnostics.journal(warning_event,path=str(path),number=value.get('number'),phase=value.get('phase'),error=str(error),no_native_command_replayed=True)
   return False
+ def publish_active(self,value):
+  return self._metadata(self.root/'active-command.json',value,'active-command-metadata-warning')
  def cmd(self,code,state='GameCore_Tuner',label='command',wait=2,check=True):
   # Exactly one send. A missing ACK is ambiguous for controls and mutations;
   # caller must inspect postconditions or fail, never blindly replay them.
@@ -118,7 +128,9 @@ class FullGameController:
   path=self.root/'source-update-handoff.json'
   assert not path.exists(),'Never replace an ownership receipt'
   proof=self.state_read('active-source-update-proof')
-  assert proof['active']and proof['local_player']==-1 and not proof['player0_human']and target-proof['turn']==proof['remaining']and 0<proof['remaining']<=5,proof
+  if not(proof['active']and proof['local_player']==-1 and not proof['player0_human']and target-proof['turn']==proof['remaining']and 0<proof['remaining']<=5):
+   self.diagnostics.journal('active-source-update-deferred',proof=proof,no_control=True)
+   return {'verified':False,'continue_owner':True,'reason':'Native phase moved before handoff; finish existing operation'}
   self.preserve_telemetry();self.capture('active-source-update-handoff');self.capture_blocker(target)
   final=self.state_read('active-source-update-final')
   if not all(proof[k]==final[k]for k in('turn','active','remaining','local_player','player0_human')):
@@ -139,13 +151,14 @@ class FullGameController:
     row={'turn':int(t),'active':a=='true','remaining':int(n),'local_player':int(p),'player0_human':h=='true','time':time.time()}
     if alive:row['player0_alive']=alive=='true'
     return row
-   except(MissingAcknowledgment,OSError,EOFError,IndexError):
+   except(MissingAcknowledgment,OSError,EOFError,IndexError,StateDiscoveryUnavailable):
     if attempt==2:raise
     self.diagnostics.journal('readonly-state-query-retry',label=label,attempt=attempt+1,no_control_replayed=True);time.sleep(2)
  def ready(self,expected,label):
   rows=[];good=0
   for _ in range(12):
    row=self.state_read(label);rows.append(row)
+   if row.get('player0_alive')is False:raise ObserverEliminated('Original observer eliminated; native AI-only flow is not bounded by the autoplay counter')
    self.diagnostics.write(self.root/'handoff-readbacks'/(label+'.json'),{'expected_turn':expected,'samples':rows,'read_only':True})
    assert row['turn']==expected,('Unexpected native handoff clock',expected,row)
    good=good+1 if not row['active']and row['local_player']==0 and row['player0_human']else 0
@@ -166,6 +179,23 @@ class FullGameController:
    row={'context':context,'core_proof':proof,'target':target,'raw':raw,'requested':marker in raw,'gameplay_response_submitted':False,'time':time.time()}
    with(self.root/'playback-recoveries.ndjson').open('a',encoding='utf-8')as f:f.write(json.dumps(row)+'\n')
    if row['requested']:self.diagnostics.checkpoint('playback-release-'+context+'-'+str(self.seq))
+  self.dismiss_congress_review(target)
+ def dismiss_congress_review(self,target):
+  if not getattr(self,'allow_observer_congress_review',False):return
+  proof=self.state_read('congress-review-core-proof')
+  if not proof['active']or proof['local_player']!=-1 or proof['player0_human']or target-proof['turn']!=proof['remaining']or not(0<proof['remaining']<=5):return
+  self.states()
+  if 'WorldCongressPopup'not in self.state:return
+  if not hasattr(self,'congress_review_attempts'):self.congress_review_attempts=set()
+  key=(proof['turn'],target)
+  if key in self.congress_review_attempts:return
+  code=(RESOURCE_ROOT/'congress_review.lua').read_text(encoding='utf-8')
+  for name,value in {'CORE_TURN':proof['turn'],'TARGET_TURN':target,'CORE_ACTIVE':proof['active'],'CORE_LOCAL':proof['local_player'],'CORE_HUMAN':proof['player0_human'],'REMAINING':proof['remaining']}.items():code=code.replace('__'+name+'__',str(value).lower())
+  self.congress_review_attempts.add(key) # Reserve before transmission; ambiguity never resends.
+  raw=self.cmd(code,'WorldCongressPopup','congress-results-review-'+str(proof['turn']))
+  skipped='CSC_CONGRESS_REVIEW_SKIP'in raw and 'CSC_CONGRESS_REVIEW_BEGIN'not in raw
+  if skipped:self.congress_review_attempts.remove(key)
+  self.diagnostics.write(self.root/'congress-reviews'/f'{proof["turn"]}-{target}.json',dict(core=proof,raw=raw,requested='CSC_CONGRESS_REVIEW_REQUESTED'in raw,shipped_results_acknowledgement=True,votes_or_proposals_submitted=False))
  def capture_blocker(self,target):
   # Capture native session/context state BEFORE any cosmetic view teardown.
   # Diagnostic failures do not trigger controls or hide the original stall.
@@ -182,43 +212,40 @@ class FullGameController:
   if not getattr(self,'allow_observer_warning_dismissal',False):return
   proof=self.state_read('warning-dismiss-core-proof')
   if not proof['active']or proof['local_player']!=-1 or proof['player0_human']or target-proof['turn']!=proof['remaining']or not(0<proof['remaining']<=5):return
-  # Native diplomacy CSV identifies the actual statement/session, not a guess
-  # based on a visible leader. Only the reviewed troop warning and exit-only agenda kudos/warnings
-  # are supported. Shipped KUDO_EXIT/WARNING_EXIT expose CHOICE_EXIT only.
-  # No response, promise or deal is selected.
   import csv
   log=self.diagnostics.USER/'Logs/DiplomacyManager.csv'
   if not log.exists():return
-  warning=None;seen_from=set()
+  candidates=[];seen_from=set()
   for row in reversed(list(csv.reader(log.read_text(encoding='utf-8-sig',errors='replace').splitlines()))):
    row=[v.strip()for v in row]
    if len(row)<5 or row[0]!=str(proof['turn'])or row[1]not in('1','2','3','4','5')or row[2]!='0':continue
    if row[1]in seen_from:continue
-   seen_from.add(row[1]) # Latest message from this participant wins; never fall back past a deal/demand.
-   if row[4]in PASSIVE_OBSERVER_STATEMENTS:
-    warning={'turn':int(row[0]),'from':int(row[1]),'to':0,'initiator_raw':row[3],'statement':row[4]};break
-  if warning is None:return
-  # CSV column4 is Initiator, not a session ID. Lua resolves the native open
-  # session for the log-verified participants and checks its identity.
-  key=(self.game_pid,proof['turn'],warning['from'],warning['statement'])
+   seen_from.add(row[1]) # A newer deal/demand prevents fallback to an old warning.
+   if row[4]in PASSIVE_OBSERVER_STATEMENTS or row[4]in EXIT_ONLY_OBSERVER_WARS or row[4]in FIRST_MEET_OBSERVER_STATEMENTS:
+    candidates.append({'turn':int(row[0]),'from':int(row[1]),'to':0,'initiator_raw':row[3],'statement':row[4]})
   if not hasattr(self,'warning_dismissals'):self.warning_dismissals=set()
-  if key in self.warning_dismissals:return
   if not hasattr(self,'warning_guard_checks'):self.warning_guard_checks={}
-  checks=self.warning_guard_checks.get(key,0)
-  if checks>=4:return # At most four fresh checks; normal stall cadence separates them.
-  self.states()
-  if 'DiplomacyActionView'not in self.state:return
-  code=(RESOURCE_ROOT/'session_dismissal.lua').read_text(encoding='utf-8')
-  for name,value in {'FROM':warning['from'],'CORE_TURN':proof['turn'],'TARGET_TURN':target,'CORE_ACTIVE':proof['active'],'CORE_LOCAL':proof['local_player'],'CORE_HUMAN':proof['player0_human']}.items():code=code.replace('__'+name+'__',str(value).lower())
-  self.diagnostics.journal('observer-warning-dismissal-begin',warning=warning,core=proof,native_pid=self.game_pid,no_response_selected=True)
-  # Reserve before transmission: any transport/Lua ambiguity remains one-shot.
-  self.warning_dismissals.add(key);self.warning_guard_checks[key]=checks+1
-  raw=self.cmd(code,'DiplomacyActionView','dismiss-observer-warning-from-'+str(warning['from']))
-  skipped=bool(re.search(r'CSC_OBSERVER_WARNING_DISMISS_SKIPPED\s+(no_session|core_phase|ui_clock|ui_control|session_closed|session_changed|participants)',raw))
-  if skipped and 'CSC_OBSERVER_WARNING_DISMISS_BEGIN'not in raw and 'CSC_OBSERVER_WARNING_DISMISS_REQUESTED'not in raw:
-   self.warning_dismissals.remove(key) # ACK proves the Lua guard returned before CloseSession.
-  self.diagnostics.journal('observer-warning-guard-result',key=key,check=checks+1,explicit_skip=skipped,may_recheck=key not in self.warning_dismissals)
-  self.diagnostics.write(self.root/'session-dismissals'/(str(self.seq)+'.json'),{'warning':warning,'core':proof,'raw':raw,'requested':'CSC_OBSERVER_WARNING_DISMISS_REQUESTED'in raw,'intervention':'standard conversation dismissal; no AddResponse/statement/turn change'})
+  for warning in candidates:
+   key=(self.game_pid,proof['turn'],warning['from'],warning['statement'])
+   if key in self.warning_dismissals:continue
+   checks=self.warning_guard_checks.get(key,0)
+   if checks>=4:continue
+   self.states()
+   if 'DiplomacyActionView'not in self.state:return
+   resource=('first_meet_session_dismissal.lua'if warning['statement']in FIRST_MEET_OBSERVER_STATEMENTS else'war_session_dismissal.lua'if warning['statement']in EXIT_ONLY_OBSERVER_WARS else'session_dismissal.lua')
+   code=(RESOURCE_ROOT/resource).read_text(encoding='utf-8').replace('__STATEMENT__',warning['statement'])
+   for name,value in {'FROM':warning['from'],'CORE_TURN':proof['turn'],'TARGET_TURN':target,'CORE_ACTIVE':proof['active'],'CORE_LOCAL':proof['local_player'],'CORE_HUMAN':proof['player0_human']}.items():code=code.replace('__'+name+'__',str(value).lower())
+   self.diagnostics.journal('observer-warning-dismissal-begin',warning=warning,core=proof,native_pid=self.game_pid,no_response_selected=True)
+   self.warning_dismissals.add(key);self.warning_guard_checks[key]=checks+1
+   raw=self.cmd(code,'DiplomacyActionView','dismiss-observer-warning-from-'+str(warning['from']))
+   match=re.search(r'CSC_OBSERVER_WARNING_DISMISS_SKIPPED\s+([a-z_]+)',raw)
+   explicit_skip=bool(match)and 'CSC_OBSERVER_WARNING_DISMISS_BEGIN'not in raw and 'CSC_OBSERVER_WARNING_DISMISS_REQUESTED'not in raw
+   if explicit_skip:self.warning_dismissals.remove(key)
+   self.diagnostics.journal('observer-warning-guard-result',key=key,check=checks+1,explicit_skip=explicit_skip,may_recheck=key not in self.warning_dismissals)
+   self.diagnostics.write(self.root/'session-dismissals'/(str(self.seq)+'.json'),{'warning':warning,'core':proof,'raw':raw,'requested':'CSC_OBSERVER_WARNING_DISMISS_REQUESTED'in raw,'intervention':('standard CHOICE_EXIT declines observer first-meet invitation; no AddResponse/statement/turn change'if warning['statement']in FIRST_MEET_OBSERVER_STATEMENTS else'standard exit-only conversation dismissal; no AddResponse/statement/turn change'),'guard_resource':resource})
+   # A closed newest session must not hide another participant's open one.
+   # One mutation maximum per pass; ambiguous transmissions never resend.
+   if not(explicit_skip and match[1]in('no_session','session_closed')):return
  def continue_after_victory(self,target,proof):
   """Opt-in fixed endpoint: shipped One More Turn, then remaining budget only.
 
@@ -268,8 +295,9 @@ class FullGameController:
    time.sleep(.5 if last is None else 1) # Poll state only; never resend activation.
    if(self.root/'native-fault-signal.json').exists():raise RuntimeError('Watchdog observed native fault')
    row=self.state_read('progress');turn=row['turn']
+   if row.get('player0_alive')is False:raise ObserverEliminated('Original observer eliminated; preserve and exit without another activation')
    if turn!=last:last=turn;changed=time.monotonic()
-   self.diagnostics.write(self.root/'live-status.json',dict(row,target=target,endpoint=250,worker_pid=os.getpid()))
+   self._metadata(self.root/'live-status.json',dict(row,target=target,endpoint=getattr(self,'study_endpoint',250),worker_pid=os.getpid()),'live-status-metadata-warning')
    request=self.root/'source-update-request.json'
    if request.exists()and row['active']and 0<row['remaining']<=5 and target-turn==row['remaining']and row['local_player']==-1 and not row['player0_human']and json.loads(request.read_text(encoding='utf-8-sig')).get('allow_active_handoff'):
     if getattr(self,'active_handoff_deferred_target',None)!=target:

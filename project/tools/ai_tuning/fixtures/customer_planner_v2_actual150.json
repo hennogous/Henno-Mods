@@ -1,0 +1,1171 @@
+{
+  "sources": [
+    {
+      "cohort": "candidate",
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-paired-selective-chain-screen-20261101\\candidate\\run-01\\continue-live45\\compact\\turn-150.json",
+      "sha256": "e7f51b697191b1bc42c5deb8eb4622659903702d3b78611192ba98bc2b44ccb3",
+      "turn": 150
+    },
+    {
+      "cohort": "reference",
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-paired-selective-chain-screen-20261101\\reference\\run-02\\recovery-45-v2\\finish-145\\resume-150\\compact\\turn-150.json",
+      "sha256": "eabe002785f878d0862a5c6f78780914851bae8472be92704954b5a41eb5e066",
+      "turn": 150
+    }
+  ],
+  "scope": "retrospective customer/material geometry only; no T1 placement, future legality, payment or causal proof",
+  "cases": [
+    {
+      "cohort": "candidate",
+      "identity": {
+        "player": 1,
+        "city": 393221,
+        "quarter": "TAILORS",
+        "source": 2165
+      },
+      "name": "LOC_CITY_NAME_KERMA",
+      "quarter": {
+        "player": 1,
+        "complete": true,
+        "quarter": "TAILORS",
+        "city": 393221,
+        "materials": [
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": 0,
+            "plot": 2240,
+            "pillaged": false,
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 1,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_CSC_FLAX",
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2166,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": true,
+            "visible": true,
+            "native_valid": true,
+            "owner": 1,
+            "working_base": true
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2092,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 1,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_SILK",
+            "working_spec": true,
+            "revealed": true,
+            "spec_mapped": true,
+            "district": -1,
+            "plot": 2091,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_PLANTATION",
+            "base_mapped": false,
+            "visible": true,
+            "native_valid": true,
+            "owner": 1,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": 8,
+            "plot": 2164,
+            "pillaged": false,
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 1,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2239,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 1,
+            "working_base": false
+          }
+        ],
+        "customers": [
+          {
+            "player": 1,
+            "district": "DISTRICT_THEATER",
+            "plot": 2164,
+            "city": 393221,
+            "owned": true,
+            "building": {
+              "pillaged": false,
+              "index": 13,
+              "type": "BUILDING_AMPHITHEATER",
+              "plot": 2164
+            },
+            "district_pillaged": false,
+            "stage": 4,
+            "district_functioning": true,
+            "district_owner": 1,
+            "district_complete": true
+          }
+        ],
+        "producers": [
+          {
+            "pillaged": false,
+            "stage": 2,
+            "index": 147,
+            "type": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+            "plot": 2165
+          },
+          {
+            "pillaged": false,
+            "stage": 3,
+            "index": 148,
+            "type": "BUILDING_CSC_TAILORS_TAILOR",
+            "plot": 2165
+          }
+        ],
+        "pillaged": false,
+        "owner": 1,
+        "source": 2165
+      },
+      "adjacent_districts": [
+        {
+          "district": {
+            "player": 1,
+            "functioning": true,
+            "pillaged": false,
+            "complete": true,
+            "type": "DISTRICT_THEATER",
+            "city": 393221,
+            "owner": 1,
+            "plot": 2164
+          },
+          "buildings": [
+            {
+              "pillaged": false,
+              "index": 13,
+              "type": "BUILDING_AMPHITHEATER",
+              "plot": 2164
+            }
+          ]
+        },
+        {
+          "district": {
+            "player": 1,
+            "functioning": true,
+            "pillaged": false,
+            "complete": true,
+            "type": "DISTRICT_CITY_CENTER",
+            "city": 393221,
+            "owner": 1,
+            "plot": 2240
+          },
+          "buildings": []
+        }
+      ],
+      "effect_properties": {
+        "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_2_EFFECT_GROWTH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_3_EFFECT_HOUSING": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_3_EFFECT_FAITH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        }
+      },
+      "native_future_customer_plot_legality": "UNOBSERVED",
+      "native_source_placement_now": "not an admission case; Quarter already built at150"
+    },
+    {
+      "cohort": "candidate",
+      "identity": {
+        "player": 3,
+        "city": 131073,
+        "quarter": "BAKERS",
+        "source": 2711
+      },
+      "name": "LOC_CITY_NAME_CHOIR",
+      "quarter": {
+        "player": 3,
+        "complete": true,
+        "quarter": "BAKERS",
+        "city": 131073,
+        "materials": [
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2785,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 3,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2712,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 3,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2637,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 3,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_CSC_FLAX",
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2636,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": true,
+            "visible": true,
+            "native_valid": true,
+            "owner": 3,
+            "working_base": true
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": 0,
+            "plot": 2710,
+            "pillaged": false,
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 3,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_OLIVES",
+            "working_spec": true,
+            "revealed": true,
+            "spec_mapped": true,
+            "district": -1,
+            "plot": 2784,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_PLANTATION",
+            "base_mapped": false,
+            "visible": true,
+            "native_valid": true,
+            "owner": 3,
+            "working_base": false
+          }
+        ],
+        "customers": [],
+        "producers": [
+          {
+            "pillaged": false,
+            "stage": 2,
+            "index": 139,
+            "type": "BUILDING_CSC_BAKERS_WIND_MILL",
+            "plot": 2711
+          }
+        ],
+        "pillaged": false,
+        "owner": 3,
+        "source": 2711
+      },
+      "adjacent_districts": [
+        {
+          "district": {
+            "player": 3,
+            "functioning": true,
+            "pillaged": false,
+            "complete": true,
+            "type": "DISTRICT_CITY_CENTER",
+            "city": 131073,
+            "owner": 3,
+            "plot": 2710
+          },
+          "buildings": []
+        }
+      ],
+      "effect_properties": {
+        "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_2_EFFECT_GROWTH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_3_EFFECT_HOUSING": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_3_EFFECT_FAITH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        }
+      },
+      "native_future_customer_plot_legality": "UNOBSERVED",
+      "native_source_placement_now": "not an admission case; Quarter already built at150"
+    },
+    {
+      "cohort": "candidate",
+      "identity": {
+        "player": 4,
+        "city": 196610,
+        "quarter": "BAKERS",
+        "source": 1862
+      },
+      "name": "LOC_CITY_NAME_BEJA",
+      "quarter": {
+        "player": 4,
+        "complete": true,
+        "quarter": "BAKERS",
+        "city": 196610,
+        "materials": [
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 1937,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 1,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_MAIZE",
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 1863,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": true,
+            "visible": true,
+            "native_valid": true,
+            "owner": 4,
+            "working_base": true
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 1789,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 4,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 1788,
+            "pillaged": false,
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 4,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_SUGAR",
+            "working_spec": true,
+            "revealed": true,
+            "spec_mapped": true,
+            "district": -1,
+            "plot": 1861,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_PLANTATION",
+            "base_mapped": false,
+            "visible": true,
+            "native_valid": true,
+            "owner": 4,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 1936,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 1,
+            "working_base": false
+          }
+        ],
+        "customers": [],
+        "producers": [
+          {
+            "pillaged": false,
+            "stage": 2,
+            "index": 139,
+            "type": "BUILDING_CSC_BAKERS_WIND_MILL",
+            "plot": 1862
+          }
+        ],
+        "pillaged": false,
+        "owner": 4,
+        "source": 1862
+      },
+      "adjacent_districts": [],
+      "effect_properties": {
+        "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_2_EFFECT_GROWTH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_3_EFFECT_HOUSING": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_3_EFFECT_FAITH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        }
+      },
+      "native_future_customer_plot_legality": "UNOBSERVED",
+      "native_source_placement_now": "not an admission case; Quarter already built at150"
+    },
+    {
+      "cohort": "candidate",
+      "identity": {
+        "player": 5,
+        "city": 131073,
+        "quarter": "BAKERS",
+        "source": 2052
+      },
+      "name": "LOC_CITY_NAME_TOKYO",
+      "quarter": {
+        "player": 5,
+        "complete": true,
+        "quarter": "BAKERS",
+        "city": 131073,
+        "materials": [
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2127,
+            "pillaged": false,
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 5,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": 9,
+            "plot": 2053,
+            "pillaged": false,
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 5,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_COCOA",
+            "working_spec": true,
+            "revealed": true,
+            "spec_mapped": true,
+            "district": -1,
+            "plot": 1979,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_PLANTATION",
+            "base_mapped": false,
+            "visible": true,
+            "native_valid": true,
+            "owner": 5,
+            "working_base": false
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 1978,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_MINE",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 5,
+            "working_base": false
+          },
+          {
+            "resource": "RESOURCE_WHEAT",
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2051,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": true,
+            "visible": true,
+            "native_valid": true,
+            "owner": 5,
+            "working_base": true
+          },
+          {
+            "working_spec": false,
+            "revealed": true,
+            "spec_mapped": false,
+            "district": -1,
+            "plot": 2126,
+            "pillaged": false,
+            "improvement": "IMPROVEMENT_FARM",
+            "base_mapped": false,
+            "visible": false,
+            "native_valid": false,
+            "owner": 5,
+            "working_base": false
+          }
+        ],
+        "customers": [],
+        "producers": [
+          {
+            "pillaged": false,
+            "stage": 2,
+            "index": 139,
+            "type": "BUILDING_CSC_BAKERS_WIND_MILL",
+            "plot": 2052
+          }
+        ],
+        "pillaged": false,
+        "owner": 5,
+        "source": 2052
+      },
+      "adjacent_districts": [
+        {
+          "district": {
+            "player": 5,
+            "functioning": true,
+            "pillaged": false,
+            "complete": false,
+            "type": "DISTRICT_INDUSTRIAL_ZONE",
+            "city": 131073,
+            "owner": 5,
+            "plot": 2053
+          },
+          "buildings": []
+        }
+      ],
+      "effect_properties": {
+        "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_2_EFFECT_GROWTH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_3_EFFECT_HOUSING": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_3_EFFECT_FAITH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        }
+      },
+      "native_future_customer_plot_legality": "UNOBSERVED",
+      "native_source_placement_now": "not an admission case; Quarter already built at150"
+    },
+    {
+      "cohort": "reference",
+      "identity": {
+        "player": 1,
+        "city": 458758,
+        "quarter": "TAILORS",
+        "source": 2165
+      },
+      "name": "LOC_CITY_NAME_BUHEN",
+      "quarter": {
+        "city": 458758,
+        "producers": [
+          {
+            "plot": 2165,
+            "stage": 2,
+            "type": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+            "index": 147,
+            "pillaged": false
+          },
+          {
+            "plot": 2165,
+            "stage": 3,
+            "type": "BUILDING_CSC_TAILORS_TAILOR",
+            "index": 148,
+            "pillaged": false
+          }
+        ],
+        "complete": true,
+        "player": 1,
+        "quarter": "TAILORS",
+        "customers": [
+          {
+            "city": 458758,
+            "owned": true,
+            "player": 1,
+            "stage": 3,
+            "plot": 2164,
+            "building": {
+              "plot": 2164,
+              "type": "BUILDING_TEMPLE",
+              "index": 11,
+              "pillaged": false
+            },
+            "district_complete": true,
+            "district": "DISTRICT_HOLY_SITE",
+            "district_pillaged": false,
+            "district_owner": 1,
+            "district_functioning": true
+          }
+        ],
+        "pillaged": false,
+        "source": 2165,
+        "materials": [
+          {
+            "owner": 1,
+            "visible": false,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2240,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": 0,
+            "base_mapped": false,
+            "native_valid": false
+          },
+          {
+            "improvement": "IMPROVEMENT_FARM",
+            "owner": 1,
+            "visible": true,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2166,
+            "working_base": true,
+            "spec_mapped": false,
+            "district": -1,
+            "base_mapped": true,
+            "native_valid": true,
+            "resource": "RESOURCE_CSC_FLAX"
+          },
+          {
+            "improvement": "IMPROVEMENT_FARM",
+            "owner": 1,
+            "visible": false,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2092,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": -1,
+            "base_mapped": false,
+            "native_valid": false
+          },
+          {
+            "improvement": "IMPROVEMENT_PLANTATION",
+            "owner": 1,
+            "visible": true,
+            "working_spec": true,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2091,
+            "working_base": false,
+            "spec_mapped": true,
+            "district": -1,
+            "base_mapped": false,
+            "native_valid": true,
+            "resource": "RESOURCE_SILK"
+          },
+          {
+            "owner": 1,
+            "visible": false,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2164,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": 1,
+            "base_mapped": false,
+            "native_valid": false
+          },
+          {
+            "improvement": "IMPROVEMENT_FARM",
+            "owner": 1,
+            "visible": false,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2239,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": -1,
+            "base_mapped": false,
+            "native_valid": false
+          }
+        ],
+        "owner": 1
+      },
+      "adjacent_districts": [
+        {
+          "district": {
+            "owner": 1,
+            "city": 458758,
+            "pillaged": false,
+            "functioning": true,
+            "type": "DISTRICT_HOLY_SITE",
+            "complete": true,
+            "plot": 2164,
+            "player": 1
+          },
+          "buildings": [
+            {
+              "plot": 2164,
+              "type": "BUILDING_TEMPLE",
+              "index": 11,
+              "pillaged": false
+            }
+          ]
+        },
+        {
+          "district": {
+            "owner": 1,
+            "city": 458758,
+            "pillaged": false,
+            "functioning": true,
+            "type": "DISTRICT_CITY_CENTER",
+            "complete": true,
+            "plot": 2240,
+            "player": 1
+          },
+          "buildings": []
+        }
+      ],
+      "effect_properties": {
+        "CSC_BAKERS_STAGE_2_EFFECT_GROWTH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_3_EFFECT_FAITH": {
+          "observed": true,
+          "present": true,
+          "value": 1
+        },
+        "CSC_TAILORS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_3_EFFECT_HOUSING": {
+          "observed": true,
+          "present": false
+        }
+      },
+      "native_future_customer_plot_legality": "UNOBSERVED",
+      "native_source_placement_now": "not an admission case; Quarter already built at150"
+    },
+    {
+      "cohort": "reference",
+      "identity": {
+        "player": 3,
+        "city": 65536,
+        "quarter": "TAILORS",
+        "source": 2562
+      },
+      "name": "LOC_CITY_NAME_QARAQORUM",
+      "quarter": {
+        "city": 65536,
+        "producers": [
+          {
+            "plot": 2562,
+            "stage": 2,
+            "type": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+            "index": 147,
+            "pillaged": false
+          },
+          {
+            "plot": 2562,
+            "stage": 3,
+            "type": "BUILDING_CSC_TAILORS_TAILOR",
+            "index": 148,
+            "pillaged": false
+          }
+        ],
+        "complete": true,
+        "player": 3,
+        "quarter": "TAILORS",
+        "customers": [
+          {
+            "city": 65536,
+            "owned": true,
+            "player": 3,
+            "stage": 3,
+            "plot": 2561,
+            "building": {
+              "plot": 2561,
+              "type": "BUILDING_TEMPLE",
+              "index": 11,
+              "pillaged": false
+            },
+            "district_complete": true,
+            "district": "DISTRICT_HOLY_SITE",
+            "district_pillaged": false,
+            "district_owner": 3,
+            "district_functioning": true
+          }
+        ],
+        "pillaged": false,
+        "source": 2562,
+        "materials": [
+          {
+            "improvement": "IMPROVEMENT_FARM",
+            "owner": 3,
+            "visible": true,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2636,
+            "working_base": true,
+            "spec_mapped": false,
+            "district": -1,
+            "base_mapped": true,
+            "native_valid": true,
+            "resource": "RESOURCE_CSC_FLAX"
+          },
+          {
+            "improvement": "IMPROVEMENT_FARM",
+            "owner": 3,
+            "visible": true,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2563,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": -1,
+            "base_mapped": false,
+            "native_valid": true,
+            "resource": "RESOURCE_MAIZE"
+          },
+          {
+            "owner": 3,
+            "visible": false,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2488,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": 27,
+            "base_mapped": false,
+            "native_valid": false
+          },
+          {
+            "improvement": "IMPROVEMENT_FARM",
+            "owner": 3,
+            "visible": true,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2487,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": -1,
+            "base_mapped": false,
+            "native_valid": false,
+            "resource": "RESOURCE_HORSES"
+          },
+          {
+            "owner": 3,
+            "visible": false,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2561,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": 1,
+            "base_mapped": false,
+            "native_valid": false
+          },
+          {
+            "improvement": "IMPROVEMENT_FARM",
+            "owner": 3,
+            "visible": true,
+            "working_spec": false,
+            "revealed": true,
+            "pillaged": false,
+            "plot": 2635,
+            "working_base": false,
+            "spec_mapped": false,
+            "district": -1,
+            "base_mapped": false,
+            "native_valid": true,
+            "resource": "RESOURCE_MAIZE"
+          }
+        ],
+        "owner": 3
+      },
+      "adjacent_districts": [
+        {
+          "district": {
+            "owner": 3,
+            "city": 65536,
+            "pillaged": false,
+            "functioning": true,
+            "type": "DISTRICT_DAM",
+            "complete": true,
+            "plot": 2488,
+            "player": 3
+          },
+          "buildings": []
+        },
+        {
+          "district": {
+            "owner": 3,
+            "city": 65536,
+            "pillaged": false,
+            "functioning": true,
+            "type": "DISTRICT_HOLY_SITE",
+            "complete": true,
+            "plot": 2561,
+            "player": 3
+          },
+          "buildings": [
+            {
+              "plot": 2561,
+              "type": "BUILDING_TEMPLE",
+              "index": 11,
+              "pillaged": false
+            }
+          ]
+        }
+      ],
+      "effect_properties": {
+        "CSC_BAKERS_STAGE_2_EFFECT_GROWTH": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_TAILORS_STAGE_3_EFFECT_FAITH": {
+          "observed": true,
+          "present": true,
+          "value": 1
+        },
+        "CSC_TAILORS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_4_EFFECT_TOURISM": {
+          "observed": true,
+          "present": false
+        },
+        "CSC_BAKERS_STAGE_3_EFFECT_HOUSING": {
+          "observed": true,
+          "present": false
+        }
+      },
+      "native_future_customer_plot_legality": "UNOBSERVED",
+      "native_source_placement_now": "not an admission case; Quarter already built at150"
+    }
+  ],
+  "registry": {
+    "CSC_QuarterCustomerBuildings": [
+      {
+        "QuarterKey": "BAKERS",
+        "DistrictType": "DISTRICT_CITY_CENTER",
+        "BuildingType": "BUILDING_GRANARY",
+        "ProducerStage": 2
+      },
+      {
+        "QuarterKey": "BAKERS",
+        "DistrictType": "DISTRICT_ENTERTAINMENT_COMPLEX",
+        "BuildingType": "BUILDING_ZOO",
+        "ProducerStage": 4
+      },
+      {
+        "QuarterKey": "BAKERS",
+        "DistrictType": "DISTRICT_WATER_ENTERTAINMENT_COMPLEX",
+        "BuildingType": "BUILDING_FERRIS_WHEEL",
+        "ProducerStage": 4
+      },
+      {
+        "QuarterKey": "TAILORS",
+        "DistrictType": "DISTRICT_HARBOR",
+        "BuildingType": "BUILDING_LIGHTHOUSE",
+        "ProducerStage": 2
+      },
+      {
+        "QuarterKey": "TAILORS",
+        "DistrictType": "DISTRICT_THEATER",
+        "BuildingType": "BUILDING_AMPHITHEATER",
+        "ProducerStage": 4
+      }
+    ],
+    "CSC_Stage3CustomerTransactions": [
+      {
+        "TransactionId": "CSC_BAKERS_BAKERY_MARKET",
+        "SellerDistrictType": "DISTRICT_CSC_BAKERS_QUARTER",
+        "SellerBuildingType": "BUILDING_CSC_BAKERS_BAKERY",
+        "CustomerDistrictType": "DISTRICT_COMMERCIAL_HUB",
+        "CustomerBuildingType": "BUILDING_MARKET",
+        "SellerPopulationProperty": "CSC_BAKERS_STAGE_3_MARKET_CUSTOMER_POP",
+        "SellerReturnAmountProperty": "CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT",
+        "CustomerYieldAmountProperty": "CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT",
+        "EngineAmountPerPopulation": 0.105
+      },
+      {
+        "TransactionId": "CSC_TAILORS_TAILOR_MARKET",
+        "SellerDistrictType": "DISTRICT_CSC_TAILORS_QUARTER",
+        "SellerBuildingType": "BUILDING_CSC_TAILORS_TAILOR",
+        "CustomerDistrictType": "DISTRICT_COMMERCIAL_HUB",
+        "CustomerBuildingType": "BUILDING_MARKET",
+        "SellerPopulationProperty": "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
+        "SellerReturnAmountProperty": "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT",
+        "CustomerYieldAmountProperty": "CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT",
+        "EngineAmountPerPopulation": 0.105
+      },
+      {
+        "TransactionId": "CSC_TAILORS_TAILOR_TEMPLE",
+        "SellerDistrictType": "DISTRICT_CSC_TAILORS_QUARTER",
+        "SellerBuildingType": "BUILDING_CSC_TAILORS_TAILOR",
+        "CustomerDistrictType": "DISTRICT_HOLY_SITE",
+        "CustomerBuildingType": "BUILDING_TEMPLE",
+        "SellerPopulationProperty": "CSC_TAILORS_STAGE_3_CUSTOMER_POP",
+        "SellerReturnAmountProperty": "CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT",
+        "CustomerYieldAmountProperty": "CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT",
+        "EngineAmountPerPopulation": 0.105
+      }
+    ]
+  },
+  "registry_source": {
+    "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-paired-selective-chain-screen-20261101\\candidate\\run-01\\runtime-gameplay.sqlite",
+    "sha256": "a1951df9696929d3607dcb02787e42c710f1c17d9588e58a568706610c75675a",
+    "access": "read-only; no clone"
+  }
+}

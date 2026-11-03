@@ -64,10 +64,11 @@ def attribute(loss,events,operations,targets,width):
         case['limit']='Native district occupancy observed at removal; no permanent building or harvest action inferred.'
     return case
 
-def report(root,through):
+def report(root,through,*,terminal=None):
     read=lambda p:json.loads(p.read_text(encoding='utf-8-sig'));root=Path(root)
-    care=read(root/'material-care'/f'turn-{through:03d}.json');primary=read(root/'game-01'/f'turn-{through:03d}.json')
+    care=read(Path(terminal)/'care.json'if terminal else root/'material-care'/f'turn-{through:03d}.json');primary=read(Path(terminal)/'primary.json'if terminal else root/'game-01'/f'turn-{through:03d}.json')
     builder_file=max((p for p in(root/'builders').glob('turn-*.json')if read(p)['turn']<=through),key=lambda p:read(p)['turn']);builders=read(builder_file)
+    if terminal:builders=read(Path(terminal)/'builders.json')
     unit_text,ucov=reconstruct(root,'UnitOperations.log');tree_text,tcov=reconstruct(root,'AI_Behavior_Trees.csv')
     for cov in(ucov,tcov):assert not cov['gaps']and not cov['conflicting_segments'],'Incomplete/conflicting log stream; attribution requires review'
     players=set(range(1,6));ops=unit_operations(unit_text,1,through,players);targets=clear_targets(tree_text,1,through,players,primary['width'])

@@ -3,6 +3,7 @@
 -- The driver still supplies native-legal candidates and verifies UI zero progress,
 -- positive unchanged cost, native legality and the result of each commitment.
 -- This file is not installed gameplay and does not schedule native commands.
+assert(not (ExposedMembers and ExposedMembers.CSC_AI_Assistance),'Installed CSC assistance owns mutations; use an observation-only driver')
 assert(not CSC_FOUNDATION_PROBE,'Refuse to install twice')
 include('CSC_AdjacencyCore')
 local A=assert(CSC_Adjacency)
@@ -82,7 +83,7 @@ local function describe(candidate)
  local base,spec,materials=0,0,{}
  for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY())) do
   local resource=near:GetResourceType()
-  if near:GetOwner()==pid and resource>=0 and A.ResourceVisible(pid,resource) then
+  if near:GetOwner()==pid and near:GetDistrictType()<0 and resource>=0 and A.ResourceVisible(pid,resource) then
    local b=maps[candidate.quarter].base[resource] or false
    local s=maps[candidate.quarter].spec[resource] or false
    if b or s then
@@ -91,7 +92,9 @@ local function describe(candidate)
    end
   end
  end
- if base==0 then return nil end
+ -- Policy-selected Both sites must remain Both at plan and commit.
+ -- Legacy Base-only plans remain legal when this explicit flag is absent.
+ if base==0 or(candidate.require_both_materials and spec==0)then return nil end
  local t={}
  for k,v in pairs(candidate)do t[k]=v end
  t.base=base;t.spec=spec;t.both=spec>0;t.materials=materials;t.districtIndex=def.Index

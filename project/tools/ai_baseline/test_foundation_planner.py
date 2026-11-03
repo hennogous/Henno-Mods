@@ -50,7 +50,7 @@ function candidate(index,base,spec)
  GetFeatureType=function()return feature end}
  for n=1,base+spec do local resource=n<=base and 10 or 11
   p.neighbors[#p.neighbors+1]={GetResourceType=function()return resource end,
-   GetOwner=function()return owner end,GetIndex=function()return index*100+n end,
+   GetOwner=function()return owner end,GetIndex=function()return index*100+n end,GetDistrictType=function()return -1 end,
    GetImprovementType=function()return -1 end,IsImprovementPillaged=function()return false end}
  end
  plots[index]=p

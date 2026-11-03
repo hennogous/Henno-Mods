@@ -1,6 +1,9 @@
 -- Read-only CSC autoplay instrumentation. No gameplay properties or yields written.
 CSCBASE = {events={},errors={},candidates={},customer_candidates={},turns={},checkpoints={},version=3};
 local B=CSCBASE;
+-- Opt-in full-game screening keeps physical/event reads but omits speculative
+-- geometry scans and duplicate first-activation full censuses. Nil stays legacy.
+local light=CSCBASE_LIGHT_OBSERVATION==true;
 local function adjacent(x,y) local a={};for direction=0,5 do local p=Map.GetAdjacentPlot(x,y,direction);if p then a[#a+1]=p end end;return a end
 local function json(v)
     local k=type(v);
@@ -81,7 +84,7 @@ local function scanPlayer(pid)
         end
     end
 end
-Events.PlayerTurnActivated.Add(protect('candidate scan',scanPlayer));
+if not light then Events.PlayerTurnActivated.Add(protect('candidate scan',scanPlayer));end;
 Events.DistrictAddedToMap.Add(protect('district placed',function(pid,did,cid,x,y,di)
     local dt=kind('Districts',di,'DistrictType');local p=Map.GetPlot(x,y);
     local e={event='district',turn=Game.GetCurrentGameTurn(),player=pid,city=cid,district=dt,plot=p:GetIndex(),x=x,y=y,quarter_sites={},customer_candidates={}};
@@ -117,7 +120,7 @@ function B.capture()
                 for key,q in pairs(B.quarters) do if dt==q.district then dr.quarter=key;dr.site=B.site(plot,id,q) end end
                 cr.districts[#cr.districts+1]=dr;
             end
-            for key,q in pairs(B.quarters) do if not ds:HasDistrict(GameInfo.Districts[q.district].Index) then s.options[#s.options+1]={player=id,city=c:GetID(),quarter=key,sites=B.options(c,q)} end end
+            for key,q in pairs(B.quarters) do if not light and not ds:HasDistrict(GameInfo.Districts[q.district].Index) then s.options[#s.options+1]={player=id,city=c:GetID(),quarter=key,sites=B.options(c,q)} end end
             s.cities[#s.cities+1]=cr;
         end
     end
@@ -139,11 +142,11 @@ function B.snapshot(target)
     if not s then assert(target==Game.GetCurrentGameTurn(),'Historical checkpoint missing');s=B.capture();B.checkpoints[target]=s end;
     print('CSCBASE_SNAPSHOT='..json(s));
 end
-Events.PlayerTurnActivated.Add(protect('checkpoint',function(pid)
+if not light then Events.PlayerTurnActivated.Add(protect('checkpoint',function(pid)
     local p=Players[pid];if not p or not p:IsMajor() then return end;
     local t=Game.GetCurrentGameTurn();
     if t%25==0 and not B.checkpoints[t] then B.checkpoints[t]=B.capture() end;
-end));
-for _,p in ipairs(PlayerManager.GetAliveMajors()) do protect('initial candidates',scanPlayer)(p:GetID()) end
+end));end;
+if not light then for _,p in ipairs(PlayerManager.GetAliveMajors()) do protect('initial candidates',scanPlayer)(p:GetID()) end end
 print('CSCBASE_OBSERVER_READY');
 

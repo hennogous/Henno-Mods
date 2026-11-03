@@ -38,6 +38,7 @@ class CheckpointTests(unittest.TestCase):
     self.reads+=1
     return dict(turn=125 if phase_change and self.reads>1 else 124,active=False,remaining=0,local_player=0,player0_human=True)
    def cmd(self,code,state,label):
+    if label=='checkpoint-ui-phase':return 'CSC_EXACT_CHECKPOINT_UI 124 false 0 true true'
     if label.startswith('save-exact-boundary'):
      self.requests+=1;self.name=json.loads(re.search(r'CSC_EXACT_CHECKPOINT_SAVE=\{name=("[^"]+")',code)[1]);(root/(self.name+'.Civ6Save')).write_bytes(b'CIV6'+b'0'*100010)
      if missing_ack:raise MissingAcknowledgment('fixture delayed ack','')

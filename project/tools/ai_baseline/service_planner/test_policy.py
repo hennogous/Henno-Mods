@@ -364,7 +364,7 @@ end
 producible=true;captured=false
 local queue={HasBeenPlaced=function()return false end,CanProduce=function()return producible,{reason='native details'}end}
 local city={GetBuildQueue=function()return queue end}
-local plot={GetX=function()return 3 end,GetY=function()return 4 end}
+local plot={GetX=function()return 3 end,GetY=function()return 4 end,GetOwner=function()return 1 end,GetDistrictType=function()return -1 end}
 Map={GetPlotByIndex=function()return plot end}
 CityOperationTypes={PARAM_DISTRICT_TYPE=1,PARAM_X=2,PARAM_Y=3,BUILD=4}
 CityOperationResults={PLOTS=1}

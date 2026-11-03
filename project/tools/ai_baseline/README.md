@@ -1,5 +1,15 @@
 # CSC natural autoplay baseline
 
+## Current installed AI-assistance candidate
+
+The new [Basic/RH profiles](../ai_tuning/README.md) implement player settings and
+an in-mod assistance host. It is not the historical Python intervention loop.
+When testing that host, use an observation-only controller: the mutating
+foundation/funded-acquisition adapters reject a second installed owner.
+The legacy trial/deployment instructions below describe archived experiments;
+they are not the build/deploy path for the new profile package.
+
+
 ## Maintained full-game controller
 
 New CSC full-game drivers should compose the reusable
@@ -239,3 +249,39 @@ The supervisor detects process exit, preserves failure evidence and never
 automatically reruns. Successful analysis reports250 plus a real common200
 comparison to the interrupted RH Builder trial. Follow-up reads local status
 about15min apart; do not run a competing native client.
+
+
+## Material-access diagnostics: native planning versus working supply
+
+The 24 October source16..75 study uses one saved-world counterfactual family,
+not independent games or an untreated baseline. See the overnight research report
+and immutable Desktop receipts. Direct Pasture80 changed one first logged Farm
+choice to Pasture and retained working Cattle. Camp/Plantation extension outcome
+must be read from its final audit/comparison; loaded rows are not job proof.
+
+`material_resource_improvement_forecast.py` owns the explicit three-row native
+scope/source/endpoint contract. `material_resource_forecast_comparison.py` reads
+closed turn-25/50/75 outcomes for raw/Pasture/three-improvement trajectories. It retains
+prior plans and physical observations after materials leave the current link
+census, preserves missingness, and separates city-job reservations from other
+trees, technology locks, rejected actions and functioning producer proxies.
+Run `python -B -m unittest test_material_resource_improvement_forecast test_material_resource_forecast_comparison` from this tools directory.
+
+`experiments/material_improvement_forecast.sql` is intentionally unregistered.
+All owners/humans may respond; it is not an AI-only release or a blanket harvest
+ban. No ordinary yield conversion does not establish indirect economic inertness.
+Never use a private-channel change as evidence that native job generation, path,
+unit availability, repair response or exact Service monetary transactions work.
+
+
+## Complete mapped-material improvement coverage
+
+`experiments/material_mapped_improvement_forecast.sql` extends the early80 to every
+live Bakers/Tailors mapped native-valid pair not already covered by the retained
+direct three-improvement or resource-Farm paths. Current new pairs are Salt/Silver
+Mines; modded resources/custom improvements use the same live mapping join. No
+blanket Mine reward or worker-policy change. `material_mapped_improvement_forecast.py`
+verifies all20 current pairs and unchanged other tables. Run `python -B -m unittest
+test_material_mapped_improvement_forecast test_mapped_improvement_values` (16 checks).
+Native controls and actual choices remain distinct; see the mapped-improvements
+research design for the19-check finite native150 test and full restoration.

@@ -1,0 +1,71 @@
+'use strict';
+const assert=require('assert'),fs=require('fs'),path=require('path');
+const {makeBuildingDecisionObserver,decodeBuildingDecisionArgs,createMemoryIO,validateBuildingConfig}=require('./building_decision_observer.js');
+const checks=[];
+const config={profile:'granary-decision-v1',player:3,city:196610,buildingIndex:3,buildingType:'BUILDING_GRANARY',buildingIndexLimit:512,mappingVerified:true,maxPairs:64};
+function fixture(start=true) {
+ const memory=new Map(),reads=[];const put=(p,o,v)=>memory.set(p+':'+o,v);
+ put('build',0x90,'city');put('city',0xd8,3);put('city',0xa8,196610);
+ put('build',0x208,'pref');put('pref',0x28,'preferences');put('preferences',12,1);
+ put('build',0x4d8,1);put('build',0x4c8,'cache');put('cache',0x28,'values');put('values',12,250);
+ put('output',0,500);
+ const io={read(p,o,t){reads.push({p,o,t});const key=p+':'+o;return memory.has(key)?{value:memory.get(key)}:{value:null,error:'unreadable_fixture_'+key};}};
+ const observer=makeBuildingDecisionObserver(io,config);if(start)observer.start();
+ return{observer,put,reads};
+}
+const args=(override={})=>Object.assign({object:'build',output:'output',thread:1,callerRva:'0x3e160a',r8ByteRaw:0,r9ByteRaw:0},override);
+function record(f){return f.observer.snapshot().records[0];}
+let f=fixture(),call=f.observer.enter('GetBestBuilding',args());f.observer.leave(call,12,'0xc');let row=record(f);
+assert.equal(row.entry.targetSignal.favoredRaw,1);assert.equal(row.leave.targetSignal.favoredRaw,1);
+assert.equal(row.leave.targetSignal.buildingIndex,3);assert.equal(row.leave.targetSignal.cachedValueQ8,250);
+assert.equal(row.leave.selectedBuildingIndex,12);assert.equal(row.leave.selectedValueQ8,500);
+checks.push('unchosen-fixed-Granary-entry-return-is-separate-from-winning-building-value');
+f=fixture();call=f.observer.enter('GetBestBuilding',args());const before=f.reads.filter(r=>r.p==='output').length;
+f.observer.leave(call,-1,'0xffffffff');row=record(f);
+assert.equal(row.leave.selectedBuildingIndex,-1);assert.equal(row.leave.selectedValueQ8,null);
+assert.equal(row.leave.targetSignal.cachedValueQ8,250);assert.equal(f.reads.filter(r=>r.p==='output').length,before);
+checks.push('negative-one-return-retains-fixed-target-without-reading-unwritten-output');
+f=fixture();call=f.observer.enter('GetBestBuilding',args());f.put('pref',0x28,'newPreferences');f.put('newPreferences',12,-1);f.put('cache',0x28,'newValues');f.put('newValues',12,321);f.observer.leave(call,3,'0x3');row=record(f);
+assert.equal(row.entry.targetSignal.favoredRaw,1);assert.equal(row.leave.targetSignal.favoredRaw,-1);
+assert.equal(row.leave.targetSignal.preferenceSign,-1);assert.equal(row.leave.targetSignal.cachedValueQ8,321);
+assert.equal(row.leave.targetSignal.cacheFreshness,'not_established_by_this_observer');checks.push('fresh-array-pointers-read-each-phase-cache-freshness-not-invented');
+for(const value of[-2,0,1,2]){f=fixture();f.put('preferences',12,value);call=f.observer.enter('GetBestBuilding',args());f.observer.leave(call,12,'0xc');assert.equal(record(f).leave.targetSignal.preferenceSign,Math.sign(value));}
+checks.push('effective-raw-sign-observed-without-treating-positive-magnitude-as-extra-multiplier');
+f=fixture();f.put('pref',0x28,'unreadable');call=f.observer.enter('GetBestBuilding',args());f.observer.leave(call,12,'0xc');
+assert.equal(record(f).entry.targetSignal.favoredRaw,null);assert.equal(record(f).entry.targetSignal.preferenceStatus,'read_error');assert(f.observer.stats.errors>0);checks.push('invalid-array-pointer-explicit-error-not-zero-preference');
+f=fixture();f.put('build',0x4d8,0);call=f.observer.enter('GetBestBuilding',args());f.observer.leave(call,-1,'0xffffffff');
+assert.equal(record(f).leave.targetSignal.cachedValueQ8,null);assert.equal(record(f).leave.targetSignal.cacheStatus,'unready');assert(!f.reads.some(r=>r.p==='build'&&r.o===0x4c8));checks.push('native-cache-ready-zero-does-not-dereference-cache');
+f=fixture();f.put('build',0x4c8,'0x0');call=f.observer.enter('GetBestBuilding',args());f.observer.leave(call,-1,'0xffffffff');assert.equal(record(f).leave.targetSignal.cacheStatus,'unavailable_object');checks.push('null-cache-is-unavailable-not-zero');
+f=fixture();call=f.observer.enter('GetBestBuilding',args());f.put('city',0xa8,42);const signalReads=f.reads.filter(r=>r.p==='build'&&r.o===0x208).length;f.observer.leave(call,12,'0xc');
+assert.equal(f.observer.stats.identityChanges,1);assert.equal(record(f).leave.inertReason,'identity_changed');assert.equal(f.reads.filter(r=>r.p==='build'&&r.o===0x208).length,signalReads);checks.push('changed-return-identity-vetoes-fixed-target-detail');
+for(const [offset,value]of[[0xd8,4],[0xa8,196611]]){f=fixture();f.put('city',offset,value);assert.equal(f.observer.enter('GetBestBuilding',args()),null);assert(!f.reads.some(r=>r.p==='build'&&r.o===0x208));}
+checks.push('wrong-owner-or-city-rejected-before-array-reads');
+f=fixture();f.put('build',0x90,'missingCity');assert.equal(f.observer.enter('GetBestBuilding',args()),null);assert(f.observer.stats.errors>0);checks.push('invalid-city-pointer-counted-and-rejected');
+for(const patch of[{buildingIndex:4},{buildingIndexLimit:3},{buildingIndexLimit:4097},{mappingVerified:false},{city:196611},{maxPairs:65}])assert.throws(()=>validateBuildingConfig(Object.assign({},config,patch)));
+checks.push('reviewed-config-fixed-index-mapping-limit-and-64pair-budget-validated');
+f=fixture();call=f.observer.enter('GetBestBuilding',args());f.observer.leave(call,512,'0x200');assert.equal(record(f).leave.selectionStatus,'invalid_return_index');assert.equal(record(f).leave.selectedValueQ8,null);assert.equal(f.observer.stats.errors,1);checks.push('out-of-range-winner-not-used-as-index-or-output-value');
+f=fixture();const outer=f.observer.enter('QueueNextBuild',args({callerRva:'0xaaa'}));const inner=f.observer.enter('QueueNextBuild',args({callerRva:'0xbbb'}));
+call=f.observer.enter('GetBestBuilding',args({callerRva:'0x3e849c'}));f.observer.leave(call,12,'0xc');f.observer.leave(inner,0,'0x0');f.observer.leave(outer,0,'0x0');
+const nested=f.observer.snapshot().records;assert.equal(nested[0].queueCallId,inner.callId);assert.equal(nested[1].queueCallId,outer.callId);assert.equal(nested[0].callerScope,'nested_QueueNextBuild');assert.equal(f.observer.stats.errors,0);checks.push('nested-queue-parent-correlation-is-thread-scoped');
+f=fixture();const q=f.observer.enter('QueueNextBuild',args());call=f.observer.enter('GetBestBuilding',args({thread:2,callerRva:'0x123456'}));f.observer.leave(call,12,'0xc');f.observer.leave(q,0,'0x0');assert.equal(f.observer.snapshot().records[0].queueCallId,null);assert.equal(f.observer.snapshot().records[0].callerScope,'other_or_unknown_caller');checks.push('other-thread-and-unrecognized-callers-are-recorded-without-false-queue-parent');
+f=fixture();call=f.observer.enter('GetBestBuilding',args());f.observer.leave(call,12,'0xc');assert.equal(record(f).callerScope,'CheckForUnitOrBuilding');assert.equal(record(f).callerRva,'0x3e160a');checks.push('planning-callsite-3e160a-recorded-not-filtered-as-fallback-only');
+f=fixture();const calls=[];for(let i=0;i<64;i++)calls.push(f.observer.enter('GetBestBuilding',args()));assert(f.observer.snapshot().saturated);assert.equal(f.observer.enter('GetBestBuilding',args()),null);
+for(const pending of calls)f.observer.leave(pending,12,'0xc');assert.equal(f.observer.stats.completedPairs,64);assert.equal(f.observer.snapshot().pendingPairs,0);assert.equal(f.observer.stats.errors,0);checks.push('saturation-reserves64pairs-and-keeps-all-pending-return-readbacks');
+f=fixture();call=f.observer.enter('GetBestBuilding',args());f.observer.freeze();const readCount=f.reads.length;f.observer.leave(call,12,'0xc');
+assert.equal(f.reads.length,readCount);assert.equal(record(f).leave.inertReason,'frozen_before_return');assert.equal(f.observer.snapshot().frozenPendingPairs,1);assert.equal(f.observer.enter('GetBestBuilding',args()),null);assert.throws(()=>f.observer.start());checks.push('freeze-retains-inert-pair-with-no-postfreeze-reads-or-restart');
+f=fixture(false);assert.equal(f.observer.enter('GetBestBuilding',args()),null);assert.equal(f.reads.length,0);f.observer.freeze();assert.throws(()=>f.observer.start());checks.push('initial-disabled-and-freeze-before-start-remain-inert');
+f=fixture();call=f.observer.enter('GetBestBuilding',args({output:'badOutput'}));f.observer.leave(call,12,'0xc');assert.equal(record(f).leave.selectedValueQ8,null);assert.equal(f.observer.stats.errors,1);checks.push('unreadable-winner-output-does-not-become-zero');
+for(const diagnostic of Object.values(f.observer.snapshot().diagnostics))assert.equal(diagnostic.entries,diagnostic.accepted+Object.values(diagnostic.rejected).reduce((a,b)=>a+b,0));checks.push('accepted-rejected-accounting-closes');
+const register=value=>({toString:()=>String(value),toUInt32:()=>value>>>0});
+const decoded=decodeBuildingDecisionArgs('GetBestBuilding',{rcx:register('build'),rdx:register('output'),r8:register(0x101),r9:register(0x2ff)},7,'0x3e160a');assert.equal(decoded.object,'build');assert.equal(decoded.output,'output');assert.equal(decoded.r8ByteRaw,1);assert.equal(decoded.r9ByteRaw,255);checks.push('verified-byte-register-flags-and-output-ABI-decoded-without-semantic-labels');
+let throwRead=false;
+class Pointer {constructor(value){this.value=BigInt(value);}isNull(){return this.value===0n;}add(n){return new Pointer(BigInt.asUintN(64,this.value+BigInt(n)));}compare(other){return this.value<other.value?-1:this.value>other.value?1:0;}readPointer(){if(throwRead)throw Error('read');return new Pointer(0x20000);}readS32(){if(throwRead)throw Error('read');return-17;}toString(){return'0x'+this.value.toString(16);}}
+const ptr=value=>value instanceof Pointer?value:new Pointer(value);let range={base:ptr(0x10000),size:0x1000,protection:'r--'};
+const io=createMemoryIO({ptr,findRangeByAddress:()=>range});assert.equal(io.read('0x10020',12,'i32').value,-17);checks.push('production-memory-reader-preserves-signed32');
+for(const [pointer,offset,type,error]of[['0x0',0,'i32','null_pointer'],['0x20',0,'i32','noncanonical_pointer'],['0x800000000000',0,'i32','noncanonical_pointer'],['0x10000',-1,'i32','argument_missing'],['0x7fffffffffff',1,'i32','address_overflow'],['0x10fff',0,'i32','unreadable_span']])assert.equal(io.read(pointer,offset,type).error,error);
+range=null;assert.equal(io.read('0x10000',0,'ptr').error,'unreadable_span');range={base:ptr(0x10000),size:0x1000,protection:'---'};assert.equal(io.read('0x10000',0,'ptr').error,'unreadable_span');range.protection='r--';throwRead=true;assert.equal(io.read('0x10000',0,'i32').error,'read_exception');checks.push('production-pointer-canonical-fullspan-overflow-permission-and-exception-guards');
+const source=fs.readFileSync(path.join(__dirname,'building_decision_observer.js'),'utf8');
+for(const forbidden of ['NativeFunction','NativeCallback','.replace(ret','.writePointer(','.writeS32(','.detach(','.unload(','Memory.protect'])assert(!source.includes(forbidden));checks.push('observer-source-no-native-calls-writes-return-replacement-or-live-detach');
+const report={passed:true,checks,native_actions:0,canonical_edits:false};
+if(process.argv[2])fs.writeFileSync(process.argv[2],JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({passed:true,checks:checks.length,native_actions:0}));

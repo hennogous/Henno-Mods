@@ -10,6 +10,18 @@ def checkpoint_name(name,archive):
     return name[:83]+'_'+identity
 
 
+def validate_ui_save_phase(core,ui):
+    """UI can remain one turn behind an inactive Core; Core owns the save clock.
+
+    This permits no turn advance, role switch or retry. Both contexts must be
+    inactive and human-controlled; future or older UI phases remain invalid.
+    """
+    assert not core['active'] and core['local_player']==0 and core['player0_human']
+    assert not ui['active'] and ui['local_player']==0 and ui['player0_human'] and ui['player0_alive']
+    assert ui['turn'] in (core['turn'],core['turn']-1),'UI clock outside the observed single-turn lag'
+    return core['turn']-ui['turn']
+
+
 def save_inactive_boundary(r,*,turn,name,native_directory,archive,timeout=60):
     assert re.fullmatch(r'[A-Za-z0-9_-]{1,96}',name),'Safe unique save name required'
     requested_name=name;archive=Path(archive);name=checkpoint_name(name,archive)
@@ -18,14 +30,18 @@ def save_inactive_boundary(r,*,turn,name,native_directory,archive,timeout=60):
     r.ready(turn,'before-exact-checkpoint')
     proof=r.state_read('exact-checkpoint-before')
     assert proof['turn']==turn and not proof['active']and proof['local_player']==0 and proof['player0_human']
+    raw=r.cmd("local p=Players[0];print('CSC_EXACT_CHECKPOINT_UI',Game.GetCurrentGameTurn(),AutoplayManager.IsActive(),Game.GetLocalPlayer(),p and p:IsHuman(),p and p:IsAlive())",'PlotInfo','checkpoint-ui-phase')
+    t,a,p,h,alive=re.findall(r'CSC_EXACT_CHECKPOINT_UI\s+(\d+)\s+(true|false)\s+(-?\d+)\s+(true|false)\s+(true|false)',raw)[-1]
+    ui=dict(turn=int(t),active=a=='true',local_player=int(p),player0_human=h=='true',player0_alive=alive=='true')
+    ui_lag=validate_ui_save_phase(proof,ui)
     n=json.dumps(name)
-    code="""assert(not AutoplayManager.IsActive()and Game.GetCurrentGameTurn()==%d)
+    code="""assert(not AutoplayManager.IsActive()and Game.GetLocalPlayer()==0 and(Game.GetCurrentGameTurn()==%d or Game.GetCurrentGameTurn()==%d))
 if CSC_EXACT_CHECKPOINT_SAVE and CSC_EXACT_CHECKPOINT_SAVE.handler then Events.SaveComplete.Remove(CSC_EXACT_CHECKPOINT_SAVE.handler)end
 CSC_EXACT_CHECKPOINT_SAVE={name=%s,completed=false}
 CSC_EXACT_CHECKPOINT_SAVE.handler=function()CSC_EXACT_CHECKPOINT_SAVE.completed=true end
 Events.SaveComplete.Add(CSC_EXACT_CHECKPOINT_SAVE.handler)
 Network.SaveGame({Name=%s,Location=SaveLocations.LOCAL_STORAGE,Type=SaveTypes.SINGLE_PLAYER,IsAutosave=false,IsQuicksave=false})
-print('CSC_EXACT_CHECKPOINT_REQUESTED',%s)"""%(turn,n,n,n)
+print('CSC_EXACT_CHECKPOINT_REQUESTED',%s)"""%(turn,turn-1,n,n,n)
     acknowledged=True
     try:r.cmd(code,'PlotInfo','save-exact-boundary-'+str(turn))
     except MissingAcknowledgment:acknowledged=False # Inspect the unique file; never repeat SaveGame.
@@ -47,4 +63,4 @@ print('CSC_EXACT_CHECKPOINT_REQUESTED',%s)"""%(turn,n,n,n)
     after=r.state_read('exact-checkpoint-after');assert all(proof[k]==after[k]for k in('turn','active','remaining','local_player','player0_human'))
     return {'verified':True,'turn':turn,'requested_name':requested_name,'unique_name':name,'native_save':str(native),'archive':str(archive),'sha256':digest,
             'size':native.stat().st_size,'save_requests':1,'save_complete_event':True,'initial_ack':acknowledged,
-            'native_phase_unchanged':True,'before':proof,'after':after,'native_pid':r.game_pid,'worlds_created':0}
+            'UI_phase':ui,'UI_clock_lag':ui_lag,'native_phase_unchanged':True,'before':proof,'after':after,'native_pid':r.game_pid,'worlds_created':0}

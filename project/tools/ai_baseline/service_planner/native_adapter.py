@@ -137,7 +137,8 @@ class NativeAdapter:
         return parse(self.r.cmd(code,'PlotInfo','purchase-real-gold-readback'),'CSC_PURCHASE_READBACK')
     def place_zero(self,c):
         defs=self.cities[c.player,c.city]['district_defs'][c.quarter]
-        target={'player':c.player,'city':c.city,'plot':c.plot,'quarter':c.quarter,'districtHash':defs['Hash'],'districtIndex':defs['Index']}
+        target={'player':c.player,'city':c.city,'plot':c.plot,'quarter':c.quarter,'districtHash':defs['Hash'],'districtIndex':defs['Index'],
+                'material_plots':{i+1:plot for i,plot in enumerate(c.material_plots)},'require_both_materials':self.material_first and c.specialty>0}
         tag=f'{self.turn}-{c.player}-{c.city}-{c.quarter}'
         folder=self.root/'placements'/tag
         # Delegate to the maintained planner after Service policy has selected a
@@ -145,7 +146,7 @@ class NativeAdapter:
         self.r.cmd('CSC_FOUNDATION_PROBE.Plan({'+self.lua(target)+'});CSC_FOUNDATION_PROBE.Export();','CSC_AdjacencyGameplay','service-plan-'+tag)
         planned=parse(self.r.cmd('CSC_FOUNDATION_PROBE.Export();','CSC_AdjacencyGameplay','service-plan-proof-'+tag),'CSC_FOUNDATION_EXPORT')['plan']
         assert len(planned)==1 and planned[0]['plot']==c.plot
-        exact='local t='+self.lua(target)+''';local city=assert(CityManager.GetCity(t.player,t.city));local q=city:GetBuildQueue();assert(not q:HasBeenPlaced(t.districtHash));local producible=q:CanProduce(t.districtHash,false,true);assert(producible,'District no longer producible');local p=Map.GetPlotByIndex(t.plot);local a={};a[CityOperationTypes.PARAM_DISTRICT_TYPE]=t.districtHash;local found=false;local result=CityManager.GetOperationTargets(city,CityOperationTypes.BUILD,a);for _,idx in ipairs(result and result[CityOperationResults.PLOTS]or {})do if idx==t.plot then found=true end end;a[CityOperationTypes.PARAM_X]=p:GetX();a[CityOperationTypes.PARAM_Y]=p:GetY();local exact=CityManager.CanStartOperation(city,CityOperationTypes.BUILD,a,true);print('CSC_SERVICE_SITE_PREFLIGHT',t.player,t.city,t.plot,found,exact);assert(found and exact,'Selected site no longer native-legal');'''
+        exact='local t='+self.lua(target)+''';local city=assert(CityManager.GetCity(t.player,t.city));local q=city:GetBuildQueue();for _,idx in ipairs(t.material_plots)do local material=assert(Map.GetPlotByIndex(idx));assert(material:GetOwner()==t.player and material:GetDistrictType()<0,'Selected material covered or lost');end;assert(not q:HasBeenPlaced(t.districtHash));local producible=q:CanProduce(t.districtHash,false,true);assert(producible,'District no longer producible');local p=Map.GetPlotByIndex(t.plot);local a={};a[CityOperationTypes.PARAM_DISTRICT_TYPE]=t.districtHash;local found=false;local result=CityManager.GetOperationTargets(city,CityOperationTypes.BUILD,a);for _,idx in ipairs(result and result[CityOperationResults.PLOTS]or {})do if idx==t.plot then found=true end end;a[CityOperationTypes.PARAM_X]=p:GetX();a[CityOperationTypes.PARAM_Y]=p:GetY();local exact=CityManager.CanStartOperation(city,CityOperationTypes.BUILD,a,true);print('CSC_SERVICE_SITE_PREFLIGHT',t.player,t.city,t.plot,found,exact);assert(found and exact,'Selected site no longer native-legal');'''
         def ui(reason,pre=False):
             raw=self.r.cmd((exact if pre else '')+'CSC_FOUNDATION_UI.targets={'+self.lua(target)+'};CSC_FOUNDATION_UI.Capture('+json.dumps(reason)+');CSC_FOUNDATION_UI.Export();','PlotInfo','ui-'+reason)
             data=parse(raw,'CSC_FOUNDATION_UI');assert not data['errors']

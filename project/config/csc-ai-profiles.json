@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "rh": [
+    {
+      "key": "subscribed-beta",
+      "modId": "2501be3e-9780-4e9f-9506-4ff71cf076cb",
+      "sourceVersionReviewed": "5.097",
+      "loadAfter": 300000000,
+      "nativeCombinedProfileTested": false
+    }
+  ]
+}

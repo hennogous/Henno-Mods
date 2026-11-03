@@ -50,7 +50,7 @@ local actualBase,actualSpec=0,0
 for _,p in ipairs(Map.GetAdjacentPlots(source:GetX(),source:GetY()))do
  local res=p:GetResourceType()
  local owned=p:GetOwner()==r.player or(p:GetIndex()==r.purchase_plot and p:GetOwner()==-1)
- if owned and visible(res)then
+ if owned and p:GetDistrictType()<0 and visible(res)then
   if base[res]then actualBase=actualBase+1 end
   if spec[res]then actualSpec=actualSpec+1 end
  end
@@ -67,6 +67,7 @@ if r.material_first then
  local plannedBase,plannedSpec=0,0
  for _,p in ipairs(Map.GetAdjacentPlots(source:GetX(),source:GetY()))do
   if r.plan_materials[tostring(p:GetIndex())]then
+   assert(p:GetDistrictType()<0,'Planned material covered by district')
    local res=p:GetResourceType()
    assert(p:GetOwner()==r.player or(p:GetOwner()==-1 and r.remaining_tiles[tostring(p:GetIndex())]),'Planned material ownership changed')
    assert(visibility:IsRevealed(p:GetX(),p:GetY())and visible(res),'Planned material no longer visible')

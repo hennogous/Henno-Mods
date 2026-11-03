@@ -7,6 +7,17 @@ allowed in the observation; ownership is a dependency, not an eligibility grant.
 from .policy import Candidate, PROFILES
 
 
+def material_deposit_available(plot):
+    """A retained resource under a district cannot host its supply improvement.
+
+    Do not require the improvement technology now: a marked future opportunity
+    may await that unlock. District occupancy is a separate structural blocker.
+    Native facts always provide district; absent/empty values retain normalized
+    historical fixture compatibility and are checked again before native effects.
+    """
+    return plot.get('district') in (None, -1, '')
+
+
 def build_candidates(observation,*,material_first=False,stepwise=False,connector_limit=0):
     if material_first:return build_material_candidates(observation,stepwise=stepwise,connector_limit=connector_limit)
     pid=observation['player'];city=observation['city'];turn=observation['turn']
@@ -21,7 +32,7 @@ def build_candidates(observation,*,material_first=False,stepwise=False,connector
         for quarter in('BAKERS','TAILORS'):
             if quarter in same:continue
             if not plot.get('potential_legal',{}).get(quarter,False):continue
-            materials=[p for p in adjacent if p.get('material_visible',False)and p.get('revealed',False)
+            materials=[p for p in adjacent if material_deposit_available(p)and p.get('material_visible',False)and p.get('revealed',False)
                        and p.get('owner')in(-1,pid)and
                        (quarter in p.get('base_for',())or quarter in p.get('spec_for',()))]
             owned=[p for p in materials if p['owner']==pid]
@@ -92,7 +103,7 @@ def build_material_candidates(observation,*,stepwise=False,connector_limit=0):
             support=bool(established==quarter and source['owner']==pid)
             if established and not support:continue
             if not support and(quarter in same or not source.get('potential_legal',{}).get(quarter)):continue
-            material=[p for p in adjacent if p.get('owner')in(-1,pid)and p.get('revealed')
+            material=[p for p in adjacent if material_deposit_available(p)and p.get('owner')in(-1,pid)and p.get('revealed')
                       and p.get('material_visible')and(quarter in p.get('base_for',())or quarter in p.get('spec_for',()))]
             bases=[p for p in material if quarter in p.get('base_for',())]
             specs=[p for p in material if quarter in p.get('spec_for',())]

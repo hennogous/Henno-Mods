@@ -195,7 +195,7 @@ class OfflineTests(unittest.TestCase):
   p={'turn':101,'active':True,'remaining':1,'local_player':-1,'player0_human':False}
   self.f.game_pid=99;self.f.preserve_telemetry=unittest.mock.Mock();self.f.capture=unittest.mock.Mock();self.f.capture_blocker=unittest.mock.Mock()
   self.f.state_read=lambda label:dict(p)
-  with self.assertRaises(AssertionError):self.f.handoff_active_for_update(103)
+  receipt=self.f.handoff_active_for_update(103);self.assertFalse(receipt['verified']);self.assertTrue(receipt['continue_owner'])
   self.f.state_read=unittest.mock.Mock(side_effect=[dict(p),dict(p,turn=102,active=False,remaining=0)])
   receipt=self.f.handoff_active_for_update(102);self.assertFalse(receipt['verified']);self.assertTrue(receipt['continue_owner'])
   self.assertFalse(any(str(args[0]).endswith('source-update-handoff.json')for args in self.writes))

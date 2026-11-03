@@ -16,6 +16,12 @@ local function emit(x)print('CSC_FUNDED_RECEIPT='..json(x));return x end
 local function save(key,x)Game:SetProperty(key,x)end
 local function fresh(r,ownership_pending)
  assert(Game.GetCurrentGameTurn()==r.turn and not AutoplayManager.IsActive(),'Inactive exact clock required')
+ -- Same-turn fresh guard before any ledger, fallback grant, assignment or debit.
+ -- A City Center may retain a resource but cannot host its supply improvement.
+ for _,index in ipairs(r.materials)do
+  local material=assert(Map.GetPlotByIndex(index))
+  assert(material:GetDistrictType()<0,'Material covered by district')
+ end
  local p=assert(Players[r.player]);assert(p:IsAlive()and p:IsMajor()and not p:IsHuman())
  local c=assert(CityManager.GetCity(r.player,r.city));assert(c:GetOwner()==r.player)
  if ownership_pending then return p:GetTreasury()end
