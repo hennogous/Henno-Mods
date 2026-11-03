@@ -210,16 +210,17 @@
   {
     "id": "AI-H012",
     "title": "Arbitrary native district incentives remain a design question",
-    "statement": "A native extension could conceptually supply a local function of player/city/district/plot/state at a score/cache boundary, but no such extension is implemented or tested; downstream present values and request priorities must remain coherent.",
+    "statement": "General author-defined district incentives still need policy, lifecycle and release integration. A fixed single-entry native prototype now has isolated Win64 checks and measured nonzero delivery through cache, winner score, present value and a new request's logged value; request priority remains distinct.",
     "status": "provisional",
     "evidence_types": [
       "inference",
       "static"
     ],
     "scope": "Implementation opportunity inferred from inspected district-scoring/cache/request architecture as of 3 November 2026.",
-    "limits": "No verified ordinary numerical per-plot Lua callback, extension ABI, lifecycle, nonzero prototype, gameplay result or release integration.",
+    "limits": "The fixed prototype does not establish a general numerical Lua callback, native generation tracking, arbitrary policy publication or release compatibility. Game delivery, changed choice, construction and economic benefit require distinct evidence.",
     "sources": [
-      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "project/docs/research/mods/civ6-district-score-prototype-20261103.md"
     ],
     "topic": "topics/history/open-questions.md",
     "depends_on": []

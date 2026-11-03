@@ -60,4 +60,9 @@ Working material improvements and producers can yield benefits before a full-cha
 
 The broad optimisation campaign remains **paused**. Both November placement observers are closed; their earlier live and next-step sections are historical provenance. Later authorised IZ and district investigations were separate scopes. This handbook does not start a game, resume an automation, change weights or implement a native extension. **[AI-H004]**
 
+A separately authorized native prototype now demonstrates one scoped district
+score adjustment reaching a new request's logged value. The winner was unchanged;
+this is bridge delivery, not an improved chain outcome. See the
+[prototype trial](../../../research/mods/civ6-district-score-prototype-20261103.md).
+
 The useful next questions are now about specific missing capabilities and their consumers. Read [corrections and cautions](corrections-and-cautions.md) before interpreting an older report, then [open questions](open-questions.md) for the remaining evidence boundaries.

@@ -4,6 +4,10 @@ Investigation: 3 November 2026. User questions: how does AI evaluate district si
 how does it choose which district to build; does empire need enter that decision;
 and what custom or arbitrary incentives could influence it?
 
+> Follow-up: the [native prototype report](civ6-district-score-prototype-20261103.md)
+> records later implementation and bounded runtime checks. This report's earlier
+> unimplemented-extension statements describe its original investigation stage.
+
 **In the inspected ordinary city path, district type and location are chosen
 together.** The selector compares cached scores for eligible district/plot pairs.
 Those scores include site economics, future building value, district preferences,

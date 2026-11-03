@@ -4,6 +4,10 @@
 was implemented or executed.** This answers where custom district/site value could
 enter the inspected native path and what a practical bridge would need to preserve.
 
+> Subsequent work on the same date implemented a bounded native prototype.
+> See the [prototype and trial report](civ6-district-score-prototype-20261103.md).
+> The no-implementation statements below describe this earlier static study.
+
 ## Assessment
 
 A small native extension is a credible way to provide an arbitrary numerical

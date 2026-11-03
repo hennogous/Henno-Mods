@@ -45,3 +45,37 @@ Evidence output: `C:/Users/Shadow/Desktop/Codex/csc-native-district-extension-20
 allowedviz staging samebasename in currentthread outputroot. Independent cache,
 host/source and testcontract reviews retained. FullrawCEsource stays external;
 public docs cite commit-pinned primary links, no GameCore redistribution.
+
+## Authorized prototype follow-up — completed
+
+User approved giving the native bridge a try. Implemented separate experimental
+`project/tools/native_ai/district_score_extension/`; no installed CSC change.
+REA Node Frida unavailable before spawn; existing PythonFrida17.24.3 fallback,
+TinyCC CModule. Owned Win64 host167/167checks PASS, incl27independent pure-core
+cases,19nativeconfigreject/priorpolicypreserve cases, nativeR12flags, memoryspan,
+sevenargs/pointer, recursion, fourjoinedthreads, cache/best/PVsignatures. Deliberate
+badreturn faults/disarms; not unexplainederror.6actualLua51/mocksourcechecksPASS.
+
+Two shared-controller sessions, exact game04/250 saveSHAea8183..., no freshworld,
+one250→251interval each. Current632fileCSC rebase, assistanceOFF/no pending,
+P4Avignon655369/Bakersindex36(count38)/plot3076(42,41), native324cDLL. Sourcefacts,
+34pins,14deps andinstalledmanifest equal. Baseline raw119170/cachebestPV339677,
+newrequest6478integer1326. Treatmentone+256write raw119170→119426,
+cachebestPV339933 (+256, NOT assumed1.5), request1327. Both3086callbacks/4records/
+0errors/0suppression/active0. Samewinner andstillunbuilt; queuePROJECT_SEND_AID.
+CityBuild142rows onlyline121value differs; BehaviorTree8746 only6475/6498;
+queue72rowsidentical. No changedchoice/construction/benefit claim.
+
+Bothnativeexit0, daemonsretaineduntilnativeexit/nodiagnosticfault, finalinventories[],
+all145modIDs/148entries+autostart restored,632installedfiles/originalsave unchanged.
+No game/researchworker left; no automation. Broadoptimisation remainspaused.
+Hostsession/epoch/version are single-loadwindow labels, NOTobservednativeepochs.
+VirtualQuery doesn'tpinobjectlifetime. No shippingloader/CEcompatibility/general
+policy/Luabinding/save-refresh qualification. Disableisnotrollback; treated
+autosaves mustnotbecome cleancontrols.
+
+Report `project/docs/research/mods/civ6-district-score-prototype-20261103.md`;
+AI-N061/062; currentnativeextensiontopic updated, oldstaticreportfollow-upnotice.
+Evidence `Desktop/Codex/csc-district-extension-prototype-20261103/`, staged same
+basename inthisthreadallowedviz. Baseline/treatment receipts and independent
+artifact/code reviews distinguish syntheticchecks fromactualCiv evidence.

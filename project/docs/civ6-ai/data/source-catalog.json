@@ -136,8 +136,8 @@
       "title": "Native district-score extension — 3 November 2026",
       "kind": "agent-note",
       "date": "20261103",
-      "bytes": 3162,
-      "sha256": "79902474893de049c4196b02987968984d847ff022df0853bea04aaa8e1fff6a",
+      "bytes": 5400,
+      "sha256": "ae9a1dcea9a0b9e1e267c8c9ab9b380e40580392dc1d2bccfd5a32ae9a7dafca",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_ai_native_district_extension_20261103.md"
     },
@@ -366,8 +366,8 @@
       "title": "District choice, placement scoring and custom incentives",
       "kind": "report",
       "date": "20261103",
-      "bytes": 19425,
-      "sha256": "409b5a18cdb94337bc29a15fb65a75201329c4278db5fd8e6b5f55d6c5a477e8",
+      "bytes": 19673,
+      "sha256": "07a5a815042fdcbbe30699ebc0ce0a6ea252e7fa8623646708f1026ef8b7a65d",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
     },
@@ -376,10 +376,20 @@
       "title": "Native district-score extension: offline feasibility and integration contract",
       "kind": "report",
       "date": "20261103",
-      "bytes": 16349,
-      "sha256": "eeb7e16fe9a3dfce7b7a51c3b70e20351cc87fcfac92dbdec10342da6d744368",
+      "bytes": 16585,
+      "sha256": "6e569d69e8a6699c1a37da8b8fc62ab4c618c2a449974d1f205d799205854a53",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-score-extension-20261103.md"
+    },
+    {
+      "path": "project/docs/research/mods/civ6-district-score-prototype-20261103.md",
+      "title": "District score bridge: prototype and bounded trial",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 9927,
+      "sha256": "cccf5a4e1519b9e9f753750da81a0bb1fb87aa340cdee8432d5c3c00c3a9a48c",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-district-score-prototype-20261103.md"
     },
     {
       "path": "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md",

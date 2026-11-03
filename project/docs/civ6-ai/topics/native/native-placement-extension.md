@@ -1,12 +1,16 @@
 # A native bridge for custom district incentives
 
-A native extension is a credible route to a formula such as
-`F(player, city, district, plot, copied state)`. We have identified a concrete
-score/cache boundary and its downstream readers. **The bridge remains a design;
-no hook, extension build or Civ mutation test has been performed.** [AI-N036]
+A native extension now has a working experimental bridge at the ordinary
+district score/cache boundary. In a matched one-save trial, a single+1 utility
+adjustment reached the completed cache, native winner's score, present value
+and new district request. The isolated Win64 host also passed167 checks.
+General arbitrary-policy authoring and a shipping extension remain future work.
+[AI-N036] [AI-N061] [AI-N062]
 
 The [offline feasibility report](../../../research/mods/civ6-district-score-extension-20261103.md)
-contains the current-build code, ABI, source and verification details.
+contains the current-build code, ABI and source details. The
+[prototype report](../../../research/mods/civ6-district-score-prototype-20261103.md)
+records the implementation, isolated checks and bounded game trial.
 
 ## Change the value the AI actually uses
 
@@ -14,12 +18,14 @@ The ordinary evaluator calls district NetValue and copies the pointed signed
 score into its plot/district cache. The candidate integration point is immediately
 before that store. Its result uses output storage and returns a pointer; a
 generic replacement of RAX with an integer would not implement the required
-contract. These are static observations requiring real adapter validation. [AI-N053]
+contract. The experimental adapter preserves that pointer and adjusts only its
+pointed signed32 score; isolated ABI checks and the untouched native trace now
+validate this limited integration. [AI-N053] [AI-N061]
 
 ```mermaid
 flowchart TD
     A[Copy facts at a verified safe boundary] --> B[Prepare a bounded policy table]
-    B --> C[Publish one immutable analysis generation]
+    B --> C[Publish one immutable qualified window]
     C --> D[Native candidate and scope filter]
     D --> E[Apply adjustment to successful score output]
     E --> F[Ordinary shared cache and later processing]
@@ -40,8 +46,8 @@ a fast lookup rather than call Lua or Python for every candidate. [AI-N060]
 
 This route can influence AI decisions without adding an ordinary gameplay yield
 or a synthetic map feature. Original human identities, including autoplay role
-changes, still need explicit exclusion and verification. No AI-only implementation
-has been tested.
+changes, need explicit exclusion and verification. The prototype implements a
+single exact original-AI tuple; it does not yet provide the general authoring layer.
 
 ## Guardrails that change the implementation
 
@@ -78,20 +84,42 @@ Its `DistrictTargetChooser` handles Congress choices. Ordinary district scoring
 would require new native integration; naming a processor or property is insufficient.
 Installed CE/source correspondence and compatibility were not established. [AI-N059]
 
-A Frida/CModule host is a useful proposed experiment route. A later CE extension
+A Frida/CModule host now implements the experimental route. A later CE extension
 or independent GameCore carrier would need separate packaging, loader, version,
 save/lifecycle and compatibility qualification. It is a larger deployment choice
 than ordinary SQL/Lua content.
 
 ## The next useful proof
 
-First use a separate native test host to prove output-pointer identity, exact
-no-op behaviour, scope and arithmetic, immutable publication and native filtering
-before JavaScript. The older observers showed why retaining few records does not
-make interception cheap. These tests were specified, not executed here.
+The first nonzero trial now establishes delivery through the ordinary path:
 
-An eventual bounded existing-save test should then link one declared incentive
-to a fresh cached score, the natural winner and downstream request value. It
-should use the shared controller, preserve legality and competing decisions,
-and issue no forced construction. Chain outcomes and empire benefit remain later
-questions. [Open questions](../history/open-questions.md)
+| Value | No-write baseline | One+256 Q8 adjustment |
+|---|---:|---:|
+| Original NetValue output |119,170|119,170|
+| Score returned to the ordinary caller |119,170|119,426|
+| Completed cache / winner score / present value |339,677|339,933|
+| New native request's logged value |1,326|1,327|
+
+Both arms selected Bakers at the same Avignon site. Only the corresponding
+request-value fields changed in the city-build and behavior-tree logs; the
+production-queue logs were identical. The Quarter remained unbuilt. This proves
+delivery into request valuation, not a caused choice switch or economic benefit.
+Both sessions normally closed with settings, original save and installed package
+verified. [AI-N062]
+
+The separate native test host now verifies pointer identity, no-op behaviour,
+scope, arithmetic, immutable publication and native filtering before JavaScript.
+It also exercises the three downstream monitor signatures. The no-write Civ
+baseline then recorded the exact fresh candidate through cache, winner and PV,
+with no errors and verified normal closure. [AI-N061]
+
+This first implementation uses one immutable **single-load window**. Its host
+generation labels are not native analysis epochs. VirtualQuery checks readable
+and writable regions but does not pin game-object lifetime. Neither mechanism
+constitutes a general shipping lifecycle solution.
+
+A future choice test needs genuinely competing candidates and an untreated
+ranking, so a deliberate site/type change can be attributed to the incentive.
+Policy refresh, native generations, saved influence and a useful material/customer
+formula remain separate work. Chain outcomes and empire benefit come later.
+[Open questions](../history/open-questions.md)

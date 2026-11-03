@@ -1,0 +1,4373 @@
+{
+  "schema_version": 1,
+  "created_on": "2026-11-03",
+  "authorship": "Independent fixture expectations written before reading Root's kernel implementation.",
+  "purpose": "Offline numeric/identity/lifecycle acceptance only; no native attachment, game or efficacy claim.",
+  "contract": {
+    "boundary": "Ordinary district NetValue pointed signed32 output before canonical cache store and district preference.",
+    "allowed_caller_rva": "0x3e30be",
+    "binary_sha256": "324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c",
+    "score_type": "signed int32 Q8",
+    "invalid_score_q8": -2559744,
+    "zero_input_policy": "preserve unchanged because successful zero and early-out zero are ambiguous",
+    "valid_negative_policy": "no generic less-than-zero rejection",
+    "delta_policy": "wide exact addition; overflow, bound violation or collision with invalid sentinel leave original unchanged",
+    "generation_types": {
+      "session_generation": "uint32 nonzero",
+      "analysis_epoch": "uint32 nonzero",
+      "policy_version": "uint32 nonzero",
+      "evaluation_id": "unique within one active native frame; never a persistent pointer identity"
+    },
+    "role_policy": "exclude original humans even during autoplay; conservative first-prototype current-human exclusion too",
+    "status_reason_note": "Reason names are semantic categories; implementation may map names explicitly. Do not call a missing guard passed merely because only score equality was checked.",
+    "bounds_note": "Fixture limits are synthetic contract parameters, not calibrated release weights.",
+    "snapshot_note": "Policy version is bound to one immutable analysis snapshot. Root selected publication only while frozen and quiescent; attempted mid-analysis publication is rejected, not partially accepted."
+  },
+  "source_paths": [
+    "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+    "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md",
+    "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+  ],
+  "kernel_cases": [
+    {
+      "id": "K001",
+      "title": "Positive one-unit Q8 increment",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1280,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K002",
+      "title": "Disabled adapter exact no-op",
+      "policy": {
+        "enabled": false,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "disabled",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K003",
+      "title": "Enabled zero-delta exact no-op",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 0
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "zero_delta",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K004",
+      "title": "Native literal-zero result is preserved",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 0
+      },
+      "expected": {
+        "score_q8": 0,
+        "changed": false,
+        "reason_category": "zero_preserved",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K005",
+      "title": "Known invalid Q8 sentinel is preserved",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -2559744
+      },
+      "expected": {
+        "score_q8": -2559744,
+        "changed": false,
+        "reason_category": "invalid_sentinel",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K006",
+      "title": "Negative score receives positive delta",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -512
+      },
+      "expected": {
+        "score_q8": -256,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K007",
+      "title": "Negative score receives negative delta",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -512
+      },
+      "expected": {
+        "score_q8": -768,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K008",
+      "title": "Valid negative crosses into positive",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 512
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -256
+      },
+      "expected": {
+        "score_q8": 256,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K009",
+      "title": "Valid nonzero result can intentionally become zero",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 256
+      },
+      "expected": {
+        "score_q8": 0,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K010",
+      "title": "Signed32 positive overflow refuses rather than clamps",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 1
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 2147483647
+      },
+      "expected": {
+        "score_q8": 2147483647,
+        "changed": false,
+        "reason_category": "overflow",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K011",
+      "title": "Signed32 negative overflow refuses rather than wraps",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -1
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -2147483648
+      },
+      "expected": {
+        "score_q8": -2147483648,
+        "changed": false,
+        "reason_category": "overflow",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K012",
+      "title": "Exact signed32 upper endpoint remains legal arithmetic",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 1
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 2147483646
+      },
+      "expected": {
+        "score_q8": 2147483647,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K013",
+      "title": "Exact signed32 lower endpoint remains legal arithmetic",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -1
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -2147483647
+      },
+      "expected": {
+        "score_q8": -2147483648,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K014",
+      "title": "Downward collision with native sentinel refuses",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -1
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -2559743
+      },
+      "expected": {
+        "score_q8": -2559743,
+        "changed": false,
+        "reason_category": "sentinel_collision",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K015",
+      "title": "Upward collision with native sentinel refuses",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 1
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -2559745
+      },
+      "expected": {
+        "score_q8": -2559745,
+        "changed": false,
+        "reason_category": "sentinel_collision",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K016",
+      "title": "Below-selector-baseline is not same as invalid sentinel",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -1
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": -2559745
+      },
+      "expected": {
+        "score_q8": -2559746,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1,
+        "qualification": "Arithmetic fixture only; this value would not exceed GetBestDistrict's initial invalid baseline."
+      }
+    },
+    {
+      "id": "K017",
+      "title": "Positive delta bound is inclusive",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 4096
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 5120,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K018",
+      "title": "Negative delta bound is inclusive",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -4096
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": -3072,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K019",
+      "title": "Positive delta limit violation refuses",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 4097
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "delta_bound",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K020",
+      "title": "Negative delta limit violation refuses",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": -4097
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "delta_bound",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K021",
+      "title": "Other player with identical city ID does not match",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 4,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "scope_miss",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K022",
+      "title": "Other city under same player does not match",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131074,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "scope_miss",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K023",
+      "title": "Other district at same site does not match",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 12,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "scope_miss",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K024",
+      "title": "Other X coordinate does not match",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 11,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "scope_miss",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K025",
+      "title": "Other Y coordinate does not match",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 11,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "scope_miss",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K026",
+      "title": "Unreviewed direct caller does not match",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30bf",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "caller_mismatch",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K027",
+      "title": "New load/session cannot consume old policy",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 8,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "stale_session",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K028",
+      "title": "Next analysis cannot consume old epoch table",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 42,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "stale_epoch",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K029",
+      "title": "Policy version must match bound analysis snapshot",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 4,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "stale_policy",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K030",
+      "title": "Original human remains excluded after autoplay role change",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0,
+          3
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": true,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "original_human",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K031",
+      "title": "Current human excluded by conservative prototype scope",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": true,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "current_human",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K032",
+      "title": "Original non-AI/NPC role is not made eligible by coordinates",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": false,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "non_ai_role",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K033",
+      "title": "Native admission failure cannot be resurrected",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": false,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "native_ineligible",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K034",
+      "title": "Unrevealed candidate cannot consume copied incentive",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": false,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "native_ineligible",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K035",
+      "title": "A cached read is not a fresh output to adjust",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": false,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1280
+      },
+      "expected": {
+        "score_q8": 1280,
+        "changed": false,
+        "reason_category": "not_fresh_output",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K036",
+      "title": "Duplicate processed frame cannot add delta twice",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": true,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1280
+      },
+      "expected": {
+        "score_q8": 1280,
+        "changed": false,
+        "reason_category": "already_processed",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K037",
+      "title": "Changed returned output pointer is never replaced",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000008",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "pointer_mismatch",
+        "returned_output_pointer": "0x10000008",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K038",
+      "title": "Null output pointer refuses before a memory read",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x0",
+        "returned_output_pointer": "0x0",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "invalid_pointer",
+        "returned_output_pointer": "0x0",
+        "original_call_count": 1,
+        "expected_score_memory_reads": 0,
+        "expected_score_memory_writes": 0
+      }
+    },
+    {
+      "id": "K039",
+      "title": "Unreadable output refuses before a dereference",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": false,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "invalid_pointer",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1,
+        "expected_score_memory_reads": 0,
+        "expected_score_memory_writes": 0
+      }
+    },
+    {
+      "id": "K040",
+      "title": "Read-only score storage refuses before a write",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": false,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "invalid_pointer",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1,
+        "expected_score_memory_writes": 0
+      }
+    },
+    {
+      "id": "K041",
+      "title": "Pointer equality is numeric, not spelling",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x0000000010000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1280,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K042",
+      "title": "Missing runtime definition mapping refuses",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": false,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "mapping_unverified",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K043",
+      "title": "Wrong binary identity refuses",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": false,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "wrong_build",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K044",
+      "title": "Native district-index sentinel is not a score",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": -1,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "invalid_context",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K045",
+      "title": "Invalid coordinate sentinel is not a score",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": -9999,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "invalid_context",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K046",
+      "title": "Out-of-map coordinates refuse",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 74,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "invalid_context",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K047",
+      "title": "Origin coordinates are valid and not missing",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 0,
+            "y": 0,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 0,
+        "y": 0,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1280,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K048",
+      "title": "Last in-range map coordinates remain valid",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 73,
+            "y": 45,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 73,
+        "y": 45,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1280,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K049",
+      "title": "Empty policy is exact no-op",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": []
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "scope_miss",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K050",
+      "title": "Immutable target table can contain positive and negative entries",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": true,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          },
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 11,
+            "y": 10,
+            "delta_q8": -128
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 11,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 896,
+        "changed": true,
+        "reason_category": "applied",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "K051",
+      "title": "Nonimmutable table refuses publication/use",
+      "policy": {
+        "enabled": true,
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "immutable": false,
+        "mapping_verified": true,
+        "allowed_caller_rva": "0x3e30be",
+        "map_width": 74,
+        "map_height": 46,
+        "district_count": 20,
+        "max_abs_delta_q8": 4096,
+        "max_entries": 64,
+        "original_human_players": [
+          0
+        ],
+        "original_ai_players": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entries": [
+          {
+            "player": 3,
+            "city": 131073,
+            "district": 11,
+            "x": 10,
+            "y": 10,
+            "delta_q8": 256
+          }
+        ]
+      },
+      "call": {
+        "session_generation": 7,
+        "analysis_epoch": 41,
+        "policy_version": 3,
+        "evaluation_id": 1001,
+        "caller_rva": "0x3e30be",
+        "player": 3,
+        "city": 131073,
+        "district": 11,
+        "x": 10,
+        "y": 10,
+        "original_human": false,
+        "current_human": false,
+        "original_ai": true,
+        "native_admitted": true,
+        "revealed": true,
+        "fresh_native_output": true,
+        "processed": false,
+        "mapping_verified": true,
+        "build_identity_verified": true,
+        "expected_output_pointer": "0x10000000",
+        "returned_output_pointer": "0x10000000",
+        "output_pointer_readable": true,
+        "output_pointer_writable": true,
+        "score_q8": 1024
+      },
+      "expected": {
+        "score_q8": 1024,
+        "changed": false,
+        "reason_category": "policy_not_immutable",
+        "returned_output_pointer": "0x10000000",
+        "original_call_count": 1
+      }
+    }
+  ],
+  "validation_cases": [
+    {
+      "id": "V001",
+      "field": "entries[0].delta_q8",
+      "value": 1.5,
+      "expected": "reject_noninteger"
+    },
+    {
+      "id": "V002",
+      "field": "entries[0].delta_q8",
+      "value": "256",
+      "expected": "reject_wrong_type_not_coerce"
+    },
+    {
+      "id": "V003",
+      "field": "entries[0].delta_q8",
+      "value": true,
+      "expected": "reject_boolean_not_integer"
+    },
+    {
+      "id": "V004",
+      "field": "entries[0].delta_q8",
+      "value": null,
+      "expected": "reject_missing_integer"
+    },
+    {
+      "id": "V005",
+      "field": "entries[0].delta_q8",
+      "encoded_nonfinite": "NaN",
+      "expected": "reject_nonfinite_before_integer_conversion"
+    },
+    {
+      "id": "V006",
+      "field": "entries[0].delta_q8",
+      "encoded_nonfinite": "+Infinity",
+      "expected": "reject_nonfinite_before_integer_conversion"
+    },
+    {
+      "id": "V007",
+      "field": "session_generation",
+      "value": 0,
+      "expected": "reject_reserved_zero_generation"
+    },
+    {
+      "id": "V008",
+      "field": "analysis_epoch",
+      "value": 0,
+      "expected": "reject_reserved_zero_epoch"
+    },
+    {
+      "id": "V009",
+      "field": "policy_version",
+      "value": 0,
+      "expected": "reject_reserved_zero_version"
+    },
+    {
+      "id": "V010",
+      "field": "analysis_epoch",
+      "value": 4294967296,
+      "expected": "reject_outside_uint32"
+    },
+    {
+      "id": "V011",
+      "field": "entries",
+      "value": [
+        {
+          "player": 3,
+          "city": 131073,
+          "district": 11,
+          "x": 10,
+          "y": 10,
+          "delta_q8": 256
+        },
+        {
+          "player": 3,
+          "city": 131073,
+          "district": 11,
+          "x": 10,
+          "y": 10,
+          "delta_q8": -128
+        }
+      ],
+      "expected": "reject_duplicate_key_whole_publication"
+    },
+    {
+      "id": "V012",
+      "field": "entries",
+      "synthetic_entry_count": 65,
+      "max_entries": 64,
+      "expected": "reject_capacity_whole_publication"
+    },
+    {
+      "id": "V013",
+      "field": "expected_output_pointer",
+      "value": "0x10000000010000000",
+      "expected": "reject_pointer_outside_uint64_not_truncate"
+    },
+    {
+      "id": "V014",
+      "field": "city",
+      "value": 2147483648,
+      "expected": "reject_outside_signed32"
+    }
+  ],
+  "memory_cases": [
+    {
+      "id": "M001",
+      "description": "Only pointed four-byte score changes; pointer and guards stay unchanged",
+      "input": {
+        "prefix_hex": "a55ac33c",
+        "score_bytes_little_endian": "00040000",
+        "suffix_hex": "11223344",
+        "expected_pointer": "0x10000000",
+        "returned_pointer": "0x10000000",
+        "delta_q8": 256
+      },
+      "expected": {
+        "prefix_hex": "a55ac33c",
+        "score_bytes_little_endian": "00050000",
+        "suffix_hex": "11223344",
+        "returned_pointer": "0x10000000",
+        "bytes_written": 4,
+        "original_call_count": 1
+      }
+    },
+    {
+      "id": "M002",
+      "description": "No-op preserves every byte including pointer and signed negative score",
+      "input": {
+        "prefix_hex": "deadbeef",
+        "score_bytes_little_endian": "00feffff",
+        "suffix_hex": "cafebabe",
+        "expected_pointer": "0x10000000",
+        "returned_pointer": "0x10000000",
+        "delta_q8": 0
+      },
+      "expected": {
+        "prefix_hex": "deadbeef",
+        "score_bytes_little_endian": "00feffff",
+        "suffix_hex": "cafebabe",
+        "returned_pointer": "0x10000000",
+        "bytes_written": 0,
+        "original_call_count": 1
+      }
+    }
+  ],
+  "sequence_cases": [
+    {
+      "id": "G001",
+      "description": "Duplicate callback is different from fresh recomputation in same analysis",
+      "events": [
+        {
+          "op": "begin_analysis",
+          "session": 7,
+          "epoch": 41,
+          "version": 3
+        },
+        {
+          "op": "fresh_result",
+          "evaluation_id": 1001,
+          "base_q8": 1024,
+          "delta_q8": 256,
+          "expected_q8": 1280,
+          "expected_writes": 1
+        },
+        {
+          "op": "duplicate_callback",
+          "evaluation_id": 1001,
+          "current_q8": 1280,
+          "expected_q8": 1280,
+          "expected_writes": 0,
+          "reason": "already_processed"
+        },
+        {
+          "op": "read_cache",
+          "expected_q8": 1280,
+          "expected_writes": 0
+        },
+        {
+          "op": "fresh_result",
+          "evaluation_id": 1002,
+          "base_q8": 1024,
+          "delta_q8": 256,
+          "expected_q8": 1280,
+          "expected_writes": 1
+        }
+      ],
+      "limits": "Use per-frame state or an equivalent bounded design; this does not require an unbounded set of every historical evaluation ID."
+    },
+    {
+      "id": "G002",
+      "description": "Mid-analysis policy publication is rejected until frozen and quiescent",
+      "events": [
+        {
+          "op": "begin_analysis",
+          "session": 7,
+          "epoch": 41,
+          "version": 3,
+          "delta_q8": 256
+        },
+        {
+          "op": "attempt_publish_while_enabled",
+          "version": 4,
+          "delta_q8": 512,
+          "expected_publication_accepted": false,
+          "expected_active_version": 3
+        },
+        {
+          "op": "fresh_result",
+          "evaluation_id": 1003,
+          "base_q8": 1024,
+          "expected_q8": 1280
+        },
+        {
+          "op": "end_analysis"
+        },
+        {
+          "op": "freeze_quiescent"
+        },
+        {
+          "op": "publish",
+          "session": 7,
+          "epoch": 42,
+          "version": 4,
+          "delta_q8": 512,
+          "expected_publication_accepted": true
+        },
+        {
+          "op": "begin_analysis",
+          "session": 7,
+          "epoch": 42,
+          "version": 4
+        },
+        {
+          "op": "fresh_result",
+          "evaluation_id": 1004,
+          "base_q8": 1024,
+          "expected_q8": 1536
+        }
+      ]
+    },
+    {
+      "id": "G003",
+      "description": "Disabling stops new changes but does not erase old cached/request state",
+      "events": [
+        {
+          "op": "cache_contains",
+          "cache_q8": 1280
+        },
+        {
+          "op": "request_contains",
+          "extra_present_value_q8": 1280
+        },
+        {
+          "op": "disable"
+        },
+        {
+          "op": "read_cache",
+          "expected_q8": 1280
+        },
+        {
+          "op": "read_request",
+          "expected_q8": 1280
+        },
+        {
+          "op": "fresh_result",
+          "evaluation_id": 1005,
+          "base_q8": 1024,
+          "expected_q8": 1024,
+          "expected_writes": 0
+        },
+        {
+          "op": "native_cache_store",
+          "expected_q8": 1024
+        },
+        {
+          "op": "contract_max_update",
+          "old_q8": 1280,
+          "current_cached_q8": 1024,
+          "expected_q8": 1280
+        }
+      ]
+    },
+    {
+      "id": "G004",
+      "description": "Save/load session generation makes old policy stale",
+      "events": [
+        {
+          "op": "begin_analysis",
+          "session": 7,
+          "epoch": 41,
+          "version": 3
+        },
+        {
+          "op": "fresh_result",
+          "evaluation_id": 1006,
+          "base_q8": 1024,
+          "expected_q8": 1280
+        },
+        {
+          "op": "load_new_session",
+          "session": 8,
+          "loaded_cache_q8": 1280
+        },
+        {
+          "op": "read_cache",
+          "expected_q8": 1280,
+          "qualification": "Treated cached value can persist; this is not an untreated reference."
+        },
+        {
+          "op": "fresh_result_with_old_policy",
+          "evaluation_id": 1,
+          "base_q8": 1024,
+          "policy_session": 7,
+          "actual_session": 8,
+          "expected_q8": 1024,
+          "reason": "stale_session"
+        },
+        {
+          "op": "publish_new_policy",
+          "session": 8,
+          "epoch": 1,
+          "version": 1,
+          "delta_q8": 256
+        },
+        {
+          "op": "fresh_result",
+          "evaluation_id": 2,
+          "base_q8": 1024,
+          "expected_q8": 1280
+        }
+      ]
+    },
+    {
+      "id": "G005",
+      "description": "Reused row identity cannot transfer a previous target's bonus",
+      "events": [
+        {
+          "op": "fresh_result",
+          "session": 7,
+          "epoch": 41,
+          "evaluation_id": 1007,
+          "row_pointer": "0x20000000",
+          "player": 3,
+          "city": 131073,
+          "x": 10,
+          "y": 10,
+          "base_q8": 1024,
+          "expected_q8": 1280
+        },
+        {
+          "op": "reuse_row",
+          "row_pointer": "0x20000000",
+          "player": 4,
+          "city": 131073,
+          "x": 10,
+          "y": 10
+        },
+        {
+          "op": "fresh_result",
+          "session": 7,
+          "epoch": 42,
+          "evaluation_id": 1008,
+          "row_pointer": "0x20000000",
+          "player": 4,
+          "city": 131073,
+          "x": 10,
+          "y": 10,
+          "base_q8": 1024,
+          "expected_q8": 1024,
+          "reason": "scope_miss"
+        }
+      ]
+    },
+    {
+      "id": "G006",
+      "description": "Thread-local frames do not use a global current candidate",
+      "events": [
+        {
+          "op": "enter",
+          "thread": 1,
+          "evaluation_id": 1009,
+          "player": 3,
+          "city": 131073,
+          "x": 10,
+          "y": 10
+        },
+        {
+          "op": "enter",
+          "thread": 2,
+          "evaluation_id": 1010,
+          "player": 4,
+          "city": 131073,
+          "x": 10,
+          "y": 10
+        },
+        {
+          "op": "leave",
+          "thread": 1,
+          "evaluation_id": 1009,
+          "base_q8": 1024,
+          "expected_q8": 1280
+        },
+        {
+          "op": "leave",
+          "thread": 2,
+          "evaluation_id": 1010,
+          "base_q8": 1024,
+          "expected_q8": 1024,
+          "reason": "scope_miss"
+        }
+      ]
+    },
+    {
+      "id": "G007",
+      "description": "Repeated activation is not a fresh native result",
+      "events": [
+        {
+          "op": "fresh_result",
+          "evaluation_id": 1011,
+          "base_q8": 1024,
+          "expected_q8": 1280
+        },
+        {
+          "op": "repeated_epoch_activation",
+          "cache_q8": 1280,
+          "fresh_native_output": false,
+          "expected_q8": 1280,
+          "expected_writes": 0
+        },
+        {
+          "op": "repeated_epoch_activation",
+          "cache_q8": 1280,
+          "fresh_native_output": false,
+          "expected_q8": 1280,
+          "expected_writes": 0
+        }
+      ]
+    }
+  ],
+  "downstream_models": [
+    {
+      "id": "D001",
+      "description": "Pre-preference delta is multiplied later",
+      "input": {
+        "base_q8": 1024,
+        "delta_q8": 256,
+        "preference": "positive_1.5",
+        "future_building_sum_q8": 512,
+        "first_compact_row_reset": false
+      },
+      "expected": {
+        "no_extension_preference_q8": 1536,
+        "no_extension_final_q8": 2048,
+        "adjusted_preference_q8": 1920,
+        "adjusted_final_q8": 2432,
+        "final_difference_q8": 384,
+        "arithmetic_shift8_integer": 9
+      }
+    },
+    {
+      "id": "D002",
+      "description": "First compact row can replace positive base with building sum",
+      "input": {
+        "base_q8": 1024,
+        "delta_q8": 256,
+        "preference": "positive_1.5",
+        "future_building_sum_q8": 512,
+        "first_compact_row_reset": true
+      },
+      "expected": {
+        "no_extension_final_q8": 512,
+        "adjusted_final_q8": 512,
+        "final_difference_q8": 0
+      },
+      "qualification": "Specific native first-row branch; not a universal identity for all rows."
+    },
+    {
+      "id": "D003",
+      "description": "Crossing positive-entry gate changes more than delta",
+      "input": {
+        "base_q8": -256,
+        "delta_q8": 512,
+        "preference": "positive_1.5",
+        "future_building_sum_q8": 1024,
+        "first_compact_row_reset": false
+      },
+      "expected": {
+        "no_extension_preference_q8": -384,
+        "no_extension_final_q8": -384,
+        "adjusted_preference_q8": 384,
+        "adjusted_final_q8": 1408,
+        "final_difference_q8": 1792
+      }
+    },
+    {
+      "id": "D004",
+      "description": "Valid negative site winner can coexist with no-plot present value zero",
+      "input": {
+        "scores_q8": [
+          -512,
+          -384
+        ],
+        "selector_initial_q8": -2559744
+      },
+      "expected": {
+        "winner_index": 1,
+        "winner_specific_present_value_q8": -384,
+        "no_plot_present_value_q8": 0,
+        "specific_arithmetic_shift8_integer": -2
+      }
+    },
+    {
+      "id": "D005",
+      "description": "Existing request retains higher old value after incentive decreases",
+      "input": {
+        "old_extra_present_value_q8": 1280,
+        "current_cache_value_q8": 1024,
+        "priority": 50
+      },
+      "expected": {
+        "new_extra_present_value_q8": 1280,
+        "priority": 50
+      },
+      "qualification": "Models the inspected max update only; other cancellation/replacement paths are not excluded."
+    },
+    {
+      "id": "D006",
+      "description": "Existing request can rise independently of priority",
+      "input": {
+        "old_extra_present_value_q8": 1024,
+        "current_cache_value_q8": 1536,
+        "priority": 50
+      },
+      "expected": {
+        "new_extra_present_value_q8": 1536,
+        "priority": 50
+      },
+      "qualification": "Does not establish that this request is offered or wins city production."
+    },
+    {
+      "id": "D007",
+      "description": "Equal-score tie and no-op preserve candidate order/RNG exposure",
+      "input": {
+        "scores_q8": [
+          1024,
+          1024
+        ],
+        "deltas_q8": [
+          0,
+          0
+        ],
+        "candidate_order": [
+          0,
+          1
+        ],
+        "rng_calls_baseline": 1
+      },
+      "expected": {
+        "scores_q8": [
+          1024,
+          1024
+        ],
+        "candidate_order": [
+          0,
+          1
+        ],
+        "rng_calls": 1
+      },
+      "qualification": "The particular RNG outcome is supplied by unchanged host state, not predicted by this fixture."
+    },
+    {
+      "id": "D008",
+      "description": "Immediate legality remains independent after scoring",
+      "input": {
+        "native_admitted_potential": true,
+        "base_q8": 1024,
+        "delta_q8": 256,
+        "reservation_succeeds": false,
+        "immediate_can_zone": false
+      },
+      "expected": {
+        "score_q8": 1280,
+        "ownership_grants": 0,
+        "forced_orders": 0,
+        "operation_started": false,
+        "completed_district": false
+      }
+    }
+  ],
+  "performance_contracts": [
+    {
+      "id": "P001",
+      "description": "Native rejection loop before bridge; run loop in native harness, not one JS→native call per item",
+      "workload": {
+        "native_invocations": 1000000,
+        "eligible_target_invocations": 0
+      },
+      "expected": {
+        "native_invocations": 1000000,
+        "scope_admitted": 0,
+        "score_mutations": 0,
+        "hot_callback_js_entries": 0,
+        "hot_callback_lua_entries": 0,
+        "retained_reports": 0
+      },
+      "limits": "Offline loop measures this adapter/harness only, not in-game detour overhead, callback fan-out, scheduler neutrality or efficacy."
+    },
+    {
+      "id": "P002",
+      "description": "Mixed native target stream with bounded deferred reporting",
+      "workload": {
+        "native_invocations": 1000000,
+        "target_every_n": 100,
+        "fresh_result_per_invocation": true,
+        "base_q8": 1024,
+        "delta_q8": 256,
+        "report_capacity": 64
+      },
+      "expected": {
+        "scope_admitted": 10000,
+        "score_mutations": 10000,
+        "scope_rejected": 990000,
+        "hot_callback_js_entries": 0,
+        "hot_callback_lua_entries": 0,
+        "retained_reports": 64,
+        "suppressed_reports": 9936,
+        "all_target_results_q8": 1280
+      },
+      "limits": "Expected counters are distinct from old JS observer callback counts; deferred bulk flush is outside the hot callback and is counted separately."
+    }
+  ],
+  "limits": [
+    "All data are synthetic acceptance expectations; this pack does not claim tests passed.",
+    "Root's actual ABI/kernel harness must map these independent semantic fields and report unsupported cases explicitly.",
+    "Zero-preserve policy omits legal zero opportunities; valid negative results are not blanket-rejected.",
+    "Exact no-op value/memory tests cannot establish in-game interception neutrality or performance.",
+    "No game, FireTuner, Frida, hook, native process or extension implementation was run/read by the fixture author."
+  ],
+  "admission_cases": [
+    {
+      "id": "A001",
+      "row_flags": {
+        "can_build_district_u8": 0,
+        "owned_u8": 1,
+        "can_purchase_u8": 0
+      },
+      "expected_native_admitted": false,
+      "expected_score_q8": 1024
+    },
+    {
+      "id": "A002",
+      "row_flags": {
+        "can_build_district_u8": 1,
+        "owned_u8": 0,
+        "can_purchase_u8": 0
+      },
+      "expected_native_admitted": false,
+      "expected_score_q8": 1024
+    },
+    {
+      "id": "A003",
+      "row_flags": {
+        "can_build_district_u8": 1,
+        "owned_u8": 0,
+        "can_purchase_u8": 1
+      },
+      "expected_native_admitted": true,
+      "expected_score_q8": 1280,
+      "qualification": "Admission potential does not grant ownership, treasury funding, successful reservation or immediate CanZone."
+    },
+    {
+      "id": "A004",
+      "row_flags": {
+        "can_build_district_u8": 1,
+        "owned_u8": 1,
+        "can_purchase_u8": 0
+      },
+      "expected_native_admitted": true,
+      "expected_score_q8": 1280
+    },
+    {
+      "id": "A005",
+      "row_flags": {
+        "can_build_district_u8": 1,
+        "owned_u8": 1,
+        "can_purchase_u8": 1
+      },
+      "expected_native_admitted": true,
+      "expected_score_q8": 1280
+    },
+    {
+      "id": "A006",
+      "row_flags": {
+        "can_build_district_u8": 2,
+        "owned_u8": 255,
+        "can_purchase_u8": 0
+      },
+      "expected_native_admitted": true,
+      "expected_score_q8": 1280,
+      "qualification": "The inspected native flags are Boolean-style nonzero bytes, not an equality-to-one contract."
+    },
+    {
+      "id": "A007",
+      "row_flags": {
+        "can_build_district_u8": 255,
+        "owned_u8": 0,
+        "can_purchase_u8": 2
+      },
+      "expected_native_admitted": true,
+      "expected_score_q8": 1280
+    }
+  ]
+}

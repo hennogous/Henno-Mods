@@ -39,7 +39,11 @@ A native extension could in principle introduce F(player,city,district,plot,stat
 The subsequent [extension feasibility investigation](native-placement-extension.md)
 identifies a concrete pre-cache candidate boundary and additional consumers.
 It also finds zero early-outs, serialized scores and retained request values that
-an implementation must handle. A hook or gameplay prototype remains untested.
+an implementation must handle. A fixed single-entry native prototype now passes
+isolated Win64 checks and a matched one-save trial: one+256 Q8 input reached
+cache/winner/present value and increased the new request's logged value by1.
+The same candidate already won the baseline. Arbitrary-policy authoring and
+release integration remain open. [AI-N061] [AI-N062]
 
 A separate integration problem is submitting a planner-selected economic job. Native build/repair consumers exist, but the inspected operation/tree routes did not establish a general typed player/city/plot/improvement payload writer. Target/rally coordinates and externally reported callbacks are insufficient proof of that bridge. [AI-N037] See the [material-job feasibility assessment](../../../research/mods/csc-ai-native-material-job-feasibility-20261030.md).
 

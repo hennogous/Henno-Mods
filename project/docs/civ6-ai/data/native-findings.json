@@ -686,10 +686,11 @@
       "inference"
     ],
     "scope": "Proposed extension boundary from November 3 reconstruction.",
-    "limits": "No custom native score patch or validated arbitrary per-site integration was implemented.",
+    "limits": "A fixed single-entry Frida/CModule prototype now has isolated native and matched score-to-request delivery validation (AI-N061/062). General arbitrary-policy authoring, native generation tracking, shipping integration and useful AI outcomes remain unestablished.",
     "sources": [
       "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
-      "project/docs/research/mods/civ6-district-score-extension-20261103.md"
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md",
+      "project/docs/research/mods/civ6-district-score-prototype-20261103.md"
     ],
     "topic": "topics/native/modding-controls.md",
     "depends_on": [
@@ -705,7 +706,8 @@
       "AI-N057",
       "AI-N058",
       "AI-N059",
-      "AI-N060"
+      "AI-N060",
+      "AI-N061"
     ]
   },
   {
@@ -1031,7 +1033,7 @@
       "static"
     ],
     "scope": "Pinned Windows XP2 GameCore324c51e9...; complete caller/wrapper code and PE-matched instructions.",
-    "limits": "This reconstructs the pointer/output ABI and candidate boundary; no detour, trampoline or live adapter was tested.",
+    "limits": "Static boundary reconstruction; AI-N061/062 separately validate a bounded adapter and live value delivery, not general compatibility or efficacy.",
     "sources": [
       "project/docs/research/mods/civ6-district-score-extension-20261103.md",
       "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
@@ -1170,10 +1172,11 @@
       "inference"
     ],
     "scope": "Proposed F(player,city,district,plot,copied-state) architecture for the identified candidate boundary.",
-    "limits": "No kernel, native test host, Lua binding, detour, concurrency/lifetime or gameplay prototype was implemented or executed. Shipping carrier/save/platform compatibility remain separate work.",
+    "limits": "A fixed single-entry native prototype is implemented and tested separately in AI-N061. Its session/epoch labels qualify one host-controlled load window; they do not observe native generations. Arbitrary authoring/Lua publication, policy refresh, persistence and shipping compatibility remain separate work.",
     "sources": [
       "project/docs/research/mods/civ6-district-score-extension-20261103.md",
-      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "project/docs/research/mods/civ6-district-score-prototype-20261103.md"
     ],
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": [
@@ -1184,5 +1187,31 @@
       "AI-N058",
       "AI-N059"
     ]
+  },
+  {
+    "id": "AI-N061",
+    "title": "Native bridge passes isolated checks and a no-write live trace",
+    "statement": "The experimental native-only score bridge passed167 isolated Win64 assertions, and its no-write Civ baseline captured one qualifying NetValue output followed by the target's completed cache, native winner and present value without hook errors.",
+    "status": "accepted",
+    "evidence_types": ["source", "runtime"],
+    "scope": "Frida17.24.3 CModule; pinned Windows XP2 build; one current-CSC rebase, Avignon P4/city655369, Bakers index36/plot3076, interval250 to251. Baseline raw119170, final cache/winner/PV339677, zero writes; normal exit and restoration verified.",
+    "limits": "The167 assertions mix synthetic ABI, supplied predicate, configuration, scope, monitor and memory checks, not167 engine findings. No general native epoch API or object-lifetime proof. The baseline alone proves neither nonzero propagation, changed choice, production nor economic benefit.",
+    "sources": ["project/docs/research/mods/civ6-district-score-prototype-20261103.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N053", "AI-N054", "AI-N055"],
+    "related": ["AI-N060", "AI-N062"]
+  },
+  {
+    "id": "AI-N062",
+    "title": "A scoped native district incentive reaches cache and request value",
+    "statement": "In the matched existing-save trial, one+256 Q8 adjustment to Avignon's Bakers NetValue output propagated unchanged into its completed district cache, winning candidate score and plot-specific present value; the new district request's logged integer value rose1326 to1327.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Pinned Windows XP2 build, Frida17.24.3 CModule, current632-file CSC rebase; identical source facts/pins, two separate250-to251 sessions. Raw119170 became119426; cache/winner/PV339677 became339933. Each arm3086 interceptions/four records/zero errors; zero versus one write. Both normally closed and restored.",
+    "limits": "Bakers at plot3076 already won the baseline, so no caused choice switch is established. Quarter remained unbuilt and production queue unchanged. Request logged value is not request priority. No calibration, chain benefit, general policy authoring, native epoch tracking or release compatibility proof.",
+    "sources": ["project/docs/research/mods/civ6-district-score-prototype-20261103.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N053", "AI-N055", "AI-N061"],
+    "related": ["AI-N036", "AI-N060"]
   }
 ]
