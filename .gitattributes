@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Keep the pinned browser dependency byte-identical to its upstream checksum.
+project/tools/ai_knowledge/vendor/mermaid-11.4.0.min.js -text

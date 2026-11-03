@@ -15,7 +15,9 @@ export async function glob(
     await globby(pattern, {
       cwd,
       ignore: ignorePatterns,
-      gitignore: true,
+      // The AI handbook is a generated projection of tracked source documents.
+      // Its staging folder is deliberately ignored; normal Quartz retains gitignore.
+      gitignore: process.env.CSC_AI_HANDBOOK !== "1",
     })
   ).map(toPosixPath)
   return fps as FilePath[]

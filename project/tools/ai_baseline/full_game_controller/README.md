@@ -299,3 +299,105 @@ and original510/preferences restored. The separate offline `log_intelligence.py`
 reconstructs archived byte-offset segments, deduplicates production contracts and
 keeps repeated tree evaluations, unit events and current cohorts distinct. It
 never connects to the game. See the decision-path report for evidence and limits.
+
+
+## Opt-in Congress results acknowledgement —25 October
+
+Profile workers enable `allow_observer_congress_review`. Only the shipped results
+screen qualifies: Core observer/finite positive budget, UI same clock or lag1,
+visible enabled Return + LastResults, hidden vote/proposal/next/pass controls and
+review rather than resolution container. The shipped ClosePopup can request
+WORLD_CONGRESS_LOOKED_AT_AVAILABLE; journal it as a results acknowledgement,
+never as no-effect cosmetic code. No votes or proposals are submitted. Reserve
+identity before transmission; an ambiguous/actual request cannot repeat. Native
+140->145->150 progress followed a single acknowledgement with unchanged original
+finite budget and frozen gameplay. This proves this recovery, not universal
+Congress safety. Seven focused Lua51/Python tests cover guards and one-shot use.
+
+An active source handoff may race normal native progress. If its fresh phase no
+longer matches the proposed target/budget, defer and finish the existing operation
+rather than raising before preservation. Two actual-method moving-phase fixtures
+cover the observed transient143/remaining1 and completed145 cases. Avoid requesting
+a handoff merely because a results acknowledgement did not advance instantly.
+
+### Hidden observer first meeting (25 October 2026)
+
+A hidden FIRST_MEET_NEAR_RECIPIENT session can stop finite autoplay even after a visible Congress results acknowledgement. Inspect the newest current-turn DiplomacyManager record and native session participants. The shared controller now permits only the shipped CHOICE_EXIT/busy decline for that exact first-meet type, requiring its native exit definition, observer0 phase, matching open session and one-shot transmission. It never selects the positive invitation or submits AddResponse/AddStatement. This is a diplomatic decline, not cosmetic playback. Native same-process recovery165 onward is verified; support for other first-meet types remains unproven. Preserve the current partial operation and resume its existing remaining budget without another activation or replay.
+
+
+
+### Eliminated return player and uncontrolled AI-only flow
+
+An inactive autoplay counter is not a stable boundary when the original return
+player has died: a live test continued175->192 with local player-1/counter0.
+State replies now include observer liveness without another roundtrip. The core
+raises ObserverEliminated in active waits and ready checks; installed-profile
+drivers preserve the terminal journal, leave through the supported Menu and
+restore the test package/preferences. Never switch a studied AI into human
+control or relabel an overrun as a completed finite test. The early abort/cleanup
+is offline-tested and requires native integration confirmation in a future test.
+Targeted fixtures: ../test paths are in project/tools/ai_tuning/
+test_observer_firstmeet.py and test_observer_elimination.py. Missing liveness in
+legacy fixtures is unknown, not proof the observer is alive.
+
+
+## Native probe boundary — 30 October 2026
+
+The finite-play core and an experiment's surrounding lifecycle are different
+components. The core does not launch/load Civ or attach a native observer.
+Recent producer probe failures were in driver setup and input assumptions;
+successful paused DLL observation is separate from AI decision exposure. Do not
+diagnose DLL instability from a Python exception or a failed load readiness guard.
+
+`log_capture.capture_log_baseline(path)` now supplies a shared read-only boundary
+for native logs: a fresh paused load may not yet have created an AI CSV. It records
+that absence explicitly, with offset0 and no observed prefix hash. After play,
+`read_log_delta(path, boundary)` requires an actual file extending the same prefix.
+It fails on absent post-play evidence, changed generation, wrong path or access
+errors. Save the returned evidence metadata; a missing initial log is not proof
+that no native decisions occurred. A replaced/truncated generation must be
+preserved separately rather than silently merged.
+
+Probe drivers should reuse this helper and the finite core rather than copy
+dated Desktop executors. Native-save load paths must have a working precedent;
+ACK is not load success. Declare any post-load reference difference explicitly
+before intervention, compare the entire chosen baseline across arms, and never
+silently omit fields or restore gameplay values to force parity.
+
+Focused check: `python -B -m unittest -v full_game_controller.test_log_capture`
+from `project/tools/ai_baseline`. No launch, native API or game-file mutation is
+performed by these tests. This addition does not make a full probe lifecycle or
+an observer part of the controller core, and is not an AI efficacy result.
+
+
+## Shared session lifecycle —30 October2026
+
+`session.NativeSession` now surrounds the unchanged finite core for fresh full
+games and maintained probes. It takes explicit `inventory`, `hold`, `write` and
+launch callbacks; it does not choose worlds, scientific gates or observer ABI.
+Use `start`, `issue_load_once`/`load_once`, `issue_once` for a host,
+`ready_after_issue(...,eligibility=...)` and `close`. Launch callbacks should
+return the actual held process (including a supported Steam successor if their
+protocol permits it), not a bootstrap PID. Attach requires complete inventoried
+creation/path identity equality. Intent files use exclusive creation and fsync;
+never reuse a partial output directory to retry an ambiguous operation.
+
+`close` orders `before_menu` (observer freeze/capture/treatment restoration),
+Menu, verified preference restoration, one ExitOK, exact held exit,
+`after_native_exit` (observer exit verification), fresh owner absence, then the
+guarded package callback. Callbacks must verify their promised postconditions.
+Failure preserves evidence; it never kills foreign owners or overwrites changed
+installations. Nonzero native exit cannot pass even after safe restoration.
+
+`probe.make_probe_controller` supplies the native interface/diagnostics without
+old Desktop executor imports. `ai_tuning/native_session_probe.py --help` exposes
+the maintained zero-turn integration exercise. Source gate, reader, saved inputs,
+target, optional observers and any finite play remain explicit probe policy.
+Fullgame `native_profile_test.worker` now uses the same session for its fresh
+path; historical live125 recovery remains separate. Full games keep light
+capture and do not require a DLL observer.
+
+Tests: `python -B -m unittest -v full_game_controller.test_session` (24 cases,
+no native connections). Actual zero-turn110 integration and limits are recorded
+in `project/docs/research/mods/csc-shared-native-session-20261030.md`. This is
+not a new full-game or instrumentation-neutrality validation.

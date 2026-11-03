@@ -1,0 +1,37 @@
+[
+  {
+    "id": "COR-001",
+    "affected_sources": ["project/docs/integrations/csc-ai-tuning.md", "project/docs/research/mods/csc-ai-tuning-v1-20261017.md", "project/docs/research/mods/csc-ai-private-resource-citizen-effects-20261024.md"],
+    "summary": "Private or hidden ordinary yields are not automatically AI-only or economically inert. Native citizen allocation and ordinary output can be affected. Retain the actual role/profile and attachment controls when interpreting a test."
+  },
+  {
+    "id": "COR-002",
+    "affected_sources": ["project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md"],
+    "summary": "The earlier PLAYER_PLOT_YIELDS city-iterator mapping was corrected on 3 November. PLAYER_PLOT_YIELDS and SINGLE_PLOT_YIELDS consume an already supplied plot pointer once. Direct inspected empty contexts and actual live/nested contexts must remain distinct."
+  },
+  {
+    "id": "COR-003",
+    "affected_sources": ["project/docs/research/mods/csc-ai-native-production-analysis-20261028.md", "project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md"],
+    "summary": "Later Builder consumer analysis links Units.Value to additive request priority. Keep that field separate from the extra present value used in queue comparisons. The earlier unresolved link is historical."
+  },
+  {
+    "id": "COR-004",
+    "affected_sources": ["project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md", "project/docs/research/mods/csc-ai-customer-aware-planner-v2-20261101.md"],
+    "summary": "The old cold-start validation pending status is qualified by the two later placement diagnostic startups, which verified helper modules and methods. This closes startup capability only; it establishes neither a useful district decision capture nor improved chain outcomes."
+  },
+  {
+    "id": "COR-005",
+    "affected_sources": ["project/docs/research/mods/csc-ai-dynamic-foundations-diagnostic-20261021.md", "project/docs/research/mods/csc-ai-clean-strategies-20261020.md", "project/docs/research/mods/csc-research-influence-findings-20261021.md", "project/docs/research/mods/csc-civic-modifier-tests-20261020.md"],
+    "summary": "Finite failure to re-adopt a stopped strategy is not permanent irreversibility. Later Ancient-series observations include natural re-adoption 20 turns after stopping. Preserve the tested strategy, era, gates and observation window."
+  },
+  {
+    "id": "COR-006",
+    "affected_sources": ["project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md", "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md", "project/docs/integrations/csc-ai-roadmap.md"],
+    "summary": "Both early placement diagnostics are closed. Callback volume exceeded the cost gate; no useful target choice was captured and no weights were changed. Historical live/pending sections authorise no retry, and the broad optimisation campaign remains paused."
+  },
+  {
+    "id": "COR-007",
+    "affected_sources": ["project/docs/research/mods/csc-ai-paired-selective-chain-screen-results-20261101.md", "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md", "project/docs/research/mods/csc-ai-foundation-priority200-20261025-results.md"],
+    "summary": "Full-supply milestones and Service/link flags are not a profit calculation. Upstream materials and producers may supply partial benefits; absent full milestones do not imply zero return. Single joint-package comparisons, partial observation and censored late investments limit causal claims."
+  }
+]

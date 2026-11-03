@@ -442,6 +442,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     searchType = currentSearchTerm.startsWith("#") ? "tags" : "basic"
 
     let searchResults: DefaultDocumentSearchResults<Item>
+    const isAiHandbook = document.querySelector('meta[name="ai-handbook"]') !== null
     if (searchType === "tags") {
       currentSearchTerm = currentSearchTerm.substring(1).trim()
       const separatorIndex = currentSearchTerm.indexOf(" ")
@@ -473,7 +474,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     } else if (searchType === "basic") {
       searchResults = await index.searchAsync({
         query: currentSearchTerm,
-        limit: numSearchResults,
+        limit: isAiHandbook ? 64 : numSearchResults,
         index: ["title", "content"],
       })
     }
@@ -490,6 +491,12 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
       ...getByField("tags"),
     ])
     const finalResults = [...allIds].map((id) => formatForDisplay(currentSearchTerm, id))
+    // In the research handbook, show reconciled explanations before dated records.
+    // Normal CSC-site search keeps Quartz's existing ordering and result limits.
+    if (isAiHandbook && searchType === "basic") {
+      finalResults.sort((a, b) => Number(a.slug.startsWith("sources/")) - Number(b.slug.startsWith("sources/")))
+      finalResults.splice(numSearchResults)
+    }
     await displayResults(finalResults)
   }
 

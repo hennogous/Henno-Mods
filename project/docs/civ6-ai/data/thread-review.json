@@ -1,0 +1,1656 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-11-03",
+  "thread_id": "01a12a24-6714-7540-8d23-154b092106fe",
+  "title": "AI optimisation",
+  "thread_url": "codex://threads/01a12a24-6714-7540-8d23-154b092106fe",
+  "method": "read_thread; 50 sequential pages newest_first; turnLimit 10; includeOutputs false; followed every nextCursor until hasMore false.",
+  "coverage": {
+    "pages": 50,
+    "distinct_turns": 492,
+    "user_message_entries": 557,
+    "assistant_final_answer_entries": 496,
+    "oldest_started_at_utc": "2026-10-11T08:46:31.000Z",
+    "newest_started_at_utc": "2026-11-01T08:59:59.000Z",
+    "thread_updated_at_utc": "2026-11-01T09:05:11.000Z",
+    "end_reached": true
+  },
+  "limits": [
+    "This reviews the app's visible turn/message history, not every retained command output or underlying artifact.",
+    "Tool/command outputs were omitted; original reports and artifacts remain the technical evidence.",
+    "Historical heartbeat/automation instructions were classified as records of old phases, never executed.",
+    "Per-message character limits were 4000 on page1,7000 on page2,16000 thereafter; very large automation/command bodies may be truncated; no message-level truncation flag was returned.",
+    "No source-level claim is promoted solely because an assistant said it in the chat; report corroboration and current corrections govern the handbook."
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "request_cursor": null,
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":92931,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a19656-4689-70b1-b25a-7832b7ea5076",
+        "01a1964f-652a-7650-a3a1-42fd5cecaabc",
+        "01a19644-38e7-7dd1-be0a-9f8adace7945",
+        "01a195c4-1216-7833-a744-c16f4d00ed24",
+        "01a1958e-1631-7f52-ba79-26678d16bfc5",
+        "01a19584-3367-7a11-9206-d702f62fdcfe",
+        "01a1955f-a318-7273-a356-f656603a4d33",
+        "01a19547-3604-7670-a8a0-520c83c8e8ce",
+        "01a1953f-3f66-73a1-8bed-1736f8b2d5a9",
+        "01a19516-5154-7cb2-b573-81afd0594614"
+      ],
+      "started_at_utc": [
+        "2026-11-01T08:59:59.000Z",
+        "2026-11-01T08:52:28.000Z",
+        "2026-11-01T08:40:15.000Z",
+        "2026-11-01T06:20:17.000Z",
+        "2026-11-01T05:21:19.000Z",
+        "2026-11-01T05:10:31.000Z",
+        "2026-11-01T04:30:35.000Z",
+        "2026-11-01T04:03:54.000Z",
+        "2026-11-01T03:55:12.000Z",
+        "2026-11-01T03:10:30.000Z"
+      ]
+    },
+    {
+      "page": 2,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":92931,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":87781,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a194f7-dc7b-7fa1-b296-898bdb064bf4",
+        "01a194ee-1b8f-74c2-a809-083b21c3c5c4",
+        "01a194c3-1570-7403-b034-fc1a42fadc8c",
+        "01a194b7-73b8-71b1-9eeb-c392194ae7d7",
+        "01a194b2-dfb4-7231-823e-4fdd2cb11407",
+        "01a194ae-4223-7133-84e5-9309c62585e9",
+        "01a1947b-32ab-70e1-b150-841880dc6add",
+        "01a1945f-35cb-72e3-8dab-14d6f4313517",
+        "01a19455-3a9c-78b3-9f22-1f63ad3f0e8c",
+        "01a19453-2d25-75d1-abfb-11b157634c15"
+      ],
+      "started_at_utc": [
+        "2026-11-01T02:37:14.000Z",
+        "2026-11-01T02:26:35.000Z",
+        "2026-11-01T01:39:35.000Z",
+        "2026-11-01T01:26:53.000Z",
+        "2026-11-01T01:21:53.000Z",
+        "2026-11-01T01:16:50.000Z",
+        "2026-11-01T00:21:04.000Z",
+        "2026-10-31T23:50:30.000Z",
+        "2026-10-31T23:39:35.000Z",
+        "2026-10-31T23:37:21.000Z"
+      ]
+    },
+    {
+      "page": 3,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":87781,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":81172,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1941f-e19e-7fd0-9522-09ea0b8a958c",
+        "01a193f7-2141-7660-aaf3-f4aabf22d4b7",
+        "01a193ea-4afe-79e3-a028-f393b2384a94",
+        "01a193d2-a3a9-7cd2-90e4-bd0357ad8427",
+        "01a193ba-d81d-7f51-9e54-c6cefdd48a06",
+        "01a19376-9d6b-7382-be84-7c954dab45d8",
+        "01a19197-baee-7cb1-9432-b8983af2939c",
+        "01a19195-0ba4-7610-971b-c5e0cb1897de",
+        "01a1913d-23c0-7783-94e6-f430d37c6308",
+        "01a1911c-615b-7222-b4c2-7343476158e9"
+      ],
+      "started_at_utc": [
+        "2026-10-31T22:41:19.000Z",
+        "2026-10-31T21:56:49.000Z",
+        "2026-10-31T21:42:47.000Z",
+        "2026-10-31T21:16:57.000Z",
+        "2026-10-31T20:50:58.000Z",
+        "2026-10-31T19:36:26.000Z",
+        "2026-10-31T10:53:22.000Z",
+        "2026-10-31T10:50:26.000Z",
+        "2026-10-31T09:14:25.000Z",
+        "2026-10-31T08:38:38.000Z"
+      ]
+    },
+    {
+      "page": 4,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":81172,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":77908,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a19102-2b9e-79c1-b132-b972aadfd981",
+        "01a190b6-29b9-78e1-bc41-422a7a7b11c1",
+        "01a190a7-6a97-7ed2-8dc1-3d7beb64ddd5",
+        "01a190a3-66c9-7c21-b40d-fba865f47481",
+        "01a18e9d-fb45-7683-a4bc-27d429e79460",
+        "01a18e7b-5ee3-7fe3-be3e-6028feb9888a",
+        "01a18e59-4506-7f43-a0bd-aa7040acb46a",
+        "01a18e4a-7679-7622-95be-7590459076d0",
+        "01a18dee-12ac-7300-a44d-e1b2e8b41907",
+        "01a18da7-7adf-7f81-b373-a136c1aba0ff"
+      ],
+      "started_at_utc": [
+        "2026-10-31T08:10:01.000Z",
+        "2026-10-31T06:46:59.000Z",
+        "2026-10-31T06:30:53.000Z",
+        "2026-10-31T06:26:30.000Z",
+        "2026-10-30T21:01:20.000Z",
+        "2026-10-30T20:23:32.000Z",
+        "2026-10-30T19:46:17.000Z",
+        "2026-10-30T19:30:07.000Z",
+        "2026-10-30T17:49:12.000Z",
+        "2026-10-30T16:32:05.000Z"
+      ]
+    },
+    {
+      "page": 5,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":77908,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":75168,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a18ccc-e74d-7f60-bf42-83a9633a02df",
+        "01a18cbc-7a33-75f1-b091-a7ffcfa6f74e",
+        "01a18cb9-7885-72c3-9f1e-e4feb08860ad",
+        "01a18c03-af8f-7ef1-b1af-f25dc71054d0",
+        "01a18bf2-dfd0-7e91-bfb6-662d6ffc18af",
+        "01a18b75-4d92-7d82-a9b0-6dda1a341e02",
+        "01a18b73-9b4d-73c2-aa8d-2f67a1d58b30",
+        "01a18b72-9a0b-74d0-8529-ea81dfc14144",
+        "01a1898e-662d-7da1-b7a5-6da7834f1d04",
+        "01a1898d-057f-78f0-a153-75f864ffca1c"
+      ],
+      "started_at_utc": [
+        "2026-10-30T12:33:21.000Z",
+        "2026-10-30T12:15:24.000Z",
+        "2026-10-30T12:12:07.000Z",
+        "2026-10-30T08:53:34.000Z",
+        "2026-10-30T08:35:12.000Z",
+        "2026-10-30T06:18:03.000Z",
+        "2026-10-30T06:16:11.000Z",
+        "2026-10-30T06:15:06.000Z",
+        "2026-10-29T21:26:13.000Z",
+        "2026-10-29T21:24:43.000Z"
+      ]
+    },
+    {
+      "page": 6,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":75168,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":72495,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1898c-3053-76b1-a03d-cb38ea583b92",
+        "01a1898a-228d-74d1-ab63-80ee730bd57f",
+        "01a18956-6b98-74d3-a38c-1173b3acba9d",
+        "01a1894f-97ed-7813-b5be-3e6c1e7679d8",
+        "01a1894f-01ac-7ff3-870b-f49650a8a2de",
+        "01a1892a-3f40-7912-8d12-67062ab5f308",
+        "01a18921-6af2-79e0-94f0-3beb75fb2070",
+        "01a18905-14f9-75e2-9c42-1315aef082d3",
+        "01a18901-1d31-7872-b3d2-f1f649334a77",
+        "01a188e5-7c9b-7032-99c5-f4e49090deaa"
+      ],
+      "started_at_utc": [
+        "2026-10-29T21:23:48.000Z",
+        "2026-10-29T21:21:33.000Z",
+        "2026-10-29T20:25:04.000Z",
+        "2026-10-29T20:17:37.000Z",
+        "2026-10-29T20:16:58.000Z",
+        "2026-10-29T19:36:49.000Z",
+        "2026-10-29T19:27:11.000Z",
+        "2026-10-29T18:56:14.000Z",
+        "2026-10-29T18:51:54.000Z",
+        "2026-10-29T18:21:43.000Z"
+      ]
+    },
+    {
+      "page": 7,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":72495,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":68587,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a188c2-1af2-7d90-b941-d83aea66be6a",
+        "01a18886-4166-7043-9ac1-5296288511b9",
+        "01a18870-e27e-7b12-9a9e-2a026528e244",
+        "01a18870-63a7-74d2-abb8-688a71fb2cf2",
+        "01a1883e-605c-77d1-903a-4f9a089c785d",
+        "01a18360-660c-7852-a8a5-4ccb4e3de00f",
+        "01a1825f-47fb-7163-a287-73f468cfaad4",
+        "01a1820a-9bad-7780-b984-ca8a24ba6f7a",
+        "01a18207-5135-7ad3-8a26-ccd13e6cf4b7",
+        "01a181fb-d900-7ad0-b36b-9ffc6e7c7e82"
+      ],
+      "started_at_utc": [
+        "2026-10-29T17:43:04.000Z",
+        "2026-10-29T16:37:42.000Z",
+        "2026-10-29T16:14:21.000Z",
+        "2026-10-29T16:13:49.000Z",
+        "2026-10-29T15:19:11.000Z",
+        "2026-10-28T16:38:15.000Z",
+        "2026-10-28T11:57:24.000Z",
+        "2026-10-28T10:24:55.000Z",
+        "2026-10-28T10:21:20.000Z",
+        "2026-10-28T10:08:48.000Z"
+      ]
+    },
+    {
+      "page": 8,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":68587,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":67020,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a181f3-a895-7c31-962a-ea7fa72df0ff",
+        "01a1819b-07f2-7cb2-83b2-09b7c4048248",
+        "01a1815f-208b-7910-854e-244e8fcbc9bf",
+        "01a18143-c05d-7322-bab9-1228e1b9112e",
+        "01a18126-844f-7cc2-ac87-0cddb6cf67e3",
+        "01a18123-7684-7c71-95e4-d80ae8b23aea",
+        "01a18120-13a9-7ac1-8f89-0d4c9f2b32ac",
+        "01a17484-bea2-7560-a56d-bdf380be94c4",
+        "01a1747c-3e3a-7090-b27d-6da0c7678e81",
+        "01a17432-b7e6-7851-917e-12150c5195ea"
+      ],
+      "started_at_utc": [
+        "2026-10-28T09:59:51.000Z",
+        "2026-10-28T08:23:03.000Z",
+        "2026-10-28T07:17:37.000Z",
+        "2026-10-28T06:47:43.000Z",
+        "2026-10-28T06:15:47.000Z",
+        "2026-10-28T06:12:27.000Z",
+        "2026-10-28T06:08:45.000Z",
+        "2026-10-25T19:23:39.000Z",
+        "2026-10-25T19:14:21.000Z",
+        "2026-10-25T17:54:03.000Z"
+      ]
+    },
+    {
+      "page": 9,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":67020,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":64658,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1722f-0e1f-74c2-8bc3-d8bbe911f248",
+        "01a171f0-5668-7050-92a2-98509bbeb073",
+        "01a171cc-2b15-7913-8432-3cccd9dc8e55",
+        "01a171b9-925b-7cb3-867f-ba67a3df9e37",
+        "01a171ac-2329-7ad2-a4ff-a3392a21558c",
+        "01a17199-d1ef-7c21-b1e8-22491acedf2a",
+        "01a17197-57f4-7e62-8419-91c6cfaa6e4f",
+        "01a17185-ac8e-7960-a112-455f6f0d8bfb",
+        "01a1716b-627e-78a2-b102-2deaea0646ea",
+        "01a17163-54a0-7b00-8223-5ea7640f4caf"
+      ],
+      "started_at_utc": [
+        "2026-10-25T08:30:48.000Z",
+        "2026-10-25T07:22:18.000Z",
+        "2026-10-25T06:42:48.000Z",
+        "2026-10-25T06:22:29.000Z",
+        "2026-10-25T06:07:49.000Z",
+        "2026-10-25T05:47:48.000Z",
+        "2026-10-25T05:45:06.000Z",
+        "2026-10-25T05:25:48.000Z",
+        "2026-10-25T04:57:05.000Z",
+        "2026-10-25T04:48:17.000Z"
+      ]
+    },
+    {
+      "page": 10,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":64658,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":63474,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a17161-7665-76b1-8119-84f1ff37711c",
+        "01a1715e-3507-72b0-923b-05cd9eeb547d",
+        "01a1715c-71c5-7ce0-961a-5ae3dc191d6a",
+        "01a17154-ad66-7ed1-a9a9-954b4e83a841",
+        "01a17146-f099-7830-aa88-ac56dd55b7f0",
+        "01a1713a-eb33-7983-8ed1-5bd4e0421dd2",
+        "01a17133-d9c7-7073-a87d-458f4658688d",
+        "01a17121-cbcb-7200-98b7-1080fdcbb7be",
+        "01a1711b-7b39-75c3-b571-1dae04e25d6a",
+        "01a17114-417f-7933-903b-dec2dd3cfcee"
+      ],
+      "started_at_utc": [
+        "2026-10-25T04:46:15.000Z",
+        "2026-10-25T04:42:41.000Z",
+        "2026-10-25T04:40:46.000Z",
+        "2026-10-25T04:32:17.000Z",
+        "2026-10-25T04:17:17.000Z",
+        "2026-10-25T04:04:09.000Z",
+        "2026-10-25T03:56:25.000Z",
+        "2026-10-25T03:36:42.000Z",
+        "2026-10-25T03:29:48.000Z",
+        "2026-10-25T03:21:55.000Z"
+      ]
+    },
+    {
+      "page": 11,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":63474,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":58461,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a170da-4aa1-7f10-bb86-30c972f73cf1",
+        "01a170c5-e46d-7c32-a30e-7368dfc759fa",
+        "01a17096-21f6-78d3-93eb-cfa32a82c470",
+        "01a1706f-681c-7081-a2df-96f414bc1095",
+        "01a17040-e454-7383-8457-9581b722eafb",
+        "01a17026-a527-7750-ab08-4de138ff1d9e",
+        "01a16fb8-8a2e-7f11-a216-84d3b8d9d7fc",
+        "01a16f92-0995-79c1-a9f9-aaf1279b0944",
+        "01a16f8e-ff42-7c03-9490-6afd7db070d8",
+        "01a16f8b-ada5-73f1-ad94-0429eaf7e16a"
+      ],
+      "started_at_utc": [
+        "2026-10-25T02:18:36.000Z",
+        "2026-10-25T01:56:19.000Z",
+        "2026-10-25T01:04:09.000Z",
+        "2026-10-25T00:21:51.000Z",
+        "2026-10-24T23:31:03.000Z",
+        "2026-10-24T23:02:23.000Z",
+        "2026-10-24T21:02:07.000Z",
+        "2026-10-24T20:20:04.000Z",
+        "2026-10-24T20:16:44.000Z",
+        "2026-10-24T20:13:07.000Z"
+      ]
+    },
+    {
+      "page": 12,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":58461,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":56165,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16f57-9a79-7a13-b654-60cca7e14443",
+        "01a16e2d-09ad-7703-88b1-6cb622d8829c",
+        "01a16def-c71a-7952-8571-29f6568e6216",
+        "01a16d8d-fdc0-7353-8f71-8987808a4175",
+        "01a16d8a-f092-7f81-85c7-779f611d01dc",
+        "01a16d7b-7366-7593-97b3-21bec5799129",
+        "01a16d71-998d-7982-8e61-ceeb1bd11f3a",
+        "01a16d6f-e9b7-7571-a044-d4a674db361e",
+        "01a16d6b-c81e-7130-aa9d-90b550db11ca",
+        "01a16d68-58f3-7ab1-85b6-d7460c29cf5e"
+      ],
+      "started_at_utc": [
+        "2026-10-24T19:16:14.000Z",
+        "2026-10-24T13:50:07.000Z",
+        "2026-10-24T12:43:13.000Z",
+        "2026-10-24T10:56:24.000Z",
+        "2026-10-24T10:53:04.000Z",
+        "2026-10-24T10:36:09.000Z",
+        "2026-10-24T10:25:23.000Z",
+        "2026-10-24T10:23:33.000Z",
+        "2026-10-24T10:19:02.000Z",
+        "2026-10-24T10:15:17.000Z"
+      ]
+    },
+    {
+      "page": 13,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":56165,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":55211,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16d62-f244-70a3-a3f8-b539382137cf",
+        "01a16d5a-dab7-7640-a71f-3f6756343b4f",
+        "01a16d52-758e-7b50-a8cd-2e55272f7723",
+        "01a16d44-b83e-7312-a85f-ef07fbb8e3e9",
+        "01a16d26-4c95-7793-8eb5-02e59782dd64",
+        "01a16d20-a972-77f2-874a-05ac7360b46e",
+        "01a16d16-eddc-7380-a785-ba9c901fbaff",
+        "01a16d09-312a-77a3-981c-79476cc01ab7",
+        "01a16cfa-8a36-72b2-936c-8679a10db6bb",
+        "01a16ce5-582a-7623-a208-9fb698346cc2"
+      ],
+      "started_at_utc": [
+        "2026-10-24T10:09:23.000Z",
+        "2026-10-24T10:00:33.000Z",
+        "2026-10-24T09:51:23.000Z",
+        "2026-10-24T09:36:22.000Z",
+        "2026-10-24T09:03:08.000Z",
+        "2026-10-24T08:56:59.000Z",
+        "2026-10-24T08:46:21.000Z",
+        "2026-10-24T08:31:21.000Z",
+        "2026-10-24T08:15:21.000Z",
+        "2026-10-24T07:52:12.000Z"
+      ]
+    },
+    {
+      "page": 14,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":55211,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":53555,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16cd7-9b8b-74c2-9767-a75207a81fef",
+        "01a16cc9-de9b-7032-b295-0a73abbd3749",
+        "01a16c9f-43d8-7d83-a599-055c3dc486ef",
+        "01a16c73-4746-7901-9ed7-db9ddecc4bc6",
+        "01a16c6d-9952-7ea3-98ad-f3a8845ce2a1",
+        "01a16c6d-3363-7ca3-b77e-8288075aeff2",
+        "01a16c6c-4aa0-7a12-a5ea-fb8e5d5be6ae",
+        "01a16c09-8853-7f43-b513-f13538d65cda",
+        "01a16bff-af75-7fb0-817a-e63aba0d884c",
+        "01a16bf1-c5ba-7590-a052-d2cee240d9bf"
+      ],
+      "started_at_utc": [
+        "2026-10-24T07:37:11.000Z",
+        "2026-10-24T07:22:11.000Z",
+        "2026-10-24T06:35:39.000Z",
+        "2026-10-24T05:47:36.000Z",
+        "2026-10-24T05:41:24.000Z",
+        "2026-10-24T05:40:58.000Z",
+        "2026-10-24T05:39:58.000Z",
+        "2026-10-24T03:52:06.000Z",
+        "2026-10-24T03:41:21.000Z",
+        "2026-10-24T03:26:09.000Z"
+      ]
+    },
+    {
+      "page": 15,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":53555,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":49039,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16bd4-2749-7ba1-8362-6331fa43f26c",
+        "01a16bcb-11ff-7930-a849-105dafd37e03",
+        "01a16b83-61d2-72c0-91f3-73931eb22b35",
+        "01a16b6f-756e-78c3-af3c-321f9cfc50bc",
+        "01a16b36-5d9f-7483-918d-1d7c27ce2f7a",
+        "01a16b19-c23e-75e2-aecf-c456856e6f71",
+        "01a16b0c-fd3b-73f1-8d8f-6184f8a43697",
+        "01a16aef-4810-7d91-92e3-8b776c208936",
+        "01a16ac6-a4d4-7820-a002-069965f8a26b",
+        "01a16ab8-749b-79f1-8650-e5f34374a063"
+      ],
+      "started_at_utc": [
+        "2026-10-24T02:53:48.000Z",
+        "2026-10-24T02:43:52.000Z",
+        "2026-10-24T01:25:34.000Z",
+        "2026-10-24T01:03:49.000Z",
+        "2026-10-24T00:01:27.000Z",
+        "2026-10-23T23:30:12.000Z",
+        "2026-10-23T23:16:15.000Z",
+        "2026-10-23T22:43:48.000Z",
+        "2026-10-23T21:59:25.000Z",
+        "2026-10-23T21:43:55.000Z"
+      ]
+    },
+    {
+      "page": 16,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":49039,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":46737,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16a85-3a9f-74c1-85b3-0df23b0d3fe5",
+        "01a16a73-1530-7543-b306-c11c116ffdd7",
+        "01a16a68-7293-7ea3-810b-34510ce92a5e",
+        "01a16a65-b400-7a01-bb0a-2be656873a5c",
+        "01a16a5a-b5d7-74c3-b199-351ee7e4ec61",
+        "01a16a49-5310-7490-98b1-acc0ebb0f85c",
+        "01a16a30-0622-7730-9a93-919d3e798a20",
+        "01a16a07-fa1c-70d0-8dd3-efc2e4bcb5d5",
+        "01a16a04-9e25-7432-8b7f-654edc4313fe",
+        "01a169fe-34d5-74c1-a89c-804ef8a672f6"
+      ],
+      "started_at_utc": [
+        "2026-10-23T20:47:58.000Z",
+        "2026-10-23T20:28:09.000Z",
+        "2026-10-23T20:16:32.000Z",
+        "2026-10-23T20:13:32.000Z",
+        "2026-10-23T20:01:32.000Z",
+        "2026-10-23T19:42:32.000Z",
+        "2026-10-23T19:14:54.000Z",
+        "2026-10-23T18:31:10.000Z",
+        "2026-10-23T18:27:30.000Z",
+        "2026-10-23T18:20:29.000Z"
+      ]
+    },
+    {
+      "page": 17,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":46737,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":45349,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a169f6-e168-77d2-9ee7-65c13e1f7ae4",
+        "01a169e9-24e2-7301-9820-f3affa34e3cc",
+        "01a169db-6803-7693-90f8-da03e0a7e438",
+        "01a169c2-ae39-77d3-803a-887c14c21e18",
+        "01a1697e-c3dc-7c52-8eee-59939acdc89e",
+        "01a1697a-3d31-7c22-9640-ea314a3b9e19",
+        "01a16973-6c37-74f1-ab78-3cf4f91d7aad",
+        "01a1694a-ad66-78b0-93b1-660fa3f56c9e",
+        "01a1693c-f0ce-7791-a48a-32e331c80acc",
+        "01a1692f-340a-7cf1-9858-15a8699bc156"
+      ],
+      "started_at_utc": [
+        "2026-10-23T18:12:29.000Z",
+        "2026-10-23T17:57:29.000Z",
+        "2026-10-23T17:42:29.000Z",
+        "2026-10-23T17:15:28.000Z",
+        "2026-10-23T16:01:17.000Z",
+        "2026-10-23T15:56:21.000Z",
+        "2026-10-23T15:48:54.000Z",
+        "2026-10-23T15:04:24.000Z",
+        "2026-10-23T14:49:23.000Z",
+        "2026-10-23T14:34:23.000Z"
+      ]
+    },
+    {
+      "page": 18,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":45349,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":44523,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16921-776f-77b0-b54b-92ac5a06c440",
+        "01a16913-bac1-7623-9101-2ecffe77431b",
+        "01a16905-fde7-7e62-a57b-044d8dc7b483",
+        "01a168fb-b6b3-7b83-946b-d3af32aade1d",
+        "01a168f0-edb9-7761-8f9c-6d5b36524929",
+        "01a168e3-30f8-7050-90b1-58d3663b2922",
+        "01a168d5-7462-7182-9312-e26fbb137619",
+        "01a168c7-b7c4-7d62-8e4a-0e9673513c8b",
+        "01a168bb-adeb-7843-b7ac-7c6af018fdb5",
+        "01a168b9-fb33-7e51-8af4-716096f5345c"
+      ],
+      "started_at_utc": [
+        "2026-10-23T14:19:23.000Z",
+        "2026-10-23T14:04:23.000Z",
+        "2026-10-23T13:49:22.000Z",
+        "2026-10-23T13:38:09.000Z",
+        "2026-10-23T13:26:22.000Z",
+        "2026-10-23T13:11:22.000Z",
+        "2026-10-23T12:56:21.000Z",
+        "2026-10-23T12:41:21.000Z",
+        "2026-10-23T12:28:12.000Z",
+        "2026-10-23T12:26:21.000Z"
+      ]
+    },
+    {
+      "page": 19,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":44523,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":43528,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a168ac-3e6c-70c1-a806-5beb93d5106a",
+        "01a1689e-81e6-7050-86ed-3f2a2a0807c9",
+        "01a16886-08fe-70a0-aa3f-63e7c17e7af1",
+        "01a1683c-3a8c-7981-a735-6c47df4c5776",
+        "01a16834-aeff-73f1-8561-c693a3b1306c",
+        "01a16823-b4cb-7b40-bf80-e1dbb9110c28",
+        "01a1681d-c73e-7b43-9cab-30b2b965afcd",
+        "01a16817-d4b4-7bf1-b4d9-810f349afefa",
+        "01a16816-fec3-7f22-a520-c33b6bbd9d05",
+        "01a16808-d83e-76f1-89a8-ca3210bf422a"
+      ],
+      "started_at_utc": [
+        "2026-10-23T12:11:21.000Z",
+        "2026-10-23T11:56:20.000Z",
+        "2026-10-23T11:29:37.000Z",
+        "2026-10-23T10:09:00.000Z",
+        "2026-10-23T10:00:45.000Z",
+        "2026-10-23T09:42:12.000Z",
+        "2026-10-23T09:35:44.000Z",
+        "2026-10-23T09:29:14.000Z",
+        "2026-10-23T09:28:19.000Z",
+        "2026-10-23T09:12:52.000Z"
+      ]
+    },
+    {
+      "page": 20,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":43528,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":42486,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16803-e39c-7782-b524-c0d4d60b2e70",
+        "01a167fe-7716-7142-bff1-710e18fd343a",
+        "01a167f5-2f78-7d81-8b21-ee8f46f01339",
+        "01a167a8-1ed0-71d1-bb06-5b4a756e97a5",
+        "01a167a4-c4e7-7923-834d-dae6251f81cd",
+        "01a16794-01d6-75f0-9d21-4d0a07d85025",
+        "01a16756-fac4-7bf2-8fda-78bdea6dc010",
+        "01a16756-b37a-7811-9e4e-f0dd6c00613d",
+        "01a16750-9ecf-7f93-8c5f-27b9c03bae26",
+        "01a1674f-3e7c-7e53-ba36-c5f567cc5a17"
+      ],
+      "started_at_utc": [
+        "2026-10-23T09:07:27.000Z",
+        "2026-10-23T09:01:32.000Z",
+        "2026-10-23T08:51:24.000Z",
+        "2026-10-23T07:27:13.000Z",
+        "2026-10-23T07:23:34.000Z",
+        "2026-10-23T07:05:15.000Z",
+        "2026-10-23T05:58:36.000Z",
+        "2026-10-23T05:58:17.000Z",
+        "2026-10-23T05:51:39.000Z",
+        "2026-10-23T05:50:09.000Z"
+      ]
+    },
+    {
+      "page": 21,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":42486,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":40359,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1674e-8c8f-7bf1-afe0-3e7115b8ee97",
+        "01a1674c-c34d-7632-90ee-1f4fedbda753",
+        "01a16736-140c-7da1-9a6c-1e2d48a255cc",
+        "01a16730-6bc3-7383-b5b8-21d241f166df",
+        "01a1672f-160b-7183-ac65-b4fb6c742b69",
+        "01a16728-db3e-7a81-9138-4a64ace591c8",
+        "01a1671d-1ce6-7b43-bf12-64cfa3c6ffc2",
+        "01a16637-a2cc-7f20-8552-ae279d01861d",
+        "01a1661e-b77c-7ff3-948f-08bdff5a505f",
+        "01a165df-e55b-74e2-9459-297ffb41ee99"
+      ],
+      "started_at_utc": [
+        "2026-10-23T05:49:23.000Z",
+        "2026-10-23T05:47:26.000Z",
+        "2026-10-23T05:22:39.000Z",
+        "2026-10-23T05:16:29.000Z",
+        "2026-10-23T05:15:01.000Z",
+        "2026-10-23T05:08:13.000Z",
+        "2026-10-23T04:55:23.000Z",
+        "2026-10-23T00:44:44.000Z",
+        "2026-10-23T00:17:31.000Z",
+        "2026-10-22T23:08:54.000Z"
+      ]
+    },
+    {
+      "page": 22,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":40359,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":37886,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a165cb-f1db-7990-a3da-a872d06c3cd5",
+        "01a1655b-47e6-7ff2-a782-4049bd71c43e",
+        "01a1654c-a3ba-7350-b728-55b75e7b254b",
+        "01a16547-5633-7db3-89f4-f056927b305e",
+        "01a1653e-e746-7843-88ac-c3ec05309e0a",
+        "01a16531-2a7a-76d3-8324-e81412e587bb",
+        "01a1652a-e0d6-7831-8920-49db840febbb",
+        "01a16528-ac5a-72e2-ab97-4673623b8a64",
+        "01a16527-117f-7731-9f65-2a919c5dc34f",
+        "01a16523-6dec-7033-94cd-d87a40bd544c"
+      ],
+      "started_at_utc": [
+        "2026-10-22T22:47:07.000Z",
+        "2026-10-22T20:44:03.000Z",
+        "2026-10-22T20:28:03.000Z",
+        "2026-10-22T20:22:16.000Z",
+        "2026-10-22T20:13:03.000Z",
+        "2026-10-22T19:58:03.000Z",
+        "2026-10-22T19:51:11.000Z",
+        "2026-10-22T19:48:46.000Z",
+        "2026-10-22T19:47:01.000Z",
+        "2026-10-22T19:43:03.000Z"
+      ]
+    },
+    {
+      "page": 23,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":37886,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":37146,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16515-b12f-7443-945d-ee581cff59b5",
+        "01a16504-8b16-7750-98ba-7ca92dd2b0f4",
+        "01a164f9-00bc-70b1-b141-60cdeedb9a3c",
+        "01a164f7-2c00-7920-95f4-a2ae3f7c7cd8",
+        "01a164f4-237f-7b31-a4c1-f05548c64d47",
+        "01a164ee-e8da-7671-a86f-651c4b01b42d",
+        "01a164eb-43fa-7553-8ed2-bcd2b5abcc63",
+        "01a164e3-1ccf-74b2-b3d2-92e3666e3884",
+        "01a164e0-55e8-7bb1-b5e8-e10b6b609caf",
+        "01a164d3-0f42-77c2-b1c2-803e3542c0e5"
+      ],
+      "started_at_utc": [
+        "2026-10-22T19:28:02.000Z",
+        "2026-10-22T19:09:19.000Z",
+        "2026-10-22T18:56:42.000Z",
+        "2026-10-22T18:54:42.000Z",
+        "2026-10-22T18:51:23.000Z",
+        "2026-10-22T18:45:41.000Z",
+        "2026-10-22T18:41:42.000Z",
+        "2026-10-22T18:32:48.000Z",
+        "2026-10-22T18:29:46.000Z",
+        "2026-10-22T18:15:16.000Z"
+      ]
+    },
+    {
+      "page": 24,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":37146,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":35988,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a164c5-b7ca-7912-a52c-7c371dd6dad6",
+        "01a164b7-fb14-75d2-965e-4431de124e0c",
+        "01a16497-c934-7a70-b323-85d98838cb5c",
+        "01a16476-5e78-7753-8e48-3d82d94d4ff8",
+        "01a16414-1f18-7ca3-a209-59a468d5b1f2",
+        "01a163e1-c142-70e3-a79c-5cfcaf3f4386",
+        "01a163c0-11c4-75e3-ad89-f98d13ec15b9",
+        "01a163be-4c73-7b43-a276-14ade6b33f3c",
+        "01a163b0-900a-7bb3-93ef-665434d6321f",
+        "01a163a2-6470-7c12-b146-8a94cf343a10"
+      ],
+      "started_at_utc": [
+        "2026-10-22T18:00:41.000Z",
+        "2026-10-22T17:45:41.000Z",
+        "2026-10-22T17:10:31.000Z",
+        "2026-10-22T16:34:01.000Z",
+        "2026-10-22T14:46:42.000Z",
+        "2026-10-22T13:51:41.000Z",
+        "2026-10-22T13:14:54.000Z",
+        "2026-10-22T13:12:58.000Z",
+        "2026-10-22T12:57:58.000Z",
+        "2026-10-22T12:42:29.000Z"
+      ]
+    },
+    {
+      "page": 25,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":35988,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":35040,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1638d-c080-7932-922e-5bc91e1aa61a",
+        "01a1637e-2eed-7851-b613-ba3f9c1a3d92",
+        "01a16372-af80-7a23-b21d-f3d5ed68fb92",
+        "01a16370-7249-7bd3-a78b-14444006e6b5",
+        "01a1635f-d672-7a33-89ed-a67b79018f75",
+        "01a16358-a31c-7e90-8f20-1d6f0db82466",
+        "01a16350-ebb0-7c71-99df-d47a7dccf810",
+        "01a1634a-e662-70e3-b607-3b6e37a2fcb7",
+        "01a1633d-297f-7e21-8360-7235917219ee",
+        "01a1632f-6cd2-71f0-bed1-9a7a8b4cfdb9"
+      ],
+      "started_at_utc": [
+        "2026-10-22T12:19:56.000Z",
+        "2026-10-22T12:02:56.000Z",
+        "2026-10-22T11:50:22.000Z",
+        "2026-10-22T11:47:56.000Z",
+        "2026-10-22T11:29:47.000Z",
+        "2026-10-22T11:21:55.000Z",
+        "2026-10-22T11:13:30.000Z",
+        "2026-10-22T11:06:55.000Z",
+        "2026-10-22T10:51:55.000Z",
+        "2026-10-22T10:36:54.000Z"
+      ]
+    },
+    {
+      "page": 26,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":35040,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":34511,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a16321-b078-7f63-91ea-abbf5b85b6d4",
+        "01a1631e-0aad-77d3-97c3-da4e68be9b9c",
+        "01a16313-f3c2-78b1-9efe-c1db738d727b",
+        "01a16306-3743-7452-a505-ee9f82cd441e",
+        "01a162f8-7a9a-7a61-ab0c-76a9c4e5c72b",
+        "01a162f2-30c2-7881-8a29-f18761c796b6",
+        "01a162ea-be27-7df0-99cb-e653945b59ba",
+        "01a162dd-01ad-7f30-8e06-178c10ab366c",
+        "01a162cf-44e0-7631-93e2-386ea7ef569b",
+        "01a162c5-51de-7481-8ff3-f683007ec681"
+      ],
+      "started_at_utc": [
+        "2026-10-22T10:21:54.000Z",
+        "2026-10-22T10:17:55.000Z",
+        "2026-10-22T10:06:54.000Z",
+        "2026-10-22T09:51:54.000Z",
+        "2026-10-22T09:36:53.000Z",
+        "2026-10-22T09:30:01.000Z",
+        "2026-10-22T09:21:53.000Z",
+        "2026-10-22T09:06:53.000Z",
+        "2026-10-22T08:51:53.000Z",
+        "2026-10-22T08:41:01.000Z"
+      ]
+    },
+    {
+      "page": 27,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":34511,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":33993,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a162c4-99c7-7241-929c-ffdef3810dba",
+        "01a162c1-8818-78c3-897b-d8edd39755ac",
+        "01a162b2-e0f5-74d3-8f1a-aad1f1855f8b",
+        "01a162a5-243b-7702-9e21-b37f9d6b91e8",
+        "01a1629a-3ea1-7fd1-ab94-9d13692c0afc",
+        "01a16290-fe7b-7d50-b3e3-551f4a69b058",
+        "01a16288-f692-7f00-b51c-4620caeb6bc4",
+        "01a16283-41c5-78b3-a6db-ef95e62feaa2",
+        "01a16275-84dd-7821-bc81-9396660596bc",
+        "01a16267-c83a-7b52-820a-38c07c826c64"
+      ],
+      "started_at_utc": [
+        "2026-10-22T08:40:14.000Z",
+        "2026-10-22T08:36:52.000Z",
+        "2026-10-22T08:20:52.000Z",
+        "2026-10-22T08:05:52.000Z",
+        "2026-10-22T07:53:58.000Z",
+        "2026-10-22T07:43:51.000Z",
+        "2026-10-22T07:35:05.000Z",
+        "2026-10-22T07:28:51.000Z",
+        "2026-10-22T07:13:51.000Z",
+        "2026-10-22T06:58:51.000Z"
+      ]
+    },
+    {
+      "page": 28,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":33993,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":33502,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1625a-0b9c-7250-acf2-8ff6387c4ef7",
+        "01a1624c-4edc-7fb2-a139-1269c4a3accb",
+        "01a1623f-4bc6-7c71-b4bb-438a8685f879",
+        "01a1623e-9210-7d31-b9c7-c65efd190df0",
+        "01a16239-7120-7a73-a5e7-e681273fb39a",
+        "01a16234-d4e8-74c2-8730-4815f09b4ab8",
+        "01a16230-d549-7cd3-a70d-d92d096974f5",
+        "01a16223-18b1-7a51-a9cb-2f0e9171817a",
+        "01a16215-5c1e-7d60-8519-dc30a0d2832a",
+        "01a16207-9fa5-7e32-a0ae-74b007a271f4"
+      ],
+      "started_at_utc": [
+        "2026-10-22T06:43:50.000Z",
+        "2026-10-22T06:28:50.000Z",
+        "2026-10-22T06:14:37.000Z",
+        "2026-10-22T06:13:50.000Z",
+        "2026-10-22T06:08:14.000Z",
+        "2026-10-22T06:03:12.000Z",
+        "2026-10-22T05:58:49.000Z",
+        "2026-10-22T05:43:49.000Z",
+        "2026-10-22T05:28:49.000Z",
+        "2026-10-22T05:13:49.000Z"
+      ]
+    },
+    {
+      "page": 29,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":33502,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":32136,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a161f9-e379-72e0-8eb1-851deb7552ea",
+        "01a161e2-ce42-77c1-8d3a-0caa1c142db0",
+        "01a161dd-5083-7660-9470-60e47dfa449a",
+        "01a161cf-93e0-74f3-aa2c-3292d9916417",
+        "01a161b6-da3e-79b3-9d2c-10ca6dc79acd",
+        "01a160c0-89da-7112-b490-75bd1ed237f5",
+        "01a160b2-cd6c-7042-837b-b8fa753d637a",
+        "01a160a5-10d0-77c2-86d8-518e74e036e9",
+        "01a16097-5451-76b2-b9c5-42d6458f5947",
+        "01a16089-97a1-7441-9221-c08190d493f8"
+      ],
+      "started_at_utc": [
+        "2026-10-22T04:58:49.000Z",
+        "2026-10-22T04:33:36.000Z",
+        "2026-10-22T04:27:36.000Z",
+        "2026-10-22T04:12:36.000Z",
+        "2026-10-22T03:45:35.000Z",
+        "2026-10-21T23:16:33.000Z",
+        "2026-10-21T23:01:33.000Z",
+        "2026-10-21T22:46:32.000Z",
+        "2026-10-21T22:31:32.000Z",
+        "2026-10-21T22:16:32.000Z"
+      ]
+    },
+    {
+      "page": 30,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":32136,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":30040,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1607b-db12-7801-82cb-ff8f77f8681e",
+        "01a1606e-1e74-7eb2-b1ad-710c5e235aa2",
+        "01a16060-6215-7f11-a7db-26463d5cc756",
+        "01a1604b-51bc-7010-aec2-d09452d48517",
+        "01a1603c-aadf-7bc2-946a-8e46468fc8ff",
+        "01a1602e-ee69-76c1-8ea8-b9e7eb5def55",
+        "01a16014-5fba-7a52-b97a-09add412590b",
+        "01a1600f-686f-7b93-8044-692599900217",
+        "01a1600b-a2e4-7d20-ab05-909ef6e1d0d4",
+        "01a16003-e3b0-70a3-8064-bd5ecaf365ab"
+      ],
+      "started_at_utc": [
+        "2026-10-21T22:01:32.000Z",
+        "2026-10-21T21:46:31.000Z",
+        "2026-10-21T21:31:31.000Z",
+        "2026-10-21T21:08:31.000Z",
+        "2026-10-21T20:52:31.000Z",
+        "2026-10-21T20:37:30.000Z",
+        "2026-10-21T20:08:30.000Z",
+        "2026-10-21T20:03:04.000Z",
+        "2026-10-21T19:58:57.000Z",
+        "2026-10-21T19:50:30.000Z"
+      ]
+    },
+    {
+      "page": 31,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":30040,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":28559,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15ff6-2715-7872-8125-26bbffd82469",
+        "01a15ff2-80fa-7972-8af8-7a1b65b5b739",
+        "01a15fc9-7a98-72c3-a830-4fe7f16f0859",
+        "01a15fb5-376b-7ad2-acd7-bb3bda6e50de",
+        "01a15fb1-76d3-7673-9454-c829c79e726d",
+        "01a15fa4-d35b-70e2-a599-10a85b13d4a8",
+        "01a15fa3-9b86-7930-b947-84a9911c4958",
+        "01a15f96-2cfb-7cd1-aa8d-670a35050e83",
+        "01a15f88-70b4-7001-a913-344267b02ec4",
+        "01a15f7a-b414-7973-bea7-eb131eca7725"
+      ],
+      "started_at_utc": [
+        "2026-10-21T19:35:29.000Z",
+        "2026-10-21T19:31:30.000Z",
+        "2026-10-21T18:46:42.000Z",
+        "2026-10-21T18:24:34.000Z",
+        "2026-10-21T18:20:28.000Z",
+        "2026-10-21T18:06:40.000Z",
+        "2026-10-21T18:05:20.000Z",
+        "2026-10-21T17:50:39.000Z",
+        "2026-10-21T17:35:39.000Z",
+        "2026-10-21T17:20:39.000Z"
+      ]
+    },
+    {
+      "page": 32,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":28559,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":27214,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15f71-1e5a-7043-862c-111bcfdae184",
+        "01a15f6c-f7f2-7e73-a22a-d473ac14293c",
+        "01a15f4a-2b2b-7e23-8a6f-34e7d9a4e8a9",
+        "01a15f3c-6e97-7073-8e77-3b0b4245cc4a",
+        "01a15f25-fdf9-7e13-bc5e-a5f129dbc488",
+        "01a15f1f-20b3-79f0-91a9-5aa92fe2ad23",
+        "01a15f19-c05a-7452-ade8-989b8d61eeca",
+        "01a15f12-868c-7e33-88b6-a1fd38f32c69",
+        "01a15f07-c6b9-70d0-9242-664cb3f22438",
+        "01a15efd-6772-75e2-a030-089ac68e8b01"
+      ],
+      "started_at_utc": [
+        "2026-10-21T17:10:11.000Z",
+        "2026-10-21T17:05:39.000Z",
+        "2026-10-21T16:27:39.000Z",
+        "2026-10-21T16:12:38.000Z",
+        "2026-10-21T15:48:07.000Z",
+        "2026-10-21T15:40:37.000Z",
+        "2026-10-21T15:34:45.000Z",
+        "2026-10-21T15:26:52.000Z",
+        "2026-10-21T15:15:07.000Z",
+        "2026-10-21T15:03:47.000Z"
+      ]
+    },
+    {
+      "page": 33,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":27214,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":26555,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15ef3-6539-79d2-91a2-d61d961f7238",
+        "01a15eec-3c2f-7180-b2bb-d898be4f8387",
+        "01a15e9f-fe5f-7131-8147-c6f256fac9d2",
+        "01a15dff-04ab-7d72-8aff-cc77d28de1d7",
+        "01a15dd4-425c-7181-8477-ca7865b9c8b8",
+        "01a15dcd-7f82-7f12-9470-90c6ac7febf7",
+        "01a15d59-d261-7a01-9b53-c1307315bd16",
+        "01a15d4c-15e5-7432-91fc-3f511a6bc7be",
+        "01a15d3e-5923-7681-8d86-a2d3b612bc4d",
+        "01a15d30-9cd6-7802-b13e-f63cba09a5b7"
+      ],
+      "started_at_utc": [
+        "2026-10-21T14:52:51.000Z",
+        "2026-10-21T14:45:02.000Z",
+        "2026-10-21T13:21:46.000Z",
+        "2026-10-21T10:25:56.000Z",
+        "2026-10-21T09:39:14.000Z",
+        "2026-10-21T09:31:51.000Z",
+        "2026-10-21T07:25:30.000Z",
+        "2026-10-21T07:10:29.000Z",
+        "2026-10-21T06:55:29.000Z",
+        "2026-10-21T06:40:29.000Z"
+      ]
+    },
+    {
+      "page": 34,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":26555,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":25786,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15d22-dfd2-7cd1-9a2f-3ec5dda438d1",
+        "01a15d14-38e6-7db1-ad2d-181976b6de2b",
+        "01a15d06-7c1e-7693-8529-fe8427e60ab3",
+        "01a15cfb-8709-7222-8081-1a88852b38c8",
+        "01a15ced-d958-7901-9616-e6200bdee2da",
+        "01a15ce9-d523-7a51-9553-e9ffed83a713",
+        "01a15ce7-95c3-7dd0-993d-9fb328e8fdcf",
+        "01a15cd7-5215-7182-9b18-315dfcdcfaab",
+        "01a15cc9-9576-7eb0-ad11-38574e3e4eea",
+        "01a15cc1-3cba-72a1-a55c-16965bdbb561"
+      ],
+      "started_at_utc": [
+        "2026-10-21T06:25:29.000Z",
+        "2026-10-21T06:09:28.000Z",
+        "2026-10-21T05:54:28.000Z",
+        "2026-10-21T05:42:30.000Z",
+        "2026-10-21T05:27:34.000Z",
+        "2026-10-21T05:23:10.000Z",
+        "2026-10-21T05:20:43.000Z",
+        "2026-10-21T05:02:57.000Z",
+        "2026-10-21T04:47:57.000Z",
+        "2026-10-21T04:38:50.000Z"
+      ]
+    },
+    {
+      "page": 35,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":25786,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":25198,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15cbf-a421-7fa2-addd-f07dff434ee4",
+        "01a15cbb-d910-7433-ae78-cf4d82c2dbb2",
+        "01a15cae-1c81-7201-873e-6e90493095b7",
+        "01a15ca0-5f9e-7832-84a4-c12869853dfc",
+        "01a15c94-c64a-7d82-8d70-ef179e781766",
+        "01a15c83-4a2f-7bd3-8843-d6eb13ae5d48",
+        "01a15c80-b500-7fa1-8c9b-2eeaa1e575ca",
+        "01a15c7b-d0f2-7a33-871d-106fef0d5ea4",
+        "01a15bc0-eaf0-7582-8522-9fa9900926df",
+        "01a15bb3-2e6e-74a3-b9a4-2b192017bcee"
+      ],
+      "started_at_utc": [
+        "2026-10-21T04:37:05.000Z",
+        "2026-10-21T04:32:57.000Z",
+        "2026-10-21T04:17:56.000Z",
+        "2026-10-21T04:02:56.000Z",
+        "2026-10-21T03:50:16.000Z",
+        "2026-10-21T03:31:10.000Z",
+        "2026-10-21T03:28:21.000Z",
+        "2026-10-21T03:23:00.000Z",
+        "2026-10-20T23:58:52.000Z",
+        "2026-10-20T23:43:52.000Z"
+      ]
+    },
+    {
+      "page": 36,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":25198,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":24249,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15ba5-6de4-7a33-9be3-41c9de6f5378",
+        "01a15b97-b148-7831-b234-9f7104899cc5",
+        "01a15b89-f49b-7850-9306-d7b92f059479",
+        "01a15b7c-37d1-7923-bcff-232a3d655029",
+        "01a15b6e-7b6a-72e3-84db-78852edc5c67",
+        "01a15b60-beaf-7a33-b915-31d62eded53c",
+        "01a15b53-023c-7ae3-98c4-9b776b9fa204",
+        "01a15b45-457f-7452-a245-d773c23030f9",
+        "01a15b37-890a-7393-b2c3-20844cc06900",
+        "01a15b29-cc60-7b61-800e-e40aee35f31d"
+      ],
+      "started_at_utc": [
+        "2026-10-20T23:28:50.000Z",
+        "2026-10-20T23:13:50.000Z",
+        "2026-10-20T22:58:50.000Z",
+        "2026-10-20T22:43:49.000Z",
+        "2026-10-20T22:28:49.000Z",
+        "2026-10-20T22:13:49.000Z",
+        "2026-10-20T21:58:49.000Z",
+        "2026-10-20T21:43:48.000Z",
+        "2026-10-20T21:28:48.000Z",
+        "2026-10-20T21:13:48.000Z"
+      ]
+    },
+    {
+      "page": 37,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":24249,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":23265,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15b1c-0fd7-7fa3-a14c-26d8c1fd44b4",
+        "01a15b0e-5342-70f2-b753-7fdf24e43195",
+        "01a15b00-96b4-7f41-8017-8f57a792c4a6",
+        "01a15af2-da1c-7613-b2c9-ec87d9319bf1",
+        "01a15ae5-1d81-72a3-b030-82caa208ff43",
+        "01a15adb-40fc-7d63-ae99-6629323c9434",
+        "01a15aca-7332-7e53-9ca5-2b3cac46f240",
+        "01a1588d-c324-73a2-b7f0-c24ce505af9e",
+        "01a15872-3f4a-77e3-8399-16208e34b62c",
+        "01a15864-82b4-72b2-8877-bdb2e0781891"
+      ],
+      "started_at_utc": [
+        "2026-10-20T20:58:48.000Z",
+        "2026-10-20T20:43:47.000Z",
+        "2026-10-20T20:28:47.000Z",
+        "2026-10-20T20:13:47.000Z",
+        "2026-10-20T19:58:47.000Z",
+        "2026-10-20T19:48:00.000Z",
+        "2026-10-20T19:29:39.000Z",
+        "2026-10-20T09:04:08.000Z",
+        "2026-10-20T08:34:04.000Z",
+        "2026-10-20T08:19:04.000Z"
+      ]
+    },
+    {
+      "page": 38,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":23265,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":22483,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15856-c657-7021-a32f-73b2aa1f7f75",
+        "01a15851-8221-73e3-bde2-8a3c1bb5be36",
+        "01a15848-dcc9-7a81-bfa4-0261fec31323",
+        "01a15845-603a-7732-9c10-eb09ce4e2a9b",
+        "01a15837-a381-7343-a159-dc2b953d840a",
+        "01a15829-e6e9-7011-98db-913bebdd821e",
+        "01a15823-673e-7dc3-84f9-493510ebe3c6",
+        "01a15817-9614-7df3-9b52-daf0afeac29e",
+        "01a15809-d984-7840-92b7-2f3ea9dae255",
+        "01a157fc-1cc1-7b81-944d-c1635efea7ec"
+      ],
+      "started_at_utc": [
+        "2026-10-20T08:04:04.000Z",
+        "2026-10-20T07:58:19.000Z",
+        "2026-10-20T07:48:52.000Z",
+        "2026-10-20T07:45:04.000Z",
+        "2026-10-20T07:30:03.000Z",
+        "2026-10-20T07:15:03.000Z",
+        "2026-10-20T07:07:57.000Z",
+        "2026-10-20T06:55:03.000Z",
+        "2026-10-20T06:40:02.000Z",
+        "2026-10-20T06:25:02.000Z"
+      ]
+    },
+    {
+      "page": 39,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":22483,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":21657,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a157ee-6071-7113-b387-accfddd7e71f",
+        "01a157e0-a396-7f62-81a5-674422537906",
+        "01a157d2-e6be-7910-aade-1e44aba3f999",
+        "01a157c0-2362-7f83-a99b-71a86c12f263",
+        "01a157bc-7cb4-7273-b605-557034dd26bc",
+        "01a157ba-0c8e-77c3-9a3b-8cc3a73de78d",
+        "01a157ae-e148-7551-9671-496019e8a7e7",
+        "01a157a2-5763-7211-b477-7f7e81a4be4b",
+        "01a15794-9ab6-7a12-af7b-0dc5dd582663",
+        "01a15786-ddfd-7050-80b0-347a00c62373"
+      ],
+      "started_at_utc": [
+        "2026-10-20T06:10:02.000Z",
+        "2026-10-20T05:55:02.000Z",
+        "2026-10-20T05:40:01.000Z",
+        "2026-10-20T05:19:32.000Z",
+        "2026-10-20T05:15:32.000Z",
+        "2026-10-20T05:12:53.000Z",
+        "2026-10-20T05:00:41.000Z",
+        "2026-10-20T04:46:59.000Z",
+        "2026-10-20T04:31:59.000Z",
+        "2026-10-20T04:16:58.000Z"
+      ]
+    },
+    {
+      "page": 40,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":21657,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":20485,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1576b-fe45-78c2-9c86-1bfeb4078ad2",
+        "01a15764-c00b-7921-a97a-7ae80bef77fe",
+        "01a15761-b1ea-7061-a2d9-0bfdef952085",
+        "01a1558d-ed4a-7fe2-be00-1a71c825b0a1",
+        "01a1557b-6b8c-72b3-91c1-5719202ca307",
+        "01a15570-81af-7110-a57b-9dd017aa1c97",
+        "01a1556f-792d-7ce3-8c5d-36bc20dc70cd",
+        "01a15560-9fcc-7381-bc44-9a14abc2aceb",
+        "01a1555a-357c-7870-825e-46249f629873",
+        "01a15545-9ca0-75b0-b145-fba94a3127a8"
+      ],
+      "started_at_utc": [
+        "2026-10-20T03:47:37.000Z",
+        "2026-10-20T03:39:43.000Z",
+        "2026-10-20T03:36:22.000Z",
+        "2026-10-19T19:05:27.000Z",
+        "2026-10-19T18:45:14.000Z",
+        "2026-10-19T18:33:19.000Z",
+        "2026-10-19T18:32:11.000Z",
+        "2026-10-19T18:15:58.000Z",
+        "2026-10-19T18:08:57.000Z",
+        "2026-10-19T17:46:27.000Z"
+      ]
+    },
+    {
+      "page": 41,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":20485,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":18918,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15542-ed8a-7593-acc9-41d3bb11b4a3",
+        "01a1548d-c17d-7b33-aa57-a8363ddf1ca7",
+        "01a153da-a580-7740-964a-1b8b154cbdd2",
+        "01a153b1-207e-7290-a8c8-0a55754f20d7",
+        "01a1539e-a438-7523-a079-2698fa2bbb85",
+        "01a1539c-5ff4-7bc3-a5e4-3ea46a6421bf",
+        "01a1538e-a31b-7d23-aab0-98c3c5d6bbb6",
+        "01a1538a-ed6e-7bb3-8ac9-b5979aecf063",
+        "01a15378-f88f-71d3-91ec-ac100f823c9a",
+        "01a15371-8f5b-7ad2-8890-0791ae320fd1"
+      ],
+      "started_at_utc": [
+        "2026-10-19T17:43:32.000Z",
+        "2026-10-19T14:25:38.000Z",
+        "2026-10-19T11:10:00.000Z",
+        "2026-10-19T10:24:39.000Z",
+        "2026-10-19T10:04:28.000Z",
+        "2026-10-19T10:01:59.000Z",
+        "2026-10-19T09:46:59.000Z",
+        "2026-10-19T09:42:56.000Z",
+        "2026-10-19T09:23:19.000Z",
+        "2026-10-19T09:15:13.000Z"
+      ]
+    },
+    {
+      "page": 42,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":18918,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":17515,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15314-6047-7fa0-8a48-ea95576704ca",
+        "01a152f5-dda1-73f1-9c51-99124ad60653",
+        "01a152f0-934e-7730-a988-6b1a02028763",
+        "01a152e2-01ba-7530-97e5-969b40a4c2fb",
+        "01a152d4-4514-7b30-9add-398eae9a799b",
+        "01a152b8-01d7-7863-851e-34e00ab17aa2",
+        "01a152ae-715f-7bc2-8c23-75136f5efe9b",
+        "01a15299-3684-7120-a32e-bd3799d9de84",
+        "01a15286-ffd9-7481-b7b8-43b0747d627d",
+        "01a1527c-7034-7191-a481-8f605f6e638e"
+      ],
+      "started_at_utc": [
+        "2026-10-19T07:33:26.000Z",
+        "2026-10-19T07:00:07.000Z",
+        "2026-10-19T06:54:20.000Z",
+        "2026-10-19T06:38:25.000Z",
+        "2026-10-19T06:23:25.000Z",
+        "2026-10-19T05:52:33.000Z",
+        "2026-10-19T05:42:06.000Z",
+        "2026-10-19T05:18:55.000Z",
+        "2026-10-19T04:59:01.000Z",
+        "2026-10-19T04:47:29.000Z"
+      ]
+    },
+    {
+      "page": 43,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":17515,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":16846,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a15277-cf5e-78e1-8f21-d76a9f9e3029",
+        "01a15141-4b64-7170-a3f1-9b5d86ec0dd0",
+        "01a15133-8ea3-71d3-b28c-9ff44a588492",
+        "01a15125-d236-7041-8206-c219376c09be",
+        "01a15118-159c-7f60-8468-a86b2c296654",
+        "01a1510a-58e8-78e1-832d-e5616d461e87",
+        "01a150fc-9c35-7883-b6de-4e846f67584d",
+        "01a150ee-dfd8-7c23-bd51-c5b033077830",
+        "01a150e1-2339-7332-93b2-f437580851d0",
+        "01a150d3-6683-7cd1-9758-b87cc8110ab4"
+      ],
+      "started_at_utc": [
+        "2026-10-19T04:42:26.000Z",
+        "2026-10-18T23:03:16.000Z",
+        "2026-10-18T22:48:15.000Z",
+        "2026-10-18T22:33:15.000Z",
+        "2026-10-18T22:18:15.000Z",
+        "2026-10-18T22:03:15.000Z",
+        "2026-10-18T21:48:14.000Z",
+        "2026-10-18T21:33:14.000Z",
+        "2026-10-18T21:18:14.000Z",
+        "2026-10-18T21:03:14.000Z"
+      ]
+    },
+    {
+      "page": 44,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":16846,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":15723,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a150c5-aa00-7933-b1a0-147a86bd3392",
+        "01a150b7-ed9d-7040-a50f-4523f8e851d2",
+        "01a150aa-30f7-7161-b521-14174cadf327",
+        "01a150a5-0ee2-7811-8475-7768f93ccb07",
+        "01a1509c-7440-7d72-b573-5df797586c70",
+        "01a1508c-e29d-7471-b676-cc877409b64c",
+        "01a15076-e52d-7862-ad43-1b9b5e1b5c9e",
+        "01a14ee5-b682-7361-99dd-dbcdd87f56ac",
+        "01a14e8c-da27-75b2-9669-ca125f532207",
+        "01a14aff-67b2-7a00-9155-9fe9442b3eaa"
+      ],
+      "started_at_utc": [
+        "2026-10-18T20:48:13.000Z",
+        "2026-10-18T20:33:13.000Z",
+        "2026-10-18T20:18:13.000Z",
+        "2026-10-18T20:12:36.000Z",
+        "2026-10-18T20:03:13.000Z",
+        "2026-10-18T19:46:12.000Z",
+        "2026-10-18T19:22:11.000Z",
+        "2026-10-18T12:03:59.000Z",
+        "2026-10-18T10:26:56.000Z",
+        "2026-10-17T17:53:34.000Z"
+      ]
+    },
+    {
+      "page": 45,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":15723,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":14892,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a14af4-4273-7443-af89-fdd1039f7501",
+        "01a14af1-e543-7e72-b324-7ca92e260619",
+        "01a14a96-8599-7050-8722-b7f5422b24d3",
+        "01a14a94-980e-7173-96c3-050401a6183d",
+        "01a14a83-0ce0-7ae1-8168-d953174ea84e",
+        "01a14a75-5052-7153-af4f-9c79106159a0",
+        "01a14a67-9360-7ed2-bb19-72e87903a1c5",
+        "01a14a51-d6d0-7371-bfd2-a2430dcb9afc",
+        "01a14a4f-2771-7e43-865d-1400a569e333",
+        "01a14a36-0bb0-7fb1-963d-8f385ff81184"
+      ],
+      "started_at_utc": [
+        "2026-10-17T17:41:24.000Z",
+        "2026-10-17T17:38:49.000Z",
+        "2026-10-17T15:59:01.000Z",
+        "2026-10-17T15:56:54.000Z",
+        "2026-10-17T15:37:44.000Z",
+        "2026-10-17T15:22:44.000Z",
+        "2026-10-17T15:07:44.000Z",
+        "2026-10-17T14:43:59.000Z",
+        "2026-10-17T14:41:04.000Z",
+        "2026-10-17T14:13:38.000Z"
+      ]
+    },
+    {
+      "page": 46,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":14892,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":12990,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a14a26-2c13-7172-a974-06d3d6c4362c",
+        "01a14a23-393c-7de0-8c18-ca9c8c8cbf27",
+        "01a14a19-ded2-7b43-8f86-ac0cbd36c327",
+        "01a149d4-6898-7623-bd9e-bab5d8e3223f",
+        "01a149c6-abf5-7cd0-8601-176b98b3d750",
+        "01a149b1-0a50-7400-a083-a3a3dde3d99b",
+        "01a149ad-487f-7633-82c9-f5d00e4a08b0",
+        "01a149a9-e418-7351-8e2a-abf61dec5663",
+        "01a1493e-000c-7011-b78e-28e54c7fc324",
+        "01a14938-79e3-72e0-a7b5-97ba636f2c20"
+      ],
+      "started_at_utc": [
+        "2026-10-17T13:56:18.000Z",
+        "2026-10-17T13:53:05.000Z",
+        "2026-10-17T13:42:51.000Z",
+        "2026-10-17T12:26:59.000Z",
+        "2026-10-17T12:11:59.000Z",
+        "2026-10-17T11:48:21.000Z",
+        "2026-10-17T11:44:15.000Z",
+        "2026-10-17T11:40:33.000Z",
+        "2026-10-17T09:42:42.000Z",
+        "2026-10-17T09:36:40.000Z"
+      ]
+    },
+    {
+      "page": 47,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":12990,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":7339,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a14934-dd9a-7910-b3af-769d8056a5c1",
+        "01a148df-9e7d-7951-a91e-9ffac2a457e4",
+        "01a148db-d98d-7b21-8ca0-2d53dbc61c90",
+        "01a148d7-4e75-7d70-8c55-0ef538131161",
+        "01a14876-fc8d-7e61-8f54-5d229406694c",
+        "01a14853-66e4-7763-9025-3ed4117957ed",
+        "01a14614-7538-73a0-bcc3-c00cb3d7ecaa",
+        "01a1460c-19f4-73a3-be01-a1a0f2168525",
+        "01a145e7-a146-7002-b6b4-7acb12d1ace8",
+        "01a1456e-9ed1-7281-8277-701bdbab9935"
+      ],
+      "started_at_utc": [
+        "2026-10-17T09:32:43.000Z",
+        "2026-10-17T07:59:37.000Z",
+        "2026-10-17T07:55:30.000Z",
+        "2026-10-17T07:50:32.000Z",
+        "2026-10-17T06:05:19.000Z",
+        "2026-10-17T05:26:27.000Z",
+        "2026-10-16T18:58:28.000Z",
+        "2026-10-16T18:49:20.000Z",
+        "2026-10-16T18:09:30.000Z",
+        "2026-10-16T15:57:19.000Z"
+      ]
+    },
+    {
+      "page": 48,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":7339,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":4628,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a1456b-c78c-7c23-bf97-80eda4303468",
+        "01a14529-ec3b-71d1-8799-72664b0056cc",
+        "01a144f6-ef6d-74f1-9d93-5d1198688cf4",
+        "01a144db-b3c6-79e1-9818-79d2e23160d4",
+        "01a144c4-e670-7831-bf00-dd89497c02b2",
+        "01a144b1-b93c-7121-bcd7-7092e4aa4132",
+        "01a14480-974c-7721-b8ab-111e29488446",
+        "01a1447a-656f-7b63-99e8-a22f2244bc55",
+        "01a1440a-52f4-7940-90ca-936d39f2bce4",
+        "01a143fa-18a3-75c2-ab68-8c46744090d5"
+      ],
+      "started_at_utc": [
+        "2026-10-16T15:54:13.000Z",
+        "2026-10-16T14:42:17.000Z",
+        "2026-10-16T13:46:36.000Z",
+        "2026-10-16T13:16:51.000Z",
+        "2026-10-16T12:51:57.000Z",
+        "2026-10-16T12:31:00.000Z",
+        "2026-10-16T11:37:20.000Z",
+        "2026-10-16T11:30:34.000Z",
+        "2026-10-16T09:28:09.000Z",
+        "2026-10-16T09:10:26.000Z"
+      ]
+    },
+    {
+      "page": 49,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":4628,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":1623,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "has_more": true,
+      "turn_ids": [
+        "01a143f8-5126-77c2-9ce7-289036bad953",
+        "01a143f4-059e-7473-8f52-7d0bfef92c11",
+        "01a143ef-d9b9-76a3-9a48-e3bd1f020a4f",
+        "01a143d3-7837-7320-a4ff-1dd03994a7cd",
+        "01a143ce-1726-7702-be2d-a10e7b97f396",
+        "01a143c8-ae60-7202-a31e-f96bfed5733c",
+        "01a143b7-b707-7f91-95dd-df41cd4135cf",
+        "01a1437d-b753-7441-8698-c883372e2a4e",
+        "01a142e8-8a0f-7a53-a656-d4f5bc45bb27",
+        "01a142e4-48fd-7843-a073-bda10ad1541f"
+      ],
+      "started_at_utc": [
+        "2026-10-16T09:08:29.000Z",
+        "2026-10-16T09:03:48.000Z",
+        "2026-10-16T08:59:14.000Z",
+        "2026-10-16T08:28:14.000Z",
+        "2026-10-16T08:22:22.000Z",
+        "2026-10-16T08:16:27.000Z",
+        "2026-10-16T07:57:55.000Z",
+        "2026-10-16T06:54:34.000Z",
+        "2026-10-16T04:11:38.000Z",
+        "2026-10-16T04:06:59.000Z"
+      ]
+    },
+    {
+      "page": 50,
+      "request_cursor": "{\"requestedThreadId\":\"01a12a24-6714-7540-8d23-154b092106fe\",\"rolloutOrdinal\":1623,\"includeAnchor\":false,\"scope\":{\"kind\":\"turns\"}}",
+      "next_cursor": null,
+      "has_more": false,
+      "turn_ids": [
+        "01a140d6-eac3-7303-b645-827b46458fa4",
+        "01a12a24-6965-76c0-8580-33d4ef9935d0"
+      ],
+      "started_at_utc": [
+        "2026-10-15T18:33:09.000Z",
+        "2026-10-11T08:46:31.000Z"
+      ]
+    }
+  ],
+  "decision_provenance": [
+    {
+      "label": "initial-question",
+      "turn_id": "01a12a24-6965-76c0-8580-33d4ef9935d0",
+      "started_at": 1791708391,
+      "visible_user_messages": [
+        "you'll see some notes computer player (AI) tuning in the civ6-gameplay skill and romanholiday's ai mod. I want for us to add some guidance for the AI on how to play well with CSC. the main things I've been thinking of are:\n\n- guiding good placement of quarters, ie adjacent to both base and specialty materials, as well as a sales district if possible\n- later placing sales districts adjacent to quarters\n- improving materials resources adjacent to quarters\n- if possible, understanding the benefits of services and which quarters to prioritise in order to pursue certain benefits, etc.\n\nin my mind, the adjacency bonuses given during district placement should already encourage good placement, but not sure the AI will know how to read our custom adjacency system, unless it just evaluates the total adjacency output, regardless of the method of granting it?\n\nwhat is feasible?"
+      ],
+      "final_answer_excerpts": [
+        "**We can give the AI useful CSC guidance. District-to-district placement and broad Quarter priorities look quite feasible; exact base/specialty material placement is the main technical uncertainty.**\n\nYour adjacency intuition is sound **if the bonus reaches the engine’s placement evaluator**. CSC’s human placement preview does not establish that it does.\n\nIn the current implementation, [the UI adds CSC’s calculated preview](<C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/Civ Supply Chains/Lua_UI/Adjacencies/AdjacencyBonusSupport.lua>), while gameplay applies bonuses through properties on existing, completed districts. There is no visible connection passing that preview calculation into the native AI’s evaluation of an empty tile. **My working assumption is that the AI cannot anticipate these custom bonuses reliably**, though a controlled test is needed to confirm it.\n\n| Your objective | Feasibility |\n|---|---|\n| Place Quarters beside sales districts | Strong candidate using native placement signals |\n| Later place sales districts beside Quarters | Strong candidate using the same technique in reverse |\n| Place Quarters beside the correct base **and** specialty materials | Harder; exact matching needs an experimental bridge |\n| Improve adjacent material resources | Ordinary improvement incentives can help; valuing the extra benefits to the Quarter needs testing |\n| Prioritise Quarters for particular Services or strategies | Feasible as weighted preferences; full supply-chain planning is much harder |\n\n**The most useful RomanHoliday technique is a custom scoring yield.** Its public source adds native adjacency rules producing `YIELD_RH_PLACEMENT`, then gives that yield an AI valuation. Examples encourage Industrial Zones beside Aqueducts and Aqueducts beside Industrial Zones. This provides a precedent for teaching both build orders without adding real Production, Food or Gold. The public repository is marked as an older version, so this is evidence of the technique rather than verification of current RHAI compatibility. [Placement rules](https://github.com/Roman-Holiday/RHAI/blob/main/core/Strategies/Internal_Strat2.sql), [yield registration and weighting](https://github.com/Roman-Holiday/RHAI/blob/main/core/Strategies/Relic_Strat.sql).\n\nFor CSC, we could author our own equivalent:\n\n- Bakers’ Quarter values adjacency to its sales districts.\n- Commercial Hubs and Entertainment Complexes value adjacency to Bakers’ Quarters.\n- Tailors’ Quarters and their Harbor, Holy Site, Commercial Hub and Theater Square customers receive corresponding signals.\n\nWe can generate those relationships from CSC’s existing tags, including unique replacements. These would still be preferences: a Harbor should retain its other placement considerations, for example. CSC would not need RomanHoliday installed.\n\n**Materials are the difficult part because native adjacency rules cannot express CSC’s exact resource groups.** The installed schema supports particular districts, improvements, terrain and features, but resource matching is limited to generic resources and resource classes. It has no selector for “Bakers’ base materials” or a specific resource type.\n\nWe could approximate this with farms, plantations and pastures, but that would miss unimproved resources and sometimes favour the wrong resources. It also misses an important distinction you raised: **three base materials are not necessarily better than one base plus one specialty material**, even when their immediate adjacency yield is higher. The second arrangement can enable later Services.\n\nOur Lua can readily calculate that richer score. The unresolved question is how to make the native AI consume it *before placement*. Simply writing another plot property does not establish that connection. A property-gated custom yield is worth testing, but I would treat it as an experiment rather than promise it works.\n\n**Builders have a similar distinction between direct and indirect benefits.** Improving a resource already has ordinary incentives, and CSC’s additional yields on the improved tile may strengthen them. However, the improvement can also increase yields elsewhere or complete a Service’s requirements. We have not established that the builder evaluator anticipates those consequences.\n\nIncreasing builder production alone would therefore be incomplete guidance. The useful test is whether an AI builder chooses a material resource beside a Quarter over an otherwise comparable resource elsewhere.\n\n**For Services, we can encode their value without expecting the AI to discover every dependency.** Services are granted automatically, so the guidance should target the enabling Quarter, buildings, improvements and customer placement.\n\nFor example:\n\n- Growth-oriented play can give greater weight to Bakers’ and its Storekeeper chain.\n- Naval play can favour Tailors’ and the Textile Workshop–Lighthouse relationship.\n- Culture-oriented play can favour supplied Fashion House"
+      ]
+    },
+    {
+      "label": "map-variation",
+      "turn_id": "01a143b7-b707-7f91-95dd-df41cd4135cf",
+      "started_at": 1792137475,
+      "visible_user_messages": [
+        "okay, so this modding topic is new to me, so explain a bit more (and research where you have to). what is the overall flow for map generation? which intervention points exist, and how do they interact? what does TAR do, as it says on its workshop page that it's compatible with a number of other map script mods. and then what does Suk's Oceans do?"
+      ],
+      "final_answer_excerpts": [
+        "**Civ VI’s map generation is a sequence of cooperating scripts.** A map mod can control the shape of the world while another mod handles resources, provided they agree on how those pieces connect.\n\nTAR and Sukritact’s Oceans demonstrate two different intervention points: **TAR changes resource placement during generation; Oceans revises parts of the completed world during game initialization.** I checked their installed code as well as their Workshop descriptions.\n\n**The normal generation flow**\n\nUsing Gathering Storm’s Continents script as a concrete example, the sequence is:\n\n```mermaid\nflowchart TD\n    A[\"Load settings and modded database rules\"] --> B[\"Generate land, water, terrain, hills and mountains\"]\n    B --> C[\"Add rivers, lakes, features, natural wonders and coastal lowlands\"]\n    C --> D[\"Place resources\"]\n    D --> E[\"Choose starting locations and adjust their surroundings\"]\n    E --> F[\"Place tribal villages\"]\n    F --> G[\"Run gameplay initialization scripts\"]\n    G --> H[\"Normal play begins\"]\n```\n\nA few details matter here:\n\n- **The database supplies the rules.** It defines which resources exist, their placement frequencies, and which terrains and features can support them. Resource mods can change these rules before placement begins.\n- **The selected map script coordinates the work.** For example, `Continents.lua` calls shared helpers such as `ResourceGenerator` and `AssignStartingPlots`. A custom map script can reuse those helpers, replace some, or implement its own.\n- **Resource placement precedes start selection.** This lets the starting-position system consider the resources already present.\n- **Starting-position code can change resources again.** It can remove resources from a starting tile or add resources around starts, including adjustments for Balanced and Legendary starts. The first resource-placement pass therefore isn’t necessarily the final distribution.\n- Strategic resources are already placed at this point; research later reveals them.\n\nThat sequence comes directly from the installed [Continents script](<C:/Program Files (x86)/Steam/steamapps/common/Sid Meier's Civilization VI/DLC/Expansion2/Maps/Continents.lua:31>) and its starting-position helper. Other map scripts can change the sequence.\n\nAlso, the game’s **named continents and connected landmasses are different things**. One connected landmass can contain several named continents. “Four luxuries per continent” refers to those continent regions.\n\n**Where mods can intervene**\n\n| Intervention | What it controls | How it interacts with other mods |\n|---|---|---|\n| Database changes | Eligible terrain/features, frequencies, available resource types | Several mods can contribute rules, although conflicting edits still need resolving. |\n| A custom map script | The generation sequence and potentially every stage | Chooses which shared generators to use. Only one selected map script coordinates that map. |\n| A shared-generator replacement | One stage, such as resource placement | Works with scripts that call that generator; competes with other replacements of the same file. |\n| Starting-position changes | Start selection and nearby balancing | Can revise resources placed earlier; custom start systems may bypass the standard one. |\n| A gameplay initialization pass | The already generated world | Avoids replacing map scripts, but its edits happen after start selection and can interact with other initialization passes. |\n\nAn important distinction is that **adding a Lua file doesn’t automatically insert it between two generation stages**. Something must execute it: the map script, a shared generator, or the gameplay-script loading system.\n\nLikewise, load order can determine which replacement takes effect, but it doesn’t automatically merge two different resource generators.\n\n**What TAR actually does**\n\nTAR has three components:\n\n1. It adds the **Plentiful** and **Truly Abundant** setup options.\n2. It changes database rules: broader terrain/feature eligibility, changes to sea-resource variety and frequency, and harvesting rules.\n3. It supplies a replacement **`ResourceGenerator.lua`**, retaining the standard `ResourceGenerator.Create(...)` interface.\n\nIts Workshop page describes additional sea-resource distribution changes and lists PerfectWorld6, YnAMP, Detailed Worlds, Got Lakes and Fantastical among compatible map mods. Those improvements also apply when using ordinary resource settings. [TAR Workshop description](https://steamcommunity.com/sharedfiles/filedetails/?id=901009089)\n\n**That compatibility list makes sense because a custom map script needn’t replace resource placement.** It can generate an unusual landscape, then call the shared resource generator. In that arrangement, TAR supplies the resource-placement step.\n\nSo my earlier warning needs that qualification: **replacing the resource generator does not inherently conflict with custom map scripts. The direct conflict is with another mod trying to supply that same generator.*"
+      ]
+    },
+    {
+      "label": "profile-policy",
+      "turn_id": "01a16def-c71a-7952-8571-29f6568e6216",
+      "started_at": 1792845793,
+      "visible_user_messages": [
+        "okay, change of course: I want us to offer two approaches to AI tuning as part of CSC.\n\n\n\n1. Our own basic tuning, which includes the things we know works and that does move the needle from where vanilla AI is at. Purchasing and placing quarters on Both sites, pseudoyield adjacencies from (and to) customer districts and bonus resources, raising the valuation of improvements, making builders more available, giving AI builders +1 movement, and whatever other part of Builder behaviour you think we have down at this point. Recruiting from another city, etc. Then I want this gated behind a user setting that defaults to on, with a second dependent setting (that also defaults to on) for subsidising the AI when we buy tiles for Both quarter placements.\n2. And then the intended setup, which is to rather offer compatibility with RH's mod. At the moment we use the beta release I have subscribed, but the exact mod id might change when they release publicly. And then we rather focus on extending their AI tuning to also include the good stuff from our own tuning, potentially then adapting how we do it to be compatible with their code.\n",
+        "<send_user_message_question_reply>\n[{\"questionItemId\":\"[\\\"request_user_input_async\\\",\\\"call_287a85b57be74905bf421208fbf8cd2e\\\",0]\",\"question\":\"I propose one “CSC AI assistance” switch (On by default): standalone tuning without RH, or CSC-specific additions when RH is enabled. “Subsidise AI tile purchases” would depend on that switch and also default to On. Does that match what you want?\",\"answer\":\"okay, so we probably want the opt-in for gold subsidies also when RH is active. but when RH is active our compatibility version just kicks in automatically\"}]\n</send_user_message_question_reply>\n",
+        "I suppose it should be possible to play with RH and without any further tuning from CSC, but let's still keep the default to on\n"
+      ],
+      "final_answer_excerpts": [
+        "I propose one “CSC AI assistance” switch (On by default): standalone tuning without RH, or CSC-specific additions when RH is enabled. “Subsidise AI tile purchases” would depend on that switch and also default to On. Does that match what you want?\n- Yes—switch automatically when RH is enabled\n- Keep separate switches for standalone tuning and RH additions",
+        "Agreed—implemented in source:\n\n| RH enabled | CSC assistance | Result |\n|---|---|---|\n| No | On | CSC basic tuning and assistance |\n| Yes | On | RH with automatic CSC extensions |\n| Yes | Off | RH alone |\n| No | Off | Underlying AI without CSC tuning |\n\n**Assistance and subsidies both default On.** Subsidies remain a separate dependent choice in either enabled mode; Off means purchases must use the AI’s safe spending budget.\n\nAll **70 offline checks pass**. The new installed host and combined RH setup still need in-game validation; purchases and foundations currently support single-player only.\n\nI haven’t closed or advanced your inspection game."
+      ]
+    },
+    {
+      "label": "combined-future-policy",
+      "turn_id": "01a171f0-5668-7050-92a2-98509bbeb073",
+      "started_at": 1792912938,
+      "visible_user_messages": [
+        "happy to go with these tests and Astra's views seem sane. some thoughts:\n\n- agreed that any clearly non-functioning elements of our guidance should go from both the csc only and rh integration guidance branches. seems like the resource modifiers as a optimistic stand-in for granular adjacencies is one of those\n- feels like the ai is spamming quarters... I think the goal should be to have them build fewer but better supply chains\n- maybe we should consider removing our adjacency from all bonus resources as that was put in place before we could surgically place quarters\n- have 2 versions of our placement: Both sites like how we do now, and any site that would result in a combined +4 adjacency spread between production and gold? maybe this ties to Astra's views on more balanced site selection. but Both sites truly hold potential for the stage 4 services so they remain attractive if we can get the materials and customers to also show up",
+        "<send_user_message_question_reply>\n[{\"questionItemId\":\"[\\\"request_user_input_async\\\",\\\"call_a8df9802bbcd4edea37c9e7f76b15f0a\\\",0]\",\"question\":\"For the +4 placement variant, should eligibility use real Production + Gold adjacency already present, or also count planned future improvements/customer districts?\",\"answer\":\"Include credible future development\"},{\"questionItemId\":\"[\\\"request_user_input_async\\\",\\\"call_a8df9802bbcd4edea37c9e7f76b15f0a\\\",1]\",\"question\":\"Should the first comparison keep Both-only and +4-only placement as separate test variants, or use a combined policy accepting either kind of site?\",\"answer\":\"One combined Both-or-+4 policy\"}]\n</send_user_message_question_reply>\n",
+        "dunno, let's try this. but first just run the tests that astra proposed, along with anything else that would give us better evidence of where we can make effective changes to the AI behaviour\n",
+        "then we can come with a revamped approach in terms of overall direction, a better planner, etc. using our then hopefully improved understanding of where the working levers are\n"
+      ],
+      "final_answer_excerpts": [
+        "For the +4 placement variant, should eligibility use real Production + Gold adjacency already present, or also count planned future improvements/customer districts?\n- Already present only; exclude private AI yields\n- Include credible future development\n\nShould the first comparison keep Both-only and +4-only placement as separate test variants, or use a combined policy accepting either kind of site?\n- Separate Both-only and +4-only variants\n- One combined Both-or-+4 policy"
+      ]
+    },
+    {
+      "label": "durable-objective",
+      "turn_id": "01a181f3-a895-7c31-962a-ea7fa72df0ff",
+      "started_at": 1793181591,
+      "visible_user_messages": [
+        "okay nice, so we have some more visibility now and hopefully we can turn the Civ VI into less of a black box. but let's just take time to pin (pls write this down as a durable objective) what we want to achieve with the Civ AI:\n\n\n\nthe main objective is to make the AI competent at using CSC's supply chain mechanics to extract increased total benefit to their empire, and ideally to use the supply chains to extract value from their lands and empire toward their overall victory progress and priorities.\n\n\n\npractically speaking, I think this objective implies a few things, most related to the spatial planning puzzle of CSC's supply chains:\n\n\n\n- favorable placement of quarters adjacent to materials mapped to their supply chain. at the very least Base materials, but sites with both Base and Specialty materials adjacent are of particular interest.\n- sites adjacent to rivers are also of interest due to the production adjacency bonus that brings\n- sites adjacent to customer districts (or given that quarters unlock earlier than many customer districts, sites that leave space for / allow for the development of customer districts)\n- the above three sources of adjacency bonuses for quarters should probably be combined together and measured against a threshold where we give different priority / weight to sites with combined +3, +4, +5, etc. potential. this is where buying tiles to secure these sites could be worth it.\n- placement of customer districts adjacent to quarters, but in a way that is balanced with other good placement options for those districts. a +4 Campus adjacent to a mountain clump should probably not be placed adjacent to an ApothecariesQ instead where it only earns +1. if it can be both, then that's of course great.\n- improvement, retention and repair of materials adjacent to quarters\n- construction of producer and customer buildings in quarters and customer districts\n- matching of service effects with AI player priorities and needs\n- repair of pillaged quarters, customer districts and materials improvements\n\n\n\npossibly other things I'm forgetting. do you agree? anything I'm missing?\n"
+      ],
+      "final_answer_excerpts": [
+        "Yes—I agree. **The goal is worthwhile, functioning supply chains that strengthen the empire**, with adjacency and Quarter counts serving as intermediate measures.\n\nSaved as the [durable CSC AI objective](</C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/project/docs/integrations/csc-ai-objectives.md>), linked from the project index, tuning documentation and memory.\n\nYour list covers the core capabilities. I’d add four considerations:\n\n- **Whole-chain opportunity cost:** tile Gold, production, Builder charges, district capacity and competing investments. A +5 site may be worse than a +3 site that becomes productive much sooner.\n- **Capacity and sequencing:** recognise when finishing buildings or repairing an existing chain is more valuable than placing another Quarter.\n- **Coordination:** avoid reserving the same future space for incompatible districts; exploit shared customers where useful without double-counting benefits.\n- **Replanning and resilience:** respond to capture, material loss and changing priorities. Preserving supplies should be a strong preference, while still allowing genuinely better redevelopment.\n\nFor the combined adjacency score, I’d retain two separate assessments: **benefit available now** and **credible future potential**. Then account for the time and investment needed to realise the latter. Both sites deserve particular attention, but their Specialty potential should not outweigh an otherwise weak development plan automatically.\n\nI recorded these additions as proposals, distinct from your confirmed objectives. The +3/+4/+5 bands remain candidates to investigate rather than fixed rules."
+      ]
+    },
+    {
+      "label": "shared-controller",
+      "turn_id": "01a18b75-4d92-7d82-a9b0-6dda1a341e02",
+      "started_at": 1793341083,
+      "visible_user_messages": [
+        "go ahead",
+        "it feels like we're just treading water with game saves atm, rather than learning anything new about the ai?",
+        "or am I too harsh now?",
+        "well, I want us to observe the actual ai rather than guessing offline, but I thought our shared game controller was pretty solid... is it the addition of the dll tools that are causing the issues?",
+        "yep, want to use and harden the shared controller, both for full games and probes if that makes sense practically"
+      ],
+      "final_answer_excerpts": [
+        "Agreed—saved in the [shared-controller contract](<C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/project/docs/integrations/csc-native-test-controller.md>): shared session handling, light full-game capture, and targeted probe attachments.\n\nThe shared log fix is implemented and used successfully. We finally observed the AI reading private yield **80**, applying the **2× building preference**, and selecting the Workshop. The +80’s marginal effect remains unmeasured.\n\nEverything is closed and restored. Next implementation step is consolidating the surrounding session machinery into maintained source."
+      ]
+    },
+    {
+      "label": "offline-first",
+      "turn_id": "01a18e59-4506-7f43-a0bd-aa7040acb46a",
+      "started_at": 1793389577,
+      "visible_user_messages": [
+        "okay, so how do we now best proceed here? what's next on the roadmap and what does Astra think of using REA? do we need to keep testing against live games or can we use REA to work offline against gamecore more?"
+      ],
+      "final_answer_excerpts": [
+        "**We should do more mechanism discovery offline now, followed by fewer, more decisive live tests. Astra agrees.**\n\nAstra considers REA useful for following values and arguments across functions and retaining the supporting evidence. It helps explain GameCore’s logic, but **it doesn’t execute a saved world or establish how the AI behaves under actual conditions**.\n\nThe next steps are:\n\n1. **Finish a bounded offline investigation.** Check the repaired site reader’s UI bindings, then determine whether one planner-selected material improvement can reach a native economic job—with the correct AI, target, available Builder and cleanup. Use REA for missing links; reuse what we already know. Establish actual Builder support before exploring an entire military-operation system.\n\n2. **Complete the zero-turn site capture.** Once its bindings pass preflight, collect the candidate sites and adjacency information from the existing save. This can proceed independently of the native-job investigation.\n\n3. **Prove one useful action.** If the interface looks viable, test one existing Builder improving one mapped material. Require correct ownership, physical completion and release of reservations. If the route remains unsupported, continue through our working guidance and guarded assistance.\n\nThe division is:\n\n| Offline analysis can establish | Live games must establish |\n|---|---|\n| Consumers, calculations, argument flow and code-level conditions | Actual activation, state and effective values |\n| Potential side effects and cancellation paths | Assignment, pathfinding, completion and cleanup |\n| Which controls deserve testing | Whether they improve functioning supply chains enough to justify their costs |\n\n**We don’t need another long campaign yet.** The immediate work is offline, then a small validation session. Longer matched Basic/RH games come after we have a useful mechanism to evaluate.\n\nI’ve saved Astra’s advice and clarified that sequence in the [roadmap](</C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/project/docs/integrations/csc-ai-roadmap.md>)."
+      ]
+    },
+    {
+      "label": "caution-about-controller-time",
+      "turn_id": "01a18e7b-5ee3-7fe3-be3e-6028feb9888a",
+      "started_at": 1793391812,
+      "visible_user_messages": [
+        "okay, just want to avoid losing time on save game state comparisons, controller failures, etc. if there are more direct ways to get where we want to be. but go ahead!",
+        "where did we learn about \"build improvement\"? cru121?",
+        "<send_user_message_question_reply>\n[{\"questionItemId\":\"[\\\"request_user_input_async\\\",\\\"call_d921120c64c14d29bbd0c29163b0ff9f\\\",0]\",\"question\":\"FireTuner is open, so I have left it untouched and paused the live capture to avoid competing console access. Should I close it and run the one zero-turn capture, or leave it open while I finish the offline work?\",\"answer\":\"Close FireTuner and run the capture\"}]\n</send_user_message_question_reply>"
+      ],
+      "final_answer_excerpts": [
+        "FireTuner is open, so I have left it untouched and paused the live capture to avoid competing console access. Should I close it and run the one zero-turn capture, or leave it open while I finish the offline work?\n- Close FireTuner and run the capture\n- Leave it open; finish offline",
+        "Civ finished the zero-turn capture but is still hung after both normal exit requests. Do you approve force-closing only this test’s Civ process so I can restore your original settings? The source save is preserved and no AI turns were advanced.\n- Approve force-close of this test’s Civ\n- I will close Civ manually",
+        "We obtained useful evidence without advancing any AI turns:\n\n- **Native improvement/repair execution is confirmed in the code.** The missing piece is passing our planner’s chosen job into it; that route is parked rather than tested blindly.\n- **The capture found 12 legal Quarter options across six sites, but none had adjacent mapped Base material.** Legality alone clearly isn’t enough.\n- **The plot-preview getter failed its controls.** We can investigate that offline using the captured data, without another game load.\n\n[Findings](</C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/project/docs/research/mods/csc-ai-native-material-job-feasibility-20261030.md>).\n\nCiv hung during shutdown, and your settings are **not yet restored**. May I force-close only this test’s Civ process and then restore them? The source save is preserved.\n\nAutomatic approval review rejected forced termination because it requires explicit approval beyond capture and normal closure. No termination occurred."
+      ]
+    },
+    {
+      "label": "latest-closure",
+      "turn_id": "01a1958e-1631-7f52-ba79-26678d16bfc5",
+      "started_at": 1793510479,
+      "visible_user_messages": [
+        "give me an overview of the night's progress"
+      ],
+      "final_answer_excerpts": [
+        "We made progress in **placement, diagnosis and engine visibility**, but the latest tuning **hasn’t improved the overall supply-chain result yet**.\n\nThe customer-aware RH test finished turn 150. Compared with the previous selective RH run:\n\n| At turn 150 | Previous | New |\n|---|---:|---:|\n| Quarters | 53 | 56 |\n| With working Base materials | 19 | 15 |\n| With working Both materials | 4 | 2 |\n| Functioning upstream producers | 38 | 39 |\n| Functioning supply chains | 3 | 2 |\n| Functioning assisted chains | 0 | 1 |\n| Tile-acquisition cost | 195 Gold | 200 Gold |\n\nThese are observed operating structures, not measured Service payments. Also, **85 Gold of the new spending occurred at turn 149**, leaving that investment unfinished at the endpoint. [Detailed results](C:/Users/Shadow/.codex/visualizations/2026/10/11/01a12a24-6714-7540-8d23-154b092106fe/customer-aware-planner-v2-20261101/outcomes-final150.json).\n\nWe confirmed several useful things:\n\n- **The Base-only “+4 or better” placement route works.** It can secure a legal site with a specific customer path.\n- **One assisted chain became operational at 119** and remained working at every subsequent checkpoint through 150. It developed a different valid Mill from the planned one.\n- **Good customer geometry doesn’t ensure construction.** Another completed Quarter acquired its Wind Mill but still lacked the adjacent Granary at 150.\n- **Future customer reservations are only promises.** The AI put a Theater Square on one reserved Holy Site plot.\n- **Material loss is now directly attributable in one case:** a Builder harvested the selected, unimproved Cattle for a Farm job. This was confirmed from coordinates, operation logs and resource disappearance—not inferred from a missing resource.\n\nAstra recommends focusing next on **native Quarter placement scoring**. Most Quarters still come from the AI itself; only 10 of the 50 clearly native sites had working Base supply at the endpoint. That includes both placement and later maintenance failures.\n\nThe ensuing Ghidra trace found a promising concrete route: **native district adjacencies enter pre-placement scoring, and that scoring path includes custom yields with configurable, nonzero weights**. This could support Quarter-specific mapped-resource guidance instead of generic bonus-resource encouragement. Actual candidate-score and placement responses remain untested.\n\nWe also identified the UI helper startup fault and applied the reviewed source repair plus clearer prerequisite diagnostics. The staged versions passed 47 focused Lua checks; **post-promotion canonical tests and fresh cold-start validation remain pending**.\n\nThe game closed normally, the original installation and settings were restored, and over **96 GiB** of abandoned Ghidra copies were cleared with automatic cleanup added.\n\n**The goal is paused.** No further game or investigation is running."
+      ]
+    },
+    {
+      "label": "report-request",
+      "turn_id": "01a19656-4689-70b1-b25a-7832b7ea5076",
+      "started_at": 1793523599,
+      "visible_user_messages": [
+        "then write a progress and learnings report to put alongside this thread's roadmap"
+      ],
+      "final_answer_excerpts": [
+        "Saved the [progress and learnings report](<C:/Users/Shadow/Documents/Firaxis ModBuddy/Civilization VI/Henno Mods/project/docs/integrations/csc-ai-progress-and-learnings-20261101.md>) and linked it from the roadmap.\n\nIt covers verified controls, test outcomes, unsuccessful approaches, remaining gaps and recommended next steps—clearly separating working mechanisms from proven AI benefit."
+      ]
+    },
+    {
+      "label": "withdrawn-material-return-report",
+      "turn_id": "01a140d6-eac3-7303-b645-827b46458fa4",
+      "started_at": 1792089189,
+      "visible_user_messages": [
+        "Those material return issues are solved.",
+        "as in: it was a false report. it works."
+      ],
+      "final_answer_excerpts": []
+    }
+  ],
+  "reconciliation_sources": [
+    "project/docs/integrations/csc-ai-objectives.md",
+    "project/docs/integrations/csc-ai-progress-and-learnings-20261101.md",
+    "project/docs/integrations/csc-ai-roadmap.md",
+    "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md",
+    "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md",
+    "project/docs/research/mods/csc-future-economy-forecast-20261103.md",
+    "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+  ]
+}

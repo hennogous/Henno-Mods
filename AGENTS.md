@@ -4,7 +4,20 @@
 
 **Target:** Civ 6 10th anniversary release, October 2026. **Quality bar:** should feel like high-quality cut content — something that could have shipped with the game.
 
-**Design docs:** https://hennogous.github.io/CivSupplyChains/ (canonical, living document) | **GitHub:** hennogous/CivSupplyChains
+**Design docs:** https://hennogous.github.io/Henno-Mods/ (canonical, living document) | **GitHub:** hennogous/Henno-Mods
+
+## AI knowledge base
+
+Start AI research at `project/docs/civ6-ai/index.md` and the installed `civ6-ai`
+skill. The maintained handbook reconciles the dated AI reports; use its finding
+IDs, scope, evidence and corrections before relying on an old experiment diary.
+Keep generic engine behaviour separate from CSC applications and intended design.
+After an investigation, update affected topics/findings and preserve the evidence
+record. Henno requested regular verified commits and pushes of this content on
+3 November 2026; keep unrelated workspace changes out of those commits. The existing
+Quartz/Pages workflow publishes the handbook at
+https://hennogous.github.io/Henno-Mods/ai/ alongside the public CSC documentation.
+See `project/docs/civ6-ai/maintenance.md` for builds, source hashes and corrections.
 
 **Civ Supply Chains** is a Civ VI mod by Henno that adds 8 industry-based "Quarters" (custom districts) with a 5-stage economic model:
 

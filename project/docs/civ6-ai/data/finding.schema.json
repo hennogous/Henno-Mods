@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Civ VI AI finding register",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "title", "statement", "status", "evidence_types", "scope", "limits", "sources", "topic", "depends_on"],
+    "properties": {
+      "id": {"type": "string", "pattern": "^AI-[NCH][0-9]{3}$"},
+      "title": {"type": "string", "minLength": 1},
+      "statement": {"type": "string", "minLength": 1},
+      "status": {"enum": ["accepted", "provisional", "superseded"]},
+      "evidence_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["static", "runtime", "source", "inference"]}},
+      "scope": {"type": "string", "minLength": 1},
+      "limits": {"type": "string", "minLength": 1},
+      "sources": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+      "topic": {"type": "string", "pattern": "^topics/.+\\.md$"},
+      "depends_on": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^AI-[NCH][0-9]{3}$"}},
+      "related": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^AI-[NCH][0-9]{3}$"}}
+    }
+  }
+}

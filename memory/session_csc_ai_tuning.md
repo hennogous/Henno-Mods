@@ -1,3 +1,152 @@
+25Oct human explicitly requested Astra review/roadmap, not a new test. gpt-6-astra read-only review complete; durable csc-ai-supply-chain-astra-review-20261025.md. Human goal fair capability: mapped siting; development/repair/preservation; bounded customer adjacency respecting better alternatives; Quarter+customer buildings; Services agenda weighting DEFERRED. Key Astra findings: preplacement anyBONUS12 vs exact40/80 only afterQuarter; ordinary adjacency schema has no ResourceType/tag selector; Both-policy preemption biases1/65. PlannerBetter omits customer frontage/strategic land opportunitycost. NoBase!=worthless: ordinary exchanges can be independent of suppliedService. Customer30sharedBasic+RH butreferenceBasic10; finish300RHonly. Don'trepeatlarger preservationweights or V7BuildingsValues. Stage short building-specialization/preservation/customer-regret probes withpositivecontrols; no native preservationveto proven. RHpillagedimprovementBuilderNeed branch gap/privatebuildingpurchaseprioritylist notpublichook. No suggested mechanisms were implemented or new games started during this review; no monitor recreated. Continue according to the human task scope, without inventing a general recovery prohibition.
+
+CLOSED V8 partial175 NOT200. Originalobserver0 dead by175; engine advanced autonomously despite inactivecounter0, diagnostic188/192excluded. Source165firstmeet recovery succeededthrough170/no replay, but175returnfailed. NormalMenuexit/allCiv+ownersabsent/pretest517/144prefs147entries/autostartfalse independentlyPASS. Lastregular150:60complete43prod15Base5Both19links4flags; all11assistedcomplete mean21median20. Failureprimary17579complete62prod16Base2Both; supplyweak, no parity/full200 claim.870research1..174present; laterfinanceafter170UNOBSERVED. Scopedmonitor deletepending; no newgame/oldgoalrevival. Sharedcontroller earlyobserverdeath+profileterminaljournal/Menucleanup addedAFTERclose, offline-only/nativefuturepending. See new resultsdoc/current final-partial-report.
+
+VERIFIED V8 native9,434pins/currentruntime/nativeDB isolation/initialfullgrid Gold setupunits SAMEV7. Current P/active-run -> candidates/foundation-customer-v8-200/A/run-01; sup15532/worker15004/DX12Civ1540. All executed sources FROZEN/exclusiveworkerTuner. New scoped monitor csc-foundation-priority-to-turn-200 ACTIVE20min, actualreceipt R/monitor.json. Old15minmonitor staysDELETED. H/verify-foundation-v8-startup.py passed; H/audit-foundation-v8.py final200; H/foundation-selection-latency.py validates V7 delays8mean28.125/median27. Native priority effect stillPENDING. No registered toolgoal or oldbroadgoal revival.
+
+# 25 October: authorized foundation/customer combined200 pilot
+Human deleted old parity monitor; deletion receipt saved V7 monitor.json. New
+request explicitly authorizes inspect RH/native queue inputs, conditional Quarter
+foundation priority + stronger reverse customer adjacency, one NEW200 game with
+20minchecks. V8 source prepared: native Districts type preference300 conditional
+on confirmed original owned incomplete assisted foundation, stable humans fail
+closed, no orders/real yields; reverse10->30/forward10. Player-wide type scope
+can also favour other cities, measure extra placements.128focusedchecksPASS,
+not native effect. Read new active-run when launched, sources freeze while alive.
+Old V7 source/outcomes remain archived, native150/noresponse and restoration done.
+See project/docs/research/mods/csc-ai-foundation-priority200-20261025.md.
+
+VERIFIED mapped-improvement test run03 native7; startup proof independent-startup-confirmation.json, 231 pins/517/native446/full source1 parity/mapped20 SQL pass. Sup9652/worker9868/Civ7860. Actual Mine bonus/decision response PENDING natural positive controls;15minmonitorACTIVE.
+
+CURRENT mapped150 test active-run->run03/sup9652. Priorrun02readonlyreaderfailedsource1 BEFOREAI/econ; native ModifierID spellingfixedafterexit/Lua51fixturesPASS; original510/prefsrestored. SameSQL/workerpolicy. Oldrun01stagingandrun02preflightdiscarded/0outcomes. Newactiveartifactsauthority.
+
+# CURRENT24October mapped-material improvement native150 test
+Human requested Mines/all mapped BakersTailors improvements INCLUDINGmodded,
+thenexplicitlyin-gametest. Newrule usesliveTypeTags+nativevalidresources; preserves
+directPasture/Camp/Plantation80/resourceFarm80, adds missingconditional80. Current
+20pairs; newSalt/SilverMines only, terrain/unrelatedMines0extra. Moddedresource/
+customimprovementfixturesPASS. Existingadjacent80/presence40/care160/80/20 and
+worker30->60/Builder50/anycitycontracts UNCHANGED; investigateavailabilityfromlogs
+beforeanotherblanketbonus.19offlinechecksPASS, nativeproofmustreadactualartifacts.
+New D csc-mapped-material-improvements-20261024 active-run->run02, initial1->150
+samepreservedsave/map/noresourcepassreapply.517/NINEdeltasrestoreoldS/run01pre510.
+Run01onlystagingFAILED BEFOREnative/commands/AI/econ; reconciledoriginal510/
+all9stagedhashes; rawpreserved, noextraworld. Newmonitor csc-mapped-material-
+improvements-to150 ACTIVE15updates. Old csc-material-care-v2-test DELETED/CLOSED,
+oldbroadgoalPAUSED. Freezeallcurrentexecutedsource/exclusiveworkerTuner. Final
+material_mapped_start1_audit.py andHmapped-improvements150-review.py offline,
+no native reporter reruns. ActualServicepaymentsUNOBSERVED/no causalclaim.
+Design csc-ai-mapped-improvements-test-20261024.md.
+
+FINAL24October scoped Farm150 monitor DELETED, actualreceipt childmonitor.json deleteStatus=deleted. Studyclosed/audit/report/restorationcomplete. OldbroadgoalPAUSED.
+
+# CLOSED24October resource-Farm/Plantation pilot native150
+Same initial1 v9 -> source134 poweroff continuation v10 COMPLETED150, owners0,
+normalCivexit/original510/prefs144autostartfalse independentlyverified. Counts:
+31cities324pop49Q46complete41producer13functioning5Both13structuralsales10Service
+flags.7assisted6complete;17tiles830Gold=448own382fallback. AssistedproducerBase
+proxy4/6 vsnatural9/35 DESCRIPTIVE/agesdifferent/notcausal.7resourceFarmcontrols
+pass/81terrainFarmcontrols0. Actual Rice1619repair139 matched native+working,
+pillagedagain143/still150; Cattle2533stillpillaged. Retention75links6/10 at150,
+125links18/21; perQuarterlinks/sparseNOTcontinuous. Research700actual45missing
+125..133; observergap/rawpartial134 replaydisclosed, nofakefullpass orsites/buys
+repeated. Audit observedchecksPASS/full_dense=false. ActualpaymentsUNOBSERVED.
+Fullreport childfinal-report.md/JSON; project resource-farm150 doc updated.
+Monitor closing actualreceiptpending until tool; broaderoldgoalPAUSED/noextension.
+
+# CURRENT24October same134 host-poweroff recovery to150
+Parent Farm-v9 stopped134->135 due System1074 host poweroff07:55UTC, boot08:13;
+noCivApplicationfault. Parent artifacts/pins213/current516 preserved unchanged.
+Human goahead; active-run child resume-134-poweroff-v10/sup11152, exact native
+worker/PID from child. Known134 wallets5/cities29/fresh27 scopes1621plotrecords
+PASS; full134 building/unit/UIprogress reference unavailable. Pending remaining
+saved17ledgers/7sites/nativeDB/Farmcontrols until child resume-validation verifies.
+Source134actionsNONE, firstnewcycle135, no recreation/econresend/newworld.
+Rawpartial134->135 replay disclosed/countacceptedonce. Research/Builder/care
+125..133 UNOBSERVED45researchrows; prefix620 inherited once, no fake fullpass.
+Final H/farm134_final_audit.py child after150+ownersdone, offline logs separate
+generations parent<=133/child>=134, original510/prefs144/report then stop scoped
+monitor. Old broadgoalPAUSED. Currentchildartifact reads override pending labels.
+
+# VERIFIED24October scoped resource-Farm150 now running beyond25
+Initial1 source/pins213/runtime516/native446/processidentity independentlyPASS.
+Closed25 nativevalue3resourceFarms(Maize1459/Rice1531/Flax2604)120=40raw+80Farm,
+3terraincontrols0, allpass. NativeFarmapplicationOBSERVED, notAIcausality.
+LogsHojoMaize2score5448 vsold5124644, Flax11/5451 vs13/4634; Rice1531newplan13.
+FirstthreephysicalFarmsconfirmed25. Fullbundle/first15timingconfounds isolatedFarm
+scorecausality. 16build/2repair/0harvest/0remove nativeSTARTrecords, notjobcompletions.
+25:6cities29pop6Q2complete/0producer,2assisted/4tiles145=63own82fallback.
+RunUNCHANGEDto150/currentresource-farm001-150-v9; all213importedpinsFROZEN,
+workerEXCLUSIVETuner. 15minhumanupdates ACTIVE. BroaderoldovernightgoalPAUSED,
+noextension/revival. Final150/audit/normalexit/original510/prefs144/reportpending.
+Design/latestresults csc-ai-resource-farm150-test-20261024.md; currentcontextproofs.
+Older PENDINGnativeapplication labels below HISTORY; earlier pausedstudiesclosed.
+
+# CURRENT24October new USER Farm/Plantation test150
+Latesthuman resumesONLYscopedtestto150, terrainFarm0/resourcesFarmhigher,
+watchnativeAIlogsvaluesANDdecisions. Olderbroadovernightgoal staysPAUSED.
+Current S/active-run -> resource-farm001-150-v9, status: initial1 parity VERIFIED; later progress must read live artifacts.
+PreservedINITIAL1SHA9a9e94c37183710663dae7b2a47db95c197f1e0ed571033e688c43927a9cefb2,
+ZEROcities/improvements, no newmap/resourcepass/pre1replay.516/eightdeltas, Farm
+conditionalprivate80 ONLYRice/Wheat/Maize/Flax, terrain/Niter/CattleFarm0;
+noflatFarmrow. Pasture/Camp/Plantation80+raw40/20+care/funding/0%rulesunchanged.
+Source16attemptv8ENDED0AI/econ: definitionsloadedbutexistingFarmvaluesunchanged;
+independentnoeffectreview/normalexit/original510/prefs144 preserved. Serialized
+attachmentcauseHYPOTHESIS; newrulebeforeanynewFarmconstruction nowtested.
+NativeapplicationPENDINGuntilnewFarmcontrols; thennativejobscore/reservationvs
+actualBuilderoperation/materialwork separate.15offlinechecksPASS notnativeproof.
+Allimportedcode/tests/pinsFROZEN, workerEXCLUSIVETuner, no otherclient/UI/assets.
+Source1changesfirst15treatmenttimingvsold16arms; comparisondescriptive/notpurecausal.
+LIGHT1/25/50/75/100/125/150, Builder5,745researchminusdefeats. UIisolatedresource
+Farmraw+80/terrain0guardsatclosedoutcomes; no control UNOBSERVED. Failpreservesave
+beforeadvance. Gameplaygetter/CoreUI distinctionsretain; nocallbacks=decisionproof.
+Monitor csc-material-care-v2-test ACTIVE15min/EACHhumanupdate, scoped150only.
+Afteractual150+job/sup0+ownersabsent independent material_farm_start1_audit.py,
+nativeAIlogreview/report/normalexit/original510/144prefs thenstopscopedmonitor.
+No extension175/revivalolderstudies/forcedorders/improvements/actorswitch/deployment.
+Design csc-ai-resource-farm150-test-20261024.md. Older PAUSED/currentlabels HISTORY.
+
+# HUMAN PAUSED24October
+Human: "let's stop here... give me an update". Goal PAUSED and actual automation csc-material-care-v2-test PAUSED; returned receipt in currentroot/human-pause.json and monitor.json. No Civ/controller remains alive; original510 and preferences144 restored. Do not launch further probes or resume native75 without a new human instruction. Investigation incomplete: native75 material-viability audit passed4/4validBoth foundations,7functioningBase/0workingBoth; zero-turn acquisition delivery control complete/audited, UIownedSugar+80 vsnewlyassigned0, Gameplayplotgetter0both lackspositivecontrol. City-level valuation test/mature175/finalovernightguidance pending. Earlier ACTIVE/currentworker labels below are HISTORY.
+# CURRENT24October acquisition-signal control completed; goal ACTIVE
+Current S/active-run points acquisition-signal-delivery16-probe-v2, nowCOMPLETE16,
+zeroAIadvance/newworld/foundation,1rawdiagnosticpaidtile40=37own3fallback EXCLUDED.
+Independent audit215pins/native446/515/flagsrestored/worldGold/unitdeclaredonly/
+normalexit/original510/prefs144/allCiv+ownersABSENT. No liveworker ownsTuner now.
+OwnedSugar1501 vsnewlyassigned1204: UIon +80 vs0, all6samples/twocycles; Gameplay
+plotgetter0BOTH, so no positivecontrol and NOTproofnativeAIgetsnosignal.
+GameEffects activeinstances/subjectsEMPTYevenUIcontrol, noabsenceclaim.
+Nativecityvaluation/turntiming/controlpath NEXT, beforebackendfix/75recovery.
+Failedfirstprobe phasecomparison initialvsfinal had0effects; sourcepreserved and
+v2strictlychecksBOTHmatchingphases. Auditerfixedsource15budgetprefixOFFLINE.
+Mature75continuationfailedBEFOREAI/econ on4paidmaterialprivategainsreload;
+physical/ordinarycity+plot/AIcash/citizenparityPASS, nativecityPRIVATEalsochanged
+Tamar216/Joao108. Rootcauseunproven; don'trelaxgate/blindrerun/reattachmodifiers.
+Parentv7 audited75:4/4validBoth vsv6 4/5;8tiles345=206own139fallback;7Base0Both.
+Mature175/decisionanalysis/overnightsynthesis stillPENDING; 7closedarms evidence
+index maps8requirements, no completionclaim. Keepgoal+monitorACTIVE15min,
+humanupdate EACHcheck. Docs acquisition-signal-delivery20261024 authority.
+Older CURRENT/nativeworker labels HISTORY. No ComputerUse/subagents/newworld/
+forcedorders/improvementgrants/actor switching/deployment. Recoveryauthorized
+preserve/reconcile/never repeatambiguousfinancialeffects.
+
+# CURRENT24October mature material follow-through
+Parentv7 independently audited75:4assisted/all4exactdistrict-freeBoth; parentv6
+5with1falseCityCenterSilk. Native guard removesfalseopportunity, workingBothstill0.
+Counts75:14cities96pop23Q17complete10producers7workingBase7saleslinks5flags.
+8tiles345=206own139fallback, source15tileincludedonce; runtime510/prefs144 restored.
+Currentstudy active-run points v7/continue-075-175; SAMEtrajectory/no newworld or
+pre75replay/reconstruction. State: native source75 validation PENDING; dispatch is not progress.
+Same515/native446/tuning, careage reset75 explicit and censored, no timerinjection.
+Parent75capture-only; firstnewcycle75once. 370researchprefix once;870through174
+expectedminusdefeats. FullnonBuilder75inventory/observer0Gold UNOBSERVED; fresh
+setupbefore/afterunit+Gold gatecannotfillhistoricalmissingness.13offlinechecksPASS.
+AllsourcepinsFROZEN/workerEXCLUSIVETuner, no competingclient/UI/assets/newworld.
+Monitor csc-material-care-v2-test ACTIVE15min; humanupdate EACHcheck. Final175/
+independentaudit/normalexit/original510/prefs144/matureloganalysis/overnightsynthesis
+pending. GoalACTIVE, no tests/partialpositivecompletion. Docs material-viability75-
+results and material-mature-followthrough20261024; old CURRENT labels HISTORY.
+
 # ACTIVE overnight material-access goal —23October
 Current frozen v2game continues225; exactprocesses10500/18868/16996 verified.
 No live source edits. Offline module material_loss_intelligence now recovers
@@ -2147,3 +2296,1386 @@ artifactfilenamesarenowWindows-safeonly, logicallabel/code/fsyncjournal/token/
 onesend/playunchanged. Allrecurringschedulingremainsoff; oldautomationDELETED.
 Finitecurrentjobcontinues250. Nativefirstacquisitionproofislocal, notfull250,
 formalbenchmark, nativepurchasecountercompatibility orcausalgain.
+
+
+23Oct terminal v2 native192: observer defeated; disabled OneMoreTurn/no winner. Independent terminal audit PASS, full225FALSE,91pins/512runtime/446DB/955research. 7assisted6complete/all7ownedBoth/5of6workingBase;9tiles385=198own187fallback. 11native matched repairs;4harvests ALL Farm jobs,7district-occupancy losses/1ownershiplink/1unresolved. Report project/docs/research/mods/csc-ai-material-care-v2-terminal192-20261023.md. Goal active; do not rerun main. Closeout original510 receipt required before source16 zero-turncontrol then MATCHED reloaded reference16..75 and raw-resource treatment16..75 (notsource1). No raw signal native proof yet.
+
+Concrete pair harness ready (28 focused checks + AST/import/source/closure checks passed). Reference016-075 launched supervisor19288/worker9316/nativeDX12 12104, exactCIM identities verified. ONE exact16load; source parity required before actions. Maintained worker/controller/guards frozen. Source readback/control remains reference for21units/world/gold/production/economic/private/nativeDB. LIGHT source16/25/50/75 outcomes;1 andBuilder1/5 explicitly inherited. Independent auditor project/tools/ai_baseline/material_forecast_audit.py verifies current510 after normal exit, nativeDB/pins/sourceparity/funding0percent/completion/work/log/research370 minusdefeats. Require actual75 plus job/sup complete0 and auditor receipt before launching H/start-material-forecast.py raw-resource. Matched reference uses v2 guidance+paidassignments, not future no-intervention baseline. No raw treatment loaded yet.
+
+
+## Additional native decision-path evidence (24 October)
+
+The unchanged-v2 reload matches the accepted main physical/world/research signature
+at25. Its independent native operation + unique tree-target reconstruction confirms
+the same Cattle2533 harvest21, Farm job value4661. This is useful reference evidence,
+not proof that the full later trajectories or internal unit states are identical.
+
+A separate offline decision-timing analyzer now corroborates a stronger late case:
+Joao/player4 Sheep2269 was recorded working at52 and a native150 census shows an
+unpillaged Pasture.
+A matching same-city Farm reservation is logged at152, native Remove Improvement
+173 and Harvest Resource174 are recorded at49,30 on the SAME Builder5111809.
+The independent UnitOperations names/enum rows corroborate both native operation
+starts. Thus this is active replacement of an existing material improvement,
+not merely missing Builder capacity or a repair not being selected.
+
+All four confirmed Farm-harvest cases had prior care observations:2533 at18 before
+matching reservation20;1573 at19 before26;1688 at73 before135;2269 at52 before152.
+These are first observed same-player/plot/system reservations, not hidden queue
+creation timestamps. The Sheep job was observed repeatedly over a long interval;
+matching player/plot/system alone does not identify one persistent unit/job.
+No private-yield value at the actual decision instant is invented from care logs.
+
+Guidance implication: test native valuation of keeping the resource/improvement,
+and inspect replacement/preparation operations. Raising blanket Builder output
+cannot alone resolve a Builder removing a Pasture for a Farm. Raw resource yields
+could affect representation AND earlier/broader signal timing; a positive paired
+result will not distinguish those mechanisms by itself. Unowned resources and
+later settlement can also change. Care activation predating observed reservations
+makes an explanation based only on noticing materials too late insufficient.
+
+New independent tools: material_decision_intelligence.py (6 counterexample tests),
+material_forecast_comparison.py (6 tests separating endpoint retention, same physical
+Quarter, own improved materials and functioning producers). Comparison refuses to
+run as a completed pair without both independently audited75 trajectories.
+No live executed source, native coefficients or assets were changed by this analysis.
+Source evidence: run-01/offline-analysis/material-decision-timing192.json and
+reference016-075/offline-analysis/loss-attribution25.json.
+
+## 24 October: raw forecast startup reconciliation and citizen allocation
+
+The reloaded reference completed75 and passed independent audit/cleanup:
+136pins,370research rows,4foundations(2complete),7paid tiles260=121own139fallback,
+including the inherited turn15 purchase25own. New effects are6tiles235=96own139fallback.
+Both Cattle-to-Farm harvests21/26 were reproduced. Physical/world/research signatures
+and counts match the unreloaded main25/50, but diverge75. Do not substitute the
+unreloaded main for the matched reference.
+
+The first raw-resource trajectory stopped at16 BEFORE AI advancement, purchasing
+or placement because its source gate found observer0GDP production-.8984375 and
+culture+.90234375. Independent source16 review verifies full world/21units/allGold/
+AI1..5cityGDP+production/149realplotyields unchanged, expected private40/20, loaded
+nativeDB onlyResource_YieldChanges, and normal exit/original510/prefs144false.
+The original failure remains intact in raw-resource016-075.
+
+Two subsequent zero-turn citizen investigations (source016-citizen-reference-v2,
+source016-citizen-raw-v2) directly read shipped PlotInfo/CitySupport GetWorkerCount
+and purchased-city plots. Both completed one source16 load and ZERO AI turns,
+purchases, foundations or citizen orders; native packages/preferences restored.
+Independent source16-citizen-allocation-audit.json confirms observer0 moved one
+worker from2868(2Food/1Production/noresource) to3016Flax(2Food/1Culture/private+40).
+Worked-yield delta(-1Production/+1Culture) corresponds to the derived city change.
+All other cities' allocations/outputs were unchanged, as were all real plot inputs.
+The original helper's full-packet equality flags were false because care refresh
+changed private values; actual workers and city outputs were stable within each
+arm. Offline semantic audit corrected this false negative without native reruns.
+The first citizen-helper preparation typo Falseand occurred before runtime copy or
+native launch; independent review proves zero effects, and its files were preserved.
+
+Important correction to interpretation: a hidden yield with no currency conversion
+is NOT necessarily economically inert for human players: it can change automatic
+citizen allocation. The raw global resource signal is a broad mechanism diagnostic,
+not AI-only release-ready tuning. Do not erase the signal or zero its DefaultValue
+just to pass a gate: historical percent-bias experiments retain DefaultValue1, and
+zero might also disable desired AI valuation. No ResourceModifiers table or native
+Improvements AIList examples were found in this446-table snapshot; unsupported
+systems must not be invented as fixes. Queue source-comment correction about human
+inertness after the experiment; existing registered/native source remains archived.
+
+Next: preserve before/after harness provenance, harden the reusable source gate to
+record the directly proven observer allocation effect while retaining exact source
+world/units/Gold/AIcityGDP/production/realplot/nativeDB/private guards. Collect actual
+worked plots at the next startup. No explicit economic commands before parity is
+true; no derived effects would be false. Use a new raw-resource016-075-allocation-v2
+branch, never overwrite/retry the failed folder. Preserve matched reference sources
+and its prior independent audit; any metadata-only controller updates need explicit
+provenance and unchanged native-play AST. Fix reusable stale endpoint250/status
+labels and make failure exports/log capture independent before the new worker.
+The prepared raw513 package/20private rows remains unchanged; no new weights,
+resource pass, Builder/citizen orders, economic grants or research/production forcing.
+Compare actual endpoint75 plus logs, including valid alternative Quarter placements,
+own improved supplies and producer/customer links; actual payments remain unobserved.
+Goal/15-minute monitor stay ACTIVE; the test has not yet proved material preservation.
+
+
+## 24 October: measured-allocation gate running; closed checkpoint25 comparison
+
+The new raw-resource016-075-allocation-v2 trajectory passed exact source16,
+149 real plots/private values,21units/all Gold/AI-city output/production/queues,
+native446DB and saved economic-ledger checks. The only allowed derived city
+output change is the previously measured observer0 citizen reallocation, backed
+by direct worked-plot evidence. This is recorded as a treatment spillover, not
+economic inertness. No explicit economic command or AI advance preceded parity.
+
+Supervisor5856/worker19648/nativeDX1211564 were independently CIM-verified;
+native39 was read back during this check and later progress is in live-status.
+Endpoint75. All executed source/proof/archive pins are now frozen. The shared
+controller endpoint status now respects study_endpoint; other native controls
+and the worker action loop have unchanged ASTs. Failure exporters preserve
+telemetry, nativeDB and logs independently.80 controller,25 focused,8 archived
+native-schema checks and preservation fault injection pass. The before/after
+provenance is H/forecast-allocation-v2-provenance.json. No live tuning edits.
+
+Closed25 comparison: both trajectories have2foundations,5paid tiles170Gold=
+76AIown94fallback (including inherited15tile25own),6cities/7Quarters4complete/
+0producers. Population differs: reference28/raw30. Cattle2533 was still harvested
+at21 in BOTH; care observation18 and Farm reservation20 occur in both, although
+the logged Farm score changes4661->3858. This signal has not protected that case;
+the score difference is not currency or proof of an isolated causal pathway.
+Both show55care calls/0errors and the same urgent-strategy transitions through25.
+Detailed immutable-checkpoint hashes/evidence are in current R/offline-analysis/
+checkpoint025-comparison.json. Later turns remain sparsely captured by design.
+
+Monitor csc-material-care-v2-test updated ACTIVE15minutes with actual live owner
+identities/new source gate and audit instructions; exact returned receipt saved
+in current R/monitor.json. At actual75+job/supervisor complete0 and native/owners
+absent, independently audit accepted schema and original510/preferences cleanup,
+then compare matched reference75. Do not rerun native for reporter assumptions.
+Overall overnight investigation remains active; this early negative case is not
+a release decision or universal preservation result. Preserve all art/unrelated work.
+
+
+### Closed50: new native Mine/technology-boost losses
+
+Both exact50 saves/checkpoints are verified. Current raw endpoint census has
+10cities62pop/15Quarters11complete/1producer(1workingBase0Both); reference has
+10cities60pop/14Quarters12complete/2producers(1workingBase0Both). Economics remain
+2assisted foundations/5tiles170=76own94fallback through50 (shared15 included).
+Both care exports205calls/0errors. Raw still harvested Cattle2533 at21, but does
+not record the reference Cattle1573 harvest26 through50. This is not full endpoint
+preservation proof.
+
+Two new native confirmed harvest paths: Joao Sheep2269/turn45 and Tamar Sheep1647/
+turn49. Matching Mine reservations were43/45 respectively, explicitly under
+Seek Tech Boost TECH_APPRENTICESHIP; care had already observed develop36/28.
+This is direct evidence of a competing technology-boost improvement pathway;
+no hidden job creation time, private yield at decision instant, or isolated causal
+utility effect is inferred. Raw signal has not made materials reliably safe.
+Reference50 losses are Cattle2533/21, Cattle1573/26 and Maize2563/district occupancy47.
+Broader citizen/production/settlement effects remain confounders. Current run
+continues UNCHANGED to75; all native executed pins frozen. Evidence/hashes:
+current R/offline-analysis/checkpoint050-comparison.json. Final independent75
+comparison remains required before interpreting endpoint supply outcomes.
+
+
+##24October: matched forecast75 audited; next scheduling hypothesis prepared
+
+C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\docs\research\mods\csc-ai-material-resource-forecast75-20261024.md
+
+Both source16..75 trajectories completed/audited/normal exit/original510/prefs144false. Raw globalBase40/Spec20 is NOT a preservation fix:3harvests vs2;0district-associated removals vs4, but cities12vs16/producers7vs8/workingBase5vs6,0workingBoth both. Raw retained Cattle1573UNIMPROVED, still harvested2533, and lostSheep2269/1647 to Apprenticeship Mine3 boost jobs despite ACTIVEcarestrategy. Current repair episodes4vs2 are descriptive/censored, not causal. Both370research/355carecalls/0errors. All native owners ABSENT. New union-loss comparator10tests+job-origin9testsPASS, no live native-source edits. Candidate514 boost/backlog preference SQL prepared/in-memory446table exact4table scope+idempotence, NOTinstalled/tested. Next branchboost-gate-v3 requires preserved harness provenance/current514auditor/strict source16measuredcitizenparity before one75counterfactual; no newworld. Overall goal/monitorACTIVE.
+
+
+##24October: boost-gate-v3 native source16 passed, running to75
+
+Branch raw-resource016-075-boost-gate-v3 launched ONCE with maintained diagnostic
+harness, supervisor16660/worker18560/trueDX12Civ11500 (created01:35:13.811621+02:00).
+Exact identities independently CIM-verified. All172executed sources/archives/
+contracts/preparation/proofs/tests are now FROZEN; exclusive worker Tuner. No new
+world, same source16 SHA, pre16 prefix inherited once, no recreated foundations.
+Native16 source matched original validation and also matched the completed RAW
+control exactly for world/21units/Gold/AI and observer city output/production/private
+plot values/direct worked plots. Only loaded DB Resource_YieldChanges over512 plus
+four declared AI-preference tables; same raw20resource40/20 in both control/gate.
+Native18/inactive read back. See currentR/independent-boost-source16-confirmation.json.
+Registration/application is NOT proof of native handler suppression or preservation.
+
+H/forecast-boost-v3-provenance.json and H/before-boost-gate-v3 preserve exact ended
+harness and offline auditor versions before extension. Sharedcontroller unchanged;
+actual driver native action-loop AST IDENTICAL.34offline contracts/reporting tests+
+actual446table expected-schema/six-runtime-delta/idempotence checks PASS; no native
+calls during those tests. Source16 has zero AI advance/explicit economic commands
+before parity. Original raw/reference audits remain executed-version receipts,
+not a claim that their old pins equal the later harness. Temporary514candidate,
+original510 final restoration after ALLCivabsent required; no production release.
+
+New unpinned offline boost-gate comparison and native boost-log reader/tests ready;
+24focused reporting checks PASS. It compares UNION losses of all classes in both
+arms, maps actual helpful-boost log records while retaining native Progress labels,
+and marks missing endpoint plots UNOBSERVED. No invented Mine counts, initial
+boost states or attribution of a boost to one Builder job. Native control log has
+no matching Apprenticeship boost record16..75 for the two Sheep-harvest players;
+this is bounded log absence, not proof of an unboosted initial state or causality.
+After ACTUAL75+job/supcomplete0/ownersabsent/original510/prefs144false, run updated
+material_forecast_audit.py currentR then material_boost_gate_comparison.py rawControl
+currentR --output S/boost-gate-comparison. No native reruns for reporter errors.
+Overall goal/15minute monitor ACTIVE. Do not tune live pins or coefficients.
+
+
+### Live boost-v3: exact checkpoint log boundaries and native strategy evidence
+
+Native AI_Victories.csv directly records material-backlog Following2at20/1+3at21.
+The offline boost-route analysis now records nativeFollowing/Stopped separately
+from Lua callback results; unknown/future/same-turn ordering remain explicit.
+Native Following does not by itself prove consumption of the false TechBoosts
+preference. Some improvement-count boost routes occur while Following; existing
+hidden commitments remain possible, so wait for actual75 comparisons.
+
+Found and corrected an OFFLINE reporting edge: selecting completed-control logs
+by numeric turn25 alone leaked rows after that checkpoint's next AI activation.
+New material_checkpoint_logs reads the exact outcome byteEND with gap/conflict/
+size/UTF8 checks. Both exact25routecounts are5 (not unbounded6vs5),2firstobserved
+whilenativeFollowing. Actualworldsignature/economiccityoutputs identical25;
+6cities30pop7Quarters4complete0producers, same CityFarm harvest2533at21. Original
+pre-byte-bound report preserved; corrected receipt currentR/offline-analysis/
+checkpoint025-boost-activity.json.19focused offline boundary/activity/comparison
+testsPASS, no native rerun/calls/source edits. All172livepins still match.
+
+Current R/monitor.json holds ACTIVE15minute automation exact returned receipt.
+Later actual status/checkpoint50 if complete are in it; source16 job anchor is
+not latest progress. New offline helpers/comparison are UNPINNED, nativeworker/
+candidate/shared sources remainFROZEN. Do not rerun H native-schema test while
+alive because it rewrites the pinned provenance receipt. Overall goal ACTIVE.
+
+
+##24October: boost-gate75 closed/audited with no observed benefit
+
+C:\Users\Shadow\Documents\Firaxis ModBuddy\Civilization VI\Henno Mods\project\docs\research\mods\csc-ai-material-boost-gate75-20261024.md
+
+Actual75/job/supcomplete0;172pins/446DB/370research/355carecallbacks0errors; original510/prefs144autostartfalse/ALLCiv+ownersabsent verified. Same12cities92pop19Q18complete7producers5workingBase0Both4customerlinks3flags; same3harvests2533/21+2269/45+1647/49; same5tiles170=76own94fallback,3foundations2complete. Native strategyFollowing confirmed but false handler preference does not protect the cases; engine-ignore NOTproved. World/city-output equality allobserved16/25/50/75; research/boost exact equality in decision.json. New coarse native-harvest guard prepared only, selected5uniqueAItraits exclude0/all446tables only3modifiertables differ; NOTinstalled/tested. See native-harvest-guard diagnosticdoc; nextnewbranch requires preserved endedsourceversions and strictsourceparity, legalchanges investigated0advancebefore any actions. Do NOTrerunoldaudits ascurrentpinclaims after futureharness edits; archivedreceipts/sourceversions authoritative. Goal/monitorACTIVE.
+
+
+## 24 October: native-rule startup and canonical-order repair
+
+The existing shipped no-harvest rule attached once to the five selected AI owners
+in both zero-turn v4/v4b preparations; five active native instances and three
+stable owner readbacks were verified, excluding observer 0. No AI turn or new
+purchase, donation or foundation occurred. The rule removed eight owned
+Quarter/plot combinations across six resource plots and changed twelve source
+projections. Hojo had no suitable owned Tailors location afterward. Resources,
+units, treasuries, real yields, city output and queues stayed unchanged; direct
+post-rule citizen allocation remained unobserved because validation stopped first.
+This proves a placement-legality effect, not harvested-material retention.
+
+The second preparation stopped only because Lua enumerated identical Bakers and
+Tailors transitions in a different order. The original failure and 207 executed
+pins are preserved. Independent review verifies semantic equality with v4 and
+normal original-510/runtime/preferences restoration, all Civ and controller owners
+absent, and zero AI/economic/foundation actions. The reusable validator now sorts
+unique transition identities; duplicates, unknown changes, queue/gold/resource
+and legality changes remain strict. Seventy-two checks pass, including both actual
+archived source16 packets and actual Lua 5.1 safety fixtures. Native play and the
+per-turn action loop AST are unchanged. Ended sources are archived under
+H/before-native-rule-order-v4c.
+
+Current same-save branch: raw-resource016-075-native-harvest-live-v4c, supervisor
+9388 at dispatch. Read active-run and its job/supervisor/source-validation/current
+handoffs for actual progress. It loads the exact original turn16 source once,
+with no pre16 replay or recreated sites; previous two preparations advanced zero
+AI turns. Runtime remains raw513; existing native rule is a coarse all-resource
+counterfactual, not targeted preservation tuning or release-ready AI-only design.
+Direct post-rule citizen parity and all source/economic gates are still required.
+Planner obeys reduced native placement eligibility. CanProduce false can mean no
+suitable owned location rather than a locked Quarter; this possible acquisition
+chicken-and-egg gate is a later investigation, not a live policy change.
+
+All current executed pins are frozen, including H/test-measured-rule-v4c-schema.py
+and its generated provenance: do not rerun it while the worker lives. Worker owns
+Tuner exclusively. ACTIVE 15-minute monitor receipt is in current monitor.json.
+After actual75 and complete0/owner absence, independent offline audit and a new
+native-rule outcome comparison are required. Compare all loss classes, working
+materials, repair failures, helpful harvest/boost/growth/placement tradeoffs against
+audited raw control; retained-but-unimproved Cattle1573 is a useful sentinel.
+Overall overnight goal remains active; no native harvest benefit is yet proven.
+
+
+### First native-rule checkpoint25: retention, not yet working supply
+
+Current v4c source startup independently verified all418 source pins/archives,
+five active owner1..5 instances with three stable samples, original world/funds/
+queues/units/real-yield parity and direct post-rule citizen-allocation parity.
+The worker progressed beyond16; exact25 outcome and closed log byte boundaries
+are in independent-checkpoint025-comparison.json. Raw control has one confirmed
+Cattle2533 harvest at21; rule arm has no observed supply-loss cases or harvest
+operation starts through25 and still owns the Cattle. It is unimproved, as is
+retained Cattle1573. Both arms6cities7Quarters4complete/3unfinished/0producers and
+0working chains; population30 control versus29 rule. This is an early retention
+result with growth difference, not a complete or universal preservation claim.
+
+New UNPINNED artifact-only H/material-native-rule-comparison.py and
+H/material-native-rule-checkpoint.py are ready. Five counterexample checks plus
+actual completed-control schema dryrun passed; the final comparison dryrun used
+a MOCKED rule audit and is explicitly NOT native-rule evidence. Real final
+comparison requires both actual independently audited75 trajectories. It reports
+union losses of all classes, seven sentinel plots, same physical and alternative
+Quarter Base/Specialty links, working-improvement/producer proxies, missingness,
+native boost records, repairs and exact-byte-bounded failed reserved-plot routes.
+Failure routes do not identify hidden persistent jobs or prove their cause.
+No current pinned sources were edited. Keep frozen worker running unchanged.
+Goal and15-minute monitor ACTIVE; exact receipt/current monitor.json updated.
+
+
+## Native-rule50: bounded action loops can resolve
+
+See project/docs/research/mods/csc-ai-native-harvest-rule-progress50-20261024.md.
+Exact50: control10cities62pop15Q11complete1functioningBase vs rule9/58/11/10/1;
+confirmed material harvest losses3vs0; matchedrepairs3vs2. Protected Cattle2533
+rejected HARVEST/BuildImprovement21..26 despite tree SUCCESS, then Pasture plan27
+and exact-plot nativeBuild by DIFFERENT Builder589829 at28, working+Pasture50.
+Not permanent idle. Sheep2269 working42/Pasture50 vs controlharvest45, but lastcharge
+unit attribution remains ambiguous (2nativeBuildstarts). NonCSCStone1868 has
+rejectedFarmroute43..49 with Builder851974 onplot/3charges50. Broadhardbantradeoffs.
+New UNPINNED H/material-rejected-work-intelligence.py +test10checksPASS; finalH
+native-rule-comparison extended with rejections/development/currentcarestate;
+5comparisonchecks+actualcontrol-mockedschemaPASS, NOTnativefinalresult. Do NOTedit
+livepins. PreppedUNINSTALLED source016-pasture-forecast (+80privatePasture direct
+Improvement_YieldChanges, nativeBanOFF) is schema/idempotence/real-yields verified,
+0observedPasturessource16; NOTdriver-ready/installed/native-tested. After75audit,
+restoration, ownerabsence and preserving418sources, evaluate next experiment.
+Goal/monitorACTIVE. Do not claim native working chain success from resourcealone.
+
+
+##24October native-rule75 complete/audited; next forecast test prepared only
+
+See project/docs/research/mods/csc-ai-native-harvest-rule75-20261024.md and
+S/native-harvest-rule-comparison/decision.json. Actual75/job+supcomplete0/all
+owners+Civabsent/original510hashes/prefs144autostartfalse/418pins/446DB/370research/
+355carecallbacks0errors verified. Control3materialharvests vsrule0; rule6functioning
+Base producers vs5/structuralsales5vs4, but Both0both, Q16vs19/completed16vs18;
+cities13vs12/pop97vs92, not consistentgrowthcostclaim. MatchedCOMPLETEDrepairs3vs4,
+1pendingeach (do NOTcountallrepair-episode rows ascompleted).2foundations2complete
+vscontrol3/2; same5tiles170=76own94fallback, including15shared25own. Sheep2269
+retained/Pasture/functioningproducer75; Cattle2533Pasture28 butBakerspillaged/no
+producer75; Sheep1647+Cattle1573retainedUNIMPROVED. Native87rejectionlogrecords
+vs65/7multiturnroutesvs3; notuniquejobs/requests. Do notshipcoarseallharvestban.
+Promoted3maintainedoffline tools +2testfiles: material_native_rule_comparison.py,
+material_native_rule_checkpoint.py, material_rejected_work_intelligence.py;
+15counterexamplechecksPASS, actualschema/pathproofs retained. Canonical comparison
+S/native-harvest-rule-comparison/maintained-report; originalHreport preserved.
+Nextsource016-pasture-forecast (+80private directPasture Improvement_YieldChanges,
+BanOFF) schema/idempotence/real-yields scopePASS, notinstalled/wired/native tested.
+Nextactionpreservecurrent418sourceversions/receipt thenwireNEWv5branch through
+canonicaldriver/variants/auditor/AST+sourcegates; no newworld or blind oldlaunch.
+Overallgoal/15minmonitorACTIVE; no liveworker owns current sources afterexit0.
+
+
+##24October directPasture v5 started; native source16 passed
+
+R=raw-resource016-075-pasture-forecast-v5, sup16880/worker7228/DX12Civ4216;
+identities verified. Native source16 world/gold/units/private/economic/queues/
+production/legality/citizens EXACTLY rawcontrol;1load/0AI+economic beforeparity/
+no reconstructed sites. Loaded native446DB only Improvement_YieldChanges extra
+one Pasture+80private row; current514/sixruntime deltas, BanOFF/no legalityexception.
+99offlinechecksPASS; sharedController/play/perturnloopASTsame. One read-only final75
+private snapshot outside loop preserves rawUI74or75 inside separated inactive
+Core75 boundaries and exact endpoint ownership/resource; not isolated80 proof.
+All live176pins and ALLimports/tests/provenance frozen. Unused imported
+native_harvest_rule.py missed conditional pin branch but unchanged from ended418
+snapshot: supplemental-import-provenance.json/extra source-version copy cover it.
+Do not hotfix live; independently verify final, then fix FUTURE pin builder.
+Startup independent receipt verifies both. Never rerun H/test-pasture-forecast-v5-
+schema.py while alive (rewrites pinned metadata). Goal/15minmonitor ACTIVE;
+actual receipt R/monitor.json. Native choice-response remains PENDING.
+Design csc-ai-pasture-forecast-diagnostic-20261024.md. Need new unpinned forecast
+comparator; native-rule comparator requires ruleON. After75+complete0/ownerabsence
+adapted audit plus supplemental provenance check, usual370research/censuses/native
+funding/physical/material/source/private/DB/original510prefs cleanup. No native
+rerun for reporters or new world.
+
+
+##24October audited Pasture75 result; next staged only
+Native75/job+supervisor complete0, owners/Civ absent, original510/144prefs restored.
+Matched control5->7workingBase,4->7structural sales,3->0observed harvest losses;
+Both0both. Cattle2533 first logged Farm20->Pasture20/working21/physical25+75.
+No universal/AI-only claim; broad private80/allowners/human spillovers disclosed.
+5foundations1complete/8tiles345=206own139fallback; ages/exposure differ.
+Next Camp+Plantation extension staged uninstalled, driver/native proof pending.
+Current176pins preserved; future helper pin fix made AFTERaudit, no oldcurrentpins
+claim. See csc-ai-pasture-forecast75-results-20261024.md and maintained comparator.
+
+
+##24October resource-improvement v6 ready offline
+Pasture80 retained; add Camp80/Plantation80 only.515files/7runtime deltas, exact native table/scope/resource validity/source gates,116checksPASS. Canonical Controller/perturnloop ASTunchanged. Same exact16counterfactual75/no newworld, noharvestban/FarmMinebonus. Native response pending. Design csc-ai-resource-improvement-forecast-diagnostic-20261024.md. Allsources freeze after launch; do not rerun schema script alive because it writes pinned provenance.
+
+
+##24October resource-improvement v6 launched
+Current R raw-resource016-075-resource-improvement-forecast-v6, supervisor11316/worker15708/DX12Civ18472 exactidentities verified. Native loading; no sourceparity/advanceclaimed yet. All imported/executed sources/tests/provenance FROZEN. WorkerexclusivelyTuner. Sameoriginal16counterfactual to75/newworld0, Pasture+Camp+Plantation80/noFarmMinebonus/ban.116checksPASS; no nativebehaviorclaimfromofflinefixtures. Original510restoration pending whilecandidate515live. Goal/monitorACTIVE15min; exact updatereturn R/monitor.json.
+
+
+##24October resource-improvement v6 launched
+Current R raw-resource016-075-resource-improvement-forecast-v6, supervisor11316/worker15708/DX12Civ18472 exactidentities verified. Independent strictsource16/rawcontrol/world/private/citizen/gold/production/units andthreeactualnativeimprovementrows VERIFIED;180executed pins+archives exact. Native laterprogress mustreadliveartifacts. All imported/executed sources/tests/provenance FROZEN. WorkerexclusivelyTuner. Sameoriginal16counterfactual to75/newworld0, Pasture+Camp+Plantation80/noFarmMinebonus/ban.116checksPASS; no nativebehaviorclaimfromofflinefixtures. Original510restoration pending whilecandidate515live. Goal/monitorACTIVE15min; exact updatereturn R/monitor.json.
+
+
+##24October v6 native progress and closed25 comparison
+Independent startup verifies strict16/world/gold/units/production/private/citizen
+equality versusrawcontrol, native446exactthreeimprovementrows,180pins/archives,
+unused imported rulehelper nowpinned. Actualnative17inactive then36archived;
+at36twofoundations/5tiles170=76own94fallback, nofault/stderr. Currentliveartifacts
+may be later. All executedsources/testfixture/provenance FROZEN/exclusiveTuner.
+New unpinned H/material-resource-forecast-comparison.py compares raw/v5/v6 only
+at exactclosed25/50/75 snapshots/logbytebounds/research packets;9testsPASS.
+Checkpoint25 validates repeated Cattle2533Pasture20/working21/retained25 with
+harvestlegal, rawFarm20/oneconfirmedharvest. V5/v6eachoneworkingcareplot,
+same7Q4complete/0producer, allarmsSugarlocked/Cattle1573nojob/Honeydevelop.
+No extra Camp/Plantation improvement response yet25; don'textrapolate final75.
+Reporter retains priorplans/physicalobs for resource plots missing currentlinks;
+UNOBSERVED remains unknown, not falsezero/destruction. Finalauditpending.
+
+Additional artifact-only v5 endpoint allocation review confirms Cattle1573
+worked1/private100/3Food/purchasedcapital65536 while serving Bakers1648/city131073.
+This excludes an unworkable/unworked-tile explanation at75; crosscitystructure
+is NOT a proven cause of jobomission.10worked/actionabledevelop materialplots,
+26unique ownedcareplots total; nearbyBuilders notidle/available/pathproof.
+Evidence Rv5/material-allocation75-review/{review.json,review.md}.
+No live edits/newnativeclient/newworld/probe/restart. MonitorACTIVE15min,
+latest actual updatereturn Rv6/monitor.json. Overallgoal remainsACTIVE.
+
+
+##24October v6 audited75; material-viability v7 offline next
+All v6owners exited0/native75; independent180pins/native446/515/gold/0%/370research/
+physical/log/private/census/original510/144prefs auditPASS. Six paired arms complete,
+one source16world. Camp/Plantation add NOobserved material work benefit75 vsPasture;
+physicalsignature/research/carehistorysame but AI1citizen allocation and ordinary
+output/GDP changed (Silk2318private20->100), so NOTeconomicallyidentical/AI-only.
+Finalnativecounts7Base0Both7sales;8tiles345=206own139fallback/5found1complete.
+Newexactprecommit auditor covers5assistedsites, finds1falseBoth: Tailors2165 at69
+relied on Silk2091 underCityCenter0. NaturalTailors2494 similarly Flax2421covered.
+Stage1 attaches to improvements; careexcluded these, plannerdidnot. Fixed after
+allownersended in observations/fundedLua/nativepurchase/nativefoundation plan+
+commit/UIpreflight; futurelockedIrrigation opportunity retained.256checksPASS,
+actualLua51/actualprecommit69, noNativecalls/installedchanges. NativefixPENDING.
+S/offline-preparation/source016-material-viability cloned515/nativeDB unchanged,
+readyfalse/driverunwired. NeedNEWv7variant/driver/auditor/sourceallowlist+pins,
+notblindoldlauncher (oldmainpinallowlistrejects intentionalchanges). No v7 load/
+newworld/reconstruction. Keepgoal+monitorACTIVE15min; sourceversions archived
+H/after-resource-improvement-v6-preserved and before-material-viability-v7.
+Design/results csc-ai-resource-improvement-forecast75-results-20261024.md;
+canonicalcomparison and retrospective-material-viability.json authoritative.
+
+
+## Final offline material viability checks and retrospective scope
+256checksPASS/0nativecalls/0installedchanges. Exactprecommit audit covers everyplacement: main1920/7falseBoth, reference0/4,raw0/3,boost0/3,nativerule0/2,Pasture1/5,v6 1/5,allunknown0. The latter is the SAME2165/Silk2091turn69case acrosscounterfactuals, notindependentduplicatedoutcomes. BugdoesnotexplainallolderpoorBothrates. S/viability-retrospective-series.json preservesmatrix. v7same16prep existsUNWIRED/readyfalse; no nativeissued. Goal/monitorACTIVE; actuallatestreceipt Rv6/monitor.json.
+
+
+## Material-viability v7 declared and launch-ready
+Distinct same-source16 counterfactual to75; unchanged515runtime/nativeDB/funding/Controller/perturnloop. Only necessary district-free material eligibility/fresh guards change; future technology locks stillallowed.256guard+compat checks current;38additional source/config/schema checksPASS. Explicit oldmain-pin overrides classified against preservedv6/guard sources; notblanketpermission. Readycheck passes, native0atthispreparationstage. Design csc-ai-material-viability-diagnostic-20261024.md. Freezeallimports/tests/provenance afterlaunch; independentnative/auditproof remainspending.
+
+
+##24October v7 strict native source16 passed
+Current R raw-resource016-075-material-viability-v7, supervisor1712/worker11664/DX12Civ5728 exactidentities verified. Source16 equalparent fullworld/Gold/units/production/private/citizen, same515runtime/native446DB, exact3forecasts;192currentpins/archives and materialguards verified independently.1load/0pre16replay/0reconstruction. All executedsources/tests/provenance FROZEN, exclusiveworkerTuner. Native laterprogress mustreadliveartifacts; fixingfalseBoth nativeeffect pending untilactualplacements andlatecase/audit. No oldv6currentpin claim. Goal/monitorACTIVE15min.
+
+
+##24October v7 positive native placements and closed25 comparison
+Actual28inactive recorded;2native0%foundations have exactprecommit district-freeBoth, nativeexport require_both_materials=true, positiveunchangedcost/queue proof. early-native-positive-foundations.json preservespositiveevidence. This verifiesvalidsitesstillwork, NOTlate69falsecaseprevention/universalsafety. Closed25comparison countsidenticalparent:6cities29pop7Q4complete0producer; exactsource/runtime/DB/pins stillverified. NewH/material-viability-comparison.py prepared/tested3counterexamples (zeroactions cannotprovefix, missing/failedprecommitnevergreen). Alllive192pins remainFROZEN, no competingnativeclient or sourceedits. Currentgoal/15minmonitorACTIVE, actual75+audit/latecase/cleanup/synthesispending.
+
+
+
+##24October mapped517 endpoint150 audited; human inspection hold
+
+Run03 native150/job+supcomplete0; independent-mapped150-audit verified231pins/native446/745research/all17economic+7zero%receipts. Final31cities324pop45Q44complete40producer15functioning4Both15structural sales14Serviceflags; actualpaymentsUNOBSERVED.6of7assistedcomplete,17tiles830=448own382fallback. Native mappedMine positive controls0/UNOBSERVED;47excludedzero. OriginalworkerclosedCiv/restored510+prefs144 BEFORE newhumanrequest leave150open. Separate H/open-mapped150-inspection.py reopening exact150save underarchived517; noautoplay/planner/economics. Read Dactive-run +R/human-inspection-150/status.json actualreadiness; humanownsUIafterhelperexit. NEVERautoexit/restorewhilehumaninspects; current517+prefs cleanupPENDINGhumanfinished/allCivabsent. Monitor csc-mapped-material-improvements-to150 updatedinspectionhold/quiet. Broadgoalpaused/noextension/newworld. R/final-report.md andprojectdesignupdated; priorrestorationreceiptshistoricalbeforereopening.
+
+
+##24October human inspection: era-dependent missing district bases
+
+Human confirms final150open and nowownsUI/Tuner; both inspectionhelpersended. Exact150save loadedonce,3native150/inactive/remaining-1/local0/humantrue samples. Readonly followup discovery failed before any request; fullreloadworld/GoldparityUNVERIFIED, doNOTreload/compete. Autostartdisable not reached; cleanup pendingafterhumanfinished. User reports bases disappear at laterera; Classic->originalera toggle restores. Source CSC_Landmarks has14Bakers+7Tailors BaseVariants tagged onlyAncient/Classical, ZERO DEFAULT-era base variants. Vanilla Campus/CommercialHub/IndustrialZone useDEFAULTfallback. CurrentBLPcontains141sourceentrystrings+all50installedreferences; no missingnames, notfullpayloadproof. R/art-era-diagnosis.json recordscandidate: absentgeneral-erafallback/selectioncache; exactnativecauseUNPROVEN, no art/source/runtimefix applied. Do not misdiagnose missingmillfiles or claim hiddenhelperartcause. Keepgameopen, no assetswap.
+
+
+##24October requested source ArtDef era fallback fixed
+
+CSC_Landmarks source-only:17Classical BaseVariants->DEFAULT (Bakers11/Tailors6);4Ancient overrides unchanged. Every BuildingSet has general fallback; XML+semantic comparison proves no other fields changed. H/quarter-base-era-fallback/verification.json +beforebackup. All517installed hashes unchanged,0nativecalls/no cook/deploy, human turn150 staysOPEN. Native coldload/eratransition fix verification PENDING after later build. Art guide updated; unrelated dirty work preserved.
+
+
+# CURRENT 24 October — CSC Basic/RH source package; human game remains open
+
+Human chose one CSC_AI_ASSISTANCE master(default On): Basic when RH absent,
+automatic CSC extension when supported RH present; Off means no CSC AI inputs or
+interventions even with RH. CSC_AI_SUBSIDIES is dependent, default On in either
+enabled mode, independently Off for safe-own-funds-only acquisition. Resource pass
+stays independent. Source settings/SQL/Lua/actions prepared, NOT built/deployed.
+Read project/docs/integrations/csc-ai-profiles.md and project/tools/ai_tuning/README.md.
+
+Basic: improvement30/Builder50/+1 AI Builder movement/any-city contracts. Shared:
+existing CSC placement/material/research signals plus new normal-turn Lua Both
+acquisition/zero-progress host. RH keeps global weights, movement and existing
+tree parameters; missing any-city parameter only is filled. CSC yield registered
+in native RHAITags instead of replacing RH reports. Registry project/config/
+csc-ai-profiles.json currently reviewed beta5.097 UUID2501be3e-9780-4e9f-9506-
+4ff71cf076cb; public ID unknown, no invented match. configure_profiles.py generates
+mutually exclusive actions, supports future reviewed aliases.
+
+Old material-care/early all-owner forecasts/harvest bans are NOT promoted. New
+assistance host is an offline-tested source candidate; normal-turn and actual RH
+combined native qualification pending. Single-player economics only until MP
+synchronization tested. Assisted quoted city assignment+actual debit, NOT proven
+native AI PURCHASE. Compact saved receipts, no deep capture. Experimental Python
+mutation adapters refuse an installed host; future tests need observation-only
+drivers, no dual interventions/replaying old studies.
+
+Current human turn150 game was reopened under archived517 and is HUMAN OWNED.
+No source build or live install performed. All installed hashes must stay517;
+source ArtDef DEFAULT fallback and AI source edits do NOT affect this open game.
+Cleanup remains pending human finished. Automation update returned “Automation
+does not exist in the app and could not be updated”; do NOT resurrect or claim a
+deletion by this agent. No scheduled cleanup currently confirmed. Old studies
+closed, broad goal paused; no new native game authorized by this source request.
+
+24 October AI-profile source verification: 40 focused + 12 foundation + 18 funding
+checks PASS; ModBuddy metadata round-trip PASS. New profile/native/RH session NOT
+tested. Final read-only runtime comparison found 26 differences from archived517,
+including new profile/settings metadata and art; no deployment/restoration was
+issued by this source task. Do not claim current517 unchanged or original510
+restored. Leave inspection game alone; reconcile manifest/prefs after human done.
+Evidence: H/ai-package-v1/final-verification.json. Automation absent/not recreated.
+
+CURRENT 24 October manual-testing handoff: human requested saved settings restored. Former inspection Civ was already absent. Launched DX12 PID2908 to MainMenu ONLY (no loads/hosts/autoplay), helper initially timed out while human FireTuner was open. Human closed FireTuner; restoration then PASSED independent native readback for all144 saved mod preferences (15enabled), auto_start=false. Helper exited0, main menu left open for human; no runtime files restored/deployed. Receipt H/manual-preferences-restoration-20261024/preferences-restored.json and run03/human-inspection-150/manual-preferences-restored.json. Do not resume old tests, restart a monitor, close human game or revert current installed files for the old inspection cleanup. New AI profile testing is explicitly deferred by human.
+
+CURRENT RH5 test24October: study csc-rh5-profile150-20261024/active-run.json -> run-05/resume-025-ui-ready-v3, sup204/worker17040/DX12Civ19972. Native50 independentlyverified, 426pinsFROZEN/exclusive worker console, 7tiles295=41own254fallback/3confirmed0%foundations/noerrors/pending. Initialsameworld25 reload fullknownworld/units/Gold/120researchprefix once verified; no earlierAIreplay/newworld. Host-v3 UI readiness deferral + persisted INITIAL_HUMANS fixed native Gameplay missing getters, UI city publication lag and autoplay-human-flag mutation. Observer0 lastcycle remainsparent24, AI1..5 reach49.44offlinechecksPASS plus actualnativeowner/Gold/queue/cost/caps. Source1..24 hostv1 economic effects0, mixed coverage explicit. Nativepaidassignment NOT native AI PURCHASE. RH5.097 subscription3792072489 only; sameModId legacyRH copies keptoff, exactper-subscription settingsrestore. BothR&F+GS loaded, Basic+1 notattached. Continue150, lightoutcomes25, monitor csc-rh5-profile-to-turn-150 ACTIVE15minupdates. No newworld/recoveryofoldstudies. Allactualsource/runtimepinned noedits/client/UI. Finalofflineaudit/report/normalexit/exactpretestmanual3delta/prefs restoration and actualmonitor delete+receipt pending. Never historical510/517 rollback. See current monitor-context and independent-native-actions50-confirmation.json. Old CURRENT statuses above/below superseded.
+
+24Oct20:13UTC heartbeat: native110 verified, same sup204/worker17040/DX12Civ19972 alive/exactCIM identities,426pins unchanged,noerrors/pending,observer0lastcycle24.7foundations/13tiles635Gold=60AIown575fallback, since50 +4foundations/+6tiles/+340cost(19own321fallback). Latest deep100:36AIcities225pop,27Quarters17complete;7assisted ever,6stillphysical,only1complete; originalGenghis Baker2564 absent acrossall recordedcities100 (cause notestablished).16Quarter sites ownedBase/4Both/5improvedBase. SupportingRice1353 disappeared withAqueduct occupancy, Flax2826withGovernment district between50..100; occupancy notBuilderharvestproof.2supportingtile endpoints newlyimproved1204/2751. No additional repair claim fromsparseendpoints. ContinueUNCHANGED150, no midrun tuning. Summary heartbeat110-summary.json; finalaudit/report/restoration/monitordelete stillpending.
+
+CURRENT HUMAN GOAL24Oct: improvements/native tests until at least CSC-only parity; ONLY CSC changes, RH Workshop read-only. Goal active, no token budget. Evidence campaign plan project/docs/research/mods/csc-ai-rh5-parity-campaign-20261024.md and Desktop csc-rh5-parity-campaign-20261024/active-run.json. Current RHpilot still150 thenaudit; newtests authorized, not oldgoal revival. Do not delete scoped monitor at first150: repurpose it for this authorized campaign. Matched frozen Basic references and three fixed seed pairs/parity vector required; native125 save remains unconfirmed, no resend/replay,620research/currentworld/economics intact. Current live continuation root from pilot active-run. Prior scoped-stop instructions superseded for subsequent authorized games only.
+
+
+## 24 October: first RH pilot audited; fresh Basic reference underway
+
+User authorized continued CSC-only improvements/native games until parity, then
+confirmed focus on evidence. Goal/15min campaign monitor ACTIVE. RH files read-only.
+Pilot150 independently audited426pins/745research/14tiles700=95own605fallback/
+9zero%foundations; exact150save a1fcf734a0d291f1947a0da060db4ff8ebe2420aa9beacad7400418e1b1f26ea.
+Exact125savegap remains; no reload/replay during125 live recovery. Normal exit/
+exactpretestpackage+prefs restoration verified; allpilotowners/Civ absent.
+Final49cities422pop52completeQ28producer12workingBase1Both9structuraldistrictsales/
+1Serviceflag; actualeligiblecustomerbuildinglinks3, paymentsUNOBSERVED.
+All9assisted complete, one capturedbyobserver0; no destruction claim.
+Workingownedlink75cohort7:5endpoint/4all4observedcheckpoints; sparse data.
+Aomori Tailors complete117, Textile Workshop submitted118value124/132205/139130
+stillabsent150. NativeDB has no CSC Buildings AiFavoredItems/Building_YieldChanges;
+RH auto-purchase list omitsCSC. Hypothesis targetedproducerguidance, notproofcause.
+
+Campaign P=C:/Users/Shadow/Desktop/Codex/csc-rh5-parity-campaign-20261024.
+Read active-run.json FIRST, plan.md; current basic-A/run-01 sup15116/worker1388/
+Civ10356, actual35verified. ModeBASIC/R&F+GS/allRHdisabled/improvement30/
+Builder50/+1movement verified,425pins/runtimeunchanged. Frozenreference archive.
+Same seedsA830405/940411; recordedresource map equality=False,
+recordedstartcities equality=True; fullinitialterraincensus
+UNOBSERVED. Do not claim seeds alone prove complete map equality.
+Driver now accepts BASIC|RH/seeds;53checksPASS(44profiles+6clock+3Lua51selection).
+No tuning changes yet; worker exclusivelyTuner/all executedsource/tests frozen.
+No oldpilot replay orgoalcompletion. FreshBasic referencesB/C then CSC-only
+compatibility candidates per campaignplan; nativeparity stillUNPROVEN.
+
+
+### Evidence method correction and first compatibility hypothesis
+
+Initial city-start equality was a vacuous empty-list comparison, now corrected to
+UNOBSERVED in independent-startup-confirmation.json. Both initial censuses contain
+431resources, but8plot records differ (4resources occupy different locations).
+Cause not established; no attribution to RH or CSC map-pass RNG. Current arm is
+a same-seed/settings reference, not an exact physical-map causal pair. Do not
+reroll it or hide these differences. Fullinitial terrain and unit-start capture
+must be added once beforeAI to future driver versions, after current owners exit.
+Keep declared outcome thresholds and historical anchor. Report comparability
+limits explicitly; a scorecard outcome is distinct from causal attribution.
+
+Pilot decision-evidence150.json adds exact customer-building links via established
+sales_prevalence routes/native replacement tables and physical building plots:
+3eligible links versus9functioning producers adjacent to a tagged sales district.
+75->150 workingownedmaterial-link cohort7:5endpoint retained,4atall4observed
+checkpoints. Counts are small and intervals sparse, not continuous retention.
+All9assisted Quarters complete150; source2564 is nowobserver0owned, so absence
+fromAI1..5 census is capture/ownership scope rather than proof of destruction.
+
+Prioritized hypothesis (NOT implemented during live Basic reference): an RH-only
+CSC Buildings preference list for real producer/chain buildings can address low
+forecast scores while leaving RH code/global priorities untouched. Native DB has
+no CSC building preferences or Building_YieldChanges; Aomori's completed Tailors
+Quarter117 has Workshop proposals118/132/139 valued124/205/130, absent150.
+This supports testing native building valuation, not claiming engine forecast
+causality. Compare selected contracts, completed physical producers and economic/
+military tradeoffs; do not reward hidden service/access flag buildings or force
+orders. RH's vanilla-only auto-purchase list is another integration gap, but any
+extra paid-building mechanism would confound a first valuation experiment and
+needs separate design; do not grant buildings or modify that private RH table.
+
+Observe worker availability through native allocation/path/production logs before
+adding generic bias: raw submitted Builder requests are not unique needed units,
+and a nearby or surviving Builder is not idle/reachable capacity. Keep current
+reference and RH global Builder policy unchanged for the first targeted test.
+
+
+### First-reference audit and order adjustment
+
+Basic-A completed150/job+sup0/allCiv+owners absent, restored exact pretest package
+and preferences. Independent audit745research/425pins/13tiles705=403own302subsidy/
+10zero%foundations/all exact checkpoints. Counts33cities356pop44completeQuarters/
+36producers15workingBase3Both11Serviceflags25eligiblecustomer-buildinglinks.
+RHpilot150:49cities422pop52completeQ28producers12Base1Both1flag3eligiblelinks.
+Retention75cohort Basic7/9endpoint6/9allobserved; RH5/7 and4/7 respectively.
+
+Reference tuning/runtime is frozen before any candidate edits. Test the first
+RH-only production candidate on seedA now, before completing Basic mapsB/C.
+This changes execution order only: all three fixed references, pooled+per-city
+gates, retention checks and stronger historical anchor remain required. Shared
+and Basic tuning hashes stay identical. Candidate adds no grants or orders.
+Do not claim parity or isolated cause from this first candidate or mixed-host
+pilot. Native decision and physical outcome response still need observation.
+
+Candidate native AiLists Buildings input gives7real CSC buildings priority90
+(stage2/3) or60(stage4), scoped to RH profile and major leaders. These weights
+use the reviewed RH Market90 as a conservative reference; native Value formula
+is not asserted. Hidden flags/MustPurchase/access buildings excluded, no global
+RH lists/weights/trees/movement/economics changed. Four SQL isolation checks plus
+44profile/3selection/3initial-census/6checkpoint tests PASS (60total), not native
+benefit. Full initial map/setup-unit reader is read-only and once-before-play;
+future arms capture it, Basic-A's missing full initial census stays explicit.
+
+
+## Production-v1 candidate actual native startup verified
+
+Current Pactive-run->candidates/production-v1/A/run-01, sup8552/worker8388/
+Civ1016 actual34verified. Native7 Buildingspreferences exact90/60 and trait
+selector loaded;9existing RH/global native tables byte-row-equal to priorRH
+afterexcluding newCSCnamespace, shared+Basic6sourcehashes equal, all426pins and
+runtime517 unchanged. RH files neveredited. Initial1fullgrid3404/
+12setupunits/6majors, observedstartgetters6,0economic
+effects; newread-onlycensus runsbeforeautoplay. Known resource-map equality to
+oldRHpilot=True, BasicA=False.
+Old fullterrain/unitstarts missing, no exactpair claim. Rowpresence alone does
+notprove AI preferenceconsumption orimprovement; nativechoices/physicalresults
+pending. Allsource/runtime/RHpins FROZEN, no competingnativeclient/UI. Goal and
+15minmonitorACTIVE; referenceAcomplete, referencesB/C stillrequired, nativeparity
+unproved. Testend150/nospontaneousextension. Full150audit/cleanup stillpending.
+
+
+## Production-v1 A complete; frozen references B/C next
+
+Native150/job+sup0/audit426pins/745research/all exactsaves/11tiles505=232own273fallback/
+9zero%foundation operations. Current pretestpackage+prefs restored/allCivabsent.
+55cities444pop48completeQ35producer16Base4Both1Serviceflag4eligiblecustomerlinks.
+BasicA33cities356pop44completeQ36producer15Base3Both11flags25eligiblelinks.
+All6percity gates fail, totalproducer/links/flags fail; NOparity. Full3maps still
+required. V1source retained, no claim that a row or one trajectory proves cause.
+
+New test-only read-only quarter-completion observer: native-style district
+collection/GetNum/GetDistrictByIndex and nativeIsComplete afterPlayerTurnDeactivated;
+first observed completion per owner/city/site/type, inheritedprefix de-duped, no
+orders/grants/no perturn deep export.4Lua51fixtures plus44profiles/3initialcensus
+PASS(51thisinstrumentationpass). Native callback availability stillpending until
+Bactualreadbacks. Fieldquarter_type avoids oldplacement-analysis misclassification.
+
+ReferenceB/C runtimes are staged EXACTLY from auditedBasicA's3archivedAI deltas,
+with full pretest manifest equality required; art/unrelatedfiles never rolled
+back. This preserves frozen Basic gameplay despite retained RHcandidate source.
+New driver/instrumentation recordsfullinitialmap/units and completionepisodes;
+different observation coverage explicit. A's oldepisode gaps not fabricated.
+Reference-series helper serializes B830102/940104 thenC830203/940207; eachbounded150,
+nextworld ONLYafter exit0/audit/cleanup, stops on any failure, no reroll/retry.
+No native transport inserieshelper: maintainedworker exclusivelyownsTuner.
+Read Pactive-run +reference-series-status before dispatching anything. Goal and
+15minmonitor remainACTIVE for further CSC-only improvement and full parity gates.
+
+
+## 25 October — customer decision evidence, reference B150 and bounded recovery
+
+The eight RH production-v1 working Base sources with a completed adjacent
+stage2customer district but missing its building are ALL Bakers/Granary cases.
+All16 working Base sources already have their stage2 Service civic. The native
+Granary/Market/Lighthouse/Temple definitions equal BasicA; this is not a discovered
+hard production prohibition. Closed AI_CityBuild logs cover1..150 without byte
+gaps. None of the8current player+city-name cohorts contains a Granary record,
+although they select other items. Telavi selected Amphitheater128/Builder132/
+ArtMuseum135/SendAid143,148; Aksu selected IndustrialZoneproject138/Factory143/
+LineInfantry147/Builder148. Name-only logs are constrained by checkpoint city
+identity histories; no unique scorer formula or isolated causal effect proved.
+H/customer-production-review.py and RH-v1-customer-production150.json retain
+records, byte coverage, current identities, checkpoint histories and competitors.
+
+H/customer-forecast-v2.sql is an UNINSTALLED draft using the existing native CSC
+player-district attachment type. A functioning AI-owned Wind/Water Mill owns an
+attachment to adjacent owned City Centers; its child adds40private planning units
+to Granary potential yield. No Granary-presence gate, civic/material gate, real
+yield/grant/order or RH/global mutation. Five actual archived-schema SQLite tests
+pass: Basic no-op, old rows unchanged, foreign keys, replay idempotence and exact
+scope/args. An initial wrong generic modifier name was caught and corrected to
+the existing MODIFIER_CSC_PLAYER_DISTRICTS_ATTACH_MODIFIER. Native application,
+future building valuation and benefit remain UNPROVEN. Before testing require
+same-context UI GetBuildingPotentialYield(GranaryHash,YieldType) controls with
+source/ownership/adjacency/pillage facts from that UI context; loaded SQL alone
+does not pass. Preserve v1 unchanged until C completes, then review/promote draft.
+
+BasicB accepted endpoint path is campaign/basic-B/run-01/resume-140-congress-v2/
+finish-145-v3/finalize-150-savegap-v4. Native150 independently audited:33AIcities,
+360population,47Quarters/45complete,43producers,14workingBase/1Both,7stage4,
+31eligiblecustomerbuildinglinks/12Serviceflags.2tile acquisitions75Gold=26own+
+49fallback,2zero%foundations.745researchrows complete; no fabricated observer
+data. Original140 stall had live exact Civ12376 and allowners exited, no crash.
+Read-only diagnostics found WorldCongressPopup visible atUI139 with Return and
+LastResults only; voting/proposal controls hidden. Guarded shipped ClosePopup
+acknowledgement was sent once, followed by native141..145 and150 using the original
+140->145 budget. ClosePopup can submit WORLD_CONGRESS_LOOKED_AT_AVAILABLE;
+this is a results acknowledgement, not merely cosmetic/no-native-effect.
+
+A diagnostic handoff was requested too early after that acknowledgement; native
+progress had resumed. It failed on moving phase143/remaining1 before any control.
+Canonical handoff now returns defer instead of asserting on a moved phase;2actual
+method fixtures pass. Old recorder exited, existing finite autoplay reached145,
+new owner confirmed3inactive145 samples and intact695-row prefix/720research,
+then played ONLY145->150. No load/newworld/replay/second140activation/econresend.
+7Congressguard tests include actualLua51 phase/vote/proposal/hidden/once checks
+and Python opt-in/ambiguity reservation. All gameplay bytes remained frozenBasicA.
+
+Final150 one-shot SaveGame ACK produced NO file/SaveComplete. Later readonly
+native status confirmedfalse; never resent. Fresh150 world/Gold/ledger and745
+research checks passed, then supported Menu exit,144prefs/autostartfalse and exact
+pretest runtime restored/allCivabsent. Offline audit verified observed contracts
+while exact_save_coverage_complete=false, exact_save_gaps=[150]. Old failures and
+probes preserved; no pretend full exact-save pass. C fixed830203/940207 dispatched
+only after B final audit+restoration. No rerolls, source changes to Basic, extra
+subsidies or RHfile edits. Monitor/goal remainACTIVE, parity stillunproved.
+
+Latest independently verified C startup/advance: native30;428unchanged pins;
+whole517 runtime equals frozenBasicA;23native tables equal;fullinitial3404plots/
+12setupunits/6starts/zeroeconomics. Closed25 completion observer calls408,
+major144,5nativecompletion observations. See C/independent-startup-confirmation.
+Cworker18148/sup1252/DX12Civ16300/series7500; all livepins frozen/exclusiveTuner.
+
+
+## 25 October — all frozen references complete; customer forecast v2 test
+
+FrozenBasicC native150/job+sup0/independent audit/restoration allpassed.36AIcities,
+391population,53Quarters/51complete,43producers,9workingBase/4Both,29eligible
+customerbuildinglinks/5Serviceflags.8assistedoperations,7ageeligiblecompletions
+observed/1stillunfinished/no unknown capturecompletion intervals.17tiles1040Gold=
+330own+710fallback. Final exactsave verified, unlike BasicB's explicit150gap.
+All428archivedpinsverified;299nonruntime source/RHpins remain unchanged, current
+installedpackage equals originalpretest517. Installedruntime pins naturally
+differ AFTER authorized restoration; validate their archived hashes and actual
+restoredmanifest, not compare treatment bytes to restoredfiles. An initial
+independent check wrongly included restoredruntime paths and failed; corrected
+scope then passed. All original raw outcomes remain intact. Cnativecompletion
+observer56observations/calls2446/major894. No source orRH tuning changedinrefs.
+
+Three-reference pooled150 target:102AIcities1107pop,146Quarters140complete,
+122producers38workingBase8Both85eligiblecustomerbuildinglinks28Serviceflags.
+Copies/detailed roots/retention/funding/savegaps frozen in
+campaign/frozen-reference/reference-results150.json. H/parity-campaign-scorecard.py
+requires all3pairs before any primaryPASS, uses matchedobservedmaps only for
+provisional comparisons, keeps zero denominatorsUNOBSERVED and completioninterval
+overlap unresolved.5aggregationfixturesPASS (missingmaps/unmatcheddenominators,
+totalsvspercity,zerocities,unknowncompletion/fullprimarynotwholegoal). No candidate
+has completed all3maps yet, so parity remainsUNPROVEN. OldAfullinitialmaplimits
+and Bexactsavegap remainexplicit; no invented flawlesscampaign claim.
+
+Promoted customer-v2 after references/ownersallgone. Gameplay change ONLY CSC
+ModSupport_RH_AI.sql, keeping v1sevenBuildingpreferences and adding anAI-only
+Granaryforecast owned by a functioning Wind/WaterMill, player-districtcollection
+to ownedadjacentCityCenter, private40 child buildingyield. No Granarypresence/
+civic/material gate: signal exists BEFORE consumerbuilding. Nativeone-level
+uniqueGranary replacements each get separatechild/wrapper (oneModifierIdarg
+perwrapper). No realyields/grants/forcedorders/newBuilderpolicy/subsidyinflation.
+SQLlayoutformatter tokenpreserving. New diagnostic-only maintained Lua reader
+and opt-in native_profile_test flag; CLI propagates through both childprocesses.
+Scheduled1/25..150 controls occur AFTER verifiedexactsave. UIGetBuildingPotentialYield
+uses buildingHash+YieldType, sameUIframe sourceownership/distance/pillage facts;
+UIclocklag recorded; unbuiltprojection/builtapplication/negative/uncertainseparate.
+Ambiguous districtfunctioning is excluded rather than calledpass. Absentpositive
+controls areUNOBSERVED, and any controlmismatchstopsaftercheckpoint preservation.
+
+67relevantchecksPASS:44existingprofiles +6native-schemaSQL/isolation/idempotence/
+directreplacement +11actualLua51controlreader +6actualdriverAST/handlerchecks.
+DriverbeforeimageASTcontrolscompareimmutablearchive (not promotedsource itself).
+An initial draftprovenancehash was computed fromLFtext whileWindowswriteproduced
+CRLF; prepromotionguardcaughtit before any source/install/nativeeffect. Corrected
+actualfile-bytehash, reranchecks, thenpromoted. Candidate manifest/beforeimages/
+testlogs archived in candidates/customer-forecast-v2. FourSDKgenerateddeployment
+deltas only:modinfo,hostLua,hostUILua,RHcompatSQL; art unchanged. NewnativeA run01
+dispatched sup8000/worker8340/DX12Civ3368 created25Oct01:24:07.474+02. No positive
+nativevalue/choice/benefit claim yet; source definitions are not scorerproof.
+Same seedA830405/940411, R&F+GS/RH5.097/assistance+subsidies/resourcepassOn/150only.
+WorkerexclusiveTuner/all executedsources FROZEN. No further tuning duringliveA.
+
+H/verify-customer-v2-startup.py independently checks native exactoldRHtables
+excludingonlynewnamespace, sharedBasic sourcehashes, allruntime/RHpins and full
+initialmap/unit/start equality againstv1A, plus currentactualadvancement and
+controls. Runonlywhen artifacts showactualadvance; no nativeconsole. H/audit-
+customer-v2.py wraps finalaudit and separately checks all7controlframes/native
+unbuiltvalue exposure; it doesNOTclaimAIchoice orparity. H/customer-production-
+review.py retains none-of8Granarycohort records/competitorchoices; nativeclosed
+jobselection and physicalGranaries/links/Serviceflags remain required evidence.
+All3newcandidate maps plus pooled/percity/genuineepisodes/75retention/historical
+15Base4Both31cityanchor and economicmilitarytradeoffs remain. Goal/monitorACTIVE.
+
+
+Native customer-v2 startup/advance independently VERIFIED at33:429source/runtime/
+RHpins unchanged, nativecandidate rowsloaded,22preexistingRHtables identicalv1
+excludingONLYnewnamespace, sharedBasic6sourcehashes equal. Fullinitial1grid/
+playerstarts+Gold/setupunits EXACTLYequalv1A. AtUI25:9no-sourceAInegativecontrols,
+1humannegative,0failures, NO Mill source/positiveexposure yet. ThusnativeUNBUILT/
+BUILTforecastapplicationSTILLUNOBSERVED; no benefitclaim. Worker8340/sup8000/
+DX12Civ3368 exactcreation25Oct01:24:07.474+02 verified; allpinsfrozen/exclusiveTuner.
+Read lateractual artifacts; independent-startup-confirmation.json authoritative.
+
+
+### 25 October — customer forecast evidence and configured-role correction
+
+V2 is CLOSED PARTIAL at125, not a completed150 candidate. Exact125 save,
+620research rows and430pins were preserved; independent actual-yield probe
+confirmed original/configured human0 CHERTOMLYK Granary had private40 as well
+as potential40 after autoplay. This is observed human-scope failure, not just
+a tooltip anomaly. Inverse REQUIREMENT_PLAYER_IS_HUMAN alone did not exclude
+this autoplay-created source after return. Normal non-autoplay humans were
+not separately tested. The native decision formula/caching cause is unproven.
+Supported Menu/exit and exact pretestpackage/144prefs restoration are verified;
+allCiv absent before the next candidate. Original failed jobs/pins/raw data stay.
+
+Earlier native V2 evidence is retained: functioning WaterMill forecast40 landed
+on UNBUILT Meroe Granary50 with16AI no-source and5human negative0 controls.
+AI_CityBuild showed Meroe proposal50/selection52/complete53, but V1 also selected
+Granary52; no earlier completion claim. Kutaisi V2 proposed71 after Mill70,
+versus no V1 Granary proposal through75 despite V1 Mill67. Both arms had two
+working Granaries75. Different recommendation input/path is observed, not an
+isolated causal benefit. One same-map combined-treatment comparison only.
+
+Matched125 V2 versus V1:42vs51cities/294vs338population,36vs32completeQuarters,
+22vs20producer buildings,12vs9workingBase,3Both each,4vs3eligiblecustomer-building
+links,2vs0Service flags. Subsidies520vs273Gold, cost775vs505Gold. V2 sparse75->125
+material cohort9/9 endpoint and7/9 all3observed; V1 10/12 and9/12. Actualpayments
+remainUNOBSERVED. Improved some chain counts but fewer people/cities, higher
+subsidies, incomplete150 and human-scope failure: qualification REJECTED.
+
+V3 promoted as a scope correction ONLY. Keep V2 private40 and V1 Buildings90/60,
+RH/global/shared/Basic/Builder/economics unchanged. New RH-only additive script
+ModSupport_RH_AI_Roles.lua reads persisted original-human identities or the UI's
+pre-autoplay snapshot, stamps Quarter source plot CSC_RH_CUSTOMER_CONFIGURED_AI
+1AI/0human; missing identity/property fails closed. Uses established Gameplay
+district APIs and placement/activation/capture events, changed writes only.
+Only two RH forecast owner requirement sets gain the native plot-property gate.
+No orders, real yields, treasury/ownership/production changes in this component.
+Reader checks stable human identity, source marker and human actual built-yield
+in addition to potential-yield controls. 77offline checks pass (44profiles,
+10actualLua51role,15reader,8archivednative-schema/actiongates); generatedModBuddy
+actions and SQLlayout pass. Native positive/exclusion proof PENDING this version.
+
+New fixed-seed A150 trial root candidates/customer-forecast-v3/A/run01 is
+dispatched through canonical native_profile_test, actual advancement must be
+read from current artifacts. SDK-generated FIVE AI runtime deltas: modinfo,
+hostLua,hostUILua,RHcompatSQL,newRHroleLua. All non-AI/art actions preserved;
+THIS deployment's backup/manifest is final restoration authority. No old510/517.
+All live executed/imported sources/runtime/RH pins frozen; worker exclusiveTuner.
+No competing client/UI/source edits/new world/reroll/ComputerUse/subagents.
+All3 frozen Basic refs unchanged; full3candidate pairs and pooled/percity,
+episodes/retention/historicalanchor/tradeoff gates still required. No parity.
+
+Further CLOSED125 log review: v2 has six working AI Granaries versus three in v1.
+Kutaisi v2 submits71/78, selects81, completes84; same exact player/city identity
+has no Granary mention through125 in v1 and no physical Granary. Batumi v2
+selects Granary98 by Default Specialization and it exists125, versus only
+proposals49/106 and no physical Granary125 in v1. Tokyo and Osaka also have
+selected/default Granaries and physical125, but their city IDs differ from v1;
+no exact city-paired causal comparison. Meroe exists both and selected52 in
+both. Closed byte coverage complete/no gaps for both through125. Net three more
+Granaries is an outcome observation, while customer-building links rise only
+4vs3. Other trajectories/subsidies and rejected human scope confound causal
+attribution. Evidence H/granary-response-v2-125.json; no native query/rerun.
+
+V3 native startup and advancement independently verified through25:
+430 source/runtime/RH pins unchanged, 518installed files match SDK deployment,
+new source-role SQL gate and RH-only component observed;22preexisting nativeRH
+policy/definition tables unchanged after excluding ONLY forecast namespace;
+6frozen shared/Basic source hashes unchanged. Initialfullmap/playerstarts+Gold/
+12setupunits exactly equalV1RH-A. Initialeconomic effects0. Nativecontrol frames
+1/25 noerrors/mismatches, but noqualifyingMills yet: positive/unbuilt40 and human
+qualifying-source0 remainUNOBSERVED. Do not call scopefix natively proven yet.
+Exactsupervisor16456/worker15516/Civ17712 identities verified. Continue unchanged
+150, existing15minmonitor/goalACTIVE; independent-startup-confirmation.json.
+
+V3 first positive AI application VERIFIED at closed50 while actualnative63:
+Meroe AI1 sourceWaterMill2603 has configured-role marker1 and unbuiltGranary
+potential40. Controls1positive-unbuilt/16no-sourceAInegative/5humannegative,
+zeroerrors/failures; rolecomponent ready,834boundedplayer/capture refreshes and
+15changedplotwrites. No qualifyinghuman source yet, so exclusion stillUNOBSERVED.
+All430pins/runtime isolation independently reverified.50receipts4foundations/
+5tiles210Gold=75own135subsidy. Continueunchanged150, fullparity stillunproven.
+
+Additional endpoint150 bottleneck decomposition from closed frozen archives:
+BasicA43completedunpillagedQuarters,16ownedimprovedBase-supplied,15producer
+present/1missing with definitionprereqs met. RHv1A48/19supplied/16producer
+present/3missing with definitionprereqs met. Technology-lock hypothesis is not
+supported for these three current RH supplied gaps (nativeCanProduce unqueried).
+Of completeunpillaged producers, BasicA36=15workingBase/18no mappedBase adjacent
+now/3ownedunimproved; RHv1A35=16workingBase/16no mappedBase now/3ownedunimproved.
+Endpoint absence doesNOT prove harvest/destruction. This does not establish a
+special RH improvement shortage or justify a blanket Builder increase.
+At150Basic stage2ready customer buildings23of26adjacent-district cases pooled
+across38workingBase producers; three buildingsmissing/12noappropriateadjacent
+district. All38servicecivics unlocked. RHv1A had only1buildingready among9such
+adjacent cases,8Granariesmissing; all16servicecivics unlocked. This supports the
+current targeted customer experiment rather than a research/globalBuilder change.
+
+### Same-world turn80 war-conversation recovery and native100 scope control
+
+V3 original A/run01 worker15516/sup16456 exited1 at native80 ten-minute stall;
+Civ17712 remained responsive. No exactPID crash evidence. Hidden open sessions
+AI3surprise/AI5formal declaration towardobserver0. Exclusive readonly proof
+war80-review/review.json (afterownersCIMabsent) verifies BOTH wars alreadyactive,
+native DECLARE_WAR_FROM_AI choices ONLYCHOICE_EXIT, world/Gold/closedreceipts/
+395research and fullBuilder snapshot equal failure prefix, all430pins unchanged.
+Controller now handles these two reviewed already-declared war statements with
+native exit-only/at-war/phase/participant guards and one-shot CloseSession. It
+also tries other participants when a closed newest session would mask them.
+No AddResponse/AddStatement/newwar/peace/roles/turnbudget call.54Python+35Lua
+fullsuite and6focusedwar guards pass. One stale active-handoff fixture corrected
+to the already-established deferred/no-controls behavior; originaltest preserved.
+
+Maintained resume_profile_live.py now supports reviewed existing finite operations.
+Firstv4 preflight failed str->Path beforeController/nativecommands; rawfailure,
+no-command review preserved, CLI type fixed and3regressions pass. No effects
+repeated. Currentchild run01/resume-080-war-exits-v5 sup10496/worker11740/same
+Civ17712 identities verified. Strict source80 known-world/Gold/395research/full
+Builder parity passed; native80 is PARTIALactive, not fabricated fulloutcome.
+No load/AIreplay/observerreset/financialresend/secondactivation. Only existing
+controller.py oldpin differs; newdriver/warLua frozen,432currentpins. Gameplay/
+installed518/RH unchanged. Exactly2guardedCloseSession requests,5then3, advanced
+existing80->85; three separate inactive/local0/humantrue85 samples and bothwars
+stillactive85 verified. Native progressed100andbeyond. Independent-war-recovery-
+confirmation.json checks commandprefix no SetTurns/SetActive before85, raw
+one-shot acknowledgements, currentpins/runtime; initial full-line comment false
+positive corrected offline withoutnativequeries. Oldoriginalfailure unchanged.
+
+Native100 first QUALIFYINGhuman exclusion now observed: CHERTOMLYK0 Mill2130
+marker0/unbuiltGranary potential0. Same physical source appeared in rejectedV2
+humanfailure125; different games/ages, not causal outcome estimate. SevenAI
+positive targets:4unbuilt/3built potential40, all3built actualprivate40. All40
+controls100 pass; exact100save verified/495research. Qualifyinghuman BUILTactual
+exclusion and while-currentAIflag exclusion remainUNOBSERVED (currenthumantrue,
+Granaryunbuilt); no universal scopeclaim. See independent-role-scope100-confirmation.
+
+Matched100 candidate31cities206pop20completeQ9producers5Base0Both3eligiblecustomer-
+buildinglinks1flag/cost590=173own417fallback. PriorRH38cities220pop20completeQ/
+11producers4Base0Both2links0flags/cost505=232own273fallback. BasicA24cities177pop/
+26complete17producers7Base2Both9links4flags/cost340=176own164fallback. Stillbelow
+Basic andmoreexpensive; NO parity claim. At100fourcurrent suppliedproducer gaps
+have definitionprereqsmet:KermaWindselected98stillunbuilt100; AksuQuarterselected94,
+thenBuilders95/97/noWorkshopmention; QeshqerWindproposals91/98notselectedwhile
+settler91/Builder99; PortoBothsource1278Windproposal95/7198 butTraderselected99/
+448693.3. Different native contract/default scores are not directly normalized;
+notproof of globalformula or a reason to raiseblanketBuilders. Keep unchanged150.
+
+### V3 A150 completed/audited/restored — not parity
+
+Final accepted root: candidates/customer-forecast-v3/A/run01/resume-080-war-exits-v5/
+finalize-150-savegap-v6. Original worker11740/sup10496 stopped after full150bundle
+on one-shot final save timeout. Finalizer11128/5424 verified same150 known world/
+Gold/745unique research, noAIadvance/load/replay/save resend; captured150controls
+as disclosed fresh same-endpoint readback. The original uniqueSaveGame request
+had no file/SaveComplete. Explicitgap150, exact_save_coverage_complete=false;
+all earlier six exactsaves present. No fakefullsavepass. Native late UI saving
+feature=true/configalive=true BUT localPlayer:IsTurnActive=false/networkfalse/
+WorldBuilderfalse: shippedCanLocalPlayerSaveGame wouldcurrentlyfalse. Eligibility
+AT THE ORIGINALrequest was not measured, so cause remainsunproven. Future save
+preflight must use shippedeligibility; never retry this ambiguity. SupportedMenu/
+Exit/exact144prefs/autostartfalse/THISpretestpackage restored, allCiv+owners absent.
+Independent-audit and independent-customer-audit verify433archivedpins/full745
+research/no missingrows/economicreceipts/native0%proofs/unchangedgameplayRHpins.
+
+Endpoint48AIcities396pop53Q46complete29producers12workingBase2Both/12eligible
+customer-buildinglinks/3Serviceflags, oneCafe withBoth.12assistedops at11physical
+plot/typepairs;10eligible<=125,8observedcomplete/1knownunfinished/1unknownafter
+scopechange,2latecensored. Lower8/10upper9/10 not100%.15tiles785Gold=264own+
+521fallback.75->150materialcohort6/8endpoint and6/8atall4observed. CompareBasicA:
+33cities356pop44complete36producers15Base3Both25links11flags/cost705=403own302
+fallback. RawcompleteQ46>=44 ONLY; all6percitygatesfail. HistoricalA15Base4Both
+31citiescount+ratefails. Full3mapgateUNOBSERVED; don't runB/CjusttohideAdeficit.
+V1RH A55cities444pop48complete35producer16Base4Both4links1flag/cost505=232own273
+fallback. Newcustomerlinks improve12vs4, actualworkingGranaries13vs5, butother
+chaincountsdecline and subsidiesincrease. Descriptive/trajectoriesdiffer, no
+isolatedcausalestimate. ActualServicepayments remainUNOBSERVED.
+
+MatchednativePlayerStats149: Basic33cities354pop23reportedland/0naval/Production671
+Gold785/Food1276, Builder15016units32charges; RHv155cities437pop36land19naval/
+Production988/Gold863/Food1381,Builders20/37; V3RH48cities395pop45land15naval/
+Production844/Gold646/Food1271,Builders34/69. Categoriesmayoverlapwithcorps/armies;
+no causal inference. This is not evidenceforaddingblanketBuilderproduction.
+
+Additional nativecapture role proof: human0CHERTMill2130 at100marker0/unbuilt
+Granary0; afterTamar2capture same physicalMill125 city720906 marker1/unbuilt
+Granary40. Rolefollowscurrentownership while originalconfiguredhumanidentity
+staysstable. Qualifiedhumanunbuilt0 observed2records; qualifyinghumanBUILTactual0
+andcurrentAIflaghumanexclusion UNOBSERVED, notuniversalsafetyproof.
+
+Next evidence-led hypothesis, NOT promoted yet: a Tailors-only material-backed
+TextileWorkshop future planning yield, using native-owned visible mapped Base
+beforeimprovement/Workshop exists, plusBoth uplift. Granary40 and existing90/60
+lists stayunchanged. NativeV3Workshopproposals144..1609, only3physicalWorkshop,
+versusMillsmostly6422..42583 and26physicalMills. KermaTailors2752 allownedimproved
+Flax+Silk butcompletedonly123 (foundation35), noWorkshop150; KawaTailors2165
+completed121 (foundation48), noWorkshop andpillageBaseFarm150. Tbilisi1616 and
+Kutaisi1541 hadrawBase whileproducerabsent100/75, thenBaseabsent125andnoWorkshop
+150. These intervals doNOTprove harvesting or causality. No newworkerorders/
+resourcegrants/globalRHbiases; measure futuregetter+legalreadiness/nativechoices/
+physicalcompletedmaterialchains andtradeoffs. Keep sharedBasicreferences frozen.
+
+
+### Workshop forecast v4 — evidence-led hypothesis, 25 October
+
+V3 A failed every per-city parity gate at150 despite 13 Granaries and12 eligible
+customer-building links (prior RH v1:5 and4). It had29 producers/12 working Base/
+2 Both/3 Service flags against BasicA36/15/3/11, and used521 fallbackGold against
+Basic302. Those are descriptive same-map outcomes, not an isolated causal effect.
+
+Native production records exposed eight Textile Workshop contract proposals,
+one selected and zero contract completions, plus three default-path selections
+and three physical Workshops. Supplied completed Kerma Tailors2752 still lacked
+a Workshop at150. Many other producers lacked adjacent Base at the endpoint;
+that absence does not identify a harvest or justify more blanket Builder bias.
+V3 had34 Builder units/69 charges at150, which is not proof of local availability.
+
+The next bounded experiment adds a Tailors Quarter-owned future Workshop value:
+private80 when an owned visible mapped native-improvable Base resource is adjacent,
+and another40 when an equivalent Specialty resource is adjacent. District-covered
+resources are excluded. Raw unimproved or pillaged materials remain potential.
+The reward is not multiplied by neighbor count. Original configured-human owners,
+foreign materials, noBase/Spec-only/noQuarter sites receive0. Existing Granary40,
+seven production preferences90/60, all shared/Basic/RH/Builder/economic policies
+remain unchanged. All changes are in CSC; Workshop RH files remain read-only.
+
+This district-owner/building-yield context is a hypothesis until actual native
+getter controls pass. The new read-only opt-in captures potential and built
+private yield separately, same-frame ownership/mapping/visibility, configured
+role, and native CanProduce boolean plus safely printed reason tables. It marks
+incomplete/pillaged Quarter cases uncertain. No positive exposure is UNOBSERVED,
+not success. Negative controls include humans, cities without Tailors and cross-
+city recipients. Native score/proposal, selected production and physical chain
+outcomes remain separate levels of evidence. Actual Service payments unobserved.
+
+76 offline checks passed:44 profile,10 role Lua51,19 Workshop SQL/Lua51 and3 actual
+driver integration tests. First profile-suite run used the wrong post-RH schema
+containing RHAITags; that fixture failure is preserved, and all44 passed against
+the documented pre-RH schema. There were no native effects from the failed tests.
+
+One fixedA830405/940411 game to150 was dispatched with the maintained observation-
+only driver/canonical finite controller and installed CSC sole mutation owner.
+Both expansions, RH5.097, resource pass, assistance and subsidies are enabled.
+Initial physical map/Gold/setup-unit comparison must be independently verified.
+All executed sources/runtime/RH files are frozen while the worker is alive.
+No blanket production/Builder/global/subsidy changes accompany this experiment.
+
+Candidate: P/candidates/workshop-forecast-v4 (P is the parity-campaign output).
+Current root and exact owners: P/active-run.json and root/supervisor.json.
+Independent artifact-only startup reporter: H/verify-workshop-v4-startup.py;
+final offline reporter: H/audit-workshop-v4.py (composes base+customer controls).
+Both are unimported by the worker and may be corrected offline without a rerun.
+The unchanged full three-map pooled AND per-city/episode/retention/historical/
+tradeoff gates apply. A getter gain or a single A game cannot complete the goal.
+
+
+### V4 native50 rejection and V5 collection correction — 25 October
+
+V4 reached50 and stopped on its first qualifying completed source: Okayama5,
+city131073/Quarter2050, owned Cotton2049 and Dyes1976, unbuilt Workshop,
+native CanProduce=true, expected120 but actual potential0. The exact50save is
+f3aa4caf926b01c0ca264abf531a8bbb80752d92f1b946aa5b8867534e274400.
+All432 pins/runtime remained unchanged;245 research rows and closed economic
+receipts were preserved. No crash: both worker/supervisor exited1, Civ remained
+responsive. Two read-only traces preserved knownworld/Gold/Builder/research50
+and issued no controls. Existing core CSC modifiers on the same native Quarter
+were active/Met; the new Workshop modifiers were inactive/NeverMet. Empty inner
+requirement lists did not identify the cause by themselves.
+
+The archived GameEffects log supplied the stronger diagnosis: six Failed to create
+OWNED_BASE/SPEC Requirement warnings, Invalid Definition, at38(citystate8) and
+42(Okayama5). COLLECTION_PLAYER_PLOTS was my unsupported collection name, absent
+from native definitions. The supported player plot collection is
+COLLECTION_PLAYER_PLOT_YIELDS. Native SQL FK checks alone cannot validate an
+arbitrary RequirementArguments enum string. V4 was normally closed; exact144
+preferences/autostartfalse and this test's pretestpackage were restored, allCiv/
+originalowners absent. Original failed job/supervisor/raw files were not rewritten.
+
+V5 changes ONLY those two collection argument values; all forecast amounts,
+ownership/visibility/originalrole gates, Granary40/production90-60, sharedBasic,
+RH/global/Builder/economic policies remain fixed. A reusable nativeDB preflight
+now checks the actual collection against present native DynamicModifiers, with
+a regression fixture explicitly rejecting the previous typo.77 offline checks
+pass. This is an engine-definition guard, not proof that an AI consumes a value.
+
+A separate zero-AI diagnostic loaded the exact50save once. Known world, all
+units' recorded ID/type/player/position/damage census, Gold and saved closed
+receipts matched. Independently compared native DB tables were identical except
+the two collection arguments. The SAME unbuilt, legal, supplied Okayama Workshop
+changed0->120; other source/material/originalrole facts matched and all observed
+non-uncertain controls passed. No AI advance, economic action, new map or save
+request occurred. Diagnostic normally exited and restored exactprefs/package;
+originalowners absent. This verifies native forecast application in that case,
+not production choice, beneficial chain outcomes, universal human exclusion or
+parity. Qualifying human-source exclusion and Base-only80 remain native exposure
+questions. The diagnostic is not a full150 outcome arm.
+
+Fresh V5 A1->150 has now been dispatched under the unchanged fixed campaign
+setup. Read active-run.json for exact current root/owners/actual progress; dispatch
+is not native advancement. H/verify-workshop-v5-startup.py checks real initial
+parity/pins/SQL controls from artifacts; H/audit-workshop-v5.py composes the final
+base+Granary+Workshop audit. All3 Basic/pooled/percity/episodes/retention/historical/
+tradeoff gates still apply. No parity claim; goal and15min monitor remain active.
+
+
+### V5 native100 rejection; V6 bounded fact bridge — 25 October
+
+V5 stopped100 with one genuine discrepancy, not a crash: legal completed Heh1,
+city393221/Quarter2165, owned Flax2166 and Silk2091, expected120 but actual0.
+Other controls included three unbuilt and one built positive records, Base80 and
+Both120. Exact100save22b992acb1dd4be51811d5f9055769098331d68251a15d130f9da348c03c8877,
+495 research rows,432 source/runtime/RH pins, full100 outcomes and closed economic
+receipts were preserved. Both owners exited1; Civ remained responsive. Two
+read-only reviews preserved world/Gold/Builder/research and advanced no AI.
+
+The original-role predicate was Met, Base collection count NotMet and Spec count
+Met. All97 nested Base checks were NeverMet, while one Spec check was Met. This
+does not isolate the collection/cache cause: native plot-yield subject IDs did
+not resolve through GetObjectString. The purchased Flax is present in Heh's
+native city plot list, owned by1/city393221, revealed and visible, and the AI
+has farmed it. There is no evidence that the purchase failed or that no Builder
+was available. No CSC Invalid Definition warnings appeared in this run's closed
+GameEffects logs. V4's unsupported-name defect was already corrected separately.
+
+V5 partial100:44AIcities260pop33Quarters27complete12producers5workingBase3Both,
+4 eligiblecustomer-building links and0Serviceflags;895Gold=358own+537fallback,
+16tiles9foundations. Workshop logs:7submitted contracts/1selected/1completed,
+1physicalWorkshop, proposal values47..3132. These combined-treatment outcomes
+are still behind Basic's per-city rates; they do not qualify a150 arm or parity.
+NormalMenuExit/exact144prefs/autostartfalse/pretestpackage restore and allowner/
+Civ absence were verified. A first cleanup helper failed on turn-0100 filename
+before Menu; raw retained, corrected-v2 closed normally. Its metadata typo
+full1100:false is preserved; actualendpoint100, NOTfull150, is explicit here.
+
+V6 replaces the empire-wide native collection filter with a bounded six-neighbour
+fact scan in the RH role bridge(version2). It mirrors eligible Base/Spec0-or1
+properties on the source Quarter. Originalconfigured-human/minor sources get0;
+only owned, visible, uncovered mapped native-improvable materials count. Empty/
+foreign/hidden/covered materials do not. Pillaged or unimproved resources remain
+potential supplies, as before. Source facts reconcile on activation/deactivation
+and rare ownership/resource/reveal/district events, and unchanged properties are
+not rewritten. Scan errors clear previous facts0 and retain bounded diagnostics.
+SQL gates the SAME private80Base+40Both from these facts. No native orders,
+ownership/treasury/research/building/improvement mutations; no amount increases,
+RH/global/sharedBasic/Builder/economic changes. The old counter definitions were
+removed rather than left attached or silently accepted. Native preflight asserts
+the exact source-property gates and absence of Workshop collection counters.
+
+103 offline checks initially passed; an additional read-only publicCulture field
+fixture brings the total104:44profile21role/fact21WorkshopSQL/UI15GranaryUI3driver.
+Tests cover same-turn resource/ownership/visibility/completion updates, captured
+human identities during autoplay, modded valid materials, failure clearing,
+bounded scans, native-style collections and stronger actual-built private-yield
+checks. These tests are not native AI-choice evidence.
+
+A zero-AI diagnostic loaded the exact100save once. Independently verified physical
+world, recordedallunitcensus and Gold/closedreceipt parity. All native rows outside
+the Workshop namespace were identical and amounts unchanged. Heh changed0->120;
+every other value stayed the same, all mirrored properties matched independently
+derived UI neighbours, and all controls passed. No AI advance, repeated finance,
+new world or SaveGame request. Probe normally exited/restored and owners were
+absent before fresh testing. Qualifying human-source exclusion is still unobserved,
+and this is not a150 outcome arm or parity claim.
+
+The fresh V6 fixedA1->150 is now dispatched. Read P/active-run.json for actual
+progress/owners; initialsupervisor1772 is dispatch metadata, not turn proof. Role
+bridge/SQL remain identical to the successful probe. The scheduled read-only
+Workshop reader additionally records potential and built PUBLIC Culture in the
+same seven frames, with no extra native commands or per-turn capture, so real
+material-to-Workshop effects can be examined separately from the private forecast.
+Those public values were not retroactively invented for the completed probe.
+
+H/verify-workshop-v6-startup.py and H/audit-workshop-v6.py are unimported offline
+reporters. The latter composes role2-aware H/audit-customer-v6.py, not the old
+version1-only auditor. Source/runtime/RH pins freeze while the worker lives;
+all3map pooled+percity/episodes/retention/historical/tradeoff gates remain intact.
+Keep goal and existing15min monitor active. No full-parity conclusion from probes,
+fixtures, getters or a single A game. Real Service payments remain unobserved.
+
+Additional closed-log lead, not implemented: BasicA Craftsmanship completed at
+10/14/14/16/14 by player1..5, RHv3 at21/21/17/20/11. First Quarter proposals were
+10/18/14/16/14 versus22/21/55/35/32. Research delay explains only part of the gap;
+Hojo unlocked earlier than Basic but proposed much later. Do not respond with
+blanket research or Builder bias without checking native choices/opportunities.
+
+
+## V6 closed100 evidence review — 25 October
+
+Current fresh V6 A remains running unchanged toward150. All432 executed pins
+were rehashed unchanged. H/v6-evidence100-review.json records independent offline
+controls, native production records, RH request logs and matched Basic counts.
+Observed at100:44cities260pop27completeQ12producer5workingBase3Both4actual
+customer-building links0Serviceflags;895Gold=358own537subsidy. BasicA100:
+24cities177pop26complete17producer7Base2Both9links4flags;340=176own164subsidy.
+No parity claim; per-city comparisons are weaker still.
+
+Workshop controls have0failures:3legalunbuilt80/120 and1built120. Okayama
+physically has its Workshop with actualCulture1. Heh legal120 now appears in
+native production proposal96/selection99; physical completion notyetobserved100.
+This separates getter application, native choice and physical output; isolated
+private-yield score causality remains unproven.
+
+Read-only RH5.097 source/nativeDB review found2 RH_YIELD_LAST_RESORT modifier
+consumers, both improvement adjacency, no BuildingType argument consumers.
+That provides no established RH building-forecast template, but is not proof
+that private building yields are unsupported. RH AutoPurchaseBuildings runs
+in captured logs:10attempt records through100,0CONFIRMED records. Its UI RH_RBP
+returns true if RequestCommand does not throw. Lisbonattempt79/Qaraqorum89
+Granaries are physically absent100. Therefore request success cannot be counted
+as a purchase, treasury receipt or customer-building completion. Reasons remain
+unisolated; no RH edits or live probes were performed. Continue unchanged150.
+
+
+## V6 producer-age qualification and RH strategy coverage — 25 October
+
+Offline closed100 reviews: H/v6-producer-backlog-review-100.json,
+v6-supplied-producer-cases100.json, v6-material-shortfall-review-100.json,
+v6-stage2-gates100.json, rh-building-strategy-coverage-evidence100.json.
+V6 has11owned-improved-Base completeunpillagedQuarters,5withproducer/6missing;
+BasicA100 has10/7/3. Sixmissing is NOT six longneglectedopportunities: first
+observed nativecomplete dates Heh89/Rustavi77/Qaraqorum92/Kobdo97/Kyoto98/
+Okayama88. Heh andOkayama producers alreadyselectedby100. Workshop native
+CanProduce true for all3missingTailors; Bakers definitionchecks do not prove
+CanProduce. Allcityjoins must use(player,city_id), IDs are player-local.
+Twelvecurrentproducers:5workingBase,5noadjacentBaseNOW,2ownedunimproved.
+FiveworkingBaseproducers:2appropriatestage2districts,0actualstage2customer
+buildings;3nodistricts, all5stage2civics unlocked. Do not infer harvesting
+fromendpointabsence or claim a new strategy has been implemented.
+
+Read-only RHsource +currentnativeDB show RHDevZoneBuildings gives vanilla
+Workshop/Factory/Granary600, whereas CSC producers have general90 only.
+CapturedRHDevZone heartbeats reportAmanitore1/Joao4active through100. This
+verifies the coverage gap in authored inputs and loggedRHstate; heartbeat
+alone does not prove native strategy adoption/scorer arithmetic. Candidate
+hypothesis AFTER V6 final150 audit: additiveCSCcounterpartentries inrelevant
+existingRHBuildings lists, preserving ALL RH-authored rows/globalpriorities.
+NoRHfileorproject/runtimegameplaysource changed whileworker alive. Values
+andwhichcounterparts require coherent design/native outcome validation;
+no arbitrary blanketBuilder increase or copiedauto-purchase requests.
+
+
+## V6 full150 audited; V7 RH strategy counterparts test started — 25 October
+
+V6 completed actual150, job+supervisor0, exactb6235533d9c881750831293bd912e4f44ab467d1c254fe0b7f4e689711bc6837,745research/all7exact saves/432archivedpins. Independent audit+finalization verifies raw144prefs147subscriptionentries/autostartfalse,517pretestfullmanifest/allowners+Civabsent. No savegap. First finalization reporter incorrectly compared restoredruntime withtestpins; repairedOFFLINE toarchive432/nonruntime302+pretestmanifest, no native rerun.
+
+V6 final57cities481pop58Q55complete39producer21workingBase5Both8actualcustomerbuildinglinks4flags;21tiles1290Gold=361AIown929fallback/11foundations. BasicA33cities44complete36producer15Base3Both25links11flags/302fallback. Four raw primary totals exceedBasic, ALL6percity gates FAIL, customer/flags totalsFAIL, historical15Base4Both31cities percityFAIL. No parity/noB-CforV6. 75cohort10/10endpoint retained,7/10all4observations (sparse); eligiblefoundations9:8complete1unknown,2latecensored. Supplybacklog150:22suppliedcompleteunpillagedQ,21producer1missing;39producers21Base17noadjBaseNOW1unimproved. Customerstage2:21Base,13appropriatedistricts,4actualbuildings,9missingbuildings8nodistrict;allcivicsunlocked. Need downstreaminvestment, not more blanketBuilders.
+
+V6 Workshop7frames0failed,16positivegetterrecords(8legalunbuilt,8built),10Base80/6Both120;2qualifyinghumanunbuilt0, humanBUILTactual0stillUNOBSERVED. Physical8Workshops;Heh/Qaraqorum actualCulture1 observed125. Native value/choice/outcome evidence separate, no isolated scorecausality. NativeAI_Victories strongerthanLuaheartbeat:RHdevelopmentFollowingP1/4at5,Stopped118;industrialFollowingall5AI108..124. NativeRHBuildings lists giveWorkshop/Factory500-600 whileCSCgeneral90; noCSCstrategy counterparts.
+
+V7 newA dispatch: P/candidates/strategy-coverage-v7/A/run-01, supervisor8436/worker5524/DX12Civ14852 exactCIM/processchain verified. InitialhostingACK notadvancement; read actualinit/live. Onlygameplaychange27additiveCSCitems in existingRHdevelopment/industrial/modern/atomic/information Buildingslists; copiesnativeweights+Favored/StringVal/difficulty/tooltipmetadata. ExistingRH/CSCtargetentries authoritative. ThreeproducersfollowWorkshop(Factorylatereras),Bakery/TailorFactory,Cafe/FashionHouseBroadcastCenterdevelopmentonly. NoRHfile/authoredrow/conditions/globalweights/Builder/economics/forecast/rolechange. Shared/Basic hashes unchanged.114offlinechecksPASS:44profiles21roles21Workshop15Granary10strategy3driver, SQLformatPASS. Addedmaintained optin --strategy-building-controls launch/supervise/worker:read-only27inputnativeDBpreflightBEFOREAI, no extra perturncapture/callback. SourceV6testsplitboundedtoV6section; newcoverageisolation separatelytestsalltables except exact27 additions, idempotence,missingrefs,existingtargets,metadata/exclusions andpreflightrejects.
+
+H/verify-strategy-v7-startup.py checksallnativeDBtables equalV6exceptEXACT27addedAiFavoredItems, fullinitialgrid/Gold/units, currentpins/runtime/Basic. RunwhileV7installed, neverafterrestore. H/audit-strategy-v7.py composes role2/V6controls/baseaudit andnativeAI_Victories. No nativebenefit from definitions alone. Keepall current source/tests/imports/runtime/RH FROZEN/exclusiveworkerTuner. Existing15minmonitor updatedACTIVE toV7. All3maptotal+percity/episodes/retention/historical/tradeoffgates unchanged; goalACTIVE.
+
+
+## V7 startup actual6 independently verified; qualified V6 customer gap
+
+Rindependent-startup-confirmation verifies433current+archivedpins/518runtime,
+allnativeDBtables SAMEV6 exceptEXACT27addedAiFavoredItems/allRHrows preserved,
+initialfullgrid/Gold/setupunits equalV6. Native27inputpreflight passed BEFOREAI;
+actual6advancement observed. Same8436/5524/Civ14852 exactCIM verified. These
+are input+advance checks, not decision/output/parity proof. AllsourcesFROZEN.
+
+ClosedV6v6-qualified-customer-gap150.json andcustomer-production150.json stored
+inV6root. Four of9stage2missingGranary cases have suppliedcompleteunpillaged
+source+private40+absenttarget observed over>=25turn span:Telavi50,Qaraqoto50,
+Qaraqorum25,Qeshqer25. Other5qualifiedonlyat150; do not label them stale. Native
+GranaryCanProduce was NOTcaptured, so legality remains unproven despite defs.
+Telavi nativeproposal95value949, Qaraqoto87value701; Qaraqorumlast51/58before
+sourceexposure, Qeshqernoproposal. All9no nativeGranaryselection. Nativeengine
+MustBeFunctioning/unpillagedMill does NOT itself establish improvedBase supply;
+privateforecastexposure andactualworkingBase are separatelychecked. Do not
+claim native ignoresprivateyield from these correlations/getters. Add native
+GranaryCanProduce+reason to a FUTUREscheduledreader aftercurrentownerexits if
+needed, no midruninstrumentationedits. Source+cityIDs use(player,city).
+
+V6late125..150 cost395=3AIown+392fallback/5tiles/2latefoundations;42%of929total
+subsidiesfallinlateinterval. Disclosecensoredoutcomes/allcosts, no benchmark-only
+purchasecutoff or exclusions to manufactureparity. Existingmoneyrulesunchanged.
+
+
+## V7 through125 native non-response; shipped planning routes research
+
+Current V7 actual130active/same8436-5524-Civ14852 identities reverified;433pins
+unchanged. All captured scoped native AI1..5 records through125 equalV6 exactly:
+6150AI_CityBuild,608AI_Victories,494116AI_Behavior_Trees. Closedbytegenerations
+no gaps; R/independent-native125-comparison.json. Aggregates125 equalV6:
+51cities41complete25producer13Base4Both5customerbuildinglinks2flags,895Gold
+358own537subsidy. All9assistedfoundationsage>=25:8confirmedcomplete1unknown.
+This is observed non-response of the27additivepreferences through125, not proof
+of a universal native Value formula or unsupported Buildings system. No tuning
+or extra client whilealive; finish150/audit/restoration before nextchanges.
+
+Userquestion districtadjacency: H/customer-district-adjacency150-comparison.json
+reconstructs AI1..5/sameowner/eligiblecompletedunpillagedcustomerdistricts
+(CityCenterdefensepillageignored), includingunique eventplacements AFTER an
+existingQuarter. BasicA40/44completeQwithcustomer(91%)/66pairs, firstRH36/52
+(69%)/46pairs, V6 34/55(62%)/43pairs. Non-CityCenterlatercustomerplacementevents
+Basic31,firstRH15,V6 21: laterplacementcountimprovedwithinRH butcoveragefell.
+FirstRHassisted1508/9confirmed1unknown;V6same8/9older+2latecensored;V7at125
+same8/9. Prior9/9physicalmatchingplotcounts mustnotcreditchangedcity/site
+episodes. No demonstrated completion-rate or speed improvement. User informed.
+
+Readonlyprimaryfiles uncovered a potentially relevant untested route. Shipped
+Base/Assets/Gameplay/Data/Leaders.xml906..916 defines9AiBuildSpecializations,
+6BuildingYield channels ONLY realFood/Production/Gold/Science/Culture/Faith;
+DefaultCitySpecialization references them. NativeRHdb hasthese9, no specialty
+forCSCprivateyield (orRHprivateyield); native Types hasnoBUILD_FOR_* registrations.
+Schema columnsSpecializationType/BuildingYield/PrioritizationYield/PriorityOffset
+provide a data-driven hypothesis: explicit CSCprivate building specialization
+may route existing forecast into production proposals. Nativecustomspecialization
+support/consumption NOTproven. Do not claim its absence explains failure.
+
+RealStrategy author comments in local1617282434/base/RealStrategy_Main.sql318
+labelBuildings asWonders andAiBuildSpecializations partial; author observation,
+notnativeproof. RH5/Supporting_Systems/RH_General_Buildings.sql also attaches
+capital-city realyield auxiliaries to buildings underRH_AI_ANCIENT_ONLY_REQ_S.
+Nativegate actuallyrequiresAI+FutureCivic+AncientOrClassical(notMedieval), not
+justAncient. Loadedrows do not prove the aux effect changes a forecast or is
+never applied. Do not blindlycopy or addreal grants; scope/economicneutrality
+would need explicit native controls. Neither speculative route implemented.
+
+
+## V7 full150 audited:27 strategy preference additions produced no observed response
+
+Actual150/job+supervisor0/433archivedpins/745research/all7exact saves/native
+27inputpreflight/nativeFollowing allverified. Fullknownphysicalworldsignature,
+allscopedAI1..5 construction8824/strategy736/behavior678877records through150,
+allfinalcounts/finance equalV6 EXACTLY. Rindependent-native150-comparison.json
+andindependent-finalization-confirmation.json. No meaningfulnative response
+to this27entry addition in this fixedA trial; do not inflateValueagain without
+mechanistic evidence or claim universalunsupportedBuildings semantics. NoB/C
+for this failedcandidate; full3mapgoal unchanged.57cities55complete39producer
+21Base5Both8customerbuildinglinks4flags,1290Gold361own929fallback. All6percity
+gates fail/customer+flag totals fail.9eligiblefoundations8complete1unknown/2late.
+
+Independent raw147subscriptionentries/144modpreferences/autostartfalse match
+original; current517files exactlypretestmanifest. All8436/5524/Civ14852 andall
+Civabsent verified. Runtime pins checked viaarchived433 pluscurrentpretest517,
+nonruntime303currentunchanged. No native rerun forreporters. Sources now free
+for the next justified CSC-only iteration; currentcode stillV7 until changed.
+
+Next evidence-backed hypothesis remains UNIMPLEMENTED: nativeAiBuildSpecializations
+BuildingYield defines6real-yield production routes, no routeforCSCprivateyield,
+andDefaultCitySpecialization lists these9shipped definitions. An additive
+CSC-only privatebuilding specialization (BuildingYield+PrioritizationYield=
+YIELD_CSC_AI_PLACEMENT, zerooffset/defaultfavor, separatemajorlist) could
+explicitlyroute existing privateforecasts into native building selection.
+Native support/consumption unknown until boundedfreshnative test. Keep all
+existing realyield/production/Builder/RHglobal/economicrules unchanged; no
+forcedorders/grants. AlternativeRHauxiliaryfake-yield path is onlyresearch,
+not a proven safe/effective mechanism. Goal+15minmonitorACTIVE towardparity.
+
+`n25Oct V8 scoped monitor csc-foundation-priority-to-turn-200 DELETED with exactreceipt childmonitor.json. Final independent partial175 audit and finalization PASS (NOT200); allCiv/owners absent, pretest517/144prefs147entries/autostartfalse restored. No scheduled checks/newgame remain. Durable resultsdoc written. Shared earlyobserverdeath guard9targetedfixtures +54core/35Lua PASS offline; firstmeet8fixtures/nativenative170 proof remains. Future native early-death cleanup validation pending.
+
+25Oct handholding cohort audit complete/offline: exactoriginalcreations65AI(40B25T),11CSC(8B3T),4capturedotheroriginsin175AIcensus. Ownedmaterials atplacement CSC11Both; AI1Both/25BaseOnly/3SpecOnly/36Neither;29AIneitherregardlessowner.64AIoriginalcompletions/all52age25+complete; CSC11complete.175producer/suppliedBase/Both CSC10/2/2,AI48/13/0.9of11assistedlostBase;8oldBasetilesnowdistricts,Sheep2865nowresource-lessMine(noharvestcauseclaim). CommercialHub1863replacedMaizebesideassistedBakers1862at109; priorV7alsolostsameMaizetoTailors,notisolatednewbonusblame. ExactunmappedresourcecountsATplacementUNOBSERVED;175mapped/unmappedlinksCSCB9/1,CSCT4/3,AIB22/30,AIT12/24,archsites/hiddenexcluded.1AIQnearpreviousCSCpurchase; stillRH+CSCguidednotvanilla. Durablecohortdoc+currentrunplacement-cohort-analysis/report.md,CSV,JSON. No game launched or monitor restarted.
+
+
+
+
+## 25 October — mechanism probe closeout
+
+Seven matched V7/RH100→105 arms audited; no shipping gameplay edits. Customer
+reverse adjacency0/10/30 reaches native values and next-turn rankings; five-turn
+physical placements equal. BONUS12 removal changes siting7→6 new native Q but
+quality/long-term gain unproven. Private build-specialization AND shipped offset
+control unchanged, so route inconclusive. Fresh160/80/20 material values land,
+scores change, preservation/repair benefit unproven; Maize1863 competing Tailors
+contract already accepted99 before source100. Safe99 preparation complete, final
+pair NOT observed: control host poweroff before load, later520-file rebuild
+preserved. All Civ/FireTuner/old probe owners absent. Each seven completed arm
+restored517files/144prefs147entries/autostartfalse; don't assert current rebuilt
+package equals old. No retry/automation/broad-goal revival. Next redesign deferred
+until human direction: combined Both-or-+4 real P+G, credible future development,
+fewer better chains. Full evidence + lag/caching/positive-control limits:
+project/docs/research/mods/csc-ai-mechanism-tests-20261025-results.md.
+Older CURRENT/active campaign labels below are HISTORY, not pending work.
+

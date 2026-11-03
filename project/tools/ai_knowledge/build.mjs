@@ -1,0 +1,62 @@
+// Use the existing Quartz checkout and dependency lockfile for the AI handbook.
+import { spawnSync } from "node:child_process"
+import fs from "node:fs"
+import path from "node:path"
+import { fileURLToPath } from "node:url"
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
+const docs = path.join(root, "docs")
+const args = process.argv.slice(2)
+const update = args.includes("--update-catalog")
+const serve = args.includes("--serve")
+const baseArg = args.find((a) => a.startsWith("--base-url="))
+const baseUrl = baseArg?.slice("--base-url=".length) || "localhost:8091"
+const python = process.env.CSC_AI_PYTHON || (process.platform === "win32" ? "python" : "python3")
+function run(command, argv, opts = {}) {
+  const result = spawnSync(command, argv, { cwd: root, stdio: "inherit", ...opts })
+  if (result.error) throw result.error
+  if (result.status !== 0) process.exit(result.status || 1)
+}
+run(python, [path.join(root, "project/tools/ai_knowledge/prepare.py"), ...(update ? ["--update-catalog"] : [])])
+if (!fs.existsSync(path.join(docs, "node_modules"))) {
+  throw new Error("Quartz dependencies are missing: run npm ci in docs first.")
+}
+run(process.execPath, ["quartz/bootstrap-cli.mjs", "build", "-d", ".ai-handbook/content",
+  "-o", ".ai-handbook/site", "--concurrency", "2"],
+  { cwd: docs, env: { ...process.env, CSC_AI_HANDBOOK: "1", CSC_AI_BASE_URL: baseUrl } })
+
+// Keep diagrams available offline without editing Quartz's Mermaid implementation.
+// This replaces only the pinned CDN import emitted by this Quartz version.
+const site = path.join(docs, ".ai-handbook/site")
+const vendor = path.join(root, "project/tools/ai_knowledge/vendor/mermaid-11.4.0.min.js")
+fs.copyFileSync(vendor, path.join(site, "static/mermaid-11.4.0.min.js"))
+fs.copyFileSync(path.join(root, "project/tools/ai_knowledge/vendor/MERMAID-LICENSE"), path.join(site, "static/MERMAID-LICENSE"))
+fs.copyFileSync(path.join(root, "project/tools/ai_knowledge/handbook.css"), path.join(site, "static/handbook.css"))
+let replacements = 0
+let htmlPages = 0
+const mermaidImport = /import\(\s*["']https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/mermaid\/11\.4\.0\/mermaid\.esm\.min\.mjs["']\s*\)/g
+function localDiagrams(text) {
+  return text.replace(mermaidImport, () => { replacements++; return "Promise.resolve({default:globalThis.mermaid})" })
+}
+function walk(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)])
+}
+for (const file of walk(site)) {
+  if (file.endsWith(".js") && !file.endsWith("mermaid-11.4.0.min.js")) {
+    let text = fs.readFileSync(file, "utf8")
+    text = localDiagrams(text)
+    fs.writeFileSync(file, text)
+  }
+  if (file.endsWith(".html")) {
+    htmlPages++
+    const relative = path.relative(path.dirname(file), path.join(site, "static/mermaid-11.4.0.min.js")).replaceAll("\\", "/")
+    const cssRelative = path.relative(path.dirname(file), path.join(site, "static/handbook.css")).replaceAll("\\", "/")
+    let text = localDiagrams(fs.readFileSync(file, "utf8"))
+    text = text.replace("</head>", `<meta name="ai-handbook" content="1"><link rel="stylesheet" href="${cssRelative}"><script src="${relative}" data-persist="true"></script></head>`)
+    fs.writeFileSync(file, text)
+  }
+}
+if (replacements !== htmlPages || htmlPages === 0) throw new Error(`Expected one Quartz Mermaid import per page; found ${replacements} for ${htmlPages} pages. Review Quartz version before shipping.`)
+console.log("AI handbook uses local Mermaid 11.4.0 and system fonts.")
+if (serve) run(process.execPath, [path.join(root, "project/tools/ai_knowledge/serve.mjs")])

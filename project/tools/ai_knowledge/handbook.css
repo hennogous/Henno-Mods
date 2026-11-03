@@ -1,0 +1,5 @@
+/* Local to the AI build. Keep phone text within the scrollbar-adjusted viewport. */
+html { width: 100%; }
+body { width: 100%; }
+article :not(pre) > code { overflow-wrap: anywhere; }
+article .table-container { max-width: 100%; }

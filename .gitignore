@@ -1,6 +1,7 @@
 docs/node_modules/
 docs/public/
 docs/.quartz-cache/
+docs/.ai-handbook/
 
 # ModBuddy generated/build output
 *.modinfo

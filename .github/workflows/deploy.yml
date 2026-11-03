@@ -27,7 +27,13 @@ jobs:
       - name: Install Quartz dependencies
         run: cd docs && npm ci
       - name: Build Quartz
-        run: cd docs && npx quartz build
+        run: cd docs && npx quartz build -d content
+      - name: Build and verify AI handbook
+        run: |
+          node project/tools/ai_knowledge/build.mjs --base-url=hennogous.github.io/Henno-Mods/ai
+          node project/tools/ai_knowledge/verify.mjs
+          mkdir -p docs/public/ai
+          cp -R docs/.ai-handbook/site/. docs/public/ai/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

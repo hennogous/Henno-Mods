@@ -1,5 +1,36 @@
 # CSC AI tuning
 
+**Current placement status (1 November 2026):** the all-BONUS12 cue is removed from
+current source. River4, Quarter→customer10 and customer→Quarter30 remain. The
+native scoring route and percentage-style yield-bias units are statically
+verified; their live effective weights and selection response are not yet
+calibrated. Exact mapped-resource pre-placement targeting remains unsupported
+by the traced standard route. See [native placement and weights](../research/mods/csc-native-quarter-placement-weights-20261101.md).
+Older tables below describe historical trials, not current tuning.
+
+**Governing objective (28 October 2026):** [AI competence and supply-chain planning](csc-ai-objectives.md). Evaluate this implementation against realised empire benefit and functioning chains; historical weights and Quarter counts are not the objective.
+
+
+**Current source architecture (24 October 2026):** [Basic/RH profiles and player
+settings](csc-ai-profiles.md). One master **CSC AI assistance** option defaults On;
+it selects Basic without supported RH or the CSC extension with RH automatically.
+Off leaves the underlying AI alone, including RH alone. The dependent subsidy
+option defaults On in both active modes and can be disabled separately.
+
+The new installed host and combined RH mode are source candidates with offline
+checks; native qualification and deployment are pending. The human's existing
+inspection game is unchanged. Experimental material-care and early all-owner
+forecast components are not promoted into the normal profiles.
+
+## Historical prototype evidence
+
+The following notes describe earlier experimental inputs and runners. Their
+“current” labels and the old improvement base90 describe that historical period,
+not today's profile selection or Basic calibration30. Do not use their legacy
+deployment commands to install the new package. Refer to the current profile
+document for ownership, validation status and further native tests.
+
+
 Experimental Bakers/Tailors tuning. Current source uses broad native bonus-resource and river adjacency, reciprocal sales placement signals and a stronger general improvement preference. The native feature-marker experiment was rejected because it interfered with Builder planning and district legality; its code is unregistered and archived. See [marker experiment](../research/mods/csc-ai-markers-rejected-20261017.md).
 
 | Signal | Coefficient | Mechanism |

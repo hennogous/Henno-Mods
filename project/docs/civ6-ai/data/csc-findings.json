@@ -1,0 +1,903 @@
+[
+  {
+    "id": "AI-C001",
+    "title": "The objective is empire benefit",
+    "statement": "CSC AI should use worthwhile, durable supply chains to support empire needs, priorities and victory progress. Fewer good chains may beat more weak commitments. Both Basic and RH profiles share this objective; strategic Service selection remains an eventual capability.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Confirmed project direction, 28 October, through the latest closed studies.",
+    "limits": "District counts, subsidies, Service flags and isolated functioning chains do not establish the full objective. Sustained multi-map Basic/RH competence and net benefit remain unproved.",
+    "sources": [
+      "project/docs/integrations/csc-ai-objectives.md",
+      "project/docs/integrations/csc-ai-progress-and-learnings-20261101.md"
+    ],
+    "topic": "topics/csc/objectives-and-baselines.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C002",
+    "title": "The true baseline excludes CSC AI aids",
+    "statement": "The agreed baseline retains real CSC gameplay and only the shared resource-generation pass. It excludes private AI cues, Builder tuning, research guidance, paid acquisition and injected foundations. Disabling an external planner alone does not create it. RH-only is a separate underlying-AI reference, not stock AI.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "The formal comparison contract accepted 22 October.",
+    "limits": "Historical tuned controls, saved-world counterfactuals and old resource-pass versions must retain their actual labels. Verify initial maps and loaded actions, not seeds alone.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-benchmark-metrics-20261022.md",
+      "project/docs/integrations/csc-ai-profiles.md"
+    ],
+    "topic": "topics/csc/objectives-and-baselines.md",
+    "depends_on": [
+      "AI-C001"
+    ]
+  },
+  {
+    "id": "AI-C003",
+    "title": "Early baselines exposed distinct bottlenecks",
+    "statement": "Five Standard-speed turn 200 games contained 175 major-city observations and 188 completed Quarters, only five with both owned material classes. Bakers had 130 mills,14 Bakeries and no Cafes; Tailors had four Workshops. The later ten Online 250 games contained 598 major-city observations and 776 Quarters, only six retaining Both. These are different clocks and samples.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Five October 15 Standard games and ten October 16–17 Online vanilla/TAR games.",
+    "limits": "Descriptive baselines are not causal tests. Owned plot-legal alternatives were scanned up to one turn earlier and did not establish affordability or complete production eligibility. Tailor Both-choice denominators were particularly small.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-baseline-20261015.md",
+      "project/docs/research/mods/csc-ai-paired-standard-20261016.md"
+    ],
+    "topic": "topics/csc/objectives-and-baselines.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C004",
+    "title": "Both potential is not working supply",
+    "statement": "Base can support Stage 2/3 Services; Both is especially valuable for Stage 4 potential. Ownership and adjacency do not prove valid improvements, producers, customers or timely operation. Ordinary sales can operate without material or Service-civic gates, and partial material/producer benefits can precede a full-chain milestone.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Mechanic-specific measurements across historical experiments and November source.",
+    "limits": "A nonoperating full-supply commitment is not automatically zero return or waste. Structural links and Service properties are not logged monetary payments.",
+    "sources": [
+      "project/docs/integrations/csc-ai-objectives.md",
+      "project/docs/research/mods/csc-ai-customer-comparison-20261023.md",
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/csc/objectives-and-baselines.md",
+    "depends_on": [
+      "AI-C001"
+    ]
+  },
+  {
+    "id": "AI-C005",
+    "title": "Measure conversion, durability and trade-offs",
+    "statement": "Use fixed opportunity definitions, absolute operating counts and city/population context. Separate native/assisted origins, site ages, own funds/subsidies, losses, repairs and supply-turns. Compare overall empire development and displaced investment as well as conversion efficiency.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Common evaluation framework, rather than a single profit formula.",
+    "limits": "Games are independent sampling units; five players from one map are not five worlds. Late investments are censored, zero opportunities are not zero success, and missing telemetry remains unknown.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-benchmark-metrics-20261022.md",
+      "project/docs/integrations/csc-ai-objectives.md"
+    ],
+    "topic": "topics/csc/objectives-and-baselines.md",
+    "depends_on": [
+      "AI-C002",
+      "AI-C004"
+    ]
+  },
+  {
+    "id": "AI-C006",
+    "title": "More resources do not ensure useful city opportunities",
+    "statement": "Fifteen paired native maps showed TAR Abundant mostly redistributing sites, while Truly Abundant increased Both-site counts. Some paired maps lacked Tailor specialty resources entirely. Offline studies and native helper follow-ups developed a resource-generation pass; production scope narrowed to Bakers/Tailors and temporary Tailor density assistance increased opportunities.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Five paired landscapes, historical 80-layout emulator study and separate native helper/density samples.",
+    "limits": "Geographic counts precede ownership, city reach, visibility, research and complete legality. Fixed-landscape emulation does not reproduce all native RNG/start adjustment. Shared clusters are not independent investments, and map assistance is not AI competence.",
+    "sources": [
+      "project/docs/research/mods/csc-map-material-opportunities-20261016.md",
+      "project/docs/research/mods/csc-offline-abundance-study-20261016.md",
+      "project/docs/research/mods/csc-offline-generation-calibration-20261016.md",
+      "project/docs/research/mods/csc-implemented-materials-native-20261016.md",
+      "project/docs/research/mods/csc-tailor-density-native-20261017.md"
+    ],
+    "topic": "topics/csc/placement-and-opportunity.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C007",
+    "title": "Early co-location gains did not solve material choice",
+    "statement": "Placement v 1 increased Quarter/customer co-location without convincing mapped-material improvement and with more supporting deposits covered later. The subsequent native bonus/river package chose Bakers Base in 24/27 opportunities versus 14/25 baseline and 16/28 v 1 on one seed.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Historical combined treatments, including one completed Online 250 bonus/river game.",
+    "limits": "One seed and multiple changed inputs cannot isolate each cue or establish general superiority. Better placement still needs retained supply and development.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-tuning-v1-20261017.md",
+      "project/docs/research/mods/csc-ai-native-bonus-river-20261017.md"
+    ],
+    "topic": "topics/csc/placement-and-opportunity.md",
+    "depends_on": [
+      "AI-C006"
+    ]
+  },
+  {
+    "id": "AI-C008",
+    "title": "The broad BONUS cue was effective but poorly targeted",
+    "statement": "The generic bonus-resource proxy changed native values and siting, but rewarded resources unmapped to the relevant Quarter. In density-v 4, nine of eleven Tailors beside bonus resources had only wrong-industry bonus types. Later mechanism contrasts confirmed responsiveness without a demonstrated chain-quality improvement; current source removes BONUS 12.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Historical proxy experiments and current November source.",
+    "limits": "Removing it is not itself proved to improve the economy. Broader guidance can incidentally help, so removal and exact-material replacement require their own outcome evidence.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-density-v4-20261017-turn250.md",
+      "project/docs/research/mods/csc-ai-mechanism-tests-20261025-results.md",
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/csc/placement-and-opportunity.md",
+    "depends_on": [
+      "AI-C007"
+    ]
+  },
+  {
+    "id": "AI-C009",
+    "title": "Markers and resource-class sets were rejected representations",
+    "statement": "Synthetic feature markers reached prospective native previews but accumulated clearing, placement and presentation side effects. A separate custom resource-class probe worked, while tested list encodings behaved as single distinct class identifiers. Resource reclassification would change gameplay and cannot cleanly represent overlapping CSC TypeTags.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "October 17 marker trial and October 28 native resource-class probes.",
+    "limits": "Preview recognition does not establish safe metadata or better natural choices. The tested class encodings failed multiple membership; do not infer arbitrary parser capabilities from a TEXT column.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-markers-rejected-20261017.md",
+      "project/docs/research/mods/native-custom-resourceclass-probe-20261028.md",
+      "project/docs/research/mods/native-resourceclass-multivalue-probe-20261028.md"
+    ],
+    "topic": "topics/csc/placement-and-opportunity.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C010",
+    "title": "Spatial amounts and preferences have different units",
+    "statement": "Ordinary native adjacency with dynamic private yields reaches district valuation. Yield bias 25 is a percentage-style contribution; the traced positive Districts preference uses aggregate sign and a 1.5 multiplier. Raw private yield is not that many final score points.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime",
+      "static"
+    ],
+    "scope": "Current-build static consumers and bounded runtime mechanism contrasts.",
+    "limits": "Costs, time discount, competing land value and caches intervene. The two final observer diagnostics captured no target Quarter decision and closed after excessive callback fan-out; no calibrated placement benefit follows.",
+    "sources": [
+      "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md",
+      "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md"
+    ],
+    "topic": "topics/csc/placement-and-opportunity.md",
+    "depends_on": [
+      "AI-C008"
+    ]
+  },
+  {
+    "id": "AI-C011",
+    "title": "Broad Builder tuning had mixed confounded outcomes",
+    "statement": "The historical 90/900 package reached improvement density 7.76/city versus 5.22 at the common 200 checkpoint, but did not finish 250. A later resource-layout variant with the same settings gave 6.70/city at 200. Training, purchases, unit additions and remaining charges measure different things. Later native tracing established that the Units-list Value adds to request priority rather than acting like a percentage; Basic's Builder 50 is not a promise of 50 workers. Required City=-1 removes one city-ID restriction while retaining ordinary eligibility checks; it does not assign a worker or guarantee recruitment.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime",
+      "static"
+    ],
+    "scope": "One-seed historical Builder/density trials and current-build static Units/request consumer tracing.",
+    "limits": "Interrupted runs do not enter completed 250 comparisons. Combined settings and changed worlds do not identify a useful individual coefficient or prove sufficient workers for a particular job.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-rh-builders-20261017-turn200.md",
+      "project/docs/research/mods/csc-ai-rh-builders-20261017.md",
+      "project/docs/research/mods/csc-ai-density-v4-20261017-turn250.md",
+      "project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md",
+      "project/docs/research/mods/csc-ai-native-builder-priority-20261028.md"
+    ],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C012",
+    "title": "Private yields are not human-economically inert",
+    "statement": "Zero-turn readbacks showed one worker move to Flax with private+40, changing ordinary worked Production/Culture despite unchanged real plot inputs. The later Plantation extension changed allocations/output without additional material development. Empty icons and UI filters do not prevent this.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "All-owner raw-resource/improvement mechanism arms.",
+    "limits": "No direct conversion into money does not imply no economic effect. Older inert-output wording is superseded; all-owner diagnostic packages were not AI-only release candidates.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-private-resource-citizen-effects-20261024.md",
+      "project/docs/research/mods/csc-ai-resource-improvement-forecast75-results-20261024.md"
+    ],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C013",
+    "title": "Soft care landed without reliable preservation",
+    "statement": "Material-care v 1 stopped 170; v 2 ended after observer defeat 192 rather than 225. V 2 recorded eleven repair-to-working episodes and thirteen supporting-link losses, including four confirmed native harvests for Farm jobs. A working improvement was sometimes actively removed before harvesting.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Historical 160/80/20 care and urgency experiments.",
+    "limits": "Occupancy alone is not a confirmed harvest. Repairs do not prove incentive causality, and nodeSUCCESS is not operation/completion. Neither endpoint achieved the declared 225 test.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-material-care-v1-20261023.md",
+      "project/docs/research/mods/csc-ai-material-care-decision-paths-20261023.md",
+      "project/docs/research/mods/csc-ai-material-care-v2-terminal192-20261023.md"
+    ],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C014",
+    "title": "A harvest ban was an unsuitable preservation control",
+    "statement": "The no-harvest rule prevented the raw control’s three losses through 75 and yielded six versus five working Base producers. It also removed Quarter options and caused repeated rejected harvest/build routes, some later adapting to Pastures.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Identical source 16→75 counterfactual pair.",
+    "limits": "One world, shared private signals and subsidies; zero working Both producers. A player-wide legality restriction is not targeted care and was not promoted.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-harvest-rule75-20261024.md"
+    ],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C015",
+    "title": "Direct Pasture and conditional Farm routes had positive controls",
+    "statement": "Cattle 2533 changed from a Farm reservation/harvest in the raw control to a Pasture reservation 20, working 21 and retained 75 under direct Pasture 80. The 150 resource-Farm pilot verified seven isolated resource-Farm positives and 81 terrain-only negatives, with logged job/reservation and physical development evidence.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Separate historical direct and conditional forecasting treatments.",
+    "limits": "All-owner scope, whole-bundle/timing differences and divergent spending prevent isolated empire-benefit claims. The Farm poweroff left 45 research rows and other interval observations missing; its dense-observation pass stayed false. Preservation and repeated pillage remained problems.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-pasture-forecast75-results-20261024.md",
+      "project/docs/research/mods/csc-ai-resource-farm150-test-20261024.md"
+    ],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": [
+      "AI-C012"
+    ]
+  },
+  {
+    "id": "AI-C016",
+    "title": "District-free supply is necessary but insufficient",
+    "statement": "A planner falsely counted Silk retained under a City Center as future Plantation supply. The corrected same-source 75 guard omitted that site: four valid foundations versus five, unchanged seven working Base producers and zero Both producers.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Exact precommit audit and external planner/commit correction.",
+    "limits": "A globally valid improvement mapping plus owned/revealed/district-free resource does not prove current unlock, terrain legality, reachable Builder or eventual work. Fewer false starts is a quality fix, not a causal whole-mod victory.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-resource-improvement-forecast75-results-20261024.md",
+      "project/docs/research/mods/csc-ai-material-viability75-results-20261024.md"
+    ],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": [
+      "AI-C004"
+    ]
+  },
+  {
+    "id": "AI-C017",
+    "title": "Recommendations, assignments and getter domains differ",
+    "statement": "Honey became its city’s highest returned recommendation at 112/113 and stayed unimproved; different Builders received identical city lists. Flax’s absence did not prove illegality or zero hidden value. Separate probes also found existing serialized Farm values and newly assigned Sugar responding differently despite correct loaded definitions.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Bounded follow-through, recommendation/admission and zero-turn delivery studies.",
+    "limits": "No same-path positive control means a getter’s zero is inconclusive. UI, Gameplay, initialization phase and reload cannot be interchanged; recommendation is not admitted work or allocated capacity.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-material-followthrough-20261031.md",
+      "project/docs/research/mods/csc-ai-material-recommendations-20261031.md",
+      "project/docs/research/mods/csc-ai-work-admission-20261031.md",
+      "project/docs/research/mods/csc-ai-acquisition-signal-delivery-20261024.md"
+    ],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": [
+      "AI-C015"
+    ]
+  },
+  {
+    "id": "AI-C018",
+    "title": "Following did not establish dynamic civic consumption",
+    "statement": "Clean sham/stock-Naval/custom-CSC arms had 400 identical civic-history rows each through 150 and 59 natural completion boundaries per arm. Retrospective analysis matched 5002 candidate keys per arm, including 327 Naval keys. No logged target-score or choice response was observed.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "One synthetic Medieval-start fixture with five AI players; earlier 180/120 and fixed/extreme controls provide supporting history.",
+    "limits": "The planned Culture-weight positive sample was unavailable, not a measured zero. These are bounded route nulls without a working positive control, not proof that all civic preferences fail. Failed research-clearing assumptions and residual lists remain documented.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-clean-strategies-20261020.md",
+      "project/docs/research/mods/csc-real-strategy-research-review-20261020.md",
+      "project/docs/research/mods/csc-ai-research-priorities-20261019.md"
+    ],
+    "topic": "topics/csc/research-and-strategies.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C019",
+    "title": "Trait preferences and construction goals worked separately",
+    "statement": "Trait-owned favoring raised a target civic score about 50% in the tested context. A temporary construction prerequisite delivered PresentValue-sized research boosts: four of five selected and three completed Divine Right versus zero in the disconnected arm.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Disposable matched Medieval mechanism controls, not ordinary CSC Service dependencies.",
+    "limits": "The typed target came from an artificial prerequisite. Safe material-aware goal ownership, submission and complete withdrawal were not established. Callback tables lacked a player ID in the captured generic Lua-condition calls.",
+    "sources": [
+      "project/docs/research/mods/csc-native-civic-goals-findings-20261020.md",
+      "project/docs/research/mods/csc-civic-unlock-experiments-20261020.md"
+    ],
+    "topic": "topics/csc/research-and-strategies.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C020",
+    "title": "Dormant forecasts delivered selective research value",
+    "statement": "A contradictory economically inactive CivicModifiers benefit plus private Yield strategy produced boosts for material-ready Tailors and zero for no-Quarter/no-Base controls. Exit variants withdrew value, but finite C 11/C 12 probes did not regain the treatment after supply recovery.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Controlled civic-modifier diagnostics; actual Service effects were unchanged.",
+    "limits": "Diagnostic magnitudes are not recommended weights. UI/human effects, complete lifecycle and natural-game benefit were not release-qualified; repeated arbitrary flag or weight changes were stopped.",
+    "sources": [
+      "project/docs/research/mods/csc-research-influence-findings-20261021.md",
+      "project/docs/research/mods/csc-civic-modifier-tests-20261020.md"
+    ],
+    "topic": "topics/csc/research-and-strategies.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C021",
+    "title": "Permanent restart failure was an overgeneralization",
+    "statement": "Later natural guidance showed Germany’s Feudalism/Faires and Greece’s Urbanization re-adopted 20 turns after stopping. This supersedes a blanket irreversible-strategy interpretation while preserving the earlier finite no-restart observations.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Two qualifying Game 1 return episodes; Games 2/3 lacked equivalent recovery opportunities.",
+    "limits": "Twenty turns is an observed delay, not a universal cooldown or a complete lifecycle fix. Continued callbacks, adoption, preference application and score consumption remain distinct.",
+    "sources": [
+      "project/docs/research/mods/csc-ancient-guidance-three-games-results-20261021.md",
+      "project/docs/research/mods/csc-research-influence-findings-20261021.md"
+    ],
+    "topic": "topics/csc/research-and-strategies.md",
+    "depends_on": [
+      "AI-C020"
+    ]
+  },
+  {
+    "id": "AI-C022",
+    "title": "Research adoption did not establish chain improvement",
+    "statement": "Three Ancient candidates completed 3735 observations; all 15 AI completed five lower Service civics and six completed Opera. Nine Naval completions lacked direct Naval eligibility. Separately, the long paired test ended with 12 Service flags versus 18 OFF.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Three natural candidates and a separate Medieval 250 pair.",
+    "limits": "Candidate/historical comparisons changed source and resource versions; the long pair’s OFF retained legacy guidance. Research gates often stopped being the endpoint bottleneck because materials, producers and venues did not align.",
+    "sources": [
+      "project/docs/research/mods/csc-ancient-guidance-three-games-results-20261021.md",
+      "project/docs/research/mods/csc-long-guidance-comparison-20261021.md",
+      "project/docs/research/mods/csc-ai-fixed-research-20261019-comparison.md"
+    ],
+    "topic": "topics/csc/research-and-strategies.md",
+    "depends_on": [
+      "AI-C018",
+      "AI-C021"
+    ]
+  },
+  {
+    "id": "AI-C023",
+    "title": "Boolean strategies are not per-plot score callbacks",
+    "statement": "Call Lua Function can compute a complex accessible-state condition and switch linked player-level preferences. It does not itself transmit a candidate city/plot or continuous numeric desirability. Source registration and Following do not prove consumption by every downstream subsystem.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "Shipped API pattern, current CSC strategy use and traced consumer distinctions.",
+    "limits": "An arbitrary numerical placement formula needs a separately proved consumer. UI previews and plot-property writers alone do not establish native hypothetical evaluation.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md",
+      "project/docs/research/mods/csc-ai-profile-source-audit-20261028.md"
+    ],
+    "topic": "topics/csc/research-and-strategies.md",
+    "depends_on": [],
+    "related": [
+      "AI-N034",
+      "AI-N036"
+    ]
+  },
+  {
+    "id": "AI-C024",
+    "title": "Private producer value reached an unbuilt Workshop decision",
+    "statement": "A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime",
+      "static"
+    ],
+    "scope": "Historical Kobdo 110/111 RH package and current-build native consumer investigation.",
+    "limits": "The OFF arm never ran. Delivery, consumption and one choice do not prove 80 caused that choice, completion or economic benefit. Today’s population/property-consumer source is not the historical package.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-producer-decision-20261030.md",
+      "project/docs/research/mods/csc-ai-producer-live-effect-20261029.md",
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C025",
+    "title": "Accepted work can wait behind another queue",
+    "statement": "The exact target district request was accepted 103/105 while Builder production continued, selected/Execute at 109 when the queue emptied, and completion-censored at 110. Native construction can use a prepared foundation without an immediate queue replacement.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime",
+      "static"
+    ],
+    "scope": "Single-target existing-city observation and static contract trace.",
+    "limits": "Priority, PresentValue, retained contract value, best-building fallback and final queue arbitration differ. No general finish-first override was proved.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-foundation-observation-20261029.md",
+      "project/docs/research/mods/csc-ai-foundation-decision-path-20261029.md"
+    ],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C026",
+    "title": "Strategy building inputs loaded without the hoped response",
+    "statement": "Twenty-seven CSC counterparts added to RH strategy Buildings lists had verified definitions/adoption but V 7’s physical state, finance and scoped construction/strategy/tree logs matched V 6 through 150. A conditional Granary strategy later reported true/Following while the observed ordinary building path still received preference 0.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Fixed-A RH package comparison and separate bounded Granary delivery probe.",
+    "limits": "These are route/context non-responses, not unsupported Buildings everywhere or proof that another Value increase would help. Specialization probes also lacked a responsive positive control.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-rh5-parity-campaign-20261024.md",
+      "project/docs/research/mods/csc-ai-granary-priority-20261031.md",
+      "project/docs/research/mods/csc-ai-mechanism-tests-20261025-results.md"
+    ],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C027",
+    "title": "Direct Granary preference worked without controlling the target",
+    "statement": "Direct trait binding delivered preference 1 in 20/20 captured evaluations and two exact 2× Granary winners. The prescribed city still lacked Granary/Bakery after 21 intervals; Choir elsewhere completed Granary and began Bakery. Its Food 2 versus database base 1 is compatible with an additional CSC effect.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Genghis trait-wide experimental 110→131 control.",
+    "limits": "Instrumentation/recovery differences prevent isolated causality; Walls and military allocation changed. The wider gain was not free, and Choir lacked a full retained-chain material/effect census.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-granary-direct-priority-20261101.md",
+      "project/docs/research/mods/csc-ai-granary-decision-20261031.md"
+    ],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C028",
+    "title": "Customer geometry was a concrete repeated failure",
+    "statement": "All four selective-assisted sites had working Both and upstream producers at 150 but no operating customer path. Three lacked Stage 2 geography; Choir had an adjacent City Center without Granary. All four also lacked registered Stage 3 customer geometry.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Four precisely identified assisted investments in the selective RH screen.",
+    "limits": "More Both starts alone would not address the diagnosed customer-path gap. Partial extraction/producer benefits do not require the full operating milestone, so these cases are not automatically zero-income.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-paired-selective-chain-screen-results-20261101.md",
+      "project/docs/research/mods/csc-ai-customer-comparison-20261023.md"
+    ],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": [
+      "AI-C004"
+    ]
+  },
+  {
+    "id": "AI-C029",
+    "title": "Current future inputs are explicitly authored",
+    "statement": "An existing Tailors Quarter supplies Workshop private 80 for BASE plus 40 with SPEC. The RH role bridge does not itself check Quarter completion/pillage. An existing functioning Bakers Mill can target Granary private 40 before Granary exists; the real Mill→Granary exchange instead requires actual recipient Granary.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "Pinned November 3 source and native analysis.",
+    "limits": "Fact flags use mapped-resource presence, ownership, reveal and district-free checks, not full improvement buildability or Builder availability. Do not describe historical getter 80 as a run of the whole current source tree or evidence of complete native network simulation.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": [],
+    "related": [
+      "AI-N031",
+      "AI-N042"
+    ]
+  },
+  {
+    "id": "AI-C030",
+    "title": "Current population returns are realized-state calculations",
+    "statement": "Stage 3 per-population seller/customer consumers attach to City Centers; Lua computes actual functioning same-owner adjacent relationships and writes bits. Stage 4/export consumers can instead adjust named building yields. Legacy producer-owned definitions can remain present but unattached.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "November 3 source, after consumer changes.",
+    "limits": "Native unsupported collections, omitted property gates and missing plot context prevent assuming faithful arbitrary future-chain forecasting. Missing material is not equivalent to no ordinary Stage 3 sales.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": [],
+    "related": [
+      "AI-N032"
+    ]
+  },
+  {
+    "id": "AI-C031",
+    "title": "Foundations can be handed to native construction",
+    "statement": "The initial four-foundation diagnostic observed all four selected and completed without scripted completion or extra production orders. Later aged cohorts also completed most foundations; construction was often stronger than material siting/preservation.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Guarded native/UI-legal incomplete district route.",
+    "limits": "Foundation insertion consumes land and district capacity and changes the AI’s remaining choices. It proves a construction route in cases, not optimal investment or chain success.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-district-foundations-20261021.md",
+      "project/docs/research/mods/csc-ai-foundation-handholding-breakdown-20261025.md"
+    ],
+    "topic": "topics/csc/assistance-and-planners.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C032",
+    "title": "Paid acquisition is an assisted backend",
+    "statement": "A donated Both diagnostic verified 65 Gold in source/Sheep acquisitions, exact gift/debit, same-turn city ownership and a legal 0%Tailors foundation. Later own-first policies donate only the next step’s shortfall with receipts, caps, reserves and cooldowns.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Gameplay WorldBuilder city assignment plus native-quoted treasury debit.",
+    "limits": "This is not proved native AI PURCHASE behavior. A full-route gift or same-state affordability shadow is a mechanism diagnostic, not an untreated counterfactual or free-chain outcome.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-donated-both-diagnostic-20261023.md",
+      "project/docs/research/mods/csc-ai-own-first-fresh-game-20261023.md",
+      "project/docs/integrations/csc-ai-profiles.md"
+    ],
+    "topic": "topics/csc/assistance-and-planners.md",
+    "depends_on": [
+      "AI-C031"
+    ]
+  },
+  {
+    "id": "AI-C033",
+    "title": "Guaranteed Both placement did not retain most inputs",
+    "statement": "In the partial 175 cohort all 11 assisted foundations completed, while 64/65 native placements completed. Only two assisted working Base/Both chains remained after nine initial Base losses. Captured sites and paid-land overlaps were tracked separately.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Original-placement cohorts; later uncontrolled 192 excluded.",
+    "limits": "Unassisted does not mean stock AI. Assistance preempted some Both choices, and cohort ages/opportunities differ; native-versus-assisted fractions are not causal treatment effects.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-foundation-handholding-breakdown-20261025.md"
+    ],
+    "topic": "topics/csc/assistance-and-planners.md",
+    "depends_on": [
+      "AI-C031"
+    ]
+  },
+  {
+    "id": "AI-C034",
+    "title": "A partial200 package improved some milestones",
+    "statement": "All 11 assisted foundations completed with mean observed delay 21/median 20 versus 28.125/27 for eight prior completions. Non-City-Center customer adjacency 31 versus 18 and building links 19 versus 8 rose, while working Base producer sites fell 15 versus 21.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Historical combined foundation/customer treatment; controlled progress ended 175.",
+    "limits": "The requested 200 endpoint was not completed. Observer defeat, unobserved later finance and changed cohorts prevent a full benchmark or isolated queue-priority efficacy claim.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-foundation-priority200-20261025-results.md"
+    ],
+    "topic": "topics/csc/assistance-and-planners.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C035",
+    "title": "Spending195 versus795 was not selective-chain success",
+    "statement": "The selective candidate spent 195 Gold=81 own+114 subsidy versus 795=300+495, but ended with three full-supply contexts versus four. Both had 53 Quarters,19 workingBase and 38 Stage 2 producers; candidate Both was four versus ten and zero assisted sites operated.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "One matched 150 RH joint-package screen.",
+    "limits": "Savings 75.5% is not benefit, parity or proof of lower waste. Full-chain milestone spending is not total return accounting; materials/producers may already help. Construction cost was not monetized.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-paired-selective-chain-screen-results-20261101.md"
+    ],
+    "topic": "topics/csc/assistance-and-planners.md",
+    "depends_on": [
+      "AI-C028",
+      "AI-C032"
+    ]
+  },
+  {
+    "id": "AI-C036",
+    "title": "Customer-aware v2 proved execution, not overall improvement",
+    "statement": "V 2 admits credible Base through Both or trial realProduction+Gold>=4 and requires an exact Stage 2/3 customer path. Its 150 pilot had two full contexts versus three selective,15 Base versus 19, and one assisted chain operating from 119 through later observations. Five foundations were assisted, fifty sites clearly native and one had cross-city acquired-land overlap.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Canonical implementation and same-map RH joint-package pilot.",
+    "limits": "200 Gold included 85 on a turn-149 commitment censored at 150. Sixteen errors and missing planner observations 11–14 kept the dense-observation pass false. An individual functioning chain did not establish overall improvement or Basic qualification.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-customer-aware-planner-v2-20261101.md",
+      "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md"
+    ],
+    "topic": "topics/csc/assistance-and-planners.md",
+    "depends_on": [
+      "AI-C035"
+    ]
+  },
+  {
+    "id": "AI-C037",
+    "title": "Future customer credit needs a named conditional contract",
+    "statement": "V 2 binds material/customer identities across purchases and protects essential footprints. Working customers, existing districts missing buildings and specific future plots are different confidence tiers. Present real P/G, projected conditional value and private cues stay separate.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "Customer-aware planner contract and Lua legality-binding investigation.",
+    "limits": "CanHaveDistrict does not prove future unlock/capacity legality. Unknown essential facts defer action; unknown secondary costs remain explicit rather than making every useful investment impossible. Future promises are not native site preferences or realized yields.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-customer-aware-planner-v2-20261101.md",
+      "project/docs/research/mods/csc-native-future-customer-legality-20261101.md",
+      "project/docs/research/mods/csc-ai-selective-planner-20261031.md"
+    ],
+    "topic": "topics/csc/assistance-and-planners.md",
+    "depends_on": [
+      "AI-C036"
+    ]
+  },
+  {
+    "id": "AI-C038",
+    "title": "Profile separation is architecture, not qualification",
+    "statement": "Off means native CSC without CSC AI interventions, or RH alone when RH is active. On selects Basic or RH-specific support, with a separate subsidy option. Basic owns general Builder/improvement/movement/contract inputs; RH is intended to own its baseline while CSC addresses evidenced supply-chain gaps.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Current objectives/source architecture and dated native pilots.",
+    "limits": "A historical profile status or manifest is not current installed-state proof. No sustained multi-map Basic/RH competence or parity was established, and old global Builder weights must not be silently shared into RH.",
+    "sources": [
+      "project/docs/integrations/csc-ai-profiles.md",
+      "project/docs/integrations/csc-ai-objectives.md",
+      "project/docs/research/mods/csc-ai-profile-source-audit-20261028.md"
+    ],
+    "topic": "topics/csc/profiles-and-reference-mods.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C039",
+    "title": "RH version changes invalidate copied assumptions",
+    "statement": "The old 4.34 reference used improvement 90/globalBuilder 900. Reviewed 5.097 uses improvement 30, no equivalent globalBuilder 900 row, +1 friendly movement and substantial Lua Builder purchasing. Selecting a needy spawn city is not dispatching an existing Builder to an exact resource job.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Read-only, version-pinned RH source review.",
+    "limits": "Leader overrides, load order and activation gates matter. RH’s separate resource-improvement fallback is a stronger intervention, not proof of a native job dispatcher. Reference source is read-only; source declarations are not performance validation.",
+    "sources": [
+      "project/docs/research/mods/csc-rh-v5097-ai-review-20261018.md",
+      "project/docs/research/mods/csc-ai-acquisition-signal-delivery-20261024.md"
+    ],
+    "topic": "topics/csc/profiles-and-reference-mods.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C040",
+    "title": "AI+ and Real Strategy supplied bounded leads",
+    "statement": "AI+ led to RequiredCity=-1 and AddGoalTech civic payload wiring. Real Strategy supplied trait/list and Lua-strategy precedents, while its historical system comments helped distinguish subsystem semantics. Their successful packages do not prove every named preference or current-build consumer works.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Read-only AI+v 13, RealStrategy 2.3.1 and RH dynamic-research reviews.",
+    "limits": "No arbitrary per-Quarter resource matcher or safe CSC Service-goal adapter emerged. Author-reported behavior remains separate from locally reproduced runtime results; civic preferences and ordinary yield percentages are not interchangeable units.",
+    "sources": [
+      "project/docs/research/mods/csc-aiplus-research-review-20261020.md",
+      "project/docs/research/mods/csc-real-strategy-research-review-20261020.md",
+      "project/docs/research/mods/csc-rh-dynamic-research-followup-20261019.md"
+    ],
+    "topic": "topics/csc/profiles-and-reference-mods.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C041",
+    "title": "The RH parity campaign did not qualify a winner",
+    "statement": "V 6 reached 150 with 57 cities,55 completedQuarters,39 producers,21 Base,5 Both,8 customer links and 4 flags, but failed its per-city and customer/Service gates against Basic-A. V 7’s 27 strategy additions matched V 6’s physical signature, scoped logs and finance through 150.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Historical fixed-A RH development series, not three independent parity successes.",
+    "limits": "Startup retries, same-world reloads and source candidates are not independent worlds. Later closures and the paused broad campaign override diary statements that say ACTIVE. Current source is not automatically the executed candidate.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-rh5-parity-campaign-20261024.md",
+      "project/docs/integrations/csc-ai-progress-and-learnings-20261101.md"
+    ],
+    "topic": "topics/csc/profiles-and-reference-mods.md",
+    "depends_on": [
+      "AI-C038",
+      "AI-C039"
+    ]
+  },
+  {
+    "id": "AI-C042",
+    "title": "Controls must share the getter and context",
+    "statement": "Loaded rows and empty modifier subject lists do not establish delivery. UI/Gameplay getters can disagree, initialization phases differ and saved instances may retain earlier behavior. A responsive same-path positive control must precede interpreting a zero.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Farm, acquisition, producer-property and general mechanism probes.",
+    "limits": "Failed positive controls make route interpretation inconclusive. They do not prove a mechanism unsupported everywhere or justify arbitrary coefficient increases; isolate application before testing decisions.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-acquisition-signal-delivery-20261024.md",
+      "project/docs/research/mods/csc-ai-mechanism-tests-20261025-results.md",
+      "project/docs/research/mods/csc-ai-producer-property-calibration-20261029.md"
+    ],
+    "topic": "topics/csc/experiment-lessons.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C043",
+    "title": "Worlds, clocks and source generations must match",
+    "statement": "Same seeds do not guarantee identical resources/starts across builds. Saved-world arms overlap; Medieval starts 71 and Online/Standard clocks differ. Preserve initial state, actual boundaries, exact executed packages and accepted log generations.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Baseline, research, material, producer and planner comparisons.",
+    "limits": "Never sum replays as independent outcomes, fill missing telemetry, compare historical pins against promoted source, or describe a post-closure repair as runtime validation. Cached advice, proposals and decisions have separate refresh timing.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-benchmark-metrics-20261022.md",
+      "project/docs/research/mods/csc-ai-resource-farm150-test-20261024.md",
+      "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md"
+    ],
+    "topic": "topics/csc/experiment-lessons.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C044",
+    "title": "Stall, save failure, host loss and native crash differ",
+    "statement": "Disaster/diplomacy playback locks produced verified stalls; shipped UI release sometimes restored progress. Host shutdowns and optional-save failures preserved useful partial data without proving native crashes. One shared finite controller, identity-qualified owners and one-shot financial receipts improved reliability.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Foundation-series recovery, harness and shared-session/exit investigations.",
+    "limits": "A missing reply or vanished worker is not a cause diagnosis. Acknowledgment is not completed effect; ambiguous economy must not be resent. Repair reporting offline rather than rerunning worlds for missing fields.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-dynamic-foundations-three-games-20261021.md",
+      "project/docs/research/mods/csc-ai-harness-performance-20261023.md",
+      "project/docs/research/mods/csc-ui-exit-crash-20261031.md",
+      "project/docs/research/mods/csc-shared-native-session-20261030.md"
+    ],
+    "topic": "topics/csc/experiment-lessons.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C045",
+    "title": "Instrumentation cost can defeat the question",
+    "statement": "Two placement diagnostics produced 882774 and 294437 callbacks in one AI interval, captured no target Quarter decision and closed normally. Moving hooks did not solve fan-out; no weight treatment followed. Native-side filtering before the JavaScript boundary became the prerequisite for future instrumented captures.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Bounded November 1 observer branch, current Windows build.",
+    "limits": "This is a measurement-budget failure, not AI blindness, a successful calibration or permission for a third retry. The broad optimisation campaign remains paused.",
+    "sources": [
+      "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md",
+      "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md"
+    ],
+    "topic": "topics/csc/experiment-lessons.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-C046",
+    "title": "Reverse engineering should resolve dependencies",
+    "statement": "PE checks, reference names, Ghidra and REA clarified consumers, ownership and side effects. Economic goal feasibility stopped at an unestablished arbitrary payload/ownership interface; planner work could continue through supported guidance and guarded acquisition/foundations.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source",
+      "inference"
+    ],
+    "scope": "Native tooling and economic-job feasibility work.",
+    "limits": "Names and historical layouts are leads. A scripted operation setter can mutate AI knowledge before invalid-ID validation, so invalid ID is not a safe no-effect control. No universal executor, complete reconstruction or token-savings gain was established.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-rea-trial-20261030.md",
+      "project/docs/research/mods/csc-ai-gamecore-symbol-resource-20261029.md",
+      "project/docs/research/mods/csc-ai-native-material-job-feasibility-20261030.md",
+      "project/docs/research/mods/csc-ai-native-goal-roadmap-review-20261030.md"
+    ],
+    "topic": "topics/csc/experiment-lessons.md",
+    "depends_on": [],
+    "related": [
+      "AI-N037",
+      "AI-N039"
+    ]
+  },
+  {
+    "id": "AI-C047",
+    "title": "The full objective remains unproved",
+    "statement": "Useful acquisition, fresh value delivery, native selections, repairs, completions and individual functioning chains are demonstrated. Reliable sustained operation, balanced opportunity cost and net benefit across Basic/RH and multiple maps remain open.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Latest audited project checkpoint plus November 3 source/native work.",
+    "limits": "Old diaries may say ACTIVE or pending. Latest human stops, audit closures and paused campaigns prevail. These pages are knowledge, not active jobs, release qualification or authority to start a game/monitor.",
+    "sources": [
+      "project/docs/integrations/csc-ai-progress-and-learnings-20261101.md",
+      "project/docs/integrations/csc-ai-roadmap.md",
+      "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md",
+      "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md"
+    ],
+    "topic": "topics/csc/experiment-lessons.md",
+    "depends_on": [
+      "AI-C001",
+      "AI-C035",
+      "AI-C036",
+      "AI-C041",
+      "AI-C045"
+    ]
+  }
+]

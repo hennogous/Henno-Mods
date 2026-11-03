@@ -1,0 +1,8 @@
+{
+  "library": "mermaid",
+  "version": "11.4.0",
+  "license": "MIT",
+  "source": "https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js",
+  "sha256": "1bca2e3c09f0e33ccc6e701e9c79d5cfa87d5e929b35d3a4aea4e1ec069dc87b",
+  "purpose": "Match the pinned Mermaid version used by the existing Quartz checkout while making handbook diagrams available locally."
+}

@@ -1,0 +1,1014 @@
+[
+  {
+    "id": "AI-N001",
+    "title": "Separate valuation from execution",
+    "statement": "The inspected city-development flow separates forecasts, caches, opportunity selection, behavior trees, contracts, queue choice, immediate operations and physical completion.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths.",
+    "limits": "This is not a complete specification of every AI subsystem.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/architecture.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-N002",
+    "title": "District preparation is multi-step",
+    "statement": "The shipped district behavior tree can coordinate research, acquisition/reservation, Builder clearance and construction of one selected district.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths.",
+    "limits": "Authored task preparation is not proof of optimal empire layouts or successful runtime completion.",
+    "sources": [
+      "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/architecture.md",
+    "depends_on": [
+      "AI-N001"
+    ]
+  },
+  {
+    "id": "AI-N003",
+    "title": "No persistent Factory objective established",
+    "statement": "The ordinary inspected building route forecasts dependencies and requests one selected item; no enduring Factory-rooted construction graph was found in that route.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths.",
+    "limits": "Does not exclude other trees, boosts, scenarios or untraced higher-level planning.",
+    "sources": [
+      "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md"
+    ],
+    "topic": "topics/native/architecture.md",
+    "depends_on": [
+      "AI-N001",
+      "AI-N018",
+      "AI-N020"
+    ]
+  },
+  {
+    "id": "AI-N004",
+    "title": "Request priority differs from present value",
+    "statement": "Native request priority, extra present value, preference Value and economic yields are distinct inputs with different consumers.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Vanilla request observation on 28 October.",
+    "limits": "No general conversion or final scheduling formula follows merely from the field names.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-builder-priority-20261028.md",
+      "project/docs/research/mods/csc-ai-native-contract-observation-20261028.md"
+    ],
+    "topic": "topics/native/architecture.md",
+    "depends_on": [
+      "AI-N001"
+    ]
+  },
+  {
+    "id": "AI-N005",
+    "title": "Native improvement/repair consumer exists",
+    "statement": "Build Improvement node paths reach native build, repair and adjacent-improvement requests after worker, reachability and legality checks.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths.",
+    "limits": "Static requests do not prove acceptance, completed work, cleanup or a general external planner payload interface.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-material-job-feasibility-20261030.md"
+    ],
+    "topic": "topics/native/architecture.md",
+    "depends_on": [
+      "AI-N001"
+    ]
+  },
+  {
+    "id": "AI-N006",
+    "title": "Joint district and site maximum",
+    "statement": "Ordinary GetBestDistrict compares cached district/plot pairs, uses randomized ties and reservation thresholds, and has no score-greater-than-zero test.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. GetBestDistrict RVA 3e4a50.",
+    "limits": "Its initial invalid sentinel is Q8 -9999; this is a local city cache comparison, not exhaustive future layout optimization.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N001"
+    ]
+  },
+  {
+    "id": "AI-N007",
+    "title": "Candidate radius and admission",
+    "statement": "Up to37 city-index plots are initialized, with revelation, ownership/assignment, purchasability, geography and district-type restrictions applied during evaluation.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. InitializePlotAnalyzers and city evaluation.",
+    "limits": "Forecast admission is more permissive than immediate construction; off-map plots are skipped.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N006"
+    ]
+  },
+  {
+    "id": "AI-N008",
+    "title": "District scores have multiple stages",
+    "statement": "Per-plot net value includes benefits, costs and delays, followed by preference/cache processing and qualifying future building propagation.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths.",
+    "limits": "These are different units/stages, not raw yields to sum naively; live decomposition remains unmeasured.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N001"
+    ]
+  },
+  {
+    "id": "AI-N009",
+    "title": "District favored sign controls multiplier",
+    "statement": "Negative district preference excludes the type, zero is neutral, and positive multiplies net site score by1.5 before later building aggregation.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Traced Districts preference consumer.",
+    "limits": "Larger numeric Districts.Value is not a proportional multiplier; multiplying a negative net value can worsen it.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N008"
+    ]
+  },
+  {
+    "id": "AI-N010",
+    "title": "Conditional alternative adjacency deduction",
+    "statement": "When chosen static adjacency is below the feasible maximum, DistrictValue can subtract the full maximum; Aqueduct mask0x04 exempts that branch.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. DistrictValue and current District SQL loader.",
+    "limits": "This is static adjacency opportunity cost, not an alternative district's complete net economic value or universal additive cue formula.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N008"
+    ]
+  },
+  {
+    "id": "AI-N011",
+    "title": "Site winner remains an intention",
+    "statement": "The selected district/site seeds preparation; acquisition, reservation, contract competition and immediate CanZone still separate it from production.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Bounded November 1 queue observation.",
+    "limits": "Selection does not establish physical completion or useful operation.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N001",
+      "AI-N025"
+    ]
+  },
+  {
+    "id": "AI-N012",
+    "title": "Plot legality is not future permission",
+    "statement": "The inspected plot CanHaveDistrict wrapper reads three numeric arguments after self, not a fourth future flag, and can admit resource auto-harvest.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Lua wrapper 01c380 and rules/helper path.",
+    "limits": "Potential is not full city permission, permanent impossibility, a cost quote or material preservation; no runtime locked-district contrast was made.",
+    "sources": [
+      "project/docs/research/mods/csc-native-future-customer-legality-20261101.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N007"
+    ]
+  },
+  {
+    "id": "AI-N013",
+    "title": "Yield weight units are consumer-specific",
+    "statement": "NormalizeYields uses Yield.DefaultValue and aggregate player bonus; ordinary Yields.Value 25 contributes +25%, with Q8 rounding and an upper aggregate cap.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. NormalizeYields RVA 52b110.",
+    "limits": "Do not transfer these units to Buildings, Districts, Units, pseudo-yields or final scores.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md"
+    ],
+    "topic": "topics/native/empire-needs.md",
+    "depends_on": [
+      "AI-N008"
+    ]
+  },
+  {
+    "id": "AI-N014",
+    "title": "Configured current-performance catch-up",
+    "statement": "YieldSensitivities coefficients feed GrandStrategic's own/met-player yield comparison, leader-gap/dispersion boost, YieldBonus and normalized valuation.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. November 3 coefficient/consumer trace.",
+    "limits": "No new effective player boost, changed district choice or exact runtime magnitude was measured.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/empire-needs.md",
+    "depends_on": [
+      "AI-N013"
+    ]
+  },
+  {
+    "id": "AI-N015",
+    "title": "Active strategies feed preferences",
+    "statement": "Leader queries and active strategy lists supply type/yield/pseudo-yield preferences; traced native strategy start/end paths attach or remove lists.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Inspected victory/strategy paths and shipped data.",
+    "limits": "Declarations or callback/Following logs alone do not prove every system consumes the preference or reveal every condition formula.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "project/docs/research/mods/csc-native-civic-goals-findings-20261020.md"
+    ],
+    "topic": "topics/native/empire-needs.md",
+    "depends_on": [
+      "AI-N009",
+      "AI-N013"
+    ]
+  },
+  {
+    "id": "AI-N016",
+    "title": "Local housing and coverage needs",
+    "statement": "Relevant district value branches use food/housing growth calculations, regional coverage and applicable unit/resource-enabling benefits.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. HousingModifierValue and DistrictValue branches.",
+    "limits": "Not every district uses every branch; current contribution sizes and causal choice effects remain unmeasured.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/empire-needs.md",
+    "depends_on": [
+      "AI-N008"
+    ]
+  },
+  {
+    "id": "AI-N017",
+    "title": "Complete portfolio optimization remains unproved",
+    "statement": "Needs-sensitive inputs do not establish a complete empire district-portfolio optimizer or guarantee that the most urgent missing type wins.",
+    "status": "provisional",
+    "evidence_types": [
+      "inference"
+    ],
+    "scope": "Boundary of the inspected native economic reconstruction.",
+    "limits": "This is an unresolved broader architecture question, not evidence that no such planning exists anywhere.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/empire-needs.md",
+    "depends_on": [
+      "AI-N006",
+      "AI-N014",
+      "AI-N015",
+      "AI-N016"
+    ]
+  },
+  {
+    "id": "AI-N018",
+    "title": "Prerequisite-aware future value",
+    "statement": "Building forecasts include missing direct prerequisites and delays; positive dependent building value can flow backward to earlier buildings and qualifying prerequisite district entries.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Shipped IZ/Workshop/Factory case.",
+    "limits": "Definition-order mutation and separate district gates do not establish recursive fixed-point scheduling or a universal reset/order invariant.",
+    "sources": [
+      "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N008"
+    ]
+  },
+  {
+    "id": "AI-N019",
+    "title": "Observed Factory-entry propagation",
+    "statement": "Six November 1 calls satisfied Workshop return minus entry equals max(0,Factory entry), including three calls with Workshop missing.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Existing save250→253, current CSC diagnostic rebase, two declared cities; profile OFF.",
+    "limits": "Uses Factory entry rather than larger return; no persistent plan, causal production effect, complete sequence or empire benefit was established.",
+    "sources": [
+      "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N018"
+    ]
+  },
+  {
+    "id": "AI-N020",
+    "title": "Ordinary next-building eligibility",
+    "statement": "The ordinary flags 0/0 selector excludes Factory while its required Workshop or legal prerequisite district is missing; the request dispatches its recorded item.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Inspected ordinary building/tree/request route.",
+    "limits": "Other selection flags, impossible-district results and alternative prerequisites have different gates; no recursive job expansion was found in these bodies.",
+    "sources": [
+      "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N018"
+    ]
+  },
+  {
+    "id": "AI-N021",
+    "title": "Building favored sign differs from district sign",
+    "statement": "The traced building preference applies 0.5 for negative and2.0 for positive sign, with zero neutral; Value magnitude is not proportional in that consumer.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. GetBestBuilding; historical observed positive2x producer selection.",
+    "limits": "Other gates/multipliers and effective accumulated sign remain separate; not every added favored row changes an already-positive sign.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",
+      "project/docs/research/mods/csc-ai-producer-decision-20261030.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N004"
+    ]
+  },
+  {
+    "id": "AI-N022",
+    "title": "Units Value adds request priority",
+    "statement": "The applicable Units integer Value sum adds to request priority during unit-request initialization, separately from extra present value.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Units accumulator and UnitRequestContract initialize; vanilla Settler corroboration.",
+    "limits": "The CSC Builder +50 intervention was not validated by vanilla traces; final priority-based allocation remains incompletely traced.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-builder-priority-20261028.md",
+      "project/docs/research/mods/csc-ai-native-contract-observation-20261028.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N004"
+    ]
+  },
+  {
+    "id": "AI-N023",
+    "title": "Contract value can retain an earlier maximum",
+    "statement": "The inspected UnitRequestContract Update retains max(previous value, current cached item value).",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Update RVA 3fa5e0.",
+    "limits": "Not a lifetime invariant: other writers, replacement and cancellation were not universally excluded.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",
+      "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N004"
+    ]
+  },
+  {
+    "id": "AI-N024",
+    "title": "Waiting expiry is not completion deadline",
+    "statement": "Building-tree Turn Limit 5 controls an inspected waiting-update expiry branch; states 1/3 can expire while executing state 5 is exempt.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. ContractManagerDecorator and shipped tree.",
+    "limits": "Exact runtime update cadence is unmeasured; other interruption/validation failures remain possible.",
+    "sources": [
+      "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N023"
+    ]
+  },
+  {
+    "id": "AI-N025",
+    "title": "Category selection differs from production",
+    "statement": "The contract queue gate compares with units/projects without a best-building comparison; November 1 Lighthouse selection was followed by Neighborhood contract production.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Inspected queue route; Nicomedia existing-save boundary253.",
+    "limits": "The contract score was not captured, so no Lighthouse/Neighborhood numerical inequality or general success rate follows.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",
+      "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N001",
+      "AI-N004"
+    ]
+  },
+  {
+    "id": "AI-N026",
+    "title": "Live adjustments and hypothetical modifiers are distinct",
+    "statement": "BuildingValue consumes current per-building yield adjustments and a separate precompiled hypothetical modifier vector.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. BuildingValue52b900; historical producer consumer trace.",
+    "limits": "A delivered live adjustment need not prove that hypothetical source/recipient simulation supports the same mechanism.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md",
+      "project/docs/research/mods/csc-ai-producer-decision-20261030.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N008"
+    ]
+  },
+  {
+    "id": "AI-N027",
+    "title": "Unsupported collection/effect omits a modifier",
+    "statement": "Missing collection/effect handlers cause AI modifier initialization/evaluation to fail; the inspected registry lacks COLLECTION_PLAYER_IMPROVEMENTS.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths.27-collection hypothetical interpreter registry and current source topology.",
+    "limits": "This does not imply gameplay modifier failure or zero material value through every other native/live route.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N026"
+    ]
+  },
+  {
+    "id": "AI-N028",
+    "title": "Unknown AI requirements are skipped",
+    "statement": "Unsupported requirement types are omitted; an ALL set with no retained requirements succeeds. Property and nested-set string support is incomplete for inspected CSC rows.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Requirement compiler48ca30 and evaluator48ef40.",
+    "limits": "Do not infer all gameplay gates apply to hypothetical analysis, or that every omitted gate increases a score.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N026"
+    ]
+  },
+  {
+    "id": "AI-N029",
+    "title": "Compiler fetches Subject requirement set",
+    "statement": "Definition virtual slot +0x60 is SubjectRequirementSetId; OwnerRequirementSetId is slot +0x58 and is not compiled by the inspected modifier compiler body.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Independent Lua-key/vtable proof and compiler48eb10.",
+    "limits": "Scoped to this body/interpreter; not universal owner-gate absence in gameplay or other paths.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N028"
+    ]
+  },
+  {
+    "id": "AI-N030",
+    "title": "Shared plot handler needs supplied context",
+    "statement": "PLAYER_PLOT_YIELDS/SINGLE_PLOT_YIELDS consume an existing analysis +0x88 plot once; direct district/ordinary non-placement contexts leave it empty and no-subject effect adds nothing.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Corrected pointer chains, leaf bytes and caller contexts.",
+    "limits": "No universal gameplay-zero claim; placement-specific and nested routes remain separate.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N026",
+      "AI-N027"
+    ]
+  },
+  {
+    "id": "AI-N031",
+    "title": "Missing recipient effect differs from actual customer gate",
+    "statement": "AdjustBuildingYieldEffect can discount an absent recipient by 0.5, but supported ordinary CityHasBuilding tests actual presence, without hypothetical candidate substitution.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Effect475a50 and requirement490c90.",
+    "limits": "Collection/requirements must admit the effect; IsWonder has a separate exception; not all wrappers or omitted requirements are thereby blocked.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N027",
+      "AI-N028"
+    ]
+  },
+  {
+    "id": "AI-N032",
+    "title": "Current Lua returns are realized-state calculations",
+    "statement": "Current CSC population-return Lua uses actual functioning sources/customers and writes properties; no inspected native candidate route re-runs it for a jointly hypothetical chain.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "November 3 CSC source snapshot plus pinned native candidate paths.",
+    "limits": "Current source is not a newly loaded runtime package; delivered live returns and proposed future partners remain separate.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N026",
+      "AI-N028",
+      "AI-N030"
+    ]
+  },
+  {
+    "id": "AI-N033",
+    "title": "Native adjacency is a bounded spatial language",
+    "statement": "Standard adjacency supports predefined spatial fields and custom registered yields, but no ResourceType or arbitrary TypeTag-set field; AdjacentResource is Boolean and AdjacentResourceClass one class string.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "Pinned schema/shipped examples and current native district-scoring route.",
+    "limits": "Do not assume arbitrary AND/OR, multi-ring formulas or an AI-only custom channel.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N008",
+      "AI-N010",
+      "AI-N013"
+    ]
+  },
+  {
+    "id": "AI-N034",
+    "title": "Boolean Lua strategy is not numeric plot callback",
+    "statement": "A verified player-level Lua Boolean can switch broad linked preferences; no ordinary numerical district/city/plot callback was established in the bounded inspected interfaces.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "November 3 shipped/source/API audit and native preference consumers.",
+    "limits": "A broad preference can affect other cities/sites; this is not engine-wide interface impossibility.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N009",
+      "AI-N015"
+    ]
+  },
+  {
+    "id": "AI-N035",
+    "title": "Private yield is not automatically inert or AI-only",
+    "statement": "A historical private-resource-yield comparison changed automatic citizen allocation and real city output, rejecting automatic human-inert assumptions.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "October 24 zero-turn source16 citizen-allocation diagnostic.",
+    "limits": "Not a universal formula for every hidden yield; no AI efficacy or release-ready private-channel scope follows.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-private-resource-citizen-effects-20261024.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N013"
+    ]
+  },
+  {
+    "id": "AI-N036",
+    "title": "Arbitrary native per-site score needs integration",
+    "statement": "A custom numerical function at a verified value/cache boundary is architectural possibility; selection, cache and downstream request values must remain consistent.",
+    "status": "provisional",
+    "evidence_types": [
+      "inference"
+    ],
+    "scope": "Proposed extension boundary from November 3 reconstruction.",
+    "limits": "No custom native score patch or validated arbitrary per-site integration was implemented.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N006",
+      "AI-N008",
+      "AI-N025"
+    ]
+  },
+  {
+    "id": "AI-N037",
+    "title": "General external economic payload remains unestablished",
+    "statement": "Inspected operation/tree interfaces did not establish a general typed planner-to-job player/city/plot/improvement writer, despite native build/repair consumers.",
+    "status": "provisional",
+    "evidence_types": [
+      "static",
+      "source",
+      "inference"
+    ],
+    "scope": "Bounded October 30 economic job feasibility and external/local source comparison.",
+    "limits": "Target/rally coordinates and reported recruitment do not prove correct economic payload, owner, completion or release; not engine-wide impossibility.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-material-job-feasibility-20261030.md",
+      "project/docs/research/mods/csc-ai-community-native-job-routes-20261030.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N005"
+    ]
+  },
+  {
+    "id": "AI-N038",
+    "title": "Historical civic goals have a limited success boundary",
+    "statement": "An artificial construction prerequisite produced native civic requests and changed some natural research, but safe material-aware Service goal creation/withdrawal remained unresolved.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime",
+      "source"
+    ],
+    "scope": "October 20 matched artificial prerequisite/gate experiments.",
+    "limits": "Not release-ready CSC Service integration; callback context, retained goals, ownership and cancellation limits remain.",
+    "sources": [
+      "project/docs/research/mods/csc-native-civic-goals-findings-20261020.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N002",
+      "AI-N004"
+    ]
+  },
+  {
+    "id": "AI-N039",
+    "title": "Symbol transfer does not establish ABI",
+    "statement": "Historical linker-map/community names aid discovery; current bytes/callers/vtables establish target identity and ABI, without a universal RVA delta.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Historical symbol package and current Windows 324c build.",
+    "limits": "Not original source, complete layouts or independently verified behavior for every transferred symbol.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-gamecore-symbol-resource-20261029.md"
+    ],
+    "topic": "topics/native/evidence-and-instrumentation.md",
+    "depends_on": []
+  },
+  {
+    "id": "AI-N040",
+    "title": "Loaded control has bounded parity",
+    "statement": "Loaded-versus-loaded count-only vanilla 1→6 arms matched exported endpoints and17 closed AI CSVs, unlike the initial fresh/load probe.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "October 28 preserved vanilla source and count-only hooks.",
+    "limits": "Does not repair the first probe's missing endpoint or prove richer/global instrumentation neutrality.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-loaded-control-20261028.md",
+      "project/docs/research/mods/csc-ai-native-instrumentation-probe-20261028.md"
+    ],
+    "topic": "topics/native/evidence-and-instrumentation.md",
+    "depends_on": [
+      "AI-N039"
+    ]
+  },
+  {
+    "id": "AI-N041",
+    "title": "Retained-record caps do not bound interception cost",
+    "statement": "Producer/placement diagnostics had very high callback fan-out; zero target records and small retained budgets do not measure native rejection or tuning efficacy.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Historical October 30 producer and November 1 failed placement captures.",
+    "limits": "Hook overhead was not fully isolated; completed instrumentation is not universal neutrality.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-producer-decision-20261030.md",
+      "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md"
+    ],
+    "topic": "topics/native/evidence-and-instrumentation.md",
+    "depends_on": [
+      "AI-N040"
+    ]
+  },
+  {
+    "id": "AI-N042",
+    "title": "Producer observation proves consumer not marginal benefit",
+    "statement": "Private+80 reached fresh unbuilt Workshop valuation, favored selection and actual queue entry; its intended off arm did not run.",
+    "status": "accepted",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "October 30 run04, one AI interval110→111, exact historical package/reference.",
+    "limits": "Fresh-to-later-cache transition, causal incentive effect, physical completion and empire benefit remain unmeasured.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-producer-decision-20261030.md"
+    ],
+    "topic": "topics/native/evidence-and-instrumentation.md",
+    "depends_on": [
+      "AI-N021",
+      "AI-N026"
+    ]
+  },
+  {
+    "id": "AI-N043",
+    "title": "Lifecycle proof differs from AI proof",
+    "statement": "Shared NativeSession/controller handles ownership, readiness, finite operations and verified restoration; a zero-turn integration can prove lifecycle behavior without AI efficacy.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Maintained shared session and its October 30 zero-turn integration.",
+    "limits": "Load acknowledgement is not readiness; each later observer/run needs its own source, exposure and authorization contract.",
+    "sources": [
+      "project/docs/research/mods/csc-shared-native-session-20261030.md"
+    ],
+    "topic": "topics/native/evidence-and-instrumentation.md",
+    "depends_on": [
+      "AI-N040"
+    ]
+  },
+  {
+    "id": "AI-N044",
+    "title": "Evidence must identify its reached boundary",
+    "statement": "Definition, delivery, consumption, selection, order, completion and useful benefit require separate evidence; fixture/closure success does not substitute for gameplay results.",
+    "status": "accepted",
+    "evidence_types": [
+      "inference"
+    ],
+    "scope": "Method distilled from the bounded native and CSC observations.",
+    "limits": "This is an evidence discipline, not a claim that every study measured every stage.",
+    "sources": [
+      "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md",
+      "project/docs/research/mods/csc-ai-producer-decision-20261030.md",
+      "project/docs/research/mods/csc-ai-native-contract-observation-20261028.md"
+    ],
+    "topic": "topics/native/evidence-and-instrumentation.md",
+    "depends_on": [
+      "AI-N001",
+      "AI-N019",
+      "AI-N025",
+      "AI-N042"
+    ]
+  },
+  {
+    "id": "AI-N045",
+    "title": "Old player-plot iterator mapping superseded",
+    "statement": "The earlier mapping of4634d0/4634f0 as PLAYER_PLOT_YIELDS and its city-enumeration explanation were incorrect and withdrawn.",
+    "status": "superseded",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Historical November 1 plot-handler interpretation.",
+    "limits": "Use AI-N030 and November 3 corrected pointer/byte proof; retain old capture limitations rather than relabeling them successful.",
+    "sources": [
+      "project/docs/research/mods/csc-future-economy-forecast-20261103.md",
+      "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md"
+    ],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [
+      "AI-N030"
+    ]
+  },
+  {
+    "id": "AI-N046",
+    "title": "Old Units consumer gap superseded",
+    "statement": "The earlier report's unresolved Units.Value-to-request link was subsequently closed as an additive request-priority path.",
+    "status": "superseded",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "October 28 Units consumer review followed by priority trace and vanilla observation.",
+    "limits": "The later priority-to-allocation boundary remains incompletely traced; not a final queue score or CSC+50 efficacy claim.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md",
+      "project/docs/research/mods/csc-ai-native-builder-priority-20261028.md",
+      "project/docs/research/mods/csc-ai-native-contract-observation-20261028.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N022"
+    ]
+  },
+  {
+    "id": "AI-N047",
+    "title": "Inert private-output assumption superseded",
+    "statement": "Older wording treating hidden/no-conversion private output as human-inert is rejected by observed automatic citizen-allocation effects.",
+    "status": "superseded",
+    "evidence_types": [
+      "runtime"
+    ],
+    "scope": "Historical private-yield interpretation corrected by October 24 diagnostic.",
+    "limits": "Use AI-N035; no universal equivalence between presentation hiding and economic inertness.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-private-resource-citizen-effects-20261024.md",
+      "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N035"
+    ]
+  },
+  {
+    "id": "AI-N048",
+    "title": "Required city is one eligibility gate",
+    "statement": "RequiredCity=-1 skips only city-ID equality; a vanilla request was observed becoming city-bound on execution.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows 324c request validation and October 28 one-AI-city vanilla observation.",
+    "limits": "Other eligibility remains; does not prove cross-city recruitment or universal redundancy of a custom override.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md",
+      "project/docs/research/mods/csc-ai-native-contract-observation-20261028.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N004",
+      "AI-N022"
+    ]
+  },
+  {
+    "id": "AI-N049",
+    "title": "OddsOfBuilding is not established probability",
+    "statement": "A bounded forecast consumer encodes 0.2×request priority+0.5 after gates without a 0–1 clamp.",
+    "status": "accepted",
+    "evidence_types": [
+      "static"
+    ],
+    "scope": "Pinned Windows 324c CityBuild OddsOfBuilding3e7c80 and inspected caller.",
+    "limits": "Not a general Builder valuation or final queue formula; downstream interpretation remains bounded.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-builder-priority-20261028.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N022"
+    ]
+  },
+  {
+    "id": "AI-N050",
+    "title": "Discount rate is a consumed engine control",
+    "statement": "AI_DISCOUNT_RATE feeds time-discount helpers after game-speed adjustment, with shipped default 2.0.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows 324c initialization and inspected fixed/income discount paths.",
+    "limits": "No assumed exponential formula or calibrated CSC tuning amount follows; exact piecewise arithmetic is not fully catalogued.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md"
+    ],
+    "topic": "topics/native/modding-controls.md",
+    "depends_on": [
+      "AI-N008"
+    ]
+  },
+  {
+    "id": "AI-N051",
+    "title": "Threat queue switching has additional gates",
+    "statement": "The inspected AI_CURRENT_TASK_BIAS comparison belongs to a threat-interruption path with further damage/attack-or-threat gates.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "source"
+    ],
+    "scope": "Pinned Windows 324c UpdateBuildQueueForThreat and shipped default.",
+    "limits": "Not a universal every-turn switching cost or justification to lower a global parameter.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [
+      "AI-N023",
+      "AI-N025"
+    ]
+  },
+  {
+    "id": "AI-N052",
+    "title": "Recommendation and work admission differ",
+    "statement": "Ordinary improvement admission has a stored-tree early gate; October 31 captured Farm/Mine payloads but no Honey payload at the selected boundary.",
+    "status": "accepted",
+    "evidence_types": [
+      "static",
+      "runtime"
+    ],
+    "scope": "Pinned Windows 324c CheckForImprovement and three AI intervals110→113 in historical CSC diagnostic.",
+    "limits": "Does not identify every candidate value, global job limit, Builder availability or a later Honey worker-assignment failure.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-work-admission-20261031.md"
+    ],
+    "topic": "topics/native/architecture.md",
+    "depends_on": [
+      "AI-N001",
+      "AI-N005"
+    ]
+  }
+]

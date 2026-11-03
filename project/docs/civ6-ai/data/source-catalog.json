@@ -1,0 +1,1725 @@
+{
+  "schema_version": 2,
+  "sources": [
+    {
+      "path": "memory/feedback_ai_thread_model_split.md",
+      "title": "Model allocation for the CSC AI research thread",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 6425,
+      "sha256": "e4e09d874859eb17c640559339fcf552f5c9e6601fe8d38ac8f4d0d8aad9a14f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/feedback_ai_thread_model_split.md"
+    },
+    {
+      "path": "memory/feedback_csc_ai_map_setup.md",
+      "title": "CSC AI experiments and map surveys",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 8408,
+      "sha256": "4a56c7e38dd0d67a40b3dcb7912988cb1055d9723145380f428cd943fd6370f4",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/feedback_csc_ai_map_setup.md"
+    },
+    {
+      "path": "memory/feedback_csc_ai_mission.md",
+      "title": "CSC AI mission —22October2026",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 672,
+      "sha256": "47318e8553faa99948ddec86b4e511b5fee9922467f96c5f6279b46a3b917845",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/feedback_csc_ai_mission.md"
+    },
+    {
+      "path": "memory/feedback_shadow_native_game_control.md",
+      "title": "Shadow native gameplay control",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 685,
+      "sha256": "8e9999e45d9b4705bcfb52caae2813d15c07f71e180c15a4f6df7f2426beb8a3",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/feedback_shadow_native_game_control.md"
+    },
+    {
+      "path": "memory/session_ai_astra_rea_next_20261030.md",
+      "title": "Astra consultation after REA trial —30 October2026",
+      "kind": "agent-note",
+      "date": "20261030",
+      "bytes": 2256,
+      "sha256": "dec0473e366b08165d73bb27a40dc614dd35d578b34a316a76c87d9eb6142b1e",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_astra_rea_next_20261030.md"
+    },
+    {
+      "path": "memory/session_ai_district_placement_20261103.md",
+      "title": "District type, site choice and incentives — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 5100,
+      "sha256": "35c8f44c45c3e1abb4ad7df9e51089c1c0b8dee6f259c5644ad00ffb1bf6ddbd",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_district_placement_20261103.md"
+    },
+    {
+      "path": "memory/session_ai_foundation_decision_20261029.md",
+      "title": "Foundation decision path — 29 October 2026",
+      "kind": "agent-note",
+      "date": "20261029",
+      "bytes": 3010,
+      "sha256": "398370ecd81cb67928f4f6ab35bdbcefec480d99aca9ec2e72e5eae77a32fe62",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_foundation_decision_20261029.md"
+    },
+    {
+      "path": "memory/session_ai_foundation_observation_20261029.md",
+      "title": "Closed result — 30 October 2026",
+      "kind": "agent-note",
+      "date": "20261029",
+      "bytes": 9144,
+      "sha256": "3c9d4c63f671f61e808d247d4d43c09ec160114469c6d607efeb5406c485747a",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_foundation_observation_20261029.md"
+    },
+    {
+      "path": "memory/session_ai_future_forecast_20261103.md",
+      "title": "CSC future material/customer forecast investigation — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 4927,
+      "sha256": "443612ddca670db3e5dd24eefe466276a6e366d7d6a592dbc39499f71c3ff965",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_future_forecast_20261103.md"
+    },
+    {
+      "path": "memory/session_ai_investment_dryrun_20261031.md",
+      "title": "Investment dry run COMPLETE — 31 October 2026",
+      "kind": "agent-note",
+      "date": "20261031",
+      "bytes": 1490,
+      "sha256": "52648fd859f190e624f41ea49598093cdd6818b1e4c92e052b011c5f1a5c2e5d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_investment_dryrun_20261031.md"
+    },
+    {
+      "path": "memory/session_ai_iz_architecture_20261101.md",
+      "title": "Industrial Zone architecture investigation — 1 November 2026",
+      "kind": "agent-note",
+      "date": "20261101",
+      "bytes": 5685,
+      "sha256": "24cb9575534419eb2c7129b2ab8cf17c33409f5d1084d4bfdf5dc34bf88dce37",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_iz_architecture_20261101.md"
+    },
+    {
+      "path": "memory/session_ai_knowledge_base_20261103.md",
+      "title": "AI knowledge base — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 3152,
+      "sha256": "7a770cd509a3affe502508bae2d63c07d161d468231eb1051e887063e2125978",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_knowledge_base_20261103.md"
+    },
+    {
+      "path": "memory/session_ai_material_recommendations_20261031.md",
+      "title": "Native material recommendations CLOSED — 31 October 2026",
+      "kind": "agent-note",
+      "date": "20261031",
+      "bytes": 2779,
+      "sha256": "6b575cd5c16bed3ac6de409082fa4d708224ca602c03552597ff3f2d9301c6b9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_material_recommendations_20261031.md"
+    },
+    {
+      "path": "memory/session_ai_native_material_feasibility_20261030.md",
+      "title": "Material-job offline pass + source110 capture —30 October2026",
+      "kind": "agent-note",
+      "date": "20261030",
+      "bytes": 3898,
+      "sha256": "21851e444b9794dd8f30f88d8f6651d55bb79349327e3191b4a117b66bf1a022",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_native_material_feasibility_20261030.md"
+    },
+    {
+      "path": "memory/session_ai_native_shadow_20261030.md",
+      "title": "Astra next-step consultation and shadow capture —30October2026",
+      "kind": "agent-note",
+      "date": "20261030",
+      "bytes": 2226,
+      "sha256": "0358d6af076a7bae110090513e88d8122cc7327da5ec62339e917d88171f58c3",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_native_shadow_20261030.md"
+    },
+    {
+      "path": "memory/session_ai_producer_calibration_20261029.md",
+      "title": "Producer property calibration — closed 29 October 2026",
+      "kind": "agent-note",
+      "date": "20261029",
+      "bytes": 1779,
+      "sha256": "b604cf4fa7b34b8ed11df44e430e34c94cd3dd1a4e5631383ace406d1dd0d556",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_producer_calibration_20261029.md"
+    },
+    {
+      "path": "memory/session_ai_producer_decision_20261030.md",
+      "title": "Producer native observation — closed30October2026",
+      "kind": "agent-note",
+      "date": "20261030",
+      "bytes": 2517,
+      "sha256": "23fea68cce806f01c4f47c451ca738a6ce17e8585504a36b6099c7fea401a75f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_producer_decision_20261030.md"
+    },
+    {
+      "path": "memory/session_ai_producer_forecast_20261029.md",
+      "title": "Producer forecast exploration — 29 October 2026",
+      "kind": "agent-note",
+      "date": "20261029",
+      "bytes": 1979,
+      "sha256": "88c1ae86ea1bae3fe4509fd651c51708c7bb1b9158c257015a551d0b176e5127",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_producer_forecast_20261029.md"
+    },
+    {
+      "path": "memory/session_ai_producer_live_effect_20261029.md",
+      "title": "Producer live effect diagnostic — closed 29 October 2026",
+      "kind": "agent-note",
+      "date": "20261029",
+      "bytes": 2222,
+      "sha256": "4bee392fb36077b597695a11abf6d449e6e050dfc0de77fdb745db8f49b0441b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_producer_live_effect_20261029.md"
+    },
+    {
+      "path": "memory/session_ai_rea_trial_20261030.md",
+      "title": "REA trial — 30 October 2026",
+      "kind": "agent-note",
+      "date": "20261030",
+      "bytes": 1758,
+      "sha256": "2b0a8f325f7f7849add7a10287c1ad920b26a05e943a30e892a9bdf970b91763",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_rea_trial_20261030.md"
+    },
+    {
+      "path": "memory/session_ai_roadmap_astra_20261030.md",
+      "title": "Astra roadmap revision —30October2026",
+      "kind": "agent-note",
+      "date": "20261030",
+      "bytes": 2185,
+      "sha256": "a0883a2b980da24a37441a664316dcff47477f755e8c287e1984d0c253a36909",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_roadmap_astra_20261030.md"
+    },
+    {
+      "path": "memory/session_ai_selective_planner_20261031.md",
+      "title": "Offline projection and selective starts — 31 October 2026",
+      "kind": "agent-note",
+      "date": "20261031",
+      "bytes": 1731,
+      "sha256": "577246d5a139656ecd6acaef3d73c04fe282bf666155234504620b9293613b5b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_selective_planner_20261031.md"
+    },
+    {
+      "path": "memory/session_ai_shared_controller_20261030.md",
+      "title": "Shared session consolidation —30October2026",
+      "kind": "agent-note",
+      "date": "20261030",
+      "bytes": 1721,
+      "sha256": "cd307a6ecc903a9debdb8ba3f410f4154aed8bd438caddbb97dd4e8d4c01780e",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_shared_controller_20261030.md"
+    },
+    {
+      "path": "memory/session_ai_work_admission_20261031.md",
+      "title": "Native work admission CLOSED/AUDITED — 31 October 2026",
+      "kind": "agent-note",
+      "date": "20261031",
+      "bytes": 2425,
+      "sha256": "b9abbb97b67a8273eccfb3523cde989b9525f29684e53ccb754d4556e0d6907c",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_work_admission_20261031.md"
+    },
+    {
+      "path": "memory/session_csc_ai_baseline.md",
+      "title": "CSC AI baseline — 15 October 2026",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 39184,
+      "sha256": "afcec22cf8ec8067f48ae9cf448e9cbaa1c9e0d32fcbcdc0b87927f68b0b14e6",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_csc_ai_baseline.md"
+    },
+    {
+      "path": "memory/session_csc_ai_feasibility.md",
+      "title": "CSC AI feasibility — 11 October 2026",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 4002,
+      "sha256": "a7675f5805958e64e517dbd0b6c8b940cfc38119c378c2b78b685f8a627675fe",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_csc_ai_feasibility.md"
+    },
+    {
+      "path": "memory/session_csc_ai_tuning.md",
+      "title": "25 October: authorized foundation/customer combined200 pilot",
+      "kind": "agent-note",
+      "date": null,
+      "bytes": 476923,
+      "sha256": "c86369c3478987717b0c0b7760bd90eaf58fac3a37c1089ad762e95e7f85cfe8",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_csc_ai_tuning.md"
+    },
+    {
+      "path": "memory/session_native_ai_instrumentation_20261028.md",
+      "title": "Native AI instrumentation — 28 October 2026",
+      "kind": "agent-note",
+      "date": "20261028",
+      "bytes": 1531,
+      "sha256": "c6a2c2016e737611bf360da514be432a267852882cee2a713df3193108f2da05",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_native_ai_instrumentation_20261028.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-ai-objectives.md",
+      "title": "CSC AI objective and decision principles",
+      "kind": "integration",
+      "date": null,
+      "bytes": 8129,
+      "sha256": "a542ee75c254ececaec1ec697d6b9ec802c1427d8245a19dcc82184cfa679353",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-ai-objectives.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-ai-profiles.md",
+      "title": "CSC AI assistance: Basic and RH profiles",
+      "kind": "integration",
+      "date": null,
+      "bytes": 9262,
+      "sha256": "977e6b3bc4a0a10f505c3881078f02806dd054a18829271962e37fb07613f135",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-ai-profiles.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-ai-progress-and-learnings-20261101.md",
+      "title": "CSC AI: progress and learnings",
+      "kind": "integration",
+      "date": "20261101",
+      "bytes": 18206,
+      "sha256": "2ea6d58526cc5316fb7e99f312edb767468bd4c62bf2bbf91668300d3f3ed5d3",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-ai-progress-and-learnings-20261101.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-ai-roadmap.md",
+      "title": "CSC AI development roadmap",
+      "kind": "integration",
+      "date": null,
+      "bytes": 39134,
+      "sha256": "cee8abd88029c8a50235ffc148076e7945043a8954d3ffba885c4760994609d9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-ai-roadmap.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-ai-tuning.md",
+      "title": "CSC AI tuning",
+      "kind": "integration",
+      "date": null,
+      "bytes": 25856,
+      "sha256": "b53a81a1fc42da08fce0649f307401dbe6fde2957b5ea48a9b0bcd3f1f071ac9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-ai-tuning.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-material-map-assistance.md",
+      "title": "CSC material map assistance",
+      "kind": "integration",
+      "date": null,
+      "bytes": 13278,
+      "sha256": "5452fed77bac822fa46375f40e761ac06d4d64cefa5df287e900628fbc726d32",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-material-map-assistance.md"
+    },
+    {
+      "path": "project/docs/integrations/csc-native-test-controller.md",
+      "title": "Shared native test sessions for full games and probes",
+      "kind": "integration",
+      "date": null,
+      "bytes": 12913,
+      "sha256": "af8f4e10bb086d97eabe0d8ff4c484b426aebdbc4c7dcaae989069d8a829db3e",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/integrations/csc-native-test-controller.md"
+    },
+    {
+      "path": "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
+      "title": "District choice, placement scoring and custom incentives",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 19425,
+      "sha256": "409b5a18cdb94337bc29a15fb65a75201329c4278db5fd8e6b5f55d6c5a477e8",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    },
+    {
+      "path": "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md",
+      "title": "Industrial Zone: observed prerequisite value and production boundary",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 12868,
+      "sha256": "4cfcc9b20fc344c96cde2077149ddeed54864e69b081e3e0ccd80cfbdca44fe6",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md",
+      "title": "Industrial Zone development: forecasting, requests and commitment",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 19997,
+      "sha256": "be63326d752130b172b14ea7e63d92091d95ab2dbdbe580c25ad5f22892857ec",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-industrial-zone-planning-architecture-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/community-extension-modding.md",
+      "title": "Community Extension API Reference",
+      "kind": "tool-reference",
+      "date": null,
+      "bytes": 14545,
+      "sha256": "91186f4f4845518cc219d7aa4e2cd3099754ed23f9f6c33dc1c3a69662f711be",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/community-extension-modding.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-acquisition-signal-delivery-20261024.md",
+      "title": "Paid-tile private-signal delivery: controlled native observations",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 5360,
+      "sha256": "34049f92afe963519e81bdc585011af480dbd6f2ca3781e8cf7178b8da3c2e85",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-acquisition-signal-delivery-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-baseline-20261015.md",
+      "title": "CSC AI autoplay baseline 15 October 2026",
+      "kind": "report",
+      "date": "20261015",
+      "bytes": 14562,
+      "sha256": "cd2d1e6172c61dfd8720a940af62e6c342c81ff29356eada6fded025169386ce",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-baseline-20261015.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-benchmark-metrics-20261022.md",
+      "title": "CSC AI tuning benchmark and metrics",
+      "kind": "report",
+      "date": "20261022",
+      "bytes": 11719,
+      "sha256": "c1af3659895932c1a2ccd256e26c28a00743f192909a07eb54639287f3b86e58",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-benchmark-metrics-20261022.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-clean-strategies-20261020.md",
+      "title": "Clean stock/custom research strategy comparison —20October2026",
+      "kind": "report",
+      "date": "20261020",
+      "bytes": 10482,
+      "sha256": "93d5f16cd0adbb30524c0cceb1a90d0db283c786c5b288811ea44a7c97c3cb9e",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-clean-strategies-20261020.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-community-native-job-routes-20261030.md",
+      "title": "Community native AI job routes —30October2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 3206,
+      "sha256": "d81fe67a54683e22933da0940f37db0b8f521f2654730eb032c0f860f2147b13",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-community-native-job-routes-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-customer-aware-planner-v2-20261101.md",
+      "title": "Customer-aware AI planner v2 — 1 November 2026",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 15056,
+      "sha256": "302ed501a39e490c3319a5a79b026cf19033582814b7486a490e5fd101077f29",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-customer-aware-planner-v2-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md",
+      "title": "Customer-aware v2 native pilot — 1 November 2026",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 13609,
+      "sha256": "6474199fae3758a080f684b58b85b07fdb5a57ef1c7715eb8e57d7cfe0efa076",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-customer-comparison-20261023.md",
+      "title": "Customer adjacency comparison at turn 225",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 2421,
+      "sha256": "113fde99c4ae1bd5f13c8ed78fa23a81eb223f78ba9b1841129ba0855ca4e174",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-customer-comparison-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-density-v4-20261017-turn250.md",
+      "title": "CSC latest resource/AI setup — turn250 snapshot results",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 5577,
+      "sha256": "1859df526a72e11c3600a81afcc1c532bcdb2d7c9d0664b28c563e70c36e5a40",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-density-v4-20261017-turn250.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-district-foundations-20261021.md",
+      "title": "Native AI completion of fixed-site Quarter foundations",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 4539,
+      "sha256": "0464387c0a175189bb7fe467bfaca822a42574912c2da147fa6a5832e819b870",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-district-foundations-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-donated-both-diagnostic-20261023.md",
+      "title": "Donated-gold Both-site diagnostic —23 October2026",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 5059,
+      "sha256": "5345c9e89aff1a7fc9d97903d1a5f5b2606e68f2e01c7097ec1c74fc44f1693d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-donated-both-diagnostic-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-dynamic-foundations-20261021.md",
+      "title": "Dynamic material-adjacent Quarter foundation test",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 22446,
+      "sha256": "fee3e0bd69a596b1353b07a6181e59af3b7fc075ec8590f84a9654f041dcb38f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-dynamic-foundations-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-dynamic-foundations-diagnostic-20261021.md",
+      "title": "Fresh dynamic Quarter foundations — diagnostic run",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 94842,
+      "sha256": "8ed203ed3c9bc58be21d74317a14924847989b361f369325545d8efe875c8563",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-dynamic-foundations-diagnostic-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-dynamic-foundations-three-games-20261021.md",
+      "title": "Three fresh Ancient full games, 21 October authorization",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 52287,
+      "sha256": "9c150fe8a707b7a2b26924dc7414dede4ecb7a03f667cbfb8444d6961c686bee",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-dynamic-foundations-three-games-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-experiment-series-20261018.md",
+      "title": "CSC AI resource experiment series — 18 October 2026",
+      "kind": "report",
+      "date": "20261018",
+      "bytes": 23496,
+      "sha256": "767b77f967ea6815b6fffc22d5ba3d84ca0db929112d1e0e8060428cb29c68ef",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-experiment-series-20261018.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-fixed-extreme-research-20261019.md",
+      "title": "Extreme fixed civic preference — completed19October2026",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 9167,
+      "sha256": "16db2365a400601841b0b881dff52ff5842576abe46c5b4e42b502c0e404c1f8",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-fixed-extreme-research-20261019.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-fixed-research-20261019-comparison.md",
+      "title": "Fixed Naval incentive: turn250 viewing extension comparison",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 4136,
+      "sha256": "07f4c42b0243f4208853a223c0630b88944de26db09a3181e2e9cbc7071c599d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-fixed-research-20261019-comparison.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-fixed-research-20261019.md",
+      "title": "Fixed Naval Tradition preference — completed19October2026",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 15626,
+      "sha256": "9df6eb3ead30d673a8b6611c645211303a2a654df93fe4149e69b522e51775ed",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-fixed-research-20261019.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-foundation-decision-path-20261029.md",
+      "title": "Unfinished Quarter production decision path — 29 October 2026",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 17120,
+      "sha256": "4ba86ffa2c27476670b8f09e1abd19dd61e7f07aebdc1fcae885e14853a88e20",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-foundation-decision-path-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-foundation-handholding-breakdown-20261025.md",
+      "title": "Placed by CSC versus placed by the AI — final observed175",
+      "kind": "report",
+      "date": "20261025",
+      "bytes": 7977,
+      "sha256": "2c84739e4ed6a0f1c2b26ade04323053ce12d75fb9942a0f021b9371402c295d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-foundation-handholding-breakdown-20261025.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-foundation-observation-20261029.md",
+      "title": "Unfinished Quarter observation — closed at turn 110",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 9496,
+      "sha256": "09f70c61994053fe5499ecd4712243f5230762d0713855d1622c2830d4e2dcdb",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-foundation-observation-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-foundation-priority200-20261025-results.md",
+      "title": "CSC/RH foundation-priority and customer-adjacency pilot — partial175",
+      "kind": "report",
+      "date": "20261025",
+      "bytes": 7109,
+      "sha256": "f51c50e496ef6b5d42491880a3ca29a9848a34d12e34378a43c030bd6e215073",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-foundation-priority200-20261025-results.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-foundation-priority200-20261025.md",
+      "title": "RH foundation priority and customer adjacency test — 25 October 2026",
+      "kind": "report",
+      "date": "20261025",
+      "bytes": 6260,
+      "sha256": "5fb91afcd2b8261f1a590805f01fdc343adbf21b1bbccfa6973365fa3105468d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-foundation-priority200-20261025.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-gamecore-symbol-resource-20261029.md",
+      "title": "GameCore linker-map resource",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 8275,
+      "sha256": "ae99104843b664aa7f266d1dc633031a4cc89c2a4e25ccd22bbf512855c2ebda",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-gamecore-symbol-resource-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-ghidra-mcp-20261029.md",
+      "title": "GhidraMCP local integration — 29 October 2026",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 8059,
+      "sha256": "d63de3f41d6bebb930ede6e9891cda8aac09fc1e276298ba68bb7638f393ed06",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-ghidra-mcp-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-granary-decision-20261031.md",
+      "title": "Actual Granary preference and production decision —31 October2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 8693,
+      "sha256": "6af1d844cf361a360fc44fc0b21d13685c85c3912b933239832fd87020656bde",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-granary-decision-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-granary-direct-priority-20261101.md",
+      "title": "Direct Granary preference: delivery, choices and follow-through",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 9864,
+      "sha256": "320a1be9d07031c29300e8adb88bed7ab91357282c12731d3a6b8e2e2d32bf21",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-granary-direct-priority-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-granary-priority-20261031.md",
+      "title": "Granary preference delivery and policy pilot — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 8673,
+      "sha256": "2b2b5799ee4e348a1edd3ce58d4b7514aba30c9b136572268d8510656633b2ef",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-granary-priority-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-harness-performance-20261023.md",
+      "title": "Faster CSC test harness and delta evaluation — 23 October 2026",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 6807,
+      "sha256": "2c40535d5d3e52f7a1db97c0146bb0c5ab9c9d658c3f307944fc43615cd0dd53",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-harness-performance-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-improvement-research-20261019.md",
+      "title": "CSC improvement-owned signals and dynamic Service research —19 October2026",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 10062,
+      "sha256": "95358e410ba6fd6eecd0a2b5d43a3d495bed1f3540b5d9de495cacb45de49ce5",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-improvement-research-20261019.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-investment-dryrun-20261031.md",
+      "title": "Investment review and guarded-host dry run — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 5983,
+      "sha256": "893ce39badbe8dd99b898c96c66d87d28adafd107ecfe0deccf7684a7c0fac79",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-investment-dryrun-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-investment-pilot-20261031.md",
+      "title": "Action-scoped CSC investment pilot — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 19852,
+      "sha256": "092e2b14b5457681c55977004d87124c46eb74d783d8b9fc02d4b1254280f65c",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-investment-pilot-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-mapped-improvements-test-20261024.md",
+      "title": "Complete mapped-resource improvement incentives —24 October",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 10561,
+      "sha256": "4232340895696cf416240af916b853f7a45b1aeb9657c3146fe3d66f3c2de821",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-mapped-improvements-test-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-markers-rejected-20261017.md",
+      "title": "Native material-marker experiment — rejected",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 4849,
+      "sha256": "c467aa5a21fe945c9612a5b564004f8f6eb924e7c11a340117f7c270e3d22206",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-markers-rejected-20261017.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-access-overnight-20261023.md",
+      "title": "Overnight material-access investigation —23 October",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 44664,
+      "sha256": "03712162af2744b450231555df7d580dc79d58ade80272613b44cd6c11985160",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-access-overnight-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-boost-gate75-20261024.md",
+      "title": "Backlog/boost scheduling test: no demonstrated native protection benefit",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 5426,
+      "sha256": "66dab94057c8fa0d4ff9206ddf77c00ba4bdef2b4d1850e0844bc4f5e77edff3",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-boost-gate75-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-care-decision-paths-20261023.md",
+      "title": "Material-care decision paths: stopped170 and native checks",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 15796,
+      "sha256": "47e704577cca3b523c9dea11843359118afd41a1eb715d9ff86bc7ec03e0c9ac",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-care-decision-paths-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-care-v1-20261023.md",
+      "title": "Material care v1: first native-incentive pilot",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 7181,
+      "sha256": "6e1e677a81a52186f91e42b7bd1a2a681143e2d51ed2cb7b1600976ff463ba16",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-care-v1-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-care-v2-20261023.md",
+      "title": "Material care v2: fresh outcome test —23 October",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 3056,
+      "sha256": "966caec9d88de2c1f69a954fffbf0e630e030df5cfac49e50033fa769513cfcb",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-care-v2-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-care-v2-terminal192-20261023.md",
+      "title": "Material-care v2 — terminal partial at turn 192",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 6430,
+      "sha256": "78c492f7d66bab081d52f6e9e16d1226764bad8121885255de20203da7d7e6ae",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-care-v2-terminal192-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-first-foundations-20261022.md",
+      "title": "Material-first foundation and acquisition test —22October2026",
+      "kind": "report",
+      "date": "20261022",
+      "bytes": 35435,
+      "sha256": "a7e6998f5bacae4484d10232ef54ac58e85a808d8f66dafb0fef4adc18b729ca",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-first-foundations-20261022.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-followthrough-20261031.md",
+      "title": "Native material follow-through — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 7797,
+      "sha256": "76e7eafa0f6e37ef9a4198538469b84da7f9d66c9f1a74bd5cfe8a2b63f0366b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-followthrough-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-mature-followthrough-20261024.md",
+      "title": "Mature follow-through of the material viability correction",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 3413,
+      "sha256": "1c8e9430a3bc56f5908dfb66196bfee043d9c0dca2bafd1e4f51a98889bf78b9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-mature-followthrough-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-preservation-and-repair-review-20261023.md",
+      "title": "Material preservation and repair: CSC, Real Strategy, AI+ and RH",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 7733,
+      "sha256": "ebdc001a850c23fd8d14d7f9ce30afb8a3a3f27ed074d6ebcdc4fac582944e2f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-preservation-and-repair-review-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-recommendations-20261031.md",
+      "title": "Native material recommendations — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 6727,
+      "sha256": "ceed2bd19e1d48576f0b2fb2dfcd1f46cd6d72b4f326ff4d7bac471bb18192e4",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-recommendations-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-resource-forecast75-20261024.md",
+      "title": "Material-access investigation: matched source16 to75,24October2026",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 7108,
+      "sha256": "0f7e90ec89574a865b16a032d618b1388cd8c3449640dc394a38ba13b9dda18d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-resource-forecast75-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-viability-diagnostic-20261024.md",
+      "title": "District-free material opportunities: same-save native verification",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 4872,
+      "sha256": "95a2bafa19092f725a56bb86c83d546466d382e1b9a9aebfa43286de6f3538b0",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-viability-diagnostic-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-material-viability75-results-20261024.md",
+      "title": "District-free material planning: native75 result",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 2713,
+      "sha256": "5d958206bd09e21ca728bf46abd039bb61893bc5c3f6229cdf55e2264c90d8cb",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-material-viability75-results-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-mechanism-tests-20261025-results.md",
+      "title": "CSC AI mechanism probes — results, 25 October 2026",
+      "kind": "report",
+      "date": "20261025",
+      "bytes": 12807,
+      "sha256": "d664299de04fa9a41d8f59ce3b486e3b699377515ee814c171d359bfab60bf12",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-mechanism-tests-20261025-results.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-mechanism-tests-20261025.md",
+      "title": "CSC AI mechanism tests — 25 October 2026",
+      "kind": "report",
+      "date": "20261025",
+      "bytes": 3974,
+      "sha256": "fbdbe9cb65ab9236c3cb375b538c544ddd305f034b02c636d904739c7c9e253a",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-mechanism-tests-20261025.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-bonus-river-20261017.md",
+      "title": "CSC native bonus-resource and river tuning — matched-seed trial",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 10781,
+      "sha256": "c63b6faedb6c8a49f5d2c5ee4a4e9bc0b6573f5e5275aeea4ca0cddd7228ccf7",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-bonus-river-20261017.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md",
+      "title": "Builder / Units consumer review — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 7733,
+      "sha256": "b3f0bb6ce9e2d625d4351227abcd85fb6fcbfc0ed6e5bd1ddb39ab0be6d3f384",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-builder-priority-20261028.md",
+      "title": "Builder score consumer review — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 11979,
+      "sha256": "64f35c87f82a981629978306823c2bf2f5b221aa4e0c7dfae848d46c50e6985d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-builder-priority-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-contract-observation-20261028.md",
+      "title": "Native production-request observation — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 7866,
+      "sha256": "da927fd050ab317ebc46845bc0a6cd7bd84fb86798e49dd54f6d3e931b92ae80",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-contract-observation-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-goal-roadmap-review-20261030.md",
+      "title": "Astra review: native economic goals and CSC sequencing — 30 October 2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 5829,
+      "sha256": "31aff4937eaf14de5095ba2c4cc7360038629b17f3f40ae3218873942a539508",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-goal-roadmap-review-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-harvest-guard-diagnostic-20261024.md",
+      "title": "Native resource-harvest diagnostics: SQL proposal and runtime rule",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 7790,
+      "sha256": "b0740b2d6fe63d4b039421acdc807115e890c03149870b2f8b09293668fbaa3f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-harvest-guard-diagnostic-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-harvest-rule-progress50-20261024.md",
+      "title": "Native harvest rule: partial results through turn 50",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 5656,
+      "sha256": "e91a1210835705c0ced4c3e20c762ee6b2dc2e613b4203b9e86bcb9114cf74e6",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-harvest-rule-progress50-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-harvest-rule75-20261024.md",
+      "title": "Native harvest legality: matched source16–75 result",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 7865,
+      "sha256": "23a431ba794ec79406c9e68aad848771157890a1778d390dddad65a0027a44b5",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-harvest-rule75-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-instrumentation-probe-20261028.md",
+      "title": "First native AI instrumentation probe — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 9511,
+      "sha256": "3280ff6181576f5f6f83919aac59891e6d1ecabf57828a4d6dcf9c5fc30fd11b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-instrumentation-probe-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-loaded-control-20261028.md",
+      "title": "Loaded-save native observation control — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 5276,
+      "sha256": "122dd67c8e1006c82b93cc9599f6ad12788cd2f209984be511cf9b85ee47b170",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-loaded-control-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-material-job-feasibility-20261030.md",
+      "title": "Native material-job entry: bounded offline feasibility —30 October2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 9363,
+      "sha256": "c4200483c33687afa9bb2244f3be2b39e5def65b051bf1f76a6c229a5c9c9de3",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-material-job-feasibility-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",
+      "title": "Native production and preference analysis — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 12902,
+      "sha256": "569adeec1c7dea2a6aeea10052ba2aa531acad6b05c42203beada66586ca0b92",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-production-analysis-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-native-shadow-sites-20261030.md",
+      "title": "Native shadow site comparison —30 October2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 11429,
+      "sha256": "b2124f50941c9fa0ef1d9b204dc2d609fcce0c66f7ff0b7a4697a295b07a4288",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-native-shadow-sites-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-next-signals-20261019.md",
+      "title": "Accepted tuning baseline and next signal experiments",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 8612,
+      "sha256": "77d550122042a82e5c44b8b4a9f8c7de189af2e1f27f5404e171f5699613df76",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-next-signals-20261019.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-offline-chain-cases-20261028.md",
+      "title": "Offline chain decision cases — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 6094,
+      "sha256": "7cf73a415d05e7d1a6e53bafae953d0863af9741d4865a55e99a4ad13592fff7",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-offline-chain-cases-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-offline-profile-inventory-20261028.md",
+      "title": "Initial offline profile inventory — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 3140,
+      "sha256": "8ff4146b8a3f8542dac689e976aa1f005650224cc7d2297c705f44e1915aefeb",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-offline-profile-inventory-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-own-first-fresh-game-20261023.md",
+      "title": "Final closure confirmed —23 October",
+      "kind": "report",
+      "date": "20261023",
+      "bytes": 12177,
+      "sha256": "cf2c721342ad846e2b393acaac6e1683e4f74c275d92474b315ee63b9c345734",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-own-first-fresh-game-20261023.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-paired-selective-chain-screen-20261101.md",
+      "title": "Paired selective-chain screen - 1 November 2026",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 25499,
+      "sha256": "42834b7744053ae10b14590ec24e596fda0d56e24866426434467ba3892198aa",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-paired-selective-chain-screen-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-paired-selective-chain-screen-results-20261101.md",
+      "title": "Paired RH selective-chain screen — audited result",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 9691,
+      "sha256": "f7888f19b7c61bcf5a0bbee5da992f97d473d579f75fb06471ab3dee18890b69",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-paired-selective-chain-screen-results-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-paired-standard-20261016.md",
+      "title": "CSC AI baseline: five vanilla and five TAR Standard games",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 13645,
+      "sha256": "dd75a90d2fd527ea65ef63c2c79c7e733aa8b297f1a0ae88d5593951a83a7439",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-paired-standard-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-pasture-forecast-diagnostic-20261024.md",
+      "title": "Direct Pasture forecast diagnostic, source16-75",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 6268,
+      "sha256": "b7f18478c755a7527a6f61929f6113ec60e685d7b78d5385297c4e7ddde45bc0",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-pasture-forecast-diagnostic-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-pasture-forecast75-results-20261024.md",
+      "title": "Direct improvement forecasting: first native result, turn75",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 4243,
+      "sha256": "b2f547570282c5b1d3804483acc4ca5bf20a9d4fc7f0faf08bcda693713cd7ee",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-pasture-forecast75-results-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-planner-and-building-step-20261029.md",
+      "title": "First planner and building-decision increment — 29 October 2026",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 7487,
+      "sha256": "6068ada37777b7bba97b35bf4a8d7e11f31064be78fe9f93595b50b1b9c48672",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-planner-and-building-step-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-private-resource-citizen-effects-20261024.md",
+      "title": "csc-ai-private-resource-citizen-effects-20261024",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 3979,
+      "sha256": "adcd2878fa8bd5948cb869e67e570d09cbde15c92faa2304a08cb445af887f4d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-private-resource-citizen-effects-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-producer-decision-20261030.md",
+      "title": "Actual producer valuation and choice — 30 October 2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 9604,
+      "sha256": "958b83a08ff01bb27ee12920af61c4599d0df3cbf69d7129518e0593b77cfbdc",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-producer-decision-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-producer-forecast-probe-20261029.md",
+      "title": "CSC producer forecast: native valuation investigation",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 11494,
+      "sha256": "6e2149c6cfd665da0ed17a8e1035748e41ed28bf254e68b7e600717b265bdf93",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-producer-forecast-probe-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-producer-live-effect-20261029.md",
+      "title": "Producer live-effect diagnostic — 29 October 2026",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 7507,
+      "sha256": "bf33ba28e7c29adc51fe9369ae288daf774958f41b35484232290ebb8655ad30",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-producer-live-effect-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-producer-property-calibration-20261029.md",
+      "title": "Producer property delivery and scorer diagnostics — 29 October 2026",
+      "kind": "report",
+      "date": "20261029",
+      "bytes": 7930,
+      "sha256": "e1baa5ee1edade83005c02dca43b67d54c11d1a0a6e28e4897abb431812ff8cd",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-producer-property-calibration-20261029.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-profile-source-audit-20261028.md",
+      "title": "CSC AI profile source audit — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 11826,
+      "sha256": "c7d2f6c9e894f3fa81f40cd8b088f7064de559be5b86ea694653eedae80fdd33",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-profile-source-audit-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-quarter-resource-incentives-20261019.md",
+      "title": "CSC Quarter resource incentives — 19 October 2026",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 21515,
+      "sha256": "0093ddffd37e2b43b3d30fc812e7e6a95488297ade4d079129d5f6bee55b43f5",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-quarter-resource-incentives-20261019.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-rea-trial-20261030.md",
+      "title": "REA offline tooling trial — 30 October 2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 9790,
+      "sha256": "e8e7b4981f67f54c8733cd96e1a863c26d76e70506579b75632273a3273cdcd9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-rea-trial-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-research-priorities-20261019.md",
+      "title": "CSC research priorities — Medieval-start controlled check,19October2026",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 11045,
+      "sha256": "94d00a65c2c58a0b236a83378e9689a6e33d41536fafd7e233aed56b87a8635d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-research-priorities-20261019.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-resource-farm150-test-20261024.md",
+      "title": "Resource-only Farm and Plantation test to150",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 16020,
+      "sha256": "74e9b2cfd6cabadb5a0035c286719f8280852800da4c7fa71db0fe50b73336ff",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-resource-farm150-test-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-resource-improvement-forecast-diagnostic-20261024.md",
+      "title": "Resource-compatible improvement forecast diagnostic, source16-75",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 5873,
+      "sha256": "de645e0bc8e90388226211b464de6f53cef14bc4c4abd05c5670b8529879dc86",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-resource-improvement-forecast-diagnostic-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-resource-improvement-forecast75-results-20261024.md",
+      "title": "Resource-compatible improvement forecast: final turn75 result",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 4975,
+      "sha256": "f2bbd7f616e9e9dc842b09406c0efaac176ec01ea3a870a39e749cdd19e6ac4b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-resource-improvement-forecast75-results-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-rh-builders-20261017-turn200.md",
+      "title": "CSC Builder tuning — matched turn-200 comparison",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 6466,
+      "sha256": "e57606e590d1c3ebb4cda61d43839e6532ca7267ae580abe74ddbfa03ac99599",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-rh-builders-20261017-turn200.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-rh-builders-20261017.md",
+      "title": "RH-aligned Builder tuning v4 — interrupted native test",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 2990,
+      "sha256": "57c1c0aab0f6dbffe25d0efc2b7ecac0a29d85680b97325eff803ac2e5218b22",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-rh-builders-20261017.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-rh5-parity-campaign-20261024.md",
+      "title": "CSC/RH5 parity campaign — evidence contract, 24 October 2026",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 64606,
+      "sha256": "bd205286529c88191624ef7506a29c76e307e719dc18eb2c4fd92f484a5520e7",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-rh5-parity-campaign-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-rh5-profile150-test-20261024.md",
+      "title": "RH5 + CSC installed-profile test, 24 October 2026",
+      "kind": "report",
+      "date": "20261024",
+      "bytes": 11035,
+      "sha256": "79006f30b30b15eed47f03108b1a54dedc77923f0077bbaba9d310eda60d620b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-rh5-profile150-test-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-selective-planner-20261031.md",
+      "title": "Attachment-aware site projection and selective start policy",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 8070,
+      "sha256": "9fb889174fe4749becfb1532a75ac93ebf7224e06830b78dddcdb05755102c30",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-selective-planner-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-service-aware-foundation-planning-20261022.md",
+      "title": "Service-aware foundation planning",
+      "kind": "report",
+      "date": "20261022",
+      "bytes": 21060,
+      "sha256": "6b14919ac04aeaa2ca91612ea207b210cb0c1941f2d5b5f58dedde0ed6f8c0e3",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-service-aware-foundation-planning-20261022.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-supply-chain-astra-review-20261025.md",
+      "title": "CSC AI supply-chain capability — Astra review, 25 October 2026",
+      "kind": "report",
+      "date": "20261025",
+      "bytes": 14218,
+      "sha256": "d7233d9c8b66fc7df64ff36cf4258629c2d4508303b570514d74764eedf2cc72",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-supply-chain-astra-review-20261025.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-tuning-v1-20261017.md",
+      "title": "CSC AI tuning v1 — matched-seed native trial",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 10440,
+      "sha256": "0984c51373c0bead82c00518117e86fee5b8e4463c848dcacce0c66e5fda2bf3",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-tuning-v1-20261017.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-work-admission-20261031.md",
+      "title": "Native improvement-work admission — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 10698,
+      "sha256": "81b5a418f805c0c7d22d2a8ac17a358a710e2563ca94c87af3a881751ced838f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-work-admission-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-aiplus-research-review-20261020.md",
+      "title": "AI+ review — 20 October 2026",
+      "kind": "report",
+      "date": "20261020",
+      "bytes": 4632,
+      "sha256": "540ddd3c4bea3783d72c3311b335f8d8a9abe4632ccbd0a8050f93182268e255",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-aiplus-research-review-20261020.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ancient-guidance-game-01-20261021.md",
+      "title": "Ancient guidance Game 1 â€” turn250",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 8956,
+      "sha256": "dfb5f30a5bc42348914fd7b707a386658467961f6aedd6ff24e339d05974cfe6",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ancient-guidance-game-01-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ancient-guidance-game-02-20261021.md",
+      "title": "Ancient guidance Game 2 â€” turn250",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 9516,
+      "sha256": "16bb6d17c590803c0d1f0883e9edce71796376dbf3ec0afb6732b8e2b1338c25",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ancient-guidance-game-02-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ancient-guidance-game-03-20261021.md",
+      "title": "Ancient guidance Game 3 â€” turn250",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 8160,
+      "sha256": "ba2960d78f3a01d239d5ec3d9416435013c8fa46439a1d5c3e950d645afb120b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ancient-guidance-game-03-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ancient-guidance-three-games-20261021.md",
+      "title": "Three Ancient-start research-guidance games â€” 21 October 2026",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 14608,
+      "sha256": "144915045685aa0d4d47647f2453b57c99953a1060ee19db98fde508257c0908",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ancient-guidance-three-games-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ancient-guidance-three-games-results-20261021.md",
+      "title": "Three Ancient guidance games — final results, 21 October 2026",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 8292,
+      "sha256": "aafd8dec2c62e0b581cada39ec563e0f9c4b3277c2fa745cdd3e8a4129141121",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ancient-guidance-three-games-results-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-civic-modifier-tests-20261020.md",
+      "title": "Civic-attached valuation modifiers: test plan and ledger",
+      "kind": "report",
+      "date": "20261020",
+      "bytes": 52069,
+      "sha256": "c84df1adf52d35981ff316e5c3d2067ca684e98d7e37d42443b7c2b595796620",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-civic-modifier-tests-20261020.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-civic-unlock-experiments-20261020.md",
+      "title": "Civic unlock experiment series — 20 October 2026",
+      "kind": "report",
+      "date": "20261020",
+      "bytes": 28905,
+      "sha256": "820cbdfbb4857f8a9dddb309de62f40b1d16ba5b62663e0d414fba99b701bbab",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-civic-unlock-experiments-20261020.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-civic-unlock-test-plan-20261020.md",
+      "title": "CSC civic-unlock experiments: Real Strategy and AI+ leads",
+      "kind": "report",
+      "date": "20261020",
+      "bytes": 16218,
+      "sha256": "ce5466216da1abd4e4f10ffa63737f2ed6bdb89fd6fbccdaf2917e4b150823d0",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-civic-unlock-test-plan-20261020.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-continental-helper-lua-20261016.md",
+      "title": "Automatic CSC Lua material pass — 16 October 2026",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 6413,
+      "sha256": "4448e3ad597ed2b1aad519190247528e283571a374b170bbde42f3ca4be4daf5",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-continental-helper-lua-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-continental-helper-native-20261016.md",
+      "title": "Native CSC continental helper comparison — 16 October 2026",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 7733,
+      "sha256": "5d9540fc7e15ab4149e13813ed3a642a322b3a5393884fe7bc66f9108ae67658",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-continental-helper-native-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-continental-resource-helper-preview-20261016.md",
+      "title": "CSC continental resource helper — offline preview",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 6793,
+      "sha256": "f981c0c611a9e7ef1436256f14bc43f461a7aca4d56cb76ea70cea1e03c64d21",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-continental-resource-helper-preview-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-future-economy-forecast-20261103.md",
+      "title": "What native AI forecasts about CSC materials and customers",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 16687,
+      "sha256": "a9e2544f944955b0b13f4ad91a4e8afdb9c901085cb3d6232a625c78884ec0b9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-future-economy-forecast-20261103.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-implemented-materials-native-20261016.md",
+      "title": "Implemented-Quarter native map study — 16 October 2026",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 7115,
+      "sha256": "c8bdb800aeb37a096aa312211563a0aa3302321ec3a6cd8d77faac15ff59827f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-implemented-materials-native-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-long-guidance-comparison-20261021.md",
+      "title": "Longer natural CSC research-guidance comparison",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 26275,
+      "sha256": "ccd2a32cd323402e326cd3616e85ba717d7b40d43b98f417866a1304e448ef89",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-long-guidance-comparison-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-map-material-opportunities-20261016.md",
+      "title": "CSC material opportunity comparison 16 October 2026",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 9452,
+      "sha256": "6d65cef57255ce7a37508e20cbd1b2b896fe15cb8d198733047176408ebd2d8e",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-map-material-opportunities-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-material-abundance-scaling-20261016.md",
+      "title": "Material assistance at different resource levels — 16 October 2026",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 7637,
+      "sha256": "3e088fa4f51df7b383556115aed9d0114454ba0ccb298cf7dbb45849f8cc6d35",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-material-abundance-scaling-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-native-civic-goals-findings-20261020.md",
+      "title": "CSC native civic research goals: findings and stopping point",
+      "kind": "report",
+      "date": "20261020",
+      "bytes": 5835,
+      "sha256": "b4fc5cd5743eb984e240d703d031c1543cd02c5ff2cba63a1721cf367e69548c",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-native-civic-goals-findings-20261020.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-native-future-customer-legality-20261101.md",
+      "title": "Future customer district legality — 1 November 2026",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 3937,
+      "sha256": "820043b7e820e467e301218093a211389fcba6d4745cb184d91f869f5f13ed31",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-native-future-customer-legality-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-native-luxury-diversity-20261016.md",
+      "title": "CSC native luxury diversity experiment — 16 October 2026",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 5907,
+      "sha256": "c94a41552c23a6875612fbbf40d6cb70ed94fa4a848dd00a43e3bdf4a64c9946",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-native-luxury-diversity-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md",
+      "title": "Native placement controls: evidence summary — 1 November 2026",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 5310,
+      "sha256": "7a83bbd01c8a3b5dfce6e8b2a73bcf53e861bfd9411d3dbf7113ed362185a60e",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md",
+      "title": "Native Quarter placement and weight calibration — 1 November 2026",
+      "kind": "report",
+      "date": "20261101",
+      "bytes": 11508,
+      "sha256": "3f04607a25ebeb3c6988341986bdb528cdf9589c69e59215502b6d315f841907",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-native-tooling-community-crosscheck-20261030.md",
+      "title": "Community tooling cross-check —30October2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 3686,
+      "sha256": "9a602da32f4ece062fced9fb6406aa26441bc23df9d8652978cbb04ff2cecbf2",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-native-tooling-community-crosscheck-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-offline-abundance-study-20261016.md",
+      "title": "Offline resource-abundance study — 16 October 2026",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 8212,
+      "sha256": "a945225570ad3284a9b414d019d43b620ec3cdefe8275fe214be21f2c46c4fbe",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-offline-abundance-study-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-offline-generation-calibration-20261016.md",
+      "title": "Offline map generation: native calibration fixtures",
+      "kind": "report",
+      "date": "20261016",
+      "bytes": 8090,
+      "sha256": "7ca6194128b4e6cf208b7566b2734ce0967d1f8753234d73bcd7bb51c62bb0e9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-offline-generation-calibration-20261016.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-real-strategy-research-review-20261020.md",
+      "title": "Real Strategy review — 20 October 2026",
+      "kind": "report",
+      "date": "20261020",
+      "bytes": 4535,
+      "sha256": "4bbf76b4475b982bf5958466d1a100a2386ad6a128a547f43c1cbdd602e7fa07",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-real-strategy-research-review-20261020.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-research-influence-findings-20261021.md",
+      "title": "CSC research influence: working valuation, unresolved restart",
+      "kind": "report",
+      "date": "20261021",
+      "bytes": 7152,
+      "sha256": "31f99d0dd0489561dad09ba378df87f2a89a16705ea6bfeac263e58c5a3d38d4",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-research-influence-findings-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-rh-dynamic-research-followup-20261019.md",
+      "title": "RH dynamic research preferences: exact wiring and next diagnostics",
+      "kind": "report",
+      "date": "20261019",
+      "bytes": 9760,
+      "sha256": "32e2d60b34d25a59d33639f4457c75bbec4e64abdfb470e9df0b954318ce5f65",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-rh-dynamic-research-followup-20261019.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-rh-v5097-ai-review-20261018.md",
+      "title": "CSC AI lessons from installed RH v5.097",
+      "kind": "report",
+      "date": "20261018",
+      "bytes": 10269,
+      "sha256": "cfd429c2c301fb77baa05a4d712de87f7605c912f892e5e1b3526f5a410f69a9",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-rh-v5097-ai-review-20261018.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-shared-native-session-20261030.md",
+      "title": "Shared native session consolidation — 30 October 2026",
+      "kind": "report",
+      "date": "20261030",
+      "bytes": 4841,
+      "sha256": "977ce0a14e2e85c3cecc54ab06182885cb077a40df118bd0b45fb3e39cc784b1",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-shared-native-session-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-tailor-density-20261017.md",
+      "title": "Tailor material-site density preview — 17 October 2026",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 4191,
+      "sha256": "42aa322bed7ca2194fe4847a89142384c71a9085913a2e6507c5b5ea489c34af",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-tailor-density-20261017.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-tailor-density-native-20261017.md",
+      "title": "Tailor density v4 — six fresh native maps, 17 October 2026",
+      "kind": "report",
+      "date": "20261017",
+      "bytes": 6348,
+      "sha256": "5f2f3ee34441c7f130797650bf25aa4d1d61b97322b300b22b2c847999308dad",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-tailor-density-native-20261017.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ui-exit-crash-20261031.md",
+      "title": "Lens radio-button exit crash — 31 October 2026",
+      "kind": "report",
+      "date": "20261031",
+      "bytes": 9801,
+      "sha256": "bcb225a57cccd04d51efc3921df22667bf9e1fab610bd5c697f21e8862968660",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ui-exit-crash-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/native-custom-resourceclass-probe-20261028.md",
+      "title": "Native custom resource-class adjacency probe — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 5026,
+      "sha256": "67d4243c8071a93b5eb52567669c39dce62693906dc69176ec2bfc9428bf8ff1",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/native-custom-resourceclass-probe-20261028.md"
+    },
+    {
+      "path": "project/docs/research/mods/native-resourceclass-multivalue-probe-20261028.md",
+      "title": "Native multi-value resource-class probe — 28 October 2026",
+      "kind": "report",
+      "date": "20261028",
+      "bytes": 5237,
+      "sha256": "2c98be91d65f2e92e9a61fe76fd95a61424f0a45ccede3a01a6e68deb1f71002",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/native-resourceclass-multivalue-probe-20261028.md"
+    },
+    {
+      "path": "project/firetuner/CE-API-REPORT.md",
+      "title": "Community Extension API Report",
+      "kind": "tool-reference",
+      "date": null,
+      "bytes": 8681,
+      "sha256": "001807b6dce9fdf7e981a969518999bd7afb02b64254a68035ca15973fc1058b",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/firetuner/CE-API-REPORT.md"
+    },
+    {
+      "path": "project/firetuner/FIRETUNER-PROTOCOL.md",
+      "title": "FireTuner2 Protocol — Reverse-Engineered",
+      "kind": "tool-reference",
+      "date": null,
+      "bytes": 8292,
+      "sha256": "e47b54f7592d5a2a5d6d54f746dacf90353620f8afe825637104f85ee88a2d9c",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/firetuner/FIRETUNER-PROTOCOL.md"
+    },
+    {
+      "path": "project/tools/ai_baseline/full_game_controller/README.md",
+      "title": "Native validation limit —23 October observer defeat",
+      "kind": "tool-reference",
+      "date": null,
+      "bytes": 26989,
+      "sha256": "46733dc6ac71a58a6ea548278cea52b5617336a5d80329c4dd151762f08c6803",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/tools/ai_baseline/full_game_controller/README.md"
+    },
+    {
+      "path": "project/tools/native_ai/README.md",
+      "title": "Native AI static extraction",
+      "kind": "tool-reference",
+      "date": null,
+      "bytes": 9358,
+      "sha256": "f62762b3b9f427feb12ebd555066c7d53e631517e0198b168919cd17bb095545",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/tools/native_ai/README.md"
+    }
+  ]
+}

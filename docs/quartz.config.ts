@@ -1,5 +1,6 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
+import { aiHandbookConfig } from "./quartz.ai.config"
 
 /**
  * Quartz 4 Configuration
@@ -14,7 +15,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "en-US",
-    baseUrl: "hennogous.github.io/CivSupplyChains",
+    baseUrl: process.env.CSC_PUBLIC_BASE_URL || "hennogous.github.io/Henno-Mods",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
@@ -93,4 +94,4 @@ const config: QuartzConfig = {
   },
 }
 
-export default config
+export default process.env.CSC_AI_HANDBOOK === "1" ? aiHandbookConfig(config) : config
