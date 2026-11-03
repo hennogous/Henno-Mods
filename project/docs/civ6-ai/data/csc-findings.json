@@ -887,7 +887,6 @@
     "limits": "Old diaries may say ACTIVE or pending. Latest human stops, audit closures and paused campaigns prevail. These pages are knowledge, not active jobs, release qualification or authority to start a game/monitor.",
     "sources": [
       "project/docs/integrations/csc-ai-progress-and-learnings-20261101.md",
-      "project/docs/integrations/csc-ai-roadmap.md",
       "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md",
       "project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md"
     ],

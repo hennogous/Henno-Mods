@@ -3,7 +3,7 @@
 Built from CLOSED turn100..105 mechanism-study artifacts while Henno uses Civ
 for manual QA. No live game/cache/client access, new decisions, game control,
 deployment or gameplay changes. These cases support the
-[roadmap](../../integrations/csc-ai-roadmap.md), not a new test result.
+[roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md), not a new test result.
 
 ## Reusable extraction
 

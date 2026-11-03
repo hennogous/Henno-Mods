@@ -70,7 +70,7 @@ resolved it without patching upstream source or changing the canonical install.
 
 Related: [symbol resource](csc-ai-gamecore-symbol-resource-20261029.md),
 [foundation decision path](csc-ai-foundation-decision-path-20261029.md),
-[roadmap](../../integrations/csc-ai-roadmap.md).
+[roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md).
 
 Official setup references: [GhidraMCP](https://github.com/LaurieWired/GhidraMCP),
 [Codex MCP configuration](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).

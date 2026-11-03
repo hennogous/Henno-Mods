@@ -131,7 +131,7 @@ an independent runtime replication of reconstructed logic.
 
 Related: [existing production analysis](csc-ai-native-production-analysis-20261028.md),
 [native goal routes](csc-ai-community-native-job-routes-20261030.md),
-[roadmap](../../integrations/csc-ai-roadmap.md).
+[roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md).
 Upstream: [REA](https://github.com/morluto/rea),
 [value tracing](https://github.com/morluto/rea/blob/main/docs/native-investigation.md#bounded-static-traces),
 [Windows provider](https://github.com/morluto/rea/blob/main/docs/windows-ghidra-p0.md).

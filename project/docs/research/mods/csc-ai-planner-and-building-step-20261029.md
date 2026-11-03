@@ -115,6 +115,6 @@ scheduled observations. Test current effective preference and competing values;
 do not spend another broad game merely trying a larger numeric Buildings Value.
 Builder tuning and strategic Service alignment remain separate investigations.
 
-Links: [roadmap](../../integrations/csc-ai-roadmap.md),
+Links: [roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md),
 [native contract observation](csc-ai-native-contract-observation-20261028.md),
 [evaluator contract](../../../tools/ai_tuning/EVALUATOR.md).

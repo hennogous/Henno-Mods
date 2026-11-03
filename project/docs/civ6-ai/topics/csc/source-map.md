@@ -154,7 +154,7 @@ Tags derive from full-body subjects, not current job status. SHA-256 pins identi
 - [CSC AI objective and decision principles](../../../integrations/csc-ai-objectives.md) — 137 lines; materials/Builders, placement/planning, research/strategy, measurement/lifecycle. Reviewed SHA-256 `adb7591b59fa17389039cb401412695312a582c14fa3d4b9fa64167bdb156637`.
 - [CSC AI assistance: Basic and RH profiles](../../../integrations/csc-ai-profiles.md) — 148 lines; materials/Builders, placement/planning, research/strategy, measurement/lifecycle. Reviewed SHA-256 `e5f6a4ca1b51d8ae2e9a0f14cfd6915bf7ef8c2aa1704eb0994e02b0c79eb3b8`.
 - [CSC AI: progress and learnings](../../../integrations/csc-ai-progress-and-learnings-20261101.md) — 272 lines; materials/Builders, placement/planning, research/strategy, measurement/lifecycle, native/tooling. Reviewed SHA-256 `b4fd8a345005e625e02b269bbbb2eec06c49feed9231bf61f8505d8a8390ce76`.
-- [CSC AI development roadmap](../../../integrations/csc-ai-roadmap.md) — 588 lines; materials/Builders, placement/planning, research/strategy, measurement/lifecycle, native/tooling. Reviewed SHA-256 `1cb636ee0e47a44d098bce48517879fe65711917b5f27aee41d25dd8e6a4dfca`.
+- The former roadmap was part of the historical review (588 lines; SHA-256 `1cb636ee0e47a44d098bce48517879fe65711917b5f27aee41d25dd8e6a4dfca`). Henno removed it on 3 November 2026. Use the [fresh roadmap](../../roadmap.md) for current planning.
 - [CSC AI tuning](../../../integrations/csc-ai-tuning.md) — 276 lines; materials/Builders, placement/planning, research/strategy, measurement/lifecycle. Reviewed SHA-256 `089c45e0dc52d86d5c86ddb81d8c39c3d40978cd4b046a5d2073a45058768cf7`.
 
 ## Remaining uncertainty

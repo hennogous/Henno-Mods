@@ -76,7 +76,7 @@ The missing Units Value-to-request link is closed: the accumulated integer is an
 
 ## Durable context
 
-This supersedes the unresolved Value-to-request link in the [earlier Units consumer review](csc-ai-native-builder-consumers-20261028.md). The subsequent priority-to-allocation path remains unresolved. Export-relative paths above resolve under `Desktop/Codex/csc-native-ai-analysis-20261028`. See [the source audit](csc-ai-profile-source-audit-20261028.md) and [roadmap](../../integrations/csc-ai-roadmap.md). No runtime test of these new fields was performed by this static investigation.
+This supersedes the unresolved Value-to-request link in the [earlier Units consumer review](csc-ai-native-builder-consumers-20261028.md). The subsequent priority-to-allocation path remains unresolved. Export-relative paths above resolve under `Desktop/Codex/csc-native-ai-analysis-20261028`. See [the source audit](csc-ai-profile-source-audit-20261028.md) and [roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md). No runtime test of these new fields was performed by this static investigation.
 
 ## Subsequent bounded scheduler review
 

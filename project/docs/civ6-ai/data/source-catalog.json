@@ -232,6 +232,16 @@
       "site_path": "sources/memory/session_ai_roadmap_astra_20261030.md"
     },
     {
+      "path": "memory/session_ai_roadmap_reset_20261103.md",
+      "title": "AI roadmap reset — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 1854,
+      "sha256": "71bd22f5a17a69ce7e5817f34609358b9623db4f95913cfdbf05cb5014387b24",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_roadmap_reset_20261103.md"
+    },
+    {
       "path": "memory/session_ai_selective_planner_20261031.md",
       "title": "Offline projection and selective starts — 31 October 2026",
       "kind": "agent-note",
@@ -316,8 +326,8 @@
       "title": "CSC AI objective and decision principles",
       "kind": "integration",
       "date": null,
-      "bytes": 8129,
-      "sha256": "a542ee75c254ececaec1ec697d6b9ec802c1427d8245a19dcc82184cfa679353",
+      "bytes": 8272,
+      "sha256": "bf4fc3bad3d25539df66a07d3844ca67d9b02fabb0265c76eb9cb433e33f19cf",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-objectives.md"
     },
@@ -336,8 +346,8 @@
       "title": "CSC AI: progress and learnings",
       "kind": "integration",
       "date": "20261101",
-      "bytes": 18206,
-      "sha256": "2ea6d58526cc5316fb7e99f312edb767468bd4c62bf2bbf91668300d3f3ed5d3",
+      "bytes": 18298,
+      "sha256": "10ee74481daa3b9186fbe560a3d73519d9ddecec9fbd31ccbe5e45cb3ad3f3d5",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-progress-and-learnings-20261101.md"
     },
@@ -350,16 +360,6 @@
       "sha256": "a20358e28be82c1c785376d2761c3db73fe8f270ffa0865b50c6a8243cb8cb07",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-reset-20261103.md"
-    },
-    {
-      "path": "project/docs/integrations/csc-ai-roadmap.md",
-      "title": "CSC AI development roadmap",
-      "kind": "integration",
-      "date": null,
-      "bytes": 39134,
-      "sha256": "cee8abd88029c8a50235ffc148076e7945043a8954d3ffba885c4760994609d9",
-      "hash_encoding": "UTF-8 without BOM; LF newlines",
-      "site_path": "sources/project/docs/integrations/csc-ai-roadmap.md"
     },
     {
       "path": "project/docs/integrations/csc-ai-tuning.md",
@@ -646,8 +646,8 @@
       "title": "Unfinished Quarter production decision path — 29 October 2026",
       "kind": "report",
       "date": "20261029",
-      "bytes": 17120,
-      "sha256": "4ba86ffa2c27476670b8f09e1abd19dd61e7f07aebdc1fcae885e14853a88e20",
+      "bytes": 17193,
+      "sha256": "7adf7aceae652434458bdca7a88de5fb3b1b9b376954edd85d51db3187c05e90",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-foundation-decision-path-20261029.md"
     },
@@ -706,8 +706,8 @@
       "title": "GhidraMCP local integration — 29 October 2026",
       "kind": "report",
       "date": "20261029",
-      "bytes": 8059,
-      "sha256": "d63de3f41d6bebb930ede6e9891cda8aac09fc1e276298ba68bb7638f393ed06",
+      "bytes": 8132,
+      "sha256": "a23a81ef0fa9a081e18b24383d695d0a2a233ce04635ed4196ae66ed9645afe9",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-ghidra-mcp-20261029.md"
     },
@@ -976,8 +976,8 @@
       "title": "Builder / Units consumer review — 28 October 2026",
       "kind": "report",
       "date": "20261028",
-      "bytes": 7733,
-      "sha256": "b3f0bb6ce9e2d625d4351227abcd85fb6fcbfc0ed6e5bd1ddb39ab0be6d3f384",
+      "bytes": 7806,
+      "sha256": "5e7456a9a714e072c983ca2d991d0f1f1360313a6fceca11a31310299ac8c5c2",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md"
     },
@@ -986,8 +986,8 @@
       "title": "Builder score consumer review — 28 October 2026",
       "kind": "report",
       "date": "20261028",
-      "bytes": 11979,
-      "sha256": "64f35c87f82a981629978306823c2bf2f5b221aa4e0c7dfae848d46c50e6985d",
+      "bytes": 12052,
+      "sha256": "44b885e930f393f7af28747a7a4d50245e523c329ddc3b17ca1754b3fdf57783",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-native-builder-priority-20261028.md"
     },
@@ -996,8 +996,8 @@
       "title": "Native production-request observation — 28 October 2026",
       "kind": "report",
       "date": "20261028",
-      "bytes": 7866,
-      "sha256": "da927fd050ab317ebc46845bc0a6cd7bd84fb86798e49dd54f6d3e931b92ae80",
+      "bytes": 7939,
+      "sha256": "8bb280134d4bb8647c561e295b613b447aed9b5d4fede8d8a596cecb816ffea7",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-native-contract-observation-20261028.md"
     },
@@ -1006,8 +1006,8 @@
       "title": "Astra review: native economic goals and CSC sequencing — 30 October 2026",
       "kind": "report",
       "date": "20261030",
-      "bytes": 5829,
-      "sha256": "31aff4937eaf14de5095ba2c4cc7360038629b17f3f40ae3218873942a539508",
+      "bytes": 6056,
+      "sha256": "60f0a927bc8819d0487e3c9d25fc10d90587cc2dd7d6221ef711edad7c01b980",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-native-goal-roadmap-review-20261030.md"
     },
@@ -1056,8 +1056,8 @@
       "title": "Loaded-save native observation control — 28 October 2026",
       "kind": "report",
       "date": "20261028",
-      "bytes": 5276,
-      "sha256": "122dd67c8e1006c82b93cc9599f6ad12788cd2f209984be511cf9b85ee47b170",
+      "bytes": 5349,
+      "sha256": "7b0b9c6bc6c3d02ec243194e938ca2a823ae880597954593b6fad26d2cac9846",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-native-loaded-control-20261028.md"
     },
@@ -1066,8 +1066,8 @@
       "title": "Native material-job entry: bounded offline feasibility —30 October2026",
       "kind": "report",
       "date": "20261030",
-      "bytes": 9363,
-      "sha256": "c4200483c33687afa9bb2244f3be2b39e5def65b051bf1f76a6c229a5c9c9de3",
+      "bytes": 9436,
+      "sha256": "5d2fca2f66e0ecc35a21c728923ccf13e500d11cf3921f82945c6f824a09c225",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-native-material-job-feasibility-20261030.md"
     },
@@ -1116,8 +1116,8 @@
       "title": "Offline chain decision cases — 28 October 2026",
       "kind": "report",
       "date": "20261028",
-      "bytes": 6094,
-      "sha256": "7cf73a415d05e7d1a6e53bafae953d0863af9741d4865a55e99a4ad13592fff7",
+      "bytes": 6167,
+      "sha256": "1d929f5475d1320a45b4edf3253488785905b97cf7efd739baadf7b5abdb2c83",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-offline-chain-cases-20261028.md"
     },
@@ -1126,8 +1126,8 @@
       "title": "Initial offline profile inventory — 28 October 2026",
       "kind": "report",
       "date": "20261028",
-      "bytes": 3140,
-      "sha256": "8ff4146b8a3f8542dac689e976aa1f005650224cc7d2297c705f44e1915aefeb",
+      "bytes": 3213,
+      "sha256": "4fd1a14495fea8ad48a70aa1796bb5fbe0c3eb608f65d02a8a58a143a3c4bc6a",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-offline-profile-inventory-20261028.md"
     },
@@ -1196,8 +1196,8 @@
       "title": "First planner and building-decision increment — 29 October 2026",
       "kind": "report",
       "date": "20261029",
-      "bytes": 7487,
-      "sha256": "6068ada37777b7bba97b35bf4a8d7e11f31064be78fe9f93595b50b1b9c48672",
+      "bytes": 7560,
+      "sha256": "d3bc342bb7c714b040db6bdca0831893b989855dadca93a8d2a002f9b70f0399",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-planner-and-building-step-20261029.md"
     },
@@ -1226,8 +1226,8 @@
       "title": "CSC producer forecast: native valuation investigation",
       "kind": "report",
       "date": "20261029",
-      "bytes": 11494,
-      "sha256": "6e2149c6cfd665da0ed17a8e1035748e41ed28bf254e68b7e600717b265bdf93",
+      "bytes": 11567,
+      "sha256": "5af73604fc3c8d61a56d626bb5c61ab0967b09ca1866695c32211cdb49ca9079",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-producer-forecast-probe-20261029.md"
     },
@@ -1256,8 +1256,8 @@
       "title": "CSC AI profile source audit — 28 October 2026",
       "kind": "report",
       "date": "20261028",
-      "bytes": 11826,
-      "sha256": "c7d2f6c9e894f3fa81f40cd8b088f7064de559be5b86ea694653eedae80fdd33",
+      "bytes": 11899,
+      "sha256": "c274450d045f73b1ba101efda0ad4d2c415842ad66a1e6c302ac6c24e9e75179",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-profile-source-audit-20261028.md"
     },
@@ -1276,8 +1276,8 @@
       "title": "REA offline tooling trial — 30 October 2026",
       "kind": "report",
       "date": "20261030",
-      "bytes": 9790,
-      "sha256": "e8e7b4981f67f54c8733cd96e1a863c26d76e70506579b75632273a3273cdcd9",
+      "bytes": 9863,
+      "sha256": "ccc3c0469669daf634bfbe663f8ba034a44eebfc6db6deee17c64d64a35c69d7",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-rea-trial-20261030.md"
     },

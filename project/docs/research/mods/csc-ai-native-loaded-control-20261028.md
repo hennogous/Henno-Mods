@@ -86,4 +86,4 @@ unobserved. No native field-reading result is claimed here.
 
 Related: [first instrumentation probe](csc-ai-native-instrumentation-probe-20261028.md),
 [Builder priority consumer](csc-ai-native-builder-priority-20261028.md),
-[AI roadmap](../../integrations/csc-ai-roadmap.md).
+[AI roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md).

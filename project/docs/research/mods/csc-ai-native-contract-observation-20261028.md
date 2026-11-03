@@ -127,4 +127,4 @@ benefit validation. No further arm, automation or old campaign was started.
 
 Related: [loaded count control](csc-ai-native-loaded-control-20261028.md),
 [static Builder priority path](csc-ai-native-builder-priority-20261028.md),
-[AI roadmap](../../integrations/csc-ai-roadmap.md).
+[AI roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md).

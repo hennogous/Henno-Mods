@@ -1,5 +1,7 @@
 # Gameplay integrations
 
+- [CSC AI roadmap](../civ6-ai/roadmap.md) — **Fresh plan, 3 November 2026**; explainable site valuation, native incentives, focused decision tests, chain development and sustained benefit. Replaces the removed old roadmap.
+
 CSC adjacency engine, historical MAB/Ruivo integration and Bakers service/notification behavior. Status notices in each document distinguish current guidance from material needing refresh.
 
 [Documentation index](../README.md) · [Currency audit](../DOCUMENT-AUDIT.md)

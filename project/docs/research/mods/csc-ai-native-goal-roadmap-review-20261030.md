@@ -1,7 +1,10 @@
 # Astra review: native economic goals and CSC sequencing — 30 October 2026
 
+> Historical review: the roadmap discussed here was removed on 3 November 2026. The [fresh roadmap](../../civ6-ai/roadmap.md) governs current planning.
+
+
 Henno requested a review of the two new resources and an actual roadmap update.
-The [roadmap](../../integrations/csc-ai-roadmap.md) now has one governing sequence,
+The [roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md) now has one governing sequence,
 explicit gates and historical records rather than several competing “current”
 instructions. This was an offline documentation review. No native session,
 source AI change, installed change, automation, goal or commit was made.

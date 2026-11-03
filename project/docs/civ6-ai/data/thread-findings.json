@@ -66,7 +66,6 @@
     "scope": "Research-status reconciliation as of 3 November 2026; historical phase instructions are not current work orders.",
     "limits": "This records project research state, not a fresh process inventory or authorisation to launch tests.",
     "sources": [
-      "project/docs/integrations/csc-ai-roadmap.md",
       "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md",
       "project/docs/research/mods/csc-future-economy-forecast-20261103.md",
       "thread:01a12a24-6714-7540-8d23-154b092106fe"
@@ -85,7 +84,6 @@
     "scope": "AI optimisation chat and dated CSC AI reports through 3 November 2026.",
     "limits": "A later date alone does not invalidate earlier evidence; corrections must identify the affected assertion or scope.",
     "sources": [
-      "project/docs/integrations/csc-ai-roadmap.md",
       "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md",
       "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md",
       "thread:01a12a24-6714-7540-8d23-154b092106fe"
@@ -181,8 +179,7 @@
     "limits": "Proves startup capability, not a positive planner candidate, useful placement decision capture or improved chain outcome.",
     "sources": [
       "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md",
-      "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md",
-      "project/docs/integrations/csc-ai-roadmap.md"
+      "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md"
     ],
     "topic": "topics/history/corrections-and-cautions.md",
     "depends_on": []

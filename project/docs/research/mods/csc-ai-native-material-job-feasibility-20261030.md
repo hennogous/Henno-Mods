@@ -135,6 +135,6 @@ H/native-goal-feasibility-20261030 contains `reader-preflight.md/json`,
 `current-build-static.json`, `create-once.json` and `feasibility-audit.json`.
 H is this thread's visualization workspace. The audit retains exact shipped/RH
 source hashes and checked native bytes. It is not an independent runtime test.
-The existing [roadmap](../../integrations/csc-ai-roadmap.md) and
+The existing [roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md) and
 [community route review](csc-ai-community-native-job-routes-20261030.md) retain
 the broader context and external/local evidence boundaries.

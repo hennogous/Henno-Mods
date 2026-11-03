@@ -11,7 +11,9 @@ compatibility change must be justified and must not blindly duplicate or overrid
 RH's existing policy. Shared objectives do not require identical tuning inputs.
 
 
-Proposed implementation path: [CSC AI development roadmap](csc-ai-roadmap.md).
+Current implementation direction: [fresh CSC AI roadmap](../civ6-ai/roadmap.md).
+The former roadmap was removed on 3 November 2026; these agreed objectives
+remain the design reference for the new native decision approach.
 
 
 Confirmed direction from Henno, 28 October 2026. This is the durable objective

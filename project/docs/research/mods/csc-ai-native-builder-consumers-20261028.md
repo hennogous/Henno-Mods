@@ -44,6 +44,6 @@ The smallest useful next step is a bounded trace of readers of the GrandStrategi
 - [Source/profile audit](csc-ai-profile-source-audit-20261028.md)
 - [Archived decision cases](csc-ai-offline-chain-cases-20261028.md)
 - [Initial native production analysis](csc-ai-native-production-analysis-20261028.md)
-- [Development roadmap](../../integrations/csc-ai-roadmap.md)
+- [Development roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md)
 
 All export-relative paths above resolve under the local analysis root `Desktop/Codex/csc-native-ai-analysis-20261028`, not the repository. Raw reconstructed code remains outside the repository.

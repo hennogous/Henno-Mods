@@ -33,6 +33,10 @@ provides stable references for individual conclusions.
 
 ## Understand the CSC experiments
 
+The [current CSC AI roadmap](roadmap.md) starts from the new native decision
+approach and the retained [design objectives](../integrations/csc-ai-objectives.md).
+The old roadmap was removed on 3 November 2026.
+
 The CSC topic pages connect placement, research, material development, building
 follow-through and assistance to the actual objective: useful economic chains
 that justify their cost and support the empire's priorities.

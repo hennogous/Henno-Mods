@@ -1,6 +1,6 @@
 # CSC AI: progress and learnings
 
-**Checkpoint: 1 November 2026.** Companion to the [development roadmap](csc-ai-roadmap.md)
+**Checkpoint: 1 November 2026.** Companion to the [development roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md)
 and [confirmed objectives](csc-ai-objectives.md). This report consolidates this
 thread's experiments and engine investigation; it is not a new test authorization
 or a claim that the current source is release-qualified.

@@ -65,6 +65,6 @@ Scope: Latest audited project checkpoint plus November 3 source/native work.
 
 Limits: Old diaries may say ACTIVE or pending. Latest human stops, audit closures and paused campaigns prevail. These pages are knowledge, not active jobs, release qualification or authority to start a game/monitor.
 
-Sources: [Progress](../../../integrations/csc-ai-progress-and-learnings-20261101.md), [roadmap](../../../integrations/csc-ai-roadmap.md), [v2 result](../../../research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md), [closed placement branch](../../../research/mods/csc-native-quarter-placement-control-evidence-20261101.md).
+Sources: [Progress](../../../integrations/csc-ai-progress-and-learnings-20261101.md), [v2 result](../../../research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md), [closed placement branch](../../../research/mods/csc-native-quarter-placement-control-evidence-20261101.md).
 
 [Complete source map](source-map.md).

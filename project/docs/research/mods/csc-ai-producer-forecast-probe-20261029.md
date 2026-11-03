@@ -186,6 +186,6 @@ tables, the observed native/log evidence and exact process closure. Restoration
 passed; the intended paired forecast experiment did not. The daemon reported native
 absence with no explicit detach receipt; no separate detach-journal claim is made.
 
-Related: [roadmap](../../integrations/csc-ai-roadmap.md),
+Related: [roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md),
 [first evaluator/building exposure](csc-ai-planner-and-building-step-20261029.md),
 [GameCore symbol resource](csc-ai-gamecore-symbol-resource-20261029.md).

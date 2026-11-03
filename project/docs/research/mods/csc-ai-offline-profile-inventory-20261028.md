@@ -5,7 +5,7 @@ Follow-up completed: [full source/action audit](csc-ai-profile-source-audit-2026
 
 Source inspection only, while Henno conducts manual QA. No live game access,
 deployment, gameplay source edits or tests. This is a starting inventory, not
-a complete current-runtime audit. Follow [the roadmap](../../integrations/csc-ai-roadmap.md).
+a complete current-runtime audit. Follow [the roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md).
 
 | Source input | Where observed | Offline finding / next evidence |
 |---|---|---|

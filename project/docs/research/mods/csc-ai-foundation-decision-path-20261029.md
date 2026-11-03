@@ -169,7 +169,7 @@ The evaluator's raw instance byte `+3f8` was not independently named in that
 review; its exclusion branch must not be treated as a new verified public field
 layout. `CanZone` independently calls the named `IsComplete` function.
 
-Related: [roadmap](../../integrations/csc-ai-roadmap.md),
+Related: [roadmap (historical)](https://github.com/hennogous/Henno-Mods/blob/819b67c/project/docs/integrations/csc-ai-roadmap.md),
 [earlier production analysis](csc-ai-native-production-analysis-20261028.md),
 [symbol resource](csc-ai-gamecore-symbol-resource-20261029.md),
 [producer live-effect result](csc-ai-producer-live-effect-20261029.md).
