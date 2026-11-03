@@ -26,7 +26,7 @@
   },
   {
     "id": "COR-006",
-    "affected_sources": ["project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md", "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md", "project/docs/integrations/csc-ai-roadmap.md"],
+    "affected_sources": ["project/docs/research/mods/csc-native-quarter-placement-control-evidence-20261101.md", "project/docs/research/mods/csc-native-quarter-placement-weights-20261101.md"],
     "summary": "Both early placement diagnostics are closed. Callback volume exceeded the cost gate; no useful target choice was captured and no weights were changed. Historical live/pending sections authorise no retry, and the broad optimisation campaign remains paused."
   },
   {

@@ -136,6 +136,11 @@ def prepare(stage: Path, update_catalog: bool) -> dict:
         routes[(KB / generated).resolve()] = stage / generated
     corrections_path = KB / "data/corrections.json"
     corrections = json.loads(read(corrections_path)) if corrections_path.is_file() else []
+    catalogued = {row["path"] for row in catalog}
+    for correction in corrections:
+        for source in correction["affected_sources"]:
+            if source not in catalogued:
+                raise ValueError(f"Uncatalogued correction source: {correction['id']}/{source}")
     for p in pages:
         dest = routes[p.resolve()]
         dest.parent.mkdir(parents=True, exist_ok=True)

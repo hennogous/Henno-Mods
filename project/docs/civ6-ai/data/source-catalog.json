@@ -6,8 +6,8 @@
       "title": "AI research publishing",
       "kind": "agent-note",
       "date": null,
-      "bytes": 409,
-      "sha256": "1205f6e2496209ae47cb71d182e93ae25b44164d627573435acaf2f1018f1660",
+      "bytes": 891,
+      "sha256": "3bbc281efc98e3abac90c991cda6f8e9a8948d25b56ada72f962bf811c2c3324",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/feedback_ai_publishing.md"
     },
@@ -210,6 +210,16 @@
       "sha256": "4bee392fb36077b597695a11abf6d449e6e050dfc0de77fdb745db8f49b0441b",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_ai_producer_live_effect_20261029.md"
+    },
+    {
+      "path": "memory/session_ai_quartz_fix_20261103.md",
+      "title": "Quartz publication correction — 3 November 2026",
+      "kind": "agent-note",
+      "date": "20261103",
+      "bytes": 1529,
+      "sha256": "934dbc8cc31f9ef9f53ce02c8fdab266c81061ba5930f5d6fd6d10a482f2214d",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_quartz_fix_20261103.md"
     },
     {
       "path": "memory/session_ai_rea_trial_20261030.md",

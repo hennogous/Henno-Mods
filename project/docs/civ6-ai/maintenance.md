@@ -73,10 +73,15 @@ and configuration. No second Quartz installation is required.
 Henno requested regular commits and pushes of handbook work on 3 November 2026.
 At useful verified checkpoints, commit the affected handbook, cited report and
 publishing files, then push. Keep unrelated mod/art/tool changes out of those
-commits. Henno subsequently clarified: commit and push findings without extra
-website, link or deployment QA. Preserve checks needed for actual gameplay/native
-changes; publishing is not another experiment gate. Refresh the source catalogue
-when its inputs change so the normal build can consume the committed content.
+commits. After the roadmap-removal publishing failure, Henno requested restoring
+documentation checks; this supersedes the earlier skip-QA instruction. Refresh
+the source catalogue when its inputs change, then run the hosted-profile build
+and verifier before pushing. For preparation/pipeline changes, also run
+`python -B -m unittest discover -s project/tools/ai_knowledge -p test_prepare.py -v`.
+Confirm the Pages workflow succeeds after pushing a publishing correction.
+Document retirement must reconcile correction-register targets as well as
+ordinary links and finding sources. Preparation checks these targets before
+Quartz runs; keep that check strict rather than suppressing missing sources.
 This is an ongoing research-completion convention, not a scheduled background job.
 
 The existing Pages workflow builds the CSC site and places this handbook under

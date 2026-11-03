@@ -146,5 +146,7 @@ model development or the next decision-relevant comparison.
   shared controller and existing observational infrastructure.
 - Preserve the agreed goals while revising mechanisms and estimates. Old
   tuning amounts, auxiliary signals and assistance routines require fresh reasons.
-- Commit and push documentation updates without additional website/link/deployment
-  testing. This plan itself starts no game, automation or deployment.
+- Build and verify handbook updates before committing/pushing, and confirm the
+  Pages workflow after a publishing correction. This restores documentation
+  checks at Henno's request after the roadmap-removal failure. This plan itself
+  starts no game, automation or deployment.

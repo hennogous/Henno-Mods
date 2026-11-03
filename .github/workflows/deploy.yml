@@ -24,6 +24,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Check AI handbook sources
+        run: |
+          python3 -B -m unittest discover -s project/tools/ai_knowledge -p test_prepare.py -v
+          python3 -B project/tools/ai_knowledge/prepare.py
       - name: Install Quartz dependencies
         run: cd docs && npm ci
       - name: Build Quartz
