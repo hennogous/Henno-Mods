@@ -144,7 +144,9 @@ flowchart LR
   B --> C["Add gap + 256 to fresh Tailors value"]
   C --> D["Tailors wins at 2272"]
   D --> E["Native Tailors request submitted"]
-  E --> F["Production and construction remain separate"]
+  E --> F["Bomber finishes; native request selected"]
+  F --> G["Preferred-tile foundation at 254"]
+  G --> H["Quarter complete at 255"]
 ```
 
 ## Follow-through interruption and presentation recovery
@@ -166,9 +168,88 @@ matching UI clock, the visible exact source context, and a retained popup-stack
 read before calling that shipped routine. Stack membership or topness is not
 an admission condition. It has an eight-acknowledgement
 interval cap and refuses to replay an ambiguous acknowledgement. Sixteen Lua5.1
-cases and six Python controller mocks passed. A no-adjustment250→254 control
-is checking this recovery before a guarded follow-through replay. That control
-is not a new scoring policy or proof of popup causality by itself.
+cases and six Python controller mocks passed. The no-adjustment250→254 control
+then acknowledged three visible Natural Wonder presentations and their event
+unlocks. It still stalled at253: a visible ProjectBuiltPopup held another event
+lock,61969. The control wrote no scores, completed251–253 and closed normally
+with restored preferences and unchanged inputs. It did not establish recovered
+turn progress or an isolated unguarded stall cause.
+
+Henno explicitly requested a permanent shared-controller fix. Both discovery
+and project-completion handlers are now installed automatically for probes and
+full games, with focused regressions and strict project-popup stack admission.
+The fix is committed/pushed in4264f8a; see the
+[shared recovery report](csc-shared-native-presentation-recovery-20261103.md).
+The replacement trial-only adapter was removed.
+
+The second treatment replay uses these shared defaults. Its numerical policy,
+tile and delta342655 are unchanged. An exact archived-source comparison permits
+only the two added controller presentation-install lines, records that revision
+separately, and continues checking every other baseline input. Native C/JS and
+the source reader remain unchanged. The new plan differs only in provenance.
+The shared handlers acknowledged three Natural Wonder presentations and the
+visible project-completion popup, releasing their respective event locks. Three
+settled Core254 readbacks then confirmed inactive autoplay, zero remaining
+turns and the original human handoff. The replay continued normally.
+
+## Preferred-site foundation observed
+
+At boundary254, an actual Tailors district object exists at **plot2272 (52,30)**,
+the declared preferred site. It is incomplete and unpillaged, and the city is
+producing the Tailors' Quarter. This is physical foundation evidence, stronger
+than the earlier selector, request or item-only queue observations.
+
+CityBuild native-turn253 rows495–496 show Bomber contract6487 completing and
+the existing Tailors contract6527 being selected immediately afterward.
+Competing military requests remain in the logs; the experiment did not clear
+the queue or force an order. The waiting request therefore followed through
+when production naturally became available. Numeric contract-priority
+comparisons were not captured, so this is not a general priority formula.
+
+The untreated arm did not reach this post-recovery boundary with the same
+presentation handlers. Treat this as observed construction in the treated
+replay, alongside the earlier matched causal type-choice contrast; it is not a
+matched post254 estimate of construction timing or economic benefit.
+
+At **boundary255**, the same Tailors district at2272 is complete and unpillaged.
+CityBuild native-turn254 row607 records **contract6527 completed**, retaining
+logged value2288.0. The city then selects an Artillery request naturally.
+The production log independently records the Quarter, and no further score
+writes occurred after its foundation. The same native request can therefore
+be followed from submission, through waiting and selection, to physical
+completion at the declared preferred site.
+
+This is an end-to-end mechanism demonstration. It does not validate this site's
+economic quality, move an already preferred Quarter between sites, or establish
+general supply-chain competence. The clean reset and deliberately chosen
+incentive should remain separate from any future site-quality formula.
+
+The driver stopped at completed-preferred rather than continuing to260.
+Normal shutdown and restoration passed: native exit0, no remaining owners,
+original preferences restored, unchanged original save and installed package,
+and every frozen input pin exact. The native daemon remained retained until
+the held process exited, reported no diagnostic fault, and finished with its
+policy disabled/quiescent. The final trace matches the last boundary:15,086
+callbacks, four score changes,12 records (four raw, four cache, one Best, three
+PV), zero hook errors. A separate artifact-only audit passed54 checks.
+
+The raw driver's `changed_choice_proven=false` is its conservative fixed output:
+that driver does not classify cross-arm contrasts. It is retained unchanged.
+The separate matched-baseline audit establishes the changed type from the native
+records; the same audit independently verifies physical completion and closure.
+
+## Result and remaining work
+
+**The AI selected, started and completed the requested Quarter at the declared
+preferred tile through its ordinary request and production machinery.** The
+earlier matched contrast establishes the changed district type. The replay
+establishes treated physical follow-through after the shared presentation fix.
+
+The next design task is to replace the deliberate gap-plus-one incentive with
+an explicit material/customer/cost model built from captured facts. Candidate
+coverage, policy refresh, persistence and shipping integration still need their
+own contracts. Future comparisons should measure displaced uses and realised
+chain benefit, not count a completed Quarter as economic success by itself.
 
 Evidence: `Desktop/Codex/csc-native-placement-choice-20261103/`, staged in this
 chat's visualization root. Original binaries and saves remain hash/path references.

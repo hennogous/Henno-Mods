@@ -58,8 +58,46 @@ caps acknowledgements at8 per interval, and blocks replay after ambiguous ACK.
 Stack topness/membership is not an admission condition. Lua5.1 tests16 and Python
 mocks6 passed. Existing controller.py was not edited for this guard.
 
-Control01 is now running no-score-adjustment250→254 with this presentation guard;
-follow-through results are to be reconciled below before final publication.
+Control01 completed251–253, then also stalled attempting254. It acknowledged
+three visible Natural Wonder presentations/unlocks but exposed a visible
+ProjectBuiltPopup with unmatched lock61969. No score writes; native closure,
+preferences, package/source and input pins all verified. Recovery failed;
+successful cleanup is not progress to254.
+
+Henno explicitly asked why the shared controller missed these and requested a
+permanent fix. The earlier implementation was too narrowly trial-opt-in. Both
+handlers now install automatically from FullGameController.__init__ for all
+probe/full-game callers. ProjectBuilt requires a unique strictly highest-priority
+stack entry; equal-priority peers are refused. Portable regressions passed7,
+plus the optional actual Lua51 regression. Additional focusedProjectBuilt25Lua
+and7mock cases overlap those checks. Shared fix4264f8a is committed/pushed.
+
+Treatment02 (`treatment-02-shared-presentation`) is now replaying the same original
+save with unchangeddelta342655/tile2272, using the shared defaults directly.
+NativeC/JS/daemon/reader unchanged. Exactbaselinecontrollerarchived9a5d...→af95...
+proof permits ONLY two added import/install lines; driver9963862f... modifies
+only make_plan/load_baseline and records this presentation revision. New plan
+differs only in provenance; strict negativecases9PASS. No trial-specific adapter
+is needed. Runtime inputs remain frozen until exact native exit.
+
+Confirmed result and limitations are already committed/pushed in08569c0.
+The replay verified recovery: three Natural Wonder acknowledgements and one
+ProjectBuilt acknowledgement released their locks; three settled Core254
+inactive/remaining0/local0/humantrue readbacks followed. At254, actual district37
+exists at preferred2272/(52,30), incomplete/unpillaged, with Tailors in production.
+Native253 CityBuild495–496 completes Bomber6487 then selects SAME Tailors6527.
+At255 the physical district is complete/unpillaged; native254 CityBuild607 logs
+6527 COMPLETED at2288.0, and the city moves naturally to Artillery6592. No scripted
+order/foundation/queueclear. Afterfoundation no further score writes. This is
+treated native follow-through, not a matched post254 construction-timing contrast
+or economic benefit. Completion triggered the planned early stop before260.
+Final normal shutdown/restoration verified: CLIexit0, heldnativeexit0, owners[],
+preferences restored, original save/package/frozen pins unchanged, daemonfaultfalse,
+finaltracequiescent/exactlastboundary. Final15086callbacks/4writes/12records/
+zeroerrors; independentartifactaudit54PASS. Actualcompleted-preferred result.
+Do not reopen game/controller work for this closed case. Future site-quality and
+shipping work are new scopes; no economic benefit or Quarter site relocation
+was established by this deliberate type-switch mechanism test.
 
 Publishing preference: commit and push updated findings; skip added website,
 link or deployment QA. See `feedback_ai_publishing.md`.

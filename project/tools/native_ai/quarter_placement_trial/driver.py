@@ -254,8 +254,9 @@ def make_plan(baseline):
                 and (net['x'], net['y']) == (cache['x'], cache['y']) == (site['x'], site['y'])):
             joined.append(dict(district=config['districtIndex'], plot=index, x=site['x'], y=site['y'],
                                cacheQ8=cache['result'], netQ8=net['base']))
-    if len(joined) < 2:
-        raise ValueError('Need two unambiguous fresh positive NetValue/cache pairs at clean source sites')
+    experiment_kind = 'site switch' if winner['district'] == config['districtIndex'] else 'district-type switch'
+    if len(joined) < (2 if experiment_kind == 'site switch' else 1):
+        raise ValueError('Need two unambiguous fresh positive NetValue/cache pairs for a same-type site switch, or one for a district-type switch')
     joined.sort(key=lambda r: (-r['cacheQ8'], r['plot']))
     alternatives = [r for r in joined if r['plot'] in decision_sites
                     and (r['district'], r['plot']) != (winner['district'], winner['plot'])]
@@ -272,18 +273,82 @@ def make_plan(baseline):
     return dict(profile=PROFILE, sourceSaveSha256=SAVE_SHA, player=PLAYER, city=CITY, districtType=DISTRICT, decisionTurn=decision_turn,
         preferred=chosen, baselineWinning={k: winner[k] for k in ('district', 'plot', 'x', 'y')} | {'scoreQ8': winner['result']},
         baselineGapQ8=gap, deltaQ8=delta, marginQ8=256,
-        joinedPositiveSites=joined, scope='mechanism only; deterministic cache runner-up, not a site-quality heuristic',
+        joinedPositiveSites=joined, experimentKind=experiment_kind,
+        plotChanged=chosen['plot'] != winner['plot'], districtTypeChanged=chosen['district'] != winner['district'],
+        planner_revision=baseline.get('planner_revision'), controller_revision=baseline.get('controller_revision'),
+        scope='mechanism only; score-ranked unreserved Quarter alternative, not a site-quality heuristic',
         observationSlice=dict(previousCacheEnd=previous_cache_end, netStart=previous_cache_end + 1,
                               cacheStart=cache_start, cacheEnd=best_position - 1, bestPosition=best_position),
         policy='add gap plus one utility unit to fresh preferred-site NetValue; no direct cache write or forced order')
 
 
 def load_baseline(directory):
+    import ast
     directory = Path(directory).resolve()
     pins = read(directory/'source-pins.json')
+    current_driver = (HERE/'driver.py').resolve()
+    current_controller = (ROOT/'project/tools/ai_baseline/full_game_controller/controller.py').resolve()
+    planner_revision = None
+    controller_revision = None
     for path, digest in pins.items():
-        if sha(path) != digest:
+        actual = sha(path)
+        if actual == digest:
+            continue
+        if Path(path).resolve() == current_controller:
+            if digest != '9a5d34e0037213a9ccbf7fcc4515b957286244900a48a918f7fe50d7001e44c2':
+                raise ValueError('Unreviewed original controller pin for presentation revision')
+            archives = read(directory/'source-archive.json')['archived']
+            matches = [r for r in archives if Path(r['source']).resolve() == current_controller]
+            if len(matches) != 1:
+                raise ValueError('Exactly one archived baseline controller source is required')
+            archived = Path(matches[0]['archive']).resolve()
+            if (not archived.is_relative_to((directory/'source-version').resolve())
+                    or not archived.is_file() or sha(archived) != digest):
+                raise ValueError('Archived baseline controller source does not match its original pin')
+            # Text equality permits precisely the reviewed presentation hook.
+            # CRLF is the sole normalization; policy/timing/control text is exact.
+            before_controller = archived.read_bytes().decode('utf-8').replace('\r\n', '\n')
+            after_controller = current_controller.read_bytes().decode('utf-8').replace('\r\n', '\n')
+            import_anchor = 'from .transport import receive_command,MissingAcknowledgment,NativeLuaFailure\n'
+            init_anchor = "  self.session_token='CSC_FULL_ACK_'+str(os.getpid())+'_'\n"
+            import_line = 'from .presentation_playback import install as install_playback_guard\n'
+            init_line = '  install_playback_guard(self)\n'
+            if before_controller.count(import_anchor) != 1 or before_controller.count(init_anchor) != 1:
+                raise ValueError('Original controller presentation patch anchors are not unique')
+            expected_controller = before_controller.replace(import_anchor, import_anchor + import_line, 1).replace(init_anchor, init_anchor + init_line, 1)
+            if after_controller != expected_controller:
+                raise ValueError('Controller differs from the exact reviewed two-line presentation patch')
+            controller_revision = dict(before_sha=digest, after_sha=actual,
+                added_lines=[import_line.rstrip('\n'), init_line.rstrip('\n')],
+                normalization='CRLF to LF only', archived_source_verified=True,
+                presentation_behavior_changed=True, native_policy_changed=False)
+            continue
+        if (Path(path).resolve() != current_driver
+                or digest != '97d57a9841f43e3c9169ed87a01311aed22f829b641a901d1318e0e499875261'):
             raise ValueError('Closed baseline source/input pin changed: ' + path)
+        archives = read(directory/'source-archive.json')['archived']
+        matches = [r for r in archives if Path(r['source']).resolve() == current_driver]
+        if len(matches) != 1:
+            raise ValueError('Exactly one archived baseline driver source is required')
+        archived = Path(matches[0]['archive']).resolve()
+        if (not archived.is_relative_to((directory/'source-version').resolve())
+                or not archived.is_file() or sha(archived) != digest):
+            raise ValueError('Archived baseline driver source does not match its original pin')
+        before = ast.parse(archived.read_text(encoding='utf-8-sig'))
+        after = ast.parse(current_driver.read_text(encoding='utf-8-sig'))
+        allowed = {'make_plan', 'load_baseline'}
+
+        def execution_structure(tree):
+            functions = [n.name for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name in allowed]
+            if sorted(functions) != sorted(allowed):
+                raise ValueError('Planner revision must retain exactly the two permitted function definitions')
+            retained = [n for n in tree.body if not (isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name in allowed)]
+            return ast.dump(ast.Module(body=retained, type_ignores=[]), include_attributes=False)
+
+        if execution_structure(before) != execution_structure(after):
+            raise ValueError('Planner revision changed native control or another top-level AST node outside the two allowed functions')
+        planner_revision = dict(before_sha=digest, after_sha=actual,
+            only_functions=['make_plan', 'load_baseline'], archived_source_verified=True)
     result = read(directory/'result.json')
     intervals = result.get('intervals', [])
     if (not isinstance(intervals, list) or not intervals or len(intervals) > 5
@@ -296,7 +361,7 @@ def load_baseline(directory):
         frozen=read(directory/'extension/trace-counts.json')['snapshot'], config=read(directory/'extension-config.json'),
         installed=read(directory/'installed-before.json'), dependencies=read(directory/'dependency-pins.json'),
         pins=pins, save_sha256=read(directory/'session-load-input.json')['sha256'],
-        decision=boundaries[intervals[-1]], prefix=boundaries)
+        decision=boundaries[intervals[-1]], prefix=boundaries, planner_revision=planner_revision, controller_revision=controller_revision)
     make_plan(bundle)
     return bundle
 

@@ -25,7 +25,11 @@ The pre-decision facts matched, and the declared bonus was the observed score
 gap plus256 Q8. This establishes a type switch, not a Quarter site relocation
 or completed construction. [AI-N064]
 
-**Useful next evidence:** observe construction separately, qualify policy freshness/lifetime and develop the material/customer formula offline. A Quarter site-switch trial still needs two qualified competing sites. Shipping integration and useful chain outcomes remain later gates.
+The shared-controller replay then observed the same native request selected
+after its Bomber finished, a preferred-tile foundation at254 and completion at255.
+No district order or foundation was scripted. [AI-N065]
+
+**Useful next evidence:** qualify policy freshness/lifetime and develop the material/customer formula offline. A Quarter site-switch trial still needs two qualified competing sites. Shipping integration and useful chain outcomes remain later gates.
 
 Source: [custom-incentive boundary](../../../research/mods/civ6-district-choice-placement-and-incentives-20261103.md#fully-arbitrary-per-site-incentives-remain-a-separate-integration-problem).
 

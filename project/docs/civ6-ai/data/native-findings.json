@@ -1234,10 +1234,23 @@
     "status": "accepted",
     "evidence_types": ["runtime"],
     "scope": "Pinned Windows XP2 build, Frida17.24.3 CModule, original AI P5/city131073. Same original game04 turn250 save and exact turn251 physical/queue/research prefix. At252, untreated winner585676 and Tailors243277; declared delta342655. Only one definitely unreserved Tailors site qualified.",
-    "limits": "This changes district type at the same tile, not a Quarter's site. Request value is not production priority. No Tailors foundation through253 in the first treatment; follow-through then timed out and closed normally. The experiment supplies a deliberate preference, not a calibrated site-quality model, economic benefit or shipping lifecycle solution.",
+    "limits": "This changes district type at the same tile, not a Quarter's site. Request value is not production priority. The first treatment stopped at253; later treated construction is reported separately in AI-N065. The experiment supplies a deliberate preference, not a calibrated site-quality model, economic benefit or shipping lifecycle solution.",
     "sources": ["project/docs/research/mods/civ6-district-placement-choice-20261103.md"],
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N006", "AI-N011", "AI-N055", "AI-N062"],
-    "related": ["AI-N063"]
+    "related": ["AI-N063", "AI-N065"]
+  },
+  {
+    "id": "AI-N065",
+    "title": "The native Quarter request reaches completion at the preferred site",
+    "statement": "In the shared-controller replay, Sydney's existing Tailors request6527 was selected after Bomber6487 completed. A physical Tailors foundation appeared at preferred plot2272/(52,30) at254 and was complete and unpillaged at255; the same contract logged completion and the city moved to Artillery. No district order or foundation was scripted.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Same clean-rules existing-save case and +342655 Q8 policy as AI-N064. Initial and pre-decision facts matched; native252 records reproduced the earlier type-choice/request chain. Default shared presentation handlers released three discovery popups and one project cinematic, followed by settled254 and255 handoffs. Native253 CityBuild495–496 selects the original Tailors contract after Bomber; native254 row607 completes it. Final15086callbacks/4writes/12records/zeroerrors; normal exit0, preferences restored, owners absent, source/package/frozen inputs unchanged; independent54-check audit.",
+    "limits": "The untreated arm did not reach a matched post-recovery254 boundary. This observes treated native follow-through; it is not a causal construction-timing estimate, a general request-priority rule, site relocation, calibrated site quality, economic benefit or a general shipping lifecycle solution.",
+    "sources": ["project/docs/research/mods/civ6-district-placement-choice-20261103.md", "project/docs/research/mods/csc-shared-native-presentation-recovery-20261103.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N011", "AI-N064"],
+    "related": ["AI-N062"]
   }
 ]

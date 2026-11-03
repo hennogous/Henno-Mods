@@ -47,3 +47,18 @@ AI reset is the new baseline and is not reverted to old tuning by test cleanup.
 See `project/docs/research/mods/civ6-district-placement-choice-20261103.md` for
 actual observations and `project/docs/integrations/csc-ai-reset-20261103.md` for
 the archive boundary.
+
+The qualified alternative may change district type at the same tile. A same-type
+site switch still requires two qualified sites. The Sydney plan is explicitly
+a type switch, not a demonstration that a Quarter moved between sites.
+
+Natural Wonder and project-completion presentation recovery now belongs to the
+shared controller and is installed automatically. The later replay records an
+exact, archived-source-verified controller presentation revision alongside the
+offline planner revision; it does not relax the native input pins or change the
+numeric policy. Regenerate a plan after a reviewed provenance revision, and
+retain the old plan as evidence of the actual earlier run.
+
+`control.py` performs a fixed no-adjustment 250→254 observation from a qualified
+closed baseline. It records scientific failure separately from successful normal
+cleanup. Its earlier frozen implementation remains archived with that run.

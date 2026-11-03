@@ -133,9 +133,13 @@ matched. Only one definitely unreserved Tailors site qualified, so this was
 not a move between two Quarter sites. [AI-N064]
 
 The first follow-through observed no Quarter foundation through253, then
-stalled while attempting254 and closed normally. A guarded
-replay is tracked in the [placement-choice report](../../../research/mods/civ6-district-placement-choice-20261103.md).
-Selection and request submission therefore remain distinct from construction.
+stalled while attempting254 and closed normally. After fixing the missing
+discovery/project presentation handlers in the shared controller, the replay
+passed254 and an actual Tailors foundation appeared at the preferred tile.
+The AI selected its waiting Quarter request after the existing Bomber finished;
+no order or foundation was scripted. The same contract and physical Quarter
+completed at255, after which the city moved to Artillery.
+[AI-N065] See the [placement-choice report](../../../research/mods/civ6-district-placement-choice-20261103.md).
 
 Policy refresh, native generations, saved influence and a useful material/customer
 formula remain separate work. Chain outcomes and empire benefit come later.

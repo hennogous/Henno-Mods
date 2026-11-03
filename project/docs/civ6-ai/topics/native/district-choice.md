@@ -50,6 +50,8 @@ new district proposal was compared. [AI-N063] See the
 The later matched decision provides direct causal evidence for joint type/site
 comparison: a scoped Tailors incentive changed Sydney's winner from Neighborhood
 to Tailors **at the same tile** and generated a native Quarter request. This is
-not yet proof of site relocation or completed construction. [AI-N064]
+not proof of Quarter site relocation. [AI-N064] A later replay observed the
+waiting request selected when the Bomber finished, a physical Quarter
+foundation at the preferred tile at254, and completion at255. [AI-N065]
 
 The Lua query plot:CanHaveDistrict(districtIndex, playerID, cityID) reads three numeric arguments after self in this build. No fourth future/ignore flag was found. Its result expresses bounded plot potential, not complete city permission, an economic quote or material preservation: an auto-harvest path can admit resource-bearing land. [AI-N012] See the [legality investigation](../../../research/mods/csc-native-future-customer-legality-20261101.md).

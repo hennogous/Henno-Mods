@@ -286,8 +286,8 @@
       "title": "Fresh CSC AI tuning and native choice test — 3 November 2026",
       "kind": "agent-note",
       "date": "20261103",
-      "bytes": 3846,
-      "sha256": "2345d5804e6dad883e4da987e23e5b2ac48d4178d2a669b56bca4da585a0d59d",
+      "bytes": 6540,
+      "sha256": "977203b7042009d13d8affb9f169b16ae4a6721f14264c759c3ce31519b6e393",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_csc_ai_native_choice_20261103.md"
     },
@@ -406,8 +406,8 @@
       "title": "Native Quarter placement choice after the AI reset",
       "kind": "report",
       "date": "20261103",
-      "bytes": 9799,
-      "sha256": "4b6a9d0240405816cd542961b450f2fd1acea15d9d112b313ab854b6b7c3e89f",
+      "bytes": 14762,
+      "sha256": "65ca893c17abb17e2f14eb0e5427f8cd8b0471a36027fbbb779eada9d5c2d038",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-placement-choice-20261103.md"
     },
@@ -1722,6 +1722,16 @@
       "site_path": "sources/project/docs/research/mods/csc-rh-v5097-source-inventory-20261018.json"
     },
     {
+      "path": "project/docs/research/mods/csc-shared-native-presentation-recovery-20261103.md",
+      "title": "Shared-controller recovery for discovery and project popups",
+      "kind": "report",
+      "date": "20261103",
+      "bytes": 4884,
+      "sha256": "80d776adbd968963e7bbd86ce987aff704c9cb47246d9f18b0d7eaf21ef53405",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-shared-native-presentation-recovery-20261103.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-shared-native-session-20261030.md",
       "title": "Shared native session consolidation — 30 October 2026",
       "kind": "report",
@@ -1806,8 +1816,8 @@
       "title": "Native validation limit —23 October observer defeat",
       "kind": "tool-reference",
       "date": null,
-      "bytes": 26989,
-      "sha256": "46733dc6ac71a58a6ea548278cea52b5617336a5d80329c4dd151762f08c6803",
+      "bytes": 28171,
+      "sha256": "80d249b22dce0a7db32d43e94c51c94a172434e4be941c659d11eac5862cac7e",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/tools/ai_baseline/full_game_controller/README.md"
     },

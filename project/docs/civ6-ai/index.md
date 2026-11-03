@@ -17,7 +17,7 @@ provides stable references for individual conclusions.
 > understood at specific consumers. Reliable, worthwhile supply-chain competence
 > across Basic CSC and RomanHoliday has **not** been established. Native per-site
 > extension work has reached a bounded prototype with measured score-to-request delivery
-> and a caused district-type choice change at one tile;
+> and a caused district-type choice change followed by native Quarter construction at one tile;
 > arbitrary policy and release integration remain open. This handbook starts no game or experiment.
 
 ## Understand the engine
