@@ -73,3 +73,7 @@ Use [the standardized render runner](2d/ae-asset-renderer.md). The existing
 `export_assets.py` still implements legacy whole-scene export: do not use it to
 overwrite a Henno-edited AE assembly until selective update behavior is added.
 The new rendering tool does not change that exporter.
+
+The [25 October L2 relocation and fixed-prop migration](l2-placement-and-fixed-props.md)
+records the current shared L2 position, shaped paving, active authoring folders,
+and the Bakery/Fashion House/Cafe props now bundled into their main geometry.

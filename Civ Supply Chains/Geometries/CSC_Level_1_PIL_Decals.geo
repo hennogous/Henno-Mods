@@ -11,7 +11,7 @@
 </m_Version>
 <m_Meshes>
 <Element>
-<m_Name text="Plane11008"/>
+<m_Name text="Plane11009"/>
 <m_Groups>
 <Element>
 <m_Name text="Ruin_Debris_Decal"/>
@@ -24,7 +24,7 @@
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
 <Element>
-<m_Name text="Plane11009"/>
+<m_Name text="Plane11008"/>
 <m_Groups>
 <Element>
 <m_Name text="Ruin_Debris_Decal"/>

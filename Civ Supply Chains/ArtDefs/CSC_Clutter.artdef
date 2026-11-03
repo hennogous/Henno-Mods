@@ -76,9 +76,9 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="RES_CSC_Flax_Tuft01"/>
+										<m_EntryName text="CSC_RES_Flax_Tuft01"/>
 										<m_XLPClass text="Landmark"/>
-										<m_XLPPath text="CSC_Clutter.xlp"/>
+										<m_XLPPath text="csc_clutter.xlp"/>
 										<m_BLPPackage text="Environment/CSC_Clutter"/>
 										<m_LibraryName text="Landmark"/>
 										<m_ParamName text="Asset"/>
@@ -137,9 +137,9 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="RES_CSC_Flax_Tuft02"/>
+										<m_EntryName text="CSC_RES_Flax_Tuft02"/>
 										<m_XLPClass text="Landmark"/>
-										<m_XLPPath text="CSC_Clutter.xlp"/>
+										<m_XLPPath text="csc_clutter.xlp"/>
 										<m_BLPPackage text="Environment/CSC_Clutter"/>
 										<m_LibraryName text="Landmark"/>
 										<m_ParamName text="Asset"/>
@@ -198,9 +198,9 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="RES_CSC_Flax_Tuft03"/>
+										<m_EntryName text="CSC_RES_Flax_Tuft03"/>
 										<m_XLPClass text="Landmark"/>
-										<m_XLPPath text="CSC_Clutter.xlp"/>
+										<m_XLPPath text="csc_clutter.xlp"/>
 										<m_BLPPackage text="Environment/CSC_Clutter"/>
 										<m_LibraryName text="Landmark"/>
 										<m_ParamName text="Asset"/>
@@ -259,9 +259,9 @@
 							<m_Fields>
 								<m_Values>
 									<Element class="AssetObjects..BLPEntryValue">
-										<m_EntryName text="RES_CSC_Flax_Tuft04"/>
+										<m_EntryName text="CSC_RES_Flax_Tuft04"/>
 										<m_XLPClass text="Landmark"/>
-										<m_XLPPath text="CSC_Clutter.xlp"/>
+										<m_XLPPath text="csc_clutter.xlp"/>
 										<m_BLPPackage text="Environment/CSC_Clutter"/>
 										<m_LibraryName text="Landmark"/>
 										<m_ParamName text="Asset"/>

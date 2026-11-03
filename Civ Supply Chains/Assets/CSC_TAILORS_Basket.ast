@@ -30,7 +30,7 @@
 						<m_Values>
 							<m_Values>
 								<Element class="AssetObjects..ObjectValue">
-									<m_ObjectName text="CSC_ALL_Props_E"/>
+									<m_ObjectName text="CSC_ALL_Props_01"/>
 									<m_eObjectType>MATERIAL</m_eObjectType>
 									<m_ParamName text="Material"/>
 								</Element>
@@ -63,8 +63,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Material.001"/>
-						<m_MeshName text="CSC_ALL_Basket"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_TAILORS_Basket_Obj"/>
 						<m_StateName text="Worked"/>
 					</Element>
 					<Element>
@@ -104,8 +104,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Material.001"/>
-						<m_MeshName text="CSC_ALL_Basket"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_TAILORS_Basket_Obj"/>
 						<m_StateName text="Unworked"/>
 					</Element>
 					<Element>
@@ -145,8 +145,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Material.001"/>
-						<m_MeshName text="CSC_ALL_Basket"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_TAILORS_Basket_Obj"/>
 						<m_StateName text="Pillaged"/>
 					</Element>
 					<Element>
@@ -186,8 +186,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Material.001"/>
-						<m_MeshName text="CSC_ALL_Basket"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_TAILORS_Basket_Obj"/>
 						<m_StateName text="Construction"/>
 					</Element>
 					<Element>
@@ -227,8 +227,8 @@
 								</Element>
 							</m_Values>
 						</m_Values>
-						<m_GroupName text="Material.001"/>
-						<m_MeshName text="CSC_ALL_Basket"/>
+						<m_GroupName text="CSC_ALL_Props_01"/>
+						<m_MeshName text="CSC_TAILORS_Basket_Obj"/>
 						<m_StateName text="Unbuilt"/>
 					</Element>
 				</m_GroupStates>
@@ -341,4 +341,3 @@
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..AssetInstance>
-

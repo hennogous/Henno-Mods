@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8'?>
 <AssetObjects..XLP>
 	<m_Version>
 		<major>1</major>
@@ -9,15 +9,7 @@
 	<m_ClassName text="Light"/>
 	<m_PackageName text="CSC_Lights"/>
 	<m_Entries>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_Stand_Light"/>
-			<m_ObjectName text="CSC_BAKERS_Stand_Light"/>
-		</Element>
-		<Element>
-			<m_EntryID text="CSC_BAKERS_Stand_Light_Negative"/>
-			<m_ObjectName text="CSC_BAKERS_Stand_Light_Negative"/>
-		</Element>
-	</m_Entries>
+		</m_Entries>
 	<m_AllowedPlatforms>
 		<Element>WINDOWS</Element>
 		<Element>MACOS</Element>
@@ -29,4 +21,3 @@
 		<Element>STADIA</Element>
 	</m_AllowedPlatforms>
 </AssetObjects..XLP>
-

@@ -1,5 +1,11 @@
 # Storage ground-pivot trial — 20 October 2026
 
+**Current naming, 24 October:** the accepted setup is now
+`CSC_BAKERS_Delivery`, `CSC_TAILORS_Delivery` and `CSC_ALL_Delivery_Donkey`.
+See [canonical delivery assets](delivery-assets.md) for consolidation, dependency
+names, backups and deployment status. The sections below retain the historical
+trial names for provenance; do not use them as current installation instructions.
+
 ## Installed scope
 
 `CSC_BAKERS_Storage_L` now uses centered, unrotated storage geometry. Its final

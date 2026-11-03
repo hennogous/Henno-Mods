@@ -10,20 +10,20 @@
 	<m_PackageName text="Environment/CSC_Clutter"/>
 	<m_Entries>
 		<Element>
-			<m_EntryID text="RES_CSC_Flax_Tuft01"/>
-			<m_ObjectName text="RES_CSC_Flax_Tuft01"/>
+			<m_EntryID text="CSC_RES_Flax_Tuft01"/>
+			<m_ObjectName text="CSC_RES_Flax_Tuft01"/>
 		</Element>
 		<Element>
-			<m_EntryID text="RES_CSC_Flax_Tuft02"/>
-			<m_ObjectName text="RES_CSC_Flax_Tuft02"/>
+			<m_EntryID text="CSC_RES_Flax_Tuft02"/>
+			<m_ObjectName text="CSC_RES_Flax_Tuft02"/>
 		</Element>
 		<Element>
-			<m_EntryID text="RES_CSC_Flax_Tuft03"/>
-			<m_ObjectName text="RES_CSC_Flax_Tuft03"/>
+			<m_EntryID text="CSC_RES_Flax_Tuft03"/>
+			<m_ObjectName text="CSC_RES_Flax_Tuft03"/>
 		</Element>
 		<Element>
-			<m_EntryID text="RES_CSC_Flax_Tuft04"/>
-			<m_ObjectName text="RES_CSC_Flax_Tuft04"/>
+			<m_EntryID text="CSC_RES_Flax_Tuft04"/>
+			<m_ObjectName text="CSC_RES_Flax_Tuft04"/>
 		</Element>
 	</m_Entries>
 	<m_AllowedPlatforms>

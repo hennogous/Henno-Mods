@@ -1,7 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <AssetObjects..GeometryInstance>
   <m_CookParams>
-    <m_Values />
+    <m_Values/>
   </m_CookParams>
   <m_Version>
     <major>0</major>
@@ -11,10 +11,10 @@
   </m_Version>
   <m_Meshes>
     <Element>
-      <m_Name text="CSC_Level_2_CON+PIL_Bldg" />
+      <m_Name text="CSC_Level_2_CON+PIL_Bldg"/>
       <m_Groups>
         <Element>
-          <m_Name text="CSC_Level_2_CON+PIL_Bldg" />
+          <m_Name text="CSC_Level_2_CON+PIL_Bldg"/>
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>1208</m_nPrims>
         </Element>
@@ -24,10 +24,10 @@
       <m_nVertexCount>1667</m_nVertexCount>
     </Element>
     <Element>
-      <m_Name text="CSC_Level_2_CON+PIL_Sign" />
+      <m_Name text="CSC_Level_2_CON+PIL_Sign"/>
       <m_Groups>
         <Element>
-          <m_Name text="CSC_Level_2_CON+PIL_Bldg" />
+          <m_Name text="CSC_Level_2_CON+PIL_Bldg"/>
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>60</m_nPrims>
         </Element>
@@ -37,10 +37,10 @@
       <m_nVertexCount>68</m_nVertexCount>
     </Element>
     <Element>
-      <m_Name text="CSC_Storage_LeanTo_CON+PIL_Bldg" />
+      <m_Name text="CSC_Storage_LeanTo_CON+PIL_Bldg"/>
       <m_Groups>
         <Element>
-          <m_Name text="CSC_TAILORS_NE" />
+          <m_Name text="CSC_TAILORS_NE"/>
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>185</m_nPrims>
         </Element>
@@ -50,10 +50,10 @@
       <m_nVertexCount>364</m_nVertexCount>
     </Element>
     <Element>
-      <m_Name text="Scaffolding" />
+      <m_Name text="Scaffolding"/>
       <m_Groups>
         <Element>
-          <m_Name text="Pillage_Construction_01" />
+          <m_Name text="Pillage_Construction_01"/>
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>272</m_nPrims>
         </Element>
@@ -64,25 +64,25 @@
     </Element>
   </m_Meshes>
   <m_Bones>
-    <Element text="CSC_TAILORS_Tailor_CON+PIL" />
-    <Element text="Bone" />
+    <Element text="CSC_TAILORS_Tailor_CON+PIL"/>
+    <Element text="Bone"/>
   </m_Bones>
-  <m_ModelName text="CSC_TAILORS_Tailor_CON+PIL" />
-  <m_SourceFilePath text="" />
-  <m_SourceObjectName text="" />
+  <m_ModelName text="CSC_TAILORS_Tailor_CON+PIL"/>
+  <m_SourceFilePath text=""/>
+  <m_SourceObjectName text=""/>
   <m_ImportedTime>0</m_ImportedTime>
   <m_ExportedTime>0</m_ExportedTime>
-  <m_ClassName text="LandmarkModel" />
+  <m_ClassName text="LandmarkModel"/>
   <m_DataFiles>
     <Element>
-      <m_ID text="GR2" />
-      <m_RelativePath text="CSC_TAILORS_Tailor_CON+PIL.fgx" />
+      <m_ID text="GR2"/>
+      <m_RelativePath text="CSC_TAILORS_Tailor_CON+PIL.fgx"/>
     </Element>
   </m_DataFiles>
-  <m_Name text="CSC_TAILORS_Tailor_CON+PIL" />
-  <m_Description text="CSC_Level_1_Decals" />
+  <m_Name text="CSC_TAILORS_Tailor_CON+PIL"/>
+  <m_Description text="CSC_Level_1_Decals"/>
   <m_Tags>
-    <Element text="LandmarkModel" />
+    <Element text="LandmarkModel"/>
   </m_Tags>
-  <m_Groups />
+  <m_Groups/>
 </AssetObjects..GeometryInstance>

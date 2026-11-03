@@ -49,6 +49,13 @@ mod/SDK. `--mod-root`, `--sdk` and `--blender` override source/tool paths.
 
 ## Fixed presets
 
+**L2 relocation, 25 October 2026:** the L2 cameras and target now follow the tested
+Tailor wrapper transform. Their lens/shift/scale values are unchanged, and both
+views preserve the original Tailor pixel registration. Optional per-mode
+`sun_direction` values in the fixed profile rotate the light with the building.
+L1/L3 are unchanged. See [the placement migration](../l2-placement-and-fixed-props.md)
+for the transform, source folders and measured registration checks.
+
 **Camera registration override, Henno, 14 October 2026:** prop bounds must not
 affect the camera, target, perspective distance, lens or orthographic scale.
 Frozen absolute camera matrices and scales live in

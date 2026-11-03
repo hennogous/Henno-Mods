@@ -5,10 +5,13 @@ param(
     [string]$ProcDump = "$env:USERPROFILE\Desktop\Codex\Tools\ProcDump\procdump64.exe",
     [ValidatePattern('^[A-Za-z0-9_.-]+\.exe$')]
     [string]$ProcessName = 'AssetEditor.exe',
+    [switch]$Full,
     [switch]$Mini,
     [int]$MaxCaptures = 0
 )
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'ae_capture_storage.ps1')
+$dumpSwitch = Get-AEDumpSwitch -Full:$Full -Mini:$Mini
 $signature = Get-AuthenticodeSignature -LiteralPath $ProcDump
 if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'O=Microsoft Corporation') {
     throw 'ProcDump must have a valid Microsoft signature.'
@@ -51,8 +54,13 @@ try {
     New-Item -ItemType Directory -Path $markers -Force | Out-Null
     $status = Join-Path $OutputRoot 'assertion-watcher-status.json'
     $captured = 0
+    $nextRetention = [DateTime]::MinValue
     while (-not (Test-Path -LiteralPath (Join-Path $OutputRoot 'pause-monitoring.txt'))) {
-        [ordered]@{Updated=(Get-Date).ToString('o');PID=$PID;Phase='Monitoring assertions';Captures=$captured;ProcessName=$ProcessName} |
+        if ([DateTime]::UtcNow -ge $nextRetention) {
+            Invoke-AEDumpRetention -OutputRoot $OutputRoot
+            $nextRetention = [DateTime]::UtcNow.AddMinutes(30)
+        }
+        [ordered]@{Updated=(Get-Date).ToString('o');PID=$PID;Phase='Monitoring assertions';Captures=$captured;ProcessName=$ProcessName;DumpType=$(if ($Full) {'Full'} else {'Mini'})} |
             ConvertTo-Json | Set-Content -LiteralPath $status -Encoding UTF8
         foreach ($process in @(Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($ProcessName)) -ErrorAction SilentlyContinue)) {
             try {
@@ -63,23 +71,19 @@ try {
                     if (Test-Path -LiteralPath $marker) { continue }
                     $folder = Join-Path $OutputRoot ((Get-Date -Format 'yyyyMMdd_HHmmss') + '_assert_' + $key)
                     New-Item -ItemType Directory -Path $folder | Out-Null
+                    if ($Full) { 'Explicit full capture; excluded from routine retention.' | Set-Content -LiteralPath (Join-Path $folder 'keep-dumps.txt') }
                     $record = [ordered]@{
                         Detected=(Get-Date).ToString('o');ProcessId=$process.Id;ProcessStartTicks=$started
                         WindowHandle=$window.Handle;WindowTitle=$window.Title;Folder=$folder
-                        Kind='Assertion memory snapshot; process remains alive';DumpType=$(if ($Mini) {'Mini'} else {'Full'});Completed=$null;DumpBytes=0
+                        Kind='Assertion memory snapshot; process remains alive';DumpType=$(if ($Full) {'Full'} else {'Mini'});Completed=$null;DumpBytes=0
                     }
                     $record | ConvertTo-Json | Set-Content -LiteralPath $marker -Encoding UTF8
                     $record | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $folder 'assertion.json') -Encoding UTF8
-                    $logs = Join-Path $env:APPDATA 'AssetEditor\1.1\Logs'
-                    if (Test-Path -LiteralPath $logs) {
-                        Get-ChildItem -LiteralPath $logs -File | Sort-Object LastWriteTime -Descending | Select-Object -First 4 |
-                            ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $folder -Force -ErrorAction Continue }
-                    }
+                    Save-AERecentLogs -Destination (Join-Path $folder 'logs')
                     $dump = Join-Path $folder 'AE_assertion.dmp'
                     [ordered]@{Updated=(Get-Date).ToString('o');PID=$PID;Phase='Capturing assertion';Captures=$captured;ProcessName=$ProcessName;Folder=$folder} |
                         ConvertTo-Json | Set-Content -LiteralPath $status -Encoding UTF8
-                    $arguments = @('-accepteula')
-                    if (-not $Mini) { $arguments += '-ma' }
+                    $arguments = @('-accepteula', $dumpSwitch)
                     $arguments += @([string]$process.Id, ('"' + $dump + '"'))
                     $writer = Start-Process -FilePath $ProcDump -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $folder 'snapshot.log') -RedirectStandardError (Join-Path $folder 'snapshot-errors.log')
                     $writer.WaitForExit()
@@ -89,10 +93,11 @@ try {
                     $record | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $folder 'assertion.json') -Encoding UTF8
                     $record | ConvertTo-Json | Set-Content -LiteralPath $marker -Encoding UTF8
                     $captured++
+                    Invoke-AEDumpRetention -OutputRoot $OutputRoot
                 }
             }
             catch {
-                "$(Get-Date -Format o) $($_.ToString())" | Add-Content -LiteralPath (Join-Path $OutputRoot 'assertion-watcher-errors.log')
+                Write-AEBoundedLog -Path (Join-Path $OutputRoot 'assertion-watcher-errors.log') -Message "$(Get-Date -Format o) $($_.ToString())"
             }
         }
         if ($MaxCaptures -gt 0 -and $captured -ge $MaxCaptures) { break }

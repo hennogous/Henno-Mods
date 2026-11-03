@@ -85,12 +85,12 @@ def check():
     assert changed>0;write(OUT/'native-check.json',dict(uv1_vertices_remapped=changed,geometry_skeleton_weights_uv2_uv3_unchanged=True,vertices=sum(len(m['vertices']) for m in after['meshes']),bone_counts_match=True))
     print('NATIVE_CLOTH_UV_TRANSLATION_VERIFIED',changed)
 
-def install():
-    result=json.loads((OUT/'cook-weathered/result.json').read_text());log=(OUT/'cook-weathered/stdout.log').read_text()
+def install(cook_label='weathered'):
+    result=json.loads((OUT/('cook-'+cook_label)/'result.json').read_text());log=(OUT/('cook-'+cook_label)/'stdout.log').read_text()
     assert result['exit_code']==0 and 'XLP cook completed with success.' in log and '(ERRORS!!)' not in log and 'Replacing asset:' not in log
     validation=json.loads((OUT/'source-validation.json').read_text());assert validation['error_count']==0 and validation['warning_count']==0
     assert json.loads((OUT/'native-check.json').read_text())['bone_counts_match']
-    code=(ROOT/'project/tools/art/verify_windmill_wood.py').read_text();code=code[code.index('def fnv(s):'):code.index('if installed:')].replace('cook-wood','cook-weathered');env=dict(OUT=OUT,NAME=NAME,RUIN=RUIN,struct=struct);exec(compile(code,'cooked_format_check','exec'),env)
+    code=(ROOT/'project/tools/art/verify_windmill_wood.py').read_text();code=code[code.index('def fnv(s):'):code.index('if installed:')].replace('cook-wood','cook-'+cook_label);env=dict(OUT=OUT,NAME=NAME,RUIN=RUIN,struct=struct);exec(compile(code,'cooked_format_check','exec'),env)
     rows=json.loads((OUT/'install-plan.json').read_text())
     for r in rows:assert sha(r['destination'])==r['before'],r['destination']
     for path,digest in json.loads((OUT/'protected.json').read_text()).items():assert sha(path)==digest,path

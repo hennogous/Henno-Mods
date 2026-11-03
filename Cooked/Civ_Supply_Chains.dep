@@ -568,7 +568,9 @@
 		</Element>
 		<Element>
 			<LibraryName text="OverlayTexture"/>
-			<PackageDependencies/>
+			<PackageDependencies>
+				<Element text="Overlay/CSC_LensPatterns.blp"/>
+			</PackageDependencies>
 		</Element>
 		<Element>
 			<LibraryName text="RouteDecalMaterial"/>

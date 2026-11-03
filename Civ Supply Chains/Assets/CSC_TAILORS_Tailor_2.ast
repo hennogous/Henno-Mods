@@ -51,19 +51,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-20.400593</x>
-							<y>-9.807961</y>
-							<z>0.020000</z>
+							<x>-18.102328352</x>
+							<y>-8.763550221</y>
+							<z>0.020000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>-0.000000</y>
-							<z>2.393686</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>2.190411000</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_Cutting_Seat"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>0.420000</m_scale>
+						<m_scale>0.420000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -103,19 +103,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-17.725706</x>
-							<y>-9.586398</y>
-							<z>0.020000</z>
+							<x>-15.527244144</x>
+							<y>-8.006548274</y>
+							<z>0.020000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>-0.000000</y>
-							<z>2.779061</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>2.575786000</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_Cutting_Table"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.100000</m_scale>
+						<m_scale>1.100000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -155,19 +155,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-19.151373</x>
-							<y>-4.594420</y>
-							<z>-0.033264</z>
+							<x>-17.931328055</x>
+							<y>-3.405162472</y>
+							<z>-0.033264000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.872448</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.669173000</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_DIS_COM_Crate_01"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>1.000000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -207,19 +207,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-20.181612</x>
-							<y>-5.706991</y>
-							<z>-0.033264</z>
+							<x>-18.715751552</x>
+							<y>-4.702808959</y>
+							<z>-0.033264000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.762543</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>0.559268000</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_DIS_COM_Crate_02"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>1.000000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -259,19 +259,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-21.342560</x>
-							<y>-8.227933</y>
-							<z>0.020000</z>
+							<x>-19.343873750</x>
+							<y>-7.406216314</y>
+							<z>0.020000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>-0.000000</y>
-							<z>-3.104689</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>2.975221307</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_Folded_Stock"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>0.850000</m_scale>
+						<m_scale>0.850000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -311,19 +311,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-20.420761</x>
-							<y>-6.226037</y>
-							<z>0.000000</z>
+							<x>-18.845192680</x>
+							<y>-5.259447072</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>-0.000000</y>
-							<z>-0.000000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>-0.203275000</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_LeanTo"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>1.000000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -363,19 +363,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-21.342560</x>
-							<y>-8.227933</y>
-							<z>0.020000</z>
+							<x>-19.343873750</x>
+							<y>-7.406216314</y>
+							<z>0.020000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>-0.000000</y>
-							<z>-3.104689</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>2.975221307</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_Sheltered_Counter"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>0.850000</m_scale>
+						<m_scale>0.850000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -415,19 +415,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-17.958271</x>
-							<y>-9.555810</y>
-							<z>0.020000</z>
+							<x>-15.761195833</x>
+							<y>-8.023539812</y>
+							<z>0.020000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>-0.000000</y>
-							<z>2.779061</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>2.575786000</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_Table_Contents"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.100000</m_scale>
+						<m_scale>1.100000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -467,19 +467,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-19.710264</x>
-							<y>-10.487699</y>
-							<z>0.178875</z>
+							<x>-17.288988623</x>
+							<y>-9.289930656</y>
+							<z>0.178875000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>-0.000000</y>
-							<z>-0.822889</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>-1.026164000</z>
 						</m_orientation>
 						<m_Name text="CSC_Attach_Work_Dress_Form"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.150000</m_scale>
+						<m_scale>1.150000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -519,19 +519,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-6.971439</x>
-							<y>-7.997732</y>
-							<z>0.000000</z>
+							<x>-5.315116857</x>
+							<y>-4.279542152</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.000000</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>-0.203275000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_71"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>1.000000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -571,19 +571,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-10.943951</x>
-							<y>-12.690930</y>
-							<z>0.553391</z>
+							<x>-8.258384219</x>
+							<y>-9.678073090</y>
+							<z>0.553391000</z>
 						</m_position>
 						<m_orientation>
-							<x>-0.000337</x>
-							<y>-0.005004</y>
-							<z>-3.123828</z>
+							<x>-0.000337000</x>
+							<y>-0.005004000</y>
+							<z>2.956082307</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_3"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>1.000000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -623,19 +623,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-9.524414</x>
-							<y>-10.786446</y>
-							<z>0.000000</z>
+							<x>-7.252547897</x>
+							<y>-7.526227860</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.295664</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>-0.498939000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_4"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>1.000000</m_scale>
+						<m_scale>1.000000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -675,19 +675,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-6.914690</x>
-							<y>-12.843011</y>
-							<z>0.000000</z>
+							<x>-4.281381154</x>
+							<y>-9.013603784</y>
+							<z>0.000000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>2.959442</z>
+							<x>0.000000000</x>
+							<y>-0.000000000</y>
+							<z>2.756167000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_1"/>
 						<m_BoneName text="CSC_TAILORS_Tailor"/>
 						<m_ModelInstanceName text="CSC_TAILORS_Tailor"/>
-						<m_scale>0.800000</m_scale>
+						<m_scale>0.800000000</m_scale>
 					</Element>
 				</m_Points>
 			</m_attachmentPoints>
@@ -3321,4 +3321,3 @@
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..AssetInstance>
-

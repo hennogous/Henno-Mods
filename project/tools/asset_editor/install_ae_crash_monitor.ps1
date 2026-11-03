@@ -5,11 +5,11 @@ $ErrorActionPreference = 'Stop'
 $taskName = 'CSC Asset Editor Crash Capture'
 $installed = "$env:USERPROFILE\Desktop\Codex\Tools\AE Crash Capture"
 $output = "$env:USERPROFILE\Desktop\Codex\AE_Crash_Captures"
-$description = 'CSC AE diagnostics: hidden per-user ProcDump supervisor; full native crash dumps and AE logs; re-arms after each session.'
+$description = 'CSC AE diagnostics: hidden per-user ProcDump supervisor; mini dumps, bounded logs and dump retention; re-arms after each session.'
 $old = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
-if ($old -and $old.Description -ne $description) { throw "An unrelated task already uses the name $taskName." }
+if ($old -and $old.Description -ne $description -and $old.Description -ne 'CSC AE diagnostics: hidden per-user ProcDump supervisor; full native crash dumps and AE logs; re-arms after each session.') { throw "An unrelated task already uses the name $taskName." }
 New-Item -ItemType Directory -Path $installed -Force | Out-Null
-foreach ($file in @('capture_ae_crash.ps1', 'watch_ae_crashes.ps1', 'watch_ae_assertions.ps1')) {
+foreach ($file in @('capture_ae_crash.ps1', 'watch_ae_crashes.ps1', 'watch_ae_assertions.ps1', 'ae_capture_storage.ps1')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination $installed -Force
 }
 $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name

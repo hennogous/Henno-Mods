@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AssetObjects:GeometryInstance>
+<AssetObjects..GeometryInstance>
 <m_CookParams>
 <m_Values/>
 </m_CookParams>
@@ -24,10 +24,10 @@
 <m_nVertexCount>1019</m_nVertexCount>
 </Element>
 <Element>
-<m_Name text="CSC_BAKERS_Oven_Bldg"/>
+<m_Name text="CSC_Fixed_BAKERS_Oven_v2_01_0"/>
 <m_Groups>
 <Element>
-<m_Name text="CSC_BAKERS_Oven_Bldg"/>
+<m_Name text="CSC_ALL_Props_01"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>427</m_nPrims>
 </Element>
@@ -35,6 +35,32 @@
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
 <m_nPrimitiveCount>427</m_nPrimitiveCount>
 <m_nVertexCount>879</m_nVertexCount>
+</Element>
+<Element>
+<m_Name text="CSC_Fixed_BAKERS_Peel_02_0"/>
+<m_Groups>
+<Element>
+<m_Name text="CSC_ALL_Props_01"/>
+<m_nFirstPrim>0</m_nFirstPrim>
+<m_nPrims>32</m_nPrims>
+</Element>
+</m_Groups>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nPrimitiveCount>32</m_nPrimitiveCount>
+<m_nVertexCount>60</m_nVertexCount>
+</Element>
+<Element>
+<m_Name text="CSC_Fixed_BAKERS_Peel_03_0"/>
+<m_Groups>
+<Element>
+<m_Name text="CSC_ALL_Props_01"/>
+<m_nFirstPrim>0</m_nFirstPrim>
+<m_nPrims>32</m_nPrims>
+</Element>
+</m_Groups>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nPrimitiveCount>32</m_nPrimitiveCount>
+<m_nVertexCount>60</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
@@ -59,4 +85,4 @@
 <Element text="LandmarkModel"/>
 </m_Tags>
 <m_Groups/>
-</AssetObjects:GeometryInstance>
+</AssetObjects..GeometryInstance>

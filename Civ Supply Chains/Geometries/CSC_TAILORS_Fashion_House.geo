@@ -1,7 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <AssetObjects..GeometryInstance>
   <m_CookParams>
-    <m_Values />
+    <m_Values/>
   </m_CookParams>
   <m_Version>
     <major>0</major>
@@ -11,10 +11,10 @@
   </m_Version>
   <m_Meshes>
     <Element>
-      <m_Name text="CSC_Level_3_Bldg" />
+      <m_Name text="CSC_Level_3_Bldg"/>
       <m_Groups>
         <Element>
-          <m_Name text="CSC_Level_3_Bldg" />
+          <m_Name text="CSC_Level_3_Bldg"/>
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>1050</m_nPrims>
         </Element>
@@ -24,20 +24,20 @@
       <m_nVertexCount>1426</m_nVertexCount>
     </Element>
     <Element>
-      <m_Name text="CSC_TAILORS_Fashion_House_Fixed" />
+      <m_Name text="CSC_TAILORS_Fashion_House_Fixed"/>
       <m_Groups>
         <Element>
-          <m_Name text="CSC_ALL_Props_01" />
+          <m_Name text="CSC_ALL_Props_01"/>
           <m_nFirstPrim>0</m_nFirstPrim>
           <m_nPrims>608</m_nPrims>
         </Element>
         <Element>
-          <m_Name text="CSC_Fashion_House_Arbour" />
+          <m_Name text="CSC_Fashion_House_Arbour"/>
           <m_nFirstPrim>608</m_nFirstPrim>
           <m_nPrims>94</m_nPrims>
         </Element>
         <Element>
-          <m_Name text="CSC_Fashion_House_Screens" />
+          <m_Name text="CSC_Fashion_House_Screens"/>
           <m_nFirstPrim>702</m_nFirstPrim>
           <m_nPrims>114</m_nPrims>
         </Element>
@@ -46,27 +46,157 @@
       <m_nPrimitiveCount>816</m_nPrimitiveCount>
       <m_nVertexCount>889</m_nVertexCount>
     </Element>
+  <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_0"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>64</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>64</m_nPrimitiveCount>
+      <m_nVertexCount>68</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_1"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>6</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>6</m_nPrimitiveCount>
+      <m_nVertexCount>8</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_2"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>10</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>10</m_nPrimitiveCount>
+      <m_nVertexCount>14</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_3"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>128</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>128</m_nPrimitiveCount>
+      <m_nVertexCount>87</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_4"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>28</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>28</m_nPrimitiveCount>
+      <m_nVertexCount>27</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_5"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>28</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>28</m_nPrimitiveCount>
+      <m_nVertexCount>27</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_6"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>10</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>10</m_nPrimitiveCount>
+      <m_nVertexCount>20</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_7"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>10</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>10</m_nPrimitiveCount>
+      <m_nVertexCount>20</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_8"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>10</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>10</m_nPrimitiveCount>
+      <m_nVertexCount>20</m_nVertexCount>
+    </Element>
+    <Element>
+      <m_Name text="CSC_Fixed_TAILORS_Fashion_House_Fitting_01_9"/>
+      <m_Groups>
+        <Element>
+          <m_Name text="CSC_Fashion_House_Fabrics"/>
+          <m_nFirstPrim>0</m_nFirstPrim>
+          <m_nPrims>10</m_nPrims>
+        </Element>
+      </m_Groups>
+      <m_nBoundBoneCount>1</m_nBoundBoneCount>
+      <m_nPrimitiveCount>10</m_nPrimitiveCount>
+      <m_nVertexCount>20</m_nVertexCount>
+    </Element>
   </m_Meshes>
   <m_Bones>
-    <Element text="CSC_TAILORS_Fashion_House" />
-    <Element text="Bone" />
+    <Element text="CSC_TAILORS_Fashion_House"/>
+    <Element text="Bone"/>
   </m_Bones>
-  <m_ModelName text="CSC_TAILORS_Fashion_House" />
-  <m_SourceFilePath text="" />
-  <m_SourceObjectName text="" />
+  <m_ModelName text="CSC_TAILORS_Fashion_House"/>
+  <m_SourceFilePath text=""/>
+  <m_SourceObjectName text=""/>
   <m_ImportedTime>0</m_ImportedTime>
   <m_ExportedTime>0</m_ExportedTime>
-  <m_ClassName text="LandmarkModel" />
+  <m_ClassName text="LandmarkModel"/>
   <m_DataFiles>
     <Element>
-      <m_ID text="GR2" />
-      <m_RelativePath text="CSC_TAILORS_Fashion_House.fgx" />
+      <m_ID text="GR2"/>
+      <m_RelativePath text="CSC_TAILORS_Fashion_House.fgx"/>
     </Element>
   </m_DataFiles>
-  <m_Name text="CSC_TAILORS_Fashion_House" />
-  <m_Description text="CSC_Level_1_Decals" />
+  <m_Name text="CSC_TAILORS_Fashion_House"/>
+  <m_Description text="CSC_Level_1_Decals"/>
   <m_Tags>
-    <Element text="LandmarkModel" />
+    <Element text="LandmarkModel"/>
   </m_Tags>
-  <m_Groups />
+  <m_Groups/>
 </AssetObjects..GeometryInstance>

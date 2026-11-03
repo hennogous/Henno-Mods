@@ -2565,7 +2565,7 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="IMP_Farm_CSC_Flax_Decal_Transition_05"/>
+									<m_EntryName text="CSC_IMP_Farm_Flax_Decal_Transition_05"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -2617,7 +2617,7 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="IMP_Farm_CSC_Flax_Decal_Angled_03"/>
+									<m_EntryName text="CSC_IMP_Farm_Flax_Decal_Angled_03"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>

@@ -61,8 +61,8 @@
 							<z>-3.141591</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_6"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>1.000000</m_scale>
 					</Element>
 					<Element>
@@ -113,8 +113,8 @@
 							<z>0.493902</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_7"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.500000</m_scale>
 					</Element>
 					<Element>
@@ -165,8 +165,8 @@
 							<z>0.586707</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_8"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.500000</m_scale>
 					</Element>
 					<Element>
@@ -217,8 +217,8 @@
 							<z>-1.108352</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_11"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.800000</m_scale>
 					</Element>
 					<Element>
@@ -269,8 +269,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_16"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.700000</m_scale>
 					</Element>
 					<Element>
@@ -321,8 +321,8 @@
 							<z>-3.141591</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_17"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>1.000000</m_scale>
 					</Element>
 					<Element>
@@ -373,61 +373,9 @@
 							<z>-3.141591</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_18"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>1.000000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_BAKERS_Cafe_Counter"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="csc_tilebases.xlp"/>
-									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="PERMANENT"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>18.907476</x>
-							<y>3.020519</y>
-							<z>0.000000</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.517434</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_1"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
-						<m_scale>0.612362</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -477,61 +425,9 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_2"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>1.000000</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_BAKERS_Cafe_Brewing_Set"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="csc_tilebases.xlp"/>
-									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="PERMANENT"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>18.260406</x>
-							<y>3.597883</y>
-							<z>-0.600635</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>-0.376396</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_3"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
-						<m_scale>0.997500</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -581,61 +477,9 @@
 							<z>1.836222</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_4"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.922070</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_BAKERS_Cafe_Pastry_Tray"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="csc_tilebases.xlp"/>
-									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="PERMANENT"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>19.183462</x>
-							<y>2.636293</y>
-							<z>1.152029</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>1.008732</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_5"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
-						<m_scale>0.684000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -685,8 +529,8 @@
 							<z>2.502069</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_9"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.852264</m_scale>
 					</Element>
 					<Element>
@@ -737,61 +581,9 @@
 							<z>2.463814</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_12"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.820560</m_scale>
-					</Element>
-					<Element>
-						<m_CookParams>
-							<m_Values>
-								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_BAKERS_Cafe_Counter"/>
-									<m_XLPClass text="TileBase"/>
-									<m_XLPPath text="csc_tilebases.xlp"/>
-									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
-									<m_LibraryName text="TileBase"/>
-									<m_ParamName text="Asset"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="NONE"/>
-									<m_ParamName text="ConnectionType"/>
-								</Element>
-								<Element class="AssetObjects..ArtDefReferenceValue">
-									<m_ElementName text="DON'T CARE"/>
-									<m_RootCollectionName text="ResourceTags"/>
-									<m_ArtDefPath text="Landmarks.artdef"/>
-									<m_CollectionIsLocked>true</m_CollectionIsLocked>
-									<m_TemplateName text="Landmarks"/>
-									<m_ParamName text="ResourceType"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="Pivot Height"/>
-									<m_ParamName text="TerrainFollowMode"/>
-								</Element>
-								<Element class="AssetObjects..StringValue">
-									<m_Value text="PERMANENT"/>
-									<m_ParamName text="Cull Mode"/>
-								</Element>
-								<Element class="AssetObjects..BoolValue">
-									<m_bValue>true</m_bValue>
-									<m_ParamName text="RandomizeAnims"/>
-								</Element>
-							</m_Values>
-						</m_CookParams>
-						<m_position>
-							<x>17.697584</x>
-							<y>3.709139</y>
-							<z>0.000000</z>
-						</m_position>
-						<m_orientation>
-							<x>0.000000</x>
-							<y>0.000000</y>
-							<z>0.517434</z>
-						</m_orientation>
-						<m_Name text="newAttachmentPoint_13"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
-						<m_scale>0.612362</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -841,8 +633,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_14"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.922070</m_scale>
 					</Element>
 					<Element>
@@ -893,8 +685,8 @@
 							<z>0.139677</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_15"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.879332</m_scale>
 					</Element>
 					<Element>
@@ -945,8 +737,8 @@
 							<z>-2.915208</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_19"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.820560</m_scale>
 					</Element>
 					<Element>
@@ -997,8 +789,8 @@
 							<z>-0.686708</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_20"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.922070</m_scale>
 					</Element>
 					<Element>
@@ -1049,8 +841,8 @@
 							<z>1.417310</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_21"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.922070</m_scale>
 					</Element>
 					<Element>
@@ -1101,8 +893,8 @@
 							<z>-2.384466</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_22"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.820560</m_scale>
 					</Element>
 					<Element>
@@ -1153,8 +945,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_23"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.922070</m_scale>
 					</Element>
 					<Element>
@@ -1205,8 +997,8 @@
 							<z>1.415377</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_24"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.922070</m_scale>
 					</Element>
 					<Element>
@@ -1257,8 +1049,8 @@
 							<z>1.130227</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_25"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.879332</m_scale>
 					</Element>
 					<Element>
@@ -1309,8 +1101,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_10"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.700600</m_scale>
 					</Element>
 					<Element>
@@ -1361,8 +1153,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_26"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.620000</m_scale>
 					</Element>
 					<Element>
@@ -1413,8 +1205,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_27"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.356255</m_scale>
 					</Element>
 					<Element>
@@ -1465,8 +1257,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_28"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.356255</m_scale>
 					</Element>
 					<Element>
@@ -1569,8 +1361,8 @@
 							<z>2.539622</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_30"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.409087</m_scale>
 					</Element>
 					<Element>
@@ -1621,8 +1413,8 @@
 							<z>1.500859</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_31"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.409087</m_scale>
 					</Element>
 					<Element>
@@ -1673,8 +1465,8 @@
 							<z>1.975875</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_32"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.409087</m_scale>
 					</Element>
 					<Element>
@@ -1725,8 +1517,8 @@
 							<z>2.941625</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_33"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.409087</m_scale>
 					</Element>
 					<Element>
@@ -1777,8 +1569,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_34"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.609196</m_scale>
 					</Element>
 					<Element>
@@ -1829,8 +1621,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_35"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.609196</m_scale>
 					</Element>
 					<Element>
@@ -1881,8 +1673,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_36"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.609196</m_scale>
 					</Element>
 					<Element>
@@ -1933,8 +1725,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_37"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.609196</m_scale>
 					</Element>
 					<Element>
@@ -1985,8 +1777,8 @@
 							<z>0.457764</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_38"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.609196</m_scale>
 					</Element>
 					<Element>
@@ -2037,8 +1829,8 @@
 							<z>0.457764</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_39"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.609196</m_scale>
 					</Element>
 					<Element>
@@ -2089,8 +1881,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_40"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.609196</m_scale>
 					</Element>
 					<Element>
@@ -2141,8 +1933,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_41"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.530000</m_scale>
 					</Element>
 					<Element>
@@ -2193,8 +1985,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_42"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.530000</m_scale>
 					</Element>
 					<Element>
@@ -2245,8 +2037,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_43"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.530000</m_scale>
 					</Element>
 					<Element>
@@ -2297,8 +2089,8 @@
 							<z>-2.290349</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_44"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.632000</m_scale>
 					</Element>
 					<Element>
@@ -2349,8 +2141,8 @@
 							<z>3.002470</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_45"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.632000</m_scale>
 					</Element>
 					<Element>
@@ -2401,8 +2193,8 @@
 							<z>0.582178</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_46"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.400564</m_scale>
 					</Element>
 					<Element>
@@ -2453,8 +2245,8 @@
 							<z>0.582178</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_47"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.400564</m_scale>
 					</Element>
 					<Element>
@@ -2505,8 +2297,8 @@
 							<z>-0.103071</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_48"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.400564</m_scale>
 					</Element>
 					<Element>
@@ -2557,8 +2349,8 @@
 							<z>0.000000</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_49"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>0.770000</m_scale>
 					</Element>
 					<Element>
@@ -2609,8 +2401,8 @@
 							<z>1.238756</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_50"/>
-						<m_BoneName text="CSC_Level_3"/>
-						<m_ModelInstanceName text="CSC_Level_3"/>
+						<m_BoneName text="CSC_BAKERS_Cafe"/>
+						<m_ModelInstanceName text="CSC_BAKERS_Cafe"/>
 						<m_scale>1.681271</m_scale>
 					</Element>
 				</m_Points>
@@ -3406,8 +3198,8 @@
 				</m_GroupStates>
 			</Element>
 			<Element>
-				<m_Name text="CSC_Level_3"/>
-				<m_GeoName text="CSC_Level_3"/>
+				<m_Name text="CSC_BAKERS_Cafe"/>
+				<m_GeoName text="CSC_BAKERS_Cafe"/>
 				<m_GroupStates>
 					<Element>
 						<m_Values>
@@ -3819,7 +3611,827 @@
 						<m_MeshName text="CSC_Level_3_Bldg"/>
 						<m_StateName text="Unbuilt"/>
 					</Element>
-				</m_GroupStates>
+				<Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_01_0"/>
+            <m_StateName text="Worked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_01_0"/>
+            <m_StateName text="Unworked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_01_0"/>
+            <m_StateName text="Pillaged"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_01_0"/>
+            <m_StateName text="Construction"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_01_0"/>
+            <m_StateName text="Unbuilt"/>
+          </Element>
+        <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Brewing_Set_02_0"/>
+            <m_StateName text="Worked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Brewing_Set_02_0"/>
+            <m_StateName text="Unworked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Brewing_Set_02_0"/>
+            <m_StateName text="Pillaged"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Brewing_Set_02_0"/>
+            <m_StateName text="Construction"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Brewing_Set_02_0"/>
+            <m_StateName text="Unbuilt"/>
+          </Element>
+        <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Pastry_Tray_03_0"/>
+            <m_StateName text="Worked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Pastry_Tray_03_0"/>
+            <m_StateName text="Unworked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Pastry_Tray_03_0"/>
+            <m_StateName text="Pillaged"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Pastry_Tray_03_0"/>
+            <m_StateName text="Construction"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Pastry_Tray_03_0"/>
+            <m_StateName text="Unbuilt"/>
+          </Element>
+        <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_04_0"/>
+            <m_StateName text="Worked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>true</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_04_0"/>
+            <m_StateName text="Unworked"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_04_0"/>
+            <m_StateName text="Pillaged"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_04_0"/>
+            <m_StateName text="Construction"/>
+          </Element>
+          <Element>
+            <m_Values>
+              <m_Values>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="CSC_ALL_Props_01"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="Material"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="Visible"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="FOW/DefaultMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="FOWMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text=""/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="BurnMaterial"/>
+                </Element>
+                <Element class="AssetObjects..ObjectValue">
+                  <m_ObjectName text="DefaultSnowMaterial"/>
+                  <m_eObjectType>MATERIAL</m_eObjectType>
+                  <m_ParamName text="SnowMaterial"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="EmissiveEnabled"/>
+                </Element>
+                <Element class="AssetObjects..BoolValue">
+                  <m_bValue>false</m_bValue>
+                  <m_ParamName text="FOWVisibleOnly"/>
+                </Element>
+              </m_Values>
+            </m_Values>
+            <m_GroupName text="CSC_ALL_Props_01"/>
+            <m_MeshName text="CSC_Fixed_BAKERS_Cafe_Counter_04_0"/>
+            <m_StateName text="Unbuilt"/>
+          </Element>
+        </m_GroupStates>
 			</Element>
 			<Element>
 				<m_Name text="CSC_ALL_Stage_4_Cobble_Decals_Rig"/>

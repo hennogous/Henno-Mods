@@ -1,37 +1,3024 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <AssetObjects..ArtDefSet>
-  <m_Version><major>4</major><minor>0</minor><build>434</build><revision>920</revision></m_Version>
-  <m_TemplateName text="Overlay"/>
+  <m_Version>
+    <major>4</major>
+    <minor>0</minor>
+    <build>434</build>
+    <revision>920</revision>
+  </m_Version>
+  <m_TemplateName text="Overlay" />
   <m_RootCollections>
     <Element>
-      <m_CollectionName text="Layers"/>
+      <m_CollectionName text="Layers" />
       <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
       <Element>
-        <m_Fields><m_Values>
-          <Element class="AssetObjects..StringValue"><m_Value text="BorderOverlay"/><m_ParamName text="Type"/></Element>
-          <Element class="AssetObjects..IntValue"><m_nValue>0</m_nValue><m_ParamName text="Pass"/></Element>
-          <Element class="AssetObjects..FloatValue"><m_fValue>15.5</m_fValue><m_ParamName text="Priority"/></Element>
-          <Element class="AssetObjects..BoolValue"><m_bValue>false</m_bValue><m_ParamName text="Visible"/></Element>
-          <Element class="AssetObjects..StringValue"><m_Value text="MapSearchBorder"/><m_ParamName text="Material"/></Element>
-          <Element class="AssetObjects..BoolValue"><m_bValue>true</m_bValue><m_ParamName text="ShowOnMap"/></Element>
-          <Element class="AssetObjects..BoolValue"><m_bValue>true</m_bValue><m_ParamName text="ShowOnWorld"/></Element>
-        </m_Values></m_Fields>
-        <m_ChildCollections/>
-        <m_Name text="CSC_QuarterPlacement"/>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="BorderOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>15.4</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="MapSearchBorder" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens" />
         <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
       </Element>
       <Element>
-        <m_Fields><m_Values>
-          <Element class="AssetObjects..StringValue"><m_Value text="BorderOverlay"/><m_ParamName text="Type"/></Element>
-          <Element class="AssetObjects..IntValue"><m_nValue>0</m_nValue><m_ParamName text="Pass"/></Element>
-          <Element class="AssetObjects..FloatValue"><m_fValue>15.5</m_fValue><m_ParamName text="Priority"/></Element>
-          <Element class="AssetObjects..BoolValue"><m_bValue>false</m_bValue><m_ParamName text="Visible"/></Element>
-          <Element class="AssetObjects..StringValue"><m_Value text="MapSearchBorder"/><m_ParamName text="Material"/></Element>
-          <Element class="AssetObjects..BoolValue"><m_bValue>true</m_bValue><m_ParamName text="ShowOnMap"/></Element>
-          <Element class="AssetObjects..BoolValue"><m_bValue>true</m_bValue><m_ParamName text="ShowOnWorld"/></Element>
-        </m_Values></m_Fields>
-        <m_ChildCollections/>
-        <m_Name text="CSC_QuarterLens_Improved"/>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="BorderOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>15.5</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="MapSearchBorder" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="SpriteOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>0</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="SpriteOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>0</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_Fill" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="HexHighlightOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>15</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_Tint" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="SpriteOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>2</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>25</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_Services" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PressureOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_FlowArrow" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_Flow" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PathOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_PathChevrons" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_FlowChevrons" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PathOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_PathTrade" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_FlowTrade" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PressureOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_ConveyorWaves" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterLens_FlowConveyorWaves" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="SpriteOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>0</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="SpriteOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>0</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_Fill" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="HexHighlightOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>15</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_Tint" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="SpriteOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>2</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>25</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_Services" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PressureOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_FlowArrow" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_Flow" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PathOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_PathChevrons" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_FlowChevrons" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PathOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_PathTrade" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_FlowTrade" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="PressureOverlay" />
+              <m_ParamName text="Type" />
+            </Element>
+            <Element class="AssetObjects..IntValue">
+              <m_nValue>0</m_nValue>
+              <m_ParamName text="Pass" />
+            </Element>
+            <Element class="AssetObjects..FloatValue">
+              <m_fValue>20</m_fValue>
+              <m_ParamName text="Priority" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="Visible" />
+            </Element>
+            <Element class="AssetObjects..StringValue">
+              <m_Value text="CSC_Lens_ConveyorWaves" />
+              <m_ParamName text="Material" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>false</m_bValue>
+              <m_ParamName text="ShowOnMap" />
+            </Element>
+            <Element class="AssetObjects..BoolValue">
+              <m_bValue>true</m_bValue>
+              <m_ParamName text="ShowOnWorld" />
+            </Element>
+          </m_Values>
+        </m_Fields>
+        <m_ChildCollections />
+        <m_Name text="CSC_QuarterPlacement_FlowConveyorWaves" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+    </Element>
+    <Element>
+      <m_CollectionName text="Overlays" />
+      <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="SplineBorder" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_FlowArrow" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="SplineTexture" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>76</m_r>
+                    <m_g>255</m_g>
+                    <m_b>0</m_b>
+                    <m_ParamName text="Color" />
+                  </Element>
+                  <Element class="AssetObjects..IntValue">
+                    <m_nValue>128</m_nValue>
+                    <m_ParamName text="Color_Alpha" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.5</m_fValue>
+                    <m_ParamName text="MidFOWSaturation" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="MidFOWBrightness" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>14</m_fValue>
+                    <m_ParamName text="SplineWidth" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>15</m_fValue>
+                    <m_ParamName text="SplineSegmentLength" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.1</m_fValue>
+                    <m_ParamName text="SplineScrollSpeed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Hidden" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Revealed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Visible" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_FlowArrow" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_FlowArrow" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="SplineBorder" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_FlowArrow" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="SplineTexture" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="Color" />
+                  </Element>
+                  <Element class="AssetObjects..IntValue">
+                    <m_nValue>224</m_nValue>
+                    <m_ParamName text="Color_Alpha" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.5</m_fValue>
+                    <m_ParamName text="MidFOWSaturation" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="MidFOWBrightness" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>18</m_fValue>
+                    <m_ParamName text="SplineWidth" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>32</m_fValue>
+                    <m_ParamName text="SplineSegmentLength" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.13</m_fValue>
+                    <m_ParamName text="SplineScrollSpeed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Hidden" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Revealed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Visible" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_PathChevrons" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_PathChevrons" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="SplineBorder" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="TradeRoutePrimary" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="Overlay.xlp" />
+                    <m_BLPPackage text="Overlay" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="SplineTexture" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="Color" />
+                  </Element>
+                  <Element class="AssetObjects..IntValue">
+                    <m_nValue>224</m_nValue>
+                    <m_ParamName text="Color_Alpha" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.5</m_fValue>
+                    <m_ParamName text="MidFOWSaturation" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="MidFOWBrightness" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>18</m_fValue>
+                    <m_ParamName text="SplineWidth" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>32</m_fValue>
+                    <m_ParamName text="SplineSegmentLength" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.13</m_fValue>
+                    <m_ParamName text="SplineScrollSpeed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Hidden" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Revealed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Visible" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_PathTrade" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_PathTrade" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="SplineBorder" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_ConveyorWave" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="SplineTexture" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="Color" />
+                  </Element>
+                  <Element class="AssetObjects..IntValue">
+                    <m_nValue>255</m_nValue>
+                    <m_ParamName text="Color_Alpha" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.5</m_fValue>
+                    <m_ParamName text="MidFOWSaturation" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="MidFOWBrightness" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>18</m_fValue>
+                    <m_ParamName text="SplineWidth" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>48</m_fValue>
+                    <m_ParamName text="SplineSegmentLength" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0.10</m_fValue>
+                    <m_ParamName text="SplineScrollSpeed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>0</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Hidden" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Revealed" />
+                  </Element>
+                  <Element class="AssetObjects..FloatValue">
+                    <m_fValue>1</m_fValue>
+                    <m_ParamName text="FOWStateAlpha_Visible" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_ConveyorWaves" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_ConveyorWaves" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>122</m_r>
+                    <m_g>55</m_g>
+                    <m_b>0</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_BASE" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_BASE" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_BaseUnready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>122</m_r>
+                    <m_g>55</m_g>
+                    <m_b>0</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BASE_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BASE_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>122</m_r>
+                    <m_g>55</m_g>
+                    <m_b>0</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BASE_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BASE_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>234</m_r>
+                    <m_g>135</m_g>
+                    <m_b>6</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_SPEC" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_SPEC" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>234</m_r>
+                    <m_g>135</m_g>
+                    <m_b>6</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_SPEC_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_SPEC_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>234</m_r>
+                    <m_g>135</m_g>
+                    <m_b>6</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_SPEC_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_SPEC_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>182</m_r>
+                    <m_g>168</m_g>
+                    <m_b>53</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_SALE" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_SALE" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>182</m_r>
+                    <m_g>168</m_g>
+                    <m_b>53</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_SALE_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_SALE_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>182</m_r>
+                    <m_g>168</m_g>
+                    <m_b>53</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_SALE_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_SALE_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>14</m_r>
+                    <m_g>84</m_g>
+                    <m_b>169</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_APOTHECARIES_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_APOTHECARIES_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>14</m_r>
+                    <m_g>84</m_g>
+                    <m_b>169</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_APOTHECARIES_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_APOTHECARIES_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>14</m_r>
+                    <m_g>84</m_g>
+                    <m_b>169</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_APOTHECARIES_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_APOTHECARIES_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>95</m_r>
+                    <m_g>130</m_g>
+                    <m_b>28</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_BAKERS_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_BAKERS_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>95</m_r>
+                    <m_g>130</m_g>
+                    <m_b>28</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BAKERS_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BAKERS_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>95</m_r>
+                    <m_g>130</m_g>
+                    <m_b>28</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BAKERS_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BAKERS_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_BLACKSMITHS_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_BLACKSMITHS_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BLACKSMITHS_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BLACKSMITHS_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BLACKSMITHS_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BLACKSMITHS_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>194</m_r>
+                    <m_g>175</m_g>
+                    <m_b>56</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_BREWERS_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_BREWERS_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>194</m_r>
+                    <m_g>175</m_g>
+                    <m_b>56</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BREWERS_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BREWERS_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>194</m_r>
+                    <m_g>175</m_g>
+                    <m_b>56</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_BREWERS_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_BREWERS_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_CARPENTERS_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_CARPENTERS_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_CARPENTERS_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_CARPENTERS_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_CARPENTERS_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_CARPENTERS_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>194</m_r>
+                    <m_g>175</m_g>
+                    <m_b>56</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_GOLDSMITHS_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_GOLDSMITHS_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>194</m_r>
+                    <m_g>175</m_g>
+                    <m_b>56</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_GOLDSMITHS_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_GOLDSMITHS_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>194</m_r>
+                    <m_g>175</m_g>
+                    <m_b>56</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_GOLDSMITHS_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_GOLDSMITHS_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_STONEMASONS_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_STONEMASONS_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_STONEMASONS_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_STONEMASONS_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>190</m_r>
+                    <m_g>107</m_g>
+                    <m_b>10</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_STONEMASONS_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_STONEMASONS_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexOutline" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>144</m_r>
+                    <m_g>55</m_g>
+                    <m_b>170</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Ready_TAILORS_QUARTER" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Ready_TAILORS_QUARTER" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Unready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>144</m_r>
+                    <m_g>55</m_g>
+                    <m_b>170</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_TAILORS_QUARTER_Unready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_TAILORS_QUARTER_Unready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_HexFill_Ready" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>20</m_x>
+                    <m_y>20</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="HEX_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>144</m_r>
+                    <m_g>55</m_g>
+                    <m_b>170</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Fill_TAILORS_QUARTER_Ready" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Fill_TAILORS_QUARTER_Ready" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_Service_BAKERS" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>48</m_x>
+                    <m_y>48</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="RECT_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Service_BAKERS" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Service_BAKERS" />
+        <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+      </Element>
+      <Element>
+        <m_Fields>
+          <m_Values />
+        </m_Fields>
+        <m_ChildCollections>
+          <Element>
+            <m_CollectionName text="Texture" />
+            <m_ReplaceMergedCollectionElements>false</m_ReplaceMergedCollectionElements>
+            <Element>
+              <m_Fields>
+                <m_Values>
+                  <Element class="AssetObjects..BLPEntryValue">
+                    <m_EntryName text="CSC_Lens_Service_TAILORS" />
+                    <m_XLPClass text="OverlayTexture" />
+                    <m_XLPPath text="CSC_LensPatterns.xlp" />
+                    <m_BLPPackage text="Overlay/CSC_LensPatterns" />
+                    <m_LibraryName text="OverlayTexture" />
+                    <m_ParamName text="StaticTexture" />
+                  </Element>
+                  <Element class="AssetObjects..BoolValue">
+                    <m_bValue>false</m_bValue>
+                    <m_ParamName text="RotateToAlign" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>48</m_x>
+                    <m_y>48</m_y>
+                    <m_ParamName text="RectDims" />
+                  </Element>
+                  <Element class="AssetObjects..StringValue">
+                    <m_Value text="RECT_GEO" />
+                    <m_ParamName text="GeomType" />
+                  </Element>
+                  <Element class="AssetObjects..Coord2DValue">
+                    <m_x>1</m_x>
+                    <m_y>1</m_y>
+                    <m_ParamName text="NumTiles" />
+                  </Element>
+                  <Element class="AssetObjects..RGBValue">
+                    <m_r>255</m_r>
+                    <m_g>255</m_g>
+                    <m_b>255</m_b>
+                    <m_ParamName text="TintColor" />
+                  </Element>
+                </m_Values>
+              </m_Fields>
+              <m_ChildCollections />
+              <m_Name text="CSC_Lens_Service_TAILORS" />
+              <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
+            </Element>
+          </Element>
+        </m_ChildCollections>
+        <m_Name text="CSC_Lens_Service_TAILORS" />
         <m_AppendMergedParameterCollections>false</m_AppendMergedParameterCollections>
       </Element>
     </Element>

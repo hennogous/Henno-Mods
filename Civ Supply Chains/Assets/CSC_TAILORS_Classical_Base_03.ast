@@ -2149,7 +2149,7 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="IMP_Farm_CSC_Flax_Decal_Transition_05"/>
+									<m_EntryName text="CSC_IMP_Farm_Flax_Decal_Transition_05"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -2201,7 +2201,7 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="IMP_Farm_CSC_Flax_Decal_Angled_03"/>
+									<m_EntryName text="CSC_IMP_Farm_Flax_Decal_Angled_03"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -3327,25 +3327,25 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-3.139355278</x>
-							<y>16.838217096</y>
-							<z>0.000000000</z>
+							<x>-3.088486</x>
+							<y>16.493372</y>
+							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000000</x>
-							<y>-0.000000000</y>
-							<z>-0.386454580</z>
+							<x>0.000000</x>
+							<y>0.000000</y>
+							<z>-0.442761</z>
 						</m_orientation>
 						<m_Name text="newAttachmentPoint_6"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>1.000000002</m_scale>
+						<m_scale>1.000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_TAILORS_Storage_Delivery_Split"/>
+									<m_EntryName text="CSC_TAILORS_Delivery"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -3379,19 +3379,19 @@
 							</m_Values>
 						</m_CookParams>
 						<m_position>
-							<x>-3.139355278</x>
-							<y>16.838217096</y>
-							<z>0.000000000</z>
+							<x>-3.139355</x>
+							<y>16.838217</y>
+							<z>0.000000</z>
 						</m_position>
 						<m_orientation>
-							<x>0.000000000</x>
-							<y>-0.000000000</y>
-							<z>-0.386454580</z>
+							<x>0.000000</x>
+							<y>-0.000000</y>
+							<z>-0.386455</z>
 						</m_orientation>
-						<m_Name text="CSC_TAILORS_Storage_Delivery_Split"/>
+						<m_Name text="CSC_TAILORS_Delivery"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
-						<m_scale>1.000000002</m_scale>
+						<m_scale>1.000000</m_scale>
 					</Element>
 					<Element>
 						<m_CookParams>
@@ -8445,3 +8445,4 @@
 	<m_Description text=""/>
 	<m_Tags/>
 </AssetObjects..AssetInstance>
+

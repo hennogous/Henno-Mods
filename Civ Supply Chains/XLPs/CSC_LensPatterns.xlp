@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<AssetObjects..XLP>
+  <m_ClassName text="OverlayTexture" />
+  <m_PackageName text="Overlay/CSC_LensPatterns" />
+  <m_Entries>
+    <Element>
+      <m_EntryID text="CSC_Lens_Chevrons" />
+      <m_ObjectName text="CSC_Lens_Chevrons" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_BaseReady" />
+      <m_ObjectName text="CSC_Lens_BaseReady" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_HexOutline" />
+      <m_ObjectName text="CSC_Lens_HexOutline" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_FlowArrow" />
+      <m_ObjectName text="CSC_Lens_FlowArrow" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_Conveyor" />
+      <m_ObjectName text="CSC_Lens_Conveyor" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_ConveyorWave" />
+      <m_ObjectName text="CSC_Lens_ConveyorWave" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_Service_BAKERS" />
+      <m_ObjectName text="CSC_Lens_Service_BAKERS" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_Service_TAILORS" />
+      <m_ObjectName text="CSC_Lens_Service_TAILORS" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_HexFill_BaseUnready" />
+      <m_ObjectName text="CSC_Lens_HexFill_BaseUnready" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_HexFill_Ready" />
+      <m_ObjectName text="CSC_Lens_HexFill_Ready" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Lens_HexFill_Unready" />
+      <m_ObjectName text="CSC_Lens_HexFill_Unready" />
+    </Element>
+  </m_Entries>
+  <m_AllowedPlatforms>
+    <Element>WINDOWS</Element>
+  </m_AllowedPlatforms>
+</AssetObjects..XLP>

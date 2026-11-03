@@ -268,7 +268,10 @@ class Builder:
         sun = bpy.data.objects.new("CSC_" + self.mode + "_Key", bpy.data.lights.new("CSC_Key", "SUN"))
         scene.collection.objects.link(sun)
         sun.data.energy, sun.data.angle = preset["sun_energy"], math.radians(preset["sun_angle"])
-        sun.location = target + Vector(preset["sun_direction"])
+        # A class-wide geometry rotation must carry its light direction too,
+        # otherwise fixed-camera registration preserves shape but changes shading.
+        sun_direction = locked[self.mode].get("sun_direction", preset["sun_direction"]) if locked else preset["sun_direction"]
+        sun.location = target + Vector(sun_direction)
         sun.rotation_euler = (target - sun.location).to_track_quat("-Z", "Y").to_euler()
         scene.view_settings.view_transform = preset["view_transform"]
         scene.view_settings.exposure, scene.view_settings.gamma = preset["exposure"], 1

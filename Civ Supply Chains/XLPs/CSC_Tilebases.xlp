@@ -10,100 +10,68 @@
   <m_PackageName text="Landmarks/CSC_Tilebases" />
   <m_Entries>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Angled_01" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Angled_01" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Angled_01" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Angled_01" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Angled_02" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Angled_02" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Angled_02" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Angled_02" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Angled_03" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Angled_03" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Angled_03" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Angled_03" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Angled_04" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Angled_04" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Square_01" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Square_01" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_01" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_01" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Square_02" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Square_02" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_02" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_02" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Square_03" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Square_03" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_03" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_03" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Square_04" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Square_04" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_04" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_04" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Square_05" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Square_05" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_05" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_05" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_01" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_01" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_06" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_06" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_02" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_02" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_07" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_07" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_03" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_03" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Square_08" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Square_08" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_04" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_04" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_01" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_01" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_05" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_05" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_02" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_02" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_06" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_06" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_03" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_03" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_07" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_07" />
     </Element>
     <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_04" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_04" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_05" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_05" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_06" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_06" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_07" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_07" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_09" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_09" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_10" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_10" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_11" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_11" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_12" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_12" />
-    </Element>
-    <Element>
-      <m_EntryID text="IMP_Farm_CSC_Flax_Decal_Transition_08" />
-      <m_ObjectName text="IMP_Farm_CSC_Flax_Decal_Transition_08" />
+      <m_EntryID text="CSC_IMP_Farm_Flax_Decal_Transition_08" />
+      <m_ObjectName text="CSC_IMP_Farm_Flax_Decal_Transition_08" />
     </Element>
     <Element>
       <m_EntryID text="CSC_BAKERS_Flour" />
@@ -120,10 +88,6 @@
     <Element>
       <m_EntryID text="CSC_BAKERS_Classical_Base_08" />
       <m_ObjectName text="CSC_BAKERS_Classical_Base_08" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_BAKERS_Wind_Mill_Tower" />
-      <m_ObjectName text="CSC_BAKERS_Wind_Mill_Tower" />
     </Element>
     <Element>
       <m_EntryID text="CSC_BAKERS_Water_Mill_Wheel" />
@@ -152,10 +116,6 @@
     <Element>
       <m_EntryID text="CSC_ALL_Curved_Path" />
       <m_ObjectName text="CSC_ALL_Curved_Path" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_ALL_Circle_Patch" />
-      <m_ObjectName text="CSC_ALL_Circle_Patch" />
     </Element>
     <Element>
       <m_EntryID text="CSC_ALL_Organic_Patch_L" />
@@ -278,10 +238,6 @@
       <m_ObjectName text="CSC_TAILORS_Classical_Base_03" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_TAILORS_RugTable" />
-      <m_ObjectName text="CSC_TAILORS_RugTable" />
-    </Element>
-    <Element>
       <m_EntryID text="CSC_TAILORS_Rugs" />
       <m_ObjectName text="CSC_TAILORS_Rugs" />
     </Element>
@@ -292,10 +248,6 @@
     <Element>
       <m_EntryID text="CSC_ALL_Cloth_Roll_Canvas" />
       <m_ObjectName text="CSC_ALL_Cloth_Roll_Canvas" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_ALL_Folded_Cloth_Teal" />
-      <m_ObjectName text="CSC_ALL_Folded_Cloth_Teal" />
     </Element>
     <Element>
       <m_EntryID text="CSC_ALL_Textile_Bale" />
@@ -334,18 +286,6 @@
       <m_ObjectName text="CSC_TAILORS_Tailor_Table_Contents" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_ALL_Chair_Upholstered_Claret" />
-      <m_ObjectName text="CSC_ALL_Chair_Upholstered_Claret" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_ALL_Folded_Cloth_Claret_Ivory" />
-      <m_ObjectName text="CSC_ALL_Folded_Cloth_Claret_Ivory" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_TAILORS_Fashion_House_Fitting" />
-      <m_ObjectName text="CSC_TAILORS_Fashion_House_Fitting" />
-    </Element>
-    <Element>
       <m_EntryID text="CSC_TAILORS_Classical_Base_04" />
       <m_ObjectName text="CSC_TAILORS_Classical_Base_04" />
     </Element>
@@ -372,26 +312,6 @@
     <Element>
       <m_EntryID text="CSC_TAILORS_Tailor_Dress_Form_2" />
       <m_ObjectName text="CSC_TAILORS_Tailor_Dress_Form_2" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_TAILORS_Tailor_Folded_Stock_2" />
-      <m_ObjectName text="CSC_TAILORS_Tailor_Folded_Stock_2" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_TAILORS_Tailor_Table_Contents_2" />
-      <m_ObjectName text="CSC_TAILORS_Tailor_Table_Contents_2" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_ALL_Rope_Coil" />
-      <m_ObjectName text="CSC_ALL_Rope_Coil" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_TAILORS_Sail_Cutting_Panel" />
-      <m_ObjectName text="CSC_TAILORS_Sail_Cutting_Panel" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_TAILORS_Sail_Drying_Rack" />
-      <m_ObjectName text="CSC_TAILORS_Sail_Drying_Rack" />
     </Element>
     <Element>
       <m_EntryID text="CSC_TAILORS_Storage_L" />
@@ -474,20 +394,12 @@
       <m_ObjectName text="CSC_BAKERS_Classical_Base_10" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_BAKERS_Peel" />
-      <m_ObjectName text="CSC_BAKERS_Peel" />
-    </Element>
-    <Element>
       <m_EntryID text="CSC_BAKERS_Dough_Set" />
       <m_ObjectName text="CSC_BAKERS_Dough_Set" />
     </Element>
     <Element>
       <m_EntryID text="CSC_BAKERS_Bread_Cart" />
       <m_ObjectName text="CSC_BAKERS_Bread_Cart" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_BAKERS_Oven_v2" />
-      <m_ObjectName text="CSC_BAKERS_Oven_v2" />
     </Element>
     <Element>
       <m_EntryID text="CSC_BAKERS_Bread_Basket" />
@@ -502,18 +414,6 @@
       <m_ObjectName text="CSC_BAKERS_Cafe_Chair" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_BAKERS_Cafe_Counter" />
-      <m_ObjectName text="CSC_BAKERS_Cafe_Counter" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_BAKERS_Cafe_Brewing_Set" />
-      <m_ObjectName text="CSC_BAKERS_Cafe_Brewing_Set" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_BAKERS_Cafe_Pastry_Tray" />
-      <m_ObjectName text="CSC_BAKERS_Cafe_Pastry_Tray" />
-    </Element>
-    <Element>
       <m_EntryID text="CSC_BAKERS_Cafe_Table_Service" />
       <m_ObjectName text="CSC_BAKERS_Cafe_Table_Service" />
     </Element>
@@ -524,10 +424,6 @@
     <Element>
       <m_EntryID text="CSC_ALL_Garden_Wall_Curve" />
       <m_ObjectName text="CSC_ALL_Garden_Wall_Curve" />
-    </Element>
-    <Element>
-      <m_EntryID text="CSC_ALL_Stage_4_Cobble_Decals" />
-      <m_ObjectName text="CSC_ALL_Stage_4_Cobble_Decals" />
     </Element>
     <Element>
       <m_EntryID text="CSC_ALL_Oval_Table" />
@@ -550,28 +446,92 @@
       <m_ObjectName text="CSC_BAKERS_Cafe_2" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_BAKERS_Storage_Delivery" />
-      <m_ObjectName text="CSC_BAKERS_Storage_Delivery" />
+      <m_EntryID text="CSC_BAKERS_Delivery" />
+      <m_ObjectName text="CSC_BAKERS_Delivery" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_TRIAL_Delivery_Donkey" />
-      <m_ObjectName text="CSC_TRIAL_Delivery_Donkey" />
+      <m_EntryID text="CSC_TAILORS_Delivery" />
+      <m_ObjectName text="CSC_TAILORS_Delivery" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_TRIAL_BAKERS_Delivery_Split" />
-      <m_ObjectName text="CSC_TRIAL_BAKERS_Delivery_Split" />
+      <m_EntryID text="CSC_ALL_Delivery_Donkey" />
+      <m_ObjectName text="CSC_ALL_Delivery_Donkey" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_BAKERS_Storage_Delivery_2_Split" />
-      <m_ObjectName text="CSC_BAKERS_Storage_Delivery_2_Split" />
+      <m_EntryID text="CSC_BAKERS_Wind_Mill_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Wind_Mill_Modern" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_TAILORS_Storage_Delivery_Split" />
-      <m_ObjectName text="CSC_TAILORS_Storage_Delivery_Split" />
+      <m_EntryID text="CSC_Level_1_S_Modern" />
+      <m_ObjectName text="CSC_Level_1_S_Modern" />
     </Element>
     <Element>
-      <m_EntryID text="CSC_TAILORS_Storage_Delivery_2_Split" />
-      <m_ObjectName text="CSC_TAILORS_Storage_Delivery_2_Split" />
+      <m_EntryID text="CSC_BAKERS_Mill_Silo_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Mill_Silo_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Flour_Trolley_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Flour_Trolley_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Flour_Pallet_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Flour_Pallet_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Water_Mill_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Water_Mill_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Water_Mill_Modern_2" />
+      <m_ObjectName text="CSC_BAKERS_Water_Mill_Modern_2" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Wind_Mill_Modern_2" />
+      <m_ObjectName text="CSC_BAKERS_Wind_Mill_Modern_2" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_ALL_Window_Box_Modern" />
+      <m_ObjectName text="CSC_ALL_Window_Box_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Bakery_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Bakery_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Bakery_Modern_2" />
+      <m_ObjectName text="CSC_BAKERS_Bakery_Modern_2" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Bread_Display_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Bread_Display_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Bread_Rack_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Bread_Rack_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Deck_Oven_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Deck_Oven_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Delivery_Truck_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Delivery_Truck_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Hanging_Sign_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Hanging_Sign_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_BAKERS_Tray_Stack_Modern" />
+      <m_ObjectName text="CSC_BAKERS_Tray_Stack_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Level_2_Modern" />
+      <m_ObjectName text="CSC_Level_2_Modern" />
+    </Element>
+    <Element>
+      <m_EntryID text="CSC_Level_2_Modern_Workshop" />
+      <m_ObjectName text="CSC_Level_2_Modern_Workshop" />
     </Element>
   </m_Entries>
   <m_AllowedPlatforms>

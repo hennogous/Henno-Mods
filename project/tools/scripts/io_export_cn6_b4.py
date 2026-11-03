@@ -558,6 +558,12 @@ def do_export(filename, triangulate, use_selection):
 
 			armOb = modelObs[modelObName]
 			armature = armOb.data
+			# Animated models can retain an older clip track-group identity while
+			# their public FGX/GEO filenames follow the current asset name.
+			# Explicit opt-in leaves existing static export naming unchanged.
+			native_model_name = str(armOb.get('csc_native_model_name', armOb.name))
+			if not native_model_name or any(c in native_model_name for c in '\"\r\n'):
+				raise RuntimeError('Invalid csc_native_model_name on %s' % armOb.name)
 
 			# Calc bone depths and sort
 			boneDepths = []
@@ -575,7 +581,7 @@ def do_export(filename, triangulate, use_selection):
 			boneIds[armOb.name] = -1 # Add entry for World Bone
 
 			# Write World Bone
-			filedata += '%d "%s" %d ' % (0, armOb.name, -1)
+			filedata += '%d "%s" %d ' % (0, native_model_name, -1)
 			filedata += '%.8f %.8f %.8f ' % (0.0, 0.0, 0.0)
 			filedata += '%.8f %.8f %.8f %.8f ' % (0.0, 0.0, 0.0, 1.0)
 			filedata += '%.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f %.8f\n' % (1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0)

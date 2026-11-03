@@ -27,7 +27,7 @@
 <m_Name text="Plane11011"/>
 <m_Groups>
 <Element>
-<m_Name text="Ruin_Debris_Decal"/>
+<m_Name text="Ruin_Debris_Decal.001"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>2</m_nPrims>
 </Element>
@@ -40,7 +40,7 @@
 <m_Name text="Plane11020"/>
 <m_Groups>
 <Element>
-<m_Name text="Ruin_Debris_Decal"/>
+<m_Name text="Ruin_Debris_Decal.002"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>2</m_nPrims>
 </Element>
@@ -53,12 +53,12 @@
 <m_Name text="Plane1.001"/>
 <m_Groups>
 <Element>
-<m_Name text="Ruin_Debris_Decal.001"/>
+<m_Name text="Ruin_Debris_Decal.003"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>2</m_nBoundBoneCount>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
@@ -66,12 +66,12 @@
 <m_Name text="Plane1.002"/>
 <m_Groups>
 <Element>
-<m_Name text="Ruin_Debris_Decal.001"/>
+<m_Name text="Ruin_Debris_Decal.004"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>2</m_nBoundBoneCount>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
@@ -79,12 +79,12 @@
 <m_Name text="Plane1.003"/>
 <m_Groups>
 <Element>
-<m_Name text="Ruin_Debris_Decal.001"/>
+<m_Name text="Ruin_Debris_Decal.005"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>2</m_nBoundBoneCount>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
@@ -92,18 +92,18 @@
 <m_Name text="Plane1.004"/>
 <m_Groups>
 <Element>
-<m_Name text="Ruin_Debris_Decal.001"/>
+<m_Name text="Ruin_Debris_Decal.006"/>
 <m_nFirstPrim>0</m_nFirstPrim>
 <m_nPrims>2</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>2</m_nBoundBoneCount>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
 <m_nPrimitiveCount>2</m_nPrimitiveCount>
 <m_nVertexCount>4</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>
-<Element text="CSC_Level_2_PIL_Decals"/>
+<Element text="CSC_BAKERS_Bakery_PIL_Decals"/>
 <Element text="Plane1.001"/>
 <Element text="Plane1.002"/>
 <Element text="Plane1.003"/>
@@ -112,7 +112,7 @@
 <Element text="Plane11011"/>
 <Element text="Plane11020"/>
 </m_Bones>
-<m_ModelName text="CSC_Level_2_PIL_Decals"/>
+<m_ModelName text="CSC_BAKERS_Bakery_PIL_Decals"/>
 <m_SourceFilePath text=""/>
 <m_SourceObjectName text=""/>
 <m_ImportedTime>0</m_ImportedTime>

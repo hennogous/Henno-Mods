@@ -398,3 +398,10 @@ This guide covers the conceptual pipeline and file relationships. For step-by-st
 For strategic view sprites, icons, and 2D art, those are significantly simpler — just textures in the right format at the right sizes, referenced by the right ArtDef entries. The 3D pipeline is where all the real complexity lives.
 
 And remember Slothoth's call in the Preamble — if you've figured out the Landmarks system and this guide helped you get started, consider contributing back. The art side is the least documented part of Civ VI modding, and every worked example helps the next person.
+
+
+## Quarter base era fallbacks (24 October 2026)
+
+In `CSC_Landmarks.artdef`, Classical-style Bakers and Tailors base variants use `Tag_Era=DEFAULT` as the general fallback. The four Ancient-specific variants retain `ARTERA_ANCIENT`. This follows the shipped district pattern and gives every authored building set a base outside its original art era. Keep the Classical asset names and all building sets, selection rules, priorities and placements unchanged. Explicit later-era art can override the fallback when authored.
+
+The user observed bases disappearing in later eras and returning after a Classical-to-original-era toggle. The source correction passes XML and scope/coverage checks; native cold-load and natural era-transition verification remain pending. This source edit was not cooked or deployed while the human inspected the open turn-150 game.

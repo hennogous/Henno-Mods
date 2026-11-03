@@ -16,12 +16,12 @@
 <Element>
 <m_Name text="CSC_ALL_Stage_3_Cobbles_02_Decal"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>2</m_nPrims>
+<m_nPrims>320</m_nPrims>
 </Element>
 </m_Groups>
-<m_nBoundBoneCount>2</m_nBoundBoneCount>
-<m_nPrimitiveCount>2</m_nPrimitiveCount>
-<m_nVertexCount>4</m_nVertexCount>
+<m_nBoundBoneCount>1</m_nBoundBoneCount>
+<m_nPrimitiveCount>320</m_nPrimitiveCount>
+<m_nVertexCount>178</m_nVertexCount>
 </Element>
 </m_Meshes>
 <m_Bones>

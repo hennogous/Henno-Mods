@@ -2,7 +2,7 @@
 
 Asset Editor crash capture now runs automatically on Shadow's machine. The
 hidden Windows task **CSC Asset Editor Crash Capture** starts at user sign-in
-and is also running in the current session. It waits for AE, captures a full
+and is also running in the current session. It waits for AE, captures a mini
 dump on an unhandled native exception, saves supporting logs, then re-arms after
 AE exits. Use AE normally; there is no need to launch a capture or retrace steps.
 It does not launch AE, operate its UI, or upload evidence.
@@ -11,7 +11,7 @@ The companion task **CSC Asset Editor Assertion Capture** now also runs at
 sign-in and in the current session. It checks AE's assertion-window metadata
 every two seconds and snapshots the still-running process without dismissing
 the dialog. This covers assertions that never become unhandled exceptions.
-Its full snapshots, AE logs and assertion metadata are saved in `*_assert_*`
+Its mini snapshots, bounded AE log tails and assertion metadata are saved in `*_assert_*`
 folders. Persistent markers keyed by process start and dialog handle prevent
 repeated dumps of the same dialog. No window interaction or screenshot is used.
 
@@ -38,8 +38,44 @@ repeated dumps of the same dialog. No window interaction or screenshot is used.
   are in `project/tools/asset_editor/`; rerun
   `install_ae_crash_monitor.ps1` to update the installed copies and task.
   An already-running session uses its loaded script until the next restart.
-- No automatic dump deletion is configured. Full dumps can be several GB each;
-  retained files can be archived or removed manually after diagnosis.
+- Since 26 October 2026, both monitors explicitly use `-mm` mini dumps. Full
+  memory capture requires `-Full` for a specific investigation; the default
+  no longer includes several GB of image/texture/managed heap memory.
+- Routine dumps share a retention policy: at most **10 dumps / 512 MiB total /
+  14 days**, whichever limit is reached first. It runs after captures and every
+  30 minutes in the assertion watcher. Only completed, recognized capture
+  folders qualify. Active, locked or unrecognized files and linked folders are
+  skipped. Only `.dmp` files are removed; metadata, diagnoses and logs remain.
+  A small per-dump receipt records removals. A capture may temporarily exceed
+  the budget while being written; an oversized completed dump is removed.
+- Each before/after collection saves only the latest two AE log files, capped
+  at 256 KiB each. `log-tails.json` records original and retained byte counts.
+  ProcDump output and watcher/error logs are capped at about 1 MiB per file.
+  AE's own source logs and game logging settings are unchanged.
+- An explicit `-Full` capture creates `keep-dumps.txt` in its evidence folder,
+  excluding it from routine dump retention. Delete that marker to return the
+  folder to routine retention. Full captures are deliberately manual exceptions.
+
+The source for these rules is `project/tools/asset_editor/ae_capture_storage.ps1`.
+`test_capture_storage.ps1 -OutputRoot <fresh-folder>` checks the limits and
+protected cases. Native default-mini capture/re-arming and assertion deduplication
+were verified with disposable hidden fixtures on 26 October, without operating AE.
+The original full dumps were removed at Henno's explicit request that day;
+compact module/thread/raw-stack summaries and existing analyses were preserved.
+Historical dump paths below identify the original evidence, not retained files.
+
+The one-time cleanup tool `cleanup_ae_dump_storage.ps1` previews full-memory
+dumps anywhere under the explicitly named `-CodexRoot`; `-Apply` saves a
+compact summary before removing each file. It checks the actual Windows dump
+header's full-memory bit rather than guessing from filenames or sizes, rejects
+linked parent directories, and preserves mini dumps. On 26 October it removed
+19 full dumps (68.622 GiB), including the cooker diagnostic, with receipts in
+`Desktop/Codex/AE-storage-cleanup-20261026_153701/`. Source assets, saved games,
+AI study evidence and existing analyses were not removed. Both production tasks
+were reinstalled and independently verified with `-mm`; the same open AE process
+was preserved through a graceful ProcDump `-cancel` detachment. Configuration
+backups and installed-script hash verification are in
+`Desktop/Codex/AE-storage-settings-20261026/`.
 
 To prevent future automatic starts, disable both **CSC Asset Editor Crash Capture**
 and **CSC Asset Editor Assertion Capture** in Windows Task Scheduler.
@@ -80,12 +116,13 @@ every earlier UI action; AE's saved logs provide the available session history.
 Each dated folder retains the dump, ProcDump output, tool version/hash and
 arguments, AE/ToolHost versions and hashes, before/after AE logs, and matching
 Windows Application events.
-Full dumps are the default: the 2026-10-12 crash needed heap memory to recover
-the exact texture name. That capture was about 2.5 GB. A normal AE exit creates
+Mini dumps are the default. Use `-Full` only when a diagnosis needs heap memory:
+the 2026-10-12 crash needed it to recover the exact texture name, producing about
+2.5 GB. A normal AE exit creates
 no dump; the automatic supervisor re-arms, or start another manual capture.
 Ctrl+C in the manual launcher cancels and lets
 ProcDump detach. Do not force-kill the debugged AE process to stop monitoring.
-Existing evidence is never overwritten or automatically deleted.
+Existing analyses and metadata are retained; routine dumps follow the limits above.
 
 The launcher uses the versioned script
 [`capture_ae_crash.ps1`](../../tools/asset_editor/capture_ae_crash.ps1).
@@ -97,11 +134,13 @@ CLI examples, from the workspace root:
 ```powershell
 & './project/tools/asset_editor/capture_ae_crash.ps1' -Note 'Fresh AE launch; open CSC_BAKERS_Wind_Mill'
 & './project/tools/asset_editor/capture_ae_crash.ps1' -CheckOnly
+& './project/tools/asset_editor/capture_ae_crash.ps1' -Full -Note 'One targeted heap investigation'
 ```
 
 `-CheckOnly` validates the signed tool and shows the planned command without
-starting a monitor or writing output. `-Mini` explicitly requests a smaller
-dump, which can omit essential texture/object memory. `-OutputRoot` and
+starting a monitor or writing output. `-Mini` remains a compatibility alias for
+the default smaller dump, which can omit texture/object heap memory. `-Full`
+explicitly opts into retaining that memory. `-OutputRoot` and
 `-ProcDump` override local defaults; `-AssetEditorDirectory` selects the SDK
 installation whose binary versions/hashes are recorded. To set up another machine, obtain ProcDump
 from [Microsoft Sysinternals](https://learn.microsoft.com/en-us/sysinternals/downloads/procdump)

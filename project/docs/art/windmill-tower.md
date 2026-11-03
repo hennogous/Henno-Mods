@@ -1,6 +1,72 @@
 # Windmill tower and storage atlas migration
 
-## Current revision — wooden tower, 22 October 2026
+## Current combined master and export repair — 30 October 2026
+
+The shared intact master is `Working Files/3D Art/BAKERS/Wind Mill/CSC_BAKERS_Wind_Mill.blend`;
+construction/pillage uses the companion `CSC_BAKERS_Wind_Mill_CON+PIL.blend`.
+Both regular and `_2` ASTs use these combined building/tower models, retaining
+their separate AE materials and attachments. The standalone tower asset is retired;
+its original eight-second `CSC_BAKERS_Wind_Mill_Tower_Turn` animation is still required.
+
+The October 28 export broke clip binding by changing the internal model name to
+`CSC_BAKERS_Wind_Mill`. The native animation expects `CSC_BAKERS_Wind_Mill_Tower`.
+The repaired master now explicitly stores `csc_native_model_name` on its armature.
+The maintained CN6 exporter honors that property for the internal model/root name
+while keeping the armature's ordinary name for the exported filenames. Models
+without the property retain their existing naming behavior. The previous
+`civ6_root_name` metadata alone did not govern this geometry exporter.
+
+The repaired master and runtime FGX/GEO are installed. Latest geometry, all three
+UV channels, normals, weights, material groups and triangles match the broken
+export exactly; only the internal model/root identity changes. All 241 native
+animation samples match the working reference within 0.000171 source units.
+The tower and base remain static, and the original animation binary is unchanged.
+Both variants cook successfully as 24-byte RigidModel geometry. Saved-source
+validation passes with only the pre-existing advisory vertex-budget warning.
+AE assemblies, construction/pillage, textures and other mod files are untouched.
+Live AE/game playback still needs review.
+
+Restart Blender to load the corrected installed exporter and reopen the repaired
+master before exporting again. Keep `csc_native_model_name`, Root/Sails and the
+mount/pivot-offset bones. Evidence and before-files are in
+`C:/Users/Shadow/Desktop/Codex/windmill-animation-repair-20261030`.
+Tools: `project/tools/art/repair_windmill_animation.py` and its Blender companion;
+publication is guarded against rerunning over later edits.
+
+## Current revision — split sail panels, 24 October 2026
+
+Follow-up **r044** removes the two cloth-covered rungs from each blade (radii 23.6
+and 39.2). Four rungs per blade remain, all visible from both sides: the open rung
+near the hub at radius 8 and the three thicker panel-boundary rungs. Every retained
+vertex, weight, UV1 and UV3 is preserved. Sail self-AO is rebaked in the same cell;
+all surface maps, other AO cells, tower, CON+PIL, placements and animation remain
+unchanged. Sail counts are now 398 editable vertices / 388 faces, or 1,050 native
+vertices / 592 triangles; total intact native geometry is **1,584 vertices**.
+Front/back rotor renders inspected; saved-source, native binding, eight-second
+motion, every-frame clearance and both-variant isolated cook checks pass.
+Installed evidence/backups: `C:\Users\Shadow\Desktop\Codex\windmill-visible-rungs-20261024`.
+Live AE/game appearance remains untested.
+
+Each blade now has **two independent cloth panels**, divided by a clearly exposed
+timber rung. The inner cloth edge and outer tip also have exposed cross-rungs.
+Those three rungs are 2.2 units thick along the blade (previously 1.55); the tip
+rung moves from radius 47 to 48.2. Cloth intervals are 17.2–29.9 and 32.9–47.0.
+The broad taper and weathered canvas remain, with each panel given a shallow billow.
+The rail and hub geometry, tower, CON+PIL and saved AE placements are preserved.
+
+Shared-library **r043** rebakes only the sail self-AO allocation `[0,128,512,512]`;
+all other AO pixels and all surface maps are unchanged. Editable sail geometry is
+462 vertices / 420 faces; the native sails are 1,178 vertices / 656 triangles.
+Total native intact geometry is 1,712 vertices; CON+PIL remains 1,034. Both cook as
+RigidModel with a 24-byte stride and one intended bone binding per mesh. The saved
+source validator has zero errors/warnings. The unchanged eight-second clip matches
+the revised source at all 241 samples; clearance is clean at every sample in the
+saved assembly. Final render inspected; live AE/game appearance remains untested.
+Sources, CN6/FGX/GEO, canonical AO and runtime DDS are installed, with focused AE
+cache refresh. Evidence/backups:
+`C:\Users\Shadow\Desktop\Codex\windmill-split-sails-20261024`.
+
+## Previous revisions — 22 October 2026
 
 Shared-library **r042** gives the sails weathered canvas: ImageGen sun fading,
 soft edge grime, stitched panel seams and a subtle repair. Dedicated slot 39
@@ -432,3 +498,45 @@ Tools: `revise_windmill_shared_materials.py`, `audit_windmill_shared_ao.py`,
 `integrate_windmill_shared_materials.py`, `verify_windmill_shared_sources.py`.
 The authoring tool is a one-time migration using the recorded user-input hashes.
 Reload the saved masters in Blender to see their new UV2 and material bindings.
+# Current delivery: integrated Wind Mill model, 26 October 2026
+
+The regular and expanded Wind Mill now share dedicated combined geometry:
+`CSC_BAKERS_Wind_Mill.geo` and `CSC_BAKERS_Wind_Mill_CON+PIL.geo`.
+Their editable masters are in `Working Files/3D Art/BAKERS/Wind Mill/`, with the
+same filenames ending in `.blend`. There is no separate `_2` geometry master;
+AE retains variant-specific materials, states and additional props.
+
+Both use the regular AST's final user-saved tower placement: position
+`(2.035524, -21.555544, -0.136043)`, Z orientation `-0.731351`, uniform scale
+`1.158080` in AE units. This supersedes the expanded variant's previous placement.
+All other saved attachments and original base/tower state bindings are preserved.
+
+The standalone tower AST and its two GEO/FGX pairs are archived in
+`C:/Users/Shadow/Desktop/Archive/CSC-windmill-tower-bundled-20261026`.
+Its XLP entry and obsolete project registration are removed. Component authoring
+sources under `tower/` remain available, but are no longer standalone runtime assets.
+
+**Animation export contract:** the existing `CSC_BAKERS_Wind_Mill_Tower_Turn`
+ANM/FGX stays in use, byte-identical, at eight seconds per revolution. Keep the
+internal native model/rig identity `CSC_BAKERS_Wind_Mill_Tower` (and its CON+PIL
+counterpart), although the new GEO/FGX filenames use the main building name.
+Granny resolves the existing clip by this model/track-group identity. Preserve
+`Root`, `Sails`, `Windmill_Tower_Mount` and `Windmill_Sail_Pivot_Offset`. The static
+pivot offset accommodates the uniform placement scale without editing the clip.
+The source has the matching sampled Action; runtime continues using the original
+native animation rather than a newly compressed export. Portable textures,
+verified exports, animation references and `Combined-model-notes.txt` accompany
+the masters. Generic Level 1 kit files are unchanged.
+
+Validation: 241 native frames match the transformed original motion within
+0.000076 model units; the building remains static. Saved Blender geometry and
+skeletons round-trip to FGX, and installed masters reopen with zero errors.
+Counts are 2,512 intact and 2,751 CON+PIL native vertices (advisory budget warnings).
+Both isolated cooks pass and retain the required 24-byte RigidModel records.
+Intact, construction, pillaged and expanded-assembly previews were inspected;
+live AE/in-game review remains outstanding. Evidence and migration tools:
+`Desktop/Codex/Windmill-bundled-tower-20261026` and
+`project/tools/art/bundle_windmill_tower.py` plus its Blender companion.
+
+Earlier standalone-tower notes below are historical.
+

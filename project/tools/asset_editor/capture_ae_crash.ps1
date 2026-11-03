@@ -7,10 +7,13 @@ param(
     [string]$Note = '',
     [ValidatePattern('^[A-Za-z0-9_.-]+\.exe$')]
     [string]$ProcessName = 'AssetEditor.exe',
+    [switch]$Full,
     [switch]$Mini,
     [switch]$CheckOnly
 )
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'ae_capture_storage.ps1')
+$dumpSwitch = Get-AEDumpSwitch -Full:$Full -Mini:$Mini
 if (-not (Test-Path -LiteralPath $ProcDump -PathType Leaf)) {
     throw "ProcDump is missing: $ProcDump. See project/docs/art/asset-editor-crash-diagnostics.md."
 }
@@ -23,17 +26,17 @@ $existing = @(Get-CimInstance Win32_Process -Filter "Name LIKE 'procdump%'" |
 if ($existing.Count) { throw 'An Asset Editor ProcDump capture is already running. Finish or cancel it first.' }
 $started = Get-Date
 $folder = Join-Path $OutputRoot ($started.ToString('yyyyMMdd_HHmmss') + '_' + [guid]::NewGuid().ToString('N').Substring(0, 6))
-$arguments = @('-accepteula')
-if (-not $Mini) { $arguments += '-ma' }
+$arguments = @('-accepteula', $dumpSwitch)
 $arguments += @('-e', '-g', '-n', '1', '-w', $ProcessName, $folder)
 if ($CheckOnly) {
     [pscustomobject]@{ Tool = $ProcDump; Signature = $signature.Status.ToString(); Arguments = $arguments; Output = $folder }
     return
 }
 New-Item -ItemType Directory -Path $folder | Out-Null
+if ($Full) { 'Explicit manual full capture; excluded from routine retention.' | Set-Content -LiteralPath (Join-Path $folder 'keep-dumps.txt') }
 $metadata = [ordered]@{
     Started = $started.ToString('o'); Finished = $null; Note = $Note; ProcessName = $ProcessName
-    DumpType = $(if ($Mini) { 'Mini' } else { 'Full' })
+    DumpType = $(if ($Full) { 'Full' } else { 'Mini' })
     ProcDump = $ProcDump; ProcDumpVersion = (Get-Item -LiteralPath $ProcDump).VersionInfo.FileVersion
     ProcDumpSHA256 = (Get-FileHash -LiteralPath $ProcDump -Algorithm SHA256).Hash
     Arguments = $arguments; ExitCode = $null; Dumps = @(); Binaries = @()
@@ -59,26 +62,19 @@ until the dump and relevant source versions have been recorded.
 
 function Save-AELogs([string]$Phase) {
     $destination = Join-Path $folder $Phase
-    New-Item -ItemType Directory -Path $destination -Force | Out-Null
-    $logs = Join-Path $env:APPDATA 'AssetEditor\1.1\Logs'
-    if (Test-Path -LiteralPath $logs) {
-        # Keep the latest sessions plus everything written during this capture.
-        $all = @(Get-ChildItem -LiteralPath $logs -File | Sort-Object LastWriteTime -Descending)
-        $selected = @($all | Select-Object -First 4) + @($all | Where-Object { $_.LastWriteTime -ge $started })
-        foreach ($file in ($selected | Sort-Object FullName -Unique)) {
-            try { Copy-Item -LiteralPath $file.FullName -Destination $destination -Force }
-            catch { $_.ToString() | Add-Content -LiteralPath (Join-Path $folder 'collection-errors.txt') }
-        }
-    }
+    try { Save-AERecentLogs -Destination $destination }
+    catch { Write-AEBoundedLog -Path (Join-Path $folder 'collection-errors.txt') -Message $_.ToString() }
 }
 Save-AELogs 'logs-before'
 Write-Host "Capturing one AE crash. Evidence: $folder"
 Write-Host 'Launch AE yourself and reproduce the crash. Ctrl+C cancels capture.'
-Write-Host 'Full dumps can take several seconds to finish; wait for the completion message.'
+Write-Host 'Mini dump is the default; use -Full only for a specific heap investigation.'
 try {
     # ProcDump handles Ctrl+C by detaching. Do not add -k or install a global debugger.
     $ErrorActionPreference = 'Continue'
-    & $ProcDump @arguments 2>&1 | Tee-Object -FilePath (Join-Path $folder 'procdump.log')
+    & $ProcDump @arguments 2>&1 | ForEach-Object {
+        Write-AEBoundedLog -Path (Join-Path $folder 'procdump.log') -Message $_.ToString()
+    }
     $metadata.ExitCode = $LASTEXITCODE
 }
 finally {
@@ -91,6 +87,7 @@ finally {
     $metadata.Finished = (Get-Date).ToString('o')
     $metadata.Dumps = @(Get-ChildItem -LiteralPath $folder -Filter '*.dmp' | Select-Object Name, Length, LastWriteTime)
     $metadata | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $folder 'capture.json') -Encoding UTF8
+    Invoke-AEDumpRetention -OutputRoot $OutputRoot
     if ($metadata.Dumps.Count) { Write-Host "Capture saved: $folder" }
     else { Write-Host "No crash dump was captured. Session logs saved: $folder" }
 }

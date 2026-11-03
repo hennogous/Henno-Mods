@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<AssetObjects:GeometryInstance>
+<AssetObjects..GeometryInstance>
 <m_CookParams>
 <m_Values/>
 </m_CookParams>
@@ -11,24 +11,20 @@
 </m_Version>
 <m_Meshes>
 <Element>
-<m_Name text="CSC_ALL_Basket"/>
+<m_Name text="CSC_TAILORS_Basket_Obj"/>
 <m_Groups>
 <Element>
-<m_Name text="Material.001"/>
+<m_Name text="CSC_ALL_Props_01"/>
 <m_nFirstPrim>0</m_nFirstPrim>
-<m_nPrims>353</m_nPrims>
+<m_nPrims>260</m_nPrims>
 </Element>
 </m_Groups>
 <m_nBoundBoneCount>1</m_nBoundBoneCount>
-<m_nPrimitiveCount>353</m_nPrimitiveCount>
-<m_nVertexCount>506</m_nVertexCount>
+<m_nPrimitiveCount>260</m_nPrimitiveCount>
+<m_nVertexCount>351</m_nVertexCount>
 </Element>
 </m_Meshes>
-<m_Bones>
-<Element text="CSC_ALL_Basket.001"/>
-<Element text="Settler_Basket_LOD1"/>
-</m_Bones>
-<m_ModelName text="CSC_ALL_Basket.001"/>
+<m_Bones><Element text="CSC_TAILORS_Basket"/><Element text="Bone"/></m_Bones><m_ModelName text="CSC_TAILORS_Basket"/>
 <m_SourceFilePath text=""/>
 <m_SourceObjectName text=""/>
 <m_ImportedTime>0</m_ImportedTime>
@@ -46,4 +42,4 @@
 <Element text="LandmarkModel"/>
 </m_Tags>
 <m_Groups/>
-</AssetObjects:GeometryInstance>
+</AssetObjects..GeometryInstance>

@@ -3241,7 +3241,7 @@
 						<m_CookParams>
 							<m_Values>
 								<Element class="AssetObjects..BLPEntryValue">
-									<m_EntryName text="CSC_TRIAL_BAKERS_Delivery_Split"/>
+									<m_EntryName text="CSC_BAKERS_Delivery"/>
 									<m_XLPClass text="TileBase"/>
 									<m_XLPPath text="csc_tilebases.xlp"/>
 									<m_BLPPackage text="Landmarks/CSC_Tilebases"/>
@@ -3284,7 +3284,7 @@
 							<y>-0.000000000</y>
 							<z>-0.386454580</z>
 						</m_orientation>
-						<m_Name text="CSC_TRIAL_BAKERS_Delivery_Split"/>
+						<m_Name text="CSC_BAKERS_Delivery"/>
 						<m_BoneName text="CSC_ALL_District_Base"/>
 						<m_ModelInstanceName text="CSC_ALL_District_Base"/>
 						<m_scale>1.000000002</m_scale>

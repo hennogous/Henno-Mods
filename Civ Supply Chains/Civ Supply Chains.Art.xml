@@ -519,6 +519,7 @@
 		<Element>
 			<libraryName text="OverlayTexture"/>
 			<relativePackagePaths>
+				<Element text="Overlay/CSC_LensPatterns"/>
 			</relativePackagePaths>
 		</Element>
 		<Element>

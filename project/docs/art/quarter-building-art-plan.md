@@ -28,6 +28,12 @@ Architecture communicates the family, roof colour communicates the main yield, a
 
 ## Base models
 
+**Modern kit — 27 October 2026:** the approved modern Wind Mill now supplies the
+reusable `CSC_Level_1_S_Modern` house and fully supported shelter under `3D Art/Level 1`.
+The silo is a mill specialisation; trolley-with-sack and pallet-stack are reusable
+attachments. Modern buildings and props have separate new shared atlas families.
+See [modern kit sources, reuse rules and atlas allocations](modern-building-kit.md).
+
 Use the actual Blender sources as the basis for concepts and prop scenes:
 
 | Source beneath `Working Files/3D Art/` | Role |
