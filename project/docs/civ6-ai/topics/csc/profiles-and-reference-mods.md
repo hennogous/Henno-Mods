@@ -52,4 +52,22 @@ Limits: Startup retries, same-world reloads and source candidates are not indepe
 
 Sources: [Parity ledger](../../../research/mods/csc-ai-rh5-parity-campaign-20261024.md), [latest consolidated progress](../../../integrations/csc-ai-progress-and-learnings-20261101.md).
 
+## AI-C051 — RH steers placement through custom adjacency incentives
+
+The installed5.097 source uses `RH_YIELD_LAST_RESORT` for positive and negative
+district-site incentives, including reciprocal Industrial Zone/infrastructure
+relationships and natural-wonder/volcano penalties. This demonstrates the general
+score-steering principle. Its visible implementation uses SQL yield/adjacency
+definitions; no direct native district-score hook was found in the reviewed
+package. Our native extension can instead supply arbitrary signed per-pair
+adjustments from independently calculated CSC facts.
+
+Scope: Read-only installed5.097 source and package inventory,4 November2026.
+
+Limits: Source intent is not runtime efficacy, and absence from this package
+cannot establish what RH privately knows or does with external tools. Older
+public-source yield identifiers must not be substituted for the installed ones.
+
+Source: [RH5 placement-method comparison](../../../research/mods/csc-rh-native-placement-method-review-20261104.md).
+
 [Complete source map](source-map.md).

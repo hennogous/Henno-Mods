@@ -950,5 +950,18 @@
     "topic": "topics/csc/site-planner.md",
     "depends_on": ["AI-C049", "AI-N006", "AI-N053"],
     "related": ["AI-C048", "AI-N009", "AI-N061"]
+  },
+  {
+    "id": "AI-C051",
+    "title": "RH5 uses custom adjacency incentives rather than a visible native score hook",
+    "statement": "Installed RH5.097 defines positive and negative district adjacencies using RH_YIELD_LAST_RESORT, including reciprocal Industrial Zone/infrastructure relationships. This implements general placement-score steering through SQL. No direct native district-score hook was found in the reviewed package; CSC's prototype can instead supply independently calculated signed per-pair adjustments.",
+    "status": "accepted",
+    "evidence_types": ["source", "inference"],
+    "scope": "Read-only4 November2026 installed Workshop3792072489, manifest5.097, RH_Districts.sql, RH_Improvements.sql, complete file inventory and bounded Lua/SQL searches. No game, attachment or tuning change.",
+    "limits": "Source establishes technique and intent, not measured runtime efficacy or the author's complete knowledge. Package absence cannot exclude external or unpublished tooling. Custom yield amounts and bias fields are not measured Q8 additions. Older public-source yield identifiers differ.",
+    "sources": ["project/docs/research/mods/csc-rh-native-placement-method-review-20261104.md"],
+    "topic": "topics/csc/profiles-and-reference-mods.md",
+    "depends_on": [],
+    "related": ["AI-C039", "AI-N061", "AI-C050"]
   }
 ]

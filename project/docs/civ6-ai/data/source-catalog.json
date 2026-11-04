@@ -1802,6 +1802,16 @@
       "site_path": "sources/project/docs/research/mods/csc-rh-dynamic-research-followup-20261019.md"
     },
     {
+      "path": "project/docs/research/mods/csc-rh-native-placement-method-review-20261104.md",
+      "title": "RH5 placement incentives versus the CSC native extension",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 4075,
+      "sha256": "a75b572813d2ca023bd7f860ca78e1699c0f9454431492632fdac3f57f6bb267",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-rh-native-placement-method-review-20261104.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-rh-v5097-ai-review-20261018.md",
       "title": "CSC AI lessons from installed RH v5.097",
       "kind": "report",
