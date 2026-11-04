@@ -2,6 +2,7 @@ import FlexSearch, { DefaultDocumentSearchResults } from "flexsearch"
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
 import { registerEscapeHandler, removeAllChildren } from "./util"
 import { FullSlug, normalizeRelativeURLs, resolveRelative } from "../../util/path"
+import { filterAIReaderResults } from "./aiReaderScope"
 
 interface Item {
   id: number
@@ -198,6 +199,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   const searchBar = searchElement.querySelector(".search-bar") as HTMLInputElement
   if (!searchBar) return
+  const scopeSelect = searchElement.querySelector<HTMLSelectElement>(".ai-search-scope-select")
 
   const searchLayout = searchElement.querySelector(".search-layout") as HTMLElement
   if (!searchLayout) return
@@ -437,7 +439,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   async function onType(e: HTMLElementEventMap["input"]) {
     if (!searchLayout || !index) return
-    currentSearchTerm = (e.target as HTMLInputElement).value
+    currentSearchTerm = searchBar.value
     searchLayout.classList.toggle("display-results", currentSearchTerm !== "")
     searchType = currentSearchTerm.startsWith("#") ? "tags" : "basic"
 
@@ -458,7 +460,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
           tag: { tags: tag },
         })
         for (let searchResult of searchResults) {
-          searchResult.result = searchResult.result.slice(0, numSearchResults)
+          searchResult.result = searchResult.result.slice(0, isAiHandbook ? Object.keys(data).length : numSearchResults)
         }
         // set search type to basic and remove tag from term for proper highlightning and scroll
         searchType = "basic"
@@ -467,14 +469,14 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
         // default search by tags index
         searchResults = await index.searchAsync({
           query: currentSearchTerm,
-          limit: numSearchResults,
+          limit: isAiHandbook ? Object.keys(data).length : numSearchResults,
           index: ["tags"],
         })
       }
     } else if (searchType === "basic") {
       searchResults = await index.searchAsync({
         query: currentSearchTerm,
-        limit: isAiHandbook ? 64 : numSearchResults,
+        limit: isAiHandbook ? Object.keys(data).length : numSearchResults,
         index: ["title", "content"],
       })
     }
@@ -490,10 +492,13 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
       ...getByField("content"),
       ...getByField("tags"),
     ])
-    const finalResults = [...allIds].map((id) => formatForDisplay(currentSearchTerm, id))
+    let finalResults = [...allIds].map((id) => formatForDisplay(currentSearchTerm, id))
+    // Keep the complete corpus addressable, but make the guide the default reading surface.
+    // Filter before limiting so many historical matches cannot crowd out a guide result.
+    finalResults = filterAIReaderResults(finalResults, scopeSelect?.value)
     // In the research handbook, show reconciled explanations before dated records.
     // Normal CSC-site search keeps Quartz's existing ordering and result limits.
-    if (isAiHandbook && searchType === "basic") {
+    if (isAiHandbook) {
       finalResults.sort((a, b) => Number(a.slug.startsWith("sources/")) - Number(b.slug.startsWith("sources/")))
       finalResults.splice(numSearchResults)
     }
@@ -506,6 +511,9 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   window.addCleanup(() => searchButton.removeEventListener("click", () => showSearch("basic")))
   searchBar.addEventListener("input", onType)
   window.addCleanup(() => searchBar.removeEventListener("input", onType))
+  const changeScope = () => { void onType(new InputEvent("input")) }
+  scopeSelect?.addEventListener("change", changeScope)
+  window.addCleanup(() => scopeSelect?.removeEventListener("change", changeScope))
 
   registerEscapeHandler(container, hideSearch)
   await fillDocument(data)

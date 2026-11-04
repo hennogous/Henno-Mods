@@ -7,6 +7,20 @@ builds both the CSC player documentation and this separate handbook.
 
 ## Finish research by updating the model
 
+The main reading surface is `index.md` and `guide/`: five navigation destinations
+explain current understanding in ordinary language. `library.md` opens detailed
+topics, findings and dated evidence. Preserve source paths and published URLs;
+age alone does not make valid evidence obsolete. The AI-only Quartz layout uses
+chapter navigation instead of the explorer, graph and backlinks. Search defaults
+to the guide, with an explicit full-library selector.
+
+Finish an investigation by updating the affected guide chapter as well as its
+technical topic/finding/report. Replace corrected explanations and diagrams in
+the guide; preserve dated evidence and trace corrections in the library. Keep
+`guide/what-next.md` consistent with the roadmap and latest results. Avoid
+experiment diaries and unexplained finding IDs in the guide. A report alone is
+not a completed documentation update.
+
 For a new investigation, identify the affected topic and existing finding IDs
 before adding new prose. Record the exact assertion, evidence type, scope,
 limitations and source links in the relevant `data/*-findings.json` file.

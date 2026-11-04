@@ -1,98 +1,38 @@
-# Civilization VI AI handbook
+# Understanding and steering Civilization VI’s AI
 
-Our current understanding of how Civilization VI's AI evaluates opportunities,
-chooses work and follows it through. The handbook brings together native code
-analysis, shipped data, actual game observations and the CSC AI experiments.
+We are learning how Civ VI turns the map and its empire’s needs into decisions—and how to help it understand Civ Supply Chains. This guide explains our **current understanding**. You do not need to read the experiment history first.
 
-[CSC public documentation](https://hennogous.github.io/Henno-Mods/) ·
-[Handbook source](https://github.com/hennogous/Henno-Mods/tree/main/project/docs/civ6-ai)
+## Where to start
 
-**Start with the explanation, then follow the evidence.** Topic pages describe
-the reconciled model. The original reports retain their exact experimental
-conditions, corrections and limitations. The [finding register](findings.md)
-provides stable references for individual conclusions.
+1. **[How the AI decides](guide/how-the-ai-decides.md)** — district sites, future buildings, empire priorities and production commitments.
+2. **[Steering the AI](guide/steering-the-ai.md)** — what our native interface lets a mod change, what we have demonstrated, and why Community Extension matters.
+3. **[Teaching it CSC](guide/teaching-it-csc.md)** — materials, customers and credible future development.
+4. **[What we’re investigating](guide/what-next.md)** — the next questions and what would count as progress.
 
-> [!info] Current research boundary — 4 November 2026
-> District choice, prerequisite valuation and several modding controls are now
-> understood at specific consumers. Reliable, worthwhile supply-chain competence
-> across Basic CSC and RomanHoliday has **not** been established. Native per-site
-> extension work has reached a bounded prototype with measured score-to-request delivery
-> and a caused district-type choice change followed by native Quarter construction at one tile;
-> the existing placement policy now also runs through packaged Lua and a CE development
-> fork, with an audited Online100 test. Policy quality and upstream release remain
-> open. This handbook starts no game or experiment.
+## What works today
 
-## Understand the engine
+We can adjust how valuable the AI thinks a particular **district at a particular tile in a particular city** would be, then let its ordinary decision and construction systems act on that value. In one controlled example, this changed its choice from a Neighborhood to a Tailors’ Quarter at the same tile; the AI subsequently built and completed the Quarter itself.
 
-1. [Architecture: how priorities become work](topics/native/architecture.md)
-2. [District types and placement](topics/native/district-choice.md)
-3. [Empire needs and strategic priorities](topics/native/empire-needs.md)
-4. [Prerequisites, requests and production](topics/native/production-and-prerequisites.md)
-5. [What hypothetical effect evaluation can understand](topics/native/modifier-forecasts.md)
-6. [Modding controls and possible native extensions](topics/native/modding-controls.md)
-7. [How we know: evidence and instrumentation](topics/native/evidence-and-instrumentation.md)
-8. [Native placement-score extension](topics/native/native-placement-extension.md): the identified integration point, persistence and proposed bridge
-9. [Anatomy of a district-site score](topics/native/district-score-anatomy.md): components, units, future buildings and the CSC correction ledger
-10. [Workshop delivery and Community Extension](topics/native/workshop-delivery.md): CE fork parity, the current development carrier and remaining release work
+The current policy runs from packaged Lua through our **Community Extension development fork**. A bounded Online-speed game reached turn 100, with matching Lua/Python plans and no reported native API faults. The released CE we tested lacks this API. Our changes are in [draft PR 9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9); acceptance and release remain open.
 
-## Understand the CSC experiments
+These results establish control over an input and some natural follow-through. They do **not** yet establish better empire performance or reliable, profitable supply chains. [See the demonstrations and limits](guide/steering-the-ai.md).
 
-The [current CSC AI roadmap](roadmap.md) starts from the new native decision
-approach and the retained [design objectives](../integrations/csc-ai-objectives.md).
-The old roadmap was removed on 3 November 2026.
+## The central idea
 
-The CSC topic pages connect placement, research, material development, building
-follow-through and assistance to the actual objective: useful economic chains
-that justify their cost and support the empire's priorities.
-
-Browse [CSC research topics](topics/csc/index.md), then the
-[research journey](topics/history/research-journey.md) for the progression of
-experiments and the decisions that changed direction.
-
-The [fresh site planner](topics/csc/site-planner.md) now provides a first
-offline Tailors comparison with actual captured cases and explicit assumptions.
-The separate [full-adjacency +4 pilot](../research/mods/csc-ai-adjacency-policy-20261103.md)
-now has an Online100 treated-game result:7 promoted Bakers sites completed,
-while23 other Quarters still founded below the cutoff. See the site-planner topic
-for scope, interruption/recovery and remaining work.
-The [soft-penalty follow-up](../research/mods/csc-ai-placement-penalties-20261103.md)
-extends the same carrier to individual weak-site deductions; a fresh Online100
-test completed after recovery on4 November. Ten promoted sites and four below-4
-sites founded, with zero native errors. The four exceptions expose early coverage,
-retained requests and downstream native valuation as the next placement targets.
-
-## See the whole decision
+The native AI already forecasts many benefits, costs and delays. We want to preserve that useful reasoning and supply the CSC relationships it misses or approximates poorly. Simply awarding a large bonus to every Quarter would not teach it those relationships.
 
 ```mermaid
-flowchart TD
-    A[Empire priorities and current state] --> B[Value district and site options]
-    C[Local geography and legal possibilities] --> B
-    D[Forecasts and supported effects] --> B
-    B --> E[Select an opportunity]
-    E --> F[Requests and preparation]
-    F --> G[Competition for production and workers]
-    G --> H[Physical completion]
-    H --> I[Retained supply and working customers]
-    I --> J[Realised empire benefit]
-    J -. observed state feeds later decisions .-> A
+flowchart LR
+  A["Understand native valuation"] --> B["Identify a CSC mismatch"]
+  B --> C["Apply a specific correction"]
+  C --> D["Observe decisions and real benefits"]
+  D --> A
 ```
 
-This is a conceptual map. Each arrow has its own conditions and failure modes.
-Evidence of a score change establishes one step; it does not establish successful
-completion or net benefit. The architecture page links the verified native paths.
+Our immediate investigation is why weak Bakers sites can receive large future-building forecasts after our adjacency penalty. [Follow the current question](guide/what-next.md).
 
-## Find an answer or an uncertainty
+## Reading the evidence
 
-- [Corrections and cautions](topics/history/corrections-and-cautions.md)
-- [Open questions and useful next investigations](topics/history/open-questions.md)
-- [Diagram atlas](diagrams.md): browse the decision and evidence maps together
-- [Finding register](findings.md): assertions, scope, evidence and dependencies
-- [Evidence library](evidence.md): original reports, implementation records and agent notes
-- [Coverage and provenance](coverage.md): what was consolidated and how
-- [Maintaining the handbook](maintenance.md): updating, correcting and publishing
-- [Terms and evidence levels](glossary.md)
+The guide is maintained as our understanding changes. Detailed technical explanations, stable finding IDs, original reports and superseded explorations live in the **[Research library](library.md)**. They support the guide rather than define its reading order. The search menu lets you explicitly include that full corpus.
 
-The left-hand search covers both the handbook and its evidence library. The
-local graph and backlinks show connections between the current page and its
-references. Diagrams explain the decision mechanisms; the link graph helps
-navigate them.
+[CSC player documentation](https://hennogous.github.io/Henno-Mods/) · [Maintaining this guide](maintenance.md)

@@ -572,6 +572,26 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-adjacency-policy-20261103.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-bakers-gameplay-component-review-20261104.md",
+      "title": "Bakers building benefits and the forecast audit",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 13832,
+      "sha256": "6d07373b80149e634f11004006d4c2a33de2592ed43eeb1ea1a5e21aed8ce457",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-bakers-gameplay-component-review-20261104.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-bakers-native-component-review-20261104.md",
+      "title": "Bakers building forecasts: native component review",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 9925,
+      "sha256": "5ab1a75fe26ee118ae1642c7f69d4865e8c37b247e404b00b37abfc3bd6ffe62",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-bakers-native-component-review-20261104.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-ai-baseline-20261015.md",
       "title": "CSC AI autoplay baseline 15 October 2026",
       "kind": "report",

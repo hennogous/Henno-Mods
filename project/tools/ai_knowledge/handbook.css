@@ -3,3 +3,24 @@ html { width: 100%; }
 body { width: 100%; }
 article :not(pre) > code { overflow-wrap: anywhere; }
 article .table-container { max-width: 100%; }
+.ai-reader-nav { width: 100%; font-size: .95rem; }
+.ai-nav-label { font-size: .8rem; text-transform: uppercase; letter-spacing: .07em; color: var(--gray); margin: 0 0 .6rem; }
+.ai-reader-nav ol { list-style: none; padding: 0; margin: 0; counter-reset: chapters; }
+.ai-reader-nav li { margin: 0 0 .35rem; counter-increment: chapters; }
+.ai-reader-nav li a { display: block; padding: .5rem .6rem; border-radius: 5px; line-height: 1.4; }
+.ai-reader-nav li a::before { content: counter(chapters) ". "; color: var(--gray); }
+.ai-reader-nav a[aria-current="page"] { background: var(--highlight); color: var(--dark); }
+.ai-library-link { display: block; border-top: 1px solid var(--lightgray); margin-top: 1rem; padding: .8rem .6rem; }
+.ai-page-context { display: flex; flex-direction: column; gap: .4rem; padding: .9rem 1rem; background: var(--highlight); border-radius: 5px; font-size: .9rem; margin: 1rem 0; }
+.ai-search-scope { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; background: var(--light); border-radius: 6px 6px 0 0; color: var(--darkgray); }
+.ai-search-scope select { font: inherit; color: var(--dark); background: var(--light); padding: .4rem; max-width: 70%; }
+@media (max-width: 800px) {
+  .page > #quartz-body .left.sidebar { flex-wrap: wrap; gap: .8rem; }
+  .page header { display: block; }
+  header .ai-reader-nav { border-bottom: 1px solid var(--lightgray); padding: .8rem 0; }
+  header .ai-nav-label { display: none; }
+  header .ai-reader-nav ol { display: grid; grid-template-columns: 1fr 1fr; gap: .15rem .4rem; }
+  header .ai-reader-nav li { margin: 0; }
+  header .ai-reader-nav li a { padding: .4rem; }
+  header .ai-library-link { margin: .4rem 0 0; padding: .5rem .4rem; }
+}

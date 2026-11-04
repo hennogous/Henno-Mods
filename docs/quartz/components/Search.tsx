@@ -7,10 +7,12 @@ import { i18n } from "../i18n"
 
 export interface SearchOptions {
   enablePreview: boolean
+  aiReaderScope: boolean
 }
 
 const defaultOptions: SearchOptions = {
   enablePreview: true,
+  aiReaderScope: false,
 }
 
 export default ((userOpts?: Partial<SearchOptions>) => {
@@ -31,6 +33,12 @@ export default ((userOpts?: Partial<SearchOptions>) => {
         </button>
         <div class="search-container">
           <div class="search-space">
+            {opts.aiReaderScope && <label class="ai-search-scope">Search in
+              <select aria-label="Search scope" class="ai-search-scope-select">
+                <option value="guide">Current guide</option>
+                <option value="all">Full research library</option>
+              </select>
+            </label>}
             <input
               autocomplete="off"
               class="search-bar"

@@ -53,6 +53,17 @@ for (const p of maintained) {
   }
 }
 const html = walk(site).filter(p => p.endsWith(".html"))
+// The reader surface must not accidentally regress to the research file tree.
+const readerSlugs = ["index", "guide/how-the-ai-decides", "guide/steering-the-ai", "guide/teaching-it-csc", "guide/what-next", "library"]
+for (const slug of readerSlugs) {
+  const file = path.join(site, slug + ".html")
+  if (!fs.existsSync(file)) { errors.push(`Missing reader page: ${slug}`); continue }
+  const text = read(file)
+  if (!text.includes('aria-label="AI guide"')) errors.push(`Missing chapter navigation: ${slug}`)
+  if (!text.includes('aria-label="Search scope"')) errors.push(`Missing explicit library search scope: ${slug}`)
+  if (/class="[^"]*\bexplorer\b/.test(text)) errors.push(`Research tree returned to reader page: ${slug}`)
+  if (/class="[^"]*\bgraph\b/.test(text)) errors.push(`Research graph returned to reader page: ${slug}`)
+}
 const anchors = new Map(html.map(p => [p, new Set([...read(p).matchAll(/\bid="([^"]+)"/g)].map(m => m[1]))]))
 let localLinks = 0
 let diagrams = 0
