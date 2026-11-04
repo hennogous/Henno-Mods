@@ -7,7 +7,7 @@ The [CivilizationVI_CommunityExtension](https://github.com/Wild-W/CivilizationVI
 
 **Status:** Beta. AGPL 3.0 (viral — derivatives must be open source).
 
-**How it works:** The mod ships a replacement DLL that the game loads instead of `GameCore_XP2_FinalRelease.dll`. It loads the real GameCore, hooks into the Lua state registration, and injects new globals (`Mem`, `ObjMem`, `RegisterCallEvent`, `RegisterProcessor`) plus new methods on existing game objects.
+**How it works (delivery corrected4 November2026):** The mod bundles its proxy under `Binaries/Win64`; frontend `GameCores.PackageId/DllPrefix` selects that package DLL. It does not require overwriting the installed GameCore. It loads the real GameCore, hooks into the Lua state registration, and injects new globals (`Mem`, `ObjMem`, `RegisterCallEvent`, `RegisterProcessor`) plus new methods on existing game objects.
 
 **Dependency:** Declare it in `.modinfo` as a mod dependency. Users must have the Community Extension installed (Steam Workshop or GitHub release).
 
@@ -400,5 +400,5 @@ Observed district build order by frequency — useful for AI priority modelling:
 - **RegisterCallEvent captures max 4 arguments** — functions with more parameters need creative workarounds.
 - **Setting memory values may not update UI** — e.g., `ChangeGrievanceScore` doesn't immediately refresh the diplomacy screen.
 - **Database extensions planned but not yet supported** — can't add new tables or columns through CE yet.
-- **DLL must be in `Win64Steam` (or `Win64EOS`)** — placement matters.
+- **Workshop DLL delivery:** CE bundles its DLL in the mod package's `Binaries/Win64` and selects it through frontend `GameCores`. The executable-folder INI is optional console configuration, not a required DLL copy. See [delivery correction](csc-native-workshop-delivery-20261104.md).
 - **No macOS/Linux support** — this is Windows-only (DLL injection).

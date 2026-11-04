@@ -1,5 +1,7 @@
 # Native district-score extension: offline feasibility and integration contract
 
+> Delivery follow-up4 November: [Workshop package loading and CE dependency](csc-native-workshop-delivery-20261104.md) corrects any implication that a separate injector/manual DLL installation is unavoidable. The proposed CE scoring API is not yet released.
+
 3 November 2026. **Offline investigation complete; no extension or game prototype
 was implemented or executed.** This answers where custom district/site value could
 enter the inspected native path and what a practical bridge would need to preserve.

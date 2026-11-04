@@ -31,6 +31,7 @@ provides stable references for individual conclusions.
 7. [How we know: evidence and instrumentation](topics/native/evidence-and-instrumentation.md)
 8. [Native placement-score extension](topics/native/native-placement-extension.md): the identified integration point, persistence and proposed bridge
 9. [Anatomy of a district-site score](topics/native/district-score-anatomy.md): components, units, future buildings and the CSC correction ledger
+10. [Workshop delivery and Community Extension](topics/native/workshop-delivery.md): the current release gate before further AI tuning
 
 ## Understand the CSC experiments
 

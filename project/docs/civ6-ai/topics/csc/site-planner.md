@@ -110,6 +110,11 @@ case traces. No empire-benefit or release-readiness claim follows from this test
 
 ## Next decision
 
+**4 November release gate:** Further tuning is held while we establish a
+[Workshop/CE delivery path](../native/workshop-delivery.md). Henno prefers CSC
+Lua/SQL with a CE dependency rather than our own shipped DLL. The model work
+below remains a later step; the research-only Frida carrier is not a release plan.
+
 Review the assumptions and case explanations. Extend profiles to Bakers and
 later Quarters, and gather only missing facts that could change a choice:
 unlocks/costs, worked tiles, future customer permission, Services and competing

@@ -2,6 +2,14 @@
 
 This page records conclusions that must be read differently from older wording. The investigation reports remain dated evidence; the handbook states the reconciled position. A newer document supersedes an older assertion only where it supplies a correction or different verified scope. A later date alone does not invalidate an earlier experiment.
 
+## Workshop delivery correction —4 November2026
+
+Native code can load from a mod package selected by frontend `GameCores`; a
+separate launcher or manual DLL copy is not inherently required. CE's optional
+console INI path was previously confused with a DLL installation requirement.
+CSC now prefers a CE dependency, although stock CE lacks the proposed qualified
+score API. See [delivery evidence](../native/workshop-delivery.md). **[COR-008]**
+
 ## Corrections that change the technical model
 
 | Earlier interpretation or shortcut | Current position | Supporting record |

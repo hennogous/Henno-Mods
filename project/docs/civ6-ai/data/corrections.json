@@ -33,5 +33,13 @@
     "id": "COR-007",
     "affected_sources": ["project/docs/research/mods/csc-ai-paired-selective-chain-screen-results-20261101.md", "project/docs/research/mods/csc-ai-customer-aware-planner-v2-native-20261101.md", "project/docs/research/mods/csc-ai-foundation-priority200-20261025-results.md"],
     "summary": "Full-supply milestones and Service/link flags are not a profit calculation. Upstream materials and producers may supply partial benefits; absent full milestones do not imply zero return. Single joint-package comparisons, partial observation and censored late investments limit causal claims."
+  },
+  {
+    "id": "COR-008",
+    "affected_sources": [
+      "project/docs/research/mods/community-extension-modding.md",
+      "project/docs/research/mods/civ6-district-score-extension-20261103.md"
+    ],
+    "summary": "A native component need not require a separate launcher or manual executable-folder DLL copy. Civ VI GameCores PackageId/DllPrefix loads native code from mod packages, as installed Workshop CE and the independent delivery prototype demonstrate. CE console INI placement is optional configuration, not the DLL installation requirement. Stock CE still lacks the proposed qualified district-score API."
   }
 ]

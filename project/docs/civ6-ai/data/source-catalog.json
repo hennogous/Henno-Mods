@@ -332,6 +332,16 @@
       "site_path": "sources/memory/session_ai_work_admission_20261031.md"
     },
     {
+      "path": "memory/session_ai_workshop_delivery_20261104.md",
+      "title": "Workshop delivery investigation,4 November2026",
+      "kind": "agent-note",
+      "date": "20261104",
+      "bytes": 4022,
+      "sha256": "d9815c62f1da8020ec0b0eac0e1f94ba27c5d37793ea5991fa6e95826c3fa951",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_workshop_delivery_20261104.md"
+    },
+    {
       "path": "memory/session_csc_ai_baseline.md",
       "title": "CSC AI baseline — 15 October 2026",
       "kind": "agent-note",
@@ -486,8 +496,8 @@
       "title": "Native district-score extension: offline feasibility and integration contract",
       "kind": "report",
       "date": "20261103",
-      "bytes": 16585,
-      "sha256": "6e569d69e8a6699c1a37da8b8fc62ab4c618c2a449974d1f205d799205854a53",
+      "bytes": 16844,
+      "sha256": "9376b5e75dd09717da0b18304504999f5bf6e2b1dce58ca5dcd51bff586a76db",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-score-extension-20261103.md"
     },
@@ -526,8 +536,8 @@
       "title": "Community Extension API Reference",
       "kind": "tool-reference",
       "date": null,
-      "bytes": 14545,
-      "sha256": "91186f4f4845518cc219d7aa4e2cd3099754ed23f9f6c33dc1c3a69662f711be",
+      "bytes": 14870,
+      "sha256": "a0d98335c6452008d563db7c8f8ac4bc3d7d34ceabdcf747f1cee2d48d8a9de3",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/community-extension-modding.md"
     },
@@ -1750,6 +1760,16 @@
       "sha256": "9a602da32f4ece062fced9fb6406aa26441bc23df9d8652978cbb04ff2cecbf2",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-native-tooling-community-crosscheck-20261030.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-native-workshop-delivery-20261104.md",
+      "title": "Workshop delivery and a Community Extension release path",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 10291,
+      "sha256": "bf8efb56f6707f7eb7e8f73cbc87d468da8d5109df478a9ab1a7083b02cba346",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-native-workshop-delivery-20261104.md"
     },
     {
       "path": "project/docs/research/mods/csc-offline-abundance-study-20261016.md",

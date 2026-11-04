@@ -17,7 +17,18 @@ Both standalone CSC and RomanHoliday integration should meet that objective.
 Success means realised benefit after investment and displaced opportunities.
 More Quarters, higher scores or a single completed chain are intermediate results.
 
-## Current bounded policy
+## Immediate gate: Workshop delivery through Community Extension
+
+On4 November Henno put further AI tuning on hold until we investigate and
+prototype a Workshop-distributable carrier. His preferred architecture is CSC
+Lua/SQL with a Community Extension dependency, rather than our own shipped DLL.
+The [delivery investigation](topics/native/workshop-delivery.md) demonstrates
+local package-native loading and packaged Lua score delivery, and prepares a
+CE-owned API contribution. Existing CE1.3 does not yet supply that proposed API.
+Resolve and validate the actual CE consumer before more tuning; object compilation
+and an unapplied patch are not a qualified release dependency.
+
+## Current bounded policy — retained research, no further tuning yet
 
 Henno authorized the [full-adjacency +4 pilot](../research/mods/csc-ai-adjacency-policy-20261103.md):
 Bakers/Tailors, all designed adjacency including the planned first Mill, cached
@@ -172,10 +183,10 @@ standalone CSC and appropriate RH references across multiple situations/maps.
 Measure realised outputs, strategic usefulness, opportunity costs, development
 delays and durability. Fewer strong investments can outperform more Quarters.
 
-The current native bridge is a pinned research prototype. Choose a distributable
-carrier and qualify versions, lifecycle, persistence and compatibility before
-calling it a player-ready release. Release packaging need not block offline
-model development or the next decision-relevant comparison.
+The current native bridge is a pinned research prototype. The4 November delivery
+gate above takes precedence: qualify a CE-owned carrier before further tuning.
+Versions, lifecycle, persistence, platform and compatibility still need review
+before calling it a player-ready release.
 
 ## Working rules
 

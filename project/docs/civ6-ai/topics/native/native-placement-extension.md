@@ -1,5 +1,11 @@
 # A native bridge for custom district incentives
 
+> **4 November delivery gate:** Further tuning is held while we qualify a
+> Workshop carrier. Native DLLs can load from mod packages; an external launcher
+> is not inherently required. Henno prefers a CE dependency with CSC Lua/SQL.
+> See [Workshop delivery](workshop-delivery.md) for the demonstrated independent
+> carrier and the proposed, not-yet-released CE score API.
+
 A native extension now has a working experimental bridge at the ordinary
 district score/cache boundary. In a matched one-save trial, a single+1 utility
 adjustment reached the completed cache, native winner's score, present value

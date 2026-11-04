@@ -1347,5 +1347,52 @@
     "related": [
       "AI-C050"
     ]
+  },
+  {
+    "id": "AI-N070",
+    "title": "GameCore proxies can load from mod packages without an external injector",
+    "statement": "Frontend GameCores PackageId/DllPrefix can select a native DLL bundled in a mod package. Installed Workshop CE uses this route. An independent local proxy was loaded from its mod directory, exposed Lua publication, delivered42 observed +256Q8 adjustments and reset on same-process context recreation without Frida/Python in the package.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Pinned Win64 XP2, installed CE1.3 package and independent GUIDa04. Online observation1–2; diagnostic1–6 followed by observation1–2 in same process. Both native exit0, preferences/content verified.12 Lua checks,7 native arithmetic checks,4 reconciliation regressions.",
+    "limits": "Independent proxy is a delivery experiment, not selected CSC release architecture. Actual Workshop upload/subscription and acceptance untested. Diagnostic driver postassert exited1 because reset counters were sampled too late; original result preserved and42 writes recovered from package logs offline. No caused decision, benefit, full lifecycle, cross-platform or compatibility claim.",
+    "sources": [
+      "project/docs/research/mods/csc-native-workshop-delivery-20261104.md"
+    ],
+    "topic": "topics/native/workshop-delivery.md",
+    "depends_on": [
+      "AI-N061"
+    ],
+    "related": [
+      "AI-N059",
+      "AI-C051"
+    ]
+  },
+  {
+    "id": "AI-N071",
+    "title": "Existing CE memory access does not yet qualify a safe district-score consumer",
+    "statement": "A stock-CE Lua-only probe read55 city observations and174 shared district scores without memory writes; CE exposes writable data memory, but safe completed-cache edit timing and fresh-analysis/idempotence handling remain unqualified. Its documented unfinished RegisterCallEvent has inspected callback ABI/lifetime concerns. A CE-owned bounded numeric publication API has a compiled contribution candidate, not a released or combined-runtime-validated implementation.",
+    "status": "provisional",
+    "evidence_types": [
+      "source",
+      "inference",
+      "runtime"
+    ],
+    "scope": "Pinned CE source e59b5aa and installed1.3 implementation-family review; current primary wiki/source. Lua-only Online1–3 probe08 closed normally,150 preference entries restored and content unchanged; actual new score API nil. CE integration branch compiles two AMD64 objects; focused unapplied patch validates.",
+    "limits": "No general engine impossibility, demonstrated CE crash or conclusion that GetBestDistrict runs on a wrong thread. Stock CE1.3 lacks the proposed API. Full CE/MSVC build, threading, lifecycle and maintainer adoption remain open; an independently maintained fork would remain a native distribution.",
+    "sources": [
+      "project/docs/research/mods/csc-native-workshop-delivery-20261104.md"
+    ],
+    "topic": "topics/native/workshop-delivery.md",
+    "depends_on": [
+      "AI-N059"
+    ],
+    "related": [
+      "AI-N070",
+      "AI-N067"
+    ]
   }
 ]
