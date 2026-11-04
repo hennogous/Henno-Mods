@@ -61,7 +61,7 @@ therefore does not imply stale scores. [AI-N067]
 ## Buying a future site
 
 The district tree can request a particular unowned location through a
-PurchasePlotContract. Economic's targeted route checks the cheapest legal quote
+PurchasePlotContract. Economic's targeted route checks the lowest positive quote
 across the player's cities, plot/slush savings and native purchase legality.
 Already-owned locations succeed without buying. Independently, an opportunistic
 Economic pass considers each city's cached frontier-resource acquisition target,

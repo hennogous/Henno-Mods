@@ -1328,7 +1328,7 @@
   {
     "id": "AI-N069",
     "title": "Plot purchases have targeted preparation and opportunistic economic routes",
-    "statement": "A district preparation tree can submit a PurchasePlotContract for its exact location; Economic TryPurchasePlot seeks the cheapest positive legal city quote. Separately PurchasePlots uses each city's cached frontier-resource acquisition target, selected from improvement forecasts and a feature heuristic. Both use plot/slush savings and native command legality; the requested route has a lower earmarked-plot-fund hurdle.",
+    "statement": "A district preparation tree can submit a PurchasePlotContract for its exact location; Economic TryPurchasePlot seeks the lowest positive city quote before native legality checks. Separately PurchasePlots uses each city's cached frontier-resource acquisition target, selected from improvement forecasts and a feature heuristic. Both use plot/slush savings and native command legality; the requested route has a lower earmarked-plot-fund hurdle.",
     "status": "accepted",
     "evidence_types": [
       "source"

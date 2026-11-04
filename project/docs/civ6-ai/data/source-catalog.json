@@ -186,8 +186,8 @@
       "title": "Native score components, cache timing and purchases —4 November2026",
       "kind": "agent-note",
       "date": "20261104",
-      "bytes": 4232,
-      "sha256": "f2b6de7e2d516f1d8aaa675cb6cd4700a0f828c4ef3639a85aea513fb77d2ca7",
+      "bytes": 4246,
+      "sha256": "4efdd8e99ed8adc39bf11ee8d88142896aa01c9ea8b0e72b593ee5c2cb4493f4",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_ai_native_score_components_20261104.md"
     },
@@ -456,8 +456,8 @@
       "title": "District score components, refresh and tile purchases",
       "kind": "report",
       "date": "20261104",
-      "bytes": 14487,
-      "sha256": "680909fa48557b242b005fdf1c20d6bb5f6440bb9a9610994e92ac24d236671e",
+      "bytes": 14479,
+      "sha256": "7f46921d4639085081e1b352e8364f6a56a2291bb319d22517601e01a1bac8ca",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
     },

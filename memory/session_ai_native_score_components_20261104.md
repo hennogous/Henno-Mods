@@ -42,7 +42,7 @@ Keyfacts:
   notprovenactualcontribution. Genericmodifierinterpretercanomitgates/collections
   orlackplotcontext, solegitbenefitsandmispricingmustbeseparated.
 - Twoacquisitionroutes: targetedPurchasePlotContract(exactsite;cheapestpositive
-  legalcityquote) andopportunisticEconomicPurchasePlots(citycachedfrontier
+  cityquote thennativelegality) andopportunisticEconomicPurchasePlots(citycachedfrontier
   resourcepoint, improvementforecast+FEATUREheuristic/order-sensitive).
   row+4=FeatureNOTimprovement; HasImprovement+50. Plot/slushsavingsgates:
   routineC<P+S &fixed(C/2)<P; targetGold<=floor((P+S)/256) &fixed(C/4)<=P.

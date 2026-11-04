@@ -172,7 +172,7 @@ queue switch cannot be treated as the same event or given one universal cadence.
 chosen Location and contains a Purchase Plot node before reservation/construction
 work, alongside research preparation. An already-owned location succeeds without
 buying; foreign ownership fails. An unowned target can create a PurchasePlotContract
-for Economic. Its execution looks for the cheapest positive legal quote across
+for Economic. Its execution looks for the lowest positive quote across
 the player's cities and requests the exact target plot. [AI-N069]
 
 **An opportunistic resource-development purchase.** Economic's full activation
