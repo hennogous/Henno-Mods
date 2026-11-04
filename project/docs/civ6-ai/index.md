@@ -53,7 +53,9 @@ while23 other Quarters still founded below the cutoff. See the site-planner topi
 for scope, interruption/recovery and remaining work.
 The [soft-penalty follow-up](../research/mods/csc-ai-placement-penalties-20261103.md)
 extends the same carrier to individual weak-site deductions; a fresh Online100
-test is in progress.
+test completed after recovery on4 November. Ten promoted sites and four below-4
+sites founded, with zero native errors. The four exceptions expose early coverage,
+retained requests and downstream native valuation as the next placement targets.
 
 ## See the whole decision
 

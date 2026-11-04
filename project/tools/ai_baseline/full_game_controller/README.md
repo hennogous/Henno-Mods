@@ -421,3 +421,23 @@ handlers issue no gameplay choices, production orders or turn activation.
 Focused regressions: `python -B -m unittest -v full_game_controller.test_presentation_playback`
 from `project/tools/ai_baseline`. The actual saved-game verification and its
 limits are recorded in the native Quarter placement-choice report.
+
+## UI control lag and probe handoff — 4 November 2026
+
+During the Quarter-penalty game at75, Core proved active finite autoplay with
+local player-1 and observer0 AI-controlled, while the UI player object retained
+its pre-autoplay human flag. The original warning guard skipped once, then its
+next scheduled retry closed the troop-warning conversation and play resumed.
+Warning, already-declared-war and whitelisted first-meet guards now use that
+fresh Core control proof, retaining the independent UI clock/local-player gate,
+session identity, participants and native exit-choice checks. A stale UI human
+flag is recorded explicitly. Actual Core human control still prevents dismissal.
+New Lua5.1 cases cover the discrepancy and all retained refusal conditions.
+
+An attempted repair handoff arrived after play resumed and exposed a missing
+`capture` method in the small probe adapter. The driver preserved its partial
+80→81 interval and closed normally. `ProbeInterfaces.capture` now archives an
+explicitly limited read-only phase receipt; both active and inactive handoffs
+have adapter regressions. It does not invent a full experiment world snapshot.
+See [the complete penalty investigation](../../../docs/research/mods/csc-ai-placement-penalties-20261103.md)
+for the actual recovery, native observations and remaining scope limits.

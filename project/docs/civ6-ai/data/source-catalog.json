@@ -193,11 +193,11 @@
     },
     {
       "path": "memory/session_ai_placement_penalties_20261103.md",
-      "title": "Weak Quarter placement penalties —3 November2026",
+      "title": "Weak Quarter placement penalties — completed4 November2026",
       "kind": "agent-note",
       "date": "20261103",
-      "bytes": 1677,
-      "sha256": "bae39591dea9d3f534885e2ce406770f725faa128c337113cc30f8f08f4e57e9",
+      "bytes": 3871,
+      "sha256": "6646a82a5110bea2a3eef413e7940ac824540ba4f3e7d04ff5a03b376fae56ed",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_ai_placement_penalties_20261103.md"
     },
@@ -1256,8 +1256,8 @@
       "title": "Soft penalties for weak Quarter placements",
       "kind": "report",
       "date": "20261103",
-      "bytes": 6108,
-      "sha256": "3a51e56a9e3bb26d6fe756dde67bdbd2c25b86ffcd0cbbb224cb7725bfa91ccd",
+      "bytes": 16012,
+      "sha256": "5ca62df27849ba2b882a37274d3143af3218304e0d7fa23d0e12f96c13d61a33",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-placement-penalties-20261103.md"
     },
@@ -1896,8 +1896,8 @@
       "title": "Native validation limit —23 October observer defeat",
       "kind": "tool-reference",
       "date": null,
-      "bytes": 28171,
-      "sha256": "80d249b22dce0a7db32d43e94c51c94a172434e4be941c659d11eac5862cac7e",
+      "bytes": 29511,
+      "sha256": "0c25b6458b8cfe9067352a28b0bf501bd229586a47dcee5a41d944d35527b49c",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/tools/ai_baseline/full_game_controller/README.md"
     },

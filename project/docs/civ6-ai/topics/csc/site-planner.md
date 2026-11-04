@@ -92,8 +92,20 @@ sub-4 Bakers/Tailors pair:65,536 Q8 per missing point, capped262,144. Multiple
 district/tile entries can now share a city. These are experimental priorities,
 not calibrated yield prices. Native negative scores can still win, and crossing
 zero also removes the later future-building uplift. No unconditional poor-site
-ban is added. The fresh Online100 test is in progress; source/host checks alone
-do not establish a changed live placement or economic benefit. [AI-C050]
+ban is added. The recovered Online100 game founded ten promoted Quarters and
+four below-4 Quarters (12 total completions), with13,881 deductions,75 additions
+and zero native errors in completed windows. The positive-only pilot had23
+below-4 foundations; this is descriptive, not a matched causal comparison. [AI-C050]
+
+The exceptions identify two different gaps. The Hague and Pokrovka entered native
+requests before their sites first appeared in the scanner; later negative values
+did not retract the retained requests. Delhi and Majapahit remained positive
+after deduction and won with much larger final cached values after downstream
+native valuation. The next placement refinement should cover candidates before
+request admission and consider a penalty on the final aggregated value. Simply
+raising a late subtraction would not solve both problems. The report preserves
+the controller interruption, exact scanner-fact recovery comparison and all four
+case traces. No empire-benefit or release-readiness claim follows from this test.
 
 ## Next decision
 

@@ -35,8 +35,14 @@ follow-through and the absence of a weak-site ban, not a caused choice change
 or empire benefit. Henno next authorized discouraging weak placements:
 the [v2 soft-penalty extension](../research/mods/csc-ai-placement-penalties-20261103.md)
 retains the promotion and subtracts a graded priority from every observed sub-4
-pair. Its fresh Online100 test is in progress. First-Mill construction remains
-a later distinct decision, not part of this placement penalty.
+pair. Its recovered Online100 test closed on4 November: ten promoted foundations,
+four below-4 foundations and zero native errors. This compares descriptively with
+23 below-4 foundations in the positive-only run, without a matched causal arm.
+Two exceptions were admitted before scanner coverage and retained old request
+values; two stayed positive and won after downstream native uplift. Next,
+cover proposal candidates before admission and review an adjustment at the final
+aggregated value. Retained-request refreshing would be a separate native contract.
+First-Mill construction remains a later distinct decision, not part of this penalty.
 
 ## Starting point
 
