@@ -23,6 +23,19 @@ def parse(raw,marker):
  if len(values)!=1:raise ValueError('Missing or ambiguous '+marker)
  return json.loads(values[0])
 
+def recovery_projection(value):
+ """Exact captured site/city/rule facts, ignoring collection order and clocks.
+
+ This is a scanner-fact comparison, never full-world, RNG or native-cache parity.
+ Timing/geometry-cache statistics intentionally differ after a new process.
+ """
+ def canonical(v):
+  if isinstance(v,dict):return {k:canonical(x)for k,x in sorted(v.items())}
+  if isinstance(v,list):return sorted((canonical(x)for x in v),key=lambda x:json.dumps(x,sort_keys=True))
+  return v
+ keys=('turn','speed','width','height','districtCount','originalAI','currentHumans','players','cities','candidates','quarters','rules')
+ return {k:canonical(value[k])for k in keys}
+
 def setup():
  return """GameConfiguration.SetToDefaults();GameConfiguration.SetRuleSet('RULESET_EXPANSION_2');BuildHeadlessGameSetup();RebuildPlayerParameters(true);GameSetup_RefreshParameters();MapConfiguration.SetScript('Continents.lua');MapConfiguration.SetMapSize('MAPSIZE_SMALL');GameConfiguration.SetParticipatingPlayerCount(6);GameConfiguration.SetValue('CITY_STATE_COUNT',9);GameConfiguration.SetGameSpeedType('GAMESPEED_ONLINE');GameConfiguration.SetHandicapType('DIFFICULTY_PRINCE');GameConfiguration.SetValue('GAME_SYNC_RANDOM_SEED',26131103);MapConfiguration.SetValue('RANDOM_SEED',16131103);MapConfiguration.SetValue('resources',2);GameConfiguration.SetValue('GAMEMODE_MONOPOLIES',false);GameConfiguration.SetStartEra(DB.MakeHash('ERA_ANCIENT'));for _,pid in ipairs(GameConfiguration.GetParticipatingPlayerIDs())do PlayerConfigurations[pid]:SetLeaderTypeName(nil)end;ReleasePlayerParameters();HideGameSetup();Automation.SetAutoStartEnabled(true);Network.HostGame(ServerType.SERVER_TYPE_NONE);"""
 
@@ -40,7 +53,11 @@ def run(args):
  files += [Path(m.__file__) for m in list(sys.modules.values()) if getattr(m,'__file__',None)and Path(m.__file__).is_relative_to(ROOT/'project/tools')]
  files += list((ROOT/'project/tools/ai_baseline/full_game_controller').glob('*.lua'))
  files += [args.binary,args.dll,args.spec]
- if args.resume_save:files += [args.resume_save,args.original_run/'original-preferences.json',args.original_run/'scans/source-1.json']
+ reference_scan=None
+ if args.resume_save:
+  files += [args.resume_save,args.original_run/'original-preferences.json',args.original_run/'scans/source-1.json']
+  for path in (args.original_run/'scans'/('turn-'+str(first)+'.json'),args.original_run/'scans'/('source-'+str(first)+'.json')):
+   if path.is_file():reference_scan=path;files.append(path);break
  pins={str(p.resolve()):sha(p) for p in files}
  write_json(out/'source-pins.json',pins);write_json(out/'source-archive.json',archive_sources(pins,out/'source-version'))
  write_json(out/'installed-before.json',installed);write_json(out/'dependency-pins.json',deps)
@@ -64,6 +81,11 @@ def run(args):
   controller.cmd((HERE/'scan.lua').read_text(encoding='utf-8'),'CSC_AdjacencyGameplay','install-readonly-scanner',wait=5)
   initial=scan('source-'+str(first));assert initial['turn']==first and initial['speed']=='GAMESPEED_ONLINE'and not(set(initial['currentHumans'])&set(original_ai))
   if not args.resume_save:assert initial['currentHumans']==[0]
+  if reference_scan:
+   expected,actual=recovery_projection(read(reference_scan)),recovery_projection(initial)
+   different=[k for k in expected if expected[k]!=actual[k]]
+   write_json(out/'recovery-scanner-parity.json',dict(reference=str(reference_scan),reference_sha256=sha(reference_scan),different_fields=different,verified=not different,scope='Captured city/district/queue/candidate/rule/player facts; not full world, RNG, cache or fractional-turn parity'))
+   if different:raise RuntimeError('Recovery scanner facts differ: '+','.join(different))
   last_turn=first;verify(content=True);return True
  def freeze():
   if extension is not None:extension.before_menu()

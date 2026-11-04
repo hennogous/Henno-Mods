@@ -1,6 +1,7 @@
 import copy,unittest
 from policy import shortlist,penalty,PROFILE
 from daemon import validate_entries,validate_snapshot
+from driver import recovery_projection
 
 def fixture():
  return dict(turn=20,originalAI=[1,2],currentHumans=[0],candidates=[dict(player=1,city=7,district=8,plot=30,quarter='BAKERS',production=2,gold=2,total=4,materialOnSite=False,legal=True)])
@@ -59,4 +60,14 @@ class PolicyTests(unittest.TestCase):
   config=dict(originalAI=[1],districtIndices=[8],width=74,height=46)
   value=dict(profile=PROFILE,read_only=False,entries=[dict(player=1,city=7,district=8,plot=30,delta=-262144)],records=[dict(player=1,city=7,district=8,plot=30,k='net',base=-1000000,result=-1048576,reason=0)],stats=dict(records=1,entryCount=1,mode=2,active=0,changed=1,errors=0,fatal=0))
   self.assertFalse(validate_snapshot(value,config));self.assertGreater(-1048576*1.5,-2559744)
+ def test_recovery_comparison_ignores_only_order_and_statistics(self):
+  s=dict(turn=80,speed='GAMESPEED_ONLINE',width=74,height=46,districtCount=38,originalAI=[1,2],currentHumans=[0],players=[dict(player=1),dict(player=2)],cities=[dict(city=7,queue='BUILDING_MILL',districts=[dict(plot=10,complete=True),dict(plot=11,complete=False)])],candidates=[dict(plot=12,total=4)],quarters=[dict(index=36)],rules=[dict(ID='one')],elapsedSeconds=0,geometryBuilt=1)
+  t=copy.deepcopy(s);t['players'].reverse();t['cities'][0]['districts'].reverse();t.update(elapsedSeconds=1,geometryBuilt=5)
+  self.assertEqual(recovery_projection(s),recovery_projection(t))
+  for changed in ('queue','complete','total'):
+   t=copy.deepcopy(s)
+   if changed=='queue':t['cities'][0]['queue']='BUILDING_OTHER'
+   elif changed=='complete':t['cities'][0]['districts'][1]['complete']=True
+   else:t['candidates'][0]['total']=3
+   self.assertNotEqual(recovery_projection(s),recovery_projection(t))
 if __name__=='__main__':unittest.main()

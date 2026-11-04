@@ -9,7 +9,10 @@ if type(id)~='number'or id<0 then skip('no_session');return end
 local turn=__CORE_TURN__;local target=__TARGET_TURN__
 if not(__CORE_ACTIVE__ and __CORE_LOCAL__==-1 and not __CORE_HUMAN__ and target-turn>0 and target-turn<=5)then skip('core_phase');return end
 local ui=Game.GetCurrentGameTurn();if ui~=turn and ui~=turn-1 then skip('ui_clock');return end
-if Game.GetLocalPlayer()~=-1 or Players[0]:IsHuman()then skip('ui_control');return end
+if Game.GetLocalPlayer()~=-1 then skip('ui_control');return end
+-- UI player objects can retain the pre-autoplay human flag. The fresh Core
+-- proof above owns control authority; retain the independent UI clock/local gate.
+if Players[0]:IsHuman()then print('CSC_OBSERVER_WARNING_STALE_UI_HUMAN',turn,ui)end
 if not DiplomacyManager.IsSessionIDOpen(id)then skip('session_closed');return end
 if DiplomacyManager.FindOpenSessionID(0,from)~=id then skip('session_changed');return end
 local info=DiplomacyManager.GetSessionInfo(id)

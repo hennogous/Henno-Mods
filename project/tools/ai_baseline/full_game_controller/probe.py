@@ -6,6 +6,7 @@ Readers, source parity, treatments and optional observers remain caller-owned.
 import hashlib
 import json
 import os
+import re
 import tempfile
 import time
 from pathlib import Path
@@ -97,6 +98,22 @@ class ProbeInterfaces:
         self.seq = 0
         self.required_state = 'GameCore_Tuner'
         self.state = {}
+
+    def capture(self, label):
+        """Archive the shared read-only phase proof used by ownership handoff.
+
+        Small probes have no experiment-specific world snapshot. Their capture
+        explicitly records that limited scope rather than requiring the full
+        native diagnostic payload of a particular experiment.
+        """
+        if not isinstance(label, str) or not re.fullmatch(r'[A-Za-z0-9_-]+', label):
+            raise ValueError('Invalid probe capture label')
+        value = dict(read_only=True, scope='shared-controller-phase',
+                     phase=self.state_read(label + '-phase'))
+        self.diagnostics.write(self.root / 'captures' / (label + '.json'), value)
+        self.diagnostics.journal('readonly-probe-capture', label=label,
+                                 scope=value['scope'], phase=value['phase'])
+        return value
 
 
 def make_probe_controller(output, *, user_root=None):

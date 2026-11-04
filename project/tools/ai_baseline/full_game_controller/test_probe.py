@@ -107,6 +107,50 @@ class ProbeTests(unittest.TestCase):
         runner.diagnostics.write(value, {'verified':True})
         self.assertEqual(len(runner.diagnostics.sha(value)), 64)
 
+    def test_real_probe_handoff_archives_readonly_phase_capture(self):
+        runner = self.runner()
+        def inactive(code, state, token, port, **kwargs):
+            self.transmissions.append((code, state, token, port))
+            self.assertEqual(code, control.HANDOFF)
+            self.assertEqual(state, 1)
+            return 'CSC_SHARED_STATE 80 false 0 0 true true', True
+        with patch.object(control, 'receive_command', inactive):
+            receipt = runner.handoff_for_update(80, {'source_update_requested': True})
+        self.assertTrue(receipt['verified'])
+        self.assertEqual(receipt['native_controls_issued'], 0)
+        self.assertEqual(len(self.transmissions), 5)
+        captured = json.loads((self.output/'captures/source-update-handoff.json').read_text())
+        self.assertTrue(captured['read_only'])
+        self.assertEqual(captured['scope'], 'shared-controller-phase')
+        self.assertEqual(captured['phase']['turn'], 80)
+        self.assertFalse(captured['phase']['active'])
+        self.assertTrue((self.output/'source-update-handoff.json').is_file())
+
+    def test_probe_capture_rejects_path_labels_before_any_command(self):
+        runner = self.runner()
+        for label in ('../escape', '', 'bad/name', None):
+            with self.subTest(label=label), self.assertRaises(ValueError):
+                runner.capture(label)
+        self.assertEqual(self.transmissions, [])
+
+    def test_real_probe_active_handoff_uses_readonly_capture(self):
+        runner = self.runner()
+        runner.capture_blocker = lambda target: self.assertEqual(target, 81)
+        def active(code, state, token, port, **kwargs):
+            self.transmissions.append((code, state, token, port))
+            self.assertEqual(code, control.HANDOFF)
+            return 'CSC_SHARED_STATE 80 true 1 -1 false true', True
+        with patch.object(control, 'receive_command', active):
+            receipt = runner.handoff_active_for_update(81)
+        self.assertTrue(receipt['verified'])
+        self.assertEqual(receipt['native_controls_issued'], 0)
+        self.assertFalse(receipt['second_activation'])
+        self.assertEqual(len(self.transmissions), 3)
+        captured = json.loads((self.output/'captures/active-source-update-handoff.json').read_text())
+        self.assertTrue(captured['read_only'])
+        self.assertEqual(captured['phase']['remaining'], 1)
+        self.assertTrue((self.output/'source-update-handoff.json').is_file())
+
     def test_default_localappdata_requires_existing_native_logs_directory(self):
         local = self.root/'local'
         expected = local/'Firaxis Games'/"Sid Meier's Civilization VI"

@@ -17,7 +17,7 @@ ContextPtr={IsHidden=function()return true end};Close=function()error('hidden vi
   l.execute(code);return l.globals().calls
  def test_declared_war_with_native_exit_only_definition_closes_once(self):self.assertEqual(self.lua(),1)
  def test_no_peace_war_creation_or_unreviewed_choice(self):
-  for setup in ("key='CHOICE_POSITIVE'",'definition=false','war=false','open=false','human=true','localplayer=0','peer=3','turn=82'):
+  for setup in ("key='CHOICE_POSITIVE'",'definition=false','war=false','open=false','localplayer=0','peer=3','turn=82'):
    self.assertEqual(self.lua(setup),0,setup)
  def method(self,lines,replies):
   draft=(H/'controller.py').read_text();tree=ast.parse(draft);cls=next(x for x in tree.body if isinstance(x,ast.ClassDef)and x.name=='FullGameController');node=next(x for x in cls.body if isinstance(x,ast.FunctionDef)and x.name=='dismiss_observer_warning')
