@@ -24,6 +24,15 @@ The source bounds the adjacency capacity exposed through a building from 1023 to
 
 Henno chose to keep FireTuner open and finish offline checks only. No installed package or game was changed. The next native comparison must verify real yield transitions, saved-game reconciliation and the isolated forecast change before asking whether a different opportunity wins and gets built. [Implementation and evidence](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
 
+## Continue the building ledger: real benefits and hidden markers
+
+Before another tuning change, the remaining building ledger must distinguish
+real Mill/Bakery/Café benefits from implementation scaffolding. The hidden River
+Access markers have zero own value in our capture, yet their prerequisite and
+mutual-exclusion links can still change the forecast. The source audit confirms
+their gameplay purpose and the Wind-on-river asymmetry; their exact early-income
+and timing contribution is still open. [River Access findings](../../research/mods/csc-ai-river-access-flags-20261104.md).
+
 ## Next: cover candidates before commitment
 
 Our scanner excludes some opportunities native planning considers. Two earlier poor placements entered requests before our policy covered them. We need to establish the precise admission gap and cover relevant candidates early enough.

@@ -47,6 +47,16 @@ The source now keeps the matcher and UI while using **one conditional +1 switch 
 
 This removes the huge encoding capacity but does not make the AI understand a condition it currently skips. Our scanner still deliberately evaluates the appropriate planned first Mill as a future benefit, separately from actual current income. Native yield, forecast and save checks remain pending. [Read the implementation](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
 
+## Hidden eligibility markers are not economic development
+
+The hidden River Access markers are another implementation detail the AI can
+misread. They automatically gate Water Mill availability and have no economic
+output or direct district-score contribution in our capture. Their prerequisite
+and exclusion links nevertheless affect native forecasting. Current gameplay
+also permits Wind on river sites; it only forbids Water off-river and owning
+both Mills. We should preserve real availability while separating free markers
+from investment value. [Read the logic audit](../../research/mods/csc-ai-river-access-flags-20261104.md).
+
 ## The richer planner is a separate review tool
 
 An offline Tailors evaluator compares 44 copied cases using explicit yield, cost, timing and development assumptions. It explains when developing an existing Quarter becomes attractive and how that changes with the horizon or construction costs.

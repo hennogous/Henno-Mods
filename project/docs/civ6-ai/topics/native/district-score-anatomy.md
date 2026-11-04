@@ -68,6 +68,17 @@ Bakery/Café deserve inspection. The later component observation below measures
 the large modifier term separately; it does not fully attribute the smaller
 earlier prerequisite-depth contribution.
 
+The [River Access audit](../../../research/mods/csc-ai-river-access-flags-20261104.md)
+separates those hidden markers from genuine investment. Their captured own
+forecasts are zero and MustPurchase excludes their direct district contribution.
+However, the depth loop does not skip free/MustPurchase/already-present markers:
+the Water→River Access definition edge participates in its structural depth.
+NoRiver also appears in Water's mutual exclusions; its lower captured definition
+index can exclude Water from the district sum even when the marker is absent.
+Wind's lower-index exclusion independently does the same. Neither zero own score
+nor hidden presentation makes these references invisible. The actual early
+subtotal/ETA impact remains unmeasured. [AI-C057]
+
 ## What the earlier Quarter test measured
 
 | Bakers case | Fresh native value | Site penalty | Remaining value | Final cache |

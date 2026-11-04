@@ -1,3 +1,11 @@
+# Latest River Access audit —4 November2026
+
+User asked recover flag logic, not change it. SQL Water requires River, excludes
+NoRiver/Wind; Wind excludes Water but allowed onriver. Markers owncapturedscore0
++MustPurchase directsumexcluded; still indirectdepth/canonicalization effects.
+No new gameplay/runtime actions. See session_ai_river_access_flags_20261104.md
+and AI-C057/report. Prior offline-only constraint still applies.
+
 # Latest local Mill repair —4 November2026
 
 User confirmed each Mill bonus only in its own Quarter. Source implements

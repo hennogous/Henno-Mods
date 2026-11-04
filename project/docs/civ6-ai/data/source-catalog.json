@@ -312,6 +312,16 @@
       "site_path": "sources/memory/session_ai_rea_trial_20261030.md"
     },
     {
+      "path": "memory/session_ai_river_access_flags_20261104.md",
+      "title": "River Access logic audit —4 November2026",
+      "kind": "agent-note",
+      "date": "20261104",
+      "bytes": 1247,
+      "sha256": "5e887eaa6d05a91b57723eb7a11a259163bb673e19b327402f2df532414a1de8",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_river_access_flags_20261104.md"
+    },
+    {
       "path": "memory/session_ai_roadmap_astra_20261030.md",
       "title": "Astra roadmap revision —30October2026",
       "kind": "agent-note",
@@ -1580,6 +1590,16 @@
       "sha256": "79006f30b30b15eed47f03108b1a54dedc77923f0077bbaba9d310eda60d620b",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-rh5-profile150-test-20261024.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-river-access-flags-20261104.md",
+      "title": "River Access flags: gameplay purpose and indirect AI effects",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 6436,
+      "sha256": "a037561cc3934b656f821beed007f5ee7a57ec3322c2979300a18aa871632350",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-river-access-flags-20261104.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-selective-planner-20261031.md",
