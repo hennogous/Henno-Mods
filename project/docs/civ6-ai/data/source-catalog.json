@@ -72,6 +72,16 @@
       "site_path": "sources/memory/session_ai_adjacency_policy_20261103.md"
     },
     {
+      "path": "memory/session_ai_adjacency_simplification_20261104.md",
+      "title": "Mill/MAB lineage, differences and bounded alternatives —4 November2026",
+      "kind": "agent-note",
+      "date": "20261104",
+      "bytes": 3023,
+      "sha256": "e0e4aa78515c32935f4f1057d320ff496e9b55eb32fc31a9088927edb1fb27aa",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_adjacency_simplification_20261104.md"
+    },
+    {
       "path": "memory/session_ai_astra_rea_next_20261030.md",
       "title": "Astra consultation after REA trial —30 October2026",
       "kind": "agent-note",
@@ -580,6 +590,26 @@
       "sha256": "9be07857c1177b19a41c9b3cf7f32f164445b006309a453ce86b8559c2951396",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-adjacency-policy-20261103.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-adjacency-range-and-provenance-20261104.md",
+      "title": "Why the adjacency engine has a 1023 range, and what CSC needs",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 14408,
+      "sha256": "40d9efad374fd0b9e98fb4745e0cafdf1a3a9719465e50d452af6404da886687",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-adjacency-range-and-provenance-20261104.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-adjacency-simplification-20261104.md",
+      "title": "Both Mills inflate: MAB lineage and a smaller CSC representation",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 9834,
+      "sha256": "404fe9d3003d116c851311e64fa42742e99481827611ccaf8a6c98834eecb6f0",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-adjacency-simplification-20261104.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-bakers-forecast-components-20261104.md",
@@ -1100,6 +1130,16 @@
       "sha256": "fbdbe9cb65ab9236c3cb375b538c544ddd305f034b02c636d904739c7c9e253a",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-mechanism-tests-20261025.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-mill-adjacency-native-options-20261104.md",
+      "title": "Mill forecast differences and simpler representation options",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 10097,
+      "sha256": "a4a7f3e1e22083b2f7153990d9e7358f78dd0a2b3650ee900b6472a0f9934212",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-mill-adjacency-native-options-20261104.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-native-bonus-river-20261017.md",

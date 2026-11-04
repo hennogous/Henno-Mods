@@ -1,3 +1,14 @@
+# Latest Mill simplification review —4 November2026
+
+Both Mills share MAB-style phantom10bitforecast. Water differs by readiness
+discounting and is separately canonicalized out of district sums, not immune.
+All46currentbundledrules fitmax1/3/6;317actualLua countcases match bounded
+representations. Recommend narrow Windone+1/Waterthree+1flags prototype before
+new native hook; no production change or game performed. Smaller encoding still
+does not fix skipped conditions. Current global Mill activation vs public local
+wording unresolved; do not silently change scope. Read
+`session_ai_adjacency_simplification_20261104.md`, new report and AI-C054/C055.
+
 # Latest AI guide and Bakers attribution —4 November2026
 
 Human reading surface is now curated `project/docs/civ6-ai/index.md` + `guide/`;

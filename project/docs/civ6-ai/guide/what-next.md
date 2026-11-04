@@ -16,7 +16,11 @@ That is a forecast error, not real income. Other building benefits—amenities, 
 
 ## Current question: what is the cleanest targeted correction?
 
-We need to exclude or replace the false encoding-bit contribution while preserving justified native value. Our current district adjustment happens **before** this building pass. A large opposing subtraction can cross a sign gate and discard real benefits too; a precise correction may need a building/modifier forecast boundary or an explicit final-component contract.
+The follow-up has confirmed that **both Mills** inflate through the same mechanism. Their large numerical differences come from forecast timing, while native mutual-exclusion handling decides which one enters the district sum. MAB’s broad encoding range is unnecessary for CSC’s current local rules.
+
+The recommended first prototype is a narrow representation change: one conditional +1 switch for Wind and three +1 steps for Water, preserving the actual geometry and payouts. The offline comparison matches all 317 current count cases. This bounds the false forecast, but still does not make the AI obey omitted conditions. [Read the simpler options](../../research/mods/csc-ai-adjacency-simplification-20261104.md).
+
+We should test that small change before adding a new native consumer or a large opposing site penalty. If exact geometry foresight still needs correction, district-owned payout plus our explicit policy is another candidate; a precise native forecast hook remains an alternative. Scope, multiple-Mill behavior and saved-game migration need explicit checks.
 
 No correction has been implemented yet. The useful next comparison would show the isolated forecast change first, then whether a different opportunity wins and gets built. A focused comparison can answer that before another broad 100-turn screen is needed.
 

@@ -120,6 +120,14 @@ all individually attributed. [AI-C053] See the
 The immediate model task is a targeted forecast correction, not a stronger
 blanket site penalty. No correction or new policy was installed by that study.
 
+The [range/simplification follow-up](../../../research/mods/csc-ai-adjacency-simplification-20261104.md)
+now recommends testing a small Mill-specific source representation first: one
+Wind +1 switch and three Water unit steps.317 actual shared-Lua count cases
+preserve current numerical payouts; no replacement is installed. Smaller bounds
+contain phantom magnitude but do not restore omitted gates. Both Mills share
+the leak; forecast readiness and native mutual canonicalization explain their
+different reported values and admission. [AI-C054] [AI-C055]
+
 **4 November carrier checkpoint:** The
 [CE fork parity port](../../../research/mods/csc-ce-policy-parity-20261104.md)
 completed Online100 with the same v2 policy and full native diagnostics.

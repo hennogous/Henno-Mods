@@ -127,6 +127,16 @@ modifier forecast or explicit later-component boundary: the existing earlier
 district hook can otherwise cross the positive gate and lose genuine benefits.
 Candidate coverage and retained requests remain separate issues.
 
+The [Mill/range follow-up](../../../research/mods/csc-ai-adjacency-simplification-20261104.md)
+confirms Water has the same encoding leak. Its phantom component1,408,256 Q8
+differs from Wind because of readiness25 versus24/26 and native fixed-point
+discounting; all480 prior effect calls reproduce exactly offline. Its exclusion
+from these district sums is a separate lower-index mutual-exclusion rule.
+[AI-C055] Current geometry only requires Wind0–1 and Water0–3. A proposed small
+unit-step encoding bounds the ghost magnitude, but does not fix omitted gates;
+native ordinary adjacency rows do not directly express these building-gated
+own-hill/per-river-edge rules. [AI-C054]
+
 Native ordinary adjacency and CSC's bundled Lua adjacency are also distinct.
 The pilot reads CSC's loaded rules itself; its+4 criterion becomes an explicit
 priority adjustment, not a calibrated conversion of the Quarter's entire future

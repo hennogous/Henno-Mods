@@ -31,6 +31,22 @@ flowchart TD
   D --> E["Preserve real benefits; correct measured mismatches"]
 ```
 
+## Why both Mills were overvalued
+
+CSC inherited MAB’s general approach of encoding a number with conditional amounts 1, 2, 4, …, 512. The AI omits the property gates and forecasts every amount. **Water has the same problem as Wind.** Their large values differ because the forecast discounts different development delays; a separate mutual-exclusion rule makes Wind the Mill added to the district total in our captured cases.
+
+Our actual rules need far less range:
+
+| Bonus | Real range |
+| --- | --- |
+| Wind, on the Quarter’s own hills tile | 0 or 1 Production |
+| Water, one Production per two river edges | 0–3 Production |
+| Each current neighboring-resource/district rule | 0–6 yield |
+
+We can keep the exact matcher and UI while using **one conditional +1 switch for Wind and three +1 steps for Water**. An offline comparison reproduced today’s numeric payouts in all 317 count cases across the 46 loaded rules. This smaller representation has not been installed or tested in-game.
+
+It removes the huge encoding capacity but does not make the AI understand a condition it currently skips. A further option moves the guarded payout out of the Mill’s forecast and lets our explicit policy value the real geometry. That needs its own gameplay checks. [Read the comparison and recommendation](../../research/mods/csc-ai-adjacency-simplification-20261104.md).
+
 ## The richer planner is a separate review tool
 
 An offline Tailors evaluator compares 44 copied cases using explicit yield, cost, timing and development assumptions. It explains when developing an existing Quarter becomes attractive and how that changes with the horizon or construction costs.

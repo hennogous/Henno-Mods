@@ -29,7 +29,7 @@ flowchart LR
   D --> A
 ```
 
-We have now traced the large building forecast at two weak Bakers sites to the Mill’s adjacency encoding: the AI credits modifier bits whose gameplay gates are disabled. The next question is how to correct that forecast while preserving real benefits. [Read the finding and next step](guide/what-next.md).
+We have traced the large Bakers building forecast to the Mills’ adjacency encoding: the AI credits amounts whose gameplay gates are disabled. Both Mills are affected. CSC’s actual local bonuses need much smaller ranges, so a simple bounded replacement is the next prototype to assess. [Read the finding and next step](guide/what-next.md).
 
 ## Reading the evidence
 

@@ -81,6 +81,15 @@ explicitly rather than merely raising a counter-penalty. Smaller components,
 candidate coverage, retained requests and physical chain development remain
 separate. No correction was implemented in the read-only study. [AI-C053]
 
+The subsequent [range and representation review](../research/mods/csc-ai-adjacency-simplification-20261104.md)
+recommends trying a smaller Mill-specific source representation before extending
+the native API: Wind needs one conditional +1; Water three unit steps. All317
+current count cases preserve numeric encoding offline. This is uninstalled and
+not an AI-fidelity or live-gameplay result. Both Mills share the leak; different
+forecast readiness and separate mutual canonicalization explain the apparent
+Wind/Water difference. Actual scope, stacking and save migration remain explicit
+qualification work. [AI-C054] [AI-C055]
+
 ## Starting point
 
 - Legacy CSC AI tuning is [archived and retired](../integrations/csc-ai-reset-20261103.md).

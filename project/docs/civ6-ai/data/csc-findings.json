@@ -1004,5 +1004,38 @@
     "topic": "topics/native/district-score-anatomy.md",
     "depends_on": ["AI-N029", "AI-N055"],
     "related": ["AI-C050", "AI-C052", "AI-N068", "AI-N030"]
+  },
+  {
+    "id": "AI-C054",
+    "title": "CSC's loaded adjacency rules fit small per-rule encodings",
+    "statement": "The current complete46-row bundled-adjacency inventory contains43 Boolean ring-one rules with maximum6 yield, two river-edge rules with maximum3 and one own-hills Wind rule with maximum1. All are positive SelfBonus. MAB's upstream ten-bit1023 architecture is much broader.317 actual shared-Lua count cases retain identical numeric payouts under bounded-binary or unit-step reconstruction; child counts would be460 to134 or265, with Mills20 to3 or4.",
+    "status": "accepted",
+    "evidence_types": ["source", "inference"],
+    "scope": "Read-only current CSC-only rules DB819d4288, independent CSC shared core813acb3d, MAB clean integration reference d852b84 and upstream base e978e6c. Complete rule bounds and5 used/55 declared source IDs; original MAB141 dispatched source functions. Actual Lua5.1 encoding comparison317 cases,24 focused core/scope checks and existing220-case policy suite.",
+    "limits": "No smaller production compiler, install, live gameplay or changed AI result. Smaller magnitude does not restore omitted property gates. Bounds are per rule, not combined Quarter returns or population/Service/export systems. Future coefficients, sources, wider rings and optional definitions need reviewed bounds. Existing empire-wide Mill eligibility versus public local design is unresolved; scope/stacking/save migration not silently changed.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-adjacency-simplification-20261104.md",
+      "project/docs/research/mods/csc-ai-adjacency-range-and-provenance-20261104.md"
+    ],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": ["AI-C053"],
+    "related": ["AI-C049", "AI-N029", "AI-C055"]
+  },
+  {
+    "id": "AI-C055",
+    "title": "Both Mills share the forecast leak; timing and canonicalization explain their difference",
+    "statement": "Both Wind and Water consume all ten adjacency bits in the captured building forecasts. Their phantom components1589504/1408256/1356544 Q8 correspond to readiness24/25/26 at horizon50 and discount4.0; a reconstruction of the pinned native helper matches all480 captured effects. Water's lower-index mutually exclusive definitions independently exclude it from the measured district sums; this is not absence of its inflated building forecast.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "inference"],
+    "scope": "Reanalysis of the closed archived80-to81 Delhi/Majapahit observation; pinned XP2 SHA324c51e9.480/480 numerical matches,40 unique amount/time cases. Fresh read-only native loader, adjacency, requirement and timing analysis; no game or new attachment. Wind139/Water140/NoRiver138 in the loaded mapping.",
+    "limits": "No exact attribution of each readiness ETA; no universal claim Water cannot be built. Changing definition order does not repair the encoding leak. Smaller encodings contain magnitude but not condition errors. Native Self is an unconditional addition and AdjacentRiver a Boolean input, so no drop-in proof for own-hill/per-edge/building-gated replacement. Direct district-owned OWNER path zero forecast is scoped static evidence and needs gameplay qualification.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-adjacency-simplification-20261104.md",
+      "project/docs/research/mods/csc-ai-mill-adjacency-native-options-20261104.md",
+      "project/docs/research/mods/csc-ai-bakers-forecast-components-20261104.md"
+    ],
+    "topic": "topics/native/district-score-anatomy.md",
+    "depends_on": ["AI-C053", "AI-N055"],
+    "related": ["AI-C054", "AI-N030", "AI-N068"]
   }
 ]

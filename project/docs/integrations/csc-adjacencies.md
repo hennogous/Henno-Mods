@@ -82,6 +82,16 @@ individual effects have not all been exercised in a live game.
 
 ## Important semantics
 
+**4 November AI review:** the current production implementation below still uses
+ten bits. A [source/range investigation](../research/mods/csc-ai-adjacency-simplification-20261104.md)
+found that all46 currently loaded bundled-adjacency rules have much smaller
+per-rule maxima (Wind1, river3, neighboring matches6). Both Mill forecasts
+credit all ten amounts without their gameplay gates. Small bounded/unit-step
+encodings and district-owned publication are proposals, not implemented fixes.
+An offline317-case numerical comparison passes; live activation, stacking,
+save migration and corrected AI choice remain untested. Preserve the documented
+current collection semantics unless an explicit design amendment changes them.
+
 - Rings are inclusive; `MaxRings` takes precedence over `Rings`. Max zero means
   the placement tile. A positive max below min normalizes up to min.
 - Resource quantities count matching plots, not deposit units. Hidden resources
