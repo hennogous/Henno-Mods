@@ -35,6 +35,23 @@ The Online100 journal recorded 73 increases and 14,584 deductions with zero repo
 
 ## Why Community Extension needs a change
 
+### A concrete reason to inspect the forecast
+
+Our latest observation found that a Mill supplies over 99.8% of two weak Bakers sites’ future-building uplift. The main term is an adjacency encoding artifact: the hypothetical evaluator credits all ten switchable modifier magnitudes without their gameplay property gates. Those yields are not actually paid in the game.
+
+This is the kind of relationship-aware steering we want: identify the specific false forecast, preserve real building benefits, and let the AI reconsider the investment. We have measured the error; a corrected-choice demonstration remains future work. [Read the component breakdown](../../research/mods/csc-ai-bakers-forecast-components-20261104.md).
+
+```mermaid
+flowchart TD
+  A["Ten switchable adjacency amounts"] --> B["Gameplay checks the actual property bits"]
+  B --> C["Only the real geometry bonus is paid"]
+  A --> D["AI forecast omits those property gates"]
+  D --> E["All ten amounts appear valuable"]
+  E --> F["Inflated Mill forecast boosts the Quarter"]
+```
+
+### The release arrangement
+
 The released CE we tested has memory tools, but lacks this typed scoring interface. Our fork adds the native hook, numeric batch publication, scope and version checks, context reset and diagnostics. Keeping those responsibilities native avoids calling arbitrary Lua from the scoring worker.
 
 The preferred release arrangement is **CSC supplies Lua policy → released CE supplies the native capability**. [Draft PR 9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9) proposes the generic capability to WildW. Until acceptance and release, we need the development fork. A separate CSC native component is a possible fallback, but running it alongside stock CE has not been qualified. Lua alone cannot add the tested implementation to stock CE.

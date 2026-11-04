@@ -1,20 +1,24 @@
 # What we’re investigating
 
-Our next step is to explain a specific valuation mismatch before changing the policy again. The CE/Lua port restored our development capability; it did not improve the placement formula.
+We have identified a specific valuation mismatch. The next step is to correct it at an appropriate boundary, then test what changes. The CE/Lua port restored our development capability; it did not itself improve the placement formula.
 
-## Current question: why does a weak Bakers site gain so much later value?
+## Answer found: the Mill’s adjacency encoding becomes a phantom forecast
 
 In the earlier Delhi case, our deduction left an initial site value of **1,207**, yet the final cached value reached **1,358,358**. In Majapahit, **32,200** became **1,623,830**. These are internal fixed-point utility values, not yields.
 
-We identified a future-building aggregation path, but those captures did not itemise each building. We cannot yet say whether the difference mostly represents a Mill, Bakery, Café, amenities, an approximation error or a combination.
+The old captures did not itemise each building. A new **read-only observation across turns 80–81** of that archived world now does. In both cities, the Wind Mill accounts for more than 99.8% of the building contribution. Bakery and Café contribute much smaller values; native mutual-exclusion handling leaves Water Mill out of the district sum.
 
-The investigation must answer:
+The dominant Mill term comes from ten generated adjacency modifiers with magnitudes 1, 2, 4, …, 512. Gameplay enables only the bits representing its actual hills/river bonus. The hypothetical evaluator omits the property gates and credits all ten magnitudes. The observed 512 contribution is positive even while that gameplay bit is disabled on every captured owner district plot.
 
-1. Which building forecasts enter the district sum, with what values and gates?
-2. What actual CSC benefits and dependencies do they represent?
-3. Which terms are valid, missing, duplicated or admitted without their gameplay conditions?
+That is a forecast error, not real income. Other building benefits—amenities, correctly gated exchanges and development—still matter. The small remaining terms are not all independently attributed, so we should not erase the entire future-building sum. The observation changed no scores and proved no improvement in decisions.
 
-The first pass uses current SQL/Lua, loaded definitions and saved native analysis. If actual values are missing, a scoped observation should capture the building breakdown and reconcile it with the district change. A longer game without that measurement would not answer it.
+[Read the exact breakdown and evidence](../../research/mods/csc-ai-bakers-forecast-components-20261104.md), or [the technical score explanation](../topics/native/district-score-anatomy.md).
+
+## Current question: what is the cleanest targeted correction?
+
+We need to exclude or replace the false encoding-bit contribution while preserving justified native value. Our current district adjustment happens **before** this building pass. A large opposing subtraction can cross a sign gate and discard real benefits too; a precise correction may need a building/modifier forecast boundary or an explicit final-component contract.
+
+No correction has been implemented yet. The useful next comparison would show the isolated forecast change first, then whether a different opportunity wins and gets built. A focused comparison can answer that before another broad 100-turn screen is needed.
 
 ## Next: cover candidates before commitment
 

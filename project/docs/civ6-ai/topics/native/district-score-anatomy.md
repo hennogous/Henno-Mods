@@ -64,10 +64,11 @@ effect nor a complete traversal of the dependency graph. [AI-N068]
 
 For CSC, a hidden prerequisite is therefore not necessarily invisible to native
 valuation. The River Access→Water Mill relationship and the Mills listed before
-Bakery/Café deserve inspection. Their exact component impact in the latest
-test was not measured.
+Bakery/Café deserve inspection. The later component observation below measures
+the large modifier term separately; it does not fully attribute the smaller
+earlier prerequisite-depth contribution.
 
-## What the latest Quarter test actually measured
+## What the earlier Quarter test measured
 
 | Bakers case | Fresh native value | Site penalty | Remaining value | Final cache |
 | --- | ---: | ---: | ---: | ---: |
@@ -85,6 +86,46 @@ The identified building pass applies a shared city/type contribution to positive
 site entries. That explains why a weak adjacency site can receive substantial
 future-development value; it does not prove the native model faithfully prices
 CSC's actual material/customer dependencies.
+
+## Follow-up: the dominant contribution is now identified
+
+A [read-only archived80→81 observation](../../../research/mods/csc-ai-bakers-forecast-components-20261104.md)
+captured504 complete component pairs and reconciled both district passes exactly.
+No CE or score writer was active; no score correction was applied. [AI-C053]
+
+| Admitted building Q8 | Delhi | Majapahit |
+| --- | ---: | ---: |
+| Wind Mill |1,356,033|1,589,150|
+| Bakery |1,118|1,023|
+| Café |invalid/excluded|1,640|
+| **Exact addition to positive district rows** |**1,357,151**|**1,591,813**|
+
+Water Mill was valued but excluded from this district sum by lower-index mutual
+canonicalization. Hidden River/No River flags returned0 and are MustPurchase-
+excluded. The pass uses raw building inputs; dependent-building propagation is
+a separate operation.
+
+The ten generated Mill adjacency wrappers contribute1,356,544/1,589,504 Q8 to
+the respective Wind forecasts. Their owner property requirements are not compiled;
+outer PLAYER_DISTRICTS supplies actual district context to the nested supported
+district-base-yield effect. All magnitudes1..512 are therefore credited, despite
+the512 property being disabled at all24 captured owner district plots.
+The real matched Mill geometry bonus at the candidate is1 in Delhi and0 in
+Majapahit.1023 is the encoding capacity, not intended actual Production.
+
+The native attach traversal assigns rather than cumulatively adds the child
+result across actual districts. The observed calculation uses the surviving
+last result per bit and per-bit rounding. The ten-bit term dominates, but other
+modifier remainders1,536/2,048 and smaller native terms remain unitemised. Do not
+call every remaining term legitimate, remove all future benefits or claim the
+prerequisite-depth heuristic multiplies this later modifier sum.
+
+The new Delhi sum equals the older measured later difference. Majapahit's new
+sum differs by183. This is corroborating recalculation in a previously treated
+world, not full historical86/89 replay. A precise fix may require a building/
+modifier forecast or explicit later-component boundary: the existing earlier
+district hook can otherwise cross the positive gate and lose genuine benefits.
+Candidate coverage and retained requests remain separate issues.
 
 Native ordinary adjacency and CSC's bundled Lua adjacency are also distinct.
 The pilot reads CSC's loaded rules itself; its+4 criterion becomes an explicit

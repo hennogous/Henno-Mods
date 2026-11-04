@@ -1,5 +1,10 @@
 # Bakers building forecasts: native component review
 
+> Follow-up: the [component observation](csc-ai-bakers-forecast-components-20261104.md)
+> subsequently measured the dominant encoding-bit contribution and reconciled
+> both city/type sums. This memo preserves the preceding offline path analysis;
+> its statements about unmeasured historical86/89 inputs remain historical scope.
+
 4 November 2026. Offline follow-up to the weak-site penalty cases. This record
 separates a newly traced candidate source of inflated value from the exact
 historical component totals, which were not captured.

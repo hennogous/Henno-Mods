@@ -37,6 +37,15 @@ The modifier compiler reads definition virtual slot +0x60, independently identif
 
 ## Plot context must actually exist
 
+The [Bakers component investigation](../../../research/mods/csc-ai-bakers-forecast-components-20261104.md)
+now supplies a concrete runtime example of omitted owner gates. Mill adjacency
+wrappers enumerate actual player districts, copy that district context into a
+nested OWNER effect, and forecast all ten1..512 encoding amounts. The actual512
+property was disabled on all captured owner districts. This is a supported
+district-base-yield effect with wrongly omitted gates, not a demonstration that
+every plot effect works without context. The direct empty-context limitation
+below remains valid. [AI-C053]
+
 PLAYER_PLOT_YIELDS and SINGLE_PLOT_YIELDS share a handler that consumes an already supplied analysis +0x88 plot once. It neither enumerates plots nor fills that field. OWNER also does not fill it. Direct DistrictValue and the ordinary non-placement building context leave +0x88 empty; the plot effect's no-subject callback returns without adding value. These specific direct forecast paths therefore gain no plot contribution through that handler. Placement-specific, nested and live routes remain separate. [AI-N030]
 
 An older note mislabeled the 4634d0/4634f0 city iterator as PLAYER_PLOT_YIELDS. That mapping and its city-enumeration explanation are **superseded**, not an alternative current interpretation. [AI-N045]

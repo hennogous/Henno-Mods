@@ -29,7 +29,7 @@ flowchart LR
   D --> A
 ```
 
-Our immediate investigation is why weak Bakers sites can receive large future-building forecasts after our adjacency penalty. [Follow the current question](guide/what-next.md).
+We have now traced the large building forecast at two weak Bakers sites to the Mill’s adjacency encoding: the AI credits modifier bits whose gameplay gates are disabled. The next question is how to correct that forecast while preserving real benefits. [Read the finding and next step](guide/what-next.md).
 
 ## Reading the evidence
 

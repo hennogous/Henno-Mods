@@ -82,6 +82,16 @@
       "site_path": "sources/memory/session_ai_astra_rea_next_20261030.md"
     },
     {
+      "path": "memory/session_ai_bakers_components_20261104.md",
+      "title": "Curated AI reading guide and Bakers forecast attribution —4 November2026",
+      "kind": "agent-note",
+      "date": "20261104",
+      "bytes": 3103,
+      "sha256": "e5c73e9f6293fd129b6e6e0811e80d63da2410423cec768cc3dff519fcbcee7f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_bakers_components_20261104.md"
+    },
+    {
       "path": "memory/session_ai_ce_parity_20261104.md",
       "title": "CE fork policy parity — complete, 4 November 2026",
       "kind": "agent-note",
@@ -572,12 +582,22 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-adjacency-policy-20261103.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-bakers-forecast-components-20261104.md",
+      "title": "Why weak Bakers sites receive large building forecasts",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 10540,
+      "sha256": "42fba7a41692a3fc77aec9b677b371c67e2856ee5d4db62013c9379705a71c8f",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-bakers-forecast-components-20261104.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-ai-bakers-gameplay-component-review-20261104.md",
       "title": "Bakers building benefits and the forecast audit",
       "kind": "report",
       "date": "20261104",
-      "bytes": 13832,
-      "sha256": "6d07373b80149e634f11004006d4c2a33de2592ed43eeb1ea1a5e21aed8ce457",
+      "bytes": 14084,
+      "sha256": "e6994347a55d9e2449b507491f6a2829e423d295e214a59f04ee397ad1384756",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-bakers-gameplay-component-review-20261104.md"
     },
@@ -586,8 +606,8 @@
       "title": "Bakers building forecasts: native component review",
       "kind": "report",
       "date": "20261104",
-      "bytes": 9925,
-      "sha256": "5ab1a75fe26ee118ae1642c7f69d4865e8c37b247e404b00b37abfc3bd6ffe62",
+      "bytes": 10254,
+      "sha256": "a0894d163d2d6711a66dd282306e7f1197c1ca0aaccb26d1877cd016873963c0",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-bakers-native-component-review-20261104.md"
     },

@@ -41,7 +41,7 @@ It is **not** the active native policy, and its partial review utility is not na
 
 After a good foundation, the AI still needs to improve and preserve materials, construct producers and customers, repair damage and choose useful Services. We will address those paths where evidence shows a failure. Retired tuning, subsidies and scripted foundations are not defaults for this approach.
 
-Our immediate task is to understand the building forecast behind Bakers-site valuation. That should tell us which correction is justified before refining the policy.
+The Bakers investigation has now found a dominant mismatch: the native Mill forecast credits all ten generated adjacency encoding bits without their gameplay gates. We should correct that specific forecast while preserving real amenities, exchanges and investment constraints. The current policy has not yet changed in response.
 
 **Continue:** [What we’re investigating](what-next.md).
 

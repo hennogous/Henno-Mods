@@ -1,3 +1,13 @@
+# Latest AI guide and Bakers attribution —4 November2026
+
+Human reading surface is now curated `project/docs/civ6-ai/index.md` + `guide/`;
+technical/evidence corpus behind `library.md`, default search guide-only. New
+AI-C053 measured Mill encoding-bit phantom forecast dominates both weak Bakers
+building sums. Read `session_ai_bakers_components_20261104.md` and the final report
+before resuming. One archived80→81 observation closed normally, all settings/
+content restored, no native owners. No score correction implemented or pending
+game. Update the curated explanation as findings change, not only the reports.
+
 - 4 November CE PARITY RESTORED / DRAFT PR9: currentv2runsinsidepackagedLua+completeCEfork, noPython/Fridapolicyworker. Online100run02 exit0,101exactLua/Pythonplans,73positive+14584negativewrites,29479complete4kindtraces/0nativefaults;12Qfound11complete(observationonly). Sameprocessoff1->2zeroreset+saved6reloadscannerfactsequal. All152entries149IDs/autostartfalse/contentrestored/noowners. NativeDLLd8081765, source17f7c75;CEdocshead a928eb8, openDRAFT Wild-W/CivilizationVI_CommunityExtension#9 (useragreedfork->prove->PR), no separate message. CSCcode600a71f alreadypushed/PagesPASS; finalcloseout follows verified source-catalog/build/push checks. Gameplaylessonab5524apushed. Firstfailedrun3 preserved; HKS511+Lua.log2047fixedbypublicconcat+chunking. TreatedAutoSave0100archived(notloaded/clockunreverified). StockCEAPIabsent;MSVC/RH/MP/Workshoproundtrip/generalCElifecycleuntested. No moregames/oldcampaignresumption. See session_ai_ce_parity_20261104.md and handbook AI-N072/AI-C052.
 
 - 4 November WORKSHOP DELIVERY GATE: Further AI tuning HELD; Henno prefers CSC Lua/SQL +Community Extension dependency, no ownCSC DLL. NativeDLLs CAN loadfrommodpackages viaGameCoresPackageId/DllPrefix; separateinjector/manualcopyNOTinherent. Independentcarrieronlyexperiment: zero-writeOnline2;42captured+256writes Online6; sameprocessnewworld2reset; nativeexits0/prefscontentrestored. Driverpostassert1 reconciledoldlogs,no replay. CEproposednumericAPIobjectscompile/patchcheck,butNOTstockCE1.3/fullCEbuild/adopted. Existinggeneralcallbackunfinished; CEreadprobe/CEfrontend separate. See session_ai_workshop_delivery_20261104.md and handbook topics/native/workshop-delivery.md. Noexternalmaintainermessage/Workshopupload.

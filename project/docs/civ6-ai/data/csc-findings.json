@@ -987,5 +987,22 @@
       "AI-C050",
       "AI-C048"
     ]
+  },
+  {
+    "id": "AI-C053",
+    "title": "Generated Mill adjacency bits dominate weak Bakers building forecasts",
+    "statement": "In a read-only recalculation of the archived weak-site world through81, Delhi's admitted Wind Mill1356033 plus Bakery1118 exactly added1357151 Q8 to positive Bakers rows; Majapahit Wind1589150 plus Bakery1023 and Cafe1640 added1591813. The Mill forecast reaches all ten generated adjacency magnitudes without their owner property gates; the surviving ten-bit contributions1356544/1589504 dominate the respective sums. These are encoding artifacts, not actual intended1023 Production yields.",
+    "status": "accepted",
+    "evidence_types": ["static", "source", "runtime"],
+    "scope": "Pinned Windows GS/CSC-only original save80 advanced once to81, no CE or score writer.504 complete read-only component pairs, exact district aggregation arithmetic, four entry fingerprints, zero observer faults/budget exhaustion.24 owner district plots had bit512 disabled. Water excluded by lower-index mutual canonicalization; hidden flags MustPurchase-excluded. Normal exit0,152 preference entries and content restored/verified.",
+    "limits": "Recalculation in a prior treated world, not historical86/89 replay or an untreated/control comparison. Whole modifier totals also contain1536/2048 unattributed Q8; smaller native/amenity/Service effects not fully itemized. No scoring repair, choice improvement, native-generation API, economic benefit or release/general compatibility established. Current district hook precedes this aggregation and an arbitrary counter-penalty can remove real later benefits.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-bakers-forecast-components-20261104.md",
+      "project/docs/research/mods/csc-ai-bakers-native-component-review-20261104.md",
+      "project/docs/research/mods/csc-ai-bakers-gameplay-component-review-20261104.md"
+    ],
+    "topic": "topics/native/district-score-anatomy.md",
+    "depends_on": ["AI-N029", "AI-N055"],
+    "related": ["AI-C050", "AI-C052", "AI-N068", "AI-N030"]
   }
 ]

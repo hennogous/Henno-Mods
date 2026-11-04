@@ -1,5 +1,9 @@
 # Bakers building benefits and the forecast audit
 
+> Follow-up: the [component observation](csc-ai-bakers-forecast-components-20261104.md)
+> subsequently confirmed the phantom encoding-bit forecast. This memo preserves
+> the gameplay truth and initial measurement proposal; it is not the final result.
+
 4 November 2026. Read-only source and cached-rules review for the question:
 which future-building contributions at a weak Bakers site reflect real CSC
 benefits? This memo supplies the gameplay half of the investigation. It does

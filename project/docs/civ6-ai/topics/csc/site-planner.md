@@ -110,6 +110,16 @@ case traces. No empire-benefit or release-readiness claim follows from this test
 
 ## Next decision
 
+**Bakers component result:** a scoped read-only archived80→81 observation now
+attributes the dominant weak-site uplift to generated Mill adjacency encoding
+bits. The Wind Mill contributes over99.8% of each admitted building sum; the
+native interpreter credits all ten magnitudes without their gameplay owner
+property gates. The remaining building benefits are much smaller and are not
+all individually attributed. [AI-C053] See the
+[component report](../../../research/mods/csc-ai-bakers-forecast-components-20261104.md).
+The immediate model task is a targeted forecast correction, not a stronger
+blanket site penalty. No correction or new policy was installed by that study.
+
 **4 November carrier checkpoint:** The
 [CE fork parity port](../../../research/mods/csc-ce-policy-parity-20261104.md)
 completed Online100 with the same v2 policy and full native diagnostics.

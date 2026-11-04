@@ -70,6 +70,17 @@ depth heuristic and hidden CSC prerequisites need that component accounting too.
 Retained-request refreshing would be a separate native contract.
 First-Mill construction remains a later distinct decision, not part of this penalty.
 
+The later4 November [component observation](../research/mods/csc-ai-bakers-forecast-components-20261104.md)
+now supplies that accounting for the dominant term. Wind Mill forecasts provide
+over99.8% of the two measured district-building sums; generated adjacency bits
+are valued without their gameplay property gates. The current model task is to
+exclude or replace this specific forecast artifact while preserving genuine
+benefits, then test the isolated value and decision change. The current district
+hook precedes the offending aggregation, so choose the correction boundary
+explicitly rather than merely raising a counter-penalty. Smaller components,
+candidate coverage, retained requests and physical chain development remain
+separate. No correction was implemented in the read-only study. [AI-C053]
+
 ## Starting point
 
 - Legacy CSC AI tuning is [archived and retired](../integrations/csc-ai-reset-20261103.md).
@@ -192,8 +203,9 @@ standalone CSC and appropriate RH references across multiple situations/maps.
 Measure realised outputs, strategic usefulness, opportunity costs, development
 delays and durability. Fewer strong investments can outperform more Quarters.
 
-The current native bridge is a pinned research prototype. The4 November delivery
-gate above takes precedence: qualify a CE-owned carrier before further tuning.
+The current native bridge is a pinned development capability. The4 November
+CE/Lua parity qualification clears the development-carrier gate; upstream release
+and player-facing delivery remain separate from further economic-model research.
 Versions, lifecycle, persistence, platform and compatibility still need review
 before calling it a player-ready release.
 

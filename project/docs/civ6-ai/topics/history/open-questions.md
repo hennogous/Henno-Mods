@@ -4,6 +4,15 @@ We now know enough to ask narrower questions. The priorities below are a researc
 
 ## 1. Can we supply an arbitrary, local district incentive coherently?
 
+**Current status,4 November:** the general development carrier is now established
+within the [CE/Lua parity qualification](../native/workshop-delivery.md): numeric
+batches, bounded native score/cache/winner/PV diagnostics, Online100, context reset
+and saved6 reload. The one-entry prototypes below are the earlier evidence trail,
+not the current capability limit. Released stock CE still lacks the interface;
+upstream adoption and release qualification remain open. The current research
+priority is component attribution and justified CSC corrections, as explained in
+[the reader agenda](../../guide/what-next.md). [AI-N072] [AI-C052]
+
 **Known:** ordinary district scoring consumes native adjacency and dynamic custom yields. Lua can evaluate arbitrary accessible state to return a Boolean strategy condition. No ordinary numerical per-candidate Lua callback was established in the inspected interfaces.
 
 **Open:** how to qualify a general author-defined function of player, city, district, plot and current state, including refresh, persistence and shipping integration. A fixed one-entry experimental bridge now exists; its bounded evidence must remain separate from a general policy interface. **[AI-H012]**
