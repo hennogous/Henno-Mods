@@ -182,6 +182,16 @@
       "site_path": "sources/memory/session_ai_knowledge_base_20261103.md"
     },
     {
+      "path": "memory/session_ai_local_mill_steps_20261104.md",
+      "title": "Local Mill unit-step source repair —4 November2026",
+      "kind": "agent-note",
+      "date": "20261104",
+      "bytes": 2363,
+      "sha256": "d22ec46b155bc1ccea0266672190577cb9f70d2974e6a536c650e939da2b2b19",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_local_mill_steps_20261104.md"
+    },
+    {
       "path": "memory/session_ai_material_recommendations_20261031.md",
       "title": "Native material recommendations CLOSED — 31 October 2026",
       "kind": "agent-note",
@@ -606,8 +616,8 @@
       "title": "Both Mills inflate: MAB lineage and a smaller CSC representation",
       "kind": "report",
       "date": "20261104",
-      "bytes": 9834,
-      "sha256": "404fe9d3003d116c851311e64fa42742e99481827611ccaf8a6c98834eecb6f0",
+      "bytes": 10133,
+      "sha256": "7f84fca0c632b97f404c737cc1d0fe6395301c4c82af81a750736d367a081e26",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-adjacency-simplification-20261104.md"
     },
@@ -950,6 +960,26 @@
       "sha256": "092e2b14b5457681c55977004d87124c46eb74d783d8b9fc02d4b1254280f65c",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-investment-pilot-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md",
+      "title": "Local Mill bonuses with bounded unit steps",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 6758,
+      "sha256": "8773f60511eabd647ab4fd1585f7555cf5aa2f38086404349df55f3fb34c63b8",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-mab-building-owner-scope-20261104.md",
+      "title": "Where the Mill's player-wide scope came from",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 9589,
+      "sha256": "e6c402f8c731beeeab4a2a2c69b10cdb79eece85c57fe1123173e13a64a997eb",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-mab-building-owner-scope-20261104.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-mapped-improvements-test-20261024.md",

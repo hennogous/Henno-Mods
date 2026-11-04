@@ -29,7 +29,7 @@ flowchart LR
   D --> A
 ```
 
-We have traced the large Bakers building forecast to the Mills’ adjacency encoding: the AI credits amounts whose gameplay gates are disabled. Both Mills are affected. CSC’s actual local bonuses need much smaller ranges, so a simple bounded replacement is the next prototype to assess. [Read the finding and next step](guide/what-next.md).
+We traced the large Bakers building forecast to the Mills’ adjacency encoding: the AI credits amounts whose gameplay gates are disabled. Both Mills are affected. The source now uses one conditional +1 step for Wind and three for Water, with each Mill enabling only its own Quarter. Offline checks cover the implementation; installation and native-game validation remain pending. [Read the finding and next step](guide/what-next.md).
 
 ## Reading the evidence
 

@@ -14,15 +14,15 @@ That is a forecast error, not real income. Other building benefits—amenities, 
 
 [Read the exact breakdown and evidence](../../research/mods/csc-ai-bakers-forecast-components-20261104.md), or [the technical score explanation](../topics/native/district-score-anatomy.md).
 
-## Current question: what is the cleanest targeted correction?
+## Implemented in source: local, small Mill bonuses
 
 The follow-up has confirmed that **both Mills** inflate through the same mechanism. Their large numerical differences come from forecast timing, while native mutual-exclusion handling decides which one enters the district sum. MAB’s broad encoding range is unnecessary for CSC’s current local rules.
 
-The recommended first prototype is a narrow representation change: one conditional +1 switch for Wind and three +1 steps for Water, preserving the actual geometry and payouts. The offline comparison matches all 317 current count cases. This bounds the false forecast, but still does not make the AI obey omitted conditions. [Read the simpler options](../../research/mods/csc-ai-adjacency-simplification-20261104.md).
+The first correction is now implemented in source: one conditional +1 switch for Wind and three +1 steps for Water, preserving the actual geometry and payouts. A Mill must be built and functioning in the receiving Quarter. A remote Mill no longer enables it. MAB supports this local scope; CSC had inherited its generic player-wide default by omitting the override.
 
-We should test that small change before adding a new native consumer or a large opposing site penalty. If exact geometry foresight still needs correction, district-owned payout plus our explicit policy is another candidate; a precise native forecast hook remains an alternative. Scope, multiple-Mill behavior and saved-game migration need explicit checks.
+The source bounds the adjacency capacity exposed through a building from 1023 to 1 or 3. It does not make the AI obey the conditions it omits. The focused offline tests exercise the actual SQL compiler and Lua evaluator, including local/remote ownership, pillage, stale properties and the planned-Mill scanner. Old modifier definitions remain available for saved references, but their building attachments are disconnected.
 
-No correction has been implemented yet. The useful next comparison would show the isolated forecast change first, then whether a different opportunity wins and gets built. A focused comparison can answer that before another broad 100-turn screen is needed.
+Henno chose to keep FireTuner open and finish offline checks only. No installed package or game was changed. The next native comparison must verify real yield transitions, saved-game reconciliation and the isolated forecast change before asking whether a different opportunity wins and gets built. [Implementation and evidence](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
 
 ## Next: cover candidates before commitment
 

@@ -1,6 +1,6 @@
 # CSC bundled adjacencies — first implementation
 
-_Implemented 2 October 2026; tooltip presentation updated 12 October. Not a Workshop release._
+_Implemented 2 October 2026; local Mill/unit-step source correction 4 November. Not a Workshop release._
 
 ## Scope and provenance
 
@@ -57,7 +57,7 @@ is unregistered and absent from the new package, including `patch_mab.py`.
 |---|---|---|
 | Bakers/Tailors BASE and SPEC materials, ownership, optional material tags | Own processor plus visible resource tag matcher | 61 frozen rules equal; native BASE/SPEC production and ownership transition |
 | Quarter sales and customer return yields, unique customer tags | District tag matcher; processor propagates tags to replacements | Frozen generated rows and 610 modifier effects/collections; native yields |
-| Water Mill river bonus and Wind Mill hill bonus | Building ownership gate retains authored collection | Native remote-city Water Mill activation/removal; hill source fixture |
+| Water Mill river bonus and Wind Mill hill bonus | Local functioning Mill; CITY wrapper; one Wind/three Water unit steps | New offline SQL/Lua coverage; earlier native remote-Mill result is historical and superseded |
 | Tailors river segments, fractional totals | Native river count; truncate total toward zero | Native yield delta; positive/negative fractional fixture |
 | Ring min/max bands, ring zero, wrapped-map deduplication | BFS over native neighbors | 7×7 and tiny wrapped worlds; ring bounds and ownership combinations |
 | MustOwn across changed gameplay source families | Per-source ownership semantics | Differential comparisons to fork; native resource ownership removal |
@@ -82,24 +82,31 @@ individual effects have not all been exercised in a live game.
 
 ## Important semantics
 
-**4 November AI review:** the current production implementation below still uses
-ten bits. A [source/range investigation](../research/mods/csc-ai-adjacency-simplification-20261104.md)
-found that all46 currently loaded bundled-adjacency rules have much smaller
-per-rule maxima (Wind1, river3, neighboring matches6). Both Mill forecasts
-credit all ten amounts without their gameplay gates. Small bounded/unit-step
-encodings and district-owned publication are proposals, not implemented fixes.
-An offline317-case numerical comparison passes; live activation, stacking,
-save migration and corrected AI choice remain untested. Preserve the documented
-current collection semantics unless an explicit design amendment changes them.
+**4 November local Mill correction:** Henno explicitly confirmed that a Mill
+enables only the bonus of its own Quarter. Both generated Mill rows now specify
+CITY scope. Their active building graphs use one conditional +1 step for Wind
+and three for Water; generic rules keep signed ten-bit encoding. The shared
+core checks local functioning ownership and publishes Boolean step properties,
+clearing legacy Mill bits during synchronized reconciliation. Old numeric
+modifier definitions remain dormant for saved references, without their old
+building attachments. See the [implementation and offline checks](../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
+This supersedes the previous intentional-parity description of remote activation.
+The installed package and native behavior have not been updated/validated: Henno
+chose offline checks only, keeping FireTuner open. Smaller capacity does not repair
+the AI's omitted conditions; native forecast and save behavior still need checking.
 
 - Rings are inclusive; `MaxRings` takes precedence over `Rings`. Max zero means
   the placement tile. A positive max below min normalizes up to min.
 - Resource quantities count matching plots, not deposit units. Hidden resources
   contribute only after the owning player's required technology/civic.
-- Mill rows intentionally use `COLLECTION_PLAYER_DISTRICTS`: a mill elsewhere
-  in the empire enables the authored bonus. Do not silently narrow to city scope.
-- Negative amounts are generated in SQL. Bits store magnitude; raw/encoded
-  amount properties retain sign. The signed encoded magnitude caps at 1023.
+- Mill rows explicitly use `COLLECTION_CITY_DISTRICTS`: a Mill elsewhere does
+  not activate a receiving Quarter. Gameplay verifies the exact local building
+  location; UI uses the validated OnePerCity/prerequisite contract and supported
+  district lifecycle checks. Planned-Mill site evaluation remains an explicit
+  future-benefit branch, separate from actual-state activation.
+- For generic rules, negative amounts are generated in SQL. Bits store magnitude;
+  raw/encoded amount properties retain sign, capped at magnitude1023. The two
+  Mill rules instead have validated nonnegative maxima1/3 and `_STEP_n` flags.
 - The gameplay script refreshes relevant districts across alive major players.
   It clears removed/changed rules and writes only changed properties. City district
   managers use `GetNumDistricts()/GetDistrictByIndex()`, not `Members()`.

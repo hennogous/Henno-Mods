@@ -1,5 +1,10 @@
 # Both Mills inflate: MAB lineage and a smaller CSC representation
 
+> Later4 November: Henno confirmed local Quarter scope and authorized the
+> [source implementation](csc-ai-local-mill-unit-steps-20261104.md). The proposal
+> status below describes this earlier investigation. Native validation of the
+> later implementation remains pending; no game was run for it.
+
 4 November 2026. Follow-up to the measured
 [Bakers forecast breakdown](csc-ai-bakers-forecast-components-20261104.md).
 This investigation was offline: source, loaded rules, existing native captures,

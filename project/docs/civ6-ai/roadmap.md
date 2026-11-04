@@ -90,6 +90,16 @@ forecast readiness and separate mutual canonicalization explain the apparent
 Wind/Water difference. Actual scope, stacking and save migration remain explicit
 qualification work. [AI-C054] [AI-C055]
 
+Later4 November Henno authorized the local scope and smaller representation.
+The [source repair](../research/mods/csc-ai-local-mill-unit-steps-20261104.md)
+now implements CITY scope, functioning local-Mill eligibility and one Wind/three
+Water unit steps. Generic encodings and current policy weights remain unchanged.
+Focused SQL/Lua checks qualify the source graph and stale-property handling;
+they do not establish native save migration or a corrected forecast/decision.
+Henno chose to keep FireTuner open and finish offline only: installation and
+shared-controller native validation are the next gated step, not a running test.
+[AI-C056]
+
 ## Starting point
 
 - Legacy CSC AI tuning is [archived and retired](../integrations/csc-ai-reset-20261103.md).

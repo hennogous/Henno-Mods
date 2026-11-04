@@ -137,6 +137,13 @@ unit-step encoding bounds the ghost magnitude, but does not fix omitted gates;
 native ordinary adjacency rows do not directly express these building-gated
 own-hill/per-river-edge rules. [AI-C054]
 
+**Later4 November source repair:** the active building graph now has one Wind
+or three Water +1 steps, with city-local functioning-Mill eligibility; the old
+twenty binary building roots are disconnected. Offline checks validate the
+compiler/evaluator, not the resulting native vector. No installed game or
+archived save was changed. The large numbers above describe the old capture;
+the new forecast still needs a native measurement. [Implementation](../../../research/mods/csc-ai-local-mill-unit-steps-20261104.md). [AI-C056]
+
 Native ordinary adjacency and CSC's bundled Lua adjacency are also distinct.
 The pilot reads CSC's loaded rules itself; its+4 criterion becomes an explicit
 priority adjustment, not a calibrated conversion of the Quarter's entire future

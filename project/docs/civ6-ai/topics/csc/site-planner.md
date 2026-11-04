@@ -128,6 +128,14 @@ contain phantom magnitude but do not restore omitted gates. Both Mills share
 the leak; forecast readiness and native mutual canonicalization explain their
 different reported values and admission. [AI-C054] [AI-C055]
 
+**Later4 November implementation:** the recommended one/three unit steps are
+now in source, with explicit CITY scope and functioning local-Mill eligibility.
+The old player-wide behavior came from CSC omitting MAB's scope override. The
+focused actual SQL/Lua checks cover the new graph and scanner; generic rules and
+the v2 policy weights are unchanged. No installation or native game check was
+performed, per Henno's offline-only choice. The earlier317-case study remains
+historical proposal evidence. [Implementation](../../../research/mods/csc-ai-local-mill-unit-steps-20261104.md). [AI-C056]
+
 **4 November carrier checkpoint:** The
 [CE fork parity port](../../../research/mods/csc-ce-policy-parity-20261104.md)
 completed Online100 with the same v2 policy and full native diagnostics.

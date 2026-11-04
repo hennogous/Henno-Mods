@@ -43,9 +43,9 @@ Our actual rules need far less range:
 | Water, one Production per two river edges | 0–3 Production |
 | Each current neighboring-resource/district rule | 0–6 yield |
 
-We can keep the exact matcher and UI while using **one conditional +1 switch for Wind and three +1 steps for Water**. An offline comparison reproduced today’s numeric payouts in all 317 count cases across the 46 loaded rules. This smaller representation has not been installed or tested in-game.
+The source now keeps the matcher and UI while using **one conditional +1 switch for Wind and three +1 steps for Water**. The generic encoding for other rules is unchanged. Each Mill enables only its own functioning Quarter; the previous remote activation came from CSC omitting MAB’s explicit city-scope setting. Focused offline SQL/Lua checks cover the repair. It has not been installed or tested in-game.
 
-It removes the huge encoding capacity but does not make the AI understand a condition it currently skips. A further option moves the guarded payout out of the Mill’s forecast and lets our explicit policy value the real geometry. That needs its own gameplay checks. [Read the comparison and recommendation](../../research/mods/csc-ai-adjacency-simplification-20261104.md).
+This removes the huge encoding capacity but does not make the AI understand a condition it currently skips. Our scanner still deliberately evaluates the appropriate planned first Mill as a future benefit, separately from actual current income. Native yield, forecast and save checks remain pending. [Read the implementation](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
 
 ## The richer planner is a separate review tool
 
@@ -57,7 +57,7 @@ It is **not** the active native policy, and its partial review utility is not na
 
 After a good foundation, the AI still needs to improve and preserve materials, construct producers and customers, repair damage and choose useful Services. We will address those paths where evidence shows a failure. Retired tuning, subsidies and scripted foundations are not defaults for this approach.
 
-The Bakers investigation has now found a dominant mismatch: the native Mill forecast credits all ten generated adjacency encoding bits without their gameplay gates. We should correct that specific forecast while preserving real amenities, exchanges and investment constraints. The current policy has not yet changed in response.
+The Bakers investigation found a dominant mismatch: the native Mill forecast credited all ten generated adjacency encoding bits without their gameplay gates. The new source representation addresses that capacity while preserving real amenities, exchanges and investment constraints. The policy’s +4 promotion and soft deduction are unchanged; the resulting native forecast and choices still need measurement.
 
 **Continue:** [What we’re investigating](what-next.md).
 

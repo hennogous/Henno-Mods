@@ -41,5 +41,12 @@
       "project/docs/research/mods/civ6-district-score-extension-20261103.md"
     ],
     "summary": "A native component need not require a separate launcher or manual executable-folder DLL copy. Civ VI GameCores PackageId/DllPrefix loads native code from mod packages, as installed Workshop CE and the independent delivery prototype demonstrate. CE console INI placement is optional configuration, not the DLL installation requirement. Stock CE still lacks the proposed qualified district-score API."
+  },
+  {
+    "id": "COR-009",
+    "affected_sources": [
+      "project/docs/research/mods/csc-ai-adjacency-simplification-20261104.md"
+    ],
+    "summary": "Henno confirmed on4 November that each Mill bonus belongs only to its own Quarter. Earlier remote activation tests demonstrated parity with CSC's omitted scope/default, not intended design. MAB supports explicit city scope. The source now uses CITY and one/three unit steps; the earlier proposal and native evidence remain historical. New native yield, forecast and save checks are pending because the user selected offline-only validation."
   }
 ]

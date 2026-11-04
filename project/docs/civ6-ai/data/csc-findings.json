@@ -1037,5 +1037,29 @@
     "topic": "topics/native/district-score-anatomy.md",
     "depends_on": ["AI-C053", "AI-N055"],
     "related": ["AI-C054", "AI-N030", "AI-N068"]
+  },
+  {
+    "id": "AI-C056",
+    "title": "Local Mill unit steps replace the active ten-bit building graphs in source",
+    "statement": "The two Bakers Mill rules now explicitly use CITY_DISTRICTS and require a functioning local Mill in its own Quarter. Wind has one +1 step and Water three; the old twenty numeric-bit building attachments are removed while their compatibility definitions remain dormant. Actual shared-core writes clear legacy flags and publish the new steps. Generic rules and the v2 placement policy are unchanged.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "4 November2026 source implementation and executed offline SQL/Lua5.1 fixtures on an in-memory clone of the immutable frozen MAB database. Local, remote, foreign, wrong-location and pillaged states; actual UI/GP adapters; duplicate compilation; dormant legacy references; stale properties; legal ranges; scanner and generic-bit preservation. MAB source review confirms omitted CSC CollectionType inherited its generic player-wide default.",
+    "limits": "Henno requested offline checks only and kept FireTuner open. No installed package, native game, save or attachment changed. Native yield/stacking/save migration, actual new forecast vector, decisions and benefit remain unverified. Bounds reduce capacity but do not restore AI condition handling. UI exact location relies on validated OnePerCity/prerequisite semantics when its API lacks GetBuildingLocation.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md",
+      "project/docs/research/mods/csc-ai-mab-building-owner-scope-20261104.md"
+    ],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": [
+      "AI-C053",
+      "AI-C054"
+    ],
+    "related": [
+      "AI-C055",
+      "AI-C052"
+    ]
   }
 ]

@@ -1,3 +1,14 @@
+# Latest local Mill repair —4 November2026
+
+User confirmed each Mill bonus only in its own Quarter. Source implements
+CITY scope + functioning local gate + Wind1/Water3 Boolean unit steps. Generic
+encoding/policy weights unchanged; dormant legacy IDs kept, old roots removed.
+Offline actual SQL/Lua checks; NO installation/game/attachment/save test. User
+explicitly chose KEEP FIRETUNER OPEN, OFFLINE CHECKS ONLY. Do not launch/control
+Civ or FireTuner, install, attach, or resume a game for this task. See
+[session](session_ai_local_mill_steps_20261104.md) and AI-C056. Prior proposal
+status and unresolved scope below are historical.
+
 # Latest Mill simplification review —4 November2026
 
 Both Mills share MAB-style phantom10bitforecast. Water differs by readiness
