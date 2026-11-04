@@ -144,7 +144,11 @@ function CSC_LiveEnableRemoteMill()
     assert(remote:GetBuildings():HasBuilding(building));
     assert(not city:GetBuildings():HasBuilding(building));
     CSC_RefreshAdjacencies();
-    assert(quarterPlots[1]:GetProperty('CSC_ADJ_CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER_ENCODED_AMOUNT')==math.floor(quarterPlots[1]:GetRiverCrossingCount()*0.5));
+    -- A Mill in a different city must not activate this Quarter's river bonus.
+    -- Historical MAB parity expected empire-wide activation; CSC's local-Mill
+    -- design now explicitly supersedes that behavior.
+    assert(quarterPlots[1]:GetProperty('CSC_ADJ_CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER_ENCODED_AMOUNT')==0,
+        'A remote Water Mill must not activate the receiving Quarter');
 end
 function CSC_LiveRemoveRemoteMill()
     player:GetCities():FindID(fixture.RemoteCity):GetBuildings():RemoveBuilding(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL.Index);

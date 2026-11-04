@@ -1,5 +1,6 @@
 -- Compile declarative CSC rules to plot-property-gated modifiers.
--- The signed ten-bit encoding preserves MAB's 1023 magnitude limit.
+-- Generic rules keep the signed ten-bit encoding. Local Mill rules explicitly
+-- use bounded +1 thresholds, so they never contain large encoding weights.
 INSERT OR IGNORE INTO CSC_AdjacencyRules
     (
         ID,
@@ -86,11 +87,70 @@ INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,            Name,            Value   )
 VALUES  (   'REQ_CSC_ADJ_NEIGHBOR',   'MaxDistance',   1   );
 
+-- Fail an unsupported step declaration rather than dropping it or silently
+-- assigning an arbitrary range. Current contracts are exactly the one-city,
+-- building-owned hills predicate and half-per-edge river count.
+CREATE TEMP TABLE CSC_AdjacencyUnitStepValidation (
+    Valid INTEGER NOT NULL CHECK (Valid = 1)
+);
+INSERT INTO CSC_AdjacencyUnitStepValidation
+        (   Valid   )
+SELECT CASE WHEN R.ID IS NOT NULL
+    AND R.ProvideType = 'SelfBonus' AND R.FreeCompose = 0
+    AND R.ModifierOwner = 'BuildingModifiers' AND R.CollectionType = 'COLLECTION_CITY_DISTRICTS'
+    AND B.PrereqDistrict = R.DistrictType AND D.OnePerCity = 1
+    AND (
+        (R.AdjacencyType = 'FROM_RINGS_CAO_TERRAIN_SETS' AND R.CustomAdjacentObject = 'IsHills'
+            AND R.Rings = 0 AND R.MinRings = 0 AND COALESCE(R.MaxRings, 0) = 0
+            AND R.YieldChange = 1 AND S.MaxAmount = 1)
+        OR
+        (R.AdjacencyType = 'FROM_RIVER_CROSSING' AND R.YieldChange = 0.5 AND S.MaxAmount = 3)
+    ) THEN 1 ELSE 0 END
+FROM CSC_AdjacencyUnitSteps AS S
+LEFT JOIN CSC_AdjacencyRules AS R ON R.ID = S.ID
+LEFT JOIN Buildings AS B ON B.BuildingType = R.WhoIsTheOwner
+LEFT JOIN Districts AS D ON D.DistrictType = R.DistrictType;
+DROP TABLE CSC_AdjacencyUnitStepValidation;
+
+-- Reprocessing an old rules cache must retire only the two configured rules'
+-- numeric-bit building attachments. Their unused definitions may remain, but
+-- they no longer enter the building's modifier vector. Saved plot bit flags
+-- are separately cleared by the Lua writer when each site is reconciled.
+DELETE FROM BuildingModifiers
+WHERE EXISTS (
+    SELECT 1
+    FROM CSC_AdjacencyUnitSteps AS S
+    JOIN CSC_AdjacencyRules AS R ON R.ID = S.ID
+    CROSS JOIN CSC_AdjacencyBits AS B
+    WHERE BuildingModifiers.BuildingType = R.WhoIsTheOwner
+        AND BuildingModifiers.ModifierId = 'ATTACH_MOD_CSC_ADJ_' || R.ID || '_' || B.Bit
+);
+
 CREATE TEMP TABLE CSC_AdjacencyCompile AS
-SELECT R.*,B.Bit,'MOD_CSC_ADJ_' || R.ID || '_' || B.Bit AS ModifierId,
-    'REQSET_CSC_ADJ_' || R.ID || '_' || B.Bit AS RequirementSetId,
-    'REQ_CSC_ADJ_' || R.ID || '_' || B.Bit AS RequirementId
-FROM CSC_AdjacencyRules R CROSS JOIN CSC_AdjacencyBits B WHERE R.FreeCompose=0;
+WITH RECURSIVE UnitSteps (Step) AS (
+    SELECT 1
+    UNION ALL
+    SELECT Step + 1 FROM UnitSteps
+    WHERE Step < (SELECT MAX(MaxAmount) FROM CSC_AdjacencyUnitSteps)
+), Encodings AS (
+    -- Retain the old numeric IDs as disconnected compatibility definitions,
+    -- including on a fresh database. An older save can still name those IDs.
+    SELECT R.*,B.Bit,CAST(B.Bit AS TEXT) AS KeySuffix,
+        CASE WHEN EXISTS (SELECT 1 FROM CSC_AdjacencyUnitSteps AS S WHERE S.ID = R.ID)
+            THEN 0 ELSE 1 END AS ActiveAttachment
+    FROM CSC_AdjacencyRules AS R CROSS JOIN CSC_AdjacencyBits AS B
+    WHERE R.FreeCompose = 0
+    UNION ALL
+    SELECT R.*,1 AS Bit,'STEP_' || U.Step AS KeySuffix,1 AS ActiveAttachment
+    FROM CSC_AdjacencyRules AS R
+    JOIN CSC_AdjacencyUnitSteps AS S ON S.ID = R.ID
+    JOIN UnitSteps AS U ON U.Step <= S.MaxAmount
+    WHERE R.FreeCompose = 0
+)
+SELECT E.*,'MOD_CSC_ADJ_' || E.ID || '_' || E.KeySuffix AS ModifierId,
+    'REQSET_CSC_ADJ_' || E.ID || '_' || E.KeySuffix AS RequirementSetId,
+    'REQ_CSC_ADJ_' || E.ID || '_' || E.KeySuffix AS RequirementId
+FROM Encodings AS E;
 
 INSERT OR IGNORE INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
@@ -103,7 +163,7 @@ INSERT OR IGNORE INTO RequirementSetRequirements
 SELECT RequirementSetId,RequirementId FROM CSC_AdjacencyCompile;
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,   Name,   Value   )
-SELECT RequirementId,'PropertyName','CSC_ADJ_' || ID || '_' || Bit FROM CSC_AdjacencyCompile
+SELECT RequirementId,'PropertyName','CSC_ADJ_' || ID || '_' || KeySuffix FROM CSC_AdjacencyCompile
 UNION ALL SELECT RequirementId,'PropertyMinimum',1 FROM CSC_AdjacencyCompile;
 
 INSERT OR IGNORE INTO Modifiers
@@ -129,8 +189,8 @@ INSERT OR IGNORE INTO DistrictModifiers
 SELECT C.DistrictType,C.ModifierId FROM CSC_AdjacencyCompile C
 JOIN Districts D USING (DistrictType) WHERE C.ModifierOwner='DistrictModifiers' AND C.NewMethod=0;
 
--- Building ownership intentionally retains the authoring CollectionType.
--- Current mill rules select PLAYER_DISTRICTS; do not narrow this to one city.
+-- Retain the declared collection for generic owners. Local Mill parents use
+-- CITY_DISTRICTS; their child property key is written only on Bakers plots.
 INSERT OR IGNORE INTO Modifiers
         (   ModifierId,   ModifierType   )
 SELECT 'ATTACH_' || ModifierId,
@@ -149,7 +209,8 @@ WHERE ModifierOwner='DistrictModifiers' AND NewMethod=1
 UNION ALL SELECT WhoIsTheOwner,'ATTACH_' || ModifierId FROM CSC_AdjacencyCompile WHERE ModifierOwner='TraitModifiers';
 INSERT OR IGNORE INTO BuildingModifiers
         (   BuildingType,   ModifierId   )
-SELECT WhoIsTheOwner,'ATTACH_' || ModifierId FROM CSC_AdjacencyCompile WHERE ModifierOwner='BuildingModifiers';
+SELECT WhoIsTheOwner,'ATTACH_' || ModifierId FROM CSC_AdjacencyCompile
+WHERE ModifierOwner='BuildingModifiers' AND ActiveAttachment=1;
 INSERT OR IGNORE INTO PolicyModifiers
         (   PolicyType,   ModifierId   )
 SELECT WhoIsTheOwner,'ATTACH_' || ModifierId FROM CSC_AdjacencyCompile WHERE ModifierOwner='PolicyModifiers';

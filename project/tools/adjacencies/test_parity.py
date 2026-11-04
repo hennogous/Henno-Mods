@@ -68,7 +68,16 @@ def main():
     for name in ['Schema','Sources','Processor','Modifiers']:
         db.executescript((CODE/f'CSC_Adjacency{name}.sql').read_text(encoding='utf-8-sig'))
     actual=[dict(r) for r in db.execute('SELECT * FROM CSC_AdjacencyRules ORDER BY ID')]
-    assert actual==fixture['rules'], 'Generated rules differ from frozen runtime inventory'
+    # Preserve the frozen reference except for the two explicitly approved
+    # local-Mill scope corrections. Original MAB's player-wide default remains
+    # evidence, not the required gameplay behavior of these CSC buildings.
+    mill_ids = {'CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS': 1,
+                'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER': 3}
+    expected_rules = [dict(row) for row in fixture['rules']]
+    for row in expected_rules:
+        if row['ID'] in mill_ids:
+            row['CollectionType'] = 'COLLECTION_CITY_DISTRICTS'
+    assert actual==expected_rules, 'Generated rules differ beyond the approved local-Mill scope correction'
     violations=db.execute('PRAGMA foreign_key_check').fetchall()
     new_violations=[tuple(r) for r in violations if str(r[0]).startswith('CSC_')]
     assert not new_violations,new_violations
@@ -95,7 +104,21 @@ def main():
             key='BuildingType' if table=='BuildingModifiers' else 'DistrictType'
             owner=rule['WhoIsTheOwner'] if table=='BuildingModifiers' else rule['DistrictType']
             attached=('ATTACH_' if table=='BuildingModifiers' else '')+modifier
-            assert db.execute(f'SELECT 1 FROM {table} WHERE {key}=? AND ModifierId=?',(owner,attached)).fetchone()
+            attachment = db.execute(f'SELECT 1 FROM {table} WHERE {key}=? AND ModifierId=?',(owner,attached)).fetchone()
+            if rule['ID'] in mill_ids:
+                assert not attachment, 'Retired Mill bit must not remain in a building forecast'
+            else:
+                assert attachment
+    # The replacement is four unit-step children, each +1, rather than a new
+    # weighted ladder. Legacy definitions remain disconnected for old save IDs.
+    for rule_id, maximum in mill_ids.items():
+        rule = next(row for row in actual if row['ID'] == rule_id)
+        for step in range(1, maximum + 1):
+            child = 'MOD_CSC_ADJ_' + rule_id + '_STEP_' + str(step)
+            amount = db.execute("SELECT Value FROM ModifierArguments WHERE ModifierId=? AND Name='Amount'", (child,)).fetchone()
+            assert amount and float(amount[0]) == 1, child
+            assert db.execute('SELECT 1 FROM BuildingModifiers WHERE BuildingType=? AND ModifierId=?',
+                              (rule['WhoIsTheOwner'], 'ATTACH_' + child)).fetchone(), child
     # Dormant fixture proves unique clones retain every option, including flags.
     base,unique=db.execute('SELECT ReplacesDistrictType,CivUniqueDistrictType FROM DistrictReplaces LIMIT 1').fetchone()
     db.execute('INSERT INTO CSC_AdjacencyRules (ID,DistrictType,ApplyForUniqueDistricts,DistrictModifiers,NewMethod,ProvideType,YieldChange,MinRings,MaxRings,MustOwn,AdjacencyType,CustomAdjacentObject) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -185,6 +208,8 @@ def main():
         lua.execute('GameInfo.'+table+'=info('+lua_value(records)+')')
     tags=[dict(r) for r in origin.execute('SELECT * FROM TypeTags')]
     objects=[dict(r) for r in db.execute('SELECT * FROM CSC_AdjacencyObjects')]
+    steps=[dict(r) for r in db.execute('SELECT * FROM CSC_AdjacencyUnitSteps ORDER BY ID')]
+    lua.execute('GameInfo.CSC_AdjacencyUnitSteps=info('+lua_value(steps)+')')
     lua.execute('GameInfo.TypeTags=info('+lua_value(tags)+'); GameInfo.CSC_AdjacencyObjects=info('+lua_value(objects)+'); GameInfo.CSC_AdjacencyRules=info('+lua_value(actual)+'); CSC_Adjacency.Initialize(); TypeTagsMap=CSC_Adjacency.Tags; ResourceTypeMap={}; DistrictTypeMap={}; for r in GameInfo.Resources() do ResourceTypeMap[r.Index]=r.ResourceType end; for r in GameInfo.Districts() do DistrictTypeMap[r.Index]=r.DistrictType end; m_ResourceVisibility={} ')
     lua.execute('for _,p in ipairs(world) do p.resource=GameInfo.Resources.RESOURCE_WHEAT.Index; p.district=GameInfo.Districts.DISTRICT_THEATER.Index; p.flags.IsHills=true; end')
     for rule in actual:
@@ -291,8 +316,11 @@ def main():
     for file in CODE.glob('*.lua'):
         lua.compile(untype(file.read_text(encoding='utf-8-sig')))
     report={'referenceCommit':head,'rules':len(actual),'bitModifiers':len(actual)*10,
+            'legacyMillBitDefinitionsDisconnected':20,'unitStepModifiers':4,
+            'activePayoutModifiers':len(actual)*10-20+4,
             'sourceRegistry':source_names,'differentialCases':len(cases),'cases':cases,
-            'intentionalCorrections':['Ring-property argument forwarding','Clear stale bits','UI reports encoded cap'],
+            'intentionalCorrections':['Ring-property argument forwarding','Clear stale bits','UI reports encoded cap',
+                                     'Mill eligibility is local to its Quarter','Mill payouts use four bounded unit steps'],
             'status':'offline parity passed; live gameplay and visual verification pending'}
     (args.output/'parity-report.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(f"PASS: {len(actual)} rules, {len(actual)*10} bit modifiers, {len(source_names)} sources, {len(cases)} comparisons")

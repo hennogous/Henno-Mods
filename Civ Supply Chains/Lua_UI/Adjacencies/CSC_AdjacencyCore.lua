@@ -10,6 +10,7 @@ A.Tags = {};
 A.Sources = {};
 A.Bits = {1,2,4,8,16,32,64,128,256,512};
 A.Limit = 1023;
+A.UnitSteps = {};
 
 local function flag(value) return value == true or value == 1; end
 local function bool(value) return value and 1 or 0; end
@@ -110,6 +111,59 @@ local function cityHasBuilding(city, buildingType)
     return city and building and city:GetBuildings():HasBuilding(building.Index) or false;
 end
 
+local function isStepNumber(value)
+    -- HavokScript can label native integral values "integer". Accept both
+    -- numeric tags here without coercing strings into locations or counts.
+    local kind=type(value);
+    return kind == 'number' or kind == 'integer';
+end
+
+local function hasLocalFunctioningStepBuilding(rule, city, playerID)
+    -- Step rules currently belong to the Bakers Mills. Their prerequisite
+    -- district is OnePerCity, so city-level presence identifies this Quarter.
+    -- Gameplay additionally exposes an exact building location; reject a grant
+    -- on another plot. UI lacks that API and uses the same prerequisite contract.
+    if not city or city:GetOwner() ~= playerID then return false; end
+    local building = row('Buildings',rule.WhoIsTheOwner);
+    local district = row('Districts',rule.DistrictType);
+    if not building or not district then return false; end
+    local buildings = city:GetBuildings();
+    if not buildings:HasBuilding(building.Index) then return false; end
+    if not buildings.IsPillaged or buildings:IsPillaged(building.Index) then return false; end
+    local districts = city:GetDistricts();
+    local expected;
+    -- Gameplay's indexed district manager is already used by the writer. Check
+    -- the actual district object's lifecycle rather than guessing manager args.
+    if districts and districts.GetNumDistricts and districts.GetDistrictByIndex then
+        for index=0,districts:GetNumDistricts()-1 do
+            local candidate=districts:GetDistrictByIndex(index);
+            if candidate and candidate:GetType() == district.Index then
+                if candidate.IsPillaged and candidate:IsPillaged() then return false; end
+                if candidate.IsComplete and not candidate:IsComplete() then return false; end
+                expected=Map.GetPlot(candidate:GetX(),candidate:GetY());
+                break;
+            end
+        end
+    else
+        -- UI exposes a district-type manager rather than gameplay's indexed
+        -- objects. These are the same calls used by the shipped ProductionPanel.
+        if not districts or not districts.IsPillaged or not districts.IsComplete then return false; end
+        if districts:IsPillaged(district.Index) or not districts:IsComplete(district.Index) then return false; end
+        if districts.GetDistrictLocation then
+            -- The native Lua binding returns x,y for this district type.
+            local x,y=districts:GetDistrictLocation(district.Index);
+            if isStepNumber(x) and isStepNumber(y) then expected=Map.GetPlot(x,y); end
+        end
+    end
+    if buildings.GetBuildingLocation then
+        local location = buildings:GetBuildingLocation(building.Index);
+        local plot = isStepNumber(location) and location >= 0 and Map.GetPlotByIndex(location);
+        if not plot or plot:GetOwner() ~= playerID or plot:GetDistrictType() ~= district.Index then return false; end
+        if not expected or expected:GetIndex() ~= location then return false; end
+    end
+    return true;
+end
+
 function A.Eligible(rule, city, playerID)
     -- Check the source that owns the modifier before counting nearby objects.
     -- Collection scope decides whether a qualifying building must be in this
@@ -124,6 +178,7 @@ function A.Eligible(rule, city, playerID)
     if owner == 'DistrictModifiers' then return true; end
     if owner == 'TraitModifiers' then return trait(playerID,key); end
     if owner == 'BuildingModifiers' then
+        if A.UnitSteps[rule.ID] then return hasLocalFunctioningStepBuilding(rule,city,playerID); end
         if rule.CollectionType == 'COLLECTION_CITY_DISTRICTS' then return cityHasBuilding(city,key); end
         if rule.CollectionType == 'COLLECTION_ALL_DISTRICTS' then
             for _,other in ipairs(PlayerManager.GetAliveMajors()) do
@@ -367,8 +422,21 @@ function A.Count(rule, center, city, playerID)
 end
 
 function A.Amount(rule, count)
-    -- SQL has a fixed ten-bit magnitude ladder. Keep the unclamped amount for
-    -- diagnostics, but use the encoded amount in both gameplay and previews.
+    -- Local Mill steps have a proved finite range, not a clipping policy. A
+    -- broken declaration/source must fail before publishing any partial value.
+    local maximum = A.UnitSteps[rule.ID];
+    if maximum then
+        local sourceMaximum=rule.AdjacencyType == 'FROM_RIVER_CROSSING' and 6 or 1;
+        assert(isStepNumber(count) and count == count and count >= 0 and count <= sourceMaximum
+            and count == math.floor(count),
+            'Invalid unit-step source count: ' .. tostring(rule.ID));
+        local amount = A.Truncate(count * rule.YieldChange);
+        assert(amount == amount and amount >= 0 and amount <= maximum,
+            'Unit-step amount exceeds its declared range: ' .. tostring(rule.ID));
+        return amount,amount;
+    end
+    -- Generic rules retain the signed ten-bit magnitude ladder. Keep the raw
+    -- amount for diagnostics and the capped value for gameplay and previews.
     local raw = A.Truncate(count * rule.YieldChange);
     return math.max(-A.Limit,math.min(A.Limit,raw)),raw;
 end
@@ -385,13 +453,29 @@ function A.Write(plot, rule, count)
     set(key .. '_ACTUAL_AMOUNT',raw);
     set(key .. '_ENCODED_AMOUNT',amount);
     local magnitude = math.abs(amount);
-    for _,bit in ipairs(A.Bits) do set(key .. '_' .. bit,math.floor(magnitude/bit)%2); end
+    local maximum = A.UnitSteps[rule.ID];
+    if maximum then
+        for step=1,maximum do set(key .. '_STEP_' .. step,magnitude >= step and 1 or 0); end
+        -- Old saves can retain the retired numeric-bit properties. They must
+        -- stay zero even when the rule is disabled or its district is removed.
+        for _,bit in ipairs(A.Bits) do set(key .. '_' .. bit,0); end
+    else
+        for _,bit in ipairs(A.Bits) do set(key .. '_' .. bit,math.floor(magnitude/bit)%2); end
+    end
 end
 
 function A.Initialize()
     -- Cache database definitions only. Player knowledge, policies and map state
     -- are evaluated live; sorting rules also fixes gameplay property-write order.
-    A.Rules={}; A.ByDistrict={}; A.Tags={}; A.Objects={}; A.SourceInfo={}; A.Providers={};
+    A.Rules={}; A.ByDistrict={}; A.Tags={}; A.Objects={}; A.SourceInfo={}; A.Providers={}; A.UnitSteps={};
+    if GameInfo.CSC_AdjacencyUnitSteps then
+        for item in GameInfo.CSC_AdjacencyUnitSteps() do
+            local maximum = tonumber(item.MaxAmount);
+            assert(maximum and maximum == math.floor(maximum) and maximum >= 1 and maximum <= A.Limit,
+                'Invalid unit-step maximum: ' .. tostring(item.ID));
+            A.UnitSteps[item.ID] = maximum;
+        end
+    end
     for item in GameInfo.TypeTags() do
         A.Tags[item.Tag] = A.Tags[item.Tag] or {};
         A.Tags[item.Tag][item.Type] = true;
@@ -402,9 +486,29 @@ function A.Initialize()
     for item in GameInfo.CSC_AdjacencyRules() do
         assert(A.Sources[item.AdjacencyType],'Unsupported CSC adjacency source: ' .. item.AdjacencyType);
         assert(A.Providers[item.ProvideType],'Unsupported CSC adjacency provider: ' .. item.ProvideType);
+        local maximum = A.UnitSteps[item.ID];
+        if maximum then
+            local district = row('Districts',item.DistrictType);
+            local building = row('Buildings',item.WhoIsTheOwner);
+            local hills = item.AdjacencyType == 'FROM_RINGS_CAO_TERRAIN_SETS'
+                and item.CustomAdjacentObject == 'IsHills' and A.Bounds(item) == 0
+                and (tonumber(item.MinRings) or 1) == 0
+                and (tonumber(item.MaxRings) or tonumber(item.Rings) or 1) == 0
+                and item.YieldChange == 1 and maximum == 1;
+            local river = item.AdjacencyType == 'FROM_RIVER_CROSSING' and item.YieldChange == 0.5 and maximum == 3;
+            assert(item.ProvideType == 'SelfBonus' and not flag(item.FreeCompose)
+                and item.ModifierOwner == 'BuildingModifiers' and item.CollectionType == 'COLLECTION_CITY_DISTRICTS'
+                and district and flag(district.OnePerCity) and building and building.PrereqDistrict == item.DistrictType
+                and (hills or river),'Unsupported unit-step rule: ' .. tostring(item.ID));
+        end
         A.Rules[#A.Rules+1]=item;
         A.ByDistrict[item.DistrictType] = A.ByDistrict[item.DistrictType] or {};
         table.insert(A.ByDistrict[item.DistrictType],item);
+    end
+    for id in pairs(A.UnitSteps) do
+        local found=false;
+        for _,item in ipairs(A.Rules) do if item.ID == id then found=true;break;end end
+        assert(found,'Unit-step rule is missing: ' .. tostring(id));
     end
     table.sort(A.Rules,function(a,b) return a.ID<b.ID; end);
     for _,rules in pairs(A.ByDistrict) do table.sort(rules,function(a,b) return a.ID<b.ID; end); end

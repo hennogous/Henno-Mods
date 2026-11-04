@@ -68,3 +68,11 @@ VALUES  (   'SelfBonus',               'EFFECT_ADJUST_DISTRICT_BASE_YIELD_CHANGE
         (   'SelfGameProperty',        'EFFECT_ADJUST_GAME_PROPERTY',                 'COLLECTION_OWNER',              'Key',                    NULL,                      0   );
 CREATE TABLE IF NOT EXISTS CSC_AdjacencyBits (Bit INTEGER PRIMARY KEY);
 INSERT OR IGNORE INTO CSC_AdjacencyBits VALUES (1),(2),(4),(8),(16),(32),(64),(128),(256),(512);
+
+-- Small, proved integer ranges can use one +1 modifier per threshold instead
+-- of the generic binary magnitude ladder. The first users are the local Mills:
+-- Wind has only 0/1; Water has floor(river edges / 2), hence 0..3.
+CREATE TABLE IF NOT EXISTS CSC_AdjacencyUnitSteps (
+    ID TEXT PRIMARY KEY REFERENCES CSC_AdjacencyRules (ID),
+    MaxAmount INTEGER NOT NULL CHECK (TYPEOF(MaxAmount) = 'integer' AND MaxAmount BETWEEN 1 AND 1023)
+);

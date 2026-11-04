@@ -40,15 +40,15 @@ def main():
     yields('materials and customers')
     run('ownership removal','CSC_LiveRemoveMaterialOwner()')
     yields('material ownership removed')
-    run('empire mill gate','CSC_LiveEnableRemoteMill()')
-    yields('remote mill')
+    run('remote mill exclusion','CSC_LiveEnableRemoteMill()')
+    yields('remote mill excluded')
     run('remove empire mill','CSC_LiveRemoveRemoteMill()')
     yields('mill removed')
     run('55 native source evaluators','CSC_LiveAssertSources()')
     run('native placement preview and tooltip',(TESTS/'live_ui.lua').read_text(encoding='utf-8'),ui)
     report={'status':'passed','ruleCount':26,'sourceCount':55,
             'checks':['native yield deltas against cleared-bit baseline','BASE/SPEC material counts',
-                      'customer return yields','material ownership removal','empire-wide mill gate',
+                      'customer return yields','material ownership removal','remote Mill does not activate the receiver',
                       'mill removal clears bits','55 source evaluators in gameplay context',
                       'native placement preview','district tooltip dispatcher','edge face deduplication'],
             'limitations':['visual appearance requires human review','optional mods tested in frozen SQL fixture, not live here',

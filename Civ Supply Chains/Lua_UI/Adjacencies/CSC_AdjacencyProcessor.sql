@@ -279,7 +279,8 @@ INSERT OR IGNORE INTO CSC_AdjacencyRules
         Rings,
         DistrictModifiers,
         ModifierOwner,
-        WhoIsTheOwner
+        WhoIsTheOwner,
+        CollectionType
     )
 SELECT
         'CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS',
@@ -293,7 +294,8 @@ SELECT
         0,
         1,
         'BuildingModifiers',
-        'BUILDING_CSC_BAKERS_WIND_MILL'
+        'BUILDING_CSC_BAKERS_WIND_MILL',
+        'COLLECTION_CITY_DISTRICTS'
 WHERE EXISTS
     (
     SELECT 1
@@ -343,7 +345,8 @@ INSERT OR IGNORE INTO CSC_AdjacencyRules
         Rings,
         DistrictModifiers,
         ModifierOwner,
-        WhoIsTheOwner
+        WhoIsTheOwner,
+        CollectionType
     )
 SELECT
         'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER',
@@ -355,13 +358,34 @@ SELECT
         1,
         1,
         'BuildingModifiers',
-        'BUILDING_CSC_BAKERS_WATER_MILL'
+        'BUILDING_CSC_BAKERS_WATER_MILL',
+        'COLLECTION_CITY_DISTRICTS'
 WHERE EXISTS
     (
     SELECT 1
     FROM Buildings
     WHERE BuildingType = 'BUILDING_CSC_BAKERS_WATER_MILL'
     );
+
+-- A Mill's terrain/river bonus belongs only to that city's Bakers' Quarter.
+-- Apply the correction on an existing rule database as well as on a fresh one;
+-- INSERT OR IGNORE above intentionally preserves unrelated authoring rows.
+UPDATE CSC_AdjacencyRules
+SET CollectionType = 'COLLECTION_CITY_DISTRICTS'
+WHERE ID IN (
+    'CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS',
+    'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER'
+);
+
+INSERT OR REPLACE INTO CSC_AdjacencyUnitSteps
+        (   ID,   MaxAmount   )
+SELECT      'CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS',                1
+WHERE EXISTS (SELECT 1 FROM CSC_AdjacencyRules WHERE ID = 'CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS');
+
+INSERT OR REPLACE INTO CSC_AdjacencyUnitSteps
+        (   ID,   MaxAmount   )
+SELECT      'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER',                3
+WHERE EXISTS (SELECT 1 FROM CSC_AdjacencyRules WHERE ID = 'CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER');
 
 INSERT OR IGNORE INTO CSC_AdjacencyObjects
         (   CustomAdjacentObject,                Name,                                     ArtdefOverlayEntry   )
