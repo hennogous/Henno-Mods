@@ -1420,5 +1420,28 @@
       "AI-N067",
       "AI-C052"
     ]
+  },
+  {
+    "id": "AI-N073",
+    "title": "Ordinary building river checks and menu visibility differ from host-district eligibility",
+    "statement": "Vanilla Water Mill uses RequiresAdjacentRiver, loaded into building159 bit08. Ordinary BuildQueue precompute0f61c0 tests the city's own plot, not the prerequisite district. Missing BuildingPrereqs is a start failure bypassed by the visible query; present mutually-exclusive counterparts and failed native river checks are hard exclusions. Stock production/purchase UI first tests exclusion, then full legality. RequiresRiver is a separate field identified in placed-Wonder plot validation, not a proven ordinary-building substitute.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "static"
+    ],
+    "scope": "Fresh read-only pinned Win64 XP2 SHA324c51e9: loaders755340/7b5eb0, prerequisite/exclusion collections77a780/77bfb0, precompute0f61c0, CanConstruct0f7100 and XP2 operation74fb00. Shipped Buildings.xml105, gameplay schema and stock ProductionPanel production2026/2038 and purchase1724 path. CSC source provides Quarter-local positive/complementary marker gates.",
+    "limits": "No new runtime legality, grant or UI visual check. RequiresRiver conclusion scoped to identified placed-Wonder consumer; no universal field-absence claim. No simple arbitrary per-district BuildingConditions predicate established: its shipped schema only declares UnlocksFromEffect. A UI-only hide is not gameplay/AI enforcement. No new native eligibility API or marker removal implemented.",
+    "sources": [
+      "project/docs/research/mods/csc-ai-watermill-native-river-check-20261104.md",
+      "project/docs/research/mods/csc-ai-river-access-flags-20261104.md"
+    ],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": [],
+    "related": [
+      "AI-C057",
+      "AI-N020",
+      "AI-N068"
+    ]
   }
 ]

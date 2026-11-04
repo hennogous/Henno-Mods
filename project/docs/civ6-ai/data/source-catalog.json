@@ -316,8 +316,8 @@
       "title": "River Access logic audit —4 November2026",
       "kind": "agent-note",
       "date": "20261104",
-      "bytes": 1247,
-      "sha256": "5e887eaa6d05a91b57723eb7a11a259163bb673e19b327402f2df532414a1de8",
+      "bytes": 1841,
+      "sha256": "348b733f79de204ce4c999b40a8aef5fcee5bda19c49a555eed8137415b55e00",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_ai_river_access_flags_20261104.md"
     },
@@ -1596,8 +1596,8 @@
       "title": "River Access flags: gameplay purpose and indirect AI effects",
       "kind": "report",
       "date": "20261104",
-      "bytes": 6436,
-      "sha256": "a037561cc3934b656f821beed007f5ee7a57ec3322c2979300a18aa871632350",
+      "bytes": 6857,
+      "sha256": "d90bd122d216cb3c9dd1ed3fa06c80fc98e9ece18381f94628f2769146ee4006",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-river-access-flags-20261104.md"
     },
@@ -1650,6 +1650,16 @@
       "sha256": "0984c51373c0bead82c00518117e86fee5b8e4463c848dcacce0c66e5fda2bf3",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-tuning-v1-20261017.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-watermill-native-river-check-20261104.md",
+      "title": "Why vanilla Water Mill river gating does not replace CSC's Quarter flags",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 7112,
+      "sha256": "7a3f9d049ae7909688ac278d350771811233af9bb997e8e6b03173a9758f7168",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-watermill-native-river-check-20261104.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-work-admission-20261031.md",

@@ -57,6 +57,12 @@ also permits Wind on river sites; it only forbids Water off-river and owning
 both Mills. We should preserve real availability while separating free markers
 from investment value. [Read the logic audit](../../research/mods/csc-ai-river-access-flags-20261104.md).
 
+Why keep two markers? A missing prerequisite can leave Water visible but grey;
+the complementary exclusion hides it. Vanilla Water Mill's native river flag
+instead checks the City Center, so it cannot simply replace the Quarter-local
+test. Henno confirmed the intended rule: Water only on river sites, Wind anywhere,
+with only one Mill per Quarter. [Native gate and UI evidence](../../research/mods/csc-ai-watermill-native-river-check-20261104.md).
+
 ## The richer planner is a separate review tool
 
 An offline Tailors evaluator compares 44 copied cases using explicit yield, cost, timing and development assumptions. It explains when developing an existing Quarter becomes attractive and how that changes with the horizon or construction costs.

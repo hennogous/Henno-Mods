@@ -34,6 +34,22 @@ flowchart TD
 
 This is different from a customer building in another district merely being useful: a supported ordinary HasBuilding requirement tests actual presence. See [modifier forecasts](modifier-forecasts.md).
 
+## Visible, disabled and constructible are different queries
+
+Stock ProductionPanel first queries `CanProduce(hash,true)` for list admission,
+then `CanProduce(hash,false,true)` for immediate legality and failure reasons.
+The inspected native building path treats a missing building prerequisite as a
+start failure that the visible query can bypass. An actually present mutually
+exclusive building is a hard exclusion and hides the option. Purchases also
+separate exclusion from full validation. [AI-N073]
+
+Vanilla Water Mill uses `RequiresAdjacentRiver`, whose ordinary precompute tests
+the city's own plot rather than the prerequisite district's plot. Moving the
+building to another district does not retarget that test. CSC's positive River
+prerequisite plus complementary NoRiver exclusion therefore has a practical
+purpose: enforce Quarter-local legality and hide an impossible Water option.
+A UI-only filter would not establish AI/gameplay legality. [Native trace](../../../research/mods/csc-ai-watermill-native-river-check-20261104.md).
+
 ## Preference, priority and value use different controls
 
 For Buildings, the traced favored preference is sign-based: negative applies 0.5, positive 2.0, zero no preference multiplier. Larger Buildings.Value does not proportionally strengthen that branch. [AI-N021]

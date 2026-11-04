@@ -1,3 +1,11 @@
+# Latest native Water Mill gate —4 November2026
+
+UserconfirmedWateronlyriverQuarter, Windanywhere. VanillaRequiresAdjacentRiver
+checksCITYCENTER, notPrereqDistrict. MissingRiverprereqcanleavegrey; present
+NoRiverexclusionhides. Existingtwoflagsservelegality+presentation; no gameplay
+changesauthorized/performed. AI-N073/nativegate report, session_ai_river_access_flags_20261104.md.
+Prior offline-only/noFireTunercontrol persists.
+
 # Latest River Access audit —4 November2026
 
 User asked recover flag logic, not change it. SQL Water requires River, excludes

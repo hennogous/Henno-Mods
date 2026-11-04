@@ -5,6 +5,12 @@ No gameplay implementation, installed package, FireTuner, game or native process
 was changed. Henno asked to recover the flags' purpose and determine whether the
 AI ignores them. [AI-C057]
 
+> Follow-up: Henno confirmed **Water only on rivers; Wind allowed anywhere**.
+> The [native gate/UI investigation](csc-ai-watermill-native-river-check-20261104.md)
+> explains why both markers serve a purpose: the vanilla flag tests the City
+> Center, while positive prerequisite and complementary exclusion separate
+> constructibility from hiding. Gameplay code remains unchanged.
+
 ## Gameplay logic
 
 The two hidden buildings are implementation markers for the **Bakers Quarter's
@@ -84,8 +90,8 @@ and mutually exclusive representative separately from genuine Mill benefits.
 No gameplay deletion or native filter is implemented here. A correction that
 skips markers for economic prerequisite depth must not accidentally bypass the
 Water Mill's actual river legality. Changing definition order or deleting only
-NoRiver is not a demonstrated complete forecast repair. Whether Wind should
-also be strictly non-river is a design decision beyond recovering this logic.
+NoRiver is not a demonstrated complete forecast repair. Henno subsequently confirmed that Wind is allowed anywhere; its existing
+availability therefore requires no extra non-river restriction.
 
 ## Evidence identity and limits
 

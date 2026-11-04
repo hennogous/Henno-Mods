@@ -35,7 +35,7 @@ title: Bakers' Quarter
 
 ## 2. Water Mill or Wind Mill
 
-The Water Mill has moved from the City Center to the Bakers' Quarter, and is only available if the Quarter has an adjacent river. The Wind Mill fills the same stage 2 role when the Quarter is not river-adjacent, and receives its terrain logistics bonus from Hills instead.
+The Water Mill has moved from the City Center to the Bakers' Quarter, and is only available if the Quarter has an adjacent river. The Wind Mill is available on both river and non-river sites, and receives its terrain logistics bonus from Hills instead. A Quarter can have only one of the two Mills.
 
 River-powered milling becomes available in the Classical era. Wind power extends milling to non-river Bakers' Quarters in the Medieval era.
 

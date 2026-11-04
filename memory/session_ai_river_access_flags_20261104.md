@@ -17,3 +17,13 @@ DeletingNoRiveralone won'tfixthat. No nativegame/process/annotation changes.
 
 Durable report `project/docs/research/mods/csc-ai-river-access-flags-20261104.md`,
 AI-C057. Staticexcerpts at Desktop/Codex/csc-river-access-audit-20261104.
+
+## Follow-up: why flags instead of vanilla river gating
+
+Userclarified intendedWateronlyriverQuarter, Windanywhere. Nativeagenttraced
+RequiresAdjacentRiver ordinarybuilding check toCITYPLOT, nothostdistrict.
+MissingRiverprereq softstartfailure canleavegrey; NoRiver mutualexclusionhardhide.
+Thus twoflags havepracticalpurpose. RequiresRiver isseparateidentifiedWonder
+placementroute, notdropinordinarybuildingfix. No gameplayedits; publicBakers
+wordingclarifiedWindanywhere. AI-N073/nativegate report; genericgameplayskill
+database-patterns updated with reusablefield/visibility distinctions.
