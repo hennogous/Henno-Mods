@@ -5,6 +5,11 @@ Henno requested a first extension that discourages poor Quarter placements and a
 fresh test game. The prior pilot's23 below-4 foundations remain valid observations;
 they were not evidence of a penalty failure because that policy only added bonuses.
 
+Follow-up: [score components, refresh and purchases](civ6-district-cache-timing-and-purchases-20261104.md)
+clarifies native coverage and timing. Henno requested understanding the later
+benefits and supplementing CSC valuation before assuming the final aggregate
+needs a blanket penalty. The test results below retain their original scope.
+
 **Result:** the signed extension successfully lowered weak-site scores. The
 Online100 game founded ten promoted Quarters and four below-4 Quarters, versus
 23 below-4 foundations in the earlier positive-only run. This is an encouraging

@@ -182,6 +182,16 @@
       "site_path": "sources/memory/session_ai_native_material_feasibility_20261030.md"
     },
     {
+      "path": "memory/session_ai_native_score_components_20261104.md",
+      "title": "Native score components, cache timing and purchases —4 November2026",
+      "kind": "agent-note",
+      "date": "20261104",
+      "bytes": 4232,
+      "sha256": "f2b6de7e2d516f1d8aaa675cb6cd4700a0f828c4ef3639a85aea513fb77d2ca7",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_native_score_components_20261104.md"
+    },
+    {
       "path": "memory/session_ai_native_shadow_20261030.md",
       "title": "Astra next-step consultation and shadow capture —30October2026",
       "kind": "agent-note",
@@ -442,12 +452,22 @@
       "site_path": "sources/project/docs/integrations/csc-native-test-controller.md"
     },
     {
+      "path": "project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md",
+      "title": "District score components, refresh and tile purchases",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 14487,
+      "sha256": "680909fa48557b242b005fdf1c20d6bb5f6440bb9a9610994e92ac24d236671e",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
+    },
+    {
       "path": "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md",
       "title": "District choice, placement scoring and custom incentives",
       "kind": "report",
       "date": "20261103",
-      "bytes": 19673,
-      "sha256": "07a5a815042fdcbbe30699ebc0ce0a6ea252e7fa8623646708f1026ef8b7a65d",
+      "bytes": 19692,
+      "sha256": "48d3bd3c9bdd3fa0f959b36d27e052044791eafbb5d587a7d20dab1ac72d3b58",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
     },
@@ -1256,8 +1276,8 @@
       "title": "Soft penalties for weak Quarter placements",
       "kind": "report",
       "date": "20261103",
-      "bytes": 16012,
-      "sha256": "5ca62df27849ba2b882a37274d3143af3218304e0d7fa23d0e12f96c13d61a33",
+      "bytes": 16352,
+      "sha256": "320fc78a13d3ece0a909b595902b04d4c905475593cea4aa850e042c9ad66a02",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-placement-penalties-20261103.md"
     },

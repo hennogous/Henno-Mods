@@ -40,8 +40,14 @@ four below-4 foundations and zero native errors. This compares descriptively wit
 23 below-4 foundations in the positive-only run, without a matched causal arm.
 Two exceptions were admitted before scanner coverage and retained old request
 values; two stayed positive and won after downstream native uplift. Next,
-cover proposal candidates before admission and review an adjustment at the final
-aggregated value. Retained-request refreshing would be a separate native contract.
+cover proposal candidates before admission and understand the
+[native score components](topics/native/district-score-anatomy.md). On4 November,
+Henno emphasized supplementing the native estimate to represent CSC gameplay:
+preserve understood benefits, identify approximate/missing relationships, and
+avoid double-counting. Decompose future-building contributions before deciding
+whether a final-aggregate adjustment is warranted. The identified prerequisite-
+depth heuristic and hidden CSC prerequisites need that component accounting too.
+Retained-request refreshing would be a separate native contract.
 First-Mill construction remains a later distinct decision, not part of this penalty.
 
 ## Starting point

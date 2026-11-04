@@ -84,7 +84,7 @@ and construction delays can be estimated before a district is currently availabl
 `GetBestDistrict` (`3e4a50`) loops **both plots and district types**, choosing the
 largest admitted cached score. Equal scores use randomized tie-breaking. Live
 reservation values constrain admission. There is no positive-score test in this
-selector: its initial baseline is the invalid Q8 sentinel −9999, not zero. Later
+selector: its initial baseline represents−9999 utility units (stored−2559744 Q8), not zero. Later
 trigger/request/queue stages are separate.
 
 Consequently a strong Campus site can help Campus beat another district type.

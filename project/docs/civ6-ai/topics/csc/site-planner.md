@@ -102,8 +102,9 @@ requests before their sites first appeared in the scanner; later negative values
 did not retract the retained requests. Delhi and Majapahit remained positive
 after deduction and won with much larger final cached values after downstream
 native valuation. The next placement refinement should cover candidates before
-request admission and consider a penalty on the final aggregated value. Simply
-raising a late subtraction would not solve both problems. The report preserves
+request admission and use a [native-versus-CSC component ledger](../native/district-score-anatomy.md)
+before deciding on final-aggregate changes. Simply raising a late subtraction
+would not solve both problems. The report preserves
 the controller interruption, exact scanner-fact recovery comparison and all four
 case traces. No empire-benefit or release-readiness claim follows from this test.
 

@@ -18,6 +18,13 @@ flowchart TD
   H --> V
 ```
 
+Another native heuristic follows the first prerequisite-building chain and
+multiplies an early benefit subtotal by1+2×depth before maintenance/discounting.
+Later modifier, amenity and other additions remain separate. Hidden prerequisites
+can therefore matter to the approximation; this does not establish their numeric
+effect in a particular live city. [AI-N068] The [score anatomy](district-score-anatomy.md)
+keeps this distinct from supported hypothetical modifier interpretation.
+
 ## Unsupported collections and requirements fail differently
 
 A missing collection or effect handler leaves a null pointer and compilation/evaluation refuses that modifier. The inspected 27-collection registry lacks COLLECTION_PLAYER_IMPROVEMENTS. Current producer-to-material wrappers using it are therefore unsupported through that traversal, without implying zero material value everywhere. [AI-N027]

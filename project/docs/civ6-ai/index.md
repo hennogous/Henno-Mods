@@ -30,6 +30,7 @@ provides stable references for individual conclusions.
 6. [Modding controls and possible native extensions](topics/native/modding-controls.md)
 7. [How we know: evidence and instrumentation](topics/native/evidence-and-instrumentation.md)
 8. [Native placement-score extension](topics/native/native-placement-extension.md): the identified integration point, persistence and proposed bridge
+9. [Anatomy of a district-site score](topics/native/district-score-anatomy.md): components, units, future buildings and the CSC correction ledger
 
 ## Understand the CSC experiments
 

@@ -56,4 +56,12 @@ The traced threat-interruption path uses AI_CURRENT_TASK_BIAS, but final cancell
 
 QueueNextBuild validates/updates contracts and compares the selected contract with unit/project alternatives; the inspected contract gate has no best-building comparison. Its fallback compares buildings, units and projects. Districts arrive through contracts. [AI-N025]
 
+Matching DoTurn/activation paths call that ordinary selector when the city queue
+is empty. A new best district value does not automatically replace current
+production each turn. The activation pass also updates a working contract, while
+new district proposals wait for a free district event-tree slot. At the inspected
+contract gate, the selected offered-contract value must beat the best unit value
+minus256 Q8 and the best project value. Interruption remains a separate path.
+[AI-N067] See [the detailed cadence and purchase investigation](../../../research/mods/civ6-district-cache-timing-and-purchases-20261104.md).
+
 A concrete bounded example: after completing an existing Factory, Nicomedia's building selector returned Lighthouse, but a Neighborhood contract became production. The contract score was not captured, so no numerical Lighthouse-versus-Neighborhood inequality follows. Toulouse did not expose the ordinary 0/0 next-building choice or a new Workshop order. These absences are coverage limits, not measured failure rates.

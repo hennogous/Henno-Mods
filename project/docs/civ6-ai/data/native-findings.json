@@ -104,7 +104,7 @@
       "static"
     ],
     "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. GetBestDistrict RVA 3e4a50.",
-    "limits": "Its initial invalid sentinel is Q8 -9999; this is a local city cache comparison, not exhaustive future layout optimization.",
+    "limits": "Its initial stored invalid sentinel is -2559744 Q8, representing -9999 utility units; this is a local city cache comparison, not exhaustive future layout optimization. Unit wording clarified4November without changing the signed-selection finding.",
     "sources": [
       "project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
     ],
@@ -1252,5 +1252,100 @@
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N011", "AI-N064"],
     "related": ["AI-N062"]
+  },
+  {
+    "id": "AI-N066",
+    "title": "The city district matrix includes future types and unowned frontier land",
+    "statement": "CityBuild allocates district-definition by radius-three plot storage, evaluates the full type collection with admission gates and research/construction delay, and can select revealed adjacent unowned land. Cache slots, evaluated possibilities and admitted winners are different sets; purchase cost enters unowned-site NetValue.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Pinned XP2 SHA324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; Initialize3e64e0/3e7350/3e7030, evaluator3e2aa0, CanEverZone2c3fc0, NetValue52a440, GetBestDistrict3e4a50. Up to37 rows including center; all DistrictDefinition indices, invalid sentinels for rejected pairs.",
+    "limits": "Not every locked type is forecastable or every stored tile selectable. Revelation, horizon, mapping, restrictions, ownership/city assignment and frontier gates apply. No search over distant territory/conquest. Exact earlier exclusions in CSC pilot were not captured.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N006",
+      "AI-N007",
+      "AI-N008"
+    ],
+    "related": [
+      "AI-C050"
+    ]
+  },
+  {
+    "id": "AI-N067",
+    "title": "Score refresh, district proposals and production use different update gates",
+    "statement": "CityManager StartTurn resets per-city off-turn/job flags; readiness-gated DoOffTurn schedules City Analysis that loops all stored plots. Full matching-priority activation aggregates future buildings and checks opportunities. A live district event tree can prevent a new GetBestDistrict call, and ordinary QueueNextBuild is gated on an empty queue.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Pinned XP2; CityManager3d98f0/3d8fc0/3d9130; CityBuild3e2590/job3e2a40/activation3e2820/DoTurn3e2750/CheckForDistrict3e0ee0/QueueNextBuild3e8190. Ordinary per-turn reset, five subsystem readiness flags and full-activation condition.",
+    "limits": "Outer virtual scheduler and every event path not exhaustively traced; not a universal exact selector-call count/calendar cadence. New-city initialization can trigger extra analysis; threat interruption is a separate guarded path. Native analysis cycle need not align with CSC global inactive scan.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
+    ],
+    "topic": "topics/native/architecture.md",
+    "depends_on": [
+      "AI-N001",
+      "AI-N025"
+    ],
+    "related": [
+      "AI-N023",
+      "AI-N051",
+      "AI-N063",
+      "AI-C050"
+    ]
+  },
+  {
+    "id": "AI-N068",
+    "title": "Building income has a first-prerequisite-depth multiplier before discounting",
+    "statement": "BuildingValue52b900 follows the first prerequisite at each level and counts depth d. An early normalized benefit subtotal is multiplied by1+2*d, then normalized maintenance is subtracted and the resulting income enters discounted-stream calculations. Later amenity, housing, power and modifier additions are separate.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "inference"
+    ],
+    "scope": "Fresh decompilation of exact pinned XP2 BuildingValue52b900 lines438-465; prerequisite vector+1f8/+200 independently identified through the native SQL loader in the IZ study. Code arithmetic gives factors1/3/5 at depths0/1/2 for that subtotal.",
+    "limits": "Not a multiplier on every component or final building value, and not full dependency-graph traversal. Actual first-pointer/order/subtotals in Delhi/Majapahit were not captured. Relevance of hidden CSC prerequisite buildings is an inference needing component observation, not measured attribution of the pilot gains.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
+    ],
+    "topic": "topics/native/district-score-anatomy.md",
+    "depends_on": [
+      "AI-N018",
+      "AI-N026"
+    ],
+    "related": [
+      "AI-N055",
+      "AI-C050"
+    ]
+  },
+  {
+    "id": "AI-N069",
+    "title": "Plot purchases have targeted preparation and opportunistic economic routes",
+    "statement": "A district preparation tree can submit a PurchasePlotContract for its exact location; Economic TryPurchasePlot seeks the cheapest positive legal city quote. Separately PurchasePlots uses each city's cached frontier-resource acquisition target, selected from improvement forecasts and a feature heuristic. Both use plot/slush savings and native command legality; the requested route has a lower earmarked-plot-fund hurdle.",
+    "status": "accepted",
+    "evidence_types": [
+      "source"
+    ],
+    "scope": "Pinned XP2 Economic457120/458530/459090 and PurchasePlotNode55db70/55ed80/55dee0, contract3f9010/3fa260, CityBuild AnalyzeCityPlots3de990; exact Execute/Validate thunk bytes3f82c0/3fa880 and0.5/0.25 constants; shipped BehaviorTrees.xml and Leaders.xml.",
+    "limits": "No new purchase executed. Full outer scheduler not exhausted; no extra N-turn cooldown found within inspected routines. Routine target selection is order-sensitive rather than strict global maximum. Earlier Hague/Pokrovka logs say Purchase Plot success with Not Buying anything; they do not prove spending or explain the precise pre-scan exclusion.",
+    "sources": [
+      "project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
+    ],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": [
+      "AI-N011",
+      "AI-N066",
+      "AI-N067"
+    ],
+    "related": [
+      "AI-C050"
+    ]
   }
 ]

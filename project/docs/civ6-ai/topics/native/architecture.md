@@ -17,6 +17,21 @@ flowchart TD
 
 The core economic chain is visible in CityBuild: off-turn analysis submits a city-evaluation job; per-plot evaluation writes caches; activation processes related building values and checks opportunities. QueueNextBuild later arbitrates production. The selector therefore reads a prepared valuation rather than performing a fresh complete simulation at its return. See the [production reconstruction](../../../research/mods/csc-ai-native-production-analysis-20261028.md) and [district study](../../../research/mods/civ6-district-choice-placement-and-incentives-20261103.md).
 
+## Refresh, proposal and execution are different clocks
+
+CityManager StartTurn clears per-city off-turn/job flags. Once five subsystem
+readiness conditions hold, CityBuild schedules a City Analysis job that evaluates
+all stored plot rows for that cycle. Full matching-priority activation then
+aggregates building forecasts and checks opportunities. A live district event
+tree can block a new district winner request even with fresh scores; ordinary
+production selection waits for an empty queue. This is a per-turn analysis cycle
+with separate gates, not a universal exact count of selector calls per turn.
+[AI-N067]
+
+The [score anatomy](district-score-anatomy.md) separates each value component;
+[district choice](district-choice.md) explains current versus future land, and
+[production](production-and-prerequisites.md) explains contracts and queue gates.
+
 ## Three meanings of planning
 
 **Forecasting dependencies:** a Factory can have value before Workshop exists, and some of that value can flow backward to Workshop and Industrial Zone.
