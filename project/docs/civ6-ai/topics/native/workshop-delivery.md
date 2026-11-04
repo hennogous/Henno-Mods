@@ -15,12 +15,10 @@ is unavoidable. The native component can be supplied by a dependency. [AI-N070]
 
 ```mermaid
 flowchart TD
-  A["CSC Workshop package: Lua policy"] --> B["CE score API: proposed capability"]
-  C["CE Workshop package: GameCore proxy"] --> B
-  B --> D["Immutable numeric table"]
-  D --> E["Native district-site score hook"]
-  E --> F["Native cache, choice and requests"]
-  G["Current CE1.3: memory APIs"] -. "Safe score-edit timing remains unqualified" .-> F
+  A["CSC Lua policy"] --> B["Proposed CE batch API"]
+  B --> C["Native numeric table"]
+  C --> D["CE district-score hook"]
+  D --> E["AI cache and decisions"]
 ```
 
 ## Existing CE and the missing consumer
