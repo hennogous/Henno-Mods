@@ -437,7 +437,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     highlights[0]?.scrollIntoView({ block: "start" })
   }
 
-  async function onType(e: HTMLElementEventMap["input"]) {
+  async function onType(_e: HTMLElementEventMap["input"]) {
     if (!searchLayout || !index) return
     currentSearchTerm = searchBar.value
     searchLayout.classList.toggle("display-results", currentSearchTerm !== "")
