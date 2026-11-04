@@ -32,7 +32,8 @@ Start at the [internal documentation index](docs/README.md). The [full documenta
 | Industrial Zone runtime check | [Observed Factory-to-Workshop value and production boundary](docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md) |
 | CSC future materials and customers | [Forecast channels, interpreter limits and current Lua returns](docs/research/mods/csc-future-economy-forecast-20261103.md) |
 | District type, site choice and custom incentives | [Native selection, empire needs and available controls](docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md) |
-| AI release delivery: current gate before tuning | [Workshop packages and preferred CE dependency](docs/civ6-ai/topics/native/workshop-delivery.md) |
+| AI carrier: CE fork parity and upstream release | [Workshop packages and preferred CE dependency](docs/civ6-ai/topics/native/workshop-delivery.md) |
+| Packaged AI policy and native traces | [Completed CE/Lua Online100 parity test](docs/research/mods/csc-ce-policy-parity-20261104.md) |
 | Gameplay systems and related projects | [System references](docs/integrations/README.md) |
 | Automatic industry-material map assistance | [Runtime and build](docs/integrations/csc-material-map-assistance.md), [five-seed results](docs/research/mods/csc-continental-helper-lua-20261016.md) |
 | Art studies, trials and reference-mod research | [Research index](docs/research/README.md) |

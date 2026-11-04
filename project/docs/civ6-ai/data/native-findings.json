@@ -1395,5 +1395,30 @@
       "AI-N070",
       "AI-N067"
     ]
+  },
+  {
+    "id": "AI-N072",
+    "title": "A CE development fork carries bounded district incentives and native decision traces",
+    "statement": "A complete CE fork accepts staged numeric district-site batches from gameplay Lua, adjusts fresh ordinary NetValue output, and exposes read-only cache/winner/PV traces through a bounded paged journal. A packaged policy completed Online100 without Frida or a Python incentive worker; native selection, requests and construction remained in control.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Exact pinned Windows GS GameCore; CE fork17f7c75, corrected DLL d8081765. Full91-source portable build,157 original exports/155 forwarders,36 isolated native checks. One CSC-only Online world1–100, same-process off world1–2 and exact saved6 reload.73 positive and14584 negative changes;29479 complete trace records;0 native faults; normal exit0/preferences/content verified.",
+    "limits": "Development carrier only; not released CE1.3 or upstream acceptance. Publication is gameplay-event driven, not historical inactive-boundary timing. No whole-analysis atomicity, request rollback, economic benefit, MSVC, RH/multiplayer/general CE compatibility or actual Workshop subscription proof. Python still controlled and audited the test.",
+    "sources": [
+      "project/docs/research/mods/csc-ce-policy-parity-20261104.md"
+    ],
+    "topic": "topics/native/workshop-delivery.md",
+    "depends_on": [
+      "AI-N061",
+      "AI-N070"
+    ],
+    "related": [
+      "AI-N071",
+      "AI-N067",
+      "AI-C052"
+    ]
   }
 ]

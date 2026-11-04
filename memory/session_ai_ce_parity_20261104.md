@@ -1,35 +1,58 @@
-# CE fork policy parity — 4 November 2026
+# CE fork policy parity — complete, 4 November 2026
 
-Henno authorized restoring the earlier Python/Frida placement-test capability
-through a local CE fork and packaged CSC Lua. No scoring changes. Fork exists:
-https://github.com/hennogous/CivilizationVI_CommunityExtension, feature branch
-`feature/ai-district-scores`, local Desktop/Codex/CE-fork. Base e59b5aa.
+Henno authorized restoring the Python/Frida placement setup through a CE fork,
+then contributing the working result to WildW. No new scoring logic. Actual
+DRAFT PR9 opened and verified against Wild-W/master after native qualification:
+https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9
+Attached to this task. No separate maintainer message. Do not open a duplicate.
 
-Complete portable CE DLL builds, existing CE included,157 exports/155 forwarders,
-Windows/UCRT imports. Missing AsmJit backend restored externally with matching
-snapshot; real MinHook/Capstone compiled. Source generic native hook/3observers,
-16384record journal, paged API, process-once init/per-context reset. MSVC untested.
+CE fork Desktop/Codex/CE-fork, feature/ai-district-scores. Tested native code
+17f7c75; README qualification head a928eb8 pushed; base e59b5aa. Complete91source
+portable Zig0.15.2 build includes real MinHook1.3.4/Capstone5.0.3 and restored
+matching missing AsmJit files.157originalexports/155forwarders, Windows/UCRTimports.
+Native DLL SHA d80817659cefbb84feb5c5f3ce67429293bd604c274109dbdb93767f791aac6d.
+36isolatednativechecks,23actualLua,9sharedscanner,15harness/audit,2docschecksPASS.
 
-Lua v2 shortlist is literal port, same shared scanner/rivers/Mill/foundedskip,
-no new tuning or assistance. Packaged original-human Game properties. Driver
-Python only controls shared finite test and audits actual Lua vs same Python
-snapshot; no external policy publication/Frida. New isolatedmodIDs end2a06/2a07,
-stockCE+CSC unchanged. Artifacts Desktop/Codex/csc-ce-parity-20261104 and separate
-ce-fork-parity-20261104. Source under project/tools/ai_workshop_bridge/ce_policy
-and ce_parity; scanner backward-compatible returnout only existing source edit.
+Current nativeAPI: begin/allow/entry/commit/disable/status,tracecount,TraceRead
+(offset,limit<=64,expectedGeneration).4096entries/4096writes perpublication,
+16384records; score/cache/Best/PVtypedhooks noLua worker callbacks. HKS first
+live run01 stopped3 on511bytepushfstringtruncation; nativeexit0 and152prefs/content
+restored. Fixverifiedpublicconcat/checkstack+<=240bytefragments. DiskLua.log
+independently2047bytecap; package frameslongSCAN/PLAN/NATIVE/TRACE512rawbytehex
+chunks epoch/seq/orderedparts/bytes/sum32. Rawrun01failure/evidence retained.
 
-First run01 STOPPED3 due actualHKS pushfstring JSON511byte truncation, independent
-Lua.log2047linecap. Native exit0/all152entries149IDs/autostartfalse restored,
-contentunchanged/noowners. Rawresult failure retained, no parityclaim. FullStatus
-Tunerreply outerJSON valid but nativeJSON511bytes. CE agent changing native push
-to<=240byte fragments+verifiedpublicconcat; Lua v3chunks512rawbyteshex perbounded
-receipt with epoch/seq/order/bytecount/sum32. Root strictreassembler/tests added.
-StateTunerquery remainsfull; autonomousSCAN/PLAN/NATIVE/TRACE chunked.
+run02 COMPLETE100 under sole maintainedsharedcontroller, native7548 exited0.
+Fresh1->6/exactSaveComplete+hash, sameprocessoffworld1->2 version/entries/changed0,
+loadsaved6 scannerfactsidentical, continue100.101capturedplans exactlymatchcurrent
+Python reference; Python onlycontroller/audit, nopolicypublication/Frida.
+100publishedwindows,98withrecords,29479complete deduplicatedrecords:
+14657Net=14584negative+73positive;14663cache,132Best,27PV;0nativefaults.
+Native12Quarterfoundationsat100/11complete (10Bakers2Tailors), notcausality/benefit.
+No matchedscript/database runtimeerrors in closedlogpatternscan. All152entries/
+149IDs/autostartfalse restored;CSC+stockCE+testpackages unchanged;inventoryempty.
+No more game is authorized by this closeout. Olderbroadcampaign remainspaused.
 
-Next planned run after both fixes: Online100 cap, fresh1->6/saveonce, sameprocess
-new offworld1->2, loadexact6/checkscannerfacts, continue100. Current report
-project/docs/research/mods/csc-ce-policy-parity-20261104.md has boundaries. No PR
-or external maintainer contact yet. Broad oldcampaign remains paused. All game
-control sharedcontroller; checkins15min whilehealthy. Do not edit frozen inputs
-whileworker alive. Driver accepts stop-request.json atinactiveboundary for orderly
-cleanup if a future transport/telemetry issue emerges.
+Evidence roots Desktop/Codex/csc-ce-parity-20261104 and ce-fork-parity-20261104.
+run02/{result,parity-audit,reload-scanner-parity,checkpoint,loaded-modules,
+preferences-restored,session-closed}.json,sevenlogarchives,exactsourcepins/archive.
+TestedCSCcodecheckpoint600a71f pushed; postrunmetadatafixseparatesrequested/
+completedlifecyclelabels only. CurrentLua source under project/tools/
+ai_workshop_bridge/ce_policy; driver/auditor/packager under ce_parity. Same
+adjacency_policy/scan.lua with returnout; source and installedCSCcore hashmatches.
+NewisolatedtestmodIDs2a06CEfork/2a07Lua, leftdisabledbyexactrestoration. StockCE
+andWorkshop files untouched. Historical bridge.c/prepare_ce_contribution are
+oldprototype inputs; NEVERoverwritecurrentCEforkfromthatgenerator. Native source
+oftruth is fork native/AIDistrictScores.c.
+
+PreservedgameAutoSave_0100 to run02/checkpoints/AutoSave_0100-treated-unreloaded.
+Civ6Save SHA a7e2b6e979d389d4438440c6825db6877130e6e6edab832bfbc31d10893800ae.
+ValidCIV6header/filehash; savedclockNOTverifiedbyreload, treatednotcleanbaseline.
+Initialexact6saveSHA8c93e0dfce54c1056b5be3a7c41ff2293afcef8823925a862cded1b62f1eb9c0.
+
+Maintainedreport project/docs/research/mods/csc-ce-policy-parity-20261104.md,
+handbookworkshopdeliverytopic,AI-N072/AI-C052. FirstCSCcheckpoint600a71f Pages
+41818310631PASS. Final source/Pages identities are tracked in the Desktop final-state receipt. Genericgameplayskill
+ab5524a pushed (HKS/durableloglesson), CEforkcleanpushed. StockCE1.3 stilllacksAPI;
+no fullCEcompat/MSVC/RH/multiplayer/Workshopsubscriptionqualification. Eventtiming
+isgameplayeventdriven ratherthanoldinactivePythonboundary; nowholeanalysisatomicity
+orretainedrequestrollback. KeepgenericCEenginefacts separatefromCSCpolicyrules.

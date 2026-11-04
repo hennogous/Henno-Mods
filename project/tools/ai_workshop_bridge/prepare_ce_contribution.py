@@ -1,5 +1,9 @@
 """Prepare and compile a proposed CE-owned district-score capability, without deployment.
 
+Historical object-only candidate. The current native implementation and its
+reporting/lifecycle fixes live in the CE fork, not this generator's old bridge.c.
+See ce_policy/ and ce_parity/ for the subsequently qualified development path.
+
 The pinned CE checkout is a read-only input. Outputs include an unapplied Main.cpp
 patch and two COFF objects; this does not build or execute a Community Extension DLL.
 """

@@ -110,10 +110,13 @@ case traces. No empire-benefit or release-readiness claim follows from this test
 
 ## Next decision
 
-**4 November release gate:** Further tuning is held while we establish a
-[Workshop/CE delivery path](../native/workshop-delivery.md). Henno prefers CSC
-Lua/SQL with a CE dependency rather than our own shipped DLL. The model work
-below remains a later step; the research-only Frida carrier is not a release plan.
+**4 November carrier checkpoint:** The
+[CE fork parity port](../../../research/mods/csc-ce-policy-parity-20261104.md)
+completed Online100 with the same v2 policy and full native diagnostics.
+CSC Lua/SQL now has a qualified development path through a CE dependency;
+stock CE still lacks the API and upstream release remains separate. [AI-C052]
+This clears the development-carrier prerequisite for later model work; it does
+not establish the economic quality of the current rule or authorize another game.
 
 Review the assumptions and case explanations. Extend profiles to Bakers and
 later Quarters, and gather only missing facts that could change a choice:

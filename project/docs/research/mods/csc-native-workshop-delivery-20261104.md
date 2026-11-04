@@ -5,6 +5,11 @@ CSC to ship Lua/SQL with a dependency on Community Extension, rather than mainta
 its own native DLL. The independent carrier below is an experiment, not the
 selected CSC release architecture.
 
+> Same-day follow-up: the [CE fork parity port](csc-ce-policy-parity-20261104.md)
+> subsequently built and exercised the complete CE-native consumer and packaged
+> Lua policy. The object-only candidate below remains the original investigation
+> record. The new API is still absent from released CE1.3.
+
 ## Correction: a native component can live inside a Workshop package
 
 An earlier conversation implied that native district hooks necessarily require a

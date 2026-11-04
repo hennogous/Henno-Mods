@@ -1,10 +1,10 @@
 # A native bridge for custom district incentives
 
-> **4 November delivery gate:** Further tuning is held while we qualify a
-> Workshop carrier. Native DLLs can load from mod packages; an external launcher
-> is not inherently required. Henno prefers a CE dependency with CSC Lua/SQL.
+> **4 November carrier checkpoint:** The CE fork now carries the existing policy
+> and diagnostics through a bounded Online100 test; upstream release remains open.
+> Native DLLs can load from mod packages. Henno prefers a CE dependency with CSC Lua/SQL.
 > See [Workshop delivery](workshop-delivery.md) for the demonstrated independent
-> carrier and the proposed, not-yet-released CE score API.
+> carrier and the development-fork score API, which is not in released CE.
 
 A native extension now has a working experimental bridge at the ordinary
 district score/cache boundary. In a matched one-save trial, a single+1 utility
@@ -88,7 +88,7 @@ bonus therefore need not immediately reverse an old commitment, and repeated
 addition to a restored cache could compound it. Load identity, fresh analysis,
 policy version and disabling need their own contract. [AI-N057] [AI-N058]
 
-## Existing CE APIs do not already supply it
+## Released CE1.3 APIs do not supply it
 
 Pinned Community Extension source shows an entry callback that requests no Lua
 return values, and a processor registry whose native callers must be implemented.
@@ -96,8 +96,11 @@ Its `DistrictTargetChooser` handles Congress choices. Ordinary district scoring
 would require new native integration; naming a processor or property is insufficient.
 Installed CE/source correspondence and compatibility were not established. [AI-N059]
 
-A Frida/CModule host now implements the experimental route. A later CE extension
-or independent GameCore carrier would need separate packaging, loader, version,
+A Frida/CModule host first implemented the experimental route. The
+[CE fork parity port](../../../research/mods/csc-ce-policy-parity-20261104.md)
+now carries the existing policy and four diagnostic families through packaged
+Lua and a bounded native consumer, with an audited Online100 result. Broader
+compatibility still needs separate packaging, loader, version,
 save/lifecycle and compatibility qualification. It is a larger deployment choice
 than ordinary SQL/Lua content.
 

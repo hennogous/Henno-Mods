@@ -108,6 +108,7 @@ def run(a):
     error, turn, phase = None, None, 'primary'
     observations, log_baselines = [], {}
     mode, checkpoint, source_before_load = 'v2', None, None
+    lifecycle_completed = False
 
     def verify(*, check_stop=False):
         if any(sha(p) != digest for p, digest in pins.items()):
@@ -258,6 +259,7 @@ def run(a):
                 different_fields=different, scope='Captured scanner facts only; not RNG/cache/full-world parity'))
             if different:
                 raise RuntimeError('Save/load scanner facts changed: ' + ','.join(different))
+            lifecycle_completed = True
         play_to(a.endpoint)
         capture_logs('at-endpoint')
     except BaseException as failure:
@@ -282,7 +284,8 @@ def run(a):
         capture_logs('closed')
         write_json(out / 'final-inventory.json', native_inventory())
     result = dict(closed=s.closed, phase=phase, endpoint=turn,
-        requested_endpoint=a.endpoint, lifecycle_exercised=a.lifecycle,
+        requested_endpoint=a.endpoint, lifecycle_requested=a.lifecycle,
+        lifecycle_exercised=lifecycle_completed,
         observations=len(observations), error=str(error) if error else None,
         installed_unchanged=all(manifest(p) == before[str(p.resolve())] for p in roots),
         frida=False, Python_policy_publication=False, native_orders_or_grants=False,

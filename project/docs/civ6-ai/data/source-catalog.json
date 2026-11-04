@@ -83,11 +83,11 @@
     },
     {
       "path": "memory/session_ai_ce_parity_20261104.md",
-      "title": "CE fork policy parity — 4 November 2026",
+      "title": "CE fork policy parity — complete, 4 November 2026",
       "kind": "agent-note",
       "date": "20261104",
-      "bytes": 2338,
-      "sha256": "064ef4e29234cb996d923c9f8d44e9024028c0999e51a206ad58b9d104cb9fdc",
+      "bytes": 4033,
+      "sha256": "516283cb208117befff51ea3b86b19cbe804258b5a1986f0a0ec8e1078e56fd0",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_ai_ce_parity_20261104.md"
     },
@@ -1596,8 +1596,8 @@
       "title": "Restoring the Python placement test through Community Extension",
       "kind": "report",
       "date": "20261104",
-      "bytes": 6623,
-      "sha256": "ff4343da06ce9072437396d9d52d1abfe00a5b05c02e2a404ccd14c9c533f4c4",
+      "bytes": 11389,
+      "sha256": "8b93d38b1f56fff54f3514e3867ada0ec7653534903d34162b5b96388dd119f9",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ce-policy-parity-20261104.md"
     },
@@ -1786,8 +1786,8 @@
       "title": "Workshop delivery and a Community Extension release path",
       "kind": "report",
       "date": "20261104",
-      "bytes": 10291,
-      "sha256": "bf8efb56f6707f7eb7e8f73cbc87d468da8d5109df478a9ab1a7083b02cba346",
+      "bytes": 10594,
+      "sha256": "c9ffd6f1a358431b70e07270f7577413a26ddc9cadd79c34c3ceae5e86fd6de5",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-native-workshop-delivery-20261104.md"
     },

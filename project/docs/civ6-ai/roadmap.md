@@ -17,7 +17,7 @@ Both standalone CSC and RomanHoliday integration should meet that objective.
 Success means realised benefit after investment and displaced opportunities.
 More Quarters, higher scores or a single completed chain are intermediate results.
 
-## Immediate gate: Workshop delivery through Community Extension
+## Carrier checkpoint: CE development parity restored
 
 On4 November Henno put further AI tuning on hold until we investigate and
 prototype a Workshop-distributable carrier. His preferred architecture is CSC
@@ -25,15 +25,19 @@ Lua/SQL with a Community Extension dependency, rather than our own shipped DLL.
 The [delivery investigation](topics/native/workshop-delivery.md) demonstrates
 local package-native loading and packaged Lua score delivery, and prepares a
 CE-owned API contribution. Existing CE1.3 does not yet supply that proposed API.
-Resolve and validate the actual CE consumer before more tuning; object compilation
-and an unapplied patch are not a qualified release dependency.
 Henno subsequently authorized a development fork to restore parity with the
-Python/Frida setup before an upstream PR. The complete fork builds; packaged Lua
-and bounded lifecycle checks are under live validation in the
-[parity port](../research/mods/csc-ce-policy-parity-20261104.md). Keep the current
-promotion/penalty policy unchanged during that qualification.
+Python/Frida setup before an upstream PR. The complete fork and packaged Lua now
+pass the bounded [parity port](../research/mods/csc-ce-policy-parity-20261104.md):
+Online100,101 exact plan comparisons,73 positive/14,584 negative changes,
+all four diagnostic families, context reset, save/load and normal restoration.
+This clears the development-carrier gate. The policy was unchanged throughout.
+Upstream adoption, actual Workshop subscription and broader compatibility remain
+release work; stock CE1.3 does not supply this API.
+The tested feature is submitted as
+[draft PR9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9)
+for WildW's review.
 
-## Current bounded policy — retained research, no further tuning yet
+## Current bounded policy — now carried by CE/Lua
 
 Henno authorized the [full-adjacency +4 pilot](../research/mods/csc-ai-adjacency-policy-20261103.md):
 Bakers/Tailors, all designed adjacency including the planned first Mill, cached

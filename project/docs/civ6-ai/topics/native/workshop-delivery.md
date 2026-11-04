@@ -1,6 +1,6 @@
 # Workshop delivery and Community Extension
 
-**Current priority: establish the release carrier before improving AI tuning.**
+**Current carrier: a qualified development CE fork; upstream release remains open.**
 Henno prefers CSC to ship Lua/SQL and depend on Community Extension, rather than
 ship and maintain its own DLL.
 
@@ -41,16 +41,28 @@ to qualify that capability before preparing an upstream contribution. The full
 fork now builds, and packaged Lua reproduces the existing Python placement
 policy. The corrected native test has passed fresh1–6, a second observation-only
 context1–2, and reload of the saved6 with identical captured scanner facts.
-The ongoing run is bounded to Online100; final parity remains pending.
+The Online100 run completed with101 exact Lua/Python plan comparisons,
+73 positive and14,584 negative native changes, and zero native faults.
+All29,479 records across score/cache/winner/PV tracing reconstructed. [AI-N072]
+
+This restores the current bounded CSC policy and diagnostic capabilities without
+a Python/Frida policy worker. It does not establish identical historical outcomes
+or economic benefit; gameplay-event publication has different timing from the
+old inactive-boundary controller. [AI-C052]
 
 The [parity report](../../../research/mods/csc-ce-policy-parity-20261104.md)
 preserves the first reporting failure and both transport corrections. The API
 is absent from released CE1.3; maintainer acceptance and a released upstream
 dependency remain separate. A private fork is not the same as stock CE.
+The qualified branch is now
+[draft PR9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9)
+for WildW's review.
 
 The independent CSC DLL remains a delivery experiment. It is not the selected
 release architecture. Local native loading and tiny score delivery are proved;
-an actual Workshop subscription roundtrip, full save/lifecycle behavior and
-broader compatibility remain separate gates.
+an actual Workshop subscription roundtrip, broader save/lifecycle behavior and
+compatibility remain separate gates. The new test covered a fresh Online100
+world, same-process observation1–2 and reload of its exact saved6. It normally
+closed and restored all152 mod entries/autostartfalse with content unchanged.
 
 Source: [Delivery report and evidence](../../../research/mods/csc-native-workshop-delivery-20261104.md).

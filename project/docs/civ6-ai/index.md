@@ -12,13 +12,15 @@ the reconciled model. The original reports retain their exact experimental
 conditions, corrections and limitations. The [finding register](findings.md)
 provides stable references for individual conclusions.
 
-> [!info] Current research boundary — 3 November 2026
+> [!info] Current research boundary — 4 November 2026
 > District choice, prerequisite valuation and several modding controls are now
 > understood at specific consumers. Reliable, worthwhile supply-chain competence
 > across Basic CSC and RomanHoliday has **not** been established. Native per-site
 > extension work has reached a bounded prototype with measured score-to-request delivery
 > and a caused district-type choice change followed by native Quarter construction at one tile;
-> arbitrary policy and release integration remain open. This handbook starts no game or experiment.
+> the existing placement policy now also runs through packaged Lua and a CE development
+> fork, with an audited Online100 test. Policy quality and upstream release remain
+> open. This handbook starts no game or experiment.
 
 ## Understand the engine
 
@@ -31,7 +33,7 @@ provides stable references for individual conclusions.
 7. [How we know: evidence and instrumentation](topics/native/evidence-and-instrumentation.md)
 8. [Native placement-score extension](topics/native/native-placement-extension.md): the identified integration point, persistence and proposed bridge
 9. [Anatomy of a district-site score](topics/native/district-score-anatomy.md): components, units, future buildings and the CSC correction ledger
-10. [Workshop delivery and Community Extension](topics/native/workshop-delivery.md): the current release gate before further AI tuning
+10. [Workshop delivery and Community Extension](topics/native/workshop-delivery.md): CE fork parity, the current development carrier and remaining release work
 
 ## Understand the CSC experiments
 

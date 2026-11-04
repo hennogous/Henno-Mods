@@ -963,5 +963,29 @@
     "topic": "topics/csc/profiles-and-reference-mods.md",
     "depends_on": [],
     "related": ["AI-C039", "AI-N061", "AI-C050"]
+  },
+  {
+    "id": "AI-C052",
+    "title": "The existing v2 Quarter policy now runs in packaged Lua through CE",
+    "statement": "The Lua port preserves the current best Production+Gold >=4 Bakers/Tailors promotion and graded weak-site deduction, reuses the same river/conditional first-Mill scanner, and excludes original humans and already-founded city/types.101 accepted captured snapshots matched the original Python shortlist. The CE-carried Online100 run recorded73 additions and14584 deductions;12 AI Quarter foundations were present at100,11 complete.",
+    "status": "accepted",
+    "evidence_types": [
+      "source",
+      "runtime"
+    ],
+    "scope": "Unchanged csc-adjacency-policy-v2, CSC-only Ancient/Prince/Small Continents/Online, original AI1–5.101 comparisons include the duplicated saved6 boundary;100 numeric publication windows. Shared controller, no district orders, grants or external policy publication. Complete signed traces and context/save/load/restoration receipts in the parity report.",
+    "limits": "Policy/intervention and diagnostic parity, not identical historical timing/outcomes or improved AI quality. Owned legal candidate scope and known native early-admission/retained-request gaps remain. Mill forecast is not a grant or building incentive.12 foundations/11 completions are observations, not caused completions or net benefit. No RH/multiplayer or stock-CE release claim.",
+    "sources": [
+      "project/docs/research/mods/csc-ce-policy-parity-20261104.md"
+    ],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": [
+      "AI-N072"
+    ],
+    "related": [
+      "AI-C049",
+      "AI-C050",
+      "AI-C048"
+    ]
   }
 ]
