@@ -27,6 +27,11 @@ local package-native loading and packaged Lua score delivery, and prepares a
 CE-owned API contribution. Existing CE1.3 does not yet supply that proposed API.
 Resolve and validate the actual CE consumer before more tuning; object compilation
 and an unapplied patch are not a qualified release dependency.
+Henno subsequently authorized a development fork to restore parity with the
+Python/Frida setup before an upstream PR. The complete fork builds; packaged Lua
+and bounded lifecycle checks are under live validation in the
+[parity port](../research/mods/csc-ce-policy-parity-20261104.md). Keep the current
+promotion/penalty policy unchanged during that qualification.
 
 ## Current bounded policy — retained research, no further tuning yet
 

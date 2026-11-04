@@ -1374,7 +1374,7 @@
   {
     "id": "AI-N071",
     "title": "Existing CE memory access does not yet qualify a safe district-score consumer",
-    "statement": "A stock-CE Lua-only probe read55 city observations and174 shared district scores without memory writes; CE exposes writable data memory, but safe completed-cache edit timing and fresh-analysis/idempotence handling remain unqualified. Its documented unfinished RegisterCallEvent has inspected callback ABI/lifetime concerns. A CE-owned bounded numeric publication API has a compiled contribution candidate, not a released or combined-runtime-validated implementation.",
+    "statement": "A stock-CE Lua-only probe read55 city observations and174 shared district scores without memory writes; CE exposes writable data memory, but safe completed-cache edit timing and fresh-analysis/idempotence handling remain unqualified. Its documented unfinished RegisterCallEvent has inspected callback ABI/lifetime concerns. The separate typed numeric API is now integrated into a development CE fork under bounded runtime qualification; it is absent from released CE1.3.",
     "status": "provisional",
     "evidence_types": [
       "source",
@@ -1382,9 +1382,10 @@
       "runtime"
     ],
     "scope": "Pinned CE source e59b5aa and installed1.3 implementation-family review; current primary wiki/source. Lua-only Online1–3 probe08 closed normally,150 preference entries restored and content unchanged; actual new score API nil. CE integration branch compiles two AMD64 objects; focused unapplied patch validates.",
-    "limits": "No general engine impossibility, demonstrated CE crash or conclusion that GetBestDistrict runs on a wrong thread. Stock CE1.3 lacks the proposed API. Full CE/MSVC build, threading, lifecycle and maintainer adoption remain open; an independently maintained fork would remain a native distribution.",
+    "limits": "No general engine impossibility, demonstrated CE crash or conclusion that GetBestDistrict runs on a wrong thread. Stock CE1.3 lacks the proposed API. A later complete portable CE fork build and initial lifecycle checks do not establish arbitrary completed-cache mutation safety, MSVC compatibility, broader CE compatibility or maintainer adoption. See the dated parity follow-up for its current runtime boundary.",
     "sources": [
-      "project/docs/research/mods/csc-native-workshop-delivery-20261104.md"
+      "project/docs/research/mods/csc-native-workshop-delivery-20261104.md",
+      "project/docs/research/mods/csc-ce-policy-parity-20261104.md"
     ],
     "topic": "topics/native/workshop-delivery.md",
     "depends_on": [

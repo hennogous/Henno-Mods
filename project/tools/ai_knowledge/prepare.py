@@ -17,7 +17,7 @@ from urllib.parse import unquote
 ROOT = Path(__file__).resolve().parents[3]
 KB = ROOT / "project/docs/civ6-ai"
 DEFAULT_STAGE = ROOT / "docs/.ai-handbook/content"
-REPORT_PREFIXES = ("csc-ai-", "csc-native-", "civ6-industrial-", "civ6-district-",
+REPORT_PREFIXES = ("csc-ai-", "csc-native-", "csc-ce-", "civ6-industrial-", "civ6-district-",
                    "csc-future-", "csc-rh-", "csc-aiplus-", "csc-real-strategy-",
                    "csc-shared-native-", "native-custom-resourceclass-",
                    "native-resourceclass-", "csc-tailor-density-", "csc-map-material-",

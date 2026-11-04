@@ -82,6 +82,16 @@
       "site_path": "sources/memory/session_ai_astra_rea_next_20261030.md"
     },
     {
+      "path": "memory/session_ai_ce_parity_20261104.md",
+      "title": "CE fork policy parity — 4 November 2026",
+      "kind": "agent-note",
+      "date": "20261104",
+      "bytes": 2338,
+      "sha256": "064ef4e29234cb996d923c9f8d44e9024028c0999e51a206ad58b9d104cb9fdc",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_ce_parity_20261104.md"
+    },
+    {
       "path": "memory/session_ai_district_placement_20261103.md",
       "title": "District type, site choice and incentives — 3 November 2026",
       "kind": "agent-note",
@@ -1580,6 +1590,16 @@
       "sha256": "aafd8dec2c62e0b581cada39ec563e0f9c4b3277c2fa745cdd3e8a4129141121",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ancient-guidance-three-games-results-20261021.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ce-policy-parity-20261104.md",
+      "title": "Restoring the Python placement test through Community Extension",
+      "kind": "report",
+      "date": "20261104",
+      "bytes": 6623,
+      "sha256": "ff4343da06ce9072437396d9d52d1abfe00a5b05c02e2a404ccd14c9c533f4c4",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ce-policy-parity-20261104.md"
     },
     {
       "path": "project/docs/research/mods/csc-civic-modifier-tests-20261020.md",

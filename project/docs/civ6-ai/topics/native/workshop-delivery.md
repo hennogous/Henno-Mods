@@ -15,7 +15,7 @@ is unavoidable. The native component can be supplied by a dependency. [AI-N070]
 
 ```mermaid
 flowchart TD
-  A["CSC Lua policy"] --> B["Proposed CE batch API"]
+  A["CSC Lua policy"] --> B["CE fork batch API"]
   B --> C["Native numeric table"]
   C --> D["CE district-score hook"]
   D --> E["AI cache and decisions"]
@@ -35,11 +35,18 @@ writes. The sampled turn-start events preceded completion of fresh analysis;
 later activation exposed scores. That still leaves mutation timing unqualified.
 
 The preferred design puts native hook/synchronization/lifecycle ownership in CE.
-CSC supplies numeric batches through Lua. A candidate CE module compiles to
-objects and an unapplied integration patch validates against pinned source.
-The proposed API is absent from released CE1.3; the combined CE build and
-maintainer adoption are not established. A private CE fork is not the same as
-depending on stock CE.
+CSC supplies numeric batches through Lua. Henno authorized a
+[CE fork](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/feature/ai-district-scores)
+to qualify that capability before preparing an upstream contribution. The full
+fork now builds, and packaged Lua reproduces the existing Python placement
+policy. The corrected native test has passed fresh1–6, a second observation-only
+context1–2, and reload of the saved6 with identical captured scanner facts.
+The ongoing run is bounded to Online100; final parity remains pending.
+
+The [parity report](../../../research/mods/csc-ce-policy-parity-20261104.md)
+preserves the first reporting failure and both transport corrections. The API
+is absent from released CE1.3; maintainer acceptance and a released upstream
+dependency remain separate. A private fork is not the same as stock CE.
 
 The independent CSC DLL remains a delivery experiment. It is not the selected
 release architecture. Local native loading and tiny score delivery are proved;

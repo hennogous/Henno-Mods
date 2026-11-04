@@ -101,5 +101,6 @@ function CSC_AI_AdjacencyScan(originalAI)
  end
  out.elapsedSeconds=os.clock()-t0
  print('CSC_AI_ADJACENCY_SCAN='..json(out))
+ return out -- Packaged CE consumer shares this exact scanner; console callers may ignore the return.
 end
 print('CSC_AI_ADJACENCY_SCANNER_READY')
