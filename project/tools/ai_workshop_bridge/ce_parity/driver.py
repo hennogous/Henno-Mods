@@ -15,6 +15,8 @@ import subprocess
 import sys
 import time
 import traceback
+import uuid
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[4]
 HERE = Path(__file__).resolve().parent
@@ -74,6 +76,12 @@ def setup(mode='v2'):
 
 
 def run(a):
+    # An isolated CSC copy may carry the reviewed source fixes while preserving
+    # the human's installed mod. Its actual manifest must match the selected ID.
+    csc_id = str(uuid.UUID(a.csc_id))
+    csc_manifests = list(a.installed.glob('*.modinfo'))
+    if len(csc_manifests) != 1 or ET.parse(csc_manifests[0]).getroot().get('id') != csc_id:
+        raise RuntimeError('Selected CSC dependency identity does not match its package')
     out = a.output.resolve()
     if out.exists() or native_inventory():
         raise RuntimeError('Fresh output and no existing native/Tuner owner required')
@@ -81,6 +89,8 @@ def run(a):
         raise ValueError('Endpoint2..100; lifecycle exercise requires at least6')
     out.mkdir(parents=True)
     roots = [a.ce, a.package, a.installed, a.stock_ce]
+    if a.reference_csc is not None:
+        roots.append(a.reference_csc)
     before = {str(p.resolve()): manifest(p) for p in roots}
     sources = list(HERE.glob('*.py'))
     sources += list((HERE.parent / 'ce_policy').glob('*'))
@@ -98,7 +108,7 @@ def run(a):
         worlds=2 if a.lifecycle else 1, loads=1 if a.lifecycle else 0,
         map_seed=16131103, game_seed=26131103, frida=False,
         external_policy_publication=False, Python_role='shared controller and offline audit only',
-        native_provider='development CE fork', original_CE_modified=False,
+        native_provider='development CE fork', csc_dependency=csc_id, original_CE_modified=False,
         policy_changes=False, benefit_or_matched_history_claimed=False))
     c = make_probe_controller(out, user_root=a.user_root)
     c.study_endpoint = a.endpoint
@@ -196,14 +206,14 @@ def run(a):
         verify()
         s.start(lambda: launch(a, out))
         s.wait_context('MainMenu')
-        configure(c, out, 'BASIC')
+        configure(c, out, 'BASIC', csc_id=csc_id)
         for identity, label in ((FORK, 'fork'), (POLICY, 'policy')):
             c.cmd("local chosen=nil;for _,m in ipairs(Modding.GetInstalledMods())do if m.Id=='" +
                 identity + "'then assert(not chosen,'Duplicate dev package');chosen=m end end;assert(chosen,'Missing dev package');local err=Modding.CanEnableMod(chosen.Handle);assert(err=='OK','Not eligible: '..tostring(err));Modding.EnableMod(chosen.Handle,true);",
                 'MainMenu', 'enable-' + label)
             s.wait_context('MainMenu', 90)
         selected = flags(c, 'verify-fork-policy-exclusive')
-        if {k for k, v in selected['mods'].items() if v} != {CSC, FORK, POLICY}:
+        if {k for k, v in selected['mods'].items() if v} != {csc_id, FORK, POLICY}:
             raise RuntimeError('Unexpected enabled mod set')
         for name in LOGS:
             log_baselines[name] = capture_log_baseline(a.user_root / 'Logs' / name)
@@ -302,4 +312,6 @@ if __name__ == '__main__':
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--endpoint', type=int, default=100)
     parser.add_argument('--lifecycle', action='store_true')
+    parser.add_argument('--csc-id', default=CSC)
+    parser.add_argument('--reference-csc', type=Path)
     run(parser.parse_args())

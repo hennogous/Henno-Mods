@@ -266,6 +266,24 @@ turn=2;CSC_AI_CEPolicy.Refresh('large-receipts')
             with self.assertRaises(ValueError):logical_receipts(damaged)
 
 class PackageTests(unittest.TestCase):
+    def test_isolated_dependency_pins_the_actual_imported_core(self):
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            dependency = directory / 'test-copy-core.lua'
+            dependency.write_text('-- distinct dependency bytes\n', encoding='utf-8')
+            selected = 'd0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a08'
+            result = BUILDER.build(directory / 'package-build', csc_id=selected,
+                                   adjacency_core=dependency)
+            mod = ET.parse(Path(result['package']) / 'CSC_CE_Policy.modinfo').getroot()
+            dependencies = {x.attrib['id'] for x in mod.findall('Dependencies/Mod')}
+            self.assertIn(selected, dependencies)
+            self.assertNotIn(BUILDER.CSC_ID, dependencies)
+            receipt = json.loads(Path(result['manifest']).read_text(encoding='utf-8'))
+            pin = receipt['adjacency_core_from_dependency']
+            self.assertEqual(pin['source'], str(dependency.resolve()))
+            self.assertEqual(pin['sha256'], BUILDER.sha(dependency))
+            self.assertFalse(list(Path(result['package']).rglob('*AdjacencyCore*')))
+
     def test_lua_only_package_reuses_scanner_bytes_and_declares_dependencies(self):
         with tempfile.TemporaryDirectory()as directory:
             result=BUILDER.build(Path(directory)/'package-build')

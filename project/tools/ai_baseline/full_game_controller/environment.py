@@ -4,7 +4,7 @@ Launch, CSC-only content selection, exact preference restoration and provenance.
 No placement heuristics, private yields, subsidies or game orders. No native I/O
 on import. Promoted functions retain the previously exercised source contracts.
 """
-import hashlib,json,os,re,shutil,subprocess,time
+import hashlib,json,os,re,shutil,subprocess,time,uuid
 from pathlib import Path
 from .windows_process import HeldProcess,native_inventory
 CSC='c5e66bd1-d804-443b-ac3d-1917a20dba3c'
@@ -107,23 +107,27 @@ def prove_loaded_module(owner,spec,output):
 write_json=write
 
 
-def configure(r, out, profile='BASIC'):
+def configure(r, out, profile='BASIC', *, csc_id=CSC):
+    # Distinct development copies let a regression leave the human installation
+    # untouched. Validate before embedding an ID in Lua; preference restoration
+    # still uses each original subscription entry, not this selected test ID.
+    csc_id = str(uuid.UUID(csc_id))
     """Select CSC plus official content; restore the exact entries after testing."""
     if profile != 'BASIC': raise ValueError('Clean bridge trials use CSC-only content')
     original = flags(r, 'save-menu-before-configuration')
     if (out/'original-preferences.json').exists(): raise RuntimeError('No configuration replay')
     write(out/'original-preferences.json', original)
-    code = "local a={};for _,m in ipairs(Modding.GetInstalledMods())do if m.Source=='Mod'and not m.Official and m.Enabled and m.Id~='"+CSC+"'then a[#a+1]=m.Handle end end;if #a>0 then Modding.DisableMod(a)end;"
+    code = "local a={};for _,m in ipairs(Modding.GetInstalledMods())do if m.Source=='Mod'and not m.Official and m.Enabled and m.Id~='"+csc_id+"'then a[#a+1]=m.Handle end end;if #a>0 then Modding.DisableMod(a)end;"
     try: r.cmd(code, 'MainMenu', 'disable-unrelated-mods-once')
     except RuntimeError as error: write(out/'disable-ack-warning.json', dict(error=str(error), no_resend=True))
     r.wait('MainMenu', 90)
     selected = flags(r, 'check-CSC-before-enable')
-    if not selected['mods'].get(CSC):
-        code = "local best=nil;for _,m in ipairs(Modding.GetInstalledMods())do if m.Id=='"+CSC+"'then assert(not best,'Ambiguous CSC entry');best=m end end;assert(best,'CSC missing');Modding.EnableMod(best.Handle,true);"
+    if not selected['mods'].get(csc_id):
+        code = "local best=nil;for _,m in ipairs(Modding.GetInstalledMods())do if m.Id=='"+csc_id+"'then assert(not best,'Ambiguous CSC entry');best=m end end;assert(best,'CSC missing');Modding.EnableMod(best.Handle,true);"
         try: r.cmd(code, 'MainMenu', 'enable-CSC-once')
         except RuntimeError as error: write(out/'enable-ack-warning.json', dict(error=str(error), no_resend=True))
         r.wait('MainMenu',90)
     selected = flags(r,'verify-CSC-only')
-    if not selected['mods'].get(CSC) or any(v for k,v in selected['mods'].items() if k!=CSC):
+    if not selected['mods'].get(csc_id) or any(v for k,v in selected['mods'].items() if k!=csc_id):
         raise RuntimeError('CSC-only preference selection not verified')
-    write(out/'native-menu-configuration.json',dict(verified=True,profile='native-bridge-clean',enabled_mod_ids=[CSC],legacy_tuning=False,assistance=False,subsidies=False))
+    write(out/'native-menu-configuration.json',dict(verified=True,profile='native-bridge-clean',enabled_mod_ids=[csc_id],legacy_tuning=False,assistance=False,subsidies=False))

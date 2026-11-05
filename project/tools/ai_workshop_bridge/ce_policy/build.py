@@ -9,6 +9,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import uuid
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -26,13 +27,17 @@ def write(path,text):
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_bytes(text.encode('utf-8'))
 
-def build(output:Path,*,ce_fork_id:str=CE_FORK_ID)->dict:
+def build(output:Path,*,ce_fork_id:str=CE_FORK_ID,csc_id:str=CSC_ID,adjacency_core:Path|None=None)->dict:
+    ce_fork_id, csc_id = str(uuid.UUID(ce_fork_id)), str(uuid.UUID(csc_id))
     output=output.resolve()
     if output==HERE or output.is_relative_to(HERE):raise ValueError('Output must be outside source directory')
     package=output/'package'
     if package.exists():raise ValueError('Fresh package output required')
     scanner=ROOT/'project/tools/ai_site_planner/adjacency_policy/scan.lua'
-    core=ROOT/'Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyCore.lua'
+    # The dependency provides this imported module; it is not copied here.
+    # Pin its actual test-copy bytes rather than assuming the runtime dependency
+    # and source checkout have already been rebuilt together.
+    core=(adjacency_core or ROOT/'Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyCore.lua').resolve(strict=True)
     sources={
         'Lua/CSC_AI_AdjacencyPolicy.lua':HERE/'policy.lua',
         'Lua/CSC_AI_AdjacencyScan.lua':scanner,
@@ -51,7 +56,7 @@ def build(output:Path,*,ce_fork_id:str=CE_FORK_ID)->dict:
         Authors='Henno',CompatibleVersions='2.0',AffectsSavedGames='1').items():
         ET.SubElement(props,key).text=value
     deps=ET.SubElement(mod,'Dependencies')
-    for guid,title in [(ce_fork_id,'CE district-score fork (developer)'),(CSC_ID,'Civ Supply Chains'),(GS_ID,'Expansion: Gathering Storm')]:
+    for guid,title in [(ce_fork_id,'CE district-score fork (developer)'),(csc_id,'Civ Supply Chains'),(GS_ID,'Expansion: Gathering Storm')]:
         ET.SubElement(deps,'Mod',id=guid,title=title)
     actions=ET.SubElement(mod,'InGameActions')
     imports=ET.SubElement(actions,'ImportFiles',id='CSC_CE_Policy_Imports')
@@ -65,7 +70,7 @@ def build(output:Path,*,ce_fork_id:str=CE_FORK_ID)->dict:
     ET.indent(mod,space='  ')
     write(package/'CSC_CE_Policy.modinfo','<?xml version="1.0" encoding="utf-8"?>\n'+ET.tostring(mod,encoding='unicode')+'\n')
     pins=[dict(path=str(p),sha256=sha(p))for p in [Path(__file__).resolve(),*sources.values(),core]]
-    manifest=dict(schema='csc-ce-policy-package-v1',mod_id=MOD_ID,ce_dependency=ce_fork_id,
+    manifest=dict(schema='csc-ce-policy-package-v1',mod_id=MOD_ID,ce_dependency=ce_fork_id,csc_dependency=csc_id,
         built_at=dt.datetime.now(dt.timezone.utc).isoformat(),source_pins=pins,
         scanner_source=str(scanner),scanner_sha256=sha(scanner),
         adjacency_core_from_dependency=dict(vfs='CSC_AdjacencyCore',source=str(core),sha256=sha(core)),
@@ -78,4 +83,6 @@ def build(output:Path,*,ce_fork_id:str=CE_FORK_ID)->dict:
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--ce-fork-id',default=CE_FORK_ID)
-    a=p.parse_args();print(json.dumps(build(a.output,ce_fork_id=a.ce_fork_id),indent=2))
+    p.add_argument('--csc-id',default=CSC_ID)
+    p.add_argument('--adjacency-core',type=Path)
+    a=p.parse_args();print(json.dumps(build(a.output,ce_fork_id=a.ce_fork_id,csc_id=a.csc_id,adjacency_core=a.adjacency_core),indent=2))

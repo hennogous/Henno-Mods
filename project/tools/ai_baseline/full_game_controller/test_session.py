@@ -197,7 +197,11 @@ class SessionTests(unittest.TestCase):
         self.assertFalse(json.loads((self.out/'session-closed.json').read_text())['verified'])
 
     def test_probe_import_and_construction_make_no_connections(self):
-        r=make_probe_controller(self.out)
+        # Keep this offline fixture independent of the runner's redirected
+        # LOCALAPPDATA and of whether a real Civ user directory exists.
+        fake_user=self.out/'native-user'
+        (fake_user/'Logs').mkdir(parents=True)
+        r=make_probe_controller(self.out,user_root=fake_user)
         self.assertEqual(r.last_interval_turn,1)
         self.assertEqual(r.seq,0)
 

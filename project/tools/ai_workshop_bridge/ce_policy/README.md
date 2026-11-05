@@ -20,6 +20,11 @@ The scanner retains cached radius3 geometry, per-turn live adjacency evaluation,
 the selected planned first Mill, river rules, founded-type exclusion and current
 legal owned-site scope. Future/unowned sites remain outside this policy.
 
+An isolated CSC test copy can be selected with `--csc-id <GUID>`. When its bytes
+differ from this checkout, also pass `--adjacency-core <actual dependency file>`:
+the builder records that file's hash without copying it or changing gameplay.
+The package continues to import the core through the selected CSC dependency.
+
 The native capability and trace paging must be present in the CE fork. Ordinary
 CE1.3 is insufficient and fails closed. Its isolated test dependency GUID is
 `d0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a06`; the policy package GUID ends `2a07`.

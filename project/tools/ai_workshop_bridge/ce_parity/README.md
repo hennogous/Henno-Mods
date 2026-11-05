@@ -14,6 +14,17 @@ Build the Lua package separately with `../ce_policy/build.py --output <fresh
 output folder>`. The two packages depend on each other through the development
 GUID ending `2a06`; the policy GUID ends `2a07`.
 
+For a regression using reviewed CSC source without overwriting the human mod,
+`package_csc.py --installed-csc <reference> --source <CSC source> --output <fresh
+copy>` creates a distinct dependency ending `2a08`. It preserves installed art
+and overlays only the four adjacency source files, recording all copied/changed
+hashes. This is a test snapshot, not a deployment or native validation. Build
+the policy with `--csc-id <copy ID> --adjacency-core <copy Core.lua>`, then pass
+the same `--csc-id` to the driver and point `--installed` at the copy. Add
+`--reference-csc <human CSC folder>` to verify the human package is unchanged
+alongside the active test copy. The controller still restores the exact original
+subscription preferences. Default identities and existing callers are unchanged.
+
 Install these into new, dedicated local mod folders while Civ is closed.
 Leave the existing stock CE and CSC files unchanged. Do not overlay the fork
 into a Workshop subscription or enable two GameCore providers together.
