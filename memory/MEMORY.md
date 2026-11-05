@@ -1,3 +1,16 @@
+# Current: combined Mill/building study —5 November2026
+
+New user instruction bundles native local/small Mill validation and other CSC
+building/effect forecast attribution. Shared-controller exec77565/run02 owns Tuner;
+runtime files frozen. One fresh Online world1→2, then a clean-process exact2
+reload, isolated CSC GUID…2a09/noCE/no scorepolicy.21 human fixturecases plus
+six read-only native hooks for19 definitions. Setup/source/native results still
+pending. Run01 closed normally after20passes plus a retained Quarter-repair
+failure (healthy flags/STEP1 but nativeYield0); paired-repair fixture corrected,
+oracleunchanged. See session_ai_mill_building_study_20261105.md and evidence
+Desktop/Codex/csc-mill-building-study-20261105/run-02. Do not open another client,
+edit pinned runtime files or touch human mods. Offline analyzer may continue.
+
 # CE develop port: supported build and Online100 passed —5 November2026
 
 Henno returned and resumed the approved plan. VS2022/MSVC14.44.35207 and SDK26100
