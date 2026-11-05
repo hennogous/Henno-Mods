@@ -181,7 +181,8 @@ unattributed. [AI-N074] [AI-C057]
 
 The same study passes20 native Mill payout/locality cases. Direct Quarter repair
 remains failed despite healthy flags and correct properties, through another
-turn and exact reload; normal production repair is the next comparison. [AI-C058]
+turn and exact reload. Normal queued repair also fails to recover that affected
+checkpoint; a pristine gameplay lifecycle remains untested. [AI-C058]
 
 Native ordinary adjacency and CSC's bundled Lua adjacency are also distinct.
 The pilot reads CSC's loaded rules itself; its+4 criterion becomes an explicit

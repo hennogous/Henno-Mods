@@ -14,8 +14,9 @@ observed in the native forecast; the retired weighted roots do not execute.
 Twenty native fixture cases pass: actual Wind/Water payouts, local scope, remote
 exclusion, removal and building pillage/repair. One direct Quarter-repair case
 fails even with healthy flags and STEP1=1; native Production stays zero after
-another turn and an exact reload. The normal production repair path remains a
-separate check. The failure is preserved, not counted as a pass.
+another turn and an exact reload. A normal queued repair then completes at
+turn4 but also leaves the affected save at zero. This failure is preserved; a
+pristine ordinary-pillage lifecycle remains untested.
 
 The accompanying read-only probe captures all19 loaded CSC building definitions
 and all88 active building roots in two controlled AI cities. Every modifier total
@@ -33,9 +34,10 @@ proof of economic improvement. No AI tuning or CE API changed.
 
 ## Next: resolve repair, then correct a measured relationship
 
-Compare the direct Debug pillage setter with normal district repair completion,
-using the existing checkpoint rather than a new map. A healthy flag and a correct
-property are not enough; the actual native payout must return.
+Normal production repair did not recover the affected checkpoint. The next
+repair question is modifier activation/invalidation and whether a pristine
+gameplay lifecycle reproduces it. Healthy flags and properties alone do not
+establish payout; keep this separate from AI score corrections.
 
 For AI steering, choose a specific alternative-recipient, Wonder-GPP or missing
 material case. Preserve amenities and other justified native contributions,

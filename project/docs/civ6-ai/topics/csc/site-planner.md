@@ -160,8 +160,10 @@ retired weighted roots, but candidate geometry is still absent from the building
 forecast. The complete19-building ledger identifies amenities, double-counted
 alternative Mill recipients, absent-Wonder GPP and missing material/Service/tourism
 channels. Raw district sums and propagated construction vectors reconcile
-separately. No policy weights or CE API changed. Normal repair completion and
-one measured forecast correction are the next focused checks.
+separately. No policy weights or CE API changed. Normal queued repair later
+fails to recover the affected checkpoint at turn4; this is not yet a pristine
+ordinary-pillage reproduction. Activation/invalidation and one measured forecast
+correction remain separate questions.
 [Combined results](../../../research/mods/csc-ai-mill-building-study-20261105.md).
 [AI-C058] [AI-C059] [AI-N074]
 

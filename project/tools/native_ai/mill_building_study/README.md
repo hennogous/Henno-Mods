@@ -145,3 +145,20 @@ the driver exits nonzero for that retained failure after both normal closures.
 The prepared source checkpoint is saved before attachment, so a focused follow-up
 can reuse the exact world. Module paths are normalized to native Windows spelling
 before the exact guard; loaded-module identity is checked before fixture changes.
+
+
+## Bounded normal-production repair follow-up
+
+`repair_check.py` reuses the exact source1 save and retired study package. It
+proves fixture parity, grants the human fixture's missing Craftsmanship civic,
+re-pillages the retained Quarter and requests one stock UI BUILD repair. It
+uses ordinary turn Production, no hooks, grants of Production or buildings, or
+direct repair setter. Stop at completion or turn16; ownership, preferences and
+package hashes use the shared controller. UI queue accessors stay in PlotInfo;
+native payout and eligibility are read in gameplay across separate samples.
+
+The5 November check completes at4 but retains Production0 with STEP1=1. This
+shows failed recovery of the affected diagnostic state, not reproduction from
+pristine normal construction/pillage. A zero host exit means observations and
+cleanup completed; inspect `verdict.json` (`passed=false`) for the payout result.
+Full chronology, limitations and external evidence paths are in the report.

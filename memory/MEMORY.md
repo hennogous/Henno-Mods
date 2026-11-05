@@ -11,8 +11,12 @@ from stale working notes below.
 20 Mill native payout/locality cases PASS; paired direct Quarter repair FAILS:
 healthy Quarter/Wind, STEP1=1 but actual district Production0 through next turn
 and exact reload. Retained failed oracle, overall driver exit1; observation
-complete, not all contracts passed. Next compare normal production repair using
-saved source1/endpoint2; do not grant/recreate as an assumed fix.
+complete, not all contracts passed. Follow-up normal queued repair on exact
+source1 also completes at4 but native payout remains0, healthy STEP1=1. Missing
+human Craftsmanship explicitly granted; ordinary Production only, no hooks.
+No pristine normal-pillage reproduction or fix yet. All3 follow-up exact-load
+processes closed/restored; evidence Desktop/Codex/csc-mill-normal-repair-20261105.
+Do not grant/recreate as an assumed fix.
 
 361 complete pairs/28132 callbacks/0 faults; all19 buildings/88 roots per city,
 modifier totals/148 district cells reconcile. Amenities dominate later buildings;

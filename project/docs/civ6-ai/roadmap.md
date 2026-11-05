@@ -116,8 +116,9 @@ do not. All19 loaded building forecasts and88 roots are accounted for in two
 controlled AI cities. Amenities explain much of the later-building value, while
 alternative Mill recipients, Wonder-linked GPP and missing material/Service/tourism
 channels expose specific mismatches. District raw sums and propagated construction
-values are distinct. Next compare normal repair completion using the existing
-checkpoint, then correct one measured relationship and trace a choice. No new
+values are distinct. A later normal queued repair completes at4 without
+recovering the affected checkpoint. Investigate activation/invalidation and a
+pristine lifecycle separately from correcting a measured forecast relationship. No new
 policy or CE API was added by this study. [AI-C058] [AI-C059] [AI-N074]
 
 ## Starting point

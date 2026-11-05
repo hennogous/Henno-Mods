@@ -52,8 +52,9 @@ planned first Mill as a separate future benefit.
 
 One extra case remains failed: directly clearing Quarter pillage leaves the
 healthy Mill's native Production at zero despite STEP1=1, through a turn and a
-reload. Normal production repair uses a different entry path and needs a focused
-comparison. The study reports this failure explicitly.
+reload. A normal queued repair also completes without restoring the affected
+save’s bonus. This does not yet prove reproduction from ordinary pillage on a
+pristine Quarter. The study reports both the failure and this limit.
 [Native checks and forecast ledger](../../research/mods/csc-ai-mill-building-study-20261105.md).
 
 ## Preserve useful forecasts and correct specific gaps

@@ -1,7 +1,8 @@
 # Smaller Mills and the other CSC building forecasts
 
 5 November 2026. **The new Mill payouts and local scope pass 20 native cases.
-One direct Quarter-repair case remains failed.** The separate building probe
+One direct Quarter-repair case remains failed; normal queued repair also fails
+to recover the affected checkpoint.** The separate building probe
 accounts for all 19 loaded CSC building definitions in two controlled AI cities.
 Later-building amenities dominate these forecasts; several other CSC benefits
 are omitted, mis-gated or credited to mutually exclusive alternatives.
@@ -74,8 +75,48 @@ The shipped Debug panel toggles `District:SetPillaged` directly. Normal UI repai
 queues a district BUILD operation. We have not yet proved that these entry paths
 perform the same completion work. This is an unresolved native reactivation
 discrepancy, not a confirmed normal-production repair regression or permission
-to work around it by granting/recreating buildings. A real repair-completion
-comparison is the next focused check.
+to work around it by granting/recreating buildings. The later comparison below tests recovery through normal repair completion.
+
+### Follow-up: normal production repair does not recover this state
+
+A bounded same-day check loads the preserved source1 checkpoint, SHA-256
+`df5d20f351e24921460a6a15d1087acca016b83cf0d4b150b3b26877ea5d1739`.
+Exact fixture parity passes before changes. There is no fresh map, native hook,
+CE policy, Production grant, building recreation or direct repair setter.
+
+The retained Quarter is re-pillaged with the Debug setter, then repair is queued
+through the stock ProductionPanel non-placement `CityManager.RequestOperation(BUILD)`
+path. The original human fixture lacked its host-district civic: only AI1/2 had
+received research grants. This check records Craftsmanship absent, grants that
+civic alone, verifies native legality and queue admission, then lets ordinary
+turn Production complete the repair. The existing Wind and geometry remain intact.
+
+| Boundary | Native observation |
+| --- | --- |
+| Source1 | Healthy Quarter/Mill, STEP1=1, Production0; exact affected-state parity |
+| Re-pillaged1 | Quarter pillaged, STEP1=0, Production0 |
+| Queued1 | Legal BUILD admitted at queue head |
+| Turns2/3 | Still pillaged, district progress25/28 |
+| Turn4 | Production-completion event for player0/city65536/district36; queue empty, healthy Quarter/Mill, STEP1=1, **Production0 instead of1** |
+
+The same district ID196610 and correctly located, unpillaged Wind survive.
+Two post-completion samples agree; the second bare city stays at0. Normal queued
+repair therefore does not recover this affected state. This is **not proof that
+ordinary enemy/disaster pillage on a pristine, normally constructed Quarter
+creates the state**: the initial objects and pillage history remain diagnostic.
+The discrepancy warrants bounded activation/invalidation investigation rather
+than dismissal as debug-only; no grant/recreate workaround is implemented.
+
+Evidence: `Desktop/Codex/csc-mill-normal-repair-20261105/run-03/`, including
+`exact-source-parity.json`, `queued.json`, `turn-2.json` through `turn-4.json`,
+`verdict.json`, issued operations and raw replies. Two earlier same-save attempts
+stop before repair: run01 calls a queue accessor in gameplay instead of UI;
+run02 fails legality before requesting BUILD, corrected by the explicit civic
+grant. Three exact loads, zero new worlds; no ambiguous mutation is replayed.
+Each native process exits0, restores153 preference entries/150 IDs and
+autostartfalse, and retires its isolated copy by hash. Human CSC/stock CE remain
+unchanged. The host's successful return means observation completed; the native
+payout verdict is explicitly `passed=false`.
 
 ## The smaller graph reaches the native AI
 
@@ -207,9 +248,9 @@ Wonder-GPP or missing-material case. We should choose one measured mismatch,
 preserve justified native contributions and trace a resulting decision. This
 study adds no CE API, opens no upstream PR and changes no tuning weights.
 
-Separately, resolve the direct Quarter-repair reactivation discrepancy against
-normal production repair. Existing source and turn2 checkpoints allow follow-up
-without another fresh map. New-package reload preserves the observed facts; it
+Separately, normal queued repair now fails to recover the existing reactivation
+discrepancy. Its origin and a pristine gameplay lifecycle remain unresolved.
+Existing source and turn2 checkpoints allow follow-up without another fresh map. New-package reload preserves the observed facts; it
 does not establish migration of an old MAB save or repair the failed state.
 
 ## Evidence, checks and restoration

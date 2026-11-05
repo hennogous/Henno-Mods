@@ -143,3 +143,21 @@ Offline50cases48pass/2optional skips; both optional cached DB/Core checks also
 pass independently;38Node checks. Source7c6f9bc checkpoint pushed before final
 run; closeout commits include driver fixes/report/findings/guide/catalog/memory.
 Durable report and AI-N074/AI-C058/AI-C059 carry scope and evidence paths.
+
+
+## Bounded normal-production repair follow-up
+
+Henno authorized the narrow queued-repair check. Three exact source1 loads,
+zero fresh worlds/hooks/CE/production grants. run01 stopped on gameplay-only
+queue accessor mismatch (moved reads to UI); run02 native queue legality false
+before RequestOperation. Original human0 lacked Craftsmanship (research grants
+were only AI1/2). run03 explicitly grants that civic after source parity, then
+re-pillages retained Quarter and queues one legal stock BUILD repair. Natural
+progress25/28 at2/3, CityProductionCompleted player0/city65536/district36 at4,
+same district196610 healthy/Windhealthy correctplot1986/STEP1=1 butnativeProd0.
+verdict completedtrue/passedfalse. Normalrepair does not recover affectedstate;
+notproof ordinary enemy/disaster pillage onpristine normalconstruction createsit.
+No fix or more games authorized from stale notes. All3 nativeprocesses exit0,
+153prefs/150IDs/autostartfalse restored; isolatedcopiesretiredhashverified,
+humanCSC/stockCEuntouched. Rootreport/C058/guidesupdated. Driverrepair_check.py
+maintained. Evidence Desktop/Codex/csc-mill-normal-repair-20261105/run-03.
