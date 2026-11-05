@@ -1,6 +1,6 @@
 # Workshop delivery and Community Extension
 
-**Current status: preserved qualified prototype; develop port awaiting build/native checks.**
+**Current status: develop port builds with supported MSVC; fresh native regression in progress.**
 Henno prefers CSC to ship Lua/SQL and depend on Community Extension, rather than
 ship and maintain its own DLL.
 
@@ -60,9 +60,12 @@ preserving the tested branch and preparing an API-only feature branch from
 upstream `develop`. The new source integration preserves develop's lifecycle and
 uses the existing Visual Studio/vcpkg approach, without the alternate Zig builder.
 Readability, native contracts and failure behavior are documented beside the code.
-The host's supported compiler/SDK are absent; installation and native tests are
-deferred until Henno is at the keyboard. Earlier Online100 proof does not qualify
-this new artifact. No new PR is authorized before scope review.
+The approved compiler/SDK installation is complete. Both unmodified develop and
+the API branch build through the same supported MSVC/vcpkg setup, with identical
+warning counts and no errors; 36 isolated checks also pass with MSVC. Static
+DLL export, import, shim and unwind checks pass. The shared-controller native
+regression is running. Earlier Online100 proof does not qualify this new
+artifact. No new PR is authorized before scope review.
 [Port, offline checks and handoff](../../../research/mods/csc-ce-develop-port-20261105.md).
 
 The independent CSC DLL remains a delivery experiment. It is not the selected

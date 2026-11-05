@@ -33,15 +33,16 @@ all four diagnostic families, context reset, save/load and normal restoration.
 This clears the development-carrier gate. The policy was unchanged throughout.
 Upstream adoption, actual Workshop subscription and broader compatibility remain
 release work; stock CE1.3 does not supply this API.
-The tested feature is submitted as
-[draft PR9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9)
-for WildW's review.
+The tested feature was submitted as
+[draft PR9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9),
+which is now closed by Henno's instruction.
 
 **5 November update:** Henno approved closing that premature master-based draft
 and preparing an API-only branch on upstream develop, preserving the old tested
 fork. The source port and maintainability review are separate from qualification:
-MSVC/SDK installation and native regression are deferred until Henno is at the
-keyboard. Use CE's existing build; broader build-system proposals are outside the
+MSVC/SDK installation, both existing-project builds and 36 MSVC isolated checks
+now pass; the fresh native regression is running. Use CE's existing build;
+broader build-system proposals are outside the
 API contribution unless an actual need arises. Final capability scope and any
 new upstream PR require Henno's review. [Current handoff](../research/mods/csc-ce-develop-port-20261105.md).
 

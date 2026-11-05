@@ -3,8 +3,10 @@
 5 November 2026. Henno approved closing the premature master-based draft,
 preserving the tested fork, preparing an API-only feature branch from develop,
 revalidating it and discussing the final scope before any new upstream PR.
-This report separates completed source/offline work from the build and native
-checks deferred until Henno is at the keyboard.
+This report preserves the initial offline handoff and the subsequent supported
+build qualification. Henno returned to the keyboard: installation and both
+MSVC builds now pass; the bounded native regression is in progress. No
+replacement upstream PR has been opened.
 
 ## Upstream status and scope
 
@@ -78,9 +80,9 @@ The review preserves program tokens while changing comments/layout; a reviewer
 walkthrough and explicit qualification limits accompany the code. Neither good
 comments nor the historical Online100 result substitutes for fresh native tests.
 
-## Existing supported build: prepared, not executed
+## Initial offline handoff: build environment prepared
 
-The host has the older ModBuddy VS2013 shell/MSBuild12 and SDK8.x, but lacks
+At the initial handoff, the host had the older ModBuddy VS2013 shell/MSBuild12 and SDK8.x, but lacked
 MSVC v143, MSBuild17, a current Windows SDK and vcpkg. The approved minimal
 Microsoft VS2022 Build Tools installer was downloaded, signature-verified and
 hashed. Windows elevation waited; Henno then deferred installation until he is
@@ -159,7 +161,7 @@ concrete CSC mismatch and whether a reusable CE control is necessary. Build
 mechanics remain a separate discussion only if the supported build cannot meet
 the feature's actual requirements.
 
-## Remaining qualification
+## Qualification planned at the initial handoff
 
 When Henno is at the keyboard, finish the approved toolchain installation, build
 upstream baseline and the port, run native self-checks with that toolchain and
@@ -173,3 +175,72 @@ No game, FireTuner request, Frida attachment, installed package update, new live
 score or native develop-DLL result is claimed by this offline handoff. Earlier
 [master-based parity results](csc-ce-policy-parity-20261104.md) remain historical
 qualification of that earlier artifact. They are not inherited by this branch.
+
+## Supported-toolchain continuation
+
+Henno returned and resumed installation. The first elevated attempt failed with
+exit87 because `--lang` is not valid for this install operation; it installed
+the Installer client, not the compiler. Later automation-launched consent
+requests did not produce a usable prompt for him. A small, readable desktop
+launcher ran the corrected command directly from his session. Installation
+completed with exit0, and `vswhere` confirms a complete, launchable instance
+without a reboot requirement:
+
+| Tool | Installed version |
+| --- | --- |
+| Visual Studio Build Tools 2022 | 17.14.37827.9 |
+| MSVC v143 | 14.44.35207 |
+| Windows SDK | 10.0.26100.0 |
+| Installation root | `C:/BuildTools/CE-v143` |
+
+The pinned vcpkg dependencies compiled successfully. Unmodified upstream
+develop and feature `87f48fc` then built through the same existing Release/x64
+VCXPROJ and environment. Both report **144 warnings and zero errors**; the API
+adds no compiler warnings. Neither build required a CE source fix. The baseline's
+98 source-file hashes remain unchanged and the feature checkout remains clean.
+
+| Complete DLL | Bytes | SHA-256 |
+| --- | ---: | --- |
+| Upstream baseline | 670,208 | `18af3c5a0e92d98756a0fdfcd28351bdcbaf1efdcd646ce6a27adfcb995991ad` |
+| Develop API feature | 685,056 | `b1090682fc6c964d077c36efe4dcbac6693d6bf83f9da08b5ad4c0f6e77d139b` |
+
+The exact tools, dependency libraries, source inventories, invocations, logs and
+MSBuild binary logs are pinned in `supported-msvc-builds.json` under the evidence
+root. The external environment uses static MSVC runtime/dependency libraries;
+the resulting feature DLL imports only Windows KERNEL32, USER32 and BCrypt.
+This is a supported-project build, not the earlier whole-CE Zig workaround.
+
+The isolated test recipe also runs successfully with x64 MSVC C11: **36 checks,
+exit0**, executable SHA-256
+`dffa1f07ac473e7ecb3c1ad876f28281df9901dacf239862fdd37d06e348794c`.
+Its receipt is `msvc-selftest/result.json`. These synthetic tests still use stubs
+and do not execute the real assembly hook or load Civ.
+
+An independent static audit of the complete DLL confirms all 157 export names,
+ordinals and forwarding contracts match the baseline. The actual 68-byte MASM
+shim preserves the recovered stack arguments, R12 context and return address;
+its PE exception entry describes the 88-byte stack allocation correctly.
+Bounded disassembly also corroborates the original-game hash, timestamp, image
+size and instruction-prefix guards before hook installation, all eight Lua
+bindings, initialization order and create/destroy resets. Reproducible scripts,
+symbols, disassembly, import/export tables and receipts are under
+`independent-artifact-audit/`. This is a static regression gate, not observed
+exception unwinding or native lifecycle proof.
+
+## Native regression in progress
+
+The shared `ce_parity` driver has started an Online-speed test capped at100,
+including the planned fresh-context and exact-save reload checks. The evidence
+directory is `native-regression-msvc-01/`. The driver exclusively owns Tuner;
+its executed Python/Lua sources and installed packages are frozen during the run.
+
+The two old dedicated development packages were moved into `runtime-backup/`
+before installing the new CE and policy copies. A separate CSC regression copy
+contains the reviewed adjacency files. `runtime-staging.json` records all source,
+backup and installed hashes. Human CSC and stock CE remain unchanged. After the
+driver closes and restores preferences, restore the previous development copies
+and move test copies out of Mods, checking their recorded inventories.
+
+No native outcome is claimed yet. Completion requires the driver's lifecycle,
+module, source, content and preference receipts plus the four-family trace audit;
+the earlier prototype's results remain separate.
