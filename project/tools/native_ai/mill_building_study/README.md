@@ -133,5 +133,15 @@ node project/tools/native_ai/mill_building_study/test_observer.js
 The38 checks exercise six signatures, scope and barriers,19-family validation,
 name/string and vector bounds, direct modifier ancestry, zero/invalid results,
 regional recipients, raw/mutable separation, read-only adapters and finite drain.
-They do not execute the new native hooks. The earlier four-hook runtime result
-does not automatically qualify the two added boundaries.
+These offline cases do not themselves execute native hooks. The5 November
+combined study separately qualified all six boundaries on the pinned original
+XP2 binary:361 complete pairs, no observer faults and fully reconciled building
+modifier/district sums. See the maintained report at
+`project/docs/research/mods/csc-ai-mill-building-study-20261105.md` for exact scope.
+
+The same run retains one failed direct Quarter-repair payout check alongside20
+passes. `observation_complete=true` does not imply `mill_contracts_passed=true`;
+the driver exits nonzero for that retained failure after both normal closures.
+The prepared source checkpoint is saved before attachment, so a focused follow-up
+can reuse the exact world. Module paths are normalized to native Windows spelling
+before the exact guard; loaded-module identity is checked before fixture changes.

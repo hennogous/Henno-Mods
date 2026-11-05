@@ -153,7 +153,35 @@ or three Water +1 steps, with city-local functioning-Mill eligibility; the old
 twenty binary building roots are disconnected. Offline checks validate the
 compiler/evaluator, not the resulting native vector. No installed game or
 archived save was changed. The large numbers above describe the old capture;
-the new forecast still needs a native measurement. [Implementation](../../../research/mods/csc-ai-local-mill-unit-steps-20261104.md). [AI-C056]
+the new forecast still needed a native measurement at that checkpoint. [Implementation](../../../research/mods/csc-ai-local-mill-unit-steps-20261104.md). [AI-C056]
+
+## Current graph: measured on 5 November
+
+The [combined Mill and building study](../../../research/mods/csc-ai-mill-building-study-20261105.md)
+now accounts for all19 loaded CSC buildings and88 active building roots in two
+controlled AI cities. All modifier totals and148 district cells reconcile.
+One Wind/three Water unit roots execute; the retired weighted roots do not.
+Building contexts still have no candidate coordinates, so the smaller graph
+bounds the phantom capacity without restoring geographic eligibility. [AI-N074]
+
+The current Bakers district uplift is27,087/20,346Q8 and Tailors27,141/23,007Q8.
+Amenities dominate the later ordinary buildings in these fixture cities. The
+forecast also credits both alternative Mill recipients and absent Wonder-linked
+GPP; some material, tourism and Service channels have no native consumer through
+the inspected route. These are specific mismatches, not grounds for removing
+all future-building benefits. [AI-C059]
+
+Keep the raw district sum separate from the propagated construction vector.
+Negative raw Workshop is omitted from the district sum, yet its mutable value
+becomes26,419/22,526Q8 after Tailor/Fashion House propagation. River Access has
+raw0 but receives raw Water value through prerequisites. `MustPurchase` excludes
+direct district contributions, not every indirect relationship. Several absent
+Service buildings have positive structural raw values whose exact source remains
+unattributed. [AI-N074] [AI-C057]
+
+The same study passes20 native Mill payout/locality cases. Direct Quarter repair
+remains failed despite healthy flags and correct properties, through another
+turn and exact reload; normal production repair is the next comparison. [AI-C058]
 
 Native ordinary adjacency and CSC's bundled Lua adjacency are also distinct.
 The pilot reads CSC's loaded rules itself; its+4 criterion becomes an explicit

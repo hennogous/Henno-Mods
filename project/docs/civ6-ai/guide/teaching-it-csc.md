@@ -43,9 +43,33 @@ Our actual rules need far less range:
 | Water, one Production per two river edges | 0–3 Production |
 | Each current neighboring-resource/district rule | 0–6 yield |
 
-The source now keeps the matcher and UI while using **one conditional +1 switch for Wind and three +1 steps for Water**. The generic encoding for other rules is unchanged. Each Mill enables only its own functioning Quarter; the previous remote activation came from CSC omitting MAB’s explicit city-scope setting. Focused offline SQL/Lua checks cover the repair. It has not been installed or tested in-game.
+The source now keeps the matcher and UI while using **one conditional +1 switch for Wind and three +1 steps for Water**. The generic encoding for other rules is unchanged. Twenty native cases verify the intended payouts, own-Quarter scope, remote exclusion, removal and building pillage/repair. The previous remote activation came from CSC omitting MAB’s explicit city-scope setting.
 
-This removes the huge encoding capacity but does not make the AI understand a condition it currently skips. Our scanner still deliberately evaluates the appropriate planned first Mill as a future benefit, separately from actual current income. Native yield, forecast and save checks remain pending. [Read the implementation](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
+The native forecast also uses the four small steps. It still skips the property
+conditions and uses no particular candidate tile, so smaller numbers alone do
+not make it river/hill aware. Our scanner deliberately evaluates the appropriate
+planned first Mill as a separate future benefit.
+
+One extra case remains failed: directly clearing Quarter pillage leaves the
+healthy Mill's native Production at zero despite STEP1=1, through a turn and a
+reload. Normal production repair uses a different entry path and needs a focused
+comparison. The study reports this failure explicitly.
+[Native checks and forecast ledger](../../research/mods/csc-ai-mill-building-study-20261105.md).
+
+## Preserve useful forecasts and correct specific gaps
+
+| What the new capture shows | Consequence for our model |
+| --- | --- |
+| Later-building amenities dominate in the two test cities | Preserve real native benefits; replacing the whole building sum would discard useful reasoning. |
+| Bakery/Café credit both alternative Mill recipients | Correct the measured alternative-recipient forecast rather than treating both as real simultaneous income. |
+| Fashion House receives Wonder-linked GPP without those Wonders | Source eligibility is not faithfully represented. |
+| Some material, tourism and Service paths have no native consumer here | Add only the missing relationship after checking its real gates and recipients. |
+| Specialists, several cost/income terms and City Center population/export channels remain unitemised | Keep them explicitly unresolved rather than assuming zero or adding them twice. |
+
+The test cities deliberately receive population and research/customer grants.
+Their score proportions are examples, not universal weights or evidence of a
+better empire. A negative raw Workshop value also becomes positive when native
+prerequisite propagation includes its valuable descendants.
 
 ## Hidden eligibility markers are not economic development
 
@@ -55,7 +79,11 @@ output or direct district-score contribution in our capture. Their prerequisite
 and exclusion links nevertheless affect native forecasting. Current gameplay
 also permits Wind on river sites; it only forbids Water off-river and owning
 both Mills. We should preserve real availability while separating free markers
-from investment value. [Read the logic audit](../../research/mods/csc-ai-river-access-flags-20261104.md).
+from investment value. In the new capture, raw River Access remains zero but
+receives Water value through prerequisite propagation. Some other hidden Service
+definitions have positive, unattributed structural forecasts; `MustPurchase`
+still excludes all of them from the direct district sum.
+[Read the logic audit](../../research/mods/csc-ai-river-access-flags-20261104.md).
 
 Why keep two markers? A missing prerequisite can leave Water visible but grey;
 the complementary exclusion hides it. Vanilla Water Mill's native river flag
@@ -73,7 +101,10 @@ It is **not** the active native policy, and its partial review utility is not na
 
 After a good foundation, the AI still needs to improve and preserve materials, construct producers and customers, repair damage and choose useful Services. We will address those paths where evidence shows a failure. Retired tuning, subsidies and scripted foundations are not defaults for this approach.
 
-The Bakers investigation found a dominant mismatch: the native Mill forecast credited all ten generated adjacency encoding bits without their gameplay gates. The new source representation addresses that capacity while preserving real amenities, exchanges and investment constraints. The policy’s +4 promotion and soft deduction are unchanged; the resulting native forecast and choices still need measurement.
+The old dominant Mill mismatch is now bounded in the native forecast. The new
+ledger identifies more specific represented, false and missing relationships.
+The policy’s +4 promotion and soft deduction are unchanged; this observation
+does not test a new correction or prove better choices.
 
 **Continue:** [What we’re investigating](what-next.md).
 

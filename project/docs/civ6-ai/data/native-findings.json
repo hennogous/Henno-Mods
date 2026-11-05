@@ -1444,5 +1444,18 @@
       "AI-N020",
       "AI-N068"
     ]
+  },
+  {
+    "id": "AI-N074",
+    "title": "Exact building modifiers, amenities and district aggregation can be accounted separately",
+    "statement": "On the pinned XP2 target, six read-only boundaries correlate BuildingValue, its own ModifierValue and direct amenities with exact AnalyzeModifier descriptors and nested base-yield results. Attach consumes the assigned nested result, not a sum of every iterator callback. City/type district uplift uses eligible positive raw building values, while a distinct mutable vector propagates descendants into prerequisite construction values. The captured building forecasts have site-unspecified coordinates.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "5 November controlled CSC-only Online1–2, AI1/2 city65536, original XP2 SHA324c51e9. 361 complete pairs/28132 callbacks/0 observer faults;38 building outputs/38 own modifier sums/251 descriptors/24 base-yield/8 direct amenities/2 district passes. All88 active BM roots observed in each city, all148 mutable district cells and both prerequisite vectors reconcile. Return sites distinguish own building subtotals from unrelated helper subroutes.",
+    "limits": "Two explicitly constructed city contexts, not universal weights, observational neutrality, economic benefit or production-choice proof. Before-interval source presence is distinguished from callback contexts. Negative remaining terms, specialist attribution, CityCenter population/export consumers and exact hidden structural income are unmeasured. No scoring output changed and no CE API added.",
+    "sources": ["project/docs/research/mods/csc-ai-mill-building-study-20261105.md"],
+    "topic": "topics/native/district-score-anatomy.md",
+    "depends_on": [],
+    "related": ["AI-C058", "AI-C059", "AI-C057", "AI-N055", "AI-N068"]
   }
 ]

@@ -14,6 +14,27 @@ Adjacency enters a broader estimate containing supported yields and effects, emp
 
 Future buildings contribute too. The inspected path adds a city-wide estimate for that district type to eligible positive site scores. It does not independently simulate a complete, site-specific building chain on every tile.
 
+The new CSC capture makes another distinction concrete: **raw building values
+help value a district; descendant-propagated building values help value its
+construction chain**. A Textile Workshop can have a negative own forecast yet a
+strongly positive construction value after Tailor and Fashion House are included.
+Its negative own value is omitted from the district sum, while those positive
+later buildings still contribute.
+
+```mermaid
+flowchart TD
+  A["Raw building forecasts"] --> B["Positive, canonical, ordinary buildings"]
+  B --> C["Common city / district-type uplift"]
+  C --> D["Eligible positive district-site scores"]
+  A --> E["Propagate descendants to prerequisites"]
+  E --> F["Mutable building construction values"]
+```
+
+Hidden `MustPurchase` buildings are excluded from the direct district sum.
+That does not exclude every prerequisite relationship: a zero-own-value River
+Access flag receives Water Mill value in the mutable vector.
+[Measured building ledger](../../research/mods/csc-ai-mill-building-study-20261105.md).
+
 The numbers are **utility**, not raw yields or Gold. Internally, 256 stored units represent one utility unit. A million stored units does not mean a million Production—and precision does not guarantee an accurate forecast.
 
 ```mermaid

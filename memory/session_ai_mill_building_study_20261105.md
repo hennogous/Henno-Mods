@@ -105,3 +105,41 @@ Current root suite:50 cases,48PASS/2 optional full-DB tests skipped; both option
 full-DB cases separately PASS under agents with actual cached DB+Core.38Node
 observer checks PASS. Analyzer completed15tests (including its full-DB case).
 All study agents finished; all runtime sources now frozen for run02.
+
+## Final closeout: run03 observation completed, repair remains failed
+
+This section supersedes all in-progress ownership/pending statements above.
+Exec15417 ended deliberately exit1 because the paired direct Quarter-repair
+assertion remains failed. Probe and clean-process reload each native exit0,
+endpoint2, no errors; all153 preferences/150 IDs and autostartfalse verified,
+no owner remains. Human CSC/stock CE unchanged. Study package retired618hashes
+under studyroot/retired-study-package; restoration.json verifies retirement.
+
+Run02 stopped before attachment because normalized path identity passed but
+shared module verifier compared forward/backslash strings literally. Driver now
+normalizes the spec path to resolved Windows spelling, proves module before
+fixture, and saves prepared source1 before attaching. Run03 completes all steps.
+Three fresh attempts total, only final attempt has hooks and exact2 reload.
+
+20 Mill cases pass; direct repair fails with unchanged independent+1 oracle.
+Quarter/Wind healthy, complete, exact correct plot/hills, ACTUAL/ENCODED1,
+STEP1=1, old flags0, native Production0. Persists next turn and exact reload.
+Paired unchanged objects disprove new attachment admission as sufficient cause.
+Debug SetPillaged versus normal BUILD repair completion is next focused check;
+existing source1/endpoint2 can be reused. No gameplay workaround implemented.
+
+Independent-analysis:361 complete pairs/28132callbacks/0 faults.38BuildingValue,
+38ownMV,251descriptors,24base-yield,8directAmenity,2Calc;88BM roots eachcity,
+all modifier sums/148district cells/dependency vectors reconcile. Amenities
+large in fixturecities. Bakery/Cafe credit both Mill alternatives; Fashion
+WonderGPP768 each without Wonders;20material nullcollections,23tourism and5
+Service null effects;24CityProperty accepted0. Dockmaster accepted0 notunsupported.
+Negative raw Workshop becomes26419/22526 mutable; Bakers district27087/20346,
+Tailors27141/23007Q8. RiverAccess raw0 receives rawWater6980/6133; hiddenService
+20595 structural values remain unattributed. Specialist/negative residual/
+CityCenter consumers unmeasured. No CE/API/policy edits or new upstream PR.
+
+Offline50cases48pass/2optional skips; both optional cached DB/Core checks also
+pass independently;38Node checks. Source7c6f9bc checkpoint pushed before final
+run; closeout commits include driver fixes/report/findings/guide/catalog/memory.
+Durable report and AI-N074/AI-C058/AI-C059 carry scope and evidence paths.

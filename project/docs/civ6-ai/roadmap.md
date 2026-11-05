@@ -93,8 +93,8 @@ separate. No correction was implemented in the read-only study. [AI-C053]
 The subsequent [range and representation review](../research/mods/csc-ai-adjacency-simplification-20261104.md)
 recommends trying a smaller Mill-specific source representation before extending
 the native API: Wind needs one conditional +1; Water three unit steps. All317
-current count cases preserve numeric encoding offline. This is uninstalled and
-not an AI-fidelity or live-gameplay result. Both Mills share the leak; different
+current count cases preserve numeric encoding offline. At that proposal stage
+it was uninstalled and not a live-gameplay result. Both Mills share the leak; different
 forecast readiness and separate mutual canonicalization explain the apparent
 Wind/Water difference. Actual scope, stacking and save migration remain explicit
 qualification work. [AI-C054] [AI-C055]
@@ -105,9 +105,20 @@ now implements CITY scope, functioning local-Mill eligibility and one Wind/three
 Water unit steps. Generic encodings and current policy weights remain unchanged.
 Focused SQL/Lua checks qualify the source graph and stale-property handling;
 they do not establish native save migration or a corrected forecast/decision.
-Henno chose to keep FireTuner open and finish offline only: installation and
-shared-controller native validation are the next gated step, not a running test.
+Henno initially chose to keep FireTuner open and finish offline only; native
+validation was deferred at that checkpoint.
 [AI-C056]
+
+On5 November, the [combined native study](../research/mods/csc-ai-mill-building-study-20261105.md)
+passes20 Mill payout/locality cases and retains one direct Quarter-repair failure
+through a turn and exact reload. The new small roots execute; old weighted roots
+do not. All19 loaded building forecasts and88 roots are accounted for in two
+controlled AI cities. Amenities explain much of the later-building value, while
+alternative Mill recipients, Wonder-linked GPP and missing material/Service/tourism
+channels expose specific mismatches. District raw sums and propagated construction
+values are distinct. Next compare normal repair completion using the existing
+checkpoint, then correct one measured relationship and trace a choice. No new
+policy or CE API was added by this study. [AI-C058] [AI-C059] [AI-N074]
 
 ## Starting point
 

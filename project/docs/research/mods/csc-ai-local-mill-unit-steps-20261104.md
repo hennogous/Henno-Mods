@@ -5,6 +5,12 @@
 only to that Quarter**. This supersedes the earlier preserved remote-Mill parity
 contract. It does not change the active +4 promotion/soft-deduction policy.
 
+**5 November follow-up:** [native payout and building-forecast study](csc-ai-mill-building-study-20261105.md)
+passes20 payout/locality cases and observes the smaller roots in the AI. Direct
+Quarter repair retains a failed native payout assertion through a turn and exact
+reload; normal production repair is still untested. The original offline-only
+checkpoint below is historical, not the current validation status.
+
 ## What changed
 
 The two generated Bakers Mill rules explicitly use

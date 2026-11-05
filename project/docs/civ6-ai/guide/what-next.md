@@ -1,37 +1,59 @@
 # What we’re investigating
 
-We have identified a specific valuation mismatch. The next step is to correct it at an appropriate boundary, then test what changes. The CE/Lua port restored our development capability; it did not itself improve the placement formula.
+We now have a measured building ledger for both implemented Quarter families.
+The next step is to resolve a repair discrepancy and choose one specific forecast
+mismatch to correct. The CE/Lua port restored our development capability; it did
+not itself improve the placement formula.
 
-## Answer found: the Mill’s adjacency encoding becomes a phantom forecast
+## Completed: smaller Mills and the building ledger
 
-In the earlier Delhi case, our deduction left an initial site value of **1,207**, yet the final cached value reached **1,358,358**. In Majapahit, **32,200** became **1,623,830**. These are internal fixed-point utility values, not yields.
+The earlier giant forecast came from ten Mill encoding amounts,1,2,4,…,512,
+whose property gates the AI omits. The current one/three unit steps are now
+observed in the native forecast; the retired weighted roots do not execute.
 
-The old captures did not itemise each building. A new **read-only observation across turns 80–81** of that archived world now does. In both cities, the Wind Mill accounts for more than 99.8% of the building contribution. Bakery and Café contribute much smaller values; native mutual-exclusion handling leaves Water Mill out of the district sum.
+Twenty native fixture cases pass: actual Wind/Water payouts, local scope, remote
+exclusion, removal and building pillage/repair. One direct Quarter-repair case
+fails even with healthy flags and STEP1=1; native Production stays zero after
+another turn and an exact reload. The normal production repair path remains a
+separate check. The failure is preserved, not counted as a pass.
 
-The dominant Mill term comes from ten generated adjacency modifiers with magnitudes 1, 2, 4, …, 512. Gameplay enables only the bits representing its actual hills/river bonus. The hypothetical evaluator omits the property gates and credits all ten magnitudes. The observed 512 contribution is positive even while that gameplay bit is disabled on every captured owner district plot.
+The accompanying read-only probe captures all19 loaded CSC building definitions
+and all88 active building roots in two controlled AI cities. Every modifier total
+and district aggregation reconciles. It shows:
 
-That is a forecast error, not real income. Other building benefits—amenities, correctly gated exchanges and development—still matter. The small remaining terms are not all independently attributed, so we should not erase the entire future-building sum. The observation changed no scores and proved no improvement in decisions.
+- Real amenities dominate the later-building forecasts in these test cities.
+- Bakery/Café credit both mutually exclusive Mill recipient variants.
+- Wonder-linked Fashion House GPP is credited without those Wonders.
+- Some material, tourism and Service channels have missing native consumers.
+- Raw district-building sums and propagated construction-chain values differ.
 
-[Read the exact breakdown and evidence](../../research/mods/csc-ai-bakers-forecast-components-20261104.md), or [the technical score explanation](../topics/native/district-score-anatomy.md).
+The cities use explicit diagnostic grants; these are not universal weights or
+proof of economic improvement. No AI tuning or CE API changed.
+[Read the combined results and limitations](../../research/mods/csc-ai-mill-building-study-20261105.md).
 
-## Implemented in source: local, small Mill bonuses
+## Next: resolve repair, then correct a measured relationship
 
-The follow-up has confirmed that **both Mills** inflate through the same mechanism. Their large numerical differences come from forecast timing, while native mutual-exclusion handling decides which one enters the district sum. MAB’s broad encoding range is unnecessary for CSC’s current local rules.
+Compare the direct Debug pillage setter with normal district repair completion,
+using the existing checkpoint rather than a new map. A healthy flag and a correct
+property are not enough; the actual native payout must return.
 
-The first correction is now implemented in source: one conditional +1 switch for Wind and three +1 steps for Water, preserving the actual geometry and payouts. A Mill must be built and functioning in the receiving Quarter. A remote Mill no longer enables it. MAB supports this local scope; CSC had inherited its generic player-wide default by omitting the override.
+For AI steering, choose a specific alternative-recipient, Wonder-GPP or missing
+material case. Preserve amenities and other justified native contributions,
+correct the identified mismatch, then observe the competing opportunities and
+resulting choice. The current early site hook may suffice; a later component
+boundary should be added to CE only if the measured correction needs it.
 
-The source bounds the adjacency capacity exposed through a building from 1023 to 1 or 3. It does not make the AI obey the conditions it omits. The focused offline tests exercise the actual SQL compiler and Lua evaluator, including local/remote ownership, pillage, stale properties and the planned-Mill scanner. Old modifier definitions remain available for saved references, but their building attachments are disconnected.
+## Remaining accounting gaps
 
-The implementation was initially checked offline while Henno kept FireTuner open. The later CE carrier regression includes these files in a separate test copy, but does not isolate their effects. The next focused native comparison must verify real yield transitions, saved-game reconciliation and the forecast change before asking whether a different opportunity wins and gets built. [Implementation and evidence](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
+Specialist returns, several negative income/cost terms and City Center
+population/export consumers are not separately attributed. Hidden Service
+definitions sometimes receive a positive structural forecast even though they
+are absent and have no own modifiers; its exact source remains unmeasured.
 
-## Continue the building ledger: real benefits and hidden markers
-
-Before another tuning change, the remaining building ledger must distinguish
-real Mill/Bakery/Café benefits from implementation scaffolding. The hidden River
-Access markers have zero own value in our capture, yet their prerequisite and
-mutual-exclusion links can still change the forecast. The source audit confirms
-their gameplay purpose and the Wind-on-river asymmetry; their exact early-income
-and timing contribution is still open. [River Access findings](../../research/mods/csc-ai-river-access-flags-20261104.md).
+River Access has zero own raw value, yet receives Water value through prerequisite
+propagation. `MustPurchase` excludes hidden direct district contributions, not
+every indirect relationship. Exact marker-related readiness/depth effects still
+need their own measurement. [River Access findings](../../research/mods/csc-ai-river-access-flags-20261104.md).
 
 ## Next: cover candidates before commitment
 
@@ -39,9 +61,11 @@ Our scanner excludes some opportunities native planning considers. Two earlier p
 
 Existing requests may retain an older higher value. Changing that persistence needs its own native contract and validation; refreshing the site table does not automatically solve it.
 
-## Then: correct a relationship and test a choice
+## Follow the correction through construction
 
-Once the ledger identifies a specific mismatch, apply a bounded correction and compare competing opportunities. The useful result is a traceable choice change, followed by construction and eventually returns—not just a lower number.
+After correcting the chosen mismatch, compare competing opportunities and trace
+the resulting choice through construction and returns. A changed score alone
+does not establish that the chain improves the empire.
 
 | Later question | Why it matters |
 | --- | --- |

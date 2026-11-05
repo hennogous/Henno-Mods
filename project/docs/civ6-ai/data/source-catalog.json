@@ -212,6 +212,16 @@
       "site_path": "sources/memory/session_ai_material_recommendations_20261031.md"
     },
     {
+      "path": "memory/session_ai_mill_building_study_20261105.md",
+      "title": "Combined Mill effects and CSC building forecasts — 5 November 2026",
+      "kind": "agent-note",
+      "date": "20261105",
+      "bytes": 9106,
+      "sha256": "717a47fba550fd076ee48ac2bc4326a724607acc1a5e7317969090cf763d854a",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/memory/session_ai_mill_building_study_20261105.md"
+    },
+    {
       "path": "memory/session_ai_native_district_extension_20261103.md",
       "title": "Native district-score extension — 3 November 2026",
       "kind": "agent-note",
@@ -986,8 +996,8 @@
       "title": "Local Mill bonuses with bounded unit steps",
       "kind": "report",
       "date": "20261104",
-      "bytes": 6758,
-      "sha256": "8773f60511eabd647ab4fd1585f7555cf5aa2f38086404349df55f3fb34c63b8",
+      "bytes": 7175,
+      "sha256": "60ad016f41ed6c6f34ea609b134b3d22ac3e59aba4603d56b39088cf784ff547",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md"
     },
@@ -1190,6 +1200,16 @@
       "sha256": "a4a7f3e1e22083b2f7153990d9e7358f78dd0a2b3650ee900b6472a0f9934212",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-mill-adjacency-native-options-20261104.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-mill-building-study-20261105.md",
+      "title": "Smaller Mills and the other CSC building forecasts",
+      "kind": "report",
+      "date": "20261105",
+      "bytes": 15149,
+      "sha256": "4a4b535f7177a49de728bb96c7e4eaa70e46debcd12399f4d42f29a1e642baa5",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-mill-building-study-20261105.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-native-bonus-river-20261017.md",

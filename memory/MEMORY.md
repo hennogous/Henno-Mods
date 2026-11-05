@@ -1,15 +1,30 @@
-# Current: combined Mill/building study —5 November2026
+# Current: combined Mill/building study completed —5 November2026
 
-New user instruction bundles native local/small Mill validation and other CSC
-building/effect forecast attribution. Shared-controller exec77565/run02 owns Tuner;
-runtime files frozen. One fresh Online world1→2, then a clean-process exact2
-reload, isolated CSC GUID…2a09/noCE/no scorepolicy.21 human fixturecases plus
-six read-only native hooks for19 definitions. Setup/source/native results still
-pending. Run01 closed normally after20passes plus a retained Quarter-repair
-failure (healthy flags/STEP1 but nativeYield0); paired-repair fixture corrected,
-oracleunchanged. See session_ai_mill_building_study_20261105.md and evidence
-Desktop/Codex/csc-mill-building-study-20261105/run-02. Do not open another client,
-edit pinned runtime files or touch human mods. Offline analyzer may continue.
+Native observation finished in run03, all game/Tuner owners closed normally,
+153 preferences/autostartfalse verified; isolated study package retired by hash.
+Human CSC/stock CE unchanged. Three fresh attempts total: run01 repair failure,
+run02 same failure plus slash-path guard mismatch before hooks; run03 full
+Online1→2 six-hook observation and clean-process exact2 reload. No CE/score
+policy/API or upstream PR changes. No active native session; do not restart one
+from stale working notes below.
+
+20 Mill native payout/locality cases PASS; paired direct Quarter repair FAILS:
+healthy Quarter/Wind, STEP1=1 but actual district Production0 through next turn
+and exact reload. Retained failed oracle, overall driver exit1; observation
+complete, not all contracts passed. Next compare normal production repair using
+saved source1/endpoint2; do not grant/recreate as an assumed fix.
+
+361 complete pairs/28132 callbacks/0 faults; all19 buildings/88 roots per city,
+modifier totals/148 district cells reconcile. Amenities dominate later buildings;
+alternative Mill recipients and absent-Wonder GPP get false credit; material,
+tourism/Service paths have missing consumers here. Raw district sums differ from
+propagated construction vectors. Specialist/negative residual/hidden Service
+structural income/CityCenter property consumers remain unattributed.
+
+Report: project/docs/research/mods/csc-ai-mill-building-study-20261105.md.
+Evidence: Desktop/Codex/csc-mill-building-study-20261105/run-03 and restoration.json.
+Source checkpoint7c6f9bc pushed; final closeout includes driver guard/checkpoint
+fixes and reconciled handbook. Preserve unrelated lens work. See session note.
 
 # CE develop port: supported build and Online100 passed —5 November2026
 

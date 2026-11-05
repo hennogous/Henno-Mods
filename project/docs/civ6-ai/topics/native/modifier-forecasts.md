@@ -57,3 +57,23 @@ AdjustBuildingYieldEffect (475a50) can discount an absent target building's stre
 Likewise, AI PlotAdjacentToOwner performs no plot-distance calculation in the ordinary no-unit context; it accepts player presence. An admitted hypothetical effect does not certify faithful geography.
 
 Current CSC population-return Lua uses actual functioning sellers, customer objects, ownership, adjacency and population, then writes properties. The inspected native candidate route is not shown to re-run that writer for a proposed chain. Existing delivered returns and a forecast of future missing partners remain different claims. [AI-N032]
+
+## Current CSC building ledger: measured outcomes
+
+The [5 November probe](../../../research/mods/csc-ai-mill-building-study-20261105.md)
+observes all88 active building roots in both controlled cities, with exact
+modifier identities, child ancestry and own-subtotal accounting. [AI-N074]
+
+| Outcome | Observed CSC example |
+| --- | --- |
+| Unsupported collection |20 material-improvement Attach calls return false with null collection `Next`. |
+| Unsupported effect |23 tourism and5 Service-grant child descriptors return false with null `Analyze`. |
+| Accepted, zero here |24 city-property calls and the observed Dockmaster naval-production roots. |
+| Accepted with wrong eligibility | All unit Mill steps without candidate geometry; three Fashion House Wonder-linked GPP roots without those Wonders. |
+| Alternatives both credited | Bakery/Café exchange roots forecast both mutually exclusive Wind/Water recipients. |
+
+These outcomes differ: zero is not proof of an unsupported handler, and a
+nonzero result is not proof of faithful CSC conditions. Own amenities are large
+in the deliberately populated fixture cities. City Center property consumers,
+specialists and remaining income/cost terms are outside the completed attribution;
+do not infer that all these benefits are absent from every AI path. [AI-C059]

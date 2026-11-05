@@ -57,7 +57,7 @@ is unregistered and absent from the new package, including `patch_mab.py`.
 |---|---|---|
 | Bakers/Tailors BASE and SPEC materials, ownership, optional material tags | Own processor plus visible resource tag matcher | 61 frozen rules equal; native BASE/SPEC production and ownership transition |
 | Quarter sales and customer return yields, unique customer tags | District tag matcher; processor propagates tags to replacements | Frozen generated rows and 610 modifier effects/collections; native yields |
-| Water Mill river bonus and Wind Mill hill bonus | Local functioning Mill; CITY wrapper; one Wind/three Water unit steps | New offline SQL/Lua coverage; earlier native remote-Mill result is historical and superseded |
+| Water Mill river bonus and Wind Mill hill bonus | Local functioning Mill; CITY wrapper; one Wind/three Water unit steps |20 native payout/locality cases pass; direct Quarter-repair reactivation fails and needs normal-production comparison. Earlier remote-Mill result is historical and superseded. |
 | Tailors river segments, fractional totals | Native river count; truncate total toward zero | Native yield delta; positive/negative fractional fixture |
 | Ring min/max bands, ring zero, wrapped-map deduplication | BFS over native neighbors | 7×7 and tiny wrapped worlds; ring bounds and ownership combinations |
 | MustOwn across changed gameplay source families | Per-source ownership semantics | Differential comparisons to fork; native resource ownership removal |
@@ -90,6 +90,13 @@ core checks local functioning ownership and publishes Boolean step properties,
 clearing legacy Mill bits during synchronized reconciliation. Old numeric
 modifier definitions remain dormant for saved references, without their old
 building attachments. See the [implementation and offline checks](../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
+
+**5 November native follow-up:** the [combined Mill/building study](../research/mods/csc-ai-mill-building-study-20261105.md)
+verifies actual Wind0/1 and Water0–3 payouts, local scope, removal and building
+pillage/repair. Direct Quarter repair leaves native Production0 despite healthy
+objects and STEP1=1, including after a turn and exact reload. This failed case
+is preserved; normal production repair has not been compared. The AI consumes
+only the smaller roots, but still omits their geographic/property eligibility.
 This supersedes the previous intentional-parity description of remote activation.
 The installed package and native behavior have not been updated/validated: Henno
 chose offline checks only, keeping FireTuner open. Smaller capacity does not repair

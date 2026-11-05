@@ -136,7 +136,11 @@ def run(a):
     spec = json.loads(a.spec.read_text(encoding='utf-8-sig'))
     if spec['sha256'] != GAME_SHA or Path(spec['path']).resolve() != a.dll.resolve():
         raise ValueError('Observer specification does not match the original binary')
+    # The shared OS module verifier compares native Windows path strings. Keep
+    # the guard exact while normalizing the caller's equivalent slash spelling.
+    spec['path'] = str(a.dll.resolve())
     out.mkdir(parents=True)
+    write_json(out / 'normalized-observer-spec.json', spec)
     roots = [a.installed, a.reference_csc, a.stock_ce]
     before = {str(p.resolve()): manifest(p) for p in roots}
     # Pin executed files, not the concurrently developed offline analyzer or its
@@ -247,6 +251,7 @@ def run(a):
             if mode == 'probe':
                 s.issue_once('host-study', setup_game(), 'MainMenu')
                 s.ready_after_issue(turn, contexts, eligibility=eligibility)
+                prove_loaded_module(s.owner, spec, phase_out / 'loaded-module-before-fixture.json')
                 setup = 'CSC_MILL_STUDY_TOKEN=' + lua(uuid.uuid4().hex) + ';\n'
                 raw = s.issue_once('fixture-setup', setup + (HERE / 'setup.lua').read_text(), GP)
                 bindings = parse(raw, 'CSC_MILL_STUDY_SETUP')
@@ -277,6 +282,14 @@ def run(a):
                 source = world('source-world')
                 if not source['sourceValidation']['valid']:
                     raise RuntimeError('Controlled AI forecast source invalid')
+                # Preserve the fully prepared source before attaching new
+                # diagnostic hooks. A later probe correction can load this
+                # exact world instead of repeating cities and all yield cases.
+                descriptor = receipt('CSC_MillFixture.Print(CSC_MillFixture.Export())', 'export-source-fixture')
+                write_json(out / 'source-fixture-descriptor.json', descriptor)
+                source_checkpoint = save_inactive_boundary(c, turn=1, name='CSC_MILL_STUDY_SOURCE',
+                    native_directory=a.save_directory, archive=out / 'checkpoints/source-1.Civ6Save')
+                write_json(out / 'source-checkpoint.json', source_checkpoint)
                 prove_loaded_module(s.owner, spec, phase_out / 'loaded-module.json')
                 sys.path.insert(0, str(a.dependencies.resolve()))
                 import frida

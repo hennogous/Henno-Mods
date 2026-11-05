@@ -1048,7 +1048,7 @@
       "source"
     ],
     "scope": "4 November2026 source implementation and executed offline SQL/Lua5.1 fixtures on an in-memory clone of the immutable frozen MAB database. Local, remote, foreign, wrong-location and pillaged states; actual UI/GP adapters; duplicate compilation; dormant legacy references; stale properties; legal ranges; scanner and generic-bit preservation. MAB source review confirms omitted CSC CollectionType inherited its generic player-wide default.",
-    "limits": "Initial implementation was offline-only with FireTuner kept open. A later isolated develop/MSVC carrier regression includes these files, but is not a controlled native yield/stacking/save migration or forecast comparison. Those focused checks, decision causality and benefit remain unverified. Bounds reduce capacity but do not restore AI condition handling. UI exact location relies on validated OnePerCity/prerequisite semantics when its API lacks GetBuildingLocation.",
+    "limits": "Initial implementation was offline-only with FireTuner kept open. The later focused AI-C058/AI-C059 study verifies20 native payout/locality cases and the smaller forecast graph, with one direct Quarter-repair failure retained. Normal production repair, old-save migration, decision causality and benefit remain unverified. Bounds reduce capacity but do not restore AI condition handling. UI exact location relies on validated OnePerCity/prerequisite semantics when its API lacks GetBuildingLocation.",
     "sources": [
       "project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md",
       "project/docs/research/mods/csc-ai-mab-building-owner-scope-20261104.md",
@@ -1061,7 +1061,9 @@
     ],
     "related": [
       "AI-C055",
-      "AI-C052"
+      "AI-C052",
+      "AI-C058",
+      "AI-C059"
     ]
   },
   {
@@ -1074,12 +1076,13 @@
       "static",
       "runtime"
     ],
-    "scope": "Current unchanged Bakers marker definitions checked against the immutable MAB-era DB; prior Delhi/Majapahit zero-value capture; fresh read-only Ghidra52b900 and3dfee0 on pinned XP2 SHA324c51e9. In captured order NoRiver138 and Wind139 independently precede Water140. No new runtime action or gameplay edit.",
-    "limits": "Own zero is scoped to two captured cities. A structural depth factor does not establish a nonzero early subtotal or exact ETA effect; later modifier sums are separate. No new native grant/legality test or first-prerequisite pointer capture. Removing NoRiver alone leaves Wind's separate canonicalization. Henno subsequently confirmed Wind is allowed anywhere; no restriction or native filter was implemented. The follow-up native gate investigation explains the positive marker versus complementary UI exclusion.",
+    "scope": "Unchanged Bakers marker definitions, prior Delhi/Majapahit capture and pinned XP2 static paths; NoRiver138/Wind139 precede Water140. New controlled AI1/2 capture again has raw0 for both flags; mutable RiverAccess receives Water6980/6133Q8 through prerequisite propagation. All12 hidden definitions are MustPurchase and excluded from the direct district sum. Several absent Service definitions separately return unattributed20595Q8 when their prerequisite district exists; they do not feed these CSC producer chains.",
+    "limits": "Own zero applies to captured River flags, not every hidden building. Structural hidden Service income is not identified or a measured gameplay benefit. Prerequisite propagation is distinct from depth/ETA processing, whose exact effect remains unmeasured. No new native queue/UI legality test. Removing NoRiver alone leaves Wind canonicalization. Wind-anywhere/Water-only-river design and complementary presentation gates remain unchanged.",
     "sources": [
       "project/docs/research/mods/csc-ai-river-access-flags-20261104.md",
       "project/docs/research/mods/csc-ai-bakers-forecast-components-20261104.md",
-      "project/docs/research/mods/csc-ai-mill-adjacency-native-options-20261104.md"
+      "project/docs/research/mods/csc-ai-mill-adjacency-native-options-20261104.md",
+      "project/docs/research/mods/csc-ai-mill-building-study-20261105.md"
     ],
     "topic": "topics/native/district-score-anatomy.md",
     "depends_on": [
@@ -1090,5 +1093,31 @@
     "related": [
       "AI-C056"
     ]
+  },
+  {
+    "id": "AI-C058",
+    "title": "Local small Mill payouts pass native cases with a direct Quarter-repair failure retained",
+    "statement": "Native fixture deltas confirm Wind0/1 on flat/hills and Water floor(edges/2) for0–6 edges, own-Quarter activation, remote exclusion, removal and building pillage/repair. Twenty cases pass with exact locations, Boolean steps and cleared legacy bits. Direct Quarter repair fails: healthy complete Quarter/healthy Wind/STEP1=1 still yields0, through the next turn and exact reload.",
+    "status": "accepted",
+    "evidence_types": ["source", "runtime"],
+    "scope": "Pinned Windows GS/current four adjacency files, isolated CSC2a09, two controlled human0 cities. Final attempt keeps the same Quarter/Mill across the paired repair. All21 stages are captured but only20 pass; failed repair is explicitly record-only and driver reports mill_contracts_passed=false. Final probe and clean reload close normally with153preferences/autostartfalse and content verified.",
+    "limits": "Direct Debug SetPillaged is not proven equivalent to normal production repair. The failure is not explained by building pillage or merely new-building admission; no gameplay fix is claimed. Same-package reload preserves facts but does not validate old-MAB save migration. Forced inland Water tests effect, not availability. No economic benefit or full native Mill release qualification.",
+    "sources": ["project/docs/research/mods/csc-ai-mill-building-study-20261105.md", "project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md"],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": ["AI-C056"],
+    "related": ["AI-C059", "AI-N074"]
+  },
+  {
+    "id": "AI-C059",
+    "title": "CSC forecasts preserve amenities but omit and mis-gate other building relationships",
+    "statement": "The current one/three Mill roots replace the active ten-bit paths in native forecasts but are still credited without site/property eligibility. In two controlled cities, direct amenities dominate Bakery/Cafe/Tailor/FashionHouse values. Bakery/Cafe credit both mutually exclusive Mill recipient variants; three Wonder-linked Fashion GPP roots each credit768Q8 even with no such Wonders. Material collection, tourism and Service grant paths have missing native consumers here, while CityProperty and Dockmaster roots are accepted with zero results.",
+    "status": "accepted",
+    "evidence_types": ["source", "static", "runtime"],
+    "scope": "Seven ordinary/12 hidden definitions, all88 BM roots in AI1 rich/AI2 bare, controlled population15/unlocks and no Quarters at source. Source coordinates are{-9999,-9999}; readiness13/14 vs15/16,horizon50. Bakers district uplift27087/20346Q8; Tailors27141/23007. Negative raw Workshop-722/-481 becomes mutable26419/22526 through Tailor+Fashion propagation. Exact descriptor IDs, own caller sites, raw/mutable matrices and signed arithmetic reconcile.",
+    "limits": "No general constant weights or clean rich/bare causal comparison; fixtures bypass normal development. Missing consumer means observed null collection Next or effect Analyze at these inspected paths, not universal absence from every AI subsystem. Zero handled Dockmaster is not proof of unsupported effect. Specialist/cost residual, hidden Service structural income and CityCenter population/export channels remain unresolved. No weights, policy or CE API changed.",
+    "sources": ["project/docs/research/mods/csc-ai-mill-building-study-20261105.md"],
+    "topic": "topics/native/district-score-anatomy.md",
+    "depends_on": ["AI-N074", "AI-C056"],
+    "related": ["AI-C053", "AI-C055", "AI-C057", "AI-C058"]
   }
 ]

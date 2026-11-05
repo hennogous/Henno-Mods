@@ -29,7 +29,7 @@ flowchart LR
   D --> A
 ```
 
-We traced the large Bakers building forecast to the Mills’ adjacency encoding: the AI credits amounts whose gameplay gates are disabled. Both Mills are affected. The source now uses one conditional +1 step for Wind and three for Water, with each Mill enabling only its own Quarter. Offline checks cover the implementation; the later carrier test includes these files but does not replace focused native yield/forecast validation. [Read the finding and next step](guide/what-next.md).
+We traced the large Bakers building forecast to the Mills’ adjacency encoding and replaced its ten-bit capacity with one Wind step and three Water steps. Twenty native payout/locality cases now pass; a direct Quarter-repair reactivation check remains failed. The new building ledger shows that amenities, some false forecasts and some missing CSC benefits all matter. [Current results and next questions](guide/what-next.md).
 
 ## Reading the evidence
 
