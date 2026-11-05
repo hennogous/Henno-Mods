@@ -106,8 +106,8 @@
       "title": "CE develop source port and deferred build —5 November2026",
       "kind": "agent-note",
       "date": "20261105",
-      "bytes": 6345,
-      "sha256": "352fe95f2801613816310d24d018172c6fd29e48ed7c356e6b36616f92001e65",
+      "bytes": 8269,
+      "sha256": "e13835d8c7484703a1bb92f1cfa9f5cee3930eb84a0358f61d2babe127ab801f",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/memory/session_ai_ce_develop_port_20261105.md"
     },
@@ -1746,8 +1746,8 @@
       "title": "CE API contribution reset: develop, scope and maintainability",
       "kind": "report",
       "date": "20261105",
-      "bytes": 14900,
-      "sha256": "9eaa438ce681db8c8b8aa404dcebc91610d80289a1a8fca7cd2da4f85342d6d7",
+      "bytes": 18840,
+      "sha256": "a8c3b601bb01b2e618a4380a1ae894d4171b88944ad4719c4687c861bcdd0716",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ce-develop-port-20261105.md"
     },

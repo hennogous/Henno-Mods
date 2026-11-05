@@ -121,9 +121,9 @@ The immediate model task is a targeted forecast correction, not a stronger
 blanket site penalty. No correction or new policy was installed by that study.
 
 The [range/simplification follow-up](../../../research/mods/csc-ai-adjacency-simplification-20261104.md)
-now recommends testing a small Mill-specific source representation first: one
+initially recommended a small Mill-specific source representation: one
 Wind +1 switch and three Water unit steps.317 actual shared-Lua count cases
-preserve current numerical payouts; no replacement is installed. Smaller bounds
+preserve current numerical payouts; no replacement was installed at that stage. Smaller bounds
 contain phantom magnitude but do not restore omitted gates. Both Mills share
 the leak; forecast readiness and native mutual canonicalization explain their
 different reported values and admission. [AI-C054] [AI-C055]
@@ -132,8 +132,8 @@ different reported values and admission. [AI-C054] [AI-C055]
 now in source, with explicit CITY scope and functioning local-Mill eligibility.
 The old player-wide behavior came from CSC omitting MAB's scope override. The
 focused actual SQL/Lua checks cover the new graph and scanner; generic rules and
-the v2 policy weights are unchanged. No installation or native game check was
-performed, per Henno's offline-only choice. The earlier317-case study remains
+the v2 policy weights are unchanged. At that stage no installation or native game
+check was performed, per Henno's offline-only choice. The earlier317-case study remains
 historical proposal evidence. [Implementation](../../../research/mods/csc-ai-local-mill-unit-steps-20261104.md). [AI-C056]
 
 **4 November carrier checkpoint:** The
@@ -143,6 +143,15 @@ CSC Lua/SQL now has a qualified development path through a CE dependency;
 stock CE still lacks the API and upstream release remains separate. [AI-C052]
 This clears the development-carrier prerequisite for later model work; it does
 not establish the economic quality of the current rule or authorize another game.
+
+**5 November supported-build checkpoint:** the API-only develop port passes
+MSVC Release/x64 and a separate Online100/context/save/reload regression, with
+101 matching plans, both adjustment signs and all four diagnostic families.
+The isolated CSC copy includes the reviewed local-Mill unit steps. That is
+carrier qualification, not an isolated native Mill yield/forecast comparison or
+evidence of better economic outcomes. All preferences and earlier development
+packages were restored; human CSC/stock CE remained unchanged.
+[Qualification](../../../research/mods/csc-ce-develop-port-20261105.md). [AI-C052] [AI-C056]
 
 Review the assumptions and case explanations. Extend profiles to Bakers and
 later Quarters, and gather only missing facts that could change a choice:

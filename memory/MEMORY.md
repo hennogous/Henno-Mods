@@ -1,28 +1,39 @@
-# CE develop port: offline handoff —5 November2026
+# CE develop port: supported build and Online100 passed —5 November2026
 
-UserapprovedcloseoldPR, cleanAPI-onlydevelopport andsupportedbuild/nativecheck.
-PR9 CLOSED06:39:18UTC; olda928forkpreserved. Newdevelopbase2986a746, source
-f9eda1c+87f48fc pushedfeature/ai-district-scores-develop; NO newPR. Userrequires strong
-maintainability/comments; read feedback_ce_api_maintainability.md and
-feedback_upstream_pr_review.md. FinalC7a6cdf2a…6343; independentreviewPASS;
-7774C/53header tokens unchanged.36isolatedC+24Lua+17harness+164controllerPASS.
+Henno returned and resumed the approved plan. VS2022/MSVC14.44.35207 and SDK26100
+are installed at C:/BuildTools/CE-v143, no reboot required. The manual desktop
+launcher succeeded after automation-launched elevation was not visible. Do not
+relaunch the installer. Both unchanged upstream develop2986a746 and API source
+87f48fc build through the existing Release/x64 MSBuild/vcpkg setup, with144
+upstream warnings/0errors and unchanged157 export contracts. No CE source fix or
+alternate full-CE builder was needed. All36 native checks also PASS with MSVC;
+prior24Lua/17harness/164controller offline checks remain valid.
 
-MSVCv143/SDK10 ABSENT. SignedVSBuildToolsinstallerdownloaded, initialUAC
-launcherrequestcancelled; noinstallation. WindowsSTILLlistsconsent11484;
-dismissoldpromptwhenuserreturnsbeforefreshinstall. UserWILL BE AT KEYBOARD LATER and explicitly
-says DO WHAT POSSIBLE WITHOUT FOR NOW. Do not retryelevation/install orrunCiv
-untilhandoffresumed. Environment/deps/isolatedpackagesready, notinstalled.
-Desktop/Codex/csc-ce-develop-port-20261105; currenthumanmodunchanged.
-Read session_ai_ce_develop_port_20261105.md and
-project/docs/research/mods/csc-ce-develop-port-20261105.md for exactnextsteps.
+Exact feature DLLb1090682…139b completed the shared-controller Online100 test:
+101 matching plans/100 publications/27,775 complete trace records,62 increases
+and13,746 deductions, all four trace families, zero native API faults. Off-context
+1–2, exact saved6 reload facts, native exit0, all153 subscription preferences and
+content pins verified. Test copies retired and both older dedicated development
+packages restored by hash; human CSC and stock CE unchanged. No game/Tuner owner
+remains. The isolated CSC copy included reviewed adjacency files, so this is
+method qualification, not a controlled Mill/forecast/economic comparison.
+
+PR9 is CLOSED; old a928 fork preserved. Feature branch is clean/pushed at
+c2355d664 (README-only qualification/log-scope follow-ups; compiled inputs remain87f48fc).
+NO replacement PR is authorized before scope review. Keep maintainability/comments
+requirements in feedback_ce_api_maintainability.md and PR review preference below.
+Evidence: Desktop/Codex/csc-ce-develop-port-20261105, session_ai_ce_develop_port_20261105.md,
+project/docs/research/mods/csc-ce-develop-port-20261105.md. Earlier dated offline
+holds and in-progress states below are historical, superseded by this closeout.
 
 # Upstream PR review preference —5 November2026
 
 Henno expected discussion BEFORE CE upstream submission; draftPR9 was opened
 tooearly relative to that expectation. Prepare in fork and obtain explicit
 approval for upstream creation/ready-for-review, including agreed API scope.
-Read feedback_upstream_pr_review.md. ReadonlyPRcheck: stillOPEN/DRAFT, no
-comments/reviews/merge. No external mutation inthisturn.
+Read feedback_upstream_pr_review.md. PR9 was subsequently closed with Henno's
+explicit authorization. No replacement PR or maintainer message is authorized
+before scope review and approval.
 
 # Latest native Water Mill gate —4 November2026
 

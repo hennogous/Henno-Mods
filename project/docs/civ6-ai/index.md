@@ -13,7 +13,7 @@ We are learning how Civ VI turns the map and its empire’s needs into decisions
 
 We can adjust how valuable the AI thinks a particular **district at a particular tile in a particular city** would be, then let its ordinary decision and construction systems act on that value. In one controlled example, this changed its choice from a Neighborhood to a Tailors’ Quarter at the same tile; the AI subsequently built and completed the Quarter itself.
 
-Packaged Lua and an earlier **Community Extension development fork** completed an Online-speed game through turn 100, with matching Lua/Python plans and no reported native API faults. The released CE we tested lacks this API. We have since closed the premature master-based PR and prepared a focused port onto CE’s `develop` branch. The supported MSVC builds and 36 isolated checks now pass; a fresh native regression is running. The earlier game result qualifies the preserved prototype, not the new port. [Current contribution status](../research/mods/csc-ce-develop-port-20261105.md).
+Packaged Lua and our **Community Extension development fork** complete an Online-speed game through turn100, with matching Lua/Python plans and no reported native API faults. The focused port onto CE’s `develop` branch now also passes with the supported Microsoft toolchain, including fresh context/save/reload checks. The earlier master-based PR is closed; we will review capability scope before another PR. Released CE still lacks this API. [Current contribution and qualification](../research/mods/csc-ce-develop-port-20261105.md).
 
 These results establish control over an input and some natural follow-through. They do **not** yet establish better empire performance or reliable, profitable supply chains. [See the demonstrations and limits](guide/steering-the-ai.md).
 
@@ -29,7 +29,7 @@ flowchart LR
   D --> A
 ```
 
-We traced the large Bakers building forecast to the Mills’ adjacency encoding: the AI credits amounts whose gameplay gates are disabled. Both Mills are affected. The source now uses one conditional +1 step for Wind and three for Water, with each Mill enabling only its own Quarter. Offline checks cover the implementation; installation and native-game validation remain pending. [Read the finding and next step](guide/what-next.md).
+We traced the large Bakers building forecast to the Mills’ adjacency encoding: the AI credits amounts whose gameplay gates are disabled. Both Mills are affected. The source now uses one conditional +1 step for Wind and three for Water, with each Mill enabling only its own Quarter. Offline checks cover the implementation; the later carrier test includes these files but does not replace focused native yield/forecast validation. [Read the finding and next step](guide/what-next.md).
 
 ## Reading the evidence
 

@@ -22,7 +22,7 @@ The first correction is now implemented in source: one conditional +1 switch for
 
 The source bounds the adjacency capacity exposed through a building from 1023 to 1 or 3. It does not make the AI obey the conditions it omits. The focused offline tests exercise the actual SQL compiler and Lua evaluator, including local/remote ownership, pillage, stale properties and the planned-Mill scanner. Old modifier definitions remain available for saved references, but their building attachments are disconnected.
 
-Henno chose to keep FireTuner open and finish offline checks only. No installed package or game was changed. The next native comparison must verify real yield transitions, saved-game reconciliation and the isolated forecast change before asking whether a different opportunity wins and gets built. [Implementation and evidence](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
+The implementation was initially checked offline while Henno kept FireTuner open. The later CE carrier regression includes these files in a separate test copy, but does not isolate their effects. The next focused native comparison must verify real yield transitions, saved-game reconciliation and the forecast change before asking whether a different opportunity wins and gets built. [Implementation and evidence](../../research/mods/csc-ai-local-mill-unit-steps-20261104.md).
 
 ## Continue the building ledger: real benefits and hidden markers
 
@@ -51,7 +51,7 @@ Once the ledger identifies a specific mismatch, apply a bounded correction and c
 
 ## Release work continues separately
 
-The earlier CE draft is closed. The API-only `develop` port now builds through CE's supported Microsoft toolchain and passes its isolated checks. A fresh shared-controller native regression is running. We will agree on the capability scope before a later PR. Actual Workshop subscription and broader compatibility remain separate from both this port and the economic policy. [Contribution status](../../research/mods/csc-ce-develop-port-20261105.md).
+The earlier CE draft is closed. The API-only `develop` port now builds through CE's supported Microsoft toolchain and passes its isolated checks and fresh shared-controller Online100 regression, including context/save/reload checks. We will agree on the capability scope before a later PR. Actual Workshop subscription and broader compatibility remain separate from both this port and the economic policy. [Contribution status](../../research/mods/csc-ce-develop-port-20261105.md).
 
 This page carries the short current agenda. The [technical roadmap](../roadmap.md) and [broader question backlog](../topics/history/open-questions.md) retain detail and history.
 

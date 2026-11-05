@@ -40,8 +40,8 @@ which is now closed by Henno's instruction.
 **5 November update:** Henno approved closing that premature master-based draft
 and preparing an API-only branch on upstream develop, preserving the old tested
 fork. The source port and maintainability review are separate from qualification:
-MSVC/SDK installation, both existing-project builds and 36 MSVC isolated checks
-now pass; the fresh native regression is running. Use CE's existing build;
+MSVC/SDK installation, both existing-project builds, 36 MSVC isolated checks and
+the fresh Online100/context/save/reload regression now pass. Use CE's existing build;
 broader build-system proposals are outside the
 API contribution unless an actual need arises. Final capability scope and any
 new upstream PR require Henno's review. [Current handoff](../research/mods/csc-ce-develop-port-20261105.md).

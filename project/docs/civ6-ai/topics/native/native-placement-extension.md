@@ -7,8 +7,8 @@
 > carrier and the development-fork score API, which is not in released CE.
 
 > 5 November: the master-based PR is closed. The API-only develop source port is
-> reviewed, builds with supported MSVC and passes 36 isolated checks. The fresh
-> native regression is in progress. [Current qualification](../../../research/mods/csc-ce-develop-port-20261105.md).
+> reviewed, builds with supported MSVC and passes 36 isolated checks and a fresh
+> bounded Online100/context/save/reload regression. [Current qualification](../../../research/mods/csc-ce-develop-port-20261105.md).
 
 A native extension now has a working experimental bridge at the ordinary
 district score/cache boundary. In a matched one-save trial, a single+1 utility

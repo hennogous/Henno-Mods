@@ -1405,8 +1405,8 @@
       "source",
       "runtime"
     ],
-    "scope": "Exact pinned Windows GS GameCore; CE fork17f7c75, corrected DLL d8081765. Full91-source portable build,157 original exports/155 forwarders,36 isolated native checks. One CSC-only Online world1–100, same-process off world1–2 and exact saved6 reload.73 positive and14584 negative changes;29479 complete trace records;0 native faults; normal exit0/preferences/content verified.",
-    "limits": "Development carrier only; not released CE1.3 or upstream acceptance. Publication is gameplay-event driven, not historical inactive-boundary timing. No whole-analysis atomicity, request rollback, economic benefit, MSVC, RH/multiplayer/general CE compatibility or actual Workshop subscription proof. Python still controlled and audited the test.",
+    "scope": "Exact pinned Windows GS GameCore. Earlier fork17f7c75/DLLd8081765: portable build,73 increases/14584 deductions/29479 trace records. Develop port87f48fc/DLLb1090682: supported MSVC14.44 Release/x64,62 increases/13746 deductions/27775 records. Each preserves157 exports/155 forwarders, passes36 isolated checks and completes its own CSC-only Online1–100, same-process off1–2 and exact saved6 reload;101 plan comparisons/0 native faults/normal exit0/preferences/content verified. New test uses an isolated CSC copy with reviewed adjacency files.",
+    "limits": "Development carriers only; not released CE1.3 or upstream acceptance. Publication is gameplay-event driven, not historical inactive-boundary timing. No whole-analysis atomicity, request rollback, economic benefit, matched outcomes across CSC revisions, Debug, RH/multiplayer/general CE compatibility or actual Workshop subscription proof. Python still controlled and audited both tests.",
     "sources": [
       "project/docs/research/mods/csc-ce-policy-parity-20261104.md",
       "project/docs/research/mods/csc-ce-develop-port-20261105.md"

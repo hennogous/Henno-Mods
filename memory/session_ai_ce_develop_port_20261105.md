@@ -93,3 +93,33 @@ One driver exclusively owns Tuner; DO NOT edit pinned Python/Lua/installed files
 or send another Tuner command. Setup still needs initial health verification.
 Once healthy, only check game every15min; use archived progress/observations and
 later result/audit, never dispatch as evidence. No new PR is authorized.
+
+## Final native closeout
+
+Driver finished normally at100, lifecycle_exercised=true, closed=true, error=null,
+installed_unchanged=true, native exit0 and no remaining owners. At the scheduled
+15-minute check it was reloaded68/ready1/faults0 with exact save scanner parity.
+Final audit verifies101 matching policy plans/100 published windows/27,775
+complete records: Net13,808, cache13,812, best135, PV20;62 increases and13,746
+deductions, no original-human trace, no native faults. All153 installed entries
+(150 mod IDs) and autostartfalse restored. Source/archive/module identities pinned.
+
+Guarded restore-runtime.ps1 executed after closure/preferences verification:
+three test copies moved into runtime-retired, two prior dedicated development
+packages restored by recorded hashes. Original human CSC and stock CE unchanged.
+runtime-restoration.json status=restored, no deletion or active game remains.
+
+Fork README updated with supported/runtime receipts and limits; no compiled
+input changed. Clean/pushed HEADc2355d66460dd0c0283a8d73e96100433e8a2336, tested
+implementation remains87f48fc and exactDLLb1090682…139b. Old fork a928 preserved,
+PR9 remains closed, no new PR. Docs/guide/findings updated for the completed
+qualification. Native method parity restored; focused Mill yield and
+forecast attribution, economic benefit, broad CE compatibility and final API scope
+remain separate future work. Do not start another world without a new need.
+
+Independent closed-run review PASS from raw facts/traces, all65archivedpins,
+three off-context zero states, ten reload fields, savedfileidentity and153exact
+preferences. Receipt independent-runtime-review/reviewer-receipt.json. Actual
+Database.log delta contains80 new CurrentClickouts Localization duplicate errors
+(46 suchlines already in prefix), no Gameplay ERROR lines/Lua runtimeerrors.
+Documented caveat; zero-fault claims refer specifically to native API/policy.

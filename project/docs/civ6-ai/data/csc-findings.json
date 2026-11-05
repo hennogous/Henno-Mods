@@ -967,16 +967,17 @@
   {
     "id": "AI-C052",
     "title": "The existing v2 Quarter policy now runs in packaged Lua through CE",
-    "statement": "The Lua port preserves the current best Production+Gold >=4 Bakers/Tailors promotion and graded weak-site deduction, reuses the same river/conditional first-Mill scanner, and excludes original humans and already-founded city/types.101 accepted captured snapshots matched the original Python shortlist. The CE-carried Online100 run recorded73 additions and14584 deductions;12 AI Quarter foundations were present at100,11 complete.",
+    "statement": "The Lua port preserves the current best Production+Gold >=4 Bakers/Tailors promotion and graded weak-site deduction, reuses the same river/conditional first-Mill scanner, and excludes original humans and already-founded city/types. Each of two CE-carried Online100 tests has101 matching Lua/Python plans. The earlier test recorded73 additions/14584 deductions and12 AI Quarter foundations,11 complete. The supported develop/MSVC regression separately recorded62 additions/13746 deductions with the reviewed adjacency files.",
     "status": "accepted",
     "evidence_types": [
       "source",
       "runtime"
     ],
-    "scope": "Unchanged csc-adjacency-policy-v2, CSC-only Ancient/Prince/Small Continents/Online, original AI1–5.101 comparisons include the duplicated saved6 boundary;100 numeric publication windows. Shared controller, no district orders, grants or external policy publication. Complete signed traces and context/save/load/restoration receipts in the parity report.",
+    "scope": "Unchanged csc-adjacency-policy-v2, CSC-only Ancient/Prince/Small Continents/Online, original AI1–5. Each test has101 comparisons including duplicated saved6,100 publication windows, all four trace kinds/both signs/zero native faults/context/save/load/restoration. Shared controller, no district orders, grants or external policy publication. The develop regression uses a distinct CSC copy with four reviewed adjacency files; it is not a matched comparison with the earlier Core.",
     "limits": "Policy/intervention and diagnostic parity, not identical historical timing/outcomes or improved AI quality. Owned legal candidate scope and known native early-admission/retained-request gaps remain. Mill forecast is not a grant or building incentive.12 foundations/11 completions are observations, not caused completions or net benefit. No RH/multiplayer or stock-CE release claim.",
     "sources": [
-      "project/docs/research/mods/csc-ce-policy-parity-20261104.md"
+      "project/docs/research/mods/csc-ce-policy-parity-20261104.md",
+      "project/docs/research/mods/csc-ce-develop-port-20261105.md"
     ],
     "topic": "topics/csc/site-planner.md",
     "depends_on": [
@@ -1047,10 +1048,11 @@
       "source"
     ],
     "scope": "4 November2026 source implementation and executed offline SQL/Lua5.1 fixtures on an in-memory clone of the immutable frozen MAB database. Local, remote, foreign, wrong-location and pillaged states; actual UI/GP adapters; duplicate compilation; dormant legacy references; stale properties; legal ranges; scanner and generic-bit preservation. MAB source review confirms omitted CSC CollectionType inherited its generic player-wide default.",
-    "limits": "Henno requested offline checks only and kept FireTuner open. No installed package, native game, save or attachment changed. Native yield/stacking/save migration, actual new forecast vector, decisions and benefit remain unverified. Bounds reduce capacity but do not restore AI condition handling. UI exact location relies on validated OnePerCity/prerequisite semantics when its API lacks GetBuildingLocation.",
+    "limits": "Initial implementation was offline-only with FireTuner kept open. A later isolated develop/MSVC carrier regression includes these files, but is not a controlled native yield/stacking/save migration or forecast comparison. Those focused checks, decision causality and benefit remain unverified. Bounds reduce capacity but do not restore AI condition handling. UI exact location relies on validated OnePerCity/prerequisite semantics when its API lacks GetBuildingLocation.",
     "sources": [
       "project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md",
-      "project/docs/research/mods/csc-ai-mab-building-owner-scope-20261104.md"
+      "project/docs/research/mods/csc-ai-mab-building-owner-scope-20261104.md",
+      "project/docs/research/mods/csc-ce-develop-port-20261105.md"
     ],
     "topic": "topics/csc/site-planner.md",
     "depends_on": [

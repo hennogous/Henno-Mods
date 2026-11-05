@@ -4,9 +4,9 @@
 preserving the tested fork, preparing an API-only feature branch from develop,
 revalidating it and discussing the final scope before any new upstream PR.
 This report preserves the initial offline handoff and the subsequent supported
-build qualification. Henno returned to the keyboard: installation and both
-MSVC builds now pass; the bounded native regression is in progress. No
-replacement upstream PR has been opened.
+build and runtime qualification. Installation, both MSVC builds and the bounded
+Online100 native regression pass. The previous development packages and exact
+preferences are restored. No replacement upstream PR has been opened.
 
 ## Upstream status and scope
 
@@ -27,6 +27,10 @@ No replacement PR was opened and the old feature branch was not rewritten.
 - Reproducible test-driver/documentation follow-up:
   `87f48fc7878d00851279bccbc9dd30cfe147470b`. The native C implementation is
   unchanged by that second commit. Both commits are pushed; the fork is clean.
+- Qualification README follow-up:
+  `26c2a969109d6674d567f085fc7f60e69e64d030`, then log-scope clarification
+  `c2355d66460dd0c0283a8d73e96100433e8a2336`, pushed on the same branch. Only
+  the README changed from the tested build inventory; compiled inputs remain exact.
 - Checkout/evidence root: `Desktop/Codex/csc-ce-develop-port-20261105/`.
 
 WildW's stated convention is feature branches into develop, with master reserved
@@ -106,8 +110,8 @@ build system. They avoid global vcpkg integration or changes to the CE project.
 
 The installer is Microsoft's VS17 release bootstrapper, SHA-256
 `972d771c33c2887b13900c2052e5d2e88208531f6d5ee3c4405d7648e853009b`.
-Intended installation path is `C:/BuildTools/CE-v143`; no files were installed
-there during this work. Installer plan and environment provenance are retained
+Intended installation path was `C:/BuildTools/CE-v143`; no files were installed
+there at the initial handoff. Installer plan and environment provenance are retained
 outside the source checkout. Do not restart elevation while Henno is away.
 
 ## Offline verification and test preparation
@@ -227,20 +231,79 @@ symbols, disassembly, import/export tables and receipts are under
 `independent-artifact-audit/`. This is a static regression gate, not observed
 exception unwinding or native lifecycle proof.
 
-## Native regression in progress
+This build qualification covers Release/x64 on the pinned Windows target.
+Debug, other compiler/SDK versions, multiplayer, live DLL unloading and actual
+Workshop subscription remain outside it. The source wiring for a configuration
+is not a receipt that it has been built or executed.
 
-The shared `ce_parity` driver has started an Online-speed test capped at100,
-including the planned fresh-context and exact-save reload checks. The evidence
-directory is `native-regression-msvc-01/`. The driver exclusively owns Tuner;
-its executed Python/Lua sources and installed packages are frozen during the run.
+## Native regression passed
+
+The maintained shared `ce_parity` driver completed the Online-speed test at turn 100.
+It saved the first world at turn 6, checked an observation-only fresh context at turns 1–2,
+reloaded that exact save and continued to turn 100. Captured scanner facts match
+before/after reload; this is not an RNG, cache or whole-world equivalence claim.
+The evidence directory is `native-regression-msvc-01/`. One driver exclusively
+owned Tuner, with executed Python/Lua sources and installed packages frozen.
+No Frida, Python policy publication, district orders or grants were used.
+
+The actual loaded development DLL matches `b1090682…139b`, alongside the exact
+qualified original GameCore. Across **100 publication windows**, all **101
+accepted Lua/Python plan comparisons** match, including the repeated saved6
+boundary. The journal audit reconstructs chunked records, removes repeated log
+archives by generation/version/index and checks every retained index:
+
+| Native trace family | Complete records |
+| --- | ---: |
+| NetValue | 13,808 |
+| Final cache | 13,812 |
+| Best district | 135 |
+| Plot-specific PresentValue | 20 |
+| Total | 27,775 |
+
+The NetValue records contain **62 increases and 13,746 deductions**, all bound
+to the actual staged pairs with checked signed arithmetic. Diagnostic records
+remain read-only; the original human is excluded. There are zero reported
+native API faults. Ninety-eight publication windows have trace records; the
+100-publication total also includes empty/no-observation windows.
+
+The game logs are not globally error-free. A boundary-aware review of the one
+closed Database.log archive finds 80 new Localization ERROR lines, all duplicate
+`LocalizedText.Language, Tag` entries in CurrentClickouts XML contexts; the
+verified pre-run prefix already contains 46 such lines. No Gameplay ERROR lines
+appear in the run delta, and the separate Lua/native-policy checks are clean.
+Repeated phase archives are not counted as new occurrences. This documents the
+observed localization issue without attributing it to the CE API.
+
+`result.json`, `parity-audit.json`, `loaded-modules.json`, `pins.json`,
+`source-archive.json`, `reload-scanner-parity.json` and the phase logs preserve
+the evidence. `session-closed.json` records supported native exit0 and no
+remaining native/Tuner owner. `preferences-restored.json` verifies all 153
+installed subscription entries (150 distinct mod IDs), with autostart false.
+An independent closed-run review recomputes the policy comparisons, complete
+trace set, AI-only scope, three zero-policy off-context observations, ten reload
+fact fields, saved-file identity and exact preference entries from the raw
+archives. Its receipt and reproducible script are
+`independent-runtime-review/reviewer-receipt.json` and `review_closed.py`.
+The endpoint policy is disabled with no active native callback. Content stability
+is attested by the pinned driver's comparisons and verified again during package
+restoration; the independent reviewer does not claim a separate final-manifest capture.
 
 The two old dedicated development packages were moved into `runtime-backup/`
 before installing the new CE and policy copies. A separate CSC regression copy
 contains the reviewed adjacency files. `runtime-staging.json` records all source,
-backup and installed hashes. Human CSC and stock CE remain unchanged. After the
-driver closes and restores preferences, restore the previous development copies
-and move test copies out of Mods, checking their recorded inventories.
+backup and installed hashes. Human CSC and stock CE remained unchanged. After
+verified controller closure and preference restoration, the guarded restoration
+script moved all three test copies out of Mods into `runtime-retired/` and
+restored the two previous development copies. `runtime-restoration.json` verifies
+the exact recorded inventories. No package was deleted.
 
-No native outcome is claimed yet. Completion requires the driver's lifecycle,
-module, source, content and preference receipts plus the four-family trace audit;
-the earlier prototype's results remain separate.
+This restores the tested native method through the supported develop build:
+packaged Lua computes the existing policy and CE applies/observes the bounded
+native scores. It does not establish better AI decisions or economic benefit,
+matched historical outcomes, native Mill yield/forecast causality, broad CE
+compatibility or a Workshop release. The CSC regression snapshot includes the
+reviewed adjacency fixes, so it is not a controlled comparison against the older
+Core. The earlier prototype's observed counts remain separate.
+
+The next contribution step is capability-scope review with Henno. PR9 remains
+closed; there is no replacement PR or build-system proposal in this branch.

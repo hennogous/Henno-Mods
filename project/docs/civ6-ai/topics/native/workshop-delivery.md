@@ -1,6 +1,6 @@
 # Workshop delivery and Community Extension
 
-**Current status: develop port builds with supported MSVC; fresh native regression in progress.**
+**Current status: develop port passes supported MSVC build and fresh bounded native regression.**
 Henno prefers CSC to ship Lua/SQL and depend on Community Extension, rather than
 ship and maintain its own DLL.
 
@@ -63,9 +63,12 @@ Readability, native contracts and failure behavior are documented beside the cod
 The approved compiler/SDK installation is complete. Both unmodified develop and
 the API branch build through the same supported MSVC/vcpkg setup, with identical
 warning counts and no errors; 36 isolated checks also pass with MSVC. Static
-DLL export, import, shim and unwind checks pass. The shared-controller native
-regression is running. Earlier Online100 proof does not qualify this new
-artifact. No new PR is authorized before scope review.
+DLL export, import, shim and unwind checks pass. The fresh shared-controller
+Online100 regression also passes: 101 matching plans, all four trace families,
+62 increases/13,746 deductions, zero native faults, context/save/reload and
+verified closure/restoration. This independently qualifies the new artifact's
+bounded method; it does not inherit or match the old world's outcomes.
+No new PR is authorized before scope review.
 [Port, offline checks and handoff](../../../research/mods/csc-ce-develop-port-20261105.md).
 
 The independent CSC DLL remains a delivery experiment. It is not the selected
