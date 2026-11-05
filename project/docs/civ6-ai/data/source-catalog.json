@@ -1006,8 +1006,8 @@
       "title": "Late district score adjustment and Bakers calibration",
       "kind": "report",
       "date": "20261105",
-      "bytes": 8617,
-      "sha256": "395b906961a1784f9da77b2f2d9ec34babf06a0ef45685379b1f81bd1ce14b35",
+      "bytes": 8628,
+      "sha256": "e862193b1966bcdf7ab77e4b3fa19db126e26c422ffd19d3d628141cbd422968",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-late-placement-20261105.md"
     },
@@ -1786,10 +1786,20 @@
       "title": "CE API contribution reset: develop, scope and maintainability",
       "kind": "report",
       "date": "20261105",
-      "bytes": 20360,
-      "sha256": "9cb250589a8334d0aa5405583ef22dcad06f97835220d186ed9e8ae7fb412e04",
+      "bytes": 20387,
+      "sha256": "01fd1a0746a0803c7709d2ec67ad3216bdd8a4690564dac52f94fb77c62c7cea",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ce-develop-port-20261105.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ce-late-score-api-20261105.md",
+      "title": "CE C++ refactor and late district score API",
+      "kind": "report",
+      "date": "20261105",
+      "bytes": 6058,
+      "sha256": "7589552d1f16df0b6f5a86162f12061902ddb569905a90b8034c4a369bda96bc",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ce-late-score-api-20261105.md"
     },
     {
       "path": "project/docs/research/mods/csc-ce-policy-parity-20261104.md",

@@ -134,7 +134,8 @@ the first CSC rule using measured Wind and Water recipient credits for a flat
 inland Bakers site. The 4,398 Q8 deduction left the control winner unchanged.
 Both the scanner and the calibration library now live in `Lua_UI/AI`. Keep
 the measured correction separate from the early experimental site priority.
-A recurring late policy needs a CE entry point and current component evidence.
+The development fork now includes a [guarded late entry](../research/mods/csc-ce-late-score-api-20261105.md).
+A recurring CSC policy still needs current component evidence.
 [AI-N075] [AI-N076] [AI-C060]
 
 ## Starting point

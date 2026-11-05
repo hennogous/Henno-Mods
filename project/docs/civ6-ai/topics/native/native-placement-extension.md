@@ -20,9 +20,13 @@ both read that exact value. Delhi reserved the site and submitted its missing
 Craftsmanship goal through the native district tree. [AI-N075]
 
 This boundary supports corrections measured in the final score's units. The
-trial uses Frida and a pinned original DLL. The main CSC Lua library owns the
-Bakers policy. A recurring CE implementation needs a late transport and
-current component evidence. [Late placement trial](../../../research/mods/csc-ai-late-placement-20261105.md)
+original trial used Frida. A matched CE replay used its new guarded Lua entry
+to reproduce the same Bakers choice, reservation and civic goal. An early
+Tailors adjustment also reached NetValue in the same calculation. The caller
+supplies the expected entry and final scores and a measured delta. The main
+CSC Lua library owns the policy, and recurring publication still needs fresh
+component evidence. [AI-N077]
+[CE late score API](../../../research/mods/csc-ce-late-score-api-20261105.md)
 
 ## Earlier bridge tests
 

@@ -53,10 +53,12 @@ Henno deferred dedicated Mill repair investigation. Watch for comparable cases
 in longer ordinary test games and retain lifecycle/payout facts; it is not a
 blocker for this AI work or a reason for another dedicated game now.
 
-The placement policy lives in the main CSC Lua library. A recurring late
-policy needs the CE transport and fresh values for the component each rule
-corrects. Use the effect map to measure the next relationship and retain the
-overlap with native value in the calculation.
+The placement policy lives in the main CSC Lua library. In a matched replay,
+the CE development build used the new late API to make Delhi choose the Bakers
+site. Applying the policy routinely
+still requires fresh values for the component each rule corrects. Use the
+effect map to measure the next relationship and account for native overlap.
+[CE late score API](../../research/mods/csc-ce-late-score-api-20261105.md)
 
 ## Remaining accounting gaps
 

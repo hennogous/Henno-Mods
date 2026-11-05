@@ -1469,7 +1469,7 @@
     "sources": ["project/docs/research/mods/csc-ai-late-placement-20261105.md"],
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": [],
-    "related": ["AI-N055", "AI-N057", "AI-N074", "AI-C059", "AI-C060"]
+    "related": ["AI-N055", "AI-N057", "AI-N074", "AI-N077", "AI-C059", "AI-C060"]
   },
   {
     "id": "AI-N076",
@@ -1483,5 +1483,18 @@
     "topic": "topics/native/modifier-forecasts.md",
     "depends_on": [],
     "related": ["AI-N026", "AI-N031", "AI-N074", "AI-C059"]
+  },
+  {
+    "id": "AI-N077",
+    "title": "CE's early and late score entries reach their respective native consumers in one calculation",
+    "statement": "A refactored CE development build accepted an early NetValue entry and a guarded late CalculateDistrictValues entry in one gameplay Lua publication. The late value reached the cache, selector and plot present value and drove native district preparation.",
+    "status": "accepted",
+    "evidence_types": ["source", "static", "runtime"],
+    "scope": "Pinned XP2 SHA324c51e9 and CE DLL SHAfbf1df55 from feature checkpoint ba06976. Shared-controller replay of the same Online save1 through2. Delhi plot1210 Tailors NetValue77534→77535 Q8; Bakers expected entry77534 and final104621, finished cell248479 after the write. The cache, selector and present value match, and the native tree reserves (26,16) and accepts Craftsmanship. Six journal records, two writes and zero native faults. The isolated saved CSC package selects the development DLL through front-end SQL.",
+    "limits": "One matched saved-world calculation, isolated carrier and diagnostic positive pulse. This does not qualify a new Online100 regression, recurring CSC publication, calibrated live inputs, completion, standalone Workshop subscription or release adoption. The API applies a caller-supplied delta and does not expose the economic forecast components.",
+    "sources": ["project/docs/research/mods/csc-ce-late-score-api-20261105.md", "project/docs/research/mods/csc-ai-late-placement-20261105.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N075"],
+    "related": ["AI-N061", "AI-N074", "AI-C060"]
   }
 ]

@@ -86,9 +86,9 @@ comments nor the historical Online100 result substitutes for fresh native tests.
 
 Henno subsequently made upstream conventions a high-priority requirement after
 WildW's feedback on direct MinHook use, C-style implementation and unlabeled
-native addresses. The tested port still has all three. Its earlier review covered
-readability and behavior preservation. Upstream fit remains a separate gate for
-the replacement contribution, including any late placement API.
+native addresses. The earlier C port had all three. Its review covered
+readability and behavior preservation. The subsequent C++ implementation and
+late placement API have a [separate review and qualification record](csc-ce-late-score-api-20261105.md).
 
 - **Start from the closest upstream feature.** `AI.cpp` and `AI.h` show the
   current `develop` pattern for typed GameCore functions, named offsets and

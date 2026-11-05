@@ -96,9 +96,9 @@ sales or specialist work. [Forecast coverage map](../../civ6-ai/topics/csc/forec
 rules using measured inputs. The main CSC mod imports this policy library
 alongside `CSC_AI_AdjacencyScan.lua`, the existing scanner moved from test tooling.
 `project/tools/native_ai/late_placement` owns the saved-world fixture, accounting
-checks and Frida adapter. The CE development fork supplies the earlier score
-API. A recurring late policy requires fresh component evidence for the current
-calculation and a CE transport for the resulting entries.
+checks and Frida adapter. The later [CE development implementation](csc-ce-late-score-api-20261105.md)
+adds a Lua API at this boundary. A recurring CSC policy still needs fresh
+component evidence for the current calculation.
 
 ## Evidence and restoration
 

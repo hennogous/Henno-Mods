@@ -3,8 +3,10 @@
 Follow the closest CE `develop` feature's hook/runtime conventions and C++
 idioms, and label native addresses and offsets with their roles and evidence.
 Check this separately from runtime correctness before a CE scope review or PR.
-The tested early-score port still needs this work. See
-`feedback_ce_api_maintainability.md` and the CE contribution handoff.
+The C++ refactor at CE `ba06976` uses shared Runtime hooks and typed HKS. Its
+late Lua entry passed the matched Online1–2 replay alongside the early API.
+Evidence is under `Desktop/Codex/csc-ce-late-placement-20261105/run-03`.
+See `feedback_ce_api_maintainability.md` and the CE contribution handoff.
 
 # Latest AI result: late Quarter placement write — 5 November 2026
 
@@ -22,8 +24,9 @@ and Water recipient credits. Bakers falls from 104,621 to 100,223 Q8 and Delhi
 submits the same requests as the control. The temporary package and preferences
 were restored. Capture raw building inputs at aggregation entry: a raw pointer
 can alias the mutated prerequisite vector. The existing CE development API is
-an earlier boundary. Recurring late correction needs current components and
-a CE transport. Keep Mill repair deferred.
+an earlier boundary in the original trial. CE `ba06976` now provides a guarded
+late entry. Recurring late correction needs current component evidence. Keep
+Mill repair deferred.
 
 Future customer forecasts require a qualifying adjacent district or credible
 specific neighboring site. Existing, missing, and future customer buildings

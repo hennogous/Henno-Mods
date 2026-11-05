@@ -16,7 +16,8 @@ Henno to review a replacement contribution.
   binary and evidence, with a nearby comment explaining the ABI or field role
   and any uncertainty. Keep CSC policy in CSC.
 
-Review upstream fit separately from functional correctness. The qualified
-`develop` port still uses direct MinHook calls and C. Its tests and readability
-pass are a behavior reference for that refactor. The CE handoff records the
-remaining work and the specific limitation of `Runtime::CreateHook`.
+Review upstream fit separately from functional correctness. The earlier C
+port remains a behavior reference. CE feature checkpoint `ba06976` moves the
+feature into C++20 and the shared Runtime and HavokScript layers. The CE handoff
+records how grouped installation preserves failure handling alongside the
+existing `Runtime::CreateHook` helper.

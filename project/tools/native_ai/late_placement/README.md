@@ -25,3 +25,9 @@ reciprocal Bakery and Café bonuses. `verify_csc_policy.py` checks the policy in
 `Civ Supply Chains/Lua_UI/AI/CSC_AI_QuarterPlacement.lua` against the native ledger
 under Lua 5.1. The main mod imports the policy as a library. The trial uses
 Frida for native delivery and has an exact saved-world scope.
+
+`ce_replay.py` replays the matched pulse using CE's Lua entries, without a
+Frida attachment. Supply the completed correction run as `--proof`. The
+`--fixture-carrier` option selects the test DLL through front-end SQL in the
+isolated saved mod identity. The shared controller verifies the loaded module,
+the starting world, both score paths, native preparation and restoration.
