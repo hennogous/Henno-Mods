@@ -12,6 +12,7 @@ Search starts in **Current guide**. Select **Full research library** to include 
 - [Prerequisites, requests and production](topics/native/production-and-prerequisites.md)
 - [Modifier forecasts and their limits](topics/native/modifier-forecasts.md)
 - [Native placement interface](topics/native/native-placement-extension.md) and [CE delivery](topics/native/workshop-delivery.md)
+- [CSC effect-by-effect forecast coverage](topics/csc/forecast-coverage.md)
 - [CSC site planning](topics/csc/site-planner.md) and [other CSC topics](topics/csc/index.md)
 
 ## Evidence and verification

@@ -77,3 +77,10 @@ nonzero result is not proof of faithful CSC conditions. Own amenities are large
 in the deliberately populated fixture cities. City Center property consumers,
 specialists and remaining income/cost terms are outside the completed attribution;
 do not infer that all these benefits are absent from every AI path. [AI-C059]
+
+
+The [CSC coverage map](../csc/forecast-coverage.md) now crosswalks every source
+group to these channels. In particular, growth/Housing/Faith and several GPP/grant
+roots returned zero **without reaching children** in the measured contexts.
+That does not establish absent child handlers. Improvement-, customer- and
+CityCenter-owned effects also cannot be classified from producer roots alone.

@@ -1,5 +1,10 @@
 # CSC AI roadmap
 
+> Current priority,5 November: use the [effect coverage map](topics/csc/forecast-coverage.md)
+> to attribute missing/misvalued CSC relationships before changing tuning.
+> Henno deferred dedicated Mill repair work; monitor it in longer ordinary games.
+> Earlier repair follow-up proposals below are historical, not the next task.
+
 Fresh plan, 3 November 2026. Henno requested removal of the old roadmap and a
 new approach using the native decision tools now available. This is the sole
 current roadmap. Dated experiments remain evidence; their proposed sequences,

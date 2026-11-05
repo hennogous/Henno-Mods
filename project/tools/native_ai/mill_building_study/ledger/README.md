@@ -14,6 +14,22 @@ their complete attached graph remains in the external raw evidence. No native
 index is inferred from SQLite row order. The world collector must capture actual
 `GameInfo` indexes before attachment.
 
+## Current forecast crosswalk
+
+`contributions.json` preserves the source-only pre-probe inventory. Its original
+unmeasured status fields are historical. `forecast_coverage.json` is the current
+26-group classification, reconciled against the closed native analysis. It
+records176 observations for all88 building/root attachments, assigned exactly
+once using both owning table and modifier identity. All39 source pins match.
+The JSON retains native input hashes and each root's accepted/Q8/child count.
+
+Use the maintained human page
+`project/docs/civ6-ai/topics/csc/forecast-coverage.md` for the readable map.
+Update it and this crosswalk together after new evidence; revalidate source
+hashes and exact root ownership before carrying classifications across revisions.
+Group/handler counts are not a percentage of the real economy understood.
+Zero at a parent without children does not prove a missing child analyzer.
+
 ## What is implemented
 
 Only Bakers and Tailors Quarter actions use `UpdateDatabase`. The other six

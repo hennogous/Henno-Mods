@@ -1,3 +1,18 @@
+# Current priority: CSC gameplay-to-forecast coverage —5 November2026
+
+Henno explicitly defers the Mill repair issue: watch for comparable states in
+longer ordinary test games, do not get stuck on dedicated reproduction. No
+new game is authorized by this priority note. Current task maps which CSC
+benefits the later native building uplift represents, misvalues, misses or has
+not measured. Source22groups+4common/39hashesmatch, all88BM attachments/176
+observations uniquely assigned. Maintain topics/csc/forecast-coverage.md and
+ledger/forecast_coverage.json. Important: accepted-zero Services without child
+calls are not proved unsupported. Improvement/customer/CityCenter-owned income
+is outside producer-root scope. Preserve amenities/local exchanges, distinguish
+false Mill alternatives/WonderGPP from missing material/tourism/grants. Population
+sales, incoming materials, routes/staffing remain attribution priorities. No
+new tuning, CE API, native hooks or runtime sessions in this mapping work.
+
 # Current: combined Mill/building study completed —5 November2026
 
 Native observation finished in run03, all game/Tuner owners closed normally,

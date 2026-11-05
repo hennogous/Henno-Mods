@@ -161,3 +161,18 @@ No fix or more games authorized from stale notes. All3 nativeprocesses exit0,
 153prefs/150IDs/autostartfalse restored; isolatedcopiesretiredhashverified,
 humanCSC/stockCEuntouched. Rootreport/C058/guidesupdated. Driverrepair_check.py
 maintained. Evidence Desktop/Codex/csc-mill-normal-repair-20261105/run-03.
+
+
+## Effect-coverage mapping and Mill deferral
+
+Henno: leave repair for observation in longer ordinary games, avoid getting stuck.
+No further game/repair investigation. Offline crosswalk verifies39sourcepins,
+22source+4common groups,88building/root tuples eachcapturedAI1/2=176observations,
+0unmapped/duplicate. Owningtable filter avoids incorrectly assigning export supply
+BM properties to CityCenter trade consumers just because prefixes match.
+New maintained topic forecast-coverage.md, portable ledger/forecast_coverage.json,
+dated csc-ai-effect-coverage-map-20261105.md. Servicesgrowth/Housing/Faith/severalGPP
+andgrants accepted0withoutchildren: notunsupportedproof. ReachedTourism/Cafegrant
+missinghandlers andmaterialnulliterator remain scoped. Mostimportantunknowns
+population sales/incoming materialincome/routes/staffing. No percentages, weights,
+API changes or newruntime. Guide/currentagenda reconciled; oldrepairproposals historical.

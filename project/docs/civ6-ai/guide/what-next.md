@@ -1,9 +1,10 @@
 # What we’re investigating
 
 We now have a measured building ledger for both implemented Quarter families.
-The next step is to resolve a repair discrepancy and choose one specific forecast
-mismatch to correct. The CE/Lua port restored our development capability; it did
-not itself improve the placement formula.
+The coverage map now distinguishes represented, missing, misvalued and
+unmeasured CSC relationships. Next, attribute the important unknown channels
+and choose a specific correction. The CE/Lua port restored our development
+capability; it did not itself improve the placement formula.
 
 ## Completed: smaller Mills and the building ledger
 
@@ -32,12 +33,23 @@ The cities use explicit diagnostic grants; these are not universal weights or
 proof of economic improvement. No AI tuning or CE API changed.
 [Read the combined results and limitations](../../research/mods/csc-ai-mill-building-study-20261105.md).
 
-## Next: resolve repair, then correct a measured relationship
+## Next: close the important forecast gaps
 
-Normal production repair did not recover the affected checkpoint. The next
-repair question is modifier activation/invalidation and whether a pristine
-gameplay lifecycle reproduces it. Healthy flags and properties alone do not
-establish payout; keep this separate from AI score corrections.
+The [effect-by-effect coverage map](../topics/csc/forecast-coverage.md) separates
+roughly represented benefits, false credit, missing handlers, accepted zeros and
+unmeasured channels. All22 gameplay groups and4 common components are mapped;
+all88 measured building-root attachments are assigned once.
+
+The main unmeasured relationships are ordinary population sales, material income
+received by producers, trade returns and specialist staffing. These often live
+outside the producer's own roots. The next useful attribution should separate
+current delivered income from a hypothetical unbuilt chain on a particular site.
+Do not turn the zero-valued growth/Housing/Faith/naval Services into a claim that
+all those effects are unsupported.
+
+Henno deferred dedicated Mill repair investigation. Watch for comparable cases
+in longer ordinary test games and retain lifecycle/payout facts; it is not a
+blocker for this AI work or a reason for another dedicated game now.
 
 For AI steering, choose a specific alternative-recipient, Wonder-GPP or missing
 material case. Preserve amenities and other justified native contributions,

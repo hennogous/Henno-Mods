@@ -72,6 +72,24 @@ Their score proportions are examples, not universal weights or evidence of a
 better empire. A negative raw Workshop value also becomes positive when native
 prerequisite propagation includes its valuable descendants.
 
+## Our current coverage map
+
+We have now matched the source effects to their forecast channels, rather than
+assuming that observing every Quarter building covers the whole economy.
+
+| Treatment | Current examples |
+| --- | --- |
+| Preserve useful native value | Amenities and ordinary local producer exchanges |
+| Correct false credit | Mill geography, both Mill alternatives, absent-Wonder GPP |
+| Account for established missing paths | Producer returns to improvements; reached Tourism and Service grants |
+| Measure before adding a bonus | Population sales, incoming material yields, routes, specialist staffing and regional reach |
+| Find an eligible positive case first | Zero-valued growth, Housing, Faith, naval Production and related GPP |
+
+The [full map](../topics/csc/forecast-coverage.md) covers both implemented Quarters,
+including the directions and conditions of each relationship. A state flag or
+hidden marker is not another economic benefit. The Mill repair discrepancy is
+being left for observation in longer games, without blocking this model work.
+
 ## Hidden eligibility markers are not economic development
 
 The hidden River Access markers are another implementation detail the AI can

@@ -1,0 +1,1982 @@
+{
+  "schema": 1,
+  "date": "2026-11-05",
+  "scope": "Current core Bakers/Tailors source; classified using the closed two-city six-boundary capture. No new native execution.",
+  "source_inventory": "project/tools/native_ai/mill_building_study/ledger/contributions.json",
+  "source_inventory_sha256": "d8697ab712654d2fe6ebdd658250fc45d606c34e1f122186470250238d8c0a5e",
+  "analysis_sha256": "8cb93ea62083d1774c2b889a5be6f66ebdd4bc3032d1f0c4bc3bb8f411074f30",
+  "native_inputs": {
+    "trace": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-mill-building-study-20261105\\run-03\\probe\\trace-frozen.json",
+    "trace_sha256": "026e421378a1dd9808e3ea923c2b13bc779fef5dda7ef77f2313653b999f2538",
+    "world": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-mill-building-study-20261105\\run-03\\probe\\source-world.json",
+    "world_sha256": "49e31963f01f9e6220bee8c2bba0ab33f40adc3d874edb1ee593ea7b871b427e"
+  },
+  "status_legend": {
+    "represented": "Rough effect value observed; not proof of complete site/gate fidelity.",
+    "misvalued": "Nonzero forecast with a demonstrated eligibility or magnitude mismatch.",
+    "missing_here": "Observed null native handler/iterator through the specified channel.",
+    "zero_context": "Accepted zero at these contexts; child/support or eligible positive case not established.",
+    "unmeasured": "Outside scoped attribution or not separately measured; not a zero claim.",
+    "mixed": "Different directions/subeffects have different coverage.",
+    "structural": "Native investment/eligibility bookkeeping, not an independent economic yield.",
+    "no_standalone": "State/visual signal with no independent economic reward."
+  },
+  "validation": {
+    "source_pins_match": 39,
+    "source_groups": 22,
+    "common_groups": 4,
+    "building_root_attachments": 88,
+    "native_root_observations": 176,
+    "unmapped_building_roots": 0,
+    "duplicate_assignments": 0
+  },
+  "groups": [
+    {
+      "id": "mill_local_steps",
+      "status": "misvalued",
+      "label": "Wind/Water conditional Quarter Production",
+      "native_assessment": "All1/3 steps credited without candidate geography; owner-property gates omitted.",
+      "next_question": "Replace the false unconditional forecast only once its existing native value and real site benefit are compared.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql",
+        "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyModifiers.sql",
+        "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyCore.lua"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "ATTACH_MOD_CSC_ADJ_CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER_STEP_1",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 2560,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 2304,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "ATTACH_MOD_CSC_ADJ_CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER_STEP_2",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 2560,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 2304,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "ATTACH_MOD_CSC_ADJ_CSC_BAKERS_WATER_MILL_PRODUCTION_FROM_RIVER_STEP_3",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 2560,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 2304,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "ATTACH_MOD_CSC_ADJ_CSC_BAKERS_WIND_MILL_PRODUCTION_FROM_HILLS_STEP_1",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 2560,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 2304,
+              "child_callbacks": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bakers_material_food_input",
+      "status": "unmeasured",
+      "label": "Improved materials give Mill/CafÃ© Food",
+      "native_assessment": "Owned by improvements, outside the building-root capture. Live building yield is a known native input, but this specific future supply is not attributed.",
+      "next_question": "Separate existing improved supply from unimproved future supply; trace live GetYieldChange.",
+      "source_channel": "live_building_yield_input",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "bakers_material_reciprocity",
+      "status": "missing_here",
+      "label": "Mill/CafÃ© return Production and Gold to improvements",
+      "native_assessment": "Captured producer Attach roots return false with no collection iterator.",
+      "next_question": "Candidate missing benefit; price actual eligible worked improvements, not every resource.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC_PROD",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bakers_granary_exchange",
+      "status": "zero_context",
+      "label": "Millâ€“Granary ordinary exchange",
+      "native_assessment": "Mill outgoing root accepted zero; no child recorded. Granary-owned reciprocal roots are outside the19-building family.",
+      "next_question": "Use a known eligible Granary relationship; distinguish each direction and actual site adjacency.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bakers_local_building_exchange",
+      "status": "mixed",
+      "label": "Millâ€“Bakery/CafÃ© ordinary exchange",
+      "native_assessment": "Both directions receive native value, but Bakery/CafÃ© credit Wind and Water alternatives together.",
+      "next_question": "Preserve ordinary local exchange; remove alternative-recipient overcount rather than adding it again.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_GOLD_TO_WATER_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 512,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 256,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_GOLD_TO_WIND_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 512,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 256,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_PROD_TO_WATER_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_PROD_TO_WIND_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_GOLD_TO_WATER_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 256,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 256,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_GOLD_TO_WIND_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 256,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 256,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_PROD_TO_WATER_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_PROD_TO_WIND_MILL",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_FOOD_TO_CAFE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_FLOUR_MILL_FOOD_TO_BAKERY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_FOOD_TO_CAFE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bakers_stage2_service",
+      "status": "zero_context",
+      "label": "Storekeeper growth and Engineer GPP",
+      "native_assessment": "Growth/GPP/grant roots accepted zero; child effects not reached in the captured contexts.",
+      "next_question": "Positive eligible-context attribution before claiming growth or GPP unsupported.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WATER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_EFFECT_ATTACH_CITY_WIND",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_GPP_ATTACH_CITY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_SERVICE_ATTACH_CITY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bakers_stage3_service",
+      "status": "zero_context",
+      "label": "Innkeeper Housing, Merchant GPP and slot",
+      "native_assessment": "Service roots accepted zero; no child effects reached here.",
+      "next_question": "Measure Housing/GPP separately from grant and staffing; do not infer handler absence.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_STAGE_3_EFFECT_ATTACH_COMHUB",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_STAGE_3_GPP_ATTACH_COMHUB",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_STAGE_3_SERVICE_ATTACH_COMHUB",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bakers_stage4_service",
+      "status": "mixed",
+      "label": "Groundskeeper/Ride Technician tourism, GPP and slot",
+      "native_assessment": "Reached Tourism and building-grant children lack effect analyzers; CafÃ© ENTER GPP returns768Q8 in AI1, while other branch roots are zero. Owner gates remain unsafe.",
+      "next_question": "Separate supported GPP, missing Tourism/grant and true supply/civic/customer eligibility.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_ENTERTAINMENT",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_STAGE_4_EFFECT_ATTACH_WATER_PARK",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_ENTER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_STAGE_4_GPP_ATTACH_WATER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_ENTER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_STAGE_4_SERVICE_ATTACH_WATER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bakers_market_population_sale",
+      "status": "unmeasured",
+      "label": "Bakeryâ€“Market population sales",
+      "native_assessment": "CityCenter property consumers are outside this producer-root window; no future-chain attribution.",
+      "next_question": "High-priority boundary: customer and seller sides,0.105 per customer citizen, real functioning adjacency.",
+      "source_channel": "citycenter_population_property_consumer",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql",
+        "Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "bakers_cafe_population_sale",
+      "status": "unmeasured",
+      "label": "CafÃ©â€“Zoo/Ferris population sales",
+      "native_assessment": "CityCenter stack consumers are outside this producer-root window.",
+      "next_question": "Trace both directions and floor each customer population/5 before summing.",
+      "source_channel": "citycenter_stack_property_consumer",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "Civ Supply Chains/Data/CSC_Q_BAKERS_GOLD.sql",
+        "Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "river_flags_and_prerequisites",
+      "status": "structural",
+      "label": "River eligibility and producer prerequisites",
+      "native_assessment": "Raw flag values zero; MustPurchase excludes direct district addition, but River Access receives Water through propagation; first-prerequisite timing is separate.",
+      "next_question": "Preserve legality; measure timing artifacts before removing flags or treating propagated values as paid flag benefits.",
+      "source_channel": "district_grant_and_native_prerequisite_structure",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "tailors_material_inputs",
+      "status": "unmeasured",
+      "label": "Improved materials give Workshop/Fashion House Culture",
+      "native_assessment": "Improvement-owned receiver income is outside the scoped producer-root vector.",
+      "next_question": "Trace current live income versus hypothetical future improvement/producer.",
+      "source_channel": "live_building_yield_input",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "tailors_material_reciprocity",
+      "status": "missing_here",
+      "label": "Workshop/Fashion House return Production and Gold to improvements",
+      "native_assessment": "Captured producer roots return false with null collection iterator.",
+      "next_question": "Evaluate genuinely eligible material improvements; avoid adding already delivered live income twice.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_GOLD",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_PROD",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": false,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tailors_local_exchange",
+      "status": "represented",
+      "label": "Workshopâ€“Tailor/Fashion House local exchange",
+      "native_assessment": "Outgoing Culture and returning Workshop Production/Gold receive nonzero native values in both cities.",
+      "next_question": "Preserve roughly represented local exchange; timing/recipient absence remain approximations.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 512,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 256,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_FASHION_HOUSE_PROD_TO_WORKSHOP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TAILOR",
+          "modifier": "MOD_CSC_TAILORS_TAILOR_GOLD_TO_WORKSHOP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 512,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 512,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TAILOR",
+          "modifier": "MOD_CSC_TAILORS_TAILOR_PROD_TO_WORKSHOP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 1024,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_FASHION_HOUSE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_WORKSHOP_CULTURE_TO_TAILOR",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 1280,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tailors_lighthouse_exchange",
+      "status": "zero_context",
+      "label": "Workshopâ€“Lighthouse ordinary exchange",
+      "native_assessment": "Outgoing Workshop root accepted zero; no eligible Harbor supplied in these cities. Lighthouse-owned reciprocal roots outside capture.",
+      "next_question": "An eligible coastal case is needed; zero is not proof of missing support.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_WORKSHOP_ATTACH_HARBOR_LIGHTHOUSE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tailors_stage2_service",
+      "status": "zero_context",
+      "label": "Dockmaster naval Production, Admiral GPP and slot",
+      "native_assessment": "Twelve naval roots and other Service roots accepted zero here; no eligible Lighthouse case.",
+      "next_question": "Measure eligible naval production before declaring unsupported or inventing generic Production value.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_ANCIENT_NAVAL_MELEE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_ANCIENT_NAVAL_RAIDER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_ANCIENT_NAVAL_RANGED",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_CLASSICAL_NAVAL_MELEE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_CLASSICAL_NAVAL_RAIDER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_CLASSICAL_NAVAL_RANGED",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_MEDIEVAL_NAVAL_MELEE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_MEDIEVAL_NAVAL_RAIDER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_MEDIEVAL_NAVAL_RANGED",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_RENAISSANCE_NAVAL_MELEE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_RENAISSANCE_NAVAL_RAIDER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_DOCKMASTER_ATTACH_RENAISSANCE_NAVAL_RANGED",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tailors_stage3_service",
+      "status": "zero_context",
+      "label": "Sacristan Faith, Prophet GPP and slot",
+      "native_assessment": "Faith/GPP/grant roots accepted zero with no children reached in these contexts.",
+      "next_question": "Measure positive eligible branch and its gates; do not price entire Service from this zero.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_TAILORS_TAILOR",
+          "modifier": "MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TAILOR",
+          "modifier": "MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TAILOR",
+          "modifier": "MOD_CSC_TAILORS_STAGE_3_SERVICE_ATTACH_HOLY_SITE",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tailors_stage4_service",
+      "status": "mixed",
+      "label": "Stage Manager/Wonder Tourism, Artist GPP and markers",
+      "native_assessment": "Three absent-Wonder GPP roots each credit768Q8 in both cities; reached Tourism children lack analyzers; Theater grant root zero/unexpanded.",
+      "next_question": "Correct false Wonder GPP; keep Tourism, grant/slots and genuine recipients separate.",
+      "source_channel": "candidate_building_modifier",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Lua_UI/WonderServices/CSC_WonderServicePlacement.lua"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_4_SERVICE_ATTACH_THEATER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BOLSHOI",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_BROADWAY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_CUSTOMER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_SYDNEY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 768,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BOLSHOI",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_BROADWAY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 1
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_CUSTOMER",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_ATTACH_SYDNEY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 5
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tailors_stage3_population_sale",
+      "status": "unmeasured",
+      "label": "Tailorâ€“Market/Temple population sales",
+      "native_assessment": "CityCenter consumers outside this building-root capture.",
+      "next_question": "High-priority future-chain measurement; customer population and both return directions.",
+      "source_channel": "citycenter_population_property_consumer",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
+        "Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "tailors_stage4_population_sale",
+      "status": "unmeasured",
+      "label": "Fashion Houseâ€“Theater/Wonder population sales",
+      "native_assessment": "CityCenter stack consumers outside this building-root capture.",
+      "next_question": "Trace exact functioning venues/plots and per-customer floor(population/5).",
+      "source_channel": "citycenter_stack_property_consumer",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
+        "Civ Supply Chains/Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "trade_route_transactions",
+      "status": "unmeasured",
+      "label": "Food/Culture/Amenity imports and producer exports",
+      "native_assessment": "Route-dependent CityCenter consumers outside this window; supplied-property writer zero is not an export forecast.",
+      "next_question": "Separate existing-route income from new route/destination/producer forecasts; fixed CSC payouts and route opportunity costs.",
+      "source_channel": "citycenter_route_property_consumer",
+      "source_refs": [
+        "Civ Supply Chains/Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.lua",
+        "Civ Supply Chains/Lua_UI/TradeRoutes/CSC_TradeRouteInteractions_Gameplay.lua",
+        "Civ Supply Chains/Lua_UI/TradeRoutes/CSC_BTS_TradeRoutePreviewSupport.lua"
+      ],
+      "building_root_evidence": []
+    },
+    {
+      "id": "non_yield_properties",
+      "status": "no_standalone",
+      "label": "Supply, Service and art properties",
+      "native_assessment": "Accepted zero results for state writers; flags are not economic yield streams.",
+      "next_question": "Do not incentivise the flag itself. Trace economic consumers; visual art needs no economic bonus.",
+      "source_channel": "state_property",
+      "source_refs": [
+        "Civ Supply Chains/Data/CSC_Q_BAKERS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Lua_UI/ArtProperties/CSC_ArtProperties.lua"
+      ],
+      "building_root_evidence": [
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_EXPORT_BAKERY_SUPPLIED_PROP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_BAKERY",
+          "modifier": "MOD_CSC_BAKERS_STAGE_3_PROP_HOUSING",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_EXPORT_CAFE_SUPPLIED_PROP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_CAFE",
+          "modifier": "MOD_CSC_BAKERS_STAGE_4_PROP_TOURISM",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WATER_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_PROP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_BAKERS_WIND_MILL",
+          "modifier": "MOD_CSC_BAKERS_STAGE_2_PROP",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE_PROPERTY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "modifier": "MOD_CSC_TAILORS_STAGE_4_ART_PROPERTY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TAILOR",
+          "modifier": "MOD_CSC_TAILORS_STAGE_3_ART_PROPERTY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TAILOR",
+          "modifier": "MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        },
+        {
+          "building": "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "modifier": "MOD_CSC_TAILORS_STAGE_2_ART_PROPERTY",
+          "observations": [
+            {
+              "player": 1,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            },
+            {
+              "player": 2,
+              "accepted": true,
+              "q8": 0,
+              "child_callbacks": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intrinsic_amenities",
+      "status": "represented",
+      "label": "Local and regional building amenities",
+      "native_assessment": "Large direct amenity components measured for four later buildings; one recipient per call in these cities.",
+      "next_question": "Preserve normal amenity reasoning; candidate-specific regional reach/overlap remains untested.",
+      "source_channel": "common_native_component",
+      "source_refs": [],
+      "building_root_evidence": []
+    },
+    {
+      "id": "specialist_slots",
+      "status": "unmeasured",
+      "label": "Producer and Service specialist staffing",
+      "native_assessment": "Specialist source rows known, but no separate attribution of staffing, returns or displaced citizen work.",
+      "next_question": "Do not convert slots into passive yields or treat unknown as missing zero.",
+      "source_channel": "common_native_component",
+      "source_refs": [],
+      "building_root_evidence": []
+    },
+    {
+      "id": "hidden_grants",
+      "status": "mixed",
+      "label": "Internal Service buildings and river flags",
+      "native_assessment": "No direct district contribution under MustPurchase; reached CafÃ© grant children unsupported. Some hidden Service raw values20595Q8 are structural/unattributed.",
+      "next_question": "Do not call hidden raw values Service benefit; preserve eligibility and separate grants, staffing and structural artifacts.",
+      "source_channel": "common_native_component",
+      "source_refs": [],
+      "building_root_evidence": []
+    },
+    {
+      "id": "native_prerequisites_and_units",
+      "status": "structural",
+      "label": "Building costs, unlocks, timing and prerequisite chains",
+      "native_assessment": "Readiness and positive raw district sums reconcile; mutable construction vectors separately propagate descendants. Negative own Workshop becomes positive with descendants.",
+      "next_question": "Preserve costs/timing/chain reasoning; residual terms and exact hidden-depth effects not separately attributed.",
+      "source_channel": "common_native_component",
+      "source_refs": [],
+      "building_root_evidence": []
+    }
+  ],
+  "limits": [
+    "All19 captured building outputs do not cover all economic owners: improvements, customers and CityCenter consumers remain distinct.",
+    "No percent of gameplay value understood can be computed from counts of groups/roots.",
+    "Owner gates and candidate geography are not certified by nonzero callbacks.",
+    "Optional M&C/LGD and six inactive Quarters are outside runtime qualification.",
+    "No weights, CE API, gameplay implementation or repair investigation changed."
+  ],
+  "outside_building_layer": [
+    {
+      "id": "quarter_adjacencies",
+      "status": "separate_early_model",
+      "note": "Ordinary resource/customer/river adjacency is in the earlier site policy; not all district-owned native forecast channels qualified by this building capture."
+    },
+    {
+      "id": "quarter_container_rules",
+      "status": "unmeasured_csc_attribution",
+      "note": "District construction/copy-scaled costs, maintenance, appeal/defensive strength, pillage/capture and legality are not new future-building benefit rows."
+    },
+    {
+      "id": "optional_and_inactive_profiles",
+      "status": "outside_runtime_scope",
+      "note": "M&C/LGD and resource/customer compatibility need profile qualification; six inactive Quarters have no current loaded building forecast."
+    }
+  ]
+}

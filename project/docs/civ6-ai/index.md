@@ -29,7 +29,7 @@ flowchart LR
   D --> A
 ```
 
-We traced the large Bakers building forecast to the Mills’ adjacency encoding and replaced its ten-bit capacity with one Wind step and three Water steps. Twenty native payout/locality cases now pass; direct and normal queued repair both leave the affected checkpoint without its Mill bonus. The new building ledger shows that amenities, some false forecasts and some missing CSC benefits all matter. [Current results and next questions](guide/what-next.md).
+We traced the large Bakers building forecast to the Mills’ adjacency encoding and replaced its ten-bit capacity with one Wind step and three Water steps. Twenty native payout/locality cases now pass; direct and normal queued repair both leave the affected checkpoint without its Mill bonus. The new building ledger shows that amenities, some false forecasts and some missing CSC benefits all matter. [Read the effect-by-effect coverage map](topics/csc/forecast-coverage.md) or the [current questions](guide/what-next.md).
 
 ## Reading the evidence
 
