@@ -1,3 +1,11 @@
+# High priority: native code maintainability — 5 November 2026
+
+Follow the closest CE `develop` feature's hook/runtime conventions and C++
+idioms, and label native addresses and offsets with their roles and evidence.
+Check this separately from runtime correctness before a CE scope review or PR.
+The tested early-score port still needs this work. See
+`feedback_ce_api_maintainability.md` and the CE contribution handoff.
+
 # Latest AI result: late Quarter placement write — 5 November 2026
 
 Henno authorized a late-write proof followed by corrections priced in native Q8.

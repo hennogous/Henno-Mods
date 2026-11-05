@@ -1786,8 +1786,8 @@
       "title": "CE API contribution reset: develop, scope and maintainability",
       "kind": "report",
       "date": "20261105",
-      "bytes": 18840,
-      "sha256": "a8c3b601bb01b2e618a4380a1ae894d4171b88944ad4719c4687c861bcdd0716",
+      "bytes": 20360,
+      "sha256": "9cb250589a8334d0aa5405583ef22dcad06f97835220d186ed9e8ae7fb412e04",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ce-develop-port-20261105.md"
     },

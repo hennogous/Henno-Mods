@@ -19,6 +19,22 @@ Quartz/Pages workflow publishes the handbook at
 https://hennogous.github.io/Henno-Mods/ai/ alongside the public CSC documentation.
 See `project/docs/civ6-ai/maintenance.md` for builds, source hashes and corrections.
 
+## Native code and Community Extension contributions
+
+Treat maintainability as a high-priority review requirement from the first
+implementation. Start with the nearest feature on CE `develop` and follow its
+C++ style, module structure, hook and runtime APIs, and lifecycle. Keep raw
+MinHook calls inside CE's shared hook layer. If it lacks a required behavior,
+document the gap and keep any shared change small and reviewable.
+Use idiomatic C++ for ownership, locking, types and cleanup. Keep a thin C or
+assembly boundary only where the native ABI requires it.
+
+Give every new native address and layout offset a descriptive name. Record
+its role, binary identity and evidence, and explain the ABI and failure behavior
+beside code that relies on them. Check these requirements separately from
+functional tests. Review the contribution with Henno before any upstream PR.
+See the [CE contribution handoff](project/docs/research/mods/csc-ce-develop-port-20261105.md#maintainability-is-a-contribution-requirement).
+
 **Civ Supply Chains** is a Civ VI mod by Henno that adds 8 industry-based "Quarters" (custom districts) with a 5-stage economic model:
 
 > materials extraction → intermediate goods → consumer goods → specialty goods → goods sales

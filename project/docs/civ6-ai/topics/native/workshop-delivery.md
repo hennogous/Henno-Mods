@@ -68,7 +68,8 @@ Online100 regression also passes: 101 matching plans, all four trace families,
 62 increases/13,746 deductions, zero native faults, context/save/reload and
 verified closure/restoration. This independently qualifies the new artifact's
 bounded method; it does not inherit or match the old world's outcomes.
-No new PR is authorized before scope review.
+Before scope review for a new PR, bring the tested port into line with CE's
+hook layer and C++ conventions, and name native addresses and layout fields.
 [Port, offline checks and handoff](../../../research/mods/csc-ce-develop-port-20261105.md).
 
 The independent CSC DLL remains a delivery experiment. It is not the selected

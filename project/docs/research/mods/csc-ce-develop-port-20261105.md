@@ -84,6 +84,30 @@ The review preserves program tokens while changing comments/layout; a reviewer
 walkthrough and explicit qualification limits accompany the code. Neither good
 comments nor the historical Online100 result substitutes for fresh native tests.
 
+Henno subsequently made upstream conventions a high-priority requirement after
+WildW's feedback on direct MinHook use, C-style implementation and unlabeled
+native addresses. The tested port still has all three. Its earlier review covered
+readability and behavior preservation. Upstream fit remains a separate gate for
+the replacement contribution, including any late placement API.
+
+- **Start from the closest upstream feature.** `AI.cpp` and `AI.h` show the
+  current `develop` pattern for typed GameCore functions, named offsets and
+  hooks installed through `Runtime`. Review the latest base before editing.
+- **Keep hook management in CE's shared layer.** `AIDistrictScores.c` currently
+  calls MinHook directly to stage a group and clean up after partial failure.
+  `Runtime::CreateHook` in the reviewed base enables immediately and returns
+  `void`. A compatible port needs to preserve qualification, failure reporting
+  and rollback. Discuss a small shared helper change if the existing API still
+  lacks those guarantees.
+- **Use idiomatic C++ and name the native contracts.** Match CE's structure,
+  types and lifetime handling. Keep the ABI shim narrowly scoped. Give each
+  address and field offset a descriptive constant with its module, role and
+  versioned evidence. Put ABI, ownership and thread/lifecycle comments beside
+  the code that depends on them.
+
+Review the resulting diff for these conventions and rerun the supported build
+and native regression before presenting it to Henno for scope review.
+
 ## Initial offline handoff: build environment prepared
 
 At the initial handoff, the host had the older ModBuddy VS2013 shell/MSBuild12 and SDK8.x, but lacked
