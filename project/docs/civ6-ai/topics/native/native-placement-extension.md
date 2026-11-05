@@ -6,6 +6,10 @@
 > See [Workshop delivery](workshop-delivery.md) for the demonstrated independent
 > carrier and the development-fork score API, which is not in released CE.
 
+> 5 November: the master-based PR is closed. The API-only develop source port is
+> reviewed and has isolated C checks; supported build and native qualification
+> remain pending. [Current handoff](../../../research/mods/csc-ce-develop-port-20261105.md).
+
 A native extension now has a working experimental bridge at the ordinary
 district score/cache boundary. In a matched one-save trial, a single+1 utility
 adjustment reached the completed cache, native winner's score, present value

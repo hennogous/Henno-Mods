@@ -1,6 +1,6 @@
 # Workshop delivery and Community Extension
 
-**Current carrier: a qualified development CE fork; upstream release remains open.**
+**Current status: preserved qualified prototype; develop port awaiting build/native checks.**
 Henno prefers CSC to ship Lua/SQL and depend on Community Extension, rather than
 ship and maintain its own DLL.
 
@@ -54,9 +54,16 @@ The [parity report](../../../research/mods/csc-ce-policy-parity-20261104.md)
 preserves the first reporting failure and both transport corrections. The API
 is absent from released CE1.3; maintainer acceptance and a released upstream
 dependency remain separate. A private fork is not the same as stock CE.
-The qualified branch is now
-[draft PR9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9)
-for WildW's review.
+On5 November Henno approved closing
+[draft PR9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9),
+preserving the tested branch and preparing an API-only feature branch from
+upstream `develop`. The new source integration preserves develop's lifecycle and
+uses the existing Visual Studio/vcpkg approach, without the alternate Zig builder.
+Readability, native contracts and failure behavior are documented beside the code.
+The host's supported compiler/SDK are absent; installation and native tests are
+deferred until Henno is at the keyboard. Earlier Online100 proof does not qualify
+this new artifact. No new PR is authorized before scope review.
+[Port, offline checks and handoff](../../../research/mods/csc-ce-develop-port-20261105.md).
 
 The independent CSC DLL remains a delivery experiment. It is not the selected
 release architecture. Local native loading and tiny score delivery are proved;

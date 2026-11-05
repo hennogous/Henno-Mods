@@ -54,7 +54,7 @@ flowchart TD
 
 The released CE we tested has memory tools, but lacks this typed scoring interface. Our fork adds the native hook, numeric batch publication, scope and version checks, context reset and diagnostics. Keeping those responsibilities native avoids calling arbitrary Lua from the scoring worker.
 
-The preferred release arrangement is **CSC supplies Lua policy → released CE supplies the native capability**. [Draft PR 9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9) proposes the generic capability to WildW. Until acceptance and release, we need the development fork. A separate CSC native component is a possible fallback, but running it alongside stock CE has not been qualified. Lua alone cannot add the tested implementation to stock CE.
+The preferred release arrangement is **CSC supplies Lua policy → released CE supplies the native capability**. The earlier master-based draft PR is closed. We are preparing a focused `develop`-based API contribution using CE’s existing build, with clearer code comments and a fresh qualification step. Its final scope will be reviewed with Henno before another PR. Until acceptance and release, we need the development fork; stock CE lacks the tested implementation. [Current port and remaining checks](../../research/mods/csc-ce-develop-port-20261105.md).
 
 ## Keep steering meaningful
 

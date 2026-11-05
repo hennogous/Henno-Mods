@@ -1,12 +1,18 @@
 # Workshop delivery prototypes
 
 **Preferred release:** CSC Lua/SQL with a Community Extension dependency. The
-current development carrier is the
-[CE fork](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/feature/ai-district-scores),
+preserved tested carrier is the
+[earlier CE fork](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/feature/ai-district-scores),
 with `ce_policy/` and `ce_parity/`. Its unchanged v2 policy completed a bounded
 Online100 test, including same-process context reset and save/load checks.
 Stock CE1.3 lacks the API; upstream adoption and release qualification remain
 separate. No installed CSC content is changed by these tools on import or build.
+
+The master-based draft PR is closed. The API-only
+[develop port](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/feature/ai-district-scores-develop)
+has source review and offline checks; supported MSVC and native qualification
+remain pending. It uses the existing CE project without the alternate whole-CE
+builder. See `project/docs/research/mods/csc-ce-develop-port-20261105.md`.
 
 See `project/docs/research/mods/csc-native-workshop-delivery-20261104.md` and the
 maintained `project/docs/civ6-ai/topics/native/workshop-delivery.md` for results.

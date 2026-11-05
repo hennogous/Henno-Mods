@@ -1,5 +1,10 @@
 # Restoring the Python placement test through Community Extension
 
+> 5 November follow-up: the master-based draft PR is closed and the tested fork
+> is preserved. A focused develop-based source port is prepared; supported build
+> and native qualification are pending. The runtime result below belongs to the
+> original artifact. [Current port and handoff](csc-ce-develop-port-20261105.md).
+
 4 November 2026. Henno authorized a CE development fork to regain the placement
 test capabilities of the local Python/Frida setup. This is a carrier and test
 port, not a new scoring policy. The intended release remains CSC Lua/SQL plus an

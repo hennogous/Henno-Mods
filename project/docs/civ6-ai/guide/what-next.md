@@ -51,7 +51,7 @@ Once the ledger identifies a specific mismatch, apply a bounded correction and c
 
 ## Release work continues separately
 
-The CE proposal is a draft. Actual Workshop subscription, broader compatibility and supported versions need qualification before a release claim. Those delivery questions differ from whether the economic policy is good.
+The earlier CE draft is closed. An API-only `develop` port is prepared for fresh supported-build and native checks; toolchain installation is deferred until Henno is at the keyboard. We will agree on the capability scope before a later PR. Actual Workshop subscription and broader compatibility remain separate from both this port and the economic policy. [Contribution status](../../research/mods/csc-ce-develop-port-20261105.md).
 
 This page carries the short current agenda. The [technical roadmap](../roadmap.md) and [broader question backlog](../topics/history/open-questions.md) retain detail and history.
 

@@ -13,7 +13,7 @@ We are learning how Civ VI turns the map and its empire’s needs into decisions
 
 We can adjust how valuable the AI thinks a particular **district at a particular tile in a particular city** would be, then let its ordinary decision and construction systems act on that value. In one controlled example, this changed its choice from a Neighborhood to a Tailors’ Quarter at the same tile; the AI subsequently built and completed the Quarter itself.
 
-The current policy runs from packaged Lua through our **Community Extension development fork**. A bounded Online-speed game reached turn 100, with matching Lua/Python plans and no reported native API faults. The released CE we tested lacks this API. Our changes are in [draft PR 9](https://github.com/Wild-W/CivilizationVI_CommunityExtension/pull/9); acceptance and release remain open.
+Packaged Lua and an earlier **Community Extension development fork** completed an Online-speed game through turn 100, with matching Lua/Python plans and no reported native API faults. The released CE we tested lacks this API. We have since closed the premature master-based PR and prepared a focused port onto CE’s `develop` branch. Its supported build and native regression remain pending; the earlier result qualifies the preserved prototype, not the new port. [Current contribution status](../research/mods/csc-ce-develop-port-20261105.md).
 
 These results establish control over an input and some natural follow-through. They do **not** yet establish better empire performance or reliable, profitable supply chains. [See the demonstrations and limits](guide/steering-the-ai.md).
 

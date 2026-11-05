@@ -1,0 +1,44 @@
+# CE develop source port and deferred build —5 November2026
+
+Userapprovedplan: closeprematurePR9, preserveoldtestedfork, API-onlydevelopport,
+supportedMSVCbuild/nativecheck, continuedAPIscopereview, laterPRsafterapproval.
+Explicitnewmaintainabilityrequirement: veryclearcommentsandreadablecode forWildW.
+Read feedback_upstream_pr_review.md andfeedback_ce_api_maintainability.md.
+
+PR9 CLOSED06:39:18UTC withapprovedexplanation. Oldremote/localCE-fork cleanat
+a928eb8b4298ed24dc2d74be0123ca2da434ed63. Isolatednewrepo:
+Desktop/Codex/csc-ce-develop-port-20261105/source. Developbase2986a746b396eb93aad14f9afffb043a09c2c489.
+Branchfeature/ai-district-scores-develop pushedcommitsf9eda1c+87f48fc, clean.
+No newPR; noCSCspecificpolicy or alternateCEbuilderinthatbranch.
+
+Sourceindependentcorrectness+maintainabilityreviewsPASS. C985lines afterformat;
+7774Ctokens/53headertokens+allPPdirectivessame. FinalC7a6cdf2abe5770268af51d23b2d45e7db0edcd6ee5605bc557785e766a4a6343.
+OnlyMain11lines, existingMSVCproject/filterwiring, fivegenericnativefiles plus
+isolatedtestdriver. Preservecurrentdeveloplogger/call_once/exports/lifecycle.
+36isolatedCchecksPASS viaalreadyavailableZig0.15.2 (NOTwholeCE/MSVC/MASM/game).
+24Lua,17harness/package,164sharedcontrollerPASS. Offlineharnessnowselects
+distinctCSCtestID/pinsactualdependencyCore; defaultIDsunchanged. Portablefixture
+suppliesfakeuserdirinstead ofassumingrealLOCALAPPDATA insideWindowsApps sandbox.
+
+Supportedtoolchainabsent (onlyModBuddyVS2013shell/MSBuild12,SDK8). Userapproved
+minimalVS2022BuildTools/v143/SDK26100install, BUT latercan'tseeUAC and says
+WILL BE AT KEYBOARD LATER; DO WHAT POSSIBLE WITHOUT FOR NOW. DO NOTRETRYINSTALL
+orstartCivuntiluserreturns. Launchwrapper80782cancelledCtrlC/exit1; elevatedinventorySTILLlistsconsent11484.
+Do notautomateitssecurityUI; dismissoldpromptwhenuserbackbeforefreshinstall.
+NoVSpathinstalled. Signedinstaller+planretainedtoolchain/.
+CUApartcompletedsummaryLocatedelevationprompt; nosecurityUIinputperformed.
+
+environment/ pinsvcpkg5d68747a,MinHook1.3.4/Capstone5.0.9[x86],staticx64,external
+normalMSBuildprops/targets/compatMinHooknamealias; baseline98filespinned.
+No globalvcpkgintegration/AsmJit/CEbuildsystemchange. Baseline+portbuildscriptsready.
+packages/csc-regression618files (ID…2a08): installedhumanCSCsnapshot+only4adjfiles
+overlaidfromreviewedsource, allhashes; sourceCore5f19314 vsinstalledCore0e150ff9.
+packages/policy-regression depends…2a08 andpinsactualcopyCore. NOTinstalled.
+No newCE DLL/package. FutureCE/policy testGUIDduplicatesneeddedicatedfolderbackup
+orcarefulreplacementofpreviousdevpackages, neverhumanstockCSC/CEoverwrites.
+
+Durablehumanhandoff project/docs/research/mods/csc-ce-develop-port-20261105.md,
+maintainedguidesreflectclosedPR/newportpending. Nextactualsupportedbuild then
+inspectexports/imports/MASMunwind,36MSVCchecks, sharedcontrollerboundedOnline<=100
+lifecycle/diagnostics/savereload/provenance/normalrestoration.15minagentcheck-ins
+onlyoncehealthyautonomousgameisrunning; source/installedpinsfrozenwhileworkerowns.

@@ -1,3 +1,29 @@
+# CE develop port: offline handoff —5 November2026
+
+UserapprovedcloseoldPR, cleanAPI-onlydevelopport andsupportedbuild/nativecheck.
+PR9 CLOSED06:39:18UTC; olda928forkpreserved. Newdevelopbase2986a746, source
+f9eda1c+87f48fc pushedfeature/ai-district-scores-develop; NO newPR. Userrequires strong
+maintainability/comments; read feedback_ce_api_maintainability.md and
+feedback_upstream_pr_review.md. FinalC7a6cdf2a…6343; independentreviewPASS;
+7774C/53header tokens unchanged.36isolatedC+24Lua+17harness+164controllerPASS.
+
+MSVCv143/SDK10 ABSENT. SignedVSBuildToolsinstallerdownloaded, initialUAC
+launcherrequestcancelled; noinstallation. WindowsSTILLlistsconsent11484;
+dismissoldpromptwhenuserreturnsbeforefreshinstall. UserWILL BE AT KEYBOARD LATER and explicitly
+says DO WHAT POSSIBLE WITHOUT FOR NOW. Do not retryelevation/install orrunCiv
+untilhandoffresumed. Environment/deps/isolatedpackagesready, notinstalled.
+Desktop/Codex/csc-ce-develop-port-20261105; currenthumanmodunchanged.
+Read session_ai_ce_develop_port_20261105.md and
+project/docs/research/mods/csc-ce-develop-port-20261105.md for exactnextsteps.
+
+# Upstream PR review preference —5 November2026
+
+Henno expected discussion BEFORE CE upstream submission; draftPR9 was opened
+tooearly relative to that expectation. Prepare in fork and obtain explicit
+approval for upstream creation/ready-for-review, including agreed API scope.
+Read feedback_upstream_pr_review.md. ReadonlyPRcheck: stillOPEN/DRAFT, no
+comments/reviews/merge. No external mutation inthisturn.
+
 # Latest native Water Mill gate —4 November2026
 
 UserconfirmedWateronlyriverQuarter, Windanywhere. VanillaRequiresAdjacentRiver
