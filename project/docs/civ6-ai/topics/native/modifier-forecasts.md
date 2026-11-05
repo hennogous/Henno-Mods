@@ -84,3 +84,18 @@ group to these channels. In particular, growth/Housing/Faith and several GPP/gra
 roots returned zero **without reaching children** in the measured contexts.
 That does not establish absent child handlers. Improvement-, customer- and
 CityCenter-owned effects also cannot be classified from producer roots alone.
+
+## Timing transfers across effects while pricing differs
+
+The fixed-point discount kernel at `528310` and its interval wrapper at
+`528660` supply common timing arithmetic. The effect handler determines the
+recipient, weights and rounding. The explicit plot-yield handler at `485a10`
+discounts first, then applies a half factor and normalizes with default yield
+weights. The building-yield handler at `475a50` normalizes with player weights
+and halves income for an absent recipient before discounting. [AI-N076]
+
+The hypothetical per-population initializer at `467e00` converts its parsed Q8
+coefficient to an integer before it checks for zero. This can drop positive
+fractional coefficients below one. The observation is scoped to that AI
+initializer. CSC's City Center population consumers were outside the producer
+capture. [Calibration and source paths](../../../research/mods/csc-ai-late-placement-20261105.md)

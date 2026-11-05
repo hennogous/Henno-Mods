@@ -289,7 +289,7 @@ class PackageTests(unittest.TestCase):
             result=BUILDER.build(Path(directory)/'package-build')
             package=Path(result['package']);self.assertEqual(result['context'],'CSC_CE_Policy')
             self.assertEqual((package/'Lua/CSC_AI_AdjacencyScan.lua').read_bytes(),
-                (ROOT/'project/tools/ai_site_planner/adjacency_policy/scan.lua').read_bytes())
+                (ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua').read_bytes())
             self.assertFalse(list(package.rglob('*.dll')))
             mod=ET.parse(package/'CSC_CE_Policy.modinfo').getroot()
             self.assertEqual({x.attrib['id']for x in mod.findall('Dependencies/Mod')},

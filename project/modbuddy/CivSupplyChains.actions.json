@@ -356,16 +356,6 @@
     "inGameActions": [
       {
         "type": "ImportFiles",
-        "id": "CSC_YieldFilter_Compatibility",
-        "properties": {
-          "LoadOrder": "480"
-        },
-        "files": [
-          "Lua_UI/AI/CSC_AI_UIFilter.lua"
-        ]
-      },
-      {
-        "type": "ImportFiles",
         "id": "CSC_QuarterOverlaySupport",
         "properties": {
           "LoadOrder": "490"
@@ -1397,6 +1387,17 @@
           "Lua_UI/Adjacencies/CSC_AdjacencyCore.lua",
           "Lua_UI/Adjacencies/CSC_AdjacencyPresentation.lua",
           "Lua_UI/Adjacencies/CSC_StockAdjacencyBonusSupport.lua"
+        ]
+      },
+      {
+        "type": "ImportFiles",
+        "id": "CSC_AI_PlacementModules",
+        "properties": {
+          "LoadOrder": "490"
+        },
+        "files": [
+          "Lua_UI/AI/CSC_AI_AdjacencyScan.lua",
+          "Lua_UI/AI/CSC_AI_QuarterPlacement.lua"
         ]
       },
       {

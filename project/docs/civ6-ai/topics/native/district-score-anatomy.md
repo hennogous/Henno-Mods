@@ -172,6 +172,10 @@ the inspected route. These are specific mismatches, not grounds for removing
 all future-building benefits. [AI-C059]
 
 Keep the raw district sum separate from the propagated construction vector.
+Capture the input values before the aggregation call. In the Delhi replay,
+the raw and mutable arrays share storage. The Wind slot starts at 1,838 Q8
+and ends at 27,087 Q8 after its descendant values are added. The input array
+address therefore reads the propagated value after the call. [AI-N075]
 Negative raw Workshop is omitted from the district sum, yet its mutable value
 becomes26,419/22,526Q8 after Tailor/Fashion House propagation. River Access has
 raw0 but receives raw Water value through prerequisites. `MustPurchase` excludes

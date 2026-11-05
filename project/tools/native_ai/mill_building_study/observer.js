@@ -178,8 +178,10 @@ function makeStudyObserver(io,cfg){
    }
   }catch(e){leave.incompleteReason=String(e);fault(String(e));}
   if(stopReason==='pair_budget'||stopReason==='callback_budget')leave.captureMayBeIncomplete=stopReason;
-  records.push({kind:f.kind,id:f.id,thread:f.thread,entrySequence:f.entrySequence,parentId:f.parentId||null,callerRva:f.args.callerRva||null,entry:f.entry,leave});
+  const record={kind:f.kind,id:f.id,thread:f.thread,entrySequence:f.entrySequence,parentId:f.parentId||null,callerRva:f.args.callerRva||null,entry:f.entry,leave};
+  records.push(record);
   stats.completedPairs++;
+  return record;
  }
  function status(){return{profile:cfg.profile,read_only:true,started,enabled:accepting,freezing,frozen,pendingPairs:pairedPending,pendingFrames:pending,stopReason,stats:{...stats},counts:JSON.parse(JSON.stringify(counts)),faults:[...faults]};}
  return{enter,leave,fault,start(){if(started||frozen||stats.errors)throw Error('Single clean window required');started=true;accepting=true;return status();},
@@ -223,9 +225,8 @@ function decodeStudyArgs(kind,a,thread,callerRva){
  if(kind==='ModifierValue')return{...common,out:a[0].toString(),analysis:a[1].toString(),vector:a[2].toString(),changes:a[3].toString()};
  return{...common,analysis:a[1].toString(),data:a[2].toString()};
 }
-if(typeof module!=='undefined'&&module.exports)module.exports={STUDY_SHA,STUDY_POINTS,STUDY_TYPES,STUDY_LIMITS,validateStudyConfig,makeStudyObserver,createStudyMemoryIO,decodeStudyArgs};
-else{
- let observer=null,moduleInfo=null,listeners=[],initError=null,validated=null;
+function installStudyRuntime(createExtension){
+ let observer=null,moduleInfo=null,listeners=[],initError=null,validated=null,extension=null;
  const pathKey=p=>String(p).replace(/\\/g,'/').toLowerCase();
  function init(spec,cfg){
   if(observer||listeners.length||initError)throw Error('Single initialization only');
@@ -249,19 +250,26 @@ else{
    moduleInfo={path:m.path,size:m.size,base:m.base.toString(),timestamp:spec.timestamp,sha256_host_verified:spec.sha256};validated=spec.functions;
    const io=createStudyMemoryIO({ptr,findRangeByAddress:p=>Process.findRangeByAddress(p)});
    observer=makeStudyObserver(io,cfg);
+   if(createExtension)extension=createExtension(m,io,cfg);
    for(const f of spec.functions)listeners.push(Interceptor.attach(m.base.add(f.rva),{
     onEnter(args){this.capture=null;try{const r=this.returnAddress,caller=r.compare(m.base)>=0&&r.compare(m.base.add(m.size))<0?r.sub(m.base).toString():null;this.capture=observer.enter(f.name,decodeStudyArgs(f.name,args,this.threadId,caller));}catch(e){observer.fault('entry '+f.name+': '+String(e));}},
-    onLeave(ret){try{observer.leave(this.capture,ret.toString());}catch(e){observer.fault('leave '+f.name+': '+String(e));}},
+    onLeave(ret){try{
+     const record=observer.leave(this.capture,ret.toString());
+     if(extension&&record?.kind==='CalculateDistrictValues'&&!record.leave.incompleteReason&&!observer.status().stopReason)
+      extension.calculated(record,this.capture.args.object);
+    }catch(e){observer.fault('leave '+f.name+': '+String(e));}},
    }));
    Interceptor.flush();return rpc.exports.status();
   }catch(e){initError=String(e);if(observer)observer.fault(initError);throw e;}
  }
- rpc.exports={init,start(){if(!observer||listeners.length!==6||initError)throw Error('Complete disabled installation required');return observer.start();},
+ rpc.exports={init,start(){if(!observer||listeners.length!==6||initError)throw Error('Complete disabled installation required');const state=observer.start();if(extension)extension.start();return state;},
   status(){return{installed:listeners.length===6&&!initError,hooks:listeners.length,initError,module:moduleInfo,validated_entry_fingerprints:validated,...(observer?observer.status():{enabled:false,read_only:true})};},
-  snapshot(){if(!observer)throw Error('Not initialized');return observer.snapshot();},
-  async freeze(){if(!observer)throw Error('Not initialized');observer.requestFreeze();const deadline=Date.now()+5000;
+  snapshot(){if(!observer)throw Error('Not initialized');const state=observer.snapshot();return extension?{...state,late:extension.snapshot()}:state;},
+  async freeze(){if(!observer)throw Error('Not initialized');if(extension)extension.stop();observer.requestFreeze();const deadline=Date.now()+5000;
    while(observer.status().pendingFrames!==0){if(Date.now()>=deadline)throw Error('Callback drain deadline; preserve attached owner');await new Promise(resolve=>setTimeout(resolve,10));}
-   return observer.finishFreeze();}
+   const state=observer.finishFreeze();return extension?{...state,late:extension.snapshot()}:state;}
  };
  // Deliberately no detach/unload/reconfigure RPC while native code is alive.
 }
+if(typeof module!=='undefined'&&module.exports)module.exports={STUDY_SHA,STUDY_POINTS,STUDY_TYPES,STUDY_LIMITS,validateStudyConfig,makeStudyObserver,createStudyMemoryIO,decodeStudyArgs};
+else if(typeof CSC_LATE_PLACEMENT_COMPOSITE==='undefined')installStudyRuntime();

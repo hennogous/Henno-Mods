@@ -15,6 +15,7 @@ from full_game_controller.environment import launch,configure,manifest,restore_p
 from full_game_controller.log_capture import capture_log_baseline,read_log_delta
 from daemon import NativeExtension,SHA,validate_contract,validate_snapshot
 from policy import shortlist,PROFILE,PENALTY_PER_POINT_Q8,MAX_PENALTY_Q8
+SCANNER = ROOT / 'Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua'
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def read(path):return json.loads(Path(path).read_text(encoding='utf-8-sig'))
@@ -52,7 +53,7 @@ def run(args):
  files=list(HERE.glob('*'));files=[p for p in files if p.is_file()]
  files += [Path(m.__file__) for m in list(sys.modules.values()) if getattr(m,'__file__',None)and Path(m.__file__).is_relative_to(ROOT/'project/tools')]
  files += list((ROOT/'project/tools/ai_baseline/full_game_controller').glob('*.lua'))
- files += [args.binary,args.dll,args.spec]
+ files += [args.binary,args.dll,args.spec,SCANNER]
  reference_scan=None
  if args.resume_save:
   files += [args.resume_save,args.original_run/'original-preferences.json',args.original_run/'scans/source-1.json']
@@ -78,7 +79,7 @@ def run(args):
   nonlocal original_ai,initial,last_turn
   raw=controller.cmd("assert(Game.GetCurrentGameTurn()=="+str(first)+");assert(GameInfo.Yields.YIELD_CSC_AI_PLACEMENT==nil and GameInfo.CSC_AI_Profile==nil,'Legacy tuning loaded');local a={};for pid=0,63 do local p=Players[pid];if p and p:IsAlive()and p:IsMajor()and not p:IsHuman()then a[#a+1]=tostring(pid)end end;print('CSC_ORIGINAL_AI=['..table.concat(a,',')..']');",'GameCore_Tuner','original-player-identities')
   original_ai=read(args.original_run/'scans/source-1.json')['originalAI']if args.resume_save else parse(raw,'CSC_ORIGINAL_AI');assert len(original_ai)==5 and 0 not in original_ai
-  controller.cmd((HERE/'scan.lua').read_text(encoding='utf-8'),'CSC_AdjacencyGameplay','install-readonly-scanner',wait=5)
+  controller.cmd(SCANNER.read_text(encoding='utf-8'),'CSC_AdjacencyGameplay','install-readonly-scanner',wait=5)
   initial=scan('source-'+str(first));assert initial['turn']==first and initial['speed']=='GAMESPEED_ONLINE'and not(set(initial['currentHumans'])&set(original_ai))
   if not args.resume_save:assert initial['currentHumans']==[0]
   if reference_scan:

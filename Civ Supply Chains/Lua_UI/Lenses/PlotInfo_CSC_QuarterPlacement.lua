@@ -1,6 +1,5 @@
 -- Preserve native PlotInfo and augment its district placement event only for
 -- configured CSC Quarters. Native valid/purchase tiles and adjacency art remain.
-include("CSC_AI_UIFilter")
 include("PlotInfo")
 include("CSC_QuarterLensSupport")
 

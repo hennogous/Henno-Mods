@@ -10,6 +10,22 @@
 > reviewed, builds with supported MSVC and passes 36 isolated checks and a fresh
 > bounded Online100/context/save/reload regression. [Current qualification](../../../research/mods/csc-ce-develop-port-20261105.md).
 
+## Late write reaches district selection and preparation
+
+The Delhi replay changes one completed district-site cell on return from
+`CalculateDistrictValues`. The same checkpoint selected Neighborhood at
+248,223 Q8 in the control. The pulse raised Bakers at plot 1210 from 104,621 to
+248,479 Q8 after aggregation. The native winner and plot-specific present value
+both read that exact value. Delhi reserved the site and submitted its missing
+Craftsmanship goal through the native district tree. [AI-N075]
+
+This boundary supports corrections measured in the final score's units. The
+trial uses Frida and a pinned original DLL. The main CSC Lua library owns the
+Bakers policy. A recurring CE implementation needs a late transport and
+current component evidence. [Late placement trial](../../../research/mods/csc-ai-late-placement-20261105.md)
+
+## Earlier bridge tests
+
 A native extension now has a working experimental bridge at the ordinary
 district score/cache boundary. In a matched one-save trial, a single+1 utility
 adjustment reached the completed cache, native winner's score, present value

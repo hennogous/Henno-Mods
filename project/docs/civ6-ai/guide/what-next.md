@@ -1,10 +1,12 @@
 # What we’re investigating
 
 We now have a measured building ledger for both implemented Quarter families.
-The coverage map now distinguishes represented, missing, misvalued and
-unmeasured CSC relationships. Next, attribute the important unknown channels
-and choose a specific correction. The CE/Lua port restored our development
-capability; it did not itself improve the placement formula.
+The coverage map distinguishes represented, missing, misvalued and unmeasured
+CSC relationships. A saved-world replay has verified a late write through the
+native selector, present value and a new district preparation tree. In a
+separate replay, the first measured correction lowered a flat inland Bakers
+site's score by removing Mill benefits that the site could never earn.
+[Late placement and calibration](../../research/mods/csc-ai-late-placement-20261105.md)
 
 ## Completed: smaller Mills and the building ledger
 
@@ -51,11 +53,10 @@ Henno deferred dedicated Mill repair investigation. Watch for comparable cases
 in longer ordinary test games and retain lifecycle/payout facts; it is not a
 blocker for this AI work or a reason for another dedicated game now.
 
-For AI steering, choose a specific alternative-recipient, Wonder-GPP or missing
-material case. Preserve amenities and other justified native contributions,
-correct the identified mismatch, then observe the competing opportunities and
-resulting choice. The current early site hook may suffice; a later component
-boundary should be added to CE only if the measured correction needs it.
+The placement policy lives in the main CSC Lua library. A recurring late
+policy needs the CE transport and fresh values for the component each rule
+corrects. Use the effect map to measure the next relationship and retain the
+overlap with native value in the calculation.
 
 ## Remaining accounting gaps
 

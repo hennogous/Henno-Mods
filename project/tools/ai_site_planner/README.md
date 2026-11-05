@@ -87,7 +87,8 @@ are separate roadmap phases.
 ## Simple full-adjacency native policy
 
 The separately authorized first native placement policy is in
-`adjacency_policy/`. It evaluates Bakers and Tailors with the loaded shared
+`adjacency_policy/`. It reads the scanner from main CSC
+`Lua_UI/AI/CSC_AI_AdjacencyScan.lua` and evaluates Bakers and Tailors with the loaded shared
 adjacency rules, including planned first-Mill terrain/river bonuses. It promotes
 one highest-scoring >=4 Production+Gold pair per city, without banning other
 sites. That v1 result is preserved. The current v2 adds a soft penalty for every

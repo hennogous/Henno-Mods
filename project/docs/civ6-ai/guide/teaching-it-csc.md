@@ -19,6 +19,11 @@ Ordinary sales and Service supply gates differ. Missing a full chain does not ma
 
 For Bakers and Tailors, the policy scans eligible sites and calculates designed Production plus Gold adjacency, including rivers and the planned appropriate first Bakers Mill. It promotes the highest qualifying pair in each city at **+4 combined adjacency or better**. Sites that would destroy an on-site material are not positively promoted.
 
+Tailors earns direct river-edge adjacency. Bakers gets the river bonus through
+the prospective Water Mill. The scanner uses current customer districts. The
+offline Tailors model also prices specific possible customer footprints as
+conditional investments. [Site planner and customer readiness](../topics/csc/site-planner.md)
+
 The second version also applies a graded deduction to observed sub-4 pairs. It is a soft preference, not a ban. Combining Production and Gold was an explicitly chosen first test, not an established universal exchange rate.
 
 In the earlier soft-penalty game, four below-4 Quarters still founded. Two exposed a timing/coverage gap; two received large later native value. Those are specific questions, rather than a reason to keep increasing a blanket penalty.

@@ -1,6 +1,7 @@
 """Exercise scanner with the real shared core and mocked native map counts."""
 import argparse,json,pathlib,sys
 HERE=pathlib.Path(__file__).resolve().parent;ROOT=HERE.parents[3]
+SCANNER=ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua'
 HARNESS=r"""
 function info(rows,key)local t={};for _,r in ipairs(rows)do t[r[key]]=r;t[r.Index]=r end;return setmetatable(t,{__call=function()local i=0;return function()i=i+1;return rows[i]end end})end
 local b='DISTRICT_CSC_BAKERS_QUARTER';local t='DISTRICT_CSC_TAILORS_QUARTER'
@@ -23,7 +24,7 @@ function CSC_Adjacency.Count(r,p,c,pid)if r.ID=='materials'then return 2 elseif 
 def main():
  a=argparse.ArgumentParser();a.add_argument('--dependencies',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);args=a.parse_args();sys.path.insert(0,str(args.dependencies));from lupa.lua51 import LuaRuntime
  lua=LuaRuntime(unpack_returned_tuples=True);lua.execute('DefenseTypes={DISTRICT_GARRISON=0,DISTRICT_OUTER=1}');lua.execute((ROOT/'Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyCore.lua').read_text(encoding='utf-8-sig'));lua.execute(HARNESS)
- score=lua.execute((HERE/'scan.lua').read_text()+'\nreturn score');g=lua.globals();checks=[]
+ score=lua.execute(SCANNER.read_text(encoding='utf-8')+'\nreturn score');g=lua.globals();checks=[]
  def check(name,quarter,river,hills,expected,current=None):
   g.plot.river=river;g.plot.hills=hills;r=score('DISTRICT_CSC_'+quarter+'_QUARTER',g.plot,g.city,1)
   actual=(r['production'],r['gold']);assert actual==expected,(name,actual,expected)
@@ -34,6 +35,6 @@ def main():
  check('Bakers planned Wind Mill hill','BAKERS',0,1,(3,1),2);check('Flat wind site no bonus','BAKERS',0,0,(2,1),2)
  g.POLICY=True;check('Active policy included','TAILORS',2,0,(3,2));g.POLICY=False
  g.MILLS=True;check('Existing remote Mills do not double planned branches','BAKERS',4,1,(4,1))
- assert 'A.PlotsInBand(center,1,3)'in(HERE/'scan.lua').read_text() and 'if not existing[name]then'in(HERE/'scan.lua').read_text()
+ assert 'A.PlotsInBand(center,1,3)'in SCANNER.read_text(encoding='utf-8') and 'if not existing[name]then'in SCANNER.read_text(encoding='utf-8')
  args.output.write_text(json.dumps(dict(passed=True,lua='Lua5.1',checks=checks,core='actual shared A.Eligible/A.Amount and native river counter; synthetic material/customer counts'),indent=2)+'\n');print('Scanner checks passed:',len(checks))
 if __name__=='__main__':main()

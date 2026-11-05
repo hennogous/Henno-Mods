@@ -1,5 +1,6 @@
--- Installed once in the existing CSC_AdjacencyGameplay context by the shared
--- controller. Read-only map/rule evaluation; only the geometry cache is local.
+-- Shared by the main CSC package and the placement experiments. Load this in
+-- a gameplay context after CSC_AdjacencyCore has initialized the loaded rules.
+-- The scanner reads map and rule facts and caches the radius-three geometry.
 -- No properties, orders, resources, buildings or yields are changed here.
 assert(CSC_Adjacency and CSC_Adjacency.ByDistrict,'Loaded bundled adjacency engine required')
 local function object(t)return setmetatable(t or {},{__json_object=true})end

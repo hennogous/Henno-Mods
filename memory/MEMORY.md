@@ -1,4 +1,29 @@
-# Current priority: CSC gameplay-to-forecast coverage —5 November2026
+# Latest AI result: late Quarter placement write — 5 November 2026
+
+Henno authorized a late-write proof followed by corrections priced in native Q8.
+The policy destination is main CSC `Civ Supply Chains/Lua_UI/AI`. The retired
+placement-yield UI filter and its active registrations are removed. ModBuddy
+imports the adjacency scanner and calibrated placement policy as libraries.
+Preserve unrelated lens work.
+
+The shared-controller evidence is under `Desktop/Codex/csc-late-placement-20261105`.
+`run-02` proves a diagnostic late pulse switches Delhi's winner from Neighborhood
+to Bakers and reaches native reservation and the Craftsmanship civic goal.
+`run-04` applies the calibrated 4,398 Q8 deduction for false Wind hill credit
+and Water recipient credits. Bakers falls from 104,621 to 100,223 Q8 and Delhi
+submits the same requests as the control. The temporary package and preferences
+were restored. Capture raw building inputs at aggregation entry: a raw pointer
+can alias the mutated prerequisite vector. The existing CE development API is
+an earlier boundary. Recurring late correction needs current components and
+a CE transport. Keep Mill repair deferred.
+
+Future customer forecasts require a qualifying adjacent district or credible
+specific neighboring site. Existing, missing, and future customer buildings
+have distinct readiness and cost. The live scanner reads current districts;
+the offline Tailors review can price conditional future footprints. Record
+new engine results and scoped CSC conclusions in the handbook.
+
+# Earlier priority: CSC gameplay-to-forecast coverage —5 November2026
 
 Henno explicitly defers the Mill repair issue: watch for comparable states in
 longer ordinary test games, do not get stuck on dedicated reproduction. No

@@ -33,7 +33,7 @@ def build(output:Path,*,ce_fork_id:str=CE_FORK_ID,csc_id:str=CSC_ID,adjacency_co
     if output==HERE or output.is_relative_to(HERE):raise ValueError('Output must be outside source directory')
     package=output/'package'
     if package.exists():raise ValueError('Fresh package output required')
-    scanner=ROOT/'project/tools/ai_site_planner/adjacency_policy/scan.lua'
+    scanner=ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua'
     # The dependency provides this imported module; it is not copied here.
     # Pin its actual test-copy bytes rather than assuming the runtime dependency
     # and source checkout have already been rebuilt together.

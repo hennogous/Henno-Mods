@@ -84,6 +84,37 @@ and recovery are retained in the evidence, not treated as uninterrupted parity.
 This is placement follow-through, not causal or economic-benefit proof. [AI-C049]
 The richer investment evaluator remains available for later refinement.
 
+The scanner now lives in the main CSC `Lua_UI/AI` folder with the late
+correction library. It reads current material deposits and customer districts,
+Tailors river-edge bonuses, and the prospective Water or Wind Mill for Bakers.
+The experimental CE package can still copy this scanner for historical CSC
+builds. The scanner measures adjacency for eligible owned plots. The +4 rule
+turns that measure into an experimental priority.
+
+## Customer geography and readiness
+
+For effects that require adjacency, first establish that the customer's
+district occupies a neighboring tile or has a specific legal neighboring
+site. Then value the relationship according to its actual state.
+
+| Customer state | Forecast treatment |
+| --- | --- |
+| Functioning building in an adjacent qualifying district | Use the actual recipient and population. The stream starts when both sides can operate. |
+| Adjacent qualifying district with a missing, unfinished or pillaged building | Treat the benefit as conditional on the building's unlock, remaining cost and delay. |
+| Specific legal neighboring site for a future customer district | Price the district and then its building. Compare competing uses of the footprint and avoid counting several alternatives on the same tile. |
+| No qualifying adjacent district or credible legal site | Adjacency-dependent customer value is zero for that branch. |
+
+The offline Tailors planner has conditional branches for captured future
+customer footprints. The live adjacency scanner uses current districts. The
+first late correction concerns internal Bakers Mill eligibility and local
+building returns. Future customer additions need their own native calibration.
+[Late placement and calibration](../../../research/mods/csc-ai-late-placement-20261105.md)
+
+Keep an effect ledger across both stages. The early +4 experiment already uses
+the prospective Bakers Mill to decide which site to promote. Its priority does
+not give us the Mill's separate Q8 price. A calibrated policy needs to account
+for that overlap before combining site guidance with a late adjustment.
+
 ## Discouraging weak sites
 
 The [soft-penalty extension](../../../research/mods/csc-ai-placement-penalties-20261103.md)

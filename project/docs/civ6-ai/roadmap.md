@@ -1,7 +1,8 @@
 # CSC AI roadmap
 
-> Current priority,5 November: use the [effect coverage map](topics/csc/forecast-coverage.md)
-> to attribute missing/misvalued CSC relationships before changing tuning.
+> Current priority, 5 November: use the [effect coverage map](topics/csc/forecast-coverage.md)
+> to measure missing or misvalued CSC relationships and correct the demonstrated
+> differences at the completed district score.
 > Henno deferred dedicated Mill repair work; monitor it in longer ordinary games.
 > Earlier repair follow-up proposals below are historical, not the next task.
 
@@ -125,6 +126,16 @@ values are distinct. A later normal queued repair completes at4 without
 recovering the affected checkpoint. Investigate activation/invalidation and a
 pristine lifecycle separately from correcting a measured forecast relationship. No new
 policy or CE API was added by this study. [AI-C058] [AI-C059] [AI-N074]
+
+The [late placement replay](../research/mods/csc-ai-late-placement-20261105.md)
+establishes a write after the building pass that reaches the native district
+winner, plot present value and prerequisite preparation. A separate arm applied
+the first CSC rule using measured Wind and Water recipient credits for a flat
+inland Bakers site. The 4,398 Q8 deduction left the control winner unchanged.
+Both the scanner and the calibration library now live in `Lua_UI/AI`. Keep
+the measured correction separate from the early experimental site priority.
+A recurring late policy needs a CE entry point and current component evidence.
+[AI-N075] [AI-N076] [AI-C060]
 
 ## Starting point
 

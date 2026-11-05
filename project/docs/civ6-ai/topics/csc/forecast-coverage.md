@@ -24,7 +24,9 @@ flowchart TD
   I["Current live building income"] --> B
   M["Supported hypothetical building modifiers"] --> B
   C["Improvement, customer and City Center effects"] --> X["Separate consumers: contribution not attributed here"]
-  A --> W["District opportunity and later production competition"]
+  A --> F["Completed district-site score"]
+  F --> L["Optional calibrated correction"]
+  L --> W["District opportunity and later production competition"]
 ```
 
 The later addition is common to eligible sites of the same Quarter type in a
@@ -115,12 +117,22 @@ to certify yet.
 
 ## What to pursue next
 
+The late placement trial has a measured correction for a flat inland Bakers
+site. It removes Wind's inapplicable hills credit and Bakery and Café's credit
+for a Water Mill recipient. The difference is calculated from the three raw
+building forecasts that actually entered the district sum, with Civ's positive
+building gate reapplied. The main CSC Lua policy returned a deduction of
+4,398 Q8. The native replay applied it, leaving the Bakers site at 100,223 Q8
+and preserving Delhi's Neighborhood choice. [AI-C060]
+[Calibrated Bakers trial](../../../research/mods/csc-ai-late-placement-20261105.md)
+
 1. **Attribute ordinary population sales and material inputs.** They are central
    CSC benefits outside the producer-root window. Separate existing delivered
    income from a forecast of an unbuilt chain, on both seller and customer sides.
-2. **Keep known false credit separate.** Mill geometry, two alternative Mill
-   recipients and absent-Wonder GPP have concrete evidence. A correction should
-   replace the identified contribution, not erase amenities or all future value.
+2. **Extend measured corrections by site.** The inland Mill case has an exact
+   calculation. River sites need a choice between eligible Mill alternatives,
+   and Wonder GPP needs a distinction between unavailable and future recipients.
+   Preserve the amenity and other building value that Civ already credited.
 3. **Add only established missing relationships.** Improvement returns and
    reached Tourism/grant paths have specific absent consumers. Grants still
    require valuing actual staffing rather than awarding a flat Service bonus.

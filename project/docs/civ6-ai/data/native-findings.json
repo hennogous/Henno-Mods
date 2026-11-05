@@ -1448,7 +1448,7 @@
   {
     "id": "AI-N074",
     "title": "Exact building modifiers, amenities and district aggregation can be accounted separately",
-    "statement": "On the pinned XP2 target, six read-only boundaries correlate BuildingValue, its own ModifierValue and direct amenities with exact AnalyzeModifier descriptors and nested base-yield results. Attach consumes the assigned nested result, not a sum of every iterator callback. City/type district uplift uses eligible positive raw building values, while a distinct mutable vector propagates descendants into prerequisite construction values. The captured building forecasts have site-unspecified coordinates.",
+    "statement": "On the pinned XP2 target, six read-only boundaries correlate BuildingValue, its own ModifierValue and direct amenities with exact AnalyzeModifier descriptors and nested base-yield results. Attach consumes the assigned nested result, not a sum of every iterator callback. City/type district uplift uses eligible positive raw building values at aggregation entry. Prerequisite construction values include descendant values propagated through a mutable vector, which can share storage with the raw inputs. The captured building forecasts have site-unspecified coordinates.",
     "status": "accepted",
     "evidence_types": ["static", "runtime", "source"],
     "scope": "5 November controlled CSC-only Online1–2, AI1/2 city65536, original XP2 SHA324c51e9. 361 complete pairs/28132 callbacks/0 observer faults;38 building outputs/38 own modifier sums/251 descriptors/24 base-yield/8 direct amenities/2 district passes. All88 active BM roots observed in each city, all148 mutable district cells and both prerequisite vectors reconcile. Return sites distinguish own building subtotals from unrelated helper subroutes.",
@@ -1457,5 +1457,31 @@
     "topic": "topics/native/district-score-anatomy.md",
     "depends_on": [],
     "related": ["AI-C058", "AI-C059", "AI-C057", "AI-N055", "AI-N068"]
+  },
+  {
+    "id": "AI-N075",
+    "title": "A late district score write reaches selection and native preparation",
+    "statement": "A guarded one-cell write after CalculateDistrictValues changed the finished district-site value read by GetBestDistrict and plot-specific PresentValueOf. The native city tree selected the new district, reserved its tile and requested its prerequisite civic.",
+    "status": "accepted",
+    "evidence_types": ["source", "static", "runtime"],
+    "scope": "Original XP2 SHA324c51e9. Exact isolated CSC Online save1 replays to2 with identical loaded facts. Delhi player1 city65536 Bakers plot1210 was 77534 Q8 before aggregation and 104621 after. Control Neighborhood plot1358 won at248223. Pulse +143858 after aggregation produced248479, matched native winner and present value, and tree decoded970 utility, reserved (26,16) and accepted Craftsmanship. In this calculation the raw and mutable building arrays alias. Wind's input slot holds1838 Q8 on entry and the propagated27087 on return.",
+    "limits": "One shared-controller matched save and one Frida write. Craftsmanship was still required, so evidence reaches native preparation and the civic goal. Continuous publication, game-wide calibration, later construction, existing-request revision and a late CE API remain separate qualification.",
+    "sources": ["project/docs/research/mods/csc-ai-late-placement-20261105.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": [],
+    "related": ["AI-N055", "AI-N057", "AI-N074", "AI-C059", "AI-C060"]
+  },
+  {
+    "id": "AI-N076",
+    "title": "Native effect handlers use different timing inputs, weights and rounding",
+    "statement": "The 528310 fixed-point income kernel and 528660 interval wrapper supply shared timing. Explicit plot yield at 485a10 discounts the stream, halves it, then normalizes with default weights. Building yield at 475a50 normalizes with player weights and halves income for an absent recipient before discounting. The per-population initializer at 467e00 drops positive parsed Q8 coefficients below one through a signed right shift followed by a zero test.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Pinned XP2 SHA324c51e9. Disassembly and Ghidra decompilation for the named handlers, plus fixed-point timing reproduction of 24 reduced-step Mill callbacks in the closed CSC study. The plot analogue prices only a declared qualified recipient and timing context.",
+    "limits": "The captured improvement wrapper returned no native credit. Plot analogue amounts are model estimates. Material input overlap with live GetYieldChange and City Center population overlap are still unmeasured. Larger per-population bit coefficients can survive the initializer.",
+    "sources": ["project/docs/research/mods/csc-ai-late-placement-20261105.md"],
+    "topic": "topics/native/modifier-forecasts.md",
+    "depends_on": [],
+    "related": ["AI-N026", "AI-N031", "AI-N074", "AI-C059"]
   }
 ]

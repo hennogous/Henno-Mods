@@ -9,11 +9,14 @@ backups. The archive also snapshots the historical research tools. Their reports
 remain evidence; their weights, private signals, subsidies and scripted placement
 policies are not inputs to the new experiment.
 
-The active ModBuddy action source and generated project remove15 AI actions and
-three criteria. The assistance/subsidy options and labels are removed. A shared
-UI yield-filter import remains solely to satisfy existing lens/tooltip includes;
-it creates no yield and makes no AI decisions. Quarter gameplay, compatibility,
-adjacencies, resource-map preparation and art are preserved.
+The active ModBuddy action source and generated project removed 15 AI actions
+and three criteria, along with the assistance and subsidy options and labels.
+The reset initially kept a UI filter for the retired planning yield to satisfy
+lens and tooltip includes.
+
+On 5 November, CSC removed that filter, its three includes and its ModBuddy
+action. Its historical test now reads the archived source. The main mod's
+`Lua_UI/AI` folder contains the new Quarter placement policy library.
 
 The installed package was reset independently by transforming only its modinfo
 and two Settings XML files. Backups and the complete before/after manifests prove

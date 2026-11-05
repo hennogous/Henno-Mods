@@ -1,4 +1,4 @@
-"""Execute the real UI filter; preserve real/other-mod rows and indexed access."""
+"""Replay the archived placement filter's UI compatibility contract."""
 import argparse
 from pathlib import Path
 import sys
@@ -23,7 +23,8 @@ GameInfo.Adjacency_YieldChanges=rows({{ID='real',YieldType='YIELD_FOOD'},{ID='pr
 GameInfo.District_Adjacencies=rows({{YieldChangeId='real'},{YieldChangeId='private'},{YieldChangeId='other'}},'YieldChangeId')
 local native=GameInfo;GameInfo=setmetatable({}, {__index=native,__newindex=function()error('native read-only table')end})
 ''')
-source=(Path(__file__).resolve().parents[3]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_UIFilter.lua').read_text()
+source = (Path(__file__).resolve().parents[2] / 'archive/ai-tuning-20261103/before' /
+          'Civ Supply Chains/Lua_UI/AI/CSC_AI_UIFilter.lua').read_text(encoding='utf-8-sig')
 lua.execute(source)
 lua.execute('''
 local function names(t,key)local a={};for r in t() do a[#a+1]=r[key] end;return table.concat(a,',') end

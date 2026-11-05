@@ -496,8 +496,8 @@
       "title": "Fresh start for CSC AI tuning",
       "kind": "integration",
       "date": "20261103",
-      "bytes": 2929,
-      "sha256": "a20358e28be82c1c785376d2761c3db73fe8f270ffa0865b50c6a8243cb8cb07",
+      "bytes": 3030,
+      "sha256": "eb37bebe331ca9c3fa68a3c2e27c2d61e57d74ec2b4d5defe9b5c7ddb1266453",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-reset-20261103.md"
     },
@@ -1000,6 +1000,16 @@
       "sha256": "092e2b14b5457681c55977004d87124c46eb74d783d8b9fc02d4b1254280f65c",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-investment-pilot-20261031.md"
+    },
+    {
+      "path": "project/docs/research/mods/csc-ai-late-placement-20261105.md",
+      "title": "Late district score adjustment and Bakers calibration",
+      "kind": "report",
+      "date": "20261105",
+      "bytes": 8617,
+      "sha256": "395b906961a1784f9da77b2f2d9ec34babf06a0ef45685379b1f81bd1ce14b35",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-late-placement-20261105.md"
     },
     {
       "path": "project/docs/research/mods/csc-ai-local-mill-unit-steps-20261104.md",
@@ -2166,8 +2176,8 @@
       "title": "Offline CSC site planner",
       "kind": "tool-reference",
       "date": null,
-      "bytes": 7151,
-      "sha256": "034716783f0daea90441f017114d099a712acb2d275e4e4f175852254726cbfe",
+      "bytes": 7224,
+      "sha256": "18a6cef6be8ad9e567e0e20635b42c0763c289adacd9b8091d42f90f4f7cad77",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/tools/ai_site_planner/README.md"
     },

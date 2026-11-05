@@ -1118,6 +1118,19 @@
     "sources": ["project/docs/research/mods/csc-ai-mill-building-study-20261105.md", "project/docs/research/mods/csc-ai-effect-coverage-map-20261105.md"],
     "topic": "topics/native/district-score-anatomy.md",
     "depends_on": ["AI-N074", "AI-C056"],
-    "related": ["AI-C053", "AI-C055", "AI-C057", "AI-C058"]
+    "related": ["AI-C053", "AI-C055", "AI-C057", "AI-C058", "AI-C060"]
+  },
+  {
+    "id": "AI-C060",
+    "title": "A measured late correction removes two flat inland Bakers forecast errors",
+    "statement": "A single late write removes inapplicable Wind hill Production and Bakery/Café credit to the unavailable Water Mill. Reapplying Civ's positive-building gate makes the district deduction4398 Q8. In the matched replay the finished Bakers score becomes100223 Q8; Neighborhood remains the winner and Delhi submits the same five requests as the control.",
+    "status": "accepted",
+    "evidence_types": ["source", "runtime"],
+    "scope": "Pinned XP2 SHA324c51e9, isolated CSC Online1–2, Delhi player1 city65536 flat inland Bakers plot1210. Native raw Wind1838/Bakery14269/Café10980, consumed invalid credits2560/1536/1024, revised admitted contributions0/12733/9956. The main CSC Lua library returns -4398 in GameCore_Tuner. A Frida adapter makes one guarded write. The replay's component ledger matches the control, native exit is0 and preferences and package restoration verify.",
+    "limits": "This flat inland candidate and three admitted native building forecasts. The exact deductions are measured credits, not fixed weights for other cities. The correction does not establish river-Mill choice, external customer valuation, economic benefit, combination with the early adjacency priority, or a recurring CE transport.",
+    "sources": ["project/docs/research/mods/csc-ai-late-placement-20261105.md"],
+    "topic": "topics/csc/forecast-coverage.md",
+    "depends_on": ["AI-N074", "AI-N075", "AI-C059"],
+    "related": ["AI-C056", "AI-N076"]
   }
 ]

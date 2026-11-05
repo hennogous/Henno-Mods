@@ -275,7 +275,7 @@ end
         self.assertIsNone(totals["SelfBonus:YIELD_PRODUCTION"])
         # Execute the scanner's actual score closure, without scanning or writing
         # any world. Planning deliberately includes the first local Mill.
-        scanner = (ROOT / "project/tools/ai_site_planner/adjacency_policy/scan.lua").read_text(encoding="utf-8")
+        scanner = (ROOT / "Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua").read_text(encoding="utf-8")
         lua.execute(scanner.split("function CSC_AI_AdjacencyScan", 1)[0] + "\nCSC_LocalMillTestScore=score")
         planned = g.CSC_LocalMillTestScore(QUARTER, g.center, g.city, 0)
         self.assertEqual(planned.production, 1)
