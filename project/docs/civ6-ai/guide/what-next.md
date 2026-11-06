@@ -9,8 +9,12 @@ and lets the AI research normally. Around turn 5 we start looking for a
 checkpoint where Craftsmanship is in progress with enough time left in the
 expected preparation window. Both arms use that same checkpoint. We check
 the actual civic unlock, native production order, foundation and completion
-separately.
-[Live bid test](../../research/mods/csc-ai-hotfix-live-bid-20261106.md).
+separately. In the read-only Online pilot, the five AIs began Craftsmanship
+on turns 7–9 and unlocked it on turns 11–19. We can now distinguish the
+game's estimate of time left on the current civic from the estimate it uses
+to plan toward a requested civic.
+[Live bid test](../../research/mods/csc-ai-hotfix-live-bid-20261106.md) ·
+[Natural research pilot](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
 ## Intermediate milestone — one working Bakers Stage 2 chain
 

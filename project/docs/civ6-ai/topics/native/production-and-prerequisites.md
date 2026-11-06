@@ -34,6 +34,15 @@ flowchart TD
 
 This is different from a customer building in another district merely being useful: a supported ordinary HasBuilding requirement tests actual presence. See [modifier forecasts](modifier-forecasts.md).
 
+## A civic in progress has its own time estimate
+
+Gameplay estimates turns left on the active civic from its cost, accumulated
+progress, carried culture and current culture yield. The UI's per-civic query
+reads a cache. AI research planning keeps its own estimate for the requested
+civic and can add time remaining on the current one. Track current selection,
+turns remaining and the actual unlock separately when following a district
+prerequisite. [AI-N081] [Native paths and the natural Bakers pilot](../../../research/mods/csc-ai-bakers-natural-research-20261106.md).
+
 ## Visible, disabled and constructible are different queries
 
 Stock ProductionPanel first queries `CanProduce(hash,true)` for list admission,

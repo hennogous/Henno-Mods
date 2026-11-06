@@ -692,6 +692,16 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-bakers-native-component-review-20261104.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md",
+      "title": "Timing a Bakers bid against natural civic research",
+      "kind": "report",
+      "date": "20261106",
+      "bytes": 3208,
+      "sha256": "082bc91c63a95a9d8e8905b4e8fd0402550399efde229bed43ff9dad9e5c8707",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-ai-baseline-20261015.md",
       "title": "CSC AI autoplay baseline 15 October 2026",
       "kind": "report",

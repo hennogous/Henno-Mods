@@ -1534,6 +1534,19 @@
     "sources": ["project/docs/research/mods/csc-ai-hotfix-live-bid-20261106.md"],
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N075", "AI-N078"],
-    "related": ["AI-N023", "AI-N024", "AI-N067", "AI-N077"]
+    "related": ["AI-N023", "AI-N024", "AI-N067", "AI-N077", "AI-N081"]
+  },
+  {
+    "id": "AI-N081",
+    "title": "Current civic turns remaining and the AI's research-route estimate are distinct",
+    "statement": "Gameplay GetTurnsLeftOnCurrentCivic derives a turns estimate from the active civic, current culture yield, cost, progress and carried culture. The UI GetTurnsToProgressCivic returns an indexed cache entry. CultureAi::EstimatedTimeToResearch reads a separate requested-civic planning row and can add time remaining on the active civic.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Windows Gathering Storm XP2 SHA 324c51e9 and November hotfix 092abfbb with identical code. Ghidra traced RVAs 6ad720, 0b3410, 6f0f40, 280770, 2806c0 and 414b20. In the read-only Online pilot the five original AIs started with Craftsmanship locked, began it on turns 7–9 and unlocked it on turns 11–19.",
+    "limits": "The pilot records actual research selection and unlocks. It supplies no estimate accuracy or district-follow-through comparison. A current civic estimate does not prove the AI's route estimate, native preparation acceptance, or a future completion date.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": ["AI-N078"],
+    "related": ["AI-N023", "AI-N024", "AI-N080"]
   }
 ]
