@@ -9,10 +9,12 @@ and lets the AI research normally. Around turn 5 we start looking for a
 checkpoint where Craftsmanship is in progress with enough time left in the
 expected preparation window. Both arms use that same checkpoint. We check
 the actual civic unlock, native production order, foundation and completion
-separately. In the read-only Online pilot, the five AIs began Craftsmanship
-on turns 7–9 and unlocked it on turns 11–19. We can now distinguish the
-game's estimate of time left on the current civic from the estimate it uses
-to plan toward a requested civic.
+separately. The read-only Online pilot saw the five AIs unlock Craftsmanship
+on turns 11–19. The turn-8 London control had four estimated turns left, but
+its existing Holy Site plan occupied district selection even as the city
+refreshed Bakers scores. The next test looks for a city actually choosing a
+district while the civic is close to completion or already unlocked through
+ordinary research.
 [Live bid test](../../research/mods/csc-ai-hotfix-live-bid-20261106.md) ·
 [Natural research pilot](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 

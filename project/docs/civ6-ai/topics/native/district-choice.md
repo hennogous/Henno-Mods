@@ -58,6 +58,12 @@ cycle. Activation aggregates future-building forecasts; CheckForDistrict only
 asks for a new winner when its district event-tree slot is free. A busy tree
 therefore does not imply stale scores. [AI-N067]
 
+In the turn-8 London control, the game refreshed a positive Bakers score
+while the Holy Site tree held the district slot. London was producing the
+Great Bath at the same time. The district planning slot and the production
+queue can have different commitments. [AI-N082]
+[Natural checkpoint and native log evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md).
+
 ## Buying a future site
 
 The district tree can request a particular unowned location through a

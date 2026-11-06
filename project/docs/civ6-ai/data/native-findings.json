@@ -1542,11 +1542,24 @@
     "statement": "Gameplay GetTurnsLeftOnCurrentCivic derives a turns estimate from the active civic, current culture yield, cost, progress and carried culture. The UI GetTurnsToProgressCivic returns an indexed cache entry. CultureAi::EstimatedTimeToResearch reads a separate requested-civic planning row and can add time remaining on the active civic.",
     "status": "accepted",
     "evidence_types": ["static", "runtime", "source"],
-    "scope": "Windows Gathering Storm XP2 SHA 324c51e9 and November hotfix 092abfbb with identical code. Ghidra traced RVAs 6ad720, 0b3410, 6f0f40, 280770, 2806c0 and 414b20. In the read-only Online pilot the five original AIs started with Craftsmanship locked, began it on turns 7–9 and unlocked it on turns 11–19.",
-    "limits": "The pilot records actual research selection and unlocks. It supplies no estimate accuracy or district-follow-through comparison. A current civic estimate does not prove the AI's route estimate, native preparation acceptance, or a future completion date.",
+    "scope": "Windows Gathering Storm XP2 SHA 324c51e9 and November hotfix 092abfbb with identical code. Ghidra traced RVAs 6ad720, 0b3410, 6f0f40, 280770, 2806c0 and 414b20. In the read-only Online pilot the five original AIs started with Craftsmanship locked, began it on turns 7–9 and unlocked it on turns 11–19. The qualified turn-8 scout read four turns remaining for player 4 from both the gameplay and UI getters, with 7.6875 Culture accumulated in the UI.",
+    "limits": "The pilot records actual research selection and unlocks. The turn-8 checkpoint confirms agreement between the two estimates in one boundary. The AI planning route's own value and the effect of the later district bid require separate evidence.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/production-and-prerequisites.md",
     "depends_on": ["AI-N078"],
     "related": ["AI-N023", "AI-N024", "AI-N080"]
+  },
+  {
+    "id": "AI-N082",
+    "title": "A city can refresh Bakers values while an existing district tree blocks selection",
+    "statement": "CheckForDistrict reaches GetBestDistrict only with a free district tree slot and a configured tree. A fresh positive district-site score can appear while the city continues preparing a previously selected district. That preparation and the actual production queue can be occupied by different items.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Stock Windows Gathering Storm XP2 SHA 092abfbb. Ghidra traced CheckForDistrict at RVA 3e0ee0. In an isolated CSC Online turn 8–9 control, London player 4 city 65536 recalculated Bakers at plot 2568 to 11930 Q8 and made no scoped GetBestDistrict call. The Holy Site tree was active, with Astrology contract 34 and a reservation on Base plot 2421. The improvement tree reserved candidate 2420 separately. Great Bath was receiving production. Zero writes and verified restoration.",
+    "limits": "One naturally timed city and interval. The Base deposit was reserved. Physical district placement and loss of the deposit were not observed. The result does not establish how long the existing plan will persist or when the next slot will open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": ["AI-N078"],
+    "related": ["AI-N024", "AI-N067", "AI-N080", "AI-N081"]
   }
 ]
