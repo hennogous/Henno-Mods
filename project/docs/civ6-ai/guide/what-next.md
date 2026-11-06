@@ -1,16 +1,19 @@
 # What we’re investigating
 
-## Current problem 2.2 — keep Boston's Bakers supplier
+## Current problem 13.3 — protect Boston's supplier from Builder clearance
 
 Boston completed Bakers on our chosen site after one turn-22 score change.
 The game began with Craftsmanship locked and Boston's player researched it
 normally. The control founded Bakers on a different tile. The chosen Quarter
-had its Base deposit and an adjacent City Center at completion. Boston then
-built a Campus over the deposit before its Mill was available. The next test
-replays from before Boston chose that Campus site and checks whether a
-measured penalty lets the AI choose another site. Boston was already
-researching Engineering for the Water Mill when it lost the deposit.
-[Construction and supplier-loss evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
+had its Base deposit and an adjacent City Center at completion. A second
+matched test lowered the Campus score on the only Base tile. Boston placed
+Campus elsewhere and built a Pasture, Granary and Water Mill through its
+ordinary plans. The Granary produced 2 Food against its base of 1, and the
+Water Mill produced 1 Production and 1 Gold. A Builder then harvested the
+Cattle to clear a Farm site for the Feudalism boost. The next test protects
+that supplier at the Builder decision so Boston can keep the working chain
+through Feudalism and Storekeeper.
+[Construction, supplier protection and actual yields](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
 ## Intermediate milestone — one working Bakers Stage 2 chain
 

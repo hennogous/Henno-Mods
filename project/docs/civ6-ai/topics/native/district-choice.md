@@ -72,6 +72,12 @@ strong district can clear it. The placement decision preceded the build
 queue's acceptance by two turns. [AI-N084]
 [Campus and supplier timeline](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-lost-the-tracked-base-before-its-mill-was-available).
 
+A matched test lowered that exact Campus pair by 8,784 Q8. Boston chose a
+different site, built its Campus there, and finished the planned Pasture on
+the retained Cattle. This demonstrates a finite preference for the inspected
+auction. Later choices still need protection if they threaten the supplier.
+[AI-N086] [Matched protection test](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-matched-deduction-protected-the-only-base).
+
 ## Buying a future site
 
 The district tree can request a particular unowned location through a

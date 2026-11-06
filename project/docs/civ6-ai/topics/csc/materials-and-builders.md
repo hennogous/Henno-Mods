@@ -2,6 +2,12 @@
 
 A valid material can be locked, unowned, unsafe, unassigned, reserved for a destructive alternative, pillaged after repair or covered by a district. Builder counts alone cannot distinguish these failures.
 
+Boston's only Cattle survived a matched Campus placement test and became a
+working Pasture. A later Farm job for the Feudalism boost removed the Pasture
+and harvested the deposit. The same Builder, exact plot and distinct native
+operations identify work clearance as the cause. [AI-N087]
+[Boston's exchange and Builder-loss evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-ordinary-exchange-worked-then-a-feudalism-boost-consumed-the-base).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

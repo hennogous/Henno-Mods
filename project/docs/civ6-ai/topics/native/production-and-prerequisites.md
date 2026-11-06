@@ -43,6 +43,12 @@ civic and can add time remaining on the current one. Track current selection,
 turns remaining and the actual unlock separately when following a district
 prerequisite. [AI-N081] [Native paths and the natural Bakers pilot](../../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
+The technology queue can hold a goal and start a different technology as its
+immediately researchable step. A technology research contract increases a
+score in the analysis row. The queue still selects and validates the actual
+step independently. [AI-N085]
+[Technology queue and contract paths](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-technology-decision-boundary).
+
 ## Visible, disabled and constructible are different queries
 
 Stock ProductionPanel first queries `CanProduce(hash,true)` for list admission,

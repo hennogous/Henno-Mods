@@ -178,6 +178,85 @@ or exceed the best value so far. This allows some negative scores to win.
 The first protection test will use a finite deduction measured against a
 viable alternative and verify the resulting decision and supplier separately.
 
+## A matched deduction protected the only Base
+
+The controller replayed the original one-write Bakers treatment and saved
+the inactive turn-31 boundary. A fresh census of all six neighbors found
+exactly one owned compatible Base deposit. It was Cattle on plot 796, with
+Pasture legal under the player's existing technology. The other resource
+observed was Sheep on plot 648, outside this Bakers Base mapping.
+
+The two arms loaded the same turn-31 save. Campus at plot 796 entered
+aggregation at 106,071 Q8 and finished at 108,726 Q8, with the same existing
+plot-reservation ID in both arms. The control again chose that Campus and
+covered the Cattle by turn 34. An eligible owned, unreserved alternative in
+the native score table at decision time was Campus at plot 648, at 100,198 Q8.
+The treatment deducted 8,784 Q8 from the destructive pair. Its score became
+99,942 Q8. Native selection instead chose Campus at plot 720, at 107,337 Q8.
+The selector could consider other rows beyond those used for calibration.
+
+Boston selected the relocated Campus for production on turn 33 and completed
+it on turn 37. The independent Pasture job moved a Builder to plot 796 and
+applied the improvement on turn 33. The first physical sample with the working
+Pasture was turn 34. That same Pasture and Cattle were intact at every later
+sample through turn 45. The protected save retains the completed Quarter,
+working Pasture, Granary and Water Mill.
+
+Engineering was reported owned on turn 38. Boston submitted Granary contract
+361 on turn 36, queued it on turn 37 and completed it on turn 39. It submitted
+Water Mill contract 416 on turn 40 and chose it for production on turn 41.
+The Water Mill was physically present at the correct Quarter on turn 44.
+Research, Builder allocation and both buildings proceeded through native
+decisions after the protection write. Feudalism and Storekeeper had yet to
+activate at the turn-45 boundary.
+
+The experiment establishes one successful finite deduction and observed
+retention through turn 45. It does not qualify a general hard exclusion or
+a permanent protection guarantee across future district choices.
+
+## The ordinary exchange worked, then a Feudalism boost consumed the Base
+
+The read-only continuation reopened the exact protected turn-45 save. The
+Granary produced 2 Food against its loaded base of 1. The Water Mill on the
+Quarter produced 1 Production and 1 Gold. The matching Cattle Pasture and
+ordinary exchange were observed together at turns 45, 48 and 51. Feudalism
+and the Storekeeper marker were absent. At turn 54 the ordinary building
+yields remained, although the Cattle and Pasture were both gone. This
+separates the ordinary exchange from the material gate for Storekeeper.
+
+The cause was a Builder job, independent of the earlier district auction.
+`Seek Civic Boost CIVIC_FEUDALISM` reserved (56, 10) for a Farm and sent
+Builder 1376266 to the site. Its unit-operation log records
+`REMOVE_IMPROVEMENT` on turn 52 and `HARVEST_RESOURCE` on turn 53. The tree
+logs the same unit clearing the exact plot. The turn-54 census found no
+resource, improvement or district on the tile. A Farm completion is not
+established by these receipts.
+
+`ClearPlotNode::Execute` at `55d970` first requests removal if an improvement
+is present. On the later clear attempt its harvest branch requests the
+resource removal. The earlier [player-wide harvest test](csc-ai-native-harvest-rule75-20261024.md)
+showed why rejecting only the final operation can leave a reserved job
+repeating. The next test targets admission of the destructive Farm candidate
+before either operation can begin.
+
+## Native technology decision boundary
+
+Engineering became active in the ordinary continuation. Ghidra identifies
+`Research::QueueNextTech` at RVA `4fa9a0` as a route that selects the AI's
+next actual technology. It compares `TechTreeAnalysis` rows and checks
+`CanResearch` for the immediate step before calling `SetResearchingTech`.
+The winning row keeps the research goal and the immediately researchable
+step separately. A named Engineering goal can therefore yield a prerequisite
+as the next researched technology.
+
+`TechResearchContract::Execute` at `3f82e0` calls
+`Research::IncreasePriority` at `4f9810`. That method adds to the selected
+row's `+0x14` value when the existing value and row flag admit the change.
+It has no immediate research setter call. `GetBestTechsToResearch` at
+`4f95b0` has direct callers in the Grand Strategic cache's fill and update
+paths. For a future research bid, trace the actual queue decision as well as
+any score or contract result. This pass made no research changes.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
@@ -206,3 +285,13 @@ SHA-256 is `ea6e003b1589120e73f01873b7ee235c5ae23a4c5e99a401b373d9a707b448ec`.
 The earlier Campus commitment appears in `matched-02/treatment/AI_Behavior_Trees.csv`
 lines 20801–20826 and `AI_CityBuild.csv` line 142. The follow-on queue selection
 appears in `stage2-01/AI_CityBuild.csv` line 4.
+The pre-decision save is `pre-supplier-01/treatment/pre-supplier.Civ6Save`
+with SHA-256 `e3d6cb7bbffab1285dcd5aebf17b23e028aeeb1d97de7116c7cbc655e43317b0`.
+The two protection arms are under `supplier-01`. The treatment's frozen
+trace SHA-256 is `af6ba6df721eb1ab5f5547e6538b059ef1ebc40ecf7a34fe6681aad773332945`.
+The protected turn-45 save SHA-256 is
+`8f745349d384f1c91069009c59efe898a9189c3fcab20eaaa0d4257e5c46f233`.
+The exchange and Builder-loss continuation is `operation-01`. Its
+`states.json` SHA-256 is `79ba98eb3d1e5289f0a52504c2a2d5fa522ff0512eb0696c3c932a39c5600ad9`.
+Its preserved `UnitOperations.log` SHA-256 is
+`e741fcb1b7cc8b8dbb5117cbbbf4f1be1a8ce3cc6ed6e37b2a89768c598d0389`.

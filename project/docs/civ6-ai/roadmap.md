@@ -30,21 +30,22 @@ district selector from Campus to Bakers, and Boston completed Bakers at plot
 721 with its Base deposit still present. The control later founded Bakers
 on a different plot. [Exact match and timeline](../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
-**Active problem — 2.2, keep the Base supplier available.**
-Boston committed to Campus on Base plot 796 at turn 31, queued the existing
-contract at turn 33, and had covered the deposit by turn 36. Repeat the
-accepted placement bid and save immediately before that fresh district
-decision. Census all six neighbors and distinguish mapped deposits, working
-suppliers and developable sites. Use the same save in both arms. Measure
-the destructive pair and a viable alternative, then verify whether a
-bounded deduction preserves the supplier through the AI's ordinary choice.
-[Supplier loss and decision timing](../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-lost-the-tracked-base-before-its-mill-was-available).
+**Verified for this fixture — 2.2, 3.1–3.3, 4.1–4.2 and 5.1.**
+On the same turn-31 save, the control covered Boston's only mapped Base
+deposit with a Campus. One measured deduction redirected Campus to plot 720.
+Boston's existing Builder job put a Pasture on the retained Cattle. Engineering,
+Granary and Water Mill followed through native research and production.
+The Quarter, both buildings and the working supply were present at turn 45.
+[Protection and follow-through](../research/mods/csc-ai-bakers-natural-research-20261106.md#a-matched-deduction-protected-the-only-base).
 
-**Next after retention — 4.1, qualify the appropriate Mill unlock.**
-Boston's Quarter has a river edge and the river-access flag. The Water Mill
-needs Engineering, which player 3 was researching naturally when the
-supplier was lost. Record the actual unlock and native eligibility on the
-retained branch. Building and queue follow-through remain **4.2** and **5.1**.
+**Active problem — 13.3, keep a working supplier out of destructive Builder jobs.**
+The ordinary exchange was working from the turn-45 protected save. A
+Feudalism boost Farm job removed the only Pasture on turn 52 and harvested
+its Cattle on turn 53. Trace the job's native candidate choice and test a
+scoped preservation input before clearance. Reuse the same turn-45 save.
+Verify native work, the exact Pasture and the ordinary exchange separately.
+Then return to **6.1** to observe Feudalism and retained Storekeeper operation.
+[Exchange and Builder-loss evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-ordinary-exchange-worked-then-a-feudalism-boost-consumed-the-base).
 
 For each update, name the active problem and report the furthest stage actually
 observed, the blocker if any, and the next check. Keep later problems queued
@@ -163,6 +164,10 @@ until the active check closes or an explicit dependency needs attention.
   investigation remains deferred.
 - **13.2 Replan.** Reassess after capture, lost supply, or destructive harvest
   and other work. Distinguish a repairable interruption from permanent loss.
+- **13.3 Preserve supply in Builder decisions.** Account for removing a
+  mapped improvement or harvesting its deposit before the job is reserved.
+  Apply the protection to boost work as well as ordinary improvement jobs.
+  Verify the alternative or deferral and the working supplier afterward.
 
 ### 14. Competing uses and shared plans
 

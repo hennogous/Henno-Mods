@@ -1132,5 +1132,18 @@
     "topic": "topics/csc/forecast-coverage.md",
     "depends_on": ["AI-N074", "AI-N075", "AI-C059"],
     "related": ["AI-C056", "AI-N076"]
+  },
+  {
+    "id": "AI-C061",
+    "title": "Boston's ordinary Stage 2 exchange operated separately from Storekeeper",
+    "statement": "A functioning Boston Water Mill and adjacent Granary showed ordinary exchange yields before Feudalism. The same building yields persisted when a later Builder job removed the working Cattle Pasture. That supplier loss blocked the retained Service milestone while the ordinary exchange continued.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Isolated CSC Online protected Boston replay, Quarter 721, Granary 795 and Cattle 796. Synchronized UI and gameplay observations at turns 45, 48 and 51 found Granary Food 2 versus loaded base 1, Water Mill Production 1 and Gold 1, and working Base. At turn 54 the yields remained and the Base was gone. Feudalism and Storekeeper were absent in this observed interval.",
+    "limits": "Whole-building yield receipts on one chain, not an isolated measurement of every modifier, monetary transactions, or an active Storekeeper Service.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-N086", "AI-N087"],
+    "related": ["AI-C059"]
   }
 ]

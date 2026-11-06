@@ -1586,6 +1586,45 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/district-choice.md",
     "depends_on": ["AI-N083"],
-    "related": ["AI-N011", "AI-N023", "AI-N067", "AI-N079"]
+    "related": ["AI-N011", "AI-N023", "AI-N067", "AI-N079", "AI-N086"]
+  },
+  {
+    "id": "AI-N085",
+    "title": "A technology goal and the actual queued research step can differ",
+    "statement": "AI Research::QueueNextTech compares technology analysis rows and submits the selected row's immediately researchable step after a CanResearch check. TechResearchContract executes IncreasePriority on the row's value rather than directly setting the active research. GetBestTechsToResearch's direct callers are Grand Strategic cache routines.",
+    "status": "accepted",
+    "evidence_types": ["static", "source"],
+    "scope": "Ghidra on Gathering Storm XP2 SHA 324c51e9 and the 092abfbb hotfix with identical code. QueueNextTech at 4fa9a0, comparator at 4f60d0, SetResearchingTech at 336230, TechResearchContract Execute at 3f82e0, IncreasePriority at 4f9810, and cache reader at 4f95b0. The contract increases the analysis row's +0x14 value subject to its guard.",
+    "limits": "Static route and storage evidence. Comparator flags are not fully attributed. The Boston run researched naturally and no custom technology score, contract, immediate choice or completion was induced.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "depends_on": ["AI-N078"],
+    "related": ["AI-N081", "AI-C019"]
+  },
+  {
+    "id": "AI-N086",
+    "title": "A measured deduction moved a native district choice off Boston's only Bakers Base",
+    "statement": "After an all-neighbor census, a matched late deduction on one destructive Campus pair led Boston to select and build Campus on another plot. Its existing improvement job completed the Pasture on the protected deposit. Native research and production subsequently supplied the Granary and Water Mill.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Stock XP2 SHA 092abfbb, isolated CSC Online exact turn-31 save with completed Bakers at 721. One owned compatible Base was Cattle at 796. Control Campus score 108726 Q8, covered the Cattle by turn 34. One −8784 Q8 write produced 99942. Native winner Campus plot 720 at 107337. Campus completed turn 37, Pasture performed on turn 33 and observed working 34–45. Engineering owned turn 38, Granary completed 39, Water Mill physically present by 44. Matched source and reservation ID, zero further writes and verified restoration.",
+    "limits": "One exact Campus pair and scoped finite deduction. The score used a safe alternative as a calibration bound. No generic exclusion, sustained tuning policy, causal building or research bid, or active Storekeeper is established by this replay.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": ["AI-N083", "AI-N084"],
+    "related": ["AI-N079", "AI-N085", "AI-N087"]
+  },
+  {
+    "id": "AI-N087",
+    "title": "A civic boost's Farm job can clear a functioning material supplier",
+    "statement": "A native Feudalism boost Farm job reserved the protected Cattle site. Its assigned Builder removed the Pasture, then harvested the deposit through Clear Plot. This loss occurred without a district on the tile and requires a work-admission decision separate from district protection.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Patched stock Gathering Storm XP2 SHA 092abfbb. Exact protected Online Boston save at turn 45. Feudalism boost tree targeted (56,10), plot 796, and logged Builder 1376266. Native UnitOperations records REMOVE_IMPROVEMENT turn 52 and HARVEST_RESOURCE turn 53. Cattle and Pasture absent at turn 54 with district=-1. Ghidra ClearPlotNode Execute at 55d970 confirms its removal-first and harvest branches.",
+    "limits": "One boost job and site. Exact candidate ranking and a scoped admission intervention remain to be verified. A Farm completion is not established. No research changes were made in this continuation.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-N086"],
+    "related": ["AI-C013", "AI-C014", "AI-C061"]
   }
 ]
