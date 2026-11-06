@@ -21,31 +21,22 @@ can satisfy dependencies. Tile purchase (**1.5**) and a new customer district
 failure occurs and is a later explicit resilience check. Run the same
 decision sequence for Tailors once the Bakers chain works.
 
-**Active problem — 1.6, time the first Quarter bid so it reaches foundation.**
-The patched stock replay proved score delivery, selection and reservation.
-Delhi's prerequisite contract expired before it could submit a Bakers
-production order. For the next matched comparison, start with Craftsmanship
-locked and let the AI progress through civics naturally. Check from around
-turn 5. Use a checkpoint where Code of Laws is complete, Craftsmanship is
-still locked but actively progressing, and its estimated completion leaves
-room in the observed eight-turn preparation window. Treat the estimate as
-an admission check and record the actual unlock separately. The natural
-Online scout saved turn 8 with player 4 already researching Craftsmanship,
-four estimated turns remaining, and two owned Bakers sites beside a Base
-deposit and the City Center. London refreshed the Bakers score while its
-Holy Site plan occupied the district selection slot. The existing plan also
-reserved one of the proposed suppliers.
+**Verified for this fixture — 1.6, district selection through completion.**
+The game started with Craftsmanship locked. London had four estimated turns
+left on the civic at turn 8, but its Holy Site plan occupied the district
+selection slot. Boston's first observed qualifying choice came on turn 22,
+after Craftsmanship had unlocked naturally. One diagnostic bid switched the
+district selector from Campus to Bakers, and Boston completed Bakers at plot
+721 with its Base deposit still present. The control later founded Bakers
+on a different plot. [Exact match and timeline](../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
-Find a fresh native district selection in the same naturally advancing game.
-The candidate can qualify after Craftsmanship unlocks through ordinary
-research. Recheck ownership, siting, capacity, the active district tree and
-the exact supplier. Save the inactive boundary immediately before selection
-and use it for the unmodified control and one-bid arm. If the city already
-chooses a viable Bakers site, follow that native plan with zero writes.
-Record the native winner, prerequisite, production contract, queue entry,
-foundation and completion separately.
-[Live bid and preparation expiry](../research/mods/csc-ai-hotfix-live-bid-20261106.md) ·
-[Natural checkpoint and native research estimates](../research/mods/csc-ai-bakers-natural-research-20261106.md).
+**Active problem — 4.1, qualify the appropriate Mill unlock.**
+Use the saved turn-33 Boston Quarter. Establish which Mill its actual geometry
+supports, which technology is required, and whether Boston's player researches
+it naturally. If the technology remains a bottleneck, measure the native
+research decision before applying a bounded bid. Record Mill availability,
+Granary status and the same Base deposit at each boundary. Building and queue
+follow-through remain problems **4.2** and **5.1**.
 
 For each update, name the active problem and report the furthest stage actually
 observed, the blocker if any, and the next check. Keep later problems queued

@@ -1,22 +1,13 @@
 # What we’re investigating
 
-## Current problem 1.6 — turn a Quarter choice into construction
+## Current problem 4.1 — unlock the Mill for Boston's Bakers
 
-The one-time bid on the patched stock game made Delhi choose Bakers and
-reserve its tile. The Craftsmanship preparation expired before Delhi submitted
-a production order. The next matched test starts with Craftsmanship locked
-and lets the AI research normally. Around turn 5 we start looking for a
-checkpoint where Craftsmanship is in progress with enough time left in the
-expected preparation window. Both arms use that same checkpoint. We check
-the actual civic unlock, native production order, foundation and completion
-separately. The read-only Online pilot saw the five AIs unlock Craftsmanship
-on turns 11–19. The turn-8 London control had four estimated turns left, but
-its existing Holy Site plan occupied district selection even as the city
-refreshed Bakers scores. The next test looks for a city actually choosing a
-district while the civic is close to completion or already unlocked through
-ordinary research.
-[Live bid test](../../research/mods/csc-ai-hotfix-live-bid-20261106.md) ·
-[Natural research pilot](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
+Boston completed Bakers on our chosen site after one turn-22 score change.
+The game began with Craftsmanship locked and Boston's player researched it
+normally. The control founded Bakers on a different tile. The chosen Quarter
+still has its Base deposit and an adjacent City Center. The next check uses
+the completed Quarter save to see which Mill its site can support and whether
+the AI unlocks the needed technology. [Matched construction test](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
 ## Intermediate milestone — one working Bakers Stage 2 chain
 
@@ -34,8 +25,8 @@ action. [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay).
 
 ## Tools for this milestone
 
-The shared controller and guarded stock research hook support the active
-construction test. Dev-CE 0.8.1 is an optional research tool for a specific
+The shared controller and guarded stock score hook support matched live tests.
+Dev-CE 0.8.1 is an optional research tool for a specific
 extra Lua getter or debugging need. Packaged CE delivery is a separate
 qualification on the patched Windows host.
 [Dev-CE release](https://github.com/cru121/civ6-dev-ce/releases/tag/v0.8.1-experimental) ·

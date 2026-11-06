@@ -98,6 +98,56 @@ a separate commitment. The next read-only pass searches for the first
 qualified selection window in the same naturally advancing world. It can
 admit a city whose Craftsmanship has unlocked through normal research.
 
+## Boston's first observed selection window
+
+The wider search resumed the untouched turn-8 save. It observed each
+eligible decision window without writing and saved its input at the inactive
+turn boundary. The first qualifying fresh choice was Boston, player 3 city
+131073, on turn 22. Player 3 had unlocked Craftsmanship on turn 15 through
+ordinary research. Boston had population 1, no district slot in use, and
+an owned, empty site at plot 721 next to its City Center and Base plot 796.
+
+The shared controller opened the turn-22 save as a fresh control. Boston's
+district planning slot was free. Bakers at plot 721 scored 28,795 Q8 on
+entry and after aggregation. Campus at plot 944 won at 39,269 Q8, matching
+the discovery observation. This was a district selection. The city continued
+producing other items.
+
+By turn 37 the control had an unpillaged Granary at plot 795 and an
+unpillaged improvement on Base plot 796. Boston had submitted a Bakers
+construction contract on turn 34 and selected it for production on turn 36.
+The first foundation observation on turn 37 was plot 648. Our candidate at
+plot 721 remained empty. These are distinct sites and distinct moments in the
+decision sequence.
+
+## The one-time Boston bid reached construction
+
+The treatment reopened the same verified turn-22 save. The original value
+and city facts matched. A single write after native aggregation put Bakers
+256 Q8 above the control's Campus score. The native selector returned
+Bakers at the new value. The observer froze after that turn.
+
+| Turn-22 district decision | Control | One bid |
+| --- | ---: | ---: |
+| Bakers plot 721, native aggregate | 28,795 Q8 | 28,795 Q8 |
+| Diagnostic adjustment | 0 | +10,730 Q8 |
+| Native selector | Campus at 944 | Bakers at 721 |
+| Winning score | 39,269 Q8 | 39,525 Q8 |
+
+Boston reserved (55, 9) and submitted Bakers construction contract 225
+on turn 22. The city chose the contract for production on turn 26. The
+first physical foundation observation was turn 27, at plot 721. The native
+queue reached the production cost and marked contract 225 complete on turn
+30. The exact district was complete at the next physical sample on turn 33.
+Boston still owned Base plot 796, which retained the same unimproved deposit.
+The Granary and Mills were absent at that boundary. The controller saved
+this completed Quarter for the next decision.
+
+The native production system handled each step after the single score change.
+Craftsmanship was already available through normal research. This experiment
+establishes follow-through in that ready state. The amount is a diagnostic
+signal measured against the control winner.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
@@ -113,3 +163,11 @@ preferences and the temporary package. The SHA-256 of `trace-frozen.json`
 is `7db19defd41e4961ccaeb59d974e4e1e8321547b9432ddbfdfce997821a82375`.
 The London tree records are `AI_Behavior_Trees.csv` lines 836–870 and
 923–927. The Great Bath production row is `City_BuildQueue.csv` line 5.
+The broader search and replay are under `matched-02`. The decision save is
+`discovery/windows/22/source.Civ6Save` with SHA-256
+`9675be27c614a2429a9cdca485a09a8d7421e627cc7833cb472bb9b1c390f55a`.
+The control and treatment closed normally with verified preferences and
+package restoration. The treatment's `trace-frozen.json` SHA-256 is
+`1fac636f4e18ebaaefe51813488b1d44093bc14b4b2314cb13eeb562aed3200c`.
+Its `completed.Civ6Save` SHA-256 is
+`df1f756b027184d5deeb30040710f16985bac9547412300bc99a9529d21fdd79`.

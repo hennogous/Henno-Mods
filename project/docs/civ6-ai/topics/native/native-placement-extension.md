@@ -22,6 +22,12 @@
 > empty through turn 25. [AI-N080]
 > [Live bid and follow-through](../../../research/mods/csc-ai-hotfix-live-bid-20261106.md)
 
+> **6 November matched Boston replay:** After a natural Craftsmanship unlock,
+> one late bid changed the turn-22 district selector from Campus to Bakers.
+> Boston reserved our site, placed its foundation and completed the Quarter.
+> The control later founded Bakers on a different plot. [AI-N083]
+> [Exact save, scores and construction timeline](../../../research/mods/csc-ai-bakers-natural-research-20261106.md)
+
 ## Late write reaches district selection and preparation
 
 The Delhi replay changes one completed district-site cell on return from

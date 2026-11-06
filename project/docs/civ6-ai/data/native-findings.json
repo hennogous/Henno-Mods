@@ -1560,6 +1560,19 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/district-choice.md",
     "depends_on": ["AI-N078"],
-    "related": ["AI-N024", "AI-N067", "AI-N080", "AI-N081"]
+    "related": ["AI-N024", "AI-N067", "AI-N080", "AI-N081", "AI-N083"]
+  },
+  {
+    "id": "AI-N083",
+    "title": "One late Bakers bid changed Boston's district choice and produced the selected Quarter",
+    "statement": "A guarded write after aggregation changed the district selected in an otherwise matched decision. The AI reserved the selected plot, submitted a construction contract, chose it for production and completed the Quarter without a second score write.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Stock Windows Gathering Storm XP2 SHA 092abfbb, isolated CSC Online turn-22 save. Boston player 3 city 131073 already knew Craftsmanship through natural play. Bakers plot 721 native score 28795 Q8 in both arms. Control Campus plot 944 scored 39269 Q8. One +10730 Q8 adjustment yielded 39525 for Bakers. Plot reserved and contract 225 submitted turn 22, chosen for production turn 26, foundation observed turn 27, contract completed turn 30, physical completion verified and saved turn 33. Base plot 796 remained intact. Control founded Bakers at different plot 648 by turn 37. All arms restored normally.",
+    "limits": "One exact site and world. The amount was calibrated to the observed competing district and carries no economic valuation claim. Research was naturally complete at selection. A locked-but-near civic bid, a recurring policy, Mill and Granary construction, supplier improvement, and the working Stage 2 chain require separate evidence.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N075", "AI-N078"],
+    "related": ["AI-N080", "AI-N081", "AI-N082"]
   }
 ]
