@@ -43,3 +43,25 @@ Delhi's exact plot through turn 25, ending earlier if the Quarter completes
 or the owner changes. The control comparison ends at turn 2. Later
 observations describe what the treated AI did after the pulse. The
 calibrated correction and CE replay retain their original build qualification.
+
+## Natural Craftsmanship checkpoint
+
+`scout.py` hosts the isolated Online game without granting unlocks or adding
+world fixtures. It records the original AIs' civic selections, reads turns
+remaining in gameplay and progress in the UI, and saves one inactive boundary
+with a qualified Bakers site. Start checking on turn 5. Candidate timing
+requires positive Craftsmanship progress, Code of Laws complete and one to
+four turns estimated remaining. `--pilot` can supply archived natural unlock
+timing when the native estimates are unavailable.
+
+`natural_bid.py --scout <closed scout directory>` loads the exact save in
+stock GameCore and observes one turn with zero writes. With `--search-through`,
+it first searches later turns for a free district tree and a fresh selection,
+then cold-loads that exact pre-decision save for the control. A distinct
+competitor and a fresh score can qualify one diagnostic bid at 256 Q8 above
+that winner. The treatment reopens the same save and changes one unreserved
+owned cell after aggregation. It checks the original native scores and
+observes the native winner before freezing. Both arms retain the native
+contract and queue logs. Follow-through samples record the civic unlock,
+foundation, district completion and exact supplier separately. All game
+actions after the one score change are ordinary AI decisions.
