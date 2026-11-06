@@ -299,6 +299,46 @@ closed the game normally. This milestone uses three separately qualified,
 scoped interventions on one world. It leaves generic material protection,
 same-city Farm fallback, routine bid calibration and Workshop delivery open.
 
+## The chain stayed active for 141 turns before damage
+
+`retention-01` resumed the exact turn-66 save with the same scoped Farm guard.
+The read-only observer checked the original Cattle Pasture, Bakers Quarter,
+Water Mill, Granary and Storekeeper at every recorded player-turn end. The
+controller also read building yields at inactive boundaries eight turns apart.
+Boston's turn checks passed from turn 66 through 206. The first failed check
+was the Pasture at the end of player 0's turn 207. The controller finished
+that batch and saved turn 210. Cattle still occupied plot 796 with no
+improvement, the Water Mill was pillaged, and Storekeeper's Growth property
+was zero despite its marker still being present. The Granary was intact.
+
+The captured weather log recorded a Crippling Blizzard centered at (55, 8)
+on turn 207. The Quarter at (55, 9) and Pasture at (56, 10) were nearby.
+`Expansion2_RandomEvents.xml` defines a 19-hex footprint and separate
+improvement destruction and building pillage effects for this storm.
+Ghidra on the `.text`-identical reference XP2 confirms that
+`Climate::Manager::ApplyStormEffects` at RVA `1b9b10` evaluates the configured
+damage on each plot returned by `GetStormPlots`. `RandomEvents::DealEventDamage`
+at `23ce00` dispatches to the improvement and building handlers. The
+destruction handler at `23d300` can clear an improvement without clearing its
+resource. This makes the blizzard the leading explanation. The first run has
+no per-plot damage attribution, and the later player-2 pillage request on
+turn 207 follows the first observed Pasture failure.
+
+The run checked 2,335 player-turn ends and recorded one Farm veto, applied in
+the turn-66 batch. The final save and normal closure verified. The evidence
+root is `retention-01`. SHA-256 for `retention/210.json` is
+`f0504567ae6ff4623533420ec8305ce5fdc02df7d8b9001645f08bab5514ad19` and for
+`Game_RandomEvents.csv` is
+`994fdd7392b147d583abd215c0543a715df12e0b300c880e970fc09b18970c7f`.
+
+`retention-02` reloaded the exact working turn-186 save and matched the prior
+gameplay and UI readbacks. The same weather pattern and first failed Pasture
+check recurred at turn 207. The exact-plot improvement removal event arrived
+on turn 209, two turns after the first failure. The replay had no Farm vetoes
+and no score writes. It ended at turn 210 with a verified save and restored
+setup. The resumed run's `retention/210.json` SHA-256 is
+`c19fd0f4e2b652cd8a1e749b1efee6cbe457f7a46816f8c12830df45c75a287d`.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

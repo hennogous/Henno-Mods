@@ -16,6 +16,12 @@ The Granary produced 2 Food against its base of 1, and the Water Mill produced
 complete chain on turn 66.
 [Construction, supplier protection and actual yields](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
+Boston kept the same chain working for another 141 turns. The Pasture
+stopped working on turn 207 during a nearby blizzard. The Cattle survived,
+but the Pasture was later removed, the Mill was pillaged and Storekeeper
+lost its Growth benefit. An exact-save replay reproduced the interruption.
+[Long-run evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-chain-stayed-active-for-141-turns-before-damage).
+
 ## Intermediate milestone — one working Bakers Stage 2 chain
 
 The sequence is a completed Quarter with viable Base supply and an adjacent

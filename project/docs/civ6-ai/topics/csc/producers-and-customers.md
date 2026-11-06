@@ -22,6 +22,12 @@ still producing after the supplier was lost, while Storekeeper stayed absent.
 [AI-C061] [AI-C062]
 [Boston evidence and turn-66 checkpoint](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#retained-stage-2-chain-verified-at-turns-63-and-66).
 
+The first long continuation kept the same chain working for 141 full turns.
+The Pasture first failed on turn 207, when a blizzard was logged nearby. The
+turn-210 save showed Cattle without a Pasture, a pillaged Water Mill, an intact
+Granary and zero Storekeeper Growth even though its marker still existed.
+[AI-C063] [Retention and damage evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-chain-stayed-active-for-141-turns-before-damage).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

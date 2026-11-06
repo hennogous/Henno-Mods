@@ -1157,6 +1157,19 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-N083", "AI-N086", "AI-N088", "AI-C061"],
-    "related": ["AI-N085"]
+    "related": ["AI-N085", "AI-C063"]
+  },
+  {
+    "id": "AI-C063",
+    "title": "Boston's working Bakers chain survived 141 turns before the Pasture failed",
+    "statement": "The exact working Boston checkpoint retained the original Cattle Pasture, Water Mill, Granary and Storekeeper through 141 completed turns. The first failure at turn 207 was consistent with nearby weather damage. By the turn-210 checkpoint the Cattle remained, the Pasture was absent and the Water Mill was pillaged.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source", "static", "inference"],
+    "scope": "One isolated Online Boston continuation on patched stock XP2. Turn 66 exact save, 2,335 player-phase samples, synchronized yield readings at inactive boundaries, one scoped Farm veto and normal closure. Granary 795, Quarter 721 and Cattle 796. An exact turn-186 reload reproduced the first failure at turn 207 and caught the removal callback at turn 209.",
+    "limits": "A Crippling Blizzard was logged near both plots on turn 207. The initial run did not record the damage source for each plot. The 141-turn span does not establish 150-turn operation or native recovery after damage.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C062"],
+    "related": ["AI-N088"]
   }
 ]

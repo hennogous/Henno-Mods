@@ -48,6 +48,13 @@ property were present at turns 63 and 66. The saved turn-66 state closes the
 Boston milestone. The tested policy is scoped to one city and supplier.
 [Final retained chain and evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#retained-stage-2-chain-verified-at-turns-63-and-66).
 
+**Active durability check — 2.2, 6.1, 13.1.** Boston's original chain worked
+for 141 consecutive turns after the turn-66 checkpoint. It first lost the
+working Pasture on turn 207, near a Crippling Blizzard. An exact checkpoint
+replay reproduced the break. The 150-turn target and native repair after this
+incident remain open.
+[Long-run observations](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-chain-stayed-active-for-141-turns-before-damage).
+
 For each update, name the active problem and report the furthest stage actually
 observed, the blocker if any, and the next check. Keep later problems queued
 until the active check closes or an explicit dependency needs attention.
