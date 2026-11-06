@@ -1,3 +1,15 @@
+# Current native target — 6 November 2026
+
+Steam 26407122 XP2 SHA `092abfbb…`, timestamp 1793649108, image 12976128.
+Exact prior XP2 SHA `324c51e9…` remains an offline reference. All XP2 code,
+hook RVAs and caller instructions match. The main DX11 executable has a new
+hash, so qualify shared CE separately before any patched CE run. Isolated fork
+topic `feature/ai-district-scores-xp2-november-hotfix` is the profile candidate.
+Use `--hotfix-baseline` only for stock observation and keep old treatment
+receipts on their original build. Its turn 1–2 replay matches the old stock
+control exactly, with zero writes and verified restoration. Candidate
+`e67b4a2` builds and passes 54 isolated checks. See the hotfix comparison report.
+
 # High priority: native code maintainability — 5 November 2026
 
 Follow the closest CE `develop` feature's hook/runtime conventions and C++

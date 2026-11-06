@@ -27,6 +27,12 @@ More Quarters, higher scores or a single completed chain are intermediate result
 
 ## Carrier checkpoint: CE development parity restored
 
+The 5 November Steam security hotfix changed the installed Windows binaries. The
+[XP2 comparison](../research/mods/csc-ai-xp2-november-hotfix-20261106.md)
+found the same AI hook addresses and instruction bytes. A separate candidate
+updates the AI target identity. Rebase and requalify it once upstream CE
+supports the patched host executable. CSC valuation work can proceed offline.
+
 On4 November Henno put further AI tuning on hold until we investigate and
 prototype a Workshop-distributable carrier. His preferred architecture is CSC
 Lua/SQL with a Community Extension dependency, rather than our own shipped DLL.

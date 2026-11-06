@@ -10,6 +10,12 @@
 > reviewed, builds with supported MSVC and passes 36 isolated checks and a fresh
 > bounded Online100/context/save/reload regression. [Current qualification](../../../research/mods/csc-ce-develop-port-20261105.md).
 
+> **6 November Steam hotfix:** The XP2 DLL has a new identity. Its code, AI
+> hook addresses and caller layout match the prior build. The stock replay
+> matches the earlier Delhi scores and winner. A separate CE candidate updates
+> the target identity while shared executable compatibility
+> remains with upstream. [AI-N078] [Hotfix comparison](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md)
+
 ## Late write reaches district selection and preparation
 
 The Delhi replay changes one completed district-site cell on return from

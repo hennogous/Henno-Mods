@@ -9,6 +9,8 @@ import shutil
 import sys
 import time
 
+from audit_xp2_hotfix import HOTFIX_SHA, HOTFIX_TIMESTAMP, XP2_IMAGE_SIZE
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 STUDY = HERE.parent / 'mill_building_study'
@@ -29,6 +31,7 @@ SAVE_SHA = 'df5d20f351e24921460a6a15d1087acca016b83cf0d4b150b3b26877ea5d1739'
 # The control and pulse use no expected-building guard. Their archived writer
 # predates the correction to read raw building values at aggregation entry.
 PULSE_WRITER_SHA = 'cb23467f8e04a0e9dea7d27d7e9b6bd1a752949114a81d6e846040c25f9ae9af'
+PULSE_OBSERVER_SHA = 'b66047f5d1d868c9de5699708e69535f4e6b475d5e1b007c44310034f9431945'
 PLOT = 1210
 DISTRICT = 36
 BASE = dict(player=1, city=65536, district=DISTRICT, plot=PLOT)
@@ -216,6 +219,8 @@ def prior_proof(reference, archived, package):
         accepted = {sha(path)}
         if path.name == 'write.js':
             accepted.add(PULSE_WRITER_SHA)
+        else:
+            accepted.add(PULSE_OBSERVER_SHA)
         require(pins[key] in accepted and sha(archive[key]) == pins[key], 'Prior native source archive differs from proof')
     observed = []
     for mode in ('baseline', 'pulse'):
@@ -243,6 +248,7 @@ def prior_proof(reference, archived, package):
 
 
 def run(a):
+    require(not (a.hotfix_baseline and a.reference), 'The patched build needs its own fresh control')
     study, out = a.study.resolve(), a.output.resolve()
     retired = study / 'retired-study-package'
     installed = a.mods.resolve() / 'CSC Mill Building Study'
@@ -253,11 +259,14 @@ def run(a):
     untouched = {p: manifest(p) for p in original if Path(p) != installed}
     checkpoint = load(study / 'run-03/source-checkpoint.json')
     source = Path(checkpoint['native_save'])
-    require(sha(source) == sha(Path(checkpoint['archive'])) == SAVE_SHA and sha(a.dll) == GAME_SHA,
+    target_sha = HOTFIX_SHA if a.hotfix_baseline else GAME_SHA
+    require(sha(source) == sha(Path(checkpoint['archive'])) == SAVE_SHA and sha(a.dll) == target_sha,
             'Unexpected saved world or native binary')
     archived = load(study / 'run-03/probe/source-world.json')
     spec = load(study / 'observer-spec.json')
     spec['path'] = str(a.dll.resolve())
+    if a.hotfix_baseline:
+        spec.update(sha256=HOTFIX_SHA, timestamp=HOTFIX_TIMESTAMP, image_size=XP2_IMAGE_SIZE)
     sys.path.insert(0, str(a.dependencies.resolve()))
     import frida
     require(frida.__version__ == '17.24.3' and Path(frida.__file__).resolve().is_relative_to(a.dependencies.resolve()),
@@ -283,6 +292,10 @@ def run(a):
         return run_arm(a, directory, dict(BASE, **plan), source, spec, archived, prior, verify, frida, calibration)
 
     try:
+        if a.hotfix_baseline:
+            baseline, _ = arm(dict(mode='baseline', delta=0))
+            write_json(out / 'result.json', dict(gamecore_sha256=target_sha, baseline=baseline))
+            return
         if a.reference:
             baseline, world, pulse = prior_proof(a.reference, archived, package)
             pulse_directory = a.reference / 'pulse'
@@ -322,4 +335,6 @@ if __name__ == '__main__':
     for name in ('study', 'output', 'mods', 'user-root', 'binary', 'dll', 'dependencies'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--reference', type=Path, help='Reuse closed and verified baseline/pulse evidence for the correction arm')
+    parser.add_argument('--hotfix-baseline', action='store_true',
+                        help='Observe one patched stock GameCore turn with no score writes or CE')
     run(parser.parse_args())

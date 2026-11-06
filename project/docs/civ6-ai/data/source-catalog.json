@@ -1722,6 +1722,16 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-work-admission-20261031.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-xp2-november-hotfix-20261106.md",
+      "title": "Civ VI November hotfix and the CSC AI hooks",
+      "kind": "report",
+      "date": "20261106",
+      "bytes": 5503,
+      "sha256": "9d0480e1a729781e535588e8b8d0ae240e377cc7bf5e2a57145860dc72c57271",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-xp2-november-hotfix-20261106.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-aiplus-research-review-20261020.md",
       "title": "AI+ review — 20 October 2026",
       "kind": "report",

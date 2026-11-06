@@ -1,6 +1,12 @@
 'use strict';
 // Finite observer only: no game/Lua calls, score writes or requested actions.
 const STUDY_SHA='324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c';
+// The November Steam hotfix has identical XP2 instructions and mapped layout.
+// See late_placement/audit_xp2_hotfix.py. Both loaded identities remain pinned.
+const STUDY_TARGET_TIMESTAMPS=new Map([
+ [STUDY_SHA,1719431003],
+ ['092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f',1793649108],
+]);
 const STUDY_POINTS={
  BuildingValue:[0x52b900,'44894c24204c894424188954241048894c24085557488dac2428feffff4881ec'],
  ModifierValue:[0x529ed0,'488bc455574154415641574881ec20010000498b384d8bf9418b68104c8be248'],
@@ -233,7 +239,8 @@ function installStudyRuntime(createExtension){
   try{
    validateStudyConfig(cfg);
    if(Process.platform!=='windows'||Process.arch!=='x64'||Process.pointerSize!==8)throw Error('Windows x64 required');
-   if(spec.sha256!==STUDY_SHA||spec.image_size!==12976128||spec.timestamp!==1719431003||typeof spec.path!=='string')throw Error('Unreviewed original GameCore identity');
+   const timestamp=STUDY_TARGET_TIMESTAMPS.get(spec.sha256);
+   if(timestamp===undefined||spec.image_size!==12976128||spec.timestamp!==timestamp||typeof spec.path!=='string')throw Error('Unreviewed original GameCore identity');
    if(Process.enumerateModules().some(m=>/GameCore_XP2_(?:CE|CSC)/i.test(m.name)))throw Error('Native carrier conflict');
    const matches=Process.enumerateModules().filter(m=>pathKey(m.path)===pathKey(spec.path));
    if(matches.length!==1)throw Error('Exact loaded original module required');

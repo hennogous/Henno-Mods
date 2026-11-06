@@ -31,3 +31,9 @@ Frida attachment. Supply the completed correction run as `--proof`. The
 `--fixture-carrier` option selects the test DLL through front-end SQL in the
 isolated saved mod identity. The shared controller verifies the loaded module,
 the starting world, both score paths, native preparation and restoration.
+
+For the November Windows hotfix, run `audit_xp2_hotfix.py` with the earlier
+reference DLL and the patched DLL. `driver.py --hotfix-baseline` then observes
+the archived turn on patched stock GameCore. This mode uses its own control
+and records zero writes. The historical treatment runner and CE replay retain
+their original build qualification.

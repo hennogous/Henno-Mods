@@ -1495,6 +1495,19 @@
     "sources": ["project/docs/research/mods/csc-ce-late-score-api-20261105.md", "project/docs/research/mods/csc-ai-late-placement-20261105.md"],
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N075"],
-    "related": ["AI-N061", "AI-N074", "AI-C060"]
+    "related": ["AI-N061", "AI-N074", "AI-N078", "AI-C060"]
+  },
+  {
+    "id": "AI-N078",
+    "title": "The November Windows Steam XP2 DLL keeps the district hook addresses and instructions",
+    "statement": "The patched GameCore has a new SHA and PE timestamp. Its full code section, mapped layout, unwind records and district hook and caller locations match the earlier qualified XP2 image. Ghidra confirms the late aggregation-to-selection ordering. A fresh stock replay of the same save also matches the earlier district and forecast observations.",
+    "status": "accepted",
+    "evidence_types": ["static", "source", "runtime"],
+    "scope": "Exact Windows Steam build 26407122, XP2 SHA 092abfbb versus SHA 324c51e9. All 10,180,608 raw .text bytes match. The only .rdata differences are 533 build-path tokens, debug/export timestamps and the CodeView GUID. Direct calls at 3e30b9 and 3e293c still reach NetValue at 52a440 and CalculateDistrictValues at 3dfee0. The isolated Online turn 1–2 stock replay matches Delhi's earlier 77,534/104,621 Q8 Bakers entry/return and 248,223 Q8 Neighborhood winner, with 361 complete observer pairs, zero writes and verified restoration. CE profile candidate e67b4a2 changes identity and keeps the same hook code.",
+    "limits": "Scoped to two exact GameCore images and one stock saved-world replay. The patched DX11 host executable has a different hash and CE has separate hooks there. This finding does not establish full CE compatibility or a patched CE live score write.",
+    "sources": ["project/docs/research/mods/csc-ai-xp2-november-hotfix-20261106.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N075"],
+    "related": ["AI-N074", "AI-N077"]
   }
 ]

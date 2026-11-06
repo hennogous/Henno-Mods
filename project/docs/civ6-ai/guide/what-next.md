@@ -92,6 +92,11 @@ does not establish that the chain improves the empire.
 
 ## Release work continues separately
 
+The November Windows hotfix changed the XP2 DLL's identity. The district
+hook addresses and code match the earlier image. The AI profile is prepared
+for the patched DLL. Live CE qualification follows upstream support for the
+updated executable. [Hotfix comparison](../../research/mods/csc-ai-xp2-november-hotfix-20261106.md)
+
 The earlier CE draft is closed. The API-only `develop` port now builds through CE's supported Microsoft toolchain and passes its isolated checks and fresh shared-controller Online100 regression, including context/save/reload checks. We will agree on the capability scope before a later PR. Actual Workshop subscription and broader compatibility remain separate from both this port and the economic policy. [Contribution status](../../research/mods/csc-ce-develop-port-20261105.md).
 
 This page carries the short current agenda. The [technical roadmap](../roadmap.md) and [broader question backlog](../topics/history/open-questions.md) retain detail and history.
