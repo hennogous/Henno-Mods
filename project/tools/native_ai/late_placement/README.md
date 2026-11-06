@@ -65,3 +65,10 @@ observes the native winner before freezing. Both arms retain the native
 contract and queue logs. Follow-through samples record the civic unlock,
 foundation, district completion and exact supplier separately. All game
 actions after the one score change are ordinary AI decisions.
+
+`natural_chain.py --match <closed matched run> --through <turn>` reopens the
+completed Quarter for a read-only Mill unlock observation. It records local
+geometry, access flags, each Mill's technology, Granary state and the tracked
+supplier. A missing gameplay legality getter is recorded as `null`. The run
+stops if the tracked supplier is lost. The original Boston continuation found
+the Campus on that supplier, which moved protection ahead of Mill delivery.

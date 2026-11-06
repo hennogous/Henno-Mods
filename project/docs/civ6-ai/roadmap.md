@@ -30,13 +30,21 @@ district selector from Campus to Bakers, and Boston completed Bakers at plot
 721 with its Base deposit still present. The control later founded Bakers
 on a different plot. [Exact match and timeline](../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
-**Active problem — 4.1, qualify the appropriate Mill unlock.**
-Use the saved turn-33 Boston Quarter. Establish which Mill its actual geometry
-supports, which technology is required, and whether Boston's player researches
-it naturally. If the technology remains a bottleneck, measure the native
-research decision before applying a bounded bid. Record Mill availability,
-Granary status and the same Base deposit at each boundary. Building and queue
-follow-through remain problems **4.2** and **5.1**.
+**Active problem — 2.2, keep the Base supplier available.**
+Boston committed to Campus on Base plot 796 at turn 31, queued the existing
+contract at turn 33, and had covered the deposit by turn 36. Repeat the
+accepted placement bid and save immediately before that fresh district
+decision. Census all six neighbors and distinguish mapped deposits, working
+suppliers and developable sites. Use the same save in both arms. Measure
+the destructive pair and a viable alternative, then verify whether a
+bounded deduction preserves the supplier through the AI's ordinary choice.
+[Supplier loss and decision timing](../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-lost-the-tracked-base-before-its-mill-was-available).
+
+**Next after retention — 4.1, qualify the appropriate Mill unlock.**
+Boston's Quarter has a river edge and the river-access flag. The Water Mill
+needs Engineering, which player 3 was researching naturally when the
+supplier was lost. Record the actual unlock and native eligibility on the
+retained branch. Building and queue follow-through remain **4.2** and **5.1**.
 
 For each update, name the active problem and report the furthest stage actually
 observed, the blocker if any, and the next check. Keep later problems queued

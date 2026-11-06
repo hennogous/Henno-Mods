@@ -1,13 +1,16 @@
 # What we’re investigating
 
-## Current problem 4.1 — unlock the Mill for Boston's Bakers
+## Current problem 2.2 — keep Boston's Bakers supplier
 
 Boston completed Bakers on our chosen site after one turn-22 score change.
 The game began with Craftsmanship locked and Boston's player researched it
 normally. The control founded Bakers on a different tile. The chosen Quarter
-still has its Base deposit and an adjacent City Center. The next check uses
-the completed Quarter save to see which Mill its site can support and whether
-the AI unlocks the needed technology. [Matched construction test](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
+had its Base deposit and an adjacent City Center at completion. Boston then
+built a Campus over the deposit before its Mill was available. The next test
+replays from before Boston chose that Campus site and checks whether a
+measured penalty lets the AI choose another site. Boston was already
+researching Engineering for the Water Mill when it lost the deposit.
+[Construction and supplier-loss evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
 ## Intermediate milestone — one working Bakers Stage 2 chain
 

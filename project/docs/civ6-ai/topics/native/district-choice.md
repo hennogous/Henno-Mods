@@ -64,6 +64,14 @@ Great Bath at the same time. The district planning slot and the production
 queue can have different commitments. [AI-N082]
 [Natural checkpoint and native log evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
+Boston's later Campus plan reserved a tracked Bakers Base deposit even
+though an improvement tree had already reserved it. The selector requires
+a score strictly above the effective reservation value. A positive
+reservation therefore gives the competing improvement a threshold, and a
+strong district can clear it. The placement decision preceded the build
+queue's acceptance by two turns. [AI-N084]
+[Campus and supplier timeline](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-lost-the-tracked-base-before-its-mill-was-available).
+
 ## Buying a future site
 
 The district tree can request a particular unowned location through a

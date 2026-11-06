@@ -1573,6 +1573,19 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N075", "AI-N078"],
-    "related": ["AI-N080", "AI-N081", "AI-N082"]
+    "related": ["AI-N080", "AI-N081", "AI-N082", "AI-N084"]
+  },
+  {
+    "id": "AI-N084",
+    "title": "Boston committed to a district over a Bakers supplier before the production order",
+    "statement": "Boston's district selector and tree committed to a Campus on the tracked Base plot before its queue selected the construction contract. The later physical observation showed the Campus and the deposit gone. The district selector requires a score above the effective reservation value, so an improvement reservation does not itself preserve a supplier.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Stock Windows Gathering Storm XP2 SHA 092abfbb, isolated CSC Online Boston player 3 city 131073. Campus contract 318 was submitted and plot 796 reserved on turn 31. The plot still contained its Base deposit at the turn-33 boundary. The same contract entered production on turn 33, with Campus and no deposit observed at turn 36. Ghidra GetBestDistrict at 3e4a50 checks the effective reservation and current best. Its native default at b66cb0 is −2559744 Q8.",
+    "limits": "One exact tracked supplier. The later observation did not enumerate every other neighbor. Last-viable classification, an effective deduction, hard exclusion, and a generic retained-chain policy require separate tests.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/district-choice.md",
+    "depends_on": ["AI-N083"],
+    "related": ["AI-N011", "AI-N023", "AI-N067", "AI-N079"]
   }
 ]

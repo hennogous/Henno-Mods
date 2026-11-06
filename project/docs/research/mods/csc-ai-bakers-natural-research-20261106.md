@@ -148,6 +148,36 @@ Craftsmanship was already available through normal research. This experiment
 establishes follow-through in that ready state. The amount is a diagnostic
 signal measured against the control winner.
 
+## Boston lost the tracked Base before its Mill was available
+
+The read-only continuation reopened the completed turn-33 Quarter. Boston
+was on a hill with one river edge and the river-access flag. Water Mill
+required Engineering and Wind Mill required Machinery. Both were locked.
+Player 3 began Engineering naturally by turn 36.
+
+The new Quarter remained complete, but at turn 36 plot 796 held a Campus
+and its previously observed Base deposit was gone. The original treatment
+log already records Boston choosing Campus, reserving (56, 10), and
+submitting contract 318 on turn 31. The continuation selected that same
+contract for production on turn 33. A new placement bid from the completed
+turn-33 save would arrive after the site commitment. Boston's improvement
+tree also had a reservation on the deposit. The Campus won despite that
+reservation.
+
+The observation follows the exact supplier nominated at turn 22. A fresh
+census of all six neighboring plots is required to establish whether it
+was still the Quarter's last viable Base at the destructive decision.
+The next matched test repeats the accepted Bakers bid, saves before the
+turn-31 district choice, and measures a new competing site before applying
+any supplier-protection adjustment. Both arms will use that saved boundary.
+
+`GetBestDistrict` at RVA `3e4a50` uses the native default −9,999 utility
+as the initial minimum and as the reservation value when no live reserve
+task resolves. A candidate score must exceed the reservation value and meet
+or exceed the best value so far. This allows some negative scores to win.
+The first protection test will use a finite deduction measured against a
+viable alternative and verify the resulting decision and supplier separately.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
@@ -171,3 +201,8 @@ package restoration. The treatment's `trace-frozen.json` SHA-256 is
 `1fac636f4e18ebaaefe51813488b1d44093bc14b4b2314cb13eeb562aed3200c`.
 Its `completed.Civ6Save` SHA-256 is
 `df1f756b027184d5deeb30040710f16985bac9547412300bc99a9529d21fdd79`.
+The read-only supplier-loss observation is `stage2-01`. Its `result.json`
+SHA-256 is `ea6e003b1589120e73f01873b7ee235c5ae23a4c5e99a401b373d9a707b448ec`.
+The earlier Campus commitment appears in `matched-02/treatment/AI_Behavior_Trees.csv`
+lines 20801–20826 and `AI_CityBuild.csv` line 142. The follow-on queue selection
+appears in `stage2-01/AI_CityBuild.csv` line 4.
