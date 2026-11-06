@@ -986,8 +986,8 @@
       "title": "Live Bakers district bid on the November hotfix",
       "kind": "report",
       "date": "20261106",
-      "bytes": 4647,
-      "sha256": "eae82820d1cd2dfa225c0a2e426c3efae7f451a9f8267bd5e4823ad613b6d726",
+      "bytes": 4779,
+      "sha256": "e50b8096d217e27392abf2d80a830ef47261e02832ea7ec581c7b0f5d7eabcc8",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-hotfix-live-bid-20261106.md"
     },

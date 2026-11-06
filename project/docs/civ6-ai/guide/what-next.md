@@ -4,9 +4,12 @@
 
 The one-time bid on the patched stock game made Delhi choose Bakers and
 reserve its tile. The Craftsmanship preparation expired before Delhi submitted
-a production order. The next matched test starts with an already unlocked
-Bakers candidate. It checks native selection, the production order, the
-foundation and completion separately.
+a production order. The next matched test starts with Craftsmanship locked
+and lets the AI research normally. Around turn 5 we start looking for a
+checkpoint where Craftsmanship is in progress with enough time left in the
+expected preparation window. Both arms use that same checkpoint. We check
+the actual civic unlock, native production order, foundation and completion
+separately.
 [Live bid test](../../research/mods/csc-ai-hotfix-live-bid-20261106.md).
 
 ## Intermediate milestone — one working Bakers Stage 2 chain

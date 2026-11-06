@@ -52,9 +52,11 @@ through normal finite autoplay intervals.
 The matched control ends at turn 2. The later observations describe how
 the treated AI handled its own preparation. A sustained bid and the cause
 of the incomplete research remain outside the comparison.
-The next construction test should start with a legal, already unlocked
-Bakers candidate and available production. Live bids for a Mill, Granary
-and material work still require separate delivery evidence.
+The follow-up plan is to start with Craftsmanship locked and bid later,
+once native civic progress makes the unlock plausible within the preparation
+window. See [active problem 1.6](../../civ6-ai/roadmap.md#current-milestone-and-active-problem).
+Live bids for a Mill, Granary and material work still require separate
+delivery evidence.
 
 ## Controller and retained evidence
 

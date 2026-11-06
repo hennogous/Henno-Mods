@@ -21,15 +21,22 @@ can satisfy dependencies. Tile purchase (**1.5**) and a new customer district
 failure occurs and is a later explicit resilience check. Run the same
 decision sequence for Tailors once the Bakers chain works.
 
-**Active problem — 1.6, take a construction-ready Quarter bid through
-foundation.** The patched stock replay proved score delivery, selection and
-reservation. Delhi's prerequisite contract expired before it could submit a
-Bakers production order. Use an already unlocked, legal, owned Bakers site
-for the next matched comparison. Verify the city has the capacity to start
-it, and log the native winner, actual production contract, queue entry,
-foundation and completion separately. This isolates production follow-through
-from civic selection. The broad policy can value a future unlock earlier
-and qualify a bid close enough to readiness for native preparation.
+**Active problem — 1.6, time the first Quarter bid so it reaches foundation.**
+The patched stock replay proved score delivery, selection and reservation.
+Delhi's prerequisite contract expired before it could submit a Bakers
+production order. For the next matched comparison, start with Craftsmanship
+locked and let the AI progress through civics naturally. Check from around
+turn 5. Use a checkpoint where Code of Laws is complete, Craftsmanship is
+still locked but actively progressing, and its estimated completion leaves
+room in the observed eight-turn preparation window. Treat the estimate as
+an admission check and record the actual unlock separately.
+
+Use that same checkpoint for the unmodified control and the one-bid arm.
+Recheck site ownership, siting requirements and city capacity. Record the
+current civic and its progress, native winner, prerequisite request, actual
+production contract, queue entry, foundation and completion separately.
+If the research state never qualifies, record that outcome before choosing
+another candidate. A later bid tests timing with native research intact.
 [Live bid and preparation expiry](../research/mods/csc-ai-hotfix-live-bid-20261106.md).
 
 For each update, name the active problem and report the furthest stage actually
