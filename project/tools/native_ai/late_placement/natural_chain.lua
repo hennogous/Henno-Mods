@@ -28,10 +28,16 @@ local function has(key)
 end
 
 local research = GameInfo.Technologies[currentTech]
-local feudalism = player:GetCulture():HasCivic(assert(GameInfo.Civics.CIVIC_FEUDALISM).Index)
+local culture = player:GetCulture()
+local civic = GameInfo.Civics[culture:GetProgressingCivic()]
+local feudalism = culture:HasCivic(assert(GameInfo.Civics.CIVIC_FEUDALISM).Index)
+local serviceGrowth = city and city:GetProperty('CSC_BAKERS_STAGE_2_EFFECT_GROWTH')
 print(string.format('CSC_NATURAL_CHAIN={"river":%s,"riverEdges":%d,"hills":%s,"currentTech":"%s",'
-    .. '"riverFlag":%s,"inlandFlag":%s,"feudalism":%s,"serviceMarker":%s,"options":{%s,%s,%s}}',
+    .. '"currentCivic":"%s","riverFlag":%s,"inlandFlag":%s,"feudalism":%s,"serviceMarker":%s,'
+    .. '"serviceGrowth":%s,"options":{%s,%s,%s}}',
     tostring(plot:IsRiver()), plot:GetRiverCrossingCount(), tostring(plot:IsHills()), research and research.TechnologyType or '',
+    civic and civic.CivicType or '',
     tostring(has('BUILDING_CSC_BAKERS_RIVER_ACCESS')), tostring(has('BUILDING_CSC_BAKERS_NO_RIVER_ACCESS')),
     tostring(feudalism), tostring(has('BUILDING_CSC_BAKERS_STAGE_2_SERVICE')),
+    type(serviceGrowth) == 'number' and tostring(serviceGrowth) or 'null',
     building('BUILDING_CSC_BAKERS_WATER_MILL'), building('BUILDING_CSC_BAKERS_WIND_MILL'), building('BUILDING_GRANARY')))

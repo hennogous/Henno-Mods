@@ -81,3 +81,12 @@ must reproduce the destructive pair and its loss. The treatment lowers that
 one finished score below a safe, positive alternative. It preserves the
 native reservation and records the actual choice, supplier and completed
 buildings. Its retained checkpoint is available for the Service observation.
+
+`natural_chain.py --continue-from <closed protection run>` follows that
+checkpoint and reads actual building yields from the UI alongside gameplay
+supplier and Service state. `--guard-farm <closed loss control>` with pinned
+`--dependencies` adds the Boston-only diagnostic veto to the two verified
+Farm location callers. It preserves the first confirmed Storekeeper chain
+at a later independent sample. The final branch stops when that persistence
+check succeeds, the tracked supplier is lost, or the supplied turn cap is
+reached.
