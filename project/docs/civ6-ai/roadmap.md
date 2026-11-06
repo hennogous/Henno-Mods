@@ -3,6 +3,8 @@
 > Current priority, 5 November: use the [effect coverage map](topics/csc/forecast-coverage.md)
 > to measure missing or misvalued CSC relationships and correct the demonstrated
 > differences at the completed district score.
+> Review who owns the complete Quarter bid before building a broad feed of
+> native forecast components.
 > Henno deferred dedicated Mill repair work; monitor it in longer ordinary games.
 > Earlier repair follow-up proposals below are historical, not the next task.
 
@@ -135,7 +137,7 @@ inland Bakers site. The 4,398 Q8 deduction left the control winner unchanged.
 Both the scanner and the calibration library now live in `Lua_UI/AI`. Keep
 the measured correction separate from the early experimental site priority.
 The development fork now includes a [guarded late entry](../research/mods/csc-ce-late-score-api-20261105.md).
-A recurring CSC policy still needs current component evidence.
+Recurring component corrections need current evidence for the credits they adjust.
 [AI-N075] [AI-N076] [AI-C060]
 
 ## Starting point
@@ -203,22 +205,36 @@ including conditional rankings and explicit missing terms. Next, review those
 assumptions, extend mechanics coverage and obtain the specific facts that can
 change a decision. This first profile does not complete the broader evaluator.
 
-## 2. Translate that value into a native incentive
+## 2. Decide who calculates the Quarter bid
 
-Extend the fixed experimental preference into a bounded policy for actual
-candidate pairs. Establish which benefits the native score already includes,
-then supply the additional CSC value justified by the evaluator. Avoid counting
-ordinary adjacency, costs or future-building value twice.
+Keep the measured corrections as the near-term approach. Correcting a few
+known errors takes less initial work than valuing a whole Quarter. Each new
+correction needs the CSC gameplay rule and the credit Civ actually assigned,
+including its timing, rounding and aggregation rules. The late-write API
+checks the aggregate scores. A broad feed of individual credits would add
+native observation points and contracts to recheck when the game changes.
+
+Calculating the complete bid in CSC takes more initial work. The evaluator
+would cover the whole Quarter-site investment, including adjacency, the supply
+chain, amenities, readiness and costs. A shared evaluator across Quarter
+families would keep those rules in one place as CSC and its integrations evolve.
+CE would deliver the finished bid at the qualified native boundary.
+
+**Revisit the choice before building a broad native component feed.** If
+pricing the corrections already requires most of the CSC evaluator plus
+continued reconstruction of Civ's credits, prefer calculating the whole bid in
+CSC. Calibrating the bid is a separate task for either route. Civ still chooses
+among eligible districts and handles the winner through its ordinary production
+process. Account for the earlier experimental adjacency priority so each
+benefit is counted once.
 
 Specify native utility units, scope, immutable publication, refresh boundaries,
 budgets and diagnostics. Handle caches, saves and retained requests explicitly:
 removing a bonus is not guaranteed to withdraw an old commitment. Keep numerical
 policy and the native carrier separate so each can be reviewed independently.
 
-**Deliverable:** a transparent mapping from evaluator components to a bounded
-candidate adjustment, with offline scope/arithmetic/lifecycle checks. Full engine
-reconstruction and perfect coefficient calibration are not prerequisites for a
-first useful comparison.
+**Deliverable:** a bounded, explainable Quarter bid or correction, with offline
+scope, arithmetic and lifecycle checks.
 
 ## 3. Test decisions with small, decisive game comparisons
 
