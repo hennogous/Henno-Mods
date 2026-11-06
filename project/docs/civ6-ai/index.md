@@ -19,12 +19,15 @@ These results establish control over an input and some natural follow-through. T
 
 ## The central idea
 
-The native AI already forecasts many benefits, costs and delays. We want to preserve that useful reasoning and supply the CSC relationships it misses or approximates poorly. Simply awarding a large bonus to every Quarter would not teach it those relationships.
+CSC will value its supply chains through one model for all eight Quarters.
+Civ will still compare eligible actions and decide how to use the empire's
+production, research, treasury and workers. Start with bounded preferences
+at each verified decision and follow them through to a working chain.
 
 ```mermaid
 flowchart LR
-  A["Understand native valuation"] --> B["Identify a CSC mismatch"]
-  B --> C["Apply a specific correction"]
+  A["Understand the native decision"] --> B["Value the CSC relationship"]
+  B --> C["Deliver a bounded bid"]
   C --> D["Observe decisions and real benefits"]
   D --> A
 ```

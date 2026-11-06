@@ -1,145 +1,67 @@
-# CSC AI objective and decision principles
+# CSC AI objectives
 
-## Profile scope — confirmed clarification, 28 October 2026
+Agreed direction, 6 November 2026. The AI should build and sustain worthwhile
+supply chains across all eight Quarters and their associated base-game and
+optional-mod elements. The same objective applies to standalone CSC and RHAI5.
+With RH, account for the workers and support it already provides. Activate
+family-specific decisions as their gameplay becomes available.
 
-Both profiles aim for meaningful CSC supply-chain competence. With RHAI5,
-complement the capabilities it already provides and add or improve only what
-CSC needs, including Builder behavior where evidence shows a gap. Without RH,
-provide the support CSC needs; this is not a general-purpose replacement AI mod.
-The RH branch need not forever forbid every Builder adjustment, but a narrow
-compatibility change must be justified and must not blindly duplicate or override
-RH's existing policy. Shared objectives do not require identical tuning inputs.
+CSC owns the value of its supply-chain relationships. Civ continues to choose
+among eligible actions, apply its strategic priorities and manage commitments
+and budgets. Success means functioning chains and realised empire benefit
+after costs, including displaced alternatives. Adjacency, construction and
+Service activations are useful intermediate measures.
 
+## Decisions to support
 
-Current implementation direction: [fresh CSC AI roadmap](../civ6-ai/roadmap.md).
-The former roadmap was removed on 3 November 2026; these agreed objectives
-remain the design reference for the new native decision approach.
+| Decision | CSC contribution |
+| --- | --- |
+| Quarter siting and land | Prefer a viable adjacent Base source and ideally both Base and Specialty. Value the Quarter's actual river effects and customer or City Lights goods-provider links. Count future neighbors only where a specific legal footprint exists. Prefer combined adjacency around +4 and above, and support a worthwhile affordable tile purchase through native planning. |
+| Other districts | Value adjacency to existing or credible future provider Quarters. Prefer safe sites over mapped Base or Specialty deposits, improved or unimproved. Protect the last viable deposit of either class per Quarter, with particular urgency when the last working supplier sustains a Service. Price the opportunity cost of shifting an otherwise good native district. |
+| Material work and Builder supply | Prioritize Base improvement once its Stage 2 buyer is working, and Specialty once its Stage 4 buyer is working. Prepare necessary technologies in time. Give the actual job to a reachable Builder with charges, including from another city. Value another Builder when useful jobs exceed available capacity. |
+| Stage 2 producer | Value its technology or civic and construction when two or more viable Base materials are adjacent. One viable Base can still support a worthwhile producer. |
+| Stage 2 customer | Value the mapped building in an adjacent customer district. Respect applicable unique replacements. |
+| Stage 3 producer | Favor the unlock from population 7 and construction from population 10, subject to the investment's expected return. |
+| Stage 3 customer | Value the mapped building in an adjacent customer district. |
+| Stage 4 producer | Favor the unlock from population 7 and construction from population 10 when a viable Base and Specialty deposit are both adjacent. |
+| Stage 4 customer | Value the mapped building in an adjacent customer district. For a Wonder, value a legal adjacent footprint beside a Quarter with the required materials. |
+| Stage 2, 3 and 4 Services | Favor research or civics when the applicable material, working producer and customer requirements are ready. Combine contributions from distinct chains. Eventually weigh Service outcomes by empire needs and victory direction. |
 
+The adjacency, material-count and population thresholds are starting
+preferences. Eligibility follows the actual game rules. Distinguish mapped
+deposits, viable supply, working improvements and material-dependent effects.
+Ordinary building exchanges and sales can have different gates from Services.
+Use enabled game data, including compatible resources, unique replacements
+and optional City Lights providers, rather than generic resource categories.
 
-Confirmed direction from Henno, 28 October 2026. This is the durable objective
-for CSC AI development across standalone CSC assistance and the RH compatibility
-branch. It describes intended capability, not a claim that current code delivers
-it. Historical experiment scorecards and tuning weights are evidence, not the
-definition of success. This document does not start a test or automation.
+## Care and trade-offs
 
-## Main objective — confirmed
+- Restore pillaged material improvements, Quarters and customer assets when
+  restoring the chain is worthwhile. Replan after capture or lost supply.
+- Protect critical deposits from harvest and other destructive work as well as
+  district placement. Track viable and working supply separately. A single
+  footprint can affect multiple Quarters, and two plans can compete for one
+  customer tile.
+- Compare finishing or repairing a chain, opening a new one and deferring.
+  Account for land purchase, construction, upkeep, unlock time, Builder travel
+  and charges, and other uses of scarce production and treasury.
+- Preserve the standalone merits of shared base-game assets. Add a bounded CSC
+  relationship benefit or cost. For CSC's own Quarters and producers, compare
+  coarse adjustments with complete custom valuations as the decision is
+  qualified. Validate the native consumer, eligibility, timing and scale.
+- Treat last-material protection as a distinct policy from normal adjacency
+  scoring. A finite bid penalty can discourage an otherwise legal placement.
+  Guaranteed protection requires a separately qualified eligibility rule.
 
-Make the AI competent at using CSC's supply-chain mechanics to increase the
-total benefit to its empire. Ideally, it should develop the opportunities in
-its lands and empire into supply chains that support its overall victory
-progress, strategic priorities and current needs.
+## Evidence of progress
 
-Quarter count, adjacency score, completed foundations and active Service flags
-are intermediate indicators. The objective is worthwhile, functioning supply
-chains and their empire benefit. Fewer, better chains can be preferable to
-more Quarters with weak follow-through.
+Verify candidate delivery, actual choice, execution, retained supply and
+economic benefit separately. Compare site quality, time to first operation,
+working supply and Service turns, costs and displaced opportunities against
+matched untuned CSC and the appropriate RH reference. Track performance per
+turn as well as choice and outcome. A first useful improvement can ship with
+coarse bid bands and limited family coverage, provided its decision path
+and scope are verified.
 
-## Required capabilities — confirmed
-
-1. **Material-aware Quarter placement.** Prefer sites adjacent to materials
-   mapped to the actual Quarter, with Base supply as the minimum planning
-   ambition and particular interest in sites with both Base and Specialty
-   supply. Use current enabled mappings, including supported modded resources;
-   generic bonus-resource presence is not a substitute for matching materials.
-2. **River opportunity.** Value river adjacency for the real Production bonus
-   it brings to the relevant Quarter.
-3. **Customer opportunity.** Value suitable existing adjacent customer
-   districts and sites that leave legal, usable space for future customers.
-   Quarters often unlock before their customer districts.
-4. **Combined site potential.** Evaluate material, river and customer adjacency
-   together. Explore graded priorities for combined +3, +4, +5 and stronger
-   opportunities. Tile purchases can be worthwhile to secure these sites.
-   These numbers are candidate bands, not approved hard thresholds or final
-   weights. Earlier Both-or-+4 planning is a candidate implementation within
-   this broader objective, not a replacement for it.
-5. **Balanced customer placement.** Encourage customer districts beside
-   Quarters without overwhelming other good locations. A +4 mountain Campus
-   should not routinely become a +1 Campus solely to sit beside an
-   Apothecaries' Quarter. Sites serving both purposes are especially attractive;
-   compare the complete benefit of the alternatives.
-6. **Material development and care.** Improve, retain and repair the mapped
-   materials serving Quarters; avoid subsequently covering or removing the
-   inputs on which a valuable chain depends.
-7. **Building follow-through.** Construct the producer and customer buildings
-   needed to realise the chain's benefits, including buildings in customer
-   districts rather than counting district shells alone.
-8. **Strategic Service selection.** Ultimately favour Service effects aligned
-   with the player's priorities, victory direction and needs. This remains a
-   longer-term capability; earlier deferral is not a decision to omit it.
-9. **Recovery.** Repair pillaged Quarters, customer districts and material
-   improvements so that established chains can return to service.
-
-## Planning distinctions to preserve
-
-Henno explicitly accepts credible future development in site assessment. Keep
-currently realised adjacency and future potential separate in reports and
-planner inputs. An unbuilt customer district or unimproved resource is not an
-already functioning chain. Production and Gold components should remain visible
-even when a combined score is used; their strategic value need not be equal.
-
-For an established Quarter, discourage any district from covering the last
-working mapped Base or Specialty improvement it uses. Protect each supply
-class separately and prioritize actual Services at risk. Prefer an adjacent
-customer site that leaves the materials in place. An unrelated district gets
-no CSC preservation adjustment on a tile that takes away no supply.
-
-Both supply has particular value because of its later Service potential, but
-potential alone does not establish timely construction, available customers or
-an actual active Service. Respect each mechanic's own requirements: material
-supply, customer-building links and Service activation are different facts.
-Do not infer monetary transactions from links or Service flags.
-
-## Additional considerations — proposed, not yet fixed policy
-
-These are recommendations arising from the objective, not newly approved
-algorithms, coefficients or gameplay changes.
-
-- **Whole-chain opportunity cost and time to benefit.** Include production,
-  tile-purchase Gold, Builder charges/travel, maintenance where applicable,
-  lost tile use, district capacity and displaced military/economic investment.
-  A stronger paper site may be worse if its chain becomes useful too late.
-- **Capacity and sequencing.** Finish or repair valuable existing chains when
-  that beats starting another. Check population/unlocks, plausible production,
-  reachable Builders and affordable development before crediting future value.
-  Builder availability is a means to complete work, not an end in itself.
-- **Coordination between sites.** Do not promise the same future plot to two
-  incompatible districts or destroy one chain's material for another without
-  evaluating the trade-off. Consider useful shared customers and redundant
-  supply, while avoiding double-counting shared economic benefits.
-- **Resilience and replanning.** Account for pillage, capture, resource loss and
-  changed strategic needs. Recover a valuable chain, revise an obsolete plan,
-  or abandon a genuinely poor investment; preservation is not an absolute ban
-  on every harvest or redevelopment.
-
-## Evidence and evaluation
-
-Use the following as a measurement framework, not a fixed weighted formula:
-
-| Dimension | Evidence to seek |
-|---|---|
-| Site quality | Mapped Base/Both supply, river benefit, legal customer options; present versus projected adjacency |
-| Follow-through | Placement to completion/building times, improvement and repair delays, unfinished commitments |
-| Sustained operation | Working supply and customer buildings over time, losses, recovery, realised Service effects |
-| Empire benefit | Observed incremental yields/effects and strategic outcomes, alongside investment, subsidies and displaced opportunities |
-| AI independence | Native placements versus assisted placements, by Quarter type and comparable opportunity/cohort |
-
-Compare against appropriate untuned/CSC-only/RH references at matched clocks
-and settings, with per-city and total context. Do not reward Quarter spam,
-denominator changes or subsidy spending as improvement by themselves. Report
-subsidised and own-funded costs separately. Unsupported causal attribution,
-unobserved transactions and sparse observation intervals remain explicit.
-
-Native input loading, score changes, selected actions, physical completion and
-net benefit are separate evidence levels. The
-[native control analysis](../research/mods/csc-ai-native-production-analysis-20261028.md)
-helps identify mechanisms; it does not turn promising inputs into proven
-outcomes. The next planner and tuning design should be chosen against this
-objective after examining the working controls, not by preserving every
-historical intervention.
-
-## Related documents
-
-- [Basic/RH profiles and settings](csc-ai-profiles.md)
-- [Tuning implementation and historical evidence](csc-ai-tuning.md)
-- [Mechanism-probe results](../research/mods/csc-ai-mechanism-tests-20261025-results.md)
-- [Native production/control analysis](../research/mods/csc-ai-native-production-analysis-20261028.md)
+See the [implementation roadmap](../civ6-ai/roadmap.md) and the
+[baseline and evaluation handbook](../civ6-ai/topics/csc/objectives-and-baselines.md).

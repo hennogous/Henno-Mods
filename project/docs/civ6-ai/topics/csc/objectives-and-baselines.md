@@ -1,6 +1,9 @@
 # Objectives, baselines and success
 
-Updated 3 November 2026. Research synthesis, not a release qualification or an active experiment. The historical campaigns are paused or closed; publishing this knowledge base does not restart them.
+The [6 November objectives](../../../integrations/csc-ai-objectives.md) cover all
+eight Quarter families and their shared assets. The [roadmap](../../roadmap.md)
+starts with one working Bakers Stage 2 chain. The results below establish
+the research baselines and limits for measuring that work.
 
 ```mermaid
 flowchart LR

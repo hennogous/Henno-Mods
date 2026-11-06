@@ -11,6 +11,24 @@ to change horizon, yield emphasis and reference construction costs on desktop or
 The [roadmap](../../roadmap.md) remains the current development plan; the
 [objectives](../../../integrations/csc-ai-objectives.md) govern what counts as success.
 
+## Stage 2 decision replay
+
+The first Stage 2 replay reads the active material, producer and customer
+registries from a copied gameplay database. The Bakers sequence covers site
+preference, the eligible Mill, an adjacent Granary, exact Base improvement or
+repair work, and the Feudalism goal when the remaining Storekeeper gates are
+ready. The output distinguishes the last viable deposit from the last working
+supplier and flags distinct jobs with known unmet Builder capacity. It includes
+Specialty deposits in the protection ledger.
+
+Synthetic state transitions exercise the sequence. The local gameplay database
+verifies both Bakers and Tailors definitions, including Lighthouse and Naval
+Tradition. Replaying the copied Kerma Tailors observation identifies its last
+Flax and Silk suppliers and keeps its Amphitheater outside the Stage 2 customer
+set. Proposal bands and protection flags are diagnostic outputs. A native
+adapter still needs live facts, scale calibration and proof of the resulting
+choice, assignment and completion. [Replay input and test commands](../../../../tools/ai_site_planner/README.md#stage-2-decision-replay).
+
 ## What can be reviewed now
 
 | Comparison | Current treatment |

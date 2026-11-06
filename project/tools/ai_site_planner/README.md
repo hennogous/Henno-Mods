@@ -1,5 +1,44 @@
 # Offline CSC site planner
 
+## Stage 2 decision replay
+
+`stage2.py` emits read-only proposals and a material protection ledger. Pass
+a closed DebugGameplay database and a normalized snapshot of one player's local
+opportunities. The database supplies stage memberships, material tags, valid
+resource improvements, customer and replacement buildings, producer unlocks
+and the reviewed Bakers/Tailors Service gates.
+
+```text
+python -B project/tools/ai_site_planner/stage2.py --database PATH --snapshot PATH
+python -B -m unittest discover -s project/tools/ai_site_planner -p test_stage2.py -v
+```
+
+Set `CSC_STAGE2_DB` to a closed gameplay database to include the loaded-profile
+test. The synthetic states in `test_stage2.py` also show the snapshot shape.
+
+- `chains` contains Quarter district type, city, plot, state and its local
+  `materials`, `producers` and `customers`. Scope observations to same-player
+  or explicitly viable future adjacent tiles. A proposed Quarter needs
+  `eligible` and a combined `adjacency` amount computed by the site scanner.
+- Material records distinguish `viable` deposits and `working` improvements.
+  An optional `work` record names the exact improvement and improve/repair
+  kind. It gives immediate `eligible` status or the outstanding `unlock`.
+  Set `covered` from assignment or reachable free charges across the empire.
+  Explicit false creates unmet work demand. Unknown coverage leaves demand open.
+- Producer and customer building options use observed states such as
+  `working`, `available`, `repairable` or `locked`. The adapter must supply
+  actual legality, including mutually exclusive Mills. A locked producer may
+  name its verified sole remaining `unlock`. Supply `unlocked` as the
+  player's completed technology and civic identifiers.
+
+The replay emits preference bands, affected Quarter/plot pairs, and unique
+uncovered work plots. Native bids, game observation, assignment, and purchase
+execution are later adapters. A working Stage 2 Service is inferred from the
+supplied chain facts for the preservation ledger. Actual payout requires live
+confirmation.
+
+## Earlier Tailors investment review
+
 Fresh implementation after retirement of the earlier tuning. Imports no old
 planner, heuristic, subsidy, foundation, game-control or native-hook module.
 It reads copied facts and produces review artifacts only.
