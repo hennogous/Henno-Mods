@@ -47,6 +47,12 @@ proof that it reaches candidates before the game commits. Retained requests
 may preserve an earlier score. Preserve the named target, runtime checks and
 CE contribution review conventions. [District adapter](topics/native/native-placement-extension.md).
 
+The patched stock research test now confirms the single-cell write and native
+Bakers selection. Delhi's Craftsmanship preparation expired before it
+submitted a construction contract. Use an already unlocked target for the
+next foundation test so research and production can be measured separately.
+[Patched stock write](../research/mods/csc-ai-hotfix-live-bid-20261106.md).
+
 Use the adapter first for bounded site and preservation adjustments. Preserve
 the native standalone value of shared districts. Prefer safe customer
 alternatives and detect loss of the last viable Base or Specialty deposit

@@ -14,6 +14,7 @@ from audit_xp2_hotfix import HOTFIX_SHA, HOTFIX_TIMESTAMP, XP2_IMAGE_SIZE
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 STUDY = HERE.parent / 'mill_building_study'
+FOLLOWTHROUGH = HERE / 'followthrough.lua'
 sys.path[:0] = [str(ROOT / 'project/tools/ai_baseline'), str(HERE.parent)]
 from full_game_controller.environment import (
     archive_sources, configure, flags, launch, manifest, prove_loaded_module, restore_preferences, write_json,
@@ -85,7 +86,8 @@ def verify_main_policy(c, out, world, calibration):
 
 def run_arm(a, out, plan, source, spec, archived, prior, verify, frida, calibration=None):
     c = make_probe_controller(out, user_root=a.user_root)
-    c.study_endpoint = 2
+    follow = a.hotfix_pulse and plan['mode'] == 'pulse'
+    c.study_endpoint = 25 if follow else 2
     c.allow_observer_warning_dismissal = c.allow_observer_first_meet_dismissal = True
     c.allow_observer_congress_review = True
     session = NativeSession(out, c, inventory=native_inventory, hold=HeldProcess, write=write_json)
@@ -95,6 +97,7 @@ def run_arm(a, out, plan, source, spec, archived, prior, verify, frida, calibrat
     boundaries = {}
     messages = []
     world = None
+    followthrough = []
 
     def observe_source():
         nonlocal world
@@ -145,6 +148,27 @@ def run_arm(a, out, plan, source, spec, archived, prior, verify, frida, calibrat
         script.exports_sync.start()
         c.play(2)
         freeze()
+        if follow:
+            late = frozen['late']
+            expected = plan['expectedNative'] + plan['delta']
+            # Freeze before further turns. The diagnostic boost is a single
+            # intervention; subsequent choices belong to the native game.
+            require(not frozen['stopReason'] and not late['errors'] and late['writes'] == 1 and
+                    any(r['kind'] == 'winner' and r['district'] == DISTRICT and
+                        r['plot'] == PLOT and r['score'] == expected for r in late['records']),
+                    'Diagnostic bid did not reach the expected winner')
+            turn = 2
+            while True:
+                facts = parse(c.cmd(read(FOLLOWTHROUGH), 'GameCore_Tuner', f'followthrough-{turn}'),
+                              'CSC_LATE_FOLLOWTHROUGH')
+                require(facts['turn'] == turn, 'Follow-through clock changed')
+                followthrough.append(facts)
+                write_json(out / 'followthrough.json', followthrough)
+                if (facts['owner'] != BASE['player'] or facts['cityOwner'] != BASE['player']
+                        or facts['complete'] or turn == c.study_endpoint):
+                    break
+                turn = min(turn + 3, c.study_endpoint)
+                c.play(turn)
     finally:
         if session.owner is not None and session.owner.poll() is None:
             try:
@@ -178,6 +202,8 @@ def run_arm(a, out, plan, source, spec, archived, prior, verify, frida, calibrat
     winner = next(r for r in late['records'] if r['kind'] == 'winner')
     result = dict(calculation=calculations[0], winner=winner, requests=requests,
                   present_values=[r for r in late['records'] if r['kind'] == 'presentValue'])
+    if follow:
+        result['followthrough'] = followthrough
     trace = dict(frozen, config=world['observerConfig'])
     accounting = analyze(trace, world)
     write_json(out / 'analysis.json', accounting)
@@ -209,7 +235,7 @@ def qualify_pulse(baseline, pulse, directory):
     return dict(native_build_request=native_build, preparation=facts)
 
 
-def prior_proof(reference, archived, package):
+def verify_prior_package(reference, package):
     require(load(reference / 'restoration.json')['verified'] and manifest(reference / 'retired-study-copy') == package,
             'Prior package restoration cannot be verified')
     pins = load(reference / 'source-pins.json')
@@ -222,33 +248,40 @@ def prior_proof(reference, archived, package):
         else:
             accepted.add(PULSE_OBSERVER_SHA)
         require(pins[key] in accepted and sha(archive[key]) == pins[key], 'Prior native source archive differs from proof')
-    observed = []
-    for mode in ('baseline', 'pulse'):
-        directory = reference / mode
-        require(load(directory / 'session-closed.json')['verified'] and
-                load(directory / 'preferences-restored.json')['verified'] and
-                load(directory / 'session-load-input.json')['sha256'] == SAVE_SHA and
-                load(directory / 'loaded-module.json')['sha256'] == GAME_SHA,
-                'Prior native closure or input identity cannot be verified')
-        trace = load(directory / 'trace-frozen.json')
-        require(trace['frozen'] and not trace['stopReason'] and not trace['late']['errors'] and
-                trace['late']['writes'] == int(mode == 'pulse'), 'Prior trace has a fault or unexpected write')
-        world = load(directory / 'source-world.json')
-        inspect_source(world, archived)
-        result = load(directory / 'result.json')
-        require(calibrate(load(directory / 'analysis.json')) == result['calibration'] and
-                result['calculation'] == next(r for r in trace['late']['records'] if r['kind'] == 'calculation') and
-                result['winner'] == next(r for r in trace['late']['records'] if r['kind'] == 'winner') and
-                result['present_values'] == [r for r in trace['late']['records'] if r['kind'] == 'presentValue'],
-                'Prior result is inconsistent with the trace')
-        observed.append((result, world))
-    (baseline, world), (pulse, matched_world) = observed
+
+
+def verified_arm(directory, mode, archived, target_sha):
+    require(load(directory / 'session-closed.json')['verified'] and
+            load(directory / 'preferences-restored.json')['verified'] and
+            load(directory / 'session-load-input.json')['sha256'] == SAVE_SHA and
+            load(directory / 'loaded-module.json')['sha256'] == target_sha,
+            'Prior native closure or input identity cannot be verified')
+    trace = load(directory / 'trace-frozen.json')
+    require(trace['frozen'] and not trace['stopReason'] and not trace['late']['errors'] and
+            trace['late']['writes'] == int(mode == 'pulse'), 'Prior trace has a fault or unexpected write')
+    world = load(directory / 'source-world.json')
+    inspect_source(world, archived)
+    result = load(directory / 'result.json')
+    require(calibrate(load(directory / 'analysis.json')) == result['calibration'] and
+            result['calculation'] == next(r for r in trace['late']['records'] if r['kind'] == 'calculation') and
+            result['winner'] == next(r for r in trace['late']['records'] if r['kind'] == 'winner') and
+            result['present_values'] == [r for r in trace['late']['records'] if r['kind'] == 'presentValue'],
+            'Prior result is inconsistent with the trace')
+    return result, world
+
+
+def prior_proof(reference, archived, package):
+    verify_prior_package(reference, package)
+    baseline, world = verified_arm(reference / 'baseline', 'baseline', archived, GAME_SHA)
+    pulse, matched_world = verified_arm(reference / 'pulse', 'pulse', archived, GAME_SHA)
     require(world == matched_world, 'Prior input worlds differ')
     return baseline, world, pulse
 
 
 def run(a):
-    require(not (a.hotfix_baseline and a.reference), 'The patched build needs its own fresh control')
+    hotfix = a.hotfix_baseline or a.hotfix_pulse
+    require(not (hotfix and a.reference), 'The patched build needs its own fresh control')
+    require(not a.hotfix_control or a.hotfix_pulse, 'A stock control can only supply a patched pulse')
     study, out = a.study.resolve(), a.output.resolve()
     retired = study / 'retired-study-package'
     installed = a.mods.resolve() / 'CSC Mill Building Study'
@@ -259,13 +292,17 @@ def run(a):
     untouched = {p: manifest(p) for p in original if Path(p) != installed}
     checkpoint = load(study / 'run-03/source-checkpoint.json')
     source = Path(checkpoint['native_save'])
-    target_sha = HOTFIX_SHA if a.hotfix_baseline else GAME_SHA
+    target_sha = HOTFIX_SHA if hotfix else GAME_SHA
     require(sha(source) == sha(Path(checkpoint['archive'])) == SAVE_SHA and sha(a.dll) == target_sha,
             'Unexpected saved world or native binary')
     archived = load(study / 'run-03/probe/source-world.json')
+    prior_control = None
+    if a.hotfix_control:
+        verify_prior_package(a.hotfix_control, package)
+        prior_control = verified_arm(a.hotfix_control / 'baseline', 'baseline', archived, HOTFIX_SHA)
     spec = load(study / 'observer-spec.json')
     spec['path'] = str(a.dll.resolve())
-    if a.hotfix_baseline:
+    if hotfix:
         spec.update(sha256=HOTFIX_SHA, timestamp=HOTFIX_TIMESTAMP, image_size=XP2_IMAGE_SIZE)
     sys.path.insert(0, str(a.dependencies.resolve()))
     import frida
@@ -273,12 +310,17 @@ def run(a):
             'Exact existing Frida package required')
     out.mkdir(parents=True)
     sources = [a.dll, a.binary, source, POLICY, *HERE.glob('*.py'), HERE / 'write.js', *STUDY.glob('*.py'),
-               STUDY / 'world.lua', STUDY / 'observer.js',
+               FOLLOWTHROUGH, STUDY / 'world.lua', STUDY / 'observer.js',
                *(ROOT / 'project/tools/ai_baseline/full_game_controller').glob('*.py'),
                *(ROOT / 'project/tools/ai_baseline/full_game_controller').glob('*.lua')]
     pins = {str(p.resolve()): sha(p) for p in sources}
     write_json(out / 'source-pins.json', pins)
     write_json(out / 'source-archive.json', archive_sources(pins, out / 'source-version'))
+    if prior_control:
+        control = a.hotfix_control / 'baseline'
+        write_json(out / 'control-reference.json', dict(
+            directory=str(control.resolve()), result_sha256=sha(control / 'result.json'),
+            world_sha256=sha(control / 'source-world.json'), trace_sha256=sha(control / 'trace-frozen.json')))
     shutil.copytree(retired, installed)
 
     def verify():
@@ -300,7 +342,7 @@ def run(a):
             baseline, world, pulse = prior_proof(a.reference, archived, package)
             pulse_directory = a.reference / 'pulse'
         else:
-            baseline, world = arm(dict(mode='baseline', delta=0))
+            baseline, world = prior_control or arm(dict(mode='baseline', delta=0))
             calc = baseline['calculation']
             delta = baseline['winner']['score'] - calc['native'] + 256
             pulse, _ = arm(dict(mode='pulse', delta=delta, expectedBefore=calc['before'], expectedNative=calc['native']), world)
@@ -312,6 +354,10 @@ def run(a):
         expected = dict(expectedBefore=calc['before'], expectedNative=calc['native'])
         proof = qualify_pulse(baseline, pulse, pulse_directory)
         write_json(out / 'late-write-proven.json', dict(baseline=baseline, pulse=pulse, proof=proof))
+        if a.hotfix_pulse:
+            write_json(out / 'result.json', dict(gamecore_sha256=target_sha, baseline=baseline,
+                                                pulse=pulse, proof=proof))
+            return
         building_indices = {r['type']: r['index'] for r in world['observerConfig']['buildings']}
         raw = [dict(index=building_indices[r['building']], raw=r['raw_q8']) for r in calibration['buildings']]
         corrected, _ = arm(dict(mode='correction', delta=calibration['delta_q8'], expectedBuildings=raw, **expected),
@@ -335,6 +381,10 @@ if __name__ == '__main__':
     for name in ('study', 'output', 'mods', 'user-root', 'binary', 'dll', 'dependencies'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--reference', type=Path, help='Reuse closed and verified baseline/pulse evidence for the correction arm')
-    parser.add_argument('--hotfix-baseline', action='store_true',
-                        help='Observe one patched stock GameCore turn with no score writes or CE')
+    parser.add_argument('--hotfix-control', type=Path, help='Reuse a closed stock control on the exact patched GameCore')
+    patched = parser.add_mutually_exclusive_group()
+    patched.add_argument('--hotfix-baseline', action='store_true',
+                         help='Observe one patched stock GameCore turn with no score writes or CE')
+    patched.add_argument('--hotfix-pulse', action='store_true',
+                         help='Compare a one-cell diagnostic bid on patched stock GameCore and observe follow-through')
     run(parser.parse_args())

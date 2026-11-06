@@ -1522,5 +1522,18 @@
     "topic": "topics/native/district-score-anatomy.md",
     "depends_on": ["AI-N078"],
     "related": ["AI-N008", "AI-N013", "AI-N018", "AI-N026", "AI-N076"]
+  },
+  {
+    "id": "AI-N080",
+    "title": "A patched stock district bid changed selection but expired during preparation",
+    "statement": "A guarded one-cell write after native district aggregation switched Delhi from Neighborhood to Bakers. Delhi reserved the site and accepted the Craftsmanship goal. Its preparation failed after the waiting contract reached its limit, and no Bakers foundation appeared by turn 25.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Stock Windows XP2 SHA 092abfbb with Frida and an isolated Online turn-1 CSC fixture. A verified archived control matched the treatment's source facts. The native Bakers aggregate at 1210 was 104621 Q8. One +143858 Q8 write reached the selector and plot present value at 248479, above the control Neighborhood score of 248223. No further writes. The tree reported waiting 8 of 8 turns on turn 9, failed on turn 10, and selected Campus on turn 11. The treatment closed normally with verified restoration.",
+    "limits": "A diagnostic pulse on one owned, initially locked site. The control ends at turn 2. The causal comparison covers selection and preparation, while later observations describe treatment follow-through. Recurring Stage 2 bids, completed construction, research causality and patched CE delivery remain separate.",
+    "sources": ["project/docs/research/mods/csc-ai-hotfix-live-bid-20261106.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N075", "AI-N078"],
+    "related": ["AI-N023", "AI-N024", "AI-N067", "AI-N077"]
   }
 ]

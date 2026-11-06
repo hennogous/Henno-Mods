@@ -982,6 +982,16 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-harness-performance-20261023.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-hotfix-live-bid-20261106.md",
+      "title": "Live Bakers district bid on the November hotfix",
+      "kind": "report",
+      "date": "20261106",
+      "bytes": 4647,
+      "sha256": "eae82820d1cd2dfa225c0a2e426c3efae7f451a9f8267bd5e4823ad613b6d726",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-hotfix-live-bid-20261106.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-ai-improvement-research-20261019.md",
       "title": "CSC improvement-owned signals and dynamic Service research —19 October2026",
       "kind": "report",

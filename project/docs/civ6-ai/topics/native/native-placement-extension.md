@@ -16,6 +16,12 @@
 > the target identity while shared executable compatibility
 > remains with upstream. [AI-N078] [Hotfix comparison](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md)
 
+> **6 November stock write:** Frida changed one guarded cell on the patched
+> stock build. Delhi switched from Neighborhood to Bakers and reserved the
+> target site. Its Craftsmanship preparation expired and the tile remained
+> empty through turn 25. [AI-N080]
+> [Live bid and follow-through](../../../research/mods/csc-ai-hotfix-live-bid-20261106.md)
+
 ## Late write reaches district selection and preparation
 
 The Delhi replay changes one completed district-site cell on return from

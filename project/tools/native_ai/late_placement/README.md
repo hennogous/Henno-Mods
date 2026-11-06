@@ -34,6 +34,12 @@ the starting world, both score paths, native preparation and restoration.
 
 For the November Windows hotfix, run `audit_xp2_hotfix.py` with the earlier
 reference DLL and the patched DLL. `driver.py --hotfix-baseline` then observes
-the archived turn on patched stock GameCore. This mode uses its own control
-and records zero writes. The historical treatment runner and CE replay retain
-their original build qualification.
+the archived turn on patched stock GameCore with zero writes.
+`--hotfix-pulse` runs a fresh turn-2 control and the matched one-cell pulse
+with Frida. `--hotfix-control` can reuse a closed control whose stock DLL,
+save, package, hook sources, trace and result are verified. The writer freezes
+after turn 2. The controller then samples
+Delhi's exact plot through turn 25, ending earlier if the Quarter completes
+or the owner changes. The control comparison ends at turn 2. Later
+observations describe what the treated AI did after the pulse. The
+calibrated correction and CE replay retain their original build qualification.
