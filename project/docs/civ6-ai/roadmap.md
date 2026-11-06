@@ -1,109 +1,219 @@
 # CSC AI roadmap
 
-Updated 6 November 2026. The [objectives](../integrations/csc-ai-objectives.md)
-cover all eight Quarters, their suppliers, customers and Services. The first
-deliverable is a working and retained Bakers Stage 2 chain, followed by Tailors
-through the same model. Other families enter as their gameplay becomes active.
+The [CSC objectives](../integrations/csc-ai-objectives.md) cover all eight
+Quarters, their suppliers, customers and Services. CSC values the chain.
+Civ compares eligible actions, allocates production and workers, and manages
+research, treasury and commitments. The numbered problems below retain the
+order of the original decision list. Their identifiers stay fixed as we add
+evidence.
 
-## 1. Build the shared model and the first Bakers slice
+## Current milestone and active problem
 
-CSC owns the value of the chain. Read active material tags, improvement
-mappings, producer buildings and customer relationships once. Evaluate the
-same chain for placement, production, material work, research and preservation.
-Separate current supply, reachable development and a speculative future site.
-Track why a proposal qualifies and which existing or future footprints it uses.
+**Intermediate milestone — one working, retained Bakers Stage 2 chain.**
+Choose and complete a Bakers Quarter with viable Base supply and an adjacent
+Granary host (**1.1–1.4, 1.6**). Get the appropriate Mill and a functioning
+Granary in place (**4.1–4.2, 5.1**). Improve the Base tile and match the job
+to a reachable Builder (**3.1–3.3**). Verify the ordinary exchange and keep
+the supplier intact (**2.2**). Then verify the Feudalism goal and Storekeeper
+when the chain is ready (**6.1**). Existing buildings, Builders and unlocks
+can satisfy dependencies. Tile purchase (**1.5**) and a new customer district
+(**2.1**) are optional for this first fixture. Repair (**13**) enters if a
+failure occurs and is a later explicit resilience check. Run the same
+decision sequence for Tailors once the Bakers chain works.
 
-Start with a read-only replay of the Stage 2 sequence. A viable Bakers site has
-a Base path and ideally an adjacent City Center or another credible customer
-footprint. Preserve its viable material plots. Value the legal Mill options and
-Granary, then surface the exact Base improvement or repair after a Mill is
-working. Distinguish an existing Builder assignment from an uncovered job and
-an unmet improvement unlock. Credit Feudalism for Storekeeper when the
-applicable chain is otherwise ready. Tailors provides the second profile with a
-Textile Workshop, Lighthouse and Naval Tradition.
+**Active problem — 1.6, take a construction-ready Quarter bid through
+foundation.** The patched stock replay proved score delivery, selection and
+reservation. Delhi's prerequisite contract expired before it could submit a
+Bakers production order. Use an already unlocked, legal, owned Bakers site
+for the next matched comparison. Verify the city has the capacity to start
+it, and log the native winner, actual production contract, queue entry,
+foundation and completion separately. This isolates production follow-through
+from civic selection. The broad policy can value a future unlock earlier
+and qualify a bid close enough to readiness for native preparation.
+[Live bid and preparation expiry](../research/mods/csc-ai-hotfix-live-bid-20261106.md).
 
-Keep +4 combined adjacency and two Base materials as preferences. Use actual
-Quarter-local river and Mill rules. Stage 2 valuation can start offline with
-coarse ranks and copied facts. The runtime evidence must eventually show a
-native choice, a completed Mill, a working supplier and a customer that remains
-connected. A Service unlock and continued operation extend that comparison.
-The dedicated Mill repair investigation remains deferred. Observe repair
-behavior during ordinary tests.
+For each update, name the active problem and report the furthest stage actually
+observed, the blocker if any, and the next check. Keep later problems queued
+until the active check closes or an explicit dependency needs attention.
 
-## 2. Qualify the native district adapter on the patched game
+## Numbered problems to solve
 
-The installed pre-hotfix CE AI fork fails its exact GameCore identity check on
-the November Steam update. Stock CE lacks the experimental district-score API.
-Our hotfix profile candidate builds against the verified XP2 identity. Pair it
-with a CE base qualified against the patched Windows host executable before
-using it as the live writer. Continue offline policy work and stock observations
-in parallel. [Hotfix qualification](../research/mods/csc-ai-xp2-november-hotfix-20261106.md).
+### 1. Quarter placement
 
-Reproduce the guarded late write before expanding its scope. The earlier
-prototype proves a completed district-site score can influence native
-selection and preparation. It is scoped to owned eligible rows and uses
-caller-supplied expected scores. A regular policy needs fresh inputs and
-proof that it reaches candidates before the game commits. Retained requests
-may preserve an earlier score. Preserve the named target, runtime checks and
-CE contribution review conventions. [District adapter](topics/native/native-placement-extension.md).
+- **1.1 Materials.** Favor legal sites beside at least one viable mapped Base
+  source, ideally with viable Specialty as well. Distinguish deposits from
+  working supply and include enabled compatibility mappings.
+- **1.2 Neighbors.** Value mapped customer districts and City Lights goods
+  providers. Credit a future neighbor only where a specific legal adjacent
+  footprint can serve it.
+- **1.3 Rivers.** Value the river effects the Quarter can actually realise,
+  including the local Mill geometry where applicable.
+- **1.4 Adjacency.** Combine the actual sources and favor sites around +4 or
+  higher. Calibrate against competing native investments and weaker viable sites.
+- **1.5 Tile purchase.** Route an affordable unowned site through native
+  planning and treasury checks. Verify the actual purchase.
+- **1.6 Construction readiness and follow-through.** Check unlocks, legal
+  siting, capacity and the preparation window before committing. Trace the
+  proposal through production, foundation and completion. Distinguish a new
+  score from a retained request.
 
-The patched stock research test now confirms the single-cell write and native
-Bakers selection. Delhi's Craftsmanship preparation expired before it
-submitted a construction contract. Use an already unlocked target for the
-next foundation test so research and production can be measured separately.
-[Patched stock write](../research/mods/csc-ai-hotfix-live-bid-20261106.md).
+### 2. Other district placement
 
-Use the adapter first for bounded site and preservation adjustments. Preserve
-the native standalone value of shared districts. Prefer safe customer
-alternatives and detect loss of the last viable Base or Specialty deposit
-even before it is improved. Separately account for working supply and Services
-at risk, including multiple Quarters served by one tile. Confirm both the
-native winner and the foundation. Prove purchase of an unowned Quarter site
-through the native district request and treasury checks as a separate test.
-[Improvement displacement](topics/native/district-score-anatomy.md) ·
-[Purchase route](../research/mods/civ6-district-cache-timing-and-purchases-20261104.md).
+- **2.1 Customer placement.** Favor a site adjacent to a provider Quarter
+  or a credible specific future Quarter footprint. Preserve the district's
+  standalone value when comparing placements.
+- **2.2 Material protection.** Price covering mapped Base or Specialty
+  deposits, including unimproved ones. Protect the last viable deposit of
+  either class per Quarter and account for lost Services when the last
+  working supplier is threatened. Apply this to any district consuming the
+  tile. Verify an absolute exclusion separately from a finite bid penalty.
 
-## 3. Qualify production, work and unlock decisions
+### 3. Material work and Builder capacity
 
-Add a small adapter at each verified consumer. Capture identity, score units
-and range, timing, eligibility, propagation and retained-request behavior
-before writing. Use representative native alternatives to set the initial
-bands. A worthwhile CSC action should beat a marginal alternative, while a
-strong competing action can win.
+- **3.1 Exact job and timing.** Prioritize Base work when the Stage 2 buyer
+  functions and Specialty work when the Stage 4 buyer functions. Put the
+  intended plot and improvement into native job allocation and observe the work.
+- **3.2 Assignment and supply.** Use a reachable Builder with charges,
+  including across cities. Value another Builder when useful work exceeds
+  available capacity.
+- **3.3 Improvement unlocks.** Value missing technologies early enough for
+  a viable supplier to be ready when needed.
 
-| Order | First evidence required |
-| --- | --- |
-| Mill and Granary | A valid construction choice reaches the queue and completes. Preserve the Granary's native value. Keep future building value and propagated prerequisite value separate. |
-| Material work and Builder capacity | The right improve/repair job enters allocation, receives a reachable worker and completes. A cross-city worker can satisfy demand. Request new capacity where existing charges cannot cover the useful work. |
-| Techs, civics and Stage 2 Services | The relevant research priority or goal is consumed and an otherwise feasible chain benefits. Verify improvement unlocks and Service unlocks separately. |
-| Stage 3 and Stage 4 | Apply the population and supply preferences. Add mapped customer buildings and qualify Wonder placement through the decision that actually picks its tile. |
+### 4. Stage 2 producer
 
-Start with bounded adjustments. For CSC-only Quarters and producers, qualify
-complete CSC bids if the approximation proves insufficient. For vanilla
-districts and buildings, retain the native standalone score and apply the
-signed CSC contribution. Measure specific native overlap when it materially
-distorts a decision. Exact reconstruction of each vanilla component is
-diagnostic work. [Production and prerequisites](topics/native/production-and-prerequisites.md)
-· [Material work](topics/csc/materials-and-builders.md)
-· [Research guidance](topics/csc/research-and-strategies.md).
+- **4.1 Unlock.** Favor the needed tech or civic when two or more viable
+  Base sources are adjacent.
+- **4.2 Build.** Favor the legal producer under that same condition. One
+  viable Base can still justify a producer. Confirm the bid reaches the
+  native queue and the building completes.
 
-## 4. Expand coverage and measure cost
+### 5. Stage 2 customer
 
-Use enabled mappings for all eight families, including conditional City Lights
-providers and supported replacements. Extend one confirmed stage or family at a
-time. Reuse the shared model and keep family-specific mechanics in data.
-Reconcile improvements, districts and demand after ownership, pillage,
-construction, research and meaningful population changes.
+- **5.1 Build.** Favor the mapped building in an adjacent customer district,
+  including a valid unique replacement. Verify the customer contributes
+  the actual exchange when the producer operates.
 
-Cache city geometry and adjacent relationships. Refresh dirty local entries
-and periodically reconcile for missed events. Publish compact immutable
-snapshots at verified boundaries. Native workers should only need bounded
-lookups. Track entries touched, runtime overhead per turn and worst-case turns
-in a mature empire. Separate decision traces from production logging.
+### 6. Stage 2 Service
 
-Use matched existing saves and the shared controller for focused tests. For
-longer comparisons, track functioning and retained supply, Service uptime,
-spending and displaced investments for standalone CSC and RH. The
-[experiment history](topics/history/research-journey.md) preserves the earlier
-pilots and their limits. Upstream CE contribution remains subject to review of
-the API scope, maintenance and Workshop delivery.
+- **6.1 Unlock.** Favor the unlock when the required working materials,
+  producer and customer are ready. Combine the value of distinct ready
+  chains and observe the Service in operation.
+- **6.2 Strategy.** Later, adjust the priority for empire needs and victory
+  direction.
+
+### 7. Stage 3 producer
+
+- **7.1 Unlock.** Favor the tech or civic from population 7 when the
+  investment is worthwhile.
+- **7.2 Build.** Favor construction from population 10, subject to expected
+  benefit and competing uses of production.
+
+### 8. Stage 3 customer
+
+- **8.1 Build.** Favor the mapped building in an adjacent customer district
+  and verify the corresponding exchange.
+
+### 9. Stage 3 Service
+
+- **9.1 Unlock.** Favor the unlock when the required chain is ready, combining
+  distinct ready chains.
+- **9.2 Strategy.** Later, value its effects according to empire needs and
+  victory direction.
+
+### 10. Stage 4 producer
+
+- **10.1 Unlock.** Favor the tech or civic from population 7 with viable
+  adjacent Base and Specialty sources.
+- **10.2 Build.** Favor construction from population 10 with both sources
+  viable. Include the cost and timing of developing Specialty supply.
+
+### 11. Stage 4 customer or Wonder
+
+- **11.1 Customer building.** Favor the mapped building in an adjacent
+  customer district.
+- **11.2 Wonder.** Favor a legal adjacent Wonder footprint where the Quarter
+  has the required materials. Verify the decision that chooses its tile.
+
+### 12. Stage 4 Service
+
+- **12.1 Unlock.** Favor the unlock when the required chain is ready, combining
+  distinct ready chains.
+- **12.2 Strategy.** Later, value its effects according to empire needs and
+  victory direction.
+
+### 13. Recovery and retention
+
+- **13.1 Repair.** Restore pillaged material improvements, Quarters and
+  customer assets when the chain merits it. Verify actual repair and resumed
+  benefits. Observe the known Mill repair case in ordinary tests. A dedicated
+  investigation remains deferred.
+- **13.2 Replan.** Reassess after capture, lost supply, or destructive harvest
+  and other work. Distinguish a repairable interruption from permanent loss.
+
+### 14. Competing uses and shared plans
+
+- **14.1 Sequence investment.** Compare finishing or repairing a chain,
+  opening a new one, and deferring. Include treasury, upkeep, production,
+  unlock time, Builder travel and charges.
+- **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
+  One supplier can serve multiple Quarters. Count each real lost or enabled
+  benefit once.
+
+## Tooling, delivery and evidence
+
+Use the shared controller on stock GameCore for matched live tests. The
+guarded Frida writer already reached native selection and preparation on
+Steam build 26407122. It supports the current 1.6 experiment. Construction,
+building, job and unlock bids each need evidence at their own native decision
+boundary. The offline Stage 2 replay checks policy and mappings separately.
+[District adapter](topics/native/native-placement-extension.md) ·
+[Stage 2 replay](topics/csc/site-planner.md#stage-2-decision-replay).
+
+Dev-CE 0.8.1 is an experimental single-player option if we need a specific
+extra Lua getter or debugger. Its release qualifies the bridge and terrain
+views on the patched build. The debugger and Lua hooks still need their own
+patched-build checks. Its generated Lua bindings are separate from CSC's
+guarded district-score API, and Dev-CE uses the GameCore replacement slot.
+Use the verified stock route for 1.6. Review Dev-CE in isolation if a later
+problem needs a capability it actually exposes.
+[Dev-CE 0.8.1 release](https://github.com/cru121/civ6-dev-ce/releases/tag/v0.8.1-experimental) ·
+[Tagged generated bindings](https://github.com/cru121/civ6-dev-ce/blob/v0.8.1-experimental/DevNativeTable.cpp).
+
+Packaged CSC delivery still needs the guarded score API on a CE base
+qualified against the patched host. Keep that carrier work separate from
+testing the decisions themselves. Reuse the shared runtime and observe the
+CE contribution review requirements before upstream submission.
+[CE hotfix qualification](../research/mods/csc-ai-xp2-november-hotfix-20261106.md).
+
+### Reverse engineering each decision
+
+1. Start with the shipped game data and the relevant handbook finding. Use
+   REA and Ghidra to trace the native consumer, prerequisites, return or score
+   units, and the transition into the next decision. Identify the exact
+   GameCore build and check the target bytes before reusing offsets.
+2. Use the shared controller, read-only game queries and guarded Frida
+   traces to observe the path on a pinned save. When testing a bid, change
+   one scoped input against a matched control. Record the winner, request,
+   queue, execution and retained benefit as distinct outcomes.
+3. Save the build identity, function locations, input facts and runtime
+   receipts. Put the mechanism, evidence limits and unresolved questions
+   in the handbook. Update the active roadmap problem with the highest
+   stage actually verified.
+
+The annotated Ghidra project uses the earlier XP2 image. Its code section
+matches the patched image, as verified in the hotfix comparison. The
+installed patched binary remains the identity for live tests.
+[Handbook evidence workflow](maintenance.md) ·
+[GameCore comparison](../research/mods/csc-ai-xp2-november-hotfix-20261106.md).
+
+For each new adapter verify eligibility, timing, score scale and the actual
+consumer. Start with bounded preferences. Retain the native standalone
+value of shared vanilla assets and add the signed CSC contribution.
+Qualify a full valuation for CSC-only assets when useful. Measure forecast
+overlap where it changes choices. Cache local relationships and refresh
+affected scopes with periodic reconciliation. Track runtime overhead and
+worst turns in a developed empire. Compare working supply, Service uptime,
+costs and displaced investments in matched standalone CSC and RH tests.
+[Production and prerequisites](topics/native/production-and-prerequisites.md) ·
+[Material work](topics/csc/materials-and-builders.md) ·
+[Research guidance](topics/csc/research-and-strategies.md).

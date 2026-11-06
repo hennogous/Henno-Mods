@@ -1,43 +1,41 @@
 # What we’re investigating
 
-## Start with one working Bakers chain
+## Current problem 1.6 — turn a Quarter choice into construction
 
-We want the AI to choose a useful Quarter site, preserve the adjacent
-materials, build a Mill and a connected Granary, and improve the Base supply
-with a Builder that can reach it. Then it can value the Storekeeper unlock
-when the chain is otherwise ready. Tailors is the next family to exercise
-the same model.
+The one-time bid on the patched stock game made Delhi choose Bakers and
+reserve its tile. The Craftsmanship preparation expired before Delhi submitted
+a production order. The next matched test starts with an already unlocked
+Bakers candidate. It checks native selection, the production order, the
+foundation and completion separately.
+[Live bid test](../../research/mods/csc-ai-hotfix-live-bid-20261106.md).
 
-The first offline evaluator reads the active gameplay mappings and replays
-these decisions from supplied observations. It reports actions and the
-material plots that need protection. It distinguishes the last viable deposit
-from the last working supplier. We checked the sequence on synthetic Bakers
-states, the definitions against the local gameplay database, and the protection
-logic on a copied Tailors case.
-[How the replay works](../topics/csc/site-planner.md#stage-2-decision-replay).
+## Intermediate milestone — one working Bakers Stage 2 chain
 
-## Deliver the right value at each decision
+The sequence is a completed Quarter with viable Base supply and an adjacent
+Granary host (**1**), a working Mill and Granary (**4, 5**), a working Base
+improvement and sufficient Builder capacity (**3**), then a functioning
+exchange with its supplier retained (**2.2**). Feudalism and Storekeeper
+extend the test to a working Service (**6.1**). Existing unlocks and buildings
+can satisfy dependencies. Tailors comes next through the same model.
 
-CSC values its supply chains. Civ still compares eligible actions and manages
-production, treasury and strategy. Start with bounded preferences, calibrated
-against a few real alternatives. A strong native investment should still
-be able to win. A change in score matters when it reaches the intended choice
-and produces a working, durable result.
+The offline replay has checked synthetic Bakers states, actual gameplay
+definitions and a copied Tailors case. Each live decision still needs
+evidence that it reached the right native consumer and produced the expected
+action. [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay).
 
-On the patched stock game, a one-time bid made Delhi choose Bakers and
-reserve the target tile. Its Craftsmanship preparation expired and it
-switched to a Campus. The next construction test needs an already unlocked
-Bakers candidate. Buying an unowned site, altering a production choice,
-getting a job assigned, and changing an unlock priority each need their own
-evidence. [Live bid test](../../research/mods/csc-ai-hotfix-live-bid-20261106.md).
-We’ll address them in the order that closes the first chain, then extend
-the approach to later stages, Wonders and the remaining Quarter families.
+## Tools for this milestone
 
-## Qualify the CE carrier
+The shared controller and guarded stock research hook support the active
+construction test. Dev-CE 0.8.1 is an optional research tool for a specific
+extra Lua getter or debugging need. Packaged CE delivery is a separate
+qualification on the patched Windows host.
+[Dev-CE release](https://github.com/cru121/civ6-dev-ce/releases/tag/v0.8.1-experimental) ·
+[CE hotfix notes](../../research/mods/csc-ai-xp2-november-hotfix-20261106.md).
 
-The pre-hotfix development fork rejects the new Steam GameCore identity.
-The updated target candidate builds, and offline CSC work can proceed.
-A packaged CE district write still needs a CE base qualified on the patched
-Windows host. [November hotfix comparison](../../research/mods/csc-ai-xp2-november-hotfix-20261106.md).
+For each problem, we trace the decision in the game files and native code
+with REA and Ghidra, then use a focused runtime trace to check what the AI
+actually does. The handbook records the mechanism and the limits of the
+evidence. [Research workflow](../roadmap.md#reverse-engineering-each-decision).
 
-[Roadmap](../roadmap.md) · [Research library](../library.md)
+The [numbered roadmap](../roadmap.md#numbered-problems-to-solve) tracks the
+decisions and the [current problem](../roadmap.md#current-milestone-and-active-problem).
