@@ -1509,5 +1509,18 @@
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N075"],
     "related": ["AI-N074", "AI-N077"]
+  },
+  {
+    "id": "AI-N079",
+    "title": "District site valuation subtracts the remaining value of an intact improvement",
+    "statement": "The district NetValue branch subtracts the shared improvement Value and the signed resource-helper result for a removal quantity of minus one. It separately credits positive district-creation yields when applicable. Improvement value uses weighted yields, relevant plot and city effects, and a discounted interval beginning at district readiness. A missing or pillaged improvement skips this branch.",
+    "status": "accepted",
+    "evidence_types": ["static", "source"],
+    "scope": "Windows Gathering Storm GameCore SHA 324c51e9 and November hotfix 092abfbb with identical code. Ghidra and disassembly at 52a440, 530690, 528700 and 2c4470, with the caller at 3e30b9 and pillage getter at 1e140. Earlier visible-resource harvest eligibility can reject the site before this branch. The debit precedes later building aggregation.",
+    "limits": "Static evidence. The exact debit in a played city, ordinary terrain and citizen reallocation elsewhere in the score, and the specific value recognized for displaced CSC supplier effects are unmeasured.",
+    "sources": ["project/docs/research/mods/civ6-district-improvement-loss-20261106.md"],
+    "topic": "topics/native/district-score-anatomy.md",
+    "depends_on": ["AI-N078"],
+    "related": ["AI-N008", "AI-N013", "AI-N018", "AI-N026", "AI-N076"]
   }
 ]

@@ -268,6 +268,24 @@ bounded live check for actual behaviour. Repair the measured gap through the
 appropriate native decision path; a placement incentive alone cannot ensure
 every later action.
 
+**Protect established supply during district siting.** For each legal district
+footprint on a working mapped improvement, compare each adjacent Quarter's Base
+and Specialty counts before and after placement. Losing the last supplier of
+either class can switch off established Services. Price that loss separately
+from the native improvement debit. A useful customer retains its own adjacency
+benefit and can use a safe adjacent site. An unrelated district on a safe site
+gets no CSC adjustment. This policy applies to any candidate district type,
+independently of how CSC calculates a new Quarter's own bid.
+
+Use a bounded score deduction and leave native legality and production
+competition in place. A matched comparison should cover the last Base, last
+Specialty, redundant supply, a safe customer alternative and an unrelated
+district on a safe tile. Record the selected site and the affected Services
+through foundation, when supply is actually lost. The native path already
+subtracts the improvement's forecast value. Its recognition of the CSC loss
+and the additional penalty magnitude remain open.
+[Native trace and CSC policy](../research/mods/civ6-district-improvement-loss-20261106.md).
+
 Strategic Service selection remains part of the goal. Develop it alongside an
 explicit account of which Services can become useful, rather than rewarding
 infeasible promises or requiring the AI to pursue every chain.

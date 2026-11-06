@@ -23,7 +23,7 @@ resolution does not establish accurate economic forecasts. [AI-N013] [AI-N055]
 | Direct district benefits | Native adjacency and supported district/player yields; applicable pseudo-yields, special effects, housing and other branches | These are weighted inputs, not an unweighted sum of adjacency numbers. [AI-N008] [AI-N016] |
 | Empire conversion | Yield DefaultValue, player's aggregate yield bonuses, strategy/personality and catch-up responses | The same yield can matter differently to different empires or at different times. [AI-N013] [AI-N014] |
 | Timing | Research/civic ETA, construction delay and evaluation horizon; fixed amounts and income streams use their own discount routes | Production cost is reflected through native construction timing here; do not invent a universal one-time subtraction formula. [AI-N008] [AI-N018] |
-| Site economics | Maintenance; plot purchase; supported clearance/harvest; lost improvement/resource value | A future unowned site is not treated as free land. [AI-N008] [AI-N066] |
+| Site economics | Maintenance, plot purchase, supported clearance/harvest and displaced improvement value | The improvement term uses a timed valuation and applies to an intact improvement. [AI-N008] [AI-N066] [AI-N079] |
 | Competing land use | Feasible alternatives' static adjacency on the same plot | The inspected branch can deduct the full maximum alternative, rather than just the difference. This is narrower than comparing complete future plans. [AI-N010] |
 | District preference | Negative excludes; neutral leaves the ordinary branch alone; positive multiplies by1.5 | Larger SQL Districts.Value is not a proportionally larger multiplier. [AI-N009] |
 | Future buildings | Positive qualifying building forecasts for a missing/pillaged prerequisite district | A city/type sum is added to positive candidate entries; it is not a fresh site-specific building-chain search at each plot. First-row and ordering exceptions matter. [AI-N018] [AI-N055] |
@@ -47,6 +47,21 @@ flowchart TD
 This is an explanatory ordering for the inspected route, not a complete closed
 formula for all districts. The CSC adjustment is a research intervention and is
 absent in an untreated game.
+
+## What does it cost to replace an improvement?
+
+For an intact improvement, the site scorer subtracts the shared improvement
+value and the separate signed result for removing one visible resource copy.
+It can add a one-off district-creation yield, such as Public Transport's Gold
+when a Neighborhood replaces a farm. Harvest value and eligibility are checked
+separately. A pillaged improvement skips the improvement branch. [AI-N079]
+
+The improvement helper uses weighted ordinary yields, applicable adjacency,
+housing and supported effects. Its recurring value runs from the district's
+forecast ready turn to the evaluation horizon, subject to climate and feature
+timing. This branch has no citizen-work test. Civ computes it before adding the
+future buildings. The [native trace](../../../research/mods/civ6-district-improvement-loss-20261106.md)
+records the exact arithmetic, gates and addresses.
 
 ## What makes the building forecast larger?
 

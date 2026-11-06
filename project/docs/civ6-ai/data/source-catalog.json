@@ -466,8 +466,8 @@
       "title": "CSC AI objective and decision principles",
       "kind": "integration",
       "date": null,
-      "bytes": 8272,
-      "sha256": "bf4fc3bad3d25539df66a07d3844ca67d9b02fabb0265c76eb9cb433e33f19cf",
+      "bytes": 8643,
+      "sha256": "6e724ba1e327b14bced8a626393e978c51ba7d512a9236c689aac51cbf9c8f8e",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-objectives.md"
     },
@@ -550,6 +550,16 @@
       "sha256": "48d3bd3c9bdd3fa0f959b36d27e052044791eafbb5d587a7d20dab1ac72d3b58",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-choice-placement-and-incentives-20261103.md"
+    },
+    {
+      "path": "project/docs/research/mods/civ6-district-improvement-loss-20261106.md",
+      "title": "How Civ VI prices an improvement displaced by a district",
+      "kind": "report",
+      "date": "20261106",
+      "bytes": 7370,
+      "sha256": "75035b486be36ee23b8026bdc0fb063a8d086c30eaa1fcb3b268a9855c9d36de",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/civ6-district-improvement-loss-20261106.md"
     },
     {
       "path": "project/docs/research/mods/civ6-district-placement-choice-20261103.md",

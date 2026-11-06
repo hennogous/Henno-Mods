@@ -41,6 +41,12 @@ replacement for every later benefit. Quarter adjacency, material-improvement
 returns, producer income and customer sales are distinct flows; adding the full
 CSC economy on top would risk counting some benefits twice.
 
+The early score also deducts the native value of a functioning improvement that
+would be removed. That helper has plot and city context and calls modifier
+analysis. The building-root ledger does not isolate what this different path
+assigns to losing a CSC supplier or switching off a Service.
+[Native displacement trace](../../../research/mods/civ6-district-improvement-loss-20261106.md).
+
 ## Read the classifications
 
 | Label | Meaning for a correction |

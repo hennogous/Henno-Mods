@@ -12,6 +12,11 @@ It can consider some districts before their technology or civic is ready, allowi
 
 Adjacency enters a broader estimate containing supported yields and effects, empire-dependent yield weights, construction and research delays, maintenance, land costs and competing uses of the plot. The same yield can matter differently to different empires or at different times.
 
+If the tile has an intact improvement, Civ deducts its estimated remaining value
+from the turn the district is expected to be ready. For a farm that can include
+its Food, its own adjacency and Housing. A pillaged improvement skips that debit.
+[How the improvement is valued](../topics/native/district-score-anatomy.md#what-does-it-cost-to-replace-an-improvement).
+
 Future buildings contribute too. The inspected path adds a city-wide estimate for that district type to eligible positive site scores. It does not independently simulate a complete, site-specific building chain on every tile.
 
 The new CSC capture makes another distinction concrete: **raw building values

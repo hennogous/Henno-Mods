@@ -77,6 +77,12 @@ planner inputs. An unbuilt customer district or unimproved resource is not an
 already functioning chain. Production and Gold components should remain visible
 even when a combined score is used; their strategic value need not be equal.
 
+For an established Quarter, discourage any district from covering the last
+working mapped Base or Specialty improvement it uses. Protect each supply
+class separately and prioritize actual Services at risk. Prefer an adjacent
+customer site that leaves the materials in place. An unrelated district gets
+no CSC preservation adjustment on a tile that takes away no supply.
+
 Both supply has particular value because of its later Service potential, but
 potential alone does not establish timely construction, available customers or
 an actual active Service. Respect each mechanic's own requirements: material

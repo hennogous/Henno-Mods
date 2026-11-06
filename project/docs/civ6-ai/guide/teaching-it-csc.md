@@ -125,6 +125,13 @@ It is **not** the active native policy, and its partial review utility is not na
 
 After a good foundation, the AI still needs to improve and preserve materials, construct producers and customers, repair damage and choose useful Services. We will address those paths where evidence shows a failure. Retired tuning, subsidies and scripted foundations are not defaults for this approach.
 
+An adjacent customer is more valuable when it leaves its Quarter's suppliers
+working. The next preservation rule will discourage any district from taking
+the last working Base or Specialty improvement. Base supports early Services,
+and losing either class can stop Services that need both. An unrelated district
+on a safe plot has no CSC preservation cost.
+[Preservation policy and native evidence](../../research/mods/civ6-district-improvement-loss-20261106.md).
+
 The old dominant Mill mismatch is now bounded in the native forecast. The new
 ledger identifies more specific represented, false and missing relationships.
 The policy’s +4 promotion and soft deduction are unchanged; this observation
