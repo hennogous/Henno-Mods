@@ -72,3 +72,12 @@ geometry, access flags, each Mill's technology, Granary state and the tracked
 supplier. A missing gameplay legality getter is recorded as `null`. The run
 stops if the tracked supplier is lost. The original Boston continuation found
 the Campus on that supplier, which moved protection ahead of Mill delivery.
+
+`natural_bid.py --replay <accepted match> --capture-at <turn>` repeats the
+verified Bakers bid and captures an earlier inactive boundary. Use
+`supplier_protection.py --replay <closed capture> --through <turn>` to census
+all six neighbors and compare two cold loads of that boundary. The control
+must reproduce the destructive pair and its loss. The treatment lowers that
+one finished score below a safe, positive alternative. It preserves the
+native reservation and records the actual choice, supplier and completed
+buildings. Its retained checkpoint is available for the Service observation.

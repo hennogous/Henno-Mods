@@ -62,7 +62,11 @@ function snapshotSite(object, target, world) {
     const {row, index, count} = found;
     if (read(row, LAYOUT.owned, 'u8') !== 1 || read(row, LAYOUT.eligible, 'u8') !== 1)
         return {status: 'row-ineligible'};
-    if (read(read(row, LAYOUT.reservation, 'ptr'), 0, 'i32') !== -1) return {status: 'row-reserved'};
+    const reservation = read(read(row, LAYOUT.reservation, 'ptr'), 0, 'i32');
+    // A placement boost must avoid all reservations. A protection deduction
+    // may lower the score that would otherwise beat an improvement reserve.
+    // The reservation itself is left entirely in native ownership.
+    if (reservation !== -1 && !target.protectedPlots) return {status: 'row-reserved'};
 
     // The score row binds the same cell as the mutable aggregation matrix.
     // Recheck both layouts after return. A reallocated or detached row has no
@@ -75,7 +79,32 @@ function snapshotSite(object, target, world) {
     const matrix = read(object, LAYOUT.matrix, 'ptr');
     if (scores !== memory.add(matrix, index * world.districtCount * 4)) return {status: 'matrix-detached'};
     const offset = target.district * 4;
-    return {status: 'observed', cell: memory.add(scores, offset), value: read(scores, offset, 'i32')};
+    return {status: 'observed', cell: memory.add(scores, offset), value: read(scores, offset, 'i32'), reservation};
+}
+
+function safeAlternative(object, target, world) {
+    // Limit the calibration to owned, unreserved rows. The native selector can
+    // also admit adjacent unowned rows and can outbid existing reservations.
+    // We observe the actual returned winner separately after the deduction.
+    const count = read(object, LAYOUT.rowCount, 'u32');
+    if (count > LAYOUT.maxRows) throw Error('Alternative row count bound');
+    const rows = read(object, LAYOUT.rows, 'ptr');
+    let best = null;
+    for (let index = 1; index < count; index++) {
+        const row = memory.add(rows, index * LAYOUT.stride);
+        if (!read(row, LAYOUT.owned, 'u8') || !read(row, LAYOUT.eligible, 'u8')) continue;
+        const x = read(row, LAYOUT.x, 'i32'), y = read(row, LAYOUT.y, 'i32');
+        if (!bounds(x, 0, world.width - 1) || !bounds(y, 0, world.height - 1)) throw Error('Alternative coordinates');
+        const plot = y * world.width + x;
+        if (target.protectedPlots.includes(plot) || read(read(row, LAYOUT.reservation, 'ptr'), 0, 'i32') !== -1)
+            continue;
+        const scores = read(row, LAYOUT.rowScores, 'ptr');
+        for (let district = 0; district < world.districtCount; district++) {
+            const score = read(scores, district * 4, 'i32');
+            if (score > (best?.score ?? 0)) best = {plot, district, score};
+        }
+    }
+    return best;
 }
 
 function hook(address, enter, leave) {
@@ -115,13 +144,22 @@ function prepare(world, targets, pulse) {
         if (!bounds(target.player, 1, 63) || !bounds(target.city, 0, 0x7fffffff)
             || !bounds(target.plot, 0, world.width * world.height - 1)
             || !bounds(target.district, 1, world.districtCount - 1)) throw Error('Target bounds');
+        if (target.protectedPlots && (targets.length !== 1 || !Array.isArray(target.protectedPlots)
+            || !bounds(target.protectedPlots.length, 1, 6) || !target.protectedPlots.includes(target.plot)
+            || target.protectedPlots.some(plot => !bounds(plot, 0, world.width * world.height - 1))))
+            throw Error('Exact protection scope required');
         const key = `${target.player}:${target.city}`;
         if (!byCity.has(key)) byCity.set(key, []);
         byCity.get(key).push(target);
     }
-    if (pulse && (targets.length !== 1 || !bounds(pulse.delta, 1, 200000)
-        || !bounds(pulse.before, 1, 0x7fffffff) || !bounds(pulse.native, 1, 0x7fffffff - pulse.delta)))
-        throw Error('Single calibrated diagnostic bid required');
+    if (pulse) {
+        const protect = Boolean(targets[0].protectedPlots);
+        const allowed = protect ? bounds(pulse.delta, -200000, -1) && Number.isInteger(pulse.reservation)
+            : bounds(pulse.delta, 1, 200000);
+        if (targets.length !== 1 || !allowed || !bounds(pulse.before, 1, 0x7fffffff)
+            || !bounds(pulse.native, 1, 0x7fffffff) || !bounds(pulse.native + pulse.delta, 1, 0x7fffffff))
+            throw Error('Single calibrated diagnostic bid required');
+    }
     records.length = 0;
     window = {world, byCity, pulse};
     armed = true;
@@ -155,9 +193,11 @@ function install(spec) {
             const {player, city, district, plot} = target;
             const receipt = {kind: 'calculation', player, city, district, plot, entry: entry.status, exit: exit.status,
                 tree, sameCell: Boolean(entry.cell && entry.cell === exit.cell),
+                reservation: exit.reservation ?? null,
                 before: entry.value ?? null, native: exit.value ?? null, final: exit.value ?? null};
             if (!pulse || writes || tree !== -1) { record(receipt); continue; }
-            if (!entry.cell || entry.cell !== exit.cell || pulse.before !== entry.value || pulse.native !== exit.value)
+            if (!entry.cell || entry.cell !== exit.cell || pulse.before !== entry.value || pulse.native !== exit.value
+                || (target.protectedPlots && pulse.reservation !== exit.reservation))
                 throw Error('Fresh calculation differs from matched control or moved cells');
             const cell = ptr(exit.cell);
             const range = Process.findRangeByAddress(cell);
@@ -174,8 +214,9 @@ function install(spec) {
     hook(winner, args => {
         const object = args[0].toString();
         const sites = window.byCity.get(identity(object));
-        return sites ? {object, output: args[1].toString(), player: sites[0].player, city: sites[0].city} : null;
-    }, ({object, output, player, city}, result) => {
+        return sites ? {object, output: args[1].toString(), target: sites[0]} : null;
+    }, ({object, output, target}, result) => {
+        const {player, city} = target;
         const {world} = window;
         const district = result.toInt32();
         if (district === -1) { record({kind: 'winner', player, city, district, writes}); return; }
@@ -184,8 +225,10 @@ function install(spec) {
         if (!found || !bounds(district, 0, world.districtCount - 1)
             || !bounds(x, 0, world.width - 1) || !bounds(y, 0, world.height - 1)) throw Error('Invalid native winner');
         const scores = read(found.row, LAYOUT.rowScores, 'ptr');
-        record({kind: 'winner', player, city, district, plot: y * world.width + x,
-            score: read(scores, district * 4, 'i32'), writes});
+        const receipt = {kind: 'winner', player, city, district, plot: y * world.width + x,
+            score: read(scores, district * 4, 'i32'), writes};
+        if (target.protectedPlots && !window.pulse) receipt.alternative = safeAlternative(object, target, world);
+        record(receipt);
     });
     Interceptor.flush();
     return listeners.length;

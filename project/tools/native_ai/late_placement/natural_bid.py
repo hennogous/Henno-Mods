@@ -52,7 +52,7 @@ def choose_bid(trace, world):
 def run_arm(args, out, source, digest, world, pilot, spec, code, verify, frida, plan=None, *, discover=False):
     controller = make_probe_controller(out, user_root=args.user_root)
     start_turn = world['turn']
-    controller.study_endpoint = args.search_through if discover else min(start_turn + 22, 100)
+    controller.study_endpoint = args.search_through if discover else (args.capture_at or min(start_turn + 22, 100))
     controller.allow_observer_warning_dismissal = controller.allow_observer_first_meet_dismissal = True
     controller.allow_observer_congress_review = True
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
@@ -136,12 +136,20 @@ def run_arm(args, out, source, digest, world, pilot, spec, code, verify, frida, 
                 require(facts['turn'] == turn, 'Follow-through clock changed')
                 followthrough.append(facts)
                 write_json(out / 'followthrough.json', followthrough)
-                if facts['complete'] and (plan or selected['pulse'] is None):
+                if args.capture_at and turn == args.capture_at:
+                    require(facts['founded'] and facts['owner'] == target['player']
+                            and any(base['resource'] >= 0 and base['district'] == -1 for base in facts['base']),
+                            'Replay did not retain the Quarter and its supplier at the requested boundary')
+                    save = save_inactive_boundary(controller, turn=turn, name='CSC_BAKERS_PRE_SUPPLIER_DECISION',
+                                                  native_directory=args.saves, archive=out / 'pre-supplier.Civ6Save')
+                    write_json(out / 'pre-supplier-checkpoint.json', save)
+                elif not args.capture_at and facts['complete'] and (plan or selected['pulse'] is None):
                     save = save_inactive_boundary(controller, turn=turn, name='CSC_BAKERS_FOUNDATION',
                                                   native_directory=args.saves, archive=out / 'completed.Civ6Save')
                     write_json(out / 'completed-checkpoint.json', save)
                 if facts['owner'] != target['player'] or facts['cityOwner'] != target['player'] \
-                        or facts['complete'] or facts['otherSite'] != -1 or turn == controller.study_endpoint:
+                        or (facts['complete'] and not args.capture_at) or facts['otherSite'] != -1 \
+                        or turn == controller.study_endpoint:
                     break
                 # Preserve the exact unlock/foundation boundary. Once founded,
                 # production can be checked at wider intervals.
@@ -206,6 +214,20 @@ def run(args):
     require(world['candidates'] and world['speed'] == 'GAMESPEED_ONLINE', 'No qualified Bakers site')
     require(args.search_through is None or world['turn'] + 1 < args.search_through <= 100,
             'Discovery endpoint must allow a later turn within Online100')
+    require(bool(args.replay) == bool(args.capture_at) and not (args.replay and args.search_through),
+            'An exact replay and capture turn must be supplied together')
+    replay_plan = None
+    if args.replay:
+        previous = args.replay.resolve()
+        require(load(previous / 'restoration.json')['verified'], 'Expected a closed matched replay')
+        archived = load(previous / 'discovery/search-result.json')
+        checkpoint, world = archived['checkpoint'], archived['world']
+        source, digest = checked_source(checkpoint)
+        treated = load(previous / 'result.json')['treatment']
+        require(treated['trace']['writes'] == 1 and treated['followthrough'][-1]['complete'],
+                'Expected the accepted single-write completed Quarter')
+        require(world['turn'] < args.capture_at <= treated['followthrough'][-1]['turn'], 'Capture turn is outside the replay')
+        replay_plan = treated['plan']
     pilot_path = load(scout / 'scout-result.json')['pilot']
     pilot = pilot_unlocks(Path(pilot_path) if pilot_path else None)
     retired = scout / 'retired-study-copy'
@@ -243,6 +265,11 @@ def run(args):
         return run_arm(args, directory, source, digest, world, pilot, spec, code, verify, frida, plan, discover=discover)
 
     try:
+        if replay_plan:
+            treatment = arm('treatment', replay_plan)
+            require((out / 'treatment/pre-supplier-checkpoint.json').is_file(), 'Requested replay boundary was not saved')
+            write_json(out / 'result.json', dict(treatment=treatment))
+            return
         if args.search_through:
             found = arm('discovery', discover=True)
             if found is None:
@@ -276,4 +303,6 @@ if __name__ == '__main__':
     for name in ('scout', 'study', 'output', 'mods', 'saves', 'user-root', 'binary', 'dll', 'dependencies'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--search-through', type=int, help='Find a later native selector window before comparing arms')
+    parser.add_argument('--replay', type=Path, help='Repeat only the accepted bid to capture an earlier boundary')
+    parser.add_argument('--capture-at', type=int, help='Exact inactive turn to save after replaying the accepted bid')
     run(parser.parse_args())
