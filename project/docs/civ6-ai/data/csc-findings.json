@@ -1144,6 +1144,19 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-N086", "AI-N087"],
-    "related": ["AI-C059"]
+    "related": ["AI-C059", "AI-C062"]
+  },
+  {
+    "id": "AI-C062",
+    "title": "One retained Boston Bakers chain reached native Storekeeper",
+    "statement": "Boston built the selected Quarter, kept and improved its only Base after a district deduction, and retained the working Pasture under the two-path Farm guard. Natural Engineering, Mill and Granary construction and Feudalism produced a working Storekeeper chain at two observed boundaries.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "One isolated CSC Online Boston case on patched stock XP2. Bakers plot 721, Cattle Pasture 796 and Granary 795. At turns 63 and 66 the Water Mill was functional, Granary Food was 2 versus base 1, Mill Production and Gold were 1 each, the Storekeeper marker was present and its Growth property was 1. Exact turn-66 save, normal exit and restored preferences and package.",
+    "limits": "One controlled red-thread milestone. The actual city Growth percentage, a fully calibrated automatic policy, native bid magnitudes for buildings or research, broad material retention and a release carrier remain separate work.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-N083", "AI-N086", "AI-N088", "AI-C061"],
+    "related": ["AI-N085"]
   }
 ]

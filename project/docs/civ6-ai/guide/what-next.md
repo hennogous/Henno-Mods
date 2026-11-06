@@ -1,6 +1,6 @@
 # What we’re investigating
 
-## Current problem 13.3 — protect Boston's supplier from Builder clearance
+## Milestone reached — Boston's working Bakers chain
 
 Boston completed Bakers on our chosen site after one turn-22 score change.
 The game began with Craftsmanship locked and Boston's player researched it
@@ -8,11 +8,12 @@ normally. The control founded Bakers on a different tile. The chosen Quarter
 had its Base deposit and an adjacent City Center at completion. A second
 matched test lowered the Campus score on the only Base tile. Boston placed
 Campus elsewhere and built a Pasture, Granary and Water Mill through its
-ordinary plans. The Granary produced 2 Food against its base of 1, and the
-Water Mill produced 1 Production and 1 Gold. A Builder then harvested the
-Cattle to clear a Farm site for the Feudalism boost. The next test protects
-that supplier at the Builder decision so Boston can keep the working chain
-through Feudalism and Storekeeper.
+ordinary plans. We then protected the Pasture from two independent Farm
+decisions, one for the Feudalism boost and one from ordinary city planning.
+Boston researched Feudalism and had a working Storekeeper at turns 63 and 66.
+The Granary produced 2 Food against its base of 1, and the Water Mill produced
+1 Production and 1 Gold at both observations. The controller saved the
+complete chain on turn 66.
 [Construction, supplier protection and actual yields](../../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
 ## Intermediate milestone — one working Bakers Stage 2 chain
@@ -24,10 +25,10 @@ exchange with its supplier retained (**2.2**). Feudalism and Storekeeper
 extend the test to a working Service (**6.1**). Existing unlocks and buildings
 can satisfy dependencies. Tailors comes next through the same model.
 
-The offline replay has checked synthetic Bakers states, actual gameplay
-definitions and a copied Tailors case. Each live decision still needs
-evidence that it reached the right native consumer and produced the expected
-action. [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay).
+The live Boston replay establishes this sequence for one Bakers chain. The
+offline planner separately covers actual gameplay definitions and a copied
+Tailors case. A reusable policy still needs broader tests of the same native
+decisions. [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay).
 
 ## Tools for this milestone
 

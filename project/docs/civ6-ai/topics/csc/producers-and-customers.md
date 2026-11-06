@@ -11,6 +11,17 @@ flowchart LR
  D[Definition] --> V[Fresh value] --> R[Accepted request] --> Q[Queue selected] --> B[Completed building] --> W[Working retained path] --> E[Benefit]
 ```
 
+## A retained Bakers Stage 2 chain in Boston
+
+The matched tests kept Boston's exact Cattle Pasture next to a working Water
+Mill and Granary. Engineering and Feudalism advanced through normal research.
+At turns 63 and 66, the Granary produced 2 Food against a base of 1, the Water
+Mill produced 1 Production and 1 Gold, and the Storekeeper marker and Growth
+property were active. The earlier replay also showed the ordinary exchange
+still producing after the supplier was lost, while Storekeeper stayed absent.
+[AI-C061] [AI-C062]
+[Boston evidence and turn-66 checkpoint](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#retained-stage-2-chain-verified-at-turns-63-and-66).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

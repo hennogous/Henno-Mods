@@ -9,7 +9,7 @@ evidence.
 
 ## Current milestone and active problem
 
-**Intermediate milestone — one working, retained Bakers Stage 2 chain.**
+**Intermediate milestone achieved — one working, retained Bakers Stage 2 chain.**
 Choose and complete a Bakers Quarter with viable Base supply and an adjacent
 Granary host (**1.1–1.4, 1.6**). Get the appropriate Mill and a functioning
 Granary in place (**4.1–4.2, 5.1**). Improve the Base tile and match the job
@@ -38,14 +38,15 @@ Granary and Water Mill followed through native research and production.
 The Quarter, both buildings and the working supply were present at turn 45.
 [Protection and follow-through](../research/mods/csc-ai-bakers-natural-research-20261106.md#a-matched-deduction-protected-the-only-base).
 
-**Active problem — 13.3, keep a working supplier out of destructive Builder jobs.**
-The ordinary exchange was working from the turn-45 protected save. A
-Feudalism boost Farm job removed the only Pasture on turn 52 and harvested
-its Cattle on turn 53. Trace the job's native candidate choice and test a
-scoped preservation input before clearance. Reuse the same turn-45 save.
-Verify native work, the exact Pasture and the ordinary exchange separately.
-Then return to **6.1** to observe Feudalism and retained Storekeeper operation.
-[Exchange and Builder-loss evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-ordinary-exchange-worked-then-a-feudalism-boost-consumed-the-base).
+**Verified for this fixture — 13.3 and 6.1.**
+A Feudalism boost Farm job removed the working Cattle Pasture and harvested
+the deposit. Protecting that boost choice alone exposed a separate ordinary
+Farm job. The final replay guarded both decisions before reservation.
+Boston kept the same working Pasture, Water Mill and Granary through
+natural Feudalism. The actual exchange, Storekeeper marker and Growth
+property were present at turns 63 and 66. The saved turn-66 state closes the
+Boston milestone. The tested policy is scoped to one city and supplier.
+[Final retained chain and evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#retained-stage-2-chain-verified-at-turns-63-and-66).
 
 For each update, name the active problem and report the furthest stage actually
 observed, the blocker if any, and the next check. Keep later problems queued

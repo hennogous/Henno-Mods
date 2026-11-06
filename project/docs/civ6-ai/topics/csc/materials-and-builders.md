@@ -8,6 +8,12 @@ and harvested the deposit. The same Builder, exact plot and distinct native
 operations identify work clearance as the cause. [AI-N087]
 [Boston's exchange and Builder-loss evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-ordinary-exchange-worked-then-a-feudalism-boost-consumed-the-base).
 
+The follow-up traced two callers of the same improvement site selector.
+Boost planning can skip a city whose location result is empty. Ordinary
+planning can defer creating an improvement tree. A guarded replay used
+both paths to keep Boston's exact Pasture through Storekeeper activation.
+[AI-N088] [Native paths and retained replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#guarding-the-boost-decision-before-reservation).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

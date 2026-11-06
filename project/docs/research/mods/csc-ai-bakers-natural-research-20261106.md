@@ -239,6 +239,66 @@ showed why rejecting only the final operation can leave a reserved job
 repeating. The next test targets admission of the destructive Farm candidate
 before either operation can begin.
 
+## Guarding the boost decision before reservation
+
+The empire-wide improvement branch of `DecodeTriggerNode::Update` reads an
+improvement value through `PresentValueOf` at `3e8000` and then calls
+`GetBestLocationFor` at `3e5750` for each city. Both use the city's improvement
+row scores at `+0x30`. The call at `55ae96` returns a plot pointer. The caller
+skips a city when that result is null. Shipped `Build City Improvement`
+executes Decode Trigger before Reserve Plot and Clear Plot.
+
+The diagnostic guard watches only that call site for player 3's Farm. It
+withholds a returned location only when it is plot 796. The original score,
+other cities' candidates and later research stay in the engine's control.
+This suppresses the city's unsafe top candidate at that call. It does not
+calculate its second-best Farm site.
+
+In the first guard attempt, Boston returned the Cattle at 27,094 Q8 while
+Washington returned plot 1168 at 15,698 Q8. The guard withheld the Cattle.
+The Feudalism tree reserved Washington's plot at (58, 15) on turn 46. A Python
+variable naming error stopped the follow-through read at turn 48. The run
+closed normally and the corrected attempt reopened the same turn-45 save.
+
+The boost-only replay kept the Pasture through turn 54. A separate ordinary
+Boston Farm job reserved the same plot on turn 53 and removed the Pasture on
+turn 55. The Cattle remained. Feudalism was owned by turn 63, but the
+improvement gap prevented Storekeeper. By turn 75 Boston had replaced the
+Pasture and the Water Mill was pillaged, another distinct interruption.
+
+`CheckForImprovement` at `3e1150` calls the same location selector at
+`3e11a0` for the city's ordinary job. It requires a non-null location and
+a positive plot-specific value before creating the improvement tree.
+The next matched replay extends the exact plot guard to this second caller.
+
+## Retained Stage 2 chain verified at turns 63 and 66
+
+The final replay loaded the same protected turn-45 save and matched all
+initial facts to the loss control. The guard covered both verified callers.
+It withheld the unsafe Farm result once in boost planning and six times in
+ordinary city planning. It changed no cached score or reservation. The same
+Cattle Pasture worked at every sampled boundary from turn 45 through 66.
+
+| Exact Boston readback | Turn 63 | Turn 66 |
+| --- | ---: | ---: |
+| Working Cattle Pasture on plot 796 | Yes | Yes |
+| Functioning Water Mill in Bakers at 721 | Yes | Yes |
+| Granary Food at 795, base 1 | 2 | 2 |
+| Water Mill Production and Gold | 1 each | 1 each |
+| Feudalism unlocked naturally | Yes | Yes |
+| Storekeeper marker and Growth property | Present, 1 | Present, 1 |
+
+Feudalism was still in progress at turn 60. By turn 63 the Storekeeper
+marker and Growth property were active. This qualifies one retained chain
+through two exact samples three turns apart. The Growth property is an
+activation receipt. The actual percentage change in aggregate city growth
+was outside this measurement.
+
+The controller saved turn 66, froze the hook with no pending callbacks and
+closed the game normally. This milestone uses three separately qualified,
+scoped interventions on one world. It leaves generic material protection,
+same-city Farm fallback, routine bid calibration and Workshop delivery open.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
@@ -295,3 +355,9 @@ The exchange and Builder-loss continuation is `operation-01`. Its
 `states.json` SHA-256 is `79ba98eb3d1e5289f0a52504c2a2d5fa522ff0512eb0696c3c932a39c5600ad9`.
 Its preserved `UnitOperations.log` SHA-256 is
 `e741fcb1b7cc8b8dbb5117cbbbf4f1be1a8ce3cc6ed6e37b2a89768c598d0389`.
+The final accepted continuation is `operation-04`. Its checkpoint is
+`stage2.Civ6Save` with SHA-256
+`56afbac023e9029f4d6fcaa5f270da07bc163bd724c6b511954de173b6630932`.
+Its `states.json` and `farm-trace-frozen.json` SHA-256 values are
+`c0f55046bc894033ebe3575f8101eefdc6cbc40fc67262210bc8ffa6bd7c8550` and
+`bc2526e4fd1e4e787a5e5d588c404c19563c5b21848cac1c90ef32ee5ed881e7`.

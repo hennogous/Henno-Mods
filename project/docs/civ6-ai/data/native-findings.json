@@ -1625,6 +1625,19 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N086"],
-    "related": ["AI-C013", "AI-C014", "AI-C061"]
+    "related": ["AI-C013", "AI-C014", "AI-C061", "AI-N088"]
+  },
+  {
+    "id": "AI-N088",
+    "title": "Boost and ordinary improvement work admit locations through separate native callers",
+    "statement": "The empire-wide boost branch of DecodeTrigger skips a city if its native improvement location is null. CheckForImprovement separately skips a new city tree when that location is null. Withholding only the exact protected Farm result at both call sites prevented the destructive work in the retained Boston replay.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Patched stock XP2 SHA 092abfbb. GetBestLocationFor 3e5750 called from 55ae96 and 3e11a0, with matching source and call fingerprints. Exact Online turn-45 Boston save. Farm on plot 796 withheld once on the boost route and six times on the ordinary route through turn 66. The original boost result Boston 27094 Q8 was withheld while Washington plot 1168 at 15698 Q8 remained available. The boost-only arm removed Pasture on the ordinary route; the combined arm kept it through every sample and achieved Storekeeper at 63 and 66.",
+    "limits": "Scoped return veto for one player, improvement and plot. It skips that city's unsafe top Farm candidate and does not choose the city's runner-up. Other improvement routes, a reusable dynamic value adjustment and perpetual retention were not qualified.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-N087"],
+    "related": ["AI-N086", "AI-C061", "AI-C062"]
   }
 ]
