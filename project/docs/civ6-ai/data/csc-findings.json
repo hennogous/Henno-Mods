@@ -1640,5 +1640,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/forecast-coverage.md",
     "related": ["AI-N026", "AI-N076", "AI-C099"]
+  },
+  {
+    "id": "AI-C101",
+    "title": "The calibrated Granary Food bid reached the native nomination while Library still won",
+    "statement": "The clean CE replay logged the exact 4608 Q8 addition to Trebizond's Granary, from 46458 to 51066 Q8. The city submitted the same Library offer as in the control.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Exact turn-150 replay through 164 with the pinned reviewed CE, integrated CSC policy, bounded packet logging and no external attachment.",
+    "limits": "One native comparison in one saved city. The policy delivered its Food term and preserved the competing choice. It has not yet changed an ordinary-start Granary selection or verified a live unique replacement.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C095", "AI-C100"]
   }
 ]

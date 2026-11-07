@@ -106,6 +106,13 @@ when an adjacent working Mill can already supply it. Production,
 Gold and future Service are separate terms. [AI-C100]
 [Forecast calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-granary-valuation-priced-food-and-returned-zero-for-the-exchange-roots).
 
+The clean CE replay applied the 18-point preference to the
+correct Granary. Library kept the nomination at this opening.
+The qualification uses CE telemetry because an exit hook on
+the selector changes the return address used by CE's caller
+guard. [AI-C101]
+[Clean integration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-clean-replay-applied-the-calibrated-granary-food-bid).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

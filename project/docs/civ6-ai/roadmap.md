@@ -122,9 +122,10 @@ The matched **5.1** diagnostic produced a valid Granary offer,
 which Trebizond bought at its ordinary value. The exchange worked
 before the later Mill damage. The native forecast returned zero
 for the outgoing exchange roots. The initial reusable bid credits
-the incoming Food at 18 points. The first instrumented replay
-published bids but recorded no native changes. Verify delivery
-using CE telemetry alone, then calibrate Production and Gold.
+the incoming Food at 18 points. The clean replay confirmed
+that CE applied the exact preference and Library kept the
+nomination. Calibrate Production and Gold, then check the
+combined preference across ordinary starts.
 Charleston supplied another **3.2** follow-through case. It received
 an exact Maize Farm bid and operated Storekeeper on 176–177.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

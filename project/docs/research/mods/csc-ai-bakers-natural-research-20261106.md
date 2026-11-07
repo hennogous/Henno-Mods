@@ -2063,6 +2063,33 @@ bounded packet-key logging will distinguish an observer
 interaction from a publication or eligibility failure.
 The replay verified normal exit and restoration.
 
+### The clean replay applied the calibrated Granary Food bid
+
+`development-trebizond-granary-food-ce-02` used the same
+turn-150 source, reviewed CE binary and 18-point policy
+through 164. It added a bounded log of packet keys and used
+CE's own telemetry with no Frida attachment. The packet
+contained player 1, city 327684, building 3, delta 4,608 Q8.
+At turn 164 CE reported one change in the preceding interval,
+from 46,458 to 51,066 Q8 for that exact key. The same Library
+offer 3238 was submitted on turn 163. The matched selector
+control had Library at 119,277 Q8. No Granary or exchange
+was present at the endpoint.
+
+The result confirms delivery and retention of the competing
+choice in this fixture. It also explains the earlier observer
+interaction. The pinned Frida implementation substitutes an
+exit trampoline for the return address on the selector's stack.
+CE's native caller guard reads that address to admit only the
+ordinary nomination. Use CE telemetry alone when qualifying
+this carrier. [Frida Gum 17.24.3 return-address replacement](https://github.com/frida/frida-gum/blob/17.24.3/gum/guminterceptor.c#L2111-L2114).
+
+The clean Lua log SHA-256 is
+`6241fbfca8ed3aea41bce132f07b5388ff4535ed9890302b617ad2342d4ddbbb`.
+Its endpoint save SHA-256 is
+`98e8b2de316db76208b4881d40934fa548628ddd74be0b737340e2436ab9e200`.
+The controller verified normal exit and restoration.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
