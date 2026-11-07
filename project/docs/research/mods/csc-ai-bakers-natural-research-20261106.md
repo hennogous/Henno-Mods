@@ -844,6 +844,40 @@ location-selector callers, including boost checks and ordinary
 proposals. This keeps cached selection, retained jobs and later
 execution distinguishable.
 
+### Earlier protection redirected the boost and preserved the deposit
+
+Both `ce-pasture-early-01` arms cold-loaded turn 69 from SHA-256
+`3869816217cf2e5bb428fec2632f08fdb39539138855a3ff6d9dcde3a0af1f16`.
+The starting census, CE binary and district policy matched. Only the
+treatment enabled Builder protection. The earlier stock turn-72 save
+had been captured before the reservation first appeared in that run's
+log. The turn-69 cold replay logged its control reservation on turn 71.
+Use the checkpoint and the replay's own events to order the decision.
+
+In the first traced interval, Boston's empire-trigger Farm location
+returned Cattle plot (56,10) at 38,655 Q8 in control. The treatment
+read −2,559,744 on that row and returned (54,10) for Boston. The
+empire's Irrigation tree actually reserved (63,11) in treatment. The
+control tree reserved (56,10) and Builder 2228225 harvested it on turn
+73. At turn 81 the treatment still had the developable Cattle and the
+control did not. Neither arm had a working Pasture or Storekeeper.
+Both closed with preferences and packages verified and no trace faults.
+
+The first empty ordinary slot gave the same Camp proposal in both arms.
+During the turn-72 interval the treatment admitted tree 11337745.
+Camp at (54,8) scored 35,432 Q8 and the Cattle Pasture scored 29,056.
+The old Cattle reservation did not resolve. At the next empty slot
+Camp again won at 39,518 against the Pasture's 32,096 Q8. This isolates
+ordinary job competition after material protection. A diagnostic
+8,192 Q8 Pasture bid is sized just above both observed gaps. The test
+must verify which job the AI admits, assigns and finishes, then check
+Storekeeper's actual payout. Already committed harvests remain a
+separate boundary.
+
+Control and treatment joined timeline SHA-256 values are
+`63137657fb7f8a2c7817a89c9f24451c99b6ec7ea2341d05f0f700e0b6ff207c`
+and `3965701a71bb263efa69b06caa2dfd6de2883c1eee36410c03ef8e3d9e1abba0`.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

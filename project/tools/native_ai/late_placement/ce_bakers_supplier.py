@@ -89,8 +89,9 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
     shutil.copytree(archived, prepared)
     add_fixture_carrier(prepared, args.ce_dll)
     advanced = args.builder or args.wonder
+    builder_policy = treatment or args.wonder or args.pasture_bid
     if treatment or advanced:
-        add_policy(prepared, start, builders=treatment or args.wonder, wonders=args.wonder and treatment,
+        add_policy(prepared, start, builders=builder_policy, wonders=args.wonder and treatment,
                    defer=bool(args.pasture_autosave))
     package = manifest(prepared)
     try:
@@ -170,7 +171,7 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
         result['initial'] = initial
         if advanced:
             first = protection_status('Builder', 'builder-before-autoplay')
-            require(first['ready'] and not first['faults'] and bool(first['entries']) == (treatment or args.wonder),
+            require(first['ready'] and not first['faults'] and bool(first['entries']) == builder_policy,
                     'Unexpected initial Builder publication')
             result['builder_initial'] = first
         if args.wonder:
@@ -189,7 +190,8 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
             require(frida.__version__ == '17.24.3' and Path(frida.__file__).resolve().is_relative_to(dependencies),
                     'Exact existing Frida package required')
             modules = load(out / 'loaded-modules.json')
-            scope = dict(load(args.replay / 'pasture-recovery-scope.json'), cePath=modules[DLL]['path'])
+            scope = dict(load(args.replay / 'pasture-recovery-scope.json'), cePath=modules[DLL]['path'],
+                         measurePastureBid=args.pasture_bid, applyPastureBid=args.pasture_bid and treatment)
             require(scope['plot'] in target['base'] and scope['player'] == target['player']
                     and scope['city'] == target['city'], 'Observer scope differs from the matched fixture')
             spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
@@ -341,7 +343,9 @@ def run(args):
     if args.pasture_autosave:
         require(all(sha(Path(path)) == value for path, value in pins.items()), 'Pinned source changed during recovery')
         write_matched_timelines(out, load(replay / 'pasture-recovery-scope.json'))
-        write_json(out / 'result.json', dict(source=digest, turn=start, plot=plot, control=lost, treatment=kept,
+        experiment = 'pasture-bid' if args.pasture_bid else 'builder-protection'
+        write_json(out / 'result.json', dict(source=digest, turn=start, plot=plot, experiment=experiment,
+                   control=lost, treatment=kept,
                    control_operation=control['final']['operation'], treatment_operation=treated['final']['operation']))
         write_json(out / 'restoration.json', dict(verified=True, owners_absent=True))
         return
@@ -386,7 +390,9 @@ if __name__ == '__main__':
     parser.add_argument('--match', type=Path)
     parser.add_argument('--resume-wonder-treatment', type=Path, help='Continue the closed Wonder treatment from turn 222')
     parser.add_argument('--pasture-autosave', type=Path, help='Pair Builder protection from a preserved supplier decision save')
-    parser.add_argument('--decision-observer-deps', type=Path, help='Pinned Frida directory for read-only native selector traces')
+    parser.add_argument('--decision-observer-deps', type=Path, help='Pinned Frida directory for native selector traces')
+    parser.add_argument('--pasture-bid', action='store_true',
+                        help='Keep Builder protection in both arms and add a bounded Boston Pasture bid in treatment')
     parser.add_argument('--through', type=int)
     args = parser.parse_args()
     if (args.builder or args.wonder) and (not args.match or not args.ce_sha256):
@@ -396,4 +402,6 @@ if __name__ == '__main__':
         parser.error('Use --through with --wonder --resume-wonder-treatment or --builder --pasture-autosave')
     if args.decision_observer_deps and not args.pasture_autosave:
         parser.error('The decision observer requires a matched supplier autosave')
+    if args.pasture_bid and not args.decision_observer_deps:
+        parser.error('The Pasture bid requires the matched supplier observer')
     run(args)

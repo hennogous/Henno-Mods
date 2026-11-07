@@ -18,6 +18,9 @@ const LOCATION_CALLERS = new Map([
 ]);
 const RESERVATION_RETURN = 0x3e5813;
 const TERRAIN_RESERVATION_RETURN = 0x3dee50;
+const PASTURE_NETVALUE_CALL = 0x3e3423;
+const PASTURE_SCORE_STORE = 0x3e3436;
+const PASTURE_BID_Q8 = 8192;
 const LAYOUT = {
     city: 0x90, owner: 0xd8, cityId: 0xa8, bestType: 0x250,
     treeSlot: 0x430, treeId: 0xc, rows: 0x4c8, count: 0x4d8, stride: 0x78,
@@ -59,6 +62,9 @@ function init(spec, scope) {
         [ANALYZE_TERRAIN, '48894c240853565741554157'],
         [BEST_LOCATION, '44884c242048894c2408415541574883ec684c63ea458bf84183fdff750b33c0'],
         [FIND_RESERVATION, '448bc283faff74454c8b9110010000'],
+        [RESERVATION_RETURN, '4885c00f85c9000000'],
+        [TERRAIN_RESERVATION_RETURN, '4885c00f85ee000000'],
+        [PASTURE_NETVALUE_CALL, 'e898741400498b4c2430448bbdc00000008b008904b1eb14'],
     ]) {
         const bytes = Array.from(new Uint8Array(address(rva).readByteArray(expected.length / 2)),
             value => value.toString(16).padStart(2, '0')).join('');
@@ -153,16 +159,40 @@ function init(spec, scope) {
         const row = plot && findRow(build, ...plot);
         add({kind: 'location', city, route, type, plot, q8: row ? score(row, type) : null, targetQ8, reservationResolved});
     });
-    watch(FIND_RESERVATION, (a, invocation) => {
-        const from = caller(invocation);
-        if (from === RESERVATION_RETURN) {
-            const sample = selections.get(invocation.threadId);
-            if (sample && coordinatesMatch(invocation.context.rdi, scope.x, scope.y)) return sample;
-        } else if (from === TERRAIN_RESERVATION_RETURN) {
-            const sample = terrain.get(invocation.threadId);
-            if (sample && coordinatesMatch(invocation.context.r15, scope.x, scope.y)) return sample;
-        }
-    }, (sample, result) => { sample.reservationResolved = !result.isNull(); });
+    // Observe the result at the two identified callers. The manager lookup
+    // also serves unrelated AI systems, so a hook there crosses into JS for
+    // work that can never contribute to this trace.
+    function watchReservationReturn(rva, frames, rowRegister) {
+        Interceptor.attach(address(rva), function () {
+            if (!enabled) return;
+            const sample = frames.get(this.threadId);
+            if (!sample) return;
+            try {
+                if (coordinatesMatch(this.context[rowRegister], scope.x, scope.y))
+                    sample.reservationResolved = !this.context.rax.isNull();
+            } catch (error) { fault = String(error); enabled = false; }
+        });
+    }
+    watchReservationReturn(RESERVATION_RETURN, selections, 'rdi');
+    watchReservationReturn(TERRAIN_RESERVATION_RETURN, terrain, 'r15');
+    // Fixture-only positive bid. This instruction copies the legal native
+    // NetValue into the improvement row. R12 is that row, RSI is the
+    // improvement index, R14 is the city and EAX is the signed Q8 result.
+    if (scope.measurePastureBid) {
+        Interceptor.attach(address(PASTURE_SCORE_STORE), function () {
+            if (!enabled || this.context.rsi.toInt32() !== scope.pasture) return;
+            try {
+                if (!coordinatesMatch(this.context.r12, scope.x, scope.y)) return;
+                const city = this.context.r14;
+                if (read(city, l.owner, 'i32') !== scope.player || read(city, l.cityId, 'i32') !== scope.city) return;
+                const nativeQ8 = this.context.rax.toInt32();
+                if (nativeQ8 <= 0 || nativeQ8 > 0x7fffffff - PASTURE_BID_Q8) return;
+                const appliedQ8 = scope.applyPastureBid ? nativeQ8 + PASTURE_BID_Q8 : nativeQ8;
+                add({kind: 'pasture-score', plot: scope.plot, type: scope.pasture, nativeQ8, appliedQ8});
+                if (scope.applyPastureBid) this.context.rax = ptr(appliedQ8);
+            } catch (error) { fault = String(error); enabled = false; }
+        });
+    }
     Interceptor.flush();
     installed = true;
     return true;

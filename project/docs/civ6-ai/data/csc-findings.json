@@ -1275,5 +1275,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C070", "AI-N092", "AI-N096"],
     "related": ["AI-C066"]
+  },
+  {
+    "id": "AI-C072",
+    "title": "Earlier Builder protection redirected the boost while Camp still beat the missing Pasture",
+    "statement": "With protection live from turn 69, the relevant Farm selector read the ineligible Cattle score and chose a different plot. The Irrigation job reserved elsewhere and the Cattle survived. Boston still admitted ordinary Camp jobs ahead of the eligible Pasture.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Matched patched Windows XP2 and CE replay from the same turn-69 autosave. Boston's Farm score changed from 38655 Q8 to minus 2559744 at the traced selector. Treatment kept the Cattle through 81. At the first two open ordinary slots, treatment Camp scores of 35432 and 39518 exceeded Pasture scores of 29056 and 32096 Q8.",
+    "limits": "One controlled missing-Pasture fixture. Neither arm restored Storekeeper by 81. The turn-72 failure and this replay leave harvests already committed when protection begins unverified.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C070", "AI-C071", "AI-N096"],
+    "related": ["AI-C066"]
   }
 ]

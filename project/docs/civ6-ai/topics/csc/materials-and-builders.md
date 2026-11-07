@@ -68,6 +68,13 @@ The forecast receipts alone cannot distinguish a fresh selection from
 a job carrying a prior location. [AI-C071]
 [Matched supplier failure](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-turn-72-protection-arms-both-lost-the-cattle).
 
+The turn-69 comparison caught the actual Farm selection before the
+Irrigation reservation. The treatment redirected the job and kept the
+Cattle through turn 81. Boston's first two open ordinary job slots
+went to a Camp elsewhere. A Pasture remained legal and Storekeeper
+stayed inactive. [AI-C072]
+[Earlier matched protection](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#earlier-protection-redirected-the-boost-and-preserved-the-deposit).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

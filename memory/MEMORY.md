@@ -36,9 +36,13 @@ job preceded the live Irrigation boost claim. Builder 2228225 harvested
 Cattle 796 on turn 73. The exact turn-72 autosave was captured before the
 claim and supplies the matched CE Builder-protection comparison.
 The turn-72 CE comparison changed Farm scores to the ineligible floor
-but both arms still lost Cattle to the same harvest. Use the earlier
-turn-69 replay and native selector reads to separate prior commitment,
-cache timing and other callers before changing the policy.
+but both arms still lost Cattle to the same harvest. Starting at turn 69
+reached the boost's selector and diverted the job. The treatment kept the
+Cattle through turn 81 with no Pasture or Storekeeper. Camp won the
+first two empty ordinary slots by 6,376 and 7,422 Q8. Test a bounded
+8,192 Q8 Pasture bid with protection in both arms. Verify the actual
+build and payout. The decision observer now scopes reservation callbacks
+to the two relevant callers, with live timing still to measure.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

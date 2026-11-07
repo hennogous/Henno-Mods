@@ -98,10 +98,13 @@ The controlled Pasture loss at turn 66 left the tile legal and valued.
 An occupied job held the ordinary slot. When the slot reopened, an
 Irrigation boost claimed and harvested the Cattle. The matched turn-72
 comparison logged the intended Farm score suppression, but both arms
-still lost the deposit. The earlier decision replay will distinguish a
-location chosen before refresh, a different cache consumer, and a job
-already carrying its location. Calibrate a positive Pasture preference
-after protecting the viable supplier.
+still lost the deposit. Protection from turn 69 reached the native
+selector before the boost reservation. The Cattle survived through
+turn 81, while Camp beat the legal Pasture at two ordinary admissions.
+The next matched test holds protection constant and varies only a
+bounded Pasture bid. Follow the job through Builder assignment,
+completion and the actual Storekeeper payout. Revalidation of an
+already committed harvest remains open.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
@@ -115,6 +118,7 @@ and measure its cost in a mature live game before enabling it in CSC.
 [Mill-only recovery and payouts](../research/mods/csc-ai-bakers-natural-research-20261106.md#mill-only-damage-restored-the-full-service).
 [Supplier decision and harvest](../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).
 [Matched supplier protection failure](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-turn-72-protection-arms-both-lost-the-cattle).
+[Earlier matched protection and Camp competition](../research/mods/csc-ai-bakers-natural-research-20261106.md#earlier-protection-redirected-the-boost-and-preserved-the-deposit).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.
