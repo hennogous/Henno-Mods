@@ -108,6 +108,52 @@ print('CSC_BUILDER_TURN=' .. Game.GetCurrentGameTurn())
     write_json(path, rows)
 
 
+def capture_wind_mill_readiness(controller, player, city, turn, path):
+    code = f"""
+local city = assert(Players[{player}]:GetCities():FindID({city}))
+local mill = assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL)
+local build = assert(city:GetBuildQueue())
+local available = build:CanProduce(mill.Hash, false, true)
+assert(type(available) == 'boolean')
+print(string.format('CSC_WIND_MILL={{"index":%d,"turn":%d,"available":%s}}',
+    mill.Index, Game.GetCurrentGameTurn(), tostring(available)))
+"""
+    row = parse(controller.cmd(code, 'PlotInfo', f'wind-mill-readiness-{turn}'), 'CSC_WIND_MILL')
+    # The UI cache can lag the inactive GameCore boundary by one turn.
+    require(row['turn'] in (turn, turn - 1), 'Wind Mill readiness clock differs')
+    write_json(path, row)
+    return row['index']
+
+
+def watch_supplier_access(controller, player, plot):
+    code = f"""
+local playerID, target = {player}, assert(Map.GetPlotByIndex({plot}))
+local builder = assert(GameInfo.Units.UNIT_BUILDER).Index
+local function snapshot()
+    local turn = Game.GetCurrentGameTurn()
+    for _, unit in Players[playerID]:GetUnits():Members() do
+        if unit:GetType() == builder then
+            print('CSC_SUPPLIER_BUILDER', turn, unit:GetID(), unit:GetX(), unit:GetY(), unit:GetBuildCharges())
+        end
+    end
+    for _, unit in ipairs(Units.GetUnitsInPlot(target) or {{}}) do
+        print('CSC_SUPPLIER_OCCUPANT', turn, unit:GetOwner(), unit:GetID(), GameInfo.Units[unit:GetType()].UnitType)
+    end
+    print('CSC_SUPPLIER_ACCESS_END', turn, target:GetOwner(), target:GetImprovementType())
+end
+snapshot()
+Events.PlayerTurnDeactivated.Add(function(id)
+    if id == playerID then
+        local ok, message = pcall(snapshot)
+        if not ok then print('CSC_SUPPLIER_ACCESS_FAULT', message) end
+    end
+end)
+print('CSC_SUPPLIER_ACCESS_INSTALLED')
+"""
+    raw = controller.cmd(code, 'CSC_AdjacencyGameplay', 'install-supplier-access-watch')
+    require('CSC_SUPPLIER_ACCESS_INSTALLED' in raw, 'Supplier movement watch was not installed')
+
+
 def summarize_run(out, players, start, endpoint, untuned, checkpoint):
     require(load(out / 'session-closed.json')['verified'], 'Expected a closed development run')
     log = read(out / 'Lua.log')
@@ -117,7 +163,7 @@ def summarize_run(out, players, start, endpoint, untuned, checkpoint):
     require('CSC_AI_BAKERS_PLACEMENT_FAILED' not in log, 'CSC placement scan faulted during the run')
     placement_bids = {int(turn): int(count) for turn, count in
                       re.findall(r'CSC_AI_BAKERS_PLACEMENT turn=(\d+) bids=(\d+)', log)}
-    score_samples, incomplete = [], []
+    score_samples, incomplete = {}, set()
     for turn, version, payload in re.findall(
             r'CSC_AI_BAKERS_DISTRICT_SAMPLES turn=(\d+) previousVersion=(\d+) samples=([^\r\n]*)', log):
         # Civ can cut off a long optional telemetry line. Preserve the raw
@@ -125,12 +171,15 @@ def summarize_run(out, players, start, endpoint, untuned, checkpoint):
         try:
             rows = json.loads(payload)
         except json.JSONDecodeError:
-            incomplete.append(int(turn))
+            incomplete.add(int(turn))
             continue
-        score_samples.append(dict(turn=int(turn), previous_version=int(version), rows=rows))
+        key = int(turn), int(version)
+        score_samples.setdefault(key, []).extend(rows)
     result = audit(log, players, expected_turns=range(start + 1, endpoint))
     write_json(out / 'result.json', dict(closed=True, reached=endpoint, placement_bids=placement_bids,
-        district_score_samples=score_samples, incomplete_district_sample_turns=incomplete,
+        district_score_samples=[dict(turn=turn, previous_version=version, rows=rows)
+                                for (turn, version), rows in score_samples.items()],
+        incomplete_district_sample_turns=sorted(incomplete),
         storekeeper=result, checkpoint=checkpoint))
 
 
@@ -172,12 +221,52 @@ def run(args):
         previous = load(prior / 'protocol.json')
         checkpoint_input = load(prior / 'checkpoint.json')
         start = checkpoint_input['turn']
-        require(previous == dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
+        expected = dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
+        if 'diagnostic_start' in previous:
+            # A saved intervention stays labelled as such even when the
+            # follow-through starts with the integrated policy alone.
+            expected.update(fresh_game=False, ordinary_setup=False, diagnostic_start=previous['diagnostic_start'],
+                            gameplay_interventions=previous['gameplay_interventions'])
+            for key in ('diagnostic_extra_pasture_q8', 'diagnostic_source_sha256', 'diagnostic_movement_only',
+                        'diagnostic_calibration_build'):
+                if key in previous:
+                    expected[key] = previous[key]
+        if args.calibration_replay:
+            require(checkpoint_input['sha256'] == 'b3d6cc1aa78e8a156e60c4b110b229a3631ccaed57e24d7883aaca549fbc9545'
+                    and args.supplier == [2, 196610, 2311, 2312] and args.through == 122,
+                    'Calibration uses the exact Alexandria movement checkpoint')
+            prior_packages = {row['install']: row['files'] for row in load(prior / 'packages.json').values()}
+            permitted = {
+                ce: {str(ce_dll)},
+                csc: {str(Path('Lua_UI/AI') / name) for name in (
+                    'CSC_AI_BakersGameplay.lua', 'CSC_AI_DistrictBridge.lua', 'CSC_AI_QuarterPlacement.lua')},
+            }
+            for source, destination in local.items():
+                old, new = prior_packages[str(destination)], pins[source]
+                changed = {name for name in old.keys() | new.keys() if old.get(name) != new.get(name)}
+                require(changed == permitted[source], 'Unexpected file changes in the calibration package')
+            expected['input_digests'] = previous['input_digests']
+            protocol['diagnostic_calibration_build'] = True
+        require(previous == expected
                 and load(prior / 'session-closed.json')['verified'],
-                'Diagnostic continuation requires the same closed normal-start package and setup')
+                'Diagnostic continuation requires the same closed package and setup')
         require(checkpoint_input['verified'] and sha(checkpoint_input['archive']) == checkpoint_input['sha256']
                 and start < args.through <= start + 15, 'Expected an exact bounded continuation')
-        protocol.update(fresh_game=False, ordinary_setup=False, diagnostic_start=start)
+        protocol.update(fresh_game=False, ordinary_setup=False, diagnostic_start=start,
+                        diagnostic_source_sha256=checkpoint_input['sha256'],
+                        gameplay_interventions=previous['gameplay_interventions'])
+        if args.movement_only:
+            protocol['diagnostic_movement_only'] = True
+        if args.alexandria_bid:
+            matched_endpoints = {
+                'e47f3982a1cf4b9e69ec3950e86d009fd08f9fdd07a4ab7cc4e3ff0995f7d769': 112,
+                'b3d6cc1aa78e8a156e60c4b110b229a3631ccaed57e24d7883aaca549fbc9545': 122,
+            }
+            require(args.supplier == [2, 196610, 2311, 2312]
+                    and matched_endpoints.get(checkpoint_input['sha256']) == args.through,
+                    'The measured Pasture comparison requires the matched Alexandria checkpoint')
+            protocol['diagnostic_extra_pasture_q8'] = 6144
+            protocol['gameplay_interventions'] = True
     other_source = None
     if args.matched_source:
         other_source = args.matched_source.resolve(strict=True)
@@ -201,6 +290,7 @@ def run(args):
     copied = []
     checkpoint = None
     observer = None
+    trace_name = 'supplier-trace.json' if args.supplier else 'wind-mill-trace.json'
 
     def verify_packages():
         for source in copied:
@@ -273,15 +363,25 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
                               read(prior / 'chain-census.txt'))
         loaded = capture_census(controller, players, start, out / 'source-census.txt')
         require(sorted(archived) == loaded, 'The loaded Stage 2 census differs from the saved endpoint')
-        pid, city, quarter, plot = args.supplier
+        pid, city, quarter, *_ = args.supplier or args.wind_mill
         require(pid in players and any(row.startswith(f'QUARTER\t{pid}\t{city}\t{quarter}\ttrue\tfalse\t')
-                                       for row in loaded)
-                and f'IMPROVEMENT\t{quarter}\t{plot}\tIMPROVEMENT_PASTURE\ttrue' in loaded
-                and any(row.startswith(f'NEIGHBOR\t{quarter}\t{plot}\t{pid}\t-1\tRESOURCE_CATTLE\t-\t')
-                        for row in loaded), 'The scoped Cattle tile is not a missing supplier on this save')
+                                       for row in loaded), 'The scoped Quarter is not a working AI district on this save')
+        if args.supplier:
+            plot = args.supplier[3]
+            require(f'IMPROVEMENT\t{quarter}\t{plot}\tIMPROVEMENT_PASTURE\ttrue' in loaded
+                    and any(row.startswith(f'NEIGHBOR\t{quarter}\t{plot}\t{pid}\t-1\tRESOURCE_CATTLE\t-\t')
+                            for row in loaded), 'The scoped Cattle tile is not a missing supplier on this save')
+        else:
+            require(f'MILL\t{quarter}\tBUILDING_CSC_BAKERS_WIND_MILL\tabsent\t-1\ttrue' in loaded,
+                    'The scoped Quarter does not have the expected missing unlocked Wind Mill')
         native = parse(controller.cmd('print("CSC_FRESH_CE="..CE_AIDistrictScoresStatus())',
                                       'GameCore_Tuner', 'diagnostic-start-status'), 'CSC_FRESH_CE')
         check_native_status(native, False)
+        if args.calibration_replay:
+            builder = parse(controller.cmd('print("CSC_FRESH_BUILDER="..CE_AIBuilderProtectionStatus())',
+                                           'GameCore_Tuner', 'verify-calibrated-builder-cap'), 'CSC_FRESH_BUILDER')
+            require(builder['ready'] == 1 and builder['faults'] == 0 and builder['maxBidQ8'] == 16384,
+                    'The calibrated Builder cap is unavailable')
         write_json(out / 'source.json', identity)
         return True
 
@@ -321,36 +421,48 @@ Modding.EnableMod(chosen.Handle,true)
         raw = controller.cmd('CSC_BAKERS_STOREKEEPER_WATCH=true\n' + read(HERE / 'storekeeper_runtime.lua'),
                              'PlotInfo', 'install-storekeeper-watch')
         require('CSC_BAKERS_STOREKEEPER_WATCH_INSTALLED' in raw, 'Storekeeper watch was not installed')
-        if prior:
+        if args.supplier:
+            capture_builders(controller, args.supplier[0], start, out / 'source-builders.json')
+            watch_supplier_access(controller, args.supplier[0], args.supplier[3])
+        if args.probe_dependencies:
             dependencies = args.probe_dependencies.resolve(strict=True)
             sys.path.insert(0, str(dependencies))
             import frida
             require(frida.__version__ == '17.24.3' and Path(frida.__file__).resolve().is_relative_to(dependencies),
                     'Exact existing Frida package required')
-            pid, city, _, plot = args.supplier
-            width = load(out / 'source.json')['map_signature'][0]
-            pasture = parse(controller.cmd(
-                "print('CSC_PASTURE='..assert(GameInfo.Improvements.IMPROVEMENT_PASTURE).Index)",
-                'GameCore_Tuner', 'supplier-improvement-index'), 'CSC_PASTURE')
             modules = load(out / 'loaded-modules.json')
-            scope = dict(player=pid, city=city, plot=plot, x=plot % width, y=plot // width, pasture=pasture,
-                         cePath=modules[DLL]['path'])
-            write_json(out / 'supplier-scope.json', scope)
-            capture_builders(controller, pid, start, out / 'source-builders.json')
+            pid, city, *_ = args.supplier or args.wind_mill
+            scope = dict(player=pid, city=city, cePath=modules[DLL]['path'])
+            if args.supplier:
+                plot = args.supplier[3]
+                width = load(out / 'source.json')['map_signature'][0]
+                pasture = parse(controller.cmd(
+                    "print('CSC_PASTURE='..assert(GameInfo.Improvements.IMPROVEMENT_PASTURE).Index)",
+                    'GameCore_Tuner', 'supplier-improvement-index'), 'CSC_PASTURE')
+                scope.update(plot=plot, x=plot % width, y=plot // width, pasture=pasture)
+                if args.alexandria_bid:
+                    scope['extraPastureQ8'] = protocol['diagnostic_extra_pasture_q8']
+                probe = HERE / 'pasture_recovery_observer.js'
+                write_json(out / 'supplier-scope.json', scope)
+            else:
+                scope['mill'] = capture_wind_mill_readiness(controller, pid, city, start, out / 'source-mill.json')
+                probe = HERE / 'mill_repair_observer.js'
+                write_json(out / 'wind-mill-scope.json', scope)
             attachment = frida.attach(session.owner.pid)
             code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(
-                read(path) for path in (STUDY / 'observer.js', HERE / 'pasture_recovery_observer.js'))
+                read(path) for path in (STUDY / 'observer.js', probe))
             script = attachment.create_script(code)
             script.load()
             observer = script
             spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
-            require(observer.exports_sync.init(spec, scope), 'Supplier observer installation failed')
+            require(observer.exports_sync.init(spec, scope), 'Decision observer installation failed')
             observer.exports_sync.advance(start)
         controller.play(args.through)
         if observer:
             trace = observer.exports_sync.freeze()
-            write_json(out / 'supplier-trace.json', trace)
-            require(trace['fault'] is None and trace['active'] == 0, 'Supplier decision trace faulted')
+            write_json(out / trace_name, trace)
+            require(trace['fault'] is None and trace['active'] == 0, 'Native decision trace faulted')
+        if args.supplier:
             capture_builders(controller, args.supplier[0], args.through, out / 'endpoint-builders.json')
         final = parse(controller.cmd('print("CSC_FRESH_CE="..CE_AIDistrictScoresStatus())',
                                      'GameCore_Tuner', 'fresh-endpoint-status'), 'CSC_FRESH_CE')
@@ -399,16 +511,30 @@ if __name__ == '__main__':
     parser.add_argument('--untuned', action='store_true', help='Remove only the CSC runtime policy action locally')
     parser.add_argument('--matched-source', type=Path, help='Require initial state parity with the other arm')
     parser.add_argument('--saves', type=Path, help='Native Saves/Single path for an endpoint census and archived save')
-    parser.add_argument('--resume-from', type=Path, help='Continue a closed tuned development run for supplier diagnosis')
-    parser.add_argument('--supplier', type=int, nargs=4, metavar=('PLAYER', 'CITY', 'QUARTER', 'PLOT'))
+    parser.add_argument('--resume-from', type=Path, help='Continue a closed tuned development run for diagnosis')
+    target = parser.add_mutually_exclusive_group()
+    target.add_argument('--supplier', type=int, nargs=4, metavar=('PLAYER', 'CITY', 'QUARTER', 'PLOT'))
+    target.add_argument('--wind-mill', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'))
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
+    parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
+    parser.add_argument('--movement-only', action='store_true', help='Observe assigned Builder movement without native hooks')
+    parser.add_argument('--calibration-replay', action='store_true', help='Verify the integrated bid on the exact Alexandria save')
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
     if options.resume_from:
-        if not (options.saves and options.supplier and options.probe_dependencies) or options.untuned or options.matched_source:
-            parser.error('A supplier continuation requires --saves, --supplier and --probe-dependencies on the tuned arm')
-    elif options.supplier or options.probe_dependencies:
-        parser.error('Supplier diagnostics require --resume-from')
+        if not (options.saves and (options.supplier or options.wind_mill)
+                and (options.probe_dependencies or options.movement_only)
+                and not options.untuned and not options.matched_source):
+            parser.error('A tuned continuation needs --saves, one target, and a diagnostic mode')
+        if options.alexandria_bid and not options.supplier:
+            parser.error('The Alexandria bid requires --supplier')
+        if options.movement_only and (not options.supplier or options.probe_dependencies or options.alexandria_bid):
+            parser.error('Movement-only diagnosis requires --supplier and uses no native probe or bid')
+        if options.calibration_replay and not options.movement_only:
+            parser.error('Integrated calibration requires --movement-only')
+    elif (options.supplier or options.wind_mill or options.probe_dependencies or options.alexandria_bid
+          or options.movement_only or options.calibration_replay):
+        parser.error('Decision diagnostics require --resume-from')
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):
         parser.error('Use positive 31-bit seeds and an endpoint between turns 3 and 250')
     if not 30 <= options.interval_minutes <= 240:

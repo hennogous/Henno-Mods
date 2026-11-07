@@ -1,7 +1,7 @@
 'use strict';
 
 // Patched Steam XP2. Observe the ordinary building score, the native building
-// choice and a BuildBuilding attempt for one existing damaged Mill. An explicit
+// choice and a BuildBuilding attempt for one Mill. An explicit
 // matched diagnostic can add a bounded preference to the eligible comparison.
 const MILL_VALUE = 0x52a050;
 const ORDINARY_RETURN = 0x3e3ee2;
@@ -73,13 +73,16 @@ function init(spec, scope) {
         : carriers.length === 0;
     if (!expectedCarrier) throw Error('Unexpected native carrier');
     const core = modules.find(module => normalize(module.path) === normalize(spec.path));
-    if (!core || core.size !== spec.image_size || scope.player !== 3 || scope.city !== 131073 ||
+    const boston = scope.player === 3 && scope.city === 131073;
+    const observedCity = Number.isInteger(scope.player) && scope.player > 0 && scope.player < 64
+        && Number.isInteger(scope.city) && scope.city >= 0;
+    if (!core || core.size !== spec.image_size || !observedCity ||
         !Number.isInteger(scope.mill) || scope.mill < 0 || scope.mill >= 4096)
-        throw Error('Expected the qualified Boston repair fixture');
+        throw Error('Expected a verified city and Mill scope');
     const bid = scope.millBidQ8 ?? 0;
-    if (bid !== 0 && (!scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
+    if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
-    if (scope.screenProjectEligibility && (!scope.cePath || bid))
+    if (scope.screenProjectEligibility && (!boston || !scope.cePath || bid))
         throw Error('The isolated project eligibility diagnostic requires CE and no Mill bid');
     const captureQueueOperands = scope.cePath || scope.captureQueueOperands;
 

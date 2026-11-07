@@ -54,12 +54,17 @@ function init(spec, scope) {
         : carriers.length === 0;
     const validIdentity = [scope.player, scope.city, scope.plot, scope.x, scope.y]
         .every(value => Number.isInteger(value) && value >= 0);
-    // Only the original matched Boston experiment may adjust a score here.
-    // Other fixtures observe the decision with the integrated policy in place.
+    // Writes are restricted to the two exact matched experiments. A generic
+    // supplier scope can only observe the integrated policy.
     const boston = scope.player === 3 && scope.city === 131073 && scope.plot === 796
         && scope.x === 56 && scope.y === 10;
+    const alexandria = scope.player === 2 && scope.city === 196610 && scope.plot === 2312
+        && scope.x === 18 && scope.y === 31 && scope.cePath;
+    const extraQ8 = scope.extraPastureQ8 || 0;
+    const deltaQ8 = scope.applyPastureBid ? PASTURE_BID_Q8 : extraQ8;
     if (!core || core.size !== spec.image_size || !expectedCarrier
         || !validIdentity || scope.player === 0 || scope.player >= 64 || (scope.applyPastureBid && !boston)
+        || (extraQ8 !== 0 && (!alexandria || extraQ8 !== 6144 || scope.applyPastureBid))
         || !Number.isInteger(scope.pasture) || scope.pasture < 0 || scope.pasture >= 256)
         throw Error('Expected a verified supplier scope');
     const address = rva => core.base.add(rva);
@@ -184,7 +189,7 @@ function init(spec, scope) {
     // Fixture-only positive bid. This instruction copies the legal native
     // NetValue into the improvement row. R12 is that row, RSI is the
     // improvement index, R14 is the city and EAX is the signed Q8 result.
-    if (scope.measurePastureBid) {
+    if (scope.measurePastureBid || deltaQ8) {
         Interceptor.attach(address(PASTURE_SCORE_STORE), function () {
             if (!enabled || this.context.rsi.toInt32() !== scope.pasture) return;
             try {
@@ -192,10 +197,10 @@ function init(spec, scope) {
                 const city = this.context.r14;
                 if (read(city, l.owner, 'i32') !== scope.player || read(city, l.cityId, 'i32') !== scope.city) return;
                 const nativeQ8 = this.context.rax.toInt32();
-                if (nativeQ8 <= 0 || nativeQ8 > 0x7fffffff - PASTURE_BID_Q8) return;
-                const appliedQ8 = scope.applyPastureBid ? nativeQ8 + PASTURE_BID_Q8 : nativeQ8;
+                if (nativeQ8 <= 0 || nativeQ8 > 0x7fffffff - deltaQ8) return;
+                const appliedQ8 = nativeQ8 + deltaQ8;
                 add({kind: 'pasture-score', plot: scope.plot, type: scope.pasture, nativeQ8, appliedQ8});
-                if (scope.applyPastureBid) this.context.rax = ptr(appliedQ8);
+                if (deltaQ8) this.context.rax = ptr(appliedQ8);
             } catch (error) { fault = String(error); enabled = false; }
         });
     }
