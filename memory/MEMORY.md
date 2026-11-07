@@ -1,4 +1,20 @@
-# Current native target — 6 November 2026
+# Current Bakers AI work — 7 November 2026
+
+The main CSC publisher's automatic district protection and optional CE
+Builder protection pass separate matched Boston replays on patched Steam
+DX11. Current review branch `codex/ce-builder-protection` at `1b63d6a` uses
+the ordinary improvement NetValue function and existing CE Runtime hooks.
+Only the treatment enabled Builder protection. It kept the Cattle Pasture
+and verified Storekeeper at 63 and 66. Already assigned work, direct
+harvest routes, fresh-seed qualification and Workshop delivery remain open.
+Stock recovery from Boston's archived turn-210 damage reached 234 with the
+Pasture and Mill still down. St. Basil's Cathedral reserved the Cattle site
+and Spaceport stayed in production. Test the two decisions separately.
+Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
+[dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
+for exact scope and next checks.
+
+# Native target baseline — 6 November 2026
 
 Steam 26407122 XP2 SHA `092abfbb…`, timestamp 1793649108, image 12976128.
 Exact prior XP2 SHA `324c51e9…` remains an offline reference. All XP2 code,

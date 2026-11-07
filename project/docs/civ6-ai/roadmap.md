@@ -74,14 +74,18 @@ critical supplier sites in the matched Boston replay. With the same district
 policy in both arms, the control lost its Cattle. The treatment kept its
 working Pasture and reached Storekeeper at turns 63 and 66. Verify protection
 from already assigned jobs and direct harvests, plus safe alternatives in
-ordinary games. For **13.1**, observe how Civ handles the archived natural
-damage to Boston's Pasture and Water Mill before adding recovery incentives.
+ordinary games. For **13.1**, Boston's stock recovery baseline reached turn
+234 without rebuilding the Pasture or repairing the Water Mill. A Wonder
+reservation competed for the damaged Cattle site while a Spaceport occupied
+city production. Check whether preserving site access enables the Pasture
+job, and measure the Mill repair at an actual production decision.
 Before a mature-game run, separate native policy limits
 from trace retention, preserve per-publication evidence, and index native
 lookups by city and district-site pair. Measure the resulting cost in play.
 [Current CE startup evidence](../research/mods/csc-ai-xp2-november-hotfix-20261106.md#corrected-shared-ce-loads-and-accepts-district-scores).
 [Builder candidate replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
 [Automatic CE Builder replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).
+[Natural recovery baseline](../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

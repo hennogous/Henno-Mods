@@ -509,6 +509,45 @@ Both arms closed normally and restored preferences and the fixture package.
 The matched result SHA-256 is
 `399cb76fb260c2b179f71cd088dd625f88cd50d54be33c3d05314f9d9c3df624`.
 
+## Natural recovery after the Boston blizzard
+
+The stock recovery replay starts from the exact turn-210 interruption save
+`retention-02/stage2.Civ6Save`, SHA-256
+`5b9b0e69608a27c7e2c535d4f879a3d25bc9574cd999ffcc58d15a9f6bcc15ae`.
+The reload matches the gameplay and UI observation. Cattle remains at
+plot 796 with no Pasture. The Water Mill at 721 is pillaged, and the
+Granary at 795 is intact. The controller only advances turns and observes.
+
+There are two separate native paths. `BuildImprovementNode::Update` at
+`551a80` can identify a matching pillaged improvement for a reachable
+Builder, and its Execute route issues Repair or BuildImprovement.
+`CityBuild::BuildBuilding` at `3df040` admits an absent or pillaged
+building, checks `CanConstruct` at `f7100` and constructs a native build
+request for that building type at `6834a0`. A damaged Mill competes for
+city production. Its repair does not use a Builder.
+
+An active job can constrain recovery before any repair bid is compared.
+Boston's production log shows a Spaceport occupying the queue. A separate
+Wonder tree submits a St. Basil's Cathedral contract on turn 211 and
+successfully reserves coordinates (56, 10), the Cattle tile. The
+improvement selector at `3e5750` and terrain analysis at `3dec40` both
+skip rows with a resolvable live reservation. This identifies a competing
+claim to trace in a matched protection test. The reservation alone does
+not prove that the Cattle was removed or that the Wonder was constructed.
+
+At the turn-234 endpoint the Cattle remained physically developable. The
+Pasture had not been rebuilt, the Water Mill was still pillaged, and
+Storekeeper had not operated at any of the sampled boundaries. There were
+no policy writes or Farm rejections. The preserved endpoint SHA-256 is
+`5bc4c32495659e2670d76779cca25c0ec024fdda3f7aca98c65d06d4ed4d3e40`.
+The next comparison should observe the Wonder reservation ID and its
+release, then measure whether an unreserved site produces a legal Pasture
+job. For the Mill, observe the first actual production choice with the
+repair available and record its cached value, legality, competing choice,
+queue entry and realized payout. The earlier district-repair payout
+failure involved a damaged Quarter, whereas Boston's Quarter remained
+complete in this replay.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

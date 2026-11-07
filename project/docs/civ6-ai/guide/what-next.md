@@ -37,10 +37,13 @@ offline planner separately covers actual gameplay definitions and a copied
 Tailors case. In matched replays the main CSC policy redirected Campus off
 the Cattle, then separately kept a destructive Farm out of the Builder
 rankings. The latter replay kept Boston's Pasture working through
-Storekeeper. Next we need to test work that was already assigned, and see
-how Civ rebuilds a lost Pasture and repairs a damaged Mill.
+Storekeeper. In a later stock replay, Boston rebuilt neither the Pasture
+nor the damaged Mill by turn 234. A Wonder reservation competed for the
+Cattle site, and a Spaceport occupied city production. The next recovery
+tests will separate those two decisions from work that was already assigned.
 [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay) ·
 [Qualification roadmap](../roadmap.md#current-milestone-and-active-problem).
+[Recovery evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
 
 ## Tools for this milestone
 

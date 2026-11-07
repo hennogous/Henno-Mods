@@ -36,6 +36,12 @@ Boston replay the treatment retained the Cattle Pasture and verified
 Storekeeper while the control lost the deposit. [AI-C066]
 [Automatic Builder protection evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).
 
+After a blizzard, a stock continuation kept the damaged Cattle deposit but
+did not rebuild the Pasture or repair the Mill by turn 234. A Wonder claim
+on the Cattle plot and a Spaceport in production give two separate recovery
+dependencies to trace. [AI-C067]
+[Stock recovery baseline](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

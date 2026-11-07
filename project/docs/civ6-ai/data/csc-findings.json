@@ -1210,5 +1210,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N092"],
     "related": ["AI-C065", "AI-N091"]
+  },
+  {
+    "id": "AI-C067",
+    "title": "Boston's stock recovery baseline left both damaged Bakers links inactive through turn 234",
+    "statement": "Cattle remained available after the Pasture was destroyed, but the stock replay rebuilt no Pasture and left the Water Mill pillaged. A St. Basil's Cathedral tree reserved the Cattle site while Boston was producing a Spaceport.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Exact archived natural turn-210 interruption, stock patched XP2, replay through turn 234 without policy writes or Farm filtering. Cattle at 796, damaged Water Mill at 721, Granary at 795 and no working Storekeeper at sampled boundaries.",
+    "limits": "The Wonder reservation identifies a competing claim. Its lifetime and causal impact on Builder assignment need a matched test. The occupied queue does not establish that an available Mill repair would lose a fresh production decision. No recovery intervention was tested.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C063"],
+    "related": ["AI-C066", "AI-N093"]
   }
 ]

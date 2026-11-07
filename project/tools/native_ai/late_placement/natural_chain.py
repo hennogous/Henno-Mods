@@ -56,6 +56,8 @@ def run(args):
             'A retention checkpoint must continue the proven operating branch')
     require(not args.survey_retention or args.resume_retention,
             'The cohort survey requires a verified intermediate checkpoint')
+    require(not args.recover_from or (args.continue_from and not args.retain_from and not args.guard_farm),
+            'A recovery baseline must observe a closed interruption without native score or Farm interventions')
     treatment = load(match / 'result.json')['treatment']
     target = treatment['plan']['target']
     final = treatment['followthrough'][-1]
@@ -90,11 +92,28 @@ def run(args):
                                 if state['city']['turn'] == checkpoint['turn'])
             require(resume_state['operation']['operating'], 'Expected a working retention checkpoint')
             final = resume_state['city']
+    if args.recover_from:
+        reference = args.recover_from.resolve()
+        require(load(reference / 'restoration.json')['verified'] and load(reference / 'session-closed.json')['verified'],
+                'Expected a closed damaged checkpoint')
+        interrupted = load(reference / 'result.json')
+        damaged = interrupted['state']
+        require(interrupted['stop'] == 'retention-interrupted' and not damaged['operation']['operating']
+                and damaged['city']['owner'] == target['player'] and damaged['city']['complete']
+                and any(row['plot'] in target['base'] and row['deposit'] and not row['working']
+                        for row in damaged['neighbors'])
+                and any(value['present'] and value['pillaged']
+                        for key, value in damaged['city']['buildings'].items() if key.endswith('_MILL')),
+                'Expected the observed supplier and Mill damage')
+        checkpoint, final = interrupted['checkpoint'], damaged['city']
+        retired = reference / 'retired-study-copy'
     supplier_types = {base['plot']: base['resource'] for base in final['base']}
     source, digest, start = Path(checkpoint['native_save']), checkpoint['sha256'], checkpoint['turn']
     require(checkpoint['verified'] and source.parent == args.saves.resolve()
             and sha(source) == sha(Path(checkpoint['archive'])) == digest, 'Exact completed save required')
     limit = start + 200 if args.survey_retention else (start + 150 if retention else 100)
+    if args.recover_from:
+        limit = start + 36
     require(start == final['turn'] and start < args.through <= limit,
             'Expected a bounded later endpoint')
     package = manifest(retired)
@@ -114,6 +133,8 @@ def run(args):
         inputs.extend((checkpoint_path, prefix / 'states.json'))
     if args.survey_retention:
         inputs.extend((cohort_probe, HERE / 'survey_retention.py'))
+    if args.recover_from:
+        inputs.append(reference / 'result.json')
     baseline = guard_code = None
     if args.guard_farm:
         reference = args.guard_farm.resolve()
@@ -191,6 +212,8 @@ def run(args):
         require(all(state['city'][key] == final[key] for key in stable), 'Reloaded Quarter differs from completion')
         if baseline is not None:
             require(state == baseline, 'Reloaded source differs from the verified reference')
+        if args.recover_from:
+            require(state == damaged, 'Reloaded damaged chain differs from the exact interruption')
         return True
 
     def observe_interval(previous, current):
@@ -284,7 +307,7 @@ def run(args):
         elif not retained:
             stopped = 'supplier-or-quarter-lost'
         elif args.continue_from and done:
-            stopped = 'retained-stage-2-service'
+            stopped = 'recovered-stage-2-service' if args.recover_from else 'retained-stage-2-service'
         elif not args.continue_from and mill_ready:
             stopped = 'mill-available'
         elif not args.continue_from and technology_ready:
@@ -335,4 +358,5 @@ if __name__ == '__main__':
     parser.add_argument('--retain-from', type=Path, help='Continue an accepted operating save and audit each player turn')
     parser.add_argument('--resume-retention', type=Path, help='Reload a healthy intermediate retention checkpoint')
     parser.add_argument('--survey-retention', action='store_true', help='Track other working Bakers chains in the same world')
+    parser.add_argument('--recover-from', type=Path, help='Observe natural recovery after a verified damaged checkpoint')
     run(parser.parse_args())
