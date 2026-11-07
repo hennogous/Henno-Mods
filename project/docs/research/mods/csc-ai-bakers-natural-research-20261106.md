@@ -2046,6 +2046,23 @@ The native trace SHA-256 is
 `54c09a4b9e96ee23e2fbf07dcbeb6efa979f26607fa3b09cbd0010a63389fd8d`.
 The short replay verified normal exit and restoration.
 
+### The first integrated Granary replay did not reach the native comparison
+
+`development-trebizond-granary-food-ce-01` published the 18-unit
+policy while the Frida selector observer was attached. CSC reported
+one nomination entry at 150 and two from 151. CE recorded zero
+changes and zero faults. The captured selector trace is
+byte-identical to the original control, and Trebizond again
+submitted Library 3238. This provides no evidence of the 18-point
+bid's effect on the competition.
+
+CE's adapter uses the native frame's return address to identify
+the ordinary caller. The observer installs an exit callback on
+that same function. A clean replay using CE's own telemetry and
+bounded packet-key logging will distinguish an observer
+interaction from a publication or eligibility failure.
+The replay verified normal exit and restoration.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

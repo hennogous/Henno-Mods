@@ -145,8 +145,14 @@ local function refresh(turn)
         print(string.format('CSC_AI_BAKERS_HARVEST turn=%d previous=%s', turn, harvestStatus))
     end
     if nominationStatus then
-        print(string.format('CSC_AI_BAKERS_NOMINATIONS turn=%d bids=%d previous=%s',
-            turn, #nominations <= capacity and #nominations or 0, nominationStatus))
+        local publishedCount = #nominations <= capacity and #nominations or 0
+        local preview = {}
+        for i = 1, math.min(publishedCount, 8) do
+            local bid = nominations[i]
+            preview[i] = string.format('[%d,%d,%d,%d]', bid.player, bid.city, bid.building, bid.delta)
+        end
+        print(string.format('CSC_AI_BAKERS_NOMINATIONS turn=%d bids=%d preview=[%s] previous=%s',
+            turn, publishedCount, table.concat(preview, ','), nominationStatus))
     end
     print(string.format('CSC_AI_BAKERS_DISTRICTS turn=%d version=%d players=%d entries=%d omitted=%d previousMatched=%d previousChanged=%d seconds=%.4f',
         turn, version + 1, #players, #entries, omitted, matched, changed, os.clock() - started))

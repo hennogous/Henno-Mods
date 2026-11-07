@@ -476,6 +476,11 @@ Modding.EnableMod(chosen.Handle,true)
         if args.supplier:
             capture_builders(controller, args.supplier[0], start, out / 'source-builders.json')
             watch_supplier_access(controller, args.supplier[0], args.supplier[3])
+        if args.granary:
+            pid, city, _ = args.granary
+            granary_index = capture_building_readiness(controller, pid, city, start,
+                out / 'source-granary.json', 'BUILDING_GRANARY')
+            capture_granary_exchange(controller, args.granary, start, out / 'source-exchange.json')
         if args.mill_ce_replay:
             pid, city, _ = args.wind_mill
             capture_building_readiness(controller, pid, city, start, out / 'source-mill.json')
@@ -507,9 +512,7 @@ Modding.EnableMod(chosen.Handle,true)
                 probe = HERE / 'pasture_recovery_observer.js'
                 write_json(out / 'supplier-scope.json', scope)
             elif args.granary:
-                scope['granary'] = capture_building_readiness(controller, pid, city, start,
-                    out / 'source-granary.json', 'BUILDING_GRANARY')
-                capture_granary_exchange(controller, args.granary, start, out / 'source-exchange.json')
+                scope['granary'] = granary_index
                 if args.trebizond_granary_bid:
                     require(load(out / 'source-granary.json')['available'], 'Granary is no longer available')
                     scope['granaryNominationQ8'] = protocol['diagnostic_granary_nomination_q8']
@@ -624,7 +627,8 @@ if __name__ == '__main__':
     options = parser.parse_args()
     if options.resume_from:
         if not (options.saves and (options.supplier or options.wind_mill or options.granary)
-                and (options.probe_dependencies or options.movement_only or options.mill_ce_replay)
+                and (options.probe_dependencies or options.movement_only or options.mill_ce_replay
+                     or options.granary_ce_replay)
                 and not options.untuned and not options.matched_source):
             parser.error('A tuned continuation needs --saves, one target, and a diagnostic mode')
         if options.alexandria_bid and not options.supplier:
@@ -636,8 +640,8 @@ if __name__ == '__main__':
         if options.granary_components and (not options.granary or options.trebizond_granary_bid):
             parser.error('Granary component capture requires a read-only --granary continuation')
         if options.granary_ce_replay and (not options.granary or options.trebizond_granary_bid
-                                         or options.granary_components):
-            parser.error('Integrated Granary qualification requires --granary with read-only tracing')
+                                         or options.granary_components or options.probe_dependencies):
+            parser.error('Integrated Granary qualification requires --granary and uses native CE telemetry')
         if options.movement_only and (not options.supplier or options.probe_dependencies or options.alexandria_bid):
             parser.error('Movement-only diagnosis requires --supplier and uses no native probe or bid')
         if options.calibration_replay and not options.movement_only:
