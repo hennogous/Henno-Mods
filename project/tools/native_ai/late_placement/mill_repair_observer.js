@@ -1,18 +1,25 @@
 'use strict';
 
 // Patched Steam XP2. Observe the ordinary building score, the native building
-// choice and a BuildBuilding attempt for one existing damaged Mill. Never write.
+// choice and a BuildBuilding attempt for one existing damaged Mill. An explicit
+// matched diagnostic can add a bounded preference to the eligible comparison.
 const MILL_VALUE = 0x52a050;
 const ORDINARY_RETURN = 0x3e3ee2;
 const BEST_BUILDING = 0x3e4710;
 const REQUIREMENTS = 0x0f61c0;
 const REQUIREMENTS_RETURN = 0x3e48bb;
 const BUILD_BUILDING = 0x3df040;
+const BUILD_PROJECT = 0x3df4b0;
+const PROJECT_CAN_ADVANCE_RETURN = 0x3df4e5;
+const PROJECT_VALIDATE_OPERATION_RETURN = 0x3df568;
 const QUEUE_NEXT_BUILD = 0x3e8190;
 const CONTRACT_VALIDATE = 0x3fa8e0;
 const CONTRACT_UPDATE = 0x3fa5e0;
 const CONTRACT_EXECUTE = 0x3f8310;
 const BUILDING_COMPARISON = 0x3e49da;
+const THREAT_BEST_BUILDING_RETURN = 0x3ea73b;
+const QUEUE_BEST_BUILDING_RETURN = 0x3e849c;
+const DIAGNOSTIC_MILL_BID_Q8 = 98304;
 const QUEUE_FALLBACK_COMPARISON = 0x3e8741;
 const DEFAULT_UNIT_RETURN = 0x3e8836;
 const DEFAULT_PROJECT_RETURN = 0x3e88e5;
@@ -64,6 +71,9 @@ function init(spec, scope) {
     if (!core || core.size !== spec.image_size || scope.player !== 3 || scope.city !== 131073 ||
         !Number.isInteger(scope.mill) || scope.mill < 0 || scope.mill >= 4096)
         throw Error('Expected the qualified Boston repair fixture');
+    const bid = scope.millBidQ8 ?? 0;
+    if (bid !== 0 && (!scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
+        throw Error('Unsupported diagnostic Mill preference');
 
     const address = rva => core.base.add(rva);
     const caller = invocation => invocation.returnAddress.sub(core.base).toInt32();
@@ -94,6 +104,9 @@ function init(spec, scope) {
             [DEFAULT_UNIT_RETURN, '84c00f8456010000'],
             [DEFAULT_PROJECT_RETURN, '84c00f84a7000000'],
             [GENERIC_UNIT_RETURN, '8bd883f8ff0f84b2000000'],
+            [BUILD_PROJECT, '48895c241848896c2420564883ec60'],
+            [PROJECT_CAN_ADVANCE_RETURN, '84c075124c8d5c2460'],
+            [PROJECT_VALIDATE_OPERATION_RETURN, '84c075054032f6'],
         ] : []),
     ]) {
         const bytes = Array.from(new Uint8Array(address(rva).readByteArray(expected.length / 2)),
@@ -187,8 +200,21 @@ function init(spec, scope) {
         Interceptor.attach(address(BUILDING_COMPARISON), function () {
             if (!enabled || this.context.r12.toInt32() !== scope.mill) return;
             const sample = selection.get(this.threadId);
-            if (sample) protect(() => add({kind: 'mill-compare', caller: sample.caller,
-                effectiveQ8: this.context.r14.toInt32(), incumbentQ8: read(this.context.rsi, 0, 'i32')}));
+            if (!sample) return;
+            protect(() => {
+                const c = this.context;
+                const effectiveQ8 = c.r14.toInt32();
+                // The engine has already checked this candidate's requirements.
+                // CMP consumes R14D and the winning branch copies it to the
+                // output score. Keep the cache, other candidates and queue intact.
+                const scoped = boundary === 261 && sample.requirements === true &&
+                    sample.flags[0] === 1 && sample.flags[1] === 0 &&
+                    (sample.caller === THREAT_BEST_BUILDING_RETURN || sample.caller === QUEUE_BEST_BUILDING_RETURN);
+                const deltaQ8 = scoped && effectiveQ8 > 0 && effectiveQ8 <= 0x7fffffff - bid ? bid : 0;
+                add({kind: 'mill-compare', caller: sample.caller, effectiveQ8, deltaQ8,
+                    incumbentQ8: read(c.rsi, 0, 'i32')});
+                if (deltaQ8) c.r14 = ptr(effectiveQ8 + deltaQ8);
+            });
         });
         function queuePoint(rva, capture) {
             Interceptor.attach(address(rva), function () {
@@ -209,6 +235,26 @@ function init(spec, scope) {
         queuePoint(DEFAULT_UNIT_RETURN, c => ({kind: 'default-unit', accepted: Boolean(c.rax.toInt32() & 255)}));
         queuePoint(DEFAULT_PROJECT_RETURN, c => ({kind: 'default-project', accepted: Boolean(c.rax.toInt32() & 255)}));
         queuePoint(GENERIC_UNIT_RETURN, c => ({kind: 'generic-unit', unit: c.rax.toInt32()}));
+        const projects = new Map();
+        observe(BUILD_PROJECT, (args, invocation) => {
+            const thread = invocation.threadId;
+            const pass = queuePass.get(thread);
+            if (pass === undefined || !target(cityOf(args[0]))) return;
+            if (projects.has(thread)) throw Error('Nested target project attempt');
+            const sample = {thread, pass, project: args[1].toInt32(), canAdvance: null, operationEligible: null};
+            projects.set(thread, sample);
+            return sample;
+        }, ({thread, ...sample}, result) => {
+            projects.delete(thread);
+            add({kind: 'project-attempt', ...sample, accepted: Boolean(result.toInt32() & 255)});
+        });
+        for (const [rva, field] of [[PROJECT_CAN_ADVANCE_RETURN, 'canAdvance'],
+            [PROJECT_VALIDATE_OPERATION_RETURN, 'operationEligible']]) {
+            Interceptor.attach(address(rva), function () {
+                const sample = projects.get(this.threadId);
+                if (enabled && sample) sample[field] = Boolean(this.context.rax.toInt32() & 255);
+            });
+        }
     }
     observe(CONTRACT_VALIDATE, (a, invocation) => {
         const from = caller(invocation);

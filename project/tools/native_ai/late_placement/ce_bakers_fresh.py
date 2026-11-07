@@ -101,7 +101,8 @@ def run(args):
         installed_pins[csc][csc_file] = dict(size=len(control_manifest),
                                              sha256=hashlib.sha256(control_manifest).hexdigest())
     protocol = dict(map=args.map, map_size=args.map_size, map_seed=args.map_seed, game_seed=args.game_seed,
-        endpoint=args.through, csc=csc_id, ce=ce_id, untuned=args.untuned, development=True, ordinary_setup=True,
+        endpoint=args.through, interval_minutes=args.interval_minutes, csc=csc_id, ce=ce_id,
+        untuned=args.untuned, development=True, ordinary_setup=True,
         fresh_game=True, qualification=False, external_policy=False, gameplay_interventions=False,
         input_digests=[hashlib.sha256(json.dumps(pins[source], sort_keys=True).encode()).hexdigest()
                        for source in (ce, csc)])
@@ -118,6 +119,9 @@ def run(args):
     write_json(out / 'protocol.json', protocol)
     controller = make_probe_controller(out, user_root=args.user_root)
     controller.study_endpoint = args.through
+    # A long qualification window stays continuous for the native Service
+    # watcher. The shared controller still fails a ten-minute single-turn stall.
+    controller.autoplay_interval_seconds = args.interval_minutes * 60
     controller.allow_observer_warning_dismissal = controller.allow_observer_first_meet_dismissal = True
     controller.allow_observer_congress_review = True
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
@@ -243,8 +247,12 @@ Modding.EnableMod(chosen.Handle,true)
     published = 'CSC_AI_BAKERS_DISTRICTS turn=' in log
     require('CSC_AI_BAKERS_DISTRICTS_FAILED' not in log and published != args.untuned,
             'Unexpected CSC policy publication in the development arm')
+    require('CSC_AI_BAKERS_PLACEMENT_FAILED' not in log, 'CSC placement scan faulted during the run')
+    placement_bids = {int(turn): int(count) for turn, count in
+                      re.findall(r'CSC_AI_BAKERS_PLACEMENT turn=(\d+) bids=(\d+)', log)}
     result = audit(log, players, expected_turns=range(2, args.through))
-    write_json(out / 'result.json', dict(closed=session.closed, reached=args.through, storekeeper=result))
+    write_json(out / 'result.json', dict(closed=session.closed, reached=args.through,
+                                       placement_bids=placement_bids, storekeeper=result))
 
 
 if __name__ == '__main__':
@@ -255,10 +263,14 @@ if __name__ == '__main__':
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--map', choices=MAPS, default='Continents')
     parser.add_argument('--map-size', choices=MAP_SIZES, default='small')
+    parser.add_argument('--interval-minutes', type=int, default=30,
+                        help='Maximum wall time of one continuous autoplay window (30–240)')
     parser.add_argument('--untuned', action='store_true', help='Remove only the CSC runtime policy action locally')
     parser.add_argument('--matched-source', type=Path, help='Require initial state parity with the other arm')
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):
         parser.error('Use positive 31-bit seeds and an endpoint between turns 3 and 250')
+    if not 30 <= options.interval_minutes <= 240:
+        parser.error('Use a continuous window limit between 30 and 240 minutes')
     run(options)

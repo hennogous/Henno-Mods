@@ -290,7 +290,8 @@ class FullGameController:
   self.cmd('Automation.SetActive(false);AutoplayManager.SetDisableAssertsForAutoplay(true);AutoplayManager.SetTurns('+str(target)+'-Game.GetCurrentGameTurn());AutoplayManager.SetReturnAsPlayer(0);AutoplayManager.SetObserveAsPlayer(-1);AutoplayManager.SetActive(true);print("CSC_DIAG_AUTOPLAY",Game.GetCurrentGameTurn(),AutoplayManager.GetTurns(),AutoplayManager.IsActive());','GameCore_Tuner','autoplay-'+str(target),wait=2)
   return self._await_target(target)
  def _await_target(self,target):
-  deadline=time.monotonic()+1800;last=None;changed=time.monotonic();release=0;inactive=0
+  interval_seconds=getattr(self,'autoplay_interval_seconds',1800)
+  deadline=time.monotonic()+interval_seconds;last=None;changed=time.monotonic();release=0;inactive=0
   while time.monotonic()<deadline:
    time.sleep(.5 if last is None else 1) # Poll state only; never resend activation.
    if(self.root/'native-fault-signal.json').exists():raise RuntimeError('Watchdog observed native fault')
@@ -311,7 +312,7 @@ class FullGameController:
    if turn>target:raise RuntimeError('Native autoplay overrun')
    if time.monotonic()-changed>35 and time.monotonic()-release>35:self.capture_blocker(target);self.dismiss_observer_warning(target);self.release_disaster(target);release=time.monotonic()
    if time.monotonic()-changed>600:raise RuntimeError('Native ten-minute turn stall')
-  else:raise TimeoutError('Thirty-minute native interval bound')
+  else:raise TimeoutError(f'Native autoplay exceeded its {interval_seconds}-second interval bound')
   self.ready(target,'after-'+str(target));self.last_interval_turn=target
  def snapshot(self,i,target):
   raw=self.cmd('CSCBASE.snapshot('+str(target)+');','CSC_AdjacencyGameplay','primary-'+str(target),wait=4)

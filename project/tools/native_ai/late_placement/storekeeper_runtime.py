@@ -1,7 +1,7 @@
 """Count only sampled Storekeeper turns with a native attachment and growth recipient."""
 
 import argparse
-from collections import Counter, defaultdict
+from collections import defaultdict
 import json
 from pathlib import Path
 import re
@@ -43,7 +43,14 @@ def confirmed_chains(instances, subjects):
     # A recipient may get the same effect from two Quarters. Count the
     # sources only if there are enough independently active effect copies
     # to match every observed attachment for that recipient and Mill type.
-    return {chain for key, sources in anchors.items() if len(sources) == len(growth[key]) for chain in sources}
+    confirmed, ambiguous = set(), set()
+    for key, sources in anchors.items():
+        copies = len(growth[key])
+        if copies == len(sources):
+            confirmed.update(sources)
+        elif copies:
+            ambiguous.update(sources)
+    return confirmed, ambiguous - confirmed
 
 
 def sampled_chains(text):
@@ -84,6 +91,16 @@ def sampled_chains(text):
     return samples
 
 
+def contiguous_ranges(turns):
+    ranges = []
+    for turn in turns:
+        if ranges and turn == ranges[-1][1] + 1:
+            ranges[-1][1] = turn
+        else:
+            ranges.append([turn, turn])
+    return ranges
+
+
 def audit(text, players, *, expected_turns=None):
     samples = sampled_chains(text)
     if not samples:
@@ -95,14 +112,30 @@ def audit(text, players, *, expected_turns=None):
         if missing or unexpected:
             raise ValueError(f'Storekeeper clock coverage differs: missing {sorted(missing)}, '
                              f'unexpected {sorted(unexpected)}')
-    active = Counter(chain for chains in samples.values() for chain in chains if chain[0] in players)
+    clocks = sorted(samples)
+    active, ambiguous = defaultdict(list), defaultdict(list)
+    for turn in clocks:
+        confirmed, uncertain = samples[turn]
+        for chain in confirmed:
+            if chain[0] in players:
+                active[chain].append(turn)
+        for chain in uncertain:
+            if chain[0] in players:
+                ambiguous[chain].append(turn)
+    chains = []
+    for (player, city, district), turns in sorted(active.items()):
+        active_or_ambiguous = set(turns).union(ambiguous.get((player, city, district), ()))
+        # Neither a missing sample nor ambiguous attribution is proof of loss.
+        inactive = (turn for turn in clocks if turn > turns[0] and turn not in active_or_ambiguous)
+        chains.append(dict(player=player, city=city, quarter=district, turns=len(turns),
+                           active_ranges=contiguous_ranges(turns),
+                           inactive_after_first=contiguous_ranges(inactive)))
     return {
-        'sampled_turns': sorted(samples),
+        'sampled_turns': clocks,
         'unsampled_turns': sorted(missing),
-        'active_turns': [
-            dict(player=player, city=city, quarter=district, turns=turns)
-            for (player, city, district), turns in sorted(active.items())
-        ],
+        'active_turns': chains,
+        'ambiguous_attribution': [dict(player=player, city=city, quarter=district, ranges=contiguous_ranges(turns))
+                                  for (player, city, district), turns in sorted(ambiguous.items())],
     }
 
 

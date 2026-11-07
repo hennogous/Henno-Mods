@@ -26,7 +26,7 @@ from supplier_timeline import write_matched_timelines
 CANDIDATE_SHA = '5b62c20bd3fe4ea3a4364e160022bc5c0f2dacac504d6a07ecced2bdf1588545'
 AI_ROOT = ROOT / 'Civ Supply Chains/Lua_UI/AI'
 AI_FILES = tuple(AI_ROOT / name for name in (
-    'CSC_AI_QuarterPlacement.lua', 'CSC_AI_DistrictBridge.lua', 'CSC_AI_BakersGameplay.lua',
+    'CSC_AI_AdjacencyScan.lua', 'CSC_AI_QuarterPlacement.lua', 'CSC_AI_DistrictBridge.lua', 'CSC_AI_BakersGameplay.lua',
 ))
 UI_READS = AI_ROOT.parent / 'Adjacencies/CSC_AdjacencyUI.lua'
 LOGS = ('Lua.log', 'AI_CityBuild.csv', 'City_BuildQueue.csv')
@@ -105,8 +105,9 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
     trace_name = 'mill-repair' if args.wonder_autosave else 'pasture-recovery'
     builder_policy = (treatment or args.wonder or args.pasture_bid or args.guard_committed_harvest
                       or args.publisher_pasture_bid or args.publisher_harvest)
+    wonder_policy = args.wonder and (treatment or args.mill_bid)
     if treatment or advanced:
-        add_policy(prepared, start, builders=builder_policy, wonders=args.wonder and treatment,
+        add_policy(prepared, start, builders=builder_policy, wonders=wonder_policy,
                    defer=bool(autosave),
                    recovery=not args.pasture_autosave or (args.publisher_pasture_bid and treatment),
                    harvest=not args.pasture_autosave or (args.publisher_harvest and treatment))
@@ -197,7 +198,7 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
             result['builder_initial'] = first
         if args.wonder:
             first = protection_status('SupplierWonder', 'wonder-before-autoplay')
-            require(first['ready'] and not first['faults'] and bool(first['protected']) == treatment,
+            require(first['ready'] and not first['faults'] and bool(first['protected']) == wonder_policy,
                     'Unexpected initial Wonder publication')
             result['wonder_initial'] = first
         if args.publisher_harvest:
@@ -225,7 +226,7 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
                     "print('CSC_BAKERS_MILL_INDEX='..assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL).Index)",
                     'GameCore_Tuner', 'native-mill-repair-index')
                 scope = dict(player=target['player'], city=target['city'], mill=parse(raw, 'CSC_BAKERS_MILL_INDEX'),
-                             cePath=modules[DLL]['path'])
+                             cePath=modules[DLL]['path'], millBidQ8=98304 if args.mill_bid and treatment else 0)
             else:
                 scope = dict(load(args.replay / 'pasture-recovery-scope.json'), cePath=modules[DLL]['path'],
                              measurePastureBid=args.pasture_bid, applyPastureBid=args.pasture_bid and treatment,
@@ -358,6 +359,9 @@ def run(args):
                 and load(observed / 'loaded-modules.json')[DLL]['sha256'] == args.ce_sha256,
                 'Expected the closed protected recovery continuation and same CE binary')
         start, endpoint, digest = saved['turn'], args.through, saved['sha256']
+        if args.mill_bid:
+            require(start == 261 and digest == 'e393c2047e28ec9c167934799f9f1d55cef564d5e45e0d4f2cc062c84d9580b8',
+                    'The Mill preference requires the measured turn-261 queue fixture')
         states = observed / 'observations.json'
         expected_source = next(row for row in load(states) if row['city']['turn'] == start)
         require(sha(archive) == digest and expected_source['operation']['customer']
@@ -403,9 +407,18 @@ def run(args):
     archived = replay / 'retired-study-copy'
     installed = args.mods.resolve() / 'CSC Mill Building Study'
     if prior_arm:
+        if args.mill_bid:
+            control = run_arm(args, out / 'control', archived, source, digest, probe, installed, False,
+                              target, start, endpoint, expected_source=expected_source)
         continued = run_arm(args, out / 'treatment', archived, source, digest, probe, installed, True,
                             target, start, endpoint, expected_source=expected_source)
         require(all(sha(Path(path)) == digest for path, digest in pins.items()), 'Pinned source changed during recovery')
+        if args.mill_bid:
+            require(control['source'] == continued['source'], 'The Mill arms have different starting states')
+            write_json(out / 'result.json', dict(source=digest, start=start, endpoint=endpoint,
+                control=control['final']['operation'], treatment=continued['final']['operation']))
+            write_json(out / 'restoration.json', dict(verified=True, owners_absent=True))
+            return
         write_json(out / 'result.json', continued)
         write_json(out / 'restoration.json', load(out / 'treatment/restoration.json'))
         return
@@ -486,6 +499,8 @@ if __name__ == '__main__':
                                help='Keep Builder protection in both arms and enable the native CSC recovery bid in treatment')
     interventions.add_argument('--publisher-harvest', action='store_true',
                                help='Enable the main CSC native Clear Plot protection only in treatment')
+    interventions.add_argument('--mill-bid', action='store_true',
+                               help='Compare a bounded Mill nomination preference on the exact turn-261 fixture')
     parser.add_argument('--through', type=int)
     parser.add_argument('--watch-storekeeper', action='store_true',
                         help='Observe native Storekeeper at each autoplay turn start in both arms')
@@ -497,6 +512,8 @@ if __name__ == '__main__':
         parser.error('Use --through with --wonder --resume-wonder-treatment or --builder --pasture-autosave')
     if args.wonder_autosave and (not args.resume_wonder_treatment or not args.decision_observer_deps):
         parser.error('The later Wonder autosave requires the prior treatment and pinned decision observer')
+    if args.mill_bid and not args.wonder_autosave:
+        parser.error('The Mill preference requires the exact later Wonder autosave')
     if args.decision_observer_deps and not (args.pasture_autosave or args.wonder_autosave):
         parser.error('The decision observer requires a qualified supplier or Mill autosave')
     if (args.pasture_bid or args.guard_committed_harvest) and not args.decision_observer_deps:
