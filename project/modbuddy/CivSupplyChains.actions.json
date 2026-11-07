@@ -1397,7 +1397,18 @@
         },
         "files": [
           "Lua_UI/AI/CSC_AI_AdjacencyScan.lua",
-          "Lua_UI/AI/CSC_AI_QuarterPlacement.lua"
+          "Lua_UI/AI/CSC_AI_QuarterPlacement.lua",
+          "Lua_UI/AI/CSC_AI_DistrictBridge.lua"
+        ]
+      },
+      {
+        "type": "AddGameplayScripts",
+        "id": "CSC_AI_BakersGameplay",
+        "properties": {
+          "LoadOrder": "999991"
+        },
+        "files": [
+          "Lua_UI/AI/CSC_AI_BakersGameplay.lua"
         ]
       },
       {

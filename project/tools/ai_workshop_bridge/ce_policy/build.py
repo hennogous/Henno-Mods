@@ -41,7 +41,7 @@ def build(output:Path,*,ce_fork_id:str=CE_FORK_ID,csc_id:str=CSC_ID,adjacency_co
     sources={
         'Lua/CSC_AI_AdjacencyPolicy.lua':HERE/'policy.lua',
         'Lua/CSC_AI_AdjacencyScan.lua':scanner,
-        'Lua/CSC_AI_DistrictBridge.lua':HERE.parent/'ce_frontend/CSC_AI_DistrictBridge.lua',
+        'Lua/CSC_AI_DistrictBridge.lua':ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_DistrictBridge.lua',
         'Lua/CSC_CE_Policy.lua':HERE/'gameplay.lua',
     }
     for destination,source in sources.items():

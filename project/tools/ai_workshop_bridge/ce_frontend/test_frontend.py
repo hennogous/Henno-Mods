@@ -2,7 +2,7 @@
 from pathlib import Path
 import unittest
 from lupa.lua51 import LuaRuntime
-SOURCE=Path(__file__).with_name('CSC_AI_DistrictBridge.lua').read_text(encoding='utf-8')
+SOURCE=(Path(__file__).resolve().parents[4]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_DistrictBridge.lua').read_text(encoding='utf-8')
 FIXTURE='''calls={};disabled=false
 for _,name in ipairs({'Begin','Allow','Entry','Commit','Disable','Status'}) do
  local n=name

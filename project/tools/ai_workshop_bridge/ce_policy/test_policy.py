@@ -19,7 +19,7 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parents[3]
 POLICY_SOURCE=(HERE/'policy.lua').read_text(encoding='utf-8')
 GAMEPLAY_SOURCE=(HERE/'gameplay.lua').read_text(encoding='utf-8')
-FRONTEND=(HERE.parent/'ce_frontend/CSC_AI_DistrictBridge.lua').read_text(encoding='utf-8')
+FRONTEND=(ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_DistrictBridge.lua').read_text(encoding='utf-8')
 spec=importlib.util.spec_from_file_location('reference_policy',ROOT/'project/tools/ai_site_planner/adjacency_policy/policy.py')
 REFERENCE=importlib.util.module_from_spec(spec);spec.loader.exec_module(REFERENCE)
 spec=importlib.util.spec_from_file_location('ce_policy_builder',HERE/'build.py')

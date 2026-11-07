@@ -34,8 +34,11 @@ can satisfy dependencies. Tailors comes next through the same model.
 
 The live Boston replay establishes this sequence for one Bakers chain. The
 offline planner separately covers actual gameplay definitions and a copied
-Tailors case. A reusable policy still needs broader tests of the same native
-decisions. [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay).
+Tailors case. The next live test checks whether the integrated district policy
+protects Bakers suppliers through CE. After that we need the Builder,
+construction, research and repair decisions to work together in fresh games.
+[Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay) ·
+[Qualification roadmap](../roadmap.md#current-milestone-and-active-problem).
 
 ## Tools for this milestone
 

@@ -1,5 +1,4 @@
--- CSC's proposed Workshop-side consumer. The native implementation belongs to
--- CE; this file carries no addresses, DLL, injector or automatic tuning policy.
+-- CSC publishes district policy through CE's guarded gameplay bindings.
 -- Released CE1.3 lacks this API: availability must be checked before use.
 CSC_AI_DistrictBridge={}
 local B=CSC_AI_DistrictBridge

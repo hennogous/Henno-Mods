@@ -55,6 +55,33 @@ Crippling Blizzard on turn 207. That break reproduced from the turn-186 save.
 Repair after disaster damage remains open under **13.1**.
 [Long-run observations](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
 
+**Active problem for reusable tuning — 2.2, district material protection.**
+Main CSC now has a gameplay publisher for the CE district-score capability.
+It reads owned, visible Bakers suppliers, distinguishes a usable deposit
+from a working improvement, and prices legal district pairs for the city
+that could cover each tile. A fixture verifies publication for a supplier
+owned by a different city and refresh after pillage or removal. The first
+live check must verify CE startup on the current executable, consumption of
+the deduction and actual preservation against a matched control. The penalty
+is finite. Builder work and harvest admission under **13.3** still need their
+own adapter and alternative-job validation.
+
+For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
+games with normal starts. Run the integrated tuning and record every result.
+Use the same starting settings and seeds for the untuned comparison.
+
+| Map | Map seed | Game seed | Configuration |
+| --- | ---: | ---: | --- |
+| Continents | 17260413 | 27410653 | CSC, matched untuned arm |
+| Pangaea | 18431267 | 28681391 | CSC |
+| Fractal | 19672039 | 29812257 | CSC with RHAI5 |
+
+Each qualification game needs three distinct AI Bakers chains with 100
+cumulative active Service turns each. Count operation per chain through
+lapses and demonstrate legal recovery from supplier disruption and from
+producer or customer damage. Record material scarcity and lost opportunities
+alongside successes. Mill repair is in scope where it prevents recovery.
+
 For each update, name the active problem and report the furthest stage actually
 observed, the blocker if any, and the next check. Keep later problems queued
 until the active check closes or an explicit dependency needs attention.

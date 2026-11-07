@@ -98,7 +98,8 @@ def run(a):
     sources += list((ROOT / 'project/tools/ai_baseline/full_game_controller').glob('*.py'))
     sources += list((ROOT / 'project/tools/ai_baseline/full_game_controller').glob('*.lua'))
     sources += list((ROOT / 'project/tools/ai_site_planner/adjacency_policy').glob('*.py'))
-    sources += [ROOT / 'Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua']
+    sources += [ROOT / 'Civ Supply Chains/Lua_UI/AI' / name for name in
+                ('CSC_AI_AdjacencyScan.lua', 'CSC_AI_DistrictBridge.lua')]
     pins = {str(p.resolve()): sha(p) for p in sources if p.is_file()}
     write_json(out / 'pins.json', pins)
     write_json(out / 'source-archive.json', archive_sources(pins, out / 'source-version'))
