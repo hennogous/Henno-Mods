@@ -14,6 +14,15 @@ ExposedMembers.CSC_Adjacency.IsSinglePlayer = function()
         and GameConfiguration.IsHotseat() == false;
 end;
 
+-- Ask the native queue which building variant this city can start now.
+ExposedMembers.CSC_Adjacency.CanProduceBuilding = function(playerID, cityID, buildingHash)
+    local city = CityManager.GetCity(playerID, cityID);
+    local queue = city and city:GetBuildQueue();
+    if not queue then return false; end
+    local ok, legal = pcall(queue.CanProduce, queue, buildingHash, false, true);
+    return ok and legal == true;
+end;
+
 -- The live Gameplay build queue does not implement CanProduce. Query the
 -- UI cache here and return only the plot indices, without sending commands.
 ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets = function(playerID, cityID, districtHash)

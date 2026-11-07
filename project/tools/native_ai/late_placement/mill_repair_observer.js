@@ -26,6 +26,11 @@ const THREAT_BEST_BUILDING_RETURN = 0x3ea73b;
 const QUEUE_BEST_BUILDING_RETURN = 0x3e849c;
 const DIAGNOSTIC_MILL_BID_Q8 = 98304;
 const MELBOURNE_NOMINATION_Q8 = 448 * 256;
+const NORMALIZE_BUILDING_YIELD = 0x52b110;
+const DISCOUNT_BUILDING_INCOME = 0x528310;
+const INTRINSIC_YIELD_RETURN = 0x52bb71;
+const INCOME_READY_RETURN = 0x52c3ad;
+const INCOME_HORIZON_RETURN = 0x52c3cd;
 const QUEUE_FALLBACK_COMPARISON = 0x3e8741;
 const QUEUE_OFFER_GATE = 0x3e86d2;
 const DEFAULT_UNIT_RETURN = 0x3e8836;
@@ -48,6 +53,8 @@ const memory = createStudyMemoryIO({ptr, findRangeByAddress: address => Process.
 const records = [], selection = new Map(), queuePass = new Map();
 let enabled = false, installed = false, boundary = null, fault = null, active = 0;
 let queueSequence = 0;
+let granaryComponents = null;
+const granaryIncome = [];
 
 function read(pointer, offset, type) {
     const result = memory.read(pointer.toString(), offset, type);
@@ -93,6 +100,9 @@ function init(spec, scope) {
         scope.granary !== 3 || granaryBid !== 288 * 256))
         throw Error('Unsupported Trebizond Granary nomination preference');
     let granaryBidApplied = false;
+    if (scope.granaryComponents && (!scope.cePath || scope.player !== 1 || scope.city !== 327684 ||
+        scope.granary !== 3 || granaryBid || !Number.isInteger(scope.foodYieldIndex) || scope.foodYieldIndex < 0))
+        throw Error('Granary component capture requires the read-only Trebizond scope');
     if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
     const melbourne = scope.player === 4 && scope.city === 131073 && scope.mill === 139;
@@ -101,6 +111,7 @@ function init(spec, scope) {
     if (scope.screenProjectEligibility && (!boston || !scope.cePath || bid || nominationBid))
         throw Error('The isolated project eligibility diagnostic requires CE and no Mill bid');
     const captureQueueOperands = scope.cePath || scope.captureQueueOperands;
+    const componentPoints = scope.granaryComponents ? ['BuildingValue', 'ModifierValue', 'AnalyzeModifier'] : [];
 
     const address = rva => core.base.add(rva);
     const caller = invocation => invocation.returnAddress.sub(core.base).toInt32();
@@ -125,6 +136,11 @@ function init(spec, scope) {
         [QUEUE_VALIDATE_RETURN - 7, '41ff9098000000'],
         [QUEUE_UPDATE_RETURN - 4, '41ff5068'],
         [QUEUE_EXECUTE_RETURN - 4, '41ff5038'],
+        ...componentPoints.map(kind => STUDY_POINTS[kind]),
+        ...(componentPoints.length ? [
+            [NORMALIZE_BUILDING_YIELD, '48895c240848896c2410488974242057'],
+            [DISCOUNT_BUILDING_INCOME, '40565741564883ec70418bf14c8bf2'],
+        ] : []),
         ...(captureQueueOperands ? [
             [BUILDING_COMPARISON, '443b367e11448936'],
             [QUEUE_OFFER_GATE, '8d9700ffffff3990580100007c3d'],
@@ -148,7 +164,11 @@ function init(spec, scope) {
         if (bytes !== expected) throw Error(`Unexpected code at ${rva.toString(16)}`);
     }
     for (const [rva, expected] of [[ORDINARY_RETURN, MILL_VALUE], [REQUIREMENTS_RETURN, REQUIREMENTS],
-        [ORDINARY_BEST_BUILDING_RETURN, BEST_BUILDING]]) {
+        [ORDINARY_BEST_BUILDING_RETURN, BEST_BUILDING], ...(componentPoints.length ? [
+            [INTRINSIC_YIELD_RETURN, NORMALIZE_BUILDING_YIELD],
+            [INCOME_READY_RETURN, DISCOUNT_BUILDING_INCOME],
+            [INCOME_HORIZON_RETURN, DISCOUNT_BUILDING_INCOME],
+        ] : [])]) {
         const end = address(rva);
         if (end.sub(5).readU8() !== 0xe8 || !end.add(end.sub(4).readS32()).equals(address(expected)))
             throw Error(`Caller fingerprint at ${rva.toString(16)}`);
@@ -166,6 +186,61 @@ function init(spec, scope) {
                 protect(() => leave(this.sample, result));
             },
         });
+    }
+    if (componentPoints.length) {
+        granaryComponents = makeStudyObserver(memory, {
+            profile: 'trebizond-granary-components-v1', mappingVerified: true,
+            buildings: [{type: 'BUILDING_GRANARY', index: building}],
+            targets: [{player: scope.player, city: scope.city}], ...GRANARY_STUDY_LIMITS,
+        });
+        // Most native valuation calls belong to other buildings and cities.
+        // Enter the detailed recorder only inside a matched valuation frame.
+        const threads = new Map();
+        for (const kind of componentPoints) {
+            observe(STUDY_POINTS[kind][0], (args, invocation) => {
+                const thread = invocation.threadId;
+                const stack = threads.get(thread) ?? [];
+                if (!stack.length && (kind !== 'BuildingValue' ||
+                    args[1].toInt32() !== building || args[6].isNull() || !target(args[6]))) return;
+                const frame = granaryComponents.enter(kind, decodeStudyArgs(kind, args, thread, caller(invocation)));
+                if (!frame) return;
+                stack.push(frame);
+                threads.set(thread, stack);
+                return {frame, thread};
+            }, ({frame, thread}, result) => {
+                granaryComponents.leave(frame, result.toString());
+                const stack = threads.get(thread);
+                if (stack.pop() !== frame) throw Error('Unbalanced Granary valuation frame');
+                if (!stack.length) threads.delete(thread);
+            });
+        }
+        // Separate observations for the native intrinsic yield and the two
+        // endpoints of its income stream. Neither helper is called by the probe.
+        const recordIncome = ({out, ...sample}, result) => {
+            if (!result.equals(out) || granaryIncome.length >= 1024)
+                throw Error('Unexpected Granary income return or capture bound');
+            granaryIncome.push({...sample, valueQ8: read(out, 0, 'i32')});
+        };
+        function buildingFrame(invocation) {
+            const frame = threads.get(invocation.threadId)?.at(-1);
+            return frame?.kind === 'BuildingValue' && frame.paired ? frame : null;
+        }
+        observe(NORMALIZE_BUILDING_YIELD, (args, invocation) => {
+            const yieldIndex = args[2].toInt32();
+            if (caller(invocation) !== INTRINSIC_YIELD_RETURN || yieldIndex !== scope.foodYieldIndex) return;
+            const frame = buildingFrame(invocation);
+            if (frame) return {out: args[0], buildingCallId: frame.id, kind: 'intrinsic-yield',
+                inputQ8: read(args[1], 0, 'i32'), yieldIndex};
+        }, recordIncome);
+        observe(DISCOUNT_BUILDING_INCOME, (args, invocation) => {
+            const from = caller(invocation);
+            if (from !== INCOME_READY_RETURN && from !== INCOME_HORIZON_RETURN) return;
+            const frame = buildingFrame(invocation);
+            if (frame) return {out: args[0], buildingCallId: frame.id,
+                kind: from === INCOME_READY_RETURN ? 'income-ready' : 'income-horizon',
+                inputQ8: read(args[1], 0, 'i32'), discountQ8: read(args[2], 0, 'i32'),
+                turns: args[3].toInt32()};
+        }, recordIncome);
     }
     if (scope.cePath) {
         // CE owns the Building NetValue entry. Read the ordinary caller's
@@ -384,7 +459,20 @@ function init(spec, scope) {
 
 rpc.exports = {
     init,
-    advance(turn) { boundary = turn; enabled = true; },
+    advance(turn) {
+        boundary = turn;
+        if (granaryComponents) granaryComponents.start();
+        enabled = true;
+    },
     snapshot() { return {records, active, fault}; },
-    freeze() { enabled = false; return {records, active, fault}; },
+    freeze() {
+        enabled = false;
+        const result = {records, active, fault};
+        if (granaryComponents && !active) {
+            granaryComponents.requestFreeze();
+            result.granaryComponents = granaryComponents.finishFreeze();
+            result.granaryIncome = granaryIncome;
+        }
+        return result;
+    },
 };

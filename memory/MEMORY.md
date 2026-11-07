@@ -15,9 +15,12 @@ found the Mill pillaged. Charleston received the ready-chain Maize
 Farm bid on plot 2100 and became the third active Storekeeper
 chain on 176–177. These are development replays. The short
 turn-167 save timed out after the yield receipt and exited cleanly.
-See handbook AI-C094–AI-C099 and AI-N102–AI-N103. Next measure
-Granary-owned exchange credit in its native forecast before
-choosing a reusable bid.
+See handbook AI-C094–AI-C100 and AI-N102–AI-N103. In Trebizond's
+component capture, the four Granary-owned exchange roots returned
+zero. One additional Food was worth roughly 18–19 native score
+units. The first integrated preference uses 18 for a legal
+Granary next to a working Mill. Production and Gold remain to
+calibrate.
 
 The turn-100 normal-start development game established four Bakers
 Quarters and no active Storekeeper. Alexandria Troas had only the

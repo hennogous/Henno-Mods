@@ -81,7 +81,7 @@ local function refresh(turn)
     for _, id in ipairs(players) do
         local player = Players[id]
         local deductions, sites, bids = placement.BakersMaterialDeductions(player, protectBuilders,
-            builderBidLimit, nominationLimit)
+            builderBidLimit, nominationLimit, ui.CanProduceBuilding)
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
         local protectedPlots = {}
         for _, entry in ipairs(deductions) do

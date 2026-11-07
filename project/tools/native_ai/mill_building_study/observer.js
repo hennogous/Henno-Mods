@@ -20,8 +20,16 @@ const STUDY_TYPES=[
  ...['TEXTILE_WORKSHOP','TAILOR','FASHION_HOUSE','STAGE_2_SERVICE','STAGE_3_SERVICE','STAGE_4_SERVICE','STAGE_4_SERVICE_BOLSHOI','STAGE_4_SERVICE_BROADWAY','STAGE_4_SERVICE_SYDNEY'].map(x=>'BUILDING_CSC_TAILORS_'+x),
 ];
 const STUDY_LIMITS={maxPairs:16384,maxCallbacks:300000,maxThreads:8,maxDepth:16,maxRows:37,maxModifierName:256};
+const GRANARY_STUDY_LIMITS={...STUDY_LIMITS,maxPairs:2048,maxCallbacks:20000};
 function validateStudyConfig(c){
  const integer=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;
+ if(c.profile==='trebizond-granary-components-v1'){
+  if(c.mappingVerified!==true||c.buildings?.length!==1||c.buildings[0].type!=='BUILDING_GRANARY'||
+     c.buildings[0].index!==3||c.targets?.length!==1||c.targets[0].player!==1||c.targets[0].city!==327684)
+   throw Error('Reviewed Trebizond Granary mapping required');
+  for(const [k,v]of Object.entries(GRANARY_STUDY_LIMITS))if(c[k]!==v)throw Error('Unreviewed Granary bound '+k);
+  return;
+ }
  if(c.profile!=='mill-building-study-v1'||c.mappingVerified!==true)throw Error('Reviewed study mapping required');
  if(!integer(c.buildingCount,19,4096)||!integer(c.districtCount,2,4096))throw Error('Definition bounds');
  if(!Array.isArray(c.districtIndices)||c.districtIndices.length!==2||new Set(c.districtIndices).size!==2||c.districtIndices.some(x=>!integer(x,1,c.districtCount-1)))throw Error('Two loaded district indices required');

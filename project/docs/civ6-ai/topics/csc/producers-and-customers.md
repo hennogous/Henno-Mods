@@ -98,6 +98,14 @@ The Granary gained one Food, and the Mill gained one Production
 and one Gold. [AI-C097] [AI-C099]
 [Purchase trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#trebizond-bought-the-granary-through-the-admitted-contract).
 
+The native Granary forecast returned zero for its four CSC
+exchange roots. Civ's Food weighting and income timing put the
+incoming Food at about 18–19 score points in this city. The
+initial reusable preference credits 18 points for that Food
+when an adjacent working Mill can already supply it. Production,
+Gold and future Service are separate terms. [AI-C100]
+[Forecast calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-granary-valuation-priced-food-and-returned-zero-for-the-exchange-roots).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

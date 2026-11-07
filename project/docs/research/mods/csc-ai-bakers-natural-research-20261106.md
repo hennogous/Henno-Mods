@@ -2010,6 +2010,42 @@ from the existing supplier policy on another resource and
 city. There is no matched no-bid arm for Charleston, so the
 bid's causal effect is still unmeasured in this case.
 
+### Native Granary valuation priced Food and returned zero for the exchange roots
+
+`development-trebizond-granary-components-01` observed the
+turn-150 source through 154 with no score adjustment. It captured
+four native `BuildingValue` calls for Granary 3. The working
+Water Mill and available, unbuilt Granary were verified in the
+source. All four Granary-owned Mill Production and Gold roots
+were accepted in all four calls. Their accumulators returned
+zero and the modifier subtotal was zero. No child was observed
+under these roots. This is a missing forecast contribution in
+the sampled context.
+
+The existing one Food passed the intrinsic yield normalizer at
+`52b110` from caller return `52bb71`, yielding 383–395 Q8
+per turn. The income calls at `528310`, with caller returns
+`52c3ad` and `52c3cd`, priced the start at 12 turns and horizon
+at 50. The ratio of the horizon-minus-start result to the same
+income input was about 12.06. Multiplying that factor by the
+normalized Food gives 4,618–4,762 Q8, about 18–19 nomination
+score units as a first approximation. This extrapolates from
+the actual native stream and allows for rounding. It does not
+value Production, Gold or future Storekeeper.
+
+The initial CSC preference is 4,608 Q8 for a legal, missing
+Granary beside a working Mill. It prices the incoming Food only,
+and the existing CE nomination channel applies it after native
+eligibility. CSC asks the UI queue which ordinary or unique
+Granary variant is legal. It leaves the actual purchase and
+production comparisons to their native valuations. Mill repair,
+missing producers and future Storekeeper require separate
+valuations. The 18-unit calibration is from one city.
+
+The native trace SHA-256 is
+`54c09a4b9e96ee23e2fbf07dcbeb6efa979f26607fa3b09cbd0010a63389fd8d`.
+The short replay verified normal exit and restoration.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

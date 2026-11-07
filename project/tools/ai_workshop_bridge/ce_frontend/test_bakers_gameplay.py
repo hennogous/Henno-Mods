@@ -157,8 +157,16 @@ class BakersGameplayTest(unittest.TestCase):
             GameInfo.Civics={CIVIC_FEUDALISM={Index=7}}
             Players[3].GetCulture=function() return {HasCivic=function(_, i) return i==7 end} end
             GameInfo.Districts.DISTRICT_CITY_CENTER={Index=0}
-            GameInfo.Buildings={BUILDING_GRANARY={Index=8}, BUILDING_CSC_BAKERS_WATER_MILL={Index=9}}
-            GameInfo.BuildingReplaces=function() return function() end end
+            GameInfo.Buildings={BUILDING_GRANARY={Index=8,Hash=108}, BUILDING_CSC_BAKERS_WATER_MILL={Index=9},
+                BUILDING_FIXTURE_GRANARY={Index=11,Hash=111,PrereqDistrict='DISTRICT_CITY_CENTER'}}
+            GameInfo.BuildingReplaces=function()
+                local given = false
+                return function()
+                    if given then return end
+                    given = true
+                    return {ReplacesBuildingType='BUILDING_GRANARY',CivUniqueBuildingType='BUILDING_FIXTURE_GRANARY'}
+                end
+            end
             city.GetProperty=function() return 0 end
             city.GetBuildings=function()
                 return {HasBuilding=function(_, i) return i==9 end, IsPillaged=function() return false end,
@@ -169,10 +177,12 @@ class BakersGameplayTest(unittest.TestCase):
                 GetDistrictType=function() return 0 end, GetResourceType=function() return -1 end}
             Map.GetAdjacentPlots=function() return {pasture,customer} end
             local getCity=Cities.GetPlotPurchaseCity
+            hasGranary = true
             Cities.GetPlotPurchaseCity=function(plot)
                 if plot~=customer then return getCity(plot) end
-                return {GetOwner=function() return 3 end, GetBuildings=function()
-                    return {HasBuilding=function(_, i) return i==8 end, IsPillaged=function() return false end,
+                return {GetOwner=function() return 3 end, GetID=function() return 77 end, GetBuildings=function()
+                    return {HasBuilding=function(_, i) return i==8 and hasGranary end,
+                        IsPillaged=function() return granaryPillaged == true end,
                         GetBuildingLocation=function() return 99 end}
                 end}
             end
@@ -208,7 +218,11 @@ class BakersGameplayTest(unittest.TestCase):
                 return {HasTech=function(_, i) return i == 1 or machinery end}
             end
             city.GetID = function() return 42 end
-            city.GetBuildings = function() return {HasBuilding=function() return hasMill end} end
+            city.GetBuildings = function()
+                return {HasBuilding=function(_, i) return i==9 and hasMill end,
+                    IsPillaged=function() return millPillaged == true end,
+                    GetBuildingLocation=function() return 100 end}
+            end
             Map.GetPlot().IsRiver = function() return river end
             machinery, river, hasMill = true, false, false
             turn=11; boundary()
@@ -225,7 +239,27 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertEqual(lua.eval('#nominations'), 0)
         lua.execute('hasMill=false; pillaged=true; turn=15; boundary()')
         self.assertEqual(lua.eval('#nominations'), 0)
-        lua.execute('turn=16; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute("""
+            Players[3].GetCulture = function() return {HasCivic=function() return false end} end
+            hasMill, hasGranary = true, false
+            CityManager = {GetCity=function(player, id)
+                assert(player==3 and id==77)
+                return {GetBuildQueue=function()
+                    return {CanProduce=function(_, hash, visible, immediate)
+                        assert(visible==false and immediate==true)
+                        return hash==111
+                    end}
+                end}
+            end}
+            turn=16; boundary()
+        """)
+        self.assertEqual(lua.eval('#nominations'), 1)
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,4608')
+        lua.execute('hasGranary=true; granaryPillaged=true; turn=17; boundary()')
+        self.assertEqual(lua.eval('#nominations'), 0)
+        lua.execute('hasGranary=false; millPillaged=true; turn=18; boundary()')
+        self.assertEqual(lua.eval('#nominations'), 0)
+        lua.execute('turn=19; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

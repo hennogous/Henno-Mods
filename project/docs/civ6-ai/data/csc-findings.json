@@ -1628,5 +1628,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C097"]
+  },
+  {
+    "id": "AI-C100",
+    "title": "Trebizond's native Granary forecast returned zero for the exchange roots and priced one Food near 18–19 units",
+    "statement": "Four read-only BuildingValue calls admitted all four Granary-owned Mill yield roots and returned zero for each. The intrinsic Food normalization and native income stream imply about 18–19 utility units for one additional Food in that case.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Trebizond turn-150 checkpoint to 154, with a working Water Mill and a legal unbuilt Granary. Native Food normalization was 383–395 Q8 and the observed income stream spanned 12–50 turns.",
+    "limits": "One city's stream and an approximate marginal Food value. Production, Gold, future Storekeeper, other cities and a live unique replacement remain unpriced.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/forecast-coverage.md",
+    "related": ["AI-N026", "AI-N076", "AI-C099"]
   }
 ]

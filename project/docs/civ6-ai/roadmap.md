@@ -120,8 +120,10 @@ needs both buildings. In Trebizond, where a Water Mill could
 immediately supply the Granary, Library won ordinary nomination.
 The matched **5.1** diagnostic produced a valid Granary offer,
 which Trebizond bought at its ordinary value. The exchange worked
-before the later Mill damage. Measure which yields the native
-forecast includes to calibrate the reusable preference.
+before the later Mill damage. The native forecast returned zero
+for the outgoing exchange roots. The initial reusable bid credits
+the incoming Food at 18 points. Verify delivery and balance in
+play, then calibrate the missing Production and Gold terms.
 Charleston supplied another **3.2** follow-through case. It received
 an exact Maize Farm bid and operated Storekeeper on 176–177.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
