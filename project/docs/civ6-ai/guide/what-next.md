@@ -42,9 +42,11 @@ city land while the material that makes the site viable is beyond it.
 The first turn-100 development game finished four AI Bakers
 Quarters. None had an active Storekeeper. Alexandria Troas had
 the buildings and unlocks, but the Cattle tile was still unimproved
-after the game applied the Pasture preference. Ancyra and Melbourne
-had working suppliers and lacked buildings. We can now replay
-the specific missing decisions from a normal game.
+after the game applied the Pasture preference. The replay showed
+the city chose a different Pasture when it had room for a new job.
+We can measure how much the Bakers supplier lost by, then test
+whether a small increase changes the job and restores Service.
+Ancyra and Melbourne had working suppliers and lacked buildings.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
 The offline planner separately covers actual gameplay definitions and a copied

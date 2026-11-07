@@ -130,6 +130,12 @@ reserving another site and had no Pasture at the endpoint. Trace
 proposal admission and worker assignment on this save. [AI-C084]
 [Normal-start follow-through](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
+The turn-112 replay found that Alexandria's ordinary improvement
+tree was occupied on nine checks. When the slot opened, the
+selected improvement was Pasture but another tile led by 5,888 Q8
+in all three comparisons. The Bakers supplier was selectable.
+[AI-C085] [Competing Pasture trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#alexandria-selected-a-different-pasture).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

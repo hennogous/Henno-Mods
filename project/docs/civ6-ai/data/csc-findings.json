@@ -1439,5 +1439,18 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C073", "AI-C081"]
+  },
+  {
+    "id": "AI-C085",
+    "title": "Another Pasture outranked Alexandria Troas's Bakers supplier after the job slot opened",
+    "statement": "The native ordinary improvement selector chose another Pasture in all three open comparisons. The Bakers Cattle was owned and selectable, with no reservation and an existing positive policy bid.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Read-only continuation from the exact turn-100 normal-start endpoint through 112. Nine of twelve proposal checks had an occupied improvement tree. In the three open checks the selected Pasture at (18,29) led the Bakers Cattle at (18,31) by 5888 Q8 after its +8192 Q8 policy adjustment. The city found a Builder for the competing work.",
+    "limits": "One save and bounded trace. No stronger bid or Builder assignment to the Bakers supplier was tested. Its Pasture and Storekeeper remained absent at the endpoint.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C084"],
+    "related": ["AI-C073"]
   }
 ]

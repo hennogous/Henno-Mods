@@ -1454,6 +1454,42 @@ The turn-100 census and result SHA-256 are
 `1bca1b1a0336efd6bf8a11561bbe9d7227ff35ca583ff625ba4ab0d4ef9903cc` and
 `71a2e138df19d538a09a05da8df864fee01559fb3d27abb1e3e409118944b21e`.
 
+### Alexandria selected a different Pasture
+
+`development-alexandria-pasture-01` reloaded the exact turn-100
+save with the same staged packages and an identical Stage 2 census.
+The observer was read-only. Macedonia had three Builders with
+four charges in total at load. Nine of the twelve observed
+ordinary proposal calls found an existing improvement tree.
+On each of the three open slots the native best improvement type
+was Pasture, and the ordinary selector picked (18,29), not the
+chain's Cattle at (18,31).
+
+| Open comparison | Selected tile, Q8 | Supply tile, Q8 | Margin, Q8 |
+| --- | ---: | ---: | ---: |
+| First | 36,280 | 30,392 | 5,888 |
+| Second | 34,739 | 28,851 | 5,888 |
+| Third | 34,650 | 28,762 | 5,888 |
+
+Each supplier value already includes the integrated +8,192 Q8.
+Its row was owned and selectable with no reservation. Native logs
+identify the first competing Pasture reservation on 102. The
+competing tree found a Builder on 110. This shows that the Cattle
+lost on the location comparison when the slot opened. It does
+not show whether the AI would assign a Builder to that target.
+The Cattle remained unimproved at 112. All eleven interior
+Storekeeper samples were present with no original-major activation.
+
+The controller closed and restored preferences. Civ truncated five
+optional district telemetry batches on 107–111. The report parser
+now records those omissions and still requires all Service samples.
+The native trace froze without faults, SHA-256
+`2ee267c238432d02c5dde88628b27335b4a5013baaf47ec83648d9d6ba10f083`.
+The next matched diagnostic can use +6,144 Q8 on top of the current
+bid for this one comparison, just above the measured gap, and
+verify assignment, construction and Service. This is a test amount
+for this save.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
