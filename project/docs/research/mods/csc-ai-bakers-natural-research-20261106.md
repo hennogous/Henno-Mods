@@ -2090,6 +2090,55 @@ Its endpoint save SHA-256 is
 `98e8b2de316db76208b4881d40934fa548628ddd74be0b737340e2436ab9e200`.
 The controller verified normal exit and restoration.
 
+### Native player weights calibrate the full ordinary Granary exchange
+
+`development-trebizond-granary-components-02` repeated the
+read-only turn-150 to 154 component window. The probe first
+identified the player valuation object in Trebizond's Granary
+`BuildingValue` call. It captured 16 positive Production inputs
+and 16 Gold inputs from other ordinary building yield calls
+through `52bb71` that used that same player object. These
+calls establish each native normalization weight independently
+of the reference buildings' own scores or build dates.
+
+One Production normalized to 370.2–370.9 Q8 and one Gold to
+370.7–371.0 Q8, using the observed output-to-input ratios.
+Using the Granary's measured 12.06 stream factor gives about
+17.5 score units each for Production and Gold. CSC rounds the
+three exchange terms down to 18 + 17 + 17, or 13,312 Q8.
+This first full exchange bid applies to a legal, missing
+customer next to a working Mill. The Water Mill and Granary
+exchange was observed directly. Future material, producer
+and Service benefits require separate pricing.
+
+The second component trace SHA-256 is
+`a027ae84d49cd25db10835723befce194a00162ab92c8fe9d9face5c93231a3b`.
+The controller verified normal exit and restoration.
+
+### The full exchange bid reached Trebizond and preserved the Library choice
+
+`development-trebizond-granary-exchange-ce-01` used the same
+turn-150 checkpoint through 164 with the rounded 52-point CSC
+policy. The reviewed CE package was unchanged. CE's own telemetry
+reported player 1, city 327684, building 3 changing from 46,458
+to 59,770 Q8 in the interval ending at 164. The city still
+submitted Library contract 3238 on 163. The run verified the
+larger bid's delivery with no external attachment. The choice
+remained consistent with the control in this opening.
+
+The passive gameplay milestone watcher emitted complete physical
+dependency censuses at turns 153 and 160 during autoplay. Both
+were archived separately from the continuous Storekeeper audit.
+This verifies the observer path for longer runs without stopping
+the game at each milestone.
+
+The integrated Lua log SHA-256 is
+`553e6dc4cbcc615231b9a6ac1b1ea1815b0b82535151c26ee87d30fd16b11998`.
+The milestone receipts have SHA-256 values
+`2fad43c04f664ffc8b8542a108deb9b6543dc59442e21558332f4bed5fe4a2d4`
+and `8170a18ae2e541696d7fb7042504c87e530086b57d812cbe4575f2aad9f57a38`.
+The controller verified normal exit and restoration.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

@@ -113,6 +113,13 @@ the selector changes the return address used by CE's caller
 guard. [AI-C101]
 [Clean integration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-clean-replay-applied-the-calibrated-granary-food-bid).
 
+Same-player native Production and Gold samples added about
+17.5 points each in the observed income window. CSC now rounds
+all three terms down to a 52-point preference for the immediate
+exchange. The integrated replay delivered the full bid and
+Library still won this opening. [AI-C102] [AI-C103]
+[Full exchange calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-player-weights-calibrate-the-full-ordinary-granary-exchange).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

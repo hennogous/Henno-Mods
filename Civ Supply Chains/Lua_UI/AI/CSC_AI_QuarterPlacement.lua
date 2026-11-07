@@ -20,9 +20,10 @@ local READY_SUPPLIER_BID_Q8 = 56 * 256
 -- Initial calibration from the matched Melbourne nomination. Only publish
 -- this preference when the Mill alone can complete a working Stage 2 chain.
 local READY_MILL_BID_Q8 = 448 * 256
--- Trebizond's native income stream valued one additional Food at roughly
--- 18–19 points. Production, Gold and possible future Service have separate values.
-local WORKING_MILL_GRANARY_BID_Q8 = 18 * 256
+-- Trebizond's measured stream gives about 18–19 points for Food and
+-- 17.5 each for Production and Gold. Round each term down. The bid
+-- covers the immediate exchange with a working Mill.
+local WORKING_MILL_GRANARY_BID_Q8 = (18 + 17 + 17) * 256
 local WIND_MILL = 'BUILDING_CSC_BAKERS_WIND_MILL'
 local WATER_MILL = 'BUILDING_CSC_BAKERS_WATER_MILL'
 

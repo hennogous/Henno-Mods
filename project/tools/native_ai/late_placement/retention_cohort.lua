@@ -43,14 +43,14 @@ local function working(buildings, kind)
     return buildings:HasBuilding(kind) and not buildings:IsPillaged(kind)
 end
 
-if mode == 'census' then
+local function census(players, prefix)
     -- Include unfinished and broken Quarters. The retention collector below
     -- deliberately skips them, which hides the links a development run needs.
     local count = 0
     local function emit(kind, ...)
         local fields = {...}
         for i, value in ipairs(fields) do fields[i] = tostring(value) end
-        print('CSC_BAKERS_CENSUS_' .. kind .. '\t' .. table.concat(fields, '\t'))
+        print(prefix .. kind .. '\t' .. table.concat(fields, '\t'))
         count = count + 1
     end
     local function unlocked(player, row)
@@ -63,7 +63,7 @@ if mode == 'census' then
         if not buildings:HasBuilding(kind) then return 'absent', -1 end
         return working(buildings, kind) and 'working' or 'pillaged', buildings:GetBuildingLocation(kind)
     end
-    for _, playerID in ipairs(assert(CSC_BAKERS_CENSUS_PLAYERS)) do
+    for _, playerID in ipairs(players) do
         local player = assert(Players[playerID])
         local alive = player:IsAlive()
         emit('PLAYER', playerID, alive, alive and player:GetCulture():HasCivic(feudalism))
@@ -113,7 +113,33 @@ if mode == 'census' then
             end
         end
     end
-    print(string.format('CSC_BAKERS_CENSUS_END\t%d\t%d', Game.GetCurrentGameTurn(), count))
+    print(string.format('%sEND\t%d\t%d', prefix, Game.GetCurrentGameTurn(), count))
+end
+
+if mode == 'census' then
+    census(assert(CSC_BAKERS_CENSUS_PLAYERS), 'CSC_BAKERS_CENSUS_')
+    return
+end
+
+if mode == 'census-watch' then
+    -- Sample selected gameplay boundaries while autoplay continues. Keep
+    -- this framing separate from the controller's inactive endpoint census.
+    assert(not CSC_BAKERS_CENSUS_WATCH_INSTALLED, 'Bakers census watcher already installed')
+    local players = assert(CSC_BAKERS_CENSUS_PLAYERS)
+    local pending = {}
+    for _, turn in ipairs(assert(CSC_BAKERS_CENSUS_TURNS)) do pending[turn] = true end
+    GameEvents.OnGameTurnStarted.Add(function()
+        local turn = Game.GetCurrentGameTurn()
+        if not pending[turn] then return end
+        pending[turn] = nil
+        print(string.format('CSC_BAKERS_WATCH_CENSUS_BEGIN\t%d', turn))
+        local ok, message = pcall(census, players, 'CSC_BAKERS_WATCH_CENSUS_')
+        if not ok then
+            print(string.format('CSC_BAKERS_WATCH_CENSUS_FAULT\t%d\t%s', turn, tostring(message)))
+        end
+    end)
+    CSC_BAKERS_CENSUS_WATCH_INSTALLED = true
+    print('CSC_BAKERS_CENSUS_WATCH_INSTALLED')
     return
 end
 

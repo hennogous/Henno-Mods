@@ -254,7 +254,7 @@ class BakersGameplayTest(unittest.TestCase):
             turn=16; boundary()
         """)
         self.assertEqual(lua.eval('#nominations'), 1)
-        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,4608')
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,13312')
         lua.execute('hasGranary=true; granaryPillaged=true; turn=17; boundary()')
         self.assertEqual(lua.eval('#nominations'), 0)
         lua.execute('hasGranary=false; millPillaged=true; turn=18; boundary()')

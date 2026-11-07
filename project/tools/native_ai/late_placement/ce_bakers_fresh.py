@@ -90,6 +90,32 @@ def capture_census(controller, players, turn, path):
     return sorted(rows)
 
 
+def archive_milestone_censuses(log, turns, out):
+    active = None
+    rows = []
+    result = {turn: 'missing' for turn in turns}
+    for kind, payload in re.findall(r'CSC_BAKERS_WATCH_CENSUS_([A-Z]+)\t([^\r\n]+)', log):
+        if kind == 'BEGIN':
+            active = int(payload)
+            rows = []
+            if active in result:
+                result[active] = 'incomplete'
+        elif kind == 'END':
+            turn, count = map(int, payload.split('\t'))
+            if turn == active and turn in result and len(rows) == count:
+                prefix = 'CSC_BAKERS_CENSUS_'
+                (out / f'chain-census-{turn}.txt').write_text(
+                    ''.join(f'{prefix}{row}\n' for row in rows) + f'{prefix}END\t{turn}\t{count}\n',
+                    encoding='utf-8')
+                result[turn] = 'complete'
+            active = None
+        elif kind == 'FAULT':
+            active = None
+        elif active in result:
+            rows.append(f'{kind}\t{payload}')
+    return result
+
+
 def capture_builders(controller, player, turn, path):
     code = f"""
 local player = assert(Players[{player}])
@@ -165,7 +191,7 @@ print('CSC_SUPPLIER_ACCESS_INSTALLED')
     require('CSC_SUPPLIER_ACCESS_INSTALLED' in raw, 'Supplier movement watch was not installed')
 
 
-def summarize_run(out, players, start, endpoint, untuned, checkpoint):
+def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_turns):
     require(load(out / 'session-closed.json')['verified'], 'Expected a closed development run')
     log = read(out / 'Lua.log')
     published = 'CSC_AI_BAKERS_DISTRICTS turn=' in log
@@ -191,7 +217,8 @@ def summarize_run(out, players, start, endpoint, untuned, checkpoint):
         district_score_samples=[dict(turn=turn, previous_version=version, rows=rows)
                                 for (turn, version), rows in score_samples.items()],
         incomplete_district_sample_turns=sorted(incomplete),
-        storekeeper=result, checkpoint=checkpoint))
+        storekeeper=result, checkpoint=checkpoint,
+        milestone_censuses=archive_milestone_censuses(log, census_turns, out)))
 
 
 def run(args):
@@ -233,6 +260,8 @@ def run(args):
         checkpoint_input = load(prior / 'checkpoint.json')
         start = checkpoint_input['turn']
         expected = dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
+        if 'census_turns' in previous:
+            expected['census_turns'] = previous['census_turns']
         if 'diagnostic_start' in previous:
             # A saved intervention stays labelled as such even when the
             # follow-through starts with the integrated policy alone.
@@ -313,6 +342,10 @@ def run(args):
             require(checkpoint_input['sha256'] == '1c6a36651a77d2361d06d651856eac8c57d6de921e2aede0fa4fca2d146f8843'
                     and args.granary == [1, 327684, 914] and args.through <= 154,
                     'Component capture uses a short read-only Trebizond window')
+    require(all(start < turn < args.through for turn in args.census_turns),
+            'Milestone censuses must be interior turns')
+    if args.census_turns:
+        protocol['census_turns'] = args.census_turns
     other_source = None
     if args.matched_source:
         other_source = args.matched_source.resolve(strict=True)
@@ -473,6 +506,12 @@ Modding.EnableMod(chosen.Handle,true)
         raw = controller.cmd('CSC_BAKERS_STOREKEEPER_WATCH=true\n' + read(HERE / 'storekeeper_runtime.lua'),
                              'PlotInfo', 'install-storekeeper-watch')
         require('CSC_BAKERS_STOREKEEPER_WATCH_INSTALLED' in raw, 'Storekeeper watch was not installed')
+        if args.census_turns:
+            scope = ("CSC_BAKERS_COHORT_MODE='census-watch'\nCSC_BAKERS_CENSUS_PLAYERS="
+                     + lua(sorted(players)) + '\nCSC_BAKERS_CENSUS_TURNS=' + lua(args.census_turns) + '\n')
+            raw = controller.cmd(scope + read(HERE / 'retention_cohort.lua'),
+                                 'CSC_AdjacencyGameplay', 'install-bakers-census-watch')
+            require('CSC_BAKERS_CENSUS_WATCH_INSTALLED' in raw, 'Milestone census watch was not installed')
         if args.supplier:
             capture_builders(controller, args.supplier[0], start, out / 'source-builders.json')
             watch_supplier_access(controller, args.supplier[0], args.supplier[3])
@@ -518,9 +557,11 @@ Modding.EnableMod(chosen.Handle,true)
                     scope['granaryNominationQ8'] = protocol['diagnostic_granary_nomination_q8']
                 if args.granary_components:
                     scope['granaryComponents'] = True
-                    scope['foodYieldIndex'] = parse(controller.cmd(
-                        "print('CSC_FOOD_INDEX='..assert(GameInfo.Yields.YIELD_FOOD).Index)",
-                        'GameCore_Tuner', 'granary-food-yield-index'), 'CSC_FOOD_INDEX')
+                    scope.update(parse(controller.cmd(
+                        """local yields = GameInfo.Yields
+print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldIndex":%d,"goldYieldIndex":%d}',
+    yields.YIELD_FOOD.Index, yields.YIELD_PRODUCTION.Index, yields.YIELD_GOLD.Index))""",
+                        'GameCore_Tuner', 'granary-exchange-yield-indices'), 'CSC_YIELD_INDICES'))
                 probe = HERE / 'mill_repair_observer.js'
                 write_json(out / 'granary-scope.json', scope)
             else:
@@ -590,7 +631,7 @@ Modding.EnableMod(chosen.Handle,true)
                 log = args.user_root / 'Logs' / name
                 if session.closed and log.is_file():
                     shutil.copyfile(log, out / name)
-    summarize_run(out, players, start, args.through, args.untuned, checkpoint)
+    summarize_run(out, players, start, args.through, args.untuned, checkpoint, args.census_turns)
 
 
 if __name__ == '__main__':
@@ -606,6 +647,8 @@ if __name__ == '__main__':
     parser.add_argument('--untuned', action='store_true', help='Remove only the CSC runtime policy action locally')
     parser.add_argument('--matched-source', type=Path, help='Require initial state parity with the other arm')
     parser.add_argument('--saves', type=Path, help='Native Saves/Single path for an endpoint census and archived save')
+    parser.add_argument('--census-turns', type=int, nargs='+', default=[],
+                        help='Read-only Bakers milestone snapshots during autoplay')
     parser.add_argument('--resume-from', type=Path, help='Continue a closed tuned development run for diagnosis')
     target = parser.add_mutually_exclusive_group()
     target.add_argument('--supplier', type=int, nargs=4, metavar=('PLAYER', 'CITY', 'QUARTER', 'PLOT'))
@@ -625,6 +668,9 @@ if __name__ == '__main__':
                         help='Verify the CE hook with the old or integrated CSC publisher on the exact Melbourne save')
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
+    options.census_turns = sorted(set(options.census_turns))
+    if len(options.census_turns) > 8:
+        parser.error('At most eight milestone census turns are supported')
     if options.resume_from:
         if not (options.saves and (options.supplier or options.wind_mill or options.granary)
                 and (options.probe_dependencies or options.movement_only or options.mill_ce_replay

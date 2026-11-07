@@ -100,8 +100,11 @@ function init(spec, scope) {
         scope.granary !== 3 || granaryBid !== 288 * 256))
         throw Error('Unsupported Trebizond Granary nomination preference');
     let granaryBidApplied = false;
+    const referenceYieldIndices = new Set([scope.productionYieldIndex, scope.goldYieldIndex]);
     if (scope.granaryComponents && (!scope.cePath || scope.player !== 1 || scope.city !== 327684 ||
-        scope.granary !== 3 || granaryBid || !Number.isInteger(scope.foodYieldIndex) || scope.foodYieldIndex < 0))
+        scope.granary !== 3 || granaryBid || referenceYieldIndices.size !== 2 ||
+        [scope.foodYieldIndex, ...referenceYieldIndices].some(index => !Number.isInteger(index) || index < 0) ||
+        referenceYieldIndices.has(scope.foodYieldIndex)))
         throw Error('Granary component capture requires the read-only Trebizond scope');
     if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
@@ -196,6 +199,8 @@ function init(spec, scope) {
         // Most native valuation calls belong to other buildings and cities.
         // Enter the detailed recorder only inside a matched valuation frame.
         const threads = new Map();
+        const referenceCounts = new Map();
+        let referencePlayer = null;
         for (const kind of componentPoints) {
             observe(STUDY_POINTS[kind][0], (args, invocation) => {
                 const thread = invocation.threadId;
@@ -204,6 +209,7 @@ function init(spec, scope) {
                     args[1].toInt32() !== building || args[6].isNull() || !target(args[6]))) return;
                 const frame = granaryComponents.enter(kind, decodeStudyArgs(kind, args, thread, caller(invocation)));
                 if (!frame) return;
+                if (kind === 'BuildingValue' && frame.paired) referencePlayer = args[5];
                 stack.push(frame);
                 threads.set(thread, stack);
                 return {frame, thread};
@@ -227,10 +233,23 @@ function init(spec, scope) {
         }
         observe(NORMALIZE_BUILDING_YIELD, (args, invocation) => {
             const yieldIndex = args[2].toInt32();
-            if (caller(invocation) !== INTRINSIC_YIELD_RETURN || yieldIndex !== scope.foodYieldIndex) return;
-            const frame = buildingFrame(invocation);
-            if (frame) return {out: args[0], buildingCallId: frame.id, kind: 'intrinsic-yield',
-                inputQ8: read(args[1], 0, 'i32'), yieldIndex};
+            if (caller(invocation) !== INTRINSIC_YIELD_RETURN) return;
+            if (yieldIndex === scope.foodYieldIndex) {
+                const frame = buildingFrame(invocation);
+                if (frame) return {out: args[0], buildingCallId: frame.id, kind: 'intrinsic-yield',
+                    inputQ8: read(args[1], 0, 'i32'), yieldIndex};
+            }
+            // NormalizeYields receives the same player valuation object as
+            // BuildingValue. A different city or building can provide a yield
+            // weight for that player. Its score and timing are unrelated.
+            if (!referencePlayer || referencePlayer.isNull() || !args[3].equals(referencePlayer) ||
+                !referenceYieldIndices.has(yieldIndex)) return;
+            const count = referenceCounts.get(yieldIndex) ?? 0;
+            if (count >= 16) return;
+            const inputQ8 = read(args[1], 0, 'i32');
+            if (inputQ8 <= 0) return;
+            referenceCounts.set(yieldIndex, count + 1);
+            return {out: args[0], kind: 'reference-yield', inputQ8, yieldIndex};
         }, recordIncome);
         observe(DISCOUNT_BUILDING_INCOME, (args, invocation) => {
             const from = caller(invocation);

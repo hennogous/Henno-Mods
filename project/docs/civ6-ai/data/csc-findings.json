@@ -1652,5 +1652,29 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C095", "AI-C100"]
+  },
+  {
+    "id": "AI-C102",
+    "title": "Native Production and Gold weights support a 52-point initial bid for the ordinary Granary exchange",
+    "statement": "Same-player intrinsic yield references put one Production and one Gold at about 17.5 points each in the observed Granary income window. Together with the Food term, the initial rounded CSC bid is 52 points.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Read-only repeat of AI-C100 from turn 150 to 154. Sixteen positive inputs of each yield used the same player valuation object. The Granary's own income timing supplies the common 12.06 factor.",
+    "limits": "One player's strategic weights and one income window. The calibrated bid is a coarse preference for an existing working Mill, with no deferred benefit or live unique-replacement claim.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/forecast-coverage.md",
+    "depends_on": ["AI-C099", "AI-C100"]
+  },
+  {
+    "id": "AI-C103",
+    "title": "The complete 52-point exchange preference reached native Granary nomination",
+    "statement": "The packaged CSC policy and reviewed CE changed Trebizond's Granary from 46458 to 59770 Q8. Library kept the same native offer. Passive dependency snapshots completed at turns 153 and 160.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Exact turn-150 Trebizond checkpoint to 164 with the 52-point CSC policy and no external attachment. CE recorded the exact city and building key.",
+    "limits": "One saved city. This verifies delivery and the preserved choice at that opening. Native selection and resulting exchanges across ordinary starts still need evidence.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C101", "AI-C102"]
   }
 ]

@@ -1,5 +1,13 @@
 # Late district placement trial
 
+For a normal-start development run, `ce_bakers_fresh.py` can
+capture intermediate chain dependencies with `--census-turns`
+followed by up to eight interior turns. The gameplay callback reads
+each requested snapshot during autoplay. The endpoint remains
+controlled separately. Completed samples are saved as
+`chain-census-TURN.txt`. The result records complete, incomplete and
+missing samples independently of the Storekeeper turn audit.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

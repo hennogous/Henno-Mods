@@ -68,8 +68,10 @@ the Mill gained one Production and one Gold. The Granary's native
 forecast returned zero for its exchange roots. The initial
 reusable bid credits the Food using the native income timing.
 The clean replay confirmed that the bid reached the comparison
-and Library still won. The Production and Gold terms still
-need their own calibration.
+and Library still won. Native samples for Production and Gold
+then raised the initial exchange preference to 52 points. Next,
+observe how the full policy assembles and retains chains from a
+normal development start.
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

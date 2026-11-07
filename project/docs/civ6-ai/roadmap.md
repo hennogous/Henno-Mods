@@ -124,8 +124,16 @@ before the later Mill damage. The native forecast returned zero
 for the outgoing exchange roots. The initial reusable bid credits
 the incoming Food at 18 points. The clean replay confirmed
 that CE applied the exact preference and Library kept the
-nomination. Calibrate Production and Gold, then check the
-combined preference across ordinary starts.
+nomination. Production and Gold calibration brings the full
+ordinary exchange bid to 52 points. The matched replay delivered
+it and Library kept the nomination. The next check is a frozen
+development setup from turn one.
+Use the existing Small Continents development seed, keep the
+three validation seeds in reserve, and sample missing links
+at turns 100, 150, 200 and 240. Use those gaps to prioritise
+the next tuning problem. At the default Online horizon, each
+qualifying chain needs to operate by roughly turn 150 to leave
+100 turns before the score limit. Lapses require an earlier start.
 Charleston supplied another **3.2** follow-through case. It received
 an exact Maize Farm bid and operated Storekeeper on 176–177.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

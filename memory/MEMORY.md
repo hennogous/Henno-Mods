@@ -1,4 +1,4 @@
-# Current Bakers AI work — 7 November 2026
+# Current Bakers AI work — 8 November 2026
 
 Active problem **5.1, customer construction**. CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native
@@ -17,10 +17,14 @@ chain on 176–177. These are development replays. The short
 turn-167 save timed out after the yield receipt and exited cleanly.
 See handbook AI-C094–AI-C100 and AI-N102–AI-N103. In Trebizond's
 component capture, the four Granary-owned exchange roots returned
-zero. One additional Food was worth roughly 18–19 native score
-units. The first integrated preference uses 18 for a legal
-Granary next to a working Mill. Production and Gold remain to
-calibrate.
+zero. The clean CE replay applied 18 Food points and Library
+kept the nomination. Native Production and Gold references
+valued another 17.5 points each. CSC now rounds the immediate
+exchange to 52. The combined replay applied 13,312 Q8 and Library
+still won. The passive milestone watcher recorded both requested
+censuses during autoplay. The next development run starts on turn
+one with frozen coefficients and the existing Small Continents
+seed. Leave the three preselected validation seeds in reserve.
 
 The turn-100 normal-start development game established four Bakers
 Quarters and no active Storekeeper. Alexandria Troas had only the
