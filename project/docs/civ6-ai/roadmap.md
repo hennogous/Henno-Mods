@@ -80,17 +80,23 @@ reservation competed for the damaged Cattle site while a Spaceport occupied
 city production. Check whether preserving site access enables the Pasture
 job, and measure the Mill repair at an actual production decision. The
 matched Wonder policy redirected that claim to a different Wonder and tile.
-Boston still rebuilt neither link by turn 222. Trace the compatible
-Pasture job separately from the protected tile, and observe the Mill's
-ordinary score and queue outcome when the Spaceport completes.
-Before a mature-game run, separate native policy limits
-from trace retention, preserve per-publication evidence, and index native
-lookups by city and district-site pair. Measure the resulting cost in play.
+Boston still rebuilt neither link by turn 222. The stock follow-up found that
+the damaged Mill could win the building comparison and still yield the
+production slot to an admitted Theater Square contract. The Mill remained
+pillaged at turn 252. Boston also submitted a repair contract on turn 249
+and queued an Encampment on turn 250. For **13.1 and 14.1**, trace how the
+game ranks and admits a legal repair contract and separately trace how a
+Pasture job gains a Builder assignment on the preserved tile.
+The CE performance review branch indexes policy lookups by city and
+district-site pair and separates routine policy limits from detailed trace
+retention. Its native self-tests passed. Qualify the optional summary mode
+and measure its cost in a mature live game before enabling it in CSC.
 [Current CE startup evidence](../research/mods/csc-ai-xp2-november-hotfix-20261106.md#corrected-shared-ce-loads-and-accepts-district-scores).
 [Builder candidate replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
 [Automatic CE Builder replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).
 [Natural recovery baseline](../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
 [Matched Wonder protection](../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
+[Mill repair and city contract ordering](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

@@ -48,6 +48,11 @@ down by turn 222. Selection and execution of a Pasture job remain
 separate checks. [AI-C068]
 [Matched Wonder protection](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
 
+When the Spaceport and Research Lab finished, Boston's eligible Water Mill
+repair won the building comparison. The city queued an admitted Theater
+Square contract and ended the replay with the Mill still pillaged.
+[AI-C069] [Mill repair choice](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

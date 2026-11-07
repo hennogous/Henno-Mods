@@ -58,6 +58,8 @@ def run(args):
             'The cohort survey requires a verified intermediate checkpoint')
     require(not args.recover_from or (args.continue_from and not args.retain_from and not args.guard_farm),
             'A recovery baseline must observe a closed interruption without native score or Farm interventions')
+    require(not args.observe_mill_repair or (args.recover_from and args.dependencies),
+            'Mill observation requires the damaged continuation and pinned Frida')
     treatment = load(match / 'result.json')['treatment']
     target = treatment['plan']['target']
     final = treatment['followthrough'][-1]
@@ -98,7 +100,8 @@ def run(args):
                 'Expected a closed damaged checkpoint')
         interrupted = load(reference / 'result.json')
         damaged = interrupted['state']
-        require(interrupted['stop'] == 'retention-interrupted' and not damaged['operation']['operating']
+        require(interrupted['stop'] in ('retention-interrupted', 'endpoint') and interrupted['native_writes'] == 0
+                and not damaged['operation']['operating']
                 and damaged['city']['owner'] == target['player'] and damaged['city']['complete']
                 and any(row['plot'] in target['base'] and row['deposit'] and not row['working']
                         for row in damaged['neighbors'])
@@ -136,6 +139,7 @@ def run(args):
     if args.recover_from:
         inputs.append(reference / 'result.json')
     baseline = guard_code = None
+    trace_name = 'mill-repair' if args.observe_mill_repair else 'farm'
     if args.guard_farm:
         reference = args.guard_farm.resolve()
         require(load(reference / 'restoration.json')['verified'], 'Expected a closed Farm-loss control')
@@ -144,6 +148,11 @@ def run(args):
         native = [STUDY / 'observer.js', HERE / 'farm_guard.js']
         inputs.extend((*native, reference / 'states.json', reference / 'UnitOperations.log'))
         guard_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(map(read, native))
+    elif args.observe_mill_repair:
+        native = [STUDY / 'observer.js', HERE / 'mill_repair_observer.js']
+        inputs.extend(native)
+        guard_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(map(read, native))
+    if guard_code:
         sys.path.insert(0, str(args.dependencies.resolve()))
         import frida
         require(frida.__version__ == '17.24.3' and Path(frida.__file__).resolve().is_relative_to(args.dependencies.resolve()),
@@ -180,7 +189,7 @@ def run(args):
         nonlocal frozen
         if script is not None and frozen is None:
             frozen = script.exports_sync.freeze()
-            write_json(out / 'farm-trace-frozen.json', frozen)
+            write_json(out / f'{trace_name}-trace-frozen.json', frozen)
 
     def play(previous, turn):
         if script is not None:
@@ -188,8 +197,8 @@ def run(args):
         controller.play(turn)
         if script is not None:
             trace = script.exports_sync.snapshot()
-            write_json(out / 'farm-trace-live.json', trace)
-            require(trace['fault'] is None and not messages, 'Farm selector trace fault')
+            write_json(out / f'{trace_name}-trace-live.json', trace)
+            require(trace['fault'] is None and not messages, f'{trace_name} trace fault')
 
     def sample(turn):
         raw = controller.cmd(source_code, 'GameCore_Tuner', f'bakers-stage2-{turn}')
@@ -245,18 +254,24 @@ def run(args):
         boundaries = {name: capture_log_baseline(args.user_root / 'Logs' / name) for name in names}
         write_json(out / 'log-boundaries.json', {name: b.evidence() for name, b in boundaries.items()})
         if guard_code:
-            query = ('local w,h=Map.GetGridSize(); local farm=assert(GameInfo.Improvements.IMPROVEMENT_FARM).Index;'
-                     'print(string.format(\'CSC_FARM_SCOPE={"width":%d,"height":%d,"farm":%d}\',w,h,farm));')
-            raw = controller.cmd(query, 'GameCore_Tuner', 'native-farm-scope')
-            require(len(target['base']) == 1, 'Guard requires the exact tracked Base')
-            native_scope = dict(parse(raw, 'CSC_FARM_SCOPE'), player=target['player'], plot=target['base'][0],
-                                filterCandidates=args.filter_farm_candidates)
-            write_json(out / 'farm-scope.json', native_scope)
+            if args.observe_mill_repair:
+                query = ('print(string.format(\'CSC_MILL_SCOPE={"mill":%d}\','
+                         'assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL).Index));')
+                raw = controller.cmd(query, 'GameCore_Tuner', 'native-mill-scope')
+                native_scope = dict(parse(raw, 'CSC_MILL_SCOPE'), player=target['player'], city=target['city'])
+            else:
+                query = ('local w,h=Map.GetGridSize(); local farm=assert(GameInfo.Improvements.IMPROVEMENT_FARM).Index;'
+                         'print(string.format(\'CSC_FARM_SCOPE={"width":%d,"height":%d,"farm":%d}\',w,h,farm));')
+                raw = controller.cmd(query, 'GameCore_Tuner', 'native-farm-scope')
+                require(len(target['base']) == 1, 'Guard requires the exact tracked Base')
+                native_scope = dict(parse(raw, 'CSC_FARM_SCOPE'), player=target['player'], plot=target['base'][0],
+                                    filterCandidates=args.filter_farm_candidates)
+            write_json(out / f'{trace_name}-scope.json', native_scope)
             attached = frida.attach(session.owner.pid)
             script = attached.create_script(guard_code)
             script.on('message', lambda value, data: messages.append(value))
             script.load()
-            require(script.exports_sync.init(spec, native_scope), 'Expected qualified Farm guard')
+            require(script.exports_sync.init(spec, native_scope), f'Expected qualified {trace_name} probe')
         if args.survey_retention:
             run_survey(controller, out, args, start, cohort_probe, play)
             freeze()
@@ -318,10 +333,10 @@ def run(args):
                                                native_directory=args.saves, archive=out / 'stage2.Civ6Save')
         freeze()
         if frozen is not None:
-            require(frozen['fault'] is None and not messages, 'Farm guard failed before close')
+            require(frozen['fault'] is None and not messages and not frozen['active'], f'{trace_name} probe failed before close')
         write_json(out / 'result.json', dict(stop=stopped, turn=turn, native_writes=0, state=state,
                                                operating_since=operating_since, checkpoint=next_save,
-                                               farm_rejections=frozen['rejected'] if frozen else 0,
+                                               farm_rejections=frozen.get('rejected', 0) if frozen else 0,
                                                start=start, interruption=interruption))
     finally:
         if session.owner is not None and session.owner.poll() is None:
@@ -359,4 +374,5 @@ if __name__ == '__main__':
     parser.add_argument('--resume-retention', type=Path, help='Reload a healthy intermediate retention checkpoint')
     parser.add_argument('--survey-retention', action='store_true', help='Track other working Bakers chains in the same world')
     parser.add_argument('--recover-from', type=Path, help='Observe natural recovery after a verified damaged checkpoint')
+    parser.add_argument('--observe-mill-repair', action='store_true', help='Trace Boston Mill production choices without writes')
     run(parser.parse_args())

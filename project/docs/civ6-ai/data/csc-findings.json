@@ -1236,5 +1236,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N094", "AI-C067"],
     "related": ["AI-C065", "AI-C066"]
+  },
+  {
+    "id": "AI-C069",
+    "title": "Boston's eligible Water Mill repair won the building comparison without entering production",
+    "statement": "After the Spaceport finished, Research Lab beat the Mill. After the Lab finished, the Mill became the best building, but Boston queued its Theater Square contract. The city later submitted a Mill repair contract and queued an Encampment instead. The Mill remained damaged and Storekeeper inactive at the turn-252 endpoint.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Read-only stock XP2 continuation of the exact turn-234 Boston recovery save. The turn-245 Mill winner scored 645296 Q8. The observer recorded no Water Mill BuildBuilding request through turn 252.",
+    "limits": "One damaged chain. The stock repair proposal establishes that the city can submit the request. Admission, ranking against competing contracts, job assignment for the Cattle and restored Storekeeper payout still require separate verification.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C067", "AI-N095"],
+    "related": ["AI-C068"]
   }
 ]

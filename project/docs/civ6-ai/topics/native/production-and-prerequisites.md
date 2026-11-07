@@ -2,6 +2,17 @@
 
 A missing prerequisite can block immediate construction while the dependent building still has forecast value. Native city development combines that foresight with commitments to individual items; it does not follow that every useful chain becomes a persistent plan.
 
+## An admitted contract can run ahead of the best building
+
+`QueueNextBuild` gathers the best building, unit and project. The ordinary
+contract branch compares the admitted contract against the unit score
+minus 256 and the project score. If the contract passes and executes,
+the function returns before fallback production selection. The building
+score does not enter that branch's comparison. Boston's best building was
+an eligible repair on turn 245, while the city started a Theater Square
+from its admitted contract. [AI-N095]
+[Native branch and live queue evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
+
 ## Factory can help justify Workshop and Industrial Zone
 
 The inspected building forecast includes research/civic delay, missing prerequisite district and direct prerequisite-building production delays, and the desired building's production time. CalculateDistrictValues (3dfee0) adds positive direct-dependent values backward and can add qualifying building values to positive missing/pillaged prerequisite district entries. [AI-N018]

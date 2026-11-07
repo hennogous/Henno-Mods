@@ -596,6 +596,44 @@ with 62 district entries at the endpoint. The Lua timer resolved no
 nonzero durations in this window. These counts check activity and
 capacity for the fixture. Native overhead still needs measurement.
 
+### The Mill won the building comparison and missed the queue
+
+`mill-repair-choice-01` resumed the exact stock turn-234 endpoint with a
+read-only observer on the patched XP2 binary. The run reached turn 252
+with zero native writes, no observer fault, and verified controller
+restoration. Boston's Granary still worked, the Water Mill was pillaged,
+and the developable Cattle had no improvement. Storekeeper growth was zero.
+
+| Turn | Building comparison and actual production |
+| --- | --- |
+| 242 | The Spaceport completed. The eligible Water Mill repair scored 564,093 Q8 in the building comparison. Research Lab won with 1,325,518 Q8 and its build request succeeded. |
+| 245 | The Research Lab completed. Water Mill won the building comparison at 645,296 Q8. Boston instead queued Theater Square contract 5774, submitted on turn 243. |
+| 249 | Boston submitted Water Mill contract 5997 with a logged value of 1,511.0. |
+| 250 | Boston queued Encampment contract 5954 after the Art Museum completed. No Mill build request appeared in the probe through turn 252. |
+
+On this XP2 image, `QueueNextBuild` at RVA `3e8190` calls the building
+selector with return address `3e849c`. Its ordinary contract branch
+uses the admitted contract pointer at city-build offset `0x158`.
+It compares the contract against the unit value minus `0x100` and the
+project value. A successful call to the contract's Execute slot at
+`0x38` returns before fallback production selection. The building score
+does not enter those contract checks. The submitted contract's printed
+value and the fallback Q8 score come from distinct consumers. Their
+conversion and the rules for admission are open.
+
+The next recovery probe should trace how the stock proposal from
+`CheckForUnitOrBuilding` at `3e1580` becomes a contender for admission.
+Boston's turn-249 submission gives an existing legal repair request to
+follow. Pasture job assignment needs its own test.
+
+The trace is under `mill-repair-choice-01`. Its frozen SHA-256 is
+`e2a71ed73410f6cf47dba075892880348337ff6c9be5af7ec8a2080f3151a8ea`.
+The result SHA-256 is
+`98a4f5d918a1be81712488a417930515ebbbfaaafb424f8b4e8a014ab753f081`.
+The archived `AI_CityBuild.csv` identifies submissions and queue starts.
+`City_BuildQueue.csv` records production progress. The probe's boundary
+field identifies the beginning of a sampling segment.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
