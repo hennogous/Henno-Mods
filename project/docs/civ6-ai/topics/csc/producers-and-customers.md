@@ -118,6 +118,20 @@ Same-player native Production and Gold samples added about
 all three terms down to a 52-point preference for the immediate
 exchange. The integrated replay delivered the full bid and
 Library still won this opening. [AI-C102] [AI-C103]
+
+In the ordinary Small Continents development game, Melbourne's
+Wind Mill bid reached native nomination. The city queued a Knight
+and later an Industrial Zone, then spent Gold on a later Mill offer
+on turn 113. The native Storekeeper effect operated from turn 114.
+Nomination, production choice and economic purchase are separate
+observations. The run lacks a matched no-bid arm. [AI-C104]
+
+In the same game, Launceston bought its Water Mill first. The
+52-point bid then reached its Granary nomination. The city bought
+the resulting offer and Storekeeper operated from turn 189.
+This closes live follow-through for one customer. A matched
+comparison would be needed to attribute the nomination to the bid.
+[AI-C105]
 [Full exchange calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-player-weights-calibrate-the-full-ordinary-granary-exchange).
 
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision

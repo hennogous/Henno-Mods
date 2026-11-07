@@ -1,6 +1,16 @@
 # Current Bakers AI work — 8 November 2026
 
-Active problem **5.1, customer construction**. CSC `dac8591` and
+Active problem **3.2, Alexandria supplier admission**. The frozen
+ordinary-start development run `development-ordinary-exchange-249-01`
+bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
+Heidelberg completed its multi-link chain on 178. At 150, Alexandria's
+only missing link was the unimproved Cattle. Its 14,336 Q8 bid reached
+the scorer repeatedly while other improvement jobs held reservations.
+The preserved turn-154 autosave and hash are in the dated Bakers report.
+Replay the job comparison with the same bid before adjusting it.
+Under **14.1**, assess how to start credible multi-link chains earlier.
+
+CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native
 production and Storekeeper from the exact turn-125 save. The same
 CE DLL with zero nominations retained Amphitheater. The 448-unit

@@ -69,9 +69,23 @@ forecast returned zero for its exchange roots. The initial
 reusable bid credits the Food using the native income timing.
 The clean replay confirmed that the bid reached the comparison
 and Library still won. Native samples for Production and Gold
-then raised the initial exchange preference to 52 points. Next,
-observe how the full policy assembles and retains chains from a
-normal development start.
+then raised the initial exchange preference to 52 points.
+
+In the next ordinary start, Melbourne submitted a Wind Mill offer
+and used its production for other commitments. It bought the Mill
+on turn 113, and Storekeeper operated from 114 through 154.
+Alexandria still lacked a Pasture at 150 despite the supplier bid
+reaching its scorer. Trace whether the job loses when an ordinary
+slot opens, or whether another job holds the slot. Six other sites
+had both types of neighbor and multiple unfinished links. They
+also need a way to value the first investment in the chain.
+Heidelberg assembled several such links and activated Storekeeper
+on turn 178. That was too late to reach 100 active turns by the
+end of the run. Its Builder repaired the Maize Farm during a
+short lapse, and the native effect returned. Launceston bought
+its Granary after receiving the exchange bid and became the
+third chain on 189.
+[Ordinary-start evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-bought-its-mill-in-the-ordinary-start-development-run).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

@@ -126,12 +126,29 @@ the incoming Food at 18 points. The clean replay confirmed
 that CE applied the exact preference and Library kept the
 nomination. Production and Gold calibration brings the full
 ordinary exchange bid to 52 points. The matched replay delivered
-it and Library kept the nomination. The next check is a frozen
-development setup from turn one.
-Use the existing Small Continents development seed, keep the
-three validation seeds in reserve, and sample missing links
-at turns 100, 150, 200 and 240. Use those gaps to prioritise
-the next tuning problem. At the default Online horizon, each
+it and Library kept the nomination.
+
+**Ordinary-start development — 4.2 and 3.2.** The frozen Small
+Continents setup bought Melbourne's Wind Mill on 113 while the city
+used production for other work. Storekeeper operated on 114–154.
+The turn-150 census found 14 completed Quarters. Alexandria Troas
+still needed its Pasture despite the exact supplier bid reaching
+the scorer. Trace the first open improvement admission before
+changing the amount. Six other sites with both a Base deposit and
+customer footprint had multiple unfinished links. Under **14.1**,
+assess an opening investment when no last-link bid applies.
+Heidelberg finished its Granary, Quarter, Water Mill and supplier,
+then activated Storekeeper on 178. Its Maize job was already
+reserved before the ready-chain Farm preference could apply.
+Heidelberg's Builder repaired the Maize Farm on 185 and the
+Service resumed on 187 (**13.1**). Launceston received the full
+Granary preference, bought its offer and activated a third chain
+on 189 (**5.1**). Both later chains missed the window for
+100 cumulative turns.
+[Ordinary-start purchase and census](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-bought-its-mill-in-the-ordinary-start-development-run).
+
+Keep the three validation seeds in reserve. The development census
+samples turns 100, 150, 200 and 240. At the default Online horizon, each
 qualifying chain needs to operate by roughly turn 150 to leave
 100 turns before the score limit. Lapses require an earlier start.
 Charleston supplied another **3.2** follow-through case. It received

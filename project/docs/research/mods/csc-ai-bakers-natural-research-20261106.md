@@ -2139,6 +2139,74 @@ The milestone receipts have SHA-256 values
 and `8170a18ae2e541696d7fb7042504c87e530086b57d812cbe4575f2aad9f57a38`.
 The controller verified normal exit and restoration.
 
+### Melbourne bought its Mill in the ordinary-start development run
+
+`development-ordinary-exchange-249-01` used the earlier Small Continents
+development seeds and the integrated 52-point Granary exchange policy.
+The separate CSC and CE packages loaded on turn one. The stock AI
+researched and played under shared-controller autoplay. No qualification
+seed or external score writer was used.
+
+At turn 100, the census had eight Bakers Quarters, six complete, with
+Feudalism unlocked by all five original AI majors. Melbourne's Rice Farm
+and Granary worked, and only the Wind Mill was missing. The 448-point
+Mill preference reached the nomination scorer in the interval reported
+on 97 and the city had submitted Wind Mill offer 1521 on 96. Production
+went to a Knight on 97 and an Industrial Zone on 102.
+
+The next observed nomination receipts included a score change from
+50,366 to 165,054 Q8 in the interval reported on 111. Melbourne
+submitted Wind Mill offer 1907 on 110. The native city log records its
+purchase on 113. From 114, the native Storekeeper observer confirmed
+the active attachment and Growth recipient. The continuously sampled
+clock had no gaps from 2 through 154. Melbourne operated on 114–154,
+the only original-major Bakers chain confirmed in that window.
+
+At 150, 14 of 15 Quarters were complete. Six of those 14 lacked
+an adjacent mapped Base deposit, an adjacent City Center customer
+footprint, or both. Six more had both types of neighbor and multiple
+unfinished links. Alexandria Troas had a working Water Mill and
+Granary, but its sole Cattle at (18,31) still lacked a Pasture.
+The same 14,336 Q8 supplier preference reached the scorer repeatedly,
+including all reporting intervals 100–155. Alexandria's ordinary
+improvement trees logged four other reservation locations in 100–159.
+These records establish scoring and competing reservations. They
+leave the reason the Cattle missed admission unresolved.
+
+Heidelberg opened a second chain. Its Quarter was still unfinished
+at 150, with no Mill, Granary or improved Maize. The production
+ledger shows Granary finishing on 158, Quarter on 163 and Water
+Mill on 174. The improvement tree was already reserving the Maize
+at (59,17) by 172, before the Mill finished and the final-link Farm
+preference became applicable. The tree reached the tile on 177
+and the native Water Mill attachment and Growth recipient first
+operated on 178. This is an observed multi-link sequence. Its
+activation was too late for 100 active turns within this window.
+Storekeeper dropped out on 184–186. On 185, Heidelberg's ordinary
+improvement tree reached the same Maize tile and logged a successful
+Farm repair. The original Quarter and its City Center regained
+the native Growth effect on 187. The logs do not identify the
+source of the damage or isolate a contribution from the bid.
+
+Launceston bought Water Mill offer 3781 on 181. In the next
+nomination interval, the 52-point exchange bid changed the
+Granary candidate for player 4, city 458758, from 78,805 to
+92,117 Q8. The city submitted Granary offer 3903 on 182 and
+bought it on 188. Its native Storekeeper attachment and Growth
+recipient first operated on 189. This is the first ordinary-start
+follow-through for the full exchange bid. The run has no matched
+control for this city, so the sequence does not prove that its
+nomination would have lost without the bid.
+
+The earlier calibrated game built Alexandria's Pasture on 118. This
+game used newer packages and reached a different live state. A replay
+of the current decision window can separate ranking, reservation,
+assignment and movement without changing the preference first.
+The preserved `diagnostic-AutoSave_0154.Civ6Save` SHA-256 is
+`8dff282a47f0137be39baa99c1c15f1e1897128c4d8f8badd2d4f981dd349b8d`.
+The development evidence is under
+`Desktop/Codex/csc-bakers-qualification-20261107`.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

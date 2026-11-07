@@ -1676,5 +1676,41 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C101", "AI-C102"]
+  },
+  {
+    "id": "AI-C104",
+    "title": "Melbourne bought its nominated Wind Mill and activated Storekeeper from a normal start",
+    "statement": "Integrated CE applied the 448-point Wind Mill nomination preference in Melbourne. Native production chose a Knight and then an Industrial Zone during earlier offers. The AI bought Wind Mill offer 1907 on turn 113, and the native Storekeeper attachment and Growth recipient were active from turn 114.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "One ordinary Small Continents development seed with frozen CSC and CE packages, stock AI, no external score writer and strict native effect samples through turn 154.",
+    "limits": "No same-package no-bid arm for this run. The evidence establishes delivery, a purchase and realised Service, with no causal estimate or general calibration of 448 points.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "related": ["AI-C093", "AI-N103"]
+  },
+  {
+    "id": "AI-C105",
+    "title": "Launceston received the full Granary exchange bid, bought the Granary and activated Storekeeper",
+    "statement": "In an ordinary-start development game, Launceston bought a Water Mill on 181. The full 13312 Q8 exchange bid changed its Granary candidate from 78805 to 92117 Q8 in the next nomination interval. It bought the resulting offer on 188 and first operated Storekeeper on 189.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "One ordinary Small Continents development seed with integrated CSC and CE, exact nomination and city contract receipts, and native attachment and Growth recipient samples.",
+    "limits": "One city and no matched no-bid arm. The sequence proves live delivery and follow-through. It cannot establish that the bid changed the winner. Activation was too late for 100 active turns by the endpoint.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "related": ["AI-C103", "AI-N103"]
+  },
+  {
+    "id": "AI-C106",
+    "title": "Heidelberg repaired its Maize Farm and regained Storekeeper in an ordinary game",
+    "statement": "Heidelberg first operated Storekeeper on 178. It was inactive on 184–186. The native improvement tree moved a Builder to its Maize tile and reported a successful Farm repair on 185. Native Storekeeper resumed on 187 for the same Quarter and City Center.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "One ordinary Small Continents development seed. The exact plot reservation, native repair and realised Growth effect are recorded by independent logs.",
+    "limits": "The damage source was not identified. This is a supplier repair through the ordinary AI and does not isolate a treatment effect or cover Mill or Granary damage.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C087", "AI-C088"]
   }
 ]

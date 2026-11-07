@@ -153,6 +153,14 @@ The integrated publisher and widened CE cap then reproduced the
 same work and three Storekeeper turns without a diagnostic hook.
 [AI-C088] [Integrated calibration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-integrated-supplier-bid-reproduced-storekeeper-without-a-diagnostic-hook).
 
+The later ordinary-start game delivered the same bid to Alexandria's
+Pasture scorer. The Cattle remained unimproved at 150 while other
+jobs held reservations. The open admission and assignment still
+need to be traced in that state. In Heidelberg, the ordinary
+improvement tree repaired the Maize Farm during a three-turn
+Storekeeper lapse. The native effect resumed on 187 for the same
+Quarter and customer. [AI-C106]
+
 The same packages then ran from normal setup. Alexandria's
 Storekeeper operated for six measured turns after the native
 Pasture completed. Other cities still had production or
