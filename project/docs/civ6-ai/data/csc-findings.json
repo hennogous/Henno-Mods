@@ -1166,10 +1166,23 @@
     "status": "accepted",
     "evidence_types": ["runtime", "source", "static", "inference"],
     "scope": "One isolated Online Boston continuation on patched stock XP2. Turn 66 exact save, 2,335 player-phase samples, synchronized yield readings at inactive boundaries, one scoped Farm veto and normal closure. Granary 795, Quarter 721 and Cattle 796. An exact turn-186 reload reproduced the first failure at turn 207 and caught the removal callback at turn 209.",
-    "limits": "A Crippling Blizzard was logged near both plots on turn 207. The initial run did not record the damage source for each plot. The 141-turn span does not establish 150-turn operation or native recovery after damage.",
+    "limits": "A Crippling Blizzard was logged near both plots on turn 207. The initial run did not record the damage source for each plot. This branch stops short of the 150-turn target. AI-C064 covers a separate continuation.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C062"],
-    "related": ["AI-N088"]
+    "related": ["AI-N088", "AI-C064"]
+  },
+  {
+    "id": "AI-C064",
+    "title": "The same Boston Bakers chain operated for 152 consecutive turns in a separate continuation",
+    "statement": "The exact Boston Cattle Pasture, Quarter, Water Mill, Granary and active Storekeeper stayed in operation from the turn-90 checkpoint through the turn-242 checkpoint. Exact chain checks passed at all 2,388 recorded player-turn ends, with 20 independent yield boundaries. The guard made no interventions in this interval.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "One isolated CSC Online save continuation on patched stock XP2. Player 3, Boston 131073, Quarter and Water Mill 721, Granary 795, Cattle Pasture 796. Granary Food 2 against database base 1 and Mill Food 1 throughout the sampled yield boundaries. Verified turn-90 and turn-242 save identities and closed controller run.",
+    "limits": "The earlier Boston blizzard did not recur in this continuation. This demonstrates duration in one established chain. Damage resilience, post-disaster repair, generalized bid calibration and causality of the playback divergence remain open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C062"],
+    "related": ["AI-C063"]
   }
 ]

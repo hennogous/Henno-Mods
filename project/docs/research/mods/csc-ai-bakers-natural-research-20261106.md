@@ -339,6 +339,37 @@ and no score writes. It ended at turn 210 with a verified save and restored
 setup. The resumed run's `retention/210.json` SHA-256 is
 `c19fd0f4e2b652cd8a1e749b1efee6cbe457f7a46816f8c12830df45c75a287d`.
 
+## The same chain passed 152 turns in a separate continuation
+
+`cohort-02` reloaded the exact healthy turn-90 save to look for other AI
+Bakers chains. It independently qualified the same Boston chain for the
+entire run from turn 90 through the turn-242 save. The chain kept its Bakers
+Quarter and Water Mill on plot 721, Granary on plot 795, and working Cattle
+Pasture on plot 796. Storekeeper remained active. All 2,388 recorded
+player-turn ends agreed on the exact chain identity, and Boston's own turn
+end was present once per elapsed turn. The independent UI readings at the
+20 inactive boundaries showed 2 Granary Food against a database base of 1,
+and 1 Water Mill Food. A gap, a changed physical participant or a failed
+yield boundary would have restarted the streak.
+
+The two continuations diverged. The turn-207 weather log for `cohort-02`
+records a River Severn flood at (54, 27). The earlier Boston blizzard did
+not recur. This run kept the same rules and had zero Farm vetoes. The cohort
+observer only read state. The result establishes that the chain can last at
+least 150 turns in normal play after establishment. The earlier replay
+shows that damage can still break it. These runs leave post-disaster repair
+and the reason for divergence between the two playbacks open.
+
+The run closed normally and restored preferences and the temporary package.
+The audit command is `python -B project/tools/native_ai/late_placement/survey_retention.py <closed-run>`.
+The starting save SHA-256 is
+`369f670a1ab0ad5a0ef004636f7feb7a6934b075242e12bb1caee4855f617728`.
+The ending `cohort.Civ6Save` SHA-256 is
+`17f4fa324387e99e4a662ba9d6a1f244916a5caf3700b1b6b7c530a3984c930f`.
+SHA-256 values for `cohort-result.json` and `cohort/242.json` are
+`28b0c04f65db1e45e3ca9cbcb7c459ed1f1bd7958cfb7641b69f361c2e36580b` and
+`ab9db34b34d96f08293faef93374e6280d165c3cbcee3bd704bcb380334ba33a`.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

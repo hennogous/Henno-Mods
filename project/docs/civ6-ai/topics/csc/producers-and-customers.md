@@ -28,6 +28,12 @@ turn-210 save showed Cattle without a Pasture, a pillaged Water Mill, an intact
 Granary and zero Storekeeper Growth even though its marker still existed.
 [AI-C063] [Retention and damage evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-chain-stayed-active-for-141-turns-before-damage).
 
+In a separate continuation from turn 90, the same chain worked through the
+turn-242 save. The original supplier, Mill, Granary and Storekeeper held
+through 152 completed turns, with Granary and Mill Food verified separately.
+The earlier Boston blizzard did not recur in this playthrough.
+[AI-C064] [152-turn audit](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.
