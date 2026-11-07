@@ -35,6 +35,10 @@ The corrected turn-66 supplier-only run reached 75. An occupied ordinary
 job preceded the live Irrigation boost claim. Builder 2228225 harvested
 Cattle 796 on turn 73. The exact turn-72 autosave was captured before the
 claim and supplies the matched CE Builder-protection comparison.
+The turn-72 CE comparison changed Farm scores to the ineligible floor
+but both arms still lost Cattle to the same harvest. Use the earlier
+turn-69 replay and native selector reads to separate prior commitment,
+cache timing and other callers before changing the policy.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

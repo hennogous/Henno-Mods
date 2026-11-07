@@ -1262,5 +1262,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N096", "AI-C069"],
     "related": ["AI-C066", "AI-C068"]
+  },
+  {
+    "id": "AI-C071",
+    "title": "Farm score suppression did not prevent the turn-73 Irrigation harvest",
+    "statement": "The main CSC publisher enabled CE Builder protection on the exact missing supplier. CE recorded Farm score writes to the native ineligible floor. Both cold-load arms nevertheless executed the same Irrigation harvest and lost the Cattle.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Patched Windows XP2 and the same CE binary and turn-72 autosave in both arms. Treatment first writes 41309 and 42128 Q8 to minus 2559744 on plot 796. Both arms reserved the plot on turn 72, logged Builder 2228225 harvesting on turn 73, and ended with no deposit at turn 84.",
+    "limits": "The CE receipts group writes by publication. They do not establish whether the relevant selector read that score before it committed or whether the job reused a prior location. Earlier protection and execution revalidation are separate questions.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C070", "AI-N092", "AI-N096"],
+    "related": ["AI-C066"]
   }
 ]

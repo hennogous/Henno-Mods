@@ -49,9 +49,9 @@ building yields. In a separate test with only the Mill pillaged, the AI
 repaired it and restored Storekeeper with its original Pasture. The late
 Boston chain still needs that Pasture rebuilt before Storekeeper can return.
 In the controlled Pasture-loss replay, an Irrigation boost harvested the
-Cattle before Boston could rebuild. The matched test starts from the
-captured decision save to check whether Builder protection keeps the
-deposit and whether the AI then restores supply.
+Cattle before Boston could rebuild. The matched replay also lost the
+deposit after CE suppressed the Farm forecast. The earlier replay will
+trace which location selector the boost uses and what it reads.
 [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay) ·
 [Qualification roadmap](../roadmap.md#current-milestone-and-active-problem).
 [Recovery evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).

@@ -62,6 +62,12 @@ An Irrigation boost made a new claim and its Builder harvested the
 Cattle. [AI-N096] [AI-C070]
 [Supplier replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).
 
+Both turn-72 CE arms lost the Cattle. The treatment logged the expected
+ineligible Farm values, while the same Irrigation job reached execution.
+The forecast receipts alone cannot distinguish a fresh selection from
+a job carrying a prior location. [AI-C071]
+[Matched supplier failure](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-turn-72-protection-arms-both-lost-the-cattle).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

@@ -1,21 +1,29 @@
 """Join one supplier replay's archived evidence without inferring worker identity."""
 
+import argparse
+import json
+from pathlib import Path
+import re
+
+from driver import load, parse, read, require, write_json
+
 from log_intelligence import records
 from material_loss_intelligence import clear_targets, unit_operations
 
-from driver import load, read, write_json
 
-
-def write_supplier_timeline(root, states, target, trace, checkpoints):
-    scope_path = root / 'pasture-recovery-scope.json'
-    if not scope_path.is_file() or not states or trace is None:
+def write_supplier_timeline(root, states, target, trace, checkpoints, *, scope=None):
+    if scope is None:
+        scope_path = root / 'pasture-recovery-scope.json'
+        if not scope_path.is_file():
+            return
+        scope = load(scope_path)
+    if not states:
         return
-    scope = load(scope_path)
     start, end = states[0]['city']['turn'], states[-1]['city']['turn']
     player, plot = target['player'], scope['plot']
     tile = f"{scope['x']} {scope['y']}"
     events = [dict(source='native', time='interval-start', turn=row['boundary'], event=row)
-              for row in trace['records']]
+              for row in trace['records']] if trace else []
     for row in states:
         neighbor = next(value for value in row['neighbors'] if value['plot'] == plot)
         events.append(dict(source='state', time='inactive-boundary', turn=row['city']['turn'], supplier=neighbor,
@@ -49,6 +57,53 @@ def write_supplier_timeline(root, states, target, trace, checkpoints):
                 events.append(dict(source='unit-log', time='logged-turn', turn=row['turn'],
                                    association='unique-tree-clear-target' if linked else 'player-only', event=row))
 
+    lua_log = root / 'Lua.log'
+    if lua_log.is_file():
+        for line in read(lua_log).splitlines():
+            publication = re.search(r'CSC_AI_BAKERS_(BUILDERS|WONDERS) turn=(\d+) .*?previous=(\{.*\})', line)
+            if publication:
+                events.append(dict(source='ce-publication', time='publication-turn', turn=int(publication[2]),
+                                   capability=publication[1], previous=json.loads(publication[3]), raw=line))
+
     events.sort(key=lambda row: row['turn'])
     write_json(root / 'supplier-timeline.json', dict(scope=scope, start=start, end=end, events=events,
-                                                    native_fault=trace['fault'], checkpoints=checkpoints))
+                                                    native_trace_available=trace is not None,
+                                                    native_fault=trace['fault'] if trace else None, checkpoints=checkpoints))
+
+
+def write_matched_timelines(root, scope):
+    """Read closed arms and link their own evidence to the verified source hash."""
+    first = None
+    inputs = []
+    for name in ('control', 'treatment'):
+        arm = root / name
+        require(load(arm / 'session-closed.json')['verified'] and load(arm / 'restoration.json')['verified'],
+                f'Expected a closed {name} arm')
+        result = load(arm / 'result.json')
+        states = [result['source'], *load(arm / 'observations.json')]
+        turn = states[0]['city']['turn']
+        digest = load(arm / 'session-load-input.json')['sha256']
+        source = (digest, states[0])
+        require(first is None or source == first, 'The arms have different starting evidence')
+        first = source
+        command = next((arm / 'commands').glob(f'*-bakers-supplier-{turn}.txt'))
+        world = parse(read(command), 'CSC_BAKERS_SUPPLY_WORLD')
+        scoped = dict(scope, width=world['width'])
+        checkpoints = [dict(turn=turn, sha256=digest, role='matched-source')]
+        archives = arm / 'decision-saves/archive.json'
+        if archives.is_file():
+            checkpoints.extend(load(archives))
+        trace_file = arm / 'pasture-recovery-trace-frozen.json'
+        trace = load(trace_file) if trace_file.is_file() else None
+        require(trace is None or (not trace['active'] and not trace['fault']), f'Incomplete {name} native trace')
+        inputs.append((arm, states, scoped, trace, checkpoints))
+    for arm, states, scoped, trace, checkpoints in inputs:
+        write_supplier_timeline(arm, states, scoped, trace, checkpoints, scope=scoped)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Join both closed CE supplier replay timelines')
+    parser.add_argument('pair', type=Path)
+    parser.add_argument('--scope', type=Path, required=True, help='Target coordinates and identity from the stock observer')
+    args = parser.parse_args()
+    write_matched_timelines(args.pair, load(args.scope))

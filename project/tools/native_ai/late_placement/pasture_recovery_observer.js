@@ -6,7 +6,16 @@ const CHECK_IMPROVEMENT = 0x3e1150;
 const ANALYZE_TERRAIN = 0x3dec40;
 const BEST_LOCATION = 0x3e5750;
 const FIND_RESERVATION = 0x4019f0;
-const ORDINARY_LOCATION_RETURN = 0x3e11a5;
+const LOCATION_CALLERS = new Map([
+    [0x3e11a5, 'ordinary-proposal'],
+    [0x3d75c1, 'boost-resource-check'],
+    [0x3d7667, 'boost-specific-resource-check'],
+    [0x481501, 'unit-charge-effect'],
+    [0x55ae9b, 'trigger-empire-location'],
+    [0x55b010, 'trigger-city-location'],
+    [0x55b102, 'trigger-plot-location'],
+    [0x55d619, 'choose-improvement-node'],
+]);
 const RESERVATION_RETURN = 0x3e5813;
 const TERRAIN_RESERVATION_RETURN = 0x3dee50;
 const LAYOUT = {
@@ -36,7 +45,11 @@ function init(spec, scope) {
     const normalized = path => path.replace(/\\/g, '/').toLowerCase();
     const modules = Process.enumerateModules();
     const core = modules.find(module => normalized(module.path) === normalized(spec.path));
-    if (!core || core.size !== spec.image_size || modules.some(module => /GameCore_XP2_(?:CE|CSC)/i.test(module.name))
+    const carriers = modules.filter(module => /GameCore_XP2_(?:CE|CSC)/i.test(module.name));
+    const expectedCarrier = scope.cePath
+        ? carriers.length === 1 && normalized(carriers[0].path) === normalized(scope.cePath)
+        : carriers.length === 0;
+    if (!core || core.size !== spec.image_size || !expectedCarrier
         || scope.player !== 3 || scope.city !== 131073 || scope.plot !== 796 || scope.x !== 56 || scope.y !== 10
         || !Number.isInteger(scope.pasture) || scope.pasture < 0 || scope.pasture >= 256)
         throw Error('Expected the qualified Boston Cattle scope');
@@ -51,7 +64,8 @@ function init(spec, scope) {
             value => value.toString(16).padStart(2, '0')).join('');
         if (bytes !== expected) throw Error(`Supplier function prefix ${rva.toString(16)}`);
     }
-    for (const [returnRva, callee] of [[ORDINARY_LOCATION_RETURN, BEST_LOCATION], [RESERVATION_RETURN, FIND_RESERVATION],
+    for (const [returnRva, callee] of [...Array.from(LOCATION_CALLERS.keys(), rva => [rva, BEST_LOCATION]),
+        [RESERVATION_RETURN, FIND_RESERVATION],
         [TERRAIN_RESERVATION_RETURN, FIND_RESERVATION]]) {
         const end = address(returnRva);
         if (end.sub(5).readU8() !== 0xe8 || !end.add(end.sub(4).readS32()).equals(address(callee)))
@@ -59,10 +73,12 @@ function init(spec, scope) {
     }
     const l = LAYOUT;
     const caller = invocation => invocation.returnAddress.sub(core.base).toInt32();
-    const target = build => {
+    const ownerCity = build => {
         const city = read(build, l.city, 'ptr');
-        return read(city, l.owner, 'i32') === scope.player && read(city, l.cityId, 'i32') === scope.city;
+        if (read(city, l.owner, 'i32') !== scope.player) return null;
+        return read(city, l.cityId, 'i32');
     };
+    const target = build => ownerCity(build) === scope.city;
     const slot = build => read(read(build, l.treeSlot, 'ptr'), l.treeId, 'i32');
     const coordinatesMatch = (row, x, y) => read(row, l.x, 'i32') === x && read(row, l.y, 'i32') === y;
     const score = (row, index) => read(read(row, l.improvementScores, 'ptr'), index * 4, 'i32');
@@ -112,13 +128,20 @@ function init(spec, scope) {
         add({kind: 'terrain', type: read(build, l.bestType, 'i32'), site: census(build), reservationResolved});
     });
     watch(BEST_LOCATION, (a, invocation) => {
-        if (caller(invocation) !== ORDINARY_LOCATION_RETURN || !target(a[0])) return;
+        const route = LOCATION_CALLERS.get(caller(invocation));
+        if (!route) return;
+        const city = ownerCity(a[0]);
+        if (city === null) return;
+        const row = findRow(a[0], scope.x, scope.y);
+        if (!row && city !== scope.city) return;
         const thread = invocation.threadId;
         if (selections.has(thread)) throw Error('Nested supplier selector');
-        const sample = {thread, build: a[0], type: a[1].toInt32(), reservationResolved: null};
+        const type = a[1].toInt32();
+        const sample = {thread, build: a[0], city, type, route, reservationResolved: null,
+                        targetQ8: row && type >= 0 && type < 256 ? score(row, type) : null};
         selections.set(thread, sample);
         return sample;
-    }, ({thread, build, type, reservationResolved}, result) => {
+    }, ({thread, build, city, type, route, targetQ8, reservationResolved}, result) => {
         selections.delete(thread);
         let plot = null;
         if (!result.isNull()) {
@@ -128,7 +151,7 @@ function init(spec, scope) {
             plot = [coords.getInt16(0, true), coords.getInt16(2, true)];
         }
         const row = plot && findRow(build, ...plot);
-        add({kind: 'location', type, plot, q8: row ? score(row, type) : null, reservationResolved});
+        add({kind: 'location', city, route, type, plot, q8: row ? score(row, type) : null, targetQ8, reservationResolved});
     });
     watch(FIND_RESERVATION, (a, invocation) => {
         const from = caller(invocation);

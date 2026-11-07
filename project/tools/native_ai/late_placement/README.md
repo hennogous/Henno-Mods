@@ -139,3 +139,7 @@ Supply the closed stock run with `--replay`. Both arms must match its
 observed census before advancing. Builder protection is the one changed
 capability. The result records the deposit, improvement and actual Service
 separately so a successful protection result cannot pass as recovery.
+It archives both arms' fresh decision saves and writes joined
+`supplier-timeline.json` files after both arms close. Add
+`--decision-observer-deps` with the pinned Frida directory to record
+native location-selector callers and the exact cached score they see.

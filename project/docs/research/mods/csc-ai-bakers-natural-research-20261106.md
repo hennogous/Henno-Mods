@@ -811,6 +811,39 @@ autosave clock reached turn 72, so the policy stayed disabled. The
 shared controller now activates that fixture script once after verifying
 the loaded turn and census.
 
+### The turn-72 protection arms both lost the Cattle
+
+The corrected `ce-pasture-recovery-03` pair cold-loaded the same
+turn-72 decision save, used the same qualified CE binary and validated
+the original census in both arms. District protection was active in
+both. Only the treatment staged Builder protection. It published one
+allowance for the Cattle supplier before autoplay and reported no
+native faults.
+
+The turn-73 and turn-74 publication receipts each reported two changes
+from their preceding intervals. In both, the first changed key was
+player 3, Boston 131073, plot 796, Farm index 1. Its previous scores
+were 41,309 and 42,128 Q8. CE replaced each with the native
+ineligible value of −2,559,744 Q8.
+
+The control and treatment still produced the same target job and
+outcome. Their joined timelines link the turn-72 Irrigation reservation,
+turn-73 clearance and harvest by Builder 2228225, and the missing Cattle
+at turn 75. Both reached turn 84 with an intact Mill and Granary
+exchange, no Pasture and no Storekeeper. Both closed and restored the
+package and preferences. The native receipts establish writes to the
+forecast. They do not order those writes against the actual selector
+read or prove that the job read that score.
+
+Control timeline SHA-256 is
+`5cc2b3e02606ad23567db36b703a537f5db0adf2ff3596a36034f0fc036e3adc`.
+Treatment timeline SHA-256 is
+`dabd56e5077223b131e96d3fe094294c131da3160ccdf5c3c2f623f7bffcdac4`.
+The earlier turn-69 replay adds read-only traces at all eight exact
+location-selector callers, including boost checks and ordinary
+proposals. This keeps cached selection, retained jobs and later
+execution distinguishable.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

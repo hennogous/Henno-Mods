@@ -5,19 +5,22 @@ import json
 from pathlib import Path
 import re
 import shutil
+import sys
+import time
 import xml.etree.ElementTree as ET
 
 from ce_replay import (
     HOTFIX_EXE_SHA, add_fixture_carrier, verify_modules, DLL,
 )
 from driver import (
-    HERE, ROOT, ID, HOTFIX_SHA, HeldProcess, NativeSession, archive_sources,
+    HERE, ROOT, ID, HOTFIX_SHA, XP2_IMAGE_SIZE, STUDY, HeldProcess, NativeSession, archive_sources,
     capture_log_baseline, configure, flags, launch, load, lua, make_probe_controller,
     manifest, native_inventory, parse, read, read_log_delta, require,
     restore_preferences, sha, write_json,
 )
 from natural_chain import operating
-from full_game_controller.checkpoint import save_inactive_boundary
+from full_game_controller.checkpoint import archive_autosave_window, save_inactive_boundary
+from supplier_timeline import write_matched_timelines
 
 
 CANDIDATE_SHA = '5b62c20bd3fe4ea3a4364e160022bc5c0f2dacac504d6a07ecced2bdf1588545'
@@ -105,6 +108,14 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
     controller.allow_observer_congress_review = True
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
     logs = {}
+    attachment = observer = None
+    observer_ready = False
+    observer_messages = []
+    checkpoints = []
+
+    def freeze_observer():
+        if observer_ready:
+            write_json(out / 'pasture-recovery-trace-frozen.json', observer.exports_sync.freeze())
 
     def sample(turn):
         raw = controller.cmd(probe, 'GameCore_Tuner', f'bakers-supplier-{turn}')
@@ -171,12 +182,44 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
         # Take the baseline in the verified gameplay context.
         names = (*LOGS, 'UnitOperations.log', 'AI_Behavior_Trees.csv') if advanced else LOGS
         logs = {name: capture_log_baseline(args.user_root / 'Logs' / name) for name in names}
+        if args.decision_observer_deps:
+            dependencies = args.decision_observer_deps.resolve()
+            sys.path.insert(0, str(dependencies))
+            import frida
+            require(frida.__version__ == '17.24.3' and Path(frida.__file__).resolve().is_relative_to(dependencies),
+                    'Exact existing Frida package required')
+            modules = load(out / 'loaded-modules.json')
+            scope = dict(load(args.replay / 'pasture-recovery-scope.json'), cePath=modules[DLL]['path'])
+            require(scope['plot'] in target['base'] and scope['player'] == target['player']
+                    and scope['city'] == target['city'], 'Observer scope differs from the matched fixture')
+            spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
+            code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(
+                read(path) for path in (STUDY / 'observer.js', HERE / 'pasture_recovery_observer.js'))
+            attachment = frida.attach(session.owner.pid)
+            observer = attachment.create_script(code)
+            observer.on('message', lambda value, data: observer_messages.append(value))
+            observer.load()
+            require(observer.exports_sync.init(spec, scope), 'Expected qualified supplier decision observer')
+            observer_ready = True
         if advanced:
             observations = []
+            previous = start
             for turn in range(start + 3, endpoint + 1, 3):
+                if observer:
+                    observer.exports_sync.advance(previous)
+                interval_started = time.time_ns()
                 controller.play(turn)
+                if args.pasture_autosave:
+                    archive = out / 'decision-saves'
+                    checkpoints.extend(archive_autosave_window(source.parent, archive, previous + 1, turn, interval_started))
+                    write_json(archive / 'archive.json', checkpoints)
                 observations.append(sample(turn))
                 write_json(out / 'observations.json', observations)
+                if observer:
+                    trace = observer.exports_sync.snapshot()
+                    write_json(out / 'pasture-recovery-trace-live.json', trace)
+                    require(not trace['fault'] and not observer_messages, 'Supplier decision trace fault')
+                previous = turn
                 if ((args.resume_wonder_treatment or args.pasture_autosave) and len(observations) >= 2
                         and all(row['operation']['operating'] for row in observations[-2:])):
                     break
@@ -197,7 +240,8 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
     finally:
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda: restore_preferences(controller, out)
-                          if (out / 'original-preferences.json').exists() else None, restore_package=verify)
+                          if (out / 'original-preferences.json').exists() else None, restore_package=verify,
+                          before_menu=freeze_observer)
         if session.closed:
             verify()
             installed.rename(out / 'retired-package')
@@ -268,8 +312,14 @@ def run(args):
     out.mkdir()
     extra = (HERE / 'operating_effects.lua', HERE / 'natural_chain.py') if advanced else ()
     references = (prior_arm / 'result.json', prior_arm / 'session-closed.json') if prior_arm else ()
+    observer_inputs = (STUDY / 'observer.js', HERE / 'pasture_recovery_observer.js') if args.decision_observer_deps else ()
+    if args.pasture_autosave:
+        tools = ROOT / 'project/tools/ai_baseline'
+        autosave_inputs += (HERE / 'supplier_timeline.py', tools / 'full_game_controller/checkpoint.py',
+                            tools / 'log_intelligence.py', tools / 'material_loss_intelligence.py')
     pins = {str(path.resolve()): sha(path) for path in (
-        Path(__file__), *probe_files, *extra, *AI_FILES, *references, *autosave_inputs, UI_READS, args.ce_dll, source)}
+        Path(__file__), *probe_files, *extra, *AI_FILES, *references, *autosave_inputs, *observer_inputs,
+        UI_READS, args.ce_dll, source)}
     write_json(out / 'source-archive.json', archive_sources(pins, out / 'source-version'))
     archived = replay / 'retired-study-copy'
     installed = args.mods.resolve() / 'CSC Mill Building Study'
@@ -290,6 +340,7 @@ def run(args):
     kept = next(row for row in treated['final']['neighbors'] if row['plot'] == plot)
     if args.pasture_autosave:
         require(all(sha(Path(path)) == value for path, value in pins.items()), 'Pinned source changed during recovery')
+        write_matched_timelines(out, load(replay / 'pasture-recovery-scope.json'))
         write_json(out / 'result.json', dict(source=digest, turn=start, plot=plot, control=lost, treatment=kept,
                    control_operation=control['final']['operation'], treatment_operation=treated['final']['operation']))
         write_json(out / 'restoration.json', dict(verified=True, owners_absent=True))
@@ -335,6 +386,7 @@ if __name__ == '__main__':
     parser.add_argument('--match', type=Path)
     parser.add_argument('--resume-wonder-treatment', type=Path, help='Continue the closed Wonder treatment from turn 222')
     parser.add_argument('--pasture-autosave', type=Path, help='Pair Builder protection from a preserved supplier decision save')
+    parser.add_argument('--decision-observer-deps', type=Path, help='Pinned Frida directory for read-only native selector traces')
     parser.add_argument('--through', type=int)
     args = parser.parse_args()
     if (args.builder or args.wonder) and (not args.match or not args.ce_sha256):
@@ -342,4 +394,6 @@ if __name__ == '__main__':
     if (bool(args.resume_wonder_treatment or args.pasture_autosave) != (args.through is not None)
             or (args.resume_wonder_treatment and not args.wonder) or (args.pasture_autosave and not args.builder)):
         parser.error('Use --through with --wonder --resume-wonder-treatment or --builder --pasture-autosave')
+    if args.decision_observer_deps and not args.pasture_autosave:
+        parser.error('The decision observer requires a matched supplier autosave')
     run(args)
