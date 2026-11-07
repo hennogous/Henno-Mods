@@ -90,3 +90,22 @@ Farm location callers. It preserves the first confirmed Storekeeper chain
 at a later independent sample. The final branch stops when that persistence
 check succeeds, the tracked supplier is lost, or the supplied turn cap is
 reached.
+
+## Building repair contract test
+
+`natural_chain.py --observe-mill-repair` traces one damaged Boston Water
+Mill on the exact patched stock DLL. It records receipt and queue
+validation, refreshed offer values, the chosen contract, the resulting
+building request and actual building output. It uses the shared controller
+with no score writes by default.
+
+`--repair-autosave` accepts a preserved autosave listed in its adjacent
+`archive.json`. The observed Boston state at that turn must match the
+closed reference named in `--recover-from`. The first cold load is the
+control. A second load with `--repair-control <closed control>` derives
+one diagnostic floor from the losing Mill offer and the contract that
+actually executed. It permits a single forecast write only when the
+repair reaches the same update boundary with the expected native value.
+The test leaves validation, competition, production and completion to the
+game. Its forced comparison is a mechanism test and provides no routine
+CSC calibration.

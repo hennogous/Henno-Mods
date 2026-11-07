@@ -637,6 +637,51 @@ The archived `AI_CityBuild.csv` identifies submissions and queue starts.
 `City_BuildQueue.csv` records production progress. The probe's boundary
 field identifies the beginning of a sampling segment.
 
+### Native contract admission and value refresh
+
+`ReceiveContract` at `3e9500` checks the offer's city-validation slot
+`0x98` before adding its handle to the offered vector at city-build
+`0x160`. Later `QueueNextBuild` scans that vector. It considers status 3
+offers, validates them again, invokes the update slot `0x68`, then keeps
+the largest signed value at contract offset `0x158`. The comparison is
+strict, so equal later offers leave the earlier one in place. The winner
+then faces the unit/project checks and Execute described above.
+
+The assembly and exact hotfix bytes distinguish the item types in
+`UnitRequestContract::Update` at `3fa5e0`. A building index at `0x190`
+reaches building PresentValueOf `3e7e50` via `3fa630`. A unit index at
+`0x178` reaches `3e8150` via `3fa69f`. A district index at `0x1a8`
+reaches `3e7f40` via `3fa725`. Each path keeps the greater of the
+retained contract value and the value returned by the corresponding
+lookup. A targeted repair preference at the building lookup could pass
+through the game's archived value setter and native competition. It
+requires a legal offer to reach the update in the first place.
+
+`mill-repair-contract-01` replayed the same turn-234 stock save with
+additional read-only hooks on queue entry and the contract virtual methods.
+All sampled Boston states matched the first replay through turn 252.
+
+| Offer | At receipt | Before queue refresh | After queue refresh | Queue execution |
+| --- | --- | --- | --- | --- |
+| Water Mill 5997 | Accepted, 386,816 Q8 | Valid, 386,816 Q8 | 639,408 Q8 | No request |
+| Encampment 5954 | Accepted, 3,439,104 Q8 | Valid, 3,439,104 Q8 | 3,694,136 Q8 | Succeeded |
+
+Boston submitted the repair on turn 249 and compared both contracts on
+turn 250 in the same queue pass. The earlier Research Lab provides a
+positive control. Its value refreshed from 735,488 to 1,325,518 Q8 and
+its contract executed when the Spaceport completed. At the turn-252
+endpoint Boston still had an intact Granary, a pillaged Mill and no
+working Pasture or Storekeeper.
+
+The frozen trace SHA-256 is
+`7dee26d09ac03362c1b504615548bbfcd3faa4649cb41a58027de9064f3c3bda`.
+The original trace transposes the two labels `building` and `unit`.
+Raw index 140 for contract 5997 is the Water Mill. The field offsets
+above, the earlier building-selection trace and the closed production log
+establish the identities. The preserved trace is unmodified. The REA
+static trace of the exact patched image is
+`ev_8569426d193a3db90ee899c49146e1a34a3b819392faeed02078ed1fd7657623`.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

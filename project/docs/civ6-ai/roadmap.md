@@ -68,13 +68,13 @@ automatic main CSC policy, Campus went on 720 and Boston worked the original
 Cattle Pasture by turn 37. The penalty is finite and needs wider calibration.
 [Automatic publisher evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
 
-**Active problem for reusable tuning — 13.3, destructive Builder work.**
+**Active problem for reusable tuning — 13.1 and 14.1, building repair.**
 The CE score-stage policy now reads live CSC material rules and protects
 critical supplier sites in the matched Boston replay. With the same district
 policy in both arms, the control lost its Cattle. The treatment kept its
 working Pasture and reached Storekeeper at turns 63 and 66. Verify protection
 from already assigned jobs and direct harvests, plus safe alternatives in
-ordinary games. For **13.1**, Boston's stock recovery baseline reached turn
+ordinary games under **13.3**. Boston's stock recovery baseline reached turn
 234 without rebuilding the Pasture or repairing the Water Mill. A Wonder
 reservation competed for the damaged Cattle site while a Spaceport occupied
 city production. Check whether preserving site access enables the Pasture
@@ -84,9 +84,14 @@ Boston still rebuilt neither link by turn 222. The stock follow-up found that
 the damaged Mill could win the building comparison and still yield the
 production slot to an admitted Theater Square contract. The Mill remained
 pillaged at turn 252. Boston also submitted a repair contract on turn 249
-and queued an Encampment on turn 250. For **13.1 and 14.1**, trace how the
-game ranks and admits a legal repair contract and separately trace how a
-Pasture job gains a Builder assignment on the preserved tile.
+and queued an Encampment on turn 250. The repeat confirmed the Mill passed
+validation and refreshed to 639,408 Q8. Encampment executed at 3,694,136 Q8.
+For **13.1 and 14.1**, close the building leg with
+a matched replay that changes the AI's choice and records a native queue
+entry, completed repair and realized Mill output. Repeat with the main CSC
+policy from a distinct eligible state, including a competing investment.
+Supplier work is a separate leg. Verify its native assignment and completion,
+then verify restored Storekeeper output with both links working.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode

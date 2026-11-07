@@ -14,6 +14,12 @@ down at 222. Review branch `codex/ce-wonder-protection` at `60a5a68`
 uses the coordinate-bearing building NetValue caller. Its ordinary caller
 already doubles the computed repair score. Trace actual selection and
 production separately.
+In the stock contract replay from turn 234, Boston received and validated
+Water Mill repair 5997. At turn 250 it refreshed to 639,408 Q8 and lost
+to Encampment 5954 at 3,694,136 Q8. The Mill stayed pillaged through 252.
+Keep the repair problem open through a changed native choice, physical
+completion and actual output in matched and distinct integrated tests.
+The t249 autosave is archived under `mill-repair-contract-autosave`.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.
