@@ -84,7 +84,7 @@ Quarter on turn 44. Continue through completion and look for improved site
 or investment choices. Future customer sites and affordable land acquisition
 are still open. [Matched development run](../research/mods/csc-ai-bakers-natural-research-20261106.md#owned-site-placement-publishing).
 
-**Active normal-start problem — 4.2, following the 3.1–3.3 supplier result.** The
+**Active normal-start problem — 5.1, following the 4.2 Mill replay.** The
 turn-100 development run had four complete and two unfinished AI
 Bakers Quarters, and zero observed Storekeepers. All five original
 AI majors unlocked Feudalism. In Alexandria Troas only the
@@ -114,7 +114,11 @@ and construction from the same turn-125 save, with active
 Storekeeper on 138. **4.2** still needs calibration across ordinary
 starts and the Water Mill route. **5.1** is the next missing link
 to join to it.
-Ancyra still needs its Mill and Granary. Charleston has both
+Ancyra's legal Granary lost ordinary nominations to Castle.
+Cuirassier took the observed production opening. Ancyra still
+needs both buildings. The next **5.1** check is Trebizond, where
+the Water Mill has completed and a Granary would start the
+exchange. Charleston has both
 buildings and Feudalism, with no Farm on the adjacent Maize
 at turn 139. That is another **3.2** supplier follow-through case.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

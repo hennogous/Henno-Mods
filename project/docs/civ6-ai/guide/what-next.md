@@ -57,8 +57,11 @@ and built the Mill at its own valuation. Storekeeper operated
 for six measured turns. The main CSC policy and CE review build
 then reproduced the nomination, construction and a measured
 Storekeeper turn from the same save. The next checks are how
-this bid behaves in other cities and how to value a Granary when
-the chain still needs both buildings, as in Ancyra.
+this bid behaves in other cities and how to value a Granary.
+Ancyra could build one, but Castle won the building nominations
+and a Cuirassier took the open production slot. Trebizond
+already has a Mill, so a Granary there would begin the exchange
+even while its Wheat still needs a Farm.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
 The offline planner separately covers actual gameplay definitions and a copied

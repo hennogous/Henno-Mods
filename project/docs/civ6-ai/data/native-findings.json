@@ -1788,5 +1788,16 @@
     "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
     "topic": "topics/native/district-choice.md",
     "related": ["AI-N069"]
+  },
+  {
+    "id": "AI-N102",
+    "title": "City building requirements and building yield changes resolve the receiving player's replacement",
+    "statement": "The inspected CityHasBuilding test resolves the requested index through the subject city's owner's replacement table before testing presence and pillage. AdjustBuildingYieldChange resolves the recipient index through the same table before applying the yield change.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Patched Windows XP2 Ghidra reference. CityHasBuilding::Test 832c30 and AdjustBuildingYieldChange::Apply 871f30 use the player-city table at +0x150. AddBuildingReplacementOverride 264110 corroborates the table identity.",
+    "limits": "Specific native requirement and effect paths. Source modifier attachments and other requirements may handle replacements differently. No live Granary replacement or exchange was tested here.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/modifier-forecasts.md"
   }
 ]

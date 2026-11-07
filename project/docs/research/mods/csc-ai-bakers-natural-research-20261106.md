@@ -1818,6 +1818,63 @@ the Water Mill and Granary and had Feudalism. Its adjacent Maize
 still had no Farm. These are separate next checks for customer
 nomination and supplier follow-through.
 
+### Granary exchange resolves the receiving player's building replacement
+
+CSC attaches the Granary-to-Mill exchange modifiers to the Granary and
+explicitly copies those source attachments to registered Granary replacements.
+The Mill-to-Granary Food modifier and the functioning-Granary requirement
+both name the base Granary in SQL. In patched Windows XP2, the native
+`CityHasBuilding::Test` at `832c30` takes the subject city's owner and
+resolves the configured index through its player-city replacement table
+before testing presence and pillage. `AdjustBuildingYieldChange::Apply`
+at `871f30` resolves the configured recipient index through the same
+table before calling the building yield-change function. The
+replacement override writer at `264110` confirms the table at
+offset `0x150` in the player-city object. This is static evidence
+for the requirement and recipient directions. A live replacement
+case is still needed to verify the exchange and Service together.
+The standalone replay's gameplay database has no Granary replacements.
+The addresses are RVAs in the Windows XP2 reference with SHA-256
+`324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c`.
+
+### Ancyra's legal Granary lost nomination and a military contract took production
+
+`development-ancyra-granary-01` continued the exact integrated
+Melbourne endpoint from 139 through 150. Ancyra (player 1,
+city 131073) had a completed Quarter at 1430, the adjacent
+working Rice Farm, Feudalism and no Mill or Granary. The UI
+reported the ordinary Granary legal. The read-only observer
+recorded both ordinary `3e160a` comparisons reaching the Granary
+with requirements satisfied.
+
+| Ordinary comparison | Granary Q8 | Castle Q8 | Gap Q8 | Native offer |
+| --- | ---: | ---: | ---: | --- |
+| First | 21,982 | 170,016 | 148,034 | Castle 2638 on turn 142 |
+| Second | 35,144 | 155,988 | 120,844 | Castle 2840 on turn 149 |
+
+The only observed production opening had Cuirassier contract
+2783 at 266,496 Q8. It passed the native unit and project
+comparison at 72,258 and 74,045 Q8 respectively, then executed.
+The best-building fallback evaluation in that pass gave Granary
+71,623 Q8 and Castle 260,128 Q8. No Granary offer competed at
+the contract gate. Ancyra still lacked both buildings at 150.
+Alexandria and Melbourne each kept Storekeeper active throughout
+all ten measured interior turns 140–149.
+
+The two nomination margins describe competition with Castle in
+this city. They do not price the marginal CSC value of a Granary
+when the Mill is also missing. The endpoint contains a separate
+Trebizond case where the Water Mill completed on 148 and the
+adjacent Granary is still missing. The Maize supplier in Charleston
+and the Wheat supplier in Trebizond remain unimproved.
+
+The Ancyra trace SHA-256 is
+`a2b708b78f08826a051ed180299ebbf45356634a32a1b8204ba91038e4f59a16`.
+The turn-150 endpoint SHA-256 is
+`1c6a36651a77d2361d06d651856eac8c57d6de921e2aede0fa4fca2d146f8843`.
+The observer froze without a fault and the shared controller
+verified native exit and restoration.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

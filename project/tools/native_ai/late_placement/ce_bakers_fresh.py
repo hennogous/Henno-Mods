@@ -108,19 +108,20 @@ print('CSC_BUILDER_TURN=' .. Game.GetCurrentGameTurn())
     write_json(path, rows)
 
 
-def capture_wind_mill_readiness(controller, player, city, turn, path):
+def capture_building_readiness(controller, player, city, turn, path,
+                               building_type='BUILDING_CSC_BAKERS_WIND_MILL'):
     code = f"""
 local city = assert(Players[{player}]:GetCities():FindID({city}))
-local mill = assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL)
+local building = assert(GameInfo.Buildings[{json.dumps(building_type)}])
 local build = assert(city:GetBuildQueue())
-local available = build:CanProduce(mill.Hash, false, true)
+local available = build:CanProduce(building.Hash, false, true)
 assert(type(available) == 'boolean')
-print(string.format('CSC_WIND_MILL={{"index":%d,"turn":%d,"available":%s}}',
-    mill.Index, Game.GetCurrentGameTurn(), tostring(available)))
+print(string.format('CSC_BUILDING_READINESS={{"index":%d,"turn":%d,"available":%s}}',
+    building.Index, Game.GetCurrentGameTurn(), tostring(available)))
 """
-    row = parse(controller.cmd(code, 'PlotInfo', f'wind-mill-readiness-{turn}'), 'CSC_WIND_MILL')
+    row = parse(controller.cmd(code, 'PlotInfo', f'building-readiness-{turn}'), 'CSC_BUILDING_READINESS')
     # The UI cache can lag the inactive GameCore boundary by one turn.
-    require(row['turn'] in (turn, turn - 1), 'Wind Mill readiness clock differs')
+    require(row['turn'] in (turn, turn - 1), 'Building readiness clock differs')
     write_json(path, row)
     return row['index']
 
@@ -304,7 +305,9 @@ def run(args):
     copied = []
     checkpoint = None
     observer = None
-    trace_name = 'supplier-trace.json' if args.supplier else 'wind-mill-trace.json'
+    target = args.supplier or args.wind_mill or args.granary
+    trace_name = ('supplier-trace.json' if args.supplier else
+                  'granary-trace.json' if args.granary else 'wind-mill-trace.json')
 
     def verify_packages():
         for source in copied:
@@ -377,7 +380,7 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
                               read(prior / 'chain-census.txt'))
         loaded = capture_census(controller, players, start, out / 'source-census.txt')
         require(sorted(archived) == loaded, 'The loaded Stage 2 census differs from the saved endpoint')
-        pid, city, quarter, *_ = args.supplier or args.wind_mill
+        pid, city, quarter, *_ = target
         require(pid in players and any(row.startswith(f'QUARTER\t{pid}\t{city}\t{quarter}\ttrue\tfalse\t')
                                        for row in loaded), 'The scoped Quarter is not a working AI district on this save')
         if args.supplier:
@@ -385,6 +388,10 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
             require(f'IMPROVEMENT\t{quarter}\t{plot}\tIMPROVEMENT_PASTURE\ttrue' in loaded
                     and any(row.startswith(f'NEIGHBOR\t{quarter}\t{plot}\t{pid}\t-1\tRESOURCE_CATTLE\t-\t')
                             for row in loaded), 'The scoped Cattle tile is not a missing supplier on this save')
+        elif args.granary:
+            require(any(row.startswith(f'CUSTOMER\t{quarter}\t{city}\t')
+                        and row.endswith('\tBUILDING_GRANARY\tabsent\t-1') for row in loaded),
+                    'The scoped Quarter lacks the expected adjacent Granary host')
         else:
             require(f'MILL\t{quarter}\tBUILDING_CSC_BAKERS_WIND_MILL\tabsent\t-1\ttrue' in loaded,
                     'The scoped Quarter does not have the expected missing unlocked Wind Mill')
@@ -440,7 +447,7 @@ Modding.EnableMod(chosen.Handle,true)
             watch_supplier_access(controller, args.supplier[0], args.supplier[3])
         if args.mill_ce_replay:
             pid, city, _ = args.wind_mill
-            capture_wind_mill_readiness(controller, pid, city, start, out / 'source-mill.json')
+            capture_building_readiness(controller, pid, city, start, out / 'source-mill.json')
             require(load(out / 'source-mill.json')['available'], 'Wind Mill is no longer available')
             status = parse(controller.cmd(
                 "print('CSC_NOMINATION='..assert(CE_AIBuildingNominationStatus)())",
@@ -455,7 +462,7 @@ Modding.EnableMod(chosen.Handle,true)
             require(frida.__version__ == '17.24.3' and Path(frida.__file__).resolve().is_relative_to(dependencies),
                     'Exact existing Frida package required')
             modules = load(out / 'loaded-modules.json')
-            pid, city, *_ = args.supplier or args.wind_mill
+            pid, city, *_ = target
             scope = dict(player=pid, city=city, cePath=modules[DLL]['path'])
             if args.supplier:
                 plot = args.supplier[3]
@@ -468,8 +475,13 @@ Modding.EnableMod(chosen.Handle,true)
                     scope['extraPastureQ8'] = protocol['diagnostic_extra_pasture_q8']
                 probe = HERE / 'pasture_recovery_observer.js'
                 write_json(out / 'supplier-scope.json', scope)
+            elif args.granary:
+                scope['granary'] = capture_building_readiness(controller, pid, city, start,
+                    out / 'source-granary.json', 'BUILDING_GRANARY')
+                probe = HERE / 'mill_repair_observer.js'
+                write_json(out / 'granary-scope.json', scope)
             else:
-                scope['mill'] = capture_wind_mill_readiness(controller, pid, city, start, out / 'source-mill.json')
+                scope['mill'] = capture_building_readiness(controller, pid, city, start, out / 'source-mill.json')
                 if args.melbourne_mill_bid:
                     require(load(out / 'source-mill.json')['available'], 'Wind Mill is no longer available')
                     scope['nominationBidQ8'] = protocol['diagnostic_mill_nomination_q8']
@@ -542,6 +554,7 @@ if __name__ == '__main__':
     target = parser.add_mutually_exclusive_group()
     target.add_argument('--supplier', type=int, nargs=4, metavar=('PLAYER', 'CITY', 'QUARTER', 'PLOT'))
     target.add_argument('--wind-mill', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'))
+    target.add_argument('--granary', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'))
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
     parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
@@ -552,7 +565,7 @@ if __name__ == '__main__':
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
     if options.resume_from:
-        if not (options.saves and (options.supplier or options.wind_mill)
+        if not (options.saves and (options.supplier or options.wind_mill or options.granary)
                 and (options.probe_dependencies or options.movement_only or options.mill_ce_replay)
                 and not options.untuned and not options.matched_source):
             parser.error('A tuned continuation needs --saves, one target, and a diagnostic mode')
@@ -566,7 +579,7 @@ if __name__ == '__main__':
             parser.error('Integrated calibration requires --movement-only')
         if options.mill_ce_replay and (not options.wind_mill or options.probe_dependencies or options.melbourne_mill_bid):
             parser.error('CE nomination qualification requires --wind-mill and uses no external probe or bid')
-    elif (options.supplier or options.wind_mill or options.probe_dependencies or options.alexandria_bid or options.melbourne_mill_bid
+    elif (options.supplier or options.wind_mill or options.granary or options.probe_dependencies or options.alexandria_bid or options.melbourne_mill_bid
           or options.movement_only or options.calibration_replay or options.mill_ce_replay):
         parser.error('Decision diagnostics require --resume-from')
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):

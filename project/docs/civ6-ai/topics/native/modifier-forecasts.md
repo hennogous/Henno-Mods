@@ -25,6 +25,12 @@ can therefore matter to the approximation; this does not establish their numeric
 effect in a particular live city. [AI-N068] The [score anatomy](district-score-anatomy.md)
 keeps this distinct from supported hypothetical modifier interpretation.
 
+The gameplay city-building presence requirement and building-yield
+effect resolve the configured building through the receiving player's
+replacement table. The functioning requirement then checks pillage
+on the resolved building. This confirms the gameplay path. Prospective
+AI coverage still depends on its separate analyzer. [AI-N102]
+
 ## Unsupported collections and requirements fail differently
 
 A missing collection or effect handler leaves a null pointer and compilation/evaluation refuses that modifier. The inspected 27-collection registry lacks COLLECTION_PLAYER_IMPROVEMENTS. Current producer-to-material wrappers using it are therefore unsupported through that traversal, without implying zero material value everywhere. [AI-N027]

@@ -1,7 +1,7 @@
 'use strict';
 
 // Patched Steam XP2. Observe the ordinary building score, the native building
-// choice and a BuildBuilding attempt for one Mill. An explicit
+// choice and a BuildBuilding attempt for one Mill or Granary. An explicit
 // matched diagnostic can add a bounded preference to the eligible comparison.
 const MILL_VALUE = 0x52a050;
 const ORDINARY_RETURN = 0x3e3ee2;
@@ -77,13 +77,17 @@ function init(spec, scope) {
     if (!expectedCarrier) throw Error('Unexpected native carrier');
     const core = modules.find(module => normalize(module.path) === normalize(spec.path));
     const boston = scope.player === 3 && scope.city === 131073;
+    const building = scope.granary ?? scope.mill;
+    const granary = scope.granary !== undefined;
     const observedCity = Number.isInteger(scope.player) && scope.player > 0 && scope.player < 64
         && Number.isInteger(scope.city) && scope.city >= 0;
     if (!core || core.size !== spec.image_size || !observedCity ||
-        !Number.isInteger(scope.mill) || scope.mill < 0 || scope.mill >= 4096)
-        throw Error('Expected a verified city and Mill scope');
+        !Number.isInteger(building) || building < 0 || building >= 4096)
+        throw Error('Expected a verified city and building scope');
     const bid = scope.millBidQ8 ?? 0;
     const nominationBid = scope.nominationBidQ8 ?? 0;
+    if (granary && (scope.mill !== undefined || bid || nominationBid || scope.screenProjectEligibility))
+        throw Error('Granary observation is read-only');
     if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
     const melbourne = scope.player === 4 && scope.city === 131073 && scope.mill === 139;
@@ -162,7 +166,7 @@ function init(spec, scope) {
         // CE owns the Building NetValue entry. Read the ordinary caller's
         // returned score before it is copied into the building row.
         Interceptor.attach(address(ORDINARY_RETURN), function () {
-            if (!enabled || this.context.r15.toInt32() !== scope.mill) return;
+            if (!enabled || this.context.r15.toInt32() !== building) return;
             protect(() => {
                 const c = this.context;
                 if (target(c.rsi)) {
@@ -173,7 +177,7 @@ function init(spec, scope) {
         });
     } else {
         observe(MILL_VALUE, (a, invocation) => {
-            if (caller(invocation) !== ORDINARY_RETURN || a[1].toInt32() !== scope.mill || !target(a[6])) return;
+        if (caller(invocation) !== ORDINARY_RETURN || a[1].toInt32() !== building || !target(a[6])) return;
             if (read(a[7], 0, 'i32') !== -9999 || read(a[7], 4, 'i32') !== -9999) throw Error('Expected ordinary coordinates');
             return {out: a[0], ready: a[3].toInt32(), horizon: a[4].toInt32()};
         }, (sample, result) => {
@@ -189,18 +193,19 @@ function init(spec, scope) {
         if (vector.isNull()) return;
         const sample = {out: a[1], thread: invocation.threadId, caller: caller(invocation),
             flags: [a[2].toInt32() & 255, a[3].toInt32() & 255],
-            millQ8: read(vector, scope.mill * 4, 'i32'), requirements: null};
+            buildingQ8: read(vector, building * 4, 'i32'), requirements: null};
         if (selection.has(sample.thread)) throw Error('Nested target building choice');
         selection.set(sample.thread, sample);
         return sample;
     }, (sample, result) => {
         selection.delete(sample.thread);
         const winner = result.toInt32();
-        add({kind: 'choice', caller: sample.caller, flags: sample.flags, millQ8: sample.millQ8,
+        add({kind: 'choice', caller: sample.caller, flags: sample.flags,
+            [granary ? 'granaryQ8' : 'millQ8']: sample.buildingQ8,
             requirements: sample.requirements, winner, winnerQ8: winner < 0 ? null : read(sample.out, 0, 'i32')});
     });
     observe(REQUIREMENTS, (a, invocation) => {
-        if (caller(invocation) !== REQUIREMENTS_RETURN || a[1].toInt32() !== scope.mill) return;
+        if (caller(invocation) !== REQUIREMENTS_RETURN || a[1].toInt32() !== building) return;
         return selection.get(invocation.threadId);
     }, (sample, result) => { sample.requirements = Boolean(result.toInt32() & 255); });
     observe(BUILD_BUILDING, (a, invocation) => {
@@ -224,7 +229,7 @@ function init(spec, scope) {
         // The candidate reached the comparison after the actual requirements
         // gates and native value transformations. R14 is its effective Q8.
         Interceptor.attach(address(BUILDING_COMPARISON), function () {
-            if (!enabled || this.context.r12.toInt32() !== scope.mill) return;
+            if (!enabled || this.context.r12.toInt32() !== building) return;
             const sample = selection.get(this.threadId);
             if (!sample) return;
             protect(() => {
@@ -242,7 +247,7 @@ function init(spec, scope) {
                     sample.flags[0] === 0 && sample.flags[1] === 0 && sample.caller === ORDINARY_BEST_BUILDING_RETURN;
                 const preference = nomination ? nominationBid : (scoped ? bid : 0);
                 const deltaQ8 = effectiveQ8 > 0 && effectiveQ8 <= 0x7fffffff - preference ? preference : 0;
-                add({kind: 'mill-compare', caller: sample.caller, effectiveQ8, deltaQ8,
+                add({kind: granary ? 'granary-compare' : 'mill-compare', caller: sample.caller, effectiveQ8, deltaQ8,
                     incumbentQ8: read(c.rsi, 0, 'i32')});
                 if (deltaQ8) c.r14 = ptr(effectiveQ8 + deltaQ8);
             });

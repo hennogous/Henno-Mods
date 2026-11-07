@@ -60,6 +60,24 @@ completion and Storekeeper at the same checkpoint without an external
 writer. The amount is an initial calibration. [AI-C093]
 [Integrated replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#integrated-ce-nomination-reproduced-melbournes-wind-mill-and-service).
 
+A City Center building that replaces Granary can serve as a
+Bakers customer. CSC copies the
+Granary's outgoing exchange attachments to those building definitions.
+The native functioning-building requirement and receiving Food modifier
+both resolve the target through the owning player's replacement table.
+This has been checked in the executable. The matched payout tests used
+the ordinary Granary. [AI-N102]
+[Replacement trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#granary-exchange-resolves-the-receiving-players-building-replacement).
+
+## Ancyra still needed both buildings
+
+Ancyra's Granary was legal but lost twice to Castle in ordinary
+nomination. Its available production slot went to a Cuirassier
+contract. The missing Mill meant the Granary would still be one
+step short of completing the exchange. The comparison margins
+measure the competition in this city. [AI-C094]
+[Granary decision trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#ancyras-legal-granary-lost-nomination-and-a-military-contract-took-production).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

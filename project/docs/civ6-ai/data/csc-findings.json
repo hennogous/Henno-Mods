@@ -1552,5 +1552,18 @@
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C092"],
     "related": ["AI-N020", "AI-N025"]
+  },
+  {
+    "id": "AI-C094",
+    "title": "Ancyra's Granary lost ordinary nomination and its open production slot went to Cuirassier",
+    "statement": "Ancyra could build the Granary but it lost two ordinary comparisons to Castle. An already offered Cuirassier won the observed production opening. No Granary offer reached that queue gate.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Read-only turn-139 to turn-150 continuation of AI-C093. Ancyra had an adjacent working Rice Farm and Feudalism but neither Granary nor Mill. The two Castle margins were 148034 and 120844 Q8.",
+    "limits": "One city and a short interval. The measured margins do not value the two-building investment or prove how a Granary offer would compete at another opening.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C093"],
+    "related": ["AI-N020", "AI-N025", "AI-N102"]
   }
 ]
