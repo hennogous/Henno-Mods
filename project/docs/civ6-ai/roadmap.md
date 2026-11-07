@@ -103,8 +103,10 @@ Alexandria Storekeeper turns, nine completed Quarters and no
 other active major-AI chain. Melbourne still has working Rice,
 Granary and Feudalism with only its Wind Mill missing. The Mill
 passed native eligibility and lost ordinary nomination to
-Amphitheater by 112,232 Q8. Test whether a bounded nomination
-preference results in a native offer and production under **4.2**.
+Amphitheater by 112,232 Q8. The matched nomination preference
+produced a valid Wind Mill offer at its lower native cache value.
+Follow that offer through the next production openings under
+**4.2** before adjusting its queue value.
 Ancyra still needs its Mill and Granary, and some sites lack a
 viable supplier or customer.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

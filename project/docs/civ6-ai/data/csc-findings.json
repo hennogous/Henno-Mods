@@ -1513,5 +1513,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C089"],
     "related": ["AI-C078", "AI-N025"]
+  },
+  {
+    "id": "AI-C091",
+    "title": "Melbourne's Wind Mill nomination bid changed the offered building but not the offer's pricing",
+    "statement": "A matched diagnostic made the eligible Wind Mill win the building nomination at 208047 Q8. The city submitted a native Wind Mill offer at 93184 Q8, based on its ordinary cache instead of the nomination result.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Same turn-125 save and packages as AI-C090 through 134. One +114688 Q8 adjustment at the ordinary 0/0 comparison. The native behavior and city log linked the valid Wind Mill to contract 2391 on turn 132. Earlier Star Fort and Commercial Hub production remained the same.",
+    "limits": "No observed Wind Mill production or Melbourne Service by 134. The interval ended while the Commercial Hub was in production, before the Wind Mill offer could compete at the next opening.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C090"],
+    "related": ["AI-N023", "AI-N025"]
   }
 ]

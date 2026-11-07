@@ -1664,6 +1664,39 @@ production arbitration alone. The observer froze with no faults
 and restoration passed. Trace SHA-256 is
 `6d9c1c139e45a1df6884aa8901cf19837ff2af8fc0bfdcbe76c2a10f9d53e0e9`.
 
+### The Wind Mill nomination changed without carrying its premium into the offer
+
+`development-melbourne-wind-mill-bid-01` repeated the same save
+and endpoint. Its only intervention was +114,688 Q8 at the legal
+ordinary building comparison. The Mill won at 208,047 Q8. The
+original Star Fort and Commercial Hub selections stayed in the
+queue. On turn 132 Melbourne submitted the Wind Mill instead of
+the Amphitheater, using contract ID 2391 in both arms. The Wind
+Mill's native offer passed validation at 93,184 Q8, the whole-unit
+value of its 93,359 Q8 cache. Neither arm built the Mill by 134.
+Both closed and restored preferences.
+
+The ordinary nomination result in `CheckForUnitOrBuilding`
+at `3e1580` is compared with the unit candidate. It then supplies
+the chosen item and its unlock facts to the one-use building tree.
+The tree independently reads the city-center building cache
+through `DecodeTriggerNode::Update` at `55a680` and
+`BestExpectedYieldFor` at `3df010`. It shifts Q8 right by eight
+for the whole-unit request value. On a later queue refresh,
+`UnitRequestContract::Update` at `3fa5e0` calls building
+`PresentValueOf` at `3e7e50` and keeps the higher of the stored
+offer and current cached value. The non-Wonder city-center cache
+is the same row and building index that the selector reads before
+its local adjustments. A nomination-only increment therefore
+changes which offer exists while leaving its initial and refreshed
+valuations to their own native reads.
+
+The matched treatment trace SHA-256 is
+`a6eb8eab6a62f1d0e25d175709aab6e8ce4a9d956bb17edb899a5fde1d46510b`.
+The turn-134 treatment save carries the Wind Mill offer. Continue
+that save to observe its native validation, refresh, and actual
+competition at the next queue opening before adding any premium.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
