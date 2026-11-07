@@ -25,7 +25,12 @@ function B.Status()
     if not B.Available() then return nil,'CE district-score capability unavailable' end
     return CE_AIDistrictScoresStatus()
 end
-function B.Publish(version,width,height,districtCount,originalAI,entries)
+function B.BuilderStatus()
+    if type(CE_AIBuilderProtectionAllow)=='function' and type(CE_AIBuilderProtectionStatus)=='function' then
+        return CE_AIBuilderProtectionStatus()
+    end
+end
+function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -47,11 +52,29 @@ function B.Publish(version,width,height,districtCount,originalAI,entries)
         if keys[key] then return reject('Duplicate district-site entry') end
         keys[key]=true
     end
+    local allowanceCount=0
+    for _,site in ipairs(builderSites or {}) do
+        if not (integer(site.player,0,63) and allowed[site.player]
+            and integer(site.city,0,2147483647) and integer(site.plot,0,width*height-1)
+            and type(site.improvements)=='table' and #site.improvements>0) then
+            return reject('Invalid Builder supplier site')
+        end
+        for _,kind in ipairs(site.improvements) do
+            if not integer(kind,0,2147483647) then return reject('Invalid supplier improvement') end
+            allowanceCount=allowanceCount+1
+        end
+    end
+    if allowanceCount>4096 then return reject('Builder supplier batch too large') end
     local ok,message=pcall(function()
         assert(CE_AIDistrictScoresBegin(version,width,height,districtCount)==1,'Native begin rejected')
         for _,pid in ipairs(originalAI) do assert(CE_AIDistrictScoresAllow(pid)==1,'Native identity rejected') end
         for _,e in ipairs(entries) do
             assert(CE_AIDistrictScoresEntry(e.player,e.city,e.district,e.plot,e.delta)==1,'Native entry rejected')
+        end
+        for _,site in ipairs(builderSites or {}) do
+            for _,kind in ipairs(site.improvements) do
+                assert(CE_AIBuilderProtectionAllow(site.player,site.city,site.plot,kind)==1,'Native supplier rejected')
+            end
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

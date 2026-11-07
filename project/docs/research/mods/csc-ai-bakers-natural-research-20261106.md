@@ -454,6 +454,61 @@ This is a scoped Frida diagnostic on stock GameCore. Generalizing the
 admission policy, handling already reserved jobs and delivering it through
 CE remain separate work.
 
+### CE score producer and execution limits
+
+The city row evaluator at RVA `3e2aa0` calls the improvement overload of
+`ValueManager::NetValue` at `52a8c0` from `3e3423`. On return, it reads the
+integer pointed to by RAX and copies it unchanged into the improvement's
+slot in the row array at offset `0x30`. The Win64 entry takes output,
+improvement ID, discount pointer and delay in registers, then horizon,
+plot and city on the stack. The row writer supplies these identities
+directly. The district hook's assembly boundary is unnecessary here.
+The installed GameCore and Ghidra reference match at the function entry,
+the caller's store, and the native floor. The three REA byte reads are
+retained in `Desktop/Codex/csc-gamecore-hotfix-20261106/builder-net-value-rea.json`
+with SHA-256 `2f9b4655c074e853d55b48f230cc9a9dede18317b111e5a3882e25d53525e615`.
+
+The CE review build calls the original and uses the native score floor
+at `b66cb0` for an otherwise admissible incompatible improvement on a
+published supplier site. That value feeds all readers of the improvement
+cache. CE checks the GameCore identity, entry prefix, caller and numeric
+keys before changing the output. CSC publishes the compatible improvements
+from the current material rules and narrows the allowance to the existing
+improvement while it is working. A fresh calculation is required for a
+new policy or its removal to change an existing cached value.
+
+An assigned job has another route to the map. `ClearPlotNode::Execute`
+at `55d970` can request RemoveImprovement and then HarvestResource before
+`BuildImprovementNode::Execute` at `551360` requests construction or
+repair. These execution paths do not consult the improvement forecast.
+Existing reservations need a separate execution and recovery test.
+
+### Automatic Builder protection in the matched CE replay
+
+`ce-builder-policy-01` ran both arms from the exact turn-45 save with the
+same CE build and CSC district policy. Only the treatment published the
+Builder allowance. The fixture supplied original seat roles because the
+save predates the publisher. The controller issued no work orders.
+
+The control removed the Pasture on turn 52 and attempted a Cattle harvest
+on turn 57. The end sample had no Cattle and no active Storekeeper. The
+treatment published one site allowance and kept the same Cattle Pasture
+throughout the sampled turns. CE recorded 23 writes with zero Builder
+faults. One native receipt changed Farm on player 3, city 131073, plot 796
+from 27,094 Q8 to the native ineligible value of −2,559,744 Q8. The treatment
+verified the exchange and Storekeeper at turns 63 and 66.
+
+Boston's treatment tree selected a different Farm site on turn 61.
+The sample does not prove that the Builder completed that alternate Farm.
+This demonstrates automatic score-stage protection in the saved fixture.
+Normal starts, already assigned jobs, direct harvest routes and Workshop
+delivery remain open. The supported MSVC build is CE review commit
+`1b63d6a`, proxy SHA-256
+`8da947135a71f53928a7cb0eb0c1d92a8b7eaaa86087f0d2844e7aff07e01945`.
+Both arms closed normally and restored preferences and the fixture package.
+The matched result SHA-256 is
+`399cb76fb260c2b179f71cd088dd625f88cd50d54be33c3d05314f9d9c3df624`.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

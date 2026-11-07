@@ -16,6 +16,7 @@ from driver import (
     manifest, native_inventory, parse, read, read_log_delta, require,
     restore_preferences, sha, write_json,
 )
+from natural_chain import operating
 
 
 CANDIDATE_SHA = '5b62c20bd3fe4ea3a4364e160022bc5c0f2dacac504d6a07ecced2bdf1588545'
@@ -28,7 +29,7 @@ LOGS = ('Lua.log', 'AI_CityBuild.csv', 'City_BuildQueue.csv')
 BOOTSTRAP = 'CSC_AI_BakersReplay'
 
 
-def add_policy(package):
+def add_policy(package, turn, builders=True):
     """Register the actual publisher and seed only saved role metadata for this old fixture."""
     (path,) = package.glob('*.modinfo')
     ui = package / UI_READS.relative_to(AI_ROOT.parent.parent)
@@ -54,13 +55,14 @@ def add_policy(package):
             ET.SubElement(files, 'File').text = relative
     relative = f'Lua_UI/AI/{BOOTSTRAP}.lua'
     (package / relative).write_text(
-        "assert(Game.GetCurrentGameTurn()==31)\n"
+        f"assert(Game.GetCurrentGameTurn()=={turn})\n"
         "for _, player in ipairs(PlayerManager.GetAliveMajors()) do\n"
         "    local id=player:GetID()\n"
         "    local human=player:IsHuman()\n"
         "    assert(human==(id==0))\n"
         "    Game:SetProperty('CSC_AI_OriginalHuman_'..id, human and 1 or 0)\n"
-        "end\n"
+        "end\n" +
+        ("" if builders else "CE_AIBuilderProtectionAllow=nil\n") +
         "include('CSC_AI_BakersGameplay')\n",
         encoding='utf-8',
     )
@@ -69,19 +71,20 @@ def add_policy(package):
     tree.write(path, encoding='utf-8', xml_declaration=True)
 
 
-def run_arm(args, out, archived, source, digest, probe, installed, treatment):
+def run_arm(args, out, archived, source, digest, probe, installed, treatment, target):
     require(not native_inventory() and not installed.exists(), 'Expected exclusive ownership and no temporary package')
     out.mkdir()
     prepared = out / 'prepared-package'
     shutil.copytree(archived, prepared)
     add_fixture_carrier(prepared, args.ce_dll)
-    if treatment:
-        add_policy(prepared)
+    start, endpoint = (45, 66) if args.builder else (31, 37)
+    if treatment or args.builder:
+        add_policy(prepared, start, builders=treatment)
     package = manifest(prepared)
     prepared.rename(installed)
     write_json(out / 'temporary-package.json', {str(installed): package})
     controller = make_probe_controller(out, user_root=args.user_root)
-    controller.study_endpoint = 37
+    controller.study_endpoint = endpoint
     controller.allow_observer_warning_dismissal = controller.allow_observer_first_meet_dismissal = True
     controller.allow_observer_congress_review = True
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
@@ -92,10 +95,20 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment):
         city = parse(raw, 'CSC_NATURAL_FOLLOWTHROUGH')
         neighbors = [json.loads(value) for value in re.findall(r'CSC_BAKERS_SUPPLIER=([^\r\n]+)', raw)]
         require(city['turn'] == turn and len(neighbors) == 6, 'Unexpected supplier census')
-        return dict(city=city, neighbors=neighbors)
+        state = dict(city=city, neighbors=neighbors)
+        if args.builder:
+            effects = 'CSC_BAKERS_TARGET=' + lua(target) + ';\n' + read(HERE / 'operating_effects.lua')
+            ui = controller.cmd(effects, 'PlotInfo', f'bakers-effects-{turn}')
+            state.update(conditions=parse(raw, 'CSC_NATURAL_CHAIN'), effects=parse(ui, 'CSC_BAKERS_EFFECTS'))
+            state['operation'] = operating(state, target)
+        return state
 
     def status(label):
         return parse(controller.cmd('print("CSC_BAKERS_CE="..CE_AIDistrictScoresStatus())',
+                                    'GameCore_Tuner', label), 'CSC_BAKERS_CE')
+
+    def builder_status(label):
+        return parse(controller.cmd('print("CSC_BAKERS_CE="..CE_AIBuilderProtectionStatus())',
                                     'GameCore_Tuner', label), 'CSC_BAKERS_CE')
 
     def verify():
@@ -114,20 +127,37 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment):
             return True
 
         contexts = ('GameCore_Tuner', 'PlotInfo', 'CSC_AdjacencyGameplay')
-        if treatment:
+        if treatment or args.builder:
             contexts += ('CSC_AdjacencyUI', BOOTSTRAP)
-        session.load_once(source, sha256=digest, native_directory=source.parent, turn=31,
+        session.load_once(source, sha256=digest, native_directory=source.parent, turn=start,
                           contexts=contexts, eligibility=ready)
-        result['source'] = sample(31)
+        result['source'] = sample(start)
         initial = status('native-before-autoplay')
-        require(initial['ready'] == 1 and initial['faults'] == 0 and initial['enabled'] == int(treatment)
-                and bool(initial['entries']) == treatment, 'Unexpected automatic CSC publication state')
+        district_policy = treatment or args.builder
+        require(initial['ready'] == 1 and initial['faults'] == 0 and initial['enabled'] == int(district_policy)
+                and bool(initial['entries']) == district_policy, 'Unexpected automatic CSC publication state')
         result['initial'] = initial
+        if args.builder:
+            first = builder_status('builder-before-autoplay')
+            require(first['ready'] and not first['faults'] and bool(first['entries']) == treatment,
+                    'Unexpected initial Builder publication')
+            result['builder_initial'] = first
         # Civ truncates the previous process's logs while loading the save.
         # Take the baseline in the verified gameplay context.
-        logs = {name: capture_log_baseline(args.user_root / 'Logs' / name) for name in LOGS}
-        controller.play(37)
-        result.update(final=sample(37), native=status('native-after-autoplay'))
+        names = (*LOGS, 'UnitOperations.log', 'AI_Behavior_Trees.csv') if args.builder else LOGS
+        logs = {name: capture_log_baseline(args.user_root / 'Logs' / name) for name in names}
+        if args.builder:
+            observations = []
+            for turn in range(start + 3, endpoint + 1, 3):
+                controller.play(turn)
+                observations.append(sample(turn))
+                write_json(out / 'observations.json', observations)
+            result.update(final=observations[-1], builder_native=builder_status('builder-after-autoplay'))
+            require(not result['builder_native']['faults'], 'Native Builder policy faulted')
+        else:
+            controller.play(endpoint)
+            result['final'] = sample(endpoint)
+        result['native'] = status('native-after-autoplay')
         require(result['native']['faults'] == 0, 'Native district policy faulted')
         write_json(out / 'result.json', result)
     finally:
@@ -146,32 +176,41 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment):
 
 def run(args):
     replay, out = args.replay.resolve(), args.output.resolve()
-    require(not out.exists() and sha(args.ce_dll) == CANDIDATE_SHA and sha(args.binary) == HOTFIX_EXE_SHA,
+    expected = args.ce_sha256 if args.builder else CANDIDATE_SHA
+    require(not out.exists() and sha(args.ce_dll) == expected and sha(args.binary) == HOTFIX_EXE_SHA,
             'Expected the exact qualified CE build and fresh output')
     require(load(replay / 'restoration.json')['verified'], 'Previous replay must be closed and restored')
-    checkpoint = load(replay / 'treatment/pre-supplier-checkpoint.json')
+    earlier = load(replay / 'result.json')['treatment']
+    checkpoint = earlier['checkpoint'] if args.builder else load(replay / 'treatment/pre-supplier-checkpoint.json')
     source = Path(checkpoint['native_save']).resolve()
     digest = checkpoint['sha256']
-    require(checkpoint['verified'] and checkpoint['turn'] == 31 and sha(source) == digest
-            and sha(Path(checkpoint['archive'])) == digest, 'Expected the exact turn-31 fixture')
-    target = load(replay / 'result.json')['treatment']['plan']['target']
+    require(checkpoint['verified'] and checkpoint['turn'] == (45 if args.builder else 31) and sha(source) == digest
+            and sha(Path(checkpoint['archive'])) == digest, 'Expected the exact Boston fixture')
+    target = load(args.match / 'result.json')['treatment']['plan']['target'] if args.builder else earlier['plan']['target']
     probe_files = tuple(HERE / name for name in ('natural_followthrough.lua', 'natural_chain.lua', 'supplier_world.lua'))
     probe = 'CSC_BAKERS_TARGET=' + lua(target) + ';\n' + '\n'.join(map(read, probe_files))
     out.mkdir()
-    pins = {str(path.resolve()): sha(path) for path in (Path(__file__), *probe_files, *AI_FILES, UI_READS, args.ce_dll, source)}
+    extra = (HERE / 'operating_effects.lua', HERE / 'natural_chain.py') if args.builder else ()
+    pins = {str(path.resolve()): sha(path) for path in (Path(__file__), *probe_files, *extra, *AI_FILES, UI_READS, args.ce_dll, source)}
     write_json(out / 'source-archive.json', archive_sources(pins, out / 'source-version'))
     archived = replay / 'retired-study-copy'
     installed = args.mods.resolve() / 'CSC Mill Building Study'
-    control = run_arm(args, out / 'control', archived, source, digest, probe, installed, False)
-    treated = run_arm(args, out / 'treatment', archived, source, digest, probe, installed, True)
+    control = run_arm(args, out / 'control', archived, source, digest, probe, installed, False, target)
+    treated = run_arm(args, out / 'treatment', archived, source, digest, probe, installed, True, target)
     require(control['source'] == treated['source'], 'The arms did not start from the same observed state')
     plot, = target['base']
     lost = next(row for row in control['final']['neighbors'] if row['plot'] == plot)
     kept = next(row for row in treated['final']['neighbors'] if row['plot'] == plot)
-    consumed = re.findall(r'CSC_AI_BAKERS_DISTRICTS [^\r\n]+previousChanged=(\d+)',
-                          read(out / 'treatment/Lua.log'))
-    result = dict(plot=plot, control=lost, treatment=kept, policy_changes=sum(map(int, consumed)),
-                  verified=not lost['deposit'] and kept['working'] and any(int(count) for count in consumed))
+    log = read(out / 'treatment/Lua.log')
+    if args.builder:
+        statuses = [json.loads(value) for value in re.findall(r'CSC_AI_BAKERS_BUILDERS [^\r\n]+previous=([^\r\n]+)', log)]
+        changes = sum(status['changed'] for status in statuses)
+        verified = (not lost['working'] and kept['working'] and changes > 0
+                    and treated['final']['operation']['operating'] and not any(status['faults'] for status in statuses))
+    else:
+        changes = sum(map(int, re.findall(r'CSC_AI_BAKERS_DISTRICTS [^\r\n]+previousChanged=(\d+)', log)))
+        verified = not lost['deposit'] and kept['working'] and changes > 0
+    result = dict(plot=plot, control=lost, treatment=kept, policy_changes=changes, verified=verified)
     write_json(out / 'result.json', result)
     require(result['verified'], 'Automatic preservation did not meet the matched observation')
 
@@ -180,4 +219,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('output', 'replay', 'mods', 'user-root', 'binary', 'ce-dll'):
         parser.add_argument('--' + name, type=Path, required=True)
-    run(parser.parse_args())
+    parser.add_argument('--builder', action='store_true')
+    parser.add_argument('--ce-sha256')
+    parser.add_argument('--match', type=Path)
+    args = parser.parse_args()
+    if args.builder and (not args.match or not args.ce_sha256):
+        parser.error('--builder requires --match and --ce-sha256')
+    run(args)

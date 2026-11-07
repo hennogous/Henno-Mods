@@ -64,10 +64,18 @@ local function refresh(turn)
     end
 
     local started = os.clock()
-    local entries = {}
+    local entries, builderSites = {}, {}
+    local builderStatus = bridge.BuilderStatus()
+    local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
+    local allowances = 0
     for _, id in ipairs(players) do
-        for _, entry in ipairs(placement.BakersMaterialDeductions(Players[id])) do
+        local deductions, sites = placement.BakersMaterialDeductions(Players[id], protectBuilders)
+        for _, entry in ipairs(deductions) do
             entries[#entries + 1] = entry
+        end
+        for _, site in ipairs(sites) do
+            builderSites[#builderSites + 1] = site
+            allowances = allowances + #site.improvements
         end
     end
     -- Prioritise the supplier relationships most at risk if the map exceeds
@@ -76,8 +84,15 @@ local function refresh(turn)
     local omitted = math.max(0, #entries - capacity)
     for i = #entries, capacity + 1, -1 do entries[i] = nil end
     local width, height = Map.GetGridSize()
-    local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries)
+    -- Dropping part of a site's compatibility list can forbid a valid job.
+    -- Retire Builder protection for the turn if the full packet cannot fit.
+    local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
+        allowances <= capacity and builderSites or nil)
     assert(accepted, message)
+    if builderStatus then
+        print(string.format('CSC_AI_BAKERS_BUILDERS turn=%d allowances=%d previous=%s',
+            turn, allowances <= capacity and allowances or 0, builderStatus))
+    end
     print(string.format('CSC_AI_BAKERS_DISTRICTS turn=%d version=%d players=%d entries=%d omitted=%d previousMatched=%d previousChanged=%d seconds=%.4f',
         turn, version + 1, #players, #entries, omitted, matched, changed, os.clock() - started))
     return true

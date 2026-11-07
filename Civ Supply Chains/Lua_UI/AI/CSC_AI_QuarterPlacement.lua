@@ -108,14 +108,30 @@ end
 
 -- A supplier can be in a different city from the Quarter. Key the deduction
 -- to the city that could actually place a district there, as CE expects.
-function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player)
+function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders)
     local playerID = player:GetID()
-    local entries = {}
+    local entries, builderSites = {}, {}
     for index, cost in pairs(CSC_AI_QuarterPlacement.BakersMaterialRisk(player)) do
         local plot = Map.GetPlotByIndex(index)
         local city = Cities.GetPlotPurchaseCity(plot)
         if city and city:GetOwner() == playerID then
             local cityID = city:GetID()
+            if includeBuilders and cost >= LAST_DEPOSIT_COST_Q8 then
+                local current = plot:GetImprovementType()
+                local options = materialOptions()[plot:GetResourceType()]
+                -- Keep a working supplier in place. For a deposit that is not
+                -- working yet, keep all mapped improvements available to Civ.
+                local working = not plot:IsImprovementPillaged()
+                for _, improvement in ipairs(options) do
+                    if improvement == current and working then
+                        options = {current}
+                        break
+                    end
+                end
+                builderSites[#builderSites + 1] = {
+                    player = playerID, city = cityID, plot = index, improvements = options,
+                }
+            end
             for district in GameInfo.Districts() do
                 if district.Index > 0 and plot:CanHaveDistrict(district.Index, playerID, cityID) then
                     entries[#entries + 1] = {
@@ -125,7 +141,7 @@ function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player)
             end
         end
     end
-    return entries
+    return entries, builderSites
 end
 
 local WATER_RECIPIENT = {

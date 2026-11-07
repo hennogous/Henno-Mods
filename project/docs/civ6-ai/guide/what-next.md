@@ -34,10 +34,11 @@ can satisfy dependencies. Tailors comes next through the same model.
 
 The live Boston replay establishes this sequence for one Bakers chain. The
 offline planner separately covers actual gameplay definitions and a copied
-Tailors case. Main CSC can now publish supplier deductions when the CE score
-capability is ready. We still need to observe whether the policy preserves
-suppliers and how Builder, construction, research and repair decisions work
-together in fresh games.
+Tailors case. In matched replays the main CSC policy redirected Campus off
+the Cattle, then separately kept a destructive Farm out of the Builder
+rankings. The latter replay kept Boston's Pasture working through
+Storekeeper. Next we need to test work that was already assigned, and see
+how Civ rebuilds a lost Pasture and repairs a damaged Mill.
 [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay) ·
 [Qualification roadmap](../roadmap.md#current-milestone-and-active-problem).
 
@@ -45,8 +46,8 @@ together in fresh games.
 
 The shared controller and guarded stock score hook support matched live tests.
 On the patched DX11 executable, the corrected CE profile loads the save
-that previously crashed and carries both score writes. The next live
-check is CSC's automatic supplier policy on that carrier.
+that previously crashed and carries both score writes. The same CE review
+line now carries the automatic district and Builder supplier policies.
 Dev-CE 0.8.1 is an optional research tool for a specific
 extra Lua getter or debugging need. Packaged CE delivery is a separate
 qualification on the patched Windows host.

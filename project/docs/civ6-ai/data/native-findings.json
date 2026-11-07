@@ -1678,5 +1678,17 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N088"],
     "related": ["AI-C062", "AI-C065"]
+  },
+  {
+    "id": "AI-N092",
+    "title": "A whole-function improvement score feeds the native Builder ranking cache",
+    "statement": "The row evaluator calls improvement NetValue with explicit improvement, plot and city arguments. It copies the returned integer unchanged into the improvement score array. The ranking floor is also the ineligible score used by the evaluator.",
+    "status": "accepted",
+    "evidence_types": ["static", "source"],
+    "scope": "XP2 hotfix SHA 092abfbb. Row evaluator 3e2aa0, call at 3e3423, improvement NetValue 52a8c0, row score array at 0x30, native floor −2559744 Q8 from b66cb0. The compared hotfix and reference bytes match.",
+    "limits": "A changed result affects future reads of that cached value. A new publication does not recalculate stale scores or cancel already assigned jobs. ClearPlotNode 55d970 and BuildImprovementNode 551360 can reach execution without consulting this score.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-N088", "AI-N091", "AI-C066"]
   }
 ]

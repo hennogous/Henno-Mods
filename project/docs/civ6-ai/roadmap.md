@@ -69,16 +69,19 @@ Cattle Pasture by turn 37. The penalty is finite and needs wider calibration.
 [Automatic publisher evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
 
 **Active problem for reusable tuning — 13.3, destructive Builder work.**
-The stock GameCore probe rejected Boston's protected Farm candidate inside
-native ranking. It observed both deferral and eligible same-city alternatives.
-Boston kept the original Pasture and reached Storekeeper at turns 63 and 66.
-Implement a CE-compatible policy boundary and test dynamically chosen
-suppliers, existing job reservations and safe follow-through.
+The CE score-stage policy now reads live CSC material rules and protects
+critical supplier sites in the matched Boston replay. With the same district
+policy in both arms, the control lost its Cattle. The treatment kept its
+working Pasture and reached Storekeeper at turns 63 and 66. Verify protection
+from already assigned jobs and direct harvests, plus safe alternatives in
+ordinary games. For **13.1**, observe how Civ handles the archived natural
+damage to Boston's Pasture and Water Mill before adding recovery incentives.
 Before a mature-game run, separate native policy limits
 from trace retention, preserve per-publication evidence, and index native
 lookups by city and district-site pair. Measure the resulting cost in play.
 [Current CE startup evidence](../research/mods/csc-ai-xp2-november-hotfix-20261106.md#corrected-shared-ce-loads-and-accepts-district-scores).
 [Builder candidate replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
+[Automatic CE Builder replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

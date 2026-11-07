@@ -19,8 +19,12 @@ local bakers = {Index=3}
 local cattle = {Index=4,ResourceType='RESOURCE_CATTLE'}
 GameInfo = {
     Districts=info({{Index=0},{Index=1},{Index=2},bakers,DISTRICT_CSC_BAKERS_QUARTER=bakers}),
-    Resources={[4]=cattle,RESOURCE_CATTLE=cattle}, Improvements={IMPROVEMENT_PASTURE={Index=5}},
-    Improvement_ValidResources=info({{ResourceType='RESOURCE_CATTLE',ImprovementType='IMPROVEMENT_PASTURE'}}),
+    Resources={[4]=cattle,RESOURCE_CATTLE=cattle},
+    Improvements={IMPROVEMENT_PASTURE={Index=5}, IMPROVEMENT_FIXTURE={Index=6}},
+    Improvement_ValidResources=info({
+        {ResourceType='RESOURCE_CATTLE',ImprovementType='IMPROVEMENT_PASTURE'},
+        {ResourceType='RESOURCE_CATTLE',ImprovementType='IMPROVEMENT_FIXTURE'},
+    }),
 }
 CSC_Adjacency = {
     Initialize=function() end,
@@ -60,7 +64,7 @@ GameConfiguration = {}
 GameEvents = {OnGameTurnStarted={Add=function(callback) boundary=callback end}}
 Events = {}
 version, packet = 0, nil
-CE_AIDistrictScoresBegin = function(v) version=v; packet={}; return 1 end
+CE_AIDistrictScoresBegin = function(v) version=v; packet={}; builders={}; return 1 end
 CE_AIDistrictScoresAllow = function(id) assert(id==3); return 1 end
 CE_AIDistrictScoresEntry = function(...) packet[#packet+1]={...}; return 1 end
 CE_AIDistrictScoresCommit = function() return 1 end
@@ -90,13 +94,23 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertIsNone(lua.eval('packet'))
         lua.execute('GameConfiguration.IsHotseat=function() return false end; boundary()')
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-24576')
+        self.assertEqual(lua.eval('#builders'), 0)
         lua.execute('boundary()')
         self.assertEqual(lua.eval('version'), 1)
-        lua.execute('turn=2; pillaged=true; boundary()')
+        lua.execute("""
+            CE_AIBuilderProtectionStatus=function() return '{"ready":1,"faults":0}' end
+            CE_AIBuilderProtectionAllow=function(...) builders[#builders+1]={...}; return 1 end
+            turn=2; boundary()
+        """)
+        self.assertEqual(lua.eval('#builders'), 1)
+        self.assertEqual(lua.eval('table.concat(builders[1], ",")'), '3,42,101,5')
+        lua.execute('turn=3; pillaged=true; boundary()')
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
-        lua.execute('turn=3; improvement=-1; boundary()')
+        self.assertEqual(lua.eval('#builders'), 2)
+        self.assertEqual(lua.eval('table.concat(builders[2], ",")'), '3,42,101,6')
+        lua.execute('turn=4; improvement=-1; boundary()')
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
-        lua.execute('turn=4; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute('turn=5; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

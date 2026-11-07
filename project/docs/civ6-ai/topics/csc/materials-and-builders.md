@@ -25,6 +25,17 @@ The boost route initially deferred Boston's Farm, and later calls retained
 eligible same-city alternatives. The supplier survived through Storekeeper.
 [AI-N091] [Candidate filtering replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
 
+The earlier improvement forecast supplies that ranking cache directly.
+CE can scope a score change to one improvement on a protected supplier
+site without replacing the selector. An already assigned job can reach
+execution without another score calculation. [AI-N092]
+[CE score producer and execution limits](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#ce-score-producer-and-execution-limits).
+
+CSC's live supplier scan now feeds that CE capability. In the matched
+Boston replay the treatment retained the Cattle Pasture and verified
+Storekeeper while the control lost the deposit. [AI-C066]
+[Automatic Builder protection evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

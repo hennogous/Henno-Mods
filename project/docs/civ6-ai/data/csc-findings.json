@@ -1197,5 +1197,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N090"],
     "related": ["AI-C062", "AI-N086", "AI-N088"]
+  },
+  {
+    "id": "AI-C066",
+    "title": "The main CSC Builder policy kept Boston's Cattle Pasture through Storekeeper activation",
+    "statement": "Both arms ran the same automatic district policy. Adding the Builder allowance kept the mapped Cattle Pasture while the control removed it and lost the deposit. The treatment then verified actual exchange yields and Storekeeper.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Exact turn-45 Boston save on the patched Steam DX11 CE review build. Farm on plot 796 was priced at the native ineligible value. One published site, 23 score changes, zero Builder faults and operating Service at turns 63 and 66. Both arms closed and restored.",
+    "limits": "The saved fixture supplied original seat roles. It qualifies a forecast-stage intervention for one supplier. Safe alternative completion, already assigned work, normal starts, direct harvest routes and Workshop delivery remain open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-N092"],
+    "related": ["AI-C065", "AI-N091"]
   }
 ]
