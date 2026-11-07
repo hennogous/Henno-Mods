@@ -101,4 +101,6 @@ The same branch ran on the patched XP2 build in Boston. Water Mill repair
 won the building comparison on turn 245. The Theater Square contract
 executed, and the function returned before fallback production selection.
 Boston later submitted a Mill repair contract and queued an Encampment.
+After that district completed, the same retained Mill contract executed
+and its repair finished.
 [AI-C069] [Native branch and live queue evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).

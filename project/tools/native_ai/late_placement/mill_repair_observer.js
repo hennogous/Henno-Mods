@@ -1,8 +1,7 @@
 'use strict';
 
 // Patched Steam XP2. Observe the ordinary building score, the native building
-// choice and a BuildBuilding attempt for one existing damaged Mill.
-// Read-only by default. A separate, explicit bid can change one forecast input.
+// choice and a BuildBuilding attempt for one existing damaged Mill. Never write.
 const MILL_VALUE = 0x52a050;
 const ORDINARY_RETURN = 0x3e3ee2;
 const BEST_BUILDING = 0x3e4710;
@@ -171,10 +170,6 @@ function init(spec, scope) {
         if (pass === undefined) throw Error('Missing contract execution pass');
         return {pass, offer: contract(a[0])};
     }, (sample, result) => add({kind: 'contract-execute', ...sample, accepted: Boolean(result.toInt32() & 255)}));
-    if (scope.repairBid) installMillRepairBid({
-        address, observe, read, caller, target, cityOf, contract, add, scope, queuePass,
-        currentBoundary: () => boundary,
-    }, scope.repairBid);
     Interceptor.flush();
     installed = true;
     return true;

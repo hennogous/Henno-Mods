@@ -1697,9 +1697,9 @@
     "title": "An existing pillaged building can enter ordinary city production as a repair",
     "statement": "CityBuild::BuildBuilding accepts an absent or pillaged building, checks CanConstruct and issues the native building-type Build request. Builder improvement repair has a separate operation path.",
     "status": "accepted",
-    "evidence_types": ["static", "source"],
-    "scope": "Windows XP2 hotfix code matched to the Ghidra reference. BuildBuilding 3df040 tests HasBuilding and IsPillaged, calls CanConstruct f7100 and builds the request at 6834a0. BuildImprovementNode uses its own native Repair request.",
-    "limits": "Admission at this boundary does not establish that an earlier chooser offers or selects a given repair. Queue availability, cached score, prerequisites and payout require separate evidence.",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Windows XP2 hotfix code matched to the Ghidra reference. BuildBuilding 3df040 tests HasBuilding and IsPillaged, calls CanConstruct f7100 and builds the request at 6834a0. Boston's stock Mill completed through both a retained contract and ordinary fallback production in separate damage states. BuildImprovementNode uses its own native Repair request.",
+    "limits": "The traces verify the Water Mill cases. They do not establish how quickly arbitrary pillaged buildings are proposed, selected and completed, or cover a pillaged host district.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C067"]

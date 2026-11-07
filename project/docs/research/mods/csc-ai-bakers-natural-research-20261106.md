@@ -682,6 +682,70 @@ establish the identities. The preserved trace is unmodified. The REA
 static trace of the exact patched image is
 `ev_8569426d193a3db90ee899c49146e1a34a3b819392faeed02078ed1fd7657623`.
 
+### The stock Mill repair completed after Encampment
+
+`mill-repair-bid-control-01` cold-loaded the archived turn-249 autosave
+SHA-256 `6d417eeea816a973ca4b4bd6eb62b692aca35e395218cf9cc71a48f2e492aaa3`.
+The starting census matched. The turn-250 scores and Encampment execution
+reproduced exactly. At the next vacancy, on turn 252, the same Water Mill
+contract 5997 executed at 639,408 Q8. Its `BuildBuilding` request returned
+true, and the native production log shows completion on turn 253 against
+a repair cost of 40 Production.
+
+The turn-255 gameplay census showed the existing Mill healthy at plot 721
+and the Granary healthy at 795. The UI's post-repair sample carried turn
+254. It showed 1 Production and 1 Gold on the Mill and 2 Food against
+the Granary's base 1. The stricter same-turn exchange boolean stayed false
+because the UI clock was one turn behind. Both clocks place the yield
+read after the repair. The Cattle remained developable without a Pasture
+and Storekeeper Growth remained zero.
+
+The autosave control froze the read-only trace and restored the game and
+temporary package. Its extra turn-255 save did not settle, so it has no
+new checkpoint or final `result.json`. The endpoint census, archived
+queue and restoration records remain available. Frozen trace SHA-256
+`635704811d3912dab7d27954804bbef3a726bd99cab310f47583d08cd7a21634`.
+Endpoint states SHA-256
+`6d1905a2482c9b534a70030b11f9740fe1b999fd6e5768a6161c4e246c51f9f4`.
+The proposed high diagnostic bid was withdrawn when this control
+demonstrated stock repair and payout.
+
+### Mill-only damage restored the full Service
+
+`mill-only-recovery-01` loaded the verified healthy turn-66 Boston save
+SHA-256 `56afbac023e9029f4d6fcaa5f270da07bc163bd724c6b511954de173b6630932`.
+The shared controller issued one controlled setup operation to pillage
+the existing Water Mill. The before/after city census differed only in
+that building's pillage flag, and all six neighboring plot records were
+identical. The Pasture and Granary were already working. No build order
+or score change was made.
+
+Boston finished University on turn 69 and selected Water Mill repair
+through ordinary fallback production. The native `BuildBuilding` call
+from `QueueNextBuild` returned true. The queue log shows repair completion
+on turn 70 at a cost of 40 Production.
+
+| Inactive turn | Mill | Granary Food | Mill Production / Gold | Storekeeper Growth |
+| --- | --- | --- | --- | --- |
+| 66 after damage | Pillaged | 1 | 0 / 0 | 0 |
+| 69 | Pillaged | 1 | 0 / 0 | 0 |
+| 72 | Repaired | 2 | 1 / 1 | 1 |
+| 75 | Repaired | 2 | 1 / 1 | 1 |
+
+The UI and gameplay clocks matched at each sample. The original Cattle
+Pasture remained working, and the operation audit passed at 72 and 75.
+The two Boston states verify stock building recovery with a competing
+district contract or an existing University in production. The known
+pillaged-Quarter payout issue is a different case. No building repair
+priority was added. The missing Pasture in the late chain is the next
+recovery dependency.
+
+The result SHA-256 is
+`4c08a91838ed60610643eee2baa9fbafb4b7485327b792c9f7efce97ffcf41bf`.
+The frozen trace SHA-256 is
+`ea11ddd2dd44343a2ace0134ad74df8d972eddbd04f054d2ee7a53813b1dd30d`.
+The controller stopped at 75 after the repeat payout sample.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

@@ -68,7 +68,7 @@ automatic main CSC policy, Campus went on 720 and Boston worked the original
 Cattle Pasture by turn 37. The penalty is finite and needs wider calibration.
 [Automatic publisher evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
 
-**Active problem for reusable tuning — 13.1 and 14.1, building repair.**
+**Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
 The CE score-stage policy now reads live CSC material rules and protects
 critical supplier sites in the matched Boston replay. With the same district
 policy in both arms, the control lost its Cattle. The treatment kept its
@@ -86,12 +86,14 @@ production slot to an admitted Theater Square contract. The Mill remained
 pillaged at turn 252. Boston also submitted a repair contract on turn 249
 and queued an Encampment on turn 250. The repeat confirmed the Mill passed
 validation and refreshed to 639,408 Q8. Encampment executed at 3,694,136 Q8.
-For **13.1 and 14.1**, close the building leg with
-a matched replay that changes the AI's choice and records a native queue
-entry, completed repair and realized Mill output. Repeat with the main CSC
-policy from a distinct eligible state, including a competing investment.
-Supplier work is a separate leg. Verify its native assignment and completion,
-then verify restored Storekeeper output with both links working.
+The cold continuation queued the same Mill contract on turn 252 after the
+Encampment finished. Repair completed on turn 253 and building yields
+returned. A separate earlier state with only the Mill pillaged also
+recovered through stock fallback production. Working supply, exchange and
+Storekeeper were verified together after repair. Keep building and Quarter
+recovery in fresh-seed qualification. For the missing Pasture, trace
+reservation, admission and assignment. Verify the legal Builder operation
+and actual Storekeeper output when both links work again.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
@@ -102,6 +104,7 @@ and measure its cost in a mature live game before enabling it in CSC.
 [Natural recovery baseline](../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
 [Matched Wonder protection](../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
 [Mill repair and city contract ordering](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
+[Mill-only recovery and payouts](../research/mods/csc-ai-bakers-natural-research-20261106.md#mill-only-damage-restored-the-full-service).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

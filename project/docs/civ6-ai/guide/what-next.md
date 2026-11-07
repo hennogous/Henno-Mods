@@ -44,9 +44,10 @@ also ended with both links down. A later stock continuation found that the
 damaged Mill won its building comparison while Boston queued a Theater
 Square contract. Boston later submitted a Mill repair contract. The city
 accepted it and refreshed its value, then executed a higher-valued
-Encampment contract. The active recovery test follows a repair from
-contract selection to completed repair and restored Mill output. Pasture
-assignment and restored Storekeeper remain separate checks.
+Encampment contract. The Mill repair ran after Encampment and restored its
+building yields. In a separate test with only the Mill pillaged, the AI
+repaired it and restored Storekeeper with its original Pasture. The late
+Boston chain still needs that Pasture rebuilt before Storekeeper can return.
 [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay) ·
 [Qualification roadmap](../roadmap.md#current-milestone-and-active-problem).
 [Recovery evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).

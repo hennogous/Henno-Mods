@@ -16,10 +16,14 @@ already doubles the computed repair score. Trace actual selection and
 production separately.
 In the stock contract replay from turn 234, Boston received and validated
 Water Mill repair 5997. At turn 250 it refreshed to 639,408 Q8 and lost
-to Encampment 5954 at 3,694,136 Q8. The Mill stayed pillaged through 252.
-Keep the repair problem open through a changed native choice, physical
-completion and actual output in matched and distinct integrated tests.
-The t249 autosave is archived under `mill-repair-contract-autosave`.
+to Encampment 5954 at 3,694,136 Q8. Cold reload of the archived t249
+autosave reproduced both values, then stock queued the same Mill contract
+on t252, finished it t253 and restored the actual building yields.
+Pasture and Storekeeper stayed down. The isolated t66 Mill-only damage
+test repaired through stock fallback after University, with working
+Storekeeper at t72 and t75. Keep building recovery in wider validation.
+Next trace admission and assignment for the missing Pasture, then verify
+actual Service output after legal AI rebuilding.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

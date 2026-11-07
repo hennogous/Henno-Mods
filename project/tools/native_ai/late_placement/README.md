@@ -101,11 +101,11 @@ with no score writes by default.
 
 `--repair-autosave` accepts a preserved autosave listed in its adjacent
 `archive.json`. The observed Boston state at that turn must match the
-closed reference named in `--recover-from`. The first cold load is the
-control. A second load with `--repair-control <closed control>` derives
-one diagnostic floor from the losing Mill offer and the contract that
-actually executed. It permits a single forecast write only when the
-repair reaches the same update boundary with the expected native value.
-The test leaves validation, competition, production and completion to the
-game. Its forced comparison is a mechanism test and provides no routine
-CSC calibration.
+closed reference named in `--recover-from`. Use the late continuation to
+see whether a retained Mill contract eventually executes.
+
+`--pillage-mill-from` instead loads a closed operating chain, verifies the
+exact healthy state and pillages only the Water Mill once. After that
+setup, stock AI owns the queue and repair. The test reports the initial
+damage, Mill completion, actual building output and whether Storekeeper
+restarts while the original Pasture stays intact.

@@ -34,6 +34,13 @@ through 152 completed turns, with Granary and Mill Food verified separately.
 The earlier Boston blizzard did not recur in this playthrough.
 [AI-C064] [152-turn audit](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
 
+The late Boston chain's stock Mill repair waited behind Encampment and
+restored its building yields. The Pasture remained missing. In a separate
+early test with only the Mill pillaged, the city repaired it after finishing
+University. The existing Pasture and Granary then supported the restored
+exchange and Storekeeper. [AI-C069]
+[Mill-only recovery evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#mill-only-damage-restored-the-full-service).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

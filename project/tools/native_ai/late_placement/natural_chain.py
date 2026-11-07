@@ -39,29 +39,6 @@ def operating(state, target):
                 storekeeper=service, operating=bool(supply and exchange and service))
 
 
-def mill_repair_plan(control, digest, start):
-    require(load(control / 'restoration.json')['verified']
-            and load(control / 'session-closed.json')['verified']
-            and load(control / 'session-load-input.json')['sha256'] == digest,
-            'Repair control must be closed, restored and matched to the source save')
-    result = load(control / 'result.json')
-    scope = load(control / 'mill-repair-scope.json')
-    trace = load(control / 'mill-repair-trace-frozen.json')
-    require(result['native_writes'] == 0 and not scope.get('repairBid') and not trace['fault'] and not trace['active'],
-            'Expected a frozen stock control')
-    # Use an executed alternative so its score also passed the native
-    # unit/project checks. Stay one whole native utility unit above it.
-    events = [row for row in trace['records'] if row['boundary'] == start]
-    chosen = {row['pass']: row['offer'] for row in events
-              if row['kind'] == 'contract-execute' and row['accepted']}
-    lost = [(row['after'], chosen[row['pass']]) for row in events if row['kind'] == 'contract-update'
-            and row['after']['building'] == scope['mill'] and row['pass'] in chosen
-            and 0 < row['after']['q8'] < chosen[row['pass']]['q8']]
-    require(len(lost) == 1, 'Need one eligible repair offer that lost to an executed contract')
-    (repair, winner), = lost
-    return dict(id=repair['id'], boundary=start, expectedQ8=repair['q8'], floorQ8=winner['q8'] + 256)
-
-
 def run(args):
     match, out = args.match.resolve(), args.output.resolve()
     installed = args.mods.resolve() / 'CSC Mill Building Study'
@@ -81,12 +58,13 @@ def run(args):
             'The cohort survey requires a verified intermediate checkpoint')
     require(not args.recover_from or (args.continue_from and not args.retain_from and not args.guard_farm),
             'A recovery baseline must observe a closed interruption without native score or Farm interventions')
-    require(not args.observe_mill_repair or (args.recover_from and args.dependencies),
+    require(not args.observe_mill_repair or ((args.recover_from or args.pillage_mill_from) and args.dependencies),
             'Mill observation requires the damaged continuation and pinned Frida')
     require(not args.repair_autosave or args.observe_mill_repair,
             'A repair autosave requires the scoped Mill diagnostic')
-    require(not args.repair_control or args.repair_autosave,
-            'A diagnostic repair bid requires a matched autosave control')
+    require(not args.pillage_mill_from or (args.continue_from and args.observe_mill_repair
+            and not any((args.recover_from, args.retain_from, args.repair_autosave, args.guard_farm))),
+            'Mill-only damage needs a separate healthy, unassisted continuation')
     treatment = load(match / 'result.json')['treatment']
     target = treatment['plan']['target']
     final = treatment['followthrough'][-1]
@@ -121,7 +99,18 @@ def run(args):
                                 if state['city']['turn'] == checkpoint['turn'])
             require(resume_state['operation']['operating'], 'Expected a working retention checkpoint')
             final = resume_state['city']
-    autosave_receipt = None
+    healthy = autosave_receipt = None
+    if args.pillage_mill_from:
+        reference = args.pillage_mill_from.resolve()
+        require(load(reference / 'restoration.json')['verified'] and load(reference / 'session-closed.json')['verified'],
+                'Expected a closed operating checkpoint')
+        source_result = load(reference / 'result.json')
+        healthy = source_result['state']
+        require(healthy['operation']['operating']
+                and healthy['operation']['mill'] == 'BUILDING_CSC_BAKERS_WATER_MILL',
+                'Expected a working Water Mill chain before controlled damage')
+        checkpoint, final = source_result['checkpoint'], healthy['city']
+        retired = reference / 'retired-study-copy'
     if args.recover_from:
         reference = args.recover_from.resolve()
         require(load(reference / 'restoration.json')['verified'] and load(reference / 'session-closed.json')['verified'],
@@ -185,12 +174,8 @@ def run(args):
         inputs.append(reference / 'result.json')
     if autosave_receipt:
         inputs.extend((archive, autosave_receipt, reference / 'states.json'))
-    repair_bid = None
-    if args.repair_control:
-        control = args.repair_control.resolve()
-        repair_bid = mill_repair_plan(control, digest, start)
-        inputs.extend(control / name for name in ('result.json', 'restoration.json', 'session-closed.json',
-                      'session-load-input.json', 'mill-repair-scope.json', 'mill-repair-trace-frozen.json'))
+    if healthy:
+        inputs.append(reference / 'result.json')
     baseline = guard_code = None
     trace_name = 'mill-repair' if args.observe_mill_repair else 'farm'
     if args.guard_farm:
@@ -203,8 +188,6 @@ def run(args):
         guard_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(map(read, native))
     elif args.observe_mill_repair:
         native = [STUDY / 'observer.js', HERE / 'mill_repair_observer.js']
-        if repair_bid:
-            native.append(HERE / 'mill_repair_bid.js')
         inputs.extend(native)
         guard_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(map(read, native))
     if guard_code:
@@ -278,6 +261,8 @@ def run(args):
             require(state == baseline, 'Reloaded source differs from the verified reference')
         if args.recover_from:
             require(state == damaged, 'Reloaded damaged chain differs from the exact interruption')
+        if healthy:
+            require(state == healthy, 'Reloaded Mill-only source differs from the healthy checkpoint')
         return True
 
     def observe_interval(previous, current):
@@ -303,6 +288,23 @@ def run(args):
         session.load_once(source, sha256=digest, native_directory=args.saves, turn=start,
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AdjacencyGameplay'), eligibility=eligibility)
         prove_loaded_module(session.owner, spec, out / 'loaded-module.json')
+        if healthy:
+            # The only controlled setup change. No production request or score
+            # intervention follows, even if the AI leaves the Mill pillaged.
+            session.issue_once('pillage-water-mill', scope + """
+local t = CSC_BAKERS_TARGET
+local city = assert(CityManager.GetCity(t.player, t.city))
+local buildings = city:GetBuildings()
+local mill = assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL).Index
+assert(buildings:HasBuilding(mill) and buildings:GetBuildingLocation(mill) == t.plot)
+assert(not buildings:IsPillaged(mill))
+buildings:SetPillaged(mill, true)
+""", 'GameCore_Tuner')
+            write_json(out / 'healthy-source.json', states.pop())
+            damaged = sample(start)
+            require(damaged['city']['buildings']['BUILDING_CSC_BAKERS_WATER_MILL']['pillaged']
+                    and damaged['neighbors'] == healthy['neighbors'] and damaged['operation']['customer'],
+                    'Controlled damage changed more than the intended Mill or did not apply')
         if retention and not args.survey_retention:
             receipt = controller.cmd(scope + read(retention_probe), 'CSC_AdjacencyGameplay', 'install-retention-observer')
             require('CSC_RETENTION_INSTALLED' in receipt, 'Retention observer installation failed')
@@ -314,8 +316,6 @@ def run(args):
                          'assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL).Index));')
                 raw = controller.cmd(query, 'GameCore_Tuner', 'native-mill-scope')
                 native_scope = dict(parse(raw, 'CSC_MILL_SCOPE'), player=target['player'], city=target['city'])
-                if repair_bid:
-                    native_scope['repairBid'] = repair_bid
             else:
                 query = ('local w,h=Map.GetGridSize(); local farm=assert(GameInfo.Improvements.IMPROVEMENT_FARM).Index;'
                          'print(string.format(\'CSC_FARM_SCOPE={"width":%d,"height":%d,"farm":%d}\',w,h,farm));')
@@ -379,20 +379,20 @@ def run(args):
         elif not retained:
             stopped = 'supplier-or-quarter-lost'
         elif args.continue_from and done:
-            stopped = 'recovered-stage-2-service' if args.recover_from else 'retained-stage-2-service'
+            stopped = 'recovered-stage-2-service' if args.recover_from or healthy else 'retained-stage-2-service'
         elif not args.continue_from and mill_ready:
             stopped = 'mill-available'
         elif not args.continue_from and technology_ready:
             stopped = 'mill-technology-unlocked'
         next_save = None
-        if retained and turn > start:
+        if retained and turn > start and not autosave_receipt and not healthy:
             next_save = save_inactive_boundary(controller, turn=turn, name='CSC_BAKERS_STAGE2',
                                                native_directory=args.saves, archive=out / 'stage2.Civ6Save')
         freeze()
         if frozen is not None:
             require(frozen['fault'] is None and not messages and not frozen['active'], f'{trace_name} probe failed before close')
-        bids = [row for row in frozen['records'] if row['kind'] == 'repair-bid'] if args.observe_mill_repair else []
-        write_json(out / 'result.json', dict(stop=stopped, turn=turn, native_writes=len(bids), state=state,
+        write_json(out / 'result.json', dict(stop=stopped, turn=turn, native_writes=0, state=state,
+                                               setup='pillage-water-mill' if healthy else None,
                                                operating_since=operating_since, checkpoint=next_save,
                                                farm_rejections=frozen.get('rejected', 0) if frozen else 0,
                                                start=start, interruption=interruption))
@@ -434,5 +434,5 @@ if __name__ == '__main__':
     parser.add_argument('--recover-from', type=Path, help='Observe natural recovery after a verified damaged checkpoint')
     parser.add_argument('--observe-mill-repair', action='store_true', help='Trace Boston Mill production choices without writes')
     parser.add_argument('--repair-autosave', type=Path, help='Use an archived autosave that has a matching sampled damage state')
-    parser.add_argument('--repair-control', type=Path, help='Derive one guarded bid from a closed autosave control')
+    parser.add_argument('--pillage-mill-from', type=Path, help='Pillage only the Mill in a verified working chain')
     run(parser.parse_args())
