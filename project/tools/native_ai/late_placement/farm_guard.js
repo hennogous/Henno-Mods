@@ -6,6 +6,11 @@
 const BEST_IMPROVEMENT_LOCATION = 0x3e5750;
 const IMPROVEMENT_CALLERS = {boost: 0x55ae9b, city: 0x3e11a5};
 const LOCATION_ENTRY = '44884c242048894c2408415541574883ec684c63ea458bf84183fdff750b33c0';
+// ECX holds the signed score. The following JLE skips the row before it can
+// win. RDI points to the row and R13D holds the improvement index.
+const CANDIDATE_SCORE_GATE = 0x3e5848;
+const CANDIDATE_GATE_BYTES = '3b0d621478000f8e91000000';
+const REJECTED_SCORE_BITS = '0x80000000';
 const CITY_BUILD_LAYOUT = {
     owner: 0x90, playerId: 0xd8, cityId: 0xa8, rows: 0x4c8, count: 0x4d8,
     rowStride: 0x78, rowX: 8, rowY: 12, improvementScores: 0x30,
@@ -14,6 +19,7 @@ const CITY_BUILD_LAYOUT = {
 const memory = createStudyMemoryIO({ptr, findRangeByAddress: address => Process.findRangeByAddress(address)});
 const records = [];
 let listener = null;
+let candidateListener = null;
 let enabled = false;
 let active = 0;
 let rejected = 0;
@@ -64,10 +70,43 @@ function init(spec, scope) {
         callers.set(caller.toString(), route);
     }
     if (bytes !== LOCATION_ENTRY) throw Error('Improvement selector fingerprint');
+    const frames = new Map();
+    if (scope.filterCandidates) {
+        const gate = core.base.add(CANDIDATE_SCORE_GATE);
+        const fingerprint = Array.from(new Uint8Array(gate.readByteArray(12)),
+            value => value.toString(16).padStart(2, '0')).join('');
+        if (fingerprint !== CANDIDATE_GATE_BYTES) throw Error('Improvement candidate gate fingerprint');
+        candidateListener = Interceptor.attach(gate, function () {
+            if (!enabled) return;
+            const sample = frames.get(this.threadId)?.at(-1);
+            if (!sample) return;
+            try {
+                const l = CITY_BUILD_LAYOUT;
+                const row = this.context.rdi.toString();
+                if (this.context.r13.toInt32() !== scope.farm) throw Error('Improvement index changed in selection');
+                const x = read(row, l.rowX, 'i32');
+                const y = read(row, l.rowY, 'i32');
+                if (x < 0 || x >= scope.width || y < 0 || y >= scope.height) throw Error('Candidate coordinates outside map');
+                if (y * scope.width + x !== scope.plot) return;
+                const score = this.context.rcx.toInt32();
+                if (score !== scoreFor(sample.object, x, y, scope.farm)) throw Error('Candidate score changed in selection');
+                // Affect this comparison only. Native rows and remaining
+                // candidates keep their original values.
+                this.context.rcx = ptr(REJECTED_SCORE_BITS);
+                sample.filtered = score;
+                rejected++;
+            } catch (error) { stop(error); }
+        });
+    }
 
     listener = Interceptor.attach(address, {
         onEnter(args) {
             this.sample = null;
+            if (candidateListener) {
+                this.frames = frames.get(this.threadId) || [];
+                frames.set(this.threadId, this.frames);
+                this.frames.push(null);
+            }
             if (!enabled || args[1].toInt32() !== scope.farm
                 || args[2].toInt32() !== -1 || (args[3].toUInt32() & 0xff) !== 0) return;
             const route = callers.get(this.returnAddress.toString());
@@ -77,14 +116,28 @@ function init(spec, scope) {
                 const owner = read(object, CITY_BUILD_LAYOUT.owner, 'ptr');
                 if (read(owner, CITY_BUILD_LAYOUT.playerId, 'i32') !== scope.player) return;
                 this.sample = {object, route, city: read(owner, CITY_BUILD_LAYOUT.cityId, 'i32')};
+                if (this.frames) this.frames[this.frames.length - 1] = this.sample;
                 active++;
             } catch (error) { stop(error); }
         },
         onLeave(result) {
+            if (this.frames) {
+                this.frames.pop();
+                if (!this.frames.length) frames.delete(this.threadId);
+            }
             if (!this.sample) return;
             active--;
-            if (!enabled || result.isNull()) return;
+            if (!enabled) return;
             try {
+                if (result.isNull()) {
+                    if (this.sample.filtered !== undefined) {
+                        if (records.length >= 1024) throw Error('Farm trace capacity');
+                        records.push({boundary, route: this.sample.route, player: scope.player, city: this.sample.city,
+                            plot: -1, filteredScore: this.sample.filtered, blocked: false});
+                    }
+                    return;
+                }
+                if (records.length >= 1024) throw Error('Farm trace capacity');
                 const span = memory.readBytes(result.toString(), CITY_BUILD_LAYOUT.plotCoordinates, 4);
                 if (span.error) throw Error('Returned plot coordinates: ' + span.error);
                 const coordinates = new DataView(Uint8Array.from(span.value).buffer);
@@ -92,10 +145,10 @@ function init(spec, scope) {
                 if (x < 0 || x >= scope.width || y < 0 || y >= scope.height) throw Error('Returned plot bounds');
                 const plot = y * scope.width + x;
                 const score = scoreFor(this.sample.object, x, y, scope.farm);
-                if (records.length >= 1024) throw Error('Farm trace capacity');
                 const blocked = plot === scope.plot;
+                if (candidateListener && blocked) throw Error('Protected plot passed the candidate filter');
                 records.push({boundary, route: this.sample.route, player: scope.player, city: this.sample.city,
-                    plot, score, blocked});
+                    plot, score, blocked, filteredScore: this.sample.filtered});
                 if (blocked) {
                     result.replace(ptr(0));
                     rejected++;

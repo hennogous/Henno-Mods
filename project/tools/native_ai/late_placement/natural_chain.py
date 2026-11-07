@@ -48,6 +48,8 @@ def run(args):
             'Closed match and exact stock GameCore required')
     require(not args.guard_farm or (args.continue_from and args.dependencies),
             'The Farm guard requires the protected continuation and pinned Frida')
+    require(not args.filter_farm_candidates or (args.guard_farm and not args.retain_from),
+            'Candidate filtering requires the scoped Farm control and is a separate diagnostic')
     require(not args.retain_from or (args.continue_from and args.guard_farm),
             'Retention requires the proven operating branch and Farm guard')
     require(not args.resume_retention or args.retain_from,
@@ -224,7 +226,8 @@ def run(args):
                      'print(string.format(\'CSC_FARM_SCOPE={"width":%d,"height":%d,"farm":%d}\',w,h,farm));')
             raw = controller.cmd(query, 'GameCore_Tuner', 'native-farm-scope')
             require(len(target['base']) == 1, 'Guard requires the exact tracked Base')
-            native_scope = dict(parse(raw, 'CSC_FARM_SCOPE'), player=target['player'], plot=target['base'][0])
+            native_scope = dict(parse(raw, 'CSC_FARM_SCOPE'), player=target['player'], plot=target['base'][0],
+                                filterCandidates=args.filter_farm_candidates)
             write_json(out / 'farm-scope.json', native_scope)
             attached = frida.attach(session.owner.pid)
             script = attached.create_script(guard_code)
@@ -326,6 +329,8 @@ if __name__ == '__main__':
     parser.add_argument('--through', type=int, required=True)
     parser.add_argument('--continue-from', type=Path, help='Resume an accepted supplier-protection save through the Service')
     parser.add_argument('--guard-farm', type=Path, help='Block the exact protected Farm candidate from the closed loss control')
+    parser.add_argument('--filter-farm-candidates', action='store_true',
+                        help='Diagnose rejecting the protected row before native selection')
     parser.add_argument('--dependencies', type=Path, help='Pinned Frida directory for the optional Farm guard')
     parser.add_argument('--retain-from', type=Path, help='Continue an accepted operating save and audit each player turn')
     parser.add_argument('--resume-retention', type=Path, help='Reload a healthy intermediate retention checkpoint')

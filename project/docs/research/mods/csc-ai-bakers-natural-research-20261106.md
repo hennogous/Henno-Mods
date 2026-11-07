@@ -417,6 +417,42 @@ independent limits, preserve useful evidence across generations, and replace
 the frequent full-table scans with indexed lookups and city-local ranges.
 Measure these paths in a mature empire before setting production budgets.
 
+## Builder candidate filtering before native ranking
+
+The previous Farm guard withheld the selector's final result. To keep any
+eligible same-city alternative in contention, the next stock GameCore probe
+filters the protected row inside `CityBuild::GetBestLocationFor` at RVA
+`3e5750`. The selector reads the requested improvement's signed score into
+ECX at RVA `3e5845` and compares it with the admission floor at `3e5848`.
+The following `JLE` skips the row if the score does not clear that floor.
+The selector's third argument restricts the search to an exact plot ID
+when supplied. It cannot express a plot exclusion.
+
+The probe checks the loaded instruction bytes, exact native caller and
+player, Farm ID, coordinates and cached score. It gives the protected row's
+comparison the signed minimum and leaves the cached score, other rows and
+native selection logic intact. It records the location the original
+selector returns, including an empty result when it defers.
+
+`operation-candidate-filter-01` resumed the original turn-45 control save.
+The first boost pass returned no Boston site after filtering the Farm on
+Cattle 796 with score 27,094 Q8. Later ordinary calls returned Boston plot
+794 with score zero after filtering the Cattle at 4,054 to 6,109 Q8. Those
+returns establish that a lower-ranked row remained eligible. The native
+logs separately show Boston reserving plot 719 and issuing a Builder
+improvement operation on turn 58. Plot 719 already scored above the
+filtered row in that pass, so the operation alone does not establish a
+switch caused by the filter.
+
+The probe filtered 11 candidate evaluations with no hook fault. The original
+Cattle Pasture, Water Mill and Granary remained intact, and Storekeeper
+operated at turns 63 and 66. The game closed normally and the setup was
+restored. The trace SHA-256 is
+`fc57bd019268394f4c050eb385da8e20656727617000a0b8d9c9984d466e4494`.
+This is a scoped Frida diagnostic on stock GameCore. Generalizing the
+admission policy, handling already reserved jobs and delivering it through
+CE remain separate work.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

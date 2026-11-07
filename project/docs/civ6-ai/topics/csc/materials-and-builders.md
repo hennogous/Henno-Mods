@@ -20,6 +20,11 @@ planning can defer creating an improvement tree. A guarded replay used
 both paths to keep Boston's exact Pasture through Storekeeper activation.
 [AI-N088] [Native paths and retained replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#guarding-the-boost-decision-before-reservation).
 
+A stock GameCore probe filtered the protected row before native ranking.
+The boost route initially deferred Boston's Farm, and later calls retained
+eligible same-city alternatives. The supplier survived through Storekeeper.
+[AI-N091] [Candidate filtering replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

@@ -1665,5 +1665,18 @@
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N078", "AI-N089"],
     "related": ["AI-N083", "AI-N086"]
+  },
+  {
+    "id": "AI-N091",
+    "title": "Native Builder location ranking can skip a protected candidate and still return a lower-scoring site",
+    "statement": "An exact-row filter at the improvement score floor left the native scan in control. It returned no Boston location in the first boost pass and later returned a lower-scoring Boston plot. The Cattle Pasture stayed intact through Storekeeper activation.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Patched stock XP2 SHA 092abfbb and exact turn-45 Boston continuation. GetBestLocationFor at 3e5750, signed improvement score comparison at 3e5848, scoped boost and city callers. Eleven candidate evaluations filtered. Ordinary calls returned plot 794 at score zero after filtering scores of 4054 to 6109 Q8 for plot 796. Storekeeper operated at turns 63 and 66.",
+    "limits": "One scoped Frida probe. Returning a plot is separate from reserving it and completing work. The observed turn-58 Farm operation on plot 719 used a higher-scoring option that could already win that pass. Existing reservations, other Builder entry points and the CE implementation remain open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-N088"],
+    "related": ["AI-C062", "AI-C065"]
   }
 ]
