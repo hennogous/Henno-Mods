@@ -107,7 +107,8 @@ Amphitheater by 112,232 Q8. The matched nomination preference
 produced a valid Wind Mill offer at its lower native cache value.
 The follow-up refreshed that offer, entered production on 135
 and finished the Mill on 137 without another adjustment.
-Storekeeper operated on 138–143. Under **4.2**, qualify a
+Storekeeper operated on 138–143. The matched control finished
+Amphitheater with Melbourne's Mill still absent. Under **4.2**, qualify a
 reusable, bounded nomination preference for ready chains and
 verify whether it generalises across ordinary starts.
 Ancyra still needs its Mill and Granary, and some sites lack a

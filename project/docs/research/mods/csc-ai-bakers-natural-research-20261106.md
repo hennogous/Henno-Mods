@@ -1710,14 +1710,22 @@ on Bakers plot 1423 alongside its working Rice Farm and Granary.
 Storekeeper was active on all six measured interior turns 138–143.
 Alexandria also remained active on turns 135–143.
 
-The continuation establishes native production follow-through
-after the diagnostic nomination. It provides no new queue bid
-and has no matched untreated continuation through 144. The
-Mill refresh and execution were observed, but the trace did not
-capture the exact unit and project operands at the final gate.
-For reusable tuning, qualify the ordinary nomination carrier
-and set a bounded preference from the incremental value of a
-ready chain before considering a second production adjustment.
+The matched `development-melbourne-wind-mill-queue-control-01`
+continued the untreated turn-134 save through the same endpoint.
+At the first queue opening the same contract ID carried Amphitheater
+at 406,879 Q8, ahead of the unit and project operands at 79,938
+and 73,546 Q8 respectively. Melbourne started Amphitheater on 135
+and completed it on 139. Neither Mill nor Storekeeper was present
+in Melbourne at 144. Alexandria operated on 135–143 in both arms.
+The control's new observer anchor at `3e86d2` captured the
+validated offer and its native unit and project competitors. It
+was not loaded on the earlier treatment continuation, so its
+gate operands cannot be attributed to the Mill choice.
+
+This comparison supports targeting ordinary nomination first
+for a city with a ready chain. It does not establish the
+economic size of a reusable bid. The 448-unit intervention was
+a diagnostic value sized to cross one observed gap.
 
 The source save SHA-256 is
 `f1e62184a1533dcf9d99a7e2e71a9ec724048035109cb4034971690e4b41f38c`.
@@ -1726,6 +1734,38 @@ The trace SHA-256 is
 The turn-144 endpoint SHA-256 is
 `3c08d207cf2f23f33f0de2626bbd9d1e0e7b98c633743edc793f8fe11829f01f`.
 Native exit and controller restoration were verified.
+
+The control source SHA-256 is
+`e3b1eb0336089f093610f371bedba62ef8c60d95507916a1f2efba3e4e4552c8`.
+Its trace SHA-256 is
+`c83d9ac9912043c8ea9a040fa00e5b2e87169c7bb80007eb9ebc4036f8a503ed`.
+The control exited normally and restored controller preferences
+and package state.
+
+#### Candidate CE nomination boundary
+
+The existing function-entry Runtime hook cannot see individual
+effective scores inside `GetBestBuilding` (`3e4710`). The
+selector reads and transforms the cached score inline. On the
+pinned XP2 reference, the prerequisite checks at `3e49c7` and
+`3e49ce` precede the five-byte
+`MOVZX R13D, byte ptr [RBP+0x48]` at `3e49d5`. A qualified
+call-site adapter could replay that instruction and return to
+the untouched signed comparison at `3e49da`. A normal CALL
+through a near relay supplies a return address and allows a
+Win64 unwind frame. R12D holds the building, R14D the effective
+Q8 candidate score and R15 the CityBuild object. The native
+frame retains the caller return at `[RBP+0x28]` and the two
+flags at `[RBP+0x40]` and `[RBP+0x48]`. The intended scope
+is return `3e160a` with flags 0/0.
+
+The adapter is a design awaiting implementation and qualification.
+Keep byte validation, relay ownership, instruction-cache flushing
+and rollback in CE Runtime. Keep the candidate lookup generic and
+publish CSC's ready-chain criteria separately. Verify no-policy
+parity and scope before testing the amount. The Windows XP2
+reference SHA-256 is
+`324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c`.
 
 ## Evidence locator
 

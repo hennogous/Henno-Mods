@@ -27,6 +27,7 @@ const QUEUE_BEST_BUILDING_RETURN = 0x3e849c;
 const DIAGNOSTIC_MILL_BID_Q8 = 98304;
 const MELBOURNE_NOMINATION_Q8 = 448 * 256;
 const QUEUE_FALLBACK_COMPARISON = 0x3e8741;
+const QUEUE_OFFER_GATE = 0x3e86d2;
 const DEFAULT_UNIT_RETURN = 0x3e8836;
 const DEFAULT_PROJECT_RETURN = 0x3e88e5;
 const GENERIC_UNIT_RETURN = 0x3e899f;
@@ -117,6 +118,7 @@ function init(spec, scope) {
         [QUEUE_EXECUTE_RETURN - 4, '41ff5038'],
         ...(captureQueueOperands ? [
             [BUILDING_COMPARISON, '443b367e11448936'],
+            [QUEUE_OFFER_GATE, '8d9700ffffff3990580100007c3d'],
             [QUEUE_FALLBACK_COMPARISON, '8b457f83f8ff0f84c50000008b5d77'],
             [DEFAULT_UNIT_RETURN, '84c00f8456010000'],
             [DEFAULT_PROJECT_RETURN, '84c00f84a7000000'],
@@ -260,6 +262,15 @@ function init(spec, scope) {
             buildingQ8: read(c.rbp, QUEUE_BUILDING_VALUE_FRAME, 'i32'),
             unit: c.r13.toInt32(), unitQ8: c.rdi.toInt32(),
             project: read(c.rbp.sub(QUEUE_PROJECT_ID_FRAME_BACK), 0, 'i32'), projectQ8: c.rsi.toInt32(),
+        }));
+        // The top validated offer first faces the best unit minus one unit,
+        // then the best project. Only read fields shared by base contracts.
+        queuePoint(QUEUE_OFFER_GATE, c => ({
+            kind: 'offer-gate',
+            offerId: read(c.rax, CONTRACT_ID, 'i32'),
+            offerQ8: read(c.rax, CONTRACT_VALUE, 'i32'),
+            unitQ8: c.rdi.toInt32(),
+            projectQ8: c.rsi.toInt32(),
         }));
         queuePoint(DEFAULT_UNIT_RETURN, c => ({kind: 'default-unit', accepted: Boolean(c.rax.toInt32() & 255)}));
         queuePoint(DEFAULT_PROJECT_RETURN, c => ({kind: 'default-project', accepted: Boolean(c.rax.toInt32() & 255)}));

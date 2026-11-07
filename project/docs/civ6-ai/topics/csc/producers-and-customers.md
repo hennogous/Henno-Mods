@@ -41,6 +41,18 @@ University. The existing Pasture and Granary then supported the restored
 exchange and Storekeeper. [AI-C069]
 [Mill-only recovery evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#mill-only-damage-restored-the-full-service).
 
+## The Wind Mill needed an ordinary nomination in Melbourne
+
+Melbourne already had a working Rice supplier, an adjacent
+Granary and Feudalism. An ordinary nomination preference changed
+the offer from Amphitheater to Wind Mill. The offer kept the
+native building cache value, and the queue refreshed and accepted
+it at the next opening. Melbourne completed the Mill and operated
+Storekeeper on turns 138–143. The matched control completed the
+Amphitheater and had no working Storekeeper in Melbourne.
+[AI-C090] [AI-C091] [AI-C092]
+[Matched production and payout](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.
