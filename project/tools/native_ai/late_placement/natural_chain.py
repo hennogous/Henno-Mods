@@ -69,6 +69,8 @@ def run(args):
             'Controlled damage needs a separate healthy, unassisted continuation')
     require(not args.pillage_mill_from or (args.observe_mill_repair and not args.remove_pasture_from),
             'Use the Mill observer for Mill-only damage')
+    require(not args.damage_checkpoint or args.pillage_mill_from,
+            'An intermediate damage checkpoint requires the Mill-only diagnostic')
     require(not args.remove_pasture_from or (args.dependencies and not args.observe_mill_repair),
             'Pasture recovery uses the read-only supplier observer')
     treatment = load(match / 'result.json')['treatment']
@@ -111,11 +113,19 @@ def run(args):
         require(load(reference / 'restoration.json')['verified'] and load(reference / 'session-closed.json')['verified'],
                 'Expected a closed operating checkpoint')
         source_result = load(reference / 'result.json')
-        healthy = source_result['state']
+        if args.damage_checkpoint:
+            damage_checkpoint = args.damage_checkpoint.resolve()
+            require(damage_checkpoint.parent == reference / 'checkpoints',
+                    'Expected a checkpoint from the closed retention run')
+            checkpoint = load(damage_checkpoint)
+            healthy, = (state for state in load(reference / 'states.json')
+                        if state['city']['turn'] == checkpoint['turn'])
+        else:
+            checkpoint, healthy = source_result['checkpoint'], source_result['state']
         require(healthy['operation']['operating']
                 and healthy['operation']['mill'] == 'BUILDING_CSC_BAKERS_WATER_MILL',
                 'Expected a working Water Mill chain before controlled damage')
-        checkpoint, final = source_result['checkpoint'], healthy['city']
+        final = healthy['city']
         retired = reference / 'retired-study-copy'
     if args.recover_from:
         reference = args.recover_from.resolve()
@@ -157,6 +167,8 @@ def run(args):
     limit = start + 200 if args.survey_retention else (start + 150 if retention else 100)
     if args.recover_from:
         limit = start + 36
+    if args.damage_checkpoint:
+        limit = start + 18
     require(start == final['turn'] and start < args.through <= limit,
             'Expected a bounded later endpoint')
     package = manifest(retired)
@@ -182,6 +194,8 @@ def run(args):
         inputs.extend((archive, autosave_receipt, reference / 'states.json'))
     if healthy:
         inputs.append(reference / 'result.json')
+    if args.damage_checkpoint:
+        inputs.extend((damage_checkpoint, reference / 'states.json'))
     baseline = guard_code = None
     trace_name = 'pasture-recovery' if args.remove_pasture_from else ('mill-repair' if args.observe_mill_repair else 'farm')
     if args.guard_farm:
@@ -320,9 +334,16 @@ buildings:SetPillaged(mill, true)
 """, 'GameCore_Tuner')
             write_json(out / 'healthy-source.json', states.pop())
             damaged = sample(start)
-            require(damaged['city']['buildings']['BUILDING_CSC_BAKERS_WATER_MILL']['pillaged']
-                    and damaged['neighbors'] == healthy['neighbors'] and damaged['operation']['customer'],
+            expected_buildings = {kind: dict(values, pillaged=True) if kind == 'BUILDING_CSC_BAKERS_WATER_MILL'
+                                  else values for kind, values in healthy['city']['buildings'].items()}
+            require(damaged['city'] == dict(healthy['city'], buildings=expected_buildings)
+                    and damaged['neighbors'] == healthy['neighbors'] and damaged['operation']['customer']
+                    and damaged['operation']['workingBase'] and not damaged['operation']['operating'],
                     'Controlled damage changed more than the intended Mill or did not apply')
+            if args.damage_checkpoint:
+                receipt = save_inactive_boundary(controller, turn=start, name='CSC_BAKERS_MILL_ONLY',
+                    native_directory=args.saves, archive=out / 'mill-only-start.Civ6Save')
+                write_json(out / 'mill-only-start.json', receipt)
         if args.remove_pasture_from:
             session.issue_once('remove-pasture', scope + """
 local t = CSC_BAKERS_TARGET
@@ -352,7 +373,8 @@ ImprovementBuilder.SetImprovementType(plot, -1)
                 query = ('print(string.format(\'CSC_MILL_SCOPE={"mill":%d}\','
                          'assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL).Index));')
                 raw = controller.cmd(query, 'GameCore_Tuner', 'native-mill-scope')
-                native_scope = dict(parse(raw, 'CSC_MILL_SCOPE'), player=target['player'], city=target['city'])
+                native_scope = dict(parse(raw, 'CSC_MILL_SCOPE'), player=target['player'], city=target['city'],
+                                    captureQueueOperands=bool(args.damage_checkpoint))
             elif args.remove_pasture_from:
                 query = scope + """
 local t = CSC_BAKERS_TARGET
@@ -487,5 +509,6 @@ if __name__ == '__main__':
     parser.add_argument('--observe-mill-repair', action='store_true', help='Trace Boston Mill production choices without writes')
     parser.add_argument('--repair-autosave', type=Path, help='Use an archived autosave that has a matching sampled damage state')
     parser.add_argument('--pillage-mill-from', type=Path, help='Pillage only the Mill in a verified working chain')
+    parser.add_argument('--damage-checkpoint', type=Path, help='Use a verified healthy intermediate retention receipt')
     parser.add_argument('--remove-pasture-from', type=Path, help='Remove only the Pasture in a verified working chain')
     run(parser.parse_args())

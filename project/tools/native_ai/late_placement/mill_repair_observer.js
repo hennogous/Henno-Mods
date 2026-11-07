@@ -10,8 +10,12 @@ const REQUIREMENTS = 0x0f61c0;
 const REQUIREMENTS_RETURN = 0x3e48bb;
 const BUILD_BUILDING = 0x3df040;
 const BUILD_PROJECT = 0x3df4b0;
+const PROJECT_CAN_ADVANCE = 0x0f55f0;
 const PROJECT_CAN_ADVANCE_RETURN = 0x3df4e5;
 const PROJECT_VALIDATE_OPERATION_RETURN = 0x3df568;
+const BEST_PROJECT = 0x3e5960;
+const PROJECT_COMPARISON = 0x3e59fe;
+const QUEUE_BEST_PROJECT_RETURN = 0x3e84ab;
 const QUEUE_NEXT_BUILD = 0x3e8190;
 const CONTRACT_VALIDATE = 0x3fa8e0;
 const CONTRACT_UPDATE = 0x3fa5e0;
@@ -29,6 +33,7 @@ const QUEUE_VALIDATE_RETURN = 0x3e82c3;
 const QUEUE_UPDATE_RETURN = 0x3e82dc;
 const QUEUE_EXECUTE_RETURN = 0x3e8715;
 const CITY_BUILD_CITY = 0x90, CITY_OWNER = 0xd8, CITY_ID = 0xa8;
+const CITY_BUILD_QUEUE = 0x10d0;
 const CITY_ROWS = 0x4c8, CITY_ROW_COUNT = 0x4d8, ROW_BUILDING_SCORES = 0x28;
 // UnitRequestContract represents building, district and unit offers. These
 // offsets are read only on calls to that type's own virtual methods.
@@ -74,6 +79,9 @@ function init(spec, scope) {
     const bid = scope.millBidQ8 ?? 0;
     if (bid !== 0 && (!scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
+    if (scope.screenProjectEligibility && (!scope.cePath || bid))
+        throw Error('The isolated project eligibility diagnostic requires CE and no Mill bid');
+    const captureQueueOperands = scope.cePath || scope.captureQueueOperands;
 
     const address = rva => core.base.add(rva);
     const caller = invocation => invocation.returnAddress.sub(core.base).toInt32();
@@ -98,7 +106,7 @@ function init(spec, scope) {
         [QUEUE_VALIDATE_RETURN - 7, '41ff9098000000'],
         [QUEUE_UPDATE_RETURN - 4, '41ff5068'],
         [QUEUE_EXECUTE_RETURN - 4, '41ff5038'],
-        ...(scope.cePath ? [
+        ...(captureQueueOperands ? [
             [BUILDING_COMPARISON, '443b367e11448936'],
             [QUEUE_FALLBACK_COMPARISON, '8b457f83f8ff0f84c50000008b5d77'],
             [DEFAULT_UNIT_RETURN, '84c00f8456010000'],
@@ -107,6 +115,12 @@ function init(spec, scope) {
             [BUILD_PROJECT, '48895c241848896c2420564883ec60'],
             [PROJECT_CAN_ADVANCE_RETURN, '84c075124c8d5c2460'],
             [PROJECT_VALIDATE_OPERATION_RETURN, '84c075054032f6'],
+        ] : []),
+        ...(scope.screenProjectEligibility ? [
+            [PROJECT_CAN_ADVANCE, '4c894c242044884424188954241048894c2408'],
+            [BEST_PROJECT, '4056415641574883ec20'],
+            [PROJECT_COMPARISON, '413b0e7e0541890e8bf3'],
+            [QUEUE_BEST_PROJECT_RETURN - 5, 'e8b5d4ffff8945af'],
         ] : []),
     ]) {
         const bytes = Array.from(new Uint8Array(address(rva).readByteArray(expected.length / 2)),
@@ -194,7 +208,7 @@ function init(spec, scope) {
         queuePass.delete(sample.thread);
         add({kind: 'queue-end', pass: sample.pass});
     });
-    if (scope.cePath) {
+    if (captureQueueOperands) {
         // The candidate reached the comparison after the actual requirements
         // gates and native value transformations. R14 is its effective Q8.
         Interceptor.attach(address(BUILDING_COMPARISON), function () {
@@ -255,6 +269,44 @@ function init(spec, scope) {
                 if (enabled && sample) sample[field] = Boolean(this.context.rax.toInt32() & 255);
             });
         }
+    }
+    if (scope.screenProjectEligibility) {
+        // Same Win64 call as BuildProject: this=BuildQueue, project index,
+        // two false flags and a null optional failure-reporter pointer.
+        const canAdvance = new NativeFunction(address(PROJECT_CAN_ADVANCE), 'uint8',
+            ['pointer', 'uint32', 'uint8', 'pointer', 'uint8']);
+        const candidates = new Map();
+        observe(BEST_PROJECT, (args, invocation) => {
+            const thread = invocation.threadId;
+            const pass = queuePass.get(thread);
+            if (boundary !== 261 || pass === undefined || caller(invocation) !== QUEUE_BEST_PROJECT_RETURN) return;
+            const city = cityOf(args[0]);
+            if (!target(city)) return;
+            if (candidates.has(thread)) throw Error('Nested target project ranking');
+            const sample = {thread, pass, buildQueue: city.add(CITY_BUILD_QUEUE), scoreOut: args[1]};
+            candidates.set(thread, sample);
+            return sample;
+        }, ({thread, pass, scoreOut}, result) => {
+            candidates.delete(thread);
+            add({kind: 'project-winner', pass, project: result.toInt32(), q8: read(scoreOut, 0, 'i32')});
+        });
+        Interceptor.attach(address(PROJECT_COMPARISON), function () {
+            if (!enabled) return;
+            const sample = candidates.get(this.threadId);
+            if (!sample) return;
+            protect(() => {
+                const c = this.context;
+                const q8 = c.rcx.toInt32(), incumbentQ8 = read(c.r14, 0, 'i32');
+                if (q8 <= incumbentQ8) return;
+                const project = c.rbx.toInt32();
+                if (project < 0 || project >= 4096) throw Error('Invalid project candidate index');
+                const legal = canAdvance(sample.buildQueue, project, 0, ptr(0), 0) !== 0;
+                add({kind: 'project-screen', pass: sample.pass, project, q8, incumbentQ8, legal});
+                // Native JLE skips the row. Preserve the incumbent and let
+                // the loop rank subsequent candidates without changing caches.
+                if (!legal) c.rcx = ptr(incumbentQ8 >>> 0);
+            });
+        });
     }
     observe(CONTRACT_VALIDATE, (a, invocation) => {
         const from = caller(invocation);
