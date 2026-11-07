@@ -2207,6 +2207,61 @@ The preserved `diagnostic-AutoSave_0154.Civ6Save` SHA-256 is
 The development evidence is under
 `Desktop/Codex/csc-bakers-qualification-20261107`.
 
+### One of four development chains reached 100 active turns
+
+The normal-start game reached the inactive turn-249 boundary and
+closed with verified preference and package restoration. All four
+milestone censuses completed. The strict effect audit found every
+interior sample from 2 to 248, with no ambiguous attribution.
+The endpoint had 24 Bakers Quarters, 22 complete.
+
+| Chain | First active | Active ranges | Cumulative turns |
+| --- | ---: | --- | ---: |
+| Melbourne | 114 | 114–238, 242–248 | 132 |
+| Launceston | 189 | 189–248 | 60 |
+| Magdeburg | 214 | 214–248 | 35 |
+| Heidelberg | 178 | 178–183, 187–206 | 26 |
+
+Melbourne had no Farm on its Rice at the turn-240 census. Its
+Wind Mill and Granary were working. The CE receipt for the
+interval reported on 240 raised the exact Farm from 18,012 to
+32,348 Q8, and the improvement tree reserved that tile on 239.
+The tree reached the Rice on (18,20) and built a Farm on 241.
+The native attachment and Growth recipient resumed on 242, and
+the endpoint census confirmed the working Rice Farm on the same tile.
+
+Heidelberg lost its only adjacent Base deposit when Dam contract
+4536 took (59,17). The census found a working Maize Farm there on
+200 and a Dam with no resource there on 240 and 249. Contract 4536
+was submitted on 202 and entered the city queue on 206. The native
+Service stopped on 207. In the CE score batch for policy version
+202, the Dam on that tile fell from 482,672 to 458,096 Q8.
+The 24,576 Q8 deduction reached the exact pair and the district
+still went forward. The evidence leaves the other Dam sites and
+downstream arbitration unresolved. A permanent-loss guard needs to
+account for alternate legal sites and any competing flood benefit.
+
+At 200, Alexandria's Water Mill was pillaged and its Cattle was
+still unimproved. Both were unchanged at 249. The preserved
+turn-154 save samples the earlier decision window before that
+second missing link.
+
+The first read-only follow-up, `development-alexandria-autosave-154-observe-01`,
+loaded the exact rotating autosave. The native return player was still
+AI-controlled and the game advanced from 154 to 155 while the shared
+controller checked readiness. The controller rejected the handoff before
+installing the observer and then closed and restored the packages.
+This yielded no ranking evidence. Use an inactive turn boundary in a
+same-seed development start to obtain a verifiable observation source.
+
+The endpoint save SHA-256 is
+`4d38825b47b95567ffcd3e14a62b8842c4d6ea07af99849443bf5f749d6e21c4`.
+The Lua and behaviour-tree logs are
+`a9e19e99d49741815f3b804c30f60b42554f0f0314db1c0d84fd9e69d8cb3ba8`
+and `449749615a77f50c84e210794968c0df8d94f65c3aec7c1d8bedbf4f581f7127`.
+This was a development game with no matched control. The
+preselected validation seeds remained unused.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

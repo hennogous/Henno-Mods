@@ -1712,5 +1712,29 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C087", "AI-C088"]
+  },
+  {
+    "id": "AI-C107",
+    "title": "Heidelberg's Dam removed its only Maize supplier despite the district-score deduction",
+    "statement": "The native district policy deducted 24576 Q8 from Heidelberg's Dam on its only adjacent Maize tile, including a change from 482672 to 458096 Q8. The city queued the Dam at that location on 206. Storekeeper stopped on 207 and the endpoint census confirmed the Dam and absence of Maize.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "One ordinary Small Continents development game with a working Heidelberg chain before Dam contract 4536. Exact CE pair, native contract and plot logs, physical censuses and continuous Service samples identify the loss.",
+    "limits": "No matched control or counterfactual ranking of other Dam sites. The finite deduction demonstrably allowed this loss. The evidence does not establish the next best site or the correct replacement policy.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C106"]
+  },
+  {
+    "id": "AI-C108",
+    "title": "Melbourne rebuilt its missing Rice Farm and resumed Storekeeper",
+    "statement": "The integrated Builder preference raised Melbourne's exact Rice Farm candidate from 18012 to 32348 Q8. The ordinary improvement tree reserved the tile on 239 and built a Farm on 241. The native Storekeeper effect resumed on 242 after three inactive turns.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "One ordinary Small Continents development game. Turn-240 physical census, CE score receipt, exact improvement tree and restored native Service agree for player 4, city 131073 and supplier plot 1498.",
+    "limits": "No matched no-bid arm. The logs verify delivery, legal rebuild and restored Service. They do not identify the source of the loss or establish that the preference changed the job choice.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C104", "AI-C106"]
   }
 ]

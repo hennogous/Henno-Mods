@@ -368,6 +368,8 @@ def run(args):
             'Milestone censuses must be interior turns')
     if args.census_turns:
         protocol['census_turns'] = args.census_turns
+    if args.observe_supplier_at is not None:
+        protocol['diagnostic_supplier_boundary'] = args.observe_supplier_at
     other_source = None
     if args.matched_source:
         other_source = args.matched_source.resolve(strict=True)
@@ -538,8 +540,31 @@ Modding.EnableMod(chosen.Handle,true)
             raw = controller.cmd(scope + read(HERE / 'retention_cohort.lua'),
                                  'CSC_AdjacencyGameplay', 'install-bakers-census-watch')
             require('CSC_BAKERS_CENSUS_WATCH_INSTALLED' in raw, 'Milestone census watch was not installed')
+        probe_start = start
+        if args.observe_supplier_at is not None:
+            # Rotating autosaves can retain an AI-controlled return player.
+            # Let the shared controller settle a supported inactive boundary
+            # before inspecting the live supplier or attaching the observer.
+            probe_start = args.observe_supplier_at
+            controller.play(probe_start)
+            census = capture_census(controller, players, probe_start, out / 'observer-start-census.txt')
+            player, city, quarter, plot = args.supplier
+            require(f'PLAYER\t{player}\ttrue\ttrue' in census
+                    and any(row.startswith(f'QUARTER\t{player}\t{city}\t{quarter}\ttrue\tfalse\t')
+                            for row in census)
+                    and any(row.startswith(f'MILL\t{quarter}\t') and row.endswith(f'\tworking\t{quarter}\ttrue')
+                            for row in census)
+                    and any(row.startswith(f'CUSTOMER\t{quarter}\t') and '\tworking\t' in row
+                            for row in census)
+                    and any(row.startswith(f'NEIGHBOR\t{quarter}\t{plot}\t{player}\t-1\tRESOURCE_CATTLE\t-\t')
+                            for row in census)
+                    and f'IMPROVEMENT\t{quarter}\t{plot}\tIMPROVEMENT_PASTURE\ttrue' in census,
+                    'The fresh diagnostic boundary does not have the expected missing Pasture')
+            boundary = save_inactive_boundary(controller, turn=probe_start, name='CSC_BAKERS_SUPPLIER_OBSERVER',
+                                              native_directory=args.saves, archive=out / 'observer-start.Civ6Save')
+            write_json(out / 'observer-checkpoint.json', boundary)
         if args.supplier:
-            capture_builders(controller, args.supplier[0], start, out / 'source-builders.json')
+            capture_builders(controller, args.supplier[0], probe_start, out / 'source-builders.json')
             watch_supplier_access(controller, args.supplier[0], args.supplier[3])
         if args.granary:
             pid, city, _ = args.granary
@@ -605,7 +630,7 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             observer = script
             spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
             require(observer.exports_sync.init(spec, scope), 'Decision observer installation failed')
-            observer.exports_sync.advance(start)
+            observer.exports_sync.advance(probe_start)
         controller.play(args.through)
         if observer:
             trace = observer.exports_sync.freeze()
@@ -679,6 +704,8 @@ if __name__ == '__main__':
     parser.add_argument('--census-turns', type=int, nargs='+', default=[],
                         help='Read-only Bakers milestone snapshots during autoplay')
     parser.add_argument('--resume-from', type=Path, help='Continue a closed tuned development run for diagnosis')
+    parser.add_argument('--observe-supplier-at', type=int,
+                        help='Observe an exact Pasture target after a verified fresh-game boundary')
     target = parser.add_mutually_exclusive_group()
     target.add_argument('--supplier', type=int, nargs=4, metavar=('PLAYER', 'CITY', 'QUARTER', 'PLOT'))
     target.add_argument('--wind-mill', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'))
@@ -708,7 +735,15 @@ if __name__ == '__main__':
         options.census_turns = QUALIFICATION_CENSUSES
     if len(options.census_turns) > 8:
         parser.error('At most eight milestone census turns are supported')
-    if options.resume_from:
+    if options.observe_supplier_at is not None:
+        if (not (options.saves and options.supplier and options.probe_dependencies)
+                or options.resume_from or options.untuned or options.qualification or options.matched_source
+                or options.alexandria_bid or options.melbourne_mill_bid or options.trebizond_granary_bid
+                or options.granary_components or options.granary_ce_replay or options.movement_only
+                or options.calibration_replay or options.mill_ce_replay
+                or not 1 < options.observe_supplier_at < options.through <= options.observe_supplier_at + 15):
+            parser.error('Fresh supplier observation needs an exact target, a read-only probe, --saves and a window of 1–15 turns')
+    elif options.resume_from:
         if not (options.saves and (options.supplier or options.wind_mill or options.granary)
                 and (options.probe_dependencies or options.movement_only or options.mill_ce_replay
                      or options.granary_ce_replay)

@@ -3,11 +3,17 @@
 Active problem **3.2, Alexandria supplier admission**. The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
+The closed turn-249 audit found Melbourne 132, Launceston 60,
+Magdeburg 35 and Heidelberg 26 cumulative turns. Melbourne rebuilt
+its Rice Farm and resumed on 242. Heidelberg's Dam replaced the
+only Maize on 206 despite the exact 24,576 Q8 deduction. See AI-C107.
 Heidelberg completed its multi-link chain on 178. At 150, Alexandria's
 only missing link was the unimproved Cattle. Its 14,336 Q8 bid reached
 the scorer repeatedly while other improvement jobs held reservations.
-The preserved turn-154 autosave and hash are in the dated Bakers report.
-Replay the job comparison with the same bid before adjusting it.
+The preserved turn-154 autosave loaded with the return player still
+AI-controlled. The shared controller rejected the clock drift and
+restored the session. A same-seed fresh run now targets an inactive
+turn-154 boundary before observing the job comparison with the same bid.
 Under **14.1**, assess how to start credible multi-link chains earlier.
 
 CSC `dac8591` and

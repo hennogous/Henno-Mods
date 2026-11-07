@@ -19,6 +19,13 @@ control manifest. The per-game retention result counts Quarters with at least
 100 confirmed active turns. Keep separate evidence for recovery and comparison
 across runs.
 
+For a fresh development diagnosis, `--observe-supplier-at` pauses at
+a shared-controller boundary and verifies the scoped Cattle still
+lacks its Pasture while the other Bakers links are ready. Supply
+`--supplier PLAYER CITY QUARTER PLOT`, `--probe-dependencies` and
+`--saves`, then allow 1–15 more turns for observation. The runner
+archives the inactive source before attaching the read-only probe.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

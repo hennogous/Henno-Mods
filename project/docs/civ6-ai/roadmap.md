@@ -130,7 +130,8 @@ it and Library kept the nomination.
 
 **Ordinary-start development — 4.2 and 3.2.** The frozen Small
 Continents setup bought Melbourne's Wind Mill on 113 while the city
-used production for other work. Storekeeper operated on 114–154.
+used production for other work. Storekeeper reached 132 active
+turns by 249, including recovery after the AI rebuilt its Rice Farm.
 The turn-150 census found 14 completed Quarters. Alexandria Troas
 still needed its Pasture despite the exact supplier bid reaching
 the scorer. Trace the first open improvement admission before
@@ -143,8 +144,11 @@ reserved before the ready-chain Farm preference could apply.
 Heidelberg's Builder repaired the Maize Farm on 185 and the
 Service resumed on 187 (**13.1**). Launceston received the full
 Granary preference, bought its offer and activated a third chain
-on 189 (**5.1**). Both later chains missed the window for
-100 cumulative turns.
+on 189 (**5.1**). Four chains operated during the run, one for
+100 cumulative turns. Heidelberg's later Dam occupied its
+only Maize tile even though the exact site received the 24,576
+Q8 supplier deduction. Trace the competing legal Dam sites and
+retained request under **2.2** before changing the protection.
 [Ordinary-start purchase and census](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-bought-its-mill-in-the-ordinary-start-development-run).
 
 Keep the three validation seeds in reserve. The development census

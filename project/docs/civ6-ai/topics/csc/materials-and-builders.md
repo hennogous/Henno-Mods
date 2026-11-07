@@ -161,6 +161,18 @@ improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same
 Quarter and customer. [AI-C106]
 
+Heidelberg then placed a Dam on that same Maize tile. CE had
+deducted 24,576 Q8 from the exact district-site pair while the
+Farm and Service still worked. The Dam entered the queue on 206
+and Storekeeper stayed down from 207 through the endpoint.
+This leaves permanent last-supplier protection open even where
+the score deduction reaches the district. [AI-C107]
+
+Melbourne had a reversible supplier loss in the same game. Its
+Rice deposit survived but the Farm was gone. The exact Builder
+bid reached the scorer, the city rebuilt the Farm on 241, and
+Storekeeper resumed on 242. [AI-C108]
+
 The same packages then ran from normal setup. Alexandria's
 Storekeeper operated for six measured turns after the native
 Pasture completed. Other cities still had production or
