@@ -104,10 +104,14 @@ turn 81, while Camp beat the legal Pasture at two ordinary admissions.
 With protection in both arms, the matched 8,192 Q8 Pasture bid changed
 the ordinary selection, led to legal construction, and restored
 Storekeeper and the Mill's supplier output at turns 75 and 78.
-The control had no Pasture at turn 87. Integrate the verified
-score boundary into the reusable CE and CSC policy and validate
-other supplier states, including pillaged improvements and worker
-shortages. Revalidation of an already committed harvest remains open.
+The control had no Pasture at turn 87. The main CSC publisher and
+the reusable CE preference reproduced the recovery without Frida.
+Native growth was active on Boston's exact City Center recipient.
+Next test pillaged improvements and worker shortages. A separate
+one-shot guard stopped the committed
+harvest and the AI later rebuilt the Pasture on the released site.
+Integrate and test a reusable gate, including other destructive
+operations and working improvements.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
@@ -123,6 +127,8 @@ and measure its cost in a mature live game before enabling it in CSC.
 [Matched supplier protection failure](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-turn-72-protection-arms-both-lost-the-cattle).
 [Earlier matched protection and Camp competition](../research/mods/csc-ai-bakers-natural-research-20261106.md#earlier-protection-redirected-the-boost-and-preserved-the-deposit).
 [Matched Pasture recovery](../research/mods/csc-ai-bakers-natural-research-20261106.md#a-bounded-pasture-bid-restored-storekeeper-in-the-matched-replay).
+[Committed-harvest recovery](../research/mods/csc-ai-bakers-natural-research-20261106.md#a-committed-harvest-failed-safely-and-boston-used-the-plot-again).
+[Integrated supplier publisher](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-main-csc-supplier-publisher-uses-the-existing-ce-score-hook).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

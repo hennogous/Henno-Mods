@@ -67,11 +67,12 @@ local function refresh(turn)
     local entries, builderSites = {}, {}
     local builderStatus = bridge.BuilderStatus()
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
+    local bidRecovery = protectBuilders and bridge.BuilderBidAvailable()
     local wonderStatus = bridge.WonderStatus()
     local protectWonders = wonderStatus and wonderStatus:match('"ready":1') and wonderStatus:match('"faults":0')
     local allowances = 0
     for _, id in ipairs(players) do
-        local deductions, sites = placement.BakersMaterialDeductions(Players[id], protectBuilders)
+        local deductions, sites = placement.BakersMaterialDeductions(Players[id], protectBuilders, bidRecovery)
         for _, entry in ipairs(deductions) do
             entries[#entries + 1] = entry
         end

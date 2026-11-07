@@ -1301,5 +1301,31 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C072", "AI-N092", "AI-N096"],
     "related": ["AI-C069", "AI-C071"]
+  },
+  {
+    "id": "AI-C074",
+    "title": "A one-shot native Clear Plot failure preserved the Cattle and reopened the supplier site",
+    "statement": "After the Irrigation tree had reserved the Cattle, rejecting the ready clearance stopped its harvest. The AI later reserved and improved the same tile through its ordinary Pasture job and restored Storekeeper.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Matched turn-72 fixture, same CE and score-stage protection in both arms. Treatment alone changed Builder 2228225's ready status from 1 to 3 on plot 796. The control harvested at 73. The treatment logged native Clear Plot failure, an ordinary Pasture reservation at 78, successful work at 79, and operating Storekeeper at 81.",
+    "limits": "One diagnostic fixture and one known Builder, plot and route. The replay verifies subsequent site access and output. It does not establish general cancellation semantics, cover other destructive operations, or ship a reusable CE execution guard.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C071", "AI-N097"],
+    "related": ["AI-C072", "AI-C073"]
+  },
+  {
+    "id": "AI-C075",
+    "title": "CSC's automatic CE supplier bid restored the exact native Storekeeper effect",
+    "statement": "The main CSC gameplay publisher staged a compatible Pasture preference through CE. The AI chose and completed the Pasture. The native Storekeeper attachment and growth effect became active on the verified Boston City Center recipient.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Patched XP2 and CE candidate 32e6edb. Same turn-69 save, publisher and protection in both arms. Control hid the optional bid API. The native treatment receipt raised the eligible Pasture from 29056 to 37248 Q8. Work succeeded on 74. Modifier 16874 was active on exact City Center object 782 at 75 and 78. Control had no Boston recovery at 81.",
+    "limits": "One controlled missing-Pasture fixture without Frida. Unique replacement and pillaged supplier branches still need runtime coverage. The samples do not establish cumulative duration or fresh-game reliability.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C073", "AI-N092"],
+    "related": ["AI-C069", "AI-C074"]
   }
 ]

@@ -33,7 +33,7 @@ LOGS = ('Lua.log', 'AI_CityBuild.csv', 'City_BuildQueue.csv')
 BOOTSTRAP = 'CSC_AI_BakersReplay'
 
 
-def add_policy(package, turn, builders=True, wonders=False, defer=False):
+def add_policy(package, turn, builders=True, wonders=False, defer=False, recovery=True):
     """Register the actual publisher and seed only saved role metadata for this old fixture."""
     (path,) = package.glob('*.modinfo')
     ui = package / UI_READS.relative_to(AI_ROOT.parent.parent)
@@ -68,6 +68,7 @@ def add_policy(package, turn, builders=True, wonders=False, defer=False):
         "end\n" +
         ("" if builders else "CE_AIBuilderProtectionAllow=nil\n") +
         ("" if wonders else "CE_AISupplierWonderProtectionStage=nil\n") +
+        ("" if recovery else "CE_AIBuilderProtectionBid=nil\n") +
         "include('CSC_AI_BakersGameplay')\n"
     )
     if defer:
@@ -96,10 +97,11 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
     shutil.copytree(archived, prepared)
     add_fixture_carrier(prepared, args.ce_dll)
     advanced = args.builder or args.wonder
-    builder_policy = treatment or args.wonder or args.pasture_bid or args.guard_committed_harvest
+    builder_policy = treatment or args.wonder or args.pasture_bid or args.guard_committed_harvest or args.publisher_pasture_bid
     if treatment or advanced:
         add_policy(prepared, start, builders=builder_policy, wonders=args.wonder and treatment,
-                   defer=bool(args.pasture_autosave))
+                   defer=bool(args.pasture_autosave),
+                   recovery=not args.pasture_autosave or (args.publisher_pasture_bid and treatment))
     package = manifest(prepared)
     try:
         prepared.rename(installed)
@@ -136,6 +138,8 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
             ui = controller.cmd(effects, 'PlotInfo', f'bakers-effects-{turn}')
             state.update(conditions=parse(raw, 'CSC_NATURAL_CHAIN'), effects=parse(ui, 'CSC_BAKERS_EFFECTS'))
             state['operation'] = operating(state, target)
+            if args.publisher_pasture_bid:
+                controller.cmd(read(HERE / 'storekeeper_runtime.lua'), 'PlotInfo', f'storekeeper-modifiers-{turn}')
         return state
 
     def status(label):
@@ -180,6 +184,8 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
             first = protection_status('Builder', 'builder-before-autoplay')
             require(first['ready'] and not first['faults'] and bool(first['entries']) == builder_policy,
                     'Unexpected initial Builder publication')
+            if args.publisher_pasture_bid:
+                require(first.get('maxBidQ8') == 8192, 'Expected the bounded CE supplier bid interface')
             result['builder_initial'] = first
         if args.wonder:
             first = protection_status('SupplierWonder', 'wonder-before-autoplay')
@@ -324,6 +330,8 @@ def run(args):
     probe = 'CSC_BAKERS_TARGET=' + lua(target) + ';\n' + '\n'.join(map(read, probe_files))
     out.mkdir()
     extra = (HERE / 'operating_effects.lua', HERE / 'natural_chain.py') if advanced else ()
+    if args.publisher_pasture_bid:
+        extra += (HERE / 'storekeeper_runtime.lua',)
     references = (prior_arm / 'result.json', prior_arm / 'session-closed.json') if prior_arm else ()
     observer_inputs = observer_sources(args)
     if args.pasture_autosave:
@@ -359,6 +367,8 @@ def run(args):
             experiment = 'pasture-bid'
         if args.guard_committed_harvest:
             experiment = 'committed-harvest'
+        if args.publisher_pasture_bid:
+            experiment = 'published-pasture-bid'
         write_json(out / 'result.json', dict(source=digest, turn=start, plot=plot, experiment=experiment,
                    control=lost, treatment=kept,
                    control_operation=control['final']['operation'], treatment_operation=treated['final']['operation']))
@@ -411,6 +421,8 @@ if __name__ == '__main__':
                                help='Keep Builder protection in both arms and add a bounded Boston Pasture bid in treatment')
     interventions.add_argument('--guard-committed-harvest', action='store_true',
                                help='Keep Builder protection in both arms and reject the verified Clear Plot harvest in treatment')
+    interventions.add_argument('--publisher-pasture-bid', action='store_true',
+                               help='Keep Builder protection in both arms and enable the native CSC recovery bid in treatment')
     parser.add_argument('--through', type=int)
     args = parser.parse_args()
     if (args.builder or args.wonder) and (not args.match or not args.ce_sha256):
@@ -422,4 +434,6 @@ if __name__ == '__main__':
         parser.error('The decision observer requires a matched supplier autosave')
     if (args.pasture_bid or args.guard_committed_harvest) and not args.decision_observer_deps:
         parser.error('The experimental intervention requires the matched supplier observer')
+    if args.publisher_pasture_bid and (not args.pasture_autosave or args.decision_observer_deps):
+        parser.error('The published bid requires a matched supplier autosave without Frida')
     run(args)

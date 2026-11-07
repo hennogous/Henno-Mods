@@ -944,6 +944,91 @@ cleanup and changed only an exact ready harvest to the existing
 failure state with no selected worker. The live test must verify
 whether the tree releases its job and the protected tile stays intact.
 
+### A committed harvest failed safely and Boston used the plot again
+
+Both `ce-committed-harvest-01` arms cold-loaded the same archived
+turn-72 save at SHA-256
+`59d39aa77fbf9ecabc7a6694f778d659e95813e55446c1ba62fe46b29d97a285`.
+Both enabled the existing CE Builder protection and used the same
+patched XP2 and CE binary. Treatment alone rejected the first ready
+Clear Plot call for the exact protected plot, player and known
+Builder 2228225. The guard reset the selected worker and returned
+the native failure value. It observed later attempts without
+changing them.
+
+Both Irrigation boost trees reserved (56,10). On turn 73 the control
+logged successful clearance by Builder 2228225 and submitted
+Harvest Resource. Treatment logged `FAILURE, Clear Plot, Clearing
+with -1`, with no corresponding harvest and no repeated ready call.
+At turn 78 the ordinary Boston improvement tree successfully
+reserved (56,10). On turn 79 it reached that plot and logged
+successful Pasture work. Builder 2228225 issued the only matching
+player-3 build-improvement request that turn. The turn-81 read
+verified a working Pasture, Granary Food 2, Mill Food/Production/Gold
+1 each, and the Storekeeper growth property at 1. Control had no
+Cattle at its turn-81 endpoint. Both arms closed with no trace
+faults and verified restoration.
+
+The new reservation and finished work establish that another job
+could use the site. The replay does not inspect the discarded
+tree's internal object lifetime. This one-shot intervention
+only covers the observed Clear Plot harvest route. Working
+improvements, other removal routes and the reusable CE gate
+need separate coverage.
+
+The joined control and treatment timeline SHA-256 values are
+`6016aea946f426c1f144905a1840686ffed71ef6c9fa135d5a3d955105cfecf6`
+and `05d78d07ef59ffa008a3b6bae735f5d9c739fcb807a51101cabb8cd14e1443c3`.
+
+### The main CSC supplier publisher uses the existing CE score hook
+
+Review branch `codex/ce-builder-supplier-bids` at `32e6edb` extends
+the ordinary improvement NetValue hook from the earlier CE candidate.
+The optional `CE_AIBuilderProtectionBid` entry carries one positive
+bounded Q8 preference on a compatible improvement. The hook
+checks the exact key and publication generation, preserves
+the ineligible sentinel, and records positive and protection
+writes separately. There is no new native hook for the preference.
+The supported Release x64 build produced SHA-256
+`b769ff9a6f03fdfcc32be33c2a2ddbd5c7f41fc6254170a147ef6e60096b941a`.
+The isolated native run passed 58 score and four hook-group checks.
+
+The initial CSC recovery policy applies to a completed Bakers
+Quarter with Feudalism, its functioning Mill, a functioning
+adjacent Granary or City Center replacement, and one viable
+Base source whose improvement is missing or pillaged. CSC
+publishes the bid alongside its existing allowance for that
+protected source. The policy leaves alternative legal improvements
+for the native scorer and retains protection when the optional
+bid capability is absent. Offline Lua checks cover those gates
+and the old interface.
+
+The closed `ce-pasture-publisher-01` match used the main CSC
+gameplay scripts and that CE build in both arms without Frida.
+Control hid only the optional preference API. Both loaded the
+turn-69 census, enabled protection and kept the Cattle. CE
+reported the same 29,056 to 37,248 Pasture adjustment during
+the turn-72 decision in treatment. The AI reserved (56,10)
+on turn 72 and logged successful Pasture work on turn 74.
+The protection-only control still had no Pasture and no
+Boston Storekeeper at turn 81.
+
+The synchronized treatment censuses at 75 and 78 verified
+the Pasture, the Mill's supplier output and the actual native
+growth modifier. Attachment instance 10788 had producer
+district object 1239 (Boston Quarter 262147) and City Center
+subject 782 (district 196610, player 3, city 131073). Growth
+instance 16874 was active on that same recipient object.
+Both arm endpoints and restorations were verified. This
+validates the reusable publisher for the controlled recovery
+case. The modifier sample provides exact identities for a
+future per-turn collector. It does not establish duration,
+fresh-game qualification or general unique replacement behavior.
+
+Control and treatment joined timeline SHA-256 values are
+`47f9af7a949b34798efa62ad147f90bc3e280f7a955f63461bf0653d3c8fc3c8`
+and `b2acec07a823c7e480c1e08fccf0cf4966622063e7b57558301eb94f62c33df9`.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

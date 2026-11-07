@@ -14,8 +14,10 @@ local MATERIAL_COST_Q8 = 2048
 local LAST_DEPOSIT_COST_Q8 = 12288
 local LAST_SUPPLIER_COST_Q8 = 16384
 local ACTIVE_SERVICE_COST_Q8 = 24576
+local RECOVERY_BID_Q8 = 8192 -- Just above the two observed Camp margins in AI-C073.
 
 local improvementsByResource
+local granaryTypes
 
 local function materialOptions()
     if improvementsByResource then return improvementsByResource end
@@ -85,10 +87,54 @@ local function priceSupply(risks, supply, activeService)
     end
 end
 
-function CSC_AI_QuarterPlacement.BakersMaterialRisk(player)
-    local risks = {}
+local function workingBuildingAt(buildings, kind, plot)
+    return kind and buildings:HasBuilding(kind.Index) and not buildings:IsPillaged(kind.Index)
+        and buildings:GetBuildingLocation(kind.Index) == plot
+end
+
+local function hasBakersCustomer(player, quarter)
+    if not granaryTypes then
+        granaryTypes = { GameInfo.Buildings.BUILDING_GRANARY }
+        for row in GameInfo.BuildingReplaces() do
+            local kind = GameInfo.Buildings[row.CivUniqueBuildingType]
+            if row.ReplacesBuildingType == 'BUILDING_GRANARY' and kind
+                and kind.PrereqDistrict == 'DISTRICT_CITY_CENTER' then
+                granaryTypes[#granaryTypes + 1] = kind
+            end
+        end
+    end
+    local cityCenter = GameInfo.Districts.DISTRICT_CITY_CENTER.Index
+    for _, plot in ipairs(Map.GetAdjacentPlots(quarter:GetX(), quarter:GetY())) do
+        if plot:GetOwner() == player and plot:GetDistrictType() == cityCenter then
+            local buyer = Cities.GetPlotPurchaseCity(plot)
+            if buyer and buyer:GetOwner() == player then
+                local buildings = buyer:GetBuildings()
+                for _, kind in ipairs(granaryTypes) do
+                    if workingBuildingAt(buildings, kind, plot:GetIndex()) then return true end
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function missingStorekeeperSupply(player, city, quarter, base)
+    if #base ~= 1 or base[1].working then return false end
+    local buildings = city:GetBuildings()
+    local index = quarter:GetIndex()
+    if not workingBuildingAt(buildings, GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL, index)
+        and not workingBuildingAt(buildings, GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL, index) then
+        return false
+    end
+    return hasBakersCustomer(player, quarter)
+end
+
+function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, includeRecovery)
+    local risks, recover = {}, {}
     local quarterType = GameInfo.Districts[BAKERS]
-    if not quarterType then return risks end
+    if not quarterType then return risks, recover end
+    local feudalism = includeRecovery and GameInfo.Civics.CIVIC_FEUDALISM
+    local canRecover = feudalism and player:GetCulture():HasCivic(feudalism.Index)
     for _, city in player:GetCities():Members() do
         local districts = city:GetDistricts()
         for index = 0, districts:GetNumDistricts() - 1 do
@@ -96,22 +142,29 @@ function CSC_AI_QuarterPlacement.BakersMaterialRisk(player)
             if quarter and quarter:GetType() == quarterType.Index then
                 local plot = Map.GetPlot(quarter:GetX(), quarter:GetY())
                 local supply = CSC_AI_QuarterPlacement.ReadBakersSuppliers(player, plot)
-                local activeService = quarter:IsComplete() and not quarter:IsPillaged()
-                    and (city:GetProperty(STOREKEEPER_GROWTH) or 0) > 0
+                local ready = quarter:IsComplete() and not quarter:IsPillaged()
+                local activeService = ready and (city:GetProperty(STOREKEEPER_GROWTH) or 0) > 0
                 priceSupply(risks, supply.base, activeService)
                 priceSupply(risks, supply.specialty, false)
+                -- One bid per protected plot. Ready consumers and Feudalism
+                -- make the absent working Base the immediate Service blocker.
+                if canRecover and ready and not activeService
+                    and missingStorekeeperSupply(player:GetID(), city, plot, supply.base) then
+                    recover[supply.base[1].plot] = RECOVERY_BID_Q8
+                end
             end
         end
     end
-    return risks
+    return risks, recover
 end
 
 -- A supplier can be in a different city from the Quarter. Key the deduction
 -- to the city that could actually place a district there, as CE expects.
-function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders)
+function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders, includeRecovery)
     local playerID = player:GetID()
     local entries, builderSites = {}, {}
-    for index, cost in pairs(CSC_AI_QuarterPlacement.BakersMaterialRisk(player)) do
+    local risks, recover = CSC_AI_QuarterPlacement.BakersMaterialRisk(player, includeRecovery)
+    for index, cost in pairs(risks) do
         local plot = Map.GetPlotByIndex(index)
         local city = Cities.GetPlotPurchaseCity(plot)
         if city and city:GetOwner() == playerID then
@@ -129,7 +182,7 @@ function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilder
                     end
                 end
                 builderSites[#builderSites + 1] = {
-                    player = playerID, city = cityID, plot = index, improvements = options,
+                    player = playerID, city = cityID, plot = index, improvements = options, deltaQ8 = recover[index],
                 }
             end
             for district in GameInfo.Districts() do

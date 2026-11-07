@@ -82,11 +82,19 @@ returned at both subsequent samples. The control kept its Cattle
 with the Pasture missing. [AI-C073]
 [Matched Pasture recovery](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-bounded-pasture-bid-restored-storekeeper-in-the-matched-replay).
 
+The main CSC publisher and the CE bid API reproduced that recovery.
+The treatment restored the Pasture and activated the native growth
+modifier on Boston's exact City Center recipient. The control kept
+protection and still lacked the Pasture. [AI-C075]
+[Integrated publisher and exact recipient evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-main-csc-supplier-publisher-uses-the-existing-ce-score-hook).
+
 A committed Clear Plot job still has to select a worker with charges
-before submitting a removal or harvest. That readiness decision is
-a separate place to test protection for work that already holds the
-plot. Its live failure and retry behavior remain unverified. [AI-N097]
-[Clear Plot worker decision](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#clear-plot-validates-its-selected-worker-before-submitting-the-operation).
+before submitting a removal or harvest. In the matched turn-72
+replay a one-shot failure stopped the old harvest, and an ordinary
+job later claimed the same tile and rebuilt the Pasture. Storekeeper
+resumed. Other routes and the reusable guard remain open.
+[AI-N097] [AI-C074]
+[Committed-harvest replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-committed-harvest-failed-safely-and-boston-used-the-plot-again).
 
 ```mermaid
 flowchart TD

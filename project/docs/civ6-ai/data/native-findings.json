@@ -1735,10 +1735,10 @@
     "status": "accepted",
     "evidence_types": ["static", "source"],
     "scope": "Patched XP2 Windows. Update 55eaf0 clears the selected worker field at node offset 0x40. Ready path 55ed62 records the unit ID and returns 1. The other paths return 2 or 3. Execute 55d970 submits the configured harvest through its dispatcher call at 55da77 when no improvement remains.",
-    "limits": "Static code identifies the gate. A native failure at that point has not been exercised for a committed protected supplier. Tree release, retry behavior and other operation routes need their own runtime evidence.",
+    "limits": "Static code identifies the gate. AI-C074 tests one matched native failure and verifies reuse of the site. It does not establish general tree lifecycle, retry behavior or coverage of other operation routes.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N087", "AI-N092"],
-    "related": ["AI-C071", "AI-C072"]
+    "related": ["AI-C071", "AI-C072", "AI-C074"]
   }
 ]

@@ -153,6 +153,12 @@ known harvest Builder in treatment and records subsequent retries
 without changing them. Compare the tree logs and final supplier state
 to see whether the old job released. These modes are mutually exclusive.
 
+`--publisher-pasture-bid` uses the built CE supplier bid API and the
+main CSC publisher in treatment, with ordinary Builder protection
+in both arms. The control hides only the optional bid API in this
+fixture. This comparison does not attach Frida and also records the
+raw native Storekeeper modifiers at each inactive boundary.
+
 The joined timeline also connects Boston's recorded Builder contract
 IDs to their submission, city selection and cancellation logs. A
 production request alone does not identify the Builder that did the work.

@@ -45,8 +45,15 @@ first two empty ordinary slots by 6,376 and 7,422 Q8. The matched
 and Storekeeper output at 75 and 78. Control still lacked both at 87.
 The next reusable implementation can share the existing CE Builder
 NetValue hook and add a scoped positive bid. Keep the test at actual
-Service output. A separate one-shot Clear Plot test uses the exact
-turn-72 harvest fixture and checks retries and reservation release.
+Service output. The CE review branch `codex/ce-builder-supplier-bids`
+at `32e6edb` built with SHA `b769ff9a…` and passed 58 score and four
+hook checks. The main CSC publisher replay reproduced recovery without
+Frida. Native growth instance 16874 was active on Boston's exact
+City Center recipient object 782 at 75 and 78.
+The separate one-shot Clear Plot test rejected the exact turn-73
+harvest while control lost Cattle. Boston claimed the plot for
+Pasture at 78, built at 79, and verified Storekeeper at 81.
+A reusable CE gate and other destructive routes remain open.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

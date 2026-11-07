@@ -30,6 +30,9 @@ function B.BuilderStatus()
         return CE_AIBuilderProtectionStatus()
     end
 end
+function B.BuilderBidAvailable()
+    return type(CE_AIBuilderProtectionBid)=='function'
+end
 function B.WonderStatus()
     if type(CE_AISupplierWonderProtectionStage)=='function'
         and type(CE_AISupplierWonderProtectionStatus)=='function' then
@@ -69,6 +72,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             if not integer(kind,0,2147483647) then return reject('Invalid supplier improvement') end
             allowanceCount=allowanceCount+1
         end
+        if site.deltaQ8~=nil and (not B.BuilderBidAvailable() or not integer(site.deltaQ8,1,8192)) then
+            return reject('Invalid Builder supplier bid')
+        end
     end
     if allowanceCount>4096 then return reject('Builder supplier batch too large') end
     local ok,message=pcall(function()
@@ -79,7 +85,12 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         end
         for _,site in ipairs(builderSites or {}) do
             for _,kind in ipairs(site.improvements) do
-                assert(CE_AIBuilderProtectionAllow(site.player,site.city,site.plot,kind)==1,'Native supplier rejected')
+                if site.deltaQ8 then
+                    assert(CE_AIBuilderProtectionBid(site.player,site.city,site.plot,kind,site.deltaQ8)==1,
+                        'Native supplier bid rejected')
+                else
+                    assert(CE_AIBuilderProtectionAllow(site.player,site.city,site.plot,kind)==1,'Native supplier rejected')
+                end
             end
         end
         if protectWonders and allowanceCount>0 then
