@@ -159,6 +159,11 @@ in both arms. The control hides only the optional bid API in this
 fixture. This comparison does not attach Frida and also records the
 raw native Storekeeper modifiers at each inactive boundary.
 
+`--publisher-harvest` similarly holds score-stage Builder
+protection constant and enables only the reusable CE Clear Plot
+protection in treatment. It uses the exact turn-72 fixture and
+captures the active growth recipients and harvest receipts.
+
 The joined timeline also connects Boston's recorded Builder contract
 IDs to their submission, city selection and cancellation logs. A
 production request alone does not identify the Builder that did the work.
@@ -168,5 +173,14 @@ through the shared controller in the `PlotInfo` UI context at an
 inactive boundary. It lists the native growth and attachment instances,
 their activation, owners and subjects. The end record reports the
 sampled turn and number of matching instances, including zero. This
-is a diagnostic snapshot. Per-turn qualification still needs a live
-check of source and recipient identities and a verified sampling clock.
+is a diagnostic snapshot. Run `storekeeper_runtime.py <Lua.log>
+--players <original AI IDs>` to count only sampled turns with matching
+native attachments and active growth recipients. It reports gaps
+and checks for missing or conflicting receipts. The paired publisher
+replay validated the Boston source and recipient objects. Per-turn
+qualification still needs a live-verified sampling clock.
+
+`--wonder-autosave` continues a closed, protected recovery from a
+later matching inactive census with the same CE binary. Supply the
+original Wonder match and pinned observer dependencies. The Mill
+observer reads the ordinary score after the CE call has returned.

@@ -33,13 +33,19 @@ end
 function B.BuilderBidAvailable()
     return type(CE_AIBuilderProtectionBid)=='function'
 end
+function B.BuilderHarvestStatus()
+    if type(CE_AIBuilderHarvestProtectionStage)=='function'
+        and type(CE_AIBuilderHarvestProtectionStatus)=='function' then
+        return CE_AIBuilderHarvestProtectionStatus()
+    end
+end
 function B.WonderStatus()
     if type(CE_AISupplierWonderProtectionStage)=='function'
         and type(CE_AISupplierWonderProtectionStatus)=='function' then
         return CE_AISupplierWonderProtectionStatus()
     end
 end
-function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders)
+function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -95,6 +101,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         end
         if protectWonders and allowanceCount>0 then
             assert(CE_AISupplierWonderProtectionStage()==1,'Native Wonder protection rejected')
+        end
+        if protectHarvests and allowanceCount>0 then
+            assert(CE_AIBuilderHarvestProtectionStage()==1,'Native harvest protection rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

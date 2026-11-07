@@ -48,7 +48,11 @@ function init(spec, scope) {
     if (installed || Process.platform !== 'windows' || Process.arch !== 'x64' || Process.pointerSize !== 8)
         throw Error('Expected first installation on Windows x64');
     const modules = Process.enumerateModules();
-    if (modules.some(module => /GameCore_XP2_(?:CE|CSC)/i.test(module.name))) throw Error('Unexpected native carrier');
+    const carriers = modules.filter(module => /GameCore_XP2_(?:CE|CSC)/i.test(module.name));
+    const expectedCarrier = scope.cePath
+        ? carriers.length === 1 && normalize(carriers[0].path) === normalize(scope.cePath)
+        : carriers.length === 0;
+    if (!expectedCarrier) throw Error('Unexpected native carrier');
     const core = modules.find(module => normalize(module.path) === normalize(spec.path));
     if (!core || core.size !== spec.image_size || scope.player !== 3 || scope.city !== 131073 ||
         !Number.isInteger(scope.mill) || scope.mill < 0 || scope.mill >= 4096)
@@ -64,7 +68,9 @@ function init(spec, scope) {
         unit: read(object, CONTRACT_UNIT, 'i32'), district: read(object, CONTRACT_DISTRICT, 'i32'),
     });
     for (const [rva, expected] of [
-        [MILL_VALUE, '4c894424188954241055535741544155'],
+        scope.cePath
+            ? [ORDINARY_RETURN, '4c8ba5b00000004963d78b00498b4c2428']
+            : [MILL_VALUE, '4c894424188954241055535741544155'],
         [BEST_BUILDING, '44884c24204488442418488954241055'],
         [BUILD_BUILDING, '48895c241048896c2418565741564881'],
         [QUEUE_NEXT_BUILD, '40554157488d6c24b14881ecf8000000'],
@@ -99,14 +105,29 @@ function init(spec, scope) {
             },
         });
     }
-    observe(MILL_VALUE, (a, invocation) => {
-        if (caller(invocation) !== ORDINARY_RETURN || a[1].toInt32() !== scope.mill || !target(a[6])) return;
-        if (read(a[7], 0, 'i32') !== -9999 || read(a[7], 4, 'i32') !== -9999) throw Error('Expected ordinary coordinates');
-        return {out: a[0], ready: a[3].toInt32(), horizon: a[4].toInt32()};
-    }, (sample, result) => {
-        if (!result.equals(sample.out)) throw Error('Unexpected building value return');
-        add({kind: 'value', q8: read(result, 0, 'i32'), ready: sample.ready, horizon: sample.horizon});
-    });
+    if (scope.cePath) {
+        // CE owns the Building NetValue entry. Read the ordinary caller's
+        // returned score before it is copied into the building row.
+        Interceptor.attach(address(ORDINARY_RETURN), function () {
+            if (!enabled || this.context.r15.toInt32() !== scope.mill) return;
+            protect(() => {
+                const c = this.context;
+                if (target(c.rsi)) {
+                    add({kind: 'value', q8: read(c.rax, 0, 'i32'), ready: c.r12.toInt32(),
+                        horizon: read(c.rsp, 0x78, 'i32')});
+                }
+            });
+        });
+    } else {
+        observe(MILL_VALUE, (a, invocation) => {
+            if (caller(invocation) !== ORDINARY_RETURN || a[1].toInt32() !== scope.mill || !target(a[6])) return;
+            if (read(a[7], 0, 'i32') !== -9999 || read(a[7], 4, 'i32') !== -9999) throw Error('Expected ordinary coordinates');
+            return {out: a[0], ready: a[3].toInt32(), horizon: a[4].toInt32()};
+        }, (sample, result) => {
+            if (!result.equals(sample.out)) throw Error('Unexpected building value return');
+            add({kind: 'value', q8: read(result, 0, 'i32'), ready: sample.ready, horizon: sample.horizon});
+        });
+    }
     observe(BEST_BUILDING, (a, invocation) => {
         if (!target(cityOf(a[0]))) return;
         const count = read(a[0], CITY_ROW_COUNT, 'u32');

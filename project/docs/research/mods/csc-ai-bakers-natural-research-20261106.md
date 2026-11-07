@@ -980,6 +980,30 @@ The joined control and treatment timeline SHA-256 values are
 `6016aea946f426c1f144905a1840686ffed71ef6c9fa135d5a3d955105cfecf6`
 and `05d78d07ef59ffa008a3b6bae735f5d9c739fcb807a51101cabb8cd14e1443c3`.
 
+The `ce-harvest-publisher-01` match repeated that comparison without
+Frida. Both arms used CE review commit `4f6f235`, the same source
+save and ordinary Builder protection. The treatment alone staged
+Clear Plot protection through the main CSC publisher. The supported
+Release x64 DLL SHA-256 was
+`74fe01492a456c2d13e5095cc2c640254a2279d894f8647afc73525a799bde8d`.
+The isolated build passed 70 score and policy checks and four
+hook-group checks.
+
+The native publication on turn 74 reported one rejection in the
+preceding epoch for player 3, plot 796 and Builder 2228225. The
+behavior tree logged the turn-73 failure. Control logged the
+successful clearance and harvested. Treatment reserved the
+same Cattle tile for Pasture at 78, built it on 79 and had
+active native Storekeeper on its City Center at 81 and 84.
+Control had no Cattle or Boston Storekeeper at 84. Both sessions
+closed and restored successfully. This qualifies the reusable
+guard for the matched route. Other destructive routes and
+long-term effects in fresh games still need checking.
+
+The integrated guard's control and treatment timeline SHA-256 values
+are `4222d1146b3b1d8d819452947ff0b4d41fd869280b0a68cd8d9d7db7f1a37355`
+and `9b6629c0b384bc7b843703ea0f84e3bb2c73c7d55049d332eb8572717f479f98`.
+
 ### The main CSC supplier publisher uses the existing CE score hook
 
 Review branch `codex/ce-builder-supplier-bids` at `32e6edb` extends
@@ -1028,6 +1052,41 @@ fresh-game qualification or general unique replacement behavior.
 Control and treatment joined timeline SHA-256 values are
 `47f9af7a949b34798efa62ad147f90bc3e280f7a955f63461bf0653d3c8fc3c8`
 and `b2acec07a823c7e480c1e08fccf0cf4966622063e7b57558301eb94f62c33df9`.
+
+### Preserving the natural supplier did not resolve simultaneous damage
+
+The `ce-natural-supplier-followthrough-01` continuation cold-loaded the
+verified turn-222 Wonder-protected checkpoint with the main CSC publisher
+and the CE supplier-bid build. It made no fixture edits after loading.
+Boston's Cattle remained on plot 796 without a district or improvement
+through turn 264. At all fourteen samples, the Water Mill was down and
+the Granary was functioning. Storekeeper never operated in that window.
+The existing recovery preference requires a functioning Mill and did
+not provide a Boston Pasture preference for this simultaneous damage.
+
+Boston finished Spaceport on turn 239, Research Lab on 242 and
+Encampment on 249, with culture and military buildings between
+production commitments. It then ran Orbital Laser projects through
+turn 262 and switched to Modern Armor. The city log contains no Water
+Mill submission or completion. The earlier stock branch that repaired
+the Mill at 253 was a different trajectory. This run does not isolate
+which competing native value kept the Mill out of the candidate list.
+There was no fault in the CE Builder or Wonder policy. The game closed
+and restored its package and preferences.
+
+The 42 retained Lua publication receipts covered five original AI
+players and 62–116 district entries per turn, with zero omitted.
+Every reported Lua timing was 0.0000 seconds. This clock readout
+does not establish runtime cost. A qualified timer and a matched
+mature measurement are still needed.
+
+The ten fresh autosaves for 255–264 were preserved from the closed
+process with SHA-256 receipts in `treatment/decision-saves/archive.json`.
+The turn-257 checkpoint is
+`db8169ec7ed052a2e1da5ac65cf86b43eace359573c8894bd6b0e22aa74fcda3`.
+Inspect an exact pre-selection save to distinguish a missing repair
+proposal from an eligible proposal losing to other production.
+Preserve strategic project competition when calibrating any repair bid.
 
 ## Native technology decision boundary
 

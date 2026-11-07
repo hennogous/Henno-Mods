@@ -70,6 +70,9 @@ local function refresh(turn)
     local bidRecovery = protectBuilders and bridge.BuilderBidAvailable()
     local wonderStatus = bridge.WonderStatus()
     local protectWonders = wonderStatus and wonderStatus:match('"ready":1') and wonderStatus:match('"faults":0')
+    local harvestStatus = bridge.BuilderHarvestStatus()
+    local protectHarvests = protectBuilders and harvestStatus
+        and harvestStatus:match('"ready":1') and harvestStatus:match('"faults":0')
     local allowances = 0
     for _, id in ipairs(players) do
         local deductions, sites = placement.BakersMaterialDeductions(Players[id], protectBuilders, bidRecovery)
@@ -90,7 +93,7 @@ local function refresh(turn)
     -- Dropping part of a site's compatibility list can forbid a valid job.
     -- Retire Builder protection for the turn if the full packet cannot fit.
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
-        allowances <= capacity and builderSites or nil, protectWonders)
+        allowances <= capacity and builderSites or nil, protectWonders, protectHarvests)
     assert(accepted, message)
     if builderStatus then
         print(string.format('CSC_AI_BAKERS_BUILDERS turn=%d allowances=%d previous=%s',
@@ -98,6 +101,9 @@ local function refresh(turn)
     end
     if wonderStatus then
         print(string.format('CSC_AI_BAKERS_WONDERS turn=%d previous=%s', turn, wonderStatus))
+    end
+    if harvestStatus then
+        print(string.format('CSC_AI_BAKERS_HARVEST turn=%d previous=%s', turn, harvestStatus))
     end
     print(string.format('CSC_AI_BAKERS_DISTRICTS turn=%d version=%d players=%d entries=%d omitted=%d previousMatched=%d previousChanged=%d seconds=%.4f',
         turn, version + 1, #players, #entries, omitted, matched, changed, os.clock() - started))

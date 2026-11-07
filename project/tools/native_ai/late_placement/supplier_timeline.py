@@ -77,7 +77,7 @@ def write_supplier_timeline(root, states, target, trace, checkpoints, *, scope=N
     lua_log = root / 'Lua.log'
     if lua_log.is_file():
         for line in read(lua_log).splitlines():
-            publication = re.search(r'CSC_AI_BAKERS_(BUILDERS|WONDERS) turn=(\d+) .*?previous=(\{.*\})', line)
+            publication = re.search(r'CSC_AI_BAKERS_(BUILDERS|WONDERS|HARVEST) turn=(\d+) .*?previous=(\{.*\})', line)
             if publication:
                 events.append(dict(source='ce-publication', time='publication-turn', turn=int(publication[2]),
                                    capability=publication[1], previous=json.loads(publication[3]), raw=line))

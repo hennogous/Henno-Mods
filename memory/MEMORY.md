@@ -54,6 +54,19 @@ The separate one-shot Clear Plot test rejected the exact turn-73
 harvest while control lost Cattle. Boston claimed the plot for
 Pasture at 78, built at 79, and verified Storekeeper at 81.
 A reusable CE gate and other destructive routes remain open.
+The no-edit Wonder-protected continuation reached turn 264 with
+developable Cattle and functioning Granary, but a pillaged Mill
+and no Pasture or Storekeeper. The queue log has no Mill request.
+Pasture bidding requires the Mill. The final ten autosaves are
+preserved in `ce-natural-supplier-followthrough-01/treatment/decision-saves`.
+Trace the Mill's ordinary proposal and competing production at
+an exact replay boundary before tuning simultaneous recovery.
+The CE harvest gate review branch `codex/ce-builder-harvest-gate`
+at `4f6f235` built with SHA `74fe0149…` and passed 70 score/policy
+and four hook-group checks. The main CSC publisher match reused
+the turn-72 fixture without Frida. The native rejection and
+subsequent Pasture and Storekeeper reproduced. Direct harvest
+and non-harvest replacement are separate routes.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

@@ -1327,5 +1327,31 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C073", "AI-N092"],
     "related": ["AI-C069", "AI-C074"]
+  },
+  {
+    "id": "AI-C076",
+    "title": "A naturally damaged Boston chain remained down despite keeping its Cattle",
+    "statement": "The Wonder-protected continuation retained a viable Cattle deposit. Boston did not submit the Water Mill repair or rebuild the Pasture. The existing supplier preference required the Mill, so simultaneous loss still needs coordination.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Closed continuation from the previously verified turn-222 protected Boston checkpoint with CE 32e6edb and the main CSC policy. Fourteen samples through 264 retained Cattle and the functioning Granary, with no working Mill, Pasture or Storekeeper.",
+    "limits": "Single natural trajectory. The logs do not establish the Mill's value at each decision, or whether investment would have been preferable to late science and military commitments.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C068", "AI-C069", "AI-C075"],
+    "related": ["AI-N094"]
+  },
+  {
+    "id": "AI-C077",
+    "title": "The reusable CSC and CE harvest guard preserved a committed supplier and restored Storekeeper",
+    "statement": "CSC published its protected supplier sites to the CE Clear Plot gate. After the native job selected its worker, CE returned failure for the bound harvest. Boston later reused the site and restored the exact active Storekeeper effect.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Same turn-72 fixture and CE 4f6f235 in both arms without Frida. Treatment logged a single native rejection for player 3, plot 796, Builder 2228225, followed by Pasture work at 79 and native Storekeeper on the exact City Center at 81 and 84. Control harvested at 73 and remained down at 84.",
+    "limits": "One observed Clear Plot harvest route. Feature removal, direct harvest and non-harvest improvement replacement still need separate coverage. No cumulative or fresh-game qualification.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C074", "AI-N097"],
+    "related": ["AI-C075", "AI-C076"]
   }
 ]

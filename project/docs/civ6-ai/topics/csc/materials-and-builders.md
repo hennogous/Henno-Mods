@@ -88,12 +88,19 @@ modifier on Boston's exact City Center recipient. The control kept
 protection and still lacked the Pasture. [AI-C075]
 [Integrated publisher and exact recipient evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-main-csc-supplier-publisher-uses-the-existing-ce-score-hook).
 
+The naturally damaged chain had a different dependency. The Cattle
+survived, but the Mill stayed pillaged and Boston never submitted
+its repair through turn 264. The supplier preference needed the
+Mill. [AI-C076]
+[Simultaneous damage and the production queue](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#preserving-the-natural-supplier-did-not-resolve-simultaneous-damage).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary
 job later claimed the same tile and rebuilt the Pasture. Storekeeper
-resumed. Other routes and the reusable guard remain open.
-[AI-N097] [AI-C074]
+resumed. The main CSC and CE guard reproduced that result without
+Frida. Other destructive routes remain open.
+[AI-N097] [AI-C074] [AI-C077]
 [Committed-harvest replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-committed-harvest-failed-safely-and-boston-used-the-plot-again).
 
 ```mermaid
