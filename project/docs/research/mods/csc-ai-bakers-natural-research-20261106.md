@@ -878,6 +878,30 @@ Control and treatment joined timeline SHA-256 values are
 `63137657fb7f8a2c7817a89c9f24451c99b6ec7ea2341d05f0f700e0b6ff207c`
 and `3965701a71bb263efa69b06caa2dfd6de2883c1eee36410c03ef8e3d9e1abba0`.
 
+### Clear Plot validates its selected worker before submitting the operation
+
+Ghidra on the matching Windows XP2 reference traces
+`ClearPlotNode::Update` at RVA `55eaf0`. It resolves the bound target
+coordinates and checks available workers for charges and reachability.
+It starts with the selected unit field at `node+0x40` set to −1. The
+ready path at `55ed62` stores the worker ID there and returns 1. Other
+paths return 2 for a reachable worker or 3 for failure. All paths free
+the temporary worker list before returning.
+
+The later `ClearPlotNode::Execute` at `55d970` uses that worker ID.
+If the worker's current plot has an improvement, it submits removal.
+With an empty improvement slot and a true harvest binding, it
+constructs a Harvest Resource request at `55da66` and submits it
+through the unit-operation dispatcher. This is downstream of the
+improvement score and already-bound job location.
+
+The installed hotfix image SHA-256 `092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f`
+matched the readiness, selected-worker write and harvest request
+fingerprints. An offline check of a diagnostic guard kept native
+cleanup and changed only an exact ready harvest to the existing
+failure state with no selected worker. The live test must verify
+whether the tree releases its job and the protected tile stays intact.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

@@ -143,3 +143,11 @@ It archives both arms' fresh decision saves and writes joined
 `supplier-timeline.json` files after both arms close. Add
 `--decision-observer-deps` with the pinned Frida directory to record
 native location-selector callers and the exact cached score they see.
+
+For a deeper Storekeeper audit, `storekeeper_runtime.lua` can be read
+through the shared controller in the `PlotInfo` UI context at an
+inactive boundary. It lists the native growth and attachment instances,
+their activation, owners and subjects. The end record reports the
+sampled turn and number of matching instances, including zero. This
+is a diagnostic snapshot. Per-turn qualification still needs a live
+check of source and recipient identities and a verified sampling clock.

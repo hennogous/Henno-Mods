@@ -75,6 +75,12 @@ went to a Camp elsewhere. A Pasture remained legal and Storekeeper
 stayed inactive. [AI-C072]
 [Earlier matched protection](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#earlier-protection-redirected-the-boost-and-preserved-the-deposit).
 
+A committed Clear Plot job still has to select a worker with charges
+before submitting a removal or harvest. That readiness decision is
+a separate place to test protection for work that already holds the
+plot. Its live failure and retry behavior remain unverified. [AI-N097]
+[Clear Plot worker decision](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#clear-plot-validates-its-selected-worker-before-submitting-the-operation).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]
