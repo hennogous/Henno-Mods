@@ -1402,5 +1402,18 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/site-planner.md",
     "depends_on": ["AI-C061", "AI-N099"]
+  },
+  {
+    "id": "AI-C082",
+    "title": "Screening project eligibility exposed a valid Terrestrial Laser",
+    "statement": "Checking native CanAdvance before a project could take the lead let Boston choose a valid Terrestrial Laser. Without the screen the unavailable winner failed and Boston trained Modern Armor through generic offense.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Matched turn-261 Boston save through 264, with no Mill score change. Project 25 failed CanAdvance in control. Project 26 survived the screen at the same 1428800 Q8 score and passed operation validation. Boston's build log names Terrestrial Laser on turn 262.",
+    "limits": "Scoped diagnostic on one save. Both arms lacked a working Mill, Pasture and Storekeeper. This did not calibrate or ship a repair policy.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C079"],
+    "related": ["AI-C080"]
   }
 ]

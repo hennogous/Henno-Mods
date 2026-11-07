@@ -135,10 +135,13 @@ measured the effective Mill and Academy operands. The queue ranked
 a project above both, rejected it, then trained Modern Armor through
 generic offense without reconsidering its building. The bounded Mill
 preference won the ordinary building ranking and still hit the same
-unadvanceable project. Test the queue with native project eligibility
-applied before ranking and preserve competition among executable choices.
+unadvanceable project. A matched diagnostic screened candidates using
+native project eligibility. Boston queued a valid Terrestrial Laser
+and the chain stayed down. Measure the marginal benefit of a Mill-only
+repair at an ordinary queue opening before choosing a bounded bid.
 This remains a repair-coordination dependency under **13.1–13.2**
 and **14.1**.
+[Project eligibility replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#project-eligibility-preserved-a-valid-terrestrial-laser).
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode

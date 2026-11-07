@@ -112,6 +112,11 @@ won the building ranking. The same unadvanceable project won the
 category comparison, so the city still reached generic offense.
 The other observed building winner came from threat review. [AI-C080]
 
+In a separate matched replay, the native eligibility check excluded
+the unavailable project before ranking. Boston then chose a valid
+Terrestrial Laser at the same score. Neither arm restored Storekeeper.
+[AI-C082] [Matched project eligibility replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#project-eligibility-preserved-a-valid-terrestrial-laser).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

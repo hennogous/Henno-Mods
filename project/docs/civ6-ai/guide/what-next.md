@@ -48,6 +48,10 @@ Encampment contract. The Mill repair ran after Encampment and restored its
 building yields. In a separate test with only the Mill pillaged, the AI
 repaired it and restored Storekeeper with its original Pasture. The late
 Boston chain still needs that Pasture rebuilt before Storekeeper can return.
+A matched replay screened unavailable projects before ranking and
+Boston chose a valid Terrestrial Laser. A repair bid needs to earn its
+place against that kind of executable investment. Measure it first with
+the supplier and customer already working.
 In the controlled Pasture-loss replay, an Irrigation boost harvested the
 Cattle before Boston could rebuild. The matched replay also lost the
 deposit after CE suppressed the Farm forecast. The earlier replay will

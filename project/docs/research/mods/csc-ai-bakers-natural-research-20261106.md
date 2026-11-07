@@ -1196,6 +1196,26 @@ contracts and reuses that project value in default category ranking.
 Filtering a project there can therefore admit an existing contract
 before default building choice. Observe both stages in the next test.
 
+## Project eligibility preserved a valid Terrestrial Laser
+
+The matched `ce-late-project-eligibility-01` replay loaded the same
+turn-261 save in both arms and ran through turn 264. The treatment
+used the original `CanAdvance` for projects that could take the lead
+in Boston's ranking. It made no Mill score change. The control's
+project 25 won at 1,428,800 Q8, failed `CanAdvance` and never reached
+operation validation. Boston queued Modern Armor through generic
+offense on turn 262.
+
+The treatment excluded projects 0, 5, 6 and 25 after failed checks.
+Projects 8 and 26 passed. Project 26 won at 1,428,800 Q8 and passed
+both `CanAdvance` and operation validation. Boston's build log
+identified Terrestrial Laser on turn 262 and its queue recorded
+44.3 of 300 production on turn 263. The trace does not identify
+project 25 by name. Both arms ended with the Mill and Pasture still
+down and no Storekeeper. This was a scoped diagnostic. It demonstrates
+that pre-ranking eligibility can retain a valid project while fixing
+this particular fallback. It does not establish a reusable repair bid.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
