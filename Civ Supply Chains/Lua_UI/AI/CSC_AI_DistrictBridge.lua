@@ -3,6 +3,7 @@
 CSC_AI_DistrictBridge={}
 local B=CSC_AI_DistrictBridge
 local names={'Begin','Allow','Entry','Commit','Disable','Status'}
+local MAX_BUILDER_BID_Q8=64*256
 local function integer(x,low,high)
     local kind=type(x)
     return (kind=='number' or kind=='integer') and x==math.floor(x) and x>=low and x<=high
@@ -30,8 +31,10 @@ function B.BuilderStatus()
         return CE_AIBuilderProtectionStatus()
     end
 end
-function B.BuilderBidAvailable()
-    return type(CE_AIBuilderProtectionBid)=='function'
+function B.BuilderBidLimit(status)
+    if type(CE_AIBuilderProtectionBid)~='function' or type(status)~='string' then return 0 end
+    local limit=tonumber(status:match('"maxBidQ8":(%d+)')) or 0
+    return math.min(limit,MAX_BUILDER_BID_Q8)
 end
 function B.BuilderHarvestStatus()
     if type(CE_AIBuilderHarvestProtectionStage)=='function'
@@ -45,7 +48,7 @@ function B.WonderStatus()
         return CE_AISupplierWonderProtectionStatus()
     end
 end
-function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests)
+function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,builderBidLimit)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -78,7 +81,8 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             if not integer(kind,0,2147483647) then return reject('Invalid supplier improvement') end
             allowanceCount=allowanceCount+1
         end
-        if site.deltaQ8~=nil and (not B.BuilderBidAvailable() or not integer(site.deltaQ8,1,8192)) then
+        if site.deltaQ8~=nil and (not integer(builderBidLimit,1,MAX_BUILDER_BID_Q8)
+            or not integer(site.deltaQ8,1,builderBidLimit)) then
             return reject('Invalid Builder supplier bid')
         end
     end

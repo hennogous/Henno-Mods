@@ -33,9 +33,9 @@ CSC_Adjacency = {
     HasTag=function(tag, resource) return tag=='CLASS_CSC_BAKERS_BASE' and resource=='RESOURCE_CATTLE' end,
 }
 local quarter = {GetType=function() return 3 end, GetX=function() return 10 end, GetY=function() return 10 end,
-    IsComplete=function() return true end, IsPillaged=function() return false end}
+    GetIndex=function() return 100 end, IsComplete=function() return true end, IsPillaged=function() return false end}
 local districts = {GetNumDistricts=function() return 1 end, GetDistrictByIndex=function() return quarter end}
-local city = {GetDistricts=function() return districts end, GetProperty=function() return 1 end}
+city = {GetDistricts=function() return districts end, GetProperty=function() return 1 end}
 local cities = {Members=function()
     local once = false
     return function() if not once then once = true; return 1,city end end
@@ -153,7 +153,41 @@ class BakersGameplayTest(unittest.TestCase):
         lua.execute("CSC_AI_BakersSiteForecasts=function() error('fixture') end; turn=7; boundary()")
         self.assertEqual(lua.eval('#packet'), 1)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
-        lua.execute('turn=8; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute("""
+            GameInfo.Civics={CIVIC_FEUDALISM={Index=7}}
+            Players[3].GetCulture=function() return {HasCivic=function(_, i) return i==7 end} end
+            GameInfo.Districts.DISTRICT_CITY_CENTER={Index=0}
+            GameInfo.Buildings={BUILDING_GRANARY={Index=8}, BUILDING_CSC_BAKERS_WATER_MILL={Index=9}}
+            GameInfo.BuildingReplaces=function() return function() end end
+            city.GetProperty=function() return 0 end
+            city.GetBuildings=function()
+                return {HasBuilding=function(_, i) return i==9 end, IsPillaged=function() return false end,
+                    GetBuildingLocation=function() return 100 end}
+            end
+            local customer={GetIndex=function() return 99 end, GetOwner=function() return 3 end,
+                GetX=function() return 9 end, GetY=function() return 10 end,
+                GetDistrictType=function() return 0 end, GetResourceType=function() return -1 end}
+            Map.GetAdjacentPlots=function() return {pasture,customer} end
+            local getCity=Cities.GetPlotPurchaseCity
+            Cities.GetPlotPurchaseCity=function(plot)
+                if plot~=customer then return getCity(plot) end
+                return {GetOwner=function() return 3 end, GetBuildings=function()
+                    return {HasBuilding=function(_, i) return i==8 end, IsPillaged=function() return false end,
+                        GetBuildingLocation=function() return 99 end}
+                end}
+            end
+            CE_AIBuilderProtectionBid=function(...) builders[#builders+1]={...}; return 1 end
+            CE_AIBuilderProtectionStatus=function()
+                return '{"ready":1,"faults":0,"maxBidQ8":'..bidLimit..'}'
+            end
+            bidLimit=8192; turn=8; boundary()
+        """)
+        self.assertEqual(lua.eval('table.concat(builders[1], ",")'), '3,42,101,5,8192')
+        lua.execute('bidLimit=16384; turn=9; boundary()')
+        self.assertEqual(lua.eval('table.concat(builders[1], ",")'), '3,42,101,5,14336')
+        lua.execute('improvement=5; pillaged=false; turn=10; boundary()')
+        self.assertEqual(lua.eval('table.concat(builders[1], ",")'), '3,42,101,5')
+        lua.execute('turn=11; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

@@ -69,7 +69,7 @@ local function refresh(turn)
     local entries, builderSites = {}, {}
     local builderStatus = bridge.BuilderStatus()
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
-    local bidRecovery = protectBuilders and bridge.BuilderBidAvailable()
+    local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
     local wonderStatus = bridge.WonderStatus()
     local protectWonders = wonderStatus and wonderStatus:match('"ready":1') and wonderStatus:match('"faults":0')
     local harvestStatus = bridge.BuilderHarvestStatus()
@@ -78,7 +78,7 @@ local function refresh(turn)
     local allowances = 0
     for _, id in ipairs(players) do
         local player = Players[id]
-        local deductions, sites = placement.BakersMaterialDeductions(player, protectBuilders, bidRecovery)
+        local deductions, sites = placement.BakersMaterialDeductions(player, protectBuilders, builderBidLimit)
         local protectedPlots = {}
         for _, entry in ipairs(deductions) do
             entries[#entries + 1] = entry
@@ -107,7 +107,7 @@ local function refresh(turn)
     -- Dropping part of a site's compatibility list can forbid a valid job.
     -- Retire Builder protection for the turn if the full packet cannot fit.
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
-        allowances <= capacity and builderSites or nil, protectWonders, protectHarvests)
+        allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit)
     assert(accepted, message)
     if samples and samples ~= '[]' then
         -- Civ clips long Lua log lines. CE sends a flat array of small

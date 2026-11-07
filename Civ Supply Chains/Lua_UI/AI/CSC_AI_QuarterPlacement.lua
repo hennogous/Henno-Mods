@@ -14,7 +14,9 @@ local MATERIAL_COST_Q8 = 2048
 local LAST_DEPOSIT_COST_Q8 = 12288
 local LAST_SUPPLIER_COST_Q8 = 16384
 local ACTIVE_SERVICE_COST_Q8 = 24576
-local RECOVERY_BID_Q8 = 8192 -- Just above the two observed Camp margins in AI-C073.
+-- Alexandria's ready chain needed 56 utility units across repeat allocations.
+-- The cap from CE preserves the original lower amount on older local builds.
+local READY_SUPPLIER_BID_Q8 = 56 * 256
 
 local improvementsByResource
 local granaryTypes
@@ -129,11 +131,12 @@ local function missingStorekeeperSupply(player, city, quarter, base)
     return hasBakersCustomer(player, quarter)
 end
 
-function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, includeRecovery)
+function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit)
     local risks, recover = {}, {}
     local quarterType = GameInfo.Districts[BAKERS]
     if not quarterType then return risks, recover end
-    local feudalism = includeRecovery and GameInfo.Civics.CIVIC_FEUDALISM
+    local recoveryBid = math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8)
+    local feudalism = recoveryBid > 0 and GameInfo.Civics.CIVIC_FEUDALISM
     local canRecover = feudalism and player:GetCulture():HasCivic(feudalism.Index)
     for _, city in player:GetCities():Members() do
         local districts = city:GetDistricts()
@@ -150,7 +153,7 @@ function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, includeRecovery)
                 -- make the absent working Base the immediate Service blocker.
                 if canRecover and ready and not activeService
                     and missingStorekeeperSupply(player:GetID(), city, plot, supply.base) then
-                    recover[supply.base[1].plot] = RECOVERY_BID_Q8
+                    recover[supply.base[1].plot] = recoveryBid
                 end
             end
         end
@@ -160,10 +163,10 @@ end
 
 -- A supplier can be in a different city from the Quarter. Key the deduction
 -- to the city that could actually place a district there, as CE expects.
-function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders, includeRecovery)
+function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders, builderBidLimit)
     local playerID = player:GetID()
     local entries, builderSites = {}, {}
-    local risks, recover = CSC_AI_QuarterPlacement.BakersMaterialRisk(player, includeRecovery)
+    local risks, recover = CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit)
     for index, cost in pairs(risks) do
         local plot = Map.GetPlotByIndex(index)
         local city = Cities.GetPlotPurchaseCity(plot)
