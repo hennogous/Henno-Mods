@@ -146,7 +146,7 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
             ui = controller.cmd(effects, 'PlotInfo', f'bakers-effects-{turn}')
             state.update(conditions=parse(raw, 'CSC_NATURAL_CHAIN'), effects=parse(ui, 'CSC_BAKERS_EFFECTS'))
             state['operation'] = operating(state, target)
-            if args.publisher_pasture_bid or args.publisher_harvest:
+            if (args.publisher_pasture_bid or args.publisher_harvest) and not args.watch_storekeeper:
                 controller.cmd(read(HERE / 'storekeeper_runtime.lua'), 'PlotInfo', f'storekeeper-modifiers-{turn}')
         return state
 
@@ -209,6 +209,10 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
         # Take the baseline in the verified gameplay context.
         names = (*LOGS, 'UnitOperations.log', 'AI_Behavior_Trees.csv') if advanced else LOGS
         logs = {name: capture_log_baseline(args.user_root / 'Logs' / name) for name in names}
+        if args.watch_storekeeper:
+            raw = controller.cmd('CSC_BAKERS_STOREKEEPER_WATCH=true\n' + read(HERE / 'storekeeper_runtime.lua'),
+                                 'PlotInfo', 'install-storekeeper-turn-watch')
+            require('CSC_BAKERS_STOREKEEPER_WATCH_INSTALLED' in raw, 'Storekeeper watch installation failed')
         if args.decision_observer_deps:
             dependencies = args.decision_observer_deps.resolve()
             sys.path.insert(0, str(dependencies))
@@ -385,7 +389,7 @@ def run(args):
     probe = 'CSC_BAKERS_TARGET=' + lua(target) + ';\n' + '\n'.join(map(read, probe_files))
     out.mkdir()
     extra = (HERE / 'operating_effects.lua', HERE / 'natural_chain.py') if advanced else ()
-    if args.publisher_pasture_bid or args.publisher_harvest:
+    if args.publisher_pasture_bid or args.publisher_harvest or args.watch_storekeeper:
         extra += (HERE / 'storekeeper_runtime.lua',)
     observer_inputs = observer_sources(args)
     if args.pasture_autosave:
@@ -483,6 +487,8 @@ if __name__ == '__main__':
     interventions.add_argument('--publisher-harvest', action='store_true',
                                help='Enable the main CSC native Clear Plot protection only in treatment')
     parser.add_argument('--through', type=int)
+    parser.add_argument('--watch-storekeeper', action='store_true',
+                        help='Observe native Storekeeper at each autoplay turn start in both arms')
     args = parser.parse_args()
     if (args.builder or args.wonder) and (not args.match or not args.ce_sha256):
         parser.error('--builder or --wonder requires --match and --ce-sha256')
@@ -497,4 +503,6 @@ if __name__ == '__main__':
         parser.error('The experimental intervention requires the matched supplier observer')
     if (args.publisher_pasture_bid or args.publisher_harvest) and (not args.pasture_autosave or args.decision_observer_deps):
         parser.error('The published policy comparison requires a matched supplier autosave without Frida')
+    if args.watch_storekeeper and not args.pasture_autosave:
+        parser.error('The Storekeeper clock study requires a matched supplier autosave')
     run(args)

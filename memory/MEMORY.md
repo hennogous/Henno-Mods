@@ -61,6 +61,12 @@ Pasture bidding requires the Mill. The final ten autosaves are
 preserved in `ce-natural-supplier-followthrough-01/treatment/decision-saves`.
 Trace the Mill's ordinary proposal and competing production at
 an exact replay boundary before tuning simultaneous recovery.
+The 258–264 read-only trace found the Mill eligible in all six
+building comparisons. Military Academy index 27 won and its
+contract 6344 refreshed to 746,032 Q8. The Mill's 685,413 Q8
+at the fallback was a cached value. Boston ultimately used
+Generic Offense for Modern Armor. Trace the effective Mill
+operand and fallback queue alternatives next.
 The CE harvest gate review branch `codex/ce-builder-harvest-gate`
 at `4f6f235` built with SHA `74fe0149…` and passed 70 score/policy
 and four hook-group checks. The main CSC publisher match reused

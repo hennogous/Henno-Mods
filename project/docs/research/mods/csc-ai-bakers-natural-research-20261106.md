@@ -1088,6 +1088,41 @@ Inspect an exact pre-selection save to distinguish a missing repair
 proposal from an eligible proposal losing to other production.
 Preserve strategic project competition when calibrating any repair bid.
 
+### Military Academy beat the eligible Mill in building selection
+
+`ce-late-mill-choice-01` cold-loaded the exact turn-258 autosave,
+SHA-256 `6b80f5133634089fe37e98fbd59b14ba31149df09c059caa6285bb0154f5534e`,
+with the same verified starting census and CE build. The read-only
+trace sampled the ordinary building caller after the CE hook
+returned. Boston's Mill passed the native requirements check in
+all six observed building selections. Military Academy won each.
+Its identity comes from contract 6344, whose native building index
+27 matches the submitted Academy row in the city log.
+
+At the fallback comparison in the turn-261 interval, the Mill's
+cached row was 685,413 Q8. The Academy won the building selection
+at 746,032 Q8. The city validated its earlier Academy contract and
+refreshed its value from 547,584 to 746,032. No Academy contract
+execution or ordinary building request followed in that queue
+pass. Boston queued Modern Armor under Generic Offense at the
+turn-262 decision. The AI kept Cattle and finished the replay at
+264 with the Mill, Pasture and Storekeeper still down.
+
+The cached Mill row and effective Academy winner are different
+comparison stages. The trace does not establish a 60,619 Q8 bid
+margin. Native `GetBestBuilding` at `3e4710` can transform the cached
+value before ranking. `QueueNextBuild` at `3e8190` then compares its
+building, unit and project alternatives after trying an offered
+contract. The next trace records the Mill's actual comparison
+operand and the queue's three category values before the generic
+fallback. A legal building bid can matter only if it survives
+these separate choices.
+
+The frozen trace had no fault or active callback at shutdown.
+Its SHA-256 is
+`50e5a2f2d089187785e96cb4cb781dd93e3cb18c7db04e8fbe63266e30f01422`.
+The native session and temporary package both closed and restored.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
@@ -1105,6 +1140,35 @@ It has no immediate research setter call. `GetBestTechsToResearch` at
 `4f95b0` has direct callers in the Grand Strategic cache's fill and update
 paths. For a future research bid, trace the actual queue decision as well as
 any score or contract result. This pass made no research changes.
+
+## Native Storekeeper turn sampling
+
+`ce-storekeeper-watch-01` repeated the turn-69 Pasture publisher pair
+through turn 78 with the optional PlotInfo watcher and no Frida. The
+watcher sampled turns 70, 71, 73, 74, 76 and 77 in both arms. In treatment,
+Boston's City Center received the active native Storekeeper growth effect
+on turns 76 and 77. Control recorded zero active turns for Boston. Neither
+arm recorded a watcher fault. The controller paused on turns 72 and 75,
+and the watcher did not sample those boundaries or the initial and final
+turns. Use a continuous autoplay interval to verify full interior coverage
+before using this method to qualify a 100-turn count. The parser excludes
+unsampled turns.
+
+The saved control and treatment `Lua.log` SHA-256 values are
+`415f71be98fdfaa6154f5e358f1e7618bfd7f8a10eee0f5098e1c75d2e21f385` and
+`08c43c1a241d0d9263567e5ca7b9ecd73f372ea157247f95595d720a1775981d`.
+
+## Separate local CSC and CE packages
+
+`Desktop/Codex/csc-bakers-qualification-20261107/staged-01` contains
+separate development packages. CSC uses the installed package's registered
+assets, the AI and adjacency files from commit `3d180d6`, and the main mod's
+canonical action declarations. Its manifest declares the local CE package
+as a dependency. CE contains the reviewed harvest-gate build with DLL
+SHA-256 `74fe01492a456c2d13e5095cc2c640254a2279d894f8647afc73525a799bde8d`.
+Both received distinct local IDs. Packaging verified the CSC reference
+was unchanged and all 18 parity-tool tests passed. The staged pair still
+needs a normal new-game loading test and qualification runs.
 
 ## Evidence locator
 

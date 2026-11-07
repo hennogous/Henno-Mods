@@ -94,6 +94,12 @@ its repair through turn 264. The supplier preference needed the
 Mill. [AI-C076]
 [Simultaneous damage and the production queue](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#preserving-the-natural-supplier-did-not-resolve-simultaneous-damage).
 
+On the turn-258 replay the Mill was eligible in all six building
+comparisons. Military Academy won the building ranking, and the
+queue eventually trained Modern Armor through its generic offense
+fallback. [AI-C078]
+[The Mill's nomination and queue competition](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#military-academy-beat-the-eligible-mill-in-building-selection).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

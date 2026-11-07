@@ -115,9 +115,12 @@ other destructive operations and working improvements.
 The archived naturally damaged branch kept Cattle through turn 264
 with no Mill or Pasture recovery. Production went to existing
 Spaceport, building and district commitments, then Orbital Lasers.
-Trace the repair proposal when both links are down before trying a
-building preference. This is an open repair-coordination dependency
-under **13.1–13.2** and **14.1**.
+The Mill passed native requirements in the turn-258 replay, and
+Military Academy won the building ranking. The city eventually
+trained Modern Armor through generic offense. Measure the actual
+building and queue operands before trying a repair preference.
+This remains a repair-coordination dependency under **13.1–13.2**
+and **14.1**.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
@@ -136,6 +139,7 @@ and measure its cost in a mature live game before enabling it in CSC.
 [Committed-harvest recovery](../research/mods/csc-ai-bakers-natural-research-20261106.md#a-committed-harvest-failed-safely-and-boston-used-the-plot-again).
 [Integrated supplier publisher](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-main-csc-supplier-publisher-uses-the-existing-ce-score-hook).
 [Simultaneous damage and competing production](../research/mods/csc-ai-bakers-natural-research-20261106.md#preserving-the-natural-supplier-did-not-resolve-simultaneous-damage).
+[The eligible Mill lost the building comparison](../research/mods/csc-ai-bakers-natural-research-20261106.md#military-academy-beat-the-eligible-mill-in-building-selection).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

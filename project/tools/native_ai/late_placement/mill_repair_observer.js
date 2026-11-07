@@ -12,6 +12,11 @@ const QUEUE_NEXT_BUILD = 0x3e8190;
 const CONTRACT_VALIDATE = 0x3fa8e0;
 const CONTRACT_UPDATE = 0x3fa5e0;
 const CONTRACT_EXECUTE = 0x3f8310;
+const BUILDING_COMPARISON = 0x3e49da;
+const QUEUE_FALLBACK_COMPARISON = 0x3e8741;
+const DEFAULT_UNIT_RETURN = 0x3e8836;
+const DEFAULT_PROJECT_RETURN = 0x3e88e5;
+const GENERIC_UNIT_RETURN = 0x3e899f;
 const RECEIVE_VALIDATE_RETURN = 0x3e9529;
 const QUEUE_VALIDATE_RETURN = 0x3e82c3;
 const QUEUE_UPDATE_RETURN = 0x3e82dc;
@@ -22,6 +27,8 @@ const CITY_ROWS = 0x4c8, CITY_ROW_COUNT = 0x4d8, ROW_BUILDING_SCORES = 0x28;
 // offsets are read only on calls to that type's own virtual methods.
 const CONTRACT_STATUS = 0xb0, CONTRACT_ID = 0x110, CONTRACT_VALUE = 0x158;
 const CONTRACT_UNIT = 0x178, CONTRACT_BUILDING = 0x190, CONTRACT_DISTRICT = 0x1a8;
+const QUEUE_BUILDING_ID_FRAME = 0x7f, QUEUE_BUILDING_VALUE_FRAME = 0x77;
+const QUEUE_PROJECT_ID_FRAME_BACK = 0x51;
 const memory = createStudyMemoryIO({ptr, findRangeByAddress: address => Process.findRangeByAddress(address)});
 const records = [], selection = new Map(), queuePass = new Map();
 let enabled = false, installed = false, boundary = null, fault = null, active = 0;
@@ -81,6 +88,13 @@ function init(spec, scope) {
         [QUEUE_VALIDATE_RETURN - 7, '41ff9098000000'],
         [QUEUE_UPDATE_RETURN - 4, '41ff5068'],
         [QUEUE_EXECUTE_RETURN - 4, '41ff5038'],
+        ...(scope.cePath ? [
+            [BUILDING_COMPARISON, '443b367e11448936'],
+            [QUEUE_FALLBACK_COMPARISON, '8b457f83f8ff0f84c50000008b5d77'],
+            [DEFAULT_UNIT_RETURN, '84c00f8456010000'],
+            [DEFAULT_PROJECT_RETURN, '84c00f84a7000000'],
+            [GENERIC_UNIT_RETURN, '8bd883f8ff0f84b2000000'],
+        ] : []),
     ]) {
         const bytes = Array.from(new Uint8Array(address(rva).readByteArray(expected.length / 2)),
             value => value.toString(16).padStart(2, '0')).join('');
@@ -167,6 +181,35 @@ function init(spec, scope) {
         queuePass.delete(sample.thread);
         add({kind: 'queue-end', pass: sample.pass});
     });
+    if (scope.cePath) {
+        // The candidate reached the comparison after the actual requirements
+        // gates and native value transformations. R14 is its effective Q8.
+        Interceptor.attach(address(BUILDING_COMPARISON), function () {
+            if (!enabled || this.context.r12.toInt32() !== scope.mill) return;
+            const sample = selection.get(this.threadId);
+            if (sample) protect(() => add({kind: 'mill-compare', caller: sample.caller,
+                effectiveQ8: this.context.r14.toInt32(), incumbentQ8: read(this.context.rsi, 0, 'i32')}));
+        });
+        function queuePoint(rva, capture) {
+            Interceptor.attach(address(rva), function () {
+                if (!enabled) return;
+                const pass = queuePass.get(this.threadId);
+                if (pass !== undefined) protect(() => add({pass, ...capture(this.context)}));
+            });
+        }
+        // This point follows contract arbitration. Compare the three
+        // default categories using the same operands the native queue uses.
+        queuePoint(QUEUE_FALLBACK_COMPARISON, c => ({
+            kind: 'default-compare',
+            building: read(c.rbp, QUEUE_BUILDING_ID_FRAME, 'i32'),
+            buildingQ8: read(c.rbp, QUEUE_BUILDING_VALUE_FRAME, 'i32'),
+            unit: c.r13.toInt32(), unitQ8: c.rdi.toInt32(),
+            project: read(c.rbp.sub(QUEUE_PROJECT_ID_FRAME_BACK), 0, 'i32'), projectQ8: c.rsi.toInt32(),
+        }));
+        queuePoint(DEFAULT_UNIT_RETURN, c => ({kind: 'default-unit', accepted: Boolean(c.rax.toInt32() & 255)}));
+        queuePoint(DEFAULT_PROJECT_RETURN, c => ({kind: 'default-project', accepted: Boolean(c.rax.toInt32() & 255)}));
+        queuePoint(GENERIC_UNIT_RETURN, c => ({kind: 'generic-unit', unit: c.rax.toInt32()}));
+    }
     observe(CONTRACT_VALIDATE, (a, invocation) => {
         const from = caller(invocation);
         if (from !== RECEIVE_VALIDATE_RETURN && from !== QUEUE_VALIDATE_RETURN) return;

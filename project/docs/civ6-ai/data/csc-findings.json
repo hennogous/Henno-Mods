@@ -1353,5 +1353,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C074", "AI-N097"],
     "related": ["AI-C075", "AI-C076"]
+  },
+  {
+    "id": "AI-C078",
+    "title": "Boston's eligible Mill repair lost building selection to Military Academy",
+    "statement": "On the protected natural-damage branch, Boston's Mill passed six native building requirement checks. Military Academy won each building comparison. The queue later used generic offense to train Modern Armor.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Read-only CE-compatible trace from the verified turn-258 Boston checkpoint through 264. Academy contract 6344 linked index 27 to the native building log. In the final fallback comparison the Mill cache was 685413 Q8, and the Academy's winning building value and refreshed contract were 746032 Q8.",
+    "limits": "The Mill cache and the Academy's effective value are different stages. The trace did not measure the Mill's effective operand or the subsequent unit and project comparison, so it does not calibrate a repair bid or explain the fallback in full.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C076", "AI-N094"],
+    "related": ["AI-C069"]
   }
 ]
