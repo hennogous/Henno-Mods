@@ -36,6 +36,13 @@ local function priority(a, b)
 end
 
 local function refresh(turn)
+    -- Gameplay does not expose all of the game-mode checks. Wait for the
+    -- UI's read-only result before capturing the original player roles.
+    local ui = ExposedMembers and ExposedMembers.CSC_Adjacency
+    if not ui or type(ui.IsSinglePlayer) ~= 'function' or ui.IsSinglePlayer() ~= true then
+        bridge.Disable()
+        return false
+    end
     local status = assert(bridge.Status())
     assert(tonumber(status:match('"ready":(%d+)')) == 1, 'CE district scoring is unavailable')
     assert(tonumber(status:match('"faults":(%d+)')) == 0, 'CE district scoring has faulted')
@@ -88,7 +95,7 @@ local function onBoundary()
     end
 end
 
-if bridge.Available() and not GameConfiguration.IsAnyMultiplayer() and not GameConfiguration.IsHotseat() then
+if bridge.Available() then
     GameEvents.OnGameTurnStarted.Add(onBoundary)
     if Events.LoadScreenClose then Events.LoadScreenClose.Add(onBoundary) end
     onBoundary()

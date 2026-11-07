@@ -370,6 +370,53 @@ SHA-256 values for `cohort-result.json` and `cohort/242.json` are
 `28b0c04f65db1e45e3ca9cbcb7c459ed1f1bd7958cfb7641b69f361c2e36580b` and
 `ab9db34b34d96f08293faef93374e6280d165c3cbcee3bd704bcb380334ba33a`.
 
+## Automatic district protection replay
+
+The matched CE replay uses the exact turn-31 Boston save and the same
+hotfix-compatible DX11 CE score build in both arms. The treatment loads the
+main CSC gameplay publisher. The replay supplies only original seat roles
+because this save predates the publisher. Neither arm issues research,
+production, placement or unit orders.
+
+In `ce-supplier-policy-01`, Boston covered the Cattle with Campus by turn 37.
+The harness captured its log baseline before Civ reset the logs during load
+and stopped before running the treatment. In `ce-supplier-policy-02`, the
+control repeated the loss and archived the logs. The treatment stopped during
+startup because the gameplay context lacked a game-mode getter supplied by
+the offline fixture. Both sessions exited normally and restored preferences
+and the test package.
+
+The publisher now reads the UI's single-player check through the existing
+CSC read-only bridge. It waits for the UI to confirm the mode before it
+captures roles or publishes any scores. The revised offline test covers
+missing UI and hotseat as well as ordinary single-player publication.
+
+In `ce-supplier-policy-03`, the revised publisher committed 20 district
+penalties across five original AI players at turn 31. CE reported nine
+applied changes before the turn-32 refresh and zero faults at turn 37. The
+control built Campus on Cattle plot 796. In the treatment, Boston built
+Campus on plot 720 and the Cattle on 796 had a working Pasture. CE reported
+51 changes across the treatment's refreshes. Both arms closed and restored
+the original preferences and verified temporary package manifests. The earlier
+diagnostic applied one measured late write. This replay used the main mod's
+automatic early publisher throughout the interval. The finite penalty
+still needs calibration across more situations and normal starts.
+
+The matched result is `ce-supplier-policy-03/result.json`, SHA-256
+`307330e8b77590b5a89deac461922c14067010758fbf5d0a0d18ca12b2ceb407`.
+The treatment Lua log SHA-256 is
+`1a8576fc7cfac7287c5a098d0ad9c1d2fabaeff845f05392b11dd32a1dc7e547`.
+
+The CE development build couples diagnostic and policy limits. Filling the
+16,384-record journal or reaching 4,096 successful score writes faults the
+policy. Multiple calls on one entry count as multiple writes. Committing a
+new publication clears the journal and the CSC publisher currently logs
+the preceding matched and changed counts. This is sufficient for a small
+replay. For long runs, give diagnostic retention and policy application
+independent limits, preserve useful evidence across generations, and replace
+the frequent full-table scans with indexed lookups and city-local ranges.
+Measure these paths in a mature empire before setting production budgets.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

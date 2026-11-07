@@ -55,18 +55,25 @@ Crippling Blizzard on turn 207. That break reproduced from the turn-186 save.
 Repair after disaster damage remains open under **13.1**.
 [Long-run observations](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
 
-**Active problem for reusable tuning — 2.2, district material protection.**
+**Verified for the Boston replay — 2.2, automatic district material protection.**
 Main CSC now has a gameplay publisher for the CE district-score capability.
 It reads owned, visible Bakers suppliers, distinguishes a usable deposit
 from a working improvement, and prices legal district pairs for the city
 that could cover each tile. A fixture verifies publication for a supplier
 owned by a different city and refresh after pillage or removal. The corrected
 CE compatibility build loaded the previously failing DX11 save, and the
-score API reproduced the early and late writes in a separate replay.
-Verify actual preservation by comparing the automatic CSC policy against
-the same CE carrier with the policy disabled. The penalty is finite.
-Builder work and harvest
-admission under **13.3** need their own adapter and alternative-job test.
+score API reproduced the early and late writes in a separate replay. In the
+matched Boston replay the control covered Cattle 796 with Campus. With the
+automatic main CSC policy, Campus went on 720 and Boston worked the original
+Cattle Pasture by turn 37. The penalty is finite and needs wider calibration.
+[Automatic publisher evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
+
+**Active problem for reusable tuning — 13.3, destructive Builder work.**
+Reject the protected Farm candidate before it wins and verify what the
+original selector and Builder do with the remaining choices.
+Before a mature-game run, separate native policy limits
+from trace retention, preserve per-publication evidence, and index native
+lookups by city and district-site pair. Measure the resulting cost in play.
 [Current CE startup evidence](../research/mods/csc-ai-xp2-november-hotfix-20261106.md#corrected-shared-ce-loads-and-accepts-district-scores).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online

@@ -8,6 +8,12 @@ and harvested the deposit. The same Builder, exact plot and distinct native
 operations identify work clearance as the cause. [AI-N087]
 [Boston's exchange and Builder-loss evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-ordinary-exchange-worked-then-a-feudalism-boost-consumed-the-base).
 
+The main CSC publisher also preserved that supplier in a matched CE replay.
+The AI put Campus on plot 720 and worked the Cattle on plot 796 by turn 37.
+This verifies automatic district protection for the fixture. Builder
+clearance is a separate decision. [AI-C065]
+[Automatic publisher evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
+
 The follow-up traced two callers of the same improvement site selector.
 Boost planning can skip a city whose location result is empty. Ordinary
 planning can defer creating an improvement tree. A guarded replay used

@@ -1184,5 +1184,18 @@
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C062"],
     "related": ["AI-C063"]
+  },
+  {
+    "id": "AI-C065",
+    "title": "The main CSC district policy preserved Boston's only Base deposit in a matched CE replay",
+    "statement": "The control built Campus over Cattle. The main CSC publisher supplied finite district-site deductions to the CE score API, and in that arm Boston built Campus on a different plot and worked the original Cattle Pasture by turn 37.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Same archived turn-31 Boston save and corrected CE DX11 score build in both arms. Control Campus at plot 796. Treatment Campus at 720, working Cattle Pasture at 796, 51 score changes across the recorded policy refreshes and zero native faults. Both arms closed and restored.",
+    "limits": "The isolated study supplied original seat roles for this old save. The observed score count covers the full publication, and the comparison verifies one physical supplier outcome. The replay does not qualify normal-start role capture, destructive Builder work, general calibration or Workshop delivery.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-N090"],
+    "related": ["AI-C062", "AI-N086", "AI-N088"]
   }
 ]

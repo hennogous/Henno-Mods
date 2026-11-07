@@ -55,7 +55,8 @@ local properties = {}
 turn = 1
 Game = {GetCurrentGameTurn=function() return turn end,GetProperty=function(_,k) return properties[k] end,
     SetProperty=function(_,k,v) properties[k]=v end}
-GameConfiguration = {IsAnyMultiplayer=function() return false end, IsHotseat=function() return false end}
+ExposedMembers = {}
+GameConfiguration = {}
 GameEvents = {OnGameTurnStarted={Add=function(callback) boundary=callback end}}
 Events = {}
 version, packet = 0, nil
@@ -79,6 +80,15 @@ class BakersGameplayTest(unittest.TestCase):
 
         lua.globals().include = include
         include('CSC_AI_BakersGameplay')
+        self.assertIsNone(lua.eval('packet'))
+        # The gameplay script can load before the separate UI context.
+        lua.execute('GameConfiguration = {IsAnyMultiplayer=function() return false end, '
+                    'IsHotseat=function() return true end}')
+        ui = SOURCE.parent / 'Adjacencies/CSC_AdjacencyUI.lua'
+        lua.execute(ui.read_text(encoding='utf-8'))
+        lua.execute('boundary()')
+        self.assertIsNone(lua.eval('packet'))
+        lua.execute('GameConfiguration.IsHotseat=function() return false end; boundary()')
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-24576')
         lua.execute('boundary()')
         self.assertEqual(lua.eval('version'), 1)
