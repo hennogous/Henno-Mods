@@ -51,9 +51,12 @@ control it built the other Pasture. The integrated publisher
 reproduced the result on the same save and then in a normal-start
 game. The fresh game had six confirmed Storekeeper turns in
 Alexandria and none elsewhere. Melbourne still needed only a
-Wind Mill. A measured bid made it offer the Mill instead of an
-Amphitheater, but the offer kept the lower native value. The
-next check is how that offer competes when production opens.
+Wind Mill. A test bid made it offer the Mill instead of an
+Amphitheater. When production opened, the AI refreshed the offer
+and built the Mill at its own valuation. Storekeeper operated
+for six measured turns. Next, test whether a reusable bid based
+on the ready chain can help the Mill get considered in ordinary
+games.
 Ancyra needed both its Mill and Granary.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 

@@ -105,13 +105,17 @@ Granary and Feudalism with only its Wind Mill missing. The Mill
 passed native eligibility and lost ordinary nomination to
 Amphitheater by 112,232 Q8. The matched nomination preference
 produced a valid Wind Mill offer at its lower native cache value.
-Follow that offer through the next production openings under
-**4.2** before adjusting its queue value.
+The follow-up refreshed that offer, entered production on 135
+and finished the Mill on 137 without another adjustment.
+Storekeeper operated on 138–143. Under **4.2**, qualify a
+reusable, bounded nomination preference for ready chains and
+verify whether it generalises across ordinary starts.
 Ancyra still needs its Mill and Granary, and some sites lack a
 viable supplier or customer.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 [Fresh calibrated game](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
 [Melbourne building trace](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-available-wind-mill-lost-the-ordinary-building-nomination).
+[Melbourne production and payout](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
 
 **Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
 The CE score-stage policy now reads live CSC material rules and protects

@@ -1697,6 +1697,36 @@ The turn-134 treatment save carries the Wind Mill offer. Continue
 that save to observe its native validation, refresh, and actual
 competition at the next queue opening before adding any premium.
 
+### Melbourne executed the Wind Mill offer at its native refreshed value
+
+`development-melbourne-wind-mill-queue-01` resumed the exact
+turn-134 treatment save through turn 144, with the same two staged
+packages and read-only observation. At the first observed queue
+opening, the refresh raised contract 2391 from 93,184 to 141,617
+Q8. The native queue accepted that same contract at 141,617 Q8.
+The city log records Wind Mill production on turn 135 and
+completion on 137. The endpoint census found the working Mill
+on Bakers plot 1423 alongside its working Rice Farm and Granary.
+Storekeeper was active on all six measured interior turns 138–143.
+Alexandria also remained active on turns 135–143.
+
+The continuation establishes native production follow-through
+after the diagnostic nomination. It provides no new queue bid
+and has no matched untreated continuation through 144. The
+Mill refresh and execution were observed, but the trace did not
+capture the exact unit and project operands at the final gate.
+For reusable tuning, qualify the ordinary nomination carrier
+and set a bounded preference from the incremental value of a
+ready chain before considering a second production adjustment.
+
+The source save SHA-256 is
+`f1e62184a1533dcf9d99a7e2e71a9ec724048035109cb4034971690e4b41f38c`.
+The trace SHA-256 is
+`86e23f4ea3ba8197fdcf79133e0ac729c014207ea63acc7ec44705abccc910cf`.
+The turn-144 endpoint SHA-256 is
+`3c08d207cf2f23f33f0de2626bbd9d1e0e7b98c633743edc793f8fe11829f01f`.
+Native exit and controller restoration were verified.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

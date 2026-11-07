@@ -171,6 +171,13 @@ the boosted nomination score. The Commercial Hub was still
 in production at the endpoint. [AI-C091]
 [Nomination and offer pricing](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-wind-mill-nomination-changed-without-carrying-its-premium-into-the-offer).
 
+At the next production opening the native queue raised the
+same offer's value and accepted it without another adjustment.
+Melbourne completed the Mill on turn 137 and operated Storekeeper
+on 138–143. The replay establishes follow-through from one
+diagnostic nomination. [AI-C092]
+[Production and payout trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary
