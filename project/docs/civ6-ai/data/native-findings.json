@@ -1702,5 +1702,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C067"]
+  },
+  {
+    "id": "AI-N094",
+    "title": "The ordinary building forecast already gives pillaged buildings a repair multiplier",
+    "statement": "The ordinary NetValue caller passes sentinel coordinates. An existing pillaged building triggers a doubling of the computed result, which is stored in the city building array. The tile-specific Wonder caller passes real coordinates and stores a separate plot score.",
+    "status": "accepted",
+    "evidence_types": ["static", "source"],
+    "scope": "Patched Windows XP2 with matching reference code. Ordinary call 3e3edd and Wonder call 3e419a both reach building NetValue 52a050. GetBestBuilding 3e4710 consumes the city-center row's building array.",
+    "limits": "This multiplier does not establish a positive score, a winning bid, a queue entry or displacement of ongoing production. A separate live observation is required for Boston's damaged Water Mill.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-N093", "AI-C067"]
   }
 ]

@@ -64,7 +64,7 @@ GameConfiguration = {}
 GameEvents = {OnGameTurnStarted={Add=function(callback) boundary=callback end}}
 Events = {}
 version, packet = 0, nil
-CE_AIDistrictScoresBegin = function(v) version=v; packet={}; builders={}; return 1 end
+CE_AIDistrictScoresBegin = function(v) version=v; packet={}; builders={}; wonderStages=0; return 1 end
 CE_AIDistrictScoresAllow = function(id) assert(id==3); return 1 end
 CE_AIDistrictScoresEntry = function(...) packet[#packet+1]={...}; return 1 end
 CE_AIDistrictScoresCommit = function() return 1 end
@@ -100,16 +100,25 @@ class BakersGameplayTest(unittest.TestCase):
         lua.execute("""
             CE_AIBuilderProtectionStatus=function() return '{"ready":1,"faults":0}' end
             CE_AIBuilderProtectionAllow=function(...) builders[#builders+1]={...}; return 1 end
+            CE_AISupplierWonderProtectionStatus=function() return '{"ready":1,"faults":0}' end
+            CE_AISupplierWonderProtectionStage=function()
+                assert(#builders>0); wonderStages=wonderStages+1; return 1
+            end
             turn=2; boundary()
         """)
         self.assertEqual(lua.eval('#builders'), 1)
         self.assertEqual(lua.eval('table.concat(builders[1], ",")'), '3,42,101,5')
+        self.assertEqual(lua.eval('wonderStages'), 1)
         lua.execute('turn=3; pillaged=true; boundary()')
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         self.assertEqual(lua.eval('#builders'), 2)
         self.assertEqual(lua.eval('table.concat(builders[2], ",")'), '3,42,101,6')
-        lua.execute('turn=4; improvement=-1; boundary()')
+        lua.execute("""
+            CE_AISupplierWonderProtectionStatus=function() return '{"ready":1,"faults":1}' end
+            turn=4; improvement=-1; boundary()
+        """)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
+        self.assertEqual(lua.eval('wonderStages'), 0)
         lua.execute('turn=5; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 

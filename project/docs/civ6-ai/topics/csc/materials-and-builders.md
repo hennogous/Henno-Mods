@@ -42,6 +42,12 @@ on the Cattle plot and a Spaceport in production give two separate recovery
 dependencies to trace. [AI-C067]
 [Stock recovery baseline](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
 
+The main CSC Wonder policy redirected the native claim to another site.
+Boston's Cattle remained physically developable, and both links remained
+down by turn 222. Selection and execution of a Pasture job remain
+separate checks. [AI-C068]
+[Matched Wonder protection](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

@@ -1223,5 +1223,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C063"],
     "related": ["AI-C066", "AI-N093"]
+  },
+  {
+    "id": "AI-C068",
+    "title": "CSC redirected the native Wonder reservation away from Boston's Cattle without restoring the chain",
+    "statement": "The main publisher protected critical supplier sites from new Wonder placement scores. The control reserved the Cattle tile for St. Basil's Cathedral. The treatment picked Országház and reserved a different tile. Boston still had no working Pasture or Mill at the end.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Same turn-210 damaged Boston save, same patched Steam DX11 CE build, and identical district and Builder policies. Only the treatment staged Wonder protection. Turn-211 reserve success at (56,10) in control and (53,9) in treatment. Cattle plot 796 remained developable in the treatment at turn 222.",
+    "limits": "Averted a newly selected Wonder claim in one replay. Safe alternative construction, cancellation of an existing claim and independent recovery of the Pasture or Mill remain unproven.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-N094", "AI-C067"],
+    "related": ["AI-C065", "AI-C066"]
   }
 ]

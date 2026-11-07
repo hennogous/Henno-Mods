@@ -30,7 +30,13 @@ function B.BuilderStatus()
         return CE_AIBuilderProtectionStatus()
     end
 end
-function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites)
+function B.WonderStatus()
+    if type(CE_AISupplierWonderProtectionStage)=='function'
+        and type(CE_AISupplierWonderProtectionStatus)=='function' then
+        return CE_AISupplierWonderProtectionStatus()
+    end
+end
+function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -75,6 +81,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             for _,kind in ipairs(site.improvements) do
                 assert(CE_AIBuilderProtectionAllow(site.player,site.city,site.plot,kind)==1,'Native supplier rejected')
             end
+        end
+        if protectWonders and allowanceCount>0 then
+            assert(CE_AISupplierWonderProtectionStage()==1,'Native Wonder protection rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

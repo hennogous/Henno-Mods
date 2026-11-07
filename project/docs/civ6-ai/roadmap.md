@@ -78,7 +78,11 @@ ordinary games. For **13.1**, Boston's stock recovery baseline reached turn
 234 without rebuilding the Pasture or repairing the Water Mill. A Wonder
 reservation competed for the damaged Cattle site while a Spaceport occupied
 city production. Check whether preserving site access enables the Pasture
-job, and measure the Mill repair at an actual production decision.
+job, and measure the Mill repair at an actual production decision. The
+matched Wonder policy redirected that claim to a different Wonder and tile.
+Boston still rebuilt neither link by turn 222. Trace the compatible
+Pasture job separately from the protected tile, and observe the Mill's
+ordinary score and queue outcome when the Spaceport completes.
 Before a mature-game run, separate native policy limits
 from trace retention, preserve per-publication evidence, and index native
 lookups by city and district-site pair. Measure the resulting cost in play.
@@ -86,6 +90,7 @@ lookups by city and district-site pair. Measure the resulting cost in play.
 [Builder candidate replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
 [Automatic CE Builder replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).
 [Natural recovery baseline](../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
+[Matched Wonder protection](../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

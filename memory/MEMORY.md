@@ -8,8 +8,12 @@ Only the treatment enabled Builder protection. It kept the Cattle Pasture
 and verified Storekeeper at 63 and 66. Already assigned work, direct
 harvest routes, fresh-seed qualification and Workshop delivery remain open.
 Stock recovery from Boston's archived turn-210 damage reached 234 with the
-Pasture and Mill still down. St. Basil's Cathedral reserved the Cattle site
-and Spaceport stayed in production. Test the two decisions separately.
+Pasture and Mill still down. The matched CE Wonder policy redirected the
+Cattle reservation to Országház at another site. Both links were still
+down at 222. Review branch `codex/ce-wonder-protection` at `60a5a68`
+uses the coordinate-bearing building NetValue caller. Its ordinary caller
+already doubles the computed repair score. Trace actual selection and
+production separately.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

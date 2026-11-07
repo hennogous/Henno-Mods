@@ -548,6 +548,54 @@ queue entry and realized payout. The earlier district-repair payout
 failure involved a damaged Quarter, whereas Boston's Quarter remained
 complete in this replay.
 
+### A repair score and a Wonder score have different callers
+
+Both callers reach building NetValue at RVA `52a050`. At `3e3edd` the
+caller passes two `-9999` coordinate sentinels for ordinary city building
+scores. In that branch, an existing pillaged building sets a repair flag
+that doubles the computed score before the result is written to the city
+building array. At `3e419a` the caller passes the tile's X and Y after
+the native Wonder eligibility checks and copies the result into the tile's
+building score array. The compiled Wonder protection intercepts only the
+second caller.
+
+`GetBestBuilding` at `3e4710` reads the city-center row's building values,
+checks the candidate's queue count and applies native preferences and
+requirements. A repair can win this comparison before the city is ready to
+act. The ordinary `QueueNextBuild` path at `3e8190` and the threat path
+at `3ea150` are separate. The latter has threat and attack gates in
+addition to a score comparison. A higher repair score does not establish
+that an economic build will be preempted.
+
+### Matched Wonder protection changed the reservation
+
+`ce-wonder-recovery-01` used the exact turn-210 damaged save in both arms.
+Both loaded the same CE build and CSC district and Builder policies. Only
+the treatment enabled the tile-specific Wonder protection on the protected
+supplier sites. The live score sample for Boston and Cattle plot 796 moved
+building index 67 from 4,638 Q8 to the native ineligible value of
+−2,559,744 Q8.
+
+On turn 211 the control selected St. Basil's Cathedral and successfully
+reserved coordinates (56, 10). The treatment instead selected Országház
+and successfully reserved (53, 9). The repeated success lines in each
+tree describe its reservation steps. They do not establish two distinct
+claims. The controller issued neither order.
+
+At turn 222 the treatment retained the developable Cattle, with no
+working Pasture and with the Water Mill still pillaged. The control also
+had neither link repaired. The matched outcome proves that the policy
+can change the Wonder plan and reserve a different site. It leaves
+material job choice, repair scheduling and the existing-reservation case
+open. The supported CE source is review commit `60a5a68` with proxy
+SHA-256 `598d39b07f49c3e6646bb8c1c3b05cdb9dc32c2b069246ea61fab116c15088f6`.
+Both arms closed normally and saved their endpoint. The matched result
+SHA-256 is `b6b633c48c043315d1ce7c06b564810d6c71cbe2e71fa1c5561ee1b5aebdd0d9`.
+Each arm reported 44,700 district-hook calls and zero district faults,
+with 62 district entries at the endpoint. The Lua timer resolved no
+nonzero durations in this window. These counts check activity and
+capacity for the fixture. Native overhead still needs measurement.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
