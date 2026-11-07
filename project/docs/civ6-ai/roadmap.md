@@ -116,9 +116,11 @@ starts and the Water Mill route. **5.1** is the next missing link
 to join to it.
 Ancyra's legal Granary lost ordinary nominations to Castle.
 Cuirassier took the observed production opening. Ancyra still
-needs both buildings. The next **5.1** check is Trebizond, where
-the Water Mill has completed and a Granary would start the
-exchange. Charleston has both
+needs both buildings. In Trebizond, where a Water Mill could
+immediately supply the Granary, Library won ordinary nomination.
+The matched **5.1** diagnostic produced a valid Granary offer.
+Follow it through production and measure the exchange before
+calibrating a reusable preference. Charleston has both
 buildings and Feudalism, with no Farm on the adjacent Maize
 at turn 139. That is another **3.2** supplier follow-through case.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

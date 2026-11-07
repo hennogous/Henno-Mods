@@ -1875,6 +1875,80 @@ The turn-150 endpoint SHA-256 is
 The observer froze without a fault and the shared controller
 verified native exit and restoration.
 
+### Trebizond's working Mill gave a closer Granary comparison
+
+`development-trebizond-granary-01` resumed the turn-150 Ancyra
+endpoint through 164. Trebizond (player 1, city 327684) already
+had the Water Mill at Bakers plot 914, Feudalism and a legal
+Granary at its adjacent City Center. Wheat 913 was still
+unimproved, so the Granary could start the ordinary exchange
+before the Storekeeper conditions were complete.
+
+The only observed ordinary Granary nomination reached
+the native comparison at 46,458 Q8. Library won at 119,277
+Q8 and became offer 3238 on turn 163. The earlier production
+openings accepted Star Fort 2837 and Theater Square 3015,
+with Theater Square still occupying production at the endpoint.
+There was no Granary offer or building in this arm. Alexandria
+and Melbourne each recorded all 13 measured interior Service
+turns, 151–163.
+
+The trace SHA-256 is
+`b3ee8ef811ad754b997d489aa2d8e441601ea403c1a7bb04a1d5d1be5bc3c9a0`.
+The control's endpoint SHA-256 is
+`8b72d11fdf220b059504c61c7dba82dc7a9f118a8a73ef77f92edf6f3f2293eb`.
+The trace froze without a fault and the shared controller
+verified native exit and restoration. A one-shot diagnostic
+adds 73,728 Q8 to the same legal ordinary comparison, just
+above the observed gap of 72,819 Q8. This tests nomination
+before considering the economic size of a general policy.
+
+For the first reusable preference, isolate the ordinary
+exchange with a working Mill. The real Granary gains one Food,
+and the Mill gains one Production and one Gold. Storekeeper
+growth and Engineer points depend on the separate working
+material and civic conditions. With no Mill, as in Ancyra,
+value depends on when and whether the complementary
+investment can complete.
+
+The native `BuildingValue` routine at `52b900` reads live
+yield changes for the candidate's index and separately evaluates
+the modifier vector indexed by that same building. The incoming
+Food modifier belongs to the Mill and requires an existing
+functioning Granary. Those two inputs do not by themselves
+forecast that incoming Food when the Granary is absent. The
+Granary-owned Production and Gold roots can enter the second
+input. Their delivered native credit at this site remains to be
+measured before adding a preference for any of those yields.
+
+### A matched Trebizond nomination produced a valid Granary offer
+
+`development-trebizond-granary-bid-01` loaded the same turn-150
+checkpoint, packages and endpoint. The one-shot diagnostic
+matched the ordinary caller, a legal Granary and the observed
+46,458 Q8 candidate. Its 73,728 Q8 addition gave 120,186 Q8
+at nomination. The city submitted Granary under the control's
+contract ID 3238 on turn 163. That offer validated at 46,336
+Q8, or 181 whole score units, from the unchanged native
+building cache. Star Fort and Theater Square had already
+taken the same slots as in the control.
+
+At 164 the UI still reported Granary available and absent, and
+the Water Mill still read zero Food, Production and Gold.
+The Theater Square was in progress. The replay establishes
+nomination and offer admission. It does not yet establish
+production, exchange or Service in Trebizond. Alexandria and
+Melbourne kept their Storekeeper effects throughout the same
+13 interior turns as in the control. Controller restoration
+and native exit were verified.
+
+The treatment trace SHA-256 is
+`ec19582e00f5606771d3e9c2f10e0fbb50c721cfdea57bf537782757480c787e`.
+The treatment endpoint SHA-256 is
+`2ae1ca1bb49d4814acddd1c98d200a87baaddbf40d5b32ee55d63ad42a3b7a43`.
+The continuation of that endpoint uses read-only observation
+to check refresh, native production competition and actual yields.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

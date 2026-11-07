@@ -61,7 +61,9 @@ this bid behaves in other cities and how to value a Granary.
 Ancyra could build one, but Castle won the building nominations
 and a Cuirassier took the open production slot. Trebizond
 already has a Mill, so a Granary there would begin the exchange
-even while its Wheat still needs a Farm.
+even while its Wheat still needs a Farm. A matched nomination
+test produced a valid Granary offer. We still need to see whether
+the city builds it and receives the exchange.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
 The offline planner separately covers actual gameplay definitions and a copied

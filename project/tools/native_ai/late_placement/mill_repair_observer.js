@@ -87,7 +87,12 @@ function init(spec, scope) {
     const bid = scope.millBidQ8 ?? 0;
     const nominationBid = scope.nominationBidQ8 ?? 0;
     if (granary && (scope.mill !== undefined || bid || nominationBid || scope.screenProjectEligibility))
-        throw Error('Granary observation is read-only');
+        throw Error('Unexpected Mill or project intervention in a Granary scope');
+    const granaryBid = scope.granaryNominationQ8 ?? 0;
+    if (granaryBid !== 0 && (!scope.cePath || scope.player !== 1 || scope.city !== 327684 ||
+        scope.granary !== 3 || granaryBid !== 288 * 256))
+        throw Error('Unsupported Trebizond Granary nomination preference');
+    let granaryBidApplied = false;
     if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
     const melbourne = scope.player === 4 && scope.city === 131073 && scope.mill === 139;
@@ -245,11 +250,20 @@ function init(spec, scope) {
                 // comparison and the independent production contract gate.
                 const nomination = boundary === 125 && sample.requirements === true &&
                     sample.flags[0] === 0 && sample.flags[1] === 0 && sample.caller === ORDINARY_BEST_BUILDING_RETURN;
-                const preference = nomination ? nominationBid : (scoped ? bid : 0);
+                // Apply once at the measured ordinary comparison, after the
+                // requirements pass. Keep the native offer and queue prices.
+                const trebizond = granaryBid && !granaryBidApplied && boundary === 150 &&
+                    sample.requirements === true && sample.flags[0] === 0 && sample.flags[1] === 0 &&
+                    sample.caller === ORDINARY_BEST_BUILDING_RETURN && effectiveQ8 === 46458;
+                const millPreference = nomination ? nominationBid : (scoped ? bid : 0);
+                const preference = trebizond ? granaryBid : millPreference;
                 const deltaQ8 = effectiveQ8 > 0 && effectiveQ8 <= 0x7fffffff - preference ? preference : 0;
                 add({kind: granary ? 'granary-compare' : 'mill-compare', caller: sample.caller, effectiveQ8, deltaQ8,
                     incumbentQ8: read(c.rsi, 0, 'i32')});
-                if (deltaQ8) c.r14 = ptr(effectiveQ8 + deltaQ8);
+                if (deltaQ8) {
+                    c.r14 = ptr(effectiveQ8 + deltaQ8);
+                    if (trebizond) granaryBidApplied = true;
+                }
             });
         });
         function queuePoint(rva, capture) {

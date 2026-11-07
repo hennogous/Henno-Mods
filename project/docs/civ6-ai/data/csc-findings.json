@@ -1565,5 +1565,31 @@
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C093"],
     "related": ["AI-N020", "AI-N025", "AI-N102"]
+  },
+  {
+    "id": "AI-C095",
+    "title": "Trebizond's Granary lost ordinary nomination to Library with a working Water Mill present",
+    "statement": "The legal Granary reached the ordinary nomination at 46458 Q8. Library won at 119277 Q8 and became offer 3238. Earlier production openings accepted Star Fort and Theater Square contracts.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Read-only turn-150 to turn-164 continuation of AI-C094. Trebizond had the working Water Mill and adjacent City Center with Granary available. Its Wheat remained unimproved at the start.",
+    "limits": "One city and one ordinary comparison. The margin measures competition with Library here. It does not price the whole exchange or establish that a Granary offer would win production.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C094"],
+    "related": ["AI-N020", "AI-N025"]
+  },
+  {
+    "id": "AI-C096",
+    "title": "A matched Trebizond nomination produced a valid Granary offer at its native cache value",
+    "statement": "A one-shot preference increased the ordinary Granary comparison from 46458 to 120186 Q8. Granary replaced Library in offer 3238, which validated at 46336 Q8.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Same turn-150 source and endpoint as AI-C095. A 73728 Q8 diagnostic applied after native eligibility. Star Fort and Theater Square took the same earlier production slots.",
+    "limits": "The Theater Square was still in progress at 164. No Granary completion, exchange or Service observed. The diagnostic crosses a measured gap and does not estimate a general preference.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C095"],
+    "related": ["AI-C091", "AI-N025"]
   }
 ]

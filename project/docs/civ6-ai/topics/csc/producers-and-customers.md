@@ -78,6 +78,20 @@ step short of completing the exchange. The comparison margins
 measure the competition in this city. [AI-C094]
 [Granary decision trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#ancyras-legal-granary-lost-nomination-and-a-military-contract-took-production).
 
+In Trebizond a working Water Mill could supply the Granary as
+soon as it existed. The legal Granary lost its ordinary
+nomination to Library, and neither earlier queue opening
+included a Granary offer. The Wheat Farm remained a separate
+Storekeeper requirement. [AI-C095]
+[Trebizond control trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#trebizonds-working-mill-gave-a-closer-granary-comparison).
+
+A matched test changed the nomination to Granary, and the game
+validated that offer at its own cache value. Theater Square still
+occupied production at the endpoint. This establishes admission.
+The next check is whether the Granary gets built and starts paying
+the exchange. [AI-C096]
+[Trebizond nomination replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-matched-trebizond-nomination-produced-a-valid-granary-offer).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

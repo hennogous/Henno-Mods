@@ -126,6 +126,16 @@ print(string.format('CSC_BUILDING_READINESS={{"index":%d,"turn":%d,"available":%
     return row['index']
 
 
+def capture_granary_exchange(controller, target, turn, path):
+    player, city, _ = target
+    scope = dict(player=player, city=city)
+    code = 'CSC_BAKERS_TARGET=' + lua(scope) + '\n' + read(HERE / 'operating_effects.lua')
+    raw = controller.cmd(code, 'PlotInfo', f'granary-exchange-{turn}')
+    state = parse(raw, 'CSC_BAKERS_EFFECTS')
+    require(state['turn'] in (turn, turn - 1), 'Granary exchange clock differs')
+    write_json(path, state)
+
+
 def watch_supplier_access(controller, player, plot):
     code = f"""
 local playerID, target = {player}, assert(Map.GetPlotByIndex({plot}))
@@ -229,7 +239,8 @@ def run(args):
             expected.update(fresh_game=False, ordinary_setup=False, diagnostic_start=previous['diagnostic_start'],
                             gameplay_interventions=previous['gameplay_interventions'])
             for key in ('diagnostic_extra_pasture_q8', 'diagnostic_source_sha256', 'diagnostic_movement_only',
-                        'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8', 'diagnostic_mill_ce_replay'):
+                        'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8',
+                        'diagnostic_mill_ce_replay', 'diagnostic_granary_nomination_q8'):
                 if key in previous:
                     expected[key] = previous[key]
         if args.calibration_replay or args.mill_ce_replay:
@@ -281,6 +292,12 @@ def run(args):
                     and args.wind_mill == [4, 131073, 1423] and args.through == 134,
                     'Wind Mill nomination uses the exact Melbourne checkpoint')
             protocol['diagnostic_mill_nomination_q8'] = 448 * 256
+            protocol['gameplay_interventions'] = True
+        if args.trebizond_granary_bid:
+            require(checkpoint_input['sha256'] == '1c6a36651a77d2361d06d651856eac8c57d6de921e2aede0fa4fca2d146f8843'
+                    and args.granary == [1, 327684, 914] and args.through == 164,
+                    'Granary nomination uses the exact Trebizond checkpoint')
+            protocol['diagnostic_granary_nomination_q8'] = 288 * 256
             protocol['gameplay_interventions'] = True
     other_source = None
     if args.matched_source:
@@ -478,6 +495,10 @@ Modding.EnableMod(chosen.Handle,true)
             elif args.granary:
                 scope['granary'] = capture_building_readiness(controller, pid, city, start,
                     out / 'source-granary.json', 'BUILDING_GRANARY')
+                capture_granary_exchange(controller, args.granary, start, out / 'source-exchange.json')
+                if args.trebizond_granary_bid:
+                    require(load(out / 'source-granary.json')['available'], 'Granary is no longer available')
+                    scope['granaryNominationQ8'] = protocol['diagnostic_granary_nomination_q8']
                 probe = HERE / 'mill_repair_observer.js'
                 write_json(out / 'granary-scope.json', scope)
             else:
@@ -501,8 +522,15 @@ Modding.EnableMod(chosen.Handle,true)
             trace = observer.exports_sync.freeze()
             write_json(out / trace_name, trace)
             require(trace['fault'] is None and trace['active'] == 0, 'Native decision trace faulted')
+            if args.trebizond_granary_bid:
+                edits = [row for row in trace['records'] if row.get('deltaQ8', 0)]
+                require(len(edits) == 1 and edits[0]['kind'] == 'granary-compare'
+                        and edits[0]['deltaQ8'] == protocol['diagnostic_granary_nomination_q8'],
+                        'The exact Granary comparison did not reproduce once')
         if args.supplier:
             capture_builders(controller, args.supplier[0], args.through, out / 'endpoint-builders.json')
+        if args.granary:
+            capture_granary_exchange(controller, args.granary, args.through, out / 'endpoint-exchange.json')
         final = parse(controller.cmd('print("CSC_FRESH_CE="..CE_AIDistrictScoresStatus())',
                                      'GameCore_Tuner', 'fresh-endpoint-status'), 'CSC_FRESH_CE')
         write_json(out / 'native-endpoint.json', final)
@@ -558,6 +586,7 @@ if __name__ == '__main__':
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
     parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
+    parser.add_argument('--trebizond-granary-bid', action='store_true', help='Add 288 score units once at the matched Granary nomination')
     parser.add_argument('--movement-only', action='store_true', help='Observe assigned Builder movement without native hooks')
     parser.add_argument('--calibration-replay', action='store_true', help='Verify the integrated bid on the exact Alexandria save')
     parser.add_argument('--mill-ce-replay', choices=('parity', 'tuned'),
@@ -573,13 +602,16 @@ if __name__ == '__main__':
             parser.error('The Alexandria bid requires --supplier')
         if options.melbourne_mill_bid and not options.wind_mill:
             parser.error('The Melbourne bid requires --wind-mill')
+        if options.trebizond_granary_bid and not options.granary:
+            parser.error('The Trebizond bid requires --granary')
         if options.movement_only and (not options.supplier or options.probe_dependencies or options.alexandria_bid):
             parser.error('Movement-only diagnosis requires --supplier and uses no native probe or bid')
         if options.calibration_replay and not options.movement_only:
             parser.error('Integrated calibration requires --movement-only')
         if options.mill_ce_replay and (not options.wind_mill or options.probe_dependencies or options.melbourne_mill_bid):
             parser.error('CE nomination qualification requires --wind-mill and uses no external probe or bid')
-    elif (options.supplier or options.wind_mill or options.granary or options.probe_dependencies or options.alexandria_bid or options.melbourne_mill_bid
+    elif (options.supplier or options.wind_mill or options.granary or options.probe_dependencies or options.alexandria_bid
+          or options.melbourne_mill_bid or options.trebizond_granary_bid
           or options.movement_only or options.calibration_replay or options.mill_ce_replay):
         parser.error('Decision diagnostics require --resume-from')
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):
