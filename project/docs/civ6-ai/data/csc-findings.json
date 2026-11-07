@@ -1488,5 +1488,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C087"]
+  },
+  {
+    "id": "AI-C089",
+    "title": "A fresh calibrated game produced Alexandria's first active Storekeeper",
+    "statement": "In a normal-start game the integrated supplier preference reached native scoring, the AI built the Bakers Pasture, and six active Storekeeper turns were measured.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Same Small Continents setup as AI-C084, extended to 125 with the calibrated packages. Alexandria improved Cattle 2312 on 118 and operated Storekeeper on 119–124. The census had nine completed and two unfinished Bakers Quarters across five original major AIs.",
+    "limits": "One seed, one working chain and six active turns. No lower-cap or untuned arm to 125. It does not qualify duration, multi-chain performance or other maps.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C084", "AI-C088"]
   }
 ]

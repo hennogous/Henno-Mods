@@ -1596,6 +1596,45 @@ telemetry passed the report audit. This qualifies the integrated
 delivery of one calibrated bid on the replay. It still needs
 normal-start, multi-chain and duration validation.
 
+### The fresh calibrated game activated one Storekeeper
+
+`development-chain-calibrated-125-01` started a normal Small
+Continents game using the calibrated CSC and CE packages. The
+terrain signature, leaders, original AI roster and starting units
+matched the earlier turn-100 development game. Its earlier
+production logs matched through their common window. The
+controller issued only normal setup, autoplay and observation.
+
+The main publisher applied 14,336 Q8 on Alexandria Troas's exact
+Cattle Pasture in 36 logged reporting intervals, from 81 through
+119 with gaps. The AI completed that Pasture on 118. The native
+attachment and Growth recipient confirmed six active Storekeeper
+turns, 119–124, all for the same Quarter. All 123 required interior
+samples were present. No other original-major chain operated.
+The turn-125 save shows the Quarter, Mill, Granary and unpillaged
+Pasture in place. The controller restored preferences and retired
+both temporary packages.
+
+The census had nine completed Bakers Quarters and two unfinished.
+Melbourne still lacked only a Wind Mill. Ancyra still lacked its
+Mill and Granary despite working Rice. Some other sites lacked
+mapped Base or an adjacent customer. The calibrated Builder
+preference addresses Alexandria's missing link. The run still
+has no matched lower-cap arm through 125, and its six active
+turns do not establish long-run retention.
+
+The 125 publications logged 3,442 changed district score calls,
+including placement and protection, with up to 173 entries and
+none omitted. No optional district sample batch was reported
+truncated. The recorded Lua times were coarse, so this is work
+volume evidence rather than a mature-empire overhead estimate.
+
+Endpoint SHA-256 is
+`bb5280928bc4c47b62f5aa58304bba873d08856aef692b548bbf1b83836d77de`.
+Census and result SHA-256 are
+`b09d7b77edd1861fce21fe18c7a9a0894f89b51f202add0a83521f1592e9e855` and
+`a6722719b4571a5c820568a2603425b4e4881c782b9dbd99f3fcf6331acf7941`.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

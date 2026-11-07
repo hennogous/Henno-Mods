@@ -84,7 +84,7 @@ Quarter on turn 44. Continue through completion and look for improved site
 or investment choices. Future customer sites and affordable land acquisition
 are still open. [Matched development run](../research/mods/csc-ai-bakers-natural-research-20261106.md#owned-site-placement-publishing).
 
-**Normal-start follow-through — 3.1–3.3, then 4.2 and 5.1.** The
+**Active normal-start problem — 4.2, following the 3.1–3.3 supplier result.** The
 turn-100 development run had four complete and two unfinished AI
 Bakers Quarters, and zero observed Storekeepers. All five original
 AI majors unlocked Feudalism. In Alexandria Troas only the
@@ -98,12 +98,15 @@ through reassignment. Both arms built a Pasture at 118. Only the
 treatment improved the Bakers supplier and activated Storekeeper
 on 119–121. The integrated CSC publisher and widened CE cap
 reproduced those three Service turns without an external score
-writer. Test this in fresh games and check how many viable
-chains now complete.
-Ancyra and Melbourne had working material and missing buildings.
-Two other sites had no adjacent Base. Keep those placement and
-building gaps distinct from the Builder decision.
+writer. A fresh calibrated game reached turn 125 with six active
+Alexandria Storekeeper turns, nine completed Quarters and no
+other active major-AI chain. Melbourne still has working Rice,
+Granary and Feudalism with only its Wind Mill missing. Trace
+eligibility, building rank and production under **4.2** next.
+Ancyra still needs its Mill and Granary, and some sites lack a
+viable supplier or customer.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
+[Fresh calibrated game](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
 
 **Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
 The CE score-stage policy now reads live CSC material rules and protects

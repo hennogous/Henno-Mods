@@ -153,6 +153,12 @@ The integrated publisher and widened CE cap then reproduced the
 same work and three Storekeeper turns without a diagnostic hook.
 [AI-C088] [Integrated calibration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-integrated-supplier-bid-reproduced-storekeeper-without-a-diagnostic-hook).
 
+The same packages then ran from normal setup. Alexandria's
+Storekeeper operated for six measured turns after the native
+Pasture completed. Other cities still had production or
+placement gaps. [AI-C089]
+[Fresh calibrated game](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

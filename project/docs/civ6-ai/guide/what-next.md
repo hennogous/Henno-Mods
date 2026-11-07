@@ -48,9 +48,10 @@ A small extra bid redirected the job and the city assigned a
 Builder. Keeping the bid active through reassignment led the AI to
 finish the Bakers Pasture and activate Storekeeper. In the matched
 control it built the other Pasture. The integrated publisher
-reproduced the result on the same save. The next check is how
-often it helps in ordinary games.
-Ancyra and Melbourne had working suppliers and lacked buildings.
+reproduced the result on the same save and then in a normal-start
+game. The fresh game had six confirmed Storekeeper turns in
+Alexandria and none elsewhere. Melbourne still needed only a
+Wind Mill, and Ancyra needed both buildings.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
 The offline planner separately covers actual gameplay definitions and a copied
