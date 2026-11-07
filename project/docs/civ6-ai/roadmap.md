@@ -101,10 +101,13 @@ comparison logged the intended Farm score suppression, but both arms
 still lost the deposit. Protection from turn 69 reached the native
 selector before the boost reservation. The Cattle survived through
 turn 81, while Camp beat the legal Pasture at two ordinary admissions.
-The next matched test holds protection constant and varies only a
-bounded Pasture bid. Follow the job through Builder assignment,
-completion and the actual Storekeeper payout. Revalidation of an
-already committed harvest remains open.
+With protection in both arms, the matched 8,192 Q8 Pasture bid changed
+the ordinary selection, led to legal construction, and restored
+Storekeeper and the Mill's supplier output at turns 75 and 78.
+The control had no Pasture at turn 87. Integrate the verified
+score boundary into the reusable CE and CSC policy and validate
+other supplier states, including pillaged improvements and worker
+shortages. Revalidation of an already committed harvest remains open.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
@@ -119,6 +122,7 @@ and measure its cost in a mature live game before enabling it in CSC.
 [Supplier decision and harvest](../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).
 [Matched supplier protection failure](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-turn-72-protection-arms-both-lost-the-cattle).
 [Earlier matched protection and Camp competition](../research/mods/csc-ai-bakers-natural-research-20261106.md#earlier-protection-redirected-the-boost-and-preserved-the-deposit).
+[Matched Pasture recovery](../research/mods/csc-ai-bakers-natural-research-20261106.md#a-bounded-pasture-bid-restored-storekeeper-in-the-matched-replay).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

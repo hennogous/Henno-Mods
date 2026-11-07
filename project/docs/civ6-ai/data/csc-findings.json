@@ -1288,5 +1288,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C070", "AI-C071", "AI-N096"],
     "related": ["AI-C066"]
+  },
+  {
+    "id": "AI-C073",
+    "title": "A bounded eligible Pasture bid restored Boston's missing supplier and Storekeeper",
+    "statement": "With Builder protection held constant, a positive Pasture adjustment changed the admitted ordinary job from Camp to Pasture. The AI assigned a Builder, rebuilt the original Pasture and restored the Storekeeper growth property and supplier output.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Same patched XP2, CE and turn-69 checkpoint in both arms. A fixture-only 8192 Q8 addition lifted the eligible Pasture from 29056 to 37248, compared with the control Camp's 35432. The AI reserved the Cattle on 72 and logged Pasture work on 74. The Pasture and operating Storekeeper were verified at 75 and 78. Control was still missing both at 87.",
+    "limits": "One controlled missing-improvement fixture. The diagnostic adjustment still needs reusable CE and CSC integration. The study does not qualify fresh seeds, general Builder supply, or repair of a pillaged improvement.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C072", "AI-N092", "AI-N096"],
+    "related": ["AI-C069", "AI-C071"]
   }
 ]

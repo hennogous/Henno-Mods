@@ -75,6 +75,13 @@ went to a Camp elsewhere. A Pasture remained legal and Storekeeper
 stayed inactive. [AI-C072]
 [Earlier matched protection](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#earlier-protection-redirected-the-boost-and-preserved-the-deposit).
 
+Holding protection constant, a bounded Pasture bid won the next
+ordinary job in treatment. The AI assigned a Builder and restored
+the original Pasture. Storekeeper and the Mill's supplier output
+returned at both subsequent samples. The control kept its Cattle
+with the Pasture missing. [AI-C073]
+[Matched Pasture recovery](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-bounded-pasture-bid-restored-storekeeper-in-the-matched-replay).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. That readiness decision is
 a separate place to test protection for work that already holds the

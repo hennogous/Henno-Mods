@@ -39,10 +39,14 @@ The turn-72 CE comparison changed Farm scores to the ineligible floor
 but both arms still lost Cattle to the same harvest. Starting at turn 69
 reached the boost's selector and diverted the job. The treatment kept the
 Cattle through turn 81 with no Pasture or Storekeeper. Camp won the
-first two empty ordinary slots by 6,376 and 7,422 Q8. Test a bounded
-8,192 Q8 Pasture bid with protection in both arms. Verify the actual
-build and payout. The decision observer now scopes reservation callbacks
-to the two relevant callers, with live timing still to measure.
+first two empty ordinary slots by 6,376 and 7,422 Q8. The matched
+8,192 Q8 Pasture test kept protection in both arms. Treatment raised
+29,056 to 37,248, admitted the Pasture, and verified its legal completion
+and Storekeeper output at 75 and 78. Control still lacked both at 87.
+The next reusable implementation can share the existing CE Builder
+NetValue hook and add a scoped positive bid. Keep the test at actual
+Service output. A separate one-shot Clear Plot test uses the exact
+turn-72 harvest fixture and checks retries and reservation release.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

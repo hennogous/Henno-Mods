@@ -31,6 +31,7 @@ def write_supplier_timeline(root, states, target, trace, checkpoints, *, scope=N
 
     tree_file = root / 'AI_Behavior_Trees.csv'
     targets = {}
+    builder_contracts = set()
     if tree_file.is_file():
         trees = read(tree_file)
         rows = [(turn, row, raw) for turn, _, row, raw in records(trees, start, end, {player}) if len(row) >= 7]
@@ -38,14 +39,30 @@ def write_supplier_timeline(root, states, target, trace, checkpoints, *, scope=N
                     if (row[5], row[6]) in (('Reserve Plot', f'Reserving plot {tile}'),
                                             ('Move Unit', f'Moving unit to {tile}'))}
         nodes = {'Decode Trigger', 'Reserve Plot', 'Find Available Unit', 'Build Unit', 'Move Unit',
-                 'Clear Plot', 'Build Improvement'}
+                 'Clear Plot', 'Build Improvement', 'Cancel Contract'}
         for turn, row, raw in rows:
             city_job = row[2:4] == ['City LOC_CITY_NAME_BOSTON', 'Build City Improvement']
             if row[5] in nodes and (city_job or (turn, row[2], row[3]) in touching):
                 events.append(dict(source='tree', time='logged-turn', turn=turn, row=row[2:], raw=raw))
+            if city_job and row[5] in ('Contract Manager Decorator', 'Cancel Contract'):
+                contract = re.search(r'\bcontract (\d+)\b', row[6], re.I)
+                if contract:
+                    builder_contracts.add(int(contract[1]))
         if scope.get('width'):
             for row in clear_targets(trees, start, end, {player}, scope['width']):
                 targets.setdefault((row['turn'], row['unit']), set()).add(row['plot'])
+
+    contract_file = root / 'AI_CityBuild.csv'
+    if contract_file.is_file() and builder_contracts:
+        for turn, _, row, raw in records(read(contract_file), start, end, {player}):
+            if 'UNIT_BUILDER' not in row or 'Build City Improvement' not in row:
+                continue
+            # The contract ID joins the tree and production records. A city
+            # accepting a request does not identify the eventual worker.
+            contract = re.search(r'\bCONTRACT (\d+)\b', raw)
+            if contract and int(contract[1]) in builder_contracts:
+                events.append(dict(source='city-build', time='logged-turn', turn=turn,
+                                   contract=int(contract[1]), row=row[2:], raw=raw))
 
     unit_file = root / 'UnitOperations.log'
     if unit_file.is_file():

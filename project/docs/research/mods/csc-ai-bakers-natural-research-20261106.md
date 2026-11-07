@@ -878,6 +878,48 @@ Control and treatment joined timeline SHA-256 values are
 `63137657fb7f8a2c7817a89c9f24451c99b6ec7ea2341d05f0f700e0b6ff207c`
 and `3965701a71bb263efa69b06caa2dfd6de2883c1eee36410c03ef8e3d9e1abba0`.
 
+### A bounded Pasture bid restored Storekeeper in the matched replay
+
+The `ce-pasture-bid-01` arms reused the turn-69 checkpoint and matched
+its starting census. Both had the same CE binary and active district
+and Builder protection. The only changed policy was a fixture-only
+8,192 Q8 addition on the positive native Boston Cattle Pasture score
+as it entered the improvement row at `3e3436`. The bid left other
+players, sites, improvement types and ineligible results untouched.
+
+At the first free ordinary slot, control admitted the Camp at (54,8)
+with 35,432 Q8. The treatment read the stock Pasture at 29,056 Q8,
+stored 37,248, and admitted its ordinary job for (56,10). Tree
+11337745 reserved the Pasture on turn 72. Boston found a Builder on
+turn 74, moved it to (56,10), and logged successful Pasture work.
+The same turn's player-3 operation log has one Build Improvement
+request, from Builder 2228225. The turn-75 census independently
+verified the original Cattle and unpillaged Pasture.
+
+On turns 75 and 78 the Water Mill paid Food, Production and Gold of
+1 each, the Granary paid Food 2 against a base of 1, and the native
+Storekeeper growth property was 1. Control still had the Cattle
+with no improvement at turn 87. Its Granary and Mill retained the
+existing exchange, with Mill Food and the Storekeeper property at
+zero. Both arms closed and restored successfully. Direct growth
+modifier recipient tracking is a separate qualification check.
+
+Both first jobs used Builder request 914. Control's St. Louis began
+training a Builder, but Boston found one before that production
+finished and cancelled the request. The logs do not assign that
+Builder to a particular training city. The subsequent control Camp
+request 1015 timed out after eight turns without an available worker.
+Changing the site bid recovered the chain in this case without a
+new worker-supply rule. Other worker-starved states still need
+separate tests.
+
+Control and treatment joined timeline SHA-256 values are
+`7d4215b76ad5a3ca907dc1e8ba3636b8e0a06091e6c8b5c34a26ece430cff4eb`
+and `03900978ab45fa24a1be33f75d4afd90b208384a28b8d5769e6a448860b84214`.
+The test applies to one controlled interruption in one world.
+The next implementation should publish a reusable, bounded bid for
+eligible suppliers through CE and verify it with the main CSC policy.
+
 ### Clear Plot validates its selected worker before submitting the operation
 
 Ghidra on the matching Windows XP2 reference traces

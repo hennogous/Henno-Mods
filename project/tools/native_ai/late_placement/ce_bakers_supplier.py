@@ -81,6 +81,13 @@ def add_policy(package, turn, builders=True, wonders=False, defer=False):
     tree.write(path, encoding='utf-8', xml_declaration=True)
 
 
+def observer_sources(args):
+    if not args.decision_observer_deps:
+        return ()
+    script = 'supplier_clear_gate.js' if args.guard_committed_harvest else 'pasture_recovery_observer.js'
+    return STUDY / 'observer.js', HERE / script
+
+
 def run_arm(args, out, archived, source, digest, probe, installed, treatment, target, start, endpoint,
             expected_source=None):
     require(not native_inventory() and not installed.exists(), 'Expected exclusive ownership and no temporary package')
@@ -89,7 +96,7 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
     shutil.copytree(archived, prepared)
     add_fixture_carrier(prepared, args.ce_dll)
     advanced = args.builder or args.wonder
-    builder_policy = treatment or args.wonder or args.pasture_bid
+    builder_policy = treatment or args.wonder or args.pasture_bid or args.guard_committed_harvest
     if treatment or advanced:
         add_policy(prepared, start, builders=builder_policy, wonders=args.wonder and treatment,
                    defer=bool(args.pasture_autosave))
@@ -191,12 +198,13 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
                     'Exact existing Frida package required')
             modules = load(out / 'loaded-modules.json')
             scope = dict(load(args.replay / 'pasture-recovery-scope.json'), cePath=modules[DLL]['path'],
-                         measurePastureBid=args.pasture_bid, applyPastureBid=args.pasture_bid and treatment)
+                         measurePastureBid=args.pasture_bid, applyPastureBid=args.pasture_bid and treatment,
+                         block=args.guard_committed_harvest and treatment)
             require(scope['plot'] in target['base'] and scope['player'] == target['player']
                     and scope['city'] == target['city'], 'Observer scope differs from the matched fixture')
             spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
             code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(
-                read(path) for path in (STUDY / 'observer.js', HERE / 'pasture_recovery_observer.js'))
+                map(read, observer_sources(args)))
             attachment = frida.attach(session.owner.pid)
             observer = attachment.create_script(code)
             observer.on('message', lambda value, data: observer_messages.append(value))
@@ -282,6 +290,9 @@ def run(args):
                      and Path(row['archive']).resolve() == archive)
         start, endpoint = saved['turn'], args.through
         digest = saved['sha256']
+        if args.guard_committed_harvest:
+            require(start == 72 and digest == '59d39aa77fbf9ecabc7a6694f778d659e95813e55446c1ba62fe46b29d97a285',
+                    'Expected the turn-72 harvest decision fixture')
         states = replay / 'states.json'
         expected_source = next(row for row in load(states) if row['city']['turn'] == start)
         require(archive.parent == replay / 'decision-saves' and sha(archive) == digest
@@ -314,7 +325,7 @@ def run(args):
     out.mkdir()
     extra = (HERE / 'operating_effects.lua', HERE / 'natural_chain.py') if advanced else ()
     references = (prior_arm / 'result.json', prior_arm / 'session-closed.json') if prior_arm else ()
-    observer_inputs = (STUDY / 'observer.js', HERE / 'pasture_recovery_observer.js') if args.decision_observer_deps else ()
+    observer_inputs = observer_sources(args)
     if args.pasture_autosave:
         tools = ROOT / 'project/tools/ai_baseline'
         autosave_inputs += (HERE / 'supplier_timeline.py', tools / 'full_game_controller/checkpoint.py',
@@ -343,7 +354,11 @@ def run(args):
     if args.pasture_autosave:
         require(all(sha(Path(path)) == value for path, value in pins.items()), 'Pinned source changed during recovery')
         write_matched_timelines(out, load(replay / 'pasture-recovery-scope.json'))
-        experiment = 'pasture-bid' if args.pasture_bid else 'builder-protection'
+        experiment = 'builder-protection'
+        if args.pasture_bid:
+            experiment = 'pasture-bid'
+        if args.guard_committed_harvest:
+            experiment = 'committed-harvest'
         write_json(out / 'result.json', dict(source=digest, turn=start, plot=plot, experiment=experiment,
                    control=lost, treatment=kept,
                    control_operation=control['final']['operation'], treatment_operation=treated['final']['operation']))
@@ -391,8 +406,11 @@ if __name__ == '__main__':
     parser.add_argument('--resume-wonder-treatment', type=Path, help='Continue the closed Wonder treatment from turn 222')
     parser.add_argument('--pasture-autosave', type=Path, help='Pair Builder protection from a preserved supplier decision save')
     parser.add_argument('--decision-observer-deps', type=Path, help='Pinned Frida directory for native selector traces')
-    parser.add_argument('--pasture-bid', action='store_true',
-                        help='Keep Builder protection in both arms and add a bounded Boston Pasture bid in treatment')
+    interventions = parser.add_mutually_exclusive_group()
+    interventions.add_argument('--pasture-bid', action='store_true',
+                               help='Keep Builder protection in both arms and add a bounded Boston Pasture bid in treatment')
+    interventions.add_argument('--guard-committed-harvest', action='store_true',
+                               help='Keep Builder protection in both arms and reject the verified Clear Plot harvest in treatment')
     parser.add_argument('--through', type=int)
     args = parser.parse_args()
     if (args.builder or args.wonder) and (not args.match or not args.ce_sha256):
@@ -402,6 +420,6 @@ if __name__ == '__main__':
         parser.error('Use --through with --wonder --resume-wonder-treatment or --builder --pasture-autosave')
     if args.decision_observer_deps and not args.pasture_autosave:
         parser.error('The decision observer requires a matched supplier autosave')
-    if args.pasture_bid and not args.decision_observer_deps:
-        parser.error('The Pasture bid requires the matched supplier observer')
+    if (args.pasture_bid or args.guard_committed_harvest) and not args.decision_observer_deps:
+        parser.error('The experimental intervention requires the matched supplier observer')
     run(args)

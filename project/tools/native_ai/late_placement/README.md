@@ -144,6 +144,19 @@ It archives both arms' fresh decision saves and writes joined
 `--decision-observer-deps` with the pinned Frida directory to record
 native location-selector callers and the exact cached score they see.
 
+With `--pasture-bid`, both arms keep Builder protection and only
+treatment adds 8,192 Q8 to Boston's eligible Cattle Pasture forecast.
+With `--guard-committed-harvest`, both arms also keep Builder
+protection. The exact turn-72 save enables only the Clear Plot
+observer, which rejects the first qualifying ready call from the
+known harvest Builder in treatment and records subsequent retries
+without changing them. Compare the tree logs and final supplier state
+to see whether the old job released. These modes are mutually exclusive.
+
+The joined timeline also connects Boston's recorded Builder contract
+IDs to their submission, city selection and cancellation logs. A
+production request alone does not identify the Builder that did the work.
+
 For a deeper Storekeeper audit, `storekeeper_runtime.lua` can be read
 through the shared controller in the `PlotInfo` UI context at an
 inactive boundary. It lists the native growth and attachment instances,
