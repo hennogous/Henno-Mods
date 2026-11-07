@@ -178,6 +178,13 @@ on 138–143. The replay establishes follow-through from one
 diagnostic nomination. [AI-C092]
 [Production and payout trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
 
+Charleston later received the same bounded supplier preference
+for a Maize Farm. The Farm worked at the endpoint and Charleston
+operated Storekeeper on 176–177, while Alexandria and Melbourne
+remained active. This is a second supplier resource and a third
+working chain in the development game. [AI-C098]
+[Charleston follow-through](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#charleston-activated-a-third-storekeeper-after-a-farm-bid).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

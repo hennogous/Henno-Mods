@@ -118,11 +118,12 @@ Ancyra's legal Granary lost ordinary nominations to Castle.
 Cuirassier took the observed production opening. Ancyra still
 needs both buildings. In Trebizond, where a Water Mill could
 immediately supply the Granary, Library won ordinary nomination.
-The matched **5.1** diagnostic produced a valid Granary offer.
-Follow it through production and measure the exchange before
-calibrating a reusable preference. Charleston has both
-buildings and Feudalism, with no Farm on the adjacent Maize
-at turn 139. That is another **3.2** supplier follow-through case.
+The matched **5.1** diagnostic produced a valid Granary offer,
+which Trebizond bought at its ordinary value. The exchange worked
+before the later Mill damage. Measure which yields the native
+forecast includes to calibrate the reusable preference.
+Charleston supplied another **3.2** follow-through case. It received
+an exact Maize Farm bid and operated Storekeeper on 176–177.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 [Fresh calibrated game](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
 [Melbourne building trace](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-available-wind-mill-lost-the-ordinary-building-nomination).

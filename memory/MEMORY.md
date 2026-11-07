@@ -1,5 +1,24 @@
 # Current Bakers AI work — 7 November 2026
 
+Active problem **5.1, customer construction**. CSC `dac8591` and
+CE fork `abf5d58` reproduce Melbourne's Mill nomination, native
+production and Storekeeper from the exact turn-125 save. The same
+CE DLL with zero nominations retained Amphitheater. The 448-unit
+Mill preference is an initial fixture calibration. AI-C093 carries
+the evidence and scope.
+
+In Trebizond, a one-shot Granary comparison changed the nomination
+from Library. Native offer 3238 validated at 46,336 Q8, then the AI
+bought it on turn 164. A turn-167 yield receipt verified +1 Granary
+Food and +1 Mill Production and Gold. The later turn-178 census
+found the Mill pillaged. Charleston received the ready-chain Maize
+Farm bid on plot 2100 and became the third active Storekeeper
+chain on 176–177. These are development replays. The short
+turn-167 save timed out after the yield receipt and exited cleanly.
+See handbook AI-C094–AI-C099 and AI-N102–AI-N103. Next measure
+Granary-owned exchange credit in its native forecast before
+choosing a reusable bid.
+
 The turn-100 normal-start development game established four Bakers
 Quarters and no active Storekeeper. Alexandria Troas had only the
 Pasture missing. It lost the open Pasture comparison by 5,888 Q8.

@@ -1591,5 +1591,42 @@
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C095"],
     "related": ["AI-C091", "AI-N025"]
+  },
+  {
+    "id": "AI-C097",
+    "title": "Trebizond's nominated Granary was purchased through the admitted contract",
+    "statement": "Trebizond purchased Granary contract 3238 on turn 164 without a further score adjustment. Its two observed production openings went to Library and Encampment.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static"],
+    "scope": "Read-only continuation from AI-C096 to 178. Granary was working at plot 988 on the endpoint, but the adjacent Water Mill was pillaged and the Granary showed base Food.",
+    "limits": "One post-nomination case. The late endpoint cannot establish pre-damage exchange. The exact Gold cost and threshold operands were not captured.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C096"],
+    "related": ["AI-N103"]
+  },
+  {
+    "id": "AI-C098",
+    "title": "Charleston's Maize Farm completed the third active Bakers chain in the development game",
+    "statement": "CE logged the ready-chain Farm bid on Maize 2100, raising it from 58005 to 72341 Q8. The endpoint had a working Maize Farm and Charleston operated Storekeeper on both measured turns 176 and 177.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Same turn-164 to turn-178 development continuation as AI-C097. Charleston already had the working Water Mill, Granary and Feudalism. Alexandria and Melbourne operated for all 13 measured interior turns.",
+    "limits": "Development continuation, two measured turns in the new chain and no matched no-bid arm for Charleston. The observations do not establish the bid's causal margin or long-run qualification.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C088", "AI-C089"]
+  },
+  {
+    "id": "AI-C099",
+    "title": "The purchased Trebizond Granary paid the ordinary exchange with its working Water Mill",
+    "statement": "After the native purchase, the Granary produced two Food against base one and the Water Mill produced one Production and one Gold against source zero.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Read-only repeat of the turn-164 source from AI-C097 to the turn-167 exchange snapshot, before the later Mill damage.",
+    "limits": "One working ordinary exchange snapshot. It does not establish Trebizond Storekeeper or a reusable bid amount.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C097"]
   }
 ]

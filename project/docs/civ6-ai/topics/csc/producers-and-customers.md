@@ -87,10 +87,16 @@ Storekeeper requirement. [AI-C095]
 
 A matched test changed the nomination to Granary, and the game
 validated that offer at its own cache value. Theater Square still
-occupied production at the endpoint. This establishes admission.
-The next check is whether the Granary gets built and starts paying
-the exchange. [AI-C096]
+occupied production at the endpoint. [AI-C096]
 [Trebizond nomination replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-matched-trebizond-nomination-produced-a-valid-granary-offer).
+
+Trebizond bought that exact Granary offer through its ordinary
+Gold budget. It used its open production slots for Library and
+Encampment. The Water Mill was pillaged by the late endpoint.
+A shorter replay captured the exchange before the damage.
+The Granary gained one Food, and the Mill gained one Production
+and one Gold. [AI-C097] [AI-C099]
+[Purchase trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#trebizond-bought-the-granary-through-the-admitted-contract).
 
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 

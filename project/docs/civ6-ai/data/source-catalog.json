@@ -696,8 +696,8 @@
       "title": "Timing a Bakers bid against natural civic research",
       "kind": "report",
       "date": "20261106",
-      "bytes": 110385,
-      "sha256": "ea001897404a9b382401e9cf9eea45c0541f89dd5a0d35e3e29db3126ec9cbc9",
+      "bytes": 113472,
+      "sha256": "82aab434d46f9dbe4d1e9057212bdf6f59988c170b01ad5d3534fce17a821dbb",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"
     },

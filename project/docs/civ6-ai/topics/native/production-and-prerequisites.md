@@ -98,6 +98,12 @@ The traced threat-interruption path uses AI_CURRENT_TASK_BIAS, but final cancell
 
 QueueNextBuild validates/updates contracts and compares the selected contract with unit/project alternatives; the inspected contract gate has no best-building comparison. Its fallback compares buildings, units and projects. Districts arrive through contracts. [AI-N025]
 
+An admitted building offer can also finish through the economic
+purchase route. The native purchase check uses the current
+building present value, normalized Gold cost and spending limits.
+The city can buy the building and still use production for other
+work. [AI-N103]
+
 The fallback attempts the winning category. In the observed project branch,
 a false return from `BuildProject` led directly to generic unit selection.
 Neither the highest-ranked building nor the ordinary unit was retried.

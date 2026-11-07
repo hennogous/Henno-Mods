@@ -1949,6 +1949,67 @@ The treatment endpoint SHA-256 is
 The continuation of that endpoint uses read-only observation
 to check refresh, native production competition and actual yields.
 
+### Trebizond bought the Granary through the admitted contract
+
+`development-trebizond-granary-queue-01` ran the treatment endpoint
+from 164 through 178 with no further adjustment. The city log reports
+`PURCHASE` for Granary contract 3238 on turn 164. The two observed
+production openings instead took Library 3299 on turn 170 and
+Encampment 3484 on 173. At 178 the Granary was working at plot 988,
+but the Water Mill was pillaged. The UI showed the Granary's base
+one Food and no Mill exchange yields. That late snapshot cannot
+establish whether the exchange operated before the damage.
+
+The patched XP2 `UnitRequestContract::Execute` at `3f8850` has
+a separate purchase path. Its building branch calls
+`Economic::TryPurchaseBuilding` at `458d00`. That function
+checks construction eligibility, compares the city's current
+building present value with a normalized Gold cost threshold,
+then checks spending limits and runs the ordinary purchase
+command. The successful branch marks the contract and logs the
+purchase. The static path explains why a nominal building
+contract can complete without a production-queue selection.
+The actual Gold cost and threshold operands were not captured.
+
+The continuation trace SHA-256 is
+`586a4c80adf35901fe6017dff282017be8c74123ce53e02eb92652000e393c7b`.
+The endpoint SHA-256 is
+`59bdb4ff4cea1d24994fee2f2bb7e84368b05cbbe55e89a7a05d5af1cca61041`.
+The controller verified normal exit and restoration.
+
+### The purchased Granary delivered the ordinary exchange before the Mill was damaged
+
+`development-trebizond-granary-exchange-01` repeated the same
+turn-164 save with no adjustment and stopped on 167. The UI
+reported two Food at the Granary against its database base of one.
+The Water Mill delivered one Production and one Gold, both up from
+zero at the source. This confirms the reciprocal exchange after
+the native Granary purchase. No Storekeeper effect was measured
+in Trebizond. The ordinary exchange and the material-gated Service
+are separate outcomes.
+
+The endpoint yield receipt SHA-256 is
+`94e1bf0bd7c3f210ed137d17da83c38585ec799c82a9a7fc437ecdccaa203d73a`.
+The later checkpoint file timed out. The yield receipt and native
+purchase log were already captured, and the controller verified
+normal exit and restoration. This arm supplies no reusable
+turn-167 save or full endpoint census.
+
+### Charleston activated a third Storekeeper after a farm bid
+
+In the same 164–178 continuation, Charleston already had
+Feudalism, a working Water Mill on Bakers plot 2025 and the
+adjacent Granary. Its Maize at 2100 was unimproved at the
+start. The turn-176 publication reported the preceding CE
+Farm bid on 2100, priced from 58,005 to 72,341 Q8. The
+endpoint census showed the working Maize Farm, and the
+Storekeeper watcher verified operation on 176–177.
+Alexandria and Melbourne each operated on every measured
+turn 165–177. The new chain is evidence of follow-through
+from the existing supplier policy on another resource and
+city. There is no matched no-bid arm for Charleston, so the
+bid's causal effect is still unmeasured in this case.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

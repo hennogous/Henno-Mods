@@ -62,8 +62,12 @@ Ancyra could build one, but Castle won the building nominations
 and a Cuirassier took the open production slot. Trebizond
 already has a Mill, so a Granary there would begin the exchange
 even while its Wheat still needs a Farm. A matched nomination
-test produced a valid Granary offer. We still need to see whether
-the city builds it and receives the exchange.
+test produced a valid Granary offer, and Trebizond bought it with
+Gold. Before later Mill damage, the Granary gained one Food and
+the Mill gained one Production and one Gold. The next check is
+which of those effects Civ already values for an unbuilt Granary.
+Charleston activated a third Storekeeper chain after a Maize
+Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
 The offline planner separately covers actual gameplay definitions and a copied

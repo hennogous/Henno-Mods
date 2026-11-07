@@ -1799,5 +1799,17 @@
     "limits": "Specific native requirement and effect paths. Source modifier attachments and other requirements may handle replacements differently. No live Granary replacement or exchange was tested here.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/modifier-forecasts.md"
+  },
+  {
+    "id": "AI-N103",
+    "title": "A building contract can finish through the separate economic purchase path",
+    "statement": "UnitRequestContract's economic Execute calls TryPurchaseBuilding. That path compares native PresentValueOf against normalized Gold cost, applies eligibility and spending gates, and can complete the same request through the ordinary purchase command.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime"],
+    "scope": "Patched XP2 Windows. Economic Execute 3f8850 calls TryPurchaseBuilding 458d00, which reads building PresentValueOf 3e7e50 and submits Purchase::MakeRequest 6809a0. Trebizond's Granary purchase carried its admitted contract ID.",
+    "limits": "Scoped building-contract route. Exact Gold cost and live threshold operands were not measured, and other purchasing routes were not evaluated.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "related": ["AI-N025", "AI-C096"]
   }
 ]
