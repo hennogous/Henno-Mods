@@ -87,6 +87,11 @@ The traced threat-interruption path uses AI_CURRENT_TASK_BIAS, but final cancell
 
 QueueNextBuild validates/updates contracts and compares the selected contract with unit/project alternatives; the inspected contract gate has no best-building comparison. Its fallback compares buildings, units and projects. Districts arrive through contracts. [AI-N025]
 
+The fallback attempts the winning category. In the observed project branch,
+a false return from `BuildProject` led directly to generic unit selection.
+Neither the highest-ranked building nor the ordinary unit was retried.
+[AI-N098] [Queue comparison and return trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-rejected-project-sent-the-queue-straight-to-generic-offense).
+
 Matching DoTurn/activation paths call that ordinary selector when the city queue
 is empty. A new best district value does not automatically replace current
 production each turn. The activation pass also updates a working contract, while

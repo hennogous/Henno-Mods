@@ -84,14 +84,21 @@ def sampled_chains(text):
     return samples
 
 
-def audit(text, players):
+def audit(text, players, *, expected_turns=None):
     samples = sampled_chains(text)
     if not samples:
         raise ValueError('No Storekeeper snapshots')
+    expected = set(range(min(samples), max(samples) + 1)) if expected_turns is None else set(expected_turns)
+    missing = expected - samples.keys()
+    if expected_turns is not None:
+        unexpected = samples.keys() - expected
+        if missing or unexpected:
+            raise ValueError(f'Storekeeper clock coverage differs: missing {sorted(missing)}, '
+                             f'unexpected {sorted(unexpected)}')
     active = Counter(chain for chains in samples.values() for chain in chains if chain[0] in players)
     return {
         'sampled_turns': sorted(samples),
-        'unsampled_turns': sorted(set(range(min(samples), max(samples) + 1)) - samples.keys()),
+        'unsampled_turns': sorted(missing),
         'active_turns': [
             dict(player=player, city=city, quarter=district, turns=turns)
             for (player, city, district), turns in sorted(active.items())
@@ -104,5 +111,14 @@ if __name__ == '__main__':
     parser.add_argument('log', type=Path)
     parser.add_argument('--players', type=int, nargs='+', required=True,
                         help='Original AI player IDs from the verified game setup')
+    parser.add_argument('--expected-turns', type=int, nargs=2, metavar=('FIRST', 'LAST'),
+                        help='Require every clock in this inclusive interval, including the endpoints')
     args = parser.parse_args()
-    print(json.dumps(audit(args.log.read_text(encoding='utf-8-sig'), set(args.players)), indent=2))
+    expected = None
+    if args.expected_turns:
+        first, last = args.expected_turns
+        if last < first:
+            parser.error('Expected FIRST <= LAST')
+        expected = range(first, last + 1)
+    print(json.dumps(audit(args.log.read_text(encoding='utf-8-sig'), set(args.players),
+                           expected_turns=expected), indent=2))

@@ -100,6 +100,13 @@ queue eventually trained Modern Armor through its generic offense
 fallback. [AI-C078]
 [The Mill's nomination and queue competition](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#military-academy-beat-the-eligible-mill-in-building-selection).
 
+The turn-261 repeat separated two barriers. Academy beat the Mill
+by 60,619 Q8 at the building comparison. A 1,428,800 Q8 project
+beat Academy, then failed execution. Boston went straight to generic
+offense. A larger Mill bid would also have to beat the failed project
+if the existing queue order stays in place. [AI-C079]
+[Exact queue operands](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-rejected-project-sent-the-queue-straight-to-generic-offense).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

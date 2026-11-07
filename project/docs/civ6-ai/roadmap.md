@@ -116,15 +116,24 @@ The archived naturally damaged branch kept Cattle through turn 264
 with no Mill or Pasture recovery. Production went to existing
 Spaceport, building and district commitments, then Orbital Lasers.
 The Mill passed native requirements in the turn-258 replay, and
-Military Academy won the building ranking. The city eventually
-trained Modern Armor through generic offense. Measure the actual
-building and queue operands before trying a repair preference.
+Military Academy won the building ranking. A repeat at turn 261
+measured the effective Mill and Academy operands. The queue ranked
+a project above both, rejected it, then trained Modern Armor through
+generic offense without reconsidering its building. Test a bounded
+Mill ranking preference and preserve the ordering of executable
+alternatives after a failed category winner.
 This remains a repair-coordination dependency under **13.1–13.2**
 and **14.1**.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
 and measure its cost in a mature live game before enabling it in CSC.
+
+The separate CSC and CE development packages loaded from normal setup
+with the main CSC publisher active on all eight observed turns. The
+native Storekeeper logger covered every interior turn of one continuous
+autoplay window. Use a strict expected turn range for qualification.
+[Package and clock smoke evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#separate-local-csc-and-ce-packages).
 [Current CE startup evidence](../research/mods/csc-ai-xp2-november-hotfix-20261106.md#corrected-shared-ce-loads-and-accepts-district-scores).
 [Builder candidate replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
 [Automatic CE Builder replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).

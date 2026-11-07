@@ -1366,5 +1366,17 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C076", "AI-N094"],
     "related": ["AI-C069"]
+  },
+  {
+    "id": "AI-C079",
+    "title": "A rejected project intercepted Boston's building fallback",
+    "statement": "In Boston's turn-261 replay the Mill lost the effective building comparison to Military Academy. The city ranked a project above the Academy, failed to start it, and queued Modern Armor through generic offense without retrying the building.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Exact turn-261 autosave through 264 with read-only observation on patched XP2 DX11. Effective Mill 685413 Q8, Academy 746032, ordinary unit 77654 and project 1428800. Project start returned false before the generic choice. The city log confirms Modern Armor on turn 262.",
+    "limits": "One comparison on one branch. The failed project's score does not calibrate repair benefit, and its rejection gate was not isolated.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C078", "AI-N098"]
   }
 ]

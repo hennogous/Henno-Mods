@@ -1123,6 +1123,43 @@ Its SHA-256 is
 `50e5a2f2d089187785e96cb4cb781dd93e3cb18c7db04e8fbe63266e30f01422`.
 The native session and temporary package both closed and restored.
 
+### The rejected project sent the queue straight to generic offense
+
+`ce-late-mill-queue-01` cold-loaded the exact turn-261 autosave
+`e393c2047e28ec9c167934799f9f1d55cef564d5e45e0d4f2cc062c84d9580b8`.
+The read-only observer now sampled the effective candidate at
+`GetBestBuilding` comparison `3e49da`. The earlier nomination used
+407,461 Q8 for the Mill and 504,788 for Academy. At the ordinary
+queue's building comparison, the Mill had 685,413 Q8 and Academy
+746,032. The second trace independently measured the effective
+60,619 Q8 gap at that comparison. The earlier gap was 97,327 Q8.
+
+At the category comparison `3e8741`, Academy at 746,032 Q8 beat
+ordinary unit index 2 at 77,654 and lost to project index 25 at
+1,428,800. `BuildProject` returned false at `3e88e5`. The queue
+called `GetBestUnitToBuild`, returned unit index 92 at `3e899f`,
+and the city log recorded Modern Armor under Generic Offense on
+turn 262. No building retry followed. The native `BuildProject`
+routine at `3df4b0` can reject at `BuildQueue::CanAdvance` or at
+operation-manager validation. This trace did not distinguish them.
+`GetBestProject` at `3e5960` compares cached project values and skips
+the current project. The inspected selector does not call either
+of those validation gates before ranking the remaining projects.
+
+The failed project outranked the Mill by 743,387 Q8 in this pass.
+That difference describes the old comparison, including the
+unexecutable winner. It does not price the economic benefit of
+repair. Check whether native project eligibility can be established
+before category ranking or whether a rejected operation can fall
+through to the best remaining legal action. Measure a bounded Mill
+bid separately at building ranking and keep valid strategic projects
+in competition.
+
+The frozen trace SHA-256 is
+`ac90a198d36881fdc9c1e7a9588a55824e4b0b9a8ab8aa7e27a9c21290e4c122`.
+It had no fault and no active observer at shutdown. The controller
+closed the game and restored the temporary package and preferences.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
@@ -1167,8 +1204,24 @@ canonical action declarations. Its manifest declares the local CE package
 as a dependency. CE contains the reviewed harvest-gate build with DLL
 SHA-256 `74fe01492a456c2d13e5095cc2c640254a2279d894f8647afc73525a799bde8d`.
 Both received distinct local IDs. Packaging verified the CSC reference
-was unchanged and all 18 parity-tool tests passed. The staged pair still
-needs a normal new-game loading test and qualification runs.
+was unchanged and all 18 parity-tool tests passed.
+
+`Desktop/Codex/csc-bakers-qualification-20261107/development-smoke-01`
+loaded that pair from ordinary Ancient start on a separate Continents
+development seed, map 18461107 and game 29461107, on Online speed.
+At turn 1 it verified the exact separate CE DLL and the unmodified
+DX11 XP2 DLL. Main CSC recorded its five original AIs and published
+on each of turns 1–8. CE reported 22,084 scoring calls and zero faults
+at turn 8. The early policy had no qualifying protection entries.
+One uninterrupted autoplay interval from turn 1 to 8 produced exactly
+the six expected interior Storekeeper samples, turns 2–7, and zero
+active chains. This verifies early clock coverage and package loading.
+It leaves mature measurement, effect uptime and fresh-seed outcomes
+open. The controller closed and verified preference restoration.
+
+The development smoke's `result.json` and `Lua.log` SHA-256 values are
+`4ea0c76235f64d358bb0702be8b3eacc6dee314e963824b60f40e4ddc6f84427` and
+`18f25f6876812488221f4f05bfc14a84606bfd45f06f0ab2424aaa965454ecae`.
 
 ## Evidence locator
 

@@ -67,6 +67,16 @@ contract 6344 refreshed to 746,032 Q8. The Mill's 685,413 Q8
 at the fallback was a cached value. Boston ultimately used
 Generic Offense for Modern Armor. Trace the effective Mill
 operand and fallback queue alternatives next.
+The exact 261–264 repeat measured the Mill's effective fallback
+operand at 685,413 Q8 and Academy at 746,032. Project index 25
+won at 1,428,800, then failed to start. The city skipped the
+other categories and queued Modern Armor. See `AI-C079` and
+`AI-N098`. The diagnostic bid arm uses a bounded 98,304 Q8
+effective uplift and traces both native project rejection gates.
+`development-smoke-01` loaded separate local CSC and CE from
+ordinary setup, published for five original AIs each turn 1–8,
+and logged all six expected interior Storekeeper turns. No active
+Service existed in this early window. Use the strict clock audit.
 The CE harvest gate review branch `codex/ce-builder-harvest-gate`
 at `4f6f235` built with SHA `74fe0149…` and passed 70 score/policy
 and four hook-group checks. The main CSC publisher match reused
