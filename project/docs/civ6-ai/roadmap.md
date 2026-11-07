@@ -94,6 +94,11 @@ Storekeeper were verified together after repair. Keep building and Quarter
 recovery in fresh-seed qualification. For the missing Pasture, trace
 reservation, admission and assignment. Verify the legal Builder operation
 and actual Storekeeper output when both links work again.
+The controlled Pasture loss at turn 66 left the tile legal and valued.
+An occupied job held the ordinary slot. When the slot reopened, an
+Irrigation boost claimed and harvested the Cattle. Compare the existing
+Builder policy from the saved turn-72 decision before calibrating a
+positive Pasture preference.
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
@@ -105,6 +110,7 @@ and measure its cost in a mature live game before enabling it in CSC.
 [Matched Wonder protection](../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
 [Mill repair and city contract ordering](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
 [Mill-only recovery and payouts](../research/mods/csc-ai-bakers-natural-research-20261106.md#mill-only-damage-restored-the-full-service).
+[Supplier decision and harvest](../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.

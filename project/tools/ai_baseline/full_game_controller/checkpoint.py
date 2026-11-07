@@ -3,6 +3,40 @@ from pathlib import Path
 import hashlib,json,re,shutil,time
 from .transport import MissingAcknowledgment
 
+
+def archive_autosave_window(native_directory, archive_directory, first, last, after_ns):
+    """Preserve existing autosaves after a finite play window without a new game command.
+
+    The receipt proves file provenance. A cold load still has to verify the
+    game clock and scenario before either arm can use the save.
+    """
+    archive_directory.mkdir(parents=True, exist_ok=True)
+    receipts = []
+    for turn in range(first, last + 1):
+        source = Path(native_directory) / 'auto' / f'AutoSave_{turn:04d}.Civ6Save'
+        row = dict(turn=turn, source=str(source))
+        try:
+            original = source.stat()
+            if original.st_mtime_ns < after_ns:
+                receipts.append(dict(row, status='predates-window'))
+                continue
+            data = source.read_bytes()
+            current = source.stat()
+        except FileNotFoundError:
+            receipts.append(dict(row, status='unavailable'))
+            continue
+        if (len(data), current.st_mtime_ns, current.st_size) != (
+                original.st_size, original.st_mtime_ns, original.st_size) or not data.startswith(b'CIV6'):
+            receipts.append(dict(row, status='unsettled'))
+            continue
+        archive = archive_directory / f'source-{turn:03d}.Civ6Save'
+        with archive.open('xb') as stream:
+            stream.write(data)
+        receipts.append(dict(row, status='archived', archive=str(archive), size=len(data),
+                             sha256=hashlib.sha256(data).hexdigest(), modified_ns=original.st_mtime_ns))
+    return receipts
+
+
 def checkpoint_name(name,archive):
     """Stable name per archived boundary; another run's save is never reused."""
     assert re.fullmatch(r'[A-Za-z0-9_-]{1,96}',name),'Safe unique save name required'

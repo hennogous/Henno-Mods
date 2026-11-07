@@ -746,6 +746,71 @@ The frozen trace SHA-256 is
 `ea11ddd2dd44343a2ace0134ad74df8d972eddbd04f054d2ee7a53813b1dd30d`.
 The controller stopped at 75 after the repeat payout sample.
 
+### Isolating the missing Pasture
+
+The late stock chain still lacked its Pasture after Mill repair. On turn
+253, a new Wonder planning tree successfully reserved the Cattle at
+(56, 10). The contemporary ordinary improvement tree was pursuing a Mine
+elsewhere. The reservation shows that stock late play had another
+competing use for the supplier tile.
+
+The earlier turn-66 checkpoint provides a separate test. The controller
+removed only the Pasture, and the Cattle, Mill and Granary remained in
+place. The first replay stopped before autoplay when its setup assertion
+treated the now-buildable Cattle as an unexpected change. The next replay
+accepted that transition and advanced through turn 75. It captured an
+occupied improvement tree slot and positive Pasture scores before a
+coordinate decoder fault stopped the trace. Both attempts closed and
+restored the isolated package. The partial trace does not establish a
+Pasture assignment or a recovery outcome.
+
+The exact hotfix code shows two separate steps. `AnalyzeTerrain` at
+`3dec40` writes a preferred improvement type after scoring rows and
+resolving reservations. `CheckForImprovement` at `3e1150` requires a
+free improvement tree slot, then calls `GetBestLocationFor` at `3e5750`
+for that type. A nonempty reservation ID excludes a row only when the
+manager lookup at `4019f0` returns a live object. The installed-image
+REA row-evaluator trace is
+`ev_d15420221964cf2ea5ea9c0c91658a8ca6ecebef53e1902cd6c6eb783594f88b`.
+
+The corrected `pasture-only-recovery-03` trace reached turn 75 with zero
+score writes. Boston had positive Pasture values of 28,194–38,463 Q8
+through the first six checks. The stored Cattle reservation 4521998
+resolved false, while the ordinary improvement slot 10027025 stayed
+occupied. Once the slot opened, the Irrigation boost had a live Cattle
+claim. Ordinary planning picked a Camp on (54, 8), scored at 35,432 Q8,
+and started a different improvement tree.
+
+The boost tree reserved (56, 10) on turn 72 and found a Builder on turn
+73. On that turn its move and clearance records linked unit 2228225 to
+the Cattle. The unit log recorded the same Builder's resource harvest.
+The turn-75 census confirmed the Cattle was gone. Boston's Mill and
+Granary still exchanged yields, and Storekeeper Growth remained zero.
+The controller closed normally and restored the package and preferences.
+
+The archive contains all nine fresh autosaves from turns 67–75. The
+turn-72 decision save SHA-256 is
+`59d39aa77fbf9ecabc7a6694f778d659e95813e55446c1ba62fe46b29d97a285`.
+Result SHA-256 is
+`6e39eaa70f96adf1b3dd3d310cf9bbf702e71cbbfb893e155777b2f7f2d49cc7`.
+Frozen trace SHA-256 is
+`ae3ad99f87ece3ca828bbd9d2318f4aa25e41252e5f267ef725ec998930b6533`.
+The joined `supplier-timeline-linked.json` retains the raw sources and
+clocks, with the map width supplied by the archived gameplay readback.
+Its SHA-256 is
+`8ed0b46555abd85f162f84605d008954b4d80eed7e62d91d44dd5e54d053243f`.
+The next comparison uses that decision save in both arms and changes
+only the Builder protection capability. Retaining the Cattle and
+assigning a Pasture are separate outcomes.
+
+Two starts of the matched CE comparison ended before autoplay. The
+first could not move its prepared package into the Windows Mods
+directory. The second used a hash-verified copy, loaded the exact
+scenario and restored cleanly. Its fixture script ran before the
+autosave clock reached turn 72, so the policy stayed disabled. The
+shared controller now activates that fixture script once after verifying
+the loaded turn and census.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

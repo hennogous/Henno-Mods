@@ -1715,5 +1715,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-N093", "AI-C067"]
+  },
+  {
+    "id": "AI-N096",
+    "title": "An old improvement reservation ID can fail to resolve and leave the tile available",
+    "statement": "AnalyzeTerrain and the improvement location selector skip a row only when its nonempty reservation resolves to a live object. An occupied ordinary improvement tree slot is a separate gate on submitting new work.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Patched XP2 Windows. AnalyzeTerrain at 3dec40 and GetBestLocationFor at 3e5750 call manager Find at 4019f0. In Boston's controlled Pasture-loss replay, old ID 4521998 resolved false during the first six checks, while tree slot 10027025 remained occupied. The later Irrigation claim resolved true.",
+    "limits": "A free row is still subject to its score, legal improvement and worker availability. The probe does not establish when an old live job expires or whether a mod can cancel it safely.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-N092", "AI-C070"]
   }
 ]

@@ -24,6 +24,17 @@ test repaired through stock fallback after University, with working
 Storekeeper at t72 and t75. Keep building recovery in wider validation.
 Next trace admission and assignment for the missing Pasture, then verify
 actual Service output after legal AI rebuilding.
+
+Henno asked to make decision checkpoints and joined evidence the normal
+way of running focused AI replays. Preserve fresh saves near a decision,
+qualify the cold-load census, and link native trace, job, worker operation
+and actual payout while retaining their original clocks and raw records.
+The Pasture observer and controller autosave archive are the first
+implementation. Improve this workflow proactively as missing links surface.
+The corrected turn-66 supplier-only run reached 75. An occupied ordinary
+job preceded the live Irrigation boost claim. Builder 2228225 harvested
+Cattle 796 on turn 73. The exact turn-72 autosave was captured before the
+claim and supplies the matched CE Builder-protection comparison.
 Use the [roadmap](../project/docs/civ6-ai/roadmap.md) and
 [dated evidence](../project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md)
 for exact scope and next checks.

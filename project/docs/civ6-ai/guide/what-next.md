@@ -48,11 +48,16 @@ Encampment contract. The Mill repair ran after Encampment and restored its
 building yields. In a separate test with only the Mill pillaged, the AI
 repaired it and restored Storekeeper with its original Pasture. The late
 Boston chain still needs that Pasture rebuilt before Storekeeper can return.
+In the controlled Pasture-loss replay, an Irrigation boost harvested the
+Cattle before Boston could rebuild. The matched test starts from the
+captured decision save to check whether Builder protection keeps the
+deposit and whether the AI then restores supply.
 [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay) ·
 [Qualification roadmap](../roadmap.md#current-milestone-and-active-problem).
 [Recovery evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
 [Matched Wonder test](../../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
 [Mill repair choice](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
+[Pasture decision and harvest](../../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).
 
 ## Tools for this milestone
 

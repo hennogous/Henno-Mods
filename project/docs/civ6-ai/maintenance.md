@@ -112,3 +112,18 @@ usable independently of publishing.
 - Outcome claims include costs, clocks, cohorts and comparison limitations.
 - Build, maintained-page links, diagrams, search and phone layout are checked.
 - Source catalogue and the chat-review coverage accurately describe their scope.
+## Decision replay evidence
+
+Preserve a checkpoint near the decision whenever the controller reaches a
+stable boundary. Archive fresh native autosaves during focused runs so
+matching the game state does not require replaying the full lead-in. Record
+the checksum and compare the observed state on cold reload before making a
+paired claim.
+
+Join the native trace, game decisions, execution log and outcome census in
+one timeline. Keep the source and clock of each record. A native trace
+interval, a turn-stamped job log and a UI effect sample can have different
+clocks. Preserve the raw records and keep ambiguous unit-to-plot joins
+unresolved. The first focused workflow produced a trace, a checksummed
+decision save and a joined timeline.
+[Pasture replay evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).

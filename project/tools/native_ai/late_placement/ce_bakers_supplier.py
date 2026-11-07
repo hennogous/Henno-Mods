@@ -30,7 +30,7 @@ LOGS = ('Lua.log', 'AI_CityBuild.csv', 'City_BuildQueue.csv')
 BOOTSTRAP = 'CSC_AI_BakersReplay'
 
 
-def add_policy(package, turn, builders=True, wonders=False):
+def add_policy(package, turn, builders=True, wonders=False, defer=False):
     """Register the actual publisher and seed only saved role metadata for this old fixture."""
     (path,) = package.glob('*.modinfo')
     ui = package / UI_READS.relative_to(AI_ROOT.parent.parent)
@@ -55,7 +55,7 @@ def add_policy(package, turn, builders=True, wonders=False):
         if relative not in known:
             ET.SubElement(files, 'File').text = relative
     relative = f'Lua_UI/AI/{BOOTSTRAP}.lua'
-    (package / relative).write_text(
+    bootstrap = (
         f"assert(Game.GetCurrentGameTurn()=={turn})\n"
         "for _, player in ipairs(PlayerManager.GetAliveMajors()) do\n"
         "    local id=player:GetID()\n"
@@ -65,26 +65,39 @@ def add_policy(package, turn, builders=True, wonders=False):
         "end\n" +
         ("" if builders else "CE_AIBuilderProtectionAllow=nil\n") +
         ("" if wonders else "CE_AISupplierWonderProtectionStage=nil\n") +
-        "include('CSC_AI_BakersGameplay')\n",
-        encoding='utf-8',
+        "include('CSC_AI_BakersGameplay')\n"
     )
+    if defer:
+        # An autosave may create gameplay contexts before its saved clock and
+        # roles settle. The controller calls this after verifying both.
+        bootstrap = ("function CSC_BakersReplay_Initialize()\n" + bootstrap
+                     + "CSC_BakersReplay_Initialize=nil\nend\n")
+    (package / relative).write_text(bootstrap, encoding='utf-8')
     ET.SubElement(gameplay, 'File').text = relative
     ET.SubElement(files, 'File').text = relative
     tree.write(path, encoding='utf-8', xml_declaration=True)
 
 
-def run_arm(args, out, archived, source, digest, probe, installed, treatment, target):
+def run_arm(args, out, archived, source, digest, probe, installed, treatment, target, start, endpoint,
+            expected_source=None):
     require(not native_inventory() and not installed.exists(), 'Expected exclusive ownership and no temporary package')
     out.mkdir()
     prepared = out / 'prepared-package'
     shutil.copytree(archived, prepared)
     add_fixture_carrier(prepared, args.ce_dll)
     advanced = args.builder or args.wonder
-    start, endpoint = (210, 222) if args.wonder else ((45, 66) if args.builder else (31, 37))
     if treatment or advanced:
-        add_policy(prepared, start, builders=treatment or args.wonder, wonders=args.wonder and treatment)
+        add_policy(prepared, start, builders=treatment or args.wonder, wonders=args.wonder and treatment,
+                   defer=bool(args.pasture_autosave))
     package = manifest(prepared)
-    prepared.rename(installed)
+    try:
+        prepared.rename(installed)
+    except PermissionError:
+        # Some Windows folders disallow a cross-directory move. Keep the
+        # prepared evidence and verify a copy before starting the game.
+        require(not installed.exists() and not native_inventory(), 'Temporary package destination changed')
+        shutil.copytree(prepared, installed)
+        require(manifest(installed) == package, 'Copied temporary package differs')
     write_json(out / 'temporary-package.json', {str(installed): package})
     controller = make_probe_controller(out, user_root=args.user_root)
     controller.study_endpoint = endpoint
@@ -135,6 +148,10 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
         session.load_once(source, sha256=digest, native_directory=source.parent, turn=start,
                           contexts=contexts, eligibility=ready)
         result['source'] = sample(start)
+        require(expected_source is None or result['source'] == expected_source,
+                'Continuation differs from the exact protected checkpoint')
+        if args.pasture_autosave:
+            session.issue_once('activate-supplier-policy', 'CSC_BakersReplay_Initialize()', BOOTSTRAP)
         initial = status('native-before-autoplay')
         district_policy = treatment or advanced
         require(initial['ready'] == 1 and initial['faults'] == 0 and initial['enabled'] == int(district_policy)
@@ -160,6 +177,9 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
                 controller.play(turn)
                 observations.append(sample(turn))
                 write_json(out / 'observations.json', observations)
+                if ((args.resume_wonder_treatment or args.pasture_autosave) and len(observations) >= 2
+                        and all(row['operation']['operating'] for row in observations[-2:])):
+                    break
             result.update(final=observations[-1], builder_native=protection_status('Builder', 'builder-after-autoplay'))
             require(not result['builder_native']['faults'], 'Native Builder policy faulted')
         else:
@@ -170,8 +190,9 @@ def run_arm(args, out, archived, source, digest, probe, installed, treatment, ta
         if args.wonder:
             result['wonder_native'] = protection_status('SupplierWonder', 'wonder-after-autoplay')
             require(not result['wonder_native']['faults'], 'Native Wonder policy faulted')
-            result['checkpoint'] = save_inactive_boundary(controller, turn=endpoint,
-                name='CSC_BAKERS_WONDER', native_directory=source.parent, archive=out / 'endpoint.Civ6Save')
+            if not args.resume_wonder_treatment:
+                result['checkpoint'] = save_inactive_boundary(controller, turn=endpoint,
+                    name='CSC_BAKERS_WONDER', native_directory=source.parent, archive=out / 'endpoint.Civ6Save')
         write_json(out / 'result.json', result)
     finally:
         if session.owner is not None and session.owner.poll() is None:
@@ -195,13 +216,49 @@ def run(args):
             'Expected the exact qualified CE build and fresh output')
     require(load(replay / 'restoration.json')['verified'], 'Previous replay must be closed and restored')
     result = load(replay / 'result.json')
-    earlier = result if args.wonder else result['treatment']
-    checkpoint = earlier['checkpoint'] if advanced else load(replay / 'treatment/pre-supplier-checkpoint.json')
-    source = Path(checkpoint['native_save']).resolve()
-    digest = checkpoint['sha256']
-    start = 210 if args.wonder else (45 if args.builder else 31)
-    require(checkpoint['verified'] and checkpoint['turn'] == start and sha(source) == digest
-            and sha(Path(checkpoint['archive'])) == digest, 'Expected the exact Boston fixture')
+    continuation = args.resume_wonder_treatment
+    prior_arm = None
+    if continuation:
+        prior_arm = continuation.resolve() / 'treatment'
+        require(load(continuation / 'restoration.json')['verified'] and load(prior_arm / 'restoration.json')['verified']
+                and load(prior_arm / 'session-closed.json')['verified'], 'Expected a closed Wonder treatment')
+    earlier = load(prior_arm / 'result.json') if prior_arm else (
+        result if args.wonder or args.pasture_autosave else result['treatment'])
+    start, endpoint = (210, 222) if args.wonder else ((45, 66) if args.builder else (31, 37))
+    expected_source = earlier['final'] if prior_arm else None
+    autosave_inputs = ()
+    if args.pasture_autosave:
+        require(earlier['setup'] == 'remove-pasture' and earlier['native_writes'] == 0
+                and load(replay / 'session-closed.json')['verified'], 'Expected a closed stock supplier diagnostic')
+        archive = args.pasture_autosave.resolve()
+        receipt = archive.parent / 'archive.json'
+        saved = next(row for row in load(receipt) if row['status'] == 'archived'
+                     and Path(row['archive']).resolve() == archive)
+        start, endpoint = saved['turn'], args.through
+        digest = saved['sha256']
+        states = replay / 'states.json'
+        expected_source = next(row for row in load(states) if row['city']['turn'] == start)
+        require(archive.parent == replay / 'decision-saves' and sha(archive) == digest
+                and expected_source['operation']['mill'] and expected_source['operation']['customer']
+                and not expected_source['operation']['workingBase'], 'Expected the archived missing-supplier state')
+        native = args.mods.resolve().parent / 'Saves' / 'Single'
+        source = native / f'CSC_BAKERS_PASTURE_{start}_{digest[:12]}.Civ6Save'
+        if not source.exists():
+            with archive.open('rb') as saved_file, source.open('xb') as native_file:
+                shutil.copyfileobj(saved_file, native_file)
+        require(sha(source) == digest, 'Named supplier save differs from its archive')
+        autosave_inputs = (archive, receipt, states, replay / 'result.json', replay / 'session-closed.json')
+    else:
+        checkpoint = earlier['checkpoint'] if advanced else load(replay / 'treatment/pre-supplier-checkpoint.json')
+        source = Path(checkpoint['native_save']).resolve()
+        digest = checkpoint['sha256']
+        if prior_arm:
+            start, endpoint = 222, args.through
+        require(checkpoint['verified'] and checkpoint['turn'] == start and sha(source) == digest
+                and sha(Path(checkpoint['archive'])) == digest, 'Expected the exact Boston fixture')
+    if prior_arm or args.pasture_autosave:
+        require(start < endpoint <= start + 45 and (endpoint - start) % 3 == 0,
+                'Expected a bounded three-turn recovery cadence')
     target = load(args.match / 'result.json')['treatment']['plan']['target'] if advanced else earlier['plan']['target']
     if args.wonder:
         require((target['player'], target['city'], target['base']) == (3, 131073, [796]),
@@ -210,16 +267,33 @@ def run(args):
     probe = 'CSC_BAKERS_TARGET=' + lua(target) + ';\n' + '\n'.join(map(read, probe_files))
     out.mkdir()
     extra = (HERE / 'operating_effects.lua', HERE / 'natural_chain.py') if advanced else ()
-    pins = {str(path.resolve()): sha(path) for path in (Path(__file__), *probe_files, *extra, *AI_FILES, UI_READS, args.ce_dll, source)}
+    references = (prior_arm / 'result.json', prior_arm / 'session-closed.json') if prior_arm else ()
+    pins = {str(path.resolve()): sha(path) for path in (
+        Path(__file__), *probe_files, *extra, *AI_FILES, *references, *autosave_inputs, UI_READS, args.ce_dll, source)}
     write_json(out / 'source-archive.json', archive_sources(pins, out / 'source-version'))
     archived = replay / 'retired-study-copy'
     installed = args.mods.resolve() / 'CSC Mill Building Study'
-    control = run_arm(args, out / 'control', archived, source, digest, probe, installed, False, target)
-    treated = run_arm(args, out / 'treatment', archived, source, digest, probe, installed, True, target)
+    if prior_arm:
+        continued = run_arm(args, out / 'treatment', archived, source, digest, probe, installed, True,
+                            target, start, endpoint, expected_source=expected_source)
+        require(all(sha(Path(path)) == digest for path, digest in pins.items()), 'Pinned source changed during recovery')
+        write_json(out / 'result.json', continued)
+        write_json(out / 'restoration.json', load(out / 'treatment/restoration.json'))
+        return
+    control = run_arm(args, out / 'control', archived, source, digest, probe, installed, False, target, start, endpoint,
+                      expected_source=expected_source)
+    treated = run_arm(args, out / 'treatment', archived, source, digest, probe, installed, True, target, start, endpoint,
+                      expected_source=expected_source)
     require(control['source'] == treated['source'], 'The arms did not start from the same observed state')
     plot, = target['base']
     lost = next(row for row in control['final']['neighbors'] if row['plot'] == plot)
     kept = next(row for row in treated['final']['neighbors'] if row['plot'] == plot)
+    if args.pasture_autosave:
+        require(all(sha(Path(path)) == value for path, value in pins.items()), 'Pinned source changed during recovery')
+        write_json(out / 'result.json', dict(source=digest, turn=start, plot=plot, control=lost, treatment=kept,
+                   control_operation=control['final']['operation'], treatment_operation=treated['final']['operation']))
+        write_json(out / 'restoration.json', dict(verified=True, owners_absent=True))
+        return
     log = read(out / 'treatment/Lua.log')
     if args.wonder:
         require(control['source'] == earlier['state'], 'Matched arms differ from the archived damage')
@@ -259,7 +333,13 @@ if __name__ == '__main__':
     modes.add_argument('--wonder', action='store_true')
     parser.add_argument('--ce-sha256')
     parser.add_argument('--match', type=Path)
+    parser.add_argument('--resume-wonder-treatment', type=Path, help='Continue the closed Wonder treatment from turn 222')
+    parser.add_argument('--pasture-autosave', type=Path, help='Pair Builder protection from a preserved supplier decision save')
+    parser.add_argument('--through', type=int)
     args = parser.parse_args()
     if (args.builder or args.wonder) and (not args.match or not args.ce_sha256):
         parser.error('--builder or --wonder requires --match and --ce-sha256')
+    if (bool(args.resume_wonder_treatment or args.pasture_autosave) != (args.through is not None)
+            or (args.resume_wonder_treatment and not args.wonder) or (args.pasture_autosave and not args.builder)):
+        parser.error('Use --through with --wonder --resume-wonder-treatment or --builder --pasture-autosave')
     run(args)

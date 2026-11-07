@@ -109,3 +109,33 @@ exact healthy state and pillages only the Water Mill once. After that
 setup, stock AI owns the queue and repair. The test reports the initial
 damage, Mill completion, actual building output and whether Storekeeper
 restarts while the original Pasture stays intact.
+
+## Supplier job and recovery evidence
+
+`natural_chain.py --remove-pasture-from <closed operating run>` verifies
+the healthy checkpoint, removes the one mapped Pasture, and leaves
+the Mill, Granary and Cattle in place. The AI controls all subsequent
+production and Builder work. The read-only trace distinguishes the
+terrain decision, the ordinary improvement tree slot, and site selection.
+
+Each finite play window archives its fresh autosaves in `decision-saves/`.
+The receipt records their checksums and marks missing or older files.
+A reload still needs the expected scenario census before play.
+`supplier-timeline.json` aligns the trace, tree log, Builder operation
+log and inactive Service samples. Native trace records carry the start
+of their interval. They have a different time resolution from the game's
+turn logs. Player-only Builder log entries stay unattributed unless
+other evidence links the unit and plot.
+
+`ce_bakers_supplier.py --wonder --resume-wonder-treatment <closed match>
+--through <turn>` can continue the protected turn-222 arm under the same
+native capability and main CSC publisher. It verifies the starting census
+and stops at a bounded endpoint or after two consecutive operating
+samples. This is a continuation of the treatment.
+
+`ce_bakers_supplier.py --builder --pasture-autosave <saved boundary>
+--through <turn>` runs both CE arms from the archived decision file.
+Supply the closed stock run with `--replay`. Both arms must match its
+observed census before advancing. Builder protection is the one changed
+capability. The result records the deposit, improvement and actual Service
+separately so a successful protection result cannot pass as recovery.

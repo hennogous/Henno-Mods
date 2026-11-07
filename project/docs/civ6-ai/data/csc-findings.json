@@ -1249,5 +1249,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C067", "AI-N025", "AI-N094"],
     "related": ["AI-C068"]
+  },
+  {
+    "id": "AI-C070",
+    "title": "An Irrigation boost harvested Boston's Cattle before the missing Pasture could be rebuilt",
+    "statement": "Boston retained a positive Pasture forecast while another ordinary improvement tree occupied its slot. When that slot opened, the Irrigation boost claimed the Cattle and the ordinary route proposed a Camp elsewhere. An exact Builder clearance and harvest preceded the disappearance of the deposit.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Controlled removal of the Pasture at turn 66 with Mill and Granary intact, stock patched XP2. Pasture cached 28194 to 38463 Q8 in the first six checks. The boost reserved (56,10) on turn 72, and Builder 2228225 cleared and harvested it on turn 73. The turn-75 census showed no Cattle and no Storekeeper.",
+    "limits": "One controlled supplier-loss scenario. Protection and a positive recovery preference need separate causal checks. The same fixture does not establish natural recovery or cross-seed reliability.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-N096", "AI-C069"],
+    "related": ["AI-C066", "AI-C068"]
   }
 ]

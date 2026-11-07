@@ -55,6 +55,13 @@ after that district completed. The Mill's building yields returned while
 the missing Pasture kept Storekeeper inactive.
 [AI-C069] [Mill repair choice](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
 
+Removing only the Pasture in the early Boston fixture exposed separate
+job and plot gates. The old plot reservation no longer resolved. The
+ordinary improvement slot was occupied, then a different job won.
+An Irrigation boost made a new claim and its Builder harvested the
+Cattle. [AI-N096] [AI-C070]
+[Supplier replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).
+
 ```mermaid
 flowchart TD
  D[Mapped deposit] --> L[Legal unlocked work] --> J[Recommendation and admitted job] --> U[Assigned worker] --> E[Native operation] --> I[Working improvement]

@@ -14,7 +14,8 @@ from driver import (
     make_probe_controller, manifest, native_inventory, parse, prove_loaded_module,
     read, read_log_delta, require, restore_preferences, sha, write_json,
 )
-from full_game_controller.checkpoint import save_inactive_boundary
+from full_game_controller.checkpoint import archive_autosave_window, save_inactive_boundary
+from supplier_timeline import write_supplier_timeline
 from survey_retention import run_survey
 
 
@@ -62,9 +63,14 @@ def run(args):
             'Mill observation requires the damaged continuation and pinned Frida')
     require(not args.repair_autosave or args.observe_mill_repair,
             'A repair autosave requires the scoped Mill diagnostic')
-    require(not args.pillage_mill_from or (args.continue_from and args.observe_mill_repair
+    setup_reference = args.pillage_mill_from or args.remove_pasture_from
+    require(not setup_reference or (args.continue_from
             and not any((args.recover_from, args.retain_from, args.repair_autosave, args.guard_farm))),
-            'Mill-only damage needs a separate healthy, unassisted continuation')
+            'Controlled damage needs a separate healthy, unassisted continuation')
+    require(not args.pillage_mill_from or (args.observe_mill_repair and not args.remove_pasture_from),
+            'Use the Mill observer for Mill-only damage')
+    require(not args.remove_pasture_from or (args.dependencies and not args.observe_mill_repair),
+            'Pasture recovery uses the read-only supplier observer')
     treatment = load(match / 'result.json')['treatment']
     target = treatment['plan']['target']
     final = treatment['followthrough'][-1]
@@ -100,8 +106,8 @@ def run(args):
             require(resume_state['operation']['operating'], 'Expected a working retention checkpoint')
             final = resume_state['city']
     healthy = autosave_receipt = None
-    if args.pillage_mill_from:
-        reference = args.pillage_mill_from.resolve()
+    if setup_reference:
+        reference = setup_reference.resolve()
         require(load(reference / 'restoration.json')['verified'] and load(reference / 'session-closed.json')['verified'],
                 'Expected a closed operating checkpoint')
         source_result = load(reference / 'result.json')
@@ -177,7 +183,7 @@ def run(args):
     if healthy:
         inputs.append(reference / 'result.json')
     baseline = guard_code = None
-    trace_name = 'mill-repair' if args.observe_mill_repair else 'farm'
+    trace_name = 'pasture-recovery' if args.remove_pasture_from else ('mill-repair' if args.observe_mill_repair else 'farm')
     if args.guard_farm:
         reference = args.guard_farm.resolve()
         require(load(reference / 'restoration.json')['verified'], 'Expected a closed Farm-loss control')
@@ -189,6 +195,12 @@ def run(args):
     elif args.observe_mill_repair:
         native = [STUDY / 'observer.js', HERE / 'mill_repair_observer.js']
         inputs.extend(native)
+        guard_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(map(read, native))
+    elif args.remove_pasture_from:
+        native = [STUDY / 'observer.js', HERE / 'pasture_recovery_observer.js']
+        tools = HERE.parents[1] / 'ai_baseline'
+        inputs.extend((*native, HERE / 'supplier_timeline.py', tools / 'full_game_controller/checkpoint.py',
+                       tools / 'log_intelligence.py', tools / 'material_loss_intelligence.py'))
         guard_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(map(read, native))
     if guard_code:
         sys.path.insert(0, str(args.dependencies.resolve()))
@@ -222,6 +234,7 @@ def run(args):
     states = []
     attached = script = frozen = None
     messages = []
+    decision_checkpoints = []
 
     def freeze():
         nonlocal frozen
@@ -232,7 +245,12 @@ def run(args):
     def play(previous, turn):
         if script is not None:
             script.exports_sync.advance(previous)
+        interval_started = time.time_ns()
         controller.play(turn)
+        if args.remove_pasture_from:
+            archive = out / 'decision-saves'
+            decision_checkpoints.extend(archive_autosave_window(args.saves, archive, previous + 1, turn, interval_started))
+            write_json(archive / 'archive.json', decision_checkpoints)
         if script is not None:
             trace = script.exports_sync.snapshot()
             write_json(out / f'{trace_name}-trace-live.json', trace)
@@ -262,7 +280,7 @@ def run(args):
         if args.recover_from:
             require(state == damaged, 'Reloaded damaged chain differs from the exact interruption')
         if healthy:
-            require(state == healthy, 'Reloaded Mill-only source differs from the healthy checkpoint')
+            require(state == healthy, 'Reloaded damage source differs from the healthy checkpoint')
         return True
 
     def observe_interval(previous, current):
@@ -288,7 +306,7 @@ def run(args):
         session.load_once(source, sha256=digest, native_directory=args.saves, turn=start,
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AdjacencyGameplay'), eligibility=eligibility)
         prove_loaded_module(session.owner, spec, out / 'loaded-module.json')
-        if healthy:
+        if args.pillage_mill_from:
             # The only controlled setup change. No production request or score
             # intervention follows, even if the AI leaves the Mill pillaged.
             session.issue_once('pillage-water-mill', scope + """
@@ -305,6 +323,25 @@ buildings:SetPillaged(mill, true)
             require(damaged['city']['buildings']['BUILDING_CSC_BAKERS_WATER_MILL']['pillaged']
                     and damaged['neighbors'] == healthy['neighbors'] and damaged['operation']['customer'],
                     'Controlled damage changed more than the intended Mill or did not apply')
+        if args.remove_pasture_from:
+            session.issue_once('remove-pasture', scope + """
+local t = CSC_BAKERS_TARGET
+assert(#t.base == 1)
+local plot = assert(Map.GetPlotByIndex(t.base[1]))
+local pasture = assert(GameInfo.Improvements.IMPROVEMENT_PASTURE).Index
+assert(plot:GetOwner() == t.player and plot:GetImprovementType() == pasture)
+assert(not plot:IsImprovementPillaged() and plot:GetDistrictType() == -1)
+ImprovementBuilder.SetImprovementType(plot, -1)
+""", 'GameCore_Tuner')
+            write_json(out / 'healthy-source.json', states.pop())
+            damaged = sample(start)
+            before = healthy['neighbors']
+            expected = [dict(row, improvement=-1, working=False, developable=True) if row['plot'] in target['base'] else row
+                        for row in before]
+            require(damaged['neighbors'] == expected and not damaged['operation']['workingBase']
+                    and damaged['city']['buildings'] == healthy['city']['buildings']
+                    and damaged['operation']['customer'] and damaged['operation']['mill'],
+                    'Controlled removal did not leave only the intended supplier broken')
         if retention and not args.survey_retention:
             receipt = controller.cmd(scope + read(retention_probe), 'CSC_AdjacencyGameplay', 'install-retention-observer')
             require('CSC_RETENTION_INSTALLED' in receipt, 'Retention observer installation failed')
@@ -316,6 +353,19 @@ buildings:SetPillaged(mill, true)
                          'assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL).Index));')
                 raw = controller.cmd(query, 'GameCore_Tuner', 'native-mill-scope')
                 native_scope = dict(parse(raw, 'CSC_MILL_SCOPE'), player=target['player'], city=target['city'])
+            elif args.remove_pasture_from:
+                query = scope + """
+local t = CSC_BAKERS_TARGET
+local plot = assert(Map.GetPlotByIndex(t.base[1]))
+local city = assert(Cities.GetPlotPurchaseCity(plot))
+local pasture = assert(GameInfo.Improvements.IMPROVEMENT_PASTURE).Index
+assert(city:GetOwner() == t.player and city:GetID() == t.city)
+local width = Map.GetGridSize()
+print(string.format('CSC_PASTURE_SCOPE={"plot":%d,"x":%d,"y":%d,"pasture":%d,"width":%d}',
+    plot:GetIndex(), plot:GetX(), plot:GetY(), pasture, width))
+"""
+                raw = controller.cmd(query, 'GameCore_Tuner', 'native-pasture-scope')
+                native_scope = dict(parse(raw, 'CSC_PASTURE_SCOPE'), player=target['player'], city=target['city'])
             else:
                 query = ('local w,h=Map.GetGridSize(); local farm=assert(GameInfo.Improvements.IMPROVEMENT_FARM).Index;'
                          'print(string.format(\'CSC_FARM_SCOPE={"width":%d,"height":%d,"farm":%d}\',w,h,farm));')
@@ -391,8 +441,8 @@ buildings:SetPillaged(mill, true)
         freeze()
         if frozen is not None:
             require(frozen['fault'] is None and not messages and not frozen['active'], f'{trace_name} probe failed before close')
-        write_json(out / 'result.json', dict(stop=stopped, turn=turn, native_writes=0, state=state,
-                                               setup='pillage-water-mill' if healthy else None,
+        setup = 'remove-pasture' if args.remove_pasture_from else ('pillage-water-mill' if healthy else None)
+        write_json(out / 'result.json', dict(stop=stopped, turn=turn, native_writes=0, state=state, setup=setup,
                                                operating_since=operating_since, checkpoint=next_save,
                                                farm_rejections=frozen.get('rejected', 0) if frozen else 0,
                                                start=start, interruption=interruption))
@@ -416,6 +466,8 @@ buildings:SetPillaged(mill, true)
         require(installed.parent == args.mods.resolve() and destination.parent == out, 'Package retirement path mismatch')
         installed.rename(destination)
         write_json(out / 'restoration.json', dict(verified=manifest(destination) == package, owners_absent=True))
+        if args.remove_pasture_from:
+            write_supplier_timeline(out, states, target, frozen, decision_checkpoints)
 
 
 if __name__ == '__main__':
@@ -435,4 +487,5 @@ if __name__ == '__main__':
     parser.add_argument('--observe-mill-repair', action='store_true', help='Trace Boston Mill production choices without writes')
     parser.add_argument('--repair-autosave', type=Path, help='Use an archived autosave that has a matching sampled damage state')
     parser.add_argument('--pillage-mill-from', type=Path, help='Pillage only the Mill in a verified working chain')
+    parser.add_argument('--remove-pasture-from', type=Path, help='Remove only the Pasture in a verified working chain')
     run(parser.parse_args())
