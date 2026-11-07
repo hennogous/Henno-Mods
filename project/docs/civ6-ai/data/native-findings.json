@@ -1747,8 +1747,8 @@
     "statement": "The default category comparison in QueueNextBuild selects a building, unit or project. In the observed branch, a failed project start fell directly into generic unit selection without retrying the building or the ordinary unit candidate.",
     "status": "accepted",
     "evidence_types": ["static", "runtime", "source"],
-    "scope": "Patched XP2 Windows. QueueNextBuild at 3e8190 compares the category operands at 3e8741. BuildProject at 3df4b0 can return false before or at operation validation. In the live trace the false return at 3e88e5 preceded the generic unit return at 3e899f.",
-    "limits": "This is one default branch after earlier contract handling. It does not establish the path for every failed operation or the economic value of the selected generic unit.",
+    "scope": "Patched XP2 Windows. QueueNextBuild at 3e8190 compares the category operands at 3e8741. In the matched control, BuildProject at 3df4b0 failed CanAdvance at 3df4e5 before operation validation. The false return at 3e88e5 preceded the generic unit return at 3e899f.",
+    "limits": "This is one default branch after earlier contract handling. The specific condition inside CanAdvance, other failed operations and the economic value of the generic unit remain unresolved.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/production-and-prerequisites.md",
     "related": ["AI-N094", "AI-C079"]

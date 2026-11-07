@@ -1160,6 +1160,17 @@ The frozen trace SHA-256 is
 It had no fault and no active observer at shutdown. The controller
 closed the game and restored the temporary package and preferences.
 
+The control arm of `ce-late-mill-bid-02` reproduced the same operands
+and the rejected project. It sampled both validation returns inside
+`BuildProject`. Project 25 returned false from `BuildQueue::CanAdvance`
+at `3df4e5` and did not reach operation-manager validation at `3df568`.
+The exact condition inside `CanAdvance` remains unresolved. The
+control closed normally. Its frozen trace SHA-256 is
+`15c883358019052b2463f6d365eab433f0e69e10069e682221735a3fa02fbcee`.
+The first launch, `ce-late-mill-bid-01`, stopped before autoplay
+because its control assertion expected Wonder protection disabled.
+The corrected pair keeps that protection enabled in both arms.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
@@ -1222,6 +1233,15 @@ open. The controller closed and verified preference restoration.
 The development smoke's `result.json` and `Lua.log` SHA-256 values are
 `4ea0c76235f64d358bb0702be8b3eacc6dee314e963824b60f40e4ddc6f84427` and
 `18f25f6876812488221f4f05bfc14a84606bfd45f06f0ab2424aaa965454ecae`.
+
+The next development runner supports all three Standard-size map
+scripts from the stock-AI roadmap. Its untuned arm removes only the
+main AI gameplay action from an isolated copy of CSC's manifest.
+The control keeps the same CSC and CE IDs and input content. For a
+paired run the runner checks the input digests, seeds and settings,
+then compares the turn-one map signature, leader roster and starting
+units. The manifest transformation and census code passed offline
+checks. The fresh control and live start comparison remain to verify.
 
 ## Evidence locator
 
