@@ -143,6 +143,12 @@ step. A continuation without the extra bid reselected and built
 the competing Pasture. [AI-C086]
 [Matched choice and assignment](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-extra-pasture-bid-changed-location-and-assignment).
 
+Keeping the extra bid on the same turn-112 save redirected the new
+job to the Bakers supplier. The AI completed the Pasture at 118
+and the exact City Center received Storekeeper Growth on turns
+119–121. [AI-C087]
+[Matched execution and Service](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#keeping-the-bid-active-completed-the-bakers-pasture-and-storekeeper).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

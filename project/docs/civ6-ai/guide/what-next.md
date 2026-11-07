@@ -45,9 +45,10 @@ the buildings and unlocks, but the Cattle tile was still unimproved
 after the game applied the Pasture preference. The replay showed
 the city chose a different Pasture when it had room for a new job.
 A small extra bid redirected the job and the city assigned a
-Builder. After the extra bid was withdrawn, the city chose and built
-the other Pasture. The follow-up tests keeping the bid active as the
-AI reconsiders its jobs.
+Builder. Keeping the bid active through reassignment led the AI to
+finish the Bakers Pasture and activate Storekeeper. In the matched
+control it built the other Pasture. The next check is delivery
+through the integrated publisher across ordinary games.
 Ancyra and Melbourne had working suppliers and lacked buildings.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 

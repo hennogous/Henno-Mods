@@ -93,10 +93,11 @@ scorer but the tile stayed unimproved. The read-only replay found
 an occupied job slot on nine checks. On the three open checks
 another Pasture site beat the Bakers supplier by 5,888 Q8. The
 matched increase redirected all three choices and the city found
-a Builder. With the extra bid withdrawn at 112, a new job selected
-the competing site and completed its Pasture at 118. Keep the extra
-bid active on the matched continuation and verify execution and
-Storekeeper before selecting a reusable amount.
+a Builder. The matched turn-112 continuation kept the extra bid
+through reassignment. Both arms built a Pasture at 118. Only the
+treatment improved the Bakers supplier and activated Storekeeper
+on 119–121. Verify the calibrated amount through the integrated
+publisher and CE cap on the same fixture, then test it in fresh games.
 Ancyra and Melbourne had working material and missing buildings.
 Two other sites had no adjacent Base. Keep those placement and
 building gaps distinct from the Builder decision.

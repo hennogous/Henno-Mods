@@ -1464,5 +1464,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C085"]
+  },
+  {
+    "id": "AI-C087",
+    "title": "Keeping the Alexandria Pasture bid through reassignment delivered Storekeeper",
+    "statement": "On the same turn-112 save, the retained extra Pasture bid redirected the new ordinary job to the Bakers supplier. A Builder completed it and the exact City Center received native Storekeeper Growth.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Matched continuations through turn 122 with the same local CSC and CE packages. Both selected a Pasture job at 113 and completed it at 118. Control built at (18,29), while the treatment added 6144 Q8 to the integrated 8192 and built at (18,31). Storekeeper operated on turns 119–121 in treatment and was absent in control.",
+    "limits": "Scoped diagnostic amount, one normal-start-derived chain, and a short Service window. This does not establish integrated use of the wider amount or qualify general play.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C086"]
   }
 ]

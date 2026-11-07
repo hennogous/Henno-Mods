@@ -1537,6 +1537,37 @@ can remain competitive through allocation and construction.
 The control `Lua.log` SHA-256 is
 `4b2f4b9e7fdf9e4ad55550507b542f559bd78554b11c3ec6971058a18a692f34`.
 
+### Keeping the bid active completed the Bakers Pasture and Storekeeper
+
+`development-alexandria-movement-bid-01` used the same turn-112
+checkpoint, packages and turn-122 endpoint as the movement control.
+The treatment retained the extra 6,144 Q8 for the single Bakers
+Pasture. The native job at 113 chose (18,31). Builder 2359298
+reached that tile on 117 with two charges and spent one on the
+Pasture at 118. The control built its Pasture on (18,29) at the
+same time. The engine handled selection, movement and construction
+in both arms.
+
+The treatment's exact Cattle tile was owned and unpillaged with
+a Pasture at 122. Native Storekeeper attached from Alexandria
+Troas's Bakers district 524295 to City Center 458758 and applied
+its Growth effect on all three interior turns 119–121 after the
+Pasture was completed. The control had no such activation. The
+integrated Builder bid stopped appearing in applied-score telemetry
+after activation. Both sessions closed and restored preferences.
+
+This proves that the finite supplier preference can carry a ready
+chain through a native job reassignment and into actual Service.
+It does not establish a globally optimal amount or retention across
+ordinary starts. The existing CE build caps positive Builder bids
+at 8,192 Q8, so the 14,336 Q8 total needs a wider bounded CE cap
+and a separate test through the main publisher.
+
+Treatment trace SHA-256 is
+`50d934e6ae91c3208f10a56ba69f5559612c2e971b6c0b25f3905860bfe13c77`.
+The outcome summary SHA-256 is
+`498877b3dc5d0badc82296d096e95e0d1793b2f5cebc1b07b45436919fb8a9de`.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
