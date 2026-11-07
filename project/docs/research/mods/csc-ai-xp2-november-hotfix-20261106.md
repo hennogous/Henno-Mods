@@ -137,3 +137,42 @@ The dump SHA-256 is
 `f2baa146928925e50df10c4b802915a88b20120f6caf6cf60cbf668cf551f777`.
 The upstream control's dump SHA-256 is
 `7139e1288ff63084f739ffb6beca0517e4cff15ba0a5ab3e212794c03a8f43f4`.
+
+## Corrected shared CE loads and accepts district scores
+
+The preserved pre-hotfix DX11 executable at
+`Desktop/Codex/csc-native-work-admission-20261031/run-01/source-version/000-CivilizationVI.exe`
+has SHA-256 `e7450823cc8e00468cff7b9d7b97c63140eae38ae1d774ba4efa437556c42d63`.
+The offline `audit_ce_executable.py` verifier pins both executable hashes,
+compares three matched unwind ranges after masking identified displacements,
+and resolves two native references to each moved global.
+
+| Shared CE target | Reference DX11 | November DX11 |
+| --- | ---: | ---: |
+| Event publication entry | `0x6e260` | `0x6d500` |
+| Lua critical section | `0x3552fa0` | `0x3553fa0` |
+| ForgeUI lock acquisition | `0x88b330` | `0x88b9b0` |
+| ForgeUI lock release | `0x8948a0` | `0x895000` |
+| ForgeUI manager slot | `0x235f7c8` | `0x23607c8` |
+
+The shared patch requires the exact executable and XP2 pair plus the
+loaded event-entry bytes before installing hooks. Unknown builds retain
+the original GameCore forwarding path. The event detour forwards the
+native return value. Failed event hook installation leaves the processor
+registration binding unavailable. The old unused Lua lock wrappers were
+removed because their declared addresses lacked an established ABI.
+
+| Isolated run | CE review commit | Verified result |
+| --- | --- | --- |
+| `ce-compat-control-01` | `bbd65a40` | Upstream CE plus executable profile, with no district-score API. Loaded the previously failing save, exposed `Mem` and `RegisterProcessor`, advanced to turn 2 and closed normally. |
+| `ce-compat-score-01` | `43559953` | Added the guarded district-score API. Verified one early write and one late write. The Bakers cell moved from 104,621 to 248,479 Q8 and reached the winner and preparation paths. Closed normally. |
+
+Both supported MSVC builds completed with 141 warnings and zero errors.
+The respective proxy SHA-256 values are
+`a252b43f5d36dbc7b941464f4133ba8c822a1c6d1d87c25806a5451a9d7a6214`
+and `5b62c20bd3fe4ea3a4364e160022bc5c0f2dacac504d6a07ecced2bdf1588545`.
+Evidence is under `Desktop/Codex/csc-gamecore-hotfix-20261106`. The successful
+replays verify only the tested Steam DX11 pair, load, Lua registration,
+turn advancement and the guarded score path. Queued processor execution,
+save and reload, other executable builds and packaged CSC qualification
+still require their own tests.

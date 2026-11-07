@@ -110,8 +110,10 @@ def run(a):
     original_sha = HOTFIX_SHA if a.hotfix else GAME_SHA
     require(not a.ce_base_control or (a.hotfix and a.fixture_carrier),
             'The CE base control must use the same patched executable and fixture carrier')
+    require(not a.compat_profile_sha or (a.hotfix and a.fixture_carrier),
+            'Use the compatibility build on the patched executable and matched fixture')
     if a.hotfix:
-        expected_ce = CE_BASE_SHA if a.ce_base_control else HOTFIX_CE_SHA
+        expected_ce = a.compat_profile_sha or (CE_BASE_SHA if a.ce_base_control else HOTFIX_CE_SHA)
         require(sha(a.ce_dll) == expected_ce and sha(a.binary) == HOTFIX_EXE_SHA,
                 'Unexpected CE hotfix DLL or DX11 executable identity')
     installed = [a.mods / 'CSC Mill Building Study']
@@ -133,7 +135,8 @@ def run(a):
     output.mkdir(parents=True)
     write_json(output / 'carrier.json', dict(fixture_carrier=a.fixture_carrier, dll_sha256=sha(a.ce_dll),
                                              original_sha256=original_sha, exe_sha256=sha(a.binary),
-                                             upstream_base_control=a.ce_base_control))
+                                             upstream_base_control=a.ce_base_control,
+                                             executable_compatibility_patch=bool(a.compat_profile_sha)))
     # Only these dedicated package folders are staged. The working stock and
     # previous CE test installations are never touched.
     untouched = {p: manifest(p) for p in (a.mods / 'Civ Supply Chains', a.mods / 'CivilizationVI_CommunityExtension')}
@@ -190,10 +193,14 @@ def run(a):
         boundaries = {name: capture_log_baseline(a.user_root / 'Logs' / name) for name in LOGS}
         session.load_once(source, sha256=SAVE_SHA, native_directory=source.parent, turn=1,
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AdjacencyGameplay'), eligibility=gate)
+        if a.compat_profile_sha:
+            controller.cmd('assert(type(Mem)=="function" and type(RegisterProcessor)=="function")',
+                           'GameCore_Tuner', 'verify-ce-compatibility-bindings')
         if a.ce_base_control:
-            controller.cmd('assert(CE_AIDistrictScoresBegin==nil)', 'GameCore_Tuner', 'verify-unchanged-ce-control')
+            controller.cmd('assert(CE_AIDistrictScoresBegin==nil)', 'GameCore_Tuner', 'verify-ce-control-bindings')
             controller.play(2)
-            write_json(output / 'result.json', dict(upstream_base_control=True, turn=2, verified=True))
+            write_json(output / 'result.json', dict(upstream_base_control=True, turn=2, verified=True,
+                                                    executable_compatibility_patch=bool(a.compat_profile_sha)))
             return
         publish = (f'assert(Game.GetCurrentGameTurn()==1);assert(CE_AIDistrictScoresBegin(1,{cfg["mapWidth"]},'
                    f'{cfg["mapHeight"]},{cfg["districtCount"]})==1);assert(CE_AIDistrictScoresAllow(1)==1);'
@@ -235,4 +242,5 @@ if __name__ == '__main__':
     parser.add_argument('--fixture-carrier', action='store_true', help='Select CE through the isolated saved mod identity')
     parser.add_argument('--hotfix', action='store_true', help='Qualify the pinned CE profile on the November XP2 and DX11 build')
     parser.add_argument('--ce-base-control', action='store_true', help='Replay with pinned upstream CE and no district-score API')
+    parser.add_argument('--compat-profile-sha', help='Expected DLL SHA-256 for the selected executable compatibility build')
     run(parser.parse_args())

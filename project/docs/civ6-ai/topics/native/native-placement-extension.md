@@ -22,6 +22,11 @@
 > supports matched decision tests. [AI-N089]
 > [Crash and hook evidence](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md#the-first-ce-replay-stopped-during-load)
 
+> **Corrected CE profile:** The compatibility-only build loaded the failing
+> fixture and reached turn 2. Layering the score API on top reproduced the
+> early and late writes and reached native Bakers selection. [AI-N090]
+> [Matched replay and address evidence](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md#corrected-shared-ce-loads-and-accepts-district-scores)
+
 > **6 November stock write:** Frida changed one guarded cell on the patched
 > stock build. Delhi switched from Neighborhood to Bakers and reserved the
 > target site. Its Craftsmanship preparation expired and the tile remained

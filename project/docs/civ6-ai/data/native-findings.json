@@ -1652,5 +1652,18 @@
     "topic": "topics/native/native-placement-extension.md",
     "depends_on": ["AI-N078"],
     "related": ["AI-N083"]
+  },
+  {
+    "id": "AI-N090",
+    "title": "The corrected shared CE profile loads and carries district scores on the patched Steam DX11 build",
+    "statement": "Matching the event entry and shared globals between the exact DX11 images enabled both a compatibility-only CE control and the guarded district-score candidate to load the previously failing save. The candidate reproduced the early and late writes and the subsequent Bakers selection and preparation.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "DX11 executable SHA d1a0cfd4 and XP2 SHA 092abfbb, isolated CSC turn-1 save. Event entry moved from 6e260 to 6d500 and critical section from 3552fa0 to 3553fa0. CE review commits bbd65a40 and 43559953, both closed and restored. Late Q8 score 104621 to 248479, one early write and a native district winner and preparation.",
+    "limits": "One exact Steam DX11 pair and a short replay. No active processor callback, save and reload, Workshop dependency, routine CSC policy effect or other game build was qualified.",
+    "sources": ["project/docs/research/mods/csc-ai-xp2-november-hotfix-20261106.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N078", "AI-N089"],
+    "related": ["AI-N083", "AI-N086"]
   }
 ]

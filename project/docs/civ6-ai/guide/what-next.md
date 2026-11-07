@@ -44,9 +44,9 @@ together in fresh games.
 ## Tools for this milestone
 
 The shared controller and guarded stock score hook support matched live tests.
-On the patched DX11 executable, the CE candidate and its upstream control
-both crashed during save load. The shared event hook needs a new qualified
-target before CE can carry the integrated policy on this build.
+On the patched DX11 executable, the corrected CE profile loads the save
+that previously crashed and carries both score writes. The next live
+check is CSC's automatic supplier policy on that carrier.
 Dev-CE 0.8.1 is an optional research tool for a specific
 extra Lua getter or debugging need. Packaged CE delivery is a separate
 qualification on the patched Windows host.
