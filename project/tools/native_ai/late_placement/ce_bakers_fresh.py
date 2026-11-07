@@ -228,7 +228,7 @@ def run(args):
             expected.update(fresh_game=False, ordinary_setup=False, diagnostic_start=previous['diagnostic_start'],
                             gameplay_interventions=previous['gameplay_interventions'])
             for key in ('diagnostic_extra_pasture_q8', 'diagnostic_source_sha256', 'diagnostic_movement_only',
-                        'diagnostic_calibration_build'):
+                        'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8'):
                 if key in previous:
                     expected[key] = previous[key]
         if args.calibration_replay:
@@ -266,6 +266,12 @@ def run(args):
                     and matched_endpoints.get(checkpoint_input['sha256']) == args.through,
                     'The measured Pasture comparison requires the matched Alexandria checkpoint')
             protocol['diagnostic_extra_pasture_q8'] = 6144
+            protocol['gameplay_interventions'] = True
+        if args.melbourne_mill_bid:
+            require(checkpoint_input['sha256'] == 'bb5280928bc4c47b62f5aa58304bba873d08856aef692b548bbf1b83836d77de'
+                    and args.wind_mill == [4, 131073, 1423] and args.through == 134,
+                    'Wind Mill nomination uses the exact Melbourne checkpoint')
+            protocol['diagnostic_mill_nomination_q8'] = 448 * 256
             protocol['gameplay_interventions'] = True
     other_source = None
     if args.matched_source:
@@ -446,6 +452,9 @@ Modding.EnableMod(chosen.Handle,true)
                 write_json(out / 'supplier-scope.json', scope)
             else:
                 scope['mill'] = capture_wind_mill_readiness(controller, pid, city, start, out / 'source-mill.json')
+                if args.melbourne_mill_bid:
+                    require(load(out / 'source-mill.json')['available'], 'Wind Mill is no longer available')
+                    scope['nominationBidQ8'] = protocol['diagnostic_mill_nomination_q8']
                 probe = HERE / 'mill_repair_observer.js'
                 write_json(out / 'wind-mill-scope.json', scope)
             attachment = frida.attach(session.owner.pid)
@@ -517,6 +526,7 @@ if __name__ == '__main__':
     target.add_argument('--wind-mill', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'))
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
+    parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
     parser.add_argument('--movement-only', action='store_true', help='Observe assigned Builder movement without native hooks')
     parser.add_argument('--calibration-replay', action='store_true', help='Verify the integrated bid on the exact Alexandria save')
     parser.add_argument('--ce-sha256', required=True)
@@ -528,11 +538,13 @@ if __name__ == '__main__':
             parser.error('A tuned continuation needs --saves, one target, and a diagnostic mode')
         if options.alexandria_bid and not options.supplier:
             parser.error('The Alexandria bid requires --supplier')
+        if options.melbourne_mill_bid and not options.wind_mill:
+            parser.error('The Melbourne bid requires --wind-mill')
         if options.movement_only and (not options.supplier or options.probe_dependencies or options.alexandria_bid):
             parser.error('Movement-only diagnosis requires --supplier and uses no native probe or bid')
         if options.calibration_replay and not options.movement_only:
             parser.error('Integrated calibration requires --movement-only')
-    elif (options.supplier or options.wind_mill or options.probe_dependencies or options.alexandria_bid
+    elif (options.supplier or options.wind_mill or options.probe_dependencies or options.alexandria_bid or options.melbourne_mill_bid
           or options.movement_only or options.calibration_replay):
         parser.error('Decision diagnostics require --resume-from')
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):

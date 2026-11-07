@@ -21,9 +21,11 @@ const CONTRACT_VALIDATE = 0x3fa8e0;
 const CONTRACT_UPDATE = 0x3fa5e0;
 const CONTRACT_EXECUTE = 0x3f8310;
 const BUILDING_COMPARISON = 0x3e49da;
+const ORDINARY_BEST_BUILDING_RETURN = 0x3e160a;
 const THREAT_BEST_BUILDING_RETURN = 0x3ea73b;
 const QUEUE_BEST_BUILDING_RETURN = 0x3e849c;
 const DIAGNOSTIC_MILL_BID_Q8 = 98304;
+const MELBOURNE_NOMINATION_Q8 = 448 * 256;
 const QUEUE_FALLBACK_COMPARISON = 0x3e8741;
 const DEFAULT_UNIT_RETURN = 0x3e8836;
 const DEFAULT_PROJECT_RETURN = 0x3e88e5;
@@ -80,9 +82,13 @@ function init(spec, scope) {
         !Number.isInteger(scope.mill) || scope.mill < 0 || scope.mill >= 4096)
         throw Error('Expected a verified city and Mill scope');
     const bid = scope.millBidQ8 ?? 0;
+    const nominationBid = scope.nominationBidQ8 ?? 0;
     if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
-    if (scope.screenProjectEligibility && (!boston || !scope.cePath || bid))
+    const melbourne = scope.player === 4 && scope.city === 131073 && scope.mill === 139;
+    if (nominationBid !== 0 && (!melbourne || !scope.cePath || nominationBid !== MELBOURNE_NOMINATION_Q8 || bid))
+        throw Error('Unsupported Wind Mill nomination preference');
+    if (scope.screenProjectEligibility && (!boston || !scope.cePath || bid || nominationBid))
         throw Error('The isolated project eligibility diagnostic requires CE and no Mill bid');
     const captureQueueOperands = scope.cePath || scope.captureQueueOperands;
 
@@ -130,7 +136,8 @@ function init(spec, scope) {
             value => value.toString(16).padStart(2, '0')).join('');
         if (bytes !== expected) throw Error(`Unexpected code at ${rva.toString(16)}`);
     }
-    for (const [rva, expected] of [[ORDINARY_RETURN, MILL_VALUE], [REQUIREMENTS_RETURN, REQUIREMENTS]]) {
+    for (const [rva, expected] of [[ORDINARY_RETURN, MILL_VALUE], [REQUIREMENTS_RETURN, REQUIREMENTS],
+        [ORDINARY_BEST_BUILDING_RETURN, BEST_BUILDING]]) {
         const end = address(rva);
         if (end.sub(5).readU8() !== 0xe8 || !end.add(end.sub(4).readS32()).equals(address(expected)))
             throw Error(`Caller fingerprint at ${rva.toString(16)}`);
@@ -227,7 +234,12 @@ function init(spec, scope) {
                 const scoped = boundary === 261 && sample.requirements === true &&
                     sample.flags[0] === 1 && sample.flags[1] === 0 &&
                     (sample.caller === THREAT_BEST_BUILDING_RETURN || sample.caller === QUEUE_BEST_BUILDING_RETURN);
-                const deltaQ8 = scoped && effectiveQ8 > 0 && effectiveQ8 <= 0x7fffffff - bid ? bid : 0;
+                // The ordinary 0/0 proposal remains subject to the unit
+                // comparison and the independent production contract gate.
+                const nomination = boundary === 125 && sample.requirements === true &&
+                    sample.flags[0] === 0 && sample.flags[1] === 0 && sample.caller === ORDINARY_BEST_BUILDING_RETURN;
+                const preference = nomination ? nominationBid : (scoped ? bid : 0);
+                const deltaQ8 = effectiveQ8 > 0 && effectiveQ8 <= 0x7fffffff - preference ? preference : 0;
                 add({kind: 'mill-compare', caller: sample.caller, effectiveQ8, deltaQ8,
                     incumbentQ8: read(c.rsi, 0, 'i32')});
                 if (deltaQ8) c.r14 = ptr(effectiveQ8 + deltaQ8);
