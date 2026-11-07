@@ -1,5 +1,17 @@
 # Current Bakers AI work — 7 November 2026
 
+The turn-100 normal-start development game established four Bakers
+Quarters and no active Storekeeper. Alexandria Troas had only the
+Pasture missing. It lost the open Pasture comparison by 5,888 Q8.
+On its matched turn-112 checkpoint, the extra 6,144 Q8 changed the
+new job and delivered Storekeeper on 119–121. CSC `a9a6741` and CE
+`11fc033` reproduced that in a separate integrated replay. CE
+advertises a 64-unit cap and CSC requests 56 for a ready chain with
+its sole owned supplier missing, clamped to the carrier's limit.
+See handbook AI-C084 through AI-C088. The fresh calibrated run and
+Melbourne's missing Wind Mill are separate next checks. CE calibration
+is on the fork's review branch `codex/ce-builder-bid-calibration`.
+
 The main CSC publisher's automatic district protection and optional CE
 Builder protection pass separate matched Boston replays on patched Steam
 DX11. Current review branch `codex/ce-builder-protection` at `1b63d6a` uses
