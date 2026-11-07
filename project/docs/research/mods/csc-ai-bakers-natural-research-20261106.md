@@ -1499,7 +1499,7 @@ Alexandria Troas's Cattle at (18,31), after the integrated CE adjustment.
 The game selected that Cattle on all three open comparisons, at 36,536,
 34,995 and 34,906 Q8. Each value was 256 Q8 above the corresponding
 control winner on (18,29). The city reserved the Bakers tile on 102 and
-found a Builder for it on 107 and 110. The behavior tree reported the
+found a Builder for it on 105, 107 and 110. The behavior tree reported the
 move in progress through the last logged turn.
 
 The endpoint still showed bare Cattle and no active Storekeeper in
@@ -1514,8 +1514,28 @@ The run closed and restored preferences. Trace SHA-256 is
 `8ff3c1ce12d32deb506df2be947afd46dc5f9c566e0c72baec4466a311143be9`.
 Its turn-112 save SHA-256 is
 `b3d6cc1aa78e8a156e60c4b110b229a3631ccaed57e24d7883aaca549fbc9545`.
-The continuation starts from that save, observes movement and
-occupancy, and makes no further diagnostic score write.
+### The follow-through control returned to the competing Pasture
+
+`development-alexandria-movement-01` cold-loaded the treatment's
+exact turn-112 save with the integrated bid and no extra preference.
+The city retained its (18,31) reservation in the turn-112 behavior
+log. At 113 a new ordinary job reserved the other Pasture at (18,29).
+Builder 2359298 reached that tile at 117 with two charges. The tree
+reported successful Pasture construction at 118, and the Builder had
+one charge left. The AI later used its final charge on a Lumber Mill.
+The Bakers supplier remained bare through 122. None of the nine
+interior Storekeeper samples showed an original-major activation.
+
+The movement watch sampled the owned Bakers tile at the end of
+each Macedonian phase from 112 through 121. No unit was on the
+target at those samples. This does not rule out transient occupancy
+or contention on an approach tile. The Builder's movement and
+construction on the competing site show it was capable of working.
+This arm removed the extra bid at reload. A second continuation
+from the same save retains it to test whether the Bakers tile
+can remain competitive through allocation and construction.
+The control `Lua.log` SHA-256 is
+`4b2f4b9e7fdf9e4ad55550507b542f559bd78554b11c3ec6971058a18a692f34`.
 
 ## Evidence locator
 

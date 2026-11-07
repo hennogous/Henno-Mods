@@ -139,7 +139,9 @@ in all three comparisons. The Bakers supplier was selectable.
 Adding 6,144 Q8 in the matched diagnostic changed all three
 locations and reached native Builder assignment. The Pasture was
 still absent at 112 while the assigned work was in its movement
-step. [AI-C086] [Matched choice and assignment](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-extra-pasture-bid-changed-location-and-assignment).
+step. A continuation without the extra bid reselected and built
+the competing Pasture. [AI-C086]
+[Matched choice and assignment](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-extra-pasture-bid-changed-location-and-assignment).
 
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
