@@ -138,10 +138,22 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertEqual(lua.eval('table.concat(packet[2], ",")'), '3,42,3,100,12288')
         self.assertIn('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=5 previousVersion=4 samples=[[3,42,1,101,12288,0]]',
                       messages)
-        lua.execute("CSC_AI_BakersSiteForecasts=function() error('fixture') end; turn=6; boundary()")
+        lua.execute("""
+            CE_AIDistrictScoresStatus=function()
+                local rows = {}
+                for i = 1, 33 do rows[i] = '[3,42,1,'..(100+i)..',12288,0]' end
+                return '{"ready":1,"faults":0,"version":'..version..
+                    ',"changed":33,"samples":['..table.concat(rows, ',')..']}'
+            end
+            turn=6; boundary()
+        """)
+        chunks = [line for line in messages if 'CSC_AI_BAKERS_DISTRICT_SAMPLES turn=6 ' in line]
+        self.assertEqual([line.count('[3,42,1,') for line in chunks], [16, 16, 1])
+        self.assertTrue(all(len(line) < 1500 and line.endswith(']]') for line in chunks))
+        lua.execute("CSC_AI_BakersSiteForecasts=function() error('fixture') end; turn=7; boundary()")
         self.assertEqual(lua.eval('#packet'), 1)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
-        lua.execute('turn=7; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute('turn=8; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

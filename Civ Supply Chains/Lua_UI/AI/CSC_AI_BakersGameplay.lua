@@ -110,8 +110,19 @@ local function refresh(turn)
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests)
     assert(accepted, message)
     if samples and samples ~= '[]' then
-        print(string.format('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=%d previousVersion=%d samples=%s',
-            turn, version, samples))
+        -- Civ clips long Lua log lines. CE sends a flat array of small
+        -- numeric rows, so split it only at complete row boundaries.
+        local chunk = {}
+        local prefix = string.format('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=%d previousVersion=%d samples=',
+            turn, version)
+        for row in samples:sub(2, -2):gmatch('%b[]') do
+            chunk[#chunk + 1] = row
+            if #chunk == 16 then
+                print(prefix .. '[' .. table.concat(chunk, ',') .. ']')
+                chunk = {}
+            end
+        end
+        if #chunk > 0 then print(prefix .. '[' .. table.concat(chunk, ',') .. ']') end
     end
     local siteBids = 0
     for _, entry in ipairs(entries) do
