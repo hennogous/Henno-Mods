@@ -1247,7 +1247,7 @@
     "limits": "One damaged chain. The stock repair proposal establishes that the city can submit the request. Admission, ranking against competing contracts, job assignment for the Cattle and restored Storekeeper payout still require separate verification.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
-    "depends_on": ["AI-C067", "AI-N095"],
+    "depends_on": ["AI-C067", "AI-N025", "AI-N094"],
     "related": ["AI-C068"]
   }
 ]

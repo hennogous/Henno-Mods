@@ -464,17 +464,18 @@
   {
     "id": "AI-N025",
     "title": "Category selection differs from production",
-    "statement": "The contract queue gate compares with units/projects without a best-building comparison; November 1 Lighthouse selection was followed by Neighborhood contract production.",
+    "statement": "The contract queue gate compares with units and projects without a best-building comparison. Successful execution returns before fallback selection. Nicomedia queued Neighborhood after choosing Lighthouse as its best building, and Boston queued Theater Square after choosing Water Mill repair.",
     "status": "accepted",
     "evidence_types": [
       "static",
       "runtime"
     ],
-    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. Inspected queue route; Nicomedia existing-save boundary253.",
-    "limits": "The contract score was not captured, so no Lighthouse/Neighborhood numerical inequality or general success rate follows.",
+    "scope": "Windows XP2 reference SHA 324c51e9 and patched SHA 092abfbb with matching code. QueueNextBuild at 3e8190, GetBestBuilding return at 3e849c, admitted contract at city-build offset 0x158 and Execute virtual slot 0x38. Nicomedia boundary 253 and Boston turn 245.",
+    "limits": "The replays show the queue order. They do not establish numerical inequalities between the building and contract, the rules for contract admission, or how ongoing work is preempted.",
     "sources": [
       "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",
-      "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md"
+      "project/docs/research/mods/civ6-industrial-zone-decision-boundary-20261101.md",
+      "project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"
     ],
     "topic": "topics/native/production-and-prerequisites.md",
     "depends_on": [
@@ -1714,18 +1715,5 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-N093", "AI-C067"]
-  },
-  {
-    "id": "AI-N095",
-    "title": "An admitted city contract can run ahead of the best fallback building",
-    "statement": "QueueNextBuild can execute the admitted city contract and return before the fallback selection. The contract test compares against the unit and project scores, with no comparison to the fallback building score.",
-    "status": "accepted",
-    "evidence_types": ["static", "runtime", "source"],
-    "scope": "Patched Windows XP2 SHA 092abfbb with matching reference code. QueueNextBuild at 3e8190, GetBestBuilding return at 3e849c, admitted contract at city build offset 0x158, Execute virtual slot 0x38. In Boston, the Theater Square contract took the queue after the Water Mill won the building comparison.",
-    "limits": "This describes the ordinary queue branch when an admitted contract executes successfully. It does not establish contract proposal or admission rules, repair completion or preemption of ongoing work.",
-    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
-    "topic": "topics/native/production-and-prerequisites.md",
-    "depends_on": ["AI-N093", "AI-N094"],
-    "related": ["AI-C069"]
   }
 ]
