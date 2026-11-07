@@ -44,8 +44,8 @@ Quarters. None had an active Storekeeper. Alexandria Troas had
 the buildings and unlocks, but the Cattle tile was still unimproved
 after the game applied the Pasture preference. The replay showed
 the city chose a different Pasture when it had room for a new job.
-We can measure how much the Bakers supplier lost by, then test
-whether a small increase changes the job and restores Service.
+A small extra bid redirected the job and the city assigned a
+Builder. The Pasture was still unfinished at the checkpoint.
 Ancyra and Melbourne had working suppliers and lacked buildings.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 

@@ -91,8 +91,10 @@ AI majors unlocked Feudalism. In Alexandria Troas only the
 Pasture was missing. The bounded supplier bid reached the native
 scorer but the tile stayed unimproved. The read-only replay found
 an occupied job slot on nine checks. On the three open checks
-another Pasture site beat the Bakers supplier by 5,888 Q8. Test a
-matched, bounded increase and verify worker assignment and Storekeeper.
+another Pasture site beat the Bakers supplier by 5,888 Q8. The
+matched increase redirected all three choices and the city found
+a Builder. Follow its movement, improvement execution and actual
+Storekeeper output before selecting a reusable amount.
 Ancyra and Melbourne had working material and missing buildings.
 Two other sites had no adjacent Base. Keep those placement and
 building gaps distinct from the Builder decision.

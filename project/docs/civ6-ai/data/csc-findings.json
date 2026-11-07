@@ -1452,5 +1452,17 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C084"],
     "related": ["AI-C073"]
+  },
+  {
+    "id": "AI-C086",
+    "title": "A matched Pasture adjustment changed Alexandria's reservation and reached Builder assignment",
+    "statement": "An extra 6144 Q8 made the Bakers supplier win all three open Pasture comparisons. Alexandria reserved it, found a Builder and reached the movement step, with no working Pasture by turn 112.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Same normal-start turn-100 save and packages as AI-C085, replayed through turn 112. The adjusted location was (18,31). Native behavior logged assignment on turns 107 and 110, and no active original-major Storekeeper was sampled.",
+    "limits": "A scoped diagnostic amount on one save. It establishes a choice and assignment effect, with movement, execution, payout and reusable calibration still open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C085"]
   }
 ]

@@ -1490,6 +1490,33 @@ bid for this one comparison, just above the measured gap, and
 verify assignment, construction and Service. This is a test amount
 for this save.
 
+### The extra Pasture bid changed location and assignment
+
+`development-alexandria-pasture-bid-01` used the same turn-100 save,
+packages and turn-112 endpoint as the read-only comparison. The sole
+intervention added 6,144 Q8 to the existing positive Pasture score on
+Alexandria Troas's Cattle at (18,31), after the integrated CE adjustment.
+The game selected that Cattle on all three open comparisons, at 36,536,
+34,995 and 34,906 Q8. Each value was 256 Q8 above the corresponding
+control winner on (18,29). The city reserved the Bakers tile on 102 and
+found a Builder for it on 107 and 110. The behavior tree reported the
+move in progress through the last logged turn.
+
+The endpoint still showed bare Cattle and no active Storekeeper in
+the eleven interior samples. Macedonia's one remaining Builder had
+three charges at (17,33). The generic unit log shows failed swap
+attempts followed by move requests for that unit. That log does
+not identify the route or establish why it had not reached the tile.
+The scoped increase changed selection and assignment in this fixture.
+Completion and payout remain separate evidence.
+
+The run closed and restored preferences. Trace SHA-256 is
+`8ff3c1ce12d32deb506df2be947afd46dc5f9c566e0c72baec4466a311143be9`.
+Its turn-112 save SHA-256 is
+`b3d6cc1aa78e8a156e60c4b110b229a3631ccaed57e24d7883aaca549fbc9545`.
+The continuation starts from that save, observes movement and
+occupancy, and makes no further diagnostic score write.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
