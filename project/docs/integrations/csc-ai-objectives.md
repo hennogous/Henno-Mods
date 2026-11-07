@@ -2,9 +2,10 @@
 
 Agreed direction, 6 November 2026. The AI should build and sustain worthwhile
 supply chains across all eight Quarters and their associated base-game and
-optional-mod elements. The same objective applies to standalone CSC and RHAI5.
-With RH, account for the workers and support it already provides. Activate
-family-specific decisions as their gameplay becomes available.
+optional-mod elements. The current Bakers Stage 2 milestone qualifies CSC
+with stock Civ VI AI. After that milestone, assess the worker and other AI
+support RHAI5 provides before deciding what to adapt. Activate family-specific
+decisions as their gameplay becomes available.
 
 CSC owns the value of its supply-chain relationships. Civ continues to choose
 among eligible actions, apply its strategic priorities and manage commitments
@@ -58,10 +59,10 @@ and optional City Lights providers, rather than generic resource categories.
 Verify candidate delivery, actual choice, execution, retained supply and
 economic benefit separately. Compare site quality, time to first operation,
 working supply and Service turns, costs and displaced opportunities against
-matched untuned CSC and the appropriate RH reference. Track performance per
-turn as well as choice and outcome. A first useful improvement can ship with
-coarse bid bands and limited family coverage, provided its decision path
-and scope are verified.
+matched untuned CSC. For later RHAI5 work, use a reference with the same RHAI5
+configuration. Track performance per turn as well as choice and outcome.
+A first useful improvement can ship with coarse bid bands and limited family
+coverage, provided its decision path and scope are verified.
 
 See the [implementation roadmap](../civ6-ai/roadmap.md) and the
 [baseline and evaluation handbook](../civ6-ai/topics/csc/objectives-and-baselines.md).

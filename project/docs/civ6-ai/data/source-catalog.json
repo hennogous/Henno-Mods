@@ -466,8 +466,8 @@
       "title": "CSC AI objectives",
       "kind": "integration",
       "date": null,
-      "bytes": 5323,
-      "sha256": "14cca552a6ea8e3f88398ead000a57c7dcce7ddb014b6a0b38fed79b1af28c4d",
+      "bytes": 5421,
+      "sha256": "7f87e9f761537b65987097216fbca0e6a4eb5c057f2aa11cd60d258adedcffc8",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-objectives.md"
     },

@@ -150,15 +150,17 @@ autoplay window. Use a strict expected turn range for qualification.
 [Simultaneous damage and competing production](../research/mods/csc-ai-bakers-natural-research-20261106.md#preserving-the-natural-supplier-did-not-resolve-simultaneous-damage).
 [The eligible Mill lost the building comparison](../research/mods/csc-ai-bakers-natural-research-20261106.md#military-academy-beat-the-eligible-mill-in-building-selection).
 
-For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
-games with normal starts. Run the integrated tuning and record every result.
-Use the same starting settings and seeds for the untuned comparison.
+For the reusable Stage 2 goal, use these preselected fresh Standard-size,
+Online games with normal starts. All three use CSC and its CE dependency
+with stock Civ VI AI. Run the integrated tuning and record every result.
+Match the untuned arm's gameplay content, starting settings and seeds.
+Review RHAI5 compatibility separately after stock AI qualification.
 
 | Map | Map seed | Game seed | Configuration |
 | --- | ---: | ---: | --- |
 | Continents | 17260413 | 27410653 | CSC, matched untuned arm |
 | Pangaea | 18431267 | 28681391 | CSC |
-| Fractal | 19672039 | 29812257 | CSC with RHAI5 |
+| Fractal | 19672039 | 29812257 | CSC |
 
 Each qualification game needs three distinct AI Bakers chains with 100
 cumulative active Service turns each. Count operation per chain through
