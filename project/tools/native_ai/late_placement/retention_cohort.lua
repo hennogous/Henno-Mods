@@ -2,6 +2,7 @@
 -- Gameplay records each player phase. The UI independently checks realized yields.
 local mode = assert(CSC_BAKERS_COHORT_MODE)
 local quarter = assert(GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER).Index
+local cityCenter = assert(GameInfo.Districts.DISTRICT_CITY_CENTER).Index
 local granary = assert(GameInfo.Buildings.BUILDING_GRANARY).Index
 local water = assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL).Index
 local wind = assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL).Index
@@ -20,10 +21,21 @@ for row in GameInfo.Improvement_ValidResources() do
     end
 end
 
-local granaryFood = 0
+local granaryTypes = {BUILDING_GRANARY = granary}
+local granaries = {granary}
+for row in GameInfo.BuildingReplaces() do
+    local building = GameInfo.Buildings[row.CivUniqueBuildingType]
+    if row.ReplacesBuildingType == 'BUILDING_GRANARY' and building and building.PrereqDistrict == 'DISTRICT_CITY_CENTER' then
+        granaryTypes[row.CivUniqueBuildingType] = building.Index
+        granaries[#granaries + 1] = building.Index
+    end
+end
+table.sort(granaries)
+local granaryFood = {}
 for row in GameInfo.Building_YieldChanges() do
-    if row.BuildingType == 'BUILDING_GRANARY' and row.YieldType == 'YIELD_FOOD' then
-        granaryFood = granaryFood + row.YieldChange
+    local index = granaryTypes[row.BuildingType]
+    if index and row.YieldType == 'YIELD_FOOD' then
+        granaryFood[index] = (granaryFood[index] or 0) + row.YieldChange
     end
 end
 
@@ -37,10 +49,15 @@ if mode == 'ui' then
     local count = 0
     for _, key in ipairs(assert(CSC_BAKERS_COHORT_KEYS)) do
         local player, cityID, mill = key:match('^(%d+)/(%d+)/%d+/(%d+)/')
-        local city = assert(Players[tonumber(player)]:GetCities():FindID(tonumber(cityID)))
-        local food = assert(city:GetBuildingYield(granary, 'YIELD_FOOD'))
+        local buyerID, granaryID = key:match('^%d+/%d+/%d+/%d+/%d+/%d+/%d+/%d+/(%d+)/(%d+)$')
+        -- Archived eight-field receipts kept the Granary in the producer city.
+        buyerID, granaryID = buyerID or cityID, tonumber(granaryID) or granary
+        local cities = Players[tonumber(player)]:GetCities()
+        local city = assert(cities:FindID(tonumber(cityID)))
+        local buyer = assert(cities:FindID(tonumber(buyerID)))
+        local food = assert(buyer:GetBuildingYield(granaryID, 'YIELD_FOOD'))
         local millFood = assert(city:GetBuildingYield(tonumber(mill), 'YIELD_FOOD'))
-        if food >= granaryFood + 1 and millFood >= 1 then
+        if food >= (granaryFood[granaryID] or 0) + 1 and millFood >= 1 then
             print(string.format('CSC_COHORT_YIELD %s %.4g %.4g', key, food, millFood))
             count = count + 1
         end
@@ -49,14 +66,32 @@ if mode == 'ui' then
     return
 end
 
+local function buyers(playerID, neighbors)
+    local result = {}
+    for _, plot in ipairs(neighbors) do
+        if plot:GetOwner() == playerID and plot:GetDistrictType() == cityCenter then
+            local city = Cities.GetPlotPurchaseCity(plot)
+            if city and city:GetOwner() == playerID and city:GetX() == plot:GetX() and city:GetY() == plot:GetY() then
+                local buildings = city:GetBuildings()
+                if buildings:HasBuilding(service) then
+                    for _, kind in ipairs(granaries) do
+                        if working(buildings, kind) and buildings:GetBuildingLocation(kind) == plot:GetIndex() then
+                            result[#result + 1] = {city = city:GetID(), building = kind, plot = plot:GetIndex()}
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return result
+end
+
 local function scanCity(playerID, city, rows)
     if (city:GetProperty('CSC_BAKERS_STAGE_2_EFFECT_GROWTH') or 0) <= 0 then return end
     local buildings = city:GetBuildings()
-    if not working(buildings, granary) or not buildings:HasBuilding(service) then return end
     local mill = working(buildings, water) and water or (working(buildings, wind) and wind or nil)
     if not mill then return end
     local millPlot = buildings:GetBuildingLocation(mill)
-    local granaryPlot = buildings:GetBuildingLocation(granary)
     local districts = city:GetDistricts()
     local district = nil
     for index = 0, districts:GetNumDistricts() - 1 do
@@ -69,11 +104,8 @@ local function scanCity(playerID, city, rows)
     if not district or not district:IsComplete() or district:IsPillaged() then return end
     if millPlot ~= Map.GetPlotIndex(district:GetX(), district:GetY()) then return end
     local neighbors = Map.GetAdjacentPlots(district:GetX(), district:GetY())
-    local customer = false
-    for _, plot in ipairs(neighbors) do
-        if plot:GetIndex() == granaryPlot and plot:GetOwner() == playerID then customer = true end
-    end
-    if not customer then return end
+    local customers = buyers(playerID, neighbors)
+    if #customers == 0 then return end
 
     for _, plot in ipairs(neighbors) do
         local resource = GameInfo.Resources[plot:GetResourceType()]
@@ -81,9 +113,10 @@ local function scanCity(playerID, city, rows)
         local improvement = plot:GetImprovementType()
         if improvements and improvements[improvement] and plot:GetOwner() == playerID
             and plot:GetDistrictType() == -1 and not plot:IsImprovementPillaged() then
-            local key = table.concat({playerID, city:GetID(), millPlot, mill, granaryPlot,
-                plot:GetIndex(), resource.Index, improvement}, '/')
-            rows[#rows + 1] = key
+            for _, customer in ipairs(customers) do
+                rows[#rows + 1] = table.concat({playerID, city:GetID(), millPlot, mill, customer.plot,
+                    plot:GetIndex(), resource.Index, improvement, customer.city, customer.building}, '/')
+            end
         end
     end
 end
