@@ -8,6 +8,17 @@ controlled separately. Completed samples are saved as
 `chain-census-TURN.txt`. The result records complete, incomplete and
 missing samples independently of the Storekeeper turn audit.
 
+Use `--qualification` for the preselected Standard-size games listed in the
+[roadmap](../../../docs/civ6-ai/roadmap.md#current-milestone-and-active-problem).
+This requires a fresh Online start, `--through 249` and `--saves`. It records
+all four intermediate censuses and audits the full interior Storekeeper clock.
+The matched Continents control uses `--untuned --matched-source` with the
+tuned run's archived `source.json`. The controller checks the initial map,
+roster and units and requires matching staged packages before deriving the
+control manifest. The per-game retention result counts Quarters with at least
+100 confirmed active turns. Keep separate evidence for recovery and comparison
+across runs.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

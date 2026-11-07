@@ -1,4 +1,4 @@
-"""Start an ordinary Bakers development game with separate local CSC and CE packages."""
+"""Start an ordinary Bakers development or qualification game with local CSC and CE packages."""
 
 import argparse
 import hashlib
@@ -25,6 +25,22 @@ LOGS = ('Lua.log', 'Database.log', 'Modding.log', 'AI_CityBuild.csv', 'AI_Resear
         'AI_Behavior_Trees.csv', 'City_BuildQueue.csv', 'UnitOperations.log')
 MAPS = ('Continents', 'Pangaea', 'Fractal')
 MAP_SIZES = {'small': (6, 9), 'standard': (8, 12)}  # Major and city-state counts.
+QUALIFICATION_SEEDS = {
+    'Continents': (17260413, 27410653),
+    'Pangaea': (18431267, 28681391),
+    'Fractal': (19672039, 29812257),
+}
+QUALIFICATION_ENDPOINT = 249
+QUALIFICATION_CENSUSES = [100, 150, 200, 240]
+
+
+def check_qualification(args):
+    if (args.resume_from or not args.saves or args.map_size != 'standard'
+            or args.through != QUALIFICATION_ENDPOINT
+            or (args.map_seed, args.game_seed) != QUALIFICATION_SEEDS[args.map]):
+        raise ValueError('Qualification requires a fresh preselected Standard game through turn 249 and --saves')
+    if args.untuned != bool(args.matched_source) or (args.untuned and args.map != 'Continents'):
+        raise ValueError('The untuned Continents qualification arm requires the matching tuned source')
 
 
 def host(map_seed, game_seed, map_name, map_size):
@@ -191,7 +207,7 @@ print('CSC_SUPPLIER_ACCESS_INSTALLED')
     require('CSC_SUPPLIER_ACCESS_INSTALLED' in raw, 'Supplier movement watch was not installed')
 
 
-def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_turns):
+def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_turns, *, qualification=False):
     require(load(out / 'session-closed.json')['verified'], 'Expected a closed development run')
     log = read(out / 'Lua.log')
     published = 'CSC_AI_BAKERS_DISTRICTS turn=' in log
@@ -213,12 +229,18 @@ def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_tur
         key = int(turn), int(version)
         score_samples.setdefault(key, []).extend(rows)
     result = audit(log, players, expected_turns=range(start + 1, endpoint))
+    # This is the retention result for one game. Recovery, the matched arm
+    # and the remaining seeds still need their own evidence.
+    retention = {}
+    if qualification:
+        chains = [row for row in result['active_turns'] if row['turns'] >= 100]
+        retention = dict(qualification_retention=dict(chains=chains, meets_target=len(chains) >= 3))
     write_json(out / 'result.json', dict(closed=True, reached=endpoint, placement_bids=placement_bids,
         district_score_samples=[dict(turn=turn, previous_version=version, rows=rows)
                                 for (turn, version), rows in score_samples.items()],
         incomplete_district_sample_turns=sorted(incomplete),
         storekeeper=result, checkpoint=checkpoint,
-        milestone_censuses=archive_milestone_censuses(log, census_turns, out)))
+        milestone_censuses=archive_milestone_censuses(log, census_turns, out), **retention))
 
 
 def run(args):
@@ -247,8 +269,8 @@ def run(args):
                                              sha256=hashlib.sha256(control_manifest).hexdigest())
     protocol = dict(map=args.map, map_size=args.map_size, map_seed=args.map_seed, game_seed=args.game_seed,
         endpoint=args.through, interval_minutes=args.interval_minutes, csc=csc_id, ce=ce_id,
-        untuned=args.untuned, development=True, ordinary_setup=True,
-        fresh_game=True, qualification=False, external_policy=False, gameplay_interventions=False,
+        untuned=args.untuned, development=not args.qualification, ordinary_setup=True,
+        fresh_game=True, qualification=args.qualification, external_policy=False, gameplay_interventions=False,
         input_digests=[hashlib.sha256(json.dumps(pins[source], sort_keys=True).encode()).hexdigest()
                        for source in (ce, csc)])
     if args.saves:
@@ -353,6 +375,10 @@ def run(args):
         require(previous == dict(protocol, untuned=not args.untuned),
                 'Matched arms require the same staged content and setup with opposite policy states')
         require(load(other_source.parent / 'session-closed.json')['verified'], 'Matched arm did not close cleanly')
+        if args.qualification:
+            require(other_source.name == 'source.json'
+                    and load(other_source.parent / 'result.json')['reached'] == QUALIFICATION_ENDPOINT,
+                    'The matched qualification arm must have archived its full tuned run')
     out.mkdir(parents=True)
     write_json(out / 'packages.json', {str(source): dict(install=str(local[source]), files=files)
                                        for source, files in installed_pins.items()})
@@ -631,7 +657,8 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
                 log = args.user_root / 'Logs' / name
                 if session.closed and log.is_file():
                     shutil.copyfile(log, out / name)
-    summarize_run(out, players, start, args.through, args.untuned, checkpoint, args.census_turns)
+    summarize_run(out, players, start, args.through, args.untuned, checkpoint, args.census_turns,
+                  qualification=args.qualification)
 
 
 if __name__ == '__main__':
@@ -645,6 +672,8 @@ if __name__ == '__main__':
     parser.add_argument('--interval-minutes', type=int, default=30,
                         help='Maximum wall time of one continuous autoplay window (30–240)')
     parser.add_argument('--untuned', action='store_true', help='Remove only the CSC runtime policy action locally')
+    parser.add_argument('--qualification', action='store_true',
+                        help='Record a preselected fresh Standard run with strict Storekeeper turn coverage')
     parser.add_argument('--matched-source', type=Path, help='Require initial state parity with the other arm')
     parser.add_argument('--saves', type=Path, help='Native Saves/Single path for an endpoint census and archived save')
     parser.add_argument('--census-turns', type=int, nargs='+', default=[],
@@ -669,6 +698,14 @@ if __name__ == '__main__':
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
     options.census_turns = sorted(set(options.census_turns))
+    if options.qualification:
+        try:
+            check_qualification(options)
+        except ValueError as error:
+            parser.error(str(error))
+        if options.census_turns and options.census_turns != QUALIFICATION_CENSUSES:
+            parser.error('Qualification uses the same four milestone censuses in every arm')
+        options.census_turns = QUALIFICATION_CENSUSES
     if len(options.census_turns) > 8:
         parser.error('At most eight milestone census turns are supported')
     if options.resume_from:
