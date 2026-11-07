@@ -108,17 +108,22 @@ produced a valid Wind Mill offer at its lower native cache value.
 The follow-up refreshed that offer, entered production on 135
 and finished the Mill on 137 without another adjustment.
 Storekeeper operated on 138–143. The matched control finished
-Amphitheater with Melbourne's Mill still absent. Under **4.2**, qualify a
-reusable, bounded nomination preference for ready chains and
-verify whether it generalises across ordinary starts.
-Ancyra still needs its Mill and Granary, and some sites lack a
-viable supplier or customer.
+Amphitheater with Melbourne's Mill still absent. The main CSC
+policy and CE review build reproduced the Wind Mill nomination
+and construction from the same turn-125 save, with active
+Storekeeper on 138. **4.2** still needs calibration across ordinary
+starts and the Water Mill route. **5.1** is the next missing link
+to join to it.
+Ancyra still needs its Mill and Granary. Charleston has both
+buildings and Feudalism, with no Farm on the adjacent Maize
+at turn 139. That is another **3.2** supplier follow-through case.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 [Fresh calibrated game](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
 [Melbourne building trace](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-available-wind-mill-lost-the-ordinary-building-nomination).
 [Melbourne production and payout](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
+[Integrated Mill replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#integrated-ce-nomination-reproduced-melbournes-wind-mill-and-service).
 
-**Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
+**Supplier recovery evidence — 3.1–3.2 and 13.1–13.2.**
 The CE score-stage policy now reads live CSC material rules and protects
 critical supplier sites in the matched Boston replay. With the same district
 policy in both arms, the control lost its Cattle. The treatment kept its

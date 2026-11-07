@@ -17,6 +17,11 @@ local ACTIVE_SERVICE_COST_Q8 = 24576
 -- Alexandria's ready chain needed 56 utility units across repeat allocations.
 -- The cap from CE preserves the original lower amount on older local builds.
 local READY_SUPPLIER_BID_Q8 = 56 * 256
+-- Initial calibration from the matched Melbourne nomination. Only publish
+-- this preference when the Mill alone can complete a working Stage 2 chain.
+local READY_MILL_BID_Q8 = 448 * 256
+local WIND_MILL = 'BUILDING_CSC_BAKERS_WIND_MILL'
+local WATER_MILL = 'BUILDING_CSC_BAKERS_WATER_MILL'
 
 local improvementsByResource
 local granaryTypes
@@ -120,24 +125,42 @@ local function hasBakersCustomer(player, quarter)
     return false
 end
 
-local function missingStorekeeperSupply(player, city, quarter, base)
-    if #base ~= 1 or base[1].working then return false end
-    local buildings = city:GetBuildings()
-    local index = quarter:GetIndex()
-    if not workingBuildingAt(buildings, GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL, index)
-        and not workingBuildingAt(buildings, GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL, index) then
-        return false
+local function nominateBakersMills(entries, player, city, quarter, base, bid)
+    local supplied = false
+    for _, material in ipairs(base) do
+        if material.working then
+            supplied = true
+            break
+        end
     end
-    return hasBakersCustomer(player, quarter)
+    if not supplied then return end
+    local buildings = city:GetBuildings()
+    local wind = GameInfo.Buildings[WIND_MILL]
+    local water = GameInfo.Buildings[WATER_MILL]
+    -- Existing producers belong to the repair policy, including pillaged ones.
+    if (wind and buildings:HasBuilding(wind.Index)) or (water and buildings:HasBuilding(water.Index)) then return end
+    local playerID = player:GetID()
+    if not hasBakersCustomer(playerID, quarter) then return end
+    local function add(kind)
+        if not kind then return end
+        local tech = kind.PrereqTech and GameInfo.Technologies[kind.PrereqTech]
+        if kind.PrereqTech and (not tech or not player:GetTechs():HasTech(tech.Index)) then return end
+        entries[#entries + 1] = { player = playerID, city = city:GetID(), building = kind.Index, delta = bid }
+    end
+    -- Both variants can be legal on rivers. Let Civ compare their native
+    -- values and enforce the river flag, mutual exclusion and queue checks.
+    add(wind)
+    if quarter:IsRiver() then add(water) end
 end
 
-function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit)
-    local risks, recover = {}, {}
+function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit, nominationLimit)
+    local risks, recover, nominations = {}, {}, {}
     local quarterType = GameInfo.Districts[BAKERS]
-    if not quarterType then return risks, recover end
+    if not quarterType then return risks, recover, nominations end
     local recoveryBid = math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8)
-    local feudalism = recoveryBid > 0 and GameInfo.Civics.CIVIC_FEUDALISM
-    local canRecover = feudalism and player:GetCulture():HasCivic(feudalism.Index)
+    local millBid = math.min(nominationLimit or 0, READY_MILL_BID_Q8)
+    local feudalism = (recoveryBid > 0 or millBid > 0) and GameInfo.Civics.CIVIC_FEUDALISM
+    local serviceUnlocked = feudalism and player:GetCulture():HasCivic(feudalism.Index)
     for _, city in player:GetCities():Members() do
         local districts = city:GetDistricts()
         for index = 0, districts:GetNumDistricts() - 1 do
@@ -149,24 +172,31 @@ function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit)
                 local activeService = ready and (city:GetProperty(STOREKEEPER_GROWTH) or 0) > 0
                 priceSupply(risks, supply.base, activeService)
                 priceSupply(risks, supply.specialty, false)
-                -- One bid per protected plot. Ready consumers and Feudalism
-                -- make the absent working Base the immediate Service blocker.
-                if canRecover and ready and not activeService
-                    and missingStorekeeperSupply(player:GetID(), city, plot, supply.base) then
-                    recover[supply.base[1].plot] = recoveryBid
+                if serviceUnlocked and ready and not activeService then
+                    local base = supply.base
+                    if recoveryBid > 0 and #base == 1 and not base[1].working then
+                        local buildings = city:GetBuildings()
+                        local millWorks = workingBuildingAt(buildings, GameInfo.Buildings[WATER_MILL], plot:GetIndex())
+                            or workingBuildingAt(buildings, GameInfo.Buildings[WIND_MILL], plot:GetIndex())
+                        if millWorks and hasBakersCustomer(player:GetID(), plot) then
+                            recover[base[1].plot] = recoveryBid
+                        end
+                    elseif millBid > 0 then
+                        nominateBakersMills(nominations, player, city, plot, base, millBid)
+                    end
                 end
             end
         end
     end
-    return risks, recover
+    return risks, recover, nominations
 end
 
 -- A supplier can be in a different city from the Quarter. Key the deduction
 -- to the city that could actually place a district there, as CE expects.
-function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders, builderBidLimit)
+function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders, builderBidLimit, nominationLimit)
     local playerID = player:GetID()
     local entries, builderSites = {}, {}
-    local risks, recover = CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit)
+    local risks, recover, nominations = CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit, nominationLimit)
     for index, cost in pairs(risks) do
         local plot = Map.GetPlotByIndex(index)
         local city = Cities.GetPlotPurchaseCity(plot)
@@ -197,7 +227,7 @@ function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilder
             end
         end
     end
-    return entries, builderSites
+    return entries, builderSites, nominations
 end
 
 local WATER_RECIPIENT = {

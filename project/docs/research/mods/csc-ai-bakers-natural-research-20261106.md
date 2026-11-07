@@ -1759,13 +1759,64 @@ frame retains the caller return at `[RBP+0x28]` and the two
 flags at `[RBP+0x40]` and `[RBP+0x48]`. The intended scope
 is return `3e160a` with flags 0/0.
 
-The adapter is a design awaiting implementation and qualification.
-Keep byte validation, relay ownership, instruction-cache flushing
-and rollback in CE Runtime. Keep the candidate lookup generic and
-publish CSC's ready-chain criteria separately. Verify no-policy
-parity and scope before testing the amount. The Windows XP2
+The adapter places byte validation, relay ownership, instruction-cache
+flushing and rollback in CE Runtime. The candidate lookup is generic
+and CSC publishes its ready-chain criteria separately. The Windows XP2
 reference SHA-256 is
 `324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c`.
+
+### Integrated CE nomination reproduced Melbourne’s Wind Mill and Service
+
+`development-melbourne-ce-integrated-01` loaded the same turn-125
+save and ran through 139 using the shared controller. CE review
+commit `abf5d58` provided the native adapter. The main CSC
+publisher staged one Mill preference on the ordinary boundary
+because Melbourne had a complete Bakers Quarter, working Rice
+Farm, an adjacent working Granary and Feudalism. Only the
+unbuilt, unlocked Wind Mill qualified in Melbourne. No Frida
+attachment or console score write was used.
+
+The turn-133 publication recorded exactly one change in the
+previous interval. Melbourne Wind Mill 139 rose from 93,359 to
+208,047 Q8. The city submitted the native offer at 364 points
+on turn 132, after the same Star Fort and Commercial Hub
+commitments as the control. It chose the Mill on 135 and
+completed it on 137 at its native refreshed value of 553.2
+points in the city log. Melbourne recorded an active Storekeeper
+turn on 138. The publisher stopped nominating the Mill once
+complete. Alexandria operated on all 13 interior turns in both
+arms. No native nomination faults were reported.
+
+`development-melbourne-ce-parity-02` used the exact reviewed DLL
+with the original CSC publisher and zero nomination entries.
+Melbourne submitted and started Amphitheater under contract 2391,
+matching the earlier stock nomination and queue choices. The
+full city-build log was byte-identical to the first no-bid replay,
+`development-melbourne-ce-parity-01`, on the earlier build of the
+adapter. All three runs verified normal exit, controller preferences
+and temporary package restoration.
+
+The reviewed release DLL SHA-256 is
+`995c93ce33f582638774547303899f35169f17da98a58795123f001ef1f45e7d`.
+The integrated endpoint SHA-256 is
+`3fde70ee828b6c4fb7d4630766bf4b31cd27744cdcd6553848ad5d7d8d47a613`.
+The integrated Lua log SHA-256 is
+`8667d3f91ad31e50daab2629724736f82dce5faf1223d195affda67ac91a60b2`.
+The reviewed no-bid endpoint SHA-256 is
+`feffebcf0c3b488f35add8faee213cc764089f76f912efe5250882530c20c185`.
+Both release builds used the existing MSVC solution and pinned
+dependencies. The reviewed source passed 74 native checks, four
+hook-group checks and the synthetic executable relay test. Eight
+Lua checks passed, including unlock, river, presence, material
+and cap gates. The 448-unit bid is an initial calibration from
+one gap. Fresh starts, other ready sites, Water Mill follow-through
+and mature-game overhead remain to be measured.
+
+At the integrated endpoint, Ancyra still needed both a Mill and
+the Granary despite its working Rice Farm. Charleston had built
+the Water Mill and Granary and had Feudalism. Its adjacent Maize
+still had no Farm. These are separate next checks for customer
+nomination and supplier follow-through.
 
 ## Evidence locator
 

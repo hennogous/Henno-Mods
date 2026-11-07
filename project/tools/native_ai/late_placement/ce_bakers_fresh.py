@@ -228,25 +228,33 @@ def run(args):
             expected.update(fresh_game=False, ordinary_setup=False, diagnostic_start=previous['diagnostic_start'],
                             gameplay_interventions=previous['gameplay_interventions'])
             for key in ('diagnostic_extra_pasture_q8', 'diagnostic_source_sha256', 'diagnostic_movement_only',
-                        'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8'):
+                        'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8', 'diagnostic_mill_ce_replay'):
                 if key in previous:
                     expected[key] = previous[key]
-        if args.calibration_replay:
-            require(checkpoint_input['sha256'] == 'b3d6cc1aa78e8a156e60c4b110b229a3631ccaed57e24d7883aaca549fbc9545'
-                    and args.supplier == [2, 196610, 2311, 2312] and args.through == 122,
-                    'Calibration uses the exact Alexandria movement checkpoint')
+        if args.calibration_replay or args.mill_ce_replay:
+            if args.calibration_replay:
+                require(checkpoint_input['sha256'] == 'b3d6cc1aa78e8a156e60c4b110b229a3631ccaed57e24d7883aaca549fbc9545'
+                        and args.supplier == [2, 196610, 2311, 2312] and args.through == 122,
+                        'Calibration uses the exact Alexandria movement checkpoint')
+                protocol['diagnostic_calibration_build'] = True
+            else:
+                require(checkpoint_input['sha256'] == 'bb5280928bc4c47b62f5aa58304bba873d08856aef692b548bbf1b83836d77de'
+                        and args.wind_mill == [4, 131073, 1423] and args.through == 139,
+                        'CE nomination uses the exact Melbourne checkpoint')
+                protocol['diagnostic_mill_ce_replay'] = args.mill_ce_replay
             prior_packages = {row['install']: row['files'] for row in load(prior / 'packages.json').values()}
             permitted = {
                 ce: {str(ce_dll)},
                 csc: {str(Path('Lua_UI/AI') / name) for name in (
                     'CSC_AI_BakersGameplay.lua', 'CSC_AI_DistrictBridge.lua', 'CSC_AI_QuarterPlacement.lua')},
             }
+            if args.mill_ce_replay == 'parity':
+                permitted[csc] = set()
             for source, destination in local.items():
                 old, new = prior_packages[str(destination)], pins[source]
                 changed = {name for name in old.keys() | new.keys() if old.get(name) != new.get(name)}
                 require(changed == permitted[source], 'Unexpected file changes in the calibration package')
             expected['input_digests'] = previous['input_digests']
-            protocol['diagnostic_calibration_build'] = True
         require(previous == expected
                 and load(prior / 'session-closed.json')['verified'],
                 'Diagnostic continuation requires the same closed package and setup')
@@ -430,6 +438,16 @@ Modding.EnableMod(chosen.Handle,true)
         if args.supplier:
             capture_builders(controller, args.supplier[0], start, out / 'source-builders.json')
             watch_supplier_access(controller, args.supplier[0], args.supplier[3])
+        if args.mill_ce_replay:
+            pid, city, _ = args.wind_mill
+            capture_wind_mill_readiness(controller, pid, city, start, out / 'source-mill.json')
+            require(load(out / 'source-mill.json')['available'], 'Wind Mill is no longer available')
+            status = parse(controller.cmd(
+                "print('CSC_NOMINATION='..assert(CE_AIBuildingNominationStatus)())",
+                'GameCore_Tuner', 'building-nomination-capability'), 'CSC_NOMINATION')
+            require(status['ready'] == 1 and status['faults'] == 0, 'CE nomination capability is unavailable')
+            require(args.mill_ce_replay != 'parity' or status['entries'] == 0, 'Parity arm published a nomination')
+            write_json(out / 'source-nomination.json', status)
         if args.probe_dependencies:
             dependencies = args.probe_dependencies.resolve(strict=True)
             sys.path.insert(0, str(dependencies))
@@ -529,11 +547,13 @@ if __name__ == '__main__':
     parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
     parser.add_argument('--movement-only', action='store_true', help='Observe assigned Builder movement without native hooks')
     parser.add_argument('--calibration-replay', action='store_true', help='Verify the integrated bid on the exact Alexandria save')
+    parser.add_argument('--mill-ce-replay', choices=('parity', 'tuned'),
+                        help='Verify the CE hook with the old or integrated CSC publisher on the exact Melbourne save')
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
     if options.resume_from:
         if not (options.saves and (options.supplier or options.wind_mill)
-                and (options.probe_dependencies or options.movement_only)
+                and (options.probe_dependencies or options.movement_only or options.mill_ce_replay)
                 and not options.untuned and not options.matched_source):
             parser.error('A tuned continuation needs --saves, one target, and a diagnostic mode')
         if options.alexandria_bid and not options.supplier:
@@ -544,8 +564,10 @@ if __name__ == '__main__':
             parser.error('Movement-only diagnosis requires --supplier and uses no native probe or bid')
         if options.calibration_replay and not options.movement_only:
             parser.error('Integrated calibration requires --movement-only')
+        if options.mill_ce_replay and (not options.wind_mill or options.probe_dependencies or options.melbourne_mill_bid):
+            parser.error('CE nomination qualification requires --wind-mill and uses no external probe or bid')
     elif (options.supplier or options.wind_mill or options.probe_dependencies or options.alexandria_bid or options.melbourne_mill_bid
-          or options.movement_only or options.calibration_replay):
+          or options.movement_only or options.calibration_replay or options.mill_ce_replay):
         parser.error('Decision diagnostics require --resume-from')
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):
         parser.error('Use positive 31-bit seeds and an endpoint between turns 3 and 250')

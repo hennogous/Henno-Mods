@@ -53,6 +53,13 @@ Amphitheater and had no working Storekeeper in Melbourne.
 [AI-C090] [AI-C091] [AI-C092]
 [Matched production and payout](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
 
+The main CSC publisher now bids for an unlocked, missing Mill when
+the working Base, customer and Feudalism are in place. The CE review
+build changed the ordinary nomination once and reproduced the offer,
+completion and Storekeeper at the same checkpoint without an external
+writer. The amount is an initial calibration. [AI-C093]
+[Integrated replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#integrated-ce-nomination-reproduced-melbournes-wind-mill-and-service).
+
 ## AI-C024 — Private producer value reached an unbuilt Workshop decision
 
 A bounded trace captured a legal unbuilt Textile Workshop’s fresh NetValue and nested private getter 80, later best-building selection and queue entry. This is stronger than a UI preview or loaded row.

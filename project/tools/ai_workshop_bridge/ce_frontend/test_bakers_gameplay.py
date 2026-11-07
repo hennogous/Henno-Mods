@@ -187,7 +187,45 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertEqual(lua.eval('table.concat(builders[1], ",")'), '3,42,101,5,14336')
         lua.execute('improvement=5; pillaged=false; turn=10; boundary()')
         self.assertEqual(lua.eval('table.concat(builders[1], ",")'), '3,42,101,5')
-        lua.execute('turn=11; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute("""
+            local begin = CE_AIDistrictScoresBegin
+            CE_AIDistrictScoresBegin = function(...)
+                nominations = {}
+                return begin(...)
+            end
+            CE_AIBuildingNominationBid = function(...)
+                nominations[#nominations+1] = {...}
+                return 1
+            end
+            CE_AIBuildingNominationStatus = function()
+                return '{"ready":1,"faults":0,"maxBidQ8":'..nominationLimit..'}'
+            end
+            nominationLimit = 32768
+            GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL.PrereqTech = 'TECH_ENGINEERING'
+            GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL = {Index=10, PrereqTech='TECH_MACHINERY'}
+            GameInfo.Technologies = {TECH_ENGINEERING={Index=1}, TECH_MACHINERY={Index=2}}
+            Players[3].GetTechs = function()
+                return {HasTech=function(_, i) return i == 1 or machinery end}
+            end
+            city.GetID = function() return 42 end
+            city.GetBuildings = function() return {HasBuilding=function() return hasMill end} end
+            Map.GetPlot().IsRiver = function() return river end
+            machinery, river, hasMill = true, false, false
+            turn=11; boundary()
+        """)
+        self.assertEqual(lua.eval('#nominations'), 1)
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,42,10,32768')
+        lua.execute('nominationLimit=131072; river=true; turn=12; boundary()')
+        self.assertEqual(lua.eval('#nominations'), 2)
+        self.assertEqual(lua.eval('table.concat(nominations[2], ",")'), '3,42,9,114688')
+        lua.execute('machinery=false; turn=13; boundary()')
+        self.assertEqual(lua.eval('#nominations'), 1)
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,42,9,114688')
+        lua.execute('hasMill=true; turn=14; boundary()')
+        self.assertEqual(lua.eval('#nominations'), 0)
+        lua.execute('hasMill=false; pillaged=true; turn=15; boundary()')
+        self.assertEqual(lua.eval('#nominations'), 0)
+        lua.execute('turn=16; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

@@ -54,10 +54,11 @@ Alexandria and none elsewhere. Melbourne still needed only a
 Wind Mill. A test bid made it offer the Mill instead of an
 Amphitheater. When production opened, the AI refreshed the offer
 and built the Mill at its own valuation. Storekeeper operated
-for six measured turns. Next, test whether a reusable bid based
-on the ready chain can help the Mill get considered in ordinary
-games.
-Ancyra needed both its Mill and Granary.
+for six measured turns. The main CSC policy and CE review build
+then reproduced the nomination, construction and a measured
+Storekeeper turn from the same save. The next checks are how
+this bid behaves in other cities and how to value a Granary when
+the chain still needs both buildings, as in Ancyra.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
 The offline planner separately covers actual gameplay definitions and a copied

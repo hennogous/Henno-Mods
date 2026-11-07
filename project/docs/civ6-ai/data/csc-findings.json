@@ -1539,5 +1539,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C091"],
     "related": ["AI-N025"]
+  },
+  {
+    "id": "AI-C093",
+    "title": "Integrated CSC and CE reproduced the Melbourne Wind Mill nomination and Service",
+    "statement": "CSC published a bounded preference for the ready chain. CE increased the ordinary Wind Mill nomination from 93359 to 208047 Q8 once, and the native offer, construction and active Storekeeper followed without an external score writer.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Exact turn-125 Melbourne checkpoint through 139 on the pinned Steam XP2 and CE review build. Native contract 2391 carried the Mill on 132, started on 135, completed on 137, and Storekeeper operated on the measured turn 138. The matched no-bid replay with the same reviewed DLL carried Amphitheater.",
+    "limits": "One saved city and a one-turn integrated payout window. The bounded 448-unit preference is an initial fixture calibration. Water Mill behavior, wider balance, mature-game overhead and fresh-start repeatability remain open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C092"],
+    "related": ["AI-N020", "AI-N025"]
   }
 ]

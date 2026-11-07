@@ -66,7 +66,7 @@ local function refresh(turn)
     end
 
     local started = os.clock()
-    local entries, builderSites = {}, {}
+    local entries, builderSites, nominations = {}, {}, {}
     local builderStatus = bridge.BuilderStatus()
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
     local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
@@ -75,10 +75,14 @@ local function refresh(turn)
     local harvestStatus = bridge.BuilderHarvestStatus()
     local protectHarvests = protectBuilders and harvestStatus
         and harvestStatus:match('"ready":1') and harvestStatus:match('"faults":0')
+    local nominationStatus = bridge.NominationStatus()
+    local nominationLimit = bridge.NominationLimit(nominationStatus)
     local allowances = 0
     for _, id in ipairs(players) do
         local player = Players[id]
-        local deductions, sites = placement.BakersMaterialDeductions(player, protectBuilders, builderBidLimit)
+        local deductions, sites, bids = placement.BakersMaterialDeductions(player, protectBuilders,
+            builderBidLimit, nominationLimit)
+        for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
         local protectedPlots = {}
         for _, entry in ipairs(deductions) do
             entries[#entries + 1] = entry
@@ -107,7 +111,8 @@ local function refresh(turn)
     -- Dropping part of a site's compatibility list can forbid a valid job.
     -- Retire Builder protection for the turn if the full packet cannot fit.
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
-        allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit)
+        allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit,
+        #nominations <= capacity and nominations or nil, nominationLimit)
     assert(accepted, message)
     if samples and samples ~= '[]' then
         -- Civ clips long Lua log lines. CE sends a flat array of small
@@ -138,6 +143,10 @@ local function refresh(turn)
     end
     if harvestStatus then
         print(string.format('CSC_AI_BAKERS_HARVEST turn=%d previous=%s', turn, harvestStatus))
+    end
+    if nominationStatus then
+        print(string.format('CSC_AI_BAKERS_NOMINATIONS turn=%d bids=%d previous=%s',
+            turn, #nominations <= capacity and #nominations or 0, nominationStatus))
     end
     print(string.format('CSC_AI_BAKERS_DISTRICTS turn=%d version=%d players=%d entries=%d omitted=%d previousMatched=%d previousChanged=%d seconds=%.4f',
         turn, version + 1, #players, #entries, omitted, matched, changed, os.clock() - started))
