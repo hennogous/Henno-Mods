@@ -77,6 +77,20 @@ effective uplift and traces both native project rejection gates.
 ordinary setup, published for five original AIs each turn 1–8,
 and logged all six expected interior Storekeeper turns. No active
 Service existed in this early window. Use the strict clock audit.
+The corrected `staged-03` owned-site publisher passed the normal-start
+Continents pair (`development-placement-02` and its matched control).
+Native changes from positive-only packets totaled 99. Ancyra reserved
+(24,19), submitted Bakers contract 422 on 39 and queued it on 44 in
+both arms. Treatment proposal 349 vs control 325 matches +6,144 Q8.
+No major-AI Bakers choice change, completion or Service by 45.
+Gameplay `CanProduce` is a stub, so the publisher uses the UI cache
+read-only targets plus an authoritative gameplay plot check (AI-N099).
+The Mill bid changed the default building winner and still lost to
+unadvanceable project 25. The earlier comparison is threat review.
+The isolated project-screen comparison now tests CanAdvance before
+ranking without changing Mill values. A valid earlier contract may win.
+Civic goal scoring is separate from the legal step. Use QueueNextCivic
+at 418860, comparator 40de20 and row details in AI-N100 for Feudalism.
 The CE harvest gate review branch `codex/ce-builder-harvest-gate`
 at `4f6f235` built with SHA `74fe0149…` and passed 70 score/policy
 and four hook-group checks. The main CSC publisher match reused

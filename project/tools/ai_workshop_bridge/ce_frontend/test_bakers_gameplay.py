@@ -78,6 +78,8 @@ class BakersGameplayTest(unittest.TestCase):
     def test_real_publisher_protects_the_city_that_can_cover_the_supplier(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)
+        messages = []
+        lua.globals().print = messages.append
 
         def include(name):
             if name != 'CSC_AdjacencyCore':
@@ -126,10 +128,16 @@ class BakersGameplayTest(unittest.TestCase):
                 assert(readLegalTargets==ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets)
                 return {{player=3,city=42,district=3,plot=100,delta=12288}}
             end
+            CE_AIDistrictScoresStatus=function()
+                return '{"ready":1,"faults":0,"version":'..version..
+                    ',"changed":1,"samples":[[3,42,1,101,12288,0]]}'
+            end
             turn=5; boundary()
         """)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         self.assertEqual(lua.eval('table.concat(packet[2], ",")'), '3,42,3,100,12288')
+        self.assertIn('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=5 previousVersion=4 samples=[[3,42,1,101,12288,0]]',
+                      messages)
         lua.execute("CSC_AI_BakersSiteForecasts=function() error('fixture') end; turn=6; boundary()")
         self.assertEqual(lua.eval('#packet'), 1)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')

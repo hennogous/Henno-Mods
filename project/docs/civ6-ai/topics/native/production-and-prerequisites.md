@@ -49,6 +49,12 @@ score in the analysis row. The queue still selects and validates the actual
 step independently. [AI-N085]
 [Technology queue and contract paths](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-technology-decision-boundary).
 
+The civic queue also separates the goal from the next step. It compares
+the full Q8 value after owned and exclusion checks, then validates the
+winning row's immediate step with `CanProgress`. A civic research
+contract adds to the full value. It does not directly queue a civic.
+[AI-N100] [Civic row and queue trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-civic-decision-boundary).
+
 ## Visible, disabled and constructible are different queries
 
 Stock ProductionPanel first queries `CanProduce(hash,true)` for list admission,

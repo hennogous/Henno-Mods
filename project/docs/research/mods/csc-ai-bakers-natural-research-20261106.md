@@ -1214,6 +1214,29 @@ It has no immediate research setter call. `GetBestTechsToResearch` at
 paths. For a future research bid, trace the actual queue decision as well as
 any score or contract result. This pass made no research changes.
 
+## Native civic decision boundary
+
+`CultureAi::DoTurnActivate` calls `QueueNextCivic` at `418860` when
+`GetProgressingCivic` reports no active civic. The queue passes the
+`CivicAnalysis` range and the excluded next-step index to the comparator
+at `40de20`. `CivicAnalysis::toString` at `41e8a0` labels the row's goal,
+owned flag, estimated turns, solo value and full value. Both values are
+logged as Q8. The comparator first prefers unowned rows and avoids the
+excluded next-step index. It compares full value at `+0x14` when the
+signed product of the two turn estimates is positive. Otherwise it
+compares the turn-estimate fields. The winner supplies its separate
+next step at `+0x1c` to `Culture::CanProgress`. A failed winner takes
+the random fallback among eligible unowned civics.
+
+`CivicResearchContract::Execute` at `3f8250` calls `IncreasePriority`
+at `416630`. It adds the contract value to the addressed row's full
+score when that score is nonnegative. It does not change the actual
+research queue. `CalculateFullValue` at `412c00` also resets and rebuilds
+the score from the goal and up to two prerequisite levels. A stock-AI
+Feudalism test should capture the effective goal operands near actual
+queue selection, the queued legal prerequisite if any, Feudalism's
+completion, and Storekeeper separately. These findings are static.
+
 ## Native Storekeeper turn sampling
 
 `ce-storekeeper-watch-01` repeated the turn-69 Pasture publisher pair
@@ -1312,8 +1335,30 @@ uses the UI-cache hash-only placement method and its separate readiness
 method. CSC now calls those read-only methods through its UI bridge,
 then checks the returned plots again in Gameplay before publishing.
 The offline fixtures passed and `development-placement-02` uses the
-corrected `staged-03` build. Native follow-through and performance
-still require evidence.
+corrected `staged-03` build. It reached turn 45 with zero placement
+errors, positive bids on turns 14–45, and up to four bids per turn.
+The CE status at turns 15–45 records 99 changed native score calls
+across the 31 preceding publications, each containing only positive
+placement entries. No entry was omitted. All 43 expected interior
+Storekeeper samples were captured. None was active. The game closed
+normally and restored preferences.
+
+`development-placement-control-01` used the same package digests,
+seeds, map signature, leaders and starting units, with only the CSC
+publisher action removed. CE remained loaded with zero active entries
+and zero changed scores. Ancyra submitted Bakers contract 422 at
+`(24, 19)` on turn 39 and put it in production on turn 44 in both
+arms. The proposal value was 349 with tuning and 325 in the untuned
+arm. The 24-unit difference matches the 6,144 Q8 band. This verifies
+score delivery through a native proposal on that site. The observed
+major-AI Bakers queue outcome was the same in both arms. Neither arm
+recorded a completion by 45 or an active Storekeeper sample.
+The next publisher version records a bounded set of native score
+samples by city and plot before each batch resets them.
+
+The tuned and untuned `Lua.log` SHA-256 values are
+`a4132057d3f4ae78ce8e795fdbebc1d1b351cf2b21280552053cc58de4fdb762` and
+`ce0ddcf6a4853cba6c337d232e395098a10b3918398c89f547c70d11950be4cd`.
 
 ## Evidence locator
 

@@ -1764,5 +1764,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/production-and-prerequisites.md",
     "related": ["AI-N073"]
+  },
+  {
+    "id": "AI-N100",
+    "title": "Civic queue choices use full goal values and a separate immediately legal step",
+    "statement": "QueueNextCivic compares CivicAnalysis rows, reads the winning row's next step and checks CanProgress before appending it. CivicResearchContract adds to a full Q8 goal value; it does not queue the civic itself.",
+    "status": "accepted",
+    "evidence_types": ["static", "source"],
+    "scope": "Patched XP2 Windows. QueueNextCivic 418860 calls comparator 40de20. The 0x50-byte row has goal index at +0x08, owned flag +0x0c, solo and full Q8 at +0x10 and +0x14, estimated turns +0x18, and next step +0x1c. Comparator prefers unowned rows and avoids the excluded step, then compares full Q8 when the signed product of estimated turns is positive. CivicResearchContract::Execute 3f8250 calls IncreasePriority 416630.",
+    "limits": "Static decision path and units. No calibrated Feudalism bid, advance date, or Storekeeper benefit is established. Full value is rebuilt by CalculateFullValue and can be sorted for other consumers.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "related": ["AI-N081", "AI-N085", "AI-C019"]
   }
 ]

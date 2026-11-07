@@ -250,9 +250,13 @@ Modding.EnableMod(chosen.Handle,true)
     require('CSC_AI_BAKERS_PLACEMENT_FAILED' not in log, 'CSC placement scan faulted during the run')
     placement_bids = {int(turn): int(count) for turn, count in
                       re.findall(r'CSC_AI_BAKERS_PLACEMENT turn=(\d+) bids=(\d+)', log)}
+    score_samples = [dict(turn=int(turn), previous_version=int(version), rows=json.loads(samples))
+                     for turn, version, samples in re.findall(
+                         r'CSC_AI_BAKERS_DISTRICT_SAMPLES turn=(\d+) previousVersion=(\d+) samples=(\[[^\r\n]+\])', log)]
     result = audit(log, players, expected_turns=range(2, args.through))
     write_json(out / 'result.json', dict(closed=session.closed, reached=args.through,
-                                       placement_bids=placement_bids, storekeeper=result))
+                                       placement_bids=placement_bids, district_score_samples=score_samples,
+                                       storekeeper=result))
 
 
 if __name__ == '__main__':

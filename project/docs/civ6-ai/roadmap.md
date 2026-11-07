@@ -76,8 +76,11 @@ the site using loaded CSC adjacency rules and the local Mill branch.
 The two initial Q8 bands passed offline checks. The first normal-start run
 exposed the Gameplay versus UI build-queue API difference. The publisher
 now reads readiness via the UI bridge and rechecks plot state in Gameplay.
-The repeat will verify publication and native consumption. Future customer sites,
-affordable land acquisition and construction follow-through are still open.
+The repeat verified positive native score changes and a higher proposal
+on Ancyra's same site in a clean untuned comparison. Both arms queued that
+Quarter on turn 44. Continue through completion and look for improved site
+or investment choices. Future customer sites and affordable land acquisition
+are still open. [Matched development run](../research/mods/csc-ai-bakers-natural-research-20261106.md#owned-site-placement-publishing).
 
 **Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
 The CE score-stage policy now reads live CSC material rules and protects

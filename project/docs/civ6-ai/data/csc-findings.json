@@ -1390,5 +1390,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C079", "AI-N098"]
+  },
+  {
+    "id": "AI-C081",
+    "title": "An integrated Bakers site bid raised the native proposal on the matched start",
+    "statement": "The corrected normal-start CSC publisher delivered positive owned-site bids to CE. In the matched pair Ancyra proposed the same Bakers site with value 349 under tuning and 325 untuned, then queued the same contract.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Stock-AI Continents development seed on Small map size through turn 45 with identical starting census and packages. Only the publisher action was absent in control. The tuned arm recorded 99 native changes from positive-only publications. Ancyra reserved (24,19), submitted contract 422 at 39 and entered production at 44 in both arms.",
+    "limits": "One start and short window. The bid reached a proposal, but no major-AI Bakers choice divergence, completion or active Storekeeper was observed by 45. No tile purchase was involved.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/site-planner.md",
+    "depends_on": ["AI-C061", "AI-N099"]
   }
 ]

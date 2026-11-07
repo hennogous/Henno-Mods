@@ -51,6 +51,7 @@ local function refresh(turn)
     -- The next commit resets CE's per-publication counters.
     local matched = tonumber(status:match('"matched":(%d+)')) or 0
     local changed = tonumber(status:match('"changed":(%d+)')) or 0
+    local samples = changed > 0 and status:match('"samples":(%b[])')
     local players = eligiblePlayers(turn)
     if #players == 0 then
         bridge.Disable()
@@ -108,6 +109,10 @@ local function refresh(turn)
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests)
     assert(accepted, message)
+    if samples and samples ~= '[]' then
+        print(string.format('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=%d previousVersion=%d samples=%s',
+            turn, version, samples))
+    end
     local siteBids = 0
     for _, entry in ipairs(entries) do
         if entry.delta > 0 then siteBids = siteBids + 1 end
