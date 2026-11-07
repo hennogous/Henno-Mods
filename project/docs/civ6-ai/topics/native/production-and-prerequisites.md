@@ -58,6 +58,11 @@ start failure that the visible query can bypass. An actually present mutually
 exclusive building is a hard exclusion and hides the option. Purchases also
 separate exclusion from full validation. [AI-N073]
 
+These calls are in the UI-cache binding. On patched XP2, Gameplay
+registers `CanProduce` to a stub and expects a production discriminator
+before the item value in `HasBeenPlaced`. A UI district-hash call can
+therefore throw when copied into a Gameplay publisher. [AI-N099]
+
 Vanilla Water Mill uses `RequiresAdjacentRiver`, whose ordinary precompute tests
 the city's own plot rather than the prerequisite district's plot. Moving the
 building to another district does not retarget that test. CSC's positive River

@@ -1752,5 +1752,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/production-and-prerequisites.md",
     "related": ["AI-N094", "AI-C079"]
+  },
+  {
+    "id": "AI-N099",
+    "title": "Gameplay and UI use different Lua build-queue bindings",
+    "statement": "Gameplay HasBeenPlaced takes a production discriminator and a second value. The UI cache accepts a production hash as its first argument. Gameplay CanProduce is registered to a stub on the inspected build.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime", "source"],
+    "scope": "Patched XP2 Windows. Gameplay PushMethods at 6c9860 registers HasBeenPlaced at 6ca220 and CanProduce at 6ca200. Discriminator DISTRICT hashes to 0x080d3734 and selects the district-index overload at ff570. The UI cache registers its own CanProduce at 68b9e0. In a normal-start CSC game, using a district hash as the lone Gameplay HasBeenPlaced argument caused 219 errors.",
+    "limits": "The Gameplay registration explains the observed failure. Reusing UI-cache legality from Gameplay requires an explicit bridge and checks against authoritative current plot state.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "related": ["AI-N073"]
   }
 ]

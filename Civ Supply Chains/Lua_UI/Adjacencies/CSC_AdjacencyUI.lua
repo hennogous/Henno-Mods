@@ -13,3 +13,24 @@ ExposedMembers.CSC_Adjacency.IsSinglePlayer = function()
         and GameConfiguration.IsAnyMultiplayer() == false
         and GameConfiguration.IsHotseat() == false;
 end;
+
+-- The live Gameplay build queue does not implement CanProduce. Query the
+-- UI cache here and return only the plot indices, without sending commands.
+ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets = function(playerID, cityID, districtHash)
+    local city = CityManager.GetCity(playerID, cityID);
+    if not city then return {}; end
+    local queue = city:GetBuildQueue();
+    if queue:HasBeenPlaced(districtHash) or not queue:CanProduce(districtHash, false, true) then
+        return {};
+    end
+    local build = CityOperationTypes.BUILD;
+    local params = { [CityOperationTypes.PARAM_DISTRICT_TYPE] = districtHash };
+    local result = CityManager.GetOperationTargets(city, build, params);
+    local legal = {};
+    for _, index in ipairs(result and result[CityOperationResults.PLOTS] or {}) do
+        local plot = Map.GetPlotByIndex(index);
+        params[CityOperationTypes.PARAM_X], params[CityOperationTypes.PARAM_Y] = plot:GetX(), plot:GetY();
+        if CityManager.CanStartOperation(city, build, params, true) then legal[#legal + 1] = index; end
+    end
+    return legal;
+end;

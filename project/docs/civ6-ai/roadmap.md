@@ -73,8 +73,10 @@ now adds one positive owned-site bid per eligible city alongside its existing
 material deductions. The scanner uses native build targets and legality,
 requires a viable Base and an adjacent friendly City Center, and forecasts
 the site using loaded CSC adjacency rules and the local Mill branch.
-The two initial Q8 bands passed offline checks. The normal-start development
-run will verify publication and native consumption. Future customer sites,
+The two initial Q8 bands passed offline checks. The first normal-start run
+exposed the Gameplay versus UI build-queue API difference. The publisher
+now reads readiness via the UI bridge and rechecks plot state in Gameplay.
+The repeat will verify publication and native consumption. Future customer sites,
 affordable land acquisition and construction follow-through are still open.
 
 **Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**

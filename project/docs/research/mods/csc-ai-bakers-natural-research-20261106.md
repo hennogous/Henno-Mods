@@ -1295,8 +1295,25 @@ so it does not establish an equivalent early amount. Native AI still
 owns production selection and legal execution. The scanner and the
 publisher packet passed offline fixtures, including preservation of
 the supplier deductions on a placement-read failure. The fresh
-development run uses `staged-02`. It must still show actual matches,
-native follow-through, and sufficient recurring performance.
+development run `development-placement-01` used `staged-02` and
+reached turn 45. It logged 219 `Unknown production type` errors from
+Gameplay `lHasBeenPlaced` and published zero site bids. Supplier
+protection remained enabled and the controller restored preferences.
+The `Lua.log` SHA-256 is
+`05df59f15f2fbb0f670fd27132a66ed6fcdab8290483e9bccc517ce841eeae4b`.
+
+Gameplay's `ICityBuildQueue::PushMethods` at `6c9860` registers a
+different implementation from the UI cache. `HasBeenPlaced` at
+`6ca220` dispatches on a production discriminator, then reads a second
+value. `DISTRICT` hashes to `0x080d3734` and selects the native
+district-index overload. The Gameplay `CanProduce` registration points
+to the `Not Implemented` stub at `6ca200`. The stock ProductionPanel
+uses the UI-cache hash-only placement method and its separate readiness
+method. CSC now calls those read-only methods through its UI bridge,
+then checks the returned plots again in Gameplay before publishing.
+The offline fixtures passed and `development-placement-02` uses the
+corrected `staged-03` build. Native follow-through and performance
+still require evidence.
 
 ## Evidence locator
 

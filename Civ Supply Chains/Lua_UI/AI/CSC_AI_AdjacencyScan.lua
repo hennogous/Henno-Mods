@@ -91,7 +91,7 @@ end
 -- ordinary unbuilt district footprint cannot become that City Center.
 -- This pass only proposes immediate, owned construction sites. A separate
 -- settlement or tile-purchase decision can make new sites eligible later.
-function CSC_AI_BakersSiteForecasts(player, readSuppliers, protectedPlots)
+function CSC_AI_BakersSiteForecasts(player, readSuppliers, protectedPlots, readLegalTargets)
     local district = GameInfo.Districts[BAKERS]
     local cityCenter = GameInfo.Districts.DISTRICT_CITY_CENTER
     local rules = A.ByDistrict[BAKERS]
@@ -99,19 +99,11 @@ function CSC_AI_BakersSiteForecasts(player, readSuppliers, protectedPlots)
     if not district or not cityCenter or not rules or #rules == 0 then return sites end
     local playerID = player:GetID()
     local visibility = PlayersVisibility[playerID]
-    local build = CityOperationTypes.BUILD
-    local districtParam = CityOperationTypes.PARAM_DISTRICT_TYPE
-    local xParam, yParam = CityOperationTypes.PARAM_X, CityOperationTypes.PARAM_Y
-
     for _, city in player:GetCities():Members() do
-        local queue = city:GetBuildQueue()
-        if not city:GetDistricts():HasDistrict(district.Index) and not queue:HasBeenPlaced(district.Hash)
-            and queue:CanProduce(district.Hash, false, true) then
+        if not city:GetDistricts():HasDistrict(district.Index) then
             local cityID, cityX, cityY = city:GetID(), city:GetX(), city:GetY()
-            local params = {[districtParam] = district.Hash}
-            local targets = CityManager.GetOperationTargets(city, build, params)
             local best
-            for _, index in ipairs(targets and targets[CityOperationResults.PLOTS] or {}) do
+            for _, index in ipairs(readLegalTargets(playerID, cityID, district.Hash)) do
                 local plot = Map.GetPlotByIndex(index)
                 if plot and not protectedPlots[index] then
                     local x, y = plot:GetX(), plot:GetY()
@@ -123,10 +115,10 @@ function CSC_AI_BakersSiteForecasts(player, readSuppliers, protectedPlots)
                     if plot:GetOwner() == playerID and plot:GetDistrictType() == -1 and visibility:IsRevealed(x, y)
                         and ownerCity and ownerCity:GetID() == cityID and ownerCity:GetOwner() == playerID
                         and Map.GetPlotDistance(cityX, cityY, x, y) <= 3
-                        and not coversMaterial and stageTwoHost(playerID, plot, cityCenter.Index) then
+                        and not coversMaterial and stageTwoHost(playerID, plot, cityCenter.Index)
+                        and plot:CanHaveDistrict(district.Index, playerID, cityID) then
                         local suppliers = readSuppliers(player, plot)
-                        params[xParam], params[yParam] = x, y
-                        if #suppliers.base > 0 and CityManager.CanStartOperation(city, build, params, true) then
+                        if #suppliers.base > 0 then
                             local forecast = score(BAKERS, plot, city, playerID, true)
                             local candidate = {
                                 player = playerID, city = cityID, district = district.Index, plot = index,

@@ -89,7 +89,8 @@ local function refresh(turn)
         end
         -- An unsupported placement read must leave the working supplier
         -- protection active. A fresh native site score is still required.
-        local scanned, bids = pcall(CSC_AI_BakersSiteForecasts, player, placement.ReadBakersSuppliers, protectedPlots)
+        local scanned, bids = pcall(CSC_AI_BakersSiteForecasts, player, placement.ReadBakersSuppliers, protectedPlots,
+            ui.GetLegalDistrictTargets)
         if scanned then
             for _, bid in ipairs(bids) do entries[#entries + 1] = bid end
         else

@@ -121,8 +121,9 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         self.assertEqual(lua.eval('wonderStages'), 0)
         lua.execute("""
-            CSC_AI_BakersSiteForecasts=function(player, readSuppliers, excluded)
+            CSC_AI_BakersSiteForecasts=function(player, readSuppliers, excluded, readLegalTargets)
                 assert(player==Players[3] and readSuppliers==CSC_AI_QuarterPlacement.ReadBakersSuppliers and excluded[101])
+                assert(readLegalTargets==ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets)
                 return {{player=3,city=42,district=3,plot=100,delta=12288}}
             end
             turn=5; boundary()

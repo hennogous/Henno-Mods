@@ -24,7 +24,7 @@ function CSC_Adjacency.Count(r,p,c,pid)if r.ID=='materials'then return 2 elseif 
 
 BAKERS_SITES = r"""
 local existing, placed, unlocked = false, false, true
-local targetsRead, checked = 0, {}
+local targetsRead, checked, gameplayChecked = 0, {}, {}
 local cityDistricts = {HasDistrict=function(_, id) assert(id==1); return existing end}
 local queue = {
     HasBeenPlaced=function(_, hash) assert(hash==1001); return placed end,
@@ -50,6 +50,9 @@ local function makeSite(id, river, host, base, spec, resource)
         GetX=function() return id end, GetY=function() return 3 end,
         GetOwner=function() return 1 end, GetDistrictType=function() return -1 end,
         GetResourceType=function() return resource or -1 end,
+        CanHaveDistrict=function(_, district, owner, cityID)
+            assert(district==1 and owner==1 and cityID==15); gameplayChecked[id]=true; return id~=22
+        end,
     }
     plots[id] = site
 end
@@ -64,6 +67,7 @@ makeSite(18, 0, true, 1, 0)
 makeSite(19, 6, true, 1, 1)
 makeSite(20, 6, true, 1, 1)
 makeSite(21, 4, true, 1, 1)
+makeSite(22, 6, true, 1, 1)
 PlayersVisibility = {[1]={IsRevealed=function(_, x) return x~=17 end}}
 Cities = {GetPlotPurchaseCity=function(p) if p.id~=19 then return city end end}
 local center = {GetOwner=function() return 1 end, GetDistrictType=function() return 0 end}
@@ -74,8 +78,9 @@ Map = {
 }
 CityOperationTypes = {BUILD=1, PARAM_DISTRICT_TYPE=2, PARAM_X=3, PARAM_Y=4}
 CityOperationResults = {PLOTS=5}
-local targets = {11,12,13,14,15,16,17,18,19,20,21}
+local targets = {11,12,13,14,15,16,17,18,19,20,21,22}
 CityManager = {
+    GetCity=function(pid, cityID) assert(pid==1 and cityID==15); return city end,
     GetOperationTargets=function(_, op, params)
         assert(op==1 and params[2]==1001 and not params[3]); targetsRead=targetsRead+1; return {[5]=targets}
     end,
@@ -88,25 +93,26 @@ CityManager = {
 local function supplies(_, site)
     return {base=site.base>0 and {true} or {}, specialty=site.spec>0 and {true} or {}}
 end
-local sites = CSC_AI_BakersSiteForecasts(player, supplies, {})
+local readLegalTargets = ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets
+local sites = CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)
 assert(#sites==1 and sites[1].plot==21 and sites[1].preferred and sites[1].adjacency==5 and sites[1].delta==12288)
-assert(checked[15] and not checked[13] and not checked[14] and not checked[16] and not checked[17]
-    and not checked[19] and not checked[20])
-sites = CSC_AI_BakersSiteForecasts(player, supplies, {[21]=true})
+assert(checked[15] and not gameplayChecked[15] and gameplayChecked[22] and not gameplayChecked[13]
+    and not gameplayChecked[16] and not gameplayChecked[17] and not gameplayChecked[19] and not gameplayChecked[20])
+sites = CSC_AI_BakersSiteForecasts(player, supplies, {[21]=true}, readLegalTargets)
 assert(#sites==1 and sites[1].plot==11)
 cattleVisible = false
-sites = CSC_AI_BakersSiteForecasts(player, supplies, {})
+sites = CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)
 assert(#sites==1 and sites[1].plot==16)
 cattleVisible = true
 targets = {18}
-sites = CSC_AI_BakersSiteForecasts(player, supplies, {})
+sites = CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)
 assert(#sites==1 and sites[1].plot==18 and not sites[1].preferred and sites[1].adjacency==3 and sites[1].delta==6144)
 existing = true
-assert(#CSC_AI_BakersSiteForecasts(player, supplies, {})==0)
+assert(#CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)==0)
 existing, placed = false, true
-assert(#CSC_AI_BakersSiteForecasts(player, supplies, {})==0)
+assert(#CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)==0)
 placed, unlocked = false, false
-assert(#CSC_AI_BakersSiteForecasts(player, supplies, {})==0 and targetsRead==4)
+assert(#CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)==0 and targetsRead==4)
 """
 
 def main():
@@ -123,6 +129,8 @@ def main():
  check('Bakers planned Wind Mill hill','BAKERS',0,1,(3,1),2);check('Flat wind site no bonus','BAKERS',0,0,(2,1),2)
  g.POLICY=True;check('Active policy included','TAILORS',2,0,(3,2));g.POLICY=False
  g.MILLS=True;check('Existing remote Mills do not double planned branches','BAKERS',4,1,(4,1))
+ lua.execute('ExposedMembers={}')
+ lua.execute((SCANNER.parent.parent/'Adjacencies/CSC_AdjacencyUI.lua').read_text(encoding='utf-8-sig'))
  lua.execute(BAKERS_SITES)
  checks.append(dict(name='Immediate Bakers site respects native readiness and Stage 2 geometry'))
  assert 'A.PlotsInBand(center,1,3)'in SCANNER.read_text(encoding='utf-8') and 'if not existing[name]then'in SCANNER.read_text(encoding='utf-8')
