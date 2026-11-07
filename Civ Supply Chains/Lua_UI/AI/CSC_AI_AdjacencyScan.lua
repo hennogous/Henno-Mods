@@ -35,7 +35,7 @@ local geometry={}
 local quarters={'DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_CSC_TAILORS_QUARTER'}
 local function totals()return {production=0,gold=0}end
 local function yieldKey(y)if y=='YIELD_PRODUCTION'then return 'production'elseif y=='YIELD_GOLD'then return 'gold'end end
-local function score(district,plot,city,pid)
+local function score(district,plot,city,pid,omitDetails)
  local now,planned,percent,nowPercent=totals(),totals(),totals(),totals();local details={};local mill=nil
  if district=='DISTRICT_CSC_BAKERS_QUARTER'then
   mill=plot:IsRiver()and'BUILDING_CSC_BAKERS_WATER_MILL'or'BUILDING_CSC_BAKERS_WIND_MILL'
@@ -52,13 +52,101 @@ local function score(district,plot,city,pid)
      if active then now[key]=now[key]+amount end
      if projected then planned[key]=planned[key]+amount end
     else if projected then percent[key]=percent[key]+amount end;if active then nowPercent[key]=nowPercent[key]+amount end end
-    if amount~=0 then details[#details+1]={rule=r.ID,yield=r.YieldType,provider=r.ProvideType,count=count,amount=amount,activeNow=not not active,inPlan=not not projected,requiresBuilding=millRule and r.WhoIsTheOwner or nil}end
+    if amount~=0 and not omitDetails then details[#details+1]={rule=r.ID,yield=r.YieldType,provider=r.ProvideType,count=count,amount=amount,activeNow=not not active,inPlan=not not projected,requiresBuilding=millRule and r.WhoIsTheOwner or nil}end
    end
   end
  end
  for key,value in pairs(planned)do planned[key]=value*(1+percent[key]/100);now[key]=now[key]*(1+nowPercent[key]/100)end
  return {production=planned.production,gold=planned.gold,total=planned.production+planned.gold,current=now,details=details,requiresBuilding=mill}
 end
+
+local BAKERS = 'DISTRICT_CSC_BAKERS_QUARTER'
+local BASE = 'CLASS_CSC_BAKERS_BASE'
+local SPECIALTY = 'CLASS_CSC_BAKERS_SPEC'
+local preferredAdjacency = 4
+-- Initial early-score bands for a matched test. The Boston late-score
+-- diagnostic needed 10,730 Q8 (AI-C061); later native terms can move an early
+-- score by a different amount. Native eligibility and competition still apply.
+local preferredSiteBidQ8 = 12288
+local viableSiteBidQ8 = 6144
+
+local function stageTwoHost(playerID, plot, cityCenter)
+    for _, neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
+        if neighbor:GetOwner() == playerID and neighbor:GetDistrictType() == cityCenter then
+            return true
+        end
+    end
+    return false
+end
+
+local function betterBakersSite(candidate, best)
+    if not best then return true end
+    if candidate.adjacency ~= best.adjacency then return candidate.adjacency > best.adjacency end
+    if candidate.base ~= best.base then return candidate.base > best.base end
+    if candidate.specialty ~= best.specialty then return candidate.specialty > best.specialty end
+    return candidate.plot < best.plot
+end
+
+-- A Stage 2 Bakers customer is a Granary in a friendly City Center. An
+-- ordinary unbuilt district footprint cannot become that City Center.
+-- This pass only proposes immediate, owned construction sites. A separate
+-- settlement or tile-purchase decision can make new sites eligible later.
+function CSC_AI_BakersSiteForecasts(player, readSuppliers, protectedPlots)
+    local district = GameInfo.Districts[BAKERS]
+    local cityCenter = GameInfo.Districts.DISTRICT_CITY_CENTER
+    local rules = A.ByDistrict[BAKERS]
+    local sites = {}
+    if not district or not cityCenter or not rules or #rules == 0 then return sites end
+    local playerID = player:GetID()
+    local visibility = PlayersVisibility[playerID]
+    local build = CityOperationTypes.BUILD
+    local districtParam = CityOperationTypes.PARAM_DISTRICT_TYPE
+    local xParam, yParam = CityOperationTypes.PARAM_X, CityOperationTypes.PARAM_Y
+
+    for _, city in player:GetCities():Members() do
+        local queue = city:GetBuildQueue()
+        if not city:GetDistricts():HasDistrict(district.Index) and not queue:HasBeenPlaced(district.Hash)
+            and queue:CanProduce(district.Hash, false, true) then
+            local cityID, cityX, cityY = city:GetID(), city:GetX(), city:GetY()
+            local params = {[districtParam] = district.Hash}
+            local targets = CityManager.GetOperationTargets(city, build, params)
+            local best
+            for _, index in ipairs(targets and targets[CityOperationResults.PLOTS] or {}) do
+                local plot = Map.GetPlotByIndex(index)
+                if plot and not protectedPlots[index] then
+                    local x, y = plot:GetX(), plot:GetY()
+                    local ownerCity = Cities.GetPlotPurchaseCity(plot)
+                    local resourceID = plot:GetResourceType()
+                    local resource = GameInfo.Resources[resourceID]
+                    local coversMaterial = resource and A.ResourceVisible(playerID, resourceID)
+                        and (A.HasTag(BASE, resource.ResourceType) or A.HasTag(SPECIALTY, resource.ResourceType))
+                    if plot:GetOwner() == playerID and plot:GetDistrictType() == -1 and visibility:IsRevealed(x, y)
+                        and ownerCity and ownerCity:GetID() == cityID and ownerCity:GetOwner() == playerID
+                        and Map.GetPlotDistance(cityX, cityY, x, y) <= 3
+                        and not coversMaterial and stageTwoHost(playerID, plot, cityCenter.Index) then
+                        local suppliers = readSuppliers(player, plot)
+                        params[xParam], params[yParam] = x, y
+                        if #suppliers.base > 0 and CityManager.CanStartOperation(city, build, params, true) then
+                            local forecast = score(BAKERS, plot, city, playerID, true)
+                            local candidate = {
+                                player = playerID, city = cityID, district = district.Index, plot = index,
+                                base = #suppliers.base, specialty = #suppliers.specialty,
+                                adjacency = forecast.total, preferred = forecast.total >= preferredAdjacency,
+                            }
+                            if betterBakersSite(candidate, best) then best = candidate end
+                        end
+                    end
+                end
+            end
+            if best then
+                best.delta = best.preferred and preferredSiteBidQ8 or viableSiteBidQ8
+                sites[#sites + 1] = best
+            end
+        end
+    end
+    return sites
+end
+
 function CSC_AI_AdjacencyScan(originalAI)
  local t0=os.clock();local out={turn=Game.GetCurrentGameTurn(),speed=assert(GameInfo.GameSpeeds[GameConfiguration.GetGameSpeedType()]).GameSpeedType,width=0,height=0,cities={},candidates={},quarters={},players={},currentHumans={},originalAI=originalAI,geometryBuilt=0,sitesEvaluated=0,rules={}}
  out.width,out.height=Map.GetGridSize()

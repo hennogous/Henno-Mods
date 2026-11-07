@@ -27,6 +27,7 @@ GameInfo = {
     }),
 }
 CSC_Adjacency = {
+    ByDistrict={},
     Initialize=function() end,
     ResourceVisible=function() return true end,
     HasTag=function(tag, resource) return tag=='CLASS_CSC_BAKERS_BASE' and resource=='RESOURCE_CATTLE' end,
@@ -119,7 +120,19 @@ class BakersGameplayTest(unittest.TestCase):
         """)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         self.assertEqual(lua.eval('wonderStages'), 0)
-        lua.execute('turn=5; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute("""
+            CSC_AI_BakersSiteForecasts=function(player, readSuppliers, excluded)
+                assert(player==Players[3] and readSuppliers==CSC_AI_QuarterPlacement.ReadBakersSuppliers and excluded[101])
+                return {{player=3,city=42,district=3,plot=100,delta=12288}}
+            end
+            turn=5; boundary()
+        """)
+        self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
+        self.assertEqual(lua.eval('table.concat(packet[2], ",")'), '3,42,3,100,12288')
+        lua.execute("CSC_AI_BakersSiteForecasts=function() error('fixture') end; turn=6; boundary()")
+        self.assertEqual(lua.eval('#packet'), 1)
+        self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
+        lua.execute('turn=7; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

@@ -107,6 +107,11 @@ offense. A larger Mill bid would also have to beat the failed project
 if the existing queue order stays in place. [AI-C079]
 [Exact queue operands](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-rejected-project-sent-the-queue-straight-to-generic-offense).
 
+A matched preference lifted the eligible Mill to 783,717 Q8 and
+won the building ranking. The same unadvanceable project won the
+category comparison, so the city still reached generic offense.
+The other observed building winner came from threat review. [AI-C080]
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

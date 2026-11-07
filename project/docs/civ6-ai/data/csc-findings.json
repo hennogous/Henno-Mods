@@ -1378,5 +1378,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C078", "AI-N098"]
+  },
+  {
+    "id": "AI-C080",
+    "title": "A Mill preference won the default building ranking without reaching repair",
+    "statement": "A +98304 Q8 diagnostic preference made the Water Mill the building winner. The project still won the category comparison and failed CanAdvance. The default queue still selected the generic offense unit.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Matched turn-261 Boston save, patched XP2, identical CSC and CE protection in both arms. The default building changed from Academy at 746032 Q8 to Mill at 783717 Q8. The project retained 1428800 Q8. The other observed building call was threat review. Both arms lacked Storekeeper at turn 267.",
+    "limits": "No Mill request or successful repair in this pass. The preference was a diagnostic register adjustment, not a calibrated CSC release policy. Filtering an unavailable project may admit an earlier contract before default building choice.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C079", "AI-N098"]
   }
 ]

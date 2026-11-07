@@ -68,6 +68,15 @@ automatic main CSC policy, Campus went on 720 and Boston worked the original
 Cattle Pasture by turn 37. The penalty is finite and needs wider calibration.
 [Automatic publisher evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
 
+**Active placement integration — 1.1–1.4 and 1.6.** The main CSC publisher
+now adds one positive owned-site bid per eligible city alongside its existing
+material deductions. The scanner uses native build targets and legality,
+requires a viable Base and an adjacent friendly City Center, and forecasts
+the site using loaded CSC adjacency rules and the local Mill branch.
+The two initial Q8 bands passed offline checks. The normal-start development
+run will verify publication and native consumption. Future customer sites,
+affordable land acquisition and construction follow-through are still open.
+
 **Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
 The CE score-stage policy now reads live CSC material rules and protects
 critical supplier sites in the matched Boston replay. With the same district
@@ -119,9 +128,10 @@ The Mill passed native requirements in the turn-258 replay, and
 Military Academy won the building ranking. A repeat at turn 261
 measured the effective Mill and Academy operands. The queue ranked
 a project above both, rejected it, then trained Modern Armor through
-generic offense without reconsidering its building. Test a bounded
-Mill ranking preference and preserve the ordering of executable
-alternatives after a failed category winner.
+generic offense without reconsidering its building. The bounded Mill
+preference won the ordinary building ranking and still hit the same
+unadvanceable project. Test the queue with native project eligibility
+applied before ranking and preserve competition among executable choices.
 This remains a repair-coordination dependency under **13.1–13.2**
 and **14.1**.
 The CE performance review branch indexes policy lookups by city and

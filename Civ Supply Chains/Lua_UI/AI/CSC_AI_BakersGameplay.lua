@@ -1,6 +1,7 @@
 -- Publish CSC's Bakers district preferences from one gameplay context.
 -- Native scoring still checks eligibility and compares the resulting bids.
 include('CSC_AdjacencyCore')
+include('CSC_AI_AdjacencyScan')
 include('CSC_AI_QuarterPlacement')
 include('CSC_AI_DistrictBridge')
 
@@ -75,13 +76,24 @@ local function refresh(turn)
         and harvestStatus:match('"ready":1') and harvestStatus:match('"faults":0')
     local allowances = 0
     for _, id in ipairs(players) do
-        local deductions, sites = placement.BakersMaterialDeductions(Players[id], protectBuilders, bidRecovery)
+        local player = Players[id]
+        local deductions, sites = placement.BakersMaterialDeductions(player, protectBuilders, bidRecovery)
+        local protectedPlots = {}
         for _, entry in ipairs(deductions) do
             entries[#entries + 1] = entry
+            protectedPlots[entry.plot] = true
         end
         for _, site in ipairs(sites) do
             builderSites[#builderSites + 1] = site
             allowances = allowances + #site.improvements
+        end
+        -- An unsupported placement read must leave the working supplier
+        -- protection active. A fresh native site score is still required.
+        local scanned, bids = pcall(CSC_AI_BakersSiteForecasts, player, placement.ReadBakersSuppliers, protectedPlots)
+        if scanned then
+            for _, bid in ipairs(bids) do entries[#entries + 1] = bid end
+        else
+            print(string.format('CSC_AI_BAKERS_PLACEMENT_FAILED turn=%d player=%d %s', turn, id, tostring(bids)))
         end
     end
     -- Prioritise the supplier relationships most at risk if the map exceeds
@@ -95,6 +107,11 @@ local function refresh(turn)
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests)
     assert(accepted, message)
+    local siteBids = 0
+    for _, entry in ipairs(entries) do
+        if entry.delta > 0 then siteBids = siteBids + 1 end
+    end
+    print(string.format('CSC_AI_BAKERS_PLACEMENT turn=%d bids=%d', turn, siteBids))
     if builderStatus then
         print(string.format('CSC_AI_BAKERS_BUILDERS turn=%d allowances=%d previous=%s',
             turn, allowances <= capacity and allowances or 0, builderStatus))

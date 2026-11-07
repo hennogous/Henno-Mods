@@ -1171,6 +1171,31 @@ The first launch, `ce-late-mill-bid-01`, stopped before autoplay
 because its control assertion expected Wonder protection disabled.
 The corrected pair keeps that protection enabled in both arms.
 
+The treatment's interval through turn 264 confirms that the +98,304 Q8
+diagnostic preference changed both effective building winners to the
+Water Mill, index 140. The earlier caller at `3ea73b` is in
+`UpdateBuildQueueForThreat` at `3ea150`. It is a threat review rather
+than `CheckForUnitOrBuilding` at `3e1580`, which calls the selector with
+flags 0/0 and may create a new request tree. The pulse changed the
+threat comparison from 407,461 to 505,765 Q8 and the actual queue
+building comparison from 685,413 to 783,717 Q8. No Mill offer or
+building submission appeared in the observed turn-261 queue pass.
+
+Project 25 remained the higher category choice and returned false
+from `CanAdvance` again. The generic unit return was unchanged.
+Both arms still lacked a working Mill, Pasture and Storekeeper at
+turns 264 and 267. The treatment trace had zero faults and zero
+active callbacks at freeze. Its SHA-256 is
+`22e2f971244da8df6f46e4e1a61b5ee1bb2d9f4a50c509ff7b0fd41dc583025f`.
+Use the ordinary queue caller alone for any next repair comparison.
+Check whether omitting only an unadvanceable project from ranking
+exposes the next legal native choice. Keep all advanceable projects
+and the engine's execution checks in place.
+`QueueNextBuild` calls `GetBestProject` before it arbitrates offered
+contracts and reuses that project value in default category ranking.
+Filtering a project there can therefore admit an existing contract
+before default building choice. Observe both stages in the next test.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies
@@ -1230,6 +1255,14 @@ active chains. This verifies early clock coverage and package loading.
 It leaves mature measurement, effect uptime and fresh-seed outcomes
 open. The controller closed and verified preference restoration.
 
+The Service audit now reports active and observed inactive ranges per
+Quarter, with missing samples and ambiguous recipient attribution listed
+separately. The native payout log and gap fixtures verified the distinction.
+The runner can use a longer
+bounded continuous window for mature games, preserving the shared
+controller's ten-minute per-turn stall guard and the default 30-minute
+interval for other callers. The offline controller suite passed.
+
 The development smoke's `result.json` and `Lua.log` SHA-256 values are
 `4ea0c76235f64d358bb0702be8b3eacc6dee314e963824b60f40e4ddc6f84427` and
 `18f25f6876812488221f4f05bfc14a84606bfd45f06f0ab2424aaa965454ecae`.
@@ -1242,6 +1275,28 @@ paired run the runner checks the input digests, seeds and settings,
 then compares the turn-one map signature, leader roster and starting
 units. The manifest transformation and census code passed offline
 checks. The fresh control and live start comparison remain to verify.
+
+### Owned-site placement publishing
+
+The main CSC publisher now combines protection deductions with one
+positive Bakers bid per eligible city. `CSC_AI_BakersSiteForecasts`
+uses `CanProduce`, the native BUILD target list, and the specific plot's
+`CanStartOperation` result. It scopes the scan to revealed, assigned,
+owned plots within three hexes. It excludes visible mapped materials
+under the footprint and plots the protection policy has priced.
+A candidate needs viable Base supply and a friendly City Center for the
+Granary. Loaded CSC production and gold adjacency rules forecast the
+site and choose its correct future Mill branch. Specialty breaks ties.
+
+The initial early-score bands are 12,288 Q8 for at least +4 combined
+adjacency and 6,144 for a weaker viable site. These are calibration
+choices. The previous one-off Boston success used a late adjustment,
+so it does not establish an equivalent early amount. Native AI still
+owns production selection and legal execution. The scanner and the
+publisher packet passed offline fixtures, including preservation of
+the supplier deductions on a placement-read failure. The fresh
+development run uses `staged-02`. It must still show actual matches,
+native follow-through, and sufficient recurring performance.
 
 ## Evidence locator
 
