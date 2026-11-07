@@ -1639,5 +1639,18 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-N087"],
     "related": ["AI-N086", "AI-C061", "AI-C062"]
+  },
+  {
+    "id": "AI-N089",
+    "title": "Shared CE event hook patches a DX11 instruction on the November hotfix",
+    "statement": "The pinned CE district-score candidate and unchanged upstream CE reproduced the same access violation during save load. The upstream control's process memory confirmed its shared event detour replaced bytes inside a native instruction in the faulting loop. The stock hotfix replay reached turn 2 from the same save.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Steam DX11 executable SHA d1a0cfd4 and XP2 SHA 092abfbb. Same isolated CSC turn-1 save, candidate proxy c39a24fd and unchanged CE develop 2986a746 proxy 18af3c5a. Both dumps record a null read at EXE RVA 6e250. Shared CE EventSystems target 6e260 lies within the native cmp instruction beginning at 6e25f. The unchanged CE process showed a jump opcode at 6e260.",
+    "limits": "No district-score publication in either CE run. The result identifies an unsafe shared hook on this executable. The event-hook replacement and the remaining executable-side CE address contracts still require qualification.",
+    "sources": ["project/docs/research/mods/csc-ai-xp2-november-hotfix-20261106.md"],
+    "topic": "topics/native/native-placement-extension.md",
+    "depends_on": ["AI-N078"],
+    "related": ["AI-N083"]
   }
 ]

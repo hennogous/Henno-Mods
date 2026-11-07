@@ -95,3 +95,45 @@ The reproducible PE audit
 reads the two hash-pinned DLLs and verifies the mapped section differences,
 entry prefixes and call displacements without loading either DLL.
 [PE audit script](https://github.com/hennogous/Henno-Mods/blob/main/project/tools/native_ai/late_placement/audit_xp2_hotfix.py)
+
+## The first CE replay stopped during load
+
+On 7 November the shared controller loaded the same turn-1 study save through
+an isolated carrier. The proxy was the supported MSVC build above and the
+executable was the pinned DX11 image with SHA-256
+`d1a0cfd439e7451be515f47595cfa0b6b983f56d1faf4ea434a4ce3b21491ebe`.
+The game accepted the load command. It then crashed before `GameCore_Tuner`
+became ready, so the replay issued neither a score publication nor an autoplay
+request.
+
+The minidump records `0xc0000005`, a read of address zero at
+`CivilizationVI.exe` RVA `0x6e250`. Its module list contains both the isolated
+CE proxy and the original XP2 DLL. The logged crash stack contains the
+executable and system frames. The stock hotfix replay reached turn 2 on
+this save. The matched `ce-base-control-01` run with unchanged upstream CE
+`2986a746` reproduced the same null read at the same RVA before gameplay.
+
+The shared CE event hook targets `EventSystems::PUBLISH_EVENTS_OFFSET`
+at `0x6e260`. In the patched executable, `.pdata` covers that RVA with
+the function range `0x6dcc0` through `0x6ef18`. The target falls one byte
+inside `48 83 f9 28` (`cmp rcx, 28h`) at `0x6e25f`. The unchanged CE
+control's process memory at `0x6e25f` contained `48 e9 7c 2d f8 ff` where
+the file contained `48 83 f9 28 7c eb`. The event detour therefore
+overwrote the middle of a native instruction in the same loop as the
+faulting `cmp byte ptr [rax], bl` at `0x6e250`. This identifies an unsafe
+shared CE executable hook independently of the new district-score API.
+
+The hardcoded `EnterLuaCriticalSection`, `LeaveLuaCriticalSection`,
+`ForgeUI::GetLock` and `ForgeUI::ReleaseLock` addresses also land inside
+unwind ranges on this build. The range check locates them but does not
+establish their intended replacements. Requalify the shared executable
+targets and their guards before relying on the carrier.
+
+The crash dialog did not close normally. The verified test process was
+stopped, then a fresh main-menu session through the shared controller restored
+the original preferences and retired the hash-checked temporary package. The
+failed run is `Desktop/Codex/csc-gamecore-hotfix-20261106/ce-pulse-01`.
+The dump SHA-256 is
+`f2baa146928925e50df10c4b802915a88b20120f6caf6cf60cbf668cf551f777`.
+The upstream control's dump SHA-256 is
+`7139e1288ff63084f739ffb6beca0517e4cff15ba0a5ab3e212794c03a8f43f4`.

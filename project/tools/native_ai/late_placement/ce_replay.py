@@ -11,7 +11,7 @@ from types import SimpleNamespace
 import xml.etree.ElementTree as ET
 
 from driver import (
-    GAME_SHA, ID, PLOT, SAVE_SHA, STUDY, configure, flags, inspect_source, launch,
+    GAME_SHA, HOTFIX_SHA, ID, PLOT, SAVE_SHA, STUDY, configure, flags, inspect_source, launch,
     load, lua, make_probe_controller, manifest, native_inventory, parse, read,
     require, restore_preferences, sha, write_json, HeldProcess, NativeSession,
     capture_log_baseline, read_log_delta,
@@ -21,9 +21,15 @@ FORK = 'd0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a0a'
 OLD_FORK = 'd0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a06'
 DLL = 'GameCore_XP2_CE_AI_FinalRelease.dll'
 LOGS = ('AI_CityBuild.csv', 'AI_Behavior_Trees.csv')
+# Supported MSVC build of the reviewed CE hotfix profile and its Windows DX11
+# executable. GameCore code parity does not qualify the executable-side hooks.
+HOTFIX_CE_SHA = 'c39a24fd5d1af7e191edeefec10b1d5f8e2280a17c173bc5d944ec313f93118d'
+HOTFIX_EXE_SHA = 'd1a0cfd439e7451be515f47595cfa0b6b983f56d1faf4ea434a4ce3b21491ebe'
+# Unchanged upstream develop 2986a746 from the same supported build workflow.
+CE_BASE_SHA = '18af3c5a0e92d98756a0fdfcd28351bdcbaf1efdcd646ce6a27adfcb995991ad'
 
 
-def verify_modules(session, fork, output):
+def verify_modules(session, fork, output, original_sha):
     command = (f'Get-Process -Id {session.owner.pid} -ErrorAction Stop | ForEach-Object {{$_.Modules}} | '
                "Where-Object {$_.ModuleName -match '^GameCore_XP2'} | Select-Object ModuleName,FileName | ConvertTo-Json -Compress")
     modules = json.loads(subprocess.check_output(['powershell', '-NoProfile', '-Command', command], text=True,
@@ -33,7 +39,7 @@ def verify_modules(session, fork, output):
     paths = {row['ModuleName']: Path(row['FileName']).resolve() for row in modules}
     write_json(output / 'loaded-modules.json', {name: {'path': str(path), 'sha256': sha(path)} for name, path in paths.items()})
     require(set(paths) == {DLL, 'GameCore_XP2_FinalRelease.dll'}, 'Unexpected loaded GameCore module set')
-    require(paths[DLL] == fork and sha(paths['GameCore_XP2_FinalRelease.dll']) == GAME_SHA,
+    require(paths[DLL] == fork and sha(paths['GameCore_XP2_FinalRelease.dll']) == original_sha,
             'Unexpected proxy or original GameCore identity')
 
 
@@ -101,6 +107,13 @@ def add_fixture_carrier(package, dll):
 def run(a):
     output = a.output.resolve()
     require(not output.exists() and not native_inventory(), 'Expected fresh output and no native/Tuner owner')
+    original_sha = HOTFIX_SHA if a.hotfix else GAME_SHA
+    require(not a.ce_base_control or (a.hotfix and a.fixture_carrier),
+            'The CE base control must use the same patched executable and fixture carrier')
+    if a.hotfix:
+        expected_ce = CE_BASE_SHA if a.ce_base_control else HOTFIX_CE_SHA
+        require(sha(a.ce_dll) == expected_ce and sha(a.binary) == HOTFIX_EXE_SHA,
+                'Unexpected CE hotfix DLL or DX11 executable identity')
     installed = [a.mods / 'CSC Mill Building Study']
     if not a.fixture_carrier:
         installed.append(a.mods / 'CE Late Placement Trial')
@@ -118,7 +131,9 @@ def run(a):
     cfg = archived['observerConfig']
     district, early_district = cfg['districtIndices']
     output.mkdir(parents=True)
-    write_json(output / 'carrier.json', dict(fixture_carrier=a.fixture_carrier, dll_sha256=sha(a.ce_dll)))
+    write_json(output / 'carrier.json', dict(fixture_carrier=a.fixture_carrier, dll_sha256=sha(a.ce_dll),
+                                             original_sha256=original_sha, exe_sha256=sha(a.binary),
+                                             upstream_base_control=a.ce_base_control))
     # Only these dedicated package folders are staged. The working stock and
     # previous CE test installations are never touched.
     untouched = {p: manifest(p) for p in (a.mods / 'Civ Supply Chains', a.mods / 'CivilizationVI_CommunityExtension')}
@@ -134,7 +149,7 @@ def run(a):
         require(all(manifest(path) == expected for path, expected in (pins | untouched).items()), 'Content changed during replay')
 
     def gate():
-        verify_modules(session, (installed[-1] / 'Binaries/Win64' / DLL).resolve(), output)
+        verify_modules(session, (installed[-1] / 'Binaries/Win64' / DLL).resolve(), output, original_sha)
         targets = [{key: target[key] for key in ('player', 'city', 'plot')} for target in archived['targets']]
         code = 'CSC_MILL_STUDY_CONFIG=' + lua(dict(targets=targets)) + ';\n' + read(STUDY / 'world.lua')
         world = parse(controller.cmd(code, 'GameCore_Tuner', 'ce-source-world', wait=30), 'CSC_MILL_BUILDING_WORLD')
@@ -175,6 +190,11 @@ def run(a):
         boundaries = {name: capture_log_baseline(a.user_root / 'Logs' / name) for name in LOGS}
         session.load_once(source, sha256=SAVE_SHA, native_directory=source.parent, turn=1,
                           contexts=('GameCore_Tuner', 'PlotInfo', 'CSC_AdjacencyGameplay'), eligibility=gate)
+        if a.ce_base_control:
+            controller.cmd('assert(CE_AIDistrictScoresBegin==nil)', 'GameCore_Tuner', 'verify-unchanged-ce-control')
+            controller.play(2)
+            write_json(output / 'result.json', dict(upstream_base_control=True, turn=2, verified=True))
+            return
         publish = (f'assert(Game.GetCurrentGameTurn()==1);assert(CE_AIDistrictScoresBegin(1,{cfg["mapWidth"]},'
                    f'{cfg["mapHeight"]},{cfg["districtCount"]})==1);assert(CE_AIDistrictScoresAllow(1)==1);'
                    f'assert(CE_AIDistrictScoresEntry(1,65536,{early_district},{PLOT},1)==1);'
@@ -195,11 +215,17 @@ def run(a):
             session.close(restore_preferences=lambda: restore_preferences(controller, output)
                           if (output / 'original-preferences.json').exists() else None, restore_package=verify)
         if not native_inventory():
-            for path, expected in pins.items():
-                require(manifest(path) == expected, 'Refusing to retire a changed package')
-                path.rename(output / ('retired-' + path.name))
-            require(all(manifest(path) == expected for path, expected in untouched.items()), 'Reference package changed')
-            write_json(output / 'restoration.json', dict(verified=True, owners_absent=True, session_closed=session.closed))
+            if (output / 'original-preferences.json').exists() and not session.closed:
+                # The saved preference identities include the staged packages.
+                # Keep them in place until a clean main-menu session restores them.
+                write_json(output / 'cleanup-required.json', dict(preferences_verified=False,
+                           temporary_packages=[str(path) for path in pins]))
+            else:
+                for path, expected in pins.items():
+                    require(manifest(path) == expected, 'Refusing to retire a changed package')
+                    path.rename(output / ('retired-' + path.name))
+                require(all(manifest(path) == expected for path, expected in untouched.items()), 'Reference package changed')
+                write_json(output / 'restoration.json', dict(verified=True, owners_absent=True, session_closed=session.closed))
 
 
 if __name__ == '__main__':
@@ -207,4 +233,6 @@ if __name__ == '__main__':
     for option in ('output', 'study', 'proof', 'mods', 'user-root', 'binary', 'ce-package', 'ce-dll'):
         parser.add_argument('--' + option, type=Path, required=True)
     parser.add_argument('--fixture-carrier', action='store_true', help='Select CE through the isolated saved mod identity')
+    parser.add_argument('--hotfix', action='store_true', help='Qualify the pinned CE profile on the November XP2 and DX11 build')
+    parser.add_argument('--ce-base-control', action='store_true', help='Replay with pinned upstream CE and no district-score API')
     run(parser.parse_args())

@@ -34,15 +34,19 @@ can satisfy dependencies. Tailors comes next through the same model.
 
 The live Boston replay establishes this sequence for one Bakers chain. The
 offline planner separately covers actual gameplay definitions and a copied
-Tailors case. The next live test checks whether the integrated district policy
-protects Bakers suppliers through CE. After that we need the Builder,
-construction, research and repair decisions to work together in fresh games.
+Tailors case. Main CSC can now publish supplier deductions when the CE score
+capability is ready. We still need to observe whether the policy preserves
+suppliers and how Builder, construction, research and repair decisions work
+together in fresh games.
 [Stage 2 replay](../topics/csc/site-planner.md#stage-2-decision-replay) ·
 [Qualification roadmap](../roadmap.md#current-milestone-and-active-problem).
 
 ## Tools for this milestone
 
 The shared controller and guarded stock score hook support matched live tests.
+On the patched DX11 executable, the CE candidate and its upstream control
+both crashed during save load. The shared event hook needs a new qualified
+target before CE can carry the integrated policy on this build.
 Dev-CE 0.8.1 is an optional research tool for a specific
 extra Lua getter or debugging need. Packaged CE delivery is a separate
 qualification on the patched Windows host.

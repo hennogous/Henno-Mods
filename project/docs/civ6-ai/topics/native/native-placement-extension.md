@@ -16,6 +16,12 @@
 > the target identity while shared executable compatibility
 > remains with upstream. [AI-N078] [Hotfix comparison](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md)
 
+> **7 November CE load check:** The new score carrier and unchanged upstream
+> CE both crashed before gameplay on the patched DX11 executable. The shared
+> event hook overwrites an instruction in the faulting loop. Stock XP2 still
+> supports matched decision tests. [AI-N089]
+> [Crash and hook evidence](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md#the-first-ce-replay-stopped-during-load)
+
 > **6 November stock write:** Frida changed one guarded cell on the patched
 > stock build. Delhi switched from Neighborhood to Bakers and reserved the
 > target site. Its Craftsmanship preparation expired and the tile remained

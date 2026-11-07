@@ -60,11 +60,14 @@ Main CSC now has a gameplay publisher for the CE district-score capability.
 It reads owned, visible Bakers suppliers, distinguishes a usable deposit
 from a working improvement, and prices legal district pairs for the city
 that could cover each tile. A fixture verifies publication for a supplier
-owned by a different city and refresh after pillage or removal. The first
-live check must verify CE startup on the current executable, consumption of
-the deduction and actual preservation against a matched control. The penalty
-is finite. Builder work and harvest admission under **13.3** still need their
-own adapter and alternative-job validation.
+owned by a different city and refresh after pillage or removal. Both the CE
+candidate and the unchanged upstream control crashed during the same save
+load. CE's shared event hook patches the middle of a DX11 instruction on
+this build. Fix and qualify the executable hooks for delivery. Continue
+district decision tests on stock GameCore and verify actual preservation
+against a matched control. The penalty is finite. Builder work and harvest
+admission under **13.3** need their own adapter and alternative-job test.
+[Current CE startup evidence](../research/mods/csc-ai-xp2-november-hotfix-20261106.md#the-first-ce-replay-stopped-during-load).
 
 For the reusable Stage 2 goal, preselect these fresh Standard-size, Online
 games with normal starts. Run the integrated tuning and record every result.
