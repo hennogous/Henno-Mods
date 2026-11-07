@@ -425,8 +425,9 @@ filters the protected row inside `CityBuild::GetBestLocationFor` at RVA
 `3e5750`. The selector reads the requested improvement's signed score into
 ECX at RVA `3e5845` and compares it with the admission floor at `3e5848`.
 The following `JLE` skips the row if the score does not clear that floor.
-The selector's third argument restricts the search to an exact plot ID
-when supplied. It cannot express a plot exclusion.
+The selector's optional third argument filters by resource type, as shown
+by its `NoSpecificResource` caller at RVA `3d7610` and the same row field
+used to count unimproved resources. It cannot express a plot exclusion.
 
 The probe checks the loaded instruction bytes, exact native caller and
 player, Farm ID, coordinates and cached score. It gives the protected row's
