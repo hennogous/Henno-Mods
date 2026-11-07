@@ -11,6 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import uuid
 import xml.etree.ElementTree as ET
 
 MOD = 'd0f3a2ab-4fa6-4a7a-bf9b-b82a66fe2a06'
@@ -25,6 +26,9 @@ def sha(path):
 
 def build(a):
     source, binary, out = a.ce.resolve(), a.dll.resolve(), a.output.resolve()
+    mod_id = str(uuid.UUID(getattr(a, 'mod_id', MOD)))
+    if mod_id == UPSTREAM:
+        raise ValueError('The local CE candidate needs a distinct identity')
     if out.exists() or not binary.is_file():
         raise ValueError('A fresh output directory and explicit fork DLL are required')
     manifests = list(source.glob('*.modinfo'))
@@ -34,7 +38,7 @@ def build(a):
     root = tree.getroot()
     if root.get('id') != UPSTREAM:
         raise ValueError('Unexpected reference CE identity')
-    root.set('id', MOD)
+    root.set('id', mod_id)
     root.set('version', '1')
     root.find('Properties/Name').text = 'CE AI development fork (local test)'
     root.find('Properties/Description').text = (
@@ -61,7 +65,7 @@ def build(a):
                 text = origin.read_text(encoding='utf-8-sig')
                 if text.count(UPSTREAM) != 1 or text.count('GameCore_XP2_CE') != 1:
                     raise ValueError('Reference frontend selector changed')
-                target.write_text(text.replace(UPSTREAM, MOD).replace(
+                target.write_text(text.replace(UPSTREAM, mod_id).replace(
                     'GameCore_XP2_CE', PREFIX), encoding='utf-8')
             else:
                 shutil.copyfile(origin, target)
@@ -70,7 +74,7 @@ def build(a):
             node.text = 'Binaries/Win64/' + DLL
     ET.indent(tree, space='  ')
     tree.write(out / 'CE_AI_Development.modinfo', encoding='utf-8', xml_declaration=True)
-    receipt = dict(mod_id=MOD, dll=DLL, dll_sha256=sha(binary), input_pins=pins,
+    receipt = dict(mod_id=mod_id, dll=DLL, dll_sha256=sha(binary), input_pins=pins,
                    upstream_installation_modified=False, development_only=True,
                    source_repo='https://github.com/hennogous/CivilizationVI_CommunityExtension')
     (out.parent / (out.name + '-receipt.json')).write_text(
@@ -82,4 +86,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('ce', 'dll', 'output'):
         parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--mod-id', default=MOD, help='Distinct local CE identity')
     print(json.dumps(build(parser.parse_args()), indent=2))
