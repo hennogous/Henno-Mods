@@ -470,7 +470,7 @@
       "static",
       "runtime"
     ],
-    "scope": "Windows XP2 reference SHA 324c51e9 and patched SHA 092abfbb with matching code. QueueNextBuild at 3e8190, GetBestBuilding return at 3e849c, admitted contract at city-build offset 0x158 and Execute virtual slot 0x38. Nicomedia boundary 253 and Boston turn 245.",
+    "scope": "Windows XP2 reference SHA 324c51e9 and patched SHA 092abfbb with matching code. QueueNextBuild at 3e8190, GetBestBuilding return at 3e849c, city-build gate field at 0x150, resolved contract value at 0x158 and Execute virtual slot 0x38. Nicomedia boundary 253 and Boston turn 245.",
     "limits": "The replays show the queue order. They do not establish numerical inequalities between the building and contract, the rules for contract admission, or how ongoing work is preempted.",
     "sources": [
       "project/docs/research/mods/csc-ai-native-production-analysis-20261028.md",

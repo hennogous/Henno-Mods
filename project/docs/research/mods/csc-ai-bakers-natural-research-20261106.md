@@ -613,13 +613,16 @@ and the developable Cattle had no improvement. Storekeeper growth was zero.
 
 On this XP2 image, `QueueNextBuild` at RVA `3e8190` calls the building
 selector with return address `3e849c`. Its ordinary contract branch
-uses the admitted contract pointer at city-build offset `0x158`.
-It compares the contract against the unit value minus `0x100` and the
-project value. A successful call to the contract's Execute slot at
+checks the city-build field at `0x150`, resolves the object through
+`06bcd0`, then reads that object's signed value at `0x158`. It compares
+the value against the unit value minus `0x100` and the project value.
+A successful call to the contract's Execute slot at
 `0x38` returns before fallback production selection. The building score
-does not enter those contract checks. The submitted contract's printed
-value and the fallback Q8 score come from distinct consumers. Their
-conversion and the rules for admission are open.
+does not enter those contract checks. `LogContract` at `3f97e0` prints
+the contract's `0x158` Q8 field divided by 256 and rounded to one decimal.
+The submitted value is therefore a snapshot at a different stage from
+the building selector or the later queue gate. A trace must capture the
+values and eligibility of the contracts that actually reach admission.
 
 The next recovery probe should trace how the stock proposal from
 `CheckForUnitOrBuilding` at `3e1580` becomes a contender for admission.
