@@ -1568,6 +1568,34 @@ Treatment trace SHA-256 is
 The outcome summary SHA-256 is
 `498877b3dc5d0badc82296d096e95e0d1793b2f5cebc1b07b45436919fb8a9de`.
 
+### The integrated supplier bid reproduced Storekeeper without a diagnostic hook
+
+`development-alexandria-calibration-01` loaded the same verified
+turn-112 save and compared its physical census before autoplay.
+Only the CE DLL and three committed CSC AI Lua files differed
+from the prior package. The CE review branch `11fc033` widens the
+existing positive Builder cap from 32 to 64 utility units and
+advertises it through the existing status call. CSC commit
+`a9a6741` requests 56 for this ready-chain condition and clamps
+it to the advertised cap. The original 32-unit CE still receives
+32. The preference is absent when the supplier already works.
+
+The calibrated CE DLL SHA-256 is
+`7fbb24a1cbd6eccbe006840cb4dc1878def9fa6d928f2ecfa2be0b42588c750e`.
+Its MSVC build and 70 district-score plus four hook-group checks
+passed. The eight Lua frontend checks covered the original cap,
+the widened cap and removal of the preference after improvement.
+
+The run used stock AI and no external score writer. CE reported
+20,480 to 34,816 Q8 for Alexandria's exact Pasture in the first
+reported decision interval. The AI built the Bakers Pasture on
+118. The same native Growth effect operated on all three interior
+turns 119–121. The original integrated-cap control built the other
+Pasture. All nine Storekeeper samples and the chunked district
+telemetry passed the report audit. This qualifies the integrated
+delivery of one calibrated bid on the replay. It still needs
+normal-start, multi-chain and duration validation.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

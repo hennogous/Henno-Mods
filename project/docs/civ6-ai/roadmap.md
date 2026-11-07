@@ -96,8 +96,10 @@ matched increase redirected all three choices and the city found
 a Builder. The matched turn-112 continuation kept the extra bid
 through reassignment. Both arms built a Pasture at 118. Only the
 treatment improved the Bakers supplier and activated Storekeeper
-on 119–121. Verify the calibrated amount through the integrated
-publisher and CE cap on the same fixture, then test it in fresh games.
+on 119–121. The integrated CSC publisher and widened CE cap
+reproduced those three Service turns without an external score
+writer. Test this in fresh games and check how many viable
+chains now complete.
 Ancyra and Melbourne had working material and missing buildings.
 Two other sites had no adjacent Base. Keep those placement and
 building gaps distinct from the Builder decision.

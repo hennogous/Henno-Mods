@@ -1476,5 +1476,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C086"]
+  },
+  {
+    "id": "AI-C088",
+    "title": "The integrated calibrated supplier policy reproduced the Alexandria Storekeeper",
+    "statement": "The main CSC publisher and widened CE cap delivered a 14336 Q8 Pasture bid without an external score writer. Native work improved the Bakers supplier and the exact Storekeeper Growth effect activated.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Exact turn-112 treatment checkpoint through 122, same physical source as AI-C087. Package difference was restricted to the CE DLL and three committed CSC AI Lua files. CE first reported 20480 to 34816 Q8 for the exact Pasture. Construction occurred at 118, with Growth active on 119–121.",
+    "limits": "The save already carries the earlier diagnostic history. The wider cap and 56-unit ready-chain preference remain development calibration and need fresh-game, multi-chain and duration validation.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C087"]
   }
 ]

@@ -149,6 +149,10 @@ and the exact City Center received Storekeeper Growth on turns
 119–121. [AI-C087]
 [Matched execution and Service](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#keeping-the-bid-active-completed-the-bakers-pasture-and-storekeeper).
 
+The integrated publisher and widened CE cap then reproduced the
+same work and three Storekeeper turns without a diagnostic hook.
+[AI-C088] [Integrated calibration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-integrated-supplier-bid-reproduced-storekeeper-without-a-diagnostic-hook).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

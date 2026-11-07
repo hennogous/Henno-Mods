@@ -47,8 +47,9 @@ the city chose a different Pasture when it had room for a new job.
 A small extra bid redirected the job and the city assigned a
 Builder. Keeping the bid active through reassignment led the AI to
 finish the Bakers Pasture and activate Storekeeper. In the matched
-control it built the other Pasture. The next check is delivery
-through the integrated publisher across ordinary games.
+control it built the other Pasture. The integrated publisher
+reproduced the result on the same save. The next check is how
+often it helps in ordinary games.
 Ancyra and Melbourne had working suppliers and lacked buildings.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
