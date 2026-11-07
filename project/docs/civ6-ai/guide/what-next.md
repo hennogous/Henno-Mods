@@ -50,8 +50,10 @@ repaired it and restored Storekeeper with its original Pasture. The late
 Boston chain still needs that Pasture rebuilt before Storekeeper can return.
 A matched replay screened unavailable projects before ranking and
 Boston chose a valid Terrestrial Laser. A repair bid needs to earn its
-place against that kind of executable investment. Measure it first with
-the supplier and customer already working.
+place against that kind of executable investment. A separate Mill-only
+replay left the supplier and customer working. Boston finished a Theater
+Square, then repaired the Mill and restored Storekeeper. Check for
+recurrent delays in ordinary games before tuning this choice.
 In the controlled Pasture-loss replay, an Irrigation boost harvested the
 Cattle before Boston could rebuild. The matched replay also lost the
 deposit after CE suppressed the Farm forecast. The earlier replay will

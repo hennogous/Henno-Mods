@@ -117,6 +117,12 @@ the unavailable project before ranking. Boston then chose a valid
 Terrestrial Laser at the same score. Neither arm restored Storekeeper.
 [AI-C082] [Matched project eligibility replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#project-eligibility-preserved-a-valid-terrestrial-laser).
 
+A later Mill-only baseline kept the Pasture and Granary working.
+Boston took a Theater Square contract, offered the Mill repair the
+following turn, and executed it after Theater Square completed.
+The exchange and Storekeeper were working at turn 126. [AI-C083]
+[Mill-only contract and payouts](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-repaired-the-mill-after-theater-square).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

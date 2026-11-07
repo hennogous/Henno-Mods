@@ -1216,6 +1216,36 @@ down and no Storekeeper. This was a scoped diagnostic. It demonstrates
 that pre-ranking eligibility can retain a valid project while fixing
 this particular fallback. It does not establish a reusable repair bid.
 
+## Boston repaired the Mill after Theater Square
+
+The stock replay `mill-only-recovery-114-01` used the healthy turn-114
+retention checkpoint. The setup pillaged only Boston's Water Mill.
+The Cattle Pasture and Granary stayed working, and the exchange and
+Storekeeper stopped. The new damaged source was saved and verified
+as `mill-only-start.Civ6Save`, SHA-256
+`23bcd375c079cb66ef099755adb6bd9b26963bbe72be89cde472dec47831c0f8`.
+There was no native score or queue write.
+
+Boston finished Military Academy and accepted an existing Theater
+Square contract at 428,005 Q8. The city log names it on turn 118.
+It submitted Water Mill repair contract 2028 on turn 119. On turn
+124, Theater Square completed and the Mill contract executed at
+544,874 Q8. On turn 125 the build queue recorded 76.3 production
+against the 40-production repair cost. The turn-126 census found
+the Water Mill, original Pasture, exchange and Storekeeper working.
+The Granary yielded 2 Food against its base 1, the Mill yielded
+1 Food and the Service Growth property was 1.
+
+The replay shows stock AI restoring a ready chain after finishing a
+competing district. The earlier opening used the existing district
+contract, before fallback building selection. Raising that fallback
+score alone would not move the repair ahead of this commitment.
+The run ended at 126, so it verifies recovery at that endpoint.
+The observer froze with no faults and no active callbacks. Its
+SHA-256 is
+`4c6218e876ea4cdda3bed8edc521a8fb9026e1eb38334be2f1bb66c4b61c7e79`.
+Controller restoration passed.
+
 ## Native technology decision boundary
 
 Engineering became active in the ordinary continuation. Ghidra identifies

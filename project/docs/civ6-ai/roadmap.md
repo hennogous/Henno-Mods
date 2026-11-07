@@ -137,11 +137,14 @@ generic offense without reconsidering its building. The bounded Mill
 preference won the ordinary building ranking and still hit the same
 unadvanceable project. A matched diagnostic screened candidates using
 native project eligibility. Boston queued a valid Terrestrial Laser
-and the chain stayed down. Measure the marginal benefit of a Mill-only
-repair at an ordinary queue opening before choosing a bounded bid.
-This remains a repair-coordination dependency under **13.1–13.2**
-and **14.1**.
+and the chain stayed down. In a separate Mill-only replay starting
+at 114, stock AI finished its Theater Square before repairing the
+Mill. Storekeeper and exchange were working again at 126. Keep
+recovery under **13.1–13.2** and **14.1** in fresh-game observation.
+Prioritise normal-start follow-through under **1.6** and **3–6**
+before adding a Mill bonus for a loss that has yet to recur there.
 [Project eligibility replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#project-eligibility-preserved-a-valid-terrestrial-laser).
+[Mill-only contract and payouts](../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-repaired-the-mill-after-theater-square).
 The CE performance review branch indexes policy lookups by city and
 district-site pair and separates routine policy limits from detailed trace
 retention. Its native self-tests passed. Qualify the optional summary mode
@@ -299,8 +302,8 @@ until the active check closes or an explicit dependency needs attention.
 
 - **13.1 Repair.** Restore pillaged material improvements, Quarters and
   customer assets when the chain merits it. Verify actual repair and resumed
-  benefits. Observe the known Mill repair case in ordinary tests. A dedicated
-  investigation remains deferred.
+  benefits. Check whether the stock Mill-only recovery repeats in ordinary
+  games and when it fails with another link down.
 - **13.2 Replan.** Reassess after capture, lost supply, or destructive harvest
   and other work. Distinguish a repairable interruption from permanent loss.
 - **13.3 Preserve supply in Builder decisions.** Account for removing a

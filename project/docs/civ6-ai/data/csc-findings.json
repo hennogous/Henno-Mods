@@ -1415,5 +1415,17 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C079"],
     "related": ["AI-C080"]
+  },
+  {
+    "id": "AI-C083",
+    "title": "Stock AI restored Storekeeper after deferring a Mill-only repair",
+    "statement": "Boston executed an existing Theater Square contract, then repaired its Water Mill after the district finished. Its exchange and Storekeeper resumed with the original Pasture.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Turn-114 healthy stock checkpoint with only the Mill pillaged by the setup. Theater Square entered production at 118. Mill contract 2028 was offered at 119 and executed at 124 at 544874 Q8. The turn-126 endpoint showed working exchange, Storekeeper and building yields.",
+    "limits": "One controlled loss with intact supply, customer and Feudalism. No calibrated repair bid, joint-damage result or duration after recovery was measured.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C080", "AI-C082"]
   }
 ]
