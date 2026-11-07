@@ -6,20 +6,22 @@ import json
 from pathlib import Path
 import re
 import shutil
+import sys
 import traceback
 import uuid
 import xml.etree.ElementTree as ET
 
 from ce_replay import DLL, HOTFIX_EXE_SHA, verify_modules
 from driver import (
-    HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, flags, launch, load,
+    HERE, HOTFIX_SHA, STUDY, XP2_IMAGE_SIZE, HeldProcess, NativeSession, configure, flags, launch, load, lua,
     make_probe_controller, manifest, native_inventory, parse, read, require,
     restore_preferences, sha, write_json,
 )
+from full_game_controller.checkpoint import save_inactive_boundary
 from storekeeper_runtime import audit
 
 
-LOGS = ('Lua.log', 'Database.log', 'Modding.log', 'AI_CityBuild.csv',
+LOGS = ('Lua.log', 'Database.log', 'Modding.log', 'AI_CityBuild.csv', 'AI_Research.csv',
         'AI_Behavior_Trees.csv', 'City_BuildQueue.csv', 'UnitOperations.log')
 MAPS = ('Continents', 'Pangaea', 'Fractal')
 MAP_SIZES = {'small': (6, 9), 'standard': (8, 12)}  # Major and city-state counts.
@@ -77,6 +79,61 @@ def check_native_status(status, untuned):
         require(status['enabled'] == 1 and status['version'] > 0, 'Integrated CSC AI policy did not publish')
 
 
+def capture_census(controller, players, turn, path):
+    scope = "CSC_BAKERS_COHORT_MODE='census'\nCSC_BAKERS_CENSUS_PLAYERS=" + lua(sorted(players)) + '\n'
+    raw = controller.cmd(scope + read(HERE / 'retention_cohort.lua'),
+                         'CSC_AdjacencyGameplay', f'chain-census-{turn}')
+    path.write_text(raw, encoding='utf-8')
+    rows = re.findall(r'CSC_BAKERS_CENSUS_(?!END\t)([A-Z]+\t[^\r\n]+)', raw)
+    footer = re.findall(r'CSC_BAKERS_CENSUS_END\t(\d+)\t(\d+)', raw)
+    require(footer == [(str(turn), str(len(rows)))], 'Incomplete Bakers endpoint census')
+    return sorted(rows)
+
+
+def capture_builders(controller, player, turn, path):
+    code = f"""
+local player = assert(Players[{player}])
+local builder = assert(GameInfo.Units.UNIT_BUILDER).Index
+for _, unit in player:GetUnits():Members() do
+    if unit:GetType() == builder then
+        print(string.format('CSC_BUILDER %d %d %d %d', unit:GetID(), unit:GetX(), unit:GetY(), unit:GetBuildCharges()))
+    end
+end
+print('CSC_BUILDER_TURN=' .. Game.GetCurrentGameTurn())
+"""
+    raw = controller.cmd(code, 'GameCore_Tuner', f'supplier-builder-census-{turn}')
+    require(parse(raw, 'CSC_BUILDER_TURN') == turn, 'Builder census clock differs')
+    rows = [dict(unit=int(unit), x=int(x), y=int(y), charges=int(charges))
+            for unit, x, y, charges in re.findall(r'CSC_BUILDER (\d+) (\d+) (\d+) (\d+)', raw)]
+    write_json(path, rows)
+
+
+def summarize_run(out, players, start, endpoint, untuned, checkpoint):
+    require(load(out / 'session-closed.json')['verified'], 'Expected a closed development run')
+    log = read(out / 'Lua.log')
+    published = 'CSC_AI_BAKERS_DISTRICTS turn=' in log
+    require('CSC_AI_BAKERS_DISTRICTS_FAILED' not in log and published != untuned,
+            'Unexpected CSC policy publication in the development arm')
+    require('CSC_AI_BAKERS_PLACEMENT_FAILED' not in log, 'CSC placement scan faulted during the run')
+    placement_bids = {int(turn): int(count) for turn, count in
+                      re.findall(r'CSC_AI_BAKERS_PLACEMENT turn=(\d+) bids=(\d+)', log)}
+    score_samples, incomplete = [], []
+    for turn, version, payload in re.findall(
+            r'CSC_AI_BAKERS_DISTRICT_SAMPLES turn=(\d+) previousVersion=(\d+) samples=([^\r\n]*)', log):
+        # Civ can cut off a long optional telemetry line. Preserve the raw
+        # log and mark that batch unavailable without dropping Service evidence.
+        try:
+            rows = json.loads(payload)
+        except json.JSONDecodeError:
+            incomplete.append(int(turn))
+            continue
+        score_samples.append(dict(turn=int(turn), previous_version=int(version), rows=rows))
+    result = audit(log, players, expected_turns=range(start + 1, endpoint))
+    write_json(out / 'result.json', dict(closed=True, reached=endpoint, placement_bids=placement_bids,
+        district_score_samples=score_samples, incomplete_district_sample_turns=incomplete,
+        storekeeper=result, checkpoint=checkpoint))
+
+
 def run(args):
     out, mods = args.output.resolve(), args.mods.resolve(strict=True)
     ce, csc = (path.resolve(strict=True) for path in (args.ce, args.csc))
@@ -89,6 +146,7 @@ def run(args):
             'Fresh output, unused development paths and exclusive native ownership required')
     require(not any(path.is_relative_to(mods) for path in (out, ce, csc)),
             'Staging and output must be outside the installed Mods directory')
+    require(not args.saves or args.saves.is_dir(), 'The native save directory must already exist')
     require(sha(args.binary) == HOTFIX_EXE_SHA, 'The validated DX11 executable is required')
     ce_dll = Path('Binaries/Win64') / DLL
     require(sha(ce / ce_dll) == args.ce_sha256, 'The staged CE DLL hash differs from the expected build')
@@ -106,6 +164,20 @@ def run(args):
         fresh_game=True, qualification=False, external_policy=False, gameplay_interventions=False,
         input_digests=[hashlib.sha256(json.dumps(pins[source], sort_keys=True).encode()).hexdigest()
                        for source in (ce, csc)])
+    if args.saves:
+        protocol['archive_endpoint'] = True
+    start = 1
+    prior = args.resume_from.resolve(strict=True) if args.resume_from else None
+    if prior:
+        previous = load(prior / 'protocol.json')
+        checkpoint_input = load(prior / 'checkpoint.json')
+        start = checkpoint_input['turn']
+        require(previous == dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
+                and load(prior / 'session-closed.json')['verified'],
+                'Diagnostic continuation requires the same closed normal-start package and setup')
+        require(checkpoint_input['verified'] and sha(checkpoint_input['archive']) == checkpoint_input['sha256']
+                and start < args.through <= start + 15, 'Expected an exact bounded continuation')
+        protocol.update(fresh_game=False, ordinary_setup=False, diagnostic_start=start)
     other_source = None
     if args.matched_source:
         other_source = args.matched_source.resolve(strict=True)
@@ -127,6 +199,8 @@ def run(args):
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
     players = set()
     copied = []
+    checkpoint = None
+    observer = None
 
     def verify_packages():
         for source in copied:
@@ -192,6 +266,25 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
                 require(state[key] == other[key], f'Matched source differs in {key}')
         return True
 
+    def continuation_gate():
+        identity = load(prior / 'source.json')
+        players.update(identity['original_ai'])
+        archived = re.findall(r'CSC_BAKERS_CENSUS_(?!END\t)([A-Z]+\t[^\r\n]+)',
+                              read(prior / 'chain-census.txt'))
+        loaded = capture_census(controller, players, start, out / 'source-census.txt')
+        require(sorted(archived) == loaded, 'The loaded Stage 2 census differs from the saved endpoint')
+        pid, city, quarter, plot = args.supplier
+        require(pid in players and any(row.startswith(f'QUARTER\t{pid}\t{city}\t{quarter}\ttrue\tfalse\t')
+                                       for row in loaded)
+                and f'IMPROVEMENT\t{quarter}\t{plot}\tIMPROVEMENT_PASTURE\ttrue' in loaded
+                and any(row.startswith(f'NEIGHBOR\t{quarter}\t{plot}\t{pid}\t-1\tRESOURCE_CATTLE\t-\t')
+                        for row in loaded), 'The scoped Cattle tile is not a missing supplier on this save')
+        native = parse(controller.cmd('print("CSC_FRESH_CE="..CE_AIDistrictScoresStatus())',
+                                      'GameCore_Tuner', 'diagnostic-start-status'), 'CSC_FRESH_CE')
+        check_native_status(native, False)
+        write_json(out / 'source.json', identity)
+        return True
+
     try:
         for source, destination in local.items():
             shutil.copytree(source, destination)
@@ -214,20 +307,66 @@ Modding.EnableMod(chosen.Handle,true)
         session.wait_context('MainMenu', 90)
         require({key for key, enabled in flags(controller, 'verify-local-pair')['mods'].items() if enabled}
                 == {ce_id, csc_id}, 'Expected only the two development packages')
-        session.issue_once('host-normal-start', host(args.map_seed, args.game_seed, args.map, args.map_size), 'MainMenu')
         contexts = ('GameCore_Tuner', 'PlotInfo')
         if not args.untuned:
             contexts += ('CSC_AI_BakersGameplay',)
-        session.ready_after_issue(1, contexts, eligibility=source_gate)
+        if prior:
+            session.load_once(checkpoint_input['native_save'], sha256=checkpoint_input['sha256'],
+                              native_directory=args.saves, turn=start, contexts=(*contexts, 'CSC_AdjacencyGameplay'),
+                              eligibility=continuation_gate)
+        else:
+            session.issue_once('host-normal-start', host(args.map_seed, args.game_seed, args.map, args.map_size), 'MainMenu')
+            session.ready_after_issue(1, contexts, eligibility=source_gate)
         verify_modules(session, local[ce] / ce_dll, out, HOTFIX_SHA)
         raw = controller.cmd('CSC_BAKERS_STOREKEEPER_WATCH=true\n' + read(HERE / 'storekeeper_runtime.lua'),
                              'PlotInfo', 'install-storekeeper-watch')
         require('CSC_BAKERS_STOREKEEPER_WATCH_INSTALLED' in raw, 'Storekeeper watch was not installed')
+        if prior:
+            dependencies = args.probe_dependencies.resolve(strict=True)
+            sys.path.insert(0, str(dependencies))
+            import frida
+            require(frida.__version__ == '17.24.3' and Path(frida.__file__).resolve().is_relative_to(dependencies),
+                    'Exact existing Frida package required')
+            pid, city, _, plot = args.supplier
+            width = load(out / 'source.json')['map_signature'][0]
+            pasture = parse(controller.cmd(
+                "print('CSC_PASTURE='..assert(GameInfo.Improvements.IMPROVEMENT_PASTURE).Index)",
+                'GameCore_Tuner', 'supplier-improvement-index'), 'CSC_PASTURE')
+            modules = load(out / 'loaded-modules.json')
+            scope = dict(player=pid, city=city, plot=plot, x=plot % width, y=plot // width, pasture=pasture,
+                         cePath=modules[DLL]['path'])
+            write_json(out / 'supplier-scope.json', scope)
+            capture_builders(controller, pid, start, out / 'source-builders.json')
+            attachment = frida.attach(session.owner.pid)
+            code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(
+                read(path) for path in (STUDY / 'observer.js', HERE / 'pasture_recovery_observer.js'))
+            script = attachment.create_script(code)
+            script.load()
+            observer = script
+            spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
+            require(observer.exports_sync.init(spec, scope), 'Supplier observer installation failed')
+            observer.exports_sync.advance(start)
         controller.play(args.through)
+        if observer:
+            trace = observer.exports_sync.freeze()
+            write_json(out / 'supplier-trace.json', trace)
+            require(trace['fault'] is None and trace['active'] == 0, 'Supplier decision trace faulted')
+            capture_builders(controller, args.supplier[0], args.through, out / 'endpoint-builders.json')
         final = parse(controller.cmd('print("CSC_FRESH_CE="..CE_AIDistrictScoresStatus())',
                                      'GameCore_Tuner', 'fresh-endpoint-status'), 'CSC_FRESH_CE')
         write_json(out / 'native-endpoint.json', final)
         check_native_status(final, args.untuned)
+        if args.saves:
+            # Save the natural endpoint for follow-up diagnosis after the
+            # continuous Service observation window has finished.
+            state = controller.state_read('fresh-endpoint-save-check')
+            if state['player0_alive']:
+                checkpoint = save_inactive_boundary(controller, turn=args.through, name='CSC_BAKERS_FRESH',
+                    native_directory=args.saves, archive=out / 'endpoint.Civ6Save')
+                write_json(out / 'checkpoint.json', checkpoint)
+            else:
+                write_json(out / 'checkpoint-unavailable.json', state)
+            capture_census(controller, players, args.through, out / 'chain-census.txt')
     except Exception as error:
         write_json(out / 'failure.json', dict(error=str(error), traceback=traceback.format_exc()))
         raise
@@ -235,7 +374,8 @@ Modding.EnableMod(chosen.Handle,true)
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda: restore_preferences(controller, out)
                           if (out / 'original-preferences.json').exists() else None,
-                          restore_package=verify_packages)
+                          restore_package=verify_packages,
+                          before_menu=lambda: observer.exports_sync.freeze() if observer else None)
         if session.closed or (session.owner is None and not native_inventory()):
             for source in copied:
                 local[source].rename(out / local[source].name)
@@ -243,20 +383,7 @@ Modding.EnableMod(chosen.Handle,true)
                 log = args.user_root / 'Logs' / name
                 if session.closed and log.is_file():
                     shutil.copyfile(log, out / name)
-    log = read(out / 'Lua.log')
-    published = 'CSC_AI_BAKERS_DISTRICTS turn=' in log
-    require('CSC_AI_BAKERS_DISTRICTS_FAILED' not in log and published != args.untuned,
-            'Unexpected CSC policy publication in the development arm')
-    require('CSC_AI_BAKERS_PLACEMENT_FAILED' not in log, 'CSC placement scan faulted during the run')
-    placement_bids = {int(turn): int(count) for turn, count in
-                      re.findall(r'CSC_AI_BAKERS_PLACEMENT turn=(\d+) bids=(\d+)', log)}
-    score_samples = [dict(turn=int(turn), previous_version=int(version), rows=json.loads(samples))
-                     for turn, version, samples in re.findall(
-                         r'CSC_AI_BAKERS_DISTRICT_SAMPLES turn=(\d+) previousVersion=(\d+) samples=(\[[^\r\n]+\])', log)]
-    result = audit(log, players, expected_turns=range(2, args.through))
-    write_json(out / 'result.json', dict(closed=session.closed, reached=args.through,
-                                       placement_bids=placement_bids, district_score_samples=score_samples,
-                                       storekeeper=result))
+    summarize_run(out, players, start, args.through, args.untuned, checkpoint)
 
 
 if __name__ == '__main__':
@@ -271,8 +398,17 @@ if __name__ == '__main__':
                         help='Maximum wall time of one continuous autoplay window (30–240)')
     parser.add_argument('--untuned', action='store_true', help='Remove only the CSC runtime policy action locally')
     parser.add_argument('--matched-source', type=Path, help='Require initial state parity with the other arm')
+    parser.add_argument('--saves', type=Path, help='Native Saves/Single path for an endpoint census and archived save')
+    parser.add_argument('--resume-from', type=Path, help='Continue a closed tuned development run for supplier diagnosis')
+    parser.add_argument('--supplier', type=int, nargs=4, metavar=('PLAYER', 'CITY', 'QUARTER', 'PLOT'))
+    parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
+    if options.resume_from:
+        if not (options.saves and options.supplier and options.probe_dependencies) or options.untuned or options.matched_source:
+            parser.error('A supplier continuation requires --saves, --supplier and --probe-dependencies on the tuned arm')
+    elif options.supplier or options.probe_dependencies:
+        parser.error('Supplier diagnostics require --resume-from')
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):
         parser.error('Use positive 31-bit seeds and an endpoint between turns 3 and 250')
     if not 30 <= options.interval_minutes <= 240:

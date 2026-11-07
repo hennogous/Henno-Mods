@@ -43,6 +43,80 @@ local function working(buildings, kind)
     return buildings:HasBuilding(kind) and not buildings:IsPillaged(kind)
 end
 
+if mode == 'census' then
+    -- Include unfinished and broken Quarters. The retention collector below
+    -- deliberately skips them, which hides the links a development run needs.
+    local count = 0
+    local function emit(kind, ...)
+        local fields = {...}
+        for i, value in ipairs(fields) do fields[i] = tostring(value) end
+        print('CSC_BAKERS_CENSUS_' .. kind .. '\t' .. table.concat(fields, '\t'))
+        count = count + 1
+    end
+    local function unlocked(player, row)
+        local tech = GameInfo.Technologies[row.PrereqTech]
+        local civic = GameInfo.Civics[row.PrereqCivic]
+        return (not tech or player:GetTechs():HasTech(tech.Index))
+            and (not civic or player:GetCulture():HasCivic(civic.Index))
+    end
+    local function buildingState(buildings, kind)
+        if not buildings:HasBuilding(kind) then return 'absent', -1 end
+        return working(buildings, kind) and 'working' or 'pillaged', buildings:GetBuildingLocation(kind)
+    end
+    for _, playerID in ipairs(assert(CSC_BAKERS_CENSUS_PLAYERS)) do
+        local player = assert(Players[playerID])
+        local alive = player:IsAlive()
+        emit('PLAYER', playerID, alive, alive and player:GetCulture():HasCivic(feudalism))
+        if alive then
+            for _, city in player:GetCities():Members() do
+                local districts = city:GetDistricts()
+                for index = 0, districts:GetNumDistricts() - 1 do
+                    local district = districts:GetDistrictByIndex(index)
+                    if district and district:GetType() == quarter then
+                        local x, y = district:GetX(), district:GetY()
+                        local quarterPlot = Map.GetPlotIndex(x, y)
+                        emit('QUARTER', playerID, city:GetID(), quarterPlot, district:IsComplete(),
+                            district:IsPillaged(), Map.GetPlotByIndex(quarterPlot):IsRiver())
+                        for _, kind in ipairs({water, wind}) do
+                            local row = GameInfo.Buildings[kind]
+                            local status, location = buildingState(city:GetBuildings(), kind)
+                            emit('MILL', quarterPlot, row.BuildingType, status, location, unlocked(player, row))
+                        end
+                        for _, plot in ipairs(Map.GetAdjacentPlots(x, y)) do
+                            local resource = GameInfo.Resources[plot:GetResourceType()]
+                            local improvement = GameInfo.Improvements[plot:GetImprovementType()]
+                            local mapped = resource and base[resource.ResourceType]
+                            emit('NEIGHBOR', quarterPlot, plot:GetIndex(), plot:GetOwner(), plot:GetDistrictType(),
+                                resource and resource.ResourceType or '-', improvement and improvement.ImprovementType or '-',
+                                mapped ~= nil, mapped and improvement and mapped[improvement.Index] == true or false,
+                                plot:IsImprovementPillaged())
+                            for kind in pairs(mapped or {}) do
+                                local row = GameInfo.Improvements[kind]
+                                emit('IMPROVEMENT', quarterPlot, plot:GetIndex(), row.ImprovementType, unlocked(player, row))
+                            end
+                            if plot:GetOwner() == playerID and plot:GetDistrictType() == cityCenter then
+                                local buyer = Cities.GetPlotPurchaseCity(plot)
+                                if buyer and buyer:GetOwner() == playerID
+                                    and buyer:GetX() == plot:GetX() and buyer:GetY() == plot:GetY() then
+                                    for _, kind in ipairs(granaries) do
+                                        local status, location = buildingState(buyer:GetBuildings(), kind)
+                                        if kind == granary or status ~= 'absent' then
+                                            emit('CUSTOMER', quarterPlot, buyer:GetID(), plot:GetIndex(),
+                                                GameInfo.Buildings[kind].BuildingType, status, location)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    print(string.format('CSC_BAKERS_CENSUS_END\t%d\t%d', Game.GetCurrentGameTurn(), count))
+    return
+end
+
 if mode == 'ui' then
     -- PlotInfo has building yields but lacks the gameplay building-location API.
     -- The gameplay snapshot supplies the exact IDs to query here.

@@ -52,10 +52,16 @@ function init(spec, scope) {
     const expectedCarrier = scope.cePath
         ? carriers.length === 1 && normalized(carriers[0].path) === normalized(scope.cePath)
         : carriers.length === 0;
+    const validIdentity = [scope.player, scope.city, scope.plot, scope.x, scope.y]
+        .every(value => Number.isInteger(value) && value >= 0);
+    // Only the original matched Boston experiment may adjust a score here.
+    // Other fixtures observe the decision with the integrated policy in place.
+    const boston = scope.player === 3 && scope.city === 131073 && scope.plot === 796
+        && scope.x === 56 && scope.y === 10;
     if (!core || core.size !== spec.image_size || !expectedCarrier
-        || scope.player !== 3 || scope.city !== 131073 || scope.plot !== 796 || scope.x !== 56 || scope.y !== 10
+        || !validIdentity || scope.player === 0 || scope.player >= 64 || (scope.applyPastureBid && !boston)
         || !Number.isInteger(scope.pasture) || scope.pasture < 0 || scope.pasture >= 256)
-        throw Error('Expected the qualified Boston Cattle scope');
+        throw Error('Expected a verified supplier scope');
     const address = rva => core.base.add(rva);
     for (const [rva, expected] of [
         [CHECK_IMPROVEMENT, '4c8bdc574881ec10010000488b8130040000'],
