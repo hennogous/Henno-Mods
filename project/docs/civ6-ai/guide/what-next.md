@@ -23,7 +23,7 @@ the streak after 141 turns when the Pasture failed during a nearby blizzard.
 The later run followed a different weather sequence.
 [152-turn audit and the earlier break](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
 
-## Intermediate milestone — one working Bakers Stage 2 chain
+## Intermediate milestone — repeat the Bakers Stage 2 chain from normal starts
 
 The sequence is a completed Quarter with viable Base supply and an adjacent
 Granary host (**1**), a working Mill and Granary (**4, 5**), a working Base
@@ -33,7 +33,13 @@ extend the test to a working Service (**6.1**). Existing unlocks and buildings
 can satisfy dependencies. Tailors comes next through the same model.
 
 The live Boston replay establishes this sequence for one Bakers chain. The
-offline planner separately covers actual gameplay definitions and a copied
+normal-start placement policy currently works on owned Quarter sites.
+Acquiring a Quarter footprint and acquiring an adjacent resource are
+separate decisions. For Bakers Stage 2, the Quarter can already be on
+city land while the material that makes the site viable is beyond it.
+[Land acquisition](../topics/native/district-choice.md#buying-a-future-site).
+
+The offline planner separately covers actual gameplay definitions and a copied
 Tailors case. In matched replays the main CSC policy redirected Campus off
 the Cattle, then separately kept a destructive Farm out of the Builder
 rankings. The latter replay kept Boston's Pasture working through

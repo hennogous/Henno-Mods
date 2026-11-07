@@ -204,6 +204,47 @@ behavior logs say `SUCCESS, Purchase Plot, Not Buying anything` before reservati
 without a spending contract. The exact pre-scan eligibility transition remains
 unrecorded.
 
+### Starting rings and a purchase receipt
+
+On patched XP2, `City::Culture::DoFoundCity` at `11be40` calls
+`AcquirePlots` at `11b000` in founding mode. That mode enumerates
+radius 1 through `4fa40` and `4f9c0`. The callback thunk at
+`11d670` reaches `11a290`, which annexes an unowned ring tile or
+a same-owner ring tile without a district. It skips foreign tiles
+and same-owner tiles with a district. If starting acquisitions
+remain, `AcquirePlots` uses its ordinary next-plot selection.
+This explains why a Bakers footprint next to a present friendly
+City Center usually already belongs to that player. A mapped
+supplier beside the proposed Quarter can sit outside the City
+Center's starting ring. A request for the footprint does not
+buy the supplier.
+
+The tuned and untuned turn-45 development logs contain the same
+early native request for Aachen. At turn 2 the district tree's
+Purchase Plot node logged `Purchase 56 11: Accepted on #32`.
+That contract is evidence of reaching the request stage. It
+does not establish spending. For a focused replay, distinguish
+the accepted contract from the targeted Economic attempt and
+record the native debit, ownership and acquiring city for that
+exact plot. A supplier-only purchase also needs a later legal
+improvement and observed chain benefit.
+
+Both routes converge on the plot branch of `City::Commands::Purchase::Start`
+at `680f70`. This branch recomputes the positive quote and checks
+`Treasury::CanAffordPlot` at call site `68135d`. The debit call at
+`681379` passes the negative quote multiplied by 256 to
+`ChangeGoldBalance`. The annex call at `68139d` assigns the plot
+to the buying city, after which the branch emits the purchase
+notification. These two call sites distinguish paid acquisition
+from the culture route and from contract acceptance. The tuned
+`AI_Behavior_Trees.csv` SHA-256 is
+`cbaa80d3923719c2592e1b7f3a33c61990ebaa9ae326582daed2cd9700d36ebf`.
+
+The Ghidra reference SHA-256 starts `324c51e9`; the installed
+patched Steam image starts `092abfbb`. Their full file-backed
+`.text` matched across 10,180,135 bytes, SHA-256
+`4ebd266b7d324fc9f97daa9dc39fa5cafcd09d6257e7a446914ddb13fd8927e9`.
+
 ## Primary evidence and limits
 
 Retained exports are under`Desktop/Codex/csc-district-placement-20261103/native/`

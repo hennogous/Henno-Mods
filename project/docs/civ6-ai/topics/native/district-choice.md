@@ -89,6 +89,12 @@ using improvement forecasts and a feature heuristic. This is not a universal
 highest-yield-tile auction. Requested targets have a more permissive savings
 hurdle than routine purchases. [AI-N069]
 
+Founding first annexes eligible plots immediately around the new
+City Center. A proposed Bakers site beside that center is therefore
+usually already owned. An adjacent supplier farther out can still
+require acquisition of its own. A targeted purchase for the district
+does not cover the supplier. [AI-N101]
+
 See [cache timing and purchase details](../../../research/mods/civ6-district-cache-timing-and-purchases-20261104.md)
 for exact funds/thresholds, phase conditions and the important distinction
 between the two pilot misses and a proven native purchase.

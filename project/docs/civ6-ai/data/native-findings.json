@@ -1776,5 +1776,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/production-and-prerequisites.md",
     "related": ["AI-N081", "AI-N085", "AI-C019"]
+  },
+  {
+    "id": "AI-N101",
+    "title": "City founding annexes eligible radius-one plots before additional starting acquisitions",
+    "statement": "Founding enumerates radius one and annexes unowned tiles and same-owner tiles without a district. It skips foreign tiles and same-owner tiles with a district, then uses ordinary next-plot selection for any remaining starting acquisitions.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Patched Steam XP2 code matched the Ghidra reference. City::Culture::DoFoundCity at 11be40 calls AcquirePlots at 11b000. Its founding traversal uses the radius-one ring helper at 4fa40 and 4f9c0 and the callback at 11a290 through thunk 11d670.",
+    "limits": "This describes normal founding rather than every later border state. The radius-one footprint of a proposed Quarter and its more distant material deposit may have different owners. No CSC purchase policy was tested.",
+    "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
+    "topic": "topics/native/district-choice.md",
+    "related": ["AI-N069"]
   }
 ]

@@ -9,7 +9,9 @@ evidence.
 
 ## Current milestone and active problem
 
-**Intermediate milestone achieved — one working, retained Bakers Stage 2 chain.**
+**Boston fixture achieved — one working, retained Bakers Stage 2 chain.**
+The reusable milestone is to repeat the sequence from normal starts across
+multiple AI cities and close the dependencies as they arise.
 Choose and complete a Bakers Quarter with viable Base supply and an adjacent
 Granary host (**1.1–1.4, 1.6**). Get the appropriate Mill and a functioning
 Granary in place (**4.1–4.2, 5.1**). Improve the Base tile and match the job
@@ -207,8 +209,12 @@ until the active check closes or an explicit dependency needs attention.
   including the local Mill geometry where applicable.
 - **1.4 Adjacency.** Combine the actual sources and favor sites around +4 or
   higher. Calibrate against competing native investments and weaker viable sites.
-- **1.5 Tile purchase.** Route an affordable unowned site through native
-  planning and treasury checks. Verify the actual purchase.
+- **1.5 Tile purchase.** Price an affordable unowned Quarter footprint or
+  a supplier needed by a viable plan. These can require different native
+  decisions. First trace an exact district purchase request through its
+  debit and acquiring city, and a separate supplier acquisition through
+  its improvement. Preserve native legality and treasury checks.
+  [Native purchase routes](topics/native/district-choice.md#buying-a-future-site).
 - **1.6 Construction readiness and follow-through.** Check unlocks, legal
   siting, capacity and the preparation window before committing. Trace the
   proposal through production, foundation and completion. Distinguish a new
