@@ -1635,6 +1635,35 @@ Census and result SHA-256 are
 `b09d7b77edd1861fce21fe18c7a9a0894f89b51f202add0a83521f1592e9e855` and
 `a6722719b4571a5c820568a2603425b4e4881c782b9dbd99f3fcf6331acf7941`.
 
+### Melbourne's available Wind Mill lost the ordinary building nomination
+
+`development-melbourne-wind-mill-01` loaded the exact fresh
+turn-125 save and observed it through 134 without score writes.
+The UI queue reported the Wind Mill available at load. The
+native building comparison called its requirements check and
+passed it in all ten recorded choices, including the ordinary
+0/0 caller at return RVA `3e160a`. In that ordinary comparison
+the Mill had 93,359 Q8 and Amphitheater won with 205,591 Q8.
+The native validation of Amphitheater contract 2391 linked
+building index 13 to the city log on turn 132.
+
+The other nine choices consisted of seven threat reviews and
+two default queue building comparisons. The actual queue
+passes accepted Star Fort contract 2119 at 289,297 Q8 on
+127 and Commercial Hub contract 2312 at 281,757 Q8 on 131.
+They did not reach the default category comparison. Neither
+queue pass shows that the Mill could have beaten those offers.
+Melbourne still had no Mill at 134. Alexandria independently
+kept its Storekeeper active on all eight interior turns.
+
+The follow-up applies 114,688 Q8 to the eligible Mill only at
+the ordinary 0/0 comparison, just above the observed 112,232
+Q8 gap. This tests nomination and any resulting native offer.
+It leaves threat comparison, the later offer refresh and
+production arbitration alone. The observer froze with no faults
+and restoration passed. Trace SHA-256 is
+`6d9c1c139e45a1df6884aa8901cf19837ff2af8fc0bfdcbe76c2a10f9d53e0e9`.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first

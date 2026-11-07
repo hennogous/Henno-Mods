@@ -27,6 +27,7 @@ Service activations are useful intermediate measures.
 | Stage 4 producer | Favor the unlock from population 7 and construction from population 10 when a viable Base and Specialty deposit are both adjacent. |
 | Stage 4 customer | Value the mapped building in an adjacent customer district. For a Wonder, value a legal adjacent footprint beside a Quarter with the required materials. |
 | Stage 2, 3 and 4 Services | Favor research or civics when the applicable material, working producer and customer requirements are ready. Combine contributions from distinct chains. Eventually weigh Service outcomes by empire needs and victory direction. |
+| Quarter investment and trade | Compare weak local Quarters with the same-family import benefits they could displace. Value trade routes to supplied Quarter destinations when the origin qualifies and can use the benefits. |
 
 The adjacency, material-count and population thresholds are starting
 preferences. Eligibility follows the actual game rules. Distinguish mapped

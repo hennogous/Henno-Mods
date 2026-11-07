@@ -1500,5 +1500,18 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C084", "AI-C088"]
+  },
+  {
+    "id": "AI-C090",
+    "title": "Melbourne's available Wind Mill lost ordinary building nomination to Amphitheater",
+    "statement": "The Wind Mill passed native requirements and scored 93359 Q8 in the ordinary 0/0 comparison. Amphitheater won at 205591 Q8. Other queue passes accepted existing Star Fort and Commercial Hub contracts.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static", "source"],
+    "scope": "Read-only continuation of the fresh calibrated turn-125 save through 134. UI queue confirmed Wind Mill available at 125. Ten native building checks passed the Mill's requirements, including the ordinary proposal caller at 3e160a. Amphitheater contract 2391 was logged at 132.",
+    "limits": "No score change. The two observed queue passes used existing offers, so these traces do not establish a Mill-versus-contract comparison. Melbourne did not construct the Mill by 134.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C089"],
+    "related": ["AI-C078", "AI-N025"]
   }
 ]

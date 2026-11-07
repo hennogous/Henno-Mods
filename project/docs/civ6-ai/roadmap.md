@@ -101,12 +101,15 @@ reproduced those three Service turns without an external score
 writer. A fresh calibrated game reached turn 125 with six active
 Alexandria Storekeeper turns, nine completed Quarters and no
 other active major-AI chain. Melbourne still has working Rice,
-Granary and Feudalism with only its Wind Mill missing. Trace
-eligibility, building rank and production under **4.2** next.
+Granary and Feudalism with only its Wind Mill missing. The Mill
+passed native eligibility and lost ordinary nomination to
+Amphitheater by 112,232 Q8. Test whether a bounded nomination
+preference results in a native offer and production under **4.2**.
 Ancyra still needs its Mill and Granary, and some sites lack a
 viable supplier or customer.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 [Fresh calibrated game](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
+[Melbourne building trace](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-available-wind-mill-lost-the-ordinary-building-nomination).
 
 **Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
 The CE score-stage policy now reads live CSC material rules and protects
@@ -349,6 +352,24 @@ until the active check closes or an explicit dependency needs attention.
 - **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
   One supplier can serve multiple Quarters. Count each real lost or enabled
   benefit once.
+
+### 15. Quarter investment and trade
+
+Later milestone, after Bakers Stage 2 qualification.
+
+- **15.1 Price lost import benefits before building.** When a local Quarter
+  would remove eligibility for same-family trade bonuses, compare its
+  credible local return with the benefits the city could actually import
+  through existing routes and credible new routes to supplied destinations.
+  Discourage weak local Quarters whose construction would sacrifice a
+  better trade option. Account for route capacity, reach and how long the
+  alternative is likely to operate.
+- **15.2 Value supplied Quarter destinations.** In native route selection,
+  value the actual CSC yields and Amenities each eligible destination can
+  deliver to the origin, alongside the normal reasons to choose a route.
+  Check the destination's producer and materials and the origin's
+  eligibility. Verify route choice, completion of the trade setup and the
+  benefits actually received.
 
 ## Tooling, delivery and evidence
 

@@ -466,8 +466,8 @@
       "title": "CSC AI objectives",
       "kind": "integration",
       "date": null,
-      "bytes": 5421,
-      "sha256": "7f87e9f761537b65987097216fbca0e6a4eb5c057f2aa11cd60d258adedcffc8",
+      "bytes": 5646,
+      "sha256": "b8552a9a347b7c9ad76498be8f7ac62c5833d5de2728a9cb9b7a45c4d34b27c8",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/integrations/csc-ai-objectives.md"
     },
@@ -696,8 +696,8 @@
       "title": "Timing a Bakers bid against natural civic research",
       "kind": "report",
       "date": "20261106",
-      "bytes": 94230,
-      "sha256": "2cbabf5b777dfac131429dd93d7689b6cb7b06fca7eb7ef7c71998d182307570",
+      "bytes": 95734,
+      "sha256": "914a1c9523bec166a212c90a2712011bc16c6644b0a4b6e8a4b8f0ab976fc0d4",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"
     },

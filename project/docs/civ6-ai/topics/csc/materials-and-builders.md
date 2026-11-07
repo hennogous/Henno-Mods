@@ -159,6 +159,12 @@ Pasture completed. Other cities still had production or
 placement gaps. [AI-C089]
 [Fresh calibrated game](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
 
+The same game's Melbourne Wind Mill passed requirements but
+lost its ordinary building comparison to Amphitheater. Two
+earlier queue openings accepted existing contracts. A nomination
+bid needs separate checks for production and payout. [AI-C090]
+[Melbourne building trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-available-wind-mill-lost-the-ordinary-building-nomination).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary
