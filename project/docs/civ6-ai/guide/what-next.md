@@ -39,6 +39,14 @@ separate decisions. For Bakers Stage 2, the Quarter can already be on
 city land while the material that makes the site viable is beyond it.
 [Land acquisition](../topics/native/district-choice.md#buying-a-future-site).
 
+The first turn-100 development game finished four AI Bakers
+Quarters. None had an active Storekeeper. Alexandria Troas had
+the buildings and unlocks, but the Cattle tile was still unimproved
+after the game applied the Pasture preference. Ancyra and Melbourne
+had working suppliers and lacked buildings. We can now replay
+the specific missing decisions from a normal game.
+[Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
+
 The offline planner separately covers actual gameplay definitions and a copied
 Tailors case. In matched replays the main CSC policy redirected Campus off
 the Cattle, then separately kept a destructive Farm out of the Builder

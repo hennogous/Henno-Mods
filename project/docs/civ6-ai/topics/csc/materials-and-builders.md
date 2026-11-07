@@ -123,6 +123,13 @@ following turn, and executed it after Theater Square completed.
 The exchange and Storekeeper were working at turn 126. [AI-C083]
 [Mill-only contract and payouts](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-repaired-the-mill-after-theater-square).
 
+In the turn-100 normal-start run, Alexandria Troas had the Mill,
+Granary and Feudalism. Its only mapped Base was unimproved Cattle.
+The exact Pasture bid reached the native scorer, but the city kept
+reserving another site and had no Pasture at the endpoint. Trace
+proposal admission and worker assignment on this save. [AI-C084]
+[Normal-start follow-through](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
+
 A committed Clear Plot job still has to select a worker with charges
 before submitting a removal or harvest. In the matched turn-72
 replay a one-shot failure stopped the old harvest, and an ordinary

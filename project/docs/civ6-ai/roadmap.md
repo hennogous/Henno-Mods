@@ -84,6 +84,18 @@ Quarter on turn 44. Continue through completion and look for improved site
 or investment choices. Future customer sites and affordable land acquisition
 are still open. [Matched development run](../research/mods/csc-ai-bakers-natural-research-20261106.md#owned-site-placement-publishing).
 
+**Normal-start follow-through — 3.1–3.3, then 4.2 and 5.1.** The
+turn-100 development run had four complete and two unfinished AI
+Bakers Quarters, and zero observed Storekeepers. All five original
+AI majors unlocked Feudalism. In Alexandria Troas only the
+Pasture was missing. The bounded supplier bid reached the native
+scorer but the tile stayed unimproved. Trace job admission,
+competing work and worker availability on the saved endpoint.
+Ancyra and Melbourne had working material and missing buildings.
+Two other sites had no adjacent Base. Keep those placement and
+building gaps distinct from the Builder decision.
+[Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
+
 **Active problem for reusable tuning — 3.1–3.2 and 13.1–13.2, supplier recovery.**
 The CE score-stage policy now reads live CSC material rules and protects
 critical supplier sites in the matched Boston replay. With the same district

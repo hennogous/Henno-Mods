@@ -1427,5 +1427,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C080", "AI-C082"]
+  },
+  {
+    "id": "AI-C084",
+    "title": "The Alexandria Troas Pasture bid reached native scoring without a working Pasture",
+    "statement": "At the turn-100 normal-start endpoint, Alexandria Troas had its Quarter, Water Mill, Granary and Feudalism. The sole Cattle deposit remained unimproved despite repeated exact native Pasture adjustments.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "One Small Continents development run with five original stock AI majors, integrated CSC and local CE. Four Quarters complete and two unfinished at 100. None of the 98 interior samples recorded an active Storekeeper. Alexandria Troas received +8192 Q8 on plot 2312 while the ordinary tree repeatedly reserved forest (20,30).",
+    "limits": "No matched untuned arm to 100. The Builder logs establish competing work and scoring but not why the Pasture failed admission or whether a reachable Builder could execute it. No qualification claim.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C073", "AI-C081"]
   }
 ]

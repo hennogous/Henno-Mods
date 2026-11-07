@@ -1410,6 +1410,50 @@ The tuned and untuned `Lua.log` SHA-256 values are
 `a4132057d3f4ae78ce8e795fdbebc1d1b351cf2b21280552053cc58de4fdb762` and
 `ce0ddcf6a4853cba6c337d232e395098a10b3918398c89f547c70d11950be4cd`.
 
+## Normal-start follow-through to turn 100
+
+`development-chain-100-01` repeated the Small Continents development
+start with the same map and game seeds. The tuned package added the
+committed score samples to the previous tested package. Stock AI ran
+from turn 1 to 100 with both local packages and no gameplay
+interventions. The session closed and restored preferences. The 98
+required interior Storekeeper samples recorded no active or
+ambiguously attributed effect for the original major AIs.
+
+| City | Quarter at 100 | Stage 2 state |
+| --- | --- | --- |
+| Ancyra | Complete at 48 | Working Rice Farm. Both Mill and Granary absent. |
+| Alexandria Troas | Complete at 71 | Water Mill and Granary working. Unimproved Cattle 2312 is the sole mapped Base. |
+| Melbourne | Complete at 82 | Working Rice Farm and Granary. Mill absent. |
+| Amphipolis | Complete at 89 | Working Wind Mill. No adjacent City Center or mapped Base. |
+| Mainz | Incomplete | Adjacent working Granary. No adjacent Base. |
+| Boston | Incomplete | Adjacent City Center and two unimproved Base deposits. Granary absent. |
+
+All five original major AIs had Feudalism by 100. Native score
+samples positively identify the eventual site in Ancyra, Alexandria
+Troas, Melbourne and Boston. These are delivered adjustments, not
+proof that the city changed its choice. The run has no matched
+untuned arm through 100. The first 99 published turns report 1,759
+changed score calls in aggregate, including material protection.
+The publisher logged zero elapsed CPU time at its recorded precision,
+which does not bound cost in a mature empire.
+
+Alexandria Troas had access to Pasture. The CE telemetry at turns
+81–86 and 90–100 reports the +8,192 Q8 adjustment on the exact
+city, tile and improvement, including 33,226 to 41,418 Q8 late in
+the run. The city repeatedly reserved forest plot (20,30) for other
+work while Cattle (18,31) stayed unimproved. Score delivery did not
+establish proposal, job assignment or execution for the Pasture.
+Replay the exact source and inspect the ordinary improvement type
+and location selectors, the existing job slot, and available workers
+before changing the bid.
+
+The endpoint save SHA-256 is
+`e47f3982a1cf4b9e69ec3950e86d009fd08f9fdd07a4ab7cc4e3ff0995f7d769`.
+The turn-100 census and result SHA-256 are
+`1bca1b1a0336efd6bf8a11561bbe9d7227ff35ca583ff625ba4ab0d4ef9903cc` and
+`71a2e138df19d538a09a05da8df864fee01559fb3d27abb1e3e409118944b21e`.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
