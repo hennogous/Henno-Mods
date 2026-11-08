@@ -1978,5 +1978,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C127", "AI-N110"]
+  },
+  {
+    "id": "AI-C129",
+    "title": "In-mod tuning produced Bakers Services on three maps while Tailors rarely had working Base supply",
+    "statement": "The three turn-200 games had 6, 3 and 4 Bakers chains with at least one confirmed active Storekeeper turn. The total was 546 chain-turns. Tailors had 47 completed Quarters and six with working Base supply at the endpoint. No Tailors Stage 2 Service property was observed.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Small Ancient Prince Online games on Continents, Pangaea and Fractal with stock AI, the integrated CSC publisher and the local CE supplier exclusion package. The shared controller collected 198 interior Storekeeper samples per game without enabling test policy.",
+    "limits": "Only one Bakers chain reached 100 cumulative active turns. No matched untuned arm isolates the treatment effect. Tailors Service properties and Bakers native effects are separate measures. The CE branch and any other placement paths require separate qualification.",
+    "sources": ["project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C126", "AI-C128"]
   }
 ]

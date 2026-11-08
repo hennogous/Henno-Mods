@@ -35,12 +35,48 @@ native database inputs, with no movement or gameplay yield bonus.
 Private customer adjacency still needs separate human allocation
 qualification.
 
-The initial trial runs three ordinary Online-speed games to turn
-200 with CSC and the corresponding CE package. The shared controller
-records ordinary Lua publication, census and actual Storekeeper
-effects. The trial uses no Frida, external policy or AI test action.
-The Tailors Service property is reported separately from the native
-Storekeeper effect audit.
+### Three normal-start games through turn 200
+
+Three Small, Ancient-era, Prince games ran on Online speed with
+stock AI, main CSC tuning and the local CE review package. The shared
+controller started and advanced each game, gathered evidence, verified its
+turn-200 save and restored the original mod preferences. No Frida,
+external policy, RHAI5 or AI test action was active during play.
+
+| Map | Map / game seeds | Bakers chains ever active | Active on turn 199 | Confirmed Bakers chain-turns | First active turn | Bakers completed / with working Base at 200 | Tailors completed / with working Base at 200 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Continents | 18461107 / 29461107 | 6 | 6 | 255 | 103 | 18 / 8 | 13 / 2 |
+| Pangaea | 18461108 / 29461108 | 3 | 2 | 159 | 81 | 17 / 4 | 15 / 1 |
+| Fractal | 18461109 / 29461109 | 4 | 3 | 132 | 143 | 20 / 5 | 19 / 3 |
+
+A confirmed chain-turn requires the native Storekeeper effect audit to identify
+an operating Quarter and customer on that turn. Each game has all 198
+interior samples from turns 2 through 199. The turn-200 Quarter census
+separately reports model state. In Pangaea it reported three active Bakers
+chains at the endpoint, after the final native audit sample had confirmed two.
+No Tailors Service property was active in the three games. Tailors had no
+independent effect audit equivalent to the Bakers measurement.
+
+Only one chain reached 100 cumulative active turns, with 119 on Pangaea.
+An operating Bakers chain resumed after a two-turn lapse on Continents
+and another after a 21-turn lapse on Fractal. These observations establish
+resumption in ordinary play. The audit by itself does not identify the cause
+of either interruption or which tuning input contributed to the resumption.
+The earlier Continents development run on the same seed had three chains
+and 116 chain-turns through turn 199. Several tuning inputs changed together
+and there was no matched untuned run in this batch. The comparison describes
+development progress and cannot isolate a treatment effect.
+
+The shared publisher completed 200 passes in each game with no reported
+publication faults. CE reported 241, 165 and 206 protected selector rows
+respectively, with no omissions. A row can appear repeatedly. The count
+measures selector exposure and does not establish how often a placement was
+prevented. Tailors' six working Base suppliers across 47 finished Quarters
+make the missing supplier step a concrete follow-up. The counts alone leave
+open whether the main losses are site access, development, or subsequent
+loss of suppliers.
+
+[Frozen setup, per-chain windows and evidence locations](../../../research/mods/csc-ai-integrated-stage-two-20261108.md).
 
 ## Earlier offline placement model
 

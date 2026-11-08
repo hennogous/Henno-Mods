@@ -1012,6 +1012,16 @@
       "site_path": "sources/project/docs/research/mods/csc-ai-improvement-research-20261019.md"
     },
     {
+      "path": "project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md",
+      "title": "Integrated CSC Stage 2 trial through turn 200",
+      "kind": "report",
+      "date": "20261108",
+      "bytes": 3237,
+      "sha256": "f069242f8eccf318bd3e1bc4781bed09ce21d3c9f66aac2ffd847d95d58308ca",
+      "hash_encoding": "UTF-8 without BOM; LF newlines",
+      "site_path": "sources/project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"
+    },
+    {
       "path": "project/docs/research/mods/csc-ai-investment-dryrun-20261031.md",
       "title": "Investment review and guarded-host dry run — 31 October 2026",
       "kind": "report",

@@ -1,5 +1,15 @@
 # What we’re investigating
 
+## Three ordinary games with integrated CSC tuning
+
+Across three Online-speed games through turn 200, 13 Bakers chains operated
+for 546 confirmed chain-turns. One chain passed 100 active turns. Two chains
+resumed after interruptions in ordinary play. Tailors finished 47 Quarters,
+but only six had a working Base supplier at the endpoint and none registered
+Stage 2 Service. The shared model is running for both Quarters. The Tailors
+results show where to look next for the missing links.
+[Game results and measurement details](../topics/csc/site-planner.md#three-normal-start-games-through-turn-200).
+
 ## Milestone reached — Boston's working Bakers chain
 
 Boston completed Bakers on our chosen site after one turn-22 score change.
