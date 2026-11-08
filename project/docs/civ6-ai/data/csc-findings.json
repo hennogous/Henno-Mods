@@ -1748,5 +1748,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "depends_on": ["AI-C102"]
+  },
+  {
+    "id": "AI-C110",
+    "title": "The same ordinary development setup delivered the Pasture in a divergent branch",
+    "statement": "With the same seed and integrated 14336 Q8 supplier preference, the player 2 Quarter at 2311 received its Pasture on 118 and operated Storekeeper on 119–153 in a second start. The original turn-249 run never improved that Cattle.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Two ordinary Small Continents starts with identical staged packages, map fingerprint, leaders and starting units. The exact plot and city identifiers agree. Native production histories diverged and the corresponding city names were Aigai and Alexandria Troas.",
+    "limits": "Same setup is not a matched intervention. The successful branch proves repeat live follow-through, not that the preference changed native ranking. The turn-154 scope guard skipped the native observer because the supplier already worked.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C088"]
   }
 ]

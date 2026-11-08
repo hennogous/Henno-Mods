@@ -1,19 +1,23 @@
 # Current Bakers AI work — 8 November 2026
 
-Active problem **3.2, Alexandria supplier admission**. The frozen
+Active problem **3.2, Pasture admission and follow-through**. The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
 The closed turn-249 audit found Melbourne 132, Launceston 60,
 Magdeburg 35 and Heidelberg 26 cumulative turns. Melbourne rebuilt
 its Rice Farm and resumed on 242. Heidelberg's Dam replaced the
 only Maize on 206 despite the exact 24,576 Q8 deduction. See AI-C107.
-Heidelberg completed its multi-link chain on 178. At 150, Alexandria's
+Heidelberg completed its multi-link chain on 178. At 150, Aigai's
 only missing link was the unimproved Cattle. Its 14,336 Q8 bid reached
 the scorer repeatedly while other improvement jobs held reservations.
 The preserved turn-154 autosave loaded with the return player still
 AI-controlled. The shared controller rejected the clock drift and
-restored the session. A same-seed fresh run now targets an inactive
-turn-154 boundary before observing the job comparison with the same bid.
+restored the session. The same-seed fresh run diverged. Its city at
+the same site, Alexandria Troas, built the Pasture on 118 and had 35
+confirmed active turns through 153. The guard skipped the 154 probe
+because the Pasture already worked. Observe 105–120 with the same bid.
+The shared Granary publisher now emits one preference per variant
+when two working Mills share a customer. Offline packet fixture passed.
 Under **14.1**, assess how to start credible multi-link chains earlier.
 
 CSC `dac8591` and

@@ -74,9 +74,11 @@ then raised the initial exchange preference to 52 points.
 In the next ordinary start, Melbourne submitted a Wind Mill offer
 and used its production for other commitments. It bought the Mill
 on turn 113, and Storekeeper operated for 132 turns by the endpoint.
-Alexandria still lacked a Pasture at 150 despite the supplier bid
-reaching its scorer. Trace whether the job loses when an ordinary
-slot opens, or whether another job holds the slot. Six other sites
+Aigai still lacked a Pasture at 150 despite the supplier bid
+reaching its scorer. The same setup took a different course in a
+second game, where the city at that site built the Pasture on 118.
+Trace the job decision and Builder assignment before adjusting the
+bid. Six other sites
 had both types of neighbor and multiple unfinished links. They
 also need a way to value the first investment in the chain.
 Heidelberg assembled several such links and activated Storekeeper

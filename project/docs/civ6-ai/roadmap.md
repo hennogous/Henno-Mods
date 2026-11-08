@@ -132,10 +132,12 @@ it and Library kept the nomination.
 Continents setup bought Melbourne's Wind Mill on 113 while the city
 used production for other work. Storekeeper reached 132 active
 turns by 249, including recovery after the AI rebuilt its Rice Farm.
-The turn-150 census found 14 completed Quarters. Alexandria Troas
+The turn-150 census found 14 completed Quarters. Aigai
 still needed its Pasture despite the exact supplier bid reaching
-the scorer. Trace the first open improvement admission before
-changing the amount. Six other sites with both a Base deposit and
+the scorer. The same setup diverged in a second start. Its city at
+that site, Alexandria Troas, built the Pasture on 118 and began
+Storekeeper on 119. Observe an earlier improvement admission
+before changing the amount. Six other sites with both a Base deposit and
 customer footprint had multiple unfinished links. Under **14.1**,
 assess an opening investment when no last-link bid applies.
 Heidelberg finished its Granary, Quarter, Water Mill and supplier,

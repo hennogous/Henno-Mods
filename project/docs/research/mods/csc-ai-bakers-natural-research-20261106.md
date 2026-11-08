@@ -2165,11 +2165,12 @@ the only original-major Bakers chain confirmed in that window.
 At 150, 14 of 15 Quarters were complete. Six of those 14 lacked
 an adjacent mapped Base deposit, an adjacent City Center customer
 footprint, or both. Six more had both types of neighbor and multiple
-unfinished links. Alexandria Troas had a working Water Mill and
-Granary, but its sole Cattle at (18,31) still lacked a Pasture.
+unfinished links. Aigai (player 2, city 196610, Quarter 2311)
+had a working Water Mill and Granary, but its sole Cattle at
+(18,31) still lacked a Pasture.
 The same 14,336 Q8 supplier preference reached the scorer repeatedly,
-including all reporting intervals 100–155. Alexandria's ordinary
-improvement trees logged four other reservation locations in 100–159.
+including all reporting intervals 100–155. Aigai's ordinary
+improvement trees logged five other reservation locations in 100–159.
 These records establish scoring and competing reservations. They
 leave the reason the Cattle missed admission unresolved.
 
@@ -2241,7 +2242,7 @@ still went forward. The evidence leaves the other Dam sites and
 downstream arbitration unresolved. A permanent-loss guard needs to
 account for alternate legal sites and any competing flood benefit.
 
-At 200, Alexandria's Water Mill was pillaged and its Cattle was
+At 200, Aigai's Water Mill was pillaged and its Cattle was
 still unimproved. Both were unchanged at 249. The preserved
 turn-154 save samples the earlier decision window before that
 second missing link.
@@ -2261,6 +2262,37 @@ The Lua and behaviour-tree logs are
 and `449749615a77f50c84e210794968c0df8d94f65c3aec7c1d8bedbf4f581f7127`.
 This was a development game with no matched control. The
 preselected validation seeds remained unused.
+
+### The same development setup produced different Pasture follow-through
+
+`development-alexandria-fresh-154-observe-01` used the same
+seed, packages, map fingerprint, original AI roster, leaders and
+starting units. Native city production records diverged by turn 55.
+The original long run's exact Quarter was in Aigai, as confirmed
+by its placement tree at (17,31) and completed Bakers contract.
+The new run called the matching player, city and Quarter site
+Alexandria Troas. Use player and plot identifiers when comparing
+the branches. The two branches are not a controlled bid comparison.
+
+The new run applied the same 14,336 Q8 preference to the Cattle
+Pasture. Its ordinary tree first reserved the exact tile on 82.
+The tree submitted a Builder request after failing to find an
+available unit on 109, when it admitted the Pasture again. A Builder
+reached the plot and constructed the Pasture on 118. Native
+Storekeeper operated on every interior sample from 119 to 153.
+The turn-154 physical census confirmed all four links. The
+diagnostic guard correctly skipped the native observer because the
+expected missing Pasture was already working. The controller
+closed and restored the session.
+
+The archived Lua log SHA-256 is
+`19273b1b996e35a28623612bd859145a716db27d9cd30153af8ae9a34a6f605e`.
+The behaviour-tree log and boundary census are
+`6d121b16452086b6d7374be678121b658a42bb508a9185aced43e286f1da2f30`
+and `0f04b44e02e322137aad8bb1ef2ff47ad38c9ea79c4e7ccc4a5683afb04c5c77`.
+A same-policy observation window starting on 105 can capture the
+second admission and follow-through. Increasing the bid would
+change the diagnostic before we know why the branches differed.
 
 ### Shared Granary hosts receive one nomination preference
 
