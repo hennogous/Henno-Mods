@@ -27,7 +27,7 @@ The turn-214 UI queue reported legal repair and 22/30 Production.
 District NetValue doubles its own value on a matching pillaged footprint,
 before later aggregation (AI-N108). The exact threshold replay reproduced
 both turn-201 scores and found the default −2559744 Q8 threshold. The
-cached reservation had no live contract. Next verify a separate native
+cached reservation had no live AI controller. Next verify a separate native
 repair offer's owner, deduplication and expiry without replacing the
 active district tree.
 The frozen

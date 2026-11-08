@@ -4,10 +4,10 @@ In the inspected ordinary city route, the AI compares district/plot pairs. A bet
 
 GetBestDistrict (RVA 3e4a50) loops cached plot records and DistrictDefinition indices. It takes the highest admitted score and randomizes equal-score ties. A live reservation supplies a threshold the new candidate must exceed. Its initial stored baseline is the invalid sentinel **−2,559,744 Q8**, representing−9,999 utility units, **not zero**: the selector itself has no score-greater-than-zero test.
 
-The selector consults the contract manager before using a stored plot
-threshold. A cached reservation whose contract is gone uses the default
-threshold. Alexandria's Quarter repair reproduced this case in the
-turn-201 district comparison. [AI-C119]
+The selector looks up the reservation's owning AI controller before
+using its stored plot threshold. A cached reservation whose controller
+is gone uses the default threshold. Alexandria's Quarter repair
+reproduced this case in the turn-201 district comparison. [AI-C119]
 
 For a Dam alternative, compare legal sites in the same native floodplain.
 The flood handler scans the affected river's floodplain for a complete,

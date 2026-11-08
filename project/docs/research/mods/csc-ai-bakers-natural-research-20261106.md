@@ -2815,15 +2815,18 @@ The read-only `development-alexandria-quarter-repair-reservation-01`
 replayed the turn-200 source through 203. At the open turn-201 check,
 the same two scores and the cached reservation ID 6881299 reproduced.
 The effective exclusive threshold on the Quarter row was the default
-−2,559,744 Q8. The reservation ID had no live contract at this check.
+−2,559,744 Q8. The reservation ID had no live AI controller at this check.
 The Quarter entered the comparison and lost on value. Turn 209 was
 outside this diagnostic window. `GetBestDistrict` (`3e4a50`) uses the
 stored plot threshold only if `Control::Manager::Find` (`4019f0`)
-returns an exact match. `TryReservePlot` (`3ea040`) makes its own
-lookup when a different request tries to reserve a plot, so a live
-reservation can still matter later. The effective threshold observer
-reads the pointer used at `3e4b19` after the lookup, guarded by the
-loaded hotfix's instruction bytes. The fault-free trace SHA-256 is
+returns the owning controller. Contract IDs use the separate
+`FindContract` (`401a40`). `ReservePlotNode::Update` (`55ef10`) supplies
+the tree's controller ID to `TryReservePlot` (`3ea040`). That function
+checks the current owner when a different controller tries to reserve
+the same plot, so a live reservation can still matter later. The
+effective threshold observer reads the pointer used at `3e4b19` after
+the lookup, guarded by the loaded hotfix's instruction bytes. The
+fault-free trace SHA-256 is
 `b34fcddfc52e1b07d245d77b85bd110a61b49bb32f585621fabb0f693b580a6d`.
 
 The scoped treatment to investigate is a separate, ordinarily valued
@@ -2835,12 +2838,17 @@ creates a one-use behavior tree (`563840`), registers it with AI control
 request (`3fe9a0`, `3f9100`), submits it to the manager (`403c70`) and
 uses `ManageContract` (`5431a0`) to track a request that remains in
 state 3. `ManageContract` retains a copy of the native request handle.
+The shipped `Build City District` tree decodes the city, district and
+plot before it submits the district request. For a trigger with a city
+and a plot, `DecodeTriggerNode::Update` (`55a680`) reads the native
+plot-specific present value (`3e7f40`) for the tree's valuation.
 The manager updates each registered tree and checks for destruction
 in `DoTurn` (`5639b0`). `CheckForDestroy` (`53ff60`) evaluates the
 tree's owning player and completion state, so a one-use tree can
-remain live across turns. `UnitRequestContract::Update` (`3fa5e0`) refreshes a district
-offer using the greater of retained value and current plot value, and
-separately updates turns from the remaining Production. Verify that a
+remain live across turns. `UnitRequestContract::Update` (`3fa5e0`)
+refreshes a district offer using the greater of retained value and
+current plot value, and separately updates turns from the remaining
+Production. Verify that a
 separate offer uses a native owner, deduplicates and expires on its own,
 and competes against ordinary requests before integrating the policy.
 
