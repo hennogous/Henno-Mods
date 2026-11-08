@@ -18,6 +18,12 @@ The v2 empires had higher Gold reserves overall but lower combined
 Production, net Gold income, population and Food surplus at that boundary.
 [Matched comparison and turn-200 census](../../research/mods/csc-ai-integrated-stage-two-20261108.md#matched-baseline-with-csc-tuning-disabled).
 
+The next Fractal repeat used shared Stage 2 guidance for both industries
+and deductions for weak Quarter sites. It finished seven fewer Bakers
+Quarters and delivered 69 more confirmed Storekeeper chain-turns. Tailors
+finished four fewer Quarters and still had no active Stage 2 Service.
+[Shared policy and matched Fractal result](../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md).
+
 ## Milestone reached — Boston's working Bakers chain
 
 Boston completed Bakers on our chosen site after one turn-22 score change.

@@ -2014,5 +2014,17 @@
     "sources": ["project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C130"]
+  },
+  {
+    "id": "AI-C132",
+    "title": "Shared Stage 2 guidance improved Storekeeper activity with fewer Quarters on Fractal",
+    "statement": "Relative to v2, the shared policy completed 13 versus 20 Bakers Quarters, with five working Base suppliers in both arms. Confirmed Storekeeper chain-turns increased from 132 to 201 across four chains. Tailors completed 15 versus 19 Quarters, with three working Base suppliers and no active Dockmaster source property in either run.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "One matched normal-start Small Fractal on Online speed through turn 200, with stock AI, the main CSC publisher and the existing CE review binary. The map, roster, starts, units and logged map assistance matched v2.",
+    "limits": "The treatment changed weak-site scoring, customer placement bids and shared Stage 2 planning together. A published Harbor offer does not prove native selection or construction. Only Bakers had an independent per-turn Service effect audit.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C130", "AI-C131"]
   }
 ]

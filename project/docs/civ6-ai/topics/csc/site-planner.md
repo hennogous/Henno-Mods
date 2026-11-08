@@ -82,6 +82,23 @@ loss of suppliers.
 [Matched baseline and v2 comparison](../../../research/mods/csc-ai-integrated-stage-two-20261108.md#matched-baseline-with-csc-tuning-disabled).
 [Which completed sites received a recorded boost](../../../research/mods/csc-ai-integrated-stage-two-20261108.md#placement-boosts-and-surviving-site-quality).
 
+## Shared Stage 2 policy on Fractal
+
+Bakers and Tailors now use the same placement quality checks, producer and
+customer rules, supplier job selection, and protection and Quarter repair
+adapters. Their Stage 2 data supplies the host types, buildings and Service
+unlock. Weak Quarter sites receive finite native score deductions. A legal
+Harbor footprint can also receive a site bid to complete an existing Tailors
+chain. Bakers still relies on existing City Centers as customer hosts.
+
+One matched Fractal run finished with 13 Bakers Quarters versus 20 in v2.
+Both ended with five working Base suppliers. Confirmed Storekeeper
+operation increased from 132 to 201 chain-turns. Tailors finished 15 Quarters
+versus 19 in v2, with three working Base suppliers in both runs and no
+observed Dockmaster source property. Shared mechanics are in place and the
+Tailors outcome still needs follow-through evidence.
+[Policy, setup and Fractal results](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md).
+
 ## Earlier offline placement model
 
 The fresh planner starts with an offline investment review. Its first Tailors
