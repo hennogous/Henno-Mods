@@ -9,7 +9,16 @@ evidence.
 
 ## Current milestone and active problem
 
-**Active 13.1 and 14.1 — repair producers and find earlier investments.**
+**Active 2.2 — preserve Heidelberg's only viable supplier.**
+The integrated repair build's normal-start repeat matched the previous
+turn-249 development result. Melbourne reached 132 active turns,
+Launceston 60, Magdeburg 35 and Heidelberg 26. Heidelberg's Farm repair
+restored its Service on 187, but the Dam took its only Maize after the
+same 24,576 Q8 deduction. Capture a clean turn-200 save with the Farm
+working before the turn-202 reservation. Compare legal Dam alternatives
+and actual flood coverage before testing a stronger protection rule.
+
+**Open 13.1 and 14.1 — repair producers and find earlier investments.**
 The Melbourne replay established that the Rice job won, but the empire's
 only Builder worked elsewhere and the replacement request lost in city
 queues. The turn-200 development repeat measured four active chains.
@@ -33,9 +42,12 @@ control left both the Quarter and Mill pillaged at 214. Repair
 coverage in ordinary games remains open under **13.1**. Under **14.1**,
 both legal buildings in Ancyra lost their ordinary comparisons to
 Walls between 120 and 135. The Mill came closer in the matched replays.
-A frozen normal-start development run with the integrated repair
-policy follows through 249 and takes earlier chain censuses. Look
-for a producer that could start an immediate exchange before Feudalism.
+The integrated repair build reached 249 from normal setup. Alexandria's
+Quarter and Mill were damaged while its Cattle had no Pasture.
+Its Quarter later recovered, and the Mill and supplier still needed
+work. The early snapshots did not capture an immediately viable
+Mill exchange before Feudalism. Recheck these opportunities on
+other maps and distinguish complementary repair from a single ready link.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible

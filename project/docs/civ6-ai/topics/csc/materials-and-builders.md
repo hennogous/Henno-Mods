@@ -236,6 +236,13 @@ original request after reload. The AI used that request, CE suppressed
 the duplicate, and the physical Quarter recovered. The Mill remained
 pillaged at this separate replay's endpoint. [AI-C124]
 
+With the repair build running from normal setup, the earlier Small
+Continents development seed repeated the same four Services. Only
+Melbourne reached 100 active turns. Heidelberg's Dam again removed
+the only Maize despite the exact deduction. Alexandria's damaged
+chain also lacked its Pasture and fell outside the working-supplier
+repair gate. [AI-C126]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

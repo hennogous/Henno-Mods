@@ -61,11 +61,16 @@ won both ordinary comparisons by 107675 and 236742 Q8. Ancyra ran
 Walls and Line Infantry after Art Museum and still needed both
 buildings. The paired Granary replay closed at 135 and lost to Walls
 by 139132 and 298150 Q8, with identical Ancyra city-build and production
-logs (AI-C125). The next diagnostic is the normal-start
-`development-integrated-repair-249-01` using stage-12 CE and CSC,
-with censuses on 60, 80, 95, 110, 125, 150, 200 and 240. This keeps
-the preselected qualification seeds separate. Look for early,
-affordable exchanges and measure ordinary recovery under **13.1**.
+logs (AI-C125). The normal-start `development-integrated-repair-249-01`
+used stage-12 CE and CSC and closed at 249. All eight censuses and
+247 interior Service samples completed. The four exact active ranges
+matched the earlier run, with Melbourne 132, Launceston 60,
+Magdeburg 35 and Heidelberg 26. The Dam took Heidelberg's only
+Maize after the same 24576 Q8 deduction. No CSC repair candidates
+were published. Alexandria's Quarter was healthy at 240, with
+the Mill pillaged and the Cattle still bare (AI-C126). The
+`development-heidelberg-pre-dam-200-01` repeat targets an inactive
+source before the Dam reservation for **2.2**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

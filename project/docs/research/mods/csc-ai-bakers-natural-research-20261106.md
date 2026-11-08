@@ -3184,6 +3184,57 @@ The controller verified clean exit and restoration and the turn-135
 save SHA-256 is
 `251722b6cc83f64a452e24ff4e81857a805247675c138689d6d5cb2f00f9a0ed`.
 
+### The integrated repair build repeated the ordinary development outcome
+
+`development-integrated-repair-249-01` started a fresh Small Continents
+game with the same development seeds, stock AI, Online speed and
+the separate stage-12 CE and CSC packages. The native module receipt
+verified the repair DLL with SHA-256 starting `4cfe1ccb` alongside
+stock patched XP2 `092abfbb`. The game used integrated tuning throughout.
+All eight censuses completed at 60, 80, 95, 110, 125, 150, 200 and
+240. The turn-249 close restored the original preferences and packages.
+
+The strict effect audit covered every turn from 2 to 248 with no
+ambiguous attribution. It exactly repeated the per-chain active
+and inactive ranges of `development-ordinary-exchange-249-01`.
+
+| Chain | Active ranges | Cumulative turns |
+| --- | --- | ---: |
+| Melbourne | 114–238, 242–248 | 132 |
+| Launceston | 189–248 | 60 |
+| Magdeburg | 214–248 | 35 |
+| Heidelberg | 178–183, 187–206 | 26 |
+
+Only one chain reached 100 active turns. Melbourne's supplier
+interruption and recovery recurred. Heidelberg's improvement repair
+restored the Service on 187, then the Dam again removed the only
+Maize at plot 1317. The CE placement input fell from 482,672 to
+458,096 Q8 after the existing deduction. The native tree first reserved
+(59,17) on 202 and submitted request 4536. The Dam entered production
+on 206 and the Service stopped on 207. At 240 the six neighbors
+included no mapped Base deposit. This repeat identifies a reliable
+source window for comparing legal flood-prevention alternatives.
+
+The repair bridge reported ready and zero candidates, admissions and
+faults across all 249 publications. Alexandria had a pillaged
+Quarter and Water Mill, working Granary and bare Cattle at 200.
+By 240 the Quarter was healthy, but the Mill remained pillaged and
+the Cattle still lacked its Pasture. This state fell outside the
+tested admission policy's working-supplier gate. Both the producer
+and its supplier still needed work.
+
+The two pre-Feudalism snapshots at 60 and 80 captured no completed
+Quarter with both a working supplier and Granary and the appropriate
+Mill technology available before Feudalism. At 80 Melbourne had the
+supplier and Granary, had already unlocked Feudalism and still
+lacked Machinery. All five original AI majors had Feudalism at 95.
+These samples leave the intervening clocks and other maps open.
+
+The complete result SHA-256 is
+`cdd15c38d2574d867fdc1d31fe4ab6b1c8b3b95b5ecf7c30e9d72fde81b84c16`.
+The verified inactive turn-249 save SHA-256 is
+`8961ff4484ef396dda4ee66ff5e877b3ec1afa3294b3e9d774a7fb2dfd5d5783`.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

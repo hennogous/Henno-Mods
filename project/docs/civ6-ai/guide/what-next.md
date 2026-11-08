@@ -138,10 +138,14 @@ Quarter and its Mill were still pillaged at turn 214.
 Ancyra already had a working Rice Farm but needed both the Wind Mill
 and Granary. Both buildings were legal and lost their comparisons
 to Walls. The Wind Mill came closer. In both replays the AI also
-spent Production on Line Infantry. A normal-start development run
-will look for earlier investments, including Mills that could start
-an exchange with an existing Granary before Feudalism.
+spent Production on Line Infantry. The normal-start development
+repeat saw no immediately viable Mill exchange before Feudalism in
+its early snapshots. It reproduced four working chains and only
+Melbourne reached 100 active turns. Heidelberg again lost its only
+Maize to a Dam. The next test compares Heidelberg's legal Dam
+sites before the AI reserves one.
 [Ancyra replay](../../research/mods/csc-ai-bakers-natural-research-20261106.md#ancyras-early-wind-mill-lost-to-walls).
+[Normal-start repeat](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-integrated-repair-build-repeated-the-ordinary-development-outcome).
 
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.

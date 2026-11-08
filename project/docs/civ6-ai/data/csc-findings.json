@@ -1942,5 +1942,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
     "related": ["AI-C094"]
+  },
+  {
+    "id": "AI-C126",
+    "title": "The integrated repair build repeated the four ordinary development chains",
+    "statement": "All 247 interior turns were observed. Melbourne reached 132 active Storekeeper turns, Launceston 60, Magdeburg 35 and Heidelberg 26, with the exact ranges from the previous normal-start development run. Heidelberg lost its only Maize to the same Dam after recovering from an earlier Farm interruption. Alexandria still needed a Pasture and Mill repair, so the working-supplier repair gate produced no candidate.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Normal Small Continents development repeat through 249 with the integrated CSC publisher and the separate CE repair package, stock AI and eight complete censuses.",
+    "limits": "One recurring development setup. Only one chain reached 100 active turns. The repeat observed supplier recovery and permanent loss, and did not exercise the new Quarter admission in ordinary play.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C106", "AI-C107", "AI-C123"]
   }
 ]
