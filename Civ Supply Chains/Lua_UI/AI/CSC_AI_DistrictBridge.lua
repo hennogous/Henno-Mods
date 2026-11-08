@@ -1,8 +1,12 @@
--- CSC publishes district policy through CE's guarded gameplay bindings.
--- Released CE1.3 lacks this API: availability must be checked before use.
+-- Translate the Lua planner's packet into CE's guarded gameplay calls. This
+-- module validates identities, sizes and units. It leaves valuation to the
+-- planner and leaves native decision timing and application to CE.
+-- A build without the required district-score API cannot publish a packet.
 CSC_AI_DistrictBridge={}
 local B=CSC_AI_DistrictBridge
 local names={'Begin','Allow','Entry','Commit','Disable','Status'}
+-- Q8 represents one native utility point as 256 integers. Lua clamps the
+-- optional budgets to both CE's reported capacity and the limits below.
 local MAX_BUILDER_BID_Q8=64*256
 local MAX_NOMINATION_BID_Q8=512*256
 local MAX_REPAIR_CANDIDATES=256
@@ -73,6 +77,12 @@ function B.ExclusionStatus()
         return CE_AISupplierExclusionStatus()
     end
 end
+
+-- District scores address a player, city, district index and plot index.
+-- Building bids address a player, city and building index. The Builder
+-- allowlist and bids address a supplier plot and an improvement index.
+-- A supplier exclusion is a separate selector input keyed to the whole plot
+-- in its owning city. A repair identifies an existing district footprint.
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
     builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions)
     if not B.Available() then return false,'CE district-score capability unavailable' end
@@ -137,6 +147,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         if not (integer(e.player,0,63) and allowed[e.player] and integer(e.city,0,2147483647)
             and integer(e.plot,0,width*height-1)) then return reject('Invalid supplier exclusion') end
     end
+    -- Begin opens staging. Nothing here queues an action. Commit publishes
+    -- the packet for later native calls. If validation or a native call fails,
+    -- Disable clears the policy so an older or incomplete offer cannot linger.
     local ok,message=pcall(function()
         assert(CE_AIDistrictScoresBegin(version,width,height,districtCount)==1,'Native begin rejected')
         for _,pid in ipairs(originalAI) do assert(CE_AIDistrictScoresAllow(pid)==1,'Native identity rejected') end
@@ -153,6 +166,8 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
                 end
             end
         end
+        -- Wonder and harvest protection consume the staged supplier sites.
+        -- They have no separate plot list to publish.
         if protectWonders and allowanceCount>0 then
             assert(CE_AISupplierWonderProtectionStage()==1,'Native Wonder protection rejected')
         end

@@ -1,5 +1,7 @@
--- Read live Bakers supply for district protection and evaluate corrections
--- for a completed native district forecast when measured Q8 inputs are available.
+-- Shared Bakers and Tailors Stage 2 policy. Read each Quarter's mapped
+-- suppliers and customer hosts, then translate missing or threatened links
+-- into candidate bids, repair offers and protection for the CE publisher.
+-- The bounded Bakers forecast diagnostic at the end has its own caller.
 CSC_AI_QuarterPlacement = {}
 
 local STOREKEEPER_GROWTH = 'CSC_BAKERS_STAGE_2_EFFECT_GROWTH'
@@ -14,8 +16,8 @@ local ACTIVE_SERVICE_COST_Q8 = 24576
 -- Alexandria's ready chain needed 56 utility units across repeat allocations.
 -- The cap from CE preserves the original lower amount on older local builds.
 local READY_SUPPLIER_BID_Q8 = 56 * 256
--- Initial calibration from the matched Melbourne nomination. Only publish
--- this preference when the Mill alone can complete a working Stage 2 chain.
+-- The ready-chain band comes from the matched Melbourne Mill nomination.
+-- The smaller band prices ordinary exchange when there is no Service premium.
 local READY_PRODUCER_BID_Q8 = 448 * 256
 local EXCHANGE_PRODUCER_BID_Q8 = 18 * 256
 local EARLY_SUPPLIER_BID_Q8 = 26 * 256
@@ -46,6 +48,8 @@ local serviceRules = {
 }
 
 function P.StageTwoProfiles()
+    -- Cache the loaded definitions once. A city lookup uses the host district
+    -- index, then checks the actual building variant and footprint at runtime.
     if profiles then return profiles end
     profiles = {}
     local byKey = {}
@@ -111,6 +115,8 @@ function P.StageTwoProfiles()
 end
 
 local function materialOptions()
+    -- Cache resource-to-improvement definitions. The map and player can change
+    -- whether an improvement is legal, present, pillaged or currently useful.
     if improvementsByResource then return improvementsByResource end
     local options = {}
     for row in GameInfo.Improvement_ValidResources() do
@@ -167,6 +173,9 @@ function P.ReadSuppliers(player, quarter, profile)
 end
 
 local function priceSupply(risks, supply, activeService)
+    -- Losing the last possible deposit and losing the last working supplier
+    -- are different risks. Charge the highest band when the loss would break
+    -- an already active Stage 2 Base supply link.
     local working = 0
     for _, material in ipairs(supply) do
         if material.working then working = working + 1 end
@@ -240,6 +249,8 @@ function P.ReadChains(player)
                 local supply = P.ReadSuppliers(player, plot, profile)
                 chains[#chains + 1] = { profile = profile, city = city, plot = plot,
                     complete = complete, ready = ready, supply = supply, workingBase = hasWorkingBase(supply.base),
+                    -- The Service source property is a policy signal. Auditing
+                    -- the customer payout requires separate evidence.
                     active = ready and (city:GetProperty(profile.service.property) or 0) > 0 }
             end
         end
@@ -248,6 +259,8 @@ function P.ReadChains(player)
 end
 
 local function visitCustomerPlots(player, chain, visit)
+    -- Customer adjacency is between district plots. The recipient city can be
+    -- the Quarter's own city or another city of the same player.
     for _, plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())) do
         local variants = chain.profile.customers[plot:GetDistrictType()]
         if variants and plot:GetOwner() == player then
@@ -258,6 +271,9 @@ local function visitCustomerPlots(player, chain, visit)
 end
 
 local function canTrainDockmasterShip(playerID, cityID, canProduce, lastEra, trainable)
+    -- Cache the ship definitions for the session and the queue answer only for
+    -- this player's current snapshot. A trainable ship establishes a possible
+    -- use for the bonus. It does not forecast demand for that ship.
     if trainable[cityID] ~= nil then return trainable[cityID] end
     if not dockmasterShipHashes then
         dockmasterShipHashes = {}
@@ -297,6 +313,10 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
     end
 
     local function bid(buyer, building, value)
+        -- The UI reads immediate queue legality. CE may encounter the bid
+        -- later when the ordinary building comparison runs. An occupied
+        -- native planning slot can delay that comparison while forecasts
+        -- continue. Keep the strongest offer when several chains suggest it.
         local delta = math.min(limits.nomination, value)
         if delta <= 0 or not canProduce or not canProduce(pid, buyer:GetID(), building.Hash) then return end
         local key = buyer:GetID() .. ':' .. building.Index
@@ -361,6 +381,7 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
 end
 
 local function materialRisk(player, builderBidLimit, nominationLimit, canProduceBuilding, admitRepairs)
+    -- Share deduplication and city queue reads across all chains for this player.
     local risks, recover, nominations, repairs = {}, {}, {}, {}
     local seen, repairCities = {}, {}
     local limits = {builder=math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8),
@@ -391,6 +412,8 @@ function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominati
         local city = Cities.GetPlotPurchaseCity(plot)
         if city and city:GetOwner() == playerID then
             local cityID = city:GetID()
+            -- A finite score deduction covers each legal district pair. Scarce
+            -- supply also gets a plot exclusion for the native selector.
             if cost >= LAST_DEPOSIT_COST_Q8 then
                 exclusions[#exclusions + 1] = {player = playerID, city = cityID, plot = index, cost = cost}
             end
@@ -422,6 +445,8 @@ function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominati
     return entries, builderSites, nominations, repairs, chains, exclusions
 end
 
+-- Diagnostic only. The late-placement research driver supplies exact native
+-- forecast components. The ordinary publisher uses the early-score bids above.
 local WATER_RECIPIENT = {
     'MOD_CSC_BAKERS_GOLD_TO_WATER_MILL',
     'MOD_CSC_BAKERS_PROD_TO_WATER_MILL',
@@ -465,6 +490,8 @@ function CSC_AI_QuarterPlacement.BakersAdjustment(site, forecast)
         -- that gate when the removal exceeds the building's whole raw score.
         correctedUplift = correctedUplift + math.max(0, building.rawQ8 - removed)
     end
+    -- The measured components must reconcile with the native aggregate before
+    -- returning a correction. A missing contributor would make it ambiguous.
     if forecast.beforeQ8 + originalUplift ~= forecast.nativeQ8 then return nil end
     return correctedUplift - originalUplift
 end

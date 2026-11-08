@@ -19,6 +19,21 @@ Quartz/Pages workflow publishes the handbook at
 https://hennogous.github.io/Henno-Mods/ai/ alongside the public CSC documentation.
 See `project/docs/civ6-ai/maintenance.md` for builds, source hashes and corrections.
 
+## AI tuning comments
+
+Add and maintain explanatory comments as part of every AI tuning change.
+Start each module with its role in the path from live game facts to CSC policy
+to native decisions. At non-obvious boundaries, explain what reads or writes
+the data, which decision consumes it, and when that happens. Document score
+units, the rationale or evidence for tuning bands, eligibility, cache and
+packet lifetime, and what happens when a capability or input is unavailable.
+Explain why limits, deduplication and tie-breaks exist where they affect play.
+
+Distinguish a proposed or published bid from a native comparison, a selected
+action and a realised Service. Label diagnostic-only code so it cannot be
+mistaken for live policy. Keep comments next to the relevant code and update
+them in the same change. Review their accuracy and usefulness before committing.
+
 ## Native code and Community Extension contributions
 
 Treat maintainability as a high-priority review requirement from the first

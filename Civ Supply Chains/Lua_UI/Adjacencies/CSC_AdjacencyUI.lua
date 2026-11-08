@@ -15,6 +15,9 @@ ExposedMembers.CSC_Adjacency.IsSinglePlayer = function()
 end;
 
 -- Ask the native queue which building or unit this city can start now.
+-- The gameplay publisher uses this for building bids and for whether a
+-- Dockmaster customer can use its ship-production bonus. This read sends
+-- no order, and CE still checks eligibility at the native comparison.
 ExposedMembers.CSC_Adjacency.CanProduceItem = function(playerID, cityID, itemHash, isUnit)
     local city = CityManager.GetCity(playerID, cityID);
     local queue = city and city:GetBuildQueue();

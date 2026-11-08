@@ -1,7 +1,7 @@
--- Shared by the main CSC package and the placement experiments. Load this in
--- a gameplay context after CSC_AdjacencyCore has initialized the loaded rules.
--- The scanner reads map and rule facts and caches the radius-three geometry.
--- No properties, orders, resources, buildings or yields are changed here.
+-- Read-only Quarter site planning, shared with the placement experiments.
+-- After CSC_AdjacencyCore loads the rules, the main publisher calls
+-- QuarterSiteForecasts for live bids. The older AdjacencyScan entry point
+-- returns a diagnostic census and caches only city-to-plot geometry.
 assert(CSC_Adjacency and CSC_Adjacency.ByDistrict,'Loaded bundled adjacency engine required')
 local function object(t)return setmetatable(t or {},{__json_object=true})end
 local function json(v)
@@ -35,6 +35,9 @@ local geometry={}
 local quarters={'DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_CSC_TAILORS_QUARTER'}
 local function totals()return {production=0,gold=0}end
 local function yieldKey(y)if y=='YIELD_PRODUCTION'then return 'production'elseif y=='YIELD_GOLD'then return 'gold'end end
+-- Count Production and Gold with the same rule engine as gameplay. Keep the
+-- active and planned totals separate because a new Bakers site can later gain
+-- one Mill's adjacency. River sites plan for Water and inland sites for Wind.
 local function score(district,plot,city,pid,omitDetails)
  local now,planned,percent,nowPercent=totals(),totals(),totals(),totals();local details={};local mill=nil
  if district=='DISTRICT_CSC_BAKERS_QUARTER'then
@@ -56,14 +59,17 @@ local function score(district,plot,city,pid,omitDetails)
    end
   end
  end
+ -- SelfMultiplier rules contribute percentage points on top of the summed
+ -- adjacency. Keep a separate multiplier for each yield and time horizon.
  for key,value in pairs(planned)do planned[key]=value*(1+percent[key]/100);now[key]=now[key]*(1+nowPercent[key]/100)end
  return {production=planned.production,gold=planned.gold,total=planned.production+planned.gold,current=now,details=details,requiresBuilding=mill}
 end
 
 
 local preferredAdjacency = 4
--- Q8 adjustments enter the native early score. Preserve the established
--- positive bands and apply larger finite deductions to weak Quarter sites.
+-- The threshold above counts yield per turn. The bands below are policy
+-- deltas in Q8 (256 per native utility point) at the early district score.
+-- They leave Civ's later forecast contributions and final comparison in play.
 local preferredSiteBidQ8 = 48 * 256
 local viableSiteBidQ8 = 24 * 256
 local noBasePenaltyQ8 = 256 * 256
@@ -89,6 +95,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     local pid = player:GetID()
     local visibility = PlayersVisibility[pid]
     local hosts = {}
+    -- Use the UI's current native targets for customer bids. Future host
+    -- geometry below is a planning hint and can never create a customer bid.
     for host in pairs(profile.customers) do
         local definition = GameInfo.Districts[host]
         if definition and definition.DistrictType ~= 'DISTRICT_CITY_CENTER' then
@@ -112,6 +120,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     end
 
     local function futureHost(plot)
+        -- One result per neighbor for this player/profile call. Ownership,
+        -- legal targets and protections are read again next publication.
         local index = plot:GetIndex()
         if potential[index] ~= nil then return potential[index] end
         local found = legalCustomers[index] ~= nil
@@ -141,6 +151,9 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     end
 
     for _, city in player:GetCities():Members() do
+        -- Price every eligible weak site. Give one positive bid per city and
+        -- Quarter type, ranking viable sites by adjacency, then materials,
+        -- then plot index so ties stay stable.
         if not city:GetDistricts():HasDistrict(district.Index) then
             local cityID = city:GetID()
             local best
@@ -201,6 +214,9 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
 end
 
 
+-- Diagnostic census for historical parity and tooling. It reports observations
+-- to Lua and the log. Live CSC placement starts from the UI's native targets
+-- above instead of consuming this radius-three census.
 function CSC_AI_AdjacencyScan(originalAI)
  local t0=os.clock();local out={turn=Game.GetCurrentGameTurn(),speed=assert(GameInfo.GameSpeeds[GameConfiguration.GetGameSpeedType()]).GameSpeedType,width=0,height=0,cities={},candidates={},quarters={},players={},currentHumans={},originalAI=originalAI,geometryBuilt=0,sitesEvaluated=0,rules={}}
  out.width,out.height=Map.GetGridSize()

@@ -1,5 +1,7 @@
--- Publish CSC's Quarter policies from one gameplay context.
--- Native scoring still checks eligibility and compares the resulting bids.
+-- Main CSC tuning entry point for Bakers and Tailors. Read live supply chains,
+-- plan site and investment bids, then publish one versioned packet to CE.
+-- Each native decision consumes the relevant part of that packet when it runs.
+-- Civ still owns candidate legality, selection, queueing and execution.
 include('CSC_AdjacencyCore')
 include('CSC_AI_AdjacencyScan')
 include('CSC_AI_QuarterPlacement')
@@ -24,6 +26,9 @@ local function readReceipt(getter, ...)
 end
 
 local function reportReceipts(turn, version)
+    -- Read the last packet before the next commit resets its counters. The log
+    -- turn is when Lua reads the receipt. The version identifies the offer
+    -- window, and forecast, comparison and score-write counts are distinct.
     local previous = previousOffers
     if not previous or previous.version ~= version then return end
     for i = 1, math.min(#previous.customers, customerReceiptLimit) do
@@ -46,6 +51,9 @@ local function reportReceipts(turn, version)
 end
 
 local function eligiblePlayers(turn)
+    -- Persist the original seats before autoplay can temporarily make a human
+    -- look like an AI. A later save without a stored identity has no safe basis
+    -- for publishing to that seat. Also exclude seats currently controlled by a human.
     local allowed = {}
     for _, player in ipairs(PlayerManager.GetAliveMajors()) do
         local id = player:GetID()
@@ -104,6 +112,9 @@ local function refresh(turn)
 
     local started = os.clock()
     local entries, builderSites, nominations, repairs, exclusions = {}, {}, {}, {}, {}
+    -- A CE build may expose district scoring without every optional consumer.
+    -- Give the planner zero capacity for unsupported bids and enable only the
+    -- protection hooks that report readiness. Harvest shares the Builder sites.
     local builderStatus = bridge.BuilderStatus()
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
     local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
@@ -122,6 +133,9 @@ local function refresh(turn)
     local allowances, stageTwo = 0, {}
     for _, id in ipairs(players) do
         local player = Players[id]
+        -- Take one chain snapshot per player. Supply protection marks plots
+        -- before placement plans run, so a customer bid cannot promote a site
+        -- already flagged by this player's material deductions.
         local deductions, sites, bids, candidates, chains, threatened = placement.MaterialDeductions(player, protectBuilders,
             builderBidLimit, nominationLimit, ui.CanProduceItem, repairLimit > 0)
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
@@ -164,8 +178,9 @@ local function refresh(turn)
     local omitted = math.max(0, #entries - capacity)
     for i = #entries, capacity + 1, -1 do entries[i] = nil end
     local width, height = Map.GetGridSize()
-    -- Dropping part of a site's compatibility list can forbid a valid job.
-    -- Retire Builder protection for the turn if the full packet cannot fit.
+    -- Dropping part of a site's improvement allowlist can forbid a valid job.
+    -- Send Builder, building and repair lists only when each fits as a whole.
+    -- Plot exclusions can be trimmed independently, so keep the greatest risks.
     local publishRepairs = #repairs > 0 and #repairs <= repairLimit
     table.sort(exclusions, function(a, b)
         if a.cost ~= b.cost then return a.cost > b.cost end
@@ -179,6 +194,8 @@ local function refresh(turn)
         #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
         exclusions)
     assert(accepted, message)
+    -- Chain totals describe the snapshot used to plan. The active column is
+    -- a source-property read, while the native receipts describe score delivery.
     for key, totals in pairs(stageTwo) do
         print(string.format('CSC_AI_STAGE_TWO turn=%d key=%s placed=%d complete=%d supplied=%d active=%d',
             turn, key, totals.placed, totals.complete, totals.supplied, totals.active))
@@ -199,6 +216,8 @@ local function refresh(turn)
         if #chunk > 0 then print(prefix .. '[' .. table.concat(chunk, ',') .. ']') end
     end
     local siteBids, weakSites, customerSites = 0, 0, 0
+    -- Save the exact published identities for readback on the next boundary.
+    -- Receipt caps limit logging work. They do not limit what CE receives.
     local tracked = {version=version + 1, customers={}, buildings={}}
     for _, entry in ipairs(entries) do
         if entry.weak then
@@ -252,6 +271,9 @@ local function refresh(turn)
 end
 
 local function onBoundary()
+    -- Startup and the load-screen event can fire on the same turn. Record the
+    -- turn after a successful publication so a later event can retry when the
+    -- UI read bridge was unavailable during startup.
     local turn = Game.GetCurrentGameTurn()
     if lastTurn == turn then return end
     local ok, published = pcall(refresh, turn)

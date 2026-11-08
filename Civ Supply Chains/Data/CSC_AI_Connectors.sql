@@ -1,8 +1,10 @@
--- This action is enabled by the CE package with supplier exclusion support.
--- One private adjacency step gives native placement a small customer-side
--- co-location signal. It grants no ordinary currency conversion. The yield
--- itself is global, so its effects on automatic human allocation still need
--- separate qualification. No material plot receives the private yield.
+-- Static CSC inputs to the stock AI. The mod action is gated on the CE
+-- package with supplier exclusion support. These rows load once with the
+-- database and complement the per-turn offers in Lua_UI/AI.
+--
+-- The private yield gives a customer district a co-location signal. It
+-- grants no ordinary currency conversion. The yield itself is global, so its
+-- effects on automatic human allocation still need separate qualification.
 INSERT OR IGNORE INTO Types
         (   Type,                       Kind   )
 VALUES  (   'YIELD_CSC_AI_PLACEMENT',   'KIND_YIELD'   );
@@ -11,6 +13,7 @@ INSERT OR IGNORE INTO Yields
         (   YieldType,                  Name,                          IconString,   OccupiedCityChange,   DefaultValue   )
 VALUES  (   'YIELD_CSC_AI_PLACEMENT',   'LOC_CSC_AI_PLACEMENT_NAME',   '',           0,                    1   );
 
+-- 25 is the native yield bias for this yield, distinct from a Q8 bid.
 INSERT INTO AiFavoredItems
         (   ListType,   Item,   Favored,   Value   )
 SELECT 'DefaultYieldBias', 'YIELD_CSC_AI_PLACEMENT', 0, 25
@@ -40,6 +43,9 @@ SELECT r.CivUniqueDistrictType, e.Quarter
 FROM CSC_AI_CustomerEdges e
 JOIN DistrictReplaces r ON r.ReplacesDistrictType = e.Customer;
 
+-- Attach +1 private yield per adjacent mapped Quarter to the customer
+-- district's score input. Critical material plots are handled by the
+-- separate native supplier protections that accompany the Lua policy.
 INSERT OR IGNORE INTO Adjacency_YieldChanges
         (   ID,   Description,   YieldType,   YieldChange,   TilesRequired,   AdjacentDistrict   )
 SELECT
@@ -58,8 +64,9 @@ FROM CSC_AI_CustomerEdges;
 
 DROP TABLE CSC_AI_CustomerEdges;
 
--- A small native recruitment preference. Existing tuning mods keep their
--- own Builder value. Job selection and movement remain native.
+-- Add 10 to the Builder unit request priority if no other rule already
+-- specifies it. This affects recruitment. The Lua supplier bid affects the
+-- improvement job, and Civ still assigns the worker and routes it.
 INSERT INTO AiFavoredItems
         (   ListType,   Item,   Favored,   Value   )
 SELECT 'UnitPriorityBoosts', 'UNIT_BUILDER', 1, 10
@@ -68,8 +75,10 @@ AND NOT EXISTS (
     SELECT 1 FROM AiFavoredItems WHERE ListType = 'UnitPriorityBoosts' AND Item = 'UNIT_BUILDER'
 );
 
--- Build City Improvement can ask more than one city to train a Builder.
+-- Build City Improvement can consider other cities when recruiting a Builder.
 -- Definition slot 2 is the native Required City input for the Build Unit node.
+-- The sentinel -1 relaxes the city ID match. Ordinary eligibility still
+-- applies when Civ evaluates which city can recruit for the request.
 INSERT INTO TreeData
         (   DefnId,   NodeId,   TreeName,   DefaultData   )
 SELECT 2, n.NodeId, n.TreeName, '-1'
