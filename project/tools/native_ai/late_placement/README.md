@@ -29,6 +29,14 @@ The report lists the boundary clock as unsampled if the pause
 prevented its UI sample. Every other interior clock is required.
 Qualification remains continuous.
 
+The Wind Mill opening probe uses `--mill-opening-components` with
+`--resume-from` pointing to the verified 105–120 supplier run,
+`--wind-mill 4 131073 1423`, `--through 112`, `--saves` and
+`--probe-dependencies`. It checks the inactive source and its
+package hashes, then removes the exact Rice Farm in the replay
+copy and confirms the Rice and Granary remain. The component
+observer records the Mill forecast without adding a bid.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

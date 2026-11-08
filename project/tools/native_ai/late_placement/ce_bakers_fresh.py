@@ -289,9 +289,14 @@ def run(args):
     prior = args.resume_from.resolve(strict=True) if args.resume_from else None
     if prior:
         previous = load(prior / 'protocol.json')
-        checkpoint_input = load(prior / 'checkpoint.json')
+        checkpoint_input = load(prior / ('observer-checkpoint.json' if args.mill_opening_components else 'checkpoint.json'))
         start = checkpoint_input['turn']
         expected = dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
+        if args.mill_opening_components:
+            require(start == 105 and args.through == 112 and args.wind_mill == [4, 131073, 1423]
+                    and checkpoint_input['sha256'] == 'dfc29fce2c25bb717bc3a2374640a37accc4052d0fd7989b753479153f1f83cd',
+                    'The opening forecast uses the verified Melbourne turn-105 source')
+            expected.update(endpoint=120, diagnostic_supplier_boundary=105)
         if 'census_turns' in previous:
             expected['census_turns'] = previous['census_turns']
         if 'diagnostic_start' in previous:
@@ -346,6 +351,8 @@ def run(args):
         protocol.update(fresh_game=False, ordinary_setup=False, diagnostic_start=start,
                         diagnostic_source_sha256=checkpoint_input['sha256'],
                         gameplay_interventions=previous['gameplay_interventions'])
+        if args.mill_opening_components:
+            protocol.update(diagnostic_mill_opening_components=True, gameplay_interventions=True)
         if args.movement_only:
             protocol['diagnostic_movement_only'] = True
         if args.alexandria_bid:
@@ -478,8 +485,8 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
     def continuation_gate():
         identity = load(prior / 'source.json')
         players.update(identity['original_ai'])
-        archived = re.findall(r'CSC_BAKERS_CENSUS_(?!END\t)([A-Z]+\t[^\r\n]+)',
-                              read(prior / 'chain-census.txt'))
+        census_name = 'observer-start-census.txt' if args.mill_opening_components else 'chain-census.txt'
+        archived = re.findall(r'CSC_BAKERS_CENSUS_(?!END\t)([A-Z]+\t[^\r\n]+)', read(prior / census_name))
         loaded = capture_census(controller, players, start, out / 'source-census.txt')
         require(sorted(archived) == loaded, 'The loaded Stage 2 census differs from the saved endpoint')
         pid, city, quarter, *_ = target
@@ -541,6 +548,28 @@ Modding.EnableMod(chosen.Handle,true)
             session.issue_once('host-normal-start', host(args.map_seed, args.game_seed, args.map, args.map_size), 'MainMenu')
             session.ready_after_issue(1, contexts, eligibility=source_gate)
         verify_modules(session, local[ce] / ce_dll, out, HOTFIX_SHA)
+        if args.mill_opening_components:
+            # A controlled opening fixture: preserve the Rice and Granary
+            # while removing only the Farm. The native probe writes no scores.
+            source = sorted(re.findall(r'CSC_BAKERS_CENSUS_(?!END\t)([A-Z]+\t[^\r\n]+)',
+                                       read(out / 'source-census.txt')))
+            healthy = 'NEIGHBOR\t1423\t1498\t4\t-1\tRESOURCE_RICE\tIMPROVEMENT_FARM\ttrue\ttrue\tfalse'
+            bare = 'NEIGHBOR\t1423\t1498\t4\t-1\tRESOURCE_RICE\t-\ttrue\tfalse\tfalse'
+            require(healthy in source and 'CUSTOMER\t1423\t131073\t1422\tBUILDING_GRANARY\tworking\t1422' in source,
+                    'The opening fixture requires the verified Rice Farm and working Granary')
+            session.issue_once('remove-melbourne-rice-farm', """
+local plot = assert(Map.GetPlotByIndex(1498))
+assert(plot:GetOwner()==4 and plot:GetDistrictType()==-1 and not plot:IsImprovementPillaged())
+assert(plot:GetResourceType()==GameInfo.Resources.RESOURCE_RICE.Index)
+assert(plot:GetImprovementType()==GameInfo.Improvements.IMPROVEMENT_FARM.Index)
+ImprovementBuilder.SetImprovementType(plot, -1)
+""", 'GameCore_Tuner')
+            prepared = capture_census(controller, players, start, out / 'opening-start-census.txt')
+            require(prepared == sorted(bare if row == healthy else row for row in source),
+                    'The opening preparation changed another census fact')
+            prepared_save = save_inactive_boundary(controller, turn=start, name='CSC_BAKERS_MILL_OPENING',
+                                                   native_directory=args.saves, archive=out / 'opening-source.Civ6Save')
+            write_json(out / 'opening-checkpoint.json', prepared_save)
         raw = controller.cmd('CSC_BAKERS_STOREKEEPER_WATCH=true\n' + read(HERE / 'storekeeper_runtime.lua'),
                              'PlotInfo', 'install-storekeeper-watch')
         require('CSC_BAKERS_STOREKEEPER_WATCH_INSTALLED' in raw, 'Storekeeper watch was not installed')
@@ -618,20 +647,24 @@ Modding.EnableMod(chosen.Handle,true)
                     scope['granaryNominationQ8'] = protocol['diagnostic_granary_nomination_q8']
                 if args.granary_components:
                     scope['granaryComponents'] = True
-                    scope.update(parse(controller.cmd(
-                        """local yields = GameInfo.Yields
-print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldIndex":%d,"goldYieldIndex":%d}',
-    yields.YIELD_FOOD.Index, yields.YIELD_PRODUCTION.Index, yields.YIELD_GOLD.Index))""",
-                        'GameCore_Tuner', 'granary-exchange-yield-indices'), 'CSC_YIELD_INDICES'))
                 probe = HERE / 'mill_repair_observer.js'
-                write_json(out / 'granary-scope.json', scope)
             else:
                 scope['mill'] = capture_building_readiness(controller, pid, city, start, out / 'source-mill.json')
+                if args.mill_opening_components:
+                    require(load(out / 'source-mill.json')['available'], 'The opening Wind Mill is unavailable')
+                    scope['millOpeningComponents'] = True
                 if args.melbourne_mill_bid:
                     require(load(out / 'source-mill.json')['available'], 'Wind Mill is no longer available')
                     scope['nominationBidQ8'] = protocol['diagnostic_mill_nomination_q8']
                 probe = HERE / 'mill_repair_observer.js'
-                write_json(out / 'wind-mill-scope.json', scope)
+            if args.granary_components or args.mill_opening_components:
+                scope.update(parse(controller.cmd(
+                    """local yields = GameInfo.Yields
+print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldIndex":%d,"goldYieldIndex":%d}',
+    yields.YIELD_FOOD.Index, yields.YIELD_PRODUCTION.Index, yields.YIELD_GOLD.Index))""",
+                    'GameCore_Tuner', 'exchange-yield-indices'), 'CSC_YIELD_INDICES'))
+            if not args.supplier:
+                write_json(out / ('granary-scope.json' if args.granary else 'wind-mill-scope.json'), scope)
             attachment = frida.attach(session.owner.pid)
             code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(
                 read(path) for path in (STUDY / 'observer.js', probe))
@@ -646,11 +679,11 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             trace = observer.exports_sync.freeze()
             write_json(out / trace_name, trace)
             require(trace['fault'] is None and trace['active'] == 0, 'Native decision trace faulted')
-            if args.granary_components:
-                components = trace['granaryComponents']
+            if args.granary_components or args.mill_opening_components:
+                components = trace['granaryComponents' if args.granary_components else 'millOpeningComponents']
                 require(components['stopReason'] is None and not components['faults']
                         and components['counts']['BuildingValue']['accepted'] > 0,
-                        'No complete fault-free Granary component capture')
+                        'No complete fault-free exchange component capture')
             if args.trebizond_granary_bid:
                 edits = [row for row in trace['records'] if row.get('deltaQ8', 0)]
                 require(len(edits) == 1 and edits[0]['kind'] == 'granary-compare'
@@ -726,6 +759,8 @@ if __name__ == '__main__':
     parser.add_argument('--trebizond-granary-bid', action='store_true', help='Add 288 score units once at the matched Granary nomination')
     parser.add_argument('--granary-components', action='store_true',
                         help='Read native modifier contributions in the short Trebizond baseline')
+    parser.add_argument('--mill-opening-components', action='store_true',
+                        help='Prepare the exact Melbourne two-link fixture and read its Wind Mill forecast')
     parser.add_argument('--granary-ce-replay', action='store_true',
                         help='Verify the calibrated CSC Granary nomination with the exact CE package')
     parser.add_argument('--movement-only', action='store_true', help='Observe assigned Builder movement without native hooks')
@@ -745,6 +780,12 @@ if __name__ == '__main__':
         options.census_turns = QUALIFICATION_CENSUSES
     if len(options.census_turns) > 8:
         parser.error('At most eight milestone census turns are supported')
+    if options.mill_opening_components and (
+            not options.resume_from or not options.wind_mill or not options.probe_dependencies
+            or options.observe_supplier_at is not None or options.melbourne_mill_bid or options.mill_ce_replay
+            or options.calibration_replay or options.granary_ce_replay or options.movement_only
+            or options.alexandria_bid or options.trebizond_granary_bid or options.granary_components):
+        parser.error('Opening components require the exact Wind Mill continuation and a read-only probe')
     if options.observe_supplier_at is not None:
         if (not (options.saves and options.supplier and options.probe_dependencies)
                 or options.resume_from or options.untuned or options.qualification or options.matched_source

@@ -492,11 +492,12 @@
       "static",
       "runtime"
     ],
-    "scope": "Pinned Windows XP2 GameCore SHA256 324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c; inspected economic paths. BuildingValue52b900; historical producer consumer trace.",
+    "scope": "Pinned Windows XP2 reference 324c51e9 and loaded hotfix 092abfbb. BuildingValue RVA 52b900, intrinsic normalization return 52bb71, GetYieldChange RVA 10c0e0 return 52bd7f, dynamic normalization return 52bda1. Historical producer consumer trace.",
     "limits": "A delivered live adjustment need not prove that hypothetical source/recipient simulation supports the same mechanism.",
     "sources": [
       "project/docs/research/mods/csc-future-economy-forecast-20261103.md",
-      "project/docs/research/mods/csc-ai-producer-decision-20261030.md"
+      "project/docs/research/mods/csc-ai-producer-decision-20261030.md",
+      "project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"
     ],
     "topic": "topics/native/modifier-forecasts.md",
     "depends_on": [
@@ -1823,5 +1824,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/architecture.md",
     "related": ["AI-N004", "AI-N005", "AI-N052"]
+  },
+  {
+    "id": "AI-N105",
+    "title": "Growth and district Great Person points have distinct native valuation inputs",
+    "statement": "The city-growth analyzer uses the recipient's Food surplus when it has city context, then normalizes Food with no player context. The district Great Person analyzer normalizes the configured type through the player's pseudo-yield weights. Both use timed income discounting.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Byte-matched Windows XP2 reference 324c51e9 and hotfix 092abfbb. Growth RVA 46fac0, city surplus 124060, district Great Person 47b3f0 and default 47b4c0, timed income 528660.",
+    "limits": "Child analyzers only. Missing-city/default paths have different inputs. Melbourne's prospective Storekeeper roots did not reach a positive value, and the actual Service amount in that city remains unpriced.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/modifier-forecasts.md",
+    "related": ["AI-N026", "AI-C112"]
   }
 ]

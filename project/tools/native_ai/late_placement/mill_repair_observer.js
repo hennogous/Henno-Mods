@@ -28,7 +28,12 @@ const DIAGNOSTIC_MILL_BID_Q8 = 98304;
 const MELBOURNE_NOMINATION_Q8 = 448 * 256;
 const NORMALIZE_BUILDING_YIELD = 0x52b110;
 const DISCOUNT_BUILDING_INCOME = 0x528310;
+const CITY_BUILDING_YIELD_CHANGE = 0x10c0e0;
 const INTRINSIC_YIELD_RETURN = 0x52bb71;
+// BuildingValue reads the city's existing building-specific yield changes
+// separately from the building definition's intrinsic yield rows.
+const CITY_BUILDING_YIELD_RETURN = 0x52bd7f;
+const DYNAMIC_YIELD_NORMALIZE_RETURN = 0x52bda1;
 const INCOME_READY_RETURN = 0x52c3ad;
 const INCOME_HORIZON_RETURN = 0x52c3cd;
 const QUEUE_FALLBACK_COMPARISON = 0x3e8741;
@@ -53,8 +58,9 @@ const memory = createStudyMemoryIO({ptr, findRangeByAddress: address => Process.
 const records = [], selection = new Map(), queuePass = new Map();
 let enabled = false, installed = false, boundary = null, fault = null, active = 0;
 let queueSequence = 0;
-let granaryComponents = null;
-const granaryIncome = [];
+let exchangeComponents = null;
+let exchangeMode = null;
+const exchangeIncome = [];
 
 function read(pointer, offset, type) {
     const result = memory.read(pointer.toString(), offset, type);
@@ -100,21 +106,23 @@ function init(spec, scope) {
         scope.granary !== 3 || granaryBid !== 288 * 256))
         throw Error('Unsupported Trebizond Granary nomination preference');
     let granaryBidApplied = false;
-    const referenceYieldIndices = new Set([scope.productionYieldIndex, scope.goldYieldIndex]);
-    if (scope.granaryComponents && (!scope.cePath || scope.player !== 1 || scope.city !== 327684 ||
-        scope.granary !== 3 || granaryBid || referenceYieldIndices.size !== 2 ||
-        [scope.foodYieldIndex, ...referenceYieldIndices].some(index => !Number.isInteger(index) || index < 0) ||
-        referenceYieldIndices.has(scope.foodYieldIndex)))
-        throw Error('Granary component capture requires the read-only Trebizond scope');
+    const melbourne = scope.player === 4 && scope.city === 131073 && scope.mill === 139;
+    const captureComponents = scope.granaryComponents || scope.millOpeningComponents;
+    const exchangeYields = new Set([scope.foodYieldIndex, scope.productionYieldIndex, scope.goldYieldIndex]);
+    if (captureComponents && (!scope.cePath || exchangeYields.size !== 3 ||
+        [...exchangeYields].some(index => !Number.isInteger(index) || index < 0) ||
+        bid || nominationBid || granaryBid || scope.screenProjectEligibility ||
+        (scope.granaryComponents && (scope.player !== 1 || scope.city !== 327684 || scope.granary !== 3)) ||
+        (scope.millOpeningComponents && (!melbourne || granary))))
+        throw Error('Expected a pinned read-only exchange forecast scope');
     if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
-    const melbourne = scope.player === 4 && scope.city === 131073 && scope.mill === 139;
     if (nominationBid !== 0 && (!melbourne || !scope.cePath || nominationBid !== MELBOURNE_NOMINATION_Q8 || bid))
         throw Error('Unsupported Wind Mill nomination preference');
     if (scope.screenProjectEligibility && (!boston || !scope.cePath || bid || nominationBid))
         throw Error('The isolated project eligibility diagnostic requires CE and no Mill bid');
     const captureQueueOperands = scope.cePath || scope.captureQueueOperands;
-    const componentPoints = scope.granaryComponents ? ['BuildingValue', 'ModifierValue', 'AnalyzeModifier'] : [];
+    const componentPoints = captureComponents ? ['BuildingValue', 'ModifierValue', 'AnalyzeModifier'] : [];
 
     const address = rva => core.base.add(rva);
     const caller = invocation => invocation.returnAddress.sub(core.base).toInt32();
@@ -144,6 +152,9 @@ function init(spec, scope) {
             [NORMALIZE_BUILDING_YIELD, '48895c240848896c2410488974242057'],
             [DISCOUNT_BUILDING_INCOME, '40565741564883ec70418bf14c8bf2'],
         ] : []),
+        ...(scope.millOpeningComponents ? [
+            [CITY_BUILDING_YIELD_CHANGE, '48895c240848896c2410488974241857'],
+        ] : []),
         ...(captureQueueOperands ? [
             [BUILDING_COMPARISON, '443b367e11448936'],
             [QUEUE_OFFER_GATE, '8d9700ffffff3990580100007c3d'],
@@ -171,6 +182,9 @@ function init(spec, scope) {
             [INTRINSIC_YIELD_RETURN, NORMALIZE_BUILDING_YIELD],
             [INCOME_READY_RETURN, DISCOUNT_BUILDING_INCOME],
             [INCOME_HORIZON_RETURN, DISCOUNT_BUILDING_INCOME],
+        ] : []), ...(scope.millOpeningComponents ? [
+            [CITY_BUILDING_YIELD_RETURN, CITY_BUILDING_YIELD_CHANGE],
+            [DYNAMIC_YIELD_NORMALIZE_RETURN, NORMALIZE_BUILDING_YIELD],
         ] : [])]) {
         const end = address(rva);
         if (end.sub(5).readU8() !== 0xe8 || !end.add(end.sub(4).readS32()).equals(address(expected)))
@@ -191,10 +205,12 @@ function init(spec, scope) {
         });
     }
     if (componentPoints.length) {
-        granaryComponents = makeStudyObserver(memory, {
-            profile: 'trebizond-granary-components-v1', mappingVerified: true,
-            buildings: [{type: 'BUILDING_GRANARY', index: building}],
-            targets: [{player: scope.player, city: scope.city}], ...GRANARY_STUDY_LIMITS,
+        exchangeMode = granary ? 'granary' : 'millOpening';
+        exchangeComponents = makeStudyObserver(memory, {
+            profile: granary ? 'trebizond-granary-components-v1' : 'melbourne-wind-mill-opening-v1',
+            mappingVerified: true,
+            buildings: [{type: granary ? 'BUILDING_GRANARY' : 'BUILDING_CSC_BAKERS_WIND_MILL', index: building}],
+            targets: [{player: scope.player, city: scope.city}], ...EXCHANGE_STUDY_LIMITS,
         });
         // Most native valuation calls belong to other buildings and cities.
         // Enter the detailed recorder only inside a matched valuation frame.
@@ -207,43 +223,59 @@ function init(spec, scope) {
                 const stack = threads.get(thread) ?? [];
                 if (!stack.length && (kind !== 'BuildingValue' ||
                     args[1].toInt32() !== building || args[6].isNull() || !target(args[6]))) return;
-                const frame = granaryComponents.enter(kind, decodeStudyArgs(kind, args, thread, caller(invocation)));
+                const frame = exchangeComponents.enter(kind, decodeStudyArgs(kind, args, thread, caller(invocation)));
                 if (!frame) return;
                 if (kind === 'BuildingValue' && frame.paired) referencePlayer = args[5];
                 stack.push(frame);
                 threads.set(thread, stack);
                 return {frame, thread};
             }, ({frame, thread}, result) => {
-                granaryComponents.leave(frame, result.toString());
+                exchangeComponents.leave(frame, result.toString());
                 const stack = threads.get(thread);
-                if (stack.pop() !== frame) throw Error('Unbalanced Granary valuation frame');
+                if (stack.pop() !== frame) throw Error('Unbalanced exchange valuation frame');
                 if (!stack.length) threads.delete(thread);
             });
         }
         // Separate observations for the native intrinsic yield and the two
         // endpoints of its income stream. Neither helper is called by the probe.
         const recordIncome = ({out, ...sample}, result) => {
-            if (!result.equals(out) || granaryIncome.length >= 1024)
-                throw Error('Unexpected Granary income return or capture bound');
-            granaryIncome.push({...sample, valueQ8: read(out, 0, 'i32')});
+            if (!result.equals(out) || exchangeIncome.length >= 1024)
+                throw Error('Unexpected exchange income return or capture bound');
+            exchangeIncome.push({...sample, valueQ8: read(out, 0, 'i32')});
         };
         function buildingFrame(invocation) {
             const frame = threads.get(invocation.threadId)?.at(-1);
             return frame?.kind === 'BuildingValue' && frame.paired ? frame : null;
         }
+        if (scope.millOpeningComponents) {
+            observe(CITY_BUILDING_YIELD_CHANGE, (args, invocation) => {
+                const yieldIndex = args[2].toInt32();
+                if (caller(invocation) !== CITY_BUILDING_YIELD_RETURN || args[1].toInt32() !== building ||
+                    !exchangeYields.has(yieldIndex)) return;
+                const frame = buildingFrame(invocation);
+                if (frame) return {buildingCallId: frame.id, kind: 'dynamic-yield-input', yieldIndex};
+            }, (sample, result) => {
+                if (exchangeIncome.length >= 1024) throw Error('Exchange income capture bound');
+                exchangeIncome.push({...sample, amount: result.toInt32()});
+            });
+        }
         observe(NORMALIZE_BUILDING_YIELD, (args, invocation) => {
             const yieldIndex = args[2].toInt32();
-            if (caller(invocation) !== INTRINSIC_YIELD_RETURN) return;
-            if (yieldIndex === scope.foodYieldIndex) {
-                const frame = buildingFrame(invocation);
-                if (frame) return {out: args[0], buildingCallId: frame.id, kind: 'intrinsic-yield',
+            const from = caller(invocation);
+            if (!exchangeYields.has(yieldIndex)) return;
+            const frame = buildingFrame(invocation);
+            if (scope.millOpeningComponents && frame && from === DYNAMIC_YIELD_NORMALIZE_RETURN)
+                return {out: args[0], buildingCallId: frame.id, kind: 'dynamic-yield-normalized',
                     inputQ8: read(args[1], 0, 'i32'), yieldIndex};
-            }
+            if (from !== INTRINSIC_YIELD_RETURN) return;
+            if (frame && (!granary || yieldIndex === scope.foodYieldIndex))
+                return {out: args[0], buildingCallId: frame.id, kind: 'intrinsic-yield',
+                    inputQ8: read(args[1], 0, 'i32'), yieldIndex};
+            if (granary && yieldIndex === scope.foodYieldIndex) return;
             // NormalizeYields receives the same player valuation object as
             // BuildingValue. A different city or building can provide a yield
             // weight for that player. Its score and timing are unrelated.
-            if (!referencePlayer || referencePlayer.isNull() || !args[3].equals(referencePlayer) ||
-                !referenceYieldIndices.has(yieldIndex)) return;
+            if (!referencePlayer || referencePlayer.isNull() || !args[3].equals(referencePlayer)) return;
             const count = referenceCounts.get(yieldIndex) ?? 0;
             if (count >= 16) return;
             const inputQ8 = read(args[1], 0, 'i32');
@@ -480,17 +512,18 @@ rpc.exports = {
     init,
     advance(turn) {
         boundary = turn;
-        if (granaryComponents) granaryComponents.start();
+        if (exchangeComponents) exchangeComponents.start();
         enabled = true;
     },
     snapshot() { return {records, active, fault}; },
     freeze() {
         enabled = false;
         const result = {records, active, fault};
-        if (granaryComponents && !active) {
-            granaryComponents.requestFreeze();
-            result.granaryComponents = granaryComponents.finishFreeze();
-            result.granaryIncome = granaryIncome;
+        if (exchangeComponents && !active) {
+            exchangeComponents.requestFreeze();
+            // Preserve the archived Granary receipt shape.
+            result[exchangeMode + 'Components'] = exchangeComponents.finishFreeze();
+            result[exchangeMode + 'Income'] = exchangeIncome;
         }
         return result;
     },

@@ -1772,5 +1772,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C088", "AI-C110", "AI-N104"]
+  },
+  {
+    "id": "AI-C112",
+    "title": "Melbourne's unbuilt Wind Mill already received the working Granary's Production and Gold",
+    "statement": "Seven opening forecasts credited +1 Production and +1 Gold to the legal unbuilt Wind Mill through current city yield changes. The hypothetical Food-to-Granary root returned zero. The same-player Food weight and Mill income window put the omitted Food near 18 points, below the observed Castle margin.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime"],
+    "scope": "Verified Melbourne turn-105 diagnostic through 112, with a working Granary, a completed Quarter and a bare Rice deposit after controlled removal of the Farm. No diagnostic score write.",
+    "limits": "One city's forecast. The estimate is approximate and no Food-only bid was applied. Supplier readiness, later Service and other cities' weights were not priced.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/forecast-coverage.md",
+    "related": ["AI-C099", "AI-C102", "AI-N026"]
   }
 ]

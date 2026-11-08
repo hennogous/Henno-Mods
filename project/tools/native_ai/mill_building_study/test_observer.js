@@ -3,6 +3,13 @@ const assert=require('node:assert/strict');
 const {makeStudyObserver,validateStudyConfig,STUDY_TYPES,STUDY_POINTS,STUDY_LIMITS,decodeStudyArgs,createStudyMemoryIO}=require('./observer.js');
 let tests=0;
 function check(name,fn){fn();tests++;console.log('PASS '+name);}
+check('Melbourne exchange scope accepts only the pinned Wind Mill and city',()=>{
+ const config={...STUDY_LIMITS,maxPairs:2048,maxCallbacks:20000,profile:'melbourne-wind-mill-opening-v1',
+  mappingVerified:true,buildings:[{type:'BUILDING_CSC_BAKERS_WIND_MILL',index:139}],targets:[{player:4,city:131073}]};
+ assert.doesNotThrow(()=>validateStudyConfig(config));
+ assert.throws(()=>validateStudyConfig({...config,targets:[{player:4,city:65536}]}),/exchange mapping/);
+ assert.throws(()=>validateStudyConfig({...config,maxPairs:2049}),/exchange bound/);
+});
 const p=n=>'0x'+n.toString(16);
 const addr={city:p(0x10000),other:p(0x20000),build:p(0x30000),row:p(0x40000),raw:p(0x50000),mutable:p(0x60000),scores:p(0x70000),scores2:p(0x71000),districtMutable:p(0x72000),analysis:p(0x80000),data:p(0x90000),vector:p(0xa0000),out:p(0xb0000),out2:p(0xb1000),discount:p(0xc0000),xy:p(0xd0000),district:p(0xe0000),player:p(0xf0000)};
 function fixture(){

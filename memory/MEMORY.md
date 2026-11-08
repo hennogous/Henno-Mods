@@ -27,6 +27,11 @@ Under **14.1**, the verified turn-105 source has Melbourne's
 working Granary and Rice Farm and an unbuilt Wind Mill with Machinery unlocked.
 Use the same diagnostic Farm removal in both arms and first
 measure the Mill's immediate exchange with the working Granary.
+That forecast is measured in AI-C112. The archived prepared save
+`233f30e7…` retains the Granary and bare Rice. Native valuation
+already credits +1 Production and +1 Gold. The omitted Food is
+about 18 points, below the observed Castle margin. Price credible
+Service completion separately before an opening bid.
 
 CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native

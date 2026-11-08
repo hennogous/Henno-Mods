@@ -407,9 +407,11 @@ until the active check closes or an explicit dependency needs attention.
 - **14.1 Sequence investment.** Compare finishing or repairing a chain,
   opening a new one, and deferring. Include treasury, upkeep, production,
   unlock time, Builder travel and charges. Use the verified Melbourne
-  turn-105 source for a matched opening test with the Mill and its Rice
-  Farm missing. Measure the Mill's ordinary exchange with the working
-  Granary first, then test only the measured missing value.
+  turn-105 source with the Mill and Rice Farm missing. The forecast
+  already credits Production and Gold. The omitted Food is about 18
+  points in that city, below the observed Castle margin. Before
+  testing an opening bid, price the expected Service and other
+  missing benefits with the cost and likelihood of completing the Farm.
 - **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
   One supplier can serve multiple Quarters. Count each real lost or enabled
   benefit once. The Granary publisher now emits one 52-point bid per legal

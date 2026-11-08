@@ -2363,6 +2363,84 @@ Granary exchange before setting a bid. This isolates the case
 where the supplier policy waits for the Mill while the Mill
 policy waits for working supply.
 
+### Native forecasts read existing yield changes for the candidate building
+
+The Ghidra reference's `BuildingValue` at RVA `52b900` first
+normalizes its definition's intrinsic yield rows. The return
+address of that normalization is `52bb71`. A separate loop
+then enumerates yield definitions and asks the city's building
+collection for the exact candidate building's yield change.
+It calls `CityBuildings::GetYieldChange` at `10c0e0`, with
+return address `52bd7f`. Positive amounts are normalized via
+the distinct return address `52bda1` and enter the income
+subtotal before the discount stream. These call encodings were
+confirmed on the loaded Steam hotfix, SHA-256
+`092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f`.
+
+An empty intrinsic row set therefore leaves the dynamic path
+available. The separate prospective modifier analysis still
+needs its own receipt. The opening probe measures both paths for
+Melbourne's Wind Mill, keeping the working Granary and removing
+only the Rice Farm from the replay copy.
+
+### Melbourne's opening forecast already credits Production and Gold
+
+The first opening replay verified the source census, removed only
+the Rice Farm and confirmed that Melbourne could build the Wind
+Mill. The new observer profile was missing from the shared
+recorder's allowlist. The replay closed before collecting forecast
+data. The corrected profile accepts only player 4, city 131073
+and Wind Mill index 139, with the existing scoped bounds.
+
+`development-melbourne-opening-components-02` reloaded the
+same verified source, prepared the same change and saved the
+inactive turn-105 state for a matched comparison. The surrounding
+census was identical except for removal of the Farm on Rice
+plot 1498. Melbourne retained its working Granary and complete
+Quarter. The legal Wind Mill remained unbuilt.
+
+All seven Wind Mill forecasts from 105–112 read +1 Production
+and +1 Gold through the existing city building-yield path.
+Those terms normalized to 371 and 217 Q8 respectively. The
+dynamic Food entry was zero. The Mill's prospective Food-to-Granary
+root, `MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_CITY_CENTER`, also
+returned zero in every forecast. The distinct material and
+Storekeeper roots returned zero in this missing-supplier state.
+
+Same-player reference normalization gave 383 Q8 per Food. The
+observed 12-to-50-turn stream changed from 8,352 to 19,464 Q8
+for input 922 Q8. Applying its marginal factor of about 12.05
+to one Food gives an approximate 18.0 utility points. It would
+double-count benefits to add the full Granary-side 52-point
+preference to this Mill forecast.
+
+The first ordinary opening compared the legal Mill at 44,739 Q8
+with Castle at 115,453. Across the captured comparisons, the
+gap was 30,902–71,830 Q8. A Food-only correction of 4,608 Q8
+would leave Castle ahead in each observed comparison. No bid
+was applied. Value the credible chain completion and its costs
+separately before deciding whether to favor this opening.
+
+The prepared save SHA-256 is
+`233f30e7130343771e59272b526ab8d43642104c2fd175ba7f6ed6f708184cae`.
+The fault-free trace SHA-256 is
+`78005bfa9f8bc2d179fccf558d9e044dc4bb75e71754d32e9c7c4ebcda766d32`.
+Both replays closed and restored the original packages and preferences.
+
+The native child analyzers offer a way to price Storekeeper if
+the chain can credibly become ready. The city-growth analyzer
+at RVA `46fac0` uses the recipient's Food surplus when city
+context exists and normalizes the resulting Food with a null
+player context before discounting the timed stream. Its missing
+city branch uses a separate fallback. The district Great Person
+analyzer at `47b3f0` normalizes the configured Great Person type
+as a player-weighted pseudo-yield and then discounts it. Its
+default routine at `47b4c0` applies a different amount scaling.
+The inspected code belongs to the byte-matched XP2 Ghidra
+reference. These are child capabilities. Melbourne's missing
+supplier kept the prospective Storekeeper roots at zero, so
+this capture did not price actual Storekeeper.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

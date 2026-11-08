@@ -31,6 +31,14 @@ replacement table. The functioning requirement then checks pillage
 on the resolved building. This confirms the gameplay path. Prospective
 AI coverage still depends on its separate analyzer. [AI-N102]
 
+Growth and district Great Person points also have separate
+valuation inputs. When the growth analyzer has a recipient city,
+it uses that city's Food surplus. The Great Person analyzer uses
+the player's pseudo-yield weight for the configured Great Person
+type. Both discount timed income. This establishes what a reached
+child can price. It leaves the caller's ability to reach that child
+under the right conditions to be verified. [AI-N105]
+
 ## Unsupported collections and requirements fail differently
 
 A missing collection or effect handler leaves a null pointer and compilation/evaluation refuses that modifier. The inspected 27-collection registry lacks COLLECTION_PLAYER_IMPROVEMENTS. Current producer-to-material wrappers using it are therefore unsupported through that traversal, without implying zero material value everywhere. [AI-N027]
