@@ -115,6 +115,11 @@ beside a completed Dam. The live survey confirmed the Farm and Dam
 share a floodplain. Charleston had no legal new Dam site, so the next
 supplier-protection comparison needs a different city or an earlier save.
 [Turn-200 development evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-normal-start-repeat-reached-four-chains-by-turn-200).
+
+In Alexandria's repair replay, the Water Mill scored well and failed
+the building requirements while its Quarter was pillaged. The next
+check follows the Quarter's own repair through legality and district
+selection. [Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

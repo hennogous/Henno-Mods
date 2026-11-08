@@ -126,3 +126,9 @@ Boston later submitted a Mill repair contract and queued an Encampment.
 After that district completed, the same retained Mill contract executed
 and its repair finished.
 [AI-C069] [Native branch and live queue evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
+
+If a pillaged building's host district is also pillaged, the native
+building requirements can reject the repair before the queue compares
+it. The specified district's own repair can reuse its existing
+footprint, subject to the zone legality checks. Test district repair
+eligibility and nomination separately from the building bid. [AI-N107]

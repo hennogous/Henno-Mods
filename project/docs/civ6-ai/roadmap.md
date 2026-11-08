@@ -13,9 +13,10 @@ evidence.
 The Melbourne replay established that the Rice job won, but the empire's
 only Builder worked elsewhere and the replacement request lost in city
 queues. The turn-200 development repeat measured four active chains.
-Ancyra still lacked both buildings on 190. Alexandria's Quarter and Mill
-were pillaged with supply and customer intact, adding a **13.1** recovery
-case. Trace the stock repair decision from this saved boundary.
+Ancyra still lacked both buildings on 190. In Alexandria's **13.1**
+case, the Water Mill scored well but failed the repair requirements while
+the Quarter remained pillaged. Trace the Quarter's own legal repair,
+including whether it can enter a free district comparison.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible
@@ -418,6 +419,8 @@ until the active check closes or an explicit dependency needs attention.
   games and when it fails with another link down.
 - **13.2 Replan.** Reassess after capture, lost supply, or destructive harvest
   and other work. Distinguish a repairable interruption from permanent loss.
+  Heidelberg owned every adjacent tile and had no mapped Base after its
+  Maize became a Dam. A purchase or Builder could not restore that chain.
 - **13.3 Preserve supply in Builder decisions.** Account for removing a
   mapped improvement or harvesting its deposit before the job is reserved.
   Apply the protection to boost work as well as ordinary improvement jobs.

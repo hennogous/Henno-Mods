@@ -192,6 +192,11 @@ its Quarter and Water Mill were pillaged while its Cattle Pasture and
 Granary still worked. This isolates a producer-side recovery case from
 the earlier missing-Builder problem. [AI-C117]
 
+Through turn 214, Alexandria's Mill had a high advisory score and
+failed the repair requirements in all ten observed comparisons. The
+host Quarter remained pillaged. Check the district's repair eligibility
+and nomination before calibrating a Mill preference. [AI-C118]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

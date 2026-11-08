@@ -2241,6 +2241,10 @@ The 24,576 Q8 deduction reached the exact pair and the district
 still went forward. The evidence leaves the other Dam sites and
 downstream arbitration unresolved. A permanent-loss guard needs to
 account for alternate legal sites and any competing flood benefit.
+The six-neighbor censuses at 200 and 249 show that Heidelberg owned
+every adjacent plot and had no other mapped Base. Once the Dam removed
+Maize, buying a tile or assigning another Builder could not restore
+this Quarter's chain from those remaining neighbors.
 
 In the Windows XP2 reference, `FloodRiver` at RVA `72d400` scans
 the affected river's floodplain plots for the district marked as
@@ -2702,6 +2706,54 @@ preferences. In the same read-only continuation, Alexandria's Dam
 finished and Broadcast Center entered production. The Bakers Quarter
 and Water Mill were still pillaged at 206. Trace repair nomination and
 the next open production comparison from the archived boundary.
+
+#### The Quarter can gate its own Mill's repair
+
+The native existing-building requirements at `0f61c0` resolve the
+pillaged building's district, including a district replacement.
+When that district is complete but pillaged, the evaluator sets its
+blocked-district flag and clears eligibility. The code also checks
+contamination and hostile occupation. Alexandria's turn-200 UI build
+queue returned false for the Water Mill while its Quarter remained
+pillaged. That UI result does not identify the failed predicate by
+itself. The native rule gives an independent reason to evaluate Quarter
+repair first.
+
+For the district itself, `GetBestLocationFor` at `3e5550` can return
+the existing plot when the specified district is pillaged, before its
+new-site search. `CanZone` at `0f97b0` has an existing-complete-district
+path which checks pillage, coastal flooding and hostile units. These
+are paths for a specified district. They do not establish that city
+planning nominates the repair against new districts and other work.
+
+The normal-start run's unit log shows a Barbarian Line Infantry
+requesting pillage on 187, the last active Storekeeper turn. That log
+does not record its target coordinates. It is a possible cause of the
+Alexandria damage and remains unconfirmed.
+
+`development-alexandria-producer-repair-01` read the Water Mill and
+queue choices from the exact turn-200 save through 214. The Mill had
+positive values and failed the requirements check on all ten recorded
+building comparisons. Two advisory calls from `3e160a` still named it
+the winner at 263,688 Q8. Their alternatives stood at 90,811 and
+94,907 Q8. The other eight comparisons selected an eligible building.
+The trace observed no Mill offer validation or repair request. The
+four production passes executed a Broadcast Center, a Builder, an
+Aerodrome and a Settler offer, respectively. The physical Quarter and
+Mill remained pillaged at 214 while the Pasture and Granary worked.
+The actual Service stayed inactive in the measured interior turns.
+All 13 interior turns were sampled. Melbourne, Charleston and Townsville
+worked throughout the interval. A German Quarter at plot 1677 first
+showed an active Service on 213. The controller verified a normal exit
+and restoration.
+
+The Water Mill already had a strong advisory score. The observed
+eligibility failure comes before effective production competition.
+The next replay checks the Quarter's own build-operation legality
+and compares its existing footprint in the district selector. It
+also records whether an occupied district planning slot prevents a
+new comparison. The fault-free first trace SHA-256 is
+`7d538c18085d7684069d619cbe832a3b5028629e2f251ab3141412efacfea10b`.
 
 The survey SHA-256 is
 `3be54b79cdb5b5a105bd0a828ff89d397c8d63822ec713ebb22a7cce5f57d787`.

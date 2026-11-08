@@ -12,6 +12,12 @@ did not recur. Charleston's active chain has sole Maize at 2100 and
 existing Dam at 2026. The read-only survey found both on river 273 and
 no legal new Dam. Selector turn 204 recorded the invalid Dam score on
 2100. It remained a working Farm at 206. See AI-C117 / AI-N106.
+The Alexandria repair replay from 200 through 214 found ten false
+Mill requirements, two advisory Mill wins at 263688 Q8 and no
+observed Mill repair offer. Both district and Mill remained pillaged.
+AI-N107 traces the native building gate and separate district location
+and zone checks. AI-C118 records the live comparison. Follow the
+Quarter legality and district tree admission from the same source.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

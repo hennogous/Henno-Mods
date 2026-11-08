@@ -1848,5 +1848,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/district-choice.md",
     "related": ["AI-C107"]
+  },
+  {
+    "id": "AI-N107",
+    "title": "A pillaged host district can block building repair before production comparison",
+    "statement": "The existing-building requirements resolve the building's actual host district, including a replacement. A pillaged host sets a blocked-district flag and clears eligibility. The specified district's own location helper can return its existing pillaged footprint, with separate CanZone legality checks.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Windows XP2 reference 324c51e9. Building requirements RVA 0f61c0, district location 3e5550 and zone eligibility 0f97b0.",
+    "limits": "Establishes requirement and location paths only. Does not show where repair is nominated, the cause of an individual eligibility rejection, or the timing of either repair.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "related": ["AI-C069", "AI-C117"]
   }
 ]

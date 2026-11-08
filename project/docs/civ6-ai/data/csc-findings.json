@@ -1844,5 +1844,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C107", "AI-C110", "AI-C116"]
+  },
+  {
+    "id": "AI-C118",
+    "title": "Alexandria's Water Mill scored well but failed the repair requirements",
+    "statement": "All ten observed building comparisons failed the Water Mill's requirements. Two advisory comparisons still ranked it first at 263688 Q8, but no repair offer reached city validation or production. The Quarter and Mill remained pillaged at 214 with the Pasture and Granary working.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Read-only turn-200 to 214 replay of the naturally damaged Alexandria Troas chain, with stock AI and the same integrated CSC and CE packages.",
+    "limits": "Shows the building requirement failure and absence of an observed Mill offer. Does not establish whether the Quarter can legally repair or whether stock AI values its repair against other districts.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C117", "AI-N107", "AI-C069"]
   }
 ]
