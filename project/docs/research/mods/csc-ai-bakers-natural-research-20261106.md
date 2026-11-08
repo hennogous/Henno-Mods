@@ -2294,6 +2294,75 @@ A same-policy observation window starting on 105 can capture the
 second admission and follow-through. Increasing the bid would
 change the diagnostic before we know why the branches differed.
 
+### Builder recruitment and movement are separate decisions
+
+In the Windows XP2 reference, `FindAvailableUnitNode::Update` at
+RVA `554b10` checks units already controlled by the behavior. It
+can then call `Control::Manager::RecruitUnits` at `403190` with
+the control identity, effective request priority and a selection
+callback. The manager filters the empire's units before invoking
+that callback. In the inspected typed-target branch,
+`FindUnitsEvaluator::ChooseUnitsFrom` at `553570` selects by
+requested type priority, then shortest plot distance at equal
+priority. Plot distance is not a movement-path proof.
+
+The Ghidra reference SHA-256 is
+`324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c`.
+The loaded hotfix was
+`092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f`.
+Their `.text` sections matched byte for byte and the callback table
+entry at RVA `a0ce08` pointed to `180553570` in both files.
+This separates existing-unit recruitment from city production and
+later movement. It leaves the failed availability checks in a
+particular job to be traced at runtime.
+
+### The Pasture won open admissions and waited for a Builder
+
+`development-alexandria-fresh-105-observe-01` used the same
+integrated packages and the same 14,336 Q8 Pasture preference.
+At the verified inactive turn-105 boundary, player 2 city 196610
+had Feudalism, the working Water Mill and Granary, and the bare
+Cattle at (18,31). The native observer watched 105–120 without
+an external score write.
+
+Of 15 ordinary proposal checks, 11 found an existing improvement
+tree. In the first three open checks the selector chose the exact
+Pasture at 34,995, 34,906 and 34,785 Q8. Each opened a new
+ordinary job. At the fourth open check, after the supplier was
+complete, the city chose a different improvement.
+
+The city reserved the Cattle on 107, 109 and 113. On 109, the
+native Find Available Unit node failed and the tree submitted
+a Builder request at 136. Both of Macedonia's Builders still
+had charges in that turn's independent census. The logs do not
+identify the specific recruitment filter that rejected each unit.
+Builder 2359298 reached the Cattle on 117 with two charges, used
+one to build the Pasture on 118, and remained a live unit.
+Native Storekeeper operated on 119.
+
+The inactive source save SHA-256 is
+`dfc29fce2c25bb717bc3a2374640a37accc4052d0fd7989b753479153f1f83cd`.
+The frozen native trace had no faults or active frames, SHA-256
+`5bbe47b3446a0c01bb8d1afc7c430c2770957e529631e158314f462fbd0c7440`.
+The controller reached 120, saved and closed cleanly. The first
+summary rejected the missing Storekeeper sample at the deliberate
+105 pause. The recovered audit verified every other interior
+clock and recorded 105 as unsampled. Qualification continues to
+require an uninterrupted sample range.
+This identifies the bottleneck in the successful branch after
+admission. Aigai's divergent branch remains a separate ranking
+and scheduling comparison.
+
+The same 105 checkpoint holds Melbourne's completed inland
+Quarter at 1423, working Granary and Rice Farm, and absent
+Wind Mill with Machinery unlocked. For the opening-investment
+test, remove the Farm in a shared diagnostic preparation and
+verify the remaining world facts before comparing arms. Measure
+whether the unbuilt Mill's forecast credits the immediate
+Granary exchange before setting a bid. This isolates the case
+where the supplier policy waits for the Mill while the Mill
+policy waits for working supply.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each
@@ -2302,9 +2371,13 @@ identical packets for player 3, city 77 and its legal unique
 Granary replacement. The publisher now visits each customer city
 once per player and policy publication, retaining the existing
 13,312 Q8 preference and native eligibility checks. The same
-fixture now receives one packet. It does not measure the value
-of the incremental exchange from a second Mill or demonstrate
-a change in native selection.
+fixture now receives one packet. In the exact reviewed CE commit
+`abf5d5842aceff98e50612055a15044ff3f288fa`, `finish_nominations`
+already retains the largest preference per building, player and
+city at commit. CSC's change removes redundant UI eligibility reads
+and avoids consuming the packet's input budget twice. The native
+score already used one preference. The fixture leaves the value
+of the incremental exchange from a second Mill unmeasured.
 
 ## Evidence locator
 

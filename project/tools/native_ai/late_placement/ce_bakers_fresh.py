@@ -207,7 +207,8 @@ print('CSC_SUPPLIER_ACCESS_INSTALLED')
     require('CSC_SUPPLIER_ACCESS_INSTALLED' in raw, 'Supplier movement watch was not installed')
 
 
-def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_turns, *, qualification=False):
+def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_turns, *,
+                  qualification=False, observer_boundary=None):
     require(load(out / 'session-closed.json')['verified'], 'Expected a closed development run')
     log = read(out / 'Lua.log')
     published = 'CSC_AI_BAKERS_DISTRICTS turn=' in log
@@ -228,7 +229,16 @@ def summarize_run(out, players, start, endpoint, untuned, checkpoint, census_tur
             continue
         key = int(turn), int(version)
         score_samples.setdefault(key, []).extend(rows)
-    result = audit(log, players, expected_turns=range(start + 1, endpoint))
+    require(not qualification or observer_boundary is None, 'Qualification requires uninterrupted sampling')
+    expected_turns = set(range(start + 1, endpoint))
+    # The diagnostic hands player 0 back before that clock's UI sample.
+    # Account for just that deliberate pause and audit every other clock.
+    skipped = []
+    if observer_boundary in expected_turns and f'CSC_STOREKEEPER_END\t{observer_boundary}\t' not in log:
+        expected_turns.remove(observer_boundary)
+        skipped.append(observer_boundary)
+    result = audit(log, players, expected_turns=expected_turns)
+    result['unsampled_turns'] = skipped
     # This is the retention result for one game. Recovery, the matched arm
     # and the remaining seeds still need their own evidence.
     retention = {}
@@ -683,7 +693,7 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
                 if session.closed and log.is_file():
                     shutil.copyfile(log, out / name)
     summarize_run(out, players, start, args.through, args.untuned, checkpoint, args.census_turns,
-                  qualification=args.qualification)
+                  qualification=args.qualification, observer_boundary=args.observe_supplier_at)
 
 
 if __name__ == '__main__':

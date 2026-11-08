@@ -1740,10 +1740,10 @@
   {
     "id": "AI-C109",
     "title": "CSC publishes one calibrated Granary bid for a customer shared by two Mills",
-    "statement": "A Lua regression fixture reproduced two identical 13312 Q8 nomination entries for a legal Granary replacement adjacent to two working Bakers Mills. The CSC publisher now visits the customer city once in each player pass, leaving one entry.",
+    "statement": "A Lua regression fixture reproduced two identical 13312 Q8 nomination entries for a legal Granary replacement adjacent to two working Bakers Mills. CSC now emits one entry. The reviewed CE already deduplicates identical keys before scoring, so the change removes redundant work and packet entries.",
     "status": "accepted",
     "evidence_types": ["source"],
-    "scope": "Actual CSC gameplay publisher, policy and bridge executed under Lua 5.1 with two Quarters, a shared customer and an exact native-binding test double.",
+    "scope": "Actual CSC publisher, policy and bridge executed under Lua 5.1 with two Quarters and a shared customer. Static cross-check of finish_nominations in reviewed CE commit abf5d58.",
     "limits": "Offline packet evidence. Live shared-customer choice and the separate marginal value of a second Mill remain unmeasured.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/producers-and-customers.md",
@@ -1760,5 +1760,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C088"]
+  },
+  {
+    "id": "AI-C111",
+    "title": "The Pasture won three open admissions before a Builder completed it",
+    "statement": "Eleven of 15 ordinary proposal checks in Alexandria Troas found an existing tree. The first three open checks selected the exact Pasture. Recruitment failed on turn 109 while two Macedonian Builders had charges. Builder 2359298 later reached and improved the tile, and Storekeeper operated on 119.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Fresh normal Small Continents development start, verified turn-105 boundary through 120, integrated 14336 Q8 preference and a read-only native observer.",
+    "limits": "One successful branch. The trace does not isolate why the charged Builders were unavailable on 109, or explain the divergent original branch. It does not isolate the preference from the stock ranking.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C088", "AI-C110", "AI-N104"]
   }
 ]

@@ -25,6 +25,9 @@ lacks its Pasture while the other Bakers links are ready. Supply
 `--supplier PLAYER CITY QUARTER PLOT`, `--probe-dependencies` and
 `--saves`, then allow 1–15 more turns for observation. The runner
 archives the inactive source before attaching the read-only probe.
+The report lists the boundary clock as unsampled if the pause
+prevented its UI sample. Every other interior clock is required.
+Qualification remains continuous.
 
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to

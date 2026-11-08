@@ -56,6 +56,13 @@ A reusable interface carrying an external planner's player, city, material plot 
 
 Ordinary improvement admission is another boundary: CheckForImprovement can exit while its stored tree slot is occupied, before submitting a new candidate. A cached recommendation is therefore not an admitted job or an available Builder. The October 31 trace linked fresh Farm/Mine payloads, while Honey never entered the observed payloads; it did not show a Honey job failing worker assignment. [AI-N052] See [work admission](../../../research/mods/csc-ai-work-admission-20261031.md).
 
+The Find Available Unit node checks units already assigned to its
+behavior and can recruit from an eligible pool using the behavior's
+request priority. In the inspected typed-target branch, requested
+type priority wins first, then plot distance breaks ties. The later
+movement path has its own checks. A Builder count alone cannot tell
+us whether a given job can obtain a worker. [AI-N104]
+
 ## Read next
 
 - [District choice](district-choice.md): which type/site wins.

@@ -137,7 +137,9 @@ A customer city can sit beside more than one working Mill. The
 publisher now emits a single calibrated preference for each
 legal Granary variant in that city. An offline two-Mill fixture
 reproduced the duplicate and verifies the corrected packet.
-The incremental benefits from a second Mill remain unpriced.
+The reviewed CE already kept the largest bid per native key.
+CSC's change saves duplicate work and packet space. The
+incremental benefits from a second Mill remain unpriced.
 [AI-C109]
 
 [Full exchange calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-player-weights-calibrate-the-full-ordinary-granary-exchange).

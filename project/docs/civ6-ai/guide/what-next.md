@@ -78,7 +78,9 @@ Aigai still lacked a Pasture at 150 despite the supplier bid
 reaching its scorer. The same setup took a different course in a
 second game, where the city at that site built the Pasture on 118.
 Trace the job decision and Builder assignment before adjusting the
-bid. Six other sites
+bid. The follow-up found that Alexandria's Pasture won all
+three open comparisons before it was built. The city still had
+to wait for a Builder. Six other sites
 had both types of neighbor and multiple unfinished links. They
 also need a way to value the first investment in the chain.
 Heidelberg assembled several such links and activated Storekeeper

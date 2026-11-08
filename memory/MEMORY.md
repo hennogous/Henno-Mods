@@ -1,6 +1,6 @@
 # Current Bakers AI work — 8 November 2026
 
-Active problem **3.2, Pasture admission and follow-through**. The frozen
+Active next test **14.1, earlier chain investment**. The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
 The closed turn-249 audit found Melbourne 132, Launceston 60,
@@ -15,10 +15,18 @@ AI-controlled. The shared controller rejected the clock drift and
 restored the session. The same-seed fresh run diverged. Its city at
 the same site, Alexandria Troas, built the Pasture on 118 and had 35
 confirmed active turns through 153. The guard skipped the 154 probe
-because the Pasture already worked. Observe 105–120 with the same bid.
+because the Pasture already worked. The verified 105–120 trace
+selected the Pasture in the first three open slots. Recruitment
+failed on 109 despite two charged Builders. Builder 2359298 built
+it on 118, and Storekeeper operated on 119. The 105 pause is the
+only unsampled clock in the recovered diagnostic summary. See
+AI-C111 and AI-N104. Aigai's divergent branch remains unresolved.
 The shared Granary publisher now emits one preference per variant
 when two working Mills share a customer. Offline packet fixture passed.
-Under **14.1**, assess how to start credible multi-link chains earlier.
+Under **14.1**, the verified turn-105 source has Melbourne's
+working Granary and Rice Farm and an unbuilt Wind Mill with Machinery unlocked.
+Use the same diagnostic Farm removal in both arms and first
+measure the Mill's immediate exchange with the working Granary.
 
 CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native

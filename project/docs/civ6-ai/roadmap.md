@@ -137,7 +137,11 @@ still needed its Pasture despite the exact supplier bid reaching
 the scorer. The same setup diverged in a second start. Its city at
 that site, Alexandria Troas, built the Pasture on 118 and began
 Storekeeper on 119. Observe an earlier improvement admission
-before changing the amount. Six other sites with both a Base deposit and
+before changing the amount. The 105–120 trace then reproduced
+the Pasture and Storekeeper. The job won three open comparisons.
+On 109 the job could not recruit either charged Builder and had
+to wait. Aigai's divergent branch still needs assignment and
+ranking evidence. Six other sites with both a Base deposit and
 customer footprint had multiple unfinished links. Under **14.1**,
 assess an opening investment when no last-link bid applies.
 Heidelberg finished its Granary, Quarter, Water Mill and supplier,
@@ -402,7 +406,10 @@ until the active check closes or an explicit dependency needs attention.
 
 - **14.1 Sequence investment.** Compare finishing or repairing a chain,
   opening a new one, and deferring. Include treasury, upkeep, production,
-  unlock time, Builder travel and charges.
+  unlock time, Builder travel and charges. Use the verified Melbourne
+  turn-105 source for a matched opening test with the Mill and its Rice
+  Farm missing. Measure the Mill's ordinary exchange with the working
+  Granary first, then test only the measured missing value.
 - **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
   One supplier can serve multiple Quarters. Count each real lost or enabled
   benefit once. The Granary publisher now emits one 52-point bid per legal

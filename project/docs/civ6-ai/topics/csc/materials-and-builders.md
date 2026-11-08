@@ -160,6 +160,13 @@ and called the city at that site Alexandria Troas. It reserved and
 improved the Cattle, and Storekeeper operated from 119. Trace the
 open admission and assignment to explain the difference. [AI-C110]
 
+The 105–120 follow-up captured the successful branch. The exact
+Pasture won the first three open ordinary comparisons. On turn
+109 the city failed to find an available Builder despite owning
+two with charges. One reached the tile later, built the Pasture
+on 118, and Storekeeper operated on 119. The original Aigai
+branch remains unresolved. [AI-C111]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same
