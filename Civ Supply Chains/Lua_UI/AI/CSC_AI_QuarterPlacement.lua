@@ -29,17 +29,98 @@ local WATER_MILL = 'BUILDING_CSC_BAKERS_WATER_MILL'
 
 local improvementsByResource
 local granaryTypes
+local profiles
+local P = CSC_AI_QuarterPlacement
+
+-- The database supplies relationships and replacements. These profiles only
+-- supply Service facts and the calibrated policy for each shipped industry.
+-- A Quarter with incomplete metadata stays outside the production adapters.
+local serviceRules = {
+    BAKERS = { civic = 'CIVIC_FEUDALISM', property = STOREKEEPER_GROWTH,
+        producerBid = READY_MILL_BID_Q8, customerBid = WORKING_MILL_GRANARY_BID_Q8 },
+    TAILORS = { civic = 'CIVIC_NAVAL_TRADITION', property = 'CSC_TAILORS_STAGE_2_EFFECT_PRODUCTION',
+        producerBid = 26 * 256, customerBid = 26 * 256 },
+}
+
+function P.StageTwoProfiles()
+    if profiles then return profiles end
+    profiles = {}
+    local byKey = {}
+    for key, service in pairs(serviceRules) do
+        local district = GameInfo.Districts['DISTRICT_CSC_' .. key .. '_QUARTER']
+        if district then
+            local profile = {key = key, district = district, base = 'CLASS_CSC_' .. key .. '_BASE',
+                specialty = 'CLASS_CSC_' .. key .. '_SPEC', service = service, producers = {}, customers = {}}
+            byKey[key] = profile
+            profiles[#profiles + 1] = profile
+        end
+    end
+    if GameInfo.CSC_QuarterFlowBuildings and GameInfo.CSC_QuarterCustomerBuildings then
+        for row in GameInfo.CSC_QuarterFlowBuildings() do
+            local p = byKey[row.QuarterKey]
+            local building = GameInfo.Buildings[row.BuildingType]
+            if p and row.Stage == 2 and building and building.PrereqDistrict == p.district.DistrictType then
+                p.producers[#p.producers + 1] = building
+            end
+        end
+        local variants = {}
+        for row in GameInfo.BuildingReplaces() do
+            local building = GameInfo.Buildings[row.CivUniqueBuildingType]
+            if building then
+                local list = variants[row.ReplacesBuildingType] or {}
+                list[#list + 1] = building
+                variants[row.ReplacesBuildingType] = list
+            end
+        end
+        local districtVariants = {}
+        for row in GameInfo.DistrictReplaces() do
+            local district = GameInfo.Districts[row.CivUniqueDistrictType]
+            if district then
+                local list = districtVariants[row.ReplacesDistrictType] or {}
+                list[#list + 1] = district
+                districtVariants[row.ReplacesDistrictType] = list
+            end
+        end
+        local function addToHost(profile, building, district)
+            local list = profile.customers[district.Index] or {}
+            list[building.Index] = building
+            profile.customers[district.Index] = list
+        end
+        local function addCustomer(profile, building)
+            local district = GameInfo.Districts[building.PrereqDistrict]
+            if not district then return end
+            addToHost(profile, building, district)
+            for _, replacement in ipairs(districtVariants[building.PrereqDistrict] or {}) do
+                addToHost(profile, building, replacement)
+            end
+        end
+        for row in GameInfo.CSC_QuarterCustomerBuildings() do
+            local p = byKey[row.QuarterKey]
+            local building = GameInfo.Buildings[row.BuildingType]
+            if p and row.ProducerStage == 2 and building then
+                addCustomer(p, building)
+                for _, variant in ipairs(variants[row.BuildingType] or {}) do addCustomer(p, variant) end
+            end
+        end
+    end
+    table.sort(profiles, function(a, b) return a.district.Index < b.district.Index end)
+    return profiles
+end
 
 local function materialOptions()
     if improvementsByResource then return improvementsByResource end
     local options = {}
     for row in GameInfo.Improvement_ValidResources() do
-        if CSC_Adjacency.HasTag(BASE, row.ResourceType) or CSC_Adjacency.HasTag(SPECIALTY, row.ResourceType) then
-            local resource = GameInfo.Resources[row.ResourceType]
-            local improvement = GameInfo.Improvements[row.ImprovementType]
-            if resource and improvement then
-                options[resource.Index] = options[resource.Index] or {}
-                options[resource.Index][#options[resource.Index] + 1] = improvement.Index
+        for _, profile in ipairs(P.StageTwoProfiles()) do
+            if CSC_Adjacency.HasTag(profile.base, row.ResourceType)
+                or CSC_Adjacency.HasTag(profile.specialty, row.ResourceType) then
+                local resource = GameInfo.Resources[row.ResourceType]
+                local improvement = GameInfo.Improvements[row.ImprovementType]
+                if resource and improvement then
+                    options[resource.Index] = options[resource.Index] or {}
+                    options[resource.Index][#options[resource.Index] + 1] = improvement.Index
+                end
+                break
             end
         end
     end
@@ -50,7 +131,7 @@ end
 -- A working improvement and a deposit that could supply the chain later are
 -- distinct facts. A compatible pillaged improvement remains a repair option.
 -- Scope supply to the player because adjacent tiles can belong to other cities.
-function CSC_AI_QuarterPlacement.ReadBakersSuppliers(player, quarter)
+function P.ReadSuppliers(player, quarter, profile)
     local options = materialOptions()
     local playerID = player:GetID()
     local supplies = {base = {}, specialty = {}}
@@ -74,12 +155,16 @@ function CSC_AI_QuarterPlacement.ReadBakersSuppliers(player, quarter)
             if viable then
                 local resource = GameInfo.Resources[resourceID].ResourceType
                 local material = {plot = plot:GetIndex(), resource = resource, working = working}
-                if CSC_Adjacency.HasTag(BASE, resource) then supplies.base[#supplies.base + 1] = material end
-                if CSC_Adjacency.HasTag(SPECIALTY, resource) then supplies.specialty[#supplies.specialty + 1] = material end
+                if CSC_Adjacency.HasTag(profile.base, resource) then supplies.base[#supplies.base + 1] = material end
+                if CSC_Adjacency.HasTag(profile.specialty, resource) then supplies.specialty[#supplies.specialty + 1] = material end
             end
         end
     end
     return supplies
+end
+
+function P.ReadBakersSuppliers(player, quarter)
+    return P.ReadSuppliers(player, quarter, {base = BASE, specialty = SPECIALTY})
 end
 
 local function priceSupply(risks, supply, activeService)
@@ -166,6 +251,78 @@ local function hasWorkingBase(base)
     return false
 end
 
+-- One snapshot per existing Quarter, shared by the placement, material
+-- protection and building adapters. All tile and building facts are read
+-- again next turn. Only loaded relationship definitions are cached.
+function P.ReadChains(player)
+    local byDistrict, chains = {}, {}
+    for _, profile in ipairs(P.StageTwoProfiles()) do byDistrict[profile.district.Index] = profile end
+    for _, city in player:GetCities():Members() do
+        local districts = city:GetDistricts()
+        for index = 0, districts:GetNumDistricts() - 1 do
+            local quarter = districts:GetDistrictByIndex(index)
+            local profile = quarter and byDistrict[quarter:GetType()]
+            if profile then
+                local plot = Map.GetPlot(quarter:GetX(), quarter:GetY())
+                local complete = quarter:IsComplete()
+                local ready = complete and not quarter:IsPillaged()
+                local supply = P.ReadSuppliers(player, plot, profile)
+                chains[#chains + 1] = { profile = profile, city = city, plot = plot,
+                    complete = complete, ready = ready, supply = supply, workingBase = hasWorkingBase(supply.base),
+                    active = ready and (city:GetProperty(profile.service.property) or 0) > 0 }
+            end
+        end
+    end
+    return chains
+end
+
+local function visitCustomerPlots(player, chain, visit)
+    for _, plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())) do
+        local variants = chain.profile.customers[plot:GetDistrictType()]
+        if variants and plot:GetOwner() == player then
+            local buyer = Cities.GetPlotPurchaseCity(plot)
+            if buyer and buyer:GetOwner() == player then visit(buyer, plot:GetIndex(), variants) end
+        end
+    end
+end
+
+local function connectStageTwo(player, chain, nominations, recover, limits, canProduce, seen)
+    if not chain.ready then return end
+    local profile, city, plot = chain.profile, chain.city, chain.plot:GetIndex()
+    local pid = player:GetID()
+    local producerWorks, producerExists, customerWorks = false, false, false
+    for _, producer in ipairs(profile.producers) do
+        producerExists = producerExists or city:GetBuildings():HasBuilding(producer.Index)
+        producerWorks = producerWorks or workingBuildingAt(city:GetBuildings(), producer, plot)
+    end
+    local function bid(buyer, building, value)
+        local delta = math.min(limits.nomination, value)
+        if delta <= 0 or not canProduce or not canProduce(pid, buyer:GetID(), building.Hash) then return end
+        local key = buyer:GetID() .. ':' .. building.Index
+        if seen[key] then return end
+        seen[key] = true
+        nominations[#nominations + 1] = { player = pid, city = buyer:GetID(), building = building.Index, delta = delta }
+    end
+    visitCustomerPlots(pid, chain, function(buyer, footprint, variants)
+        local buildings = buyer:GetBuildings()
+        local exists = false
+        for _, building in pairs(variants) do
+            exists = exists or buildings:HasBuilding(building.Index)
+            customerWorks = customerWorks or workingBuildingAt(buildings, building, footprint)
+        end
+        if producerWorks and not exists then
+            for _, building in pairs(variants) do bid(buyer, building, profile.service.customerBid) end
+        end
+    end)
+    if chain.workingBase and customerWorks and not producerExists then
+        for _, producer in ipairs(profile.producers) do bid(city, producer, profile.service.producerBid) end
+    end
+    local base = chain.supply.base
+    if producerWorks and customerWorks and #base == 1 and not chain.workingBase and limits.builder > 0 then
+        recover[base[1].plot] = math.max(recover[base[1].plot] or 0, limits.builder)
+    end
+end
+
 local function pillagedBakersMill(city, plot)
     local buildings = city:GetBuildings()
     for _, name in ipairs({WATER_MILL, WIND_MILL}) do
@@ -200,7 +357,7 @@ end
 function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit, nominationLimit, canProduceBuilding,
     admitRepairs)
     local risks, recover, nominations, repairs = {}, {}, {}, {}
-    local visitedCustomers = {}
+    local visitedCustomers, genericNominations = {}, {}
     local quarterType = GameInfo.Districts[BAKERS]
     if not quarterType then return risks, recover, nominations, repairs end
     local recoveryBid = math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8)
@@ -209,49 +366,51 @@ function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit, nom
         and math.min(nominationLimit or 0, WORKING_MILL_GRANARY_BID_Q8) or 0
     local feudalism = (recoveryBid > 0 or millBid > 0 or admitRepairs) and GameInfo.Civics.CIVIC_FEUDALISM
     local serviceUnlocked = feudalism and player:GetCulture():HasCivic(feudalism.Index)
-    for _, city in player:GetCities():Members() do
-        local districts = city:GetDistricts()
-        for index = 0, districts:GetNumDistricts() - 1 do
-            local quarter = districts:GetDistrictByIndex(index)
-            if quarter and quarter:GetType() == quarterType.Index then
-                local plot = Map.GetPlot(quarter:GetX(), quarter:GetY())
-                local supply = CSC_AI_QuarterPlacement.ReadBakersSuppliers(player, plot)
-                local complete = quarter:IsComplete()
-                local ready = complete and not quarter:IsPillaged()
-                local activeService = ready and (city:GetProperty(STOREKEEPER_GROWTH) or 0) > 0
-                priceSupply(risks, supply.base, activeService)
-                priceSupply(risks, supply.specialty, false)
-                local missingSupply = recoveryBid > 0 and #supply.base == 1 and not supply.base[1].working
-                local millWorks = ready and (customerBid > 0 or (serviceUnlocked and not activeService and missingSupply))
-                    and workingBakersMill(city, plot:GetIndex())
-                -- The exchange can operate before the Farm or Feudalism.
-                if millWorks and customerBid > 0 then
-                    nominateBakersGranaries(nominations, visitedCustomers, player:GetID(), plot, customerBid,
-                        canProduceBuilding)
-                end
-                if serviceUnlocked and ready and not activeService then
-                    local base = supply.base
-                    if missingSupply then
-                        if millWorks and hasBakersCustomer(player:GetID(), plot) then
-                            recover[base[1].plot] = recoveryBid
-                        end
-                    elseif millBid > 0 then
-                        nominateBakersMills(nominations, player, city, plot, base, millBid)
+    local limits = {builder = recoveryBid, nomination = nominationLimit or 0}
+    local chains = P.ReadChains(player)
+    for _, chain in ipairs(chains) do
+        local city, plot, supply = chain.city, chain.plot, chain.supply
+        local complete, ready, activeService = chain.complete, chain.ready, chain.active
+        priceSupply(risks, supply.base, activeService)
+        priceSupply(risks, supply.specialty, false)
+        if chain.profile.key ~= 'BAKERS' then
+            connectStageTwo(player, chain, nominations, recover, limits, canProduceBuilding, genericNominations)
+        else
+            local base = supply.base
+            local missingSupply = recoveryBid > 0 and #base == 1 and not chain.workingBase
+            local millWorks = ready and (customerBid > 0 or missingSupply)
+                and workingBakersMill(city, plot:GetIndex())
+            -- The exchange can operate before the Farm or Feudalism.
+            if millWorks and customerBid > 0 then
+                nominateBakersGranaries(nominations, visitedCustomers, player:GetID(), plot, customerBid,
+                    canProduceBuilding)
+            end
+            if ready and not activeService then
+                if missingSupply and hasBakersCustomer(player:GetID(), plot) then
+                    -- A pillaged Mill leaves two links unfinished. Give the
+                    -- Builder job a smaller bid while the stock repair competes.
+                    local value = millWorks and recoveryBid or math.min(recoveryBid, 26 * 256)
+                    if millWorks or pillagedBakersMill(city, plot:GetIndex()) then
+                        recover[base[1].plot] = math.max(recover[base[1].plot] or 0, value)
                     end
+                elseif millBid > 0 then
+                    -- Before Feudalism, credit the exchange alone conservatively.
+                    local value = serviceUnlocked and millBid or math.min(millBid, 18 * 256)
+                    nominateBakersMills(nominations, player, city, plot, base, value)
                 end
-                -- The pillaged host blocks its existing Mill. Offer only this
-                -- missing prerequisite when the rest of the chain can work.
-                -- CE supplies the stock value and checks live repair legality.
-                if admitRepairs and serviceUnlocked and complete and not ready and hasWorkingBase(supply.base)
-                    and pillagedBakersMill(city, plot:GetIndex()) and hasBakersCustomer(player:GetID(), plot) then
-                    repairs[#repairs + 1] = {
-                        player = player:GetID(), city = city:GetID(), district = quarterType.Index, plot = plot:GetIndex(),
-                    }
-                end
+            end
+            -- The pillaged host blocks its existing Mill. Offer only this
+            -- missing prerequisite when the rest of the chain can work.
+            -- CE supplies the stock value and checks live repair legality.
+            if admitRepairs and serviceUnlocked and complete and not ready and chain.workingBase
+                and pillagedBakersMill(city, plot:GetIndex()) and hasBakersCustomer(player:GetID(), plot) then
+                repairs[#repairs + 1] = {
+                    player = player:GetID(), city = city:GetID(), district = quarterType.Index, plot = plot:GetIndex(),
+                }
             end
         end
     end
-    return risks, recover, nominations, repairs
+    return risks, recover, nominations, repairs, chains
 end
 
 -- A supplier can be in a different city from the Quarter. Key the deduction
@@ -259,14 +418,17 @@ end
 function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilders, builderBidLimit, nominationLimit,
     canProduceBuilding, admitRepairs)
     local playerID = player:GetID()
-    local entries, builderSites = {}, {}
-    local risks, recover, nominations, repairs = CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit,
+    local entries, builderSites, exclusions = {}, {}, {}
+    local risks, recover, nominations, repairs, chains = CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit,
         nominationLimit, canProduceBuilding, admitRepairs)
     for index, cost in pairs(risks) do
         local plot = Map.GetPlotByIndex(index)
         local city = Cities.GetPlotPurchaseCity(plot)
         if city and city:GetOwner() == playerID then
             local cityID = city:GetID()
+            if cost >= LAST_DEPOSIT_COST_Q8 then
+                exclusions[#exclusions + 1] = {player = playerID, city = cityID, plot = index, cost = cost}
+            end
             if includeBuilders and cost >= LAST_DEPOSIT_COST_Q8 then
                 local current = plot:GetImprovementType()
                 local options = materialOptions()[plot:GetResourceType()]
@@ -292,7 +454,7 @@ function CSC_AI_QuarterPlacement.BakersMaterialDeductions(player, includeBuilder
             end
         end
     end
-    return entries, builderSites, nominations, repairs
+    return entries, builderSites, nominations, repairs, chains, exclusions
 end
 
 local WATER_RECIPIENT = {

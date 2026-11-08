@@ -4,8 +4,9 @@
 --------------------------------------------------------------
 
 INSERT OR REPLACE INTO LocalizedText
-        (   Language,   Tag,                          Text   )
-VALUES  (   'en_US',    'LOC_CLASS_CSC_BASE_NAME',    '[ICON_CSC_BASE] Base Materials'   ),
-        (   'en_US',    'LOC_CLASS_CSC_SPEC_NAME',    '[ICON_CSC_SPEC] Specialty Materials'   ),
-        (   'en_US',    'LOC_CLASS_CSC_SALES_NAME',   '[ICON_CSC_SALES] Sales'   ),
-        (   'en_US',    'LOC_RESOURCE_WINE_NAME',     'Grapes'   );
+        (   Language,   Tag,                           Text   )
+VALUES  (   'en_US',    'LOC_CLASS_CSC_BASE_NAME',     '[ICON_CSC_BASE] Base Materials'   ),
+        (   'en_US',    'LOC_CLASS_CSC_SPEC_NAME',     '[ICON_CSC_SPEC] Specialty Materials'   ),
+        (   'en_US',    'LOC_CLASS_CSC_SALES_NAME',    '[ICON_CSC_SALES] Sales'   ),
+        (   'en_US',    'LOC_RESOURCE_WINE_NAME',      'Grapes'   ),
+        (   'en_US',    'LOC_CSC_AI_PLACEMENT_NAME',   'Supply Chain Planning'   );

@@ -75,6 +75,44 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_shared_model_resolves_unique_host_and_building(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        lua.execute("""
+            local function rows(values)
+                return function()
+                    local index = 0
+                    return function() index = index + 1; return values[index] end
+                end
+            end
+            GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER = {Index=9,DistrictType='DISTRICT_CSC_TAILORS_QUARTER'}
+            GameInfo.Districts.DISTRICT_HARBOR = {Index=4,DistrictType='DISTRICT_HARBOR'}
+            GameInfo.Districts.DISTRICT_DOCKYARD = {Index=5,DistrictType='DISTRICT_DOCKYARD'}
+            GameInfo.Buildings = {
+                BUILDING_WORKSHOP={Index=19,PrereqDistrict='DISTRICT_CSC_TAILORS_QUARTER'},
+                BUILDING_LIGHTHOUSE={Index=20,PrereqDistrict='DISTRICT_HARBOR'},
+                BUILDING_UNIQUE_LIGHTHOUSE={Index=21,PrereqDistrict='DISTRICT_DOCKYARD'},
+            }
+            GameInfo.BuildingReplaces=rows({
+                {ReplacesBuildingType='BUILDING_LIGHTHOUSE',CivUniqueBuildingType='BUILDING_UNIQUE_LIGHTHOUSE'},
+            })
+            GameInfo.DistrictReplaces=rows({
+                {ReplacesDistrictType='DISTRICT_HARBOR',CivUniqueDistrictType='DISTRICT_DOCKYARD'},
+            })
+            GameInfo.CSC_QuarterFlowBuildings=rows({
+                {QuarterKey='TAILORS',Stage=2,BuildingType='BUILDING_WORKSHOP'},
+            })
+            GameInfo.CSC_QuarterCustomerBuildings=rows({
+                {QuarterKey='TAILORS',ProducerStage=2,BuildingType='BUILDING_LIGHTHOUSE'},
+            })
+        """)
+        lua.execute((SOURCE / 'CSC_AI_QuarterPlacement.lua').read_text(encoding='utf-8'))
+        profile = lua.eval('CSC_AI_QuarterPlacement.StageTwoProfiles()[2]')
+        self.assertEqual(profile.producers[1].Index, 19)
+        self.assertEqual(profile.customers[4][20].Index, 20)
+        self.assertEqual(profile.customers[5][20].Index, 20)
+        self.assertEqual(profile.customers[5][21].Index, 21)
+
     def test_real_publisher_protects_the_city_that_can_cover_the_supplier(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)

@@ -15,3 +15,6 @@ language: en_US
 
 ## LOC_RESOURCE_WINE_NAME
 Grapes
+
+## LOC_CSC_AI_PLACEMENT_NAME
+Supply Chain Planning

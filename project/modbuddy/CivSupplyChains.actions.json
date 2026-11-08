@@ -6,6 +6,18 @@
       {
         "tag": "Criteria",
         "attributes": {
+          "id": "CSC_CE_SupplierExclusion"
+        },
+        "children": [
+          {
+            "tag": "ModInUse",
+            "text": "a6ce92d2-7814-473e-b05f-153c1d9c62e6"
+          }
+        ]
+      },
+      {
+        "tag": "Criteria",
+        "attributes": {
           "id": "Monopolies_Mode"
         },
         "children": [
@@ -1399,6 +1411,19 @@
           "Lua_UI/AI/CSC_AI_AdjacencyScan.lua",
           "Lua_UI/AI/CSC_AI_QuarterPlacement.lua",
           "Lua_UI/AI/CSC_AI_DistrictBridge.lua"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_AI_Connectors",
+        "properties": {
+          "LoadOrder": "480"
+        },
+        "criteria": [
+          "CSC_CE_SupplierExclusion"
+        ],
+        "files": [
+          "Data/CSC_AI_Connectors.sql"
         ]
       },
       {

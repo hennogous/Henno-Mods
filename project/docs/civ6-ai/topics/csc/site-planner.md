@@ -1,5 +1,49 @@
 # Explainable Quarter site planning
 
+## In-mod Stage 2 integration trial
+
+CSC now builds a turn-local view of the loaded Bakers and Tailors
+Quarter sites and their working suppliers. The model takes producer
+and customer types from the Stage 2 gameplay registry, expands
+building and district replacements, and keeps the two Service
+unlock and property rules explicit. The publication starts once per
+turn for original AI majors in single-player. It refreshes live
+facts and caches the static relationships. The existing Bakers
+calibrations remain scoped to Bakers. Tailors use smaller initial
+nomination bands while their own calibration is pending.
+
+The CE adapters publish the selected legal owned Quarter sites,
+supplier deductions and work, building preferences and supported
+repair requests. A modest missing-supplier bid can also compete
+while a pillaged Bakers Mill awaits native repair. A separate CE
+capability temporarily hides a protected owned plot during the
+ordinary joint district selector. The original selector runs once.
+The hook restores the original row eligibility before the native
+winner goes into preparation. It leaves district scores, stored
+reservations and later queue arbitration to the game. Alternate
+placement consumers and requests already under preparation still
+require their own protection checks. This capability is a local
+CE build under review.
+
+With the corresponding CE package present, CSC also loads one
+private adjacency step from a mapped Quarter to a Stage 2 customer
+district. It includes Harbor replacements and leaves City Centers
+to settlement. No private yield is added to material plots. The
+archived cross-city Builder request is restored with a 10-point
+Builder preference where another mod has supplied none. These are
+native database inputs, with no movement or gameplay yield bonus.
+Private customer adjacency still needs separate human allocation
+qualification.
+
+The initial trial runs three ordinary Online-speed games to turn
+200 with CSC and the corresponding CE package. The shared controller
+records ordinary Lua publication, census and actual Storekeeper
+effects. The trial uses no Frida, external policy or AI test action.
+The Tailors Service property is reported separately from the native
+Storekeeper effect audit.
+
+## Earlier offline placement model
+
 The fresh planner starts with an offline investment review. Its first Tailors
 profile evaluates **44 copied historical cases**, with separate yield, cost,
 timing, supply and customer explanations. It imports no retired tuning policy

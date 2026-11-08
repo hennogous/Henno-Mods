@@ -66,7 +66,7 @@ local function refresh(turn)
     end
 
     local started = os.clock()
-    local entries, builderSites, nominations, repairs = {}, {}, {}, {}
+    local entries, builderSites, nominations, repairs, exclusions = {}, {}, {}, {}, {}
     local builderStatus = bridge.BuilderStatus()
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
     local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
@@ -79,13 +79,17 @@ local function refresh(turn)
     local nominationLimit = bridge.NominationLimit(nominationStatus)
     local repairStatus = bridge.RepairStatus()
     local repairLimit = bridge.RepairLimit(repairStatus)
-    local allowances = 0
+    local exclusionStatus = bridge.ExclusionStatus()
+    local exclusionLimit = exclusionStatus and exclusionStatus:match('"ready":1')
+        and math.min(256, tonumber(exclusionStatus:match('"capacity":(%d+)')) or 0) or 0
+    local allowances, stageTwo = 0, {}
     for _, id in ipairs(players) do
         local player = Players[id]
-        local deductions, sites, bids, candidates = placement.BakersMaterialDeductions(player, protectBuilders,
+        local deductions, sites, bids, candidates, chains, threatened = placement.BakersMaterialDeductions(player, protectBuilders,
             builderBidLimit, nominationLimit, ui.CanProduceBuilding, repairLimit > 0)
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
         for _, candidate in ipairs(candidates) do repairs[#repairs + 1] = candidate end
+        for _, site in ipairs(threatened or {}) do exclusions[#exclusions + 1] = site end
         local protectedPlots = {}
         for _, entry in ipairs(deductions) do
             entries[#entries + 1] = entry
@@ -104,6 +108,27 @@ local function refresh(turn)
         else
             print(string.format('CSC_AI_BAKERS_PLACEMENT_FAILED turn=%d player=%d %s', turn, id, tostring(bids)))
         end
+        for _, profile in ipairs(placement.StageTwoProfiles()) do
+            if profile.key ~= 'BAKERS' then
+                local ok, industryBids = pcall(CSC_AI_IndustrySiteForecasts, player, profile,
+                    placement.ReadSuppliers, protectedPlots, ui.GetLegalDistrictTargets)
+                if ok then
+                    for _, bid in ipairs(industryBids) do entries[#entries + 1] = bid end
+                else
+                    print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',
+                        turn, id, profile.key, tostring(industryBids)))
+                end
+            end
+        end
+        for _, chain in ipairs(chains or {}) do
+            local key = chain.profile.key
+            local totals = stageTwo[key] or {placed=0, complete=0, supplied=0, active=0}
+            stageTwo[key] = totals
+            totals.placed = totals.placed + 1
+            if chain.complete then totals.complete = totals.complete + 1 end
+            if chain.workingBase then totals.supplied = totals.supplied + 1 end
+            if chain.active then totals.active = totals.active + 1 end
+        end
     end
     -- Prioritise the supplier relationships most at risk if the map exceeds
     -- the shared table limit. Stable tie-breaks make the packet reproducible.
@@ -114,10 +139,22 @@ local function refresh(turn)
     -- Dropping part of a site's compatibility list can forbid a valid job.
     -- Retire Builder protection for the turn if the full packet cannot fit.
     local publishRepairs = #repairs > 0 and #repairs <= repairLimit
+    table.sort(exclusions, function(a, b)
+        if a.cost ~= b.cost then return a.cost > b.cost end
+        if a.player ~= b.player then return a.player < b.player end
+        return a.plot < b.plot
+    end)
+    local omittedExclusions = math.max(0, #exclusions - exclusionLimit)
+    for i = #exclusions, exclusionLimit + 1, -1 do exclusions[i] = nil end
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit,
-        #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit)
+        #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
+        exclusions)
     assert(accepted, message)
+    for key, totals in pairs(stageTwo) do
+        print(string.format('CSC_AI_STAGE_TWO turn=%d key=%s placed=%d complete=%d supplied=%d active=%d',
+            turn, key, totals.placed, totals.complete, totals.supplied, totals.active))
+    end
     if samples and samples ~= '[]' then
         -- Civ clips long Lua log lines. CE sends a flat array of small
         -- numeric rows, so split it only at complete row boundaries.
@@ -161,6 +198,10 @@ local function refresh(turn)
     if repairStatus then
         print(string.format('CSC_AI_BAKERS_REPAIRS turn=%d candidates=%d previous=%s',
             turn, publishRepairs and #repairs or 0, repairStatus))
+    end
+    if exclusionStatus then
+        print(string.format('CSC_AI_SUPPLIER_EXCLUSIONS turn=%d sites=%d omitted=%d previous=%s',
+            turn, #exclusions, omittedExclusions, exclusionStatus))
     end
     print(string.format('CSC_AI_BAKERS_DISTRICTS turn=%d version=%d players=%d entries=%d omitted=%d previousMatched=%d previousChanged=%d seconds=%.4f',
         turn, version + 1, #players, #entries, omitted, matched, changed, os.clock() - started))

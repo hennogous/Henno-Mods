@@ -68,8 +68,13 @@ function B.RepairLimit(status)
     if type(status)~='string' or not status:match('"ready":1') or not status:match('"faults":0') then return 0 end
     return math.min(tonumber(status:match('"maxCandidates":(%d+)')) or 0,MAX_REPAIR_CANDIDATES)
 end
+function B.ExclusionStatus()
+    if type(CE_AISupplierExclusionStage)=='function' and type(CE_AISupplierExclusionStatus)=='function' then
+        return CE_AISupplierExclusionStatus()
+    end
+end
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
-    builderBidLimit,nominations,nominationLimit,repairs,repairLimit)
+    builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -127,6 +132,11 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         if repairCities[key] then return reject('Duplicate district repair city') end
         repairCities[key]=true
     end
+    if exclusions and #exclusions>256 then return reject('Supplier exclusion batch too large') end
+    for _,e in ipairs(exclusions or {}) do
+        if not (integer(e.player,0,63) and allowed[e.player] and integer(e.city,0,2147483647)
+            and integer(e.plot,0,width*height-1)) then return reject('Invalid supplier exclusion') end
+    end
     local ok,message=pcall(function()
         assert(CE_AIDistrictScoresBegin(version,width,height,districtCount)==1,'Native begin rejected')
         for _,pid in ipairs(originalAI) do assert(CE_AIDistrictScoresAllow(pid)==1,'Native identity rejected') end
@@ -154,6 +164,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         end
         for _,e in ipairs(repairs or {}) do
             assert(CE_AIDistrictRepairStage(e.player,e.city,e.district,e.plot)==1,'Native district repair rejected')
+        end
+        for _,e in ipairs(exclusions or {}) do
+            assert(CE_AISupplierExclusionStage(e.player,e.city,e.plot)==1,'Native supplier exclusion rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

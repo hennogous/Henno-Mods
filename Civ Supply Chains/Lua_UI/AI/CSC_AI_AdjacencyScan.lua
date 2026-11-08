@@ -139,6 +139,63 @@ function CSC_AI_BakersSiteForecasts(player, readSuppliers, protectedPlots, readL
     return sites
 end
 
+-- Additional loaded industries use the same supplier facts and bid bands.
+-- A future customer is credited only when the owner has a distinct legal
+-- adjacent footprint for its actual host district.
+function CSC_AI_IndustrySiteForecasts(player, profile, readSuppliers, protectedPlots, readLegalTargets)
+    local bids, futureCustomers = {}, {}
+    local district = profile.district
+    if not A.ByDistrict[district.DistrictType] or next(profile.customers) == nil then return bids end
+    local pid = player:GetID()
+    local function canHost(plot)
+        for _, neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
+            local idx = neighbor:GetIndex()
+            if neighbor:GetOwner() == pid and (profile.customers[neighbor:GetDistrictType()]
+                or (futureCustomers[idx] and not protectedPlots[idx] and neighbor:GetResourceType() == -1)) then
+                return true
+            end
+        end
+        return false
+    end
+    for _, city in player:GetCities():Members() do
+        for host in pairs(profile.customers) do
+            local definition = GameInfo.Districts[host]
+            if definition and not city:GetDistricts():HasDistrict(host) then
+                for _, idx in ipairs(readLegalTargets(pid, city:GetID(), definition.Hash)) do
+                    futureCustomers[idx] = true
+                end
+            end
+        end
+    end
+    for _, city in player:GetCities():Members() do
+        if not city:GetDistricts():HasDistrict(district.Index) then
+            local best
+            for _, index in ipairs(readLegalTargets(pid, city:GetID(), district.Hash)) do
+                local plot = Map.GetPlotByIndex(index)
+                local resource = plot and GameInfo.Resources[plot:GetResourceType()]
+                local ownerCity = plot and Cities.GetPlotPurchaseCity(plot)
+                if plot and plot:GetOwner() == pid and ownerCity and ownerCity:GetID() == city:GetID()
+                    and plot:GetDistrictType() == -1 and not protectedPlots[index]
+                    and not (resource and (A.HasTag(profile.base, resource.ResourceType)
+                        or A.HasTag(profile.specialty, resource.ResourceType))) and canHost(plot) then
+                    local supply = readSuppliers(player, plot, profile)
+                    if #supply.base > 0 then
+                        local forecast = score(district.DistrictType, plot, city, pid, true)
+                        local candidate = {player = pid, city = city:GetID(), district = district.Index, plot = index,
+                            base = #supply.base, specialty = #supply.specialty, adjacency = forecast.total}
+                        if betterBakersSite(candidate, best) then best = candidate end
+                    end
+                end
+            end
+            if best then
+                best.delta = best.adjacency >= preferredAdjacency and preferredSiteBidQ8 or viableSiteBidQ8
+                bids[#bids + 1] = best
+            end
+        end
+    end
+    return bids
+end
+
 function CSC_AI_AdjacencyScan(originalAI)
  local t0=os.clock();local out={turn=Game.GetCurrentGameTurn(),speed=assert(GameInfo.GameSpeeds[GameConfiguration.GetGameSpeedType()]).GameSpeedType,width=0,height=0,cities={},candidates={},quarters={},players={},currentHumans={},originalAI=originalAI,geometryBuilt=0,sitesEvaluated=0,rules={}}
  out.width,out.height=Map.GetGridSize()
