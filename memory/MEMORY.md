@@ -1,7 +1,8 @@
 # Current Bakers AI work — 8 November 2026
 
-Active next test **3.2, Builder recruitment and city production** for
-**14.1, earlier chain investment**. The frozen
+Active next tests **2.2, supplier retention**, and **14.1, earlier chain
+investment**. Builder recruitment remains a **3.2** calibration problem
+for a different fixture. The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
 The closed turn-249 audit found Melbourne 132, Launceston 60,
@@ -48,6 +49,15 @@ Adelaide's winner at 94,976 Q8 was Sydney's Farm Builder, still in
 production on 115. Melbourne chose Campus on 114. Rice stayed bare.
 AI-C115 records the queue evidence. The next replay observes the
 nearby Builder's controller, processed flag and evaluator membership.
+Recruitment run `-01` caught Builder 2752514 controlled elsewhere and
+already processed at the first Rice check on 106, with no candidate
+pool delivered. The probe faulted on a later unsuccessful callback's
+null result slot. The controller closed cleanly and the fixed `-02`
+replay captured all ten calls. Sydney used 2752514 for a Farm repair on
+108, then Canberra built an Outback Station with it on 115. Melbourne
+had no Builder candidate. See AI-C116. Astra concurs that Melbourne does not justify a higher
+general Builder bid. Consider a matched alternative-site test for
+Heidelberg's Dam and an earlier chain-opportunity census under 14.1.
 
 CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native

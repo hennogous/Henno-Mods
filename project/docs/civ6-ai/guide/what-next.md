@@ -101,8 +101,11 @@ immediately working Storekeeper leaves Castle ahead in this replay.
 Melbourne reserved the Rice Farm. Its request for another Builder
 lost nine comparisons across six cities. In the closest comparison,
 Adelaide took a higher-valued request for a Builder on a different
-job. Next, trace why the nearby Builder couldn't take the Rice job.
-[Opening forecast and Builder evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-rice-builder-offer-lost-across-australian-cities).
+job. The nearby Builder repaired Sydney's Farm, then built an Outback
+Station for Canberra. Melbourne found no eligible worker on ten checks.
+The next development run looks for earlier investments with credible
+payoffs and a save before a district can cover a working supplier.
+[Opening forecast and Builder evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-first-rice-recruitment-found-the-nearby-builder-already-busy).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

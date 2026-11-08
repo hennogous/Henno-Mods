@@ -2548,6 +2548,88 @@ The controller verified normal exit and restored the original packages
 and preferences. The trace SHA-256 is
 `376a381e67be12d28bd3984440da73780f72054b8d4f2379416ccd07c342a4fa`.
 
+#### The first Rice recruitment found the nearby Builder already busy
+
+`development-melbourne-builder-recruitment-01` observed the exact
+Rice target `(18, 20)`. On turn 106 the recruitment request used
+priority 2 and controller 24707087. Australia's one Builder, 2752514,
+was still at `(17, 20)` with controller 24772611 and the processed-turn
+flag set. It was alive. The call did not offer the Builder to the
+evaluator and left its controller unchanged. The opening census had
+confirmed one charge. The live observation identifies the failed
+eligibility checks for this call and leaves the existing controller's
+job to be identified. The behavior log shows Sydney found a Builder
+for a Farm at `(19, 22)` earlier that turn, but it does not print the
+unit identity.
+
+The probe stopped recording later in the replay when it attempted to
+read a null unit slot after an unsuccessful evaluator call. The native
+typed evaluator can leave one slot with a null pointer when no unit
+matches. The corrected observer reads the result vector only after a
+successful return. The game reached 116 and the controller verified
+clean closure. The incomplete trace preserves the complete first
+roster snapshot. It did not retain the evaluator call from that first
+check. Its SHA-256 is
+`699ce91f6ba5bfa8ca10fc3b438ed466d5b7b68d973d4603a60605f6f7899f3d`.
+
+`development-melbourne-builder-recruitment-02` reproduced the queue
+result and joined the nearby Builder to its actual jobs. On 106
+Sydney recruited Builder 2752514 from Canberra's earlier controller
+and moved it toward `(19, 22)`. By Melbourne's check it had already
+processed the turn. It repaired Sydney's Farm on 108, then became
+unassigned with the processed flag still set. On 109 Canberra took it
+again, for the Outback Station at `(12, 13)`. The unit reached the tile
+on 114, built the improvement on 115 and was marked for removal.
+The turn-116 census found no Australian Builder and Melbourne's Rice
+still bare. Adelaide's new Builder remained in production.
+
+The corrected trace captured all ten Rice recruitment calls from
+106 through 115. Each evaluator call saw other unit types but no
+Builder. The unit was processed from 106 through 114 and marked
+for removal on 115. Sydney, Canberra and Melbourne all requested
+priority 2 when recruiting the same unit. These outcomes establish
+scarce capacity and earlier assignment in this fixture. A larger Rice
+job score would leave those eligibility checks in place. A higher
+production offer would compete with the other recorded investments.
+
+The corrected trace froze with no active frames and no fault. The
+controller verified native exit and package and preference restoration.
+The trace SHA-256 is
+`a3990797c37e5359f50ea02734e3d384fe25b12f354fbd343596c3af9dd0d65e`.
+
+### The turn-100 portfolio had only two one-link opportunities
+
+The archived turn-100 census from `development-ordinary-exchange-249-01`
+contains six Quarter footprints with both an adjacent friendly Granary
+host and an owned, uncovered, mapped Base deposit with its improvement
+technology unlocked. Four Quarters were complete and healthy. The list
+below uses footprint and unlock information. Builder reach, current
+building eligibility and actual competing bids still require live checks.
+
+| Player and Quarter plot | Missing chain links on turn 100 |
+| --- | --- |
+| 1, Ancyra 1430 | Mill and Granary |
+| 2, Aigai 2311 | Base improvement |
+| 2, 1860 | Quarter completion, Base improvement, Mill and Granary |
+| 4, Melbourne 1423 | Mill |
+| 4, 1426 | Quarter completion, Base improvement, Mill and Granary |
+| 5, 2761 | Base improvement, Mill and Granary |
+
+The one-link opportunities fit the existing policies. The other four
+need an earlier investment before any last-link policy can apply.
+Ancyra had a working Rice Farm and two buildings missing on turn 100,
+the shortest remaining sequence among these four. The later Ancyra
+Granary trace shows that legal construction can still lose to Castle
+and military production. Capture earlier choice and expected completion
+cost before pricing that first investment. One earlier census cannot
+establish which candidate will be ready soonest in another start.
+The separate Alexandria diagnostic preserved an inactive turn-120 save
+with this same Ancyra footprint, working Rice and both buildings missing.
+Its SHA-256 is
+`a74a60e6f07b5303d01e5c441dce5e96d71e2cf1eebaa30c0ed02d6e230c2a56`.
+The archived turn-100 census SHA-256 is
+`4a6747a13056a9035cb2735b56283e85463154dd60a7963e12fa6a6c386ac091`.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

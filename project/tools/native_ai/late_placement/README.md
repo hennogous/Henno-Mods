@@ -37,6 +37,16 @@ package hashes, then removes the exact Rice Farm in the replay
 copy and confirms the Rice and Granary remain. The component
 observer records the Mill forecast without adding a bid.
 
+Add `--melbourne-builder-offers` and use `--through 116` to
+record receipt validation and queue arbitration for the six Australian
+cities. `opening-offer-cities.json` maps their IDs. Join the offer IDs in
+`wind-mill-trace.json` to `AI_CityBuild.csv` and the job's tree log.
+Add `--melbourne-builder-recruitment` to also capture the existing
+Builders' controllers and evaluator pools for the exact Rice target.
+That mode records other Australian recruitment calls only when they
+change a Builder's controller. Both extensions leave native decisions
+unchanged after the initial fixture setup.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

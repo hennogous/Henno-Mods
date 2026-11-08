@@ -1820,5 +1820,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C113", "AI-C114", "AI-N004", "AI-N104"]
+  },
+  {
+    "id": "AI-C116",
+    "title": "Sydney and Canberra used the Builder before Melbourne could recruit it",
+    "statement": "Builder 2752514 repaired Sydney's Farm, then Canberra reassigned it and built an Outback Station. It was already processed at each Rice check from 106 through 114 and marked for removal on 115. No Builder entered Melbourne's candidate pool on those ten calls.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static"],
+    "scope": "Melbourne read-only diagnostic -02 from 105 to 116. Exact Rice target at 18,20, joined controller changes to Sydney Farm at 19,22 and Canberra Outback Station at 12,13. Opening census found one Builder with one charge.",
+    "limits": "One shared-worker conflict. Establishes availability and execution in this fixture. It does not show how to reorder work across cities or establish the marginal value of another Builder.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C113", "AI-C115", "AI-N104"]
   }
 ]

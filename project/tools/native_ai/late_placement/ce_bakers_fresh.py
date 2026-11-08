@@ -293,7 +293,8 @@ def run(args):
         start = checkpoint_input['turn']
         expected = dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
         if args.mill_opening_components:
-            require(start == 105 and args.through == 112 and args.wind_mill == [4, 131073, 1423]
+            endpoint = 116 if args.melbourne_builder_offers else 112
+            require(start == 105 and args.through == endpoint and args.wind_mill == [4, 131073, 1423]
                     and checkpoint_input['sha256'] == 'dfc29fce2c25bb717bc3a2374640a37accc4052d0fd7989b753479153f1f83cd',
                     'The opening forecast uses the verified Melbourne turn-105 source')
             expected.update(endpoint=120, diagnostic_supplier_boundary=105)
@@ -353,6 +354,10 @@ def run(args):
                         gameplay_interventions=previous['gameplay_interventions'])
         if args.mill_opening_components:
             protocol.update(diagnostic_mill_opening_components=True, gameplay_interventions=True)
+        if args.melbourne_builder_offers:
+            protocol['diagnostic_melbourne_builder_offers'] = True
+        if args.melbourne_builder_recruitment:
+            protocol['diagnostic_melbourne_builder_recruitment'] = True
         if args.movement_only:
             protocol['diagnostic_movement_only'] = True
         if args.alexandria_bid:
@@ -581,6 +586,18 @@ print(string.format('CSC_OPENING_ECONOMY={"turn":%d,"foodSurplus":%.8g,"builderP
 """, 'PlotInfo', 'opening-economy'), 'CSC_OPENING_ECONOMY')
             require(economy['turn'] == start, 'Opening economy must match the inactive boundary')
             write_json(out / 'opening-economy.json', economy)
+            if args.melbourne_builder_offers:
+                raw = controller.cmd("""
+for _, city in Players[4]:GetCities():Members() do
+    print(string.format('CSC_OFFER_CITY %d %s', city:GetID(), city:GetName()))
+end
+print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
+""", 'GameCore_Tuner', 'opening-offer-cities')
+                offer_cities = {int(city): name.strip() for city, name in
+                                re.findall(r'CSC_OFFER_CITY (\d+) ([^\r\n]+)', raw)}
+                require(parse(raw, 'CSC_OFFER_TURN') == start and len(offer_cities) == 6
+                        and 131073 in offer_cities, 'Expected the six verified Australian cities')
+                write_json(out / 'opening-offer-cities.json', offer_cities)
             prepared_save = save_inactive_boundary(controller, turn=start, name='CSC_BAKERS_MILL_OPENING',
                                                    native_directory=args.saves, archive=out / 'opening-source.Civ6Save')
             write_json(out / 'opening-checkpoint.json', prepared_save)
@@ -668,6 +685,12 @@ print(string.format('CSC_OPENING_ECONOMY={"turn":%d,"foodSurplus":%.8g,"builderP
                     require(load(out / 'source-mill.json')['available'], 'The opening Wind Mill is unavailable')
                     scope['millOpeningComponents'] = True
                     scope['engineerPseudoYieldIndex'] = economy['engineerPseudoYieldIndex']
+                    if args.melbourne_builder_offers:
+                        scope['offerCities'] = sorted(offer_cities)
+                    if args.melbourne_builder_recruitment:
+                        scope['recruitmentBuilder'] = parse(controller.cmd(
+                            "print('CSC_BUILDER_INDEX='..assert(GameInfo.Units.UNIT_BUILDER).Index)",
+                            'GameCore_Tuner', 'recruitment-builder-index'), 'CSC_BUILDER_INDEX')
                 if args.melbourne_mill_bid:
                     require(load(out / 'source-mill.json')['available'], 'Wind Mill is no longer available')
                     scope['nominationBidQ8'] = protocol['diagnostic_mill_nomination_q8']
@@ -706,6 +729,8 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
                         'The exact Granary comparison did not reproduce once')
         if args.supplier:
             capture_builders(controller, args.supplier[0], args.through, out / 'endpoint-builders.json')
+        if args.melbourne_builder_recruitment:
+            capture_builders(controller, 4, args.through, out / 'endpoint-builders.json')
         if args.granary:
             capture_granary_exchange(controller, args.granary, args.through, out / 'endpoint-exchange.json')
         final = parse(controller.cmd('print("CSC_FRESH_CE="..CE_AIDistrictScoresStatus())',
@@ -776,6 +801,10 @@ if __name__ == '__main__':
                         help='Read native modifier contributions in the short Trebizond baseline')
     parser.add_argument('--mill-opening-components', action='store_true',
                         help='Prepare the exact Melbourne two-link fixture and read its Wind Mill forecast')
+    parser.add_argument('--melbourne-builder-offers', action='store_true',
+                        help='Follow Australian city offers through turn 116 in the exact opening fixture')
+    parser.add_argument('--melbourne-builder-recruitment', action='store_true',
+                        help='Record existing Builder candidates for the exact Melbourne Rice job')
     parser.add_argument('--granary-ce-replay', action='store_true',
                         help='Verify the calibrated CSC Granary nomination with the exact CE package')
     parser.add_argument('--movement-only', action='store_true', help='Observe assigned Builder movement without native hooks')
@@ -795,6 +824,10 @@ if __name__ == '__main__':
         options.census_turns = QUALIFICATION_CENSUSES
     if len(options.census_turns) > 8:
         parser.error('At most eight milestone census turns are supported')
+    if options.melbourne_builder_offers and not options.mill_opening_components:
+        parser.error('The Builder offer trace requires --mill-opening-components')
+    if options.melbourne_builder_recruitment and not options.melbourne_builder_offers:
+        parser.error('The recruitment trace requires --melbourne-builder-offers')
     if options.mill_opening_components and (
             not options.resume_from or not options.wind_mill or not options.probe_dependencies
             or options.observe_supplier_at is not None or options.melbourne_mill_bid or options.mill_ce_replay

@@ -20,6 +20,11 @@ const QUEUE_NEXT_BUILD = 0x3e8190;
 const CONTRACT_VALIDATE = 0x3fa8e0;
 const CONTRACT_UPDATE = 0x3fa5e0;
 const CONTRACT_EXECUTE = 0x3f8310;
+const RECRUIT_UNITS = 0x403190;
+const FIND_UNIT_RECRUIT_RETURN = 0x55523f;
+const CHOOSE_RECRUITED_UNITS = 0x553570;
+const FIND_UNITS_EVALUATOR_VTABLE = 0xa0ce08;
+const GAME_INSTANCE_GET = 0x951550, GAME_INSTANCE_SLOT = 0xb8aa68, GAME_TURN = 0xc0;
 const BUILDING_COMPARISON = 0x3e49da;
 const ORDINARY_BEST_BUILDING_RETURN = 0x3e160a;
 const THREAT_BEST_BUILDING_RETURN = 0x3ea73b;
@@ -53,6 +58,14 @@ const CITY_ROWS = 0x4c8, CITY_ROW_COUNT = 0x4d8, ROW_BUILDING_SCORES = 0x28;
 // offsets are read only on calls to that type's own virtual methods.
 const CONTRACT_STATUS = 0xb0, CONTRACT_ID = 0x110, CONTRACT_VALUE = 0x158;
 const CONTRACT_UNIT = 0x178, CONTRACT_BUILDING = 0x190, CONTRACT_DISTRICT = 0x1a8;
+// RecruitUnits walks Player::Units from the controller's player pointer.
+// The player/unit IDs and unit flags come from their archive constructors.
+// The evaluator location and vector slots are the operands at its two calls.
+const CONTROL_MANAGER_PLAYER = 0x90, PLAYER_ID = 0xd8, PLAYER_UNITS = 0x6c8;
+const UNIT_LIST_HEAD = 0xd0, UNIT_NODE_OBJECT = 0, UNIT_NODE_NEXT = 0x10;
+const UNIT_ID = 0xb0, UNIT_TYPE = 0xc8, UNIT_X = 0xf8, UNIT_Y = 0xfc;
+const UNIT_PROCESSED_TURN = 0x258, UNIT_DELAYED_DEATH = 0x2e8, UNIT_CONTROLLER = 0x300;
+const FIND_EVALUATOR_LOCATION = 0x10, VECTOR_DATA = 0, VECTOR_SIZE = 0x10;
 const QUEUE_BUILDING_ID_FRAME = 0x7f, QUEUE_BUILDING_VALUE_FRAME = 0x77;
 const QUEUE_PROJECT_ID_FRAME_BACK = 0x51;
 const memory = createStudyMemoryIO({ptr, findRangeByAddress: address => Process.findRangeByAddress(address)});
@@ -123,12 +136,28 @@ function init(spec, scope) {
         throw Error('Unsupported Wind Mill nomination preference');
     if (scope.screenProjectEligibility && (!boston || !scope.cePath || bid || nominationBid))
         throw Error('The isolated project eligibility diagnostic requires CE and no Mill bid');
+    const offerCities = new Set(scope.offerCities);
+    if (scope.offerCities !== undefined && (!scope.millOpeningComponents ||
+        offerCities.size !== 6 || !offerCities.has(scope.city) ||
+        [...offerCities].some(id => !Number.isInteger(id) || id < 0)))
+        throw Error('Expected the six scoped Melbourne opening cities');
+    const captureRecruitment = scope.recruitmentBuilder !== undefined;
+    if (captureRecruitment && (!offerCities.size || !Number.isInteger(scope.recruitmentBuilder) ||
+        scope.recruitmentBuilder < 0 || scope.recruitmentBuilder >= 4096))
+        throw Error('Expected a verified Melbourne Builder index');
     const captureQueueOperands = scope.cePath || scope.captureQueueOperands;
     const componentPoints = captureComponents ? ['BuildingValue', 'ModifierValue', 'AnalyzeModifier'] : [];
 
     const address = rva => core.base.add(rva);
     const caller = invocation => invocation.returnAddress.sub(core.base).toInt32();
-    const target = city => read(city, CITY_OWNER, 'i32') === scope.player && read(city, CITY_ID, 'i32') === scope.city;
+    const ownedCityId = city => read(city, CITY_OWNER, 'i32') === scope.player ? read(city, CITY_ID, 'i32') : null;
+    const target = city => ownedCityId(city) === scope.city;
+    // The Mill forecast stays city-scoped. The same unrestricted unit offer
+    // can compete in any of these cities, so only the queue scope expands.
+    const queueCityId = city => {
+        const id = ownedCityId(city);
+        return id === scope.city || offerCities.has(id) ? id : null;
+    };
     const cityOf = build => ptr(read(build, CITY_BUILD_CITY, 'ptr'));
     const contract = object => ({
         id: read(object, CONTRACT_ID, 'i32'), status: read(object, CONTRACT_STATUS, 'i32'),
@@ -157,6 +186,12 @@ function init(spec, scope) {
         ...(scope.millOpeningComponents ? [
             [CITY_BUILDING_YIELD_CHANGE, '48895c240848896c2410488974241857'],
             [NORMALIZE_PSEUDO_YIELD, '48896c242056415641574883ec40418b'],
+        ] : []),
+        ...(captureRecruitment ? [
+            [RECRUIT_UNITS, '4d85c90f8451060000488bc44c8948'],
+            [FIND_UNIT_RECRUIT_RETURN - 5, 'e851dfeaff498b8f'],
+            [CHOOSE_RECRUITED_UNITS, '488bc4488950104889480855535657'],
+            [GAME_INSTANCE_GET, '488b0511952300c3'],
         ] : []),
         ...(captureQueueOperands ? [
             [BUILDING_COMPARISON, '443b367e11448936'],
@@ -205,6 +240,86 @@ function init(spec, scope) {
                 active--;
                 protect(() => leave(this.sample, result));
             },
+        });
+    }
+    if (captureRecruitment) {
+        if (!ptr(read(address(FIND_UNITS_EVALUATOR_VTABLE), 0, 'ptr')).equals(address(CHOOSE_RECRUITED_UNITS)))
+            throw Error('Unexpected Find Available Unit evaluator');
+        const recruitment = new Map();
+        const builders = unit => read(unit, UNIT_TYPE, 'i32') === scope.recruitmentBuilder;
+        const snapshot = unit => ({
+            unit: read(unit, UNIT_ID, 'i32'), x: read(unit, UNIT_X, 'i32'), y: read(unit, UNIT_Y, 'i32'),
+            controller: read(unit, UNIT_CONTROLLER, 'i32'), processed: read(unit, UNIT_PROCESSED_TURN, 'u8'),
+            delayedDeath: read(unit, UNIT_DELAYED_DEATH, 'u8'),
+        });
+        const maxUnits = 512;
+        function roster(player) {
+            const units = ptr(read(player, PLAYER_UNITS, 'ptr'));
+            let node = ptr(read(units, UNIT_LIST_HEAD, 'ptr'));
+            const candidates = [];
+            for (let count = 0; !node.isNull(); count++) {
+                if (count === maxUnits) throw Error('Recruitment roster bound');
+                const unit = ptr(read(node, UNIT_NODE_OBJECT, 'ptr'));
+                if (builders(unit)) candidates.push(snapshot(unit));
+                node = ptr(read(node, UNIT_NODE_NEXT, 'ptr'));
+            }
+            return candidates;
+        }
+        function pool(vector) {
+            const size = read(vector, VECTOR_SIZE, 'u32');
+            if (size > maxUnits) throw Error('Recruitment candidate pool bound');
+            const data = ptr(read(vector, VECTOR_DATA, 'ptr'));
+            const candidates = [];
+            for (let index = 0; index < size; index++) {
+                const unit = ptr(read(data, index * Process.pointerSize, 'ptr'));
+                if (builders(unit)) candidates.push(snapshot(unit));
+            }
+            return {size, candidates};
+        }
+        // RecruitUnits(this, priority, controlId, evaluator) sees the existing
+        // player roster. Retain the Rice calls and other Australian calls
+        // that actually change which behavior controls a Builder.
+        observe(RECRUIT_UNITS, (args, invocation) => {
+            if (caller(invocation) !== FIND_UNIT_RECRUIT_RETURN || args[3].isNull()) return;
+            const player = ptr(read(args[0], CONTROL_MANAGER_PLAYER, 'ptr'));
+            if (read(player, PLAYER_ID, 'i32') !== scope.player) return;
+            const evaluator = args[3];
+            const location = ptr(read(evaluator, FIND_EVALUATOR_LOCATION, 'ptr'));
+            const x = read(location, 0, 'i32'), y = read(location, 4, 'i32');
+            const rice = x === 18 && y === 20;
+            const thread = invocation.threadId;
+            // Read the same archived game clock that city production uses.
+            const game = ptr(read(address(GAME_INSTANCE_SLOT), 0, 'ptr'));
+            const turn = read(game, GAME_TURN, 'i32');
+            const sample = {thread, player, evaluator, rice, x, y, turn, priority: args[1].toInt32(),
+                controlId: args[2].toInt32(), before: roster(player), pools: []};
+            if (rice) {
+                if (recruitment.has(thread)) throw Error('Nested Rice Builder recruitment');
+                recruitment.set(thread, sample);
+            }
+            return sample;
+        }, ({thread, player, evaluator, rice, ...sample}) => {
+            const after = roster(player);
+            if (rice) {
+                recruitment.delete(thread);
+                add({kind: 'builder-recruitment', ...sample, after});
+            } else if (sample.before.some(unit => after.some(candidate =>
+                candidate.unit === unit.unit && candidate.controller !== unit.controller))) {
+                add({kind: 'builder-reassignment', ...sample, after});
+            }
+        });
+        // The evaluator receives a mutable vector of Unit::Instance pointers.
+        // Compare its entry and exit so rejection stays distinct from filtering.
+        observe(CHOOSE_RECRUITED_UNITS, (args, invocation) => {
+            const sample = recruitment.get(invocation.threadId);
+            if (!sample || !args[0].equals(sample.evaluator)) return;
+            if (sample.pools.length >= 2) throw Error('Unexpected recruitment pool count');
+            return {sample, vector: args[1], before: pool(args[1])};
+        }, ({sample, vector, before}, result) => {
+            const selected = Boolean(result.toInt32() & 255);
+            // The typed evaluator can leave one null slot when it finds no
+            // match. RecruitUnits consumes its result vector only on success.
+            sample.pools.push({before, after: selected ? pool(vector) : null, selected});
         });
     }
     if (componentPoints.length) {
@@ -361,12 +476,13 @@ function init(spec, scope) {
     // Queue passes group individual offers even when several decisions occur
     // in a sampling segment. Receive validation is earlier and has no pass.
     observe(QUEUE_NEXT_BUILD, (a, invocation) => {
-        if (!target(cityOf(a[0]))) return;
+        const city = queueCityId(cityOf(a[0]));
+        if (city === null) return;
         const thread = invocation.threadId;
         if (queuePass.has(thread)) throw Error('Nested target city queue pass');
         const pass = ++queueSequence;
         queuePass.set(thread, pass);
-        add({kind: 'queue-begin', pass});
+        add({kind: 'queue-begin', pass, city});
         return {thread, pass};
     }, sample => {
         queuePass.delete(sample.thread);
@@ -440,7 +556,7 @@ function init(spec, scope) {
         observe(BUILD_PROJECT, (args, invocation) => {
             const thread = invocation.threadId;
             const pass = queuePass.get(thread);
-            if (pass === undefined || !target(cityOf(args[0]))) return;
+            if (pass === undefined || queueCityId(cityOf(args[0])) === null) return;
             if (projects.has(thread)) throw Error('Nested target project attempt');
             const sample = {thread, pass, project: args[1].toInt32(), canAdvance: null, operationEligible: null};
             projects.set(thread, sample);
@@ -498,13 +614,14 @@ function init(spec, scope) {
     observe(CONTRACT_VALIDATE, (a, invocation) => {
         const from = caller(invocation);
         if (from !== RECEIVE_VALIDATE_RETURN && from !== QUEUE_VALIDATE_RETURN) return;
-        if (!target(cityOf(a[1]))) return;
+        const city = queueCityId(cityOf(a[1]));
+        if (city === null) return;
         const pass = queuePass.get(invocation.threadId) ?? null;
         if (from === QUEUE_VALIDATE_RETURN && pass === null) throw Error('Missing queue validation pass');
-        return {pass, from, offer: contract(a[0])};
+        return {pass, from, city, offer: contract(a[0])};
     }, (sample, result) => add({kind: 'contract-validate', ...sample, eligible: Boolean(result.toInt32() & 255)}));
     observe(CONTRACT_UPDATE, (a, invocation) => {
-        if (caller(invocation) !== QUEUE_UPDATE_RETURN || !target(cityOf(a[1]))) return;
+        if (caller(invocation) !== QUEUE_UPDATE_RETURN || queueCityId(cityOf(a[1])) === null) return;
         const pass = queuePass.get(invocation.threadId);
         if (pass === undefined) throw Error('Missing queue update pass');
         return {pass, object: a[0], before: contract(a[0])};
@@ -514,7 +631,7 @@ function init(spec, scope) {
         add({kind: 'contract-update', pass, before, after});
     });
     observe(CONTRACT_EXECUTE, (a, invocation) => {
-        if (caller(invocation) !== QUEUE_EXECUTE_RETURN || !target(cityOf(a[1]))) return;
+        if (caller(invocation) !== QUEUE_EXECUTE_RETURN || queueCityId(cityOf(a[1])) === null) return;
         const pass = queuePass.get(invocation.threadId);
         if (pass === undefined) throw Error('Missing contract execution pass');
         return {pass, offer: contract(a[0])};

@@ -9,6 +9,13 @@ evidence.
 
 ## Current milestone and active problem
 
+**Active 2.2 and 14.1 — preserve working supply and find earlier investments.**
+The Melbourne replay established that the Rice job won, but the empire's
+only Builder worked elsewhere and the replacement request lost in city
+queues. The next ordinary development run samples early chain readiness
+and saves an inactive turn-200 boundary. Use it to check for a threatened
+working supplier and compare legal district alternatives before a new bid.
+
 **Boston fixture achieved — one working, retained Bakers Stage 2 chain.**
 The reusable milestone is to repeat the sequence from normal starts across
 multiple AI cities and close the dependencies as they arise.
@@ -70,7 +77,7 @@ automatic main CSC policy, Campus went on 720 and Boston worked the original
 Cattle Pasture by turn 37. The penalty is finite and needs wider calibration.
 [Automatic publisher evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
 
-**Active placement integration — 1.1–1.4 and 1.6.** The main CSC publisher
+**Placement integration — 1.1–1.4 and 1.6.** The main CSC publisher
 now adds one positive owned-site bid per eligible city alongside its existing
 material deductions. The scanner uses native build targets and legality,
 requires a viable Base and an adjacent friendly City Center, and forecasts
@@ -84,7 +91,7 @@ Quarter on turn 44. Continue through completion and look for improved site
 or investment choices. Future customer sites and affordable land acquisition
 are still open. [Matched development run](../research/mods/csc-ai-bakers-natural-research-20261106.md#owned-site-placement-publishing).
 
-**Active normal-start problem — 5.1, following the 4.2 Mill replay.** The
+**Ordinary-start building follow-through — 5.1 and 4.2.** The
 turn-100 development run had four complete and two unfinished AI
 Bakers Quarters, and zero observed Storekeepers. All five original
 AI majors unlocked Feudalism. In Alexandria Troas only the
@@ -315,6 +322,9 @@ until the active check closes or an explicit dependency needs attention.
   either class per Quarter and account for lost Services when the last
   working supplier is threatened. Apply this to any district consuming the
   tile. Verify an absolute exclusion separately from a finite bid penalty.
+  For Heidelberg, capture a boundary before Dam reservation and compare
+  legal sites and flood coverage. Use a matched test to verify the chosen
+  alternative retains the supplier and the operating Service.
 
 ### 3. Material work and Builder capacity
 
@@ -326,8 +336,10 @@ until the active check closes or an explicit dependency needs attention.
   available capacity. In Melbourne's opening replay the AI already
   reserved the right Farm. The 300-point offer reached nine legal queue
   comparisons across six cities and lost, including to a 371-point
-  Builder offer for another job. Trace the existing Builder's control
-  and eligibility before changing how this request competes.
+  Builder offer for another job. Sydney and Canberra used the nearby
+  Builder for actual work. Melbourne's ten attempts found none eligible.
+  Calibrate added capacity where a ready chain can justify its own
+  competing request. This replay gives no such case for a global boost.
 - **3.3 Improvement unlocks.** Value missing technologies early enough for
   a viable supplier to be ready when needed.
 
@@ -415,7 +427,10 @@ until the active check closes or an explicit dependency needs attention.
   already credits Production and Gold. The measured missing CSC effects
   total about 85 utility points with immediate supply and Service, below
   Castle's 121–281 point lead. The stock tree reserved the Farm and
-  requested a Builder. Follow **3.2** before testing a Mill opening bid.
+  requested a Builder. The turn-100 ordinary census had two one-link
+  opportunities and four needing multiple investments. Ancyra already
+  had its Farm but needed both buildings. Compare first-link opportunities
+  at a verified early boundary before setting another bid.
   [Measured opening and recruitment](../research/mods/csc-ai-bakers-natural-research-20261106.md#pricing-the-opening-with-the-missing-farm).
 - **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
   One supplier can serve multiple Quarters. Count each real lost or enabled

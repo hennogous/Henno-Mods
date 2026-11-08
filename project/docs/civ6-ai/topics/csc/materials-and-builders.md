@@ -180,6 +180,12 @@ lost to higher offers. Adelaide chose another Builder request at
 371 points. This is competition between requests, even when their
 result would be the same unit type. [AI-C115]
 
+At Melbourne's first failed Rice recruitment, the charged Builder
+beside the tile already had another controller and was marked as
+processed for the turn. The complete repeat traced that unit through
+Sydney's Farm repair and Canberra's Outback Station. Melbourne's
+ten recruitment checks found no eligible Builder. [AI-C116]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same
