@@ -50,9 +50,12 @@ admission on branch `codex/ce-district-repair-admission` at `e175f17`
 and main CSC Lua reproduced the Quarter repair through 214, with one
 admission, a duplicate rejection and zero candidates after repair
 (AI-C123). The same-package Mill-only arm closed at 229 with active
-Storekeeper 221–228 and zero CE faults. The next arm archives an active
-repair at 206 for the reload test. The same-DLL empty candidate control
-and high-resolution performance measurement remain open.
+Storekeeper 221–228 and zero CE faults. The active repair saved at 206
+and reloaded through 214 retained request 4421. CE counted one
+duplicate and zero new admissions. The Quarter recovered and the Mill
+was still pillaged at 214 (AI-C124). The same-DLL empty candidate
+control reached 214 with both repairs outstanding (AI-C123).
+High-resolution performance measurement remains open.
 Keep Ancyra's verified turn-120 fixture available for **14.1**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`

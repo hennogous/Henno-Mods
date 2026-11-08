@@ -3070,12 +3070,46 @@ on each turn from 221 to 228. The controller verified normal close
 and restoration at 229. The endpoint save SHA-256 is
 `5156e5ee9e76b4759cfab2732915b0205113b252dcb3264fdeb499a4c1b09243`.
 
-This tests repeated publication in one game context and continuation
-after the Quarter was repaired. A reload while the repair tree is still
-active and a same-DLL empty-candidate arm need separate runs. The
-existing Lua timing log did not resolve sub-second differences
+The existing Lua timing log did not resolve sub-second differences
 on this late-game replay. Measure the native admission overhead and
 publisher cost with a higher-resolution clock in the performance pass.
+
+#### An active Quarter repair survived a save and reload
+
+`development-alexandria-repair-ce-active-save-01` repeated the packaged
+treatment from the exact turn-200 source. GameCore submitted Quarter
+request 4421 on 201 at 5,645 whole units. The controller stopped at 206
+with the request still outstanding and verified the inactive save and
+clean close. The save SHA-256 is
+`1078a8f042656c79afc8913a336890eb715e4068d075351d4027d1d8c2e4d083`.
+
+`development-alexandria-repair-ce-active-reload-01` loaded that exact
+save with the same packages. The native build query reported the
+Quarter repair legal with 22 of 30 Production. CSC published one
+candidate and CE initially reported zero admissions and faults. On 209
+the native queue used the original request 4421 for the Quarter repair.
+When the stock district planner reopened, CE recognized the existing
+repair and counted one duplicate, published in the turn-210 Lua log.
+Across the replay CE reported zero new admissions and faults. CSC
+withdrew the candidate on 211. The turn-214 census verified the same
+Quarter healthy with the Mill still pillaged, the original Cattle
+Pasture and the adjacent Granary both working. The controller verified
+the clean close and the endpoint SHA-256
+`347c58c7158889d60df47d1d2f7111a808c301f6228fa011ad133f54c829d6e4`.
+
+#### The matched control still needed both repairs
+
+`development-alexandria-repair-ce-empty-01` used the original turn-200
+source and ran through 214 with the same CE binary. Across the 641
+package files, the only change from the straight-through treatment
+was one Lua line that set the repair candidate limit to zero. CE
+reported ready with an empty table and no admission or fault on every
+publication. In the control, Broadcast Center also completed on 209.
+The later Aerodrome request 4704 entered production on 210. The
+endpoint census confirmed the Quarter and Water Mill were both still
+pillaged, with the original supplier and customer working. The
+controller verified the clean close and inactive turn-214 save SHA-256
+`eba7caf1ab28938c5766a7428ad9758996e156ad4aeb79ffe37f27297be75ee8`.
 
 ### Shared Granary hosts receive one nomination preference
 

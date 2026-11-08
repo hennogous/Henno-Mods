@@ -27,8 +27,11 @@ also advanced to native progress.
 The restored Quarter made the Mill eligible. Stock AI completed the
 Mill repair on 220 and Storekeeper resumed on 221. Packaged CE and
 CSC reproduced the Quarter repair and rejected a duplicate in the
-same game context. Verify active-repair save/reload and an empty
-candidate control before an ordinary run.
+same game context. The active-repair reload also retained the original
+request, rejected a duplicate and restored the Quarter. The matched
+control left both the Quarter and Mill pillaged at 214. Next, trace
+Ancyra's first building bid under **14.1**. Repair
+coverage in ordinary games remains open under **13.1**.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible
@@ -429,8 +432,10 @@ until the active check closes or an explicit dependency needs attention.
   customer assets when the chain merits it. Verify actual repair and resumed
   benefits. Alexandria's matched extra Quarter admission at ordinary
   value restored the host. Stock AI then repaired the Mill and restored
-  Storekeeper. Move the tested admission mechanism into reusable CE and
-  CSC code and validate its native lifecycle and ordinary-game coverage.
+  Storekeeper. The reusable CE and CSC packages reproduced the repair
+  and kept the pending request across a save and reload. Validate the
+  other repair sequences and ordinary-game coverage. The matched control
+  retained the pillaged Quarter and Mill at turn 214.
 - **13.2 Replan.** Reassess after capture, lost supply, or destructive harvest
   and other work. Distinguish a repairable interruption from permanent loss.
   Heidelberg owned every adjacent tile and had no mapped Base after its

@@ -129,8 +129,10 @@ finishing Broadcast Center. The later Aerodrome request also advanced.
 The restored Quarter made its Water Mill eligible. The AI completed
 the Mill repair on 220, and Storekeeper resumed on 221. The packaged
 CE and CSC versions reproduced both repairs and the resumed Service.
-The next check is whether a pending repair survives a reload without
-creating a duplicate.
+The pending Quarter repair also survived a save and reload. The AI
+used the original request, and CE suppressed a duplicate. In the matched
+run with the same CE binary and repair nominations disabled, both the
+Quarter and its Mill were still pillaged at turn 214.
 [Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.

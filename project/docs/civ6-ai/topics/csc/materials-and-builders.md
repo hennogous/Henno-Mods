@@ -227,7 +227,14 @@ growth effect on 221. The follow-up applied no Mill preference.
 Packaged CE and CSC reproduced the Quarter repair from the same
 source. The four-field request used the native score. CE recognized
 the active repair when CSC published it again. The same packages then
-reproduced the Mill repair and eight active Storekeeper turns. [AI-C123]
+reproduced the Mill repair and eight active Storekeeper turns. In the
+matched control, disabling repair nominations with the same CE binary
+left both the Quarter and Mill pillaged at turn 214. [AI-C123]
+
+An exact save made while the Quarter repair was pending retained the
+original request after reload. The AI used that request, CE suppressed
+the duplicate, and the physical Quarter recovered. The Mill remained
+pillaged at this separate replay's endpoint. [AI-C124]
 
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
