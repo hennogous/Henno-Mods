@@ -24,6 +24,13 @@ Quarters and delivered 69 more confirmed Storekeeper chain-turns. Tailors
 finished four fewer Quarters and still had no active Stage 2 Service.
 [Shared policy and matched Fractal result](../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md).
 
+The Lighthouse follow-up confirmed that the once-per-turn offer reaches
+the native building comparison when Kőszeg's planning slot opens. That
+closes the offer-timing question for this replay. The next Tailors
+outcome to verify is an operating Dockmaster chain with its supplier,
+Textile Workshop and Lighthouse in place.
+[Lighthouse follow-through](../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#lighthouse-follow-through).
+
 ## Milestone reached — Boston's working Bakers chain
 
 Boston completed Bakers on our chosen site after one turn-22 score change.

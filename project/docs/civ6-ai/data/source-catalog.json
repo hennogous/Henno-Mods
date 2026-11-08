@@ -1716,8 +1716,8 @@
       "title": "Shared Stage 2 AI policy on Fractal",
       "kind": "report",
       "date": "20261108",
-      "bytes": 11296,
-      "sha256": "d186017e1ad70f221f3291523d0f4d161997a9fee0ffd1d5b26041fbff01a261",
+      "bytes": 14307,
+      "sha256": "6699a877c4a39956f2c7b083cca30dba1ca1687098cbf3f6cfc558d6c536dcac",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"
     },
@@ -2236,8 +2236,8 @@
       "title": "Native validation limit —23 October observer defeat",
       "kind": "tool-reference",
       "date": null,
-      "bytes": 29511,
-      "sha256": "0c25b6458b8cfe9067352a28b0bf501bd229586a47dcee5a41d944d35527b49c",
+      "bytes": 29936,
+      "sha256": "b6401a61a5722ae4f319b8e0ac5ee9022937d299c92d376d113c600431dbf513",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/tools/ai_baseline/full_game_controller/README.md"
     },

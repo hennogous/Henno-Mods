@@ -2038,5 +2038,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C132"]
+  },
+  {
+    "id": "AI-C134",
+    "title": "The existing Lighthouse refresh reaches the ordinary native comparison",
+    "statement": "Continuing Kőszeg from the archived turn-200 receipt save with the same packages and CE receipts alone showed +13312 Q8 Lighthouse writes in ordinary comparisons on turns 200, 207 and 214. CSC's existing once-per-turn refresh covered all three comparisons.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "One city in the matched v2.1 Fractal replay, stock AI and the original CSC and CE receipt packages. Lighthouse building index 8 in player 2 city 524295, Harbor plot 1437. The clean run used no additional selector instrumentation.",
+    "limits": "This shows delivery at an observed comparison and does not isolate a causal effect on the eventual city purchase. The original four windows had forecast exposure and zero ordinary writes. The separate Frida arm established call timing but interfered with the CE caller check.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C133", "AI-N111"]
   }
 ]

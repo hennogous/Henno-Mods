@@ -51,6 +51,12 @@ Access flag receives Water Mill value in the mutable vector.
 
 The numbers are **utility**, not raw yields or Gold. Internally, 256 stored units represent one utility unit. A million stored units does not mean a million Production—and precision does not guarantee an accurate forecast.
 
+A city can forecast a building each turn and compare it as an ordinary
+candidate only when its planning slot opens. The production queue is
+separate. In Kőszeg, the Lighthouse kept getting forecasts between
+comparisons, and the city eventually bought it while producing a unit.
+[Lighthouse replay](../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#lighthouse-follow-through).
+
 ```mermaid
 flowchart TD
   A["District and candidate tile"] --> B["Benefits, empire weights, costs and timing"]

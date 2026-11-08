@@ -104,6 +104,12 @@ building present value, normalized Gold cost and spending limits.
 The city can buy the building and still use production for other
 work. [AI-N103]
 
+The ordinary CityBuild nomination pass has a separate unit-or-building
+plan slot. When the slot is occupied, the pass returns before the
+ordinary building comparison. Building forecasts still run, and a free
+slot can lead to a comparison while another item is in the production
+queue. [AI-N111] [Kőszeg replay](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#lighthouse-follow-through).
+
 The fallback attempts the winning category. In the observed project branch,
 a false return from `BuildProject` led directly to generic unit selection.
 Neither the highest-ranked building nor the ordinary unit was retried.

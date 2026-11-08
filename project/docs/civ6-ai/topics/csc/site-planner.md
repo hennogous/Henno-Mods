@@ -100,6 +100,13 @@ Tailors outcome still needs follow-through evidence.
 [Policy, setup and Fractal results](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md).
 [Exact Harbor, building and protection receipts](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#exact-receipts-in-the-matched-follow-up).
 
+In the Kőszeg follow-through, CSC's existing once-per-turn Lighthouse
+offer was available when the ordinary building comparison ran. CE
+applied the offer at that comparison. A city may keep forecasting the
+building for several turns between ordinary comparisons. The replay
+supports keeping the existing refresh cadence. [AI-C134]
+[Lighthouse follow-through](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#lighthouse-follow-through).
+
 ## Earlier offline placement model
 
 The fresh planner starts with an offline investment review. Its first Tailors

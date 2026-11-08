@@ -411,6 +411,14 @@ disaster, diplomacy and wonder-built handling is preserved. The additional
 handlers acknowledge Natural Wonder discoveries and project-completion
 cinematics through their shipped `Close()` routines.
 
+A cold autosave can reopen a visible `WonderBuiltPopup` at its starting
+turn. For these replays, run an opening segment of four turns and wait
+for its normal inactive handoff before requesting the final endpoint.
+This places the initial popup within the existing five-turn Wonder
+guard. The Kőszeg turn-200 replay used `play(204)` followed by
+`play(224)` and recorded the shipped dismissal in
+`playback-recoveries.ndjson`.
+
 Each acknowledgement needs fresh Core proof of an active, finite observer
 operation, a matching UI clock and a visible exact popup context. Project-built
 also requires its unique highest-priority popup-stack entry. Receipts preserve

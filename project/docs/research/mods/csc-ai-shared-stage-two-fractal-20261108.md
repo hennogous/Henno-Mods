@@ -204,3 +204,61 @@ weak-site deduction by exact player, city, district type and tile. This
 shows that the finite deductions still allowed some penalized sites to
 win. The samples alone cannot establish which alternative would win
 without tuning, or why a site later lost a qualifying link.
+
+## Lighthouse follow-through
+
+The archived receipt run's turn-200 autosave was replayed through turn
+224 with the same CSC and CE packages. The save SHA-256 begins
+`803ffeadfefb091b`. In Kőszeg (player 2, city 524295), the Lighthouse
+was legal and absent at load, with its Harbor at plot 1437. The first
+attempt stalled on the stock Wonder playback popup at turn 200. The
+shared controller's Wonder guard applies within five turns of its
+target. On retry the controller ran a four-turn opening segment, closed
+the popup itself, then continued to turn 224.
+
+The ordinary CityBuild nomination pass at XP2 RVA `3e1580` returns early
+when the unit-or-building plan slot is occupied. It reads that slot at
+offset `0x4` in the plan object pointed to by `CityBuild + 0x430`.
+The ordinary selector call at `3e1605` supplies flags `0,0`. Its return
+address `3e160a` is the CE hook's caller check. These code ranges match
+the Ghidra reference `324c51e9` and Steam hotfix image `092abfbb`.
+
+In the instrumented replay, the slot was free on turns 200, 207, 214 and
+217. The ordinary building selector compared an eligible Lighthouse on
+the first three turns. It still ran its building loop on turn 217, but
+the Lighthouse was already built by then. Forecasts continued while
+the plan slot was occupied. The native plan slot and the production
+queue are separate. The game bought the Lighthouse on turn 216 while
+a Nuclear Submarine was still in production. The Frida selector exit
+hook rewrote the caller return address that CE checks. That run
+establishes the slot and selector timing. Its zero-write receipts are
+invalid as a test of CE bid delivery.
+
+The clean replay used the same packages and CE's own receipts, with no
+Frida attachment. CSC published a new eligible offer each turn. CE
+recorded one actual comparison and one write for the exact Lighthouse
+at each opening below. The receipts appear on the following turn.
+
+| Decision turn | Score before (Q8) | Score after (Q8) |
+| ---: | ---: | ---: |
+| 200 | 233441 | 246753 |
+| 207 | 246778 | 260090 |
+| 214 | 229661 | 242973 |
+
+Each delta was 13312 Q8, or 52 native utility points. The turns between
+those openings recorded forecasts with no ordinary comparison for that
+candidate.
+
+The clean run submitted Lighthouse contracts on turns 207 and 214
+and bought the Lighthouse on turn 216 while the Nuclear Submarine was
+still in production. CSC stopped publishing the offer on turn 217.
+The instrumented run logged the same submissions and purchase, so this
+replay demonstrates score delivery and physical follow-through without
+establishing that the boost changed the choice. There was no observed
+expiry gap. Keep the existing refresh rate for this path.
+
+The trace and clean evidence are archived respectively in
+`Desktop/Codex/csc-ai-lighthouse-followthrough-20261108-02` and
+`Desktop/Codex/csc-ai-lighthouse-followthrough-20261108-03`. The clean
+evidence pairs the scoped `Lua.log` receipts with the stock
+`AI_CityBuild.csv` and `City_BuildQueue.csv` logs.

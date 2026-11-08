@@ -1896,5 +1896,17 @@
     "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
     "topic": "topics/native/district-choice.md",
     "related": ["AI-N006", "AI-N008", "AI-C119"]
+  },
+  {
+    "id": "AI-N111",
+    "title": "An occupied city plan slot skips the ordinary building nomination comparison",
+    "statement": "The CityBuild unit-or-building nomination pass returns before the ordinary building selector when its plan slot is occupied. Native forecasts still ran. When the slot reopened in the Kőszeg trace, the ordinary selector ran even while the city's production queue was occupied.",
+    "status": "accepted",
+    "evidence_types": ["static", "runtime"],
+    "scope": "Windows XP2 Ghidra reference 324c51e9 and byte-matched patched Steam code 092abfbb. Nomination pass RVA 3e1580, GetBestBuilding call RVA 3e1605 and caller return RVA 3e160a. Slot field at offset 4 of the object reached through CityBuild + 0x430. One scoped city trace on the patched executable.",
+    "limits": "The free slot is one gate. Threat selection, forecast passes, and final production or economic purchase have separate paths. The instrumented run disturbed the CE caller check, so its ordinary receipts cannot establish policy delivery.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/native/production-and-prerequisites.md",
+    "related": ["AI-N021", "AI-N103"]
   }
 ]
