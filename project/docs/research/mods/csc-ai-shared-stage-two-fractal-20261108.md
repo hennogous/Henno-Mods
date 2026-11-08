@@ -262,3 +262,9 @@ The trace and clean evidence are archived respectively in
 `Desktop/Codex/csc-ai-lighthouse-followthrough-20261108-03`. The clean
 evidence pairs the scoped `Lua.log` receipts with the stock
 `AI_CityBuild.csv` and `City_BuildQueue.csv` logs.
+
+Both continuations reported one active Tailors source property on every
+publication from turn 201 through 224. That property was already present
+before Kőszeg's Lighthouse purchase on turn 216. The aggregate does not
+identify the Quarter or audit the naval production bonus. The original
+normal-start run still recorded zero active properties through turn 200.

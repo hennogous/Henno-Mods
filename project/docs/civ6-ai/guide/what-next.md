@@ -27,8 +27,10 @@ finished four fewer Quarters and still had no active Stage 2 Service.
 The Lighthouse follow-up confirmed that the once-per-turn offer reaches
 the native building comparison when Kőszeg's planning slot opens. That
 closes the offer-timing question for this replay. The next Tailors
-outcome to verify is an operating Dockmaster chain with its supplier,
-Textile Workshop and Lighthouse in place.
+outcome to verify is the actual Dockmaster payout from a known chain.
+The continuation reported one active Tailors source property before
+Kőszeg's Lighthouse purchase. That count identifies neither the Quarter
+nor the production bonus it delivered.
 [Lighthouse follow-through](../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#lighthouse-follow-through).
 
 ## Milestone reached — Boston's working Bakers chain
