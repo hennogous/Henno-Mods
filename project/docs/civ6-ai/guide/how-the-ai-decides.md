@@ -21,6 +21,11 @@ from the turn the district is expected to be ready. For a farm that can include
 its Food, its own adjacency and Housing. A pillaged improvement skips that debit.
 [How the improvement is valued](../topics/native/district-score-anatomy.md#what-does-it-cost-to-replace-an-improvement).
 
+The selector also has a reserved score for an invalid option. A
+finite penalty can still leave a site in contention. The two
+placement searches and any existing request each have their own
+checks, so excluding a new option depends on where the rule enters.
+
 Future buildings contribute too. The inspected path adds a city-wide estimate for that district type to eligible positive site scores. It does not independently simulate a complete, site-specific building chain on every tile.
 
 The new CSC capture makes another distinction concrete: **raw building values

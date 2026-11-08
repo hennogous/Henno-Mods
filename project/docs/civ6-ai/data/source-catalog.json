@@ -536,8 +536,8 @@
       "title": "District score components, refresh and tile purchases",
       "kind": "report",
       "date": "20261104",
-      "bytes": 18770,
-      "sha256": "9c94c95f799603c38dc66c64913e941d821efa063dc11fbd8e5042335dcc77b6",
+      "bytes": 20487,
+      "sha256": "83030c72611ec0b95b74ce80fe1bb229279d79ae7c71c2db7fddf13eb61d999a",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
     },

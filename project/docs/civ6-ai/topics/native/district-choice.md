@@ -9,6 +9,12 @@ using its stored plot threshold. A cached reservation whose controller
 is gone uses the default threshold. Alexandria's Quarter repair
 reproduced this case in the turn-201 district comparison. [AI-C119]
 
+On an unreserved row, a cell equal to the invalid sentinel fails
+the joint comparison. The type-specific new-location scan also
+rejects that value, while its existing pillaged footprint path
+does not read the score matrix. The current CE numeric penalty
+stays above the sentinel. [AI-N110]
+
 For a Dam alternative, compare legal sites in the same native floodplain.
 The flood handler scans the affected river's floodplain for a complete,
 unpillaged flood-prevention district. This establishes coverage for

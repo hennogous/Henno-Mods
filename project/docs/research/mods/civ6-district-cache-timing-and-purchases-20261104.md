@@ -283,6 +283,39 @@ selection from spending. The static trace establishes where a scoped
 supplier preference would have to compete. It has no new purchase
 receipt or measured CSC bid amount.
 
+### Which district selectors can exclude a single site
+
+The patched image matches the reference's ordinary `GetBestDistrict`
+selection test at `3e4b2c`. The joint selector compares a cell with
+both the row's reservation threshold and the best score so far.
+For an unreserved row the threshold is the signed Q8 sentinel
+`-2559744`. The branch rejects a value equal to that threshold.
+An active controller can supply a different threshold. The running
+best starts at the sentinel, so a value below it would fail the
+running-best test even with a lower live reservation threshold.
+
+The type-specific `GetBestLocationFor` at `3e5550` rejects a new
+location with a live reservation and requires its cell to be greater
+than the same sentinel. Its existing-district path can return a
+pillaged footprint before inspecting the score matrix. This routine
+has callers outside the ordinary joint selector, including
+`CityBuild::BuildDistrict` at `3df341` and trigger decoding at
+`55abd7` and `55abe9`.
+
+The current CE numeric adjustment is bounded. In the repair review
+branch it clamps deductions at `-4096 * 256`, and it protects the
+invalid sentinel. This remains a finite preference. An explicit
+exclusion would need to reach the intended selector at the right
+time. Existing requests, repairs and the alternate site consumers
+have separate eligibility paths.
+
+For a scoped diagnostic on an unreserved threatened supplier, the
+ordinary selection boundary can isolate one district and plot cell
+from competing pairs. Keep the actual request, queue, placement and
+retained Service as separate observations. This static result
+establishes the branch condition and neither redirects a live Dam
+nor revokes an existing contract.
+
 ## Primary evidence and limits
 
 Retained exports are under`Desktop/Codex/csc-district-placement-20261103/native/`

@@ -1884,5 +1884,17 @@
     "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
     "topic": "topics/native/district-choice.md",
     "related": ["AI-N069", "AI-N101"]
+  },
+  {
+    "id": "AI-N110",
+    "title": "The joint and type-specific district selectors can reject one cached pair",
+    "statement": "The joint selector requires a cached score greater than its row threshold and at least its running best, initially the invalid sentinel. For an unreserved row, a cell equal to the sentinel fails. The type-specific new-location selector requires a score above the sentinel and skips a live reservation. Its existing pillaged footprint route precedes the score scan.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Windows XP2 Ghidra reference 324c51e9 and patched Steam code 092abfbb. Joint GetBestDistrict RVA 3e4a50 and signed comparison at 3e4b2c. GetBestLocationFor RVA 3e5550 and explicit BuildDistrict caller at 3df341.",
+    "limits": "Selection boundaries only. Existing district requests and repair bypasses have their own rules. The current CE numerical adjustment stays above the sentinel and a new exclusion has not yet been tested in a live choice.",
+    "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
+    "topic": "topics/native/district-choice.md",
+    "related": ["AI-N006", "AI-N008", "AI-C119"]
   }
 ]
