@@ -1016,8 +1016,8 @@
       "title": "Integrated CSC Stage 2 trial through turn 200",
       "kind": "report",
       "date": "20261108",
-      "bytes": 9628,
-      "sha256": "ecb52d7d3d493e80e5afea2996058e12b01fba9d7f82fe232b37d6c2000194fb",
+      "bytes": 11791,
+      "sha256": "3337a93ec67e3d630ef41a342e86bbd5a51b024e3507a66a1007a6272db0e411",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"
     },

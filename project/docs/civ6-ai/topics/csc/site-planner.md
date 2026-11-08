@@ -80,6 +80,7 @@ loss of suppliers.
 
 [Frozen setup, per-chain windows and evidence locations](../../../research/mods/csc-ai-integrated-stage-two-20261108.md).
 [Matched baseline and v2 comparison](../../../research/mods/csc-ai-integrated-stage-two-20261108.md#matched-baseline-with-csc-tuning-disabled).
+[Which completed sites received a recorded boost](../../../research/mods/csc-ai-integrated-stage-two-20261108.md#placement-boosts-and-surviving-site-quality).
 
 ## Earlier offline placement model
 

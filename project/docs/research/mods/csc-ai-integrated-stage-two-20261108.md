@@ -68,6 +68,11 @@ or changed scores. All three games closed cleanly with verified turn-200
 saves. The baseline folders are `baseline-continents`, `baseline-pangaea`
 and `baseline-fractal` under the same evidence root.
 
+CSC's normal map assistance completed on turn 1 in both arms. The native
+Lua logs show 32, 29 and 30 additions on Continents, Pangaea and Fractal
+respectively. All were logged as Tailors additions. Each pair matches
+tile by tile and resource by resource.
+
 | Map | Baseline Bakers chains ever active | V2 chains ever active | Baseline chain-turns | V2 chain-turns | Baseline first Service | V2 first Service |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Continents | 1 | 6 | 39 | 255 | 161 | 103 |
@@ -127,6 +132,40 @@ never coincided with working Base and Workshop in a complete Stage 2 chain.
 Later-stage Quarter buildings were less common in v2 for both industries.
 The single baseline Stage 3 source property is a snapshot observation.
 Only Storekeeper has an independent per-turn effect audit in these runs.
+
+### Placement boosts and surviving site quality
+
+The v2 run logs record sampled edits to the native district-site score.
+Matching positive edits by player, city, district type and exact tile
+against the turn-200 census finds 20 of 55 completed Bakers and one of
+47 completed Tailors. Bakers matches by map are 8/18, 6/17 and 6/20.
+Six of the 20 Bakers had at least one sampled boost in the forecast band
+for +4 or better. The other 14 were sampled only in the lower viable band.
+These are pre-construction planner estimates. Endpoint conditions can change.
+
+| Bakers outcome at turn 200 | Untuned baseline | V2 with a recorded boost to the exact site | V2 with no recorded boost to the exact site |
+| --- | ---: | ---: | ---: |
+| Completed Quarters | 56 | 20 | 35 |
+| Adjacent owned Base and mapped City Center | 5 | 20 | 5 |
+| Adjacent Base deposit | 15 | 20 | 8 |
+| Both Base and Specialty adjacent | 0 | 5 | 2 |
+| Working Base improvement | 9 | 12 | 5 |
+| Working adjacent Granary | 13 | 13 | 7 |
+| Active Storekeeper source property | 2 | 9 | 3 |
+
+The positive-match count shows where the chosen tile received a CSC
+boost. The native AI still chose and built the district. The samples do
+not show whether the boost changed the winner, and they cap at 64 edits
+per publication window. One of the 35 Bakers without a recorded boost
+had a sampled deduction on its tile. Changes to competing sites can
+also matter. The no-boost group cannot be treated as an untuned control.
+The counts cover surviving Quarters and measure site quality at turn 200.
+
+The remaining gap is weak native Quarter investment. A weak functioning
+Quarter can disqualify its city from same-family import benefits, even
+when its own supply chain is incomplete. A follow-up can compare lowering
+the bids for weak local sites with the value of leaving those cities
+eligible to import, while preserving a viable route for strong sites.
 
 ### AI economy at turn 200
 

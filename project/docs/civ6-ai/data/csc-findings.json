@@ -2001,6 +2001,18 @@
     "limits": "Three paired starts measure the combined tuning package. The comparison cannot assign an effect to an individual connector or explain the economic differences. Economy values are endpoint rates and stocks. Later-stage Services and Tailors lack an independent per-turn payout audit.",
     "sources": ["project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"],
     "topic": "topics/csc/site-planner.md",
-    "related": ["AI-C129"]
+    "related": ["AI-C129", "AI-C131"]
+  },
+  {
+    "id": "AI-C131",
+    "title": "One third of completed v2 Bakers sites have a sampled positive placement edit",
+    "statement": "20 of 55 completed Bakers and one of 47 completed Tailors matched a positive CE score edit by player, city, district type and exact tile. All 20 matched Bakers had an owned Base deposit and Stage 2 host at turn 200, and nine had an active Storekeeper property. Of the 35 completed Bakers without a matching positive edit, eight had Base and three had an active Storekeeper property.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Join of the three matched v2 games' CE district-score samples with their surviving completed Quarters at turn 200.",
+    "limits": "Score samples cap at 64 edits per publication window. An observed edit does not prove a changed winner, and the lack of a sample does not establish an untouched choice. Endpoint materials may differ from those at placement.",
+    "sources": ["project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C130"]
   }
 ]
