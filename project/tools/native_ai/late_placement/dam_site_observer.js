@@ -7,12 +7,16 @@
 // The scope supplies either legal Dam footprints or an existing Quarter.
 const BEST_DISTRICT_RETURN = 0x3e0f3c;
 const CHECK_FOR_DISTRICT = 0x3e0ee0;
+const CITY_ACTIVATION_DISTRICT_CHECK = 0x3e29f1;
 const GET_BEST_DISTRICT_THRESHOLD = 0x3e4b19;
 const DEFAULT_DISTRICT_THRESHOLD = 0xb66cb0;
 const CITY = 0x90, CITY_ID = 0xa8, CITY_OWNER = 0xd8;
 const ROWS = 0x4c8, ROW_COUNT = 0x4d8, ROW_SIZE = 0x78;
 const ROW_X = 8, ROW_Y = 12, ROW_SCORES = 0x20, ROW_RESERVATION = 0x48;
 const ROW_ELIGIBLE = 0x55, ROW_FRONTIER = 0x57, ROW_OWNED = 0x5a;
+const HIGHEST_SIGNED_SCORE = 0x7fffffff;
+const HEIDELBERG_CHECK_TURN = 202, HEIDELBERG_DAM_SCORE_Q8 = 461089;
+const UNRESERVED_THRESHOLD_Q8 = -9999 * 256;
 const DISTRICT_TREE = 0x430, TREE_ID = 8;
 const WINNER_XY = 0x40;
 const GAME_INSTANCE_SLOT = 0xb8aa68, GAME_TURN = 0xc0;
@@ -35,7 +39,12 @@ rpc.exports = {
             !bounded(scope.width, 257) || !bounded(scope.height, 257) || !scope.width || !scope.height ||
             !bounded(scope.districtCount, 4097) || !bounded(scope.district, scope.districtCount) ||
             !Array.isArray(scope.plots) || !scope.plots.length || scope.plots.length > 38 ||
-            scope.plots.some(plot => !bounded(plot, scope.width * scope.height)))
+            scope.plots.some(plot => !bounded(plot, scope.width * scope.height)) ||
+            (scope.thresholdPlot !== undefined && !scope.plots.includes(scope.thresholdPlot)) ||
+            (scope.exclusionAlternative !== undefined &&
+                (!scope.traceTree || scope.player !== 3 || scope.city !== 524295 || scope.district !== 27 ||
+                    scope.thresholdPlot !== 1317 || scope.exclusionAlternative !== 1169 ||
+                    !scope.plots.includes(scope.exclusionAlternative))))
             throw Error('Expected a verified district selector scope');
         const modules = Process.enumerateModules();
         const carriers = modules.filter(module => /GameCore_XP2_(?:CE|CSC)/i.test(module.name));
@@ -70,32 +79,53 @@ rpc.exports = {
         const offerRepair = scope.offerRepair ? makeQuarterRepairOffer(core, scope, fingerprint,
             currentTurn, record, protect) : null;
         if (scope.traceTree) {
-            const check = core.base.add(CHECK_FOR_DISTRICT);
             const threshold = core.base.add(GET_BEST_DISTRICT_THRESHOLD);
             const defaultThreshold = core.base.add(DEFAULT_DISTRICT_THRESHOLD);
-            fingerprint(check, '405557488d6c24d84881ec28010000488b8130040000');
+            // Keep the scratch threshold alive through the callback. The
+            // selector reads it from RAX once and copies it to EDI.
+            const exclusionThreshold = scope.exclusionAlternative === undefined ? null : Memory.alloc(4);
+            if (exclusionThreshold) exclusionThreshold.writeS32(HIGHEST_SIGNED_SCORE);
+            let excluded = false;
             fingerprint(threshold.sub(22), '4885c0740a488b46484883c004eb07488d05972178008b384533f633ed4d85ff');
-            Interceptor.attach(check, {
-                onEnter(args) {
-                    protect(() => {
-                        if (!isTarget(args[0])) return;
-                        const tree = read(args[0], DISTRICT_TREE, 'ptr');
-                        const id = read(tree, TREE_ID, 'i32'), turn = currentTurn();
-                        record({kind: 'check', turn, tree: id});
-                        if (offerRepair && id === -1 && turn === 201) this.repairBuild = args[0];
-                    });
-                },
-                onLeave() {
-                    if (!this.repairBuild) return;
-                    protect(() => {
-                        const selection = records.find(row => row.kind === 'selection' && row.turn === 201);
-                        const threshold = records.find(row => row.kind === 'threshold' && row.turn === 201);
-                        if (!selection) throw Error('The matched turn-201 district comparison did not occur');
-                        const tree = read(this.repairBuild, DISTRICT_TREE, 'ptr');
-                        offerRepair(this.repairBuild, read(tree, TREE_ID, 'i32'), selection, threshold);
-                    });
-                },
-            });
+            const checkSlot = build => {
+                if (!isTarget(build)) return null;
+                const tree = read(build, DISTRICT_TREE, 'ptr');
+                const receipt = {kind: 'check', turn: currentTurn(), tree: read(tree, TREE_ID, 'i32')};
+                record(receipt);
+                return receipt;
+            };
+            if (scope.thresholdPlot !== undefined) {
+                // CE's repair capability owns the CheckForDistrict entry detour.
+                // Observe the verified CityBuild caller, where RSI still holds
+                // CityBuild before it is passed to the native check in RCX.
+                const call = core.base.add(CITY_ACTIVATION_DISTRICT_CHECK);
+                fingerprint(call, '488bcee8e7e4ffff488bcee84fe7ffff');
+                Interceptor.attach(call, function () {
+                    protect(() => checkSlot(this.context.rsi));
+                });
+            } else {
+                const check = core.base.add(CHECK_FOR_DISTRICT);
+                fingerprint(check, '405557488d6c24d84881ec28010000488b8130040000');
+                Interceptor.attach(check, {
+                    onEnter(args) {
+                        protect(() => {
+                            const receipt = checkSlot(args[0]);
+                            if (offerRepair && receipt?.tree === -1 && receipt.turn === 201)
+                                this.repairBuild = args[0];
+                        });
+                    },
+                    onLeave() {
+                        if (!this.repairBuild) return;
+                        protect(() => {
+                            const selection = records.find(row => row.kind === 'selection' && row.turn === 201);
+                            const threshold = records.find(row => row.kind === 'threshold' && row.turn === 201);
+                            if (!selection) throw Error('The matched turn-201 district comparison did not occur');
+                            const tree = read(this.repairBuild, DISTRICT_TREE, 'ptr');
+                            offerRepair(this.repairBuild, read(tree, TREE_ID, 'i32'), selection, threshold);
+                        });
+                    },
+                });
+            }
             // The selector has resolved the row's reservation through Manager::Find.
             // RAX addresses the threshold it will actually compare, RSI the row,
             // and RBP still holds CityBuild before reuse by the district-type loop.
@@ -104,11 +134,26 @@ rpc.exports = {
                     const row = this.context.rsi;
                     const x = read(row, ROW_X, 'i32'), y = read(row, ROW_Y, 'i32');
                     const plot = y * scope.width + x;
-                    if (!targets.has(plot) || !isTarget(this.context.rbp)) return;
+                    if (!targets.has(plot) || (scope.thresholdPlot !== undefined && plot !== scope.thresholdPlot &&
+                            plot !== scope.exclusionAlternative) ||
+                        !isTarget(this.context.rbp)) return;
                     const thresholdValue = this.context.rax;
-                    record({kind: 'threshold', turn: currentTurn(), plot,
-                        liveReservation: !thresholdValue.equals(defaultThreshold),
-                        minimumExclusiveQ8: read(thresholdValue, 0, 'i32')});
+                    const turn = currentTurn();
+                    const liveReservation = !thresholdValue.equals(defaultThreshold);
+                    const minimumExclusiveQ8 = read(thresholdValue, 0, 'i32');
+                    record({kind: 'threshold', turn, plot, liveReservation, minimumExclusiveQ8});
+                    if (exclusionThreshold && !excluded && plot === scope.thresholdPlot &&
+                            turn === HEIDELBERG_CHECK_TURN) {
+                        const scores = ptr(read(row, ROW_SCORES, 'ptr'));
+                        const damQ8 = read(scores, scope.district * 4, 'i32');
+                        if (liveReservation || minimumExclusiveQ8 !== UNRESERVED_THRESHOLD_Q8 ||
+                                damQ8 !== HEIDELBERG_DAM_SCORE_Q8 || read(row, ROW_OWNED, 'u8') !== 1)
+                            throw Error('The matched Heidelberg supplier comparison changed');
+                        record({kind: 'supplier-exclusion', turn, plot, damQ8, minimumExclusiveQ8,
+                            replacementThresholdQ8: HIGHEST_SIGNED_SCORE});
+                        this.context.rax = exclusionThreshold;
+                        excluded = true;
+                    }
                 });
             });
         }

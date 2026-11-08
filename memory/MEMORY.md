@@ -69,8 +69,19 @@ Magdeburg 35 and Heidelberg 26. The Dam took Heidelberg's only
 Maize after the same 24576 Q8 deduction. No CSC repair candidates
 were published. Alexandria's Quarter was healthy at 240, with
 the Mill pillaged and the Cattle still bare (AI-C126). The
-`development-heidelberg-pre-dam-200-01` repeat targets an inactive
-source before the Dam reservation for **2.2**.
+`development-heidelberg-pre-dam-200-01` matched all 202 census
+rows at turn 200 and verified the inactive source before the Dam
+reservation for **2.2**. The exact `development-heidelberg-dam-sites-01`
+control found the legal resource-free Farm 1169 on the same river
+138 as sole Maize 1317. The t202 Maize score won at 461089 Q8
+against 418427 Q8 cached on 1169, and the Maize was gone at 208
+(AI-C127). `development-heidelberg-supplier-exclusion-01` matched
+the t202 score and replaced only the Maize row threshold. Harbor
+won at 457534 Q8 and used contract 4536 at 206. The alternative
+Dam passed its live threshold but ranked below Harbor. Storekeeper
+worked on 201–207 and the Maize Farm remained at 208 (AI-C128).
+Follow the treatment save through 222 with the same packages and
+no probe. Next evaluate a bounded CE joint-selection exclusion.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

@@ -243,6 +243,16 @@ the only Maize despite the exact deduction. Alexandria's damaged
 chain also lacked its Pasture and fell outside the working-supplier
 repair gate. [AI-C126]
 
+Before the Dam reservation, Heidelberg had a second legal site on
+the same river, covering the same five floodplain tiles. Its Farm
+had no resource. In the read-only replay the Maize site's final Dam
+score led, the city took that site, and Storekeeper stopped. [AI-C127]
+
+The matched treatment excluded the sole Maize tile in one ordinary
+comparison. The AI preferred Harbor elsewhere over the remaining
+Dam site, and the Harbor entered production. The original Maize
+Farm and Storekeeper survived to the measured endpoint. [AI-C128]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

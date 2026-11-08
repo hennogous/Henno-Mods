@@ -53,9 +53,21 @@ with `--resume-from`, `--saves` and an endpoint at most 15 turns later.
 indices. The loaded census must show that the plot is the Quarter's sole
 working Base. `source-dam-sites.json` records new footprints admitted by
 the build operation and the native floodplain list for each.
-With `--probe-dependencies`, the same replay records those sites' Q8 scores,
-reservation IDs and the stock district winner in `dam-site-trace.json`.
-An empty trace means the city never reached the scoped native selector.
+With `--probe-dependencies`, the same replay records district planning
+checks and their occupied slot IDs, those sites' Q8 scores and
+reservation IDs, the supplier's effective selection threshold, and the
+stock winner in `dam-site-trace.json`. A planning check without a
+selection receipt identifies a check that did not reach the comparison.
+
+For the exact Heidelberg turn-200 save, `--heidelberg-supplier-exclusion`
+is a separate diagnostic treatment through 208. It verifies the
+resource-free Dam alternative shares the native floodplain, then
+raises the Maize row's threshold for the matched turn-202 comparison.
+It changes one register for that comparison and leaves the score cache
+and the rest of the native decision in place.
+Resume the verified treatment endpoint with the same `--dam-sites`
+target and packages to observe construction and Service follow-through.
+The continuation uses the native game without attaching a probe.
 
 Use `--water-mill-repair PLAYER CITY QUARTER` with a saved continuation
 and `--probe-dependencies` when the Quarter and Water Mill are pillaged

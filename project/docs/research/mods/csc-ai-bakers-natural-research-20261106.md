@@ -3235,6 +3235,79 @@ The complete result SHA-256 is
 The verified inactive turn-249 save SHA-256 is
 `8961ff4484ef396dda4ee66ff5e877b3ec1afa3294b3e9d774a7fb2dfd5d5783`.
 
+### Heidelberg had a legal Dam alternative with the same flood coverage
+
+`development-heidelberg-pre-dam-200-01` repeated the Small
+Continents development game with the same integrated packages.
+It matched all 202 rows of the turn-200 census from the full game.
+Heidelberg's completed Bakers Quarter at 1244 had a working Water
+Mill, adjacent working Granary and only one Base supplier, the
+Maize Farm at 1317. The effect audit confirmed Storekeeper on
+178–183 and 187–199. All 198 interior samples and the close
+verified. The inactive turn-200 save SHA-256 is
+`447f8f04b2b6fad1d1a2ddc5c983a961f8d0100e06c74a1abfc1322fc95fc45c`.
+
+`development-heidelberg-dam-sites-01` reloaded that exact save
+through 208 without a score write. The native build operation
+admitted two new Dam sites. Both were owned by Germany and sat on
+river 138. A complete unpillaged Dam at either site would protect
+the same five floodplain tiles, 1169, 1243, 1244, 1316 and 1317.
+Plot 1169 had a Farm on a tile with no resource. Plot 1317 had
+Heidelberg's only Maize Farm.
+
+The ordinary district plan slot was occupied on 200 and 201. It
+opened on 202. The Maize row's saved reservation ID was nonempty,
+but the native selector used the default threshold of −2,559,744
+Q8. It compared a final Dam score of 461,089 Q8 at 1317 with
+418,427 Q8 in the alternative's cache row. The Maize site won.
+The 42,662 Q8 gap compares cached values. The observer did not
+resolve the alternative's effective reservation threshold in this arm.
+
+GameCore submitted the same Dam contract 4536 at turn 202 and
+entered production on 206. The original Storekeeper effect
+operated on 201–206 and was inactive on 207. The 208 census
+confirmed the Dam footprint at 1317 and the resource-free Farm
+still at 1169. The observer froze without fault and the controller
+verified a clean close. The frozen trace SHA-256 is
+`876463f4088e7aaebdc5a99558f59652005adf164a9afe747412d50b674ef921`.
+The turn-208 save SHA-256 is
+`d36ab3f4ef306931dbe0e37a524a329b5c9a36914aeac8014ce66b88c4c36860`.
+
+#### A one-comparison supplier exclusion preserved the Maize
+
+`development-heidelberg-supplier-exclusion-01` reloaded the same
+turn-200 save with identical packages. The observer verified the
+same two legal footprints, the exact turn-202 Maize score and the
+default threshold before applying the treatment. At RVA `3e4b19`
+it changed only the RAX value for that row to a scratch int32
+containing INT_MAX. The next instruction copies the threshold into
+EDI. No signed score can exceed it. The original cached Dam
+score of 461,089 Q8 and reservation ID were still visible after
+selection. The original score storage and reservation stayed intact.
+
+The alternative Dam at 1169 had an active reservation with a
+threshold of 29,696 Q8. Its score of 418,427 Q8 passed that
+threshold, and the ordinary selector instead chose Harbor at
+(61,18) with 457,534 Q8. GameCore submitted Harbor request 4536 at
+1,787 whole units on 202 and put it into production on 206.
+The Farm without a resource also stayed intact.
+
+Storekeeper was active on all seven sampled turns 201–207, against
+six in the control. The verified inactive turn-208 census retained
+the working Maize Farm at 1317. The run closed cleanly and the
+observer recorded one exclusion and zero faults. The treatment
+trace SHA-256 is
+`e7e69c5da9dc391fd937cc9bf3c95bccadcc5c00884e0d1d07d103dfbc8af1d0`.
+The turn-208 save SHA-256 is
+`411d2b3c25dea9fd1900591725b1be92efca389f7e815d21f720dd9ed3d06534`.
+
+This is a scoped diagnostic at the joint district comparison.
+Construction completion, sustained retention after the next open
+planning slot, alternate consumers and a reusable CE policy remain
+separate checks. Same-river flood coverage made the resource-free
+Dam a legal option in this case. A Dam at that location would
+still need its own request and construction to deliver flood protection.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

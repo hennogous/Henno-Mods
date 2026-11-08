@@ -14,9 +14,13 @@ The integrated repair build's normal-start repeat matched the previous
 turn-249 development result. Melbourne reached 132 active turns,
 Launceston 60, Magdeburg 35 and Heidelberg 26. Heidelberg's Farm repair
 restored its Service on 187, but the Dam took its only Maize after the
-same 24,576 Q8 deduction. Capture a clean turn-200 save with the Farm
-working before the turn-202 reservation. Compare legal Dam alternatives
-and actual flood coverage before testing a stronger protection rule.
+same 24,576 Q8 deduction. The verified turn-200 save showed a legal
+Dam site on the same river with the same flood coverage. In the
+read-only replay the Maize site won at 461,089 Q8. The matched
+exclusion let Harbor win at 457,534 Q8 and enter production while
+the Maize Farm and Storekeeper survived. Follow the resulting save
+through construction and another planning cycle. Then qualify a
+bounded CE exclusion for ordinary joint district selection.
 
 **Open 13.1 and 14.1 — repair producers and find earlier investments.**
 The Melbourne replay established that the Rice job won, but the empire's
@@ -362,9 +366,12 @@ until the active check closes or an explicit dependency needs attention.
   either class per Quarter and account for lost Services when the last
   working supplier is threatened. Apply this to any district consuming the
   tile. Verify an absolute exclusion separately from a finite bid penalty.
-  For Heidelberg, capture a boundary before Dam reservation and compare
-  legal sites and flood coverage. Use a matched test to verify the chosen
-  alternative retains the supplier and the operating Service.
+  In Heidelberg's verified pre-reservation replay, the city had
+  a legal resource-free site with the same flood coverage. The
+  Maize plot won the native comparison. One matched exclusion let
+  Harbor start and retained the supplier and Service. Verify
+  completion, later planning and a reusable exclusion before
+  extending it to other new-district consumers.
 
 ### 3. Material work and Builder capacity
 

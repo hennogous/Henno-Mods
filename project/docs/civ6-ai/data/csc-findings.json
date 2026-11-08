@@ -1954,5 +1954,29 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C106", "AI-C107", "AI-C123"]
+  },
+  {
+    "id": "AI-C127",
+    "title": "Heidelberg chose the Maize site despite a legal Dam alternative on the same river",
+    "statement": "Native UI checks admitted plots 1169 and 1317, with equal flood coverage. Plot 1169 was a Farm with no resource. In the open turn-202 comparison the Maize plot 1317 won at 461089 Q8, against an alternative cached score of 418427 Q8. Dam request 4536 entered production on 206 and the original Storekeeper ceased on 207.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Read-only exact-source Heidelberg turn-200 to turn-208 replay, after a fresh development repeat verified the pre-Dam chain. The native site survey and selector used the integrated CSC and CE repair packages.",
+    "limits": "One city, with equal flood prevention at completion and distinct underlying land values. AI-C128 records the alternative's threshold and the matched exclusion.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C107", "AI-C126", "AI-C128", "AI-N110"]
+  },
+  {
+    "id": "AI-C128",
+    "title": "Excluding Heidelberg's Maize plot let the AI choose Harbor and retain Storekeeper",
+    "statement": "A one-comparison diagnostic made the sole Maize plot ineligible without writing its scores or reservation. Harbor at 457534 Q8 beat the other admitted pairs, including the same-river Dam at 418427 Q8. Harbor request 4536 entered production on 206. The original Maize Farm remained at 208 and Storekeeper operated on all seven measured turns.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Exact paired Heidelberg turn-200 to turn-208 development replay. The treatment replaced only the Maize row's effective reservation threshold in one stock GetBestDistrict invocation.",
+    "limits": "One controlled comparison and short Service window. Harbor completion, later decisions, all other district consumers and reusable CE delivery remain separate checks.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C127", "AI-N110"]
   }
 ]

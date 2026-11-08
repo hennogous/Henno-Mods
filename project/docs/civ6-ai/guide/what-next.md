@@ -142,10 +142,15 @@ spent Production on Line Infantry. The normal-start development
 repeat saw no immediately viable Mill exchange before Feudalism in
 its early snapshots. It reproduced four working chains and only
 Melbourne reached 100 active turns. Heidelberg again lost its only
-Maize to a Dam. The next test compares Heidelberg's legal Dam
-sites before the AI reserves one.
+Maize to a Dam. The read-only replay found a legal alternative with
+the same flood coverage. The Maize site still scored higher.
+Excluding the Maize tile in one matched comparison let the AI
+choose Harbor elsewhere. It started the Harbor and kept the Farm
+and Storekeeper. Next, verify that the protection holds after
+production and make it reusable.
 [Ancyra replay](../../research/mods/csc-ai-bakers-natural-research-20261106.md#ancyras-early-wind-mill-lost-to-walls).
 [Normal-start repeat](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-integrated-repair-build-repeated-the-ordinary-development-outcome).
+[Heidelberg site comparison](../../research/mods/csc-ai-bakers-natural-research-20261106.md#heidelberg-had-a-legal-dam-alternative-with-the-same-flood-coverage).
 
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.

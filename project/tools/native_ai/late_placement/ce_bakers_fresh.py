@@ -335,6 +335,11 @@ def run(args):
         start = checkpoint_input['turn']
         repair_followthrough = args.repair_ce_replay and previous.get('diagnostic_repair_ce_replay') is True
         expected = dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
+        if previous.get('diagnostic_heidelberg_supplier_exclusion') is True:
+            require(start == 208 and args.dam_sites == previous.get('diagnostic_dam_sites')
+                    and not args.probe_dependencies and not args.heidelberg_supplier_exclusion,
+                    'Follow the protected Heidelberg save using the native game and the same package')
+            expected.update(external_policy=True, diagnostic_heidelberg_supplier_exclusion=True)
         if 'diagnostic_supplier_boundary' in previous:
             # A read-only observer can start before the archived endpoint.
             # Keep that provenance when replaying the endpoint for a new link.
@@ -421,6 +426,12 @@ def run(args):
             protocol.update(diagnostic_mill_opening_components=True, gameplay_interventions=True)
         if args.dam_sites:
             protocol['diagnostic_dam_sites'] = args.dam_sites
+        if args.heidelberg_supplier_exclusion:
+            require(start == 200 and args.through == 208 and args.dam_sites == [3, 524295, 1244, 1317]
+                    and checkpoint_input['sha256'] == '447f8f04b2b6fad1d1a2ddc5c983a961f8d0100e06c74a1abfc1322fc95fc45c',
+                    'The supplier exclusion uses the exact pre-Dam Heidelberg source')
+            protocol.update(diagnostic_heidelberg_supplier_exclusion=True, external_policy=True,
+                            gameplay_interventions=True)
         if args.water_mill_repair:
             protocol['diagnostic_water_mill_repair'] = args.water_mill_repair
         if args.mill_only_repair:
@@ -785,8 +796,18 @@ print(string.format('CSC_DISTRICT_INDICES={{"district":%d,"districtCount":%d}}',
                 plots = ({dam_sites['protected']['plot'], *(row['plot'] for row in dam_sites['legal'])}
                          if args.dam_sites else {args.water_mill_repair[2]})
                 scope.update(width=width, height=height, **indices, plots=sorted(plots))
-                if args.quarter_repair_selector:
-                    scope['traceTree'] = True
+                scope['traceTree'] = True
+                if args.dam_sites:
+                    # Record whether planning opens and the effective threshold
+                    # on the supplier. Alternative sites already carry their
+                    # scores and reservation IDs in the comparison receipt.
+                    scope['thresholdPlot'] = dam_sites['protected']['plot']
+                    if args.heidelberg_supplier_exclusion:
+                        legal = {row['plot']: row for row in dam_sites['legal']}
+                        require(1317 in legal and 1169 in legal and legal[1169]['sameFloodplain']
+                                and legal[1169]['resource'] == -1,
+                                'The native survey no longer admits the matched resource-free Dam alternative')
+                        scope['exclusionAlternative'] = 1169
                 if args.quarter_repair_offer:
                     scope['offerRepair'] = True
                 probe = HERE / 'dam_site_observer.js'
@@ -868,6 +889,9 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             trace = observer.exports_sync.freeze()
             write_json(out / trace_name, trace)
             require(trace['fault'] is None and trace['active'] == 0, 'Native decision trace faulted')
+            if args.heidelberg_supplier_exclusion:
+                require(sum(row['kind'] == 'supplier-exclusion' for row in trace['records']) == 1,
+                        'The exact Heidelberg supplier comparison did not occur once')
             if args.quarter_repair_offer:
                 require(sum(row['kind'] == 'repair-tree' for row in trace['records']) == 1,
                         'The exact separate Quarter repair tree did not reproduce once')
@@ -956,6 +980,8 @@ if __name__ == '__main__':
                         help='Survey legal Dam sites and flood coverage around a sole working Base supplier')
     target.add_argument('--water-mill-repair', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'),
                         help='Observe a pillaged Water Mill and Quarter with the other chain links working')
+    parser.add_argument('--heidelberg-supplier-exclusion', action='store_true',
+                        help='Exclude one threatened Maize plot in the matched Heidelberg comparison')
     parser.add_argument('--quarter-repair-selector', action='store_true',
                         help='Observe the existing Quarter at the district selector instead of the Mill comparison')
     parser.add_argument('--quarter-repair-offer', action='store_true',
@@ -995,6 +1021,9 @@ if __name__ == '__main__':
         options.census_turns = QUALIFICATION_CENSUSES
     if len(options.census_turns) > 8:
         parser.error('At most eight milestone census turns are supported')
+    if options.heidelberg_supplier_exclusion and not (options.dam_sites and options.resume_from
+                                                     and options.probe_dependencies and not options.qualification):
+        parser.error('The Heidelberg exclusion requires the matched Dam continuation and native probe')
     if options.quarter_repair_selector and not options.water_mill_repair:
         parser.error('The Quarter selector requires --water-mill-repair')
     if options.mill_only_repair and not (options.water_mill_repair and options.resume_from
