@@ -1784,5 +1784,29 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/forecast-coverage.md",
     "related": ["AI-C099", "AI-C102", "AI-N026"]
+  },
+  {
+    "id": "AI-C113",
+    "title": "Melbourne reserved a Farm before it could recruit a Builder",
+    "statement": "The ordinary improvement tree selected a Farm on Melbourne's bare Rice, reserved its exact tile, and failed to recruit a Builder at each check from 106 through 111. One Builder contract was submitted to six cities and recorded no further contract event in the window. The Rice was still bare on 112.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Melbourne opening diagnostic -02, prepared turn-105 save with a removed Rice Farm, working Granary and unbuilt Wind Mill. No diagnostic score writes or CSC ready-chain preference for Melbourne.",
+    "limits": "One city and a short window. The trace establishes job selection and reservation but does not isolate the failed recruitment or why the Builder contract did not advance.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C111", "AI-C112", "AI-N104"]
+  },
+  {
+    "id": "AI-C114",
+    "title": "Melbourne's measured chain benefits left Castle ahead in the missing-Farm replay",
+    "statement": "Using the city's observed Food surplus, same-player Engineer weights and Mill income window, Storekeeper's Growth and Engineer point add about 21 utility points. The full set of missing CSC effects is about 85 points under immediate Farm and Service readiness, below the observed Castle margin of 121–281 points.",
+    "status": "accepted",
+    "evidence_types": ["source", "static", "runtime"],
+    "scope": "Read-only Melbourne turn-105 opening diagnostic -03 through 112. Uses loaded CSC effect amounts, city Food surplus 9, same-player Engineer normalization of 230 Q8 per point, and the observed 12-to-50-turn Mill window.",
+    "limits": "Sensitivity calculation for this fixture with no delays or costs, the Farm worked, and the observed pre-Farm surplus. The inactive Storekeeper roots did not return a native score. The result does not set a universal Mill preference or price a different city.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/forecast-coverage.md",
+    "related": ["AI-C112", "AI-C113", "AI-N105"]
   }
 ]

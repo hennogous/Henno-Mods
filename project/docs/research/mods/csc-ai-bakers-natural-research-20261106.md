@@ -2441,6 +2441,68 @@ reference. These are child capabilities. Melbourne's missing
 supplier kept the prospective Storekeeper roots at zero, so
 this capture did not price actual Storekeeper.
 
+#### Pricing the opening with the missing Farm
+
+`development-melbourne-opening-components-03` repeated the prepared
+opening without a score write. At the inactive turn-105 boundary the
+city reported a Food surplus of 9, 45 Production for a new Builder,
+and 40 Production for the Mill. Australia's census found one Builder
+with one charge, at `(17, 20)`, adjacent to the Rice. The census alone
+cannot establish availability to Melbourne's improvement tree.
+
+Sixteen positive reference calls used Australia's player context, the
+verified Engineer pseudo-yield index 4 and diplomatic context `-1`.
+Each gave 230 Q8 per Engineer point. Seven observed Mill forecasts
+reproduced the income window and about 12.05 marginal discount factor.
+Using the measured surplus and the native growth analyzer's 10% rate
+gives about 10.6 utility points of Growth. One Engineer point adds
+about 10.8 points under the same window. These are calibrated proxy
+values. The blocked Storekeeper roots did not return those values.
+
+Under an optimistic scenario where the Farm is ready and worked when
+the Mill opens and Storekeeper starts at once, the missing effects
+sum to about 85 utility points at the observed weights and Food surplus.
+That includes the outgoing Granary Food, Farm-to-Mill Food, the Farm's
+CSC Production and Gold, Growth and Engineer points. It excludes the
+Granary-to-Mill Production and Gold that the forecast already credits,
+and ordinary Farm output outside the CSC exchange. Castle led by about
+121–281 points across the captured comparisons. At these weights the
+measured gap does not justify raising the Mill above Castle. Delay and
+scarce Builder time reduce the expected value further. A fresh Builder's
+45 Production across three initial charges gives 15 Production per
+charge as a replacement-cost yardstick, with travel and other work still
+to consider. Those costs were not subtracted from the utility estimate.
+
+The frozen trace has no fault and SHA-256
+`bf14fc43cc373dc6a9025b519012fb4b5985200fa33b5377f4985af630dd2e6a`.
+The controller closed at 112 and verified package and preference restoration.
+
+### Melbourne reserved the Rice Farm and could not recruit a Builder
+
+In the same `-02` diagnostic, Melbourne's ordinary improvement tree
+selected a Farm at its displayed value of 300 on turn 106. It reserved
+coordinates `(18, 20)`, the bare Rice at plot 1498. `Find Available Unit`
+then failed on every logged turn from 106 through 111. The tree's Builder
+contract 1731 was submitted to six Australian cities including Melbourne.
+The city build log contains those submissions and no later event for that
+contract in the captured interval. The Rice remained bare at 112. CSC's
+ready-chain preference did not nominate Melbourne's job with its Mill
+missing. No diagnostic bid was applied.
+
+The `-03` repeat reserved the same tile on 106 and reproduced all six
+failed recruitment checks. Its starting census places the charged
+Builder next to the Rice. This makes control or evaluator eligibility
+a concrete question for the next trace, alongside the separate production
+request. The existing unit request observer has verified native entry
+points for initialization, city validation and execution. Join those
+events to the city log by player and contract ID.
+[Unit request observation](csc-ai-native-contract-observation-20261028.md).
+
+This distinguishes a winning job and reserved tile from obtaining a
+Builder. The same replay does not establish why the unit was unavailable
+or why the Builder offer did not advance. Check recruitment and city
+acceptance separately before changing either bid.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

@@ -27,6 +27,7 @@ const QUEUE_BEST_BUILDING_RETURN = 0x3e849c;
 const DIAGNOSTIC_MILL_BID_Q8 = 98304;
 const MELBOURNE_NOMINATION_Q8 = 448 * 256;
 const NORMALIZE_BUILDING_YIELD = 0x52b110;
+const NORMALIZE_PSEUDO_YIELD = 0x52af40;
 const DISCOUNT_BUILDING_INCOME = 0x528310;
 const CITY_BUILDING_YIELD_CHANGE = 0x10c0e0;
 const INTRINSIC_YIELD_RETURN = 0x52bb71;
@@ -113,7 +114,8 @@ function init(spec, scope) {
         [...exchangeYields].some(index => !Number.isInteger(index) || index < 0) ||
         bid || nominationBid || granaryBid || scope.screenProjectEligibility ||
         (scope.granaryComponents && (scope.player !== 1 || scope.city !== 327684 || scope.granary !== 3)) ||
-        (scope.millOpeningComponents && (!melbourne || granary))))
+        (scope.millOpeningComponents && (!melbourne || granary ||
+            !Number.isInteger(scope.engineerPseudoYieldIndex) || scope.engineerPseudoYieldIndex < 0))))
         throw Error('Expected a pinned read-only exchange forecast scope');
     if (bid !== 0 && (!boston || !scope.cePath || bid !== DIAGNOSTIC_MILL_BID_Q8))
         throw Error('Unsupported diagnostic Mill preference');
@@ -154,6 +156,7 @@ function init(spec, scope) {
         ] : []),
         ...(scope.millOpeningComponents ? [
             [CITY_BUILDING_YIELD_CHANGE, '48895c240848896c2410488974241857'],
+            [NORMALIZE_PSEUDO_YIELD, '48896c242056415641574883ec40418b'],
         ] : []),
         ...(captureQueueOperands ? [
             [BUILDING_COMPARISON, '443b367e11448936'],
@@ -258,6 +261,19 @@ function init(spec, scope) {
                 if (exchangeIncome.length >= 1024) throw Error('Exchange income capture bound');
                 exchangeIncome.push({...sample, amount: result.toInt32()});
             });
+            // District GPP calls the normalizer with diplomatic context -1.
+            // Use real inputs for the same player instead of invoking it.
+            observe(NORMALIZE_PSEUDO_YIELD, (args, invocation) => {
+                if (!referencePlayer || referencePlayer.isNull() || !args[3].equals(referencePlayer) ||
+                    args[2].toInt32() !== scope.engineerPseudoYieldIndex || args[4].toInt32() !== -1)
+                    return;
+                const count = referenceCounts.get('engineer') ?? 0;
+                if (count >= 16) return;
+                const inputQ8 = read(args[1], 0, 'i32');
+                if (inputQ8 <= 0) return;
+                referenceCounts.set('engineer', count + 1);
+                return {out: args[0], kind: 'engineer-reference', inputQ8, callerRva: caller(invocation)};
+            }, recordIncome);
         }
         observe(NORMALIZE_BUILDING_YIELD, (args, invocation) => {
             const yieldIndex = args[2].toInt32();

@@ -1,6 +1,7 @@
 # Current Bakers AI work — 8 November 2026
 
-Active next test **14.1, earlier chain investment**. The frozen
+Active next test **3.2, Builder recruitment and city production** for
+**14.1, earlier chain investment**. The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
 The closed turn-249 audit found Melbourne 132, Launceston 60,
@@ -30,8 +31,14 @@ measure the Mill's immediate exchange with the working Granary.
 That forecast is measured in AI-C112. The archived prepared save
 `233f30e7…` retains the Granary and bare Rice. Native valuation
 already credits +1 Production and +1 Gold. The omitted Food is
-about 18 points, below the observed Castle margin. Price credible
-Service completion separately before an opening bid.
+about 18 points. Repeat `development-melbourne-opening-components-03`
+priced the missing CSC effects at about 85 utility points with immediate
+supply and Storekeeper, below the 121–281 Castle gap. Both diagnostics
+reserved the Rice Farm on 106 and failed six recruitment checks. Builder
+contract 1731 was submitted across six Australian cities with no later
+logged event. The repeat started with one adjacent charged Builder and
+closed cleanly at 112. See AI-C113/C114. Trace recruitment and contract
+validation/queue comparison separately before changing a bid.
 
 CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native

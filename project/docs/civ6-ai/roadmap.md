@@ -323,7 +323,10 @@ until the active check closes or an explicit dependency needs attention.
   intended plot and improvement into native job allocation and observe the work.
 - **3.2 Assignment and supply.** Use a reachable Builder with charges,
   including across cities. Value another Builder when useful work exceeds
-  available capacity.
+  available capacity. In Melbourne's opening replay the AI already
+  reserved the right Farm and requested a Builder. Observe why the
+  existing unit is unavailable and whether the contract passes city
+  validation and reaches queue comparison before tuning recruitment.
 - **3.3 Improvement unlocks.** Value missing technologies early enough for
   a viable supplier to be ready when needed.
 
@@ -408,10 +411,11 @@ until the active check closes or an explicit dependency needs attention.
   opening a new one, and deferring. Include treasury, upkeep, production,
   unlock time, Builder travel and charges. Use the verified Melbourne
   turn-105 source with the Mill and Rice Farm missing. The forecast
-  already credits Production and Gold. The omitted Food is about 18
-  points in that city, below the observed Castle margin. Before
-  testing an opening bid, price the expected Service and other
-  missing benefits with the cost and likelihood of completing the Farm.
+  already credits Production and Gold. The measured missing CSC effects
+  total about 85 utility points with immediate supply and Service, below
+  Castle's 121–281 point lead. The stock tree reserved the Farm and
+  requested a Builder. Follow **3.2** before testing a Mill opening bid.
+  [Measured opening and recruitment](../research/mods/csc-ai-bakers-natural-research-20261106.md#pricing-the-opening-with-the-missing-farm).
 - **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
   One supplier can serve multiple Quarters. Count each real lost or enabled
   benefit once. The Granary publisher now emits one 52-point bid per legal

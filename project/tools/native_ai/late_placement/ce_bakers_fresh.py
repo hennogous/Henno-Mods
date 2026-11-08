@@ -567,6 +567,20 @@ ImprovementBuilder.SetImprovementType(plot, -1)
             prepared = capture_census(controller, players, start, out / 'opening-start-census.txt')
             require(prepared == sorted(bare if row == healthy else row for row in source),
                     'The opening preparation changed another census fact')
+            capture_builders(controller, 4, start, out / 'opening-builders.json')
+            economy = parse(controller.cmd("""
+local city = assert(Players[4]:GetCities():FindID(131073))
+local queue = city:GetBuildQueue()
+local builder = assert(GameInfo.Units.UNIT_BUILDER)
+local mill = assert(GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL)
+local engineer = assert(GameInfo.PseudoYields.PSEUDOYIELD_GPP_ENGINEER)
+print(string.format('CSC_OPENING_ECONOMY={"turn":%d,"foodSurplus":%.8g,"builderProduction":%d,'
+    .. '"millProduction":%d,"engineerPseudoYieldIndex":%d}',
+    Game.GetCurrentGameTurn(), city:GetGrowth():GetFoodSurplus(), queue:GetUnitCost(builder.Index),
+    queue:GetBuildingCost(mill.Index), engineer.Index))
+""", 'PlotInfo', 'opening-economy'), 'CSC_OPENING_ECONOMY')
+            require(economy['turn'] == start, 'Opening economy must match the inactive boundary')
+            write_json(out / 'opening-economy.json', economy)
             prepared_save = save_inactive_boundary(controller, turn=start, name='CSC_BAKERS_MILL_OPENING',
                                                    native_directory=args.saves, archive=out / 'opening-source.Civ6Save')
             write_json(out / 'opening-checkpoint.json', prepared_save)
@@ -653,6 +667,7 @@ ImprovementBuilder.SetImprovementType(plot, -1)
                 if args.mill_opening_components:
                     require(load(out / 'source-mill.json')['available'], 'The opening Wind Mill is unavailable')
                     scope['millOpeningComponents'] = True
+                    scope['engineerPseudoYieldIndex'] = economy['engineerPseudoYieldIndex']
                 if args.melbourne_mill_bid:
                     require(load(out / 'source-mill.json')['available'], 'Wind Mill is no longer available')
                     scope['nominationBidQ8'] = protocol['diagnostic_mill_nomination_q8']

@@ -96,10 +96,12 @@ supplier-protection problem.
 
 For earlier investment, Melbourne's turn-105 replay shows that an
 existing Granary already gives the proposed Wind Mill credit for
-Production and Gold. The missing Food is too small to change the
-observed Castle choice. Next, estimate the benefits and costs of
-getting the supplier and Storekeeper working.
-[Opening forecast evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-opening-forecast-already-credits-production-and-gold).
+Production and Gold. Even pricing the missing exchange and an
+immediately working Storekeeper leaves Castle ahead in this replay.
+Melbourne already reserved the Rice Farm and requested a Builder.
+The next question is why it could neither assign one nor get that
+request into production during the replay.
+[Opening forecast and Builder evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#pricing-the-opening-with-the-missing-farm).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
