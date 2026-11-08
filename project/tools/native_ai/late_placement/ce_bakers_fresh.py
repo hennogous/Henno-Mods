@@ -76,13 +76,16 @@ def package_identity(package):
 
 
 def untuned_manifest(root):
-    """Derive the control manifest by removing only the runtime policy action."""
+    """Keep gameplay content and remove the declared AI tuning actions."""
     actions = root.find('InGameActions')
     publisher, = (node for node in actions if node.get('id') == 'CSC_AI_BakersGameplay')
     require(publisher.tag == 'AddGameplayScripts'
             and [file.text for file in publisher.findall('File')] == ['Lua_UI/AI/CSC_AI_BakersGameplay.lua'],
             'The publisher action must have exactly one CSC policy script')
     actions.remove(publisher)
+    connectors = actions.find("UpdateDatabase[@id='CSC_AI_Connectors']")
+    if connectors is not None:
+        actions.remove(connectors)
     return ET.tostring(root, encoding='utf-8', xml_declaration=True)
 
 
@@ -300,6 +303,7 @@ def run(args):
     ce, csc = (path.resolve(strict=True) for path in (args.ce, args.csc))
     ce_id, _ = package_identity(ce)
     csc_id, csc_manifest = package_identity(csc)
+    integrated_connectors = csc_manifest.find("InGameActions/UpdateDatabase[@id='CSC_AI_Connectors']") is not None
     require(ce_id != csc_id and csc_manifest.find(f"Dependencies/Mod[@id='{ce_id}']") is not None,
             'The staged CSC manifest must depend on the separate local CE package')
     local = {ce: mods / 'CSC Bakers Development CE', csc: mods / 'CSC Bakers Development Mod'}
@@ -519,11 +523,24 @@ def run(args):
             require(manifest(local[source]) == installed_pins[source], f'Installed development package changed: {source}')
 
     def source_gate():
-        mode = 'local untuned = ' + str(args.untuned).lower() + '\n'
+        mode = ('local untuned = ' + str(args.untuned).lower() + '\n'
+                + 'local connectors = ' + str(integrated_connectors and not args.untuned).lower() + '\n')
         raw = controller.cmd(mode + """
 assert(Game.GetCurrentGameTurn()==1 and Players[0]:IsHuman())
 assert(GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER)
-assert(GameInfo.Yields.YIELD_CSC_AI_PLACEMENT==nil and GameInfo.CSC_AI_Profile==nil,'Legacy AI tuning loaded')
+assert(GameInfo.CSC_AI_Profile==nil,'Legacy AI tuning loaded')
+assert((GameInfo.Yields.YIELD_CSC_AI_PLACEMENT~=nil)==connectors,'Unexpected private AI yield')
+if connectors then
+    local count=0
+    for row in GameInfo.Adjacency_YieldChanges() do
+        if row.YieldType=='YIELD_CSC_AI_PLACEMENT' then
+            assert(row.ID:match('^CSC_AI_CUSTOMER_') and row.YieldChange==1,'Unexpected private adjacency rule')
+            count=count+1
+        end
+    end
+    assert(count>0,'No integrated customer adjacency')
+    assert(CE_AISupplierExclusionStatus():match('"ready":1'),'Supplier exclusion unavailable')
+end
 local speed=GameConfiguration.GetGameSpeedType()
 assert(speed=='GAMESPEED_ONLINE' or GameInfo.GameSpeeds[speed].GameSpeedType=='GAMESPEED_ONLINE')
 local map={}

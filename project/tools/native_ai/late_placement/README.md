@@ -15,7 +15,10 @@ all four intermediate censuses and audits the full interior Storekeeper clock.
 The matched Continents control uses `--untuned --matched-source` with the
 tuned run's archived `source.json`. The controller checks the initial map,
 roster and units and requires matching staged packages before deriving the
-control manifest. The per-game retention result counts Quarters with at least
+control manifest. The control removes the in-mod runtime policy and, when
+present, its native database connector action. A normal tuned start verifies
+that any declared private yield has only the intended customer rules and
+that CE's supplier exclusion capability is ready. The per-game retention result counts Quarters with at least
 100 confirmed active turns. Keep separate evidence for recovery and comparison
 across runs.
 
