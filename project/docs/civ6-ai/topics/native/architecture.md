@@ -58,7 +58,9 @@ Ordinary improvement admission is another boundary: CheckForImprovement can exit
 
 The Find Available Unit node checks units already assigned to its
 behavior and can recruit from an eligible pool using the behavior's
-request priority. In the inspected typed-target branch, requested
+request priority. The first pool excludes units with a controller.
+Both candidate pools exclude units marked as processed this turn or
+awaiting delayed death. In the inspected typed-target branch, requested
 type priority wins first, then plot distance breaks ties. The later
 movement path has its own checks. A Builder count alone cannot tell
 us whether a given job can obtain a worker. [AI-N104]

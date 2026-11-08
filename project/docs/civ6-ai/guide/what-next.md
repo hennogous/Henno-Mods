@@ -98,11 +98,11 @@ For earlier investment, Melbourne's turn-105 replay shows that an
 existing Granary already gives the proposed Wind Mill credit for
 Production and Gold. Even pricing the missing exchange and an
 immediately working Storekeeper leaves Castle ahead in this replay.
-Melbourne reserved the Rice Farm and accepted a Builder request while
-its production queue was busy. Next, trace why the nearby Builder
-couldn't take the job and how the request fares when cities choose
-their next build.
-[Opening forecast and Builder evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#pricing-the-opening-with-the-missing-farm).
+Melbourne reserved the Rice Farm. Its request for another Builder
+lost nine comparisons across six cities. In the closest comparison,
+Adelaide took a higher-valued request for a Builder on a different
+job. Next, trace why the nearby Builder couldn't take the Rice job.
+[Opening forecast and Builder evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-rice-builder-offer-lost-across-australian-cities).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

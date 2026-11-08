@@ -1808,5 +1808,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/forecast-coverage.md",
     "related": ["AI-C112", "AI-C113", "AI-N105"]
+  },
+  {
+    "id": "AI-C115",
+    "title": "Melbourne's Rice Builder offer lost nine valid queue comparisons",
+    "statement": "All six Australian cities accepted the Rice Farm's Builder offer at 76800 Q8. It stayed at that value after nine successful revalidations and refreshes. Each city executed a higher offer. Adelaide chose a different Builder contract at 94976 Q8, the closest margin.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Exact Melbourne opening fixture replayed from 105 through 116 under the shared controller. Read-only native queue observer scoped to the six Australian cities.",
+    "limits": "One diagnostic with the Rice Farm removed. The competing Builder was queued for Sydney's Farm but had not completed by the endpoint. The reason the nearby Builder was unavailable remains unresolved.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C113", "AI-C114", "AI-N004", "AI-N104"]
   }
 ]

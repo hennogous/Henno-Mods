@@ -1816,11 +1816,11 @@
   {
     "id": "AI-N104",
     "title": "Find Available Unit recruits existing units separately from production and movement",
-    "statement": "FindAvailableUnitNode checks units already controlled by the behavior and can call RecruitUnits with the control identity and effective request priority. RecruitUnits filters the empire's units before invoking its evaluator. The inspected typed-target evaluator branch ranks type priority first and uses plot distance to break ties.",
+    "statement": "FindAvailableUnitNode checks units already controlled by the behavior and can call RecruitUnits with the control identity and effective request priority. The first recruitment pool requires no controller. Both pools exclude processed-turn and delayed-death units. The inspected typed-target evaluator branch ranks type priority first and uses plot distance to break ties.",
     "status": "accepted",
     "evidence_types": ["static"],
     "scope": "Ghidra XP2 reference 324c51e9 and live hotfix 092abfbb with identical .text. FindAvailableUnitNode Update RVA 554b10, RecruitUnits 403190, evaluator 553570 and callback table entry a0ce08 matched.",
-    "limits": "One typed-target evaluator branch. Plot distance does not establish route viability. Exact per-unit filters and reasons for a specific recruitment failure require runtime evidence.",
+    "limits": "One typed-target evaluator branch. Plot distance does not establish route viability. The callback that supplies the second pool and the filter that affected a specific Builder require further evidence.",
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/architecture.md",
     "related": ["AI-N004", "AI-N005", "AI-N052"]

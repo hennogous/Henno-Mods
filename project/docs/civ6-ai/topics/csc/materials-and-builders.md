@@ -174,6 +174,12 @@ Builder contract was submitted to six cities. Melbourne validated it on
 receipt but had no queue comparison while producing Kōtoku-in. The Rice
 remained bare at the end of the replay. [AI-C113]
 
+The extended trace observed the same request in nine native queue
+openings across the six cities. It stayed valid at 300 points and
+lost to higher offers. Adelaide chose another Builder request at
+371 points. This is competition between requests, even when their
+result would be the same unit type. [AI-C115]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

@@ -324,9 +324,10 @@ until the active check closes or an explicit dependency needs attention.
 - **3.2 Assignment and supply.** Use a reachable Builder with charges,
   including across cities. Value another Builder when useful work exceeds
   available capacity. In Melbourne's opening replay the AI already
-  reserved the right Farm and accepted a Builder offer while its queue
-  was occupied. Trace why the nearby Builder was unavailable and how
-  the accepted offer fares at the next openings across candidate cities.
+  reserved the right Farm. The 300-point offer reached nine legal queue
+  comparisons across six cities and lost, including to a 371-point
+  Builder offer for another job. Trace the existing Builder's control
+  and eligibility before changing how this request competes.
 - **3.3 Improvement unlocks.** Value missing technologies early enough for
   a viable supplier to be ready when needed.
 

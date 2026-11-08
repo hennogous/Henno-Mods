@@ -41,6 +41,13 @@ closed cleanly at 112. The trace confirms Melbourne validated the
 offer at 76,800 Q8 while Kōtoku-in occupied its queue, with no queue
 comparison. See AI-C113/C114. Trace recruitment and cross-city queue
 comparison separately before changing a bid.
+`development-melbourne-builder-offers-01` closed cleanly at 116.
+All six cities accepted the Rice offer and nine later queue passes
+revalidated and refreshed it at 76,800 Q8. It lost every pass.
+Adelaide's winner at 94,976 Q8 was Sydney's Farm Builder, still in
+production on 115. Melbourne chose Campus on 114. Rice stayed bare.
+AI-C115 records the queue evidence. The next replay observes the
+nearby Builder's controller, processed flag and evaluator membership.
 
 CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native

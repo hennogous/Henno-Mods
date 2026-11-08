@@ -2306,6 +2306,16 @@ that callback. In the inspected typed-target branch,
 requested type priority, then shortest plot distance at equal
 priority. Plot distance is not a movement-path proof.
 
+`RecruitUnits` builds its first candidate pool only from units with
+`m_aiController == -1`, `m_bProcessedTurn == false` and
+`m_bDelayedDeath == false`. Its second pool comes from a signal
+request using the requested priority and control identity. That pool
+still checks the two Boolean fields. The archived names and offsets
+are explicit in the unit constructors at RVAs `39b140`, `66bf0`
+and `66180`, respectively `0x300`, `0x258` and `0x2e8` in the
+unit object. These are recruitment filters. They do not show which
+one affected Melbourne's nearby Builder.
+
 The Ghidra reference SHA-256 is
 `324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c`.
 The loaded hotfix was
@@ -2494,7 +2504,8 @@ failed recruitment checks. Its starting census places the charged
 Builder next to the Rice. The native trace also shows Melbourne
 accepted contract 1731 on receipt at 76,800 Q8 (300 points). Melbourne
 stayed on Kōtoku-in from 105 through 111 and the trace saw no native
-queue comparison there. Other cities that logged the submission started
+queue comparison there. Its improvement tree logged the eight-turn
+contract wait from 107 through 111. Other cities that logged the submission started
 Castle, an Encampment or a Dam after finishing their previous builds. The existing
 trace was scoped to Melbourne. It cannot distinguish a later invalid
 offer in those cities from an eligible offer that lost the comparison.
@@ -2508,6 +2519,34 @@ events to the city log by player and contract ID.
 
 The unavailable unit and later city queue competition remain separate
 questions. The trace establishes initial city acceptance for Melbourne.
+
+#### The Rice Builder offer lost across Australian cities
+
+`development-melbourne-builder-offers-01` used the same prepared
+turn-105 setup and observed all six Australian cities through turn 116.
+All six passed receipt validation for the Rice Farm's Builder offer
+1731 at 76,800 Q8 (300 points). It passed validation again in nine
+queue openings. The refresh left it at 76,800 Q8 every time. Each
+opening executed a higher-valued offer. Melbourne itself eventually
+reopened its queue on 114 and executed a Campus offer at 387,898 Q8.
+The Rice job logged the eighth turn of its wait on that same turn.
+
+The closest comparison was Adelaide. Its next build accepted another
+Builder offer, 1791, at 94,976 Q8 (371 points). Sydney's improvement
+tree requested it for the Farm at `(18, 26)`. Adelaide queued the unit
+on 112 and it was still in production on 115. Melbourne's Rice was
+still bare at 116. The other winners led
+1731 by about 394–1,893 points. These are refreshed city offer values.
+They price separate requests and must be distinguished from recruitment
+priority, the unit's Production cost and the earlier building ranking.
+The measured route reached cross-city production competition while the
+request was still valid. These results do not support a longer deadline
+or a broad Builder preference as the first intervention in this case.
+
+The read-only trace froze with zero active frames and no fault.
+The controller verified normal exit and restored the original packages
+and preferences. The trace SHA-256 is
+`376a381e67be12d28bd3984440da73780f72054b8d4f2379416ccd07c342a4fa`.
 
 ### Shared Granary hosts receive one nomination preference
 
