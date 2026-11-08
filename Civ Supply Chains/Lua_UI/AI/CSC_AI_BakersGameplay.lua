@@ -9,8 +9,41 @@ local bridge = CSC_AI_DistrictBridge
 local placement = CSC_AI_QuarterPlacement
 local identityPrefix = 'CSC_AI_OriginalHuman_'
 local capacity = 4096 -- CE batch contract, across all original AI players.
+local customerReceiptLimit = 16 -- Each customer read scans the native district journal.
+local buildingReceiptLimit = 96
 local lastTurn
 local districtCount
+local previousOffers
+
+local function readReceipt(getter, ...)
+    -- Observability is optional on older CE builds. A readback fault must
+    -- not prevent the next valid policy packet from being published.
+    local ok, result = pcall(getter, ...)
+    if ok and type(result) == 'string' then return result end
+    return '{"readbackError":true}'
+end
+
+local function reportReceipts(turn, version)
+    local previous = previousOffers
+    if not previous or previous.version ~= version then return end
+    for i = 1, math.min(#previous.customers, customerReceiptLimit) do
+        local site = previous.customers[i]
+        local result = readReceipt(CE_AIDistrictScoresReceipt, version, site.player, site.city, site.district, site.plot)
+        print(string.format('CSC_AI_CUSTOMER_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d result=%s',
+            turn, version, site.player, site.city, site.district, site.plot, result))
+    end
+    for i = 1, math.min(#previous.buildings, buildingReceiptLimit) do
+        local bid = previous.buildings[i]
+        local result = readReceipt(CE_AIBuildingNominationReceipt, version, bid.player, bid.city, bid.building)
+        print(string.format('CSC_AI_BUILDING_RECEIPT turn=%d version=%d player=%d city=%d building=%d result=%s',
+            turn, version, bid.player, bid.city, bid.building, result))
+    end
+    if #previous.customers > customerReceiptLimit or #previous.buildings > buildingReceiptLimit then
+        print(string.format('CSC_AI_RECEIPTS_OMITTED turn=%d version=%d customer=%d buildings=%d', turn, version,
+            math.max(0, #previous.customers - customerReceiptLimit),
+            math.max(0, #previous.buildings - buildingReceiptLimit)))
+    end
+end
 
 local function eligiblePlayers(turn)
     local allowed = {}
@@ -51,6 +84,7 @@ local function refresh(turn)
     assert(tonumber(status:match('"ready":(%d+)')) == 1, 'CE district scoring is unavailable')
     assert(tonumber(status:match('"faults":(%d+)')) == 0, 'CE district scoring has faulted')
     local version = assert(tonumber(status:match('"version":(%d+)')))
+    reportReceipts(turn, version)
     -- The next commit resets CE's per-publication counters.
     local matched = tonumber(status:match('"matched":(%d+)')) or 0
     local changed = tonumber(status:match('"changed":(%d+)')) or 0
@@ -165,15 +199,23 @@ local function refresh(turn)
         if #chunk > 0 then print(prefix .. '[' .. table.concat(chunk, ',') .. ']') end
     end
     local siteBids, weakSites, customerSites = 0, 0, 0
+    local tracked = {version=version + 1, customers={}, buildings={}}
     for _, entry in ipairs(entries) do
         if entry.weak then
             weakSites = weakSites + 1
         elseif entry.customer then
             customerSites = customerSites + 1
+            if type(CE_AIDistrictScoresReceipt) == 'function' then
+                tracked.customers[#tracked.customers + 1] = entry
+            end
         elseif entry.delta > 0 then
             siteBids = siteBids + 1
         end
     end
+    if type(CE_AIBuildingNominationReceipt) == 'function' and #nominations <= capacity then
+        tracked.buildings = nominations
+    end
+    previousOffers = tracked
     print(string.format('CSC_AI_BAKERS_PLACEMENT turn=%d bids=%d weak=%d customer=%d',
         turn, siteBids, weakSites, customerSites))
     if builderStatus then

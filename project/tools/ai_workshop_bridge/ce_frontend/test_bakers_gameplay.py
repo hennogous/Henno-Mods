@@ -98,6 +98,49 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_optional_native_receipts_are_read_before_the_next_packet(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        messages = []
+        lua.globals().print = messages.append
+
+        def include(name):
+            if name != 'CSC_AdjacencyCore':
+                lua.execute((SOURCE / f'{name}.lua').read_text(encoding='utf-8'))
+
+        lua.globals().include = include
+        include('CSC_AI_BakersGameplay')
+        lua.execute("""
+            ExposedMembers.CSC_Adjacency={IsSinglePlayer=function() return true end}
+            CSC_AI_QuarterPlacement.MaterialDeductions=function()
+                return {},{},{{player=3,city=42,building=8,delta=256}},{},{},{}
+            end
+            CSC_AI_QuarterSiteForecasts=function()
+                return {{player=3,city=42,district=2,plot=100,delta=256,customer=true}}
+            end
+            CE_AIBuildingNominationStatus=function()
+                return '{"ready":1,"faults":0,"maxBidQ8":1024}'
+            end
+            CE_AIBuildingNominationBid=function() return 1 end
+            CE_AIDistrictScoresReceipt=function(v,p,c,d,i)
+                assert(v==version and p==3 and c==42 and d==2 and i==100)
+                return '{"staged":1,"scoreAttempts":0}'
+            end
+            CE_AIBuildingNominationReceipt=function(v,p,c,b)
+                assert(v==version and p==3 and c==42 and b==8)
+                return '{"staged":1,"forecasts":1,"comparisons":0}'
+            end
+            boundary()
+            turn=2; boundary()
+        """)
+        self.assertIn('CSC_AI_CUSTOMER_RECEIPT turn=2 version=1 player=3 city=42 district=2 plot=100 '
+                      'result={"staged":1,"scoreAttempts":0}', messages)
+        self.assertIn('CSC_AI_BUILDING_RECEIPT turn=2 version=1 player=3 city=42 building=8 '
+                      'result={"staged":1,"forecasts":1,"comparisons":0}', messages)
+        lua.execute("CE_AIDistrictScoresReceipt=function() error('fixture') end; turn=3; boundary()")
+        self.assertEqual(lua.eval('version'), 3)
+        self.assertTrue(any('readbackError' in line for line in messages))
+
     def test_tailors_uses_same_builder_and_repair_rules_with_multiple_deposits(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)
