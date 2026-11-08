@@ -84,6 +84,34 @@ reported 163 positive score writes, versus 63 in v2, with zero faults.
 These can repeat an evaluation of the same job and do not count Builder
 assignments or completed improvements.
 
+### Publication and native consumption
+
+The publisher refreshes once per game turn for the original AI majors in
+single-player. It commits one packet and keeps it available for the native
+decisions that run during that window. The next publication normally logs
+the previous window's results. Fractal committed 200 packets and had no
+reported district-score faults or omitted district entries.
+
+The samples confirm positive and negative Quarter score edits for both
+industries. The Stage 2 building hook changed 32 scores. Its retained first
+write per window identifies native writes for Granary, Wind Mill and
+Textile Workshop. In the window before the final publication, the Workshop
+bid for player 4, city 589832 raised its nomination score from 147803 to
+262491 Q8. That city owned the Cotton and Lighthouse chain at plot 2457
+and still lacked a Workshop at the endpoint. Lighthouse bids were
+published on turns 196–200. The four windows with subsequent native
+readbacks had zero Lighthouse writes, and turn 200 was the endpoint.
+
+Native protection also applied district selector masks, Wonder score
+changes and Builder improvement score changes. The last selector
+readback recorded 132 masked rows across the session. This can include
+repeated comparisons. The harvest guard was active and logged zero
+rejections. There were no eligible Quarter repair offers or admissions
+in this game. The static customer adjacency and Builder recruitment
+rules load into the gameplay database and have no individual acceptance
+receipt. The capped samples cannot settle whether the separate published
+Harbor site offers reached an actual native score write.
+
 ## Recovered endpoint census
 
 The shared controller loaded the fresh native turn-200 autosave read-only.

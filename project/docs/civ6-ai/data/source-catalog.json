@@ -1716,8 +1716,8 @@
       "title": "Shared Stage 2 AI policy on Fractal",
       "kind": "report",
       "date": "20261108",
-      "bytes": 6516,
-      "sha256": "ba7241a87e6c181cf1fc2e878459e9f4bd7c86fa0e0374516bc41a4303b9ae9d",
+      "bytes": 8167,
+      "sha256": "011680357eb1ce4f0ccf62a434ac03ba1295edcd685cd9473e7fcdca925488b2",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"
     },
