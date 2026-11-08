@@ -49,8 +49,10 @@ Storekeeper 221–228 (AI-C122). Clean close at 229. Packaged CE repair
 admission on branch `codex/ce-district-repair-admission` at `e175f17`
 and main CSC Lua reproduced the Quarter repair through 214, with one
 admission, a duplicate rejection and zero candidates after repair
-(AI-C123). Follow the same-package Mill-only arm, then test reload
-while the repair tree is active and an empty candidate control.
+(AI-C123). The same-package Mill-only arm closed at 229 with active
+Storekeeper 221–228 and zero CE faults. The next arm archives an active
+repair at 206 for the reload test. The same-DLL empty candidate control
+and high-resolution performance measurement remain open.
 Keep Ancyra's verified turn-120 fixture available for **14.1**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`

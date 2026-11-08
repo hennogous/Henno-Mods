@@ -3061,9 +3061,19 @@ working Quarter and the still-pillaged Mill. The controller verified
 normal close and restoration. The inactive save SHA-256 is
 `1d78ac421eb66caab2bc6d5ef06784f38f31d1aadfa154210f8570a4c1a41ad8`.
 
-This tests repeated publication in one game context. Active-repair
-save/reload and the same-DLL empty-candidate arm still need a separate
-run. The existing Lua timing log did not resolve sub-second differences
+`development-alexandria-mill-repair-ce-01` reloaded that archive with
+the same packages and no additional repair policy. The Mill was eligible.
+GameCore submitted and accepted the same stock Mill request on 217 and
+219, and finished the 40-Production repair on 220. All 14 interior
+turns were sampled. The actual Storekeeper growth effect was active
+on each turn from 221 to 228. The controller verified normal close
+and restoration at 229. The endpoint save SHA-256 is
+`5156e5ee9e76b4759cfab2732915b0205113b252dcb3264fdeb499a4c1b09243`.
+
+This tests repeated publication in one game context and continuation
+after the Quarter was repaired. A reload while the repair tree is still
+active and a same-DLL empty-candidate arm need separate runs. The
+existing Lua timing log did not resolve sub-second differences
 on this late-game replay. Measure the native admission overhead and
 publisher cost with a higher-resolution clock in the performance pass.
 

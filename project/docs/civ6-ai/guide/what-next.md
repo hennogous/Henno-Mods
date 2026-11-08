@@ -128,8 +128,9 @@ and kept the Aerodrome request. Alexandria repaired the Quarter after
 finishing Broadcast Center. The later Aerodrome request also advanced.
 The restored Quarter made its Water Mill eligible. The AI completed
 the Mill repair on 220, and Storekeeper resumed on 221. The packaged
-CE and CSC versions reproduced the Quarter repair. The next check is
-whether a pending repair survives a reload without creating a duplicate.
+CE and CSC versions reproduced both repairs and the resumed Service.
+The next check is whether a pending repair survives a reload without
+creating a duplicate.
 [Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
