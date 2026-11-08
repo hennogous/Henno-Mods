@@ -60,26 +60,17 @@ local function score(district,plot,city,pid,omitDetails)
  return {production=planned.production,gold=planned.gold,total=planned.production+planned.gold,current=now,details=details,requiresBuilding=mill}
 end
 
-local BAKERS = 'DISTRICT_CSC_BAKERS_QUARTER'
-local BASE = 'CLASS_CSC_BAKERS_BASE'
-local SPECIALTY = 'CLASS_CSC_BAKERS_SPEC'
+
 local preferredAdjacency = 4
--- Initial early-score bands for a matched test. The Boston late-score
--- diagnostic needed 10,730 Q8 (AI-C061); later native terms can move an early
--- score by a different amount. Native eligibility and competition still apply.
-local preferredSiteBidQ8 = 12288
-local viableSiteBidQ8 = 6144
+-- Q8 adjustments enter the native early score. Preserve the established
+-- positive bands and apply larger finite deductions to weak Quarter sites.
+local preferredSiteBidQ8 = 48 * 256
+local viableSiteBidQ8 = 24 * 256
+local noBasePenaltyQ8 = 256 * 256
+local noCustomerPenaltyQ8 = 128 * 256
+local customerSiteBidQ8 = 40 * 256
 
-local function stageTwoHost(playerID, plot, cityCenter)
-    for _, neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
-        if neighbor:GetOwner() == playerID and neighbor:GetDistrictType() == cityCenter then
-            return true
-        end
-    end
-    return false
-end
-
-local function betterBakersSite(candidate, best)
+local function betterQuarterSite(candidate, best)
     if not best then return true end
     if candidate.adjacency ~= best.adjacency then return candidate.adjacency > best.adjacency end
     if candidate.base ~= best.base then return candidate.base > best.base end
@@ -87,104 +78,95 @@ local function betterBakersSite(candidate, best)
     return candidate.plot < best.plot
 end
 
--- A Stage 2 Bakers customer is a Granary in a friendly City Center. An
--- ordinary unbuilt district footprint cannot become that City Center.
--- This pass only proposes immediate, owned construction sites. A separate
--- settlement or tile-purchase decision can make new sites eligible later.
-function CSC_AI_BakersSiteForecasts(player, readSuppliers, protectedPlots, readLegalTargets)
-    local district = GameInfo.Districts[BAKERS]
-    local cityCenter = GameInfo.Districts.DISTRICT_CITY_CENTER
-    local rules = A.ByDistrict[BAKERS]
-    local sites = {}
-    if not district or not cityCenter or not rules or #rules == 0 then return sites end
-    local playerID = player:GetID()
-    local visibility = PlayersVisibility[playerID]
-    for _, city in player:GetCities():Members() do
-        if not city:GetDistricts():HasDistrict(district.Index) then
-            local cityID, cityX, cityY = city:GetID(), city:GetX(), city:GetY()
-            local best
-            for _, index in ipairs(readLegalTargets(playerID, cityID, district.Hash)) do
-                local plot = Map.GetPlotByIndex(index)
-                if plot and not protectedPlots[index] then
-                    local x, y = plot:GetX(), plot:GetY()
-                    local ownerCity = Cities.GetPlotPurchaseCity(plot)
-                    local resourceID = plot:GetResourceType()
-                    local resource = GameInfo.Resources[resourceID]
-                    local coversMaterial = resource and A.ResourceVisible(playerID, resourceID)
-                        and (A.HasTag(BASE, resource.ResourceType) or A.HasTag(SPECIALTY, resource.ResourceType))
-                    if plot:GetOwner() == playerID and plot:GetDistrictType() == -1 and visibility:IsRevealed(x, y)
-                        and ownerCity and ownerCity:GetID() == cityID and ownerCity:GetOwner() == playerID
-                        and Map.GetPlotDistance(cityX, cityY, x, y) <= 3
-                        and not coversMaterial and stageTwoHost(playerID, plot, cityCenter.Index)
-                        and plot:CanHaveDistrict(district.Index, playerID, cityID) then
-                        local suppliers = readSuppliers(player, plot)
-                        if #suppliers.base > 0 then
-                            local forecast = score(BAKERS, plot, city, playerID, true)
-                            local candidate = {
-                                player = playerID, city = cityID, district = district.Index, plot = index,
-                                base = #suppliers.base, specialty = #suppliers.specialty,
-                                adjacency = forecast.total, preferred = forecast.total >= preferredAdjacency,
-                            }
-                            if betterBakersSite(candidate, best) then best = candidate end
+-- Bakers needs an existing City Center. Tailors can plan around a native-
+-- legal Harbor footprint, including before its unlock. Only immediately
+-- constructible customer sites can receive a positive customer bid.
+function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, readLegalTargets)
+    local bids, potential, legalCustomers = {}, {}, {}
+    local district = profile.district
+    if not A.ByDistrict[district.DistrictType] or next(profile.customers) == nil
+        or type(readLegalTargets) ~= 'function' then return bids end
+    local pid = player:GetID()
+    local visibility = PlayersVisibility[pid]
+    local hosts = {}
+    for host in pairs(profile.customers) do
+        local definition = GameInfo.Districts[host]
+        if definition and definition.DistrictType ~= 'DISTRICT_CITY_CENTER' then
+            hosts[#hosts + 1] = definition
+            for _, city in player:GetCities():Members() do
+                if not city:GetDistricts():HasDistrict(host) then
+                    local cityID = city:GetID()
+                    for _, index in ipairs(readLegalTargets(pid, cityID, definition.Hash)) do
+                        local plot = Map.GetPlotByIndex(index)
+                        local owner = plot and Cities.GetPlotPurchaseCity(plot)
+                        if owner and owner:GetID() == cityID and plot:GetOwner() == pid
+                            and not protectedPlots[index] and plot:GetResourceType() == -1 then
+                            local choices = legalCustomers[index] or {}
+                            choices[#choices + 1] = {player=pid, city=cityID, district=host, plot=index}
+                            legalCustomers[index] = choices
                         end
                     end
                 end
             end
-            if best then
-                best.delta = best.preferred and preferredSiteBidQ8 or viableSiteBidQ8
-                sites[#sites + 1] = best
-            end
         end
     end
-    return sites
-end
 
--- Additional loaded industries use the same supplier facts and bid bands.
--- A future customer is credited only when the owner has a distinct legal
--- adjacent footprint for its actual host district.
-function CSC_AI_IndustrySiteForecasts(player, profile, readSuppliers, protectedPlots, readLegalTargets)
-    local bids, futureCustomers = {}, {}
-    local district = profile.district
-    if not A.ByDistrict[district.DistrictType] or next(profile.customers) == nil then return bids end
-    local pid = player:GetID()
-    local function canHost(plot)
-        for _, neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
-            local idx = neighbor:GetIndex()
-            if neighbor:GetOwner() == pid and (profile.customers[neighbor:GetDistrictType()]
-                or (futureCustomers[idx] and not protectedPlots[idx] and neighbor:GetResourceType() == -1)) then
-                return true
-            end
-        end
-        return false
-    end
-    for _, city in player:GetCities():Members() do
-        for host in pairs(profile.customers) do
-            local definition = GameInfo.Districts[host]
-            if definition and not city:GetDistricts():HasDistrict(host) then
-                for _, idx in ipairs(readLegalTargets(pid, city:GetID(), definition.Hash)) do
-                    futureCustomers[idx] = true
+    local function futureHost(plot)
+        local index = plot:GetIndex()
+        if potential[index] ~= nil then return potential[index] end
+        local found = legalCustomers[index] ~= nil
+        if not found and #hosts > 0 and plot:GetDistrictType() == -1
+            and not protectedPlots[index] and plot:GetResourceType() == -1 then
+            local owner = Cities.GetPlotPurchaseCity(plot)
+            if owner and owner:GetOwner() == pid then
+                for _, host in ipairs(hosts) do
+                    if not owner:GetDistricts():HasDistrict(host.Index)
+                        and plot:CanHaveDistrict(host.Index, pid, owner:GetID()) then
+                        found = true
+                        break
+                    end
                 end
             end
         end
+        potential[index] = found
+        return found
     end
+
+    local function hasHost(neighbors, includeFuture)
+        for _, neighbor in ipairs(neighbors) do
+            if neighbor:GetOwner() == pid and (profile.customers[neighbor:GetDistrictType()]
+                or (includeFuture and futureHost(neighbor))) then return true end
+        end
+        return false
+    end
+
     for _, city in player:GetCities():Members() do
         if not city:GetDistricts():HasDistrict(district.Index) then
+            local cityID = city:GetID()
             local best
-            for _, index in ipairs(readLegalTargets(pid, city:GetID(), district.Hash)) do
+            for _, index in ipairs(readLegalTargets(pid, cityID, district.Hash)) do
                 local plot = Map.GetPlotByIndex(index)
-                local resource = plot and GameInfo.Resources[plot:GetResourceType()]
                 local ownerCity = plot and Cities.GetPlotPurchaseCity(plot)
-                if plot and plot:GetOwner() == pid and ownerCity and ownerCity:GetID() == city:GetID()
+                if plot and plot:GetOwner() == pid and ownerCity and ownerCity:GetID() == cityID
                     and plot:GetDistrictType() == -1 and not protectedPlots[index]
-                    and not (resource and (A.HasTag(profile.base, resource.ResourceType)
-                        or A.HasTag(profile.specialty, resource.ResourceType))) and canHost(plot) then
+                    and visibility:IsRevealed(plot:GetX(), plot:GetY())
+                    and Map.GetPlotDistance(city:GetX(), city:GetY(), plot:GetX(), plot:GetY()) <= 3
+                    and plot:CanHaveDistrict(district.Index, pid, cityID) then
                     local supply = readSuppliers(player, plot, profile)
-                    if #supply.base > 0 then
-                        local forecast = score(district.DistrictType, plot, city, pid, true)
-                        local candidate = {player = pid, city = city:GetID(), district = district.Index, plot = index,
-                            base = #supply.base, specialty = #supply.specialty, adjacency = forecast.total}
-                        if betterBakersSite(candidate, best) then best = candidate end
+                    local resource = GameInfo.Resources[plot:GetResourceType()]
+                    local coversMaterial = resource and A.ResourceVisible(pid, resource.Index)
+                        and (A.HasTag(profile.base, resource.ResourceType) or A.HasTag(profile.specialty, resource.ResourceType))
+                    local candidate = {player=pid, city=cityID, district=district.Index, plot=index}
+                    if #supply.base == 0 or coversMaterial then
+                        candidate.delta, candidate.weak = -noBasePenaltyQ8, true
+                    elseif not hasHost(Map.GetAdjacentPlots(plot:GetX(), plot:GetY()), true) then
+                        candidate.delta, candidate.weak = -noCustomerPenaltyQ8, true
+                    else
+                        candidate.base, candidate.specialty = #supply.base, #supply.specialty
+                        candidate.adjacency = score(district.DistrictType, plot, city, pid, true).total
+                        if betterQuarterSite(candidate, best) then best = candidate end
                     end
+                    if candidate.weak then bids[#bids + 1] = candidate end
                 end
             end
             if best then
@@ -193,8 +175,31 @@ function CSC_AI_IndustrySiteForecasts(player, profile, readSuppliers, protectedP
             end
         end
     end
+
+    -- Several Quarters can share one customer district. Credit each legal
+    -- district-site pair once and leave the final Harbor choice to Civ.
+    local nominated = {}
+    for _, chain in ipairs(chains) do
+        if chain.profile == profile and chain.ready and #chain.supply.base > 0 then
+            local neighbors = Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())
+            if not hasHost(neighbors, false) then
+                for _, neighbor in ipairs(neighbors) do
+                    for _, candidate in ipairs(legalCustomers[neighbor:GetIndex()] or {}) do
+                        local key = candidate.city .. ':' .. candidate.district .. ':' .. candidate.plot
+                        if not nominated[key] then
+                            candidate.delta = customerSiteBidQ8
+                            candidate.customer = true
+                            bids[#bids + 1] = candidate
+                            nominated[key] = true
+                        end
+                    end
+                end
+            end
+        end
+    end
     return bids
 end
+
 
 function CSC_AI_AdjacencyScan(originalAI)
  local t0=os.clock();local out={turn=Game.GetCurrentGameTurn(),speed=assert(GameInfo.GameSpeeds[GameConfiguration.GetGameSpeedType()]).GameSpeedType,width=0,height=0,cities={},candidates={},quarters={},players={},currentHumans={},originalAI=originalAI,geometryBuilt=0,sitesEvaluated=0,rules={}}

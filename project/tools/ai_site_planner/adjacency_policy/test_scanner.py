@@ -94,25 +94,62 @@ local function supplies(_, site)
     return {base=site.base>0 and {true} or {}, specialty=site.spec>0 and {true} or {}}
 end
 local readLegalTargets = ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets
-local sites = CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)
-assert(#sites==1 and sites[1].plot==21 and sites[1].preferred and sites[1].adjacency==5 and sites[1].delta==12288)
-assert(checked[15] and not gameplayChecked[15] and gameplayChecked[22] and not gameplayChecked[13]
-    and not gameplayChecked[16] and not gameplayChecked[17] and not gameplayChecked[19] and not gameplayChecked[20])
-sites = CSC_AI_BakersSiteForecasts(player, supplies, {[21]=true}, readLegalTargets)
-assert(#sites==1 and sites[1].plot==11)
+local bakers = {district=GameInfo.Districts[1], customers={[0]={}},
+    base='CLASS_CSC_BAKERS_BASE', specialty='CLASS_CSC_BAKERS_SPEC'}
+local function bids(profile, protected, legal, chains)
+    local indexed = {}
+    for _, site in ipairs(CSC_AI_QuarterSiteForecasts(player, profile, chains or {},
+        supplies, protected, legal)) do indexed[site.plot] = site end
+    return indexed
+end
+local sites = bids(bakers, {}, readLegalTargets)
+assert(sites[21].adjacency==5 and sites[21].delta==12288)
+assert(sites[13].delta==-32768 and sites[14].delta==-65536 and sites[16].delta==-65536)
+assert(checked[15] and not sites[15] and not sites[17] and not sites[19] and not sites[20] and not sites[22])
+sites = bids(bakers, {[21]=true}, readLegalTargets)
+assert(not sites[21] and sites[11].delta==12288)
 cattleVisible = false
-sites = CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)
-assert(#sites==1 and sites[1].plot==16)
+sites = bids(bakers, {}, readLegalTargets)
+assert(sites[16].delta==12288)
 cattleVisible = true
 targets = {18}
-sites = CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)
-assert(#sites==1 and sites[1].plot==18 and not sites[1].preferred and sites[1].adjacency==3 and sites[1].delta==6144)
+sites = bids(bakers, {}, readLegalTargets)
+assert(sites[18].adjacency==3 and sites[18].delta==6144)
 existing = true
-assert(#CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)==0)
+assert(next(bids(bakers, {}, readLegalTargets))==nil)
 existing, placed = false, true
-assert(#CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)==0)
+assert(next(bids(bakers, {}, readLegalTargets))==nil)
 placed, unlocked = false, false
-assert(#CSC_AI_BakersSiteForecasts(player, supplies, {}, readLegalTargets)==0 and targetsRead==4)
+assert(next(bids(bakers, {}, readLegalTargets))==nil and targetsRead==4)
+
+-- The same gate accepts a future Harbor before it can be built, then
+-- nominates the actual legal host of an existing Tailors chain.
+local tailors = {district=GameInfo.Districts[2], customers={[4]={}},
+    base='CLASS_CSC_TAILORS_BASE', specialty='CLASS_CSC_TAILORS_SPEC'}
+tailors.district.Hash=1002
+GameInfo.Districts[4]={Index=4, Hash=1004, DistrictType='DISTRICT_HARBOR'}
+cityDistricts.HasDistrict=function(_, id) return existing and id==2 end
+local function tailorPlot(id)
+    makeSite(id, 4, false, 1, 0)
+    plots[id].GetIndex=function() return id end
+    plots[id].CanHaveDistrict=function(_, district) return district==2 or (district==4 and id==24) end
+end
+tailorPlot(23)
+tailorPlot(24)
+Map.GetAdjacentPlots=function(x) return x==23 and {plots[24]} or {} end
+local harborUnlocked=false
+local function legal(_, _, hash)
+    if hash==1002 then return {23} end
+    return harborUnlocked and {24} or {}
+end
+assert(bids(tailors, {}, legal)[23].delta==12288)
+assert(bids(tailors, {[24]=true}, legal)[23].delta==-32768)
+existing=true
+local chain={profile=tailors, ready=true, plot=plots[23], supply={base={true}}}
+assert(next(bids(tailors, {}, legal, {chain}))==nil)
+harborUnlocked=true
+assert(bids(tailors, {}, legal, {chain,chain})[24].delta==10240)
+assert(next(bids(tailors, {[24]=true}, legal, {chain}))==nil)
 """
 
 def main():

@@ -15,12 +15,34 @@ end
 local function info(rows)
     return setmetatable(rows, {__call = function() return iterator(rows) end})
 end
-local bakers = {Index=3}
+local bakers = {Index=3,DistrictType='DISTRICT_CSC_BAKERS_QUARTER'}
+local center = {Index=0,DistrictType='DISTRICT_CITY_CENTER'}
 local cattle = {Index=4,ResourceType='RESOURCE_CATTLE'}
+local pastureKind = {Index=5}
+local alternateKind = {Index=6}
 GameInfo = {
-    Districts=info({{Index=0},{Index=1},{Index=2},bakers,DISTRICT_CSC_BAKERS_QUARTER=bakers}),
+    Districts=info({center,{Index=1},{Index=2},bakers,DISTRICT_CSC_BAKERS_QUARTER=bakers,
+        DISTRICT_CITY_CENTER=center}),
     Resources={[4]=cattle,RESOURCE_CATTLE=cattle},
-    Improvements={IMPROVEMENT_PASTURE={Index=5}, IMPROVEMENT_FIXTURE={Index=6}},
+    Improvements={[5]=pastureKind, [6]=alternateKind,
+        IMPROVEMENT_PASTURE=pastureKind, IMPROVEMENT_FIXTURE=alternateKind},
+    Buildings={
+        BUILDING_GRANARY={Index=8,Hash=108,PrereqDistrict='DISTRICT_CITY_CENTER'},
+        BUILDING_CSC_BAKERS_WATER_MILL={Index=9,Hash=109,PrereqDistrict=bakers.DistrictType},
+        BUILDING_CSC_BAKERS_WIND_MILL={Index=10,Hash=110,PrereqDistrict=bakers.DistrictType},
+        BUILDING_FIXTURE_GRANARY={Index=11,Hash=111,PrereqDistrict='DISTRICT_CITY_CENTER'},
+    },
+    BuildingReplaces=info({
+        {ReplacesBuildingType='BUILDING_GRANARY',CivUniqueBuildingType='BUILDING_FIXTURE_GRANARY'},
+    }),
+    DistrictReplaces=info({}),
+    CSC_QuarterFlowBuildings=info({
+        {QuarterKey='BAKERS',Stage=2,BuildingType='BUILDING_CSC_BAKERS_WIND_MILL'},
+        {QuarterKey='BAKERS',Stage=2,BuildingType='BUILDING_CSC_BAKERS_WATER_MILL'},
+    }),
+    CSC_QuarterCustomerBuildings=info({
+        {QuarterKey='BAKERS',ProducerStage=2,BuildingType='BUILDING_GRANARY'},
+    }),
     Improvement_ValidResources=info({
         {ResourceType='RESOURCE_CATTLE',ImprovementType='IMPROVEMENT_PASTURE'},
         {ResourceType='RESOURCE_CATTLE',ImprovementType='IMPROVEMENT_FIXTURE'},
@@ -35,7 +57,8 @@ CSC_Adjacency = {
 local quarter = {GetType=function() return 3 end, GetX=function() return 10 end, GetY=function() return 10 end,
     GetIndex=function() return 100 end, IsComplete=function() return true end, IsPillaged=function() return false end}
 local districts = {GetNumDistricts=function() return 1 end, GetDistrictByIndex=function() return quarter end}
-city = {GetDistricts=function() return districts end, GetProperty=function() return 1 end}
+city = {GetDistricts=function() return districts end, GetProperty=function() return 1 end,
+    GetID=function() return 42 end}
 local cities = {Members=function()
     local once = false
     return function() if not once then once = true; return 1,city end end
@@ -75,6 +98,76 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_tailors_uses_same_builder_and_repair_rules_with_multiple_deposits(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        lua.execute("""
+            local tailor = GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER
+            GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER = nil
+            tailor.DistrictType = 'DISTRICT_CSC_TAILORS_QUARTER'
+            GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER = tailor
+            GameInfo.Districts.DISTRICT_HARBOR = {Index=2, DistrictType='DISTRICT_HARBOR'}
+            GameInfo.Buildings.WORKSHOP = {Index=9, Hash=109, PrereqDistrict=tailor.DistrictType}
+            GameInfo.Buildings.LIGHTHOUSE = {Index=8, Hash=108, PrereqDistrict='DISTRICT_HARBOR'}
+            local function row(value)
+                return function()
+                    local used = false
+                    return function() if not used then used = true; return value end end
+                end
+            end
+            GameInfo.CSC_QuarterFlowBuildings = row({QuarterKey='TAILORS', Stage=2, BuildingType='WORKSHOP'})
+            GameInfo.CSC_QuarterCustomerBuildings = row({QuarterKey='TAILORS', ProducerStage=2, BuildingType='LIGHTHOUSE'})
+            GameInfo.Civics = {CIVIC_NAVAL_TRADITION={Index=7}}
+            Players[3].GetCulture = function() return {HasCivic=function(_, id) return id==7 end} end
+            CSC_Adjacency.HasTag = function(tag) return tag=='CLASS_CSC_TAILORS_BASE' end
+            city.GetProperty = function() return 0 end
+            city.GetBuildings = function()
+                return {HasBuilding=function(_, id) return id==9 and workshop end,
+                    IsPillaged=function() return damaged end, GetBuildingLocation=function() return 100 end}
+            end
+            local harbor = {GetIndex=function() return 99 end, GetOwner=function() return 3 end,
+                GetDistrictType=function() return 2 end, GetResourceType=function() return -1 end}
+            local alternative = setmetatable({GetIndex=function() return 98 end,
+                GetImprovementType=function() return -1 end, IsImprovementPillaged=function() return false end},
+                {__index=pasture})
+            local getPlot = Map.GetPlotByIndex
+            Map.GetPlotByIndex = function(id) return id==98 and alternative or getPlot(id) end
+            Map.GetAdjacentPlots = function() return {alternative,pasture,harbor} end
+            local getBuyer = Cities.GetPlotPurchaseCity
+            Cities.GetPlotPurchaseCity = function(plot)
+                if plot~=harbor then return getBuyer(plot) end
+                return {GetOwner=function() return 3 end, GetID=function() return 77 end,
+                    GetBuildings=function()
+                        return {HasBuilding=function(_, id) return id==8 and lighthouse end,
+                            IsPillaged=function() return false end, GetBuildingLocation=function() return 99 end}
+                    end}
+            end
+            Map.GetPlot().IsPillaged = function() return damaged end
+            workshop, lighthouse, damaged, pillaged = true, true, false, true
+        """)
+        lua.execute((SOURCE / 'CSC_AI_QuarterPlacement.lua').read_text(encoding='utf-8'))
+        lua.execute("""
+            function plan()
+                local _, jobs, buildings, repairs = CSC_AI_QuarterPlacement.MaterialDeductions(
+                    Players[3], true, 16384, 131072, function() return true end, true)
+                local values = {}
+                for _, job in ipairs(jobs) do values[job.plot] = job.deltaQ8 end
+                return values, buildings, repairs
+            end
+            jobs, buildings, repairs = plan()
+        """)
+        self.assertEqual(lua.eval('jobs[101]'), 14336)
+        self.assertIsNone(lua.eval('jobs[98]'))
+        lua.execute('pillaged=false; lighthouse=false; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('buildings[1].city'), 77)
+        self.assertEqual(lua.eval('buildings[1].delta'), 13312)
+        lua.execute('lighthouse=true; workshop=false; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('buildings[1].city'), 42)
+        self.assertEqual(lua.eval('buildings[1].delta'), 114688)
+        lua.execute('workshop=true; damaged=true; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('repairs[1].district'), 3)
+        self.assertEqual(lua.eval('#buildings'), 0)
+
     def test_shared_model_resolves_unique_host_and_building(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)
@@ -161,10 +254,12 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         self.assertEqual(lua.eval('wonderStages'), 0)
         lua.execute("""
-            CSC_AI_BakersSiteForecasts=function(player, readSuppliers, excluded, readLegalTargets)
-                assert(player==Players[3] and readSuppliers==CSC_AI_QuarterPlacement.ReadBakersSuppliers and excluded[101])
+            CSC_AI_QuarterSiteForecasts=function(player, profile, chains, readSuppliers, excluded, readLegalTargets)
+                assert(player==Players[3] and profile.key=='BAKERS' and #chains==1)
+                assert(readSuppliers==CSC_AI_QuarterPlacement.ReadSuppliers and excluded[101])
                 assert(readLegalTargets==ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets)
-                return {{player=3,city=42,district=3,plot=100,delta=12288}}
+                return {{player=3,city=42,district=3,plot=100,delta=12288},
+                    {player=3,city=42,district=3,plot=102,delta=-65536,weak=true}}
             end
             CE_AIDistrictScoresStatus=function()
                 return '{"ready":1,"faults":0,"version":'..version..
@@ -174,6 +269,7 @@ class BakersGameplayTest(unittest.TestCase):
         """)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         self.assertEqual(lua.eval('table.concat(packet[2], ",")'), '3,42,3,100,12288')
+        self.assertEqual(lua.eval('table.concat(packet[3], ",")'), '3,42,3,102,-65536')
         self.assertIn('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=5 previousVersion=4 samples=[[3,42,1,101,12288,0]]',
                       messages)
         lua.execute("""
@@ -188,23 +284,12 @@ class BakersGameplayTest(unittest.TestCase):
         chunks = [line for line in messages if 'CSC_AI_BAKERS_DISTRICT_SAMPLES turn=6 ' in line]
         self.assertEqual([line.count('[3,42,1,') for line in chunks], [16, 16, 1])
         self.assertTrue(all(len(line) < 1500 and line.endswith(']]') for line in chunks))
-        lua.execute("CSC_AI_BakersSiteForecasts=function() error('fixture') end; turn=7; boundary()")
+        lua.execute("CSC_AI_QuarterSiteForecasts=function() error('fixture') end; turn=7; boundary()")
         self.assertEqual(lua.eval('#packet'), 1)
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         lua.execute("""
             GameInfo.Civics={CIVIC_FEUDALISM={Index=7}}
             Players[3].GetCulture=function() return {HasCivic=function(_, i) return i==7 end} end
-            GameInfo.Districts.DISTRICT_CITY_CENTER={Index=0}
-            GameInfo.Buildings={BUILDING_GRANARY={Index=8,Hash=108}, BUILDING_CSC_BAKERS_WATER_MILL={Index=9},
-                BUILDING_FIXTURE_GRANARY={Index=11,Hash=111,PrereqDistrict='DISTRICT_CITY_CENTER'}}
-            GameInfo.BuildingReplaces=function()
-                local given = false
-                return function()
-                    if given then return end
-                    given = true
-                    return {ReplacesBuildingType='BUILDING_GRANARY',CivUniqueBuildingType='BUILDING_FIXTURE_GRANARY'}
-                end
-            end
             city.GetProperty=function() return 0 end
             city.GetBuildings=function()
                 return {HasBuilding=function(_, i) return i==9 end, IsPillaged=function() return false end,
@@ -249,12 +334,6 @@ class BakersGameplayTest(unittest.TestCase):
                 return '{"ready":1,"faults":0,"maxBidQ8":'..nominationLimit..'}'
             end
             nominationLimit = 32768
-            GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL.PrereqTech = 'TECH_ENGINEERING'
-            GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL = {Index=10, PrereqTech='TECH_MACHINERY'}
-            GameInfo.Technologies = {TECH_ENGINEERING={Index=1}, TECH_MACHINERY={Index=2}}
-            Players[3].GetTechs = function()
-                return {HasTech=function(_, i) return i == 1 or machinery end}
-            end
             city.GetID = function() return 42 end
             city.GetBuildings = function()
                 return {HasBuilding=function(_, i) return i==9 and hasMill end,
@@ -262,6 +341,15 @@ class BakersGameplayTest(unittest.TestCase):
                     GetBuildingLocation=function() return 100 end}
             end
             Map.GetPlot().IsRiver = function() return river end
+            CityManager = {GetCity=function(player, id)
+                assert(player==3 and id==42)
+                return {GetBuildQueue=function()
+                    return {CanProduce=function(_, hash, visible, immediate)
+                        assert(visible==false and immediate==true)
+                        return (hash==109 and river) or (hash==110 and machinery)
+                    end}
+                end}
+            end}
             machinery, river, hasMill = true, false, false
             turn=11; boundary()
         """)

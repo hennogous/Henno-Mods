@@ -1,4 +1,4 @@
--- Publish CSC's Bakers district preferences from one gameplay context.
+-- Publish CSC's Quarter policies from one gameplay context.
 -- Native scoring still checks eligibility and compares the resulting bids.
 include('CSC_AdjacencyCore')
 include('CSC_AI_AdjacencyScan')
@@ -29,6 +29,9 @@ local function eligiblePlayers(turn)
 end
 
 local function priority(a, b)
+    -- Wide weak-site coverage must never crowd out supplier protection or
+    -- a positive bid for a viable Quarter or its customer.
+    if (a.weak == true) ~= (b.weak == true) then return not a.weak end
     if a.delta ~= b.delta then return a.delta < b.delta end
     if a.player ~= b.player then return a.player < b.player end
     if a.city ~= b.city then return a.city < b.city end
@@ -85,7 +88,7 @@ local function refresh(turn)
     local allowances, stageTwo = 0, {}
     for _, id in ipairs(players) do
         local player = Players[id]
-        local deductions, sites, bids, candidates, chains, threatened = placement.BakersMaterialDeductions(player, protectBuilders,
+        local deductions, sites, bids, candidates, chains, threatened = placement.MaterialDeductions(player, protectBuilders,
             builderBidLimit, nominationLimit, ui.CanProduceBuilding, repairLimit > 0)
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
         for _, candidate in ipairs(candidates) do repairs[#repairs + 1] = candidate end
@@ -101,23 +104,14 @@ local function refresh(turn)
         end
         -- An unsupported placement read must leave the working supplier
         -- protection active. A fresh native site score is still required.
-        local scanned, bids = pcall(CSC_AI_BakersSiteForecasts, player, placement.ReadBakersSuppliers, protectedPlots,
-            ui.GetLegalDistrictTargets)
-        if scanned then
-            for _, bid in ipairs(bids) do entries[#entries + 1] = bid end
-        else
-            print(string.format('CSC_AI_BAKERS_PLACEMENT_FAILED turn=%d player=%d %s', turn, id, tostring(bids)))
-        end
         for _, profile in ipairs(placement.StageTwoProfiles()) do
-            if profile.key ~= 'BAKERS' then
-                local ok, industryBids = pcall(CSC_AI_IndustrySiteForecasts, player, profile,
-                    placement.ReadSuppliers, protectedPlots, ui.GetLegalDistrictTargets)
-                if ok then
-                    for _, bid in ipairs(industryBids) do entries[#entries + 1] = bid end
-                else
-                    print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',
-                        turn, id, profile.key, tostring(industryBids)))
-                end
+            local ok, industryBids = pcall(CSC_AI_QuarterSiteForecasts, player, profile, chains,
+                placement.ReadSuppliers, protectedPlots, ui.GetLegalDistrictTargets)
+            if ok then
+                for _, bid in ipairs(industryBids) do entries[#entries + 1] = bid end
+            else
+                print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',
+                    turn, id, profile.key, tostring(industryBids)))
             end
         end
         for _, chain in ipairs(chains or {}) do
@@ -170,11 +164,18 @@ local function refresh(turn)
         end
         if #chunk > 0 then print(prefix .. '[' .. table.concat(chunk, ',') .. ']') end
     end
-    local siteBids = 0
+    local siteBids, weakSites, customerSites = 0, 0, 0
     for _, entry in ipairs(entries) do
-        if entry.delta > 0 then siteBids = siteBids + 1 end
+        if entry.weak then
+            weakSites = weakSites + 1
+        elseif entry.customer then
+            customerSites = customerSites + 1
+        elseif entry.delta > 0 then
+            siteBids = siteBids + 1
+        end
     end
-    print(string.format('CSC_AI_BAKERS_PLACEMENT turn=%d bids=%d', turn, siteBids))
+    print(string.format('CSC_AI_BAKERS_PLACEMENT turn=%d bids=%d weak=%d customer=%d',
+        turn, siteBids, weakSites, customerSites))
     if builderStatus then
         print(string.format('CSC_AI_BAKERS_BUILDERS turn=%d allowances=%d previous=%s',
             turn, allowances <= capacity and allowances or 0, builderStatus))
