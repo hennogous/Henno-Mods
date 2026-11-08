@@ -255,11 +255,43 @@ class BakersGameplayTest(unittest.TestCase):
         """)
         self.assertEqual(lua.eval('#nominations'), 1)
         self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,13312')
-        lua.execute('hasGranary=true; granaryPillaged=true; turn=17; boundary()')
+        lua.execute("""
+            local getCities = Players[3].GetCities
+            local getPlot = Map.GetPlot
+            local secondQuarter = setmetatable({
+                GetX=function() return 11 end,
+                GetIndex=function() return 102 end,
+            }, {__index=getPlot()})
+            local secondCity = setmetatable({
+                GetID=function() return 43 end,
+                GetDistricts=function()
+                    return {GetNumDistricts=function() return 1 end,
+                            GetDistrictByIndex=function() return secondQuarter end}
+                end,
+                GetBuildings=function()
+                    local buildings = city:GetBuildings()
+                    buildings.GetBuildingLocation=function() return 102 end
+                    return buildings
+                end,
+            }, {__index=city})
+            Map.GetPlot=function(x, y)
+                if x==11 then return secondQuarter end
+                return getPlot(x,y)
+            end
+            Players[3].GetCities=function()
+                return {Members=function() return ipairs({city,secondCity}) end}
+            end
+            turn=17; boundary()
+            Map.GetPlot = getPlot
+            Players[3].GetCities = getCities
+        """)
+        self.assertEqual(lua.eval('#nominations'), 1)
+        self.assertEqual(lua.eval('table.concat(nominations[1], ",")'), '3,77,11,13312')
+        lua.execute('hasGranary=true; granaryPillaged=true; turn=18; boundary()')
         self.assertEqual(lua.eval('#nominations'), 0)
-        lua.execute('hasGranary=false; millPillaged=true; turn=18; boundary()')
+        lua.execute('hasGranary=false; millPillaged=true; turn=19; boundary()')
         self.assertEqual(lua.eval('#nominations'), 0)
-        lua.execute('turn=19; Players[3].IsHuman=function() return true end; boundary()')
+        lua.execute('turn=20; Players[3].IsHuman=function() return true end; boundary()')
         self.assertIsNone(lua.eval('packet'))
 
 

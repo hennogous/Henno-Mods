@@ -403,7 +403,9 @@ until the active check closes or an explicit dependency needs attention.
   unlock time, Builder travel and charges.
 - **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
   One supplier can serve multiple Quarters. Count each real lost or enabled
-  benefit once.
+  benefit once. The Granary publisher now emits one 52-point bid per legal
+  variant when two working Mills share its host. The packet fixture passes.
+  Shared-supplier valuation and live shared-customer follow-through remain open.
 
 ### 15. Quarter investment and trade
 

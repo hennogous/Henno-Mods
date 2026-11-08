@@ -139,14 +139,18 @@ local function workingBakersMill(city, plot)
         or workingBuildingAt(buildings, GameInfo.Buildings[WIND_MILL], plot)
 end
 
-local function nominateBakersGranaries(entries, player, quarter, bid, canProduceBuilding)
+local function nominateBakersGranaries(entries, visitedCustomers, player, quarter, bid, canProduceBuilding)
     visitBakersCustomers(player, quarter, function(buyer)
+        local city = buyer:GetID()
+        -- Several Mills can share a City Center, but the city makes one
+        -- Granary investment. Credit the calibrated single exchange once.
+        if visitedCustomers[city] then return end
+        visitedCustomers[city] = true
         local buildings = buyer:GetBuildings()
         for _, kind in ipairs(granaryTypes) do
             -- A pillaged Granary calls for repair and remains the existing customer.
             if buildings:HasBuilding(kind.Index) then return end
         end
-        local city = buyer:GetID()
         for _, kind in ipairs(granaryTypes) do
             if canProduceBuilding(player, city, kind.Hash) then
                 entries[#entries + 1] = { player = player, city = city, building = kind.Index, delta = bid }
@@ -185,6 +189,7 @@ end
 
 function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit, nominationLimit, canProduceBuilding)
     local risks, recover, nominations = {}, {}, {}
+    local visitedCustomers = {}
     local quarterType = GameInfo.Districts[BAKERS]
     if not quarterType then return risks, recover, nominations end
     local recoveryBid = math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8)
@@ -209,7 +214,8 @@ function CSC_AI_QuarterPlacement.BakersMaterialRisk(player, builderBidLimit, nom
                     and workingBakersMill(city, plot:GetIndex())
                 -- The exchange can operate before the Farm or Feudalism.
                 if millWorks and customerBid > 0 then
-                    nominateBakersGranaries(nominations, player:GetID(), plot, customerBid, canProduceBuilding)
+                    nominateBakersGranaries(nominations, visitedCustomers, player:GetID(), plot, customerBid,
+                        canProduceBuilding)
                 end
                 if serviceUnlocked and ready and not activeService then
                     local base = supply.base

@@ -1736,5 +1736,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C104", "AI-C106"]
+  },
+  {
+    "id": "AI-C109",
+    "title": "CSC publishes one calibrated Granary bid for a customer shared by two Mills",
+    "statement": "A Lua regression fixture reproduced two identical 13312 Q8 nomination entries for a legal Granary replacement adjacent to two working Bakers Mills. The CSC publisher now visits the customer city once in each player pass, leaving one entry.",
+    "status": "accepted",
+    "evidence_types": ["source"],
+    "scope": "Actual CSC gameplay publisher, policy and bridge executed under Lua 5.1 with two Quarters, a shared customer and an exact native-binding test double.",
+    "limits": "Offline packet evidence. Live shared-customer choice and the separate marginal value of a second Mill remain unmeasured.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "depends_on": ["AI-C102"]
   }
 ]

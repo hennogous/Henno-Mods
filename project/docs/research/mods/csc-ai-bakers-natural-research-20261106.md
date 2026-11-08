@@ -2262,6 +2262,18 @@ and `449749615a77f50c84e210794968c0df8d94f65c3aec7c1d8bedbf4f581f7127`.
 This was a development game with no matched control. The
 preselected validation seeds remained unused.
 
+### Shared Granary hosts receive one nomination preference
+
+The CSC publisher formerly visited a Granary host once from each
+adjacent working Mill. A two-Mill Lua fixture reproduced two
+identical packets for player 3, city 77 and its legal unique
+Granary replacement. The publisher now visits each customer city
+once per player and policy publication, retaining the existing
+13,312 Q8 preference and native eligibility checks. The same
+fixture now receives one packet. It does not measure the value
+of the incremental exchange from a second Mill or demonstrate
+a change in native selection.
+
 ## Evidence locator
 
 The evidence root is `Desktop/Codex/csc-bakers-natural-20261106`. The first
