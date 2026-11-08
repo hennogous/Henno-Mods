@@ -1986,9 +1986,21 @@
     "status": "accepted",
     "evidence_types": ["runtime"],
     "scope": "Small Ancient Prince Online games on Continents, Pangaea and Fractal with stock AI, the integrated CSC publisher and the local CE supplier exclusion package. The shared controller collected 198 interior Storekeeper samples per game without enabling test policy.",
-    "limits": "Only one Bakers chain reached 100 cumulative active turns. No matched untuned arm isolates the treatment effect. Tailors Service properties and Bakers native effects are separate measures. The CE branch and any other placement paths require separate qualification.",
+    "limits": "Only one Bakers chain reached 100 cumulative active turns. AI-C130 adds the later matched baseline. Tailors Service properties and Bakers native effects are separate measures. The CE branch and any other placement paths require separate qualification.",
     "sources": ["project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"],
     "topic": "topics/csc/site-planner.md",
-    "related": ["AI-C126", "AI-C128"]
+    "related": ["AI-C126", "AI-C128", "AI-C130"]
+  },
+  {
+    "id": "AI-C130",
+    "title": "Matched v2 games formed more working Bakers chains while stock AI had higher aggregate endpoint income",
+    "statement": "Three normal-start pairs yielded 2 Bakers chains and 94 confirmed chain-turns without tuning versus 13 and 546 in v2. The endpoint census found 56 versus 55 finished Bakers Quarters, 9 versus 17 with developed Base, and 2 versus 12 active source Service properties. Tailors recorded no active Stage 2 property in either arm. The baseline had greater aggregate Production, net Gold income, population and Food surplus at turn 200, and lower Gold reserves.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Continents, Pangaea and Fractal with paired seeds, identical frozen CSC gameplay and CE, and matching starting map signatures, leader rosters, plots and units. The baseline removed the CSC publisher and connector actions. Native Storekeeper audit on turns 2–199 and read-only exact-turn-200 save census for 15 original AI majors per arm.",
+    "limits": "Three paired starts measure the combined tuning package. The comparison cannot assign an effect to an individual connector or explain the economic differences. Economy values are endpoint rates and stocks. Later-stage Services and Tailors lack an independent per-turn payout audit.",
+    "sources": ["project/docs/research/mods/csc-ai-integrated-stage-two-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C129"]
   }
 ]

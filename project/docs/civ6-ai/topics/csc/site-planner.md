@@ -64,8 +64,10 @@ resumption in ordinary play. The audit by itself does not identify the cause
 of either interruption or which tuning input contributed to the resumption.
 The earlier Continents development run on the same seed had three chains
 and 116 chain-turns through turn 199. Several tuning inputs changed together
-and there was no matched untuned run in this batch. The comparison describes
-development progress and cannot isolate a treatment effect.
+in that earlier run. A later matched baseline kept this v2 build's gameplay
+and CE package and disabled its CSC tuning actions. It produced two Bakers
+chains and 94 confirmed chain-turns across the three maps, compared with
+13 chains and 546 chain-turns in v2.
 
 The shared publisher completed 200 passes in each game with no reported
 publication faults. CE reported 241, 165 and 206 protected selector rows
@@ -77,6 +79,7 @@ open whether the main losses are site access, development, or subsequent
 loss of suppliers.
 
 [Frozen setup, per-chain windows and evidence locations](../../../research/mods/csc-ai-integrated-stage-two-20261108.md).
+[Matched baseline and v2 comparison](../../../research/mods/csc-ai-integrated-stage-two-20261108.md#matched-baseline-with-csc-tuning-disabled).
 
 ## Earlier offline placement model
 

@@ -10,6 +10,14 @@ Stage 2 Service. The shared model is running for both Quarters. The Tailors
 results show where to look next for the missing links.
 [Game results and measurement details](../topics/csc/site-planner.md#three-normal-start-games-through-turn-200).
 
+Repeating the same starts with CSC tuning off yielded two Bakers chains
+and 94 confirmed Service turns. V2 had almost the same number of Bakers
+Quarters and substantially more with working Base supply and a working
+customer. Neither arm had an active Tailors Stage 2 Service at turn 200.
+The v2 empires had higher Gold reserves overall but lower combined
+Production, net Gold income, population and Food surplus at that boundary.
+[Matched comparison and turn-200 census](../../research/mods/csc-ai-integrated-stage-two-20261108.md#matched-baseline-with-csc-tuning-disabled).
+
 ## Milestone reached — Boston's working Bakers chain
 
 Boston completed Bakers on our chosen site after one turn-22 score change.
