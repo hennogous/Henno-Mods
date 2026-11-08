@@ -3111,6 +3111,43 @@ pillaged, with the original supplier and customer working. The
 controller verified the clean close and inactive turn-214 save SHA-256
 `eba7caf1ab28938c5766a7428ad9758996e156ad4aeb79ffe37f27297be75ee8`.
 
+### Ancyra's early Wind Mill lost to Walls
+
+`development-ancyra-wind-opening-01` continued the verified
+`development-alexandria-fresh-105-observe-01` turn-120 archive through
+135 with the original packages. The source save SHA-256 is
+`a74a60e6f07b5303d01e5c441dce5e96d71e2cf1eebaa30c0ed02d6e230c2a56`.
+Ancyra had Feudalism, an inland Quarter on 1430 and a working Rice
+Farm on 1429. Its adjacent City Center had no Granary and the
+Quarter's Wind Mill was legal and unbuilt. The read-only probe
+recorded zero score additions at every scoped comparison.
+
+| Ordinary building comparison | Wind Mill Q8 | Walls Q8 | Gap Q8 |
+| --- | ---: | ---: | ---: |
+| First | 46,569 | 154,244 | 107,675 |
+| Second | 89,260 | 326,002 | 236,742 |
+
+The Mill passed its requirements at these two ordinary `3e160a`
+comparisons and at all fifteen scoped comparisons in other callers.
+The first production comparison rejected Builder offer 2187 at
+52,736 Q8 against the unit and project alternatives at 87,717 and
+63,630 Q8. A Walls request succeeded on the building fallback. The
+queue recorded Art Museum completion on 131 and Walls on 132–133.
+The next scoped queue pass accepted Line Infantry offer 2376 at
+258,816 Q8, above its unit and project alternatives at 76,510 and
+66,660 Q8. The production log confirmed Line Infantry on 134. Both
+Bakers buildings were still absent at the turn-135 endpoint, with
+the original Rice Farm working. The observed margins describe how
+strong the alternatives were. Pricing the Mill's chain contribution
+also requires the likely timing of the Granary and the local value
+of the benefits during that window.
+
+The observer froze without faults and the controller verified clean
+exit and restoration. The observer SHA-256 is
+`b0a27df698fa57071c2104b9e2fb239e38b68af2035c1b29e202e9ccc4a4b4b4`.
+The verified turn-135 save SHA-256 is
+`027cfe5df1b4b701b7db6e433747fe7737e5e0ed8b4658631ef6813062416f9a`.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

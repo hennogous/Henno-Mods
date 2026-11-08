@@ -134,6 +134,14 @@ used the original request, and CE suppressed a duplicate. In the matched
 run with the same CE binary and repair nominations disabled, both the
 Quarter and its Mill were still pillaged at turn 214.
 [Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
+
+Ancyra already had a working Rice Farm but needed both the Wind Mill
+and Granary. The legal Mill lost both ordinary building comparisons
+to Walls. The AI also spent Production on Line Infantry in that
+window. The next comparison is the Granary from the same save, so we
+can judge which first investment has the stronger case.
+[Ancyra replay](../../research/mods/csc-ai-bakers-natural-research-20261106.md#ancyras-early-wind-mill-lost-to-walls).
+
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

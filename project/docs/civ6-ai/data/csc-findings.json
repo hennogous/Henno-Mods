@@ -1930,5 +1930,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C123"]
+  },
+  {
+    "id": "AI-C125",
+    "title": "Ancyra's earlier Wind Mill lost both ordinary comparisons to Walls",
+    "statement": "The Wind Mill was legal and passed both ordinary building comparisons without a CSC addition. Walls led by 107675 and 236742 Q8. The production log showed Walls and Line Infantry after Art Museum. Both Bakers buildings were absent at 135 and the original Rice Farm still worked.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Read-only turn-120 to turn-135 Ancyra continuation with the original packages, a completed inland Quarter, Feudalism, a working supplier and both producer and customer buildings missing.",
+    "limits": "One city and window. The margins measure specific native competitors. A useful chain valuation still needs the Granary comparison, its likely completion timing, and the benefit while both buildings operate.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/producers-and-customers.md",
+    "related": ["AI-C094"]
   }
 ]

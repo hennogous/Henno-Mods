@@ -29,9 +29,11 @@ Mill repair on 220 and Storekeeper resumed on 221. Packaged CE and
 CSC reproduced the Quarter repair and rejected a duplicate in the
 same game context. The active-repair reload also retained the original
 request, rejected a duplicate and restored the Quarter. The matched
-control left both the Quarter and Mill pillaged at 214. Next, trace
-Ancyra's first building bid under **14.1**. Repair
-coverage in ordinary games remains open under **13.1**.
+control left both the Quarter and Mill pillaged at 214. Repair
+coverage in ordinary games remains open under **13.1**. Under **14.1**,
+Ancyra's legal Wind Mill lost both ordinary comparisons to Walls
+between 120 and 135. Replay the same source for the Granary to compare
+the two ways to start the exchange.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible
@@ -456,8 +458,9 @@ until the active check closes or an explicit dependency needs attention.
   Castle's 121–281 point lead. The stock tree reserved the Farm and
   requested a Builder. The turn-100 ordinary census had two one-link
   opportunities and four needing multiple investments. Ancyra already
-  had its Farm but needed both buildings. Compare first-link opportunities
-  at a verified early boundary before setting another bid.
+  had its Farm but needed both buildings. Walls beat the legal Wind
+  Mill twice at the verified earlier boundary. Compare the Granary on
+  the same source before setting another bid.
   [Measured opening and recruitment](../research/mods/csc-ai-bakers-natural-research-20261106.md#pricing-the-opening-with-the-missing-farm).
 - **14.2 Resolve conflicts.** Two plans can compete for the same footprint.
   One supplier can serve multiple Quarters. Count each real lost or enabled

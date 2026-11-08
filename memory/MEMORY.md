@@ -56,7 +56,11 @@ duplicate and zero new admissions. The Quarter recovered and the Mill
 was still pillaged at 214 (AI-C124). The same-DLL empty candidate
 control reached 214 with both repairs outstanding (AI-C123).
 High-resolution performance measurement remains open.
-Keep Ancyra's verified turn-120 fixture available for **14.1**.
+Ancyra's turn-120 Wind Mill observer closed cleanly at 135. Walls
+won both ordinary comparisons by 107675 and 236742 Q8. Ancyra ran
+Walls and Line Infantry after Art Museum and still needed both
+buildings (AI-C125). Use the same source and packages for the Granary
+side of **14.1**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
