@@ -57,6 +57,16 @@ With `--probe-dependencies`, the same replay records those sites' Q8 scores,
 reservation IDs and the stock district winner in `dam-site-trace.json`.
 An empty trace means the city never reached the scoped native selector.
 
+Use `--water-mill-repair PLAYER CITY QUARTER` with a saved continuation
+and `--probe-dependencies` when the Quarter and Water Mill are pillaged
+and the supplier and customer still work. The default probe records Mill
+eligibility, building comparisons and queue arbitration. Add
+`--quarter-repair-selector` to capture the district comparison for the
+existing footprint instead. Both modes read the native build operation's
+Quarter repair eligibility, Production cost and progress at the saved
+  boundary. The selector mode also records occupied planning slots
+  and the effective reservation threshold on the target footprint.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

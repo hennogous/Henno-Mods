@@ -190,6 +190,26 @@ print(string.format('CSC_BUILDING_READINESS={{"index":%d,"turn":%d,"available":%
     return row['index']
 
 
+def capture_quarter_repair_legality(controller, player, city, plot, turn, path):
+    code = f"""
+local city = assert(CityManager.GetCity({player}, {city}))
+local plot = assert(Map.GetPlotByIndex({plot}))
+local district = assert(GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER)
+local build = CityOperationTypes.BUILD
+local params = {{ [CityOperationTypes.PARAM_DISTRICT_TYPE] = district.Hash,
+    [CityOperationTypes.PARAM_X] = plot:GetX(), [CityOperationTypes.PARAM_Y] = plot:GetY() }}
+local legal = CityManager.CanStartOperation(city, build, params, true)
+assert(type(legal) == 'boolean')
+local queue = city:GetBuildQueue()
+print(string.format('CSC_QUARTER_REPAIR={{"turn":%d,"legal":%s,"productionCost":%d,"productionProgress":%.8g}}',
+    Game.GetCurrentGameTurn(), tostring(legal), queue:GetDistrictCost(district.Index),
+    queue:GetDistrictProgress(district.Index)))
+"""
+    row = parse(controller.cmd(code, 'PlotInfo', f'quarter-repair-legality-{turn}'), 'CSC_QUARTER_REPAIR')
+    require(row['turn'] == turn, 'Quarter repair legality clock differs')
+    write_json(path, row)
+
+
 def capture_granary_exchange(controller, target, turn, path):
     player, city, _ = target
     scope = dict(player=player, city=city)
@@ -329,7 +349,8 @@ def run(args):
                             gameplay_interventions=previous['gameplay_interventions'])
             for key in ('diagnostic_extra_pasture_q8', 'diagnostic_source_sha256', 'diagnostic_movement_only',
                         'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8',
-                        'diagnostic_mill_ce_replay', 'diagnostic_granary_nomination_q8', 'diagnostic_granary_ce_replay'):
+                        'diagnostic_mill_ce_replay', 'diagnostic_granary_nomination_q8', 'diagnostic_granary_ce_replay',
+                        'diagnostic_dam_sites', 'diagnostic_water_mill_repair', 'diagnostic_quarter_repair_selector'):
                 if key in previous:
                     expected[key] = previous[key]
         if args.calibration_replay or args.mill_ce_replay or args.granary_ce_replay:
@@ -378,6 +399,10 @@ def run(args):
             protocol.update(diagnostic_mill_opening_components=True, gameplay_interventions=True)
         if args.dam_sites:
             protocol['diagnostic_dam_sites'] = args.dam_sites
+        if args.water_mill_repair:
+            protocol['diagnostic_water_mill_repair'] = args.water_mill_repair
+        if args.quarter_repair_selector:
+            protocol['diagnostic_quarter_repair_selector'] = True
         if args.melbourne_builder_offers:
             protocol['diagnostic_melbourne_builder_offers'] = True
         if args.melbourne_builder_recruitment:
@@ -443,8 +468,10 @@ def run(args):
     copied = []
     checkpoint = None
     observer = None
-    target = args.supplier or args.wind_mill or args.granary or args.dam_sites
+    target = args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair
     trace_name = ('dam-site-trace.json' if args.dam_sites else 'supplier-trace.json' if args.supplier else
+                  'quarter-repair-trace.json' if args.quarter_repair_selector else
+                  'water-mill-repair-trace.json' if args.water_mill_repair else
                   'granary-trace.json' if args.granary else 'wind-mill-trace.json')
 
     def verify_packages():
@@ -522,9 +549,16 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
         quarters = [row.split('\t') for row in loaded if row.startswith(f'QUARTER\t{pid}\t')]
         if not args.dam_sites:
             quarters = [row for row in quarters if row[2] == str(city)]
-        require(pid in players and any(row[3:6] == [str(quarter), 'true', 'false'] for row in quarters),
-                'The scoped Quarter is not a working AI district on this save')
-        if args.dam_sites:
+        pillaged = 'true' if args.water_mill_repair else 'false'
+        require(pid in players and any(row[3:6] == [str(quarter), 'true', pillaged] for row in quarters),
+                'The scoped completed AI Quarter differs from the expected repair state')
+        if args.water_mill_repair:
+            require(f'MILL\t{quarter}\tBUILDING_CSC_BAKERS_WATER_MILL\tpillaged\t{quarter}\ttrue' in loaded
+                    and any(row.startswith(f'CUSTOMER\t{quarter}\t') and '\tworking\t' in row for row in loaded)
+                    and any(row.startswith(f'NEIGHBOR\t{quarter}\t') and row.endswith('\ttrue\ttrue\tfalse')
+                            and row.split('\t')[3:5] == [str(pid), '-1'] for row in loaded),
+                    'Expected a pillaged Water Mill with a working supplier and customer')
+        elif args.dam_sites:
             plot = args.dam_sites[3]
             working = [row.split('\t')[2] for row in loaded if
                        row.startswith(f'NEIGHBOR\t{quarter}\t') and row.endswith('\ttrue\ttrue\tfalse')
@@ -672,6 +706,9 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
         if args.dam_sites:
             pid, city, _, plot = args.dam_sites
             dam_sites = capture_dam_sites(controller, pid, city, plot, start, out / 'source-dam-sites.json')
+        if args.water_mill_repair:
+            capture_quarter_repair_legality(controller, *args.water_mill_repair, start,
+                                            out / 'source-quarter-repair.json')
         if args.granary:
             pid, city, _ = args.granary
             granary_index = capture_building_readiness(controller, pid, city, start,
@@ -696,15 +733,20 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
             modules = load(out / 'loaded-modules.json')
             pid, city, *_ = target
             scope = dict(player=pid, city=city, cePath=modules[DLL]['path'])
-            if args.dam_sites:
+            if args.dam_sites or args.quarter_repair_selector:
                 width, height, *_ = load(out / 'source.json')['map_signature']
-                indices = parse(controller.cmd("""
+                district_type = 'DISTRICT_DAM' if args.dam_sites else 'DISTRICT_CSC_BAKERS_QUARTER'
+                indices = parse(controller.cmd(f"""
 local count = 0
 for _ in GameInfo.Districts() do count = count + 1 end
-print(string.format('CSC_DAM_INDICES={"dam":%d,"districtCount":%d}', GameInfo.Districts.DISTRICT_DAM.Index, count))
-""", 'GameCore_Tuner', 'dam-district-indices'), 'CSC_DAM_INDICES')
-                scope.update(width=width, height=height, **indices,
-                             plots=sorted({dam_sites['protected']['plot'], *(row['plot'] for row in dam_sites['legal'])}))
+print(string.format('CSC_DISTRICT_INDICES={{"district":%d,"districtCount":%d}}',
+    GameInfo.Districts.{district_type}.Index, count))
+""", 'GameCore_Tuner', 'selector-district-indices'), 'CSC_DISTRICT_INDICES')
+                plots = ({dam_sites['protected']['plot'], *(row['plot'] for row in dam_sites['legal'])}
+                         if args.dam_sites else {args.water_mill_repair[2]})
+                scope.update(width=width, height=height, **indices, plots=sorted(plots))
+                if args.quarter_repair_selector:
+                    scope['traceTree'] = True
                 probe = HERE / 'dam_site_observer.js'
             elif args.supplier:
                 plot = args.supplier[3]
@@ -724,6 +766,10 @@ print(string.format('CSC_DAM_INDICES={"dam":%d,"districtCount":%d}', GameInfo.Di
                     scope['granaryNominationQ8'] = protocol['diagnostic_granary_nomination_q8']
                 if args.granary_components:
                     scope['granaryComponents'] = True
+                probe = HERE / 'mill_repair_observer.js'
+            elif args.water_mill_repair:
+                scope['mill'] = capture_building_readiness(controller, pid, city, start, out / 'source-mill.json',
+                                                           'BUILDING_CSC_BAKERS_WATER_MILL')
                 probe = HERE / 'mill_repair_observer.js'
             else:
                 scope['mill'] = capture_building_readiness(controller, pid, city, start, out / 'source-mill.json')
@@ -749,6 +795,10 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
                     'GameCore_Tuner', 'exchange-yield-indices'), 'CSC_YIELD_INDICES'))
             if args.dam_sites:
                 write_json(out / 'dam-site-scope.json', scope)
+            elif args.quarter_repair_selector:
+                write_json(out / 'quarter-repair-scope.json', scope)
+            elif args.water_mill_repair:
+                write_json(out / 'water-mill-repair-scope.json', scope)
             elif not args.supplier:
                 write_json(out / ('granary-scope.json' if args.granary else 'wind-mill-scope.json'), scope)
             attachment = frida.attach(session.owner.pid)
@@ -843,6 +893,10 @@ if __name__ == '__main__':
     target.add_argument('--granary', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'))
     target.add_argument('--dam-sites', type=int, nargs=4, metavar=('PLAYER', 'CITY', 'QUARTER', 'PLOT'),
                         help='Survey legal Dam sites and flood coverage around a sole working Base supplier')
+    target.add_argument('--water-mill-repair', type=int, nargs=3, metavar=('PLAYER', 'CITY', 'QUARTER'),
+                        help='Observe a pillaged Water Mill and Quarter with the other chain links working')
+    parser.add_argument('--quarter-repair-selector', action='store_true',
+                        help='Observe the existing Quarter at the district selector instead of the Mill comparison')
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
     parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
@@ -874,6 +928,8 @@ if __name__ == '__main__':
         options.census_turns = QUALIFICATION_CENSUSES
     if len(options.census_turns) > 8:
         parser.error('At most eight milestone census turns are supported')
+    if options.quarter_repair_selector and not options.water_mill_repair:
+        parser.error('The Quarter selector requires --water-mill-repair')
     if options.melbourne_builder_offers and not options.mill_opening_components:
         parser.error('The Builder offer trace requires --mill-opening-components')
     if options.melbourne_builder_recruitment and not options.melbourne_builder_offers:
@@ -893,13 +949,16 @@ if __name__ == '__main__':
                 or not 1 < options.observe_supplier_at < options.through <= options.observe_supplier_at + 15):
             parser.error('Fresh supplier observation needs an exact target, a read-only probe, --saves and a window of 1–15 turns')
     elif options.resume_from:
-        if not (options.saves and (options.supplier or options.wind_mill or options.granary or options.dam_sites)
+        if not (options.saves and (options.supplier or options.wind_mill or options.granary or options.dam_sites
+                                  or options.water_mill_repair)
                 and (options.probe_dependencies or options.movement_only or options.mill_ce_replay
                      or options.granary_ce_replay or options.dam_sites)
                 and not options.untuned and not options.matched_source):
             parser.error('A tuned continuation needs --saves, one target, and a diagnostic mode')
         if options.dam_sites and options.qualification:
             parser.error('A Dam site survey uses the shared controller and the existing CE package')
+        if options.water_mill_repair and not options.probe_dependencies:
+            parser.error('Water Mill repair observation requires --probe-dependencies')
         if options.alexandria_bid and not options.supplier:
             parser.error('The Alexandria bid requires --supplier')
         if options.melbourne_mill_bid and not options.wind_mill:
@@ -917,7 +976,8 @@ if __name__ == '__main__':
             parser.error('Integrated calibration requires --movement-only')
         if options.mill_ce_replay and (not options.wind_mill or options.probe_dependencies or options.melbourne_mill_bid):
             parser.error('CE nomination qualification requires --wind-mill and uses no external probe or bid')
-    elif (options.supplier or options.wind_mill or options.granary or options.dam_sites or options.probe_dependencies or options.alexandria_bid
+    elif (options.supplier or options.wind_mill or options.granary or options.dam_sites or options.water_mill_repair
+          or options.probe_dependencies or options.alexandria_bid
           or options.melbourne_mill_bid or options.trebizond_granary_bid or options.granary_components or options.granary_ce_replay
           or options.movement_only or options.calibration_replay or options.mill_ce_replay):
         parser.error('Decision diagnostics require --resume-from')

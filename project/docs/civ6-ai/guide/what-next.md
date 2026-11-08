@@ -117,9 +117,14 @@ supplier-protection comparison needs a different city or an earlier save.
 [Turn-200 development evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-normal-start-repeat-reached-four-chains-by-turn-200).
 
 In Alexandria's repair replay, the Water Mill scored well and failed
-the building requirements while its Quarter was pillaged. The next
-check follows the Quarter's own repair through legality and district
-selection. [Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
+the building requirements while its Quarter was pillaged. The Quarter
+repair was legal. It scored below Aerodrome in the only two open
+district comparisons. The same plan then occupied all 15 checks in
+the continuation. The Quarter and Mill were still damaged at turn
+229. The reservation saved on the Quarter's tile did not block it
+on turn 201. We are tracing whether an additional repair offer can enter
+production at its ordinary value while the existing plan continues.
+[Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

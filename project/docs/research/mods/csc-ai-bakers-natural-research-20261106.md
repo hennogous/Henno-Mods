@@ -2707,6 +2707,11 @@ finished and Broadcast Center entered production. The Bakers Quarter
 and Water Mill were still pillaged at 206. Trace repair nomination and
 the next open production comparison from the archived boundary.
 
+The survey SHA-256 is
+`3be54b79cdb5b5a105bd0a828ff89d397c8d63822ec713ebb22a7cce5f57d787`.
+The fault-free selector trace SHA-256 is
+`43e687291466cbc5e97ec8472324af7ec68eacc7c441822ba8c6199939f6f30f`.
+
 #### The Quarter can gate its own Mill's repair
 
 The native existing-building requirements at `0f61c0` resolve the
@@ -2755,10 +2760,89 @@ also records whether an occupied district planning slot prevents a
 new comparison. The fault-free first trace SHA-256 is
 `7d538c18085d7684069d619cbe832a3b5028629e2f251ab3141412efacfea10b`.
 
-The survey SHA-256 is
-`3be54b79cdb5b5a105bd0a828ff89d397c8d63822ec713ebb22a7cce5f57d787`.
-The fault-free selector trace SHA-256 is
-`43e687291466cbc5e97ec8472324af7ec68eacc7c441822ba8c6199939f6f30f`.
+`development-alexandria-quarter-repair-selector-01` replayed the same
+turn-200 save through 214. The native build operation accepted the
+existing Quarter repair at plot 2311 on the inactive turn-200
+boundary. Twelve of 14 district checks found an existing tree. The
+two open checks produced these comparisons:
+
+| Turn | Existing Quarter score, Q8 | Aerodrome winner, Q8 | Difference in utility points |
+| --- | ---: | ---: | ---: |
+| 201 | 1,445,266 | 1,847,362 | 1,570.69 |
+| 209 | 1,528,530 | 2,830,878 | 5,087.30 |
+
+The cached Quarter row was owned and flagged eligible. It carried
+reservation 6881299 at both checks. The observer does not establish
+whether that reservation still imposed a live threshold. The Quarter
+was below the recorded winner even without that possible threshold.
+Alexandria submitted Aerodrome contracts 4422 and 4704. Both repairs
+were still outstanding at 214 and Storekeeper remained inactive in
+the measured interior turns. The differences are in district value.
+A calibrated preference would need to represent benefits the native
+score actually misses.
+
+The native district `NetValue` at `52a440` already doubles its
+accumulated value when the candidate matches the existing pillaged
+district on that plot. The City Center branch also adds 12,800,000
+Q8 before that multiplication. This is an input to the cache. Later
+forecast aggregation can add other terms, so the final repair score
+does not have to be exactly twice a hypothetical new district score.
+
+The controller verified normal exit and restoration. The fault-free
+selector trace SHA-256 is
+`79cdfd5d62d680cead436e0c622e91cc7078c33f1b5500758f099d3763a84140`.
+The inactive turn-214 save SHA-256 is
+`a978f782b451a3d037ca736ce6ba663002faa67f3a0797dc122e2d1ca0c36bcb`.
+
+The follow-up `development-alexandria-quarter-repair-selector-02`
+opened that boundary. The native build operation still accepted the
+repair. The UI queue reported 22 of 30 Production invested in the
+Quarter, leaving eight. This is the cost of the Quarter link at that
+boundary. It excludes the subsequent Mill repair and any time spent
+waiting for production.
+
+All 15 district planning checks from 214 through 228 found the same
+active tree ID, 67567670. None of these checks called the district
+selector. Both repairs were still outstanding at 229. Every
+interior turn (215–228) was sampled for Storekeeper. Four other
+chains operated on all 14, while Alexandria operated on none. The
+controller verified clean close and restoration. The fault-free
+`quarter-repair-trace.json` SHA-256 is
+`d7ca696bc4ffebefa30ca53429b4e48152cee44a5cb375d3130c201a5d13ee59`.
+Both selector runs are under `Desktop/Codex/csc-bakers-qualification-20261107`.
+
+The read-only `development-alexandria-quarter-repair-reservation-01`
+replayed the turn-200 source through 203. At the open turn-201 check,
+the same two scores and the cached reservation ID 6881299 reproduced.
+The effective exclusive threshold on the Quarter row was the default
+−2,559,744 Q8. The reservation ID had no live contract at this check.
+The Quarter entered the comparison and lost on value. Turn 209 was
+outside this diagnostic window. `GetBestDistrict` (`3e4a50`) uses the
+stored plot threshold only if `Control::Manager::Find` (`4019f0`)
+returns an exact match. `TryReservePlot` (`3ea040`) makes its own
+lookup when a different request tries to reserve a plot, so a live
+reservation can still matter later. The effective threshold observer
+reads the pointer used at `3e4b19` after the lookup, guarded by the
+loaded hotfix's instruction bytes. The fault-free trace SHA-256 is
+`b34fcddfc52e1b07d245d77b85bd110a61b49bb32f585621fabb0f693b580a6d`.
+
+The scoped treatment to investigate is a separate, ordinarily valued
+repair offer for the existing footprint, with the stock district plan
+and production comparison intact. Stock `CheckForDistrict` (`3e0ee0`)
+creates a one-use behavior tree (`563840`), registers it with AI control
+(`53feb0`) and records its ID in the district planning slot. Its
+`BuildFromCityNode::Execute` (`55ba40`) creates and initializes a district
+request (`3fe9a0`, `3f9100`), submits it to the manager (`403c70`) and
+uses `ManageContract` (`5431a0`) to track a request that remains in
+state 3. `ManageContract` retains a copy of the native request handle.
+The manager updates each registered tree and checks for destruction
+in `DoTurn` (`5639b0`). `CheckForDestroy` (`53ff60`) evaluates the
+tree's owning player and completion state, so a one-use tree can
+remain live across turns. `UnitRequestContract::Update` (`3fa5e0`) refreshes a district
+offer using the greater of retained value and current plot value, and
+separately updates turns from the remaining Production. Verify that a
+separate offer uses a native owner, deduplicates and expires on its own,
+and competes against ordinary requests before integrating the policy.
 
 ### Shared Granary hosts receive one nomination preference
 

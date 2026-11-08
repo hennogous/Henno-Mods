@@ -197,6 +197,16 @@ failed the repair requirements in all ten observed comparisons. The
 host Quarter remained pillaged. Check the district's repair eligibility
 and nomination before calibrating a Mill preference. [AI-C118]
 
+The Quarter's repair was legal on turn 200. Its cached district
+score was below Aerodrome on both open comparisons, while the other
+twelve checks found a district plan in progress. The same plan
+occupied all 15 district checks in the follow-up. The turn-214
+repair had eight Production remaining, but both the Quarter and
+Mill were still pillaged at turn 229. The turn-201 replay confirmed
+the Quarter used the default threshold despite a cached reservation ID.
+It was admitted and lost on the relative score.
+[AI-C119]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

@@ -1856,5 +1856,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C117", "AI-N107", "AI-C069"]
+  },
+  {
+    "id": "AI-C119",
+    "title": "Alexandria could legally repair its Quarter, while Aerodrome won both open district checks",
+    "statement": "The existing Quarter passed the native build-operation check at turn 200. Twelve of 14 planning checks had an active tree. At the two open checks, the owned eligible Quarter row scored 1445266 and 1528530 Q8. The winning Aerodrome scored 1847362 and 2830878 Q8. The turn-201 repeat confirmed the Quarter used the default threshold despite cached reservation 6881299. At 214 the legal repair had eight Production remaining. The same tree occupied all 15 subsequent checks, and both repairs remained outstanding at 229.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Exact turn-200 to 214 Alexandria Troas read-only district-selector replay with a working Pasture and Granary, a continuation from 214 to 229, and an exact threshold diagnostic through 203.",
+    "limits": "The effective turn-209 threshold remains unobserved. The repair score was below both winners independently of that threshold. Eventual stock recovery and the amount of any missing CSC benefit remain open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C118", "AI-N107", "AI-N011"]
   }
 ]

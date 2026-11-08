@@ -1860,5 +1860,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/production-and-prerequisites.md",
     "related": ["AI-C069", "AI-C117"]
+  },
+  {
+    "id": "AI-N108",
+    "title": "District NetValue gives matching pillaged footprints a built-in repair preference",
+    "statement": "District NetValue detects when the candidate type matches the pillaged district on the plot and doubles the accumulated value before returning it. The City Center path adds 12800000 Q8 before doubling.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Windows XP2 reference 324c51e9, district NetValue RVA 52a440. Match uses the plot's existing district type and the district object's pillage predicate.",
+    "limits": "NetValue only. Later cache aggregation can add terms. This finding does not quantify the repair bonus in a finished cache row or attribute the entire Alexandria score.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/district-choice.md",
+    "related": ["AI-N107", "AI-C119"]
   }
 ]

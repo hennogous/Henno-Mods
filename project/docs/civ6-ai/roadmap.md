@@ -15,8 +15,12 @@ only Builder worked elsewhere and the replacement request lost in city
 queues. The turn-200 development repeat measured four active chains.
 Ancyra still lacked both buildings on 190. In Alexandria's **13.1**
 case, the Water Mill scored well but failed the repair requirements while
-the Quarter remained pillaged. Trace the Quarter's own legal repair,
-including whether it can enter a free district comparison.
+the Quarter remained pillaged. The legal Quarter repair had a positive
+score, and Aerodrome won both open district comparisons. A single plan
+occupied every check in the continuation, and both repairs remained
+outstanding at 229. The cached plot reservation was stale at the open
+turn-201 comparison. Verify the ownership and lifetime of a separate
+repair offer at ordinary valuation before testing production.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible

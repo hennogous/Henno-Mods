@@ -18,6 +18,18 @@ observed Mill repair offer. Both district and Mill remained pillaged.
 AI-N107 traces the native building gate and separate district location
 and zone checks. AI-C118 records the live comparison. Follow the
 Quarter legality and district tree admission from the same source.
+The selector replay verified legal Quarter repair at 200. Twelve
+checks were occupied. Aerodrome beat the positive Quarter score on
+201 and 209 by 402096 and 1302348 Q8. Both repairs remained outstanding
+at 214. The exact continuation found tree 67567670 at all 15 checks
+through 228 and both repairs still outstanding at 229 (AI-C119).
+The turn-214 UI queue reported legal repair and 22/30 Production.
+District NetValue doubles its own value on a matching pillaged footprint,
+before later aggregation (AI-N108). The exact threshold replay reproduced
+both turn-201 scores and found the default −2559744 Q8 threshold. The
+cached reservation had no live contract. Next verify a separate native
+repair offer's owner, deduplication and expiry without replacing the
+active district tree.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
