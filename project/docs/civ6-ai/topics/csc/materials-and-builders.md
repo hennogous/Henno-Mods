@@ -170,8 +170,9 @@ branch remains unresolved. [AI-C111]
 In the Melbourne opening diagnostic, the stock improvement tree
 reserved the bare Rice for a Farm even with the Wind Mill unbuilt.
 It found no available Builder on the next six logged checks. Its
-Builder contract was submitted to six cities, and the Rice remained
-bare at the end of the replay. [AI-C113]
+Builder contract was submitted to six cities. Melbourne validated it on
+receipt but had no queue comparison while producing Kōtoku-in. The Rice
+remained bare at the end of the replay. [AI-C113]
 
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn

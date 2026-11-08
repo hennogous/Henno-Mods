@@ -2491,17 +2491,23 @@ missing. No diagnostic bid was applied.
 
 The `-03` repeat reserved the same tile on 106 and reproduced all six
 failed recruitment checks. Its starting census places the charged
-Builder next to the Rice. This makes control or evaluator eligibility
-a concrete question for the next trace, alongside the separate production
-request. The existing unit request observer has verified native entry
+Builder next to the Rice. The native trace also shows Melbourne
+accepted contract 1731 on receipt at 76,800 Q8 (300 points). Melbourne
+stayed on Kōtoku-in from 105 through 111 and the trace saw no native
+queue comparison there. Other cities that logged the submission started
+Castle, an Encampment or a Dam after finishing their previous builds. The existing
+trace was scoped to Melbourne. It cannot distinguish a later invalid
+offer in those cities from an eligible offer that lost the comparison.
+
+Trace recruitment eligibility for the nearby Builder and follow the
+existing offer across candidate cities through their next production
+openings. The existing unit request observer has verified native entry
 points for initialization, city validation and execution. Join those
 events to the city log by player and contract ID.
 [Unit request observation](csc-ai-native-contract-observation-20261028.md).
 
-This distinguishes a winning job and reserved tile from obtaining a
-Builder. The same replay does not establish why the unit was unavailable
-or why the Builder offer did not advance. Check recruitment and city
-acceptance separately before changing either bid.
+The unavailable unit and later city queue competition remain separate
+questions. The trace establishes initial city acceptance for Melbourne.
 
 ### Shared Granary hosts receive one nomination preference
 

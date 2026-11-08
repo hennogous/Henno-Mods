@@ -37,8 +37,10 @@ supply and Storekeeper, below the 121–281 Castle gap. Both diagnostics
 reserved the Rice Farm on 106 and failed six recruitment checks. Builder
 contract 1731 was submitted across six Australian cities with no later
 logged event. The repeat started with one adjacent charged Builder and
-closed cleanly at 112. See AI-C113/C114. Trace recruitment and contract
-validation/queue comparison separately before changing a bid.
+closed cleanly at 112. The trace confirms Melbourne validated the
+offer at 76,800 Q8 while Kōtoku-in occupied its queue, with no queue
+comparison. See AI-C113/C114. Trace recruitment and cross-city queue
+comparison separately before changing a bid.
 
 CSC `dac8591` and
 CE fork `abf5d58` reproduce Melbourne's Mill nomination, native
