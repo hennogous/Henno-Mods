@@ -334,6 +334,10 @@ def run(args):
         checkpoint_input = load(prior / ('observer-checkpoint.json' if args.mill_opening_components else 'checkpoint.json'))
         start = checkpoint_input['turn']
         expected = dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
+        if 'diagnostic_supplier_boundary' in previous:
+            # A read-only observer can start before the archived endpoint.
+            # Keep that provenance when replaying the endpoint for a new link.
+            expected['diagnostic_supplier_boundary'] = previous['diagnostic_supplier_boundary']
         if args.mill_opening_components:
             endpoint = 116 if args.melbourne_builder_offers else 112
             require(start == 105 and args.through == endpoint and args.wind_mill == [4, 131073, 1423]
@@ -351,7 +355,7 @@ def run(args):
                         'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8',
                         'diagnostic_mill_ce_replay', 'diagnostic_granary_nomination_q8', 'diagnostic_granary_ce_replay',
                         'diagnostic_dam_sites', 'diagnostic_water_mill_repair', 'diagnostic_quarter_repair_selector',
-                        'diagnostic_quarter_repair_offer'):
+                        'diagnostic_quarter_repair_offer', 'diagnostic_mill_only_repair'):
                 if key in previous:
                     expected[key] = previous[key]
         if args.calibration_replay or args.mill_ce_replay or args.granary_ce_replay:
@@ -396,12 +400,16 @@ def run(args):
         protocol.update(fresh_game=False, ordinary_setup=False, diagnostic_start=start,
                         diagnostic_source_sha256=checkpoint_input['sha256'],
                         gameplay_interventions=previous['gameplay_interventions'])
+        if 'diagnostic_supplier_boundary' in previous:
+            protocol['diagnostic_supplier_boundary'] = previous['diagnostic_supplier_boundary']
         if args.mill_opening_components:
             protocol.update(diagnostic_mill_opening_components=True, gameplay_interventions=True)
         if args.dam_sites:
             protocol['diagnostic_dam_sites'] = args.dam_sites
         if args.water_mill_repair:
             protocol['diagnostic_water_mill_repair'] = args.water_mill_repair
+        if args.mill_only_repair:
+            protocol['diagnostic_mill_only_repair'] = True
         if args.quarter_repair_selector:
             protocol['diagnostic_quarter_repair_selector'] = True
         if args.quarter_repair_offer:
@@ -555,7 +563,7 @@ print('CSC_FRESH_CE='..CE_AIDistrictScoresStatus())
         quarters = [row.split('\t') for row in loaded if row.startswith(f'QUARTER\t{pid}\t')]
         if not args.dam_sites:
             quarters = [row for row in quarters if row[2] == str(city)]
-        pillaged = 'true' if args.water_mill_repair else 'false'
+        pillaged = 'true' if args.water_mill_repair and not args.mill_only_repair else 'false'
         require(pid in players and any(row[3:6] == [str(quarter), 'true', pillaged] for row in quarters),
                 'The scoped completed AI Quarter differs from the expected repair state')
         if args.water_mill_repair:
@@ -923,6 +931,8 @@ if __name__ == '__main__':
                         help='Observe the existing Quarter at the district selector instead of the Mill comparison')
     parser.add_argument('--quarter-repair-offer', action='store_true',
                         help='Submit one unmodified native repair offer on the exact Alexandria replay')
+    parser.add_argument('--mill-only-repair', action='store_true',
+                        help='Observe a pillaged Water Mill after its host Quarter has been restored')
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
     parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
@@ -956,6 +966,9 @@ if __name__ == '__main__':
         parser.error('At most eight milestone census turns are supported')
     if options.quarter_repair_selector and not options.water_mill_repair:
         parser.error('The Quarter selector requires --water-mill-repair')
+    if options.mill_only_repair and not (options.water_mill_repair and options.resume_from
+                                          and not options.quarter_repair_selector):
+        parser.error('The Mill-only observer requires a saved Water Mill repair continuation')
     if options.quarter_repair_offer and not (options.quarter_repair_selector and options.resume_from
                                                and options.probe_dependencies and not options.qualification):
         parser.error('The separate repair offer requires the matched selector continuation')

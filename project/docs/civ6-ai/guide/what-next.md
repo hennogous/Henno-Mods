@@ -123,9 +123,11 @@ district comparisons. The same plan then occupied all 15 checks in
 the continuation. The Quarter and Mill were still damaged at turn
 229. The reservation saved on the Quarter's tile did not block it
 on turn 201. A separate repair tree submitted a request alongside
-Aerodrome. The new request's value came out much higher than the
-Quarter's stock score. The next replay checks that conversion before
-the tree can bid, so we can measure a repair at its ordinary value.
+Aerodrome. The corrected replay used the Quarter's ordinary value
+and kept the Aerodrome request. Alexandria repaired the Quarter after
+finishing Broadcast Center. The later Aerodrome request also advanced. The
+Water Mill remained damaged. The next replay follows that repair and
+checks whether Storekeeper returns.
 [Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.

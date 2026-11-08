@@ -20,7 +20,8 @@ const REPAIR_NATIVE = {
     findController: [0x4019f0, '448bc283faff74454c8b911001000048'],
     destroyTree: [0x563960, '48895c2408574883ec20488bf9418bd8'],
     uninitializeTree: [0x544020, '48895c24104889742418555741544156'],
-    decodeTrigger: [0x55a680, '488bc44c8948205541554156488d68a8'],
+    decodeCityPlotValueReturn: [0x55afcc, '8b08c1f908010be9a1020000'],
+    decodeSuccessEpilogue: [0x55b72b, '4881c440010000415e415d5dc3'],
     submitContract: [0x403c70, '48895c2420564883ec2048833a00488b'],
     executeContract: [0x3f8310, '405553574156488d6c24c14881eca800'],
 };
@@ -64,37 +65,39 @@ function makeQuarterRepairOffer(core, scope, fingerprint, currentTurn, record, p
     const contract = object => ({id: read(object, REPAIR_CONTRACT_ID, 'i32'),
         state: read(object, REPAIR_CONTRACT_STATE, 'i32'), q8: read(object, REPAIR_CONTRACT_Q8, 'i32')});
 
-    // Decode Trigger should convert the scoped stock Q8 to whole points and
-    // back before the tree creates requests. A mismatch fails this one
-    // diagnostic tree at its root, before it can reserve or bid. Let the
-    // native tree manager retire it through the normal failure path.
-    Interceptor.attach(addr('decodeTrigger'), {
-        onEnter(args) {
+    // At this Decode Trigger call site, R14 is the current tree, RAX points
+    // to the city/plot present value and RBX points to the whole-unit sum
+    // before this input is added. Use instruction probes so stock node
+    // calls keep their original return addresses.
+    Interceptor.attach(addr('decodeCityPlotValueReturn'), function () {
+        if (!active || !this.context.r14.equals(active.tree)) return;
+        protect(() => {
+            active.presentQ8 = read(this.context.rax, 0, 'i32');
+            active.accumulatedBeforePlot = read(this.context.rbx, 0, 'i32');
+        });
+    });
+    Interceptor.attach(addr('decodeSuccessEpilogue'), function () {
+        if (!active || !this.context.r14.equals(active.tree)) return;
+        let admitted = false;
+        try {
             protect(() => {
-                if (!active || !args[4].equals(active.tree)) return;
-                this.repairDecode = {
-                    base: read(active.tree, REPAIR_TREE_TRIGGER_BASE, 'i32'),
-                    bonus: read(active.tree, REPAIR_TREE_TRIGGER_BONUS, 'i32'),
-                };
+                const base = read(active.tree, REPAIR_TREE_TRIGGER_BASE, 'i32');
+                const bonus = read(active.tree, REPAIR_TREE_TRIGGER_BONUS, 'i32');
+                const q8 = read(active.tree, REPAIR_TREE_DECODED_Q8, 'i32');
+                const {expectedQ8, selectorQ8, presentQ8, accumulatedBeforePlot} = active;
+                const matchesStock = base === 0 && bonus === 0 && accumulatedBeforePlot === 0 &&
+                    presentQ8 === selectorQ8 && q8 === expectedQ8;
+                record({kind: 'repair-decode', turn: currentTurn(), q8, expectedQ8, base, bonus,
+                    presentQ8: presentQ8 ?? null, accumulatedBeforePlot: accumulatedBeforePlot ?? null,
+                    admitted: matchesStock});
+                admitted = matchesStock;
             });
-        },
-        onLeave(result) {
-            if (!this.repairDecode) return;
-            // Fail closed if any read or evidence write throws. Other tree
-            // invocations never enter this branch.
-            let admitted = false;
-            try {
-                protect(() => {
-                    const q8 = read(active.tree, REPAIR_TREE_DECODED_Q8, 'i32');
-                    const expectedQ8 = active.expectedQ8;
-                    record({kind: 'repair-decode', turn: currentTurn(), q8, expectedQ8, ...this.repairDecode});
-                    admitted = result.toInt32() === 1 && this.repairDecode.base === 0 &&
-                        this.repairDecode.bonus === 0 && q8 === expectedQ8;
-                });
-            } finally {
-                if (!admitted) result.replace(ptr(3));
-            }
-        },
+        } finally {
+            active.presentQ8 = active.accumulatedBeforePlot = undefined;
+            // EAX already holds stock success (1). Return the native failure
+            // code for this exact diagnostic only, before reservation or bid.
+            if (!admitted) this.context.rax = ptr(3);
+        }
     });
 
     // SubmitContract receives the live native handle. Read its already-resolved
@@ -184,12 +187,16 @@ function makeQuarterRepairOffer(core, scope, fingerprint, currentTurn, record, p
 
         // Match the game's string and trigger lifetimes. The constructor
         // initializes the no-unlock sentinels for this completed district.
-        const trigger = constructTrigger(Memory.alloc(REPAIR_TRIGGER_SIZE));
+        // Frida keeps an allocation alive through its owning JS pointer. A
+        // pointer returned by the native constructor does not own that memory.
+        const trigger = Memory.alloc(REPAIR_TRIGGER_SIZE);
+        constructTrigger(trigger);
         trigger.add(REPAIR_TRIGGER_DISTRICT).writeS32(scope.district);
         trigger.add(REPAIR_TRIGGER_CITY).writePointer(city);
         trigger.add(REPAIR_TRIGGER_PLOT).writePointer(plot);
-        const template = Memory.alloc(8).writePointer(emptyString());
-        const label = Memory.alloc(8).writePointer(emptyString());
+        const template = Memory.alloc(8), label = Memory.alloc(8);
+        template.writePointer(emptyString());
+        label.writePointer(emptyString());
         const manager = ptr(read(player, REPAIR_PLAYER_TREES, 'ptr'));
         const control = ptr(read(player, REPAIR_PLAYER_CONTROL, 'ptr'));
         let tree = ptr(0), id = -1;
@@ -211,7 +218,7 @@ function makeQuarterRepairOffer(core, scope, fingerprint, currentTurn, record, p
             if (read(read(build, DISTRICT_TREE, 'ptr'), TREE_ID, 'i32') !== stockTree)
                 throw Error('The ordinary district tree changed during repair admission');
             const expectedQ8 = (site.q8 >> 8) << 8;
-            active = {tree, id, control, controller, expectedQ8};
+            active = {tree, id, control, controller, expectedQ8, selectorQ8: site.q8};
             record({kind: 'repair-tree', turn: currentTurn(), tree: id, stockTree, controller, plot: site.plot,
                 stockSelectorQ8: site.q8, expectedQ8, triggerBase: read(tree, REPAIR_TREE_TRIGGER_BASE, 'i32'),
                 triggerBonus: read(tree, REPAIR_TREE_TRIGGER_BONUS, 'i32')});
@@ -221,7 +228,11 @@ function makeQuarterRepairOffer(core, scope, fingerprint, currentTurn, record, p
         } finally {
             destroyString(label);
             destroyString(template);
-            freeTriggerBuffer(ptr(read(trigger, REPAIR_TRIGGER_BUFFER, 'ptr')));
+            // This is our own live scratch allocation. Frida's game-memory
+            // range enumeration can omit its agent heap, so read it through
+            // the allocation handle and free only the native vector buffer.
+            const buffer = trigger.add(REPAIR_TRIGGER_BUFFER).readPointer();
+            if (!buffer.isNull()) freeTriggerBuffer(buffer);
         }
     };
 }

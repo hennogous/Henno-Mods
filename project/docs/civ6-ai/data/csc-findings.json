@@ -1880,5 +1880,18 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C119"]
+  },
+  {
+    "id": "AI-C121",
+    "title": "An extra Alexandria repair offer entered at the ordinary plot value",
+    "statement": "The native plot getter returned 1445266 Q8. Zero trigger base and bonus left the decoder at 1445120 Q8, equivalent to 5645 whole units. The city received Quarter repair request 4421 at that value and retained its ordinary Aerodrome request at 7216 whole units. The native queue accepted the refreshed repair on 209. The controller released the repair tree on 210, and the turn-214 census confirmed the Quarter was restored while the Mill remained pillaged.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Exact turn-200 Alexandria replay, with a separate one-use tree for the existing pillaged Quarter at turn 201 and the ordinary plan intact.",
+    "limits": "One matched diagnostic. The Quarter repair succeeded while the Water Mill remained pillaged. This does not establish reusable admission, Mill repair or active Storekeeper.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C119"],
+    "related": ["AI-C120"]
   }
 ]

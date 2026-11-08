@@ -34,9 +34,17 @@ The exact separate-offer treatment `-01` failed before mutation on
 the footprint lookup. `-02` used `City::Districts::GetDistrictAt` and
 submitted Quarter request 4421 alongside Aerodrome 4422 on 201. The
 repair decoded to an unexpectedly inflated value and FireTuner lost
-its contexts at 202 (AI-C120). Use the new fail-closed decoder check
-and live receipt journal in the next short diagnostic. First reconcile
-the shared controller and native owner for `-02`.
+its contexts at 202 (AI-C120). The menu recovery verified original
+preferences and archived both temporary packages. `-03` stopped at 201
+before a repair receipt and needed the same verified recovery. `-04`
+decoded to 5645 but the scratch cleanup read faulted. The guard rejected
+the repair and the controller closed cleanly. `-05` recorded native
+plot 1445266 Q8, decoder and submit 1445120 Q8, then acceptance at
+1528530 Q8 on 209 and controller release on 210. Quarter healthy at 214,
+Water Mill still pillaged, no Storekeeper (AI-C121). Clean close.
+Next read-only `--water-mill-repair 2 196610 2311 --mill-only-repair`
+from `-05`'s verified 214 save. Keep Ancyra's verified turn-120
+first-link fixture available for **14.1**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

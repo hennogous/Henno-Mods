@@ -2888,18 +2888,87 @@ city log recorded Aerodrome request 4422 on that turn. The tree logged
 a decoded value of 1,227,157,293. The native city log reported the
 Quarter request at 2,420,525 whole value units, versus 7,216 for
 Aerodrome. The Quarter's selector value of 1,445,266 Q8 corresponds
-to 5,645 whole units. This run demonstrates separate request
+to 5,645 whole units. Shifting the inflated decoder total into its
+32-bit Q8 field and reading it back as whole units yields 2,420,525.
+This run demonstrates separate request
 admission. The unexpectedly high value invalidates it as a test
 of ordinarily valued repair. The controller subsequently lost its
 responsive tuner context at turn 202. There is no verified queue
 execution, repair or Storekeeper outcome from this arm.
 
-The follow-up probe checks both trigger value inputs and the decoded
-tree value before the new tree reaches its reservation or request
-nodes. It expects zero base and bonus and a decoded value matching the
-stock selector's whole-unit conversion. It fails the diagnostic tree
-if the check differs and journals the operands separately from the
-end-of-run trace. This guard still needs a live replay.
+`development-alexandria-quarter-repair-offer-03` added a guard at the
+decoder's function return. The shared controller lost responsive tuner
+contexts at 201, with no repair-tree, decoder or request receipt. There
+is no evidence that this attempt reached the guard. The game exited on
+a graceful window-close request. A separate main-menu session verified
+the original preferences and archived the two temporary packages at
+their original hashes. The original `failure.json` SHA-256 is
+`0e70947b6a0f6db7efb4821de43890ac3432b751472a0fc6f7937ca6c3d1a486`.
+
+Astra identified a lifetime hazard in the original probe. It passed a
+fresh Frida allocation to the native constructor and retained only
+the returned address. A disposable-process test on Frida 17.24.3 and
+QuickJS registered a weak finalizer on the allocation wrapper. The
+wrapper finalized while the pointer returned through the native call
+was still held. This demonstrates that the returned pointer does not
+keep its owning wrapper alive. The test does not identify the cause of
+either Civ VI failure. The revised probe keeps the original allocation
+wrapper through construction, copying and cleanup.
+[Frida Memory.alloc lifetime](https://frida.re/docs/javascript-api/#memory).
+
+In the archived control, Aerodrome decoded to 7,216 whole units on 201
+and 11,058 on 209, consistent with each selector score shifted by eight
+bits. The revised guard reads the plot value just after the native
+`PresentValueOf` call in `DecodeTriggerNode::Update` at `55afcc`, along
+with the sum before that input. At the success epilogue `55b72b` it
+checks both trigger value inputs and the decoded Q8 total. It rejects
+the exact diagnostic tree before reservation or bidding if any value
+differs. These two instruction probes preserve the original return
+addresses of stock node calls. Their receipts are journalled before
+the endpoint is reached.
+
+`development-alexandria-quarter-repair-offer-04` reached 203. Its native
+tree decoded the repair to 5,645 whole units, which matches 1,445,266 Q8
+shifted by eight bits. Both trigger fields read as zero at tree creation.
+Aerodrome kept its 7,216-unit request. The repair tree returned failure
+before submitting a request. The controller closed and restored both
+preferences and packages. The diagnostic's scratch-buffer cleanup
+had faulted after tree creation because the generic game-memory reader
+did not find the Frida allocation in its mapped ranges. The decoder
+guard then failed closed. The trace SHA-256 is
+`c7e8a3387f2558cc487b39664ef6e628fcaad485c17d55e59a7a63067d07672a`.
+The probe now reads the native vector pointer through its retained
+Frida allocation handle and frees a buffer only when one exists.
+
+`development-alexandria-quarter-repair-offer-05` repeated the exact
+turn-201 comparison. The corrected probe recorded 1,445,266 Q8 from
+the plot getter, zero in the accumulator before that input, and zero
+base and bonus. The decoder and the submitted request both carried
+1,445,120 Q8, or 5,645 whole units. Quarter request 4421 reached native
+state 3. The stock Aerodrome remained a separate request, 4422 at
+7,216 whole units. The repair tree and stock tree retained distinct
+IDs, 64028688 and 63963173. The city was producing Broadcast Center
+when the two requests were submitted. A request accepted by the
+native manager is still an offer to production.
+
+Broadcast Center finished on 209. The native queue accepted request
+4421 on that turn with its refreshed value of 1,528,530 Q8, equal to
+the control's recorded Quarter value on 209. The turn-210 production
+row shows 22 existing Production plus 36 new Production against a
+30-Production repair. The separate controller was released on 210.
+The city logged cancellation of the associated request during cleanup.
+The turn-214 census confirms a restored Quarter, alongside the still
+pillaged Water Mill and the working Pasture and Granary. Aerodrome
+request 4701 entered native `IN PROGRESS` on 210. The queue log then
+records Production going to a Settler on 211–213. Storekeeper did not
+operate in Alexandria on any of the 13 sampled interior turns. The
+matched control's Quarter and Mill were both still pillaged at 214.
+The controller closed and verified restoration. The fault-free treatment
+trace SHA-256 is
+`ed0c9800ff98541b5af52c31a55a3b6a3c27c275d7b06b1c8a686a22f568485c`.
+The verified treatment save at 214 has SHA-256
+`7c8c0086ed022982cb2b8fab84c3c8b71a5d5fb8b5500da6531a0773bb5fa55c`.
+Use it to measure the remaining Mill's legality and competition.
 
 ### Shared Granary hosts receive one nomination preference
 

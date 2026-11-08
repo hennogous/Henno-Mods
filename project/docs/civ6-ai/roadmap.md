@@ -20,9 +20,12 @@ score, and Aerodrome won both open district comparisons. A single plan
 occupied every check in the continuation, and both repairs remained
 outstanding at 229. The cached plot reservation was stale at the open
 turn-201 comparison. A separate tree submitted a Quarter repair
-request alongside Aerodrome. Its decoded value was inflated. Verify
-the guarded decoder inputs and a normally valued request before
-testing production and Service recovery.
+request alongside Aerodrome. The corrected probe now admits the
+repair at its ordinary plot value. Alexandria restored the Quarter
+after finishing Broadcast Center. The later Aerodrome request
+also advanced to native progress.
+The Mill was still pillaged at 214. Use the archived boundary to
+check its eligibility, bidding and actual Service recovery.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible

@@ -68,15 +68,19 @@ Quarter repair eligibility, Production cost and progress at the saved
   and the effective reservation threshold on the target footprint.
 
   `--quarter-repair-offer` is a separate treatment on the pinned
-  Alexandria turn-200 save, ending on 214. It requires the stock
+  Alexandria turn-200 save, ending on 203 or 214. It requires the stock
   Aerodrome winner and the recorded Quarter score and threshold to
   reproduce on 201. It then creates one separate native district
   tree for the existing pillaged Quarter. The treatment supplies
   the city, district and plot to the stock tree and uses its normal
-  priority and valuation. The trace separates the new tree, its
-  request, execution and release. Read the endpoint census and the
+  priority and valuation. The decoder guard checks the actual plot
+  value and whole-unit conversion before the repair tree can bid.
+  The trace separates the new tree, its request, execution and release.
+  Read the endpoint census and the
   native Storekeeper effect to establish recovery. An offer or queue
   execution alone cannot establish that either repair finished.
+  Add `--mill-only-repair` to a saved Water Mill repair continuation
+  when the Quarter has already been restored. This arm is observational.
 
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to

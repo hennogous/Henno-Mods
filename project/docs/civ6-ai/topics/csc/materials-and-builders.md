@@ -212,6 +212,13 @@ a repair request alongside the stock Aerodrome request. Its decoded
 value was inflated. The controller lost its tuner context on the next
 turn, leaving repair and Service recovery unverified. [AI-C120]
 
+The corrected probe submitted a separate repair at 5,645 whole value
+units, the normal conversion of the Quarter's native plot score.
+Aerodrome still submitted at 7,216. When Broadcast Center finished,
+the repair request reached production and the Quarter was restored.
+The later Aerodrome request also entered native progress. The Water Mill
+was still pillaged at 214, leaving the second repair open. [AI-C121]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same
