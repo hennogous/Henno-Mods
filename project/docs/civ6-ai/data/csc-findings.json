@@ -1905,5 +1905,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C121", "AI-N107"]
+  },
+  {
+    "id": "AI-C123",
+    "title": "Packaged CE and CSC reproduced the ordinary-value Quarter repair",
+    "statement": "The integrated CSC publisher sent one repair identity. The separate CE dependency admitted the Quarter at native plot value 1445266 Q8. GameCore submitted request 4421 at 5645 whole units alongside its Aerodrome. Repeated publication reported one duplicate and no second admission. The Quarter was restored on turn 210 and CSC withdrew the candidate.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Exact inactive Alexandria turn-200 save through 214 with the independently staged CE DLL and main CSC Lua, no external policy.",
+    "limits": "Verifies one packaged development replay and duplicate handling within a single context. Active-repair save/reload, the empty-candidate arm and ordinary-start qualification remain open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C121", "AI-C122"]
   }
 ]

@@ -25,9 +25,10 @@ repair at its ordinary plot value. Alexandria restored the Quarter
 after finishing Broadcast Center. The later Aerodrome request
 also advanced to native progress.
 The restored Quarter made the Mill eligible. Stock AI completed the
-Mill repair on 220 and Storekeeper resumed on 221. Implement and verify
-the bounded CE repair admission with CSC's ready-chain policy. Cover
-duplicate requests, invalidation, and save/reload before an ordinary run.
+Mill repair on 220 and Storekeeper resumed on 221. Packaged CE and
+CSC reproduced the Quarter repair and rejected a duplicate in the
+same game context. Verify active-repair save/reload and an empty
+candidate control before an ordinary run.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible

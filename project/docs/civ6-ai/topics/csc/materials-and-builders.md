@@ -224,6 +224,10 @@ requested it, completed it on 220, and restored the active Storekeeper
 growth effect on 221. The follow-up applied no Mill preference.
 [AI-C122]
 
+Packaged CE and CSC reproduced the Quarter repair from the same
+source. The four-field request used the native score. CE recognized
+the active repair when CSC published it again. [AI-C123]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

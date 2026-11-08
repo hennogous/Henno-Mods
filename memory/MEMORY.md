@@ -45,10 +45,13 @@ Water Mill still pillaged, no Storekeeper (AI-C121). Clean close.
 Read-only `development-alexandria-water-mill-after-quarter-01` from
 `-05`'s verified 214 save found the Mill eligible, stock request 4993
 on 217, acceptance at 566288 Q8 on 219, repair on 220 and active
-Storekeeper 221–228 (AI-C122). Clean close at 229. Implement reusable
-CE repair admission and CSC policy next. The isolated CE review branch
-is `codex/ce-district-repair-admission` at `abf5d58`. Keep Ancyra's
-verified turn-120 first-link fixture available for **14.1**.
+Storekeeper 221–228 (AI-C122). Clean close at 229. Packaged CE repair
+admission on branch `codex/ce-district-repair-admission` at `e175f17`
+and main CSC Lua reproduced the Quarter repair through 214, with one
+admission, a duplicate rejection and zero candidates after repair
+(AI-C123). Follow the same-package Mill-only arm, then test reload
+while the repair tree is active and an empty candidate control.
+Keep Ancyra's verified turn-120 fixture available for **14.1**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

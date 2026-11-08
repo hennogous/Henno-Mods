@@ -333,6 +333,7 @@ def run(args):
         previous = load(prior / 'protocol.json')
         checkpoint_input = load(prior / ('observer-checkpoint.json' if args.mill_opening_components else 'checkpoint.json'))
         start = checkpoint_input['turn']
+        repair_followthrough = args.repair_ce_replay and previous.get('diagnostic_repair_ce_replay') is True
         expected = dict(protocol, endpoint=start, interval_minutes=previous['interval_minutes'])
         if 'diagnostic_supplier_boundary' in previous:
             # A read-only observer can start before the archived endpoint.
@@ -355,10 +356,12 @@ def run(args):
                         'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8',
                         'diagnostic_mill_ce_replay', 'diagnostic_granary_nomination_q8', 'diagnostic_granary_ce_replay',
                         'diagnostic_dam_sites', 'diagnostic_water_mill_repair', 'diagnostic_quarter_repair_selector',
-                        'diagnostic_quarter_repair_offer', 'diagnostic_mill_only_repair'):
+                        'diagnostic_quarter_repair_offer', 'diagnostic_mill_only_repair',
+                        'diagnostic_repair_ce_replay'):
                 if key in previous:
                     expected[key] = previous[key]
-        if args.calibration_replay or args.mill_ce_replay or args.granary_ce_replay:
+        if args.calibration_replay or args.mill_ce_replay or args.granary_ce_replay or (
+                args.repair_ce_replay and not repair_followthrough):
             if args.calibration_replay:
                 require(checkpoint_input['sha256'] == 'b3d6cc1aa78e8a156e60c4b110b229a3631ccaed57e24d7883aaca549fbc9545'
                         and args.supplier == [2, 196610, 2311, 2312] and args.through == 122,
@@ -369,11 +372,17 @@ def run(args):
                         and args.wind_mill == [4, 131073, 1423] and args.through == 139,
                         'CE nomination uses the exact Melbourne checkpoint')
                 protocol['diagnostic_mill_ce_replay'] = args.mill_ce_replay
-            else:
+            elif args.granary_ce_replay:
                 require(checkpoint_input['sha256'] == '1c6a36651a77d2361d06d651856eac8c57d6de921e2aede0fa4fca2d146f8843'
                         and args.granary == [1, 327684, 914] and args.through == 164,
                         'Integrated Granary nomination uses the exact Trebizond checkpoint')
                 protocol['diagnostic_granary_ce_replay'] = True
+            else:
+                require(start == 200 and args.through in (206, 214) and not args.mill_only_repair
+                        and args.water_mill_repair == [2, 196610, 2311]
+                        and checkpoint_input['sha256'] == '641421d09b33a8f467b5d8635a98af1731c236edfa14d0acdbf95695ad5820d6',
+                        'Integrated repair uses the exact Alexandria turn-200 fixture')
+                protocol['diagnostic_repair_ce_replay'] = True
             prior_packages = {row['install']: row['files'] for row in load(prior / 'packages.json').values()}
             permitted = {
                 ce: {str(ce_dll)},
@@ -392,6 +401,12 @@ def run(args):
                 changed = {name for name in old.keys() | new.keys() if old.get(name) != new.get(name)}
                 require(changed == permitted[source], 'Unexpected file changes in the calibration package')
             expected['input_digests'] = previous['input_digests']
+        if repair_followthrough:
+            require(args.water_mill_repair == [2, 196610, 2311]
+                    and (start == 206 and args.through == 214 and not args.mill_only_repair
+                         or start == 214 and args.through == 229 and args.mill_only_repair),
+                    'Packaged repair follow-through uses the turn-206 or turn-214 archived endpoint')
+            protocol['diagnostic_repair_ce_replay'] = True
         require(previous == expected
                 and load(prior / 'session-closed.json')['verified'],
                 'Diagnostic continuation requires the same closed package and setup')
@@ -723,8 +738,17 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
         if args.water_mill_repair:
             capture_quarter_repair_legality(controller, *args.water_mill_repair, start,
                                             out / 'source-quarter-repair.json')
-            if args.quarter_repair_offer:
+            if args.quarter_repair_offer or (args.repair_ce_replay and not args.mill_only_repair):
                 require(load(out / 'source-quarter-repair.json')['legal'], 'Quarter repair is no longer legal')
+            if args.repair_ce_replay:
+                if args.mill_only_repair:
+                    capture_building_readiness(controller, *args.water_mill_repair[:2], start,
+                                               out / 'source-mill.json', 'BUILDING_CSC_BAKERS_WATER_MILL')
+                    require(load(out / 'source-mill.json')['available'], 'Restored Quarter did not admit Mill repair')
+                status = parse(controller.cmd("print('CSC_REPAIR='..assert(CE_AIDistrictRepairStatus)())",
+                    'GameCore_Tuner', 'district-repair-capability'), 'CSC_REPAIR')
+                require(status['ready'] == 1 and status['faults'] == 0, 'CE repair admission is unavailable')
+                write_json(out / 'source-repair-status.json', status)
         if args.granary:
             pid, city, _ = args.granary
             granary_index = capture_building_readiness(controller, pid, city, start,
@@ -867,6 +891,11 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
                                      'GameCore_Tuner', 'fresh-endpoint-status'), 'CSC_FRESH_CE')
         write_json(out / 'native-endpoint.json', final)
         check_native_status(final, args.untuned)
+        if args.repair_ce_replay:
+            status = parse(controller.cmd("print('CSC_REPAIR='..assert(CE_AIDistrictRepairStatus)())",
+                'GameCore_Tuner', 'district-repair-endpoint-status'), 'CSC_REPAIR')
+            write_json(out / 'endpoint-repair-status.json', status)
+            require(status['ready'] == 1 and status['faults'] == 0, 'CE repair admission faulted')
         if args.saves:
             capture_census(controller, players, args.through, out / 'chain-census.txt')
             # Save the natural endpoint for follow-up diagnosis after the
@@ -933,6 +962,8 @@ if __name__ == '__main__':
                         help='Submit one unmodified native repair offer on the exact Alexandria replay')
     parser.add_argument('--mill-only-repair', action='store_true',
                         help='Observe a pillaged Water Mill after its host Quarter has been restored')
+    parser.add_argument('--repair-ce-replay', action='store_true',
+                        help='Verify packaged CE and CSC repair admission on the exact Alexandria replay')
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
     parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
@@ -972,6 +1003,10 @@ if __name__ == '__main__':
     if options.quarter_repair_offer and not (options.quarter_repair_selector and options.resume_from
                                                and options.probe_dependencies and not options.qualification):
         parser.error('The separate repair offer requires the matched selector continuation')
+    if options.repair_ce_replay and not (options.water_mill_repair and options.resume_from and not (
+            options.probe_dependencies or options.quarter_repair_selector
+            or options.qualification)):
+        parser.error('Packaged repair qualification requires the matched save and uses native CE telemetry')
     if options.melbourne_builder_offers and not options.mill_opening_components:
         parser.error('The Builder offer trace requires --mill-opening-components')
     if options.melbourne_builder_recruitment and not options.melbourne_builder_offers:
@@ -994,12 +1029,12 @@ if __name__ == '__main__':
         if not (options.saves and (options.supplier or options.wind_mill or options.granary or options.dam_sites
                                   or options.water_mill_repair)
                 and (options.probe_dependencies or options.movement_only or options.mill_ce_replay
-                     or options.granary_ce_replay or options.dam_sites)
+                     or options.granary_ce_replay or options.dam_sites or options.repair_ce_replay)
                 and not options.untuned and not options.matched_source):
             parser.error('A tuned continuation needs --saves, one target, and a diagnostic mode')
         if options.dam_sites and options.qualification:
             parser.error('A Dam site survey uses the shared controller and the existing CE package')
-        if options.water_mill_repair and not options.probe_dependencies:
+        if options.water_mill_repair and not (options.probe_dependencies or options.repair_ce_replay):
             parser.error('Water Mill repair observation requires --probe-dependencies')
         if options.alexandria_bid and not options.supplier:
             parser.error('The Alexandria bid requires --supplier')

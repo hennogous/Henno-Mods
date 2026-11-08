@@ -82,6 +82,12 @@ Quarter repair eligibility, Production cost and progress at the saved
   Add `--mill-only-repair` to a saved Water Mill repair continuation
   when the Quarter has already been restored. This arm is observational.
 
+  `--repair-ce-replay` exercises the packaged CE and CSC feature on
+  the same source with no Frida probe. A turn-200 replay can end on
+  206 for an active-request save or on 214 for physical completion.
+  Continue those archives with the same packages. Use
+  `--mill-only-repair` for the 214 to 229 Service follow-through.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

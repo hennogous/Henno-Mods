@@ -5,6 +5,7 @@ local B=CSC_AI_DistrictBridge
 local names={'Begin','Allow','Entry','Commit','Disable','Status'}
 local MAX_BUILDER_BID_Q8=64*256
 local MAX_NOMINATION_BID_Q8=512*256
+local MAX_REPAIR_CANDIDATES=256
 local function integer(x,low,high)
     local kind=type(x)
     return (kind=='number' or kind=='integer') and x==math.floor(x) and x>=low and x<=high
@@ -58,8 +59,17 @@ function B.NominationLimit(status)
     if type(status)~='string' or not status:match('"ready":1') or not status:match('"faults":0') then return 0 end
     return math.min(tonumber(status:match('"maxBidQ8":(%d+)')) or 0,MAX_NOMINATION_BID_Q8)
 end
+function B.RepairStatus()
+    if type(CE_AIDistrictRepairStage)=='function' and type(CE_AIDistrictRepairStatus)=='function' then
+        return CE_AIDistrictRepairStatus()
+    end
+end
+function B.RepairLimit(status)
+    if type(status)~='string' or not status:match('"ready":1') or not status:match('"faults":0') then return 0 end
+    return math.min(tonumber(status:match('"maxCandidates":(%d+)')) or 0,MAX_REPAIR_CANDIDATES)
+end
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
-    builderBidLimit,nominations,nominationLimit)
+    builderBidLimit,nominations,nominationLimit,repairs,repairLimit)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -104,6 +114,19 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             and allowed[e.player] and integer(e.city,0,2147483647) and integer(e.building,0,2147483647)
             and integer(e.delta,1,nominationLimit)) then return reject('Invalid building nomination entry') end
     end
+    if repairs and (not integer(repairLimit,1,MAX_REPAIR_CANDIDATES) or #repairs>repairLimit) then
+        return reject('Invalid district repair batch')
+    end
+    local repairCities={}
+    for _,e in ipairs(repairs or {}) do
+        if not (integer(e.player,0,63) and allowed[e.player] and integer(e.city,0,2147483647)
+            and integer(e.district,1,districtCount-1) and integer(e.plot,0,width*height-1)) then
+            return reject('Invalid district repair candidate')
+        end
+        local key=e.player..':'..e.city
+        if repairCities[key] then return reject('Duplicate district repair city') end
+        repairCities[key]=true
+    end
     local ok,message=pcall(function()
         assert(CE_AIDistrictScoresBegin(version,width,height,districtCount)==1,'Native begin rejected')
         for _,pid in ipairs(originalAI) do assert(CE_AIDistrictScoresAllow(pid)==1,'Native identity rejected') end
@@ -128,6 +151,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         end
         for _,e in ipairs(nominations or {}) do
             assert(CE_AIBuildingNominationBid(e.player,e.city,e.building,e.delta)==1,'Native building nomination rejected')
+        end
+        for _,e in ipairs(repairs or {}) do
+            assert(CE_AIDistrictRepairStage(e.player,e.city,e.district,e.plot)==1,'Native district repair rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

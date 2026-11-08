@@ -3033,6 +3033,40 @@ under `Desktop/Codex/csc-gamecore-hotfix-20261106`, on local branch
 `codex/ce-district-repair-admission` at the exact staged DLL source
 `abf5d5842aceff98e50612055a15044ff3f288fa`. This records the review base.
 
+#### Packaged CE and CSC reproduced the Quarter repair
+
+The review branch now implements the optional repair stage and status
+inside the existing district policy transaction. Its supported MSVC
+Release x64 build SHA-256 is
+`4cfe1ccb0a6369cd123f9d18f3efc3dd87dffbbe42a9c75a347c478f8050ae85`.
+The DLL preserves all 157 PE export ordinals and names from the reviewed
+nomination carrier. The isolated native suite passed 86 checks and the
+existing hook group and instruction checks. A Lua 5.1 fixture verified
+the working supplier and Granary, matching pillaged Mill, damage and
+Feudalism gates, four-field staging, duplicate and original-player
+checks, and the older CE fallback.
+[CE review source](https://github.com/hennogous/CivilizationVI_CommunityExtension/tree/codex/ce-district-repair-admission).
+
+`development-alexandria-quarter-repair-ce-01` reloaded the exact 200
+checkpoint with the separate CE dependency and the three changed CSC
+AI files. There was no Frida attachment, Lua score write or manual
+production order. On 201 CE admitted one repair tree with controller
+64159762 and native plot value 1,445,266 Q8. GameCore submitted Quarter
+request 4421 at 5,645 whole units and stock Aerodrome request 4422 at
+7,216. When a second stock district plan became available on 209, CE
+recognized the active repair and reported one duplicate. The repair
+used the native queue and restored the Quarter on 210. CSC's next
+publication had zero candidates. The turn-214 census confirmed the
+working Quarter and the still-pillaged Mill. The controller verified
+normal close and restoration. The inactive save SHA-256 is
+`1d78ac421eb66caab2bc6d5ef06784f38f31d1aadfa154210f8570a4c1a41ad8`.
+
+This tests repeated publication in one game context. Active-repair
+save/reload and the same-DLL empty-candidate arm still need a separate
+run. The existing Lua timing log did not resolve sub-second differences
+on this late-game replay. Measure the native admission overhead and
+publisher cost with a higher-resolution clock in the performance pass.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

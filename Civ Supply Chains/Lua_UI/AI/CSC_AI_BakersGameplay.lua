@@ -66,7 +66,7 @@ local function refresh(turn)
     end
 
     local started = os.clock()
-    local entries, builderSites, nominations = {}, {}, {}
+    local entries, builderSites, nominations, repairs = {}, {}, {}, {}
     local builderStatus = bridge.BuilderStatus()
     local protectBuilders = builderStatus and builderStatus:match('"ready":1') and builderStatus:match('"faults":0')
     local builderBidLimit = protectBuilders and bridge.BuilderBidLimit(builderStatus) or 0
@@ -77,12 +77,15 @@ local function refresh(turn)
         and harvestStatus:match('"ready":1') and harvestStatus:match('"faults":0')
     local nominationStatus = bridge.NominationStatus()
     local nominationLimit = bridge.NominationLimit(nominationStatus)
+    local repairStatus = bridge.RepairStatus()
+    local repairLimit = bridge.RepairLimit(repairStatus)
     local allowances = 0
     for _, id in ipairs(players) do
         local player = Players[id]
-        local deductions, sites, bids = placement.BakersMaterialDeductions(player, protectBuilders,
-            builderBidLimit, nominationLimit, ui.CanProduceBuilding)
+        local deductions, sites, bids, candidates = placement.BakersMaterialDeductions(player, protectBuilders,
+            builderBidLimit, nominationLimit, ui.CanProduceBuilding, repairLimit > 0)
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
+        for _, candidate in ipairs(candidates) do repairs[#repairs + 1] = candidate end
         local protectedPlots = {}
         for _, entry in ipairs(deductions) do
             entries[#entries + 1] = entry
@@ -110,9 +113,10 @@ local function refresh(turn)
     local width, height = Map.GetGridSize()
     -- Dropping part of a site's compatibility list can forbid a valid job.
     -- Retire Builder protection for the turn if the full packet cannot fit.
+    local publishRepairs = #repairs > 0 and #repairs <= repairLimit
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit,
-        #nominations <= capacity and nominations or nil, nominationLimit)
+        #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit)
     assert(accepted, message)
     if samples and samples ~= '[]' then
         -- Civ clips long Lua log lines. CE sends a flat array of small
@@ -153,6 +157,10 @@ local function refresh(turn)
         end
         print(string.format('CSC_AI_BAKERS_NOMINATIONS turn=%d bids=%d preview=[%s] previous=%s',
             turn, publishedCount, table.concat(preview, ','), nominationStatus))
+    end
+    if repairStatus then
+        print(string.format('CSC_AI_BAKERS_REPAIRS turn=%d candidates=%d previous=%s',
+            turn, publishRepairs and #repairs or 0, repairStatus))
     end
     print(string.format('CSC_AI_BAKERS_DISTRICTS turn=%d version=%d players=%d entries=%d omitted=%d previousMatched=%d previousChanged=%d seconds=%.4f',
         turn, version + 1, #players, #entries, omitted, matched, changed, os.clock() - started))
