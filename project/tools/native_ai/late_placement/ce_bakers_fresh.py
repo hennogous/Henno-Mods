@@ -350,7 +350,8 @@ def run(args):
             for key in ('diagnostic_extra_pasture_q8', 'diagnostic_source_sha256', 'diagnostic_movement_only',
                         'diagnostic_calibration_build', 'diagnostic_mill_nomination_q8',
                         'diagnostic_mill_ce_replay', 'diagnostic_granary_nomination_q8', 'diagnostic_granary_ce_replay',
-                        'diagnostic_dam_sites', 'diagnostic_water_mill_repair', 'diagnostic_quarter_repair_selector'):
+                        'diagnostic_dam_sites', 'diagnostic_water_mill_repair', 'diagnostic_quarter_repair_selector',
+                        'diagnostic_quarter_repair_offer'):
                 if key in previous:
                     expected[key] = previous[key]
         if args.calibration_replay or args.mill_ce_replay or args.granary_ce_replay:
@@ -403,6 +404,11 @@ def run(args):
             protocol['diagnostic_water_mill_repair'] = args.water_mill_repair
         if args.quarter_repair_selector:
             protocol['diagnostic_quarter_repair_selector'] = True
+        if args.quarter_repair_offer:
+            require(start == 200 and args.through in (203, 214) and args.water_mill_repair == [2, 196610, 2311]
+                    and checkpoint_input['sha256'] == '641421d09b33a8f467b5d8635a98af1731c236edfa14d0acdbf95695ad5820d6',
+                    'The separate repair offer uses the exact Alexandria turn-200 fixture')
+            protocol.update(diagnostic_quarter_repair_offer=True, gameplay_interventions=True)
         if args.melbourne_builder_offers:
             protocol['diagnostic_melbourne_builder_offers'] = True
         if args.melbourne_builder_recruitment:
@@ -709,6 +715,8 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
         if args.water_mill_repair:
             capture_quarter_repair_legality(controller, *args.water_mill_repair, start,
                                             out / 'source-quarter-repair.json')
+            if args.quarter_repair_offer:
+                require(load(out / 'source-quarter-repair.json')['legal'], 'Quarter repair is no longer legal')
         if args.granary:
             pid, city, _ = args.granary
             granary_index = capture_building_readiness(controller, pid, city, start,
@@ -747,6 +755,8 @@ print(string.format('CSC_DISTRICT_INDICES={{"district":%d,"districtCount":%d}}',
                 scope.update(width=width, height=height, **indices, plots=sorted(plots))
                 if args.quarter_repair_selector:
                     scope['traceTree'] = True
+                if args.quarter_repair_offer:
+                    scope['offerRepair'] = True
                 probe = HERE / 'dam_site_observer.js'
             elif args.supplier:
                 plot = args.supplier[3]
@@ -802,9 +812,20 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             elif not args.supplier:
                 write_json(out / ('granary-scope.json' if args.granary else 'wind-mill-scope.json'), scope)
             attachment = frida.attach(session.owner.pid)
+            probe_sources = [STUDY / 'observer.js', probe]
+            if args.quarter_repair_offer:
+                probe_sources.append(HERE / 'quarter_repair_offer.js')
             code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n" + '\n'.join(
-                read(path) for path in (STUDY / 'observer.js', probe))
+                read(path) for path in probe_sources)
             script = attachment.create_script(code)
+            if args.quarter_repair_offer:
+                def archive_repair_receipt(message, _data):
+                    payload = message.get('payload')
+                    if (message['type'] == 'send' and isinstance(payload, dict)
+                            and payload.get('kind') == 'quarter-repair-receipt'):
+                        with (out / 'quarter-repair-receipts.ndjson').open('a', encoding='utf-8') as journal:
+                            journal.write(json.dumps(payload['receipt']) + '\n')
+                script.on('message', archive_repair_receipt)
             script.load()
             observer = script
             spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
@@ -815,6 +836,9 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             trace = observer.exports_sync.freeze()
             write_json(out / trace_name, trace)
             require(trace['fault'] is None and trace['active'] == 0, 'Native decision trace faulted')
+            if args.quarter_repair_offer:
+                require(sum(row['kind'] == 'repair-tree' for row in trace['records']) == 1,
+                        'The exact separate Quarter repair tree did not reproduce once')
             if args.granary_components or args.mill_opening_components:
                 components = trace['granaryComponents' if args.granary_components else 'millOpeningComponents']
                 require(components['stopReason'] is None and not components['faults']
@@ -897,6 +921,8 @@ if __name__ == '__main__':
                         help='Observe a pillaged Water Mill and Quarter with the other chain links working')
     parser.add_argument('--quarter-repair-selector', action='store_true',
                         help='Observe the existing Quarter at the district selector instead of the Mill comparison')
+    parser.add_argument('--quarter-repair-offer', action='store_true',
+                        help='Submit one unmodified native repair offer on the exact Alexandria replay')
     parser.add_argument('--probe-dependencies', type=Path, help='Existing exact Frida package directory')
     parser.add_argument('--alexandria-bid', action='store_true', help='Add a scoped +6144 Q8 in the matched replay only')
     parser.add_argument('--melbourne-mill-bid', action='store_true', help='Add 448 score units at the matched Wind Mill nomination')
@@ -930,6 +956,9 @@ if __name__ == '__main__':
         parser.error('At most eight milestone census turns are supported')
     if options.quarter_repair_selector and not options.water_mill_repair:
         parser.error('The Quarter selector requires --water-mill-repair')
+    if options.quarter_repair_offer and not (options.quarter_repair_selector and options.resume_from
+                                               and options.probe_dependencies and not options.qualification):
+        parser.error('The separate repair offer requires the matched selector continuation')
     if options.melbourne_builder_offers and not options.mill_opening_components:
         parser.error('The Builder offer trace requires --mill-opening-components')
     if options.melbourne_builder_recruitment and not options.melbourne_builder_offers:

@@ -207,6 +207,11 @@ the Quarter used the default threshold despite a cached reservation ID.
 It was admitted and lost on the relative score.
 [AI-C119]
 
+A separate district tree reserved the pillaged Quarter and submitted
+a repair request alongside the stock Aerodrome request. Its decoded
+value was inflated. The controller lost its tuner context on the next
+turn, leaving repair and Service recovery unverified. [AI-C120]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

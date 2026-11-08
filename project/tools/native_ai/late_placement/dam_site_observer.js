@@ -2,7 +2,8 @@
 
 // Windows XP2 hotfix 092abfbb. Observe CheckForDistrict just after its
 // GetBestDistrict call. RDI holds CityBuild and RBP+0x40 holds the output XY.
-// This caller is outside the two CE detours and all reads are observational.
+// This caller is outside the two CE detours. The separate matched repair
+// treatment is opt-in. Dam and selector-only probes are read-only.
 // The scope supplies either legal Dam footprints or an existing Quarter.
 const BEST_DISTRICT_RETURN = 0x3e0f3c;
 const CHECK_FOR_DISTRICT = 0x3e0ee0;
@@ -54,6 +55,8 @@ rpc.exports = {
         const record = receipt => {
             if (records.length >= 64) throw Error('District selector evidence bound');
             records.push(receipt);
+            if (scope.offerRepair && receipt.kind.startsWith('repair-'))
+                send({kind: 'quarter-repair-receipt', receipt});
         };
         const isTarget = build => {
             const city = read(build, CITY, 'ptr');
@@ -64,6 +67,8 @@ rpc.exports = {
             try { callback(); }
             catch (error) { enabled = false; fault = String(error); }
         };
+        const offerRepair = scope.offerRepair ? makeQuarterRepairOffer(core, scope, fingerprint,
+            currentTurn, record, protect) : null;
         if (scope.traceTree) {
             const check = core.base.add(CHECK_FOR_DISTRICT);
             const threshold = core.base.add(GET_BEST_DISTRICT_THRESHOLD);
@@ -75,7 +80,19 @@ rpc.exports = {
                     protect(() => {
                         if (!isTarget(args[0])) return;
                         const tree = read(args[0], DISTRICT_TREE, 'ptr');
-                        record({kind: 'check', turn: currentTurn(), tree: read(tree, TREE_ID, 'i32')});
+                        const id = read(tree, TREE_ID, 'i32'), turn = currentTurn();
+                        record({kind: 'check', turn, tree: id});
+                        if (offerRepair && id === -1 && turn === 201) this.repairBuild = args[0];
+                    });
+                },
+                onLeave() {
+                    if (!this.repairBuild) return;
+                    protect(() => {
+                        const selection = records.find(row => row.kind === 'selection' && row.turn === 201);
+                        const threshold = records.find(row => row.kind === 'threshold' && row.turn === 201);
+                        if (!selection) throw Error('The matched turn-201 district comparison did not occur');
+                        const tree = read(this.repairBuild, DISTRICT_TREE, 'ptr');
+                        offerRepair(this.repairBuild, read(tree, TREE_ID, 'i32'), selection, threshold);
                     });
                 },
             });

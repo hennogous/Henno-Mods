@@ -2852,6 +2852,55 @@ Production. Verify that a
 separate offer uses a native owner, deduplicates and expires on its own,
 and competes against ordinary requests before integrating the policy.
 
+### An ordinarily valued Quarter repair offer beside the stock plan
+
+The treatment runs on the exact inactive turn-200 save from
+`development-early-portfolio-200-01`. The shared controller verifies
+the same package and census, a legal Quarter repair, a working supplier
+and Granary, and the pillaged Quarter and Water Mill. On the native AI
+thread, the probe waits for the turn-201 Aerodrome winner and both
+known Q8 scores, including the Quarter's default reservation threshold.
+It runs after stock `CheckForDistrict` has registered Aerodrome.
+
+The probe resolves the existing footprint through the city's own
+`GetDistrictAt` (`11e520`), the same lookup used by `BuildDistrict`
+(`3df220`). The extra stock `Build City District` tree receives a
+normal city priority and trigger context for the existing district,
+with no research prerequisites to acquire. It gets a distinct native
+controller. The stock slot and district values are untouched. The
+observer records the request under that controller and the native
+execution and controller release if they occur. Storekeeper is
+measured separately. This is a pinned GameCore diagnostic, separate
+from the CE API and the qualification runs.
+
+The first attempt, `development-alexandria-quarter-repair-offer-01`,
+reproduced the stock comparison but failed the footprint guard before
+tree creation. The direct lookup used the wrong player object field.
+The guard prevented a write, and the controller closed and verified
+restoration. The trace SHA-256 is
+`e3fe91019e98cdcd7110b89458ee38fdb33565071efcb19850a9d74f735eeb29`.
+The retry uses the city lookup above.
+
+`development-alexandria-quarter-repair-offer-02` passed that guard.
+On 201 its separately labelled tree decoded the Quarter, reserved
+plot `(17, 31)`, and submitted Quarter request 4421. The same native
+city log recorded Aerodrome request 4422 on that turn. The tree logged
+a decoded value of 1,227,157,293. The native city log reported the
+Quarter request at 2,420,525 whole value units, versus 7,216 for
+Aerodrome. The Quarter's selector value of 1,445,266 Q8 corresponds
+to 5,645 whole units. This run demonstrates separate request
+admission. The unexpectedly high value invalidates it as a test
+of ordinarily valued repair. The controller subsequently lost its
+responsive tuner context at turn 202. There is no verified queue
+execution, repair or Storekeeper outcome from this arm.
+
+The follow-up probe checks both trigger value inputs and the decoded
+tree value before the new tree reaches its reservation or request
+nodes. It expects zero base and bonus and a decoded value matching the
+stock selector's whole-unit conversion. It fails the diagnostic tree
+if the check differs and journals the operands separately from the
+end-of-run trace. This guard still needs a live replay.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

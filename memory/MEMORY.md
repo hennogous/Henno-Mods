@@ -30,6 +30,13 @@ both turn-201 scores and found the default −2559744 Q8 threshold. The
 cached reservation had no live AI controller. Next verify a separate native
 repair offer's owner, deduplication and expiry without replacing the
 active district tree.
+The exact separate-offer treatment `-01` failed before mutation on
+the footprint lookup. `-02` used `City::Districts::GetDistrictAt` and
+submitted Quarter request 4421 alongside Aerodrome 4422 on 201. The
+repair decoded to an unexpectedly inflated value and FireTuner lost
+its contexts at 202 (AI-C120). Use the new fail-closed decoder check
+and live receipt journal in the next short diagnostic. First reconcile
+the shared controller and native owner for `-02`.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

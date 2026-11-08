@@ -1868,5 +1868,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C118", "AI-N107", "AI-N011"]
+  },
+  {
+    "id": "AI-C120",
+    "title": "A separate Quarter repair request coexisted with the stock Aerodrome request",
+    "statement": "On turn 201 a separate native district tree decoded the pillaged Quarter, reserved its plot and submitted request 4421. Alexandria also submitted its original Aerodrome request 4422. The Quarter request was inflated at 2420525 whole value units versus the 5645 whole units from its selector score.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Pinned Alexandria turn-200 treatment, with the stock Aerodrome selection, threshold and cached Quarter score reproduced before one extra tree was created.",
+    "limits": "The request value invalidates an ordinary-price comparison. The shared controller lost its tuner context on turn 202. Queue execution, native expiry and Service recovery were not established.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C119"]
   }
 ]
