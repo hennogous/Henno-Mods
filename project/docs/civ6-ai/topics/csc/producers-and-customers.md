@@ -71,12 +71,13 @@ the ordinary Granary. [AI-N102]
 
 ## Ancyra still needed both buildings
 
-From an earlier turn-120 checkpoint, the legal Wind Mill lost both
-ordinary building comparisons to Walls. The AI finished Art Museum,
-then used production for Walls and Line Infantry. Ancyra still needed
-both buildings at 135, with the Rice Farm working. Those margins
-show what the first investment would compete against. Its chain
-benefit depends on when the second building could arrive. [AI-C125]
+From an earlier turn-120 checkpoint, both legal Bakers buildings lost
+their ordinary comparisons to Walls. The Wind Mill had the closer
+scores. In both read-only replays the AI finished Art Museum, then
+used production for Walls and Line Infantry. Ancyra still needed
+both buildings at 135, with the Rice Farm working. Pricing the first
+investment requires its immediate benefits and an estimate of when
+the second building could arrive. [AI-C125]
 
 Ancyra's Granary was legal but lost twice to Castle in ordinary
 nomination. Its available production slot went to a Cuirassier

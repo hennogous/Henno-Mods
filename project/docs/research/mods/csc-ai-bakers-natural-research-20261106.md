@@ -3148,6 +3148,42 @@ exit and restoration. The observer SHA-256 is
 The verified turn-135 save SHA-256 is
 `027cfe5df1b4b701b7db6e433747fe7737e5e0ed8b4658631ef6813062416f9a`.
 
+#### The paired Granary replay lost to the same alternatives
+
+`development-ancyra-granary-opening-01` replayed the same turn-120
+source and packages through 135, observing the Granary instead. It
+was legal at the source and passed its requirements at all 17 scoped
+comparisons. At the two ordinary nominations Walls won by larger
+margins than it did against the Wind Mill.
+
+| Ordinary building comparison | Granary Q8 | Walls Q8 | Gap Q8 |
+| --- | ---: | ---: | ---: |
+| First | 15,112 | 154,244 | 139,132 |
+| Second | 27,852 | 326,002 | 298,150 |
+
+Both replays had identical candidate comparison winners and winner
+values, scoped queue gates and requests, 34 Ancyra city-build log
+rows and 15 production queue rows. The source and endpoint chain
+censuses matched after removing transport metadata. At 135 the
+original Rice Farm still worked and both buildings were absent.
+
+The Granary has its own native value. Its CSC exchange still needed
+the Mill. The Wind Mill was the closer of the two at both ordinary
+comparisons, but its omitted standalone CSC value at this site was
+unmeasured. The observed gaps describe the actual competition, with
+no calibrated first-link amount inferred from them. A separate
+earlier opportunity is a legal Mill beside a working supplier and
+Granary before Feudalism. The current Mill preference waits for
+Feudalism even though the ordinary exchange can operate sooner.
+Look for these cases in a frozen normal-start development game
+before changing the nomination policy.
+
+The Granary observer froze without faults. Its SHA-256 is
+`2e18df5706089265d43b5ad338c88ebd6ccff03960520b720802869c92594420`.
+The controller verified clean exit and restoration and the turn-135
+save SHA-256 is
+`251722b6cc83f64a452e24ff4e81857a805247675c138689d6d5cb2f00f9a0ed`.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

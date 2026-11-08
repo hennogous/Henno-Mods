@@ -59,8 +59,13 @@ High-resolution performance measurement remains open.
 Ancyra's turn-120 Wind Mill observer closed cleanly at 135. Walls
 won both ordinary comparisons by 107675 and 236742 Q8. Ancyra ran
 Walls and Line Infantry after Art Museum and still needed both
-buildings (AI-C125). Use the same source and packages for the Granary
-side of **14.1**.
+buildings. The paired Granary replay closed at 135 and lost to Walls
+by 139132 and 298150 Q8, with identical Ancyra city-build and production
+logs (AI-C125). The next diagnostic is the normal-start
+`development-integrated-repair-249-01` using stage-12 CE and CSC,
+with censuses on 60, 80, 95, 110, 125, 150, 200 and 240. This keeps
+the preselected qualification seeds separate. Look for early,
+affordable exchanges and measure ordinary recovery under **13.1**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

@@ -136,10 +136,11 @@ Quarter and its Mill were still pillaged at turn 214.
 [Repair evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-quarter-can-gate-its-own-mills-repair).
 
 Ancyra already had a working Rice Farm but needed both the Wind Mill
-and Granary. The legal Mill lost both ordinary building comparisons
-to Walls. The AI also spent Production on Line Infantry in that
-window. The next comparison is the Granary from the same save, so we
-can judge which first investment has the stronger case.
+and Granary. Both buildings were legal and lost their comparisons
+to Walls. The Wind Mill came closer. In both replays the AI also
+spent Production on Line Infantry. A normal-start development run
+will look for earlier investments, including Mills that could start
+an exchange with an existing Granary before Feudalism.
 [Ancyra replay](../../research/mods/csc-ai-bakers-natural-research-20261106.md#ancyras-early-wind-mill-lost-to-walls).
 
 Charleston activated a third Storekeeper chain after a Maize
