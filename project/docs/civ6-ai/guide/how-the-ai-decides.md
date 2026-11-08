@@ -8,6 +8,10 @@ Each city has score storage for its center and tiles within three rings, across 
 
 It can consider some districts before their technology or civic is ready, allowing for the expected delay. It can also consider revealed unowned land; an eligible frontier site may lead to a tile-purchase request. Our simple CSC scanner currently covers a narrower set of owned, city-assigned sites.
 
+Buying land for a resource can happen separately. Each city's analysis
+picks one frontier resource tile for the routine purchase pass. The
+treasury and buying city still decide whether that purchase can go through.
+
 ## Value the investment
 
 Adjacency enters a broader estimate containing supported yields and effects, empire-dependent yield weights, construction and research delays, maintenance, land costs and competing uses of the plot. The same yield can matter differently to different empires or at different times.

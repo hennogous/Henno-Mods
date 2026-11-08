@@ -330,7 +330,10 @@ until the active check closes or an explicit dependency needs attention.
   a supplier needed by a viable plan. These can require different native
   decisions. First trace an exact district purchase request through its
   debit and acquiring city, and a separate supplier acquisition through
-  its improvement. Preserve native legality and treasury checks.
+  its improvement. The routine resource pass consumes one cached
+  frontier candidate per city. Trace an eligible supplier through
+  that selection and the quote before testing a preference. Preserve
+  native legality and treasury checks.
   [Native purchase routes](topics/native/district-choice.md#buying-a-future-site).
 - **1.6 Construction readiness and follow-through.** Check unlocks, legal
   siting, capacity and the preparation window before committing. Trace the

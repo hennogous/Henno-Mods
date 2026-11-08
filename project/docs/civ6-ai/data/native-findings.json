@@ -1872,5 +1872,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/district-choice.md",
     "related": ["AI-N107", "AI-C119"]
+  },
+  {
+    "id": "AI-N109",
+    "title": "Routine tile buying receives one frontier-resource candidate per city",
+    "statement": "The plot evaluator marks a frontier row using same-player adjacency. CityBuild ranks resource-bearing frontier rows and caches a single coordinate. The Economic routine quotes that one plot for the city and applies the normal budget and purchase checks. It does not try a second candidate for that city if the quote or budget fails.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Windows XP2 Ghidra reference 324c51e9 with byte-matched patched Steam text 092abfbb. Evaluator 3e2aa0, CityBuild activation call 3e296f, AnalyzeCityPlots 3de990, Economic activation call 4576b8 and quote site 458619.",
+    "limits": "Static candidate and purchase path. A revealed supplier must still reach the native shortlist and pass the actual city's quote and command validation. No new spending, Builder follow-through or calibrated preference was measured.",
+    "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
+    "topic": "topics/native/district-choice.md",
+    "related": ["AI-N069", "AI-N101"]
   }
 ]

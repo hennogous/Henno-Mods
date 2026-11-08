@@ -105,6 +105,12 @@ using improvement forecasts and a feature heuristic. This is not a universal
 highest-yield-tile auction. Requested targets have a more permissive savings
 hurdle than routine purchases. [AI-N069]
 
+The routine buyer receives one cached coordinate per city from
+CityBuild's frontier resource scan. The frontier test checks for a
+neighbor owned by the player, while the purchase command checks the
+specific buying city. If the cached tile fails its quote or savings
+check, that city has no second candidate in this pass. [AI-N109]
+
 Founding first annexes eligible plots immediately around the new
 City Center. A proposed Bakers site beside that center is therefore
 usually already owned. An adjacent supplier farther out can still

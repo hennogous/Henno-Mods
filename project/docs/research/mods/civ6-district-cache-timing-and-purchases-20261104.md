@@ -245,6 +245,44 @@ patched Steam image starts `092abfbb`. Their full file-backed
 `.text` matched across 10,180,135 bytes, SHA-256
 `4ebd266b7d324fc9f97daa9dc39fa5cafcd09d6257e7a446914ddb13fd8927e9`.
 
+### Where a supplier purchase can enter city analysis
+
+A read-only follow-up checked the frontier flag, candidate selection
+and quote call on the same Ghidra reference. The plot evaluator at
+`3e2aa0` checks visibility and resolves the resource visible to the
+player. It sets the frontier flag at row offset `0x57` when a plot
+outside the player's ownership has a same-player neighbor. A plot
+owned by another player clears the flag before the candidate is
+scored. The neighbor need only belong to the player. The later
+purchase command still checks the buying city's actual eligibility.
+
+CityBuild's turn activation calls `AnalyzeCityPlots` at `3e296f`.
+Analysis clears the prior coordinate to the missing sentinel
+`(-9999, -9999)` and scans resource-bearing rows with the frontier flag.
+The first eligible row can become the candidate without a score
+comparison. Later rows use the feature preference and signed
+improvement forecasts. The function writes one coordinate at
+`3dec1b` to the CityBuild field at `0x228`, whose value begins at
+`0x238` through the auto-variable accessor at `72a920`. It does not
+retain a ranked list for Economic to revisit.
+
+The nonhuman Economic activation calls `PurchasePlots` at `4576b8`,
+after checking its queued control handles and Great Person purchases.
+The routine reads the coordinate at `4585dd` and `4585f0`, quotes that
+plot for that city at `458619`, then checks savings. A qualifying
+quote can reach purchase request construction at `45867f` and native
+command validation and execution. The next city is considered after
+this city. The loop cannot fall back to a different candidate for
+the same city when its cached plot fails the quote or savings gate.
+
+For a supplier-only diagnostic, start with an unowned, revealed
+mapped resource adjacent to a viable Quarter and an owned border
+tile. Trace the row through the ordinary comparison and cached
+coordinate, then use the quote, debit and annex sites to separate
+selection from spending. The static trace establishes where a scoped
+supplier preference would have to compete. It has no new purchase
+receipt or measured CSC bid amount.
+
 ## Primary evidence and limits
 
 Retained exports are under`Desktop/Codex/csc-district-placement-20261103/native/`
