@@ -1,8 +1,18 @@
 # Current Bakers AI work — 8 November 2026
 
-Active next tests **2.2, supplier retention**, and **14.1, earlier chain
-investment**. Builder recruitment remains a **3.2** calibration problem
-for a different fixture. The frozen
+Active next tests **13.1, producer repair**, and **14.1, earlier chain
+investment**. Supplier retention **2.2** needs an eligible threat and
+alternative. Builder recruitment remains a **3.2** calibration problem
+for a different fixture. `development-early-portfolio-200-01` closed
+normally at 200 with all interior turns observed. Alexandria 69,
+Melbourne 50, Charleston 38 and Townsville 19 actual active turns.
+Alexandria's Quarter and Water Mill were pillaged at the saved boundary
+with Pasture and Granary intact (**13.1**). Heidelberg's old Quarter
+did not recur. Charleston's active chain has sole Maize at 2100 and
+existing Dam at 2026. The read-only survey found both on river 273 and
+no legal new Dam. Selector turn 204 recorded the invalid Dam score on
+2100. It remained a working Farm at 206. See AI-C117 / AI-N106.
+The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.
 The closed turn-249 audit found Melbourne 132, Launceston 60,

@@ -2242,6 +2242,26 @@ still went forward. The evidence leaves the other Dam sites and
 downstream arbitration unresolved. A permanent-loss guard needs to
 account for alternate legal sites and any competing flood benefit.
 
+In the Windows XP2 reference, `FloodRiver` at RVA `72d400` scans
+the affected river's floodplain plots for the district marked as
+preventing floods. It checks completion and pillage state before
+suppressing damage. `GetFloodPreventionDistrict` at `72e130` reads
+that flag from the district definition. The shipped Dam definition
+has `PreventsFloods` and `OnePerRiver`. Compare same-river flood
+coverage using the native lists from `GetRiverForFloodplain`
+(`5bcd70` Lua binding) and `GetFloodplainPlots` (`5bc970` Lua binding).
+Equal flood coverage leaves placement legality, Production, housing,
+and any other location effects to check separately.
+
+The follow-up observer reads the Dam's score on each currently
+surveyed candidate after `GetBestDistrict` returns to `CheckForDistrict`
+at `3e0f3c`. It reads the engine's selected district and coordinates
+there. The survey separately calls the UI's native district build
+operation for every candidate at the saved boundary. Offline fixtures
+verified same-river and different-river coverage, occupied and rejected
+sites, and decoding of the native score snapshot. These checks do not
+establish whether Heidelberg has an alternative in a live game.
+
 At 200, Aigai's Water Mill was pillaged and its Cattle was
 still unimproved. Both were unchanged at 249. The preserved
 turn-154 save samples the earlier decision window before that
@@ -2629,6 +2649,64 @@ Its SHA-256 is
 `a74a60e6f07b5303d01e5c441dce5e96d71e2cf1eebaa30c0ed02d6e230c2a56`.
 The archived turn-100 census SHA-256 is
 `4a6747a13056a9035cb2735b56283e85463154dd60a7963e12fa6a6c386ac091`.
+
+#### A normal-start repeat reached four chains by turn 200
+
+`development-early-portfolio-200-01` used the same Small Continents
+development seeds and integrated packages as the turn-249 run. It
+started normally and closed cleanly at 200. All six milestone censuses
+completed, and all interior turns 2–199 were sampled. Only Ancyra and
+Alexandria had both an adjacent customer footprint and an owned mapped
+Base with its improvement technology unlocked at 80. Ancyra already
+had its Farm and still lacked both buildings on 190. Melbourne needed
+only its Wind Mill at 100 and 120.
+
+| Chain | Active turns | Verified range |
+| --- | ---: | --- |
+| Alexandria Troas, Quarter plot 2311 | 69 | 119–187 |
+| Melbourne, Quarter plot 1423 | 50 | 150–199 |
+| Charleston, Quarter plot 2025 | 38 | 162–199 |
+| Townsville, Quarter plot 1869 | 19 | 181–199 |
+
+Alexandria's Quarter and Water Mill were pillaged at 200. Its original
+Cattle Pasture and Granary still worked. The Service remained inactive
+from 188 through 199. The census and Service records establish a live
+repair opportunity. Alexandria finished a Research Lab and chose Dam
+contract 4029 on 198. Its Dam was near completion at the saved boundary.
+The cause of the damage and the next repair decision still need evidence.
+The original Heidelberg Quarter at 1244 was absent in
+this repeat. The save preserves Charleston's completed chain and sole
+working Maize, next to the Dam that it placed at `(28, 27)` earlier in
+the game. That supplies a live geometry check for the new Dam survey.
+
+The result SHA-256 is
+`c5facd1bec281d3a2fb99beebfa34afaf9d49dbc0a28c424714aa835342924c7`.
+The archived inactive turn-200 save SHA-256 is
+`641421d09b33a8f467b5d8635a98af1731c236edfa14d0acdbf95695ad5820d6`.
+
+#### Charleston verified the live Dam survey
+
+`development-charleston-dam-sites-01` loaded that turn-200 save without
+changing the policy. The native river binding put Maize plot 2100 and
+the completed Dam at 2026 on river 273. Its floodplain contains 1878,
+1952, 1953, 2025, 2026 and 2100. The city operation exposed no legal
+new Dam footprints at that boundary. On turn 204 the native district
+selector chose Spaceport at `(28, 25)` and the Dam entry for
+2100 remained the invalid value, −2,559,744 Q8, with the row ineligible.
+The Maize Farm still worked at 206. This verifies the survey and score
+observer on the live build. A genuine alternate-site comparison still
+requires a city with an eligible threatened plot and an alternate.
+
+The controller verified normal exit and restored both packages and
+preferences. In the same read-only continuation, Alexandria's Dam
+finished and Broadcast Center entered production. The Bakers Quarter
+and Water Mill were still pillaged at 206. Trace repair nomination and
+the next open production comparison from the archived boundary.
+
+The survey SHA-256 is
+`3be54b79cdb5b5a105bd0a828ff89d397c8d63822ec713ebb22a7cce5f57d787`.
+The fault-free selector trace SHA-256 is
+`43e687291466cbc5e97ec8472324af7ec68eacc7c441822ba8c6199939f6f30f`.
 
 ### Shared Granary hosts receive one nomination preference
 

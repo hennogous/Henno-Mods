@@ -106,6 +106,15 @@ Station for Canberra. Melbourne found no eligible worker on ten checks.
 The next development run looks for earlier investments with credible
 payoffs and a save before a district can cover a working supplier.
 [Opening forecast and Builder evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-first-rice-recruitment-found-the-nearby-builder-already-busy).
+
+The turn-200 repeat observed four active chains. Ancyra still needed
+both buildings on 190. Alexandria's Service stopped after 69 turns
+when its Quarter and Mill were damaged, with its Pasture and Granary
+still present. The saved game also has Charleston's working Maize chain
+beside a completed Dam. The live survey confirmed the Farm and Dam
+share a floodplain. Charleston had no legal new Dam site, so the next
+supplier-protection comparison needs a different city or an earlier save.
+[Turn-200 development evidence](../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-normal-start-repeat-reached-four-chains-by-turn-200).
 Charleston activated a third Storekeeper chain after a Maize
 Farm appeared. That chain has two measured Service turns so far.
 [Turn-100 census](../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).

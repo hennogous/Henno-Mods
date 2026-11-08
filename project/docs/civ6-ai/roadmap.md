@@ -9,12 +9,17 @@ evidence.
 
 ## Current milestone and active problem
 
-**Active 2.2 and 14.1 — preserve working supply and find earlier investments.**
+**Active 13.1 and 14.1 — repair producers and find earlier investments.**
 The Melbourne replay established that the Rice job won, but the empire's
 only Builder worked elsewhere and the replacement request lost in city
-queues. The next ordinary development run samples early chain readiness
-and saves an inactive turn-200 boundary. Use it to check for a threatened
-working supplier and compare legal district alternatives before a new bid.
+queues. The turn-200 development repeat measured four active chains.
+Ancyra still lacked both buildings on 190. Alexandria's Quarter and Mill
+were pillaged with supply and customer intact, adding a **13.1** recovery
+case. Trace the stock repair decision from this saved boundary.
+The same boundary verified the Dam survey for **2.2** in Charleston,
+where the existing Dam already covers the Maize's floodplain and a new
+Dam there is ineligible. A live threatened supplier with an eligible
+alternative remains the test for a placement change.
 
 **Boston fixture achieved — one working, retained Bakers Stage 2 chain.**
 The reusable milestone is to repeat the sequence from normal starts across

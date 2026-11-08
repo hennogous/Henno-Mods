@@ -4,6 +4,12 @@ In the inspected ordinary city route, the AI compares district/plot pairs. A bet
 
 GetBestDistrict (RVA 3e4a50) loops cached plot records and DistrictDefinition indices. It takes the highest admitted score and randomizes equal-score ties. A live reservation supplies a threshold the new candidate must exceed. Its initial stored baseline is the invalid sentinel **−2,559,744 Q8**, representing−9,999 utility units, **not zero**: the selector itself has no score-greater-than-zero test.
 
+For a Dam alternative, compare legal sites in the same native floodplain.
+The flood handler scans the affected river's floodplain for a complete,
+unpillaged flood-prevention district. This establishes coverage for
+flood damage. Other location benefits still need their own comparison.
+[AI-N106]
+
 This is a local comparison over this city's cache, not proof of exhaustive optimization of all future district layouts. The [district choice report](../../../research/mods/civ6-district-choice-placement-and-incentives-20261103.md) is the detailed evidence source.
 
 ## Which plots enter?

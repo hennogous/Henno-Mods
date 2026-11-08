@@ -186,6 +186,12 @@ processed for the turn. The complete repeat traced that unit through
 Sydney's Farm repair and Canberra's Outback Station. Melbourne's
 ten recruitment checks found no eligible Builder. [AI-C116]
 
+The next normal-start repeat recorded four operating chains by 200.
+Alexandria's 69 active turns ended after 187. At the archived boundary
+its Quarter and Water Mill were pillaged while its Cattle Pasture and
+Granary still worked. This isolates a producer-side recovery case from
+the earlier missing-Builder problem. [AI-C117]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

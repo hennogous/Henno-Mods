@@ -1832,5 +1832,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/csc/materials-and-builders.md",
     "related": ["AI-C113", "AI-C115", "AI-N104"]
+  },
+  {
+    "id": "AI-C117",
+    "title": "The ordinary development repeat reached four chains and exposed producer damage",
+    "statement": "The closed turn-200 run recorded 69 active Storekeeper turns in Alexandria Troas, 50 in Melbourne, 38 in Charleston and 19 in Townsville. Alexandria stopped after 187. Its Quarter and Water Mill were pillaged at 200, with its Pasture and Granary intact.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Normal Small Continents stock-AI development start using the staged integrated CSC and CE packages. All turns 2–199 sampled and six milestone censuses complete. Exact turn-200 save archived.",
+    "limits": "Development repeat of the same seeds with divergent later decisions. Qualification still requires three chains each reaching 100 active turns. This run did not show Alexandria's repair or reproduce Heidelberg's Dam conflict.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "related": ["AI-C107", "AI-C110", "AI-C116"]
   }
 ]

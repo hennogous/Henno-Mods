@@ -47,6 +47,16 @@ That mode records other Australian recruitment calls only when they
 change a Builder's controller. Both extensions leave native decisions
 unchanged after the initial fixture setup.
 
+For a threatened working Base, use `--dam-sites PLAYER CITY QUARTER PLOT`
+with `--resume-from`, `--saves` and an endpoint at most 15 turns later.
+`CITY` is the city that can place the Dam. `QUARTER` and `PLOT` are plot
+indices. The loaded census must show that the plot is the Quarter's sole
+working Base. `source-dam-sites.json` records new footprints admitted by
+the build operation and the native floodplain list for each.
+With `--probe-dependencies`, the same replay records those sites' Q8 scores,
+reservation IDs and the stock district winner in `dam-site-trace.json`.
+An empty trace means the city never reached the scoped native selector.
+
 This trial uses the archived Online turn-1 Mill study checkpoint and its exact
 isolated CSC package. The shared controller owns each process and advances it to
 turn 2. The experiment targets Delhi's flat inland Bakers site at plot 1210.

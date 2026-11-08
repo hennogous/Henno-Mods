@@ -1836,5 +1836,17 @@
     "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
     "topic": "topics/native/modifier-forecasts.md",
     "related": ["AI-N026", "AI-C112"]
+  },
+  {
+    "id": "AI-N106",
+    "title": "A complete Dam on a river's floodplain can suppress damage across that flood event",
+    "statement": "FloodRiver scans the affected river's floodplain for the configured flood-prevention district, checks completion and pillage, and suppresses flood damage when the check passes. The Lua river and floodplain bindings expose the corresponding plot list for comparing legal Dam sites.",
+    "status": "accepted",
+    "evidence_types": ["static", "source"],
+    "scope": "Windows XP2 reference 324c51e9 and matching hotfix code. FloodRiver 72d400, GetFloodPreventionDistrict 72e130, Lua bindings 5bcd70 and 5bc970. Shipped Gathering Storm Dam definition and NaturalDisasterPopup call site.",
+    "limits": "Flood damage path only. Does not price a Dam's other benefits, establish construction eligibility, or prove alternative sites for any city.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/native/district-choice.md",
+    "related": ["AI-C107"]
   }
 ]
