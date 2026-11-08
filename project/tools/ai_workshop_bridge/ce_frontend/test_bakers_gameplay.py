@@ -160,7 +160,39 @@ class BakersGameplayTest(unittest.TestCase):
             end
             GameInfo.CSC_QuarterFlowBuildings = row({QuarterKey='TAILORS', Stage=2, BuildingType='WORKSHOP'})
             GameInfo.CSC_QuarterCustomerBuildings = row({QuarterKey='TAILORS', ProducerStage=2, BuildingType='LIGHTHOUSE'})
-            GameInfo.Civics = {CIVIC_NAVAL_TRADITION={Index=7}}
+            GameInfo.Civics = {CIVIC_NAVAL_TRADITION={Index=7}, CIVIC_MERCANTILISM={EraType='ERA_RENAISSANCE'}}
+            GameInfo.Eras = {ERA_RENAISSANCE={Index=3}, ERA_INDUSTRIAL={Index=4}}
+            GameInfo.Technologies = {TECH_STEAM_POWER={EraType='ERA_INDUSTRIAL'}}
+            GameInfo.Units = function()
+                local units = {
+                    {Hash=121, Domain='DOMAIN_SEA', PromotionClass='PROMOTION_CLASS_NAVAL_MELEE',
+                        PrereqTech='TECH_STEAM_POWER'},
+                    {Hash=120, Domain='DOMAIN_SEA', PromotionClass='PROMOTION_CLASS_NAVAL_RAIDER',
+                        PrereqCivic='CIVIC_MERCANTILISM'},
+                }
+                local index = 0
+                return function()
+                    index = index + 1
+                    return units[index]
+                end
+            end
+            era, shipLegal, shipVisible, shipChecks, shipQueries = 3, true, true, 0, 0
+            Players[3].GetEra = function() return era end
+            MilitaryFormationTypes = {STANDARD_MILITARY_FORMATION=1}
+            CityManager = {GetCity=function(player, cityID)
+                assert(player==3)
+                return {GetBuildQueue=function()
+                    return {CanProduce=function(_, item, visibleOnly, returnReasons)
+                        if type(item)=='number' then return item==108 or item==109 end
+                        shipQueries = shipQueries + 1
+                        assert(cityID==77 and item.UnitType==120 and item.MilitaryFormationType==1)
+                        if visibleOnly then return shipVisible end
+                        assert(returnReasons)
+                        shipChecks = shipChecks + 1
+                        return shipLegal
+                    end}
+                end}
+            end}
             Players[3].GetCulture = function() return {HasCivic=function(_, id) return id==7 end} end
             CSC_Adjacency.HasTag = function(tag) return tag=='CLASS_CSC_TAILORS_BASE' end
             city.GetProperty = function() return 0 end
@@ -188,11 +220,12 @@ class BakersGameplayTest(unittest.TestCase):
             Map.GetPlot().IsPillaged = function() return damaged end
             workshop, lighthouse, damaged, pillaged = true, true, false, true
         """)
+        lua.execute((SOURCE.parent / 'Adjacencies/CSC_AdjacencyUI.lua').read_text(encoding='utf-8'))
         lua.execute((SOURCE / 'CSC_AI_QuarterPlacement.lua').read_text(encoding='utf-8'))
         lua.execute("""
             function plan()
                 local _, jobs, buildings, repairs = CSC_AI_QuarterPlacement.MaterialDeductions(
-                    Players[3], true, 16384, 131072, function() return true end, true)
+                    Players[3], true, 16384, 131072, ExposedMembers.CSC_Adjacency.CanProduceItem, true)
                 local values = {}
                 for _, job in ipairs(jobs) do values[job.plot] = job.deltaQ8 end
                 return values, buildings, repairs
@@ -207,6 +240,17 @@ class BakersGameplayTest(unittest.TestCase):
         lua.execute('lighthouse=true; workshop=false; jobs, buildings, repairs=plan()')
         self.assertEqual(lua.eval('buildings[1].city'), 42)
         self.assertEqual(lua.eval('buildings[1].delta'), 114688)
+        self.assertEqual(lua.eval('shipChecks'), 1)
+        self.assertEqual(lua.eval('shipQueries'), 2)
+        lua.execute('shipLegal=false; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('buildings[1].delta'), 4608)
+        self.assertEqual(lua.eval('shipChecks'), 2)
+        lua.execute('shipLegal=true; shipVisible=false; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('buildings[1].delta'), 4608)
+        self.assertEqual(lua.eval('shipChecks'), 2)
+        lua.execute('shipVisible=true; era=4; jobs, buildings, repairs=plan()')
+        self.assertEqual(lua.eval('buildings[1].delta'), 4608)
+        self.assertEqual(lua.eval('shipChecks'), 2)
         lua.execute('workshop=true; damaged=true; jobs, buildings, repairs=plan()')
         self.assertEqual(lua.eval('repairs[1].district'), 3)
         self.assertEqual(lua.eval('#buildings'), 0)

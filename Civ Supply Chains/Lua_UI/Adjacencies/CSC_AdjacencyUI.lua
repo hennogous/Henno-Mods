@@ -14,12 +14,20 @@ ExposedMembers.CSC_Adjacency.IsSinglePlayer = function()
         and GameConfiguration.IsHotseat() == false;
 end;
 
--- Ask the native queue which building variant this city can start now.
-ExposedMembers.CSC_Adjacency.CanProduceBuilding = function(playerID, cityID, buildingHash)
+-- Ask the native queue which building or unit this city can start now.
+ExposedMembers.CSC_Adjacency.CanProduceItem = function(playerID, cityID, itemHash, isUnit)
     local city = CityManager.GetCity(playerID, cityID);
     local queue = city and city:GetBuildQueue();
     if not queue then return false; end
-    local ok, legal = pcall(queue.CanProduce, queue, buildingHash, false, true);
+    local item = itemHash;
+    if isUnit then
+        -- Match the stock Production Panel's single-unit query and visibility
+        -- check so hidden or superseded ships cannot justify a bid.
+        item = {UnitType=itemHash, MilitaryFormationType=MilitaryFormationTypes.STANDARD_MILITARY_FORMATION};
+        local ok, visible = pcall(queue.CanProduce, queue, item, true);
+        if not ok or visible ~= true then return false; end
+    end
+    local ok, legal = pcall(queue.CanProduce, queue, item, false, true);
     return ok and legal == true;
 end;
 

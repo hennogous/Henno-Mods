@@ -123,7 +123,7 @@ local function refresh(turn)
     for _, id in ipairs(players) do
         local player = Players[id]
         local deductions, sites, bids, candidates, chains, threatened = placement.MaterialDeductions(player, protectBuilders,
-            builderBidLimit, nominationLimit, ui.CanProduceBuilding, repairLimit > 0)
+            builderBidLimit, nominationLimit, ui.CanProduceItem, repairLimit > 0)
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
         for _, candidate in ipairs(candidates) do repairs[#repairs + 1] = candidate end
         for _, site in ipairs(threatened or {}) do exclusions[#exclusions + 1] = site end

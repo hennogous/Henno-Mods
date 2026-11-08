@@ -17,7 +17,7 @@ local READY_SUPPLIER_BID_Q8 = 56 * 256
 -- Initial calibration from the matched Melbourne nomination. Only publish
 -- this preference when the Mill alone can complete a working Stage 2 chain.
 local READY_PRODUCER_BID_Q8 = 448 * 256
-local EARLY_PRODUCER_BID_Q8 = 18 * 256
+local EXCHANGE_PRODUCER_BID_Q8 = 18 * 256
 local EARLY_SUPPLIER_BID_Q8 = 26 * 256
 -- Trebizond's measured stream gives about 18–19 points for Food and
 -- 17.5 each for Production and Gold. Round each term down. The bid
@@ -26,7 +26,16 @@ local CUSTOMER_BID_Q8 = (18 + 17 + 17) * 256
 
 local improvementsByResource
 local profiles
+local dockmasterShipHashes
 local P = CSC_AI_QuarterPlacement
+
+-- Match the naval families in the Dockmaster production modifiers. Use the
+-- loaded unlock eras so unique and modded ships can qualify through the queue.
+local dockmasterNavalClasses = {
+    PROMOTION_CLASS_NAVAL_MELEE = true,
+    PROMOTION_CLASS_NAVAL_RANGED = true,
+    PROMOTION_CLASS_NAVAL_RAIDER = true,
+}
 
 -- The database supplies relationships and replacements. These profiles supply
 -- each Service gate. The shared initial bands come from the Bakers replays.
@@ -248,6 +257,34 @@ local function visitCustomerPlots(player, chain, visit)
     end
 end
 
+local function canTrainDockmasterShip(playerID, cityID, canProduce, lastEra, trainable)
+    if trainable[cityID] ~= nil then return trainable[cityID] end
+    if not dockmasterShipHashes then
+        dockmasterShipHashes = {}
+        for unit in GameInfo.Units() do
+            if unit.Domain == 'DOMAIN_SEA' and not unit.MustPurchase and dockmasterNavalClasses[unit.PromotionClass] then
+                local tech = unit.PrereqTech and GameInfo.Technologies[unit.PrereqTech]
+                local civic = unit.PrereqCivic and GameInfo.Civics[unit.PrereqCivic]
+                local techEra = tech and tech.EraType and GameInfo.Eras[tech.EraType]
+                local civicEra = civic and civic.EraType and GameInfo.Eras[civic.EraType]
+                if (techEra or civicEra)
+                    and (not unit.PrereqTech or techEra and techEra.Index <= lastEra)
+                    and (not unit.PrereqCivic or civicEra and civicEra.Index <= lastEra) then
+                    dockmasterShipHashes[#dockmasterShipHashes + 1] = unit.Hash
+                end
+            end
+        end
+    end
+    for _, hash in ipairs(dockmasterShipHashes) do
+        if canProduce(playerID, cityID, hash, true) then
+            trainable[cityID] = true
+            return true
+        end
+    end
+    trainable[cityID] = false
+    return false
+end
+
 
 local function connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduce, seen, repairCities)
     local profile, city, plot = chain.profile, chain.city, chain.plot:GetIndex()
@@ -272,6 +309,12 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         end
     end
 
+    local civic = GameInfo.Civics and GameInfo.Civics[profile.service.civic]
+    local unlocked = civic and player:GetCulture():HasCivic(civic.Index)
+    local lastNavalEra = profile.key == 'TAILORS' and GameInfo.Eras and GameInfo.Eras.ERA_RENAISSANCE
+    local checkShips = lastNavalEra and chain.ready and chain.workingBase and not producerExists
+        and unlocked and canProduce and player:GetEra() <= lastNavalEra.Index
+    local navalProductionAvailable = false
     local hasBase = #chain.supply.base > 0
     visitCustomerPlots(pid, chain, function(buyer, footprint, variants)
         customerHost = true
@@ -279,7 +322,13 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         local exists = false
         for _, building in pairs(variants) do
             exists = exists or buyerBuildings:HasBuilding(building.Index)
-            customerWorks = customerWorks or workingBuildingAt(buyerBuildings, building, footprint)
+            if workingBuildingAt(buyerBuildings, building, footprint) then
+                customerWorks = true
+                if checkShips and not navalProductionAvailable then
+                    navalProductionAvailable = canTrainDockmasterShip(
+                        pid, buyer:GetID(), canProduce, lastNavalEra.Index, limits.trainableShips)
+                end
+            end
         end
         -- The producer/customer exchange can pay before the Service unlock.
         if chain.ready and producerWorks and hasBase and not exists then
@@ -287,11 +336,13 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
         end
     end)
 
-    local civic = GameInfo.Civics and GameInfo.Civics[profile.service.civic]
-    local unlocked = civic and player:GetCulture():HasCivic(civic.Index)
     if chain.ready then
         if chain.workingBase and customerWorks and not producerExists then
-            local value = unlocked and READY_PRODUCER_BID_Q8 or EARLY_PRODUCER_BID_Q8
+            -- Keep the modest exchange bid whenever the supplier and customer
+            -- are working. The larger Tailors bid prices Dockmaster production
+            -- only while the AI is in the sail era and its customer can use it.
+            local servicePremium = unlocked and (profile.key ~= 'TAILORS' or navalProductionAvailable)
+            local value = servicePremium and READY_PRODUCER_BID_Q8 or EXCHANGE_PRODUCER_BID_Q8
             for _, producer in ipairs(profile.producers) do bid(city, producer, value) end
         end
         if customerWorks or (producerWorks and customerHost) then
@@ -313,7 +364,7 @@ local function materialRisk(player, builderBidLimit, nominationLimit, canProduce
     local risks, recover, nominations, repairs = {}, {}, {}, {}
     local seen, repairCities = {}, {}
     local limits = {builder=math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8),
-        nomination=nominationLimit or 0, repair=admitRepairs}
+        nomination=nominationLimit or 0, repair=admitRepairs, trainableShips={}}
     local chains = P.ReadChains(player)
     for _, chain in ipairs(chains) do
         priceSupply(risks, chain.supply.base, chain.active)

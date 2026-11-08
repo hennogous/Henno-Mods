@@ -107,6 +107,14 @@ building for several turns between ordinary comparisons. The replay
 supports keeping the existing refresh cadence. [AI-C134]
 [Lighthouse follow-through](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#lighthouse-follow-through).
 
+The Dockmaster premium on a ready Textile Workshop bid now requires
+Naval Tradition, an AI player in the Renaissance or earlier, and a
+working Lighthouse on an adjacent Harbor whose city can train a
+qualifying Ancient–Renaissance ship. The ship check uses the stock city queue
+eligibility query. The smaller bid for the Workshop–Lighthouse
+exchange still applies when the naval premium is unavailable. These
+gates have offline coverage and await live validation.
+
 ## Earlier offline placement model
 
 The fresh planner starts with an offline investment review. Its first Tailors
