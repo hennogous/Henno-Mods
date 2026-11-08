@@ -2026,5 +2026,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C130", "AI-C131"]
+  },
+  {
+    "id": "AI-C133",
+    "title": "Exact native receipts distinguish Harbor score writes from Lighthouse forecasts",
+    "statement": "The matched Fractal replay observed native score writes for all 28 exact Harbor offers and three stock selector wins across two distinct offered plots. All four auditable Lighthouse offers reached native forecasting, and none reached the ordinary building comparison. The CE selector now also accepts supplier exclusions in cities without published score edits.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Normal-start matched v2.1 Fractal through turn 200 with the receipt CE review build and CSC publisher. The exclusion-only wiring fix was verified with a focused native synthetic fixture.",
+    "limits": "A selector return does not prove construction or causation. No native repair offer or harvest rejection occurred in the replay. The Lighthouse result is specific to four windows, and it does not identify why the comparison did not run.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C132"]
   }
 ]

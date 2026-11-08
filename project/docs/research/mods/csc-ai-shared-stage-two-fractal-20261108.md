@@ -112,6 +112,64 @@ rules load into the gameplay database and have no individual acceptance
 receipt. The capped samples cannot settle whether the separate published
 Harbor site offers reached an actual native score write.
 
+### Exact receipts in the matched follow-up
+
+The CE follow-up fixed a supplier-exclusion wiring gap. The existing joint
+selector admitted its observation from a district score entry, so a city
+with a supplier exclusion and no score edits could miss protection. The
+selector now admits either kind of entry and restores the same native row
+byte when it returns. The native fixture verified masking and restoration
+with an exclusion-only publication.
+
+The CSC publisher reads targeted native receipts before replacing each
+packet. The Harbor receipt queries the existing journal for an exact
+version, player, city, district and plot. It can see writes beyond the
+64-record status sample. The building receipt identifies the ordinary
+forecast, effective comparison and write separately. Its forecast observer
+uses the existing building NetValue detour. The ordinary forecast caller
+and comparison bytes were verified against stock XP2 hotfix hash
+`092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f`.
+Quarter repair status now also counts native consideration when a
+candidate's city reaches the stock district decision.
+
+The matched Fractal replay used CSC commit `ddda28e` and CE review commit
+`d8df47d`, with CE DLL SHA-256
+`f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07`.
+The shared controller ran ordinary play to turn 200 and closed cleanly.
+The map and starting roster, plots and units matched. The native city
+build, production queue, research and unit operation logs were byte-for-byte
+identical to the earlier v2.1 run. Both audits found 201 Storekeeper
+chain-turns. No native score or receipt faults or omitted receipts were
+reported in the matched follow-up.
+
+| Exact offers with a subsequent receipt | Published windows | Native forecasts or score attempts | Comparison writes |
+| --- | ---: | ---: | ---: |
+| Harbor site | 28 | 28 | 28 |
+| Granary | 147 | 146 | 24 |
+| Wind Mill | 38 | 37 | 4 |
+| Textile Workshop | 32 | 32 | 4 |
+| Lighthouse | 4 | 4 | 0 |
+
+All 28 Harbor offers had an actual native write and a cache observation
+for the same site. Five city selector calls were observed across those
+offer windows. Three exact wins covered two distinct Harbor sites, plots
+2383 and 1437. The selector return does not establish construction or
+whether the bid changed the winner.
+
+The Lighthouse was forecast in every observed offer window. None reached
+the ordinary building comparison for that exact candidate. Its turn-200
+offer had no following window. The result shows native forecast exposure
+and no score edit. It does not establish why the ordinary comparison
+did not run. The Workshop for city 589832 again reached the comparison
+and was written in the turn-199 window. There were zero Quarter repair
+offers and no harvest rejections during the follow-up, so those paths
+were not exercised by this map.
+
+The original archived live log and replay package manifest are in
+`Desktop/Codex/csc-ai-native-receipts-20261108/fractal`. The CE build
+passed 101 native checks, four hook-group checks and instruction-call
+delivery and restoration. Eleven CSC Lua frontend checks passed.
+
 ## Recovered endpoint census
 
 The shared controller loaded the fresh native turn-200 autosave read-only.

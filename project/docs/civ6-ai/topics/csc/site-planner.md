@@ -98,6 +98,7 @@ versus 19 in v2, with three working Base suppliers in both runs and no
 observed Dockmaster source property. Shared mechanics are in place and the
 Tailors outcome still needs follow-through evidence.
 [Policy, setup and Fractal results](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md).
+[Exact Harbor, building and protection receipts](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#exact-receipts-in-the-matched-follow-up).
 
 ## Earlier offline placement model
 
