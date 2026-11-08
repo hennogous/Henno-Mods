@@ -42,9 +42,13 @@ the repair and the controller closed cleanly. `-05` recorded native
 plot 1445266 Q8, decoder and submit 1445120 Q8, then acceptance at
 1528530 Q8 on 209 and controller release on 210. Quarter healthy at 214,
 Water Mill still pillaged, no Storekeeper (AI-C121). Clean close.
-Next read-only `--water-mill-repair 2 196610 2311 --mill-only-repair`
-from `-05`'s verified 214 save. Keep Ancyra's verified turn-120
-first-link fixture available for **14.1**.
+Read-only `development-alexandria-water-mill-after-quarter-01` from
+`-05`'s verified 214 save found the Mill eligible, stock request 4993
+on 217, acceptance at 566288 Q8 on 219, repair on 220 and active
+Storekeeper 221–228 (AI-C122). Clean close at 229. Implement reusable
+CE repair admission and CSC policy next. The isolated CE review branch
+is `codex/ce-district-repair-admission` at `abf5d58`. Keep Ancyra's
+verified turn-120 first-link fixture available for **14.1**.
 The frozen
 ordinary-start development run `development-ordinary-exchange-249-01`
 bought Melbourne's Mill on 113 and first confirmed Storekeeper on 114.

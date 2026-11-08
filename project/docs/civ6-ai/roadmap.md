@@ -24,8 +24,10 @@ request alongside Aerodrome. The corrected probe now admits the
 repair at its ordinary plot value. Alexandria restored the Quarter
 after finishing Broadcast Center. The later Aerodrome request
 also advanced to native progress.
-The Mill was still pillaged at 214. Use the archived boundary to
-check its eligibility, bidding and actual Service recovery.
+The restored Quarter made the Mill eligible. Stock AI completed the
+Mill repair on 220 and Storekeeper resumed on 221. Implement and verify
+the bounded CE repair admission with CSC's ready-chain policy. Cover
+duplicate requests, invalidation, and save/reload before an ordinary run.
 The same boundary verified the Dam survey for **2.2** in Charleston,
 where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible
@@ -424,8 +426,10 @@ until the active check closes or an explicit dependency needs attention.
 
 - **13.1 Repair.** Restore pillaged material improvements, Quarters and
   customer assets when the chain merits it. Verify actual repair and resumed
-  benefits. Check whether the stock Mill-only recovery repeats in ordinary
-  games and when it fails with another link down.
+  benefits. Alexandria's matched extra Quarter admission at ordinary
+  value restored the host. Stock AI then repaired the Mill and restored
+  Storekeeper. Move the tested admission mechanism into reusable CE and
+  CSC code and validate its native lifecycle and ordinary-game coverage.
 - **13.2 Replan.** Reassess after capture, lost supply, or destructive harvest
   and other work. Distinguish a repairable interruption from permanent loss.
   Heidelberg owned every adjacent tile and had no mapped Base after its

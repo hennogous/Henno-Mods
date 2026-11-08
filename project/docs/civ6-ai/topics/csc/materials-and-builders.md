@@ -219,6 +219,11 @@ the repair request reached production and the Quarter was restored.
 The later Aerodrome request also entered native progress. The Water Mill
 was still pillaged at 214, leaving the second repair open. [AI-C121]
 
+The restored Quarter made the Water Mill repair eligible. Stock AI
+requested it, completed it on 220, and restored the active Storekeeper
+growth effect on 221. The follow-up applied no Mill preference.
+[AI-C122]
+
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same

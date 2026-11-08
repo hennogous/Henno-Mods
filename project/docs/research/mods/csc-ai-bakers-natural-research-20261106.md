@@ -2970,6 +2970,69 @@ The verified treatment save at 214 has SHA-256
 `7c8c0086ed022982cb2b8fab84c3c8b71a5d5fb8b5500da6531a0773bb5fa55c`.
 Use it to measure the remaining Mill's legality and competition.
 
+### Stock AI repaired the Mill and restored Storekeeper
+
+The read-only `development-alexandria-water-mill-after-quarter-01`
+continued that exact save from 214. At the source the Water Mill
+was still pillaged. The native production query now returned true.
+The stock AI submitted Water Mill request 4993 on 217 at 1,331 whole
+value units. Its ordinary `0/0` building comparison passed native
+requirements and selected building 140 at 340,938 Q8. Alexandria used
+production to finish a Builder on 219. The native queue validated and
+refreshed the 340,736 Q8 Mill offer to 566,288 Q8, then accepted it.
+On 220 it recorded
+61 accumulated Production against the 40-Production repair, including
+31 new Production. The native Storekeeper watcher first measured the
+working effect again on 221. It tied Water attachment instance 93255
+to Quarter district 524295, then to the active Water growth instance
+93256 on Alexandria's City Center district 458758, all under player 2.
+The only repair intervention was the earlier extra Quarter admission
+at the stock plot value. The fault-free Mill trace SHA-256 is
+`07d26d71534dfe692292962dd212b5795074d59f578c6e76c14a8e4436c54667`.
+All 14 interior turns were sampled. Alexandria operated on every
+turn from 221 through 228, giving eight verified active turns after
+the interruption. The 229 census confirmed the repaired Quarter and
+Mill and the original working Pasture and Granary. The shared controller
+verified a clean close and restoration. The inactive endpoint save has
+SHA-256 `31bb234008fa5ffcc65636153f9201601ed665758f771322b574e3e73c2e276e`.
+
+#### Proposed reusable delivery boundary
+
+Keep the choice of repair candidates in CSC. Its existing Bakers scan
+already finds mapped suppliers and customer districts. Initially request
+the repair of a complete, pillaged Quarter only when the working supplier
+and customer remain and the existing producer needs the Quarter restored.
+The repaired host lets the ordinary AI handle its producer. The proposed
+CE input is a bounded, versioned set of player, city, district and exact
+existing footprint identities. It has no score or priority input.
+
+At the same native admission phase used in the diagnostic, CE should
+recheck original AI identity, current ownership, damage, exact footprint
+and repair legality. Preserve the ordinary district tree. Keep at most
+one supplemental repair per city and reject duplicates of the ordinary
+plan or an existing supplemental repair. Use the stock tree template,
+decoder and production queue. Report admission, request and retirement
+as separate events. Keep active work bounded by candidate lookup and the
+native lifecycle, with reconciliation after load before a candidate can
+submit again. The native manager has `FindById` (`564020`) for live tree
+IDs. Its `Read` (`564b40`) reloads its tree store and rebuilds active
+lists. These are paths to qualify for deduplication across reload, rather
+than evidence that the diagnostic's in-process IDs already provide it.
+
+Review the reusable CE implementation separately from the proof. Match
+the exact save in packaged CE and CSC with an empty candidate control.
+Check repeated publication, active-tree save/reload, repaired or
+invalidated candidates, and clean retirement. Confirm a matched
+normal-value repair and actual Service before including this capability
+in a delivery review. An Astra review agreed that this feature belongs
+ahead of further repair score tuning. The early investment and fresh
+validation runs remain separate milestones.
+
+The isolated CE review worktree is `ce-district-repair-admission-review`
+under `Desktop/Codex/csc-gamecore-hotfix-20261106`, on local branch
+`codex/ce-district-repair-admission` at the exact staged DLL source
+`abf5d5842aceff98e50612055a15044ff3f288fa`. This records the review base.
+
 ### Shared Granary hosts receive one nomination preference
 
 The CSC publisher formerly visited a Granary host once from each

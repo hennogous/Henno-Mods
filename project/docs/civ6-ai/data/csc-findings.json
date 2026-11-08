@@ -1893,5 +1893,17 @@
     "topic": "topics/csc/materials-and-builders.md",
     "depends_on": ["AI-C119"],
     "related": ["AI-C120"]
+  },
+  {
+    "id": "AI-C122",
+    "title": "The stock AI repaired Alexandria's Mill after the Quarter and restored Storekeeper",
+    "statement": "After the Quarter repair, the pillaged Water Mill passed the production and ordinary building requirements. Stock request 4993 was submitted on 217 and accepted at 566288 Q8 on 219. The Mill repair completed on 220. The active Water attachment and growth effect identified Alexandria's original Quarter and customer on all eight sampled turns from 221 through 228.",
+    "status": "accepted",
+    "evidence_types": ["runtime"],
+    "scope": "Read-only turn-214 continuation of the matched Alexandria Quarter repair treatment with the original working Pasture and Granary. No additional Mill preference was applied.",
+    "limits": "One naturally damaged chain and a scoped Quarter admission diagnostic. Reusable CE delivery, restart-safe deduplication and ordinary-start qualification remain open.",
+    "sources": ["project/docs/research/mods/csc-ai-bakers-natural-research-20261106.md"],
+    "topic": "topics/csc/materials-and-builders.md",
+    "depends_on": ["AI-C121", "AI-N107"]
   }
 ]
