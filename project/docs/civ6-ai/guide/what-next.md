@@ -5,7 +5,11 @@
 The placement increment ranks the Quarter's long-term adjacency. A feasible
 future Harbor counts even if its city needs to grow, and an owned mapped
 supplier can count before its improvement unlocks. Readiness breaks ties.
-The matched test compares which sites Civ commits to and which it leaves open.
+The matched Fractal restart produced a Tailors offer with both links still
+pending, but no Tailors offer reached +4 projected adjacency. Both Quarters
+ended up on the same plots as before, and Storekeeper activity matched. The next
+owned-site test needs a city where a strong future site can compete with
+a weaker site the engine would otherwise choose.
 Tile buying follows in separate footprint and supplier tests that track
 the AI's savings, actual spending and follow-through.
 [Placement capability and test sequence](../topics/csc/site-planner.md#quarter-placement-capability).

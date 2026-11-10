@@ -268,3 +268,57 @@ publication from turn 201 through 224. That property was already present
 before Kőszeg's Lighthouse purchase on turn 216. The aggregate does not
 identify the Quarter or audit the naval production bonus. The original
 normal-start run still recorded zero active properties through turn 200.
+
+## Long-term placement follow-up
+
+The 10 November Fractal restart tested CSC revision `bc878976` from turn 1
+through 200 on Online speed. It used the same two seeds, start signature,
+AI leaders, initial plots and units as the archived receipt run. The CSC
+package differed only in four placement Lua files. Both arms loaded CE
+`f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07`.
+CSC tuning was active in both arms, with stock AI and no probe policy.
+The earlier readiness-first candidate was stopped at turn 152 and excluded.
+
+The revised planner logged 57 Tailors site evaluations with both the
+supplier improvement and Harbor pending. These are repeated evaluations,
+not distinct plots. For example, on turn 29 player 4 had 11 legal Tailors
+tiles, ten without a qualifying Base and one with both links pending.
+The one viable site earned a placement offer. Across the whole map the
+planner published 287 Tailors offers, none reaching its projected +4
+adjacency band. Native samples included 22 Tailors writes of +24 utility
+points and 49 Bakers writes of +48, the same sampled counts for those
+bands as in the control. The samples alone cannot attribute a write to
+the pending site in that example.
+
+The two arms had byte-identical production queue, research and unit
+operation logs. The city-build log differed in one building nomination
+on turn 199, with a Seaport replacing a Textile Workshop candidate.
+Confirmed Storekeeper operation matched across all 198 sampled turns
+(2–199). The same four chains recorded 52, 29, 22 and 98 active turns,
+for 201 chain-turns in each arm.
+
+The native named checkpoint timed out after the live turn-200 census.
+The shared controller verified a clean exit and restored preferences.
+The turn-200 autosave was written during the run, immediately before the
+endpoint readback. Its SHA-256 is
+`7f456bf7ffac3d3ddae3c3fa2779d9ad85eaa064f17b75ff3b4db5d775a135a0`.
+Loading it from the autosave folder returned to the menu. A byte-identical
+copy in `Saves/Single` loaded at turn 200 with autoplay inactive. All 13
+Bakers identities, plots and damage states matched the live census.
+Both policies finished with the same 13 Bakers and 15 Tailors on the
+same plots. The placement quality measures below also matched.
+
+| Completed Quarters at turn 200, both arms | Bakers | Tailors |
+| --- | ---: | ---: |
+| Adjacent owned Base deposit | 9 | 7 |
+| No adjacent owned Base deposit | 4 | 8 |
+| Adjacent owned Base and Stage 2 host | 7 | 2 |
+| Working Base improvement | 5 | 3 |
+| Adjacent working Stage 2 customer | 4 | 2 |
+| Active Stage 2 source Service property | 3 | 0 |
+
+This seed established that the policy can publish a pending-site offer.
+It did not show that the revised ranking changes placement or deferral.
+The endpoint also cannot establish when a Base deposit was lost.
+Artifacts are in `Desktop/Codex/csc-ai-placement-potential-20261110`.
+The zero-turn readback is `endpoint-detail-recovered/fractal.json`.

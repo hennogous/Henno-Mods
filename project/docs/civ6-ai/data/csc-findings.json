@@ -2050,5 +2050,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C133", "AI-N111"]
+  },
+  {
+    "id": "AI-C135",
+    "title": "A long-term Tailors offer can be published with supplier and Harbor both pending",
+    "statement": "In a normal-start Fractal test of the revised CSC placement planner, a Tailors city with exactly one viable owned site published an offer even though the supplier improvement was locked and its Harbor was still pending. The revised planner published no Tailors offers in its +4 projected adjacency band. Both arms completed the same 13 Bakers and 15 Tailors on the same plots, with identical production queue and Storekeeper activity.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "CSC bc878976 against the archived shared Stage 2 policy with matching Fractal seeds and CE DLL, stock AI on Online speed through turn 200.",
+    "limits": "The pending example establishes Lua publication. The bounded native samples do not identify a write or a winning placement for that exact offer. One seed did not exercise a strong Tailors offer and cannot qualify the placement policy.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C132", "AI-C133"]
   }
 ]

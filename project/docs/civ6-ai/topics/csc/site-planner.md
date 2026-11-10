@@ -133,7 +133,12 @@ actual commitment need separate evidence.
 The first candidate ranked readiness first, required current population
 capacity for future Harbor geometry and held the bonus with both links
 pending. That candidate was withdrawn during its Fractal run at the user's
-request. Use the revised candidate from turn 1 when comparing outcomes.
+request. In the matched restart, the revised policy offered a boost to a
+Tailors site with both links pending. No Tailors offer reached the +4 band
+in that game. The control and restart completed the same 13 Bakers and 15
+Tailors on the same plots. Confirmed Storekeeper activity also matched.
+This narrows the next test to a city where a viable long-term offer can
+actually compete with a weaker site. [AI-C135]
 
 | Problem | Coverage and next proof |
 | --- | --- |
