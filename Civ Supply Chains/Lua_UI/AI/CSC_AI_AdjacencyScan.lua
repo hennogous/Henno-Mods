@@ -78,7 +78,9 @@ local customerSiteBidQ8 = 40 * 256
 
 local function betterQuarterSite(candidate, best)
     if not best then return true end
+    if candidate.pending ~= best.pending then return candidate.pending < best.pending end
     if candidate.adjacency ~= best.adjacency then return candidate.adjacency > best.adjacency end
+    if candidate.workingBase ~= best.workingBase then return candidate.workingBase end
     if candidate.base ~= best.base then return candidate.base > best.base end
     if candidate.specialty ~= best.specialty then return candidate.specialty > best.specialty end
     return candidate.plot < best.plot
@@ -87,11 +89,13 @@ end
 -- Bakers needs an existing City Center. Tailors can plan around a native-
 -- legal Harbor footprint, including before its unlock. Only immediately
 -- constructible customer sites can receive a positive customer bid.
-function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, readLegalTargets)
-    local bids, potential, legalCustomers = {}, {}, {}
+function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, ui)
+    local bids, potential, legalCustomers, spareSlots, placedHosts = {}, {}, {}, {}, {}
+    local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, held=0, deferCities=0, offered=0, strong=0}
     local district = profile.district
+    local readLegalTargets = ui and ui.GetLegalDistrictTargets
     if not A.ByDistrict[district.DistrictType] or next(profile.customers) == nil
-        or type(readLegalTargets) ~= 'function' then return bids end
+        or type(readLegalTargets) ~= 'function' then return bids, counts end
     local pid = player:GetID()
     local visibility = PlayersVisibility[pid]
     local hosts = {}
@@ -119,20 +123,30 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         end
     end
 
+    local function hasRoom(city, host)
+        if not host.RequiresPopulation or host.RequiresPopulation == 0 then return true end
+        local cityID = city:GetID()
+        if spareSlots[cityID] == nil then
+            spareSlots[cityID] = ui.GetSpareDistrictSlots and ui.GetSpareDistrictSlots(pid, cityID) or false
+        end
+        local slots = spareSlots[cityID]
+        return slots and slots > 0
+    end
+
     local function futureHost(plot)
         -- One result per neighbor for this player/profile call. Ownership,
         -- legal targets and protections are read again next publication.
         local index = plot:GetIndex()
         if potential[index] ~= nil then return potential[index] end
-        local found = legalCustomers[index] ~= nil
+        local found = legalCustomers[index] and 1 or false
         if not found and #hosts > 0 and plot:GetDistrictType() == -1
             and not protectedPlots[index] and plot:GetResourceType() == -1 then
             local owner = Cities.GetPlotPurchaseCity(plot)
             if owner and owner:GetOwner() == pid then
                 for _, host in ipairs(hosts) do
-                    if not owner:GetDistricts():HasDistrict(host.Index)
+                    if not owner:GetDistricts():HasDistrict(host.Index) and hasRoom(owner, host)
                         and plot:CanHaveDistrict(host.Index, pid, owner:GetID()) then
-                        found = true
+                        found = 0
                         break
                     end
                 end
@@ -142,21 +156,38 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         return found
     end
 
-    local function hasHost(neighbors, includeFuture)
+    -- 2 is a working district, 1 is already placed or buildable now, and
+    -- 0 is geometry with room but no native build target yet. Nil is no
+    -- evidenced path. Keep placed hosts distinct for actual customer bids.
+    local function hostReadiness(neighbors, includeFuture)
+        local best
         for _, neighbor in ipairs(neighbors) do
-            if neighbor:GetOwner() == pid and (profile.customers[neighbor:GetDistrictType()]
-                or (includeFuture and futureHost(neighbor))) then return true end
+            if neighbor:GetOwner() == pid then
+                local rank
+                if profile.customers[neighbor:GetDistrictType()] then
+                    local index = neighbor:GetIndex()
+                    if not placedHosts[index] then
+                        placedHosts[index] = ui.HasWorkingDistrictAt
+                            and ui.HasWorkingDistrictAt(neighbor:GetX(), neighbor:GetY()) and 2 or 1
+                    end
+                    rank = placedHosts[index]
+                elseif includeFuture and visibility:IsRevealed(neighbor:GetX(), neighbor:GetY()) then
+                    rank = futureHost(neighbor) or nil
+                end
+                if rank == 2 then return rank end
+                if rank and (not best or rank > best) then best = rank end
+            end
         end
-        return false
+        return best
     end
 
     for _, city in player:GetCities():Members() do
-        -- Price every eligible weak site. Give one positive bid per city and
-        -- Quarter type, ranking viable sites by adjacency, then materials,
-        -- then plot index so ties stay stable.
+        -- Price every eligible weak site. Rank positive offers by unresolved
+        -- links, then adjacency and materials, with plot index as a tie-break.
         if not city:GetDistricts():HasDistrict(district.Index) then
             local cityID = city:GetID()
             local best
+            local legal = 0
             for _, index in ipairs(readLegalTargets(pid, cityID, district.Hash)) do
                 local plot = Map.GetPlotByIndex(index)
                 local ownerCity = plot and Cities.GetPlotPurchaseCity(plot)
@@ -165,26 +196,56 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                     and visibility:IsRevealed(plot:GetX(), plot:GetY())
                     and Map.GetPlotDistance(city:GetX(), city:GetY(), plot:GetX(), plot:GetY()) <= 3
                     and plot:CanHaveDistrict(district.Index, pid, cityID) then
+                    legal = legal + 1
                     local supply = readSuppliers(player, plot, profile)
                     local resource = GameInfo.Resources[plot:GetResourceType()]
                     local coversMaterial = resource and A.ResourceVisible(pid, resource.Index)
                         and (A.HasTag(profile.base, resource.ResourceType) or A.HasTag(profile.specialty, resource.ResourceType))
                     local candidate = {player=pid, city=cityID, district=district.Index, plot=index}
-                    if #supply.base == 0 or coversMaterial then
+                    if coversMaterial then
+                        counts.coversMaterial = counts.coversMaterial + 1
                         candidate.delta, candidate.weak = -noBasePenaltyQ8, true
-                    elseif not hasHost(Map.GetAdjacentPlots(plot:GetX(), plot:GetY()), true) then
-                        candidate.delta, candidate.weak = -noCustomerPenaltyQ8, true
+                    elseif #supply.base == 0 then
+                        counts.noBase = counts.noBase + 1
+                        candidate.delta, candidate.weak = -noBasePenaltyQ8, true
                     else
-                        candidate.base, candidate.specialty = #supply.base, #supply.specialty
-                        candidate.adjacency = score(district.DistrictType, plot, city, pid, true).total
-                        if betterQuarterSite(candidate, best) then best = candidate end
+                        local host = hostReadiness(Map.GetAdjacentPlots(plot:GetX(), plot:GetY()), true)
+                        if not host then
+                            counts.noHost = counts.noHost + 1
+                            candidate.delta, candidate.weak = -noCustomerPenaltyQ8, true
+                        else
+                            local ready, working = false, false
+                            for _, material in ipairs(supply.base) do
+                                ready = ready or material.ready
+                                working = working or material.working
+                            end
+                            -- A buildable or repairable supplier is near-term.
+                            -- A missing/unfinished host or a locked improvement
+                            -- is a separate investment. With both pending, hold
+                            -- the bonus and reconsider next turn.
+                            candidate.pending = (ready and 0 or 1) + (host == 2 and 0 or 1)
+                            if candidate.pending == 2 then
+                                counts.held = counts.held + 1
+                            else
+                                candidate.workingBase = working == true
+                                candidate.base, candidate.specialty = #supply.base, #supply.specialty
+                                candidate.adjacency = score(district.DistrictType, plot, city, pid, true).total
+                                if betterQuarterSite(candidate, best) then best = candidate end
+                            end
+                        end
                     end
                     if candidate.weak then bids[#bids + 1] = candidate end
                 end
             end
+            counts.legal = counts.legal + legal
             if best then
-                best.delta = best.adjacency >= preferredAdjacency and preferredSiteBidQ8 or viableSiteBidQ8
+                local strong = best.pending == 0 and best.adjacency >= preferredAdjacency
+                best.delta = strong and preferredSiteBidQ8 or viableSiteBidQ8
                 bids[#bids + 1] = best
+                counts.offered = counts.offered + 1
+                if strong then counts.strong = counts.strong + 1 end
+            elseif legal > 0 then
+                counts.deferCities = counts.deferCities + 1
             end
         end
     end
@@ -195,7 +256,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     for _, chain in ipairs(chains) do
         if chain.profile == profile and chain.ready and #chain.supply.base > 0 then
             local neighbors = Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())
-            if not hasHost(neighbors, false) then
+            if not hostReadiness(neighbors, false) then
                 for _, neighbor in ipairs(neighbors) do
                     for _, candidate in ipairs(legalCustomers[neighbor:GetIndex()] or {}) do
                         local key = candidate.city .. ':' .. candidate.district .. ':' .. candidate.plot
@@ -210,7 +271,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
             end
         end
     end
-    return bids
+    return bids, counts
 end
 
 

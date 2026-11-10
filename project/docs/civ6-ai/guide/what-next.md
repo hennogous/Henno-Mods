@@ -1,5 +1,14 @@
 # What we’re investigating
 
+## Current focus — Quarter placement
+
+The first placement increment distinguishes a working or buildable supplier
+from a locked one, and checks that a future Harbor has room in its city.
+The next test compares which sites Civ commits to and which it leaves open.
+Tile buying follows in separate footprint and supplier tests that track
+the AI's savings, actual spending and follow-through.
+[Placement capability and test sequence](../topics/csc/site-planner.md#quarter-placement-capability).
+
 ## Three ordinary games with integrated CSC tuning
 
 Across three Online-speed games through turn 200, 13 Bakers chains operated

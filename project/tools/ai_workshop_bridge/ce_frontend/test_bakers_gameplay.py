@@ -98,6 +98,30 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_owned_supplier_readiness_distinguishes_unlock_and_repair(self):
+        lua = LuaRuntime()
+        lua.execute(FIXTURE)
+        lua.execute((SOURCE / 'CSC_AI_QuarterPlacement.lua').read_text(encoding='utf-8'))
+        lua.execute("""
+            for _, id in ipairs({5,6}) do GameInfo.Improvements[id].PrereqTech='TECH_FIXTURE' end
+            GameInfo.Technologies={TECH_FIXTURE={Index=12}}
+            Players[3].GetTechs=function()
+                return {HasTech=function(_, index) return index==12 and unlocked end}
+            end
+            function supplier()
+                local planner=CSC_AI_QuarterPlacement
+                return planner.ReadSuppliers(Players[3], Map.GetPlot(), planner.StageTwoProfiles()[1]).base[1]
+            end
+            improvement, unlocked = -1, false
+            assert(supplier() and not supplier().ready and not supplier().working)
+            unlocked = true
+            assert(supplier().ready and not supplier().working)
+            improvement, pillaged, unlocked = 5, true, false
+            assert(supplier().ready and not supplier().working)
+            pillaged = false
+            assert(supplier().ready and supplier().working)
+        """)
+
     def test_optional_native_receipts_are_read_before_the_next_packet(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)
@@ -341,12 +365,13 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertEqual(lua.eval('table.concat(packet[1], ",")'), '3,42,1,101,-12288')
         self.assertEqual(lua.eval('wonderStages'), 0)
         lua.execute("""
-            CSC_AI_QuarterSiteForecasts=function(player, profile, chains, readSuppliers, excluded, readLegalTargets)
+            CSC_AI_QuarterSiteForecasts=function(player, profile, chains, readSuppliers, excluded, ui)
                 assert(player==Players[3] and profile.key=='BAKERS' and #chains==1)
                 assert(readSuppliers==CSC_AI_QuarterPlacement.ReadSuppliers and excluded[101])
-                assert(readLegalTargets==ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets)
+                assert(ui==ExposedMembers.CSC_Adjacency)
                 return {{player=3,city=42,district=3,plot=100,delta=12288},
-                    {player=3,city=42,district=3,plot=102,delta=-65536,weak=true}}
+                    {player=3,city=42,district=3,plot=102,delta=-65536,weak=true}},
+                    {legal=2,noBase=1,coversMaterial=0,noHost=0,held=0,deferCities=0,offered=1,strong=1}
             end
             CE_AIDistrictScoresStatus=function()
                 return '{"ready":1,"faults":0,"version":'..version..
@@ -359,6 +384,8 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertEqual(lua.eval('table.concat(packet[3], ",")'), '3,42,3,102,-65536')
         self.assertIn('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=5 previousVersion=4 samples=[[3,42,1,101,12288,0]]',
                       messages)
+        self.assertIn('CSC_AI_QUARTER_PLAN turn=5 player=3 key=BAKERS legal=2 noBase=1 coversMaterial=0 noHost=0 '
+                      'held=0 deferCities=0 offers=1 strong=1', messages)
         lua.execute("""
             CE_AIDistrictScoresStatus=function()
                 local rows = {}

@@ -153,10 +153,17 @@ local function refresh(turn)
         -- An unsupported placement read must leave the working supplier
         -- protection active. A fresh native site score is still required.
         for _, profile in ipairs(placement.StageTwoProfiles()) do
-            local ok, industryBids = pcall(CSC_AI_QuarterSiteForecasts, player, profile, chains,
-                placement.ReadSuppliers, protectedPlots, ui.GetLegalDistrictTargets)
+            local ok, industryBids, counts = pcall(CSC_AI_QuarterSiteForecasts, player, profile, chains,
+                placement.ReadSuppliers, protectedPlots, ui)
             if ok then
                 for _, bid in ipairs(industryBids) do entries[#entries + 1] = bid end
+                -- This is CSC's assessment of the current legal targets.
+                -- The engine may still pick a penalized or unassisted site.
+                if counts and counts.legal > 0 then
+                    print(string.format('CSC_AI_QUARTER_PLAN turn=%d player=%d key=%s legal=%d noBase=%d coversMaterial=%d noHost=%d held=%d deferCities=%d offers=%d strong=%d',
+                        turn, id, profile.key, counts.legal, counts.noBase, counts.coversMaterial,
+                        counts.noHost, counts.held, counts.deferCities, counts.offered, counts.strong))
+                end
             else
                 print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',
                     turn, id, profile.key, tostring(industryBids)))

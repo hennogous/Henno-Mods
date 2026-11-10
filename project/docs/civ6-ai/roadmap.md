@@ -9,6 +9,17 @@ evidence.
 
 ## Current milestone and active problem
 
+### Current capability — Quarter placement (1.1–1.7)
+
+The first increment improves choices among owned sites for Bakers and Tailors.
+Qualify that increment against the existing policy before adding a purchase
+signal. The purchase work splits into a Quarter footprint and a material
+supplier because each enters a different native decision. Keep the Stage 2
+chain results as follow-through evidence for these placement tests.
+[Coverage review and test sequence](topics/csc/site-planner.md#quarter-placement-capability).
+
+### Earlier Stage 2 development evidence
+
 **Active 2.2 — preserve Heidelberg's only viable supplier.**
 The integrated repair build's normal-start repeat matched the previous
 turn-249 development result. Melbourne reached 132 active turns,
@@ -355,6 +366,11 @@ until the active check closes or an explicit dependency needs attention.
   siting, capacity and the preparation window before committing. Trace the
   proposal through production, foundation and completion. Distinguish a new
   score from a retained request.
+- **1.7 Place or defer.** Decide whether the best available Quarter site
+  merits a bid now. Consider whether the Base supplier and customer path can
+  be made usable and what would need to happen first. Reconsider as ownership,
+  unlocks and district commitments change. Measure good opportunities taken
+  and weak commitments made while no good option was available.
 
 ### 2. Other district placement
 

@@ -137,6 +137,17 @@ local function materialOptions()
     return options
 end
 
+-- Map suitability can exist before the improvement is unlocked. Share the
+-- unlock check between the siting forecast and the actual Builder offer.
+local function improvementUnlocked(player, index)
+    local definition = GameInfo.Improvements[index]
+    if not definition then return false end
+    local tech = definition.PrereqTech and GameInfo.Technologies[definition.PrereqTech]
+    local civic = definition.PrereqCivic and GameInfo.Civics[definition.PrereqCivic]
+    return (not definition.PrereqTech or tech and player:GetTechs():HasTech(tech.Index))
+        and (not definition.PrereqCivic or civic and player:GetCulture():HasCivic(civic.Index))
+end
+
 -- A working improvement and a deposit that could supply the chain later are
 -- distinct facts. A compatible pillaged improvement remains a repair option.
 -- Scope supply to the player because adjacent tiles can belong to other cities.
@@ -150,20 +161,22 @@ function P.ReadSuppliers(player, quarter, profile)
             and PlayersVisibility[playerID]:IsRevealed(plot:GetX(), plot:GetY())
             and CSC_Adjacency.ResourceVisible(playerID, resourceID) then
             local current = plot:GetImprovementType()
-            local viable, working = false, false
+            local viable, working, ready = false, false, false
             for _, improvement in ipairs(options[resourceID]) do
                 if improvement == current then
                     viable = true
                     working = not plot:IsImprovementPillaged()
+                    ready = true -- An existing compatible improvement can be used or repaired.
                     break
                 end
                 if ImprovementBuilder.CanHaveImprovement(plot, improvement, player:GetTeam()) then
                     viable = true
+                    ready = ready or improvementUnlocked(player, improvement)
                 end
             end
             if viable then
                 local resource = GameInfo.Resources[resourceID].ResourceType
-                local material = {plot = plot:GetIndex(), resource = resource, working = working}
+                local material = {plot = plot:GetIndex(), resource = resource, working = working, ready = ready}
                 if CSC_Adjacency.HasTag(profile.base, resource) then supplies.base[#supplies.base + 1] = material end
                 if CSC_Adjacency.HasTag(profile.specialty, resource) then supplies.specialty[#supplies.specialty + 1] = material end
             end
@@ -215,12 +228,7 @@ local function offerBaseJob(player, chain, recover, bid)
         local current = plot:GetImprovementType()
         for _, index in ipairs(materialOptions()[plot:GetResourceType()]) do
             local repair = current == index and plot:IsImprovementPillaged()
-            local definition = GameInfo.Improvements[index]
-            local tech = definition and definition.PrereqTech and GameInfo.Technologies[definition.PrereqTech]
-            local civic = definition and definition.PrereqCivic and GameInfo.Civics[definition.PrereqCivic]
-            local buildable = repair or definition
-                and (not definition.PrereqTech or tech and player:GetTechs():HasTech(tech.Index))
-                and (not definition.PrereqCivic or civic and player:GetCulture():HasCivic(civic.Index))
+            local buildable = repair or improvementUnlocked(player, index)
                 and ImprovementBuilder.CanHaveImprovement(plot, index, team)
             if buildable and (not best or repair and not bestRepair
                 or repair == bestRepair and material.plot < best) then

@@ -1776,8 +1776,8 @@
       "title": "Civ VI November hotfix and the CSC AI hooks",
       "kind": "report",
       "date": "20261106",
-      "bytes": 10255,
-      "sha256": "ef1acd3a37266a02727759087222c844886356811ded56ac5f9bfab8e2e0d2d9",
+      "bytes": 10677,
+      "sha256": "b74542c79ed53485714466638783084717f303dae30de769e7b18e7158378cbd",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-xp2-november-hotfix-20261106.md"
     },

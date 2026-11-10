@@ -115,6 +115,63 @@ eligibility query. The smaller bid for the Workshop–Lighthouse
 exchange still applies when the naval premium is unavailable. These
 gates have offline coverage and await live validation.
 
+## Quarter placement capability
+
+The current increment ranks owned sites by unresolved supply and customer
+links before projected adjacency. A working, repairable or currently
+buildable Base improvement qualifies as ready for siting. A future Harbor
+needs a specific legal footprint and room for a population-limited district.
+A placed Harbor that is unfinished or pillaged counts as a pending link.
+The stronger 48-point offer requires a functioning customer district,
+ready supply and projected adjacency of +4 or more. One pending link can
+still earn 24 points. If both links are pending, CSC withholds the bonus
+and reassesses on the next publication. Existing finite weak-site deductions
+remain in use. `CSC_AI_QUARTER_PLAN` reports CSC's assessment per player
+and Quarter type. The native comparison and actual commitment need separate
+evidence. These changes have offline coverage.
+
+| Problem | Coverage and next proof |
+| --- | --- |
+| 1.1 Materials | Owned, revealed deposits and the status of their mapped improvements. Qualify working, repairable, unlocked and locked suppliers in live choices. Unowned supply needs 1.5. |
+| 1.2 Neighbors | Existing mapped Stage 2 hosts, buildable targets and a capacity-checked future Harbor. City Lights goods-provider adjacency can enter the yield projection. Qualify the provider's separate role before using it as an alternative to the Stage 2 customer path. |
+| 1.3 Rivers and 1.4 adjacency | Loaded Production and Gold adjacency, including the projected local Mill branch. The current bands still use projected yield. Compare pre-Mill and eventual site value in live cases before pricing the delay. |
+| 1.5 Buying | The integrated publisher uses owned sites and suppliers. Verify both native buying routes below before giving either one a CSC preference. |
+| 1.6 Follow-through and 1.7 defer | Native UI build targets supply immediate legality. The Lua bid can change a later comparison, and an existing contract can retain its prior value. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |
+
+### Placement and purchase tests
+
+1. **Owned-site match.** Replay the previous and new policies on a shared
+   save with a viable site and a weaker alternative. Include a city with
+   only weak or pending sites and a Tailors city with a future Harbor.
+   Track legal sites at commitment, the chosen site or deferral, and eventual
+   foundation and completion. Repeat on a matched normal start once the
+   small cases are clear. Report strong opportunities taken and weak
+   commitments separately.
+2. **Quarter footprint purchase.** Start with a revealed, otherwise legal
+   unowned footprint and a credible chain. Follow its district request
+   through the exact purchase contract, city quotes, savings, native debit,
+   ownership, reservation and placement. The cheapest eligible buying city
+   may differ from the proposing city. Verify the Quarter remains legal after
+   acquisition. Use Aachen's recorded request as a lead and already-owned
+   and foreign-owned sites as controls.
+3. **Supplier purchase.** Hold the Quarter footprint owned and put its only
+   usable Base just outside the border. Follow the deposit through the city's
+   frontier-resource ranking, cached target, quote, spending and eventual
+   improvement. Include a competing resource and a case where the cached
+   candidate fails the quote or savings check. The inspected native pass
+   considers one cached resource candidate per city.
+4. **Treasury and subsidy.** Separate target selection, earmarked plot
+   savings, slush funds and actual treasury Gold. Observe an affordable
+   purchase and a case blocked at each funds check, then see whether the AI
+   saves enough under normal play. Establish an own-funds route first.
+   If a worthy plan is repeatedly blocked by an actual Gold shortfall,
+   compare a capped, player-facing shortfall subsidy against that route.
+   Keep native legality and debit, and record own Gold, subsidy, ownership
+   and placement separately. High adjacency is a screening signal alongside
+   the credible supply/customer path and the quoted cost.
+
+[Native purchase routes and savings checks](../native/district-choice.md#buying-a-future-site).
+
 ## Earlier offline placement model
 
 The fresh planner starts with an offline investment review. Its first Tailors

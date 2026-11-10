@@ -138,6 +138,13 @@ The dump SHA-256 is
 The upstream control's dump SHA-256 is
 `7139e1288ff63084f739ffb6beca0517e4cff15ba0a5ab3e212794c03a8f43f4`.
 
+The 10 November upstream check still resolved WildW's
+[`develop` branch](https://github.com/Wild-W/CivilizationVI_CommunityExtension/tree/2986a746b396eb93aad14f9afffb043a09c2c489)
+to the same tested `2986a746` commit. Its runtime loads the installed XP2
+GameCore. The incompatibility above is in the shared hook against the
+updated DX11 executable. The compatibility control below isolates that
+fix from the CSC AI APIs.
+
 ## Corrected shared CE loads and accepts district scores
 
 The preserved pre-hotfix DX11 executable at

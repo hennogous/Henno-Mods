@@ -70,7 +70,8 @@ makeSite(21, 4, true, 1, 1)
 makeSite(22, 6, true, 1, 1)
 PlayersVisibility = {[1]={IsRevealed=function(_, x) return x~=17 end}}
 Cities = {GetPlotPurchaseCity=function(p) if p.id~=19 then return city end end}
-local center = {GetOwner=function() return 1 end, GetDistrictType=function() return 0 end}
+local center = {GetOwner=function() return 1 end, GetDistrictType=function() return 0 end,
+    GetIndex=function() return 2 end, GetX=city.GetX, GetY=city.GetY}
 Map = {
     GetPlotByIndex=function(id) return plots[id] end,
     GetPlotDistance=function(_, _, x) return x==20 and 4 or 2 end,
@@ -80,6 +81,10 @@ CityOperationTypes = {BUILD=1, PARAM_DISTRICT_TYPE=2, PARAM_X=3, PARAM_Y=4}
 CityOperationResults = {PLOTS=5}
 local targets = {11,12,13,14,15,16,17,18,19,20,21,22}
 CityManager = {
+    GetDistrictAt=function(x, y)
+        assert(x==2 and y==3)
+        return {IsComplete=function() return true end, IsPillaged=function() return false end}
+    end,
     GetCity=function(pid, cityID) assert(pid==1 and cityID==15); return city end,
     GetOperationTargets=function(_, op, params)
         assert(op==1 and params[2]==1001 and not params[3]); targetsRead=targetsRead+1; return {[5]=targets}
@@ -91,16 +96,20 @@ CityManager = {
     end,
 }
 local function supplies(_, site)
-    return {base=site.base>0 and {true} or {}, specialty=site.spec>0 and {true} or {}}
+    return {base=site.base>0 and {{ready=not site.baseLocked, working=site.baseWorking}} or {},
+        specialty=site.spec>0 and {{}} or {}}
 end
-local readLegalTargets = ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets
+local ui = ExposedMembers.CSC_Adjacency
+local readLegalTargets = ui.GetLegalDistrictTargets
 local bakers = {district=GameInfo.Districts[1], customers={[0]={}},
     base='CLASS_CSC_BAKERS_BASE', specialty='CLASS_CSC_BAKERS_SPEC'}
 local function bids(profile, protected, legal, chains)
+    ui.GetLegalDistrictTargets = legal
     local indexed = {}
-    for _, site in ipairs(CSC_AI_QuarterSiteForecasts(player, profile, chains or {},
-        supplies, protected, legal)) do indexed[site.plot] = site end
-    return indexed
+    local offers, counts = CSC_AI_QuarterSiteForecasts(player, profile, chains or {},
+        supplies, protected, ui)
+    for _, site in ipairs(offers) do indexed[site.plot] = site end
+    return indexed, counts
 end
 local sites = bids(bakers, {}, readLegalTargets)
 assert(sites[21].adjacency==5 and sites[21].delta==12288)
@@ -115,19 +124,29 @@ cattleVisible = true
 targets = {18}
 sites = bids(bakers, {}, readLegalTargets)
 assert(sites[18].adjacency==3 and sites[18].delta==6144)
+targets = {11,21}
+plots[21].baseLocked = true
+sites = bids(bakers, {}, readLegalTargets)
+assert(sites[11].delta==12288 and not sites[21])
+targets = {21}
+assert(bids(bakers, {}, readLegalTargets)[21].delta==6144)
+plots[21].baseLocked = false
 existing = true
-assert(next(bids(bakers, {}, readLegalTargets))==nil)
+assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 existing, placed = false, true
-assert(next(bids(bakers, {}, readLegalTargets))==nil)
+assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 placed, unlocked = false, false
-assert(next(bids(bakers, {}, readLegalTargets))==nil and targetsRead==4)
+assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==6)
 
 -- The same gate accepts a future Harbor before it can be built, then
 -- nominates the actual legal host of an existing Tailors chain.
 local tailors = {district=GameInfo.Districts[2], customers={[4]={}},
     base='CLASS_CSC_TAILORS_BASE', specialty='CLASS_CSC_TAILORS_SPEC'}
 tailors.district.Hash=1002
-GameInfo.Districts[4]={Index=4, Hash=1004, DistrictType='DISTRICT_HARBOR'}
+GameInfo.Districts[4]={Index=4, Hash=1004, DistrictType='DISTRICT_HARBOR', RequiresPopulation=true}
+local slots = 1
+cityDistricts.GetNumAllowedDistrictsRequiringPopulation=function() return 3 end
+cityDistricts.GetNumZonedDistrictsRequiringPopulation=function() return 3-slots end
 cityDistricts.HasDistrict=function(_, id) return existing and id==2 end
 local function tailorPlot(id)
     makeSite(id, 4, false, 1, 0)
@@ -142,14 +161,37 @@ local function legal(_, _, hash)
     if hash==1002 then return {23} end
     return harborUnlocked and {24} or {}
 end
-assert(bids(tailors, {}, legal)[23].delta==12288)
+assert(bids(tailors, {}, legal)[23].delta==6144)
+slots=0
+assert(bids(tailors, {}, legal)[23].delta==-32768)
+slots=1
+plots[23].baseLocked=true
+local held, counts=bids(tailors, {}, legal)
+assert(not held[23] and counts.held==1 and counts.deferCities==1)
+harborUnlocked=true
+assert(not bids(tailors, {}, legal)[23])
+plots[23].baseLocked=false
+assert(bids(tailors, {}, legal)[23].delta==6144)
+harborUnlocked=false
 assert(bids(tailors, {[24]=true}, legal)[23].delta==-32768)
+-- A completed Harbor raises the bid. A placed but pillaged Harbor only
+-- supplies geometry until the district can function again.
+local pillaged=false
+CityManager.GetDistrictAt=function(x, y)
+    assert(x==24 and y==3)
+    return {IsComplete=function() return true end, IsPillaged=function() return pillaged end}
+end
+plots[24].GetDistrictType=function() return 4 end
+assert(bids(tailors, {}, legal)[23].delta==12288)
+pillaged=true
+assert(bids(tailors, {}, legal)[23].delta==6144)
+plots[24].GetDistrictType=function() return -1 end
 existing=true
 local chain={profile=tailors, ready=true, plot=plots[23], supply={base={true}}}
-assert(next(bids(tailors, {}, legal, {chain}))==nil)
+assert(next((bids(tailors, {}, legal, {chain})))==nil)
 harborUnlocked=true
 assert(bids(tailors, {}, legal, {chain,chain})[24].delta==10240)
-assert(next(bids(tailors, {[24]=true}, legal, {chain}))==nil)
+assert(next((bids(tailors, {[24]=true}, legal, {chain})))==nil)
 """
 
 def main():
