@@ -128,15 +128,20 @@ targets = {11,21}
 plots[21].baseLocked = true
 sites = bids(bakers, {}, readLegalTargets)
 assert(sites[11].delta==12288 and not sites[21])
+plots[21].river = 6
 targets = {21}
-assert(bids(bakers, {}, readLegalTargets)[21].delta==6144)
+assert(bids(bakers, {}, readLegalTargets)[21].delta==12288)
+targets = {11,21}
+sites = bids(bakers, {}, readLegalTargets)
+assert(sites[21].adjacency==6 and not sites[11])
+plots[21].river = 4
 plots[21].baseLocked = false
 existing = true
 assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 existing, placed = false, true
 assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 placed, unlocked = false, false
-assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==6)
+assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==7)
 
 -- The same gate accepts a future Harbor before it can be built, then
 -- nominates the actual legal host of an existing Tailors chain.
@@ -145,8 +150,6 @@ local tailors = {district=GameInfo.Districts[2], customers={[4]={}},
 tailors.district.Hash=1002
 GameInfo.Districts[4]={Index=4, Hash=1004, DistrictType='DISTRICT_HARBOR', RequiresPopulation=true}
 local slots = 1
-cityDistricts.GetNumAllowedDistrictsRequiringPopulation=function() return 3 end
-cityDistricts.GetNumZonedDistrictsRequiringPopulation=function() return 3-slots end
 cityDistricts.HasDistrict=function(_, id) return existing and id==2 end
 local function tailorPlot(id)
     makeSite(id, 4, false, 1, 0)
@@ -156,35 +159,47 @@ end
 tailorPlot(23)
 tailorPlot(24)
 Map.GetAdjacentPlots=function(x) return x==23 and {plots[24]} or {} end
+local rules=CSC_Adjacency.ByDistrict[tailors.district.DistrictType]
+rules[#rules+1]={ID='futureHarbor', YieldType='YIELD_GOLD', YieldChange=1,
+    ModifierOwner='DistrictModifiers', ProvideType='SelfBonus', AdjacencyType='FROM_RINGS_TYPETAG_DISTRICT',
+    CustomAdjacentObject='TAILORS_FIXTURE_HOST', Rings=1}
+local count=CSC_Adjacency.Count
+CSC_Adjacency.Count=function(rule, center, city, pid)
+    if rule.ID=='futureHarbor' then return plots[24]:GetDistrictType()==4 and 1 or 0 end
+    return count(rule,center,city,pid)
+end
+local hasTag=CSC_Adjacency.HasTag
+CSC_Adjacency.HasTag=function(tag, kind)
+    return tag=='TAILORS_FIXTURE_HOST' and kind=='DISTRICT_HARBOR' or hasTag(tag,kind)
+end
 local harborUnlocked=false
 local function legal(_, _, hash)
     if hash==1002 then return {23} end
-    return harborUnlocked and {24} or {}
+    return harborUnlocked and slots>0 and {24} or {}
 end
-assert(bids(tailors, {}, legal)[23].delta==6144)
+assert(bids(tailors, {}, legal)[23].adjacency==6)
 slots=0
-assert(bids(tailors, {}, legal)[23].delta==-32768)
-slots=1
 plots[23].baseLocked=true
-local held, counts=bids(tailors, {}, legal)
-assert(not held[23] and counts.held==1 and counts.deferCities==1)
+local future, counts=bids(tailors, {}, legal)
+assert(future[23].adjacency==6 and future[23].delta==12288 and counts.bothPending==1 and counts.deferCities==0)
 harborUnlocked=true
-assert(not bids(tailors, {}, legal)[23])
+assert(bids(tailors, {}, legal)[23].delta==12288)
+slots=1
 plots[23].baseLocked=false
-assert(bids(tailors, {}, legal)[23].delta==6144)
+assert(bids(tailors, {}, legal)[23].delta==12288)
 harborUnlocked=false
 assert(bids(tailors, {[24]=true}, legal)[23].delta==-32768)
--- A completed Harbor raises the bid. A placed but pillaged Harbor only
--- supplies geometry until the district can function again.
+-- Existing and pillaged Harbors keep their long-term adjacency. A built
+-- Harbor's observed rule amount replaces the future projection.
 local pillaged=false
 CityManager.GetDistrictAt=function(x, y)
     assert(x==24 and y==3)
     return {IsComplete=function() return true end, IsPillaged=function() return pillaged end}
 end
 plots[24].GetDistrictType=function() return 4 end
-assert(bids(tailors, {}, legal)[23].delta==12288)
+assert(bids(tailors, {}, legal)[23].adjacency==6)
 pillaged=true
-assert(bids(tailors, {}, legal)[23].delta==6144)
+assert(bids(tailors, {}, legal)[23].adjacency==6)
 plots[24].GetDistrictType=function() return -1 end
 existing=true
 local chain={profile=tailors, ready=true, plot=plots[23], supply={base={true}}}

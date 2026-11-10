@@ -371,7 +371,7 @@ class BakersGameplayTest(unittest.TestCase):
                 assert(ui==ExposedMembers.CSC_Adjacency)
                 return {{player=3,city=42,district=3,plot=100,delta=12288},
                     {player=3,city=42,district=3,plot=102,delta=-65536,weak=true}},
-                    {legal=2,noBase=1,coversMaterial=0,noHost=0,held=0,deferCities=0,offered=1,strong=1}
+                    {legal=2,noBase=1,coversMaterial=0,noHost=0,bothPending=0,deferCities=0,offered=1,strong=1}
             end
             CE_AIDistrictScoresStatus=function()
                 return '{"ready":1,"faults":0,"version":'..version..
@@ -385,7 +385,7 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertIn('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=5 previousVersion=4 samples=[[3,42,1,101,12288,0]]',
                       messages)
         self.assertIn('CSC_AI_QUARTER_PLAN turn=5 player=3 key=BAKERS legal=2 noBase=1 coversMaterial=0 noHost=0 '
-                      'held=0 deferCities=0 offers=1 strong=1', messages)
+                      'bothPending=0 deferCities=0 offers=1 strong=1', messages)
         lua.execute("""
             CE_AIDistrictScoresStatus=function()
                 local rows = {}

@@ -2,9 +2,10 @@
 
 ## Current focus — Quarter placement
 
-The first placement increment distinguishes a working or buildable supplier
-from a locked one, and checks that a future Harbor has room in its city.
-The next test compares which sites Civ commits to and which it leaves open.
+The placement increment ranks the Quarter's long-term adjacency. A feasible
+future Harbor counts even if its city needs to grow, and an owned mapped
+supplier can count before its improvement unlocks. Readiness breaks ties.
+The matched test compares which sites Civ commits to and which it leaves open.
 Tile buying follows in separate footprint and supplier tests that track
 the AI's savings, actual spending and follow-through.
 [Placement capability and test sequence](../topics/csc/site-planner.md#quarter-placement-capability).

@@ -160,9 +160,9 @@ local function refresh(turn)
                 -- This is CSC's assessment of the current legal targets.
                 -- The engine may still pick a penalized or unassisted site.
                 if counts and counts.legal > 0 then
-                    print(string.format('CSC_AI_QUARTER_PLAN turn=%d player=%d key=%s legal=%d noBase=%d coversMaterial=%d noHost=%d held=%d deferCities=%d offers=%d strong=%d',
+                    print(string.format('CSC_AI_QUARTER_PLAN turn=%d player=%d key=%s legal=%d noBase=%d coversMaterial=%d noHost=%d bothPending=%d deferCities=%d offers=%d strong=%d',
                         turn, id, profile.key, counts.legal, counts.noBase, counts.coversMaterial,
-                        counts.noHost, counts.held, counts.deferCities, counts.offered, counts.strong))
+                        counts.noHost, counts.bothPending, counts.deferCities, counts.offered, counts.strong))
                 end
             else
                 print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',

@@ -55,17 +55,8 @@ ExposedMembers.CSC_Adjacency.GetLegalDistrictTargets = function(playerID, cityID
     return legal;
 end;
 
--- A geometrically legal future Harbor also needs a population slot. Reuse
--- the counts shown by the stock city panel so queued/zoned districts count.
-ExposedMembers.CSC_Adjacency.GetSpareDistrictSlots = function(playerID, cityID)
-    local city = CityManager.GetCity(playerID, cityID);
-    if not city then return nil; end
-    local districts = city:GetDistricts();
-    return districts:GetNumAllowedDistrictsRequiringPopulation() - districts:GetNumZonedDistrictsRequiringPopulation();
-end;
-
 -- A placed but unfinished or pillaged host still has the right geometry.
--- Only a functioning district can justify the stronger placement bid.
+-- A functioning district breaks ties between sites with equal potential.
 ExposedMembers.CSC_Adjacency.HasWorkingDistrictAt = function(x, y)
     local district = CityManager.GetDistrictAt(x, y);
     return district and district:IsComplete() and not district:IsPillaged();

@@ -117,23 +117,28 @@ gates have offline coverage and await live validation.
 
 ## Quarter placement capability
 
-The current increment ranks owned sites by unresolved supply and customer
-links before projected adjacency. A working, repairable or currently
-buildable Base improvement qualifies as ready for siting. A future Harbor
-needs a specific legal footprint and room for a population-limited district.
-A placed Harbor that is unfinished or pillaged counts as a pending link.
-The stronger 48-point offer requires a functioning customer district,
-ready supply and projected adjacency of +4 or more. One pending link can
-still earn 24 points. If both links are pending, CSC withholds the bonus
-and reassesses on the next publication. Existing finite weak-site deductions
-remain in use. `CSC_AI_QUARTER_PLAN` reports CSC's assessment per player
-and Quarter type. The native comparison and actual commitment need separate
-evidence. These changes have offline coverage.
+The current increment ranks owned sites by long-term projected adjacency.
+A mapped deposit with a feasible improvement qualifies even while the
+improvement is locked. A future Harbor needs a specific feasible adjacent
+footprint, which can wait for research or population growth. The projection
+credits one prospective host through the matching loaded adjacency rules.
+A Quarter can receive the 48-point offer at projected adjacency of +4 or more
+with both links pending. Viable sites below +4 can earn 24 points. Readiness
+breaks ties and immediate Harbor placement bids still use native build
+targets. Existing finite weak-site deductions remain in use.
+`CSC_AI_QUARTER_PLAN` counts sites with both links pending separately from
+cities where the policy found no viable offer. The native comparison and
+actual commitment need separate evidence.
+
+The first candidate ranked readiness first, required current population
+capacity for future Harbor geometry and held the bonus with both links
+pending. That candidate was withdrawn during its Fractal run at the user's
+request. Use the revised candidate from turn 1 when comparing outcomes.
 
 | Problem | Coverage and next proof |
 | --- | --- |
 | 1.1 Materials | Owned, revealed deposits and the status of their mapped improvements. Qualify working, repairable, unlocked and locked suppliers in live choices. Unowned supply needs 1.5. |
-| 1.2 Neighbors | Existing mapped Stage 2 hosts, buildable targets and a capacity-checked future Harbor. City Lights goods-provider adjacency can enter the yield projection. Qualify the provider's separate role before using it as an alternative to the Stage 2 customer path. |
+| 1.2 Neighbors | Existing mapped Stage 2 hosts, immediate build targets and feasible future Harbor geometry. City Lights goods-provider adjacency can enter the yield projection. Qualify the provider's separate role before using it as an alternative to the Stage 2 customer path. |
 | 1.3 Rivers and 1.4 adjacency | Loaded Production and Gold adjacency, including the projected local Mill branch. The current bands still use projected yield. Compare pre-Mill and eventual site value in live cases before pricing the delay. |
 | 1.5 Buying | The integrated publisher uses owned sites and suppliers. Verify both native buying routes below before giving either one a CSC preference. |
 | 1.6 Follow-through and 1.7 defer | Native UI build targets supply immediate legality. The Lua bid can change a later comparison, and an existing contract can retain its prior value. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |
