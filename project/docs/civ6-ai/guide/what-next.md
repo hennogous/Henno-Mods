@@ -2,14 +2,16 @@
 
 ## Current focus — Quarter placement
 
-The placement increment ranks the Quarter's long-term adjacency. A feasible
-future Harbor counts even if its city needs to grow, and an owned mapped
-supplier can count before its improvement unlocks. Readiness breaks ties.
-The matched Fractal restart produced a Tailors offer with both links still
+The placement policy ranks long-term Production and Gold adjacency.
+Customers from all stages and City Lights goods providers can count.
+The planner credits one feasible future neighbor and can count an owned
+supplier before its improvement unlocks. Readiness breaks ties.
+The earlier matched Fractal restart produced a Tailors offer with both links still
 pending, but no Tailors offer reached +4 projected adjacency. Both Quarters
 ended up on the same plots as before, and Storekeeper activity matched. The next
-owned-site test needs a city where a strong future site can compete with
-a weaker site the engine would otherwise choose.
+saved-world survey found two +4 Tailors offers with the wider neighbor
+forecast. Aachen is a candidate for testing whether an offer changes
+the native choice.
 We track weak-site deductions separately from whether the city waits to
 build any Quarter.
 Tile buying follows in separate footprint and supplier tests that track

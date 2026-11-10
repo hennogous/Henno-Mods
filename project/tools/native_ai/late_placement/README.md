@@ -1,5 +1,23 @@
 # Late district placement trial
 
+## Finding comparable owned Quarter sites
+
+`quarter_site_survey.lua` is a read-only diagnostic for an inactive saved
+boundary. Use the shared controller to load a hash-verified checkpoint
+with its pinned CSC and CE packages. In the `CSC_AI_BakersGameplay`
+context, prefix the script with `local CSC_QUARTER_SURVEY_PLAYERS = {id}`
+for one original AI at a time. Check the `END` row's turn and record count
+before using the results.
+
+Each `SITE` row reports player, city ID and name, profile, district index,
+plot index, Q8 delta, projected adjacency and pending-link count for the
+positive offer, viable Base and Specialty counts, and river edges.
+Zero delta means the site passed the scan but received no Quarter bid.
+Use the rows to pick controls with competing legal alternatives or
+weak-only cities. A survey reads the production planner and current build
+targets. It does not publish a packet, inspect a native winner or advance
+autoplay.
+
 For a normal-start development run, `ce_bakers_fresh.py` can
 capture intermediate chain dependencies with `--census-turns`
 followed by up to eight interior turns. The gameplay callback reads

@@ -322,3 +322,57 @@ It did not show that the revised ranking changes placement or deferral.
 The endpoint also cannot establish when a Base deposit was lost.
 Artifacts are in `Desktop/Codex/csc-ai-placement-potential-20261110`.
 The zero-turn readback is `endpoint-detail-recovered/fractal.json`.
+
+### Saved-world placement candidates
+
+A separate zero-turn survey loaded three archived turn-200 positions using
+the same planner and CE DLL as the Fractal restart. The shared controller
+verified the saved boundaries and read the production planner without
+publishing offers. The 283 Continents, 280 Pangaea and 276 Fractal rows are
+owned legal Quarter-site pairs after the planner's ordinary exclusions.
+The snapshots returned 11 +4-or-higher Bakers offers and no Tailors
+offer in that band. They also contain 102 weak-only city/profile pairs.
+These are screening counts for three saved worlds.
+
+Mainz (player 3, city 327684, Continents) offers Bakers plot 1243 at +4
+adjacency and +12,288 Q8. Plot 1167 received no CSC placement adjustment.
+Three other sites received deductions. Geelong (player 4, city 327684)
+has +5 at plot 1426, an unadjusted plot 1499 and three weak sites.
+Both cases can separate the positive band from deductions if the
+native planning slot opens. The census itself has no native comparison,
+commitment or causal placement result.
+
+Artifacts are under
+`Desktop/Codex/csc-ai-problems-1-2-20261110/owned-site-survey-01`.
+
+### All-stage neighbor forecast
+
+The expanded scanner reads the loaded sales and goods-provider tags for
+each Quarter. It combines the actual contribution of already placed
+neighbors with one projected neighbor on an empty, owned, revealed
+footprint. Stage 2 building and Service gates remain separate. The
+offline fixture verified a future Commercial Hub and City Lights Rural
+Community in a position with no feasible Harbor. It also verified the
+separate provisional 16-point Harbor offer, native target requirement
+and same-city population-slot guard.
+
+The three matched turn-200 readbacks used the same 839 legal pairs.
+Strong Bakers offers increased from 11 to 21. Strong Tailors offers
+increased from zero to two, at Aachen and Mistahi Sîpihk. Missing-host
+deductions fell from 147 to 23 across both Quarter types. Missing-Base
+and covers-material deductions stayed at 652 across the same pairs.
+
+Aachen's plot 1094, with a viable Base and four river edges,
+moved from a missing-host deduction of 32,768 Q8 to an offer of
+12,288 Q8. The observed change comes from the planner. A native score
+write, winning comparison and construction need separate evidence.
+The same empty footprint could also host a +5 Bakers site. The two
+Quarter offers compete for it if both are still available at selection.
+
+Astra's evidence review identified the remaining ordering limit. The
+forecast uses current readiness when selecting one feasible future
+neighbor and can keep the first candidate on equal readiness. An
+unequal-value choice between future neighbors needs a separate test
+before treating this as the maximum possible long-term adjacency.
+Artifacts are under
+`Desktop/Codex/csc-ai-problems-1-2-20261110/owned-site-survey-all-customers-01`.

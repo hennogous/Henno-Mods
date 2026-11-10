@@ -119,13 +119,26 @@ gates have offline coverage and await live validation.
 
 The current increment ranks owned sites by long-term projected adjacency.
 A mapped deposit with a feasible improvement qualifies even while the
-improvement is locked. A future Harbor needs a specific feasible adjacent
-footprint, which can wait for research or population growth. The projection
-credits one prospective host through the matching loaded adjacency rules.
-A Quarter can receive the 48-point offer at projected adjacency of +4 or more
-with both links pending. Viable sites below +4 can earn 24 points. Readiness
-breaks ties and immediate Harbor placement bids still use native build
-targets. Existing finite weak-site deductions remain in use.
+improvement is locked. The projection counts Production plus Gold per turn
+under the loaded rules. For example, two mapped deposits, a City Center and
+one Water Mill step from two river edges give a Bakers site +4 after that
+Mill is built. A Tailors site can get +4 from Sheep, Silk, two river edges
+and an existing or feasible Harbor.
+
+Siting considers sales districts from all stages and enabled City Lights
+goods providers. Placed neighbors contribute through the loaded rules.
+The forecast can also count one specific feasible empty footprint, even
+if its district still needs research or population. The model credits one
+future neighbor to avoid assuming every eligible tile will be developed.
+Stage 2 Service still requires its own customer and building.
+
+A Quarter can receive the 48-point offer at projected adjacency of +4 or
+more with both links pending. Viable sites below +4 can earn 24 points.
+Readiness breaks ties. Existing finite weak-site deductions remain in use.
+The separate Stage 2 customer offer requires a current native build
+target. A ready existing chain can bid 40 utility points. A selected +4
+Quarter plan with a ready Base can tentatively bid 16 on its projected
+Stage 2 host. These prospective bids require live comparison evidence.
 `CSC_AI_QUARTER_PLAN` counts sites with both links pending separately from
 cities where the policy found no viable offer. The native comparison and
 actual commitment need separate evidence.
@@ -140,10 +153,15 @@ Tailors on the same plots. Confirmed Storekeeper activity also matched.
 This narrows the next test to a city where a viable long-term offer can
 actually compete with a weaker site. [AI-C135]
 
+The all-stage revision increased strong Bakers offers from 11 to 21 and
+strong Tailors offers from zero to two across the same three saved positions.
+Those surveys held the game state and legal pairs fixed. They measured CSC
+offers before any native comparison. [AI-C136]
+
 | Problem | Coverage and next proof |
 | --- | --- |
 | 1.1 Materials | Owned, revealed deposits and the status of their mapped improvements. Qualify working, repairable, unlocked and locked suppliers in live choices. Unowned supply needs 1.5. |
-| 1.2 Neighbors | Existing mapped Stage 2 hosts, immediate build targets and feasible future Harbor geometry. City Lights goods-provider adjacency can enter the yield projection. Qualify the provider's separate role before using it as an alternative to the Stage 2 customer path. |
+| 1.2 Neighbors | Existing mapped customers across stages and enabled goods providers, plus one feasible future footprint. Qualify the actual site choice separately from the Stage 2 customer and Service gates. |
 | 1.3 Rivers and 1.4 adjacency | Loaded Production and Gold adjacency, including the projected local Mill branch. The current bands still use projected yield. Compare pre-Mill and eventual site value in live cases before pricing the delay. |
 | 1.5 Buying | The integrated publisher uses owned sites and suppliers. Verify both native buying routes below before giving either one a CSC preference. |
 | 1.6 Follow-through | Native UI build targets supply immediate legality. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |

@@ -2062,5 +2062,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C132", "AI-C133"]
+  },
+  {
+    "id": "AI-C136",
+    "title": "All-stage adjacency changes which saved-world Quarter sites receive strong offers",
+    "statement": "On the same 839 owned legal pairs from three turn-200 positions, the expanded customer and goods-provider forecast increased strong Bakers offers from 11 to 21 and strong Tailors offers from zero to two. Aachen Tailors plot 1094 moved from a missing-host deduction to a +4 forecast and +12288 Q8 offer.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Read-only zero-turn shared-controller surveys on Continents, Pangaea and Fractal. The packages differ only in the pinned scanner Lua file. The expansion reads enabled sales and goods-provider tags and projects one feasible future neighbor.",
+    "limits": "The evidence establishes planner output on the loaded states. No game decision or placement was observed in either survey. The single future neighbor follows the heuristic's readiness and traversal ordering and need not maximize possible adjacency.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C135"]
   }
 ]

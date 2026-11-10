@@ -5,7 +5,7 @@ SCANNER=ROOT/'Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua'
 HARNESS=r"""
 function info(rows,key)local t={};for _,r in ipairs(rows)do t[r[key]]=r;t[r.Index]=r end;return setmetatable(t,{__call=function()local i=0;return function()i=i+1;return rows[i]end end})end
 local b='DISTRICT_CSC_BAKERS_QUARTER';local t='DISTRICT_CSC_TAILORS_QUARTER'
-GameInfo={Districts=info({{Index=0,DistrictType='DISTRICT_CITY_CENTER'},{Index=1,DistrictType=b},{Index=2,DistrictType=t}},'DistrictType'),Buildings=info({{Index=1,BuildingType='BUILDING_CSC_BAKERS_WATER_MILL'},{Index=2,BuildingType='BUILDING_CSC_BAKERS_WIND_MILL'}},'BuildingType'),Policies=info({{Index=1,PolicyType='POLICY_TEST'}},'PolicyType')}
+GameInfo={Districts=info({{Index=0,DistrictType='DISTRICT_CITY_CENTER'},{Index=1,DistrictType=b},{Index=2,DistrictType=t},{Index=4,Hash=1004,DistrictType='DISTRICT_HARBOR',RequiresPopulation=true},{Index=5,Hash=1005,DistrictType='DISTRICT_COMMERCIAL_HUB'},{Index=6,DistrictType='DISTRICT_RURALCOMMUNITYA'}},'DistrictType'),Buildings=info({{Index=1,BuildingType='BUILDING_CSC_BAKERS_WATER_MILL'},{Index=2,BuildingType='BUILDING_CSC_BAKERS_WIND_MILL'}},'BuildingType'),Policies=info({{Index=1,PolicyType='POLICY_TEST'}},'PolicyType')}
 POLICY=false;MILLS=false
 city={GetBuildings=function()return {HasBuilding=function()return MILLS end}end}
 player={IsHuman=function()return false end,GetCities=function()return {Members=function()local once=false;return function()if not once then once=true;return 1,city end end end}end,GetCulture=function()return {IsPolicyActive=function()return POLICY end}end}
@@ -101,7 +101,7 @@ local function supplies(_, site)
 end
 local ui = ExposedMembers.CSC_Adjacency
 local readLegalTargets = ui.GetLegalDistrictTargets
-local bakers = {district=GameInfo.Districts[1], customers={[0]={}},
+local bakers = {key='BAKERS', district=GameInfo.Districts[1], customers={[0]={}},
     base='CLASS_CSC_BAKERS_BASE', specialty='CLASS_CSC_BAKERS_SPEC'}
 local function bids(profile, protected, legal, chains)
     ui.GetLegalDistrictTargets = legal
@@ -145,10 +145,9 @@ assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==7)
 
 -- The same gate accepts a future Harbor before it can be built, then
 -- nominates the actual legal host of an existing Tailors chain.
-local tailors = {district=GameInfo.Districts[2], customers={[4]={}},
+local tailors = {key='TAILORS', district=GameInfo.Districts[2], customers={[4]={}},
     base='CLASS_CSC_TAILORS_BASE', specialty='CLASS_CSC_TAILORS_SPEC'}
 tailors.district.Hash=1002
-GameInfo.Districts[4]={Index=4, Hash=1004, DistrictType='DISTRICT_HARBOR', RequiresPopulation=true}
 local slots = 1
 cityDistricts.HasDistrict=function(_, id) return existing and id==2 end
 local function tailorPlot(id)
@@ -170,7 +169,9 @@ CSC_Adjacency.Count=function(rule, center, city, pid)
 end
 local hasTag=CSC_Adjacency.HasTag
 CSC_Adjacency.HasTag=function(tag, kind)
-    return tag=='TAILORS_FIXTURE_HOST' and kind=='DISTRICT_HARBOR' or hasTag(tag,kind)
+    return tag=='TAILORS_FIXTURE_HOST' and (kind=='DISTRICT_HARBOR' or kind=='DISTRICT_COMMERCIAL_HUB')
+        or tag=='CLASS_CSC_TAILORS_SALES' and kind=='DISTRICT_COMMERCIAL_HUB'
+        or tag=='CLASS_CSC_TAILORS_GOODS_PROVIDER' and kind=='DISTRICT_RURALCOMMUNITYA' or hasTag(tag,kind)
 end
 local harborUnlocked=false
 local function legal(_, _, hash)
@@ -187,8 +188,23 @@ assert(bids(tailors, {}, legal)[23].delta==12288)
 slots=1
 plots[23].baseLocked=false
 assert(bids(tailors, {}, legal)[23].delta==12288)
+assert(bids(tailors, {}, legal)[24].delta==4096)
+tailors.district.RequiresPopulation=true
+assert(not bids(tailors, {}, legal)[24])
+tailors.district.RequiresPopulation=false
 harborUnlocked=false
 assert(bids(tailors, {[24]=true}, legal)[23].delta==-32768)
+-- A later-stage Commercial Hub gives a concrete forecast even when a
+-- Harbor is impossible. It does not manufacture a Stage 2 customer bid.
+local canHaveDistrict=plots[24].CanHaveDistrict
+plots[24].CanHaveDistrict=function(_, district) return district==5 end
+assert(bids(tailors, {}, legal)[23].adjacency==6 and not bids(tailors, {}, legal)[24])
+rules[#rules+1]={ID='futureProvider', YieldType='YIELD_PRODUCTION', YieldChange=1,
+    ModifierOwner='DistrictModifiers', ProvideType='SelfBonus', AdjacencyType='FROM_RINGS_TYPETAG_DISTRICT',
+    CustomAdjacentObject='CLASS_CSC_TAILORS_GOODS_PROVIDER', Rings=1}
+plots[24].CanHaveDistrict=function(_, district) return district==6 end
+assert(bids(tailors, {}, legal)[23].adjacency==6 and not bids(tailors, {}, legal)[24])
+plots[24].CanHaveDistrict=canHaveDistrict
 -- Existing and pillaged Harbors keep their long-term adjacency. A built
 -- Harbor's observed rule amount replaces the future projection.
 local pillaged=false
