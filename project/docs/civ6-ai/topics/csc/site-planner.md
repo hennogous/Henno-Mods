@@ -146,7 +146,9 @@ actually compete with a weaker site. [AI-C135]
 | 1.2 Neighbors | Existing mapped Stage 2 hosts, immediate build targets and feasible future Harbor geometry. City Lights goods-provider adjacency can enter the yield projection. Qualify the provider's separate role before using it as an alternative to the Stage 2 customer path. |
 | 1.3 Rivers and 1.4 adjacency | Loaded Production and Gold adjacency, including the projected local Mill branch. The current bands still use projected yield. Compare pre-Mill and eventual site value in live cases before pricing the delay. |
 | 1.5 Buying | The integrated publisher uses owned sites and suppliers. Verify both native buying routes below before giving either one a CSC preference. |
-| 1.6 Follow-through and 1.7 defer | Native UI build targets supply immediate legality. The Lua bid can change a later comparison, and an existing contract can retain its prior value. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |
+| 1.6 Follow-through | Native UI build targets supply immediate legality. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |
+| 1.7 Defer | Track whether the city leaves the Quarter uncommitted when every site is weak, then reconsider after a specific new opportunity. Withholding a positive bid alone cannot demonstrate deferral. |
+| 1.8 Discourage poor sites | Record which weak tile lost or won after its deduction. Hold positive boosts fixed in a matched comparison to separate the effect of the deduction from promotion of a good alternative. |
 
 ### Placement and purchase tests
 

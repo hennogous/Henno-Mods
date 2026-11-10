@@ -129,6 +129,11 @@ between the two pilot misses and a proven native purchase.
 
 ## Observed score and selection timing
 
+The joint district-and-site scan draws on a tie with the current best.
+The type-specific new-location scan keeps the first eligible row among
+equal best scores. A replay should distinguish the two scans and record
+the score margin before attributing a changed choice to tuning. [AI-N112]
+
 Fresh valuation can also happen before the city asks for its next district.
 In the clean Sydney trial, eleven Tailors outputs reached the cache while an
 existing Aerodrome tree finished; no new ordinary GetBestDistrict return was

@@ -1908,5 +1908,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/native/production-and-prerequisites.md",
     "related": ["AI-N021", "AI-N103"]
+  },
+  {
+    "id": "AI-N112",
+    "title": "Joint and type-specific district scans resolve equal scores differently",
+    "statement": "The joint GetBestDistrict scan calls the two-outcome City Build District Choice random draw for an eligible cell equal to the current best. After its first eligible row, the new-location branch of GetBestLocationFor only replaces the chosen coordinate for a strictly higher score.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Ghidra Windows XP2 reference 324c51e9, functions at RVAs 3e4a50 and 3e5550. The complete file-backed text matches installed Steam XP2 092abfbb.",
+    "limits": "Applies to the inspected score scans. Does not establish the matrix row order, runtime draw outcomes or downstream commitment.",
+    "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
+    "topic": "topics/native/district-choice.md",
+    "related": ["AI-N006", "AI-N110"]
   }
 ]

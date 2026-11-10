@@ -9,13 +9,14 @@ evidence.
 
 ## Current milestone and active problem
 
-### Current capability — Quarter placement (1.1–1.7)
+### Current capability — Quarter placement (1.1–1.8) and related districts (2.1–2.2)
 
-The first increment improves choices among owned sites for Bakers and Tailors.
-Qualify that increment against the existing policy before adding a purchase
-signal. The purchase work splits into a Quarter footprint and a material
-supplier because each enters a different native decision. Keep the Stage 2
-chain results as follow-through evidence for these placement tests.
+The first increment targets choices among owned sites for Bakers and Tailors.
+Qualify strong-site promotion, weak-site suppression and city-level deferral
+separately. The purchase work splits into a Quarter footprint and a material
+supplier because each enters a different native decision. For other districts,
+trace customer offers and material protection through selection and placement.
+Keep the Stage 2 chain results as follow-through evidence.
 [Coverage review and test sequence](topics/csc/site-planner.md#quarter-placement-capability).
 
 ### Earlier Stage 2 development evidence
@@ -369,8 +370,16 @@ until the active check closes or an explicit dependency needs attention.
 - **1.7 Place or defer.** Decide whether the best available Quarter site
   merits a bid now. Consider whether the Base supplier and customer path can
   be made usable and what would need to happen first. Reconsider as ownership,
-  unlocks and district commitments change. Measure good opportunities taken
-  and weak commitments made while no good option was available.
+  unlocks and district commitments change. In a weak-only city, verify whether
+  the AI leaves the Quarter uncommitted and can revisit it when a credible
+  opportunity becomes available.
+- **1.8 Discourage poor placements.** Deduct value from individual Quarter
+  sites that lack a viable Base, cover a mapped material, or have no credible
+  customer footprint. Distinguish a site deduction from the decision to
+  defer the whole Quarter in 1.7. On a matched start, show which weak sites
+  lose a native comparison and check whether the AI commits to a better
+  site or another investment. Track weak foundations separately from the
+  strength of their supply chains at the endpoint.
 
 ### 2. Other district placement
 

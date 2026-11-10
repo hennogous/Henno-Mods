@@ -302,6 +302,18 @@ has callers outside the ordinary joint selector, including
 `CityBuild::BuildDistrict` at `3df341` and trigger decoding at
 `55abd7` and `55abe9`.
 
+The two selectors also resolve ties differently. The joint scan at
+`3e4a50` calls the two-outcome `City Build District Choice` random draw
+when an eligible pair equals the running best. The new-location scan
+at `3e5550` updates its saved coordinate only for a strictly higher
+score after it has found its first eligible row. A later equal score
+therefore leaves the earlier scanned row in place. This is row traversal
+order. The decompile does not establish an ordering by plot index.
+A matched placement replay should record the comparison path and
+prefer a strict score margin to isolate the effect of its bid.
+The 10 November recheck used the same Ghidra reference and confirmed
+its complete file-backed `.text` still matches the installed patch.
+
 The current CE numeric adjustment is bounded. In the repair review
 branch it clamps deductions at `-4096 * 256`, and it protects the
 invalid sentinel. This remains a finite preference. An explicit
