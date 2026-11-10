@@ -376,3 +376,37 @@ unequal-value choice between future neighbors needs a separate test
 before treating this as the maximum possible long-term adjacency.
 Artifacts are under
 `Desktop/Codex/csc-ai-problems-1-2-20261110/owned-site-survey-all-customers-01`.
+
+### Aachen native comparison
+
+Both arms cold-loaded the same turn-200 Continents checkpoint
+(`e333251ec7318fb6b170678a956c28e02e2f9b01c4c4753c99e84b1a112fe19a`).
+They used the same CE DLL and differed only in the scanner. The same
+read-only observer recorded the returned winner and matrix values at
+the native `CheckForDistrict` return site `3e0f3c`. It made no gameplay
+writes. The first reference attempt exited during loading. The repeat
+verified the exact staged packages and expected test configuration before
+loading the same save. The controller restored the recorded original
+preferences on exit.
+
+| Turn | Earlier Tailors 1094 (Q8) | All-stage Tailors 1094 (Q8) | Encampment winner (Q8) |
+| --- | ---: | ---: | ---: |
+| 201 | 168,761 | 213,817 | 1,017,638 |
+| 203 | 168,761 | 213,817 | 1,023,276 |
+| 205 | 177,817 | 222,873 | 1,969,961 |
+| 207 | 186,486 | 231,542 | 2,076,713 |
+
+Each final Tailors score rose by 45,056 Q8, exactly the difference
+between the old `-32768` and new `+12288` Lua adjustments. The other
+observed Tailors cells and the Encampment winners matched. The observer
+recorded a populated reservation handle at 1094. It did not resolve the
+effective threshold, so an eligible row flag does not establish whether
+that pair could pass the reservation test. The Encampment led by at
+least 803,821 Q8 even before considering that gate. Aachen submitted
+no Tailors construction contract through turn 208 in either arm.
+
+This verifies a native score effect for the wider neighbor forecast.
+The next comparison needs a site and competing investment with a
+smaller score gap, and an observed unreserved row or effective threshold.
+Artifacts are `aachen-tailors-selector-01` and
+`aachen-tailors-selector-reference-02` under the same Desktop folder.

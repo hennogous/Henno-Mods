@@ -158,6 +158,12 @@ strong Tailors offers from zero to two across the same three saved positions.
 Those surveys held the game state and legal pairs fixed. They measured CSC
 offers before any native comparison. [AI-C136]
 
+In matched Aachen replays, the wider neighbor forecast raised the
+finished score of Tailors plot 1094 by 45,056 Q8 at four native comparisons.
+An Encampment won each time. This shows the adjustment survived aggregation
+in this case. A changed winner and placement still need a closer comparison
+with a known reservation threshold. [AI-C137]
+
 | Problem | Coverage and next proof |
 | --- | --- |
 | 1.1 Materials | Owned, revealed deposits and the status of their mapped improvements. Qualify working, repairable, unlocked and locked suppliers in live choices. Unowned supply needs 1.5. |

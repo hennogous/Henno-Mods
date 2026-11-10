@@ -10,8 +10,9 @@ The earlier matched Fractal restart produced a Tailors offer with both links sti
 pending, but no Tailors offer reached +4 projected adjacency. Both Quarters
 ended up on the same plots as before, and Storekeeper activity matched. The next
 saved-world survey found two +4 Tailors offers with the wider neighbor
-forecast. Aachen is a candidate for testing whether an offer changes
-the native choice.
+forecast. The matched Aachen replay raised the finished Tailors score at
+four comparisons. The Encampment still won each one. A closer comparison
+is needed to test placement.
 We track weak-site deductions separately from whether the city waits to
 build any Quarter.
 Tile buying follows in separate footprint and supplier tests that track

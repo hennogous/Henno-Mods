@@ -2074,5 +2074,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C135"]
+  },
+  {
+    "id": "AI-C137",
+    "title": "The wider neighbor forecast raised Aachen's finished Tailors score",
+    "statement": "Matched Aachen replays found that Tailors plot 1094 was 45056 Q8 higher at the ordinary joint selector on all four observed comparisons. This equals the change from a 32768 Q8 deduction to a 12288 Q8 boost. Both arms returned Encampment in all four comparisons.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "One matched turn-200 Continents save replayed through 208. Aachen player 3, city 65536, Tailors district 37. Same CE DLL and read-only observer, with only the CSC scanner changed.",
+    "limits": "The effective reservation threshold was not resolved, the Encampment led by at least 803821 Q8, and no Tailors construction contract was observed in either arm. This demonstrates score delivery in this case, without a changed native choice or placement.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C136", "AI-N110"]
   }
 ]
