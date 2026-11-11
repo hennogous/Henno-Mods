@@ -9,7 +9,15 @@ evidence.
 
 ## Current milestone and active problem
 
-### Current capability — Quarter placement (1.1–1.8) and related districts (2.1–2.2)
+The active goal follows the [levels 1â€“3 completion contract](acceptance.md).
+Work sequentially from the earliest unclosed item, state its acceptance test
+before investigation, and preserve Astra-validated scoped closures. Broad
+qualification and the older multi-seed Stage 2 milestone below are follow-up
+work, not additional conditions for closing this goal's placement capabilities.
+Current item: **1.1 Materials**. **1.8 suppression** and **2.2 finite material
+protection** already meet levels 1â€“3 at the recorded representative scopes.
+
+### Current capability â€” Quarter placement (1.1â€“1.8) and related districts (2.1â€“2.2)
 
 The first increment targets choices among owned sites for Bakers and Tailors.
 Qualify strong-site promotion, weak-site suppression and city-level deferral
@@ -19,7 +27,7 @@ trace customer offers and material protection through selection and placement.
 Keep the Stage 2 chain results as follow-through evidence.
 [Coverage review and test sequence](topics/csc/site-planner.md#quarter-placement-capability).
 
-The active 1.8 case is Nicopolis. A single owned-site deduction changed
+Completed scoped 1.8 suppression evidence comes from Nicopolis. A single owned-site deduction changed
 the native winner and request. The integrated frontier correction also
 changed the previously unpriced frontier choice and produced a purchase
 request for plot 401. Through turn 216 it stayed unowned and empty;
@@ -38,7 +46,7 @@ preflight stopped on tied Debrecen/Szeged quotes. Static checks show a purchase
 for another friendly city cannot satisfy the original city's reservation in
 this district path. The current quote screen is conservative and cannot bind
 a retained contract's later buyer. The new Nicopolis lineage replay verified
-city → district tree → accepted contract 4333 → target 401 → savings attempts.
+city â†’ district tree â†’ accepted contract 4333 â†’ target 401 â†’ savings attempts.
 The read-only Szeged prototype verified both native selector listeners, but
 did not establish active policy. Its untuned source intentionally lacked the
 original-seat metadata. The replay now requires active publication before
@@ -52,7 +60,7 @@ remain open under 1.5. [Buyer dependency and lineage](../research/mods/csc-ai-fr
 
 ### Earlier Stage 2 development evidence
 
-**Active 2.2 — preserve Heidelberg's only viable supplier.**
+**Active 2.2 â€” preserve Heidelberg's only viable supplier.**
 The integrated repair build's normal-start repeat matched the previous
 turn-249 development result. Melbourne reached 132 active turns,
 Launceston 60, Magdeburg 35 and Heidelberg 26. Heidelberg's Farm repair
@@ -65,7 +73,7 @@ the Maize Farm and Storekeeper survived. Follow the resulting save
 through construction and another planning cycle. Then qualify a
 bounded CE exclusion for ordinary joint district selection.
 
-**Open 13.1 and 14.1 — repair producers and find earlier investments.**
+**Open 13.1 and 14.1 â€” repair producers and find earlier investments.**
 The Melbourne replay established that the Rice job won, but the empire's
 only Builder worked elsewhere and the replacement request lost in city
 queues. The turn-200 development repeat measured four active chains.
@@ -100,13 +108,13 @@ where the existing Dam already covers the Maize's floodplain and a new
 Dam there is ineligible. A live threatened supplier with an eligible
 alternative remains the test for a placement change.
 
-**Boston fixture achieved — one working, retained Bakers Stage 2 chain.**
+**Boston fixture achieved â€” one working, retained Bakers Stage 2 chain.**
 The reusable milestone is to repeat the sequence from normal starts across
 multiple AI cities and close the dependencies as they arise.
 Choose and complete a Bakers Quarter with viable Base supply and an adjacent
-Granary host (**1.1–1.4, 1.6**). Get the appropriate Mill and a functioning
-Granary in place (**4.1–4.2, 5.1**). Improve the Base tile and match the job
-to a reachable Builder (**3.1–3.3**). Verify the ordinary exchange and keep
+Granary host (**1.1â€“1.4, 1.6**). Get the appropriate Mill and a functioning
+Granary in place (**4.1â€“4.2, 5.1**). Improve the Base tile and match the job
+to a reachable Builder (**3.1â€“3.3**). Verify the ordinary exchange and keep
 the supplier intact (**2.2**). Then verify the Feudalism goal and Storekeeper
 when the chain is ready (**6.1**). Existing buildings, Builders and unlocks
 can satisfy dependencies. Tile purchase (**1.5**) and a new customer district
@@ -114,7 +122,7 @@ can satisfy dependencies. Tile purchase (**1.5**) and a new customer district
 failure occurs and is a later explicit resilience check. Run the same
 decision sequence for Tailors once the Bakers chain works.
 
-**Verified for this fixture — 1.6, district selection through completion.**
+**Verified for this fixture â€” 1.6, district selection through completion.**
 The game started with Craftsmanship locked. London had four estimated turns
 left on the civic at turn 8, but its Holy Site plan occupied the district
 selection slot. Boston's first observed qualifying choice came on turn 22,
@@ -123,7 +131,7 @@ district selector from Campus to Bakers, and Boston completed Bakers at plot
 721 with its Base deposit still present. The control later founded Bakers
 on a different plot. [Exact match and timeline](../research/mods/csc-ai-bakers-natural-research-20261106.md).
 
-**Verified for this fixture — 2.2, 3.1–3.3, 4.1–4.2 and 5.1.**
+**Verified for this fixture â€” 2.2, 3.1â€“3.3, 4.1â€“4.2 and 5.1.**
 On the same turn-31 save, the control covered Boston's only mapped Base
 deposit with a Campus. One measured deduction redirected Campus to plot 720.
 Boston's existing Builder job put a Pasture on the retained Cattle. Engineering,
@@ -131,7 +139,7 @@ Granary and Water Mill followed through native research and production.
 The Quarter, both buildings and the working supply were present at turn 45.
 [Protection and follow-through](../research/mods/csc-ai-bakers-natural-research-20261106.md#a-matched-deduction-protected-the-only-base).
 
-**Verified for this fixture — 13.3 and 6.1.**
+**Verified for this fixture â€” 13.3 and 6.1.**
 A Feudalism boost Farm job removed the working Cattle Pasture and harvested
 the deposit. Protecting that boost choice alone exposed a separate ordinary
 Farm job. The final replay guarded both decisions before reservation.
@@ -141,14 +149,14 @@ property were present at turns 63 and 66. The saved turn-66 state closes the
 Boston milestone. The tested policy is scoped to one city and supplier.
 [Final retained chain and evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#retained-stage-2-chain-verified-at-turns-63-and-66).
 
-**Verified duration — 2.2 and 6.1.** A separate continuation kept Boston's
+**Verified duration â€” 2.2 and 6.1.** A separate continuation kept Boston's
 original chain working for 152 consecutive turns from turn 90 to 242. The
 original continuation worked for 141 turns before the Pasture failed near a
 Crippling Blizzard on turn 207. That break reproduced from the turn-186 save.
 Repair after disaster damage remains open under **13.1**.
 [Long-run observations](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
 
-**Verified for the Boston replay — 2.2, automatic district material protection.**
+**Verified for the Boston replay â€” 2.2, automatic district material protection.**
 Main CSC now has a gameplay publisher for the CE district-score capability.
 It reads owned, visible Bakers suppliers, distinguishes a usable deposit
 from a working improvement, and prices legal district pairs for the city
@@ -161,7 +169,7 @@ automatic main CSC policy, Campus went on 720 and Boston worked the original
 Cattle Pasture by turn 37. The penalty is finite and needs wider calibration.
 [Automatic publisher evidence](../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
 
-**Placement integration — 1.1–1.4 and 1.6.** The main CSC publisher
+**Placement integration â€” 1.1â€“1.4 and 1.6.** The main CSC publisher
 now adds one positive owned-site bid per eligible city alongside its existing
 material deductions. The scanner uses native build targets and legality,
 requires a viable Base and an adjacent friendly City Center, and forecasts
@@ -175,7 +183,7 @@ Quarter on turn 44. Continue through completion and look for improved site
 or investment choices. Future customer sites and affordable land acquisition
 are still open. [Matched development run](../research/mods/csc-ai-bakers-natural-research-20261106.md#owned-site-placement-publishing).
 
-**Ordinary-start building follow-through — 5.1 and 4.2.** The
+**Ordinary-start building follow-through â€” 5.1 and 4.2.** The
 turn-100 development run had four complete and two unfinished AI
 Bakers Quarters, and zero observed Storekeepers. All five original
 AI majors unlocked Feudalism. In Alexandria Troas only the
@@ -187,7 +195,7 @@ matched increase redirected all three choices and the city found
 a Builder. The matched turn-112 continuation kept the extra bid
 through reassignment. Both arms built a Pasture at 118. Only the
 treatment improved the Bakers supplier and activated Storekeeper
-on 119–121. The integrated CSC publisher and widened CE cap
+on 119â€“121. The integrated CSC publisher and widened CE cap
 reproduced those three Service turns without an external score
 writer. A fresh calibrated game reached turn 125 with six active
 Alexandria Storekeeper turns, nine completed Quarters and no
@@ -198,7 +206,7 @@ Amphitheater by 112,232 Q8. The matched nomination preference
 produced a valid Wind Mill offer at its lower native cache value.
 The follow-up refreshed that offer, entered production on 135
 and finished the Mill on 137 without another adjustment.
-Storekeeper operated on 138–143. The matched control finished
+Storekeeper operated on 138â€“143. The matched control finished
 Amphitheater with Melbourne's Mill still absent. The main CSC
 policy and CE review build reproduced the Wind Mill nomination
 and construction from the same turn-125 save, with active
@@ -219,7 +227,7 @@ nomination. Production and Gold calibration brings the full
 ordinary exchange bid to 52 points. The matched replay delivered
 it and Library kept the nomination.
 
-**Ordinary-start development — 4.2 and 3.2.** The frozen Small
+**Ordinary-start development â€” 4.2 and 3.2.** The frozen Small
 Continents setup bought Melbourne's Wind Mill on 113 while the city
 used production for other work. Storekeeper reached 132 active
 turns by 249, including recovery after the AI rebuilt its Rice Farm.
@@ -228,7 +236,7 @@ still needed its Pasture despite the exact supplier bid reaching
 the scorer. The same setup diverged in a second start. Its city at
 that site, Alexandria Troas, built the Pasture on 118 and began
 Storekeeper on 119. Observe an earlier improvement admission
-before changing the amount. The 105–120 trace then reproduced
+before changing the amount. The 105â€“120 trace then reproduced
 the Pasture and Storekeeper. The job won three open comparisons.
 On 109 the job could not recruit either charged Builder and had
 to wait. Aigai's divergent branch still needs assignment and
@@ -253,14 +261,14 @@ samples turns 100, 150, 200 and 240. At the default Online horizon, each
 qualifying chain needs to operate by roughly turn 150 to leave
 100 turns before the score limit. Lapses require an earlier start.
 Charleston supplied another **3.2** follow-through case. It received
-an exact Maize Farm bid and operated Storekeeper on 176–177.
+an exact Maize Farm bid and operated Storekeeper on 176â€“177.
 [Turn-100 census](../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 [Fresh calibrated game](../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
 [Melbourne building trace](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-available-wind-mill-lost-the-ordinary-building-nomination).
 [Melbourne production and payout](../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
 [Integrated Mill replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#integrated-ce-nomination-reproduced-melbournes-wind-mill-and-service).
 
-**Supplier recovery evidence — 3.1–3.2 and 13.1–13.2.**
+**Supplier recovery evidence â€” 3.1â€“3.2 and 13.1â€“13.2.**
 The CE score-stage policy now reads live CSC material rules and protects
 critical supplier sites in the matched Boston replay. With the same district
 policy in both arms, the control lost its Cattle. The treatment kept its
@@ -318,8 +326,8 @@ native project eligibility. Boston queued a valid Terrestrial Laser
 and the chain stayed down. In a separate Mill-only replay starting
 at 114, stock AI finished its Theater Square before repairing the
 Mill. Storekeeper and exchange were working again at 126. Keep
-recovery under **13.1–13.2** and **14.1** in fresh-game observation.
-Prioritise normal-start follow-through under **1.6** and **3–6**
+recovery under **13.1â€“13.2** and **14.1** in fresh-game observation.
+Prioritise normal-start follow-through under **1.6** and **3â€“6**
 before adding a Mill bonus for a loss that has yet to recur there.
 [Project eligibility replay](../research/mods/csc-ai-bakers-natural-research-20261106.md#project-eligibility-preserved-a-valid-terrestrial-laser).
 [Mill-only contract and payouts](../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-repaired-the-mill-after-theater-square).
@@ -538,7 +546,7 @@ until the active check closes or an explicit dependency needs attention.
   turn-105 source with the Mill and Rice Farm missing. The forecast
   already credits Production and Gold. The measured missing CSC effects
   total about 85 utility points with immediate supply and Service, below
-  Castle's 121–281 point lead. The stock tree reserved the Farm and
+  Castle's 121â€“281 point lead. The stock tree reserved the Farm and
   requested a Builder. The turn-100 ordinary census had two one-link
   opportunities and four needing multiple investments. Ancyra already
   had its Farm but needed both buildings. Walls beat both legal
@@ -577,7 +585,7 @@ guarded Frida writer already reached native selection and preparation on
 Steam build 26407122. It supports the current 1.6 experiment. Construction,
 building, job and unlock bids each need evidence at their own native decision
 boundary. The offline Stage 2 replay checks policy and mappings separately.
-[District adapter](topics/native/native-placement-extension.md) ·
+[District adapter](topics/native/native-placement-extension.md) Â·
 [Stage 2 replay](topics/csc/site-planner.md#stage-2-decision-replay).
 
 Dev-CE 0.8.1 is an experimental single-player option if we need a specific
@@ -587,7 +595,7 @@ patched-build checks. Its generated Lua bindings are separate from CSC's
 guarded district-score API, and Dev-CE uses the GameCore replacement slot.
 Use the verified stock route for 1.6. Review Dev-CE in isolation if a later
 problem needs a capability it actually exposes.
-[Dev-CE 0.8.1 release](https://github.com/cru121/civ6-dev-ce/releases/tag/v0.8.1-experimental) ·
+[Dev-CE 0.8.1 release](https://github.com/cru121/civ6-dev-ce/releases/tag/v0.8.1-experimental) Â·
 [Tagged generated bindings](https://github.com/cru121/civ6-dev-ce/blob/v0.8.1-experimental/DevNativeTable.cpp).
 
 Packaged CSC delivery still needs the guarded score API on a CE base
@@ -614,7 +622,7 @@ CE contribution review requirements before upstream submission.
 The annotated Ghidra project uses the earlier XP2 image. Its code section
 matches the patched image, as verified in the hotfix comparison. The
 installed patched binary remains the identity for live tests.
-[Handbook evidence workflow](maintenance.md) ·
+[Handbook evidence workflow](maintenance.md) Â·
 [GameCore comparison](../research/mods/csc-ai-xp2-november-hotfix-20261106.md).
 
 For each new adapter verify eligibility, timing, score scale and the actual
@@ -625,6 +633,6 @@ overlap where it changes choices. Cache local relationships and refresh
 affected scopes with periodic reconciliation. Track runtime overhead and
 worst turns in a developed empire. Compare working supply, Service uptime,
 costs and displaced investments in matched standalone CSC and RH tests.
-[Production and prerequisites](https://github.com/hennogous/civ6-ai/blob/main/references/engine/production-and-prerequisites.md) ·
-[Material work](topics/csc/materials-and-builders.md) ·
+[Production and prerequisites](https://github.com/hennogous/civ6-ai/blob/main/references/engine/production-and-prerequisites.md) Â·
+[Material work](topics/csc/materials-and-builders.md) Â·
 [Research guidance](topics/csc/research-and-strategies.md).

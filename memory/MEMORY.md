@@ -109,12 +109,46 @@ Next naturallyfoundedNuremberg(201) frontier862vsowned788 at202; verifyID458758.
 Hamburg393221 frontier1011vsownedalts. Newfrontier_discovery --compare-owned
 Continentsonly stages3mainfiles, requiresactivepolicy200, plays202, readonly
 surveyscorrectpurchase-cityownedemptyplots+allcityquotes862/1011.8tests pass.
-CURRENT sharedcontroller continents-owned-comparison-01 launcher13100 start
-14:34:20local (sameDesktoproot). Checkactualhandle/artifactsterminalbefore
-newsession. No buyerrestrictionyet. Surveyomitsno-Base/invalidsites: absence
-of788isnotproofit'sweak. Protection/reservationarenotallmodeledinsurvey.
-ValidateparsedbuyerquotecompletenessagainstcurrentGermancitiesbeforeunique
-buyerclaims. Astrareviewed; no source/gameplaywriteissue.
+Continentsownedcomparison01 completed200->202 normalcleanup. Nuremberg458758
+founded201, owned788BakersprojectedMill3/maxfuture4 vsfrontier8621/2 at85Gold.
+Hamburg393221frontier1011max2vsfree1085max2.1084max4coversSheep, notfully
+policyqualified. Sevenallcityquoteseach862/1011complete, solepositiveintended
+city; Germanbank942.6484375. No worthwhilepurchasefixture. Autosave202archived
+comparison01/source-autosaves/source-202.Civ6Save SHA0a9aba59a79e82097abbc17071d62cd2b14ec7d22c2771f611b6e96896608e2c.
+Futurecontrolledrelease788Astrareviewed,butqueuedbehindsequential1.1.
+
+RESUMED GOAL finitelevels1mechanism,2causalchoice/action,3dynamicmainCSC;
+qualificationlevel4outsidegoal. acceptance.md canonical. Astraapproved1.8scoped
+weaksite(C138/C139)and2.2finiteprotection(C065) levels1-3COMPLETE. Active1.1
+materialawarepromotion. Boston22candidateoldpulse10730wasgapderived; don'treuse.
+Current24band6144<old10474gap;48bandonlyifmodelactuallyqualifies+4.
+
+UsercurrentgameSAVEDturn3 BEFOREauthorizedclose: Henno_Preserved_20261111_5914d40a484a.
+NativeSaveComplete+hashmatchedbackup verified Desktop/Codex/csc-ai-preserve-henno-game-20261111/checkpoint.json.
+SHAda1b0a14957201601e9ac380d93a52f5f7cf70e749febe2ae177815bef1f82c5.
+Civ/FireTunerclosed normally. No user'ssave removed.
+Bostonmaterialsurvey01 stopped0turns, normalcleanup: oldsaveactivatedonlystock
+GameCore despiteCEenabledmenu. Needdocumentedadd_fixture_carrier patternwithin
+itsCSC09package, notjustrelabelheader. SurveyextensionnowaddsdiagnosticConfig
+order11(afterCE10) PackageId09/DllPrefixCE_AI andidenticalf812DLLinCSCpackage.
+Nativehash/pathguardretained. No gameplaypolicyororiginalroleinjection.
+Bostonmaterialsurvey02 completed0turns normalexit+preferences/packagecleanup.
+ActualmainmodelBoston721=adj3/+6144/pending0/Base1/riveredge1. Notactivepubproof.
+Newboston_material_policy.py addsfixturep3rolemetadataonlyfromPINNEDscout:
+searchresult22e69e2e... andarchivedscout4993fb5c...civicsrow3 excludeshumans,
+checkpointinactivehuman0. Turn22/leaderTeddy/cityBoston/controller/property
+conflictguardbeforemissing-onlywrite. All4mainAI+UIstaged, no nativepulse.
+Controlremovesonlypositive(3,131073,36,721)AFTERcapacitytrim; otherarrayssame.
+Prefixcallbackregisteredbeforepublisherreadsfullstatuschunks+versionreceipt,
+physicalQuarter/queue/supplier. Manualinitial+terminalstrictready/enabled/fault0;
+sourceinitialmatch1/delta6144/removalexpected andexactReceiptstaged0vs1required
+beforeautoplay. Endpointrejectsdiag/mainpublisher/industryfailures.4Luahelper
+checks+9surveychecks passed; Astrareviewfixesapplied. Useroriginalturn3save
+remainsverified, bothcopiespreserved.
+CURRENT sharedcontroller boston-material-control-01 launcher22164started
+21:12:50local11Nov; source22through33. Inspectexacthandle/artifactsbefore
+nextsession. NoFrida/externalwriter. Mustcompareagainstsamecarriertreatment
+before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.
 No feature-offer ablation allowed in buyer A/B arms.
 
 Read-only lineage hooks:3e10fd RDI CityBuild,RBX newtree,ESI rootTreeID;

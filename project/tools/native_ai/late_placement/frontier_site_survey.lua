@@ -4,6 +4,9 @@
 -- treasury, ownership, research, production or autoplay mutation occurs here.
 local P, A = assert(CSC_AI_QuarterPlacement), assert(CSC_Adjacency)
 A.Initialize()
+-- Optional diagnostic comparison: include owned empty footprints for these
+-- player/city pairs. This adds observations, never bids or purchase commands.
+local comparison = CSC_FRONTIER_COMPARISON or {}
 local function call(object, method, ...)
     if not object or type(object[method]) ~= 'function' then return nil, 'missing method: ' .. method end
     local ok, value = pcall(object[method], object, ...)
@@ -82,7 +85,7 @@ for pid=0,63 do
             goldYield=goldYield, maintenance=maintenance,
             goldYieldAvailable=type(goldYield)=='number', maintenanceAvailable=type(maintenance)=='number',
             goldYieldError=yieldError, maintenanceError=maintenanceError,
-            frontierPairs=0, knownBasePairs=0, cities=0}
+            frontierPairs=0, ownedComparisonPairs=0, knownBasePairs=0, cities=0}
         result.players[#result.players + 1] = economy
         for _, city in player:GetCities():Members() do
             economy.cities = economy.cities + 1
@@ -100,14 +103,20 @@ for pid=0,63 do
                 local hostTypes, hostDefinitions = mappedHosts(profile)
                 if not city:GetDistricts():HasDistrict(profile.district.Index) then
                     for _, site in ipairs(A.PlotsInBand(center,1,3)) do
-                        if site:GetOwner() == -1 and visible(pid,site) and site:GetDistrictType() == -1
+                        local ownedComparison=false
+                        if comparison[pid] and comparison[pid][city:GetID()] and site:GetOwner()==pid then
+                            local purchaseCity=Cities.GetPlotPurchaseCity(site)
+                            ownedComparison=purchaseCity and purchaseCity:GetID()==city:GetID()
+                        end
+                        if (site:GetOwner() == -1 or ownedComparison) and visible(pid,site) and site:GetDistrictType() == -1
                             and site:CanHaveDistrict(profile.district.Index,pid,city:GetID()) then
                             local border = false
                             for _, n in ipairs(Map.GetAdjacentPlots(site:GetX(),site:GetY())) do
                                 border = border or n:GetOwner() == pid
                             end
-                            if border then
-                                economy.frontierPairs = economy.frontierPairs + 1
+                            if border or ownedComparison then
+                                if ownedComparison then economy.ownedComparisonPairs=economy.ownedComparisonPairs+1
+                                else economy.frontierPairs = economy.frontierPairs + 1 end
                                 local supply = P.ReadSuppliers(player,site,profile)
                                 -- Keep discovery bounded to known owned supply.
                                 -- Fog and unowned materials are not promoted to
@@ -117,6 +126,7 @@ for pid=0,63 do
                                     local quote,quoteError=call(call(city,'GetGold'),'GetPlotPurchaseCost',site:GetIndex())
                                     local row = {player=pid,city=city:GetID(),cityName=city:GetName(),
                                         profile=profile.key,district=profile.district.Index,plot=site:GetIndex(),
+                                        ownedComparison=not not ownedComparison,
                                         supply=supply,riverEdges=site:GetRiverCrossingCount(),hosts={},futureHosts={},
                                         quote=quote,quoteAvailable=type(quote)=='number',quoteError=quoteError,
                                         producers={},unrevealedNeighbors=0}

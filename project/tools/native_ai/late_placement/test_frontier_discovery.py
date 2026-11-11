@@ -48,6 +48,19 @@ class Discovery(unittest.TestCase):
         self.assertEqual(data['players'][0]['treasuryGold'], 50)
         self.assertEqual(data['players'][0]['goldYield'], 10)
 
+    def test_owned_comparison_requires_explicit_city_and_correct_purchase_city(self):
+        for enabled,city_id in ((False,42),(True,42),(True,99)):
+            with self.subTest(enabled=enabled,city=city_id):
+                self.setUp()
+                data=self.sample('site.GetOwner=function()return 1 end\n'
+                    +'Cities={GetPlotPurchaseCity=function()return {GetID=function()return '+str(city_id)+' end}end}\n'
+                    +('CSC_FRONTIER_COMPARISON={[1]={[42]=true}}' if enabled else ''))
+                accepted=enabled and city_id==42
+                self.assertEqual(len(data['sites']),int(accepted))
+                self.assertEqual(data['players'][0]['frontierPairs'],0)
+                self.assertEqual(data['players'][0]['ownedComparisonPairs'],int(accepted))
+                if accepted:self.assertTrue(data['sites'][0]['ownedComparison'])
+
     def test_missing_quote_is_explicit(self):
         row = self.sample('city.GetGold=nil')['sites'][0]
         self.assertFalse(row['quoteAvailable'])
@@ -108,6 +121,25 @@ end
         self.assertEqual(len(row['futureForecasts']),2)
         self.assertEqual(row['bestFutureType'],'DISTRICT_COMMERCIAL_HUB')
         self.assertEqual(row['maximumProjection']['total'],4)
+
+    def test_buyer_matrix_requires_one_readable_quote_per_current_city(self):
+        class Controller:
+            def __init__(self,quotes):self.quotes=quotes
+            def cmd(self,code,context,label):
+                return ('CSC_FRONTIER_UI_ECONOMY\t1\t150\t12\t2\n'
+                    'CSC_FRONTIER_UI_CITY\t1\t42\t2\t1\t4\n'
+                    'CSC_FRONTIER_UI_END\t202\t0\t1\t1\n'+self.quotes)
+        for quotes,valid in [('CSC_COMPARISON_BUYER_QUOTE\t1\t31\t42\t145',True),('',False),
+                ('CSC_COMPARISON_BUYER_QUOTE\t1\t31\t42\tnil',False),
+                ('CSC_COMPARISON_BUYER_QUOTE\t1\t31\t99\t145',False),
+                ('CSC_COMPARISON_BUYER_QUOTE\t1\t31\t42\t145\nCSC_COMPARISON_BUYER_QUOTE\t1\t31\t42\t145',False)]:
+            with self.subTest(quotes=quotes),tempfile.TemporaryDirectory() as folder:
+                state=dict(turn=202,players=[dict(player=1)],sites=[],supplierLeads=[],
+                    cityStates=[dict(player=1,city=42)],buyerPlots=[dict(player=1,plot=31)])
+                if valid:ui_readback(Controller(quotes),Path(folder),state)
+                else:
+                    with self.assertRaisesRegex(AssertionError,'Incomplete all-city'):
+                        ui_readback(Controller(quotes),Path(folder),state)
 
 
 if __name__ == '__main__':
