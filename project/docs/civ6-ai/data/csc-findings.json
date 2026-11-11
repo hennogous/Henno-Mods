@@ -2086,5 +2086,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C136", "AI-N110"]
+  },
+  {
+    "id": "AI-C138",
+    "title": "One weak-site deduction changed Nicopolis's Quarter choice and request",
+    "statement": "Removing only the Bakers deduction on owned plot 472 raised its finished score by 65536 Q8 and changed the turn-203 native winner from frontier plot 398 to plot 472. The district tree switched from a plot purchase request to an accepted Bakers construction request.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Player 1, Nicopolis city 524295, Bakers district 36, matched Continents turn-200 checkpoint through 208. The archived packages differ in one scanner condition, retaining all positive offers and other deductions.",
+    "limits": "Neither plot contained a district at the ablation endpoint. Neither had viable owned Base supply there. The original frontier winner was outside the owned-site scanner. The evidence proves an individual site and request effect, without establishing better placement quality, Gold spending or reliable weak-site avoidance.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C137", "AI-N069", "AI-N110"]
   }
 ]

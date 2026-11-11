@@ -410,3 +410,61 @@ The next comparison needs a site and competing investment with a
 smaller score gap, and an observed unreserved row or effective threshold.
 Artifacts are `aachen-tailors-selector-01` and
 `aachen-tailors-selector-reference-02` under the same Desktop folder.
+
+### Nicopolis weak-site deduction
+
+A read-only scout used the same Continents save and all-stage scanner to
+watch the ordinary district selector. It screened 222 surveyed owned
+Quarter pairs across 30 comparisons through turn 208. It shortlisted
+unreserved weak sites whose final score gap was smaller than their
+surveyed deduction. This screen suggests a replay case. It cannot
+predict how the early adjustment affects all downstream components.
+
+The matched ablation used the same turn-200 save and CE DLL. The only
+package change omitted one weak site entry for Nicopolis (player 1, city
+524295), Bakers district 36, plot 472. The scanner still read the same
+site and the diagnostic changed no positive offers or other deductions.
+The two native observers read the same stock selector return and wrote
+no game data. The native comparison on turn 203 followed the earlier
+Water Park plan recorded on turns 200–202.
+
+| Turn 203 | Production policy | Plot 472 deduction omitted |
+| --- | ---: | ---: |
+| Bakers plot 472 (Q8) | 347,924 | 413,460 |
+| Bakers plot 398 (Q8) | 396,462 | 396,462 |
+| Returned and reserved plot | 398 | 472 |
+| Request in the district tree | Purchase plot 398 | Construct Bakers on plot 472 |
+
+Plot 472 was unreserved at comparison. Its finished score increased by
+exactly 65,536 Q8. The other three near-margin cells in the scout also
+matched their ablation scores. The treatment with the deduction selected
+frontier plot 398. The stock district tree reported an accepted purchase
+request for that plot through turn 207. The ablation submitted and
+accepted a Bakers construction request for owned plot 472 on turn 203.
+At the ablation endpoint both plots were empty and neither had a viable
+owned adjacent Bakers Base. A later Hippodrome plan had reserved plot 472.
+
+The deduction changed which tile Civ chose and which request it issued.
+The frontier alternative fell outside the owned-site planner. This case
+does not establish a stronger Quarter site, Gold spending, deferral of
+the Quarter type or eventual construction. A frontier-aware test needs
+both plot ownership and the proposing city, which are distinct in the
+native plot-analysis row.
+
+Artifacts are `weak-site-scout-continents-01` and
+`nicopolis-weak-ablation-01` under the same Desktop folder.
+
+The 11 November repeat in `nicopolis-original-durable-01` reproduced
+the original turn-203 winner and both scores using the same scoped
+observer as the ablation. Boundary snapshots show plot 398 unowned
+through turn 203 and owned by Nicopolis at 208. It passed
+`CanHaveDistrict` even while unowned. Neither plot had an owned viable
+Base in those snapshots. The visible neighboring resources reported
+beside 398 were Silver and Salt. Ownership alone does not identify
+whether acquisition used Gold or culture.
+
+The repeat restored the recorded preferences left by the interrupted
+load and verified a clean exit. The durable fixture runner is
+`project/tools/native_ai/late_placement/nicopolis_replay.py`.
+Its separate frontier mode is a scoped diagnostic of CE admission,
+rather than the production frontier policy.

@@ -19,6 +19,13 @@ trace customer offers and material protection through selection and placement.
 Keep the Stage 2 chain results as follow-through evidence.
 [Coverage review and test sequence](topics/csc/site-planner.md#quarter-placement-capability).
 
+The active 1.8 case is Nicopolis. A single owned-site deduction changed
+the native winner and request, but Civ's alternative was an unowned tile
+outside the scanner. Verify a negative-only frontier correction using
+the actual native candidate and distinguish missing owned supply from
+a supplier that could be acquired under 1.5. Keep positive frontier bids
+for the separately qualified purchase path.
+
 ### Earlier Stage 2 development evidence
 
 **Active 2.2 — preserve Heidelberg's only viable supplier.**

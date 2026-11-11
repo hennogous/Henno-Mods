@@ -18,6 +18,32 @@ weak-only cities. A survey reads the production planner and current build
 targets. It does not publish a packet, inspect a native winner or advance
 autoplay.
 
+`weak_site_scout.js` uses the same save and current-policy survey to
+screen for a discriminating weak-site comparison. Compose it with the
+Mill study's `observer.js` memory helpers and set
+`CSC_LATE_PLACEMENT_COMPOSITE = true`. Pass the verified native module
+paths and image size, map dimensions, district count, and scoped
+`sites` rows with `player`, `city`, `district`, `plot` and `delta`.
+The scout reads the winner and finished scores at the ordinary selector
+return. It keeps owned rows with the unreserved sentinel, whose score
+gap is less than the surveyed deduction. The result is a lead.
+The early adjustment can change downstream forecasts and the weak
+classification can change after the save. A matched replay must hold
+the other offers fixed and observe the actual decision with and without
+the scoped deduction.
+
+`nicopolis_replay.py` preserves this exact diagnostic as a command-line
+fixture. It requires the closed scout package, verified turn-200 Continents
+checkpoint and existing isolated Frida dependencies. `--mode original`
+repeats the ordinary policy with pre-decision plot readbacks.
+`--mode frontier --original-run <closed original>` adds only the
+diagnostic plot-398 entry. `--recover-from` can restore the exact
+preferences and package installation left by an interrupted original
+run, after checking the live inventory and hashes. Run through a hidden
+background process on Shadow when the runner must outlive a chat tool
+session. The runner continues to use the shared controller for every
+native operation and restores preferences before retiring its packages.
+
 For a normal-start development run, `ce_bakers_fresh.py` can
 capture intermediate chain dependencies with `--census-turns`
 followed by up to eight interior turns. The gameplay callback reads

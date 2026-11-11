@@ -164,6 +164,14 @@ An Encampment won each time. This shows the adjustment survived aggregation
 in this case. A changed winner and placement still need a closer comparison
 with a known reservation threshold. [AI-C137]
 
+In Nicopolis, omitting only the weak-site deduction on Bakers plot 472
+changed the native winner and reservation to that tile. With the deduction,
+Civ chose unowned plot 398 and requested its purchase. The latter tile was
+outside the owned-site scanner, so the test also exposed a coverage gap.
+The penalty has a demonstrated effect on the individual choice. Reliable
+avoidance of poor Quarter placements still needs frontier coverage and
+foundation evidence. [AI-C138]
+
 | Problem | Coverage and next proof |
 | --- | --- |
 | 1.1 Materials | Owned, revealed deposits and the status of their mapped improvements. Qualify working, repairable, unlocked and locked suppliers in live choices. Unowned supply needs 1.5. |
@@ -172,7 +180,7 @@ with a known reservation threshold. [AI-C137]
 | 1.5 Buying | The integrated publisher uses owned sites and suppliers. Verify both native buying routes below before giving either one a CSC preference. |
 | 1.6 Follow-through | Native UI build targets supply immediate legality. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |
 | 1.7 Defer | Track whether the city leaves the Quarter uncommitted when every site is weak, then reconsider after a specific new opportunity. Withholding a positive bid alone cannot demonstrate deferral. |
-| 1.8 Discourage poor sites | Record which weak tile lost or won after its deduction. Hold positive boosts fixed in a matched comparison to separate the effect of the deduction from promotion of a good alternative. |
+| 1.8 Discourage poor sites | Nicopolis's scoped deduction changed the native site and request. The alternative was an unpriced frontier tile. Verify negative frontier coverage, distinguish potential purchased supply, and follow the resulting foundations. |
 
 ### Placement and purchase tests
 
