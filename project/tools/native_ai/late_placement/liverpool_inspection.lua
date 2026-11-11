@@ -71,6 +71,9 @@ local permitted=buyer and CSC_AI_FutureDistrictTypes(4,buyer)
 result.futureHost=inspect(host)
 result.futureHost.permitted=permitted and permitted[commercial.Index]==true or false
 result.futureHost.geometry=buyer and host:CanHaveDistrict(commercial.Index,4,buyer:GetID()) or false
+-- Conditional alternate-site potential is a diagnostic comparison, not proof
+-- that this site wins the planner or that its future host will be constructed.
+result.alternateForecast=CSC_AI_QuarterAdjacencyValue(profile.district.DistrictType,host,city,4,false,'DISTRICT_COMMERCIAL_HUB')
 for pid=0,5 do
  local original=Game:GetProperty('CSC_AI_OriginalHuman_'..pid)
  result.originalRoles[#result.originalRoles+1]={player=pid,originalHuman=original,

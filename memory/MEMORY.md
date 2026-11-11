@@ -15,6 +15,20 @@ combinedadjacency preference must changechoice towardstrongsitevsweakeroption,
 ordinarybands. Beforelaunch inspectexistingcandidatefacts/ranking forbounded
 discriminatingcomparison. PreserveC151/C153/C156/C138-139/C065closures.
 
+1.4 setup approved by Astra: common flatten2571plainsHills→plains removes
+WindMillSELFhillpoint (MinRings0/Rings0), notbuildingeligibility; otherterrain
+yield/nativeeffectscommonbotharms. Source liverpool-adjacency-source-01 now
+closedverified0turns/SaveComplete/inactive25human0/restoration, SHA
+460384303aca0195cdec133f4660522baffa14ae3c906a026e4fd8417605ac52.
+Strong2497forecast4, weak2571forecast3; legalownedtargets/suppliercount1each.
+Current liverpool-adjacency-control-01 sharedworker live: --liverpool-adjacency-arm
+control removesONLYP4/c131073/Bakerspositiveowned+frontiersiteoffersaftertrim,
+no scorewriter, negatives/otherprofiles/arrayskept. Stopifnativechoiceisnot
+weakerQuarter2571; onlythenrunfullunchangedmainarmfromsamesource. Acceptance
+strong-sitepromotionchangesweakQuarter→strongQuarter, NOT48vs24necessity.
+No1.4closureyet. Pinnedtoolsunchangedwhileworkerlive. Report
+csc-ai-combined-adjacency-choice-20261112.md.
+
 Latest river work: 1.3 remains active. liverpool-source-inspection-01 rejected
 raw rotating25 at actual27/AIobserver before facts; normal closure verified.
 Replacement liverpool-paused-source-01 replayed exact22→25 and saved once through

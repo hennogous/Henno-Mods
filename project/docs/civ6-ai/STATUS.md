@@ -16,7 +16,7 @@ qualification remains separate. The full goal is active and incomplete.
   that host path. The location itself does not change. [AI-C153](findings.md#ai-c153).
 - **1.3 Rivers — levels 1–3.** Withholding one prospective river-Mill input
   reranks the main owned-site offer and changes the native Bakers location and
-  request2497→2571. Complete packet audit isolates that path; no realised yield
+  request 2497→2571. Complete packet audit isolates that path; no realised yield
   or Quarter completion is implied. [AI-C156](findings.md#ai-c156).
 - **1.8 Weak-site suppression — levels 1–3.** Matched main-policy deductions
   changed Nicopolis's native site and request, including dynamic frontier
@@ -39,12 +39,14 @@ packet differences and the native choice/request. Construction remains 1.6.
 
 The river case is complete and Astra-approved. Each arm consumes 175 entries;
 all 174 common pairs have identical native inputs/results/cache. Only the +48
-owned offer moves2497→2571, with matching native winner/request. The main planner
+owned offer moves 2497→2571, with matching native winner/request. The main planner
 reranked rather than retaining a +24 offer at 2497. Each selected site rates 4 in
 its respective model, so this does not also close 1.4. Both later produce
-Stonehenge, leaving 1.6 open. Both runs closed normally. Next inspect existing
-candidate/component records for a discriminating strong-versus-weaker comparison
-before selecting another bounded replay. No new world search is prescribed.
+Stonehenge, leaving 1.6 open. Both runs closed normally. For 1.4, prepare one
+common derivative with the inland alternative flattened: loaded self-hill Mill
+rule makes it 3 while the river site stays 4. Run the local positive-promotion
+control first, then the full arm only if it exposes a fresh weaker-Quarter
+choice. [Acceptance and controlled setup](../research/mods/csc-ai-combined-adjacency-choice-20261112.md).
 
 ## Evidence levels by sub-problem
 
