@@ -18,6 +18,10 @@ qualification remains separate. The full goal is active and incomplete.
   reranks the main owned-site offer and changes the native Bakers location and
   request 2497→2571. Complete packet audit isolates that path; no realised yield
   or Quarter completion is implied. [AI-C156](findings.md#ai-c156).
+- **1.4 Combined adjacency — levels 1–3.** Ordinary main guidance changes the
+  native Quarter site/request from viable 3-adjacency site 2571 to strong
+  4-adjacency site 2497, with complete packet/cache audit. This does not prove premium
+  necessity or construction. [AI-C158](findings.md#ai-c158).
 - **1.8 Weak-site suppression — levels 1–3.** Matched main-policy deductions
   changed Nicopolis's native site and request, including dynamic frontier
   coverage. This proves suppression of known weak sites, not that every
@@ -30,23 +34,22 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 1.4 Combined adjacency
+## Active problem: 1.5 Tile acquisition
 
-**Acceptance:** the shared model's combined adjacency preference changes a
-native choice toward a qualified strong site rather than a weaker alternative,
-using ordinary policy bands. Trace live components, candidate ranking, full
-packet differences and the native choice/request. Construction remains 1.6.
+**Acceptance:** a worthwhile Quarter-footprint purchase reaches native request,
+savings/legality checks, payment, ownership by the intended city and foundation.
+Qualify the separate supplier acquisition route through acquisition and
+improvement. Diagnostic ownership assignment is not a native purchase.
 
-The river case is complete and Astra-approved. Each arm consumes 175 entries;
-all 174 common pairs have identical native inputs/results/cache. Only the +48
-owned offer moves 2497→2571, with matching native winner/request. The main planner
-reranked rather than retaining a +24 offer at 2497. Each selected site rates 4 in
-its respective model, so this does not also close 1.4. Both later produce
-Stonehenge, leaving 1.6 open. Both runs closed normally. For 1.4, prepare one
-common derivative with the inland alternative flattened: loaded self-hill Mill
-rule makes it 3 while the river site stays 4. Run the local positive-promotion
-control first, then the full arm only if it exposes a fresh weaker-Quarter
-choice. [Acceptance and controlled setup](../research/mods/csc-ai-combined-adjacency-choice-20261112.md).
+Both river-aware ranking and combined strong-site preference are complete at
+their independently validated scopes. The latter changes Quarter 2571/29,251 to
+Quarter 2497/32,096; all 173 common native/cache records match, with exactly three
+positive-offer differences. The no-promotion Holy Site negative is preserved.
+Both arms later produce Stonehenge. A verified inactive turn-27 checkpoint
+preserves the full native Quarter plan for later 1.6. All sessions closed
+normally. Next qualify an existing worthwhile acquisition candidate against
+real treasury, native savings, buyer identity and contractual lifetime before
+another bounded purchase replay. [Strong-site evidence](../research/mods/csc-ai-combined-adjacency-choice-20261112.md#matched-result-14-closed-at-levels-13).
 
 ## Evidence levels by sub-problem
 
@@ -55,7 +58,7 @@ choice. [Acceptance and controlled setup](../research/mods/csc-ai-combined-adjac
 | 1.1 Materials | Verified | Quarter choice/request changed | **Complete at stated scope** |
 | 1.2 Neighbors | Verified | Future-host path changes type/request | **Complete at stated scope** |
 | 1.3 Rivers | Verified | Quarter site/request changed | **Complete at stated scope** |
-| 1.4 Combined adjacency | Score delivery verified | Pending | Pending causal case |
+| 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
 | 1.5 Buying | Request/attempt lineage verified | Paid acquisition pending | Pending |
 | 1.6 Follow-through | Verified | Diagnostic construction completed | Causal main-policy reproduction pending |
 | 1.7 Defer/reconsider | Partial; weak-site mechanism exists | Pending | Pending |

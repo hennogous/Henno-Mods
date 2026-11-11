@@ -2694,3 +2694,52 @@ selected sites rate 4 in their respective models. Both later produce Stonehenge.
 No 1.4 strong-over-weak or 1.6 construction completion claim follows.
 
 - [Matched evidence and independent acceptance](../research/mods/csc-ai-river-choice-20261111.md#matched-result-13-closed-at-levels-13)
+
+## AI-C157
+
+**Removing all local Bakers promotions produced a Holy Site, not the weaker Quarter comparison**
+
+Status: accepted negative qualification; independently verified by Astra.
+No 1.4 closure.
+
+On the shared flattened Liverpool source, site 2497 projects 4 and site 2571
+projects 3. Removing only that city's positive Bakers owned/frontier offers
+after capacity trim withholds exactly two entries per publication. The fresh
+native winner is Holy Site 2721 at 23,425 Q8. The bounded 25→27 run closes normally.
+The intended weaker-Quarter baseline was absent, so no full counterpart was
+run for this hypothesis.
+
+**Limits:** A local promotion ablation, not an entirely untuned game. This does
+not show that viable-site guidance fails; it was withheld along with strong
+guidance. The same saved derivative can test a strong-only promotion ablation
+that preserves ordinary viable fallbacks. Native terrain/yield effects of the
+common flattening must not be inferred from earlier unflattened values.
+
+- [Negative result and revised controlled question](../research/mods/csc-ai-combined-adjacency-choice-20261112.md#initial-local-promotion-ablation-wrong-comparison-preserved-negative)
+
+## AI-C158
+
+**Ordinary strong-site guidance changes a weaker Bakers choice to a stronger site**
+
+Status: accepted; Astra validated **Problem 1.4 levels 1–3** on 12 November 2026.
+
+Matched 25→27 runs share the verified flattened Liverpool world. Main CSC
+selects the strong 4-adjacency site 2497 with +12,288 Q8. A diagnostic local
+strong-promotion ablation leaves ordinary viable guidance intact and selects
+the weaker 3-adjacency site 2571 with +6,144. Native winners are respectively
+**2497/32,096** and **2571/29,251**, with matching request 263 and reservation.
+
+Complete first packets contain 175 versus 174 eligible net/cache pairs. All
+173 common records match exactly. Only three positive offers differ: strong
+owned 2497 and frontier 2423 versus viable owned 2571. Other policy arrays are
+empty. Actual physical inspections match; only the scoped scanner control
+differs. Both sessions close normally, and Astra independently verifies the
+sources, records, request/reservation and audit hashes.
+
+**Limits:** This establishes combined strong-site guidance versus ordinary
+viable-site guidance, not necessity of the +48/+24 premium or comparator alone.
+Unbid native/cache counterparts are unobserved. Both later produce Stonehenge;
+no 1.6 construction claim. The full native plan is preserved at inactive turn 27 for
+later follow-through. No-promotion Holy Site result AI-C157 remains negative.
+
+- [Matched evidence and independent acceptance](../research/mods/csc-ai-combined-adjacency-choice-20261112.md#matched-result-14-closed-at-levels-13)

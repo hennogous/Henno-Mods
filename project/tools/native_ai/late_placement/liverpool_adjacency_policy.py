@@ -1,8 +1,10 @@
 """Diagnostic 1.4 common terrain derivative and positive-offer ablation.
 
-The full arm uses unmodified main CSC policy. The control removes this city's
-positive Bakers site entries only, after capacity trim. It writes no native
-replacement value and preserves deductions and all other decision channels.
+The full arm uses unmodified main CSC policy. The original control removes
+this city's positive Bakers entries after capacity trim. The viable control
+instead excludes strong candidates from the shared owned/frontier comparator,
+leaving ordinary viable fallback guidance. Neither writes a native replacement
+value; both preserve deductions and all other decision channels.
 """
 
 PREPARE=r'''
@@ -53,3 +55,22 @@ def without_promotions(publisher):
     assert publisher.count(needle)==1
     assert publisher.index(b'for i = #entries, capacity + 1, -1')<publisher.index(needle)
     return publisher.replace(needle,FILTER+needle)
+
+
+STRONG_ABLATION=b'''    -- Diagnostic local strong-promotion ablation. Preserve native legality,
+    -- weak-site deductions and ordinary viable fallback offers. This shared
+    -- comparator serves both owned and frontier positive selection; excluding
+    -- only the owned strong site would leave a strong frontier as a confound.
+    if candidate.player==4 and candidate.city==131073 and candidate.district==36
+        and candidate.adjacency>=preferredAdjacency then return false end
+'''
+
+
+def without_strong_promotions(scanner):
+    # Keep original line endings so removal of the one injected block exactly
+    # reproduces the archived full arm for the later artifact comparison.
+    newline=b'\r\n' if b'\r\n' in scanner else b'\n'
+    needle=b'local function betterQuarterSite(candidate, best)'+newline
+    assert scanner.count(needle)==1
+    assert scanner.count(b'if betterQuarterSite(candidate, best) then best = candidate end')==2
+    return scanner.replace(needle,needle+STRONG_ABLATION)

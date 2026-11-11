@@ -14,7 +14,7 @@ Work sequentially from the earliest unclosed item, state its acceptance test
 before investigation, and preserve Astra-validated scoped closures. Broad
 qualification and the older multi-seed Stage 2 milestone below are follow-up
 work, not additional conditions for closing this goal's placement capabilities.
-Current item: **1.4 Combined adjacency**. **1.1 material-aware choice**, **1.2 future customer access**, **1.3 river-aware site ranking**, **1.8 suppression** and **2.2 finite material
+Current item: **1.5 Tile acquisition**. **1.1 material-aware choice**, **1.2 future customer access**, **1.3 river-aware site ranking**, **1.4 combined strong-site guidance**, **1.8 suppression** and **2.2 finite material
 protection** already meet levels 1â€“3 at the recorded representative scopes.
 
 ### Current capability â€” Quarter placement (1.1â€“1.8) and related districts (2.1â€“2.2)

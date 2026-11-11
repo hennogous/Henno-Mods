@@ -1,4 +1,4 @@
-"""Read-only frontier discovery in pinned existing worlds, using one shared owner.
+"""Bounded Quarter decision replays in pinned worlds, using one shared owner.
 
 Default mode advances no turns. The explicit owned comparison follows the
 pinned Continents world to 202, then compares two cities' frontier and owned
@@ -8,6 +8,11 @@ The explicit Boston arms instead compare the current integrated material
 preference with its one-pair ablation and retain native follow-through receipts.
 The Fractal host scout stages the current main policy and reads existing CE
 trace prefixes through207; it adds no native hook or policy treatment.
+Liverpool modes preserve inactive checkpoints and compare current main CSC
+guidance with scoped input/offer ablations. Explicit source-preparation flags
+make declared common map edits, never shipping policy or native AI actions.
+Physical surveys, committed offers, native values and requests are separate
+evidence steps; a saved plan does not establish construction completion.
 """
 import argparse
 import json
@@ -29,7 +34,7 @@ from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, fla
     restore_preferences, sha, write_json, lua)
 from full_game_controller.checkpoint import save_inactive_boundary
 from liverpool_river_policy import PREPARE as PREPARE_RIVER, without_river
-from liverpool_adjacency_policy import PREPARE as PREPARE_ADJACENCY, without_promotions
+from liverpool_adjacency_policy import PREPARE as PREPARE_ADJACENCY, without_promotions, without_strong_promotions
 
 
 def liverpool_checkpoint(folder, home, world_sha, policy_root):
@@ -294,6 +299,7 @@ def run(args):
                 replacements[SCANNER],replacements[relative],migrate_roles=False)
             if river_arm=='control':replacements[SCANNER]=without_river(replacements[SCANNER])
             if adjacency_arm=='control':replacements[relative]=without_promotions(replacements[relative])
+            if adjacency_arm=='viable':replacements[SCANNER]=without_strong_promotions(replacements[SCANNER])
             host_scope=[]
             replacements[relative]=stage_host_reader(replacements[relative],host_scope,
                 start=25,end=27,players=[1,2,3,4,5])
@@ -588,6 +594,14 @@ end
                     shutil.copyfile(user_root/'Logs'/log,out/log)
                 for failure in ('CSC_HOST_DIAG_FAILED','CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED'):
                     assert failure not in read(out/'Lua.log'),'Policy/reader failure: '+failure
+                if adjacency_arm=='full':
+                    # Preserve this ordinary native Quarter plan for the later
+                    # 1.6 construction-follow-through requirement. Saving after
+                    # the comparison changes neither arm's observed decision.
+                    # This is a checkpoint, not evidence of construction yet.
+                    checkpoint=save_inactive_boundary(controller,turn=endpoint,name='CSC_ADJACENCY_FOLLOWTHROUGH',
+                        native_directory=home/'Saves/Single',archive=out/'endpoint.Civ6Save')
+                    write_json(out/'endpoint-checkpoint.json',checkpoint)
                 if save_liverpool:
                     # Replay the verified22 source normally, then save only once
                     # autoplay has returned the observer to human/inactive25.
@@ -702,8 +716,8 @@ if __name__=='__main__':
         help='Matched one-Base source25→27; control omits only the exact prospective Water Mill rule at2497')
     parser.add_argument('--liverpool-prepare-flat-alternative',action='store_true',
         help='Diagnostic only: flatten2571 in the verified one-Base source to remove its self-hill Mill point')
-    parser.add_argument('--liverpool-adjacency-arm',choices=('full','control'),
-        help='Matched strong4/weaker3 source25→27; control removes only this city/profile positive site offers')
+    parser.add_argument('--liverpool-adjacency-arm',choices=('full','control','viable'),
+        help='Strong4/weaker3 source25→27; control removes positive site offers; viable withholds strong-only promotions')
     args=parser.parse_args()
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))

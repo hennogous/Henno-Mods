@@ -3,10 +3,22 @@ from pathlib import Path
 import unittest
 from lupa.lua51 import LuaRuntime
 from early_host_policy import stage
-from liverpool_adjacency_policy import PREPARE,FILTER,without_promotions
+from liverpool_adjacency_policy import PREPARE,FILTER,without_promotions,STRONG_ABLATION,without_strong_promotions
 
 
 class AdjacencyPolicy(unittest.TestCase):
+    def test_strong_ablation_preserves_viable_fallback_and_other_scopes(self):
+        for player,city,district,adjacency,excluded in ((4,131073,36,4,True),(4,131073,36,5,True),
+            (4,131073,36,3,False),(3,131073,36,4,False),(4,65536,36,4,False),(4,131073,37,4,False)):
+            vm=LuaRuntime();vm.execute(f'preferredAdjacency=4;candidate={{player={player},city={city},district={district},adjacency={adjacency}}}')
+            fn=vm.eval('function()'+STRONG_ABLATION.decode()+"return 'ordinary comparator' end")
+            self.assertEqual(fn(),False if excluded else 'ordinary comparator')
+        root=Path(__file__).resolve().parents[4]/'Civ Supply Chains/Lua_UI/AI'
+        original=(root/'CSC_AI_AdjacencyScan.lua').read_bytes()
+        modified=without_strong_promotions(original)
+        self.assertEqual(modified.replace(STRONG_ABLATION,b''),original)
+        LuaRuntime().eval('function(code)return assert(loadstring(code))end')(modified.decode('utf-8-sig'))
+
     def test_control_preserves_other_channels_and_deductions(self):
         vm=LuaRuntime();vm.execute('''print=function()end;turn=25;version=0
 entries={{player=4,city=131073,district=36,plot=2497,delta=12288},

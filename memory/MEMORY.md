@@ -1,5 +1,21 @@
 # Current CSC AI work — 12 November 2026
 
+**Latest: AI-C158 closes1.4 levels1–3, Astra-approved.** liverpool-adjacency-
+full-01 vsviable-01 sameflatsource4603843…; nativeweak2571/adj3/+6144/result29251
+→strong2497/adj4/+12288/result32096, request263/reservation55,34→55,33.
+Full175 vsviable174completeNet+Cache;173commonrecordsexactequal;3unionchanges
+owned2497/frontier2423 strongpromotions vsweak2571viablepromotion; arrayszero.
+Bothclosedverified2turns/exit0/restoration. AI-C157negativeblankpromotion
+controlHolySite2721/23425preserved. No premium/comparatornecessity or1.6claim.
+Fullendpoint27savedonce inactivehuman0 SHA
+2fa681ca4ac55a7aa4bb5e0b260a42c157a28ea179fd643f996c8d1d3ededf80,
+endpoint-checkpoint.json in fullrun. Audit-adjacencychoice passessealedrepoJSON.
+31offlineguards pass; priorriversealedJSONreproducesexactly. Noownedliveworker
+orCivremains. **Next1.5** acceptedrequiredoutcomes paidQfootprint/nativecorrect-
+cityownership/foundation PLUS separateSupplierpurchase/improvement. Review
+existingbuyingfixtures/budget/quotes/required-buyerprototype beforeliveaction.
+Closed6of10scopes:1.1/1.2/1.3/1.4/1.8/2.2. Stillopen1.5/1.6/1.7/2.1.
+
 AI-C156 closes **1.3 levels1–3**, independently approved by Astra: matched
 liverpool-river-full-01/control-01 both25→27 normalclosed. Shared source270fd8a…;
 one exact river-rule model ablation makes2497 forecast4→3; mainownedoffer

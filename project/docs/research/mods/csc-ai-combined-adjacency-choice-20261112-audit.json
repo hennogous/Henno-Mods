@@ -1,0 +1,199 @@
+{
+  "artifact_audit_verified": true,
+  "closure_claim": false,
+  "scope": "1.4 ordinary strong-site guidance versus viable-only guidance; not +48/+24 premium necessity or construction",
+  "source": {
+    "boston-selection": {
+      "path": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Saves\\Single\\CSC_LIVERPOOL_ADJACENCY_80d94a46f579.Civ6Save",
+      "sha256": "460384303aca0195cdec133f4660522baffa14ae3c906a026e4fd8417605ac52",
+      "turn": 25
+    }
+  },
+  "manifest_differences": [
+    [
+      "CSC Bakers Development Mod",
+      "Lua_UI\\AI\\CSC_AI_AdjacencyScan.lua"
+    ]
+  ],
+  "complete_packet_counts": {
+    "full": 175,
+    "viable": 174
+  },
+  "common_native_pair_count": 173,
+  "common_net_and_cache_identical": true,
+  "packet_differences": [
+    {
+      "key": [
+        4,
+        131073,
+        36,
+        2423
+      ],
+      "full_delta": 12288,
+      "viable_delta": 0,
+      "full_native_record": {
+        "k": "net",
+        "generation": 4,
+        "version": 1,
+        "player": 4,
+        "city": 131073,
+        "district": 36,
+        "plot": 2423,
+        "base": 17708,
+        "result": 29996,
+        "reason": 0,
+        "eligible": 1
+      },
+      "viable_native_record": null
+    },
+    {
+      "key": [
+        4,
+        131073,
+        36,
+        2497
+      ],
+      "full_delta": 12288,
+      "viable_delta": 0,
+      "full_native_record": {
+        "k": "net",
+        "generation": 4,
+        "version": 1,
+        "player": 4,
+        "city": 131073,
+        "district": 36,
+        "plot": 2497,
+        "base": 19808,
+        "result": 32096,
+        "reason": 0,
+        "eligible": 1
+      },
+      "viable_native_record": null
+    },
+    {
+      "key": [
+        4,
+        131073,
+        36,
+        2571
+      ],
+      "full_delta": 0,
+      "viable_delta": 6144,
+      "full_native_record": null,
+      "viable_native_record": {
+        "k": "net",
+        "generation": 4,
+        "version": 1,
+        "player": 4,
+        "city": 131073,
+        "district": 36,
+        "plot": 2571,
+        "base": 23107,
+        "result": 29251,
+        "reason": 0,
+        "eligible": 1
+      }
+    }
+  ],
+  "physical_inspections_identical": true,
+  "source_model_adjacency": {
+    "strong2497": 4,
+    "weaker2571": 3
+  },
+  "retained_city_offers": {
+    "full": [
+      [
+        "2423",
+        "12288",
+        "4",
+        "3",
+        "1",
+        "0",
+        "DISTRICT_COMMERCIAL_HUB",
+        "2497"
+      ],
+      [
+        "2497",
+        "12288",
+        "4",
+        "3",
+        "1",
+        "0",
+        "DISTRICT_COMMERCIAL_HUB",
+        "2498"
+      ]
+    ],
+    "viable": [
+      [
+        "2571",
+        "6144",
+        "3",
+        "2",
+        "1",
+        "0",
+        "DISTRICT_COMMERCIAL_HUB",
+        "2645"
+      ]
+    ]
+  },
+  "other_arrays_identical_zero": true,
+  "winners": {
+    "full": {
+      "k": "best",
+      "generation": 4,
+      "version": 1,
+      "player": 4,
+      "city": 131073,
+      "district": 36,
+      "plot": 2497,
+      "base": 32096,
+      "result": 32096,
+      "reason": 0,
+      "eligible": 1
+    },
+    "viable": {
+      "k": "best",
+      "generation": 4,
+      "version": 1,
+      "player": 4,
+      "city": 131073,
+      "district": 36,
+      "plot": 2571,
+      "base": 29251,
+      "result": 29251,
+      "reason": 0,
+      "eligible": 1
+    }
+  },
+  "requests": {
+    "full": {
+      "request": "25, 4, LOC_CITY_NAME_LIVERPOOL, , CONTRACT 263, SUBMITTED, NO_UNIT, NO_BUILDING, DISTRICT_CSC_BAKERS_QUARTER, VALUE 125.0, Build City District",
+      "reservation": "25, 4, City LOC_CITY_NAME_LIVERPOOL, Build City District, SUCCESS, Reserve Plot, Reserving plot 55 33"
+    },
+    "viable": {
+      "request": "25, 4, LOC_CITY_NAME_LIVERPOOL, , CONTRACT 263, SUBMITTED, NO_UNIT, NO_BUILDING, DISTRICT_CSC_BAKERS_QUARTER, VALUE 114.0, Build City District",
+      "reservation": "25, 4, City LOC_CITY_NAME_LIVERPOOL, Build City District, SUCCESS, Reserve Plot, Reserving plot 55 34"
+    }
+  },
+  "unpaired_native_limit": "Absent CSC entries have zero adjustment; raw/native-cache counterparts remain unobserved",
+  "pins": {
+    "full": {
+      "inputs.json": "55dc595d58ee531a734a652d99b63904c024e863bb3857239add709a8825dd53",
+      "Lua.log": "44c9639fbcb1fe3e22be710da484240e33325c96b0b76262c7f3124cc7a23180",
+      "AI_CityBuild.csv": "4a859d27af9f56956b3fb3797661bf54a9ba98c056e3f6d0c5dbfe07d550122f",
+      "AI_Behavior_Trees.csv": "a5a0b2fda2a10863c414bb4edc9a1076281e9f37e29df241174bd53fd95d918a",
+      "City_BuildQueue.csv": "d86b0fb95c9dd38e45b38c3a6475a491c4e103b4ea3357a8cae31b51e2726589",
+      "complete.json": "b79357f818424a9ad497af6f3da3b463f25768c288aa36572a63dcef798dbdd0",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15"
+    },
+    "viable": {
+      "inputs.json": "c4ef6e2c5858d791450fbde2a1909f2baaf941ba335ef42224071783febf969e",
+      "Lua.log": "0f4e38acb353d7fe0f777ff1d003e8ee8a4d72fad474fb815f5c1eefa48ec9ac",
+      "AI_CityBuild.csv": "8d7efe883be8a9b4e95bcee9aa8fc662a8698a6bc530f237a17afa66f9c650f0",
+      "AI_Behavior_Trees.csv": "fa9ce6cea5e6a6509c31827d3d262feb651c5dcc25bbc75e657d0e66c1367ac3",
+      "City_BuildQueue.csv": "d86b0fb95c9dd38e45b38c3a6475a491c4e103b4ea3357a8cae31b51e2726589",
+      "complete.json": "b79357f818424a9ad497af6f3da3b463f25768c288aa36572a63dcef798dbdd0",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15"
+    }
+  }
+}

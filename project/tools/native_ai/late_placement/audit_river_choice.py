@@ -15,7 +15,7 @@ from liverpool_river_policy import without_river
 TARGET=(4,131073,36,2497)
 
 
-def collect(folder):
+def collect(folder,*,allow_empty_city_offers=False):
     assert load(folder/'complete.json')['verified']
     assert load(folder/'session-closed.json')['verified']
     text=read(folder/'Lua.log')
@@ -54,7 +54,7 @@ def collect(folder):
     assert caches.keys()==nets.keys(),'Published pair has no cache read or an unexpected pair was retained'
     offers=re.findall(r'CSC_EARLY_RETAINED_OFFER\s+25\s+'+str(first)+
         r'\s+4\s+131073\s+36\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)',text)
-    assert offers
+    assert offers or allow_empty_city_offers
     other_arrays={}
     for name,pattern in (
         ('builders',r'CSC_AI_BAKERS_BUILDERS turn=25 allowances=(\d+)'),
