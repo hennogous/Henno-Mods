@@ -6,6 +6,8 @@ options. Production scanner/publisher/quote bridge replace only those files
 in a verified carrier; the diagnostic survey publishes no score treatment.
 The explicit Boston arms instead compare the current integrated material
 preference with its one-pair ablation and retain native follow-through receipts.
+The Fractal host scout stages the current main policy and reads existing CE
+trace prefixes through207; it adds no native hook or policy treatment.
 """
 import argparse
 import json
@@ -16,10 +18,11 @@ import traceback
 import xml.etree.ElementTree as ET
 from types import SimpleNamespace
 
-from nicopolis_replay import CE_SHA, DLL, HOTFIX_EXE_SHA, SCANNER, QUOTE_BRIDGE, CASES, qualify_integrated_policy
+from nicopolis_replay import CE_SHA, DLL, HOTFIX_EXE_SHA, SCANNER, QUOTE_BRIDGE, CASES, qualify_integrated_policy, seed_source_seats
 from ce_bakers_fresh import package_identity
 from ce_replay import verify_modules
 from boston_material_policy import provenance as boston_provenance, stage as stage_boston_policy, PREPARE_SPECIALTY
+from host_choice_policy import candidate_scope, stage as stage_host_reader
 from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, flags,
     launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json, lua)
@@ -114,9 +117,11 @@ def run(args):
     boston_arm=getattr(args,'boston_arm',None)
     prepare_specialty=getattr(args,'boston_prepare_specialty',False)
     prepared=getattr(args,'boston_prepared',None)
+    host_scout=getattr(args,'host_choice_scout',None)
     assert not boston_arm or boston and 23<=args.through<=40
     assert not prepare_specialty or boston and not boston_arm and not prepared
     assert not prepared or boston and boston_arm and not prepare_specialty
+    assert not host_scout or args.case==['baseline-fractal'] and not getattr(args,'compare_owned',False)
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     assert load(reference / 'complete.json')['verified'] and load(reference / 'session-closed.json')['verified']
     assert load(previous / 'complete.json')['verified'] and load(previous / 'session-closed.json')['verified']
@@ -192,17 +197,28 @@ def run(args):
     replacements = {relative: (args.policy_root / relative).read_bytes() for relative in
         (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE)}
     role_provenance=None
-    if boston_arm or prepare_specialty:
+    host_scope=None
+    if boston_arm or prepare_specialty or host_scout:
         # Reproduce the actual current reusable modules, not just a new
         # scanner calling a historical policy helper in the carrier.
         for filename in ('CSC_AI_QuarterPlacement.lua','CSC_AI_DistrictBridge.lua'):
             relative=Path('Lua_UI/AI')/filename
             replacements[relative]=(args.policy_root/relative).read_bytes()
-        role_provenance=boston_provenance(args.worlds)
+        if boston_arm or prepare_specialty:role_provenance=boston_provenance(args.worlds)
         if boston_arm:
             relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
             replacements[relative]=stage_boston_policy(replacements[relative],boston_arm,args.through,
                 expected_delta=12288 if prepared else 6144)
+        if host_scout:
+            assert saves['baseline-fractal']['sha256']==CASES['szeged']['sha256']
+            # This pinned provenance identifies the whole Fractal world, not
+            # only Szeged. All six original seats are qualified before writes.
+            relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+            replacements[relative],role_provenance=seed_source_seats(
+                replacements[relative],args.worlds/'baseline-fractal',CASES['szeged'])
+            host_scope=candidate_scope(load(host_scout/'owned-site-survey-01/baseline-fractal.json'),
+                load(host_scout/'owned-site-survey-all-customers-01/baseline-fractal.json'))
+            replacements[relative]=stage_host_reader(replacements[relative],host_scope)
     if boston:
         # Match this older save's CSC identity while keeping the verified
         # carrier's gameplay content identical across future matched arms.
@@ -240,11 +256,15 @@ def run(args):
         require_model=args.require_model,compare_owned=compare_owned,boston_arm=boston_arm,
         through=args.through if boston_arm else None,role_provenance=role_provenance,
         prepare_specialty=prepare_specialty,prepared_source=str(prepared) if prepared else None,
+        host_choice_scope=host_scope,
         packages={source.name: pin for source,pin in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     shutil.copyfile(HERE / 'frontier_site_survey.lua', out / 'frontier_site_survey.lua')
     if boston:shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
     if boston_arm or prepare_specialty:shutil.copyfile(HERE/'boston_material_policy.py',out/'boston_material_policy.py')
+    if host_scout:
+        shutil.copyfile(HERE/'host_choice_policy.py',out/'host_choice_policy.py')
+        shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
     controller = make_probe_controller(out, user_root=user_root)
     controller.study_endpoint = 22 if boston else 200
     session = NativeSession(out,controller,inventory=native_inventory,hold=HeldProcess,write=write_json)
@@ -313,6 +333,11 @@ assert(p:GetDistrictType()==-1 and p:GetImprovementType()==-1)
                     (case/'initial-receipt.txt').write_text(raw,encoding='utf-8')
                 if compare_owned:
                     qualify_integrated_policy(controller,case,CASES['nicopolis'])
+                if host_scout:
+                    qualify_integrated_policy(controller,case,dict(player=4,city=655369,
+                        district=36,profile='BAKERS',purchasePlots=[2678]))
+                    raw=session.issue_once('arm-host-reader','CSC_HOST_DIAG_Arm()','CSC_AI_BakersGameplay')
+                    (case/'host-initial-prefix.txt').write_text(raw,encoding='utf-8')
                 checks = []
                 for identity in identities[name]:
                     checks.append(f"""
@@ -325,6 +350,10 @@ do
 end
 """)
                 prefix='CSC_FRONTIER_COMPARISON='+lua({3:{131073:True}})+'\n' if boston else ''
+                if host_scout:
+                    cities={}
+                    for row in host_scope:cities.setdefault(row['player'],{})[row['city']]=True
+                    prefix='CSC_FRONTIER_COMPARISON='+lua(cities)+'\n'
                 raw=controller.cmd('\n'.join(checks)+prefix+read(out/'frontier_site_survey.lua'),
                     'CSC_AI_BakersGameplay','frontier-survey-' + name)
                 state=parse(raw,'CSC_FRONTIER_SURVEY')
@@ -335,6 +364,13 @@ end
                 write_json(case / 'gameplay-survey.json',state)
                 ui_readback(controller,case,state)
                 write_json(case / 'survey.json',state)
+                if host_scout:
+                    raw=controller.cmd('CSC_QUARTER_SURVEY_PLAYERS={1,2,3,4,5};\n'+read(out/'quarter_site_survey.lua'),
+                        'CSC_AI_BakersGameplay','host-current-policy-offers')
+                    (case/'actual-policy-survey.txt').write_text(raw,encoding='utf-8')
+                    target=next(r for r in state['sites'] if r['player']==4 and r['city']==655369
+                        and r['plot']==2678 and r['profile']=='TAILORS')
+                    assert target['hosts'] or target['futureHosts'],'Current Makwa customer path is absent'
                 if boston:
                     # Read only the six neighboring plots before designing a
                     # controlled material fixture. A resource on the sole future
@@ -383,6 +419,22 @@ end
             session.ready_after_issue(source['turn'],('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),eligibility=ready)
             shutil.copyfile(out/'session-source-ready.json',case/'source-ready.json')
             print('Frontier survey complete',name,flush=True)
+            if host_scout:
+                # Bound discovery through the already recorded Makwa206 choice.
+                # Inactive207 does not include Diara's later207 decision.
+                # These existing CE records nominate a comparison; they do
+                # not establish the row's effective reservation threshold.
+                controller.study_endpoint=207
+                controller.play(207)
+                boundary=controller.state_read('host-scout-endpoint')
+                assert boundary['turn']==207 and not boundary['active']
+                raw=controller.cmd('CSC_HOST_DIAG_Snapshot()','CSC_AI_BakersGameplay','host-terminal-prefix')
+                (case/'host-terminal-prefix.txt').write_text(raw,encoding='utf-8')
+                for log in ('Lua.log','AI_CityBuild.csv','AI_Behavior_Trees.csv','City_BuildQueue.csv'):
+                    shutil.copyfile(user_root/'Logs'/log,out/log)
+                for failure in ('CSC_HOST_DIAG_FAILED','CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED'):
+                    assert failure not in read(out/'Lua.log'),'Policy/reader failure: '+failure
+                print('Host-choice scout complete at207',flush=True)
             if boston_arm:
                 controller.study_endpoint=args.through
                 controller.play(args.through)
@@ -438,7 +490,7 @@ end
             for source in installed:
                 packages[source].rename(out/source.name)
     assert session.closed
-    advanced=args.through-22 if boston_arm else 2 if compare_owned else 0
+    advanced=args.through-22 if boston_arm else 7 if host_scout else 2 if compare_owned else 0
     write_json(out/'complete.json',dict(verified=True,turns_advanced=advanced,cases=args.case))
 
 
@@ -457,6 +509,8 @@ if __name__=='__main__':
         help='Diagnostic only: prepare and save one terrain-valid Sugar722/ownership derivative; advance zero turns')
     parser.add_argument('--boston-prepared',type=Path,
         help='Matched arms only: reopen the exact verified strong-material derivative directory')
+    parser.add_argument('--host-choice-scout',type=Path,
+        help='Fractal only: prior host-survey artifact root; read current native candidate/winner trace prefixes through207')
     args=parser.parse_args()
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))

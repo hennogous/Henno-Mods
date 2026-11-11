@@ -168,6 +168,18 @@ Preserve29. ControlGovernmentdestroyedCattle29;treatmentretainedunimproved.
 C151. Not1.4:raw19623+6144=25767alreadybeatsGov96. Active1.2customer
 contribution;reviewmeaningfulmarginalcasebeforepoint-ablationexpectednegative.
 No controllerownednow. Neverclaimconstruction/acquisitionfromthiscase.
+1.2archiveauditC137all15155districtrows/85freshchoices each:only8value-row
+diffs Nuremberg+24, same788reservation; nohiddenchangedchoice. Fractal20
+hostchangedpairsnoneQuarterwinnersinobserve04. AstrarecommendsMakwaP4/655369
+2678 consumer206, oldBakers+24→48/Tailors-128→24, Neighbor892; rawgap/thresholdunknown.
+Newhost_choice_policy.py read-onlyexistingCETraceReadfixedprefix(append-safe,
+samegen/version,exactoffset/count,rawindices), 20pairs+nativeBestcityrecords.
+ExplicitArmAFTERmainpreflight avoidsstartupfalsefault;strictafterarm;bound207
+capturesMakwa206 NOT Diara207.5reader+9discovery+5BostonchecksPASS/Astrareview.
+CURRENT sharedcontroller host-choice-fractal-scout-01 exec17078 launched:
+Fractal200→207 main4AI/UI, pinnedwholeworldseats seed, NOFrida/newhook/pulse.
+FirstCLIpreflightusedwrongprevioussurveyshape andstoppedBEFORElaunch/output;
+correctrunusesowned-site-survey-all-customers-01. Inspecthandlebeforeanynextgame.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.
 No feature-offer ablation allowed in buyer A/B arms.
 
