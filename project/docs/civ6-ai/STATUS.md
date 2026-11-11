@@ -38,15 +38,32 @@ publication: the older untuned checkpoint lacks the early identity-capture
 path, and the watcher had no initialized Base tags. This is not a frontier
 offer losing. [AI-C148](findings.md#ai-c148).
 
-Next qualify every policy gate before autoplay. Any fixture-only migration of
-missing seat metadata must use archived original identities, preserve existing
-values and keep production's safety gate intact. Then compare the required
-buyer with the unrestricted buyer under identical active offers, preserving
-native prices, savings and payment; follow debit, ownership and foundation.
+The explicit fixture migration passed those gates. Szeged's target received
+eight native writes and eligible cache reads. It gained exactly the offered
+6,144 Q8, but Neighborhood still won; no target contract appeared. This is
+delivery evidence, not acquisition. [AI-C149](findings.md#ai-c149).
+
+Next compare Nuremberg's frontier 862 with owned 788, and Hamburg's frontier
+1011 with its owned alternatives. Establish an economic reason to buy before
+testing the required buyer. Preserve native prices, savings and payment;
+follow debit, ownership and foundation.
 Reload/lifecycle support and the maintainable CE API remain open. Supplier
 acquisition is a separate 1.5 branch. No buyer override has run live yet.
 
 ## What remains open
+
+| Problem | Current evidence | Still needed |
+| --- | --- | --- |
+| 1.1 Materials | Shared planner distinguishes viable deposits and working suppliers; material-aware offers reach native scoring. | Matched choices covering locked, repairable, Base/Specialty and compatibility cases. |
+| 1.2 Neighbors | All-stage/future-neighbor revision changed Aachen's native Tailors score. | Changed site choice and completion attributable to those neighbor cases. |
+| 1.3 Rivers | Loaded rules and local Mill branch are modeled and tested. | An isolated live river-value choice, including the delay before the Mill. |
+| 1.4 Combined adjacency | Positive placement offers reach native scoring; +24 delivery verified again in Szeged. | A calibrated +4-versus-weaker native choice under the current planner. |
+| 1.5 Buying | Frontier writes, purchase requests, quote/fund gates and fresh city→contract lineage verified. | Worthwhile paid acquisition, correct city, foundation; separate supplier purchase and lifecycle/reload support. |
+| 1.6 Follow-through | Earlier guided Quarters reached foundation and completion. | Current planner and broader readiness/capacity/retained-plan cases. |
+| 1.7 Defer/reconsider | Policy can withhold positive offers and penalize weak sites. | A weak-only city defers, then revisits after a credible new opportunity. |
+| 1.8 Poor sites | Matched Nicopolis deductions changed native site and request. | Better completed alternative and dependable avoidance across cases. |
+| 2.1 Customer sites | Exact Harbor offers reached native writes and three wins across two plots. | Broader placement/construction and future-Quarter cases; no forced standalone overvaluation. |
+| 2.2 Protect materials | Boston's automatic policy relocated Campus and retained supply; Heidelberg exclusion preserved supplier and Service while Harbor started. | Broader district consumers, Base/Specialty/shared-supplier cases, later plans and exclusion completion. |
 
 The roadmap's sub-problems need individual native evidence. Broad placement
 quality, dependable poor-site avoidance, city deferral/reconsideration,

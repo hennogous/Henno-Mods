@@ -2478,3 +2478,28 @@ buyer restriction or worthwhile acquisition has been demonstrated.
 
 - [Evidence and next qualification](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#szeged-observer-coexistence-passed-active-treatment-was-not-established)
 - Related: [AI-C145](#ai-c145), [AI-C147](#ai-c147).
+
+## AI-C149
+
+**Szeged's active frontier preference reached eight native writes without winning**
+
+Status: accepted. Evidence: runtime receipts, exact journals, source preflight.
+
+The provenance-migrated Fractal replay confirmed enabled policy and target
+staging before play. Eight completed packet windows each recorded a write and
+eligible cache read for Tailors 1365. On 205 its cache held 180,019 Q8, exactly
+6,144 above the inactive run, matching the +24 utility offer. Neighborhood
+still won at 277,389 Q8. The target remained unowned and empty through 208.
+
+**Scope:** Explicit diagnostic seeding of missing seat metadata from pinned
+turn-1 records and a staged tied-quote bypass. Production safety unchanged;
+native buyer observer read-only. Two purchase and ten selector receipts exactly
+match their streams, no faults, normal cleanup. Astra independently verified.
+
+**Limits:** Delivery and comparison only. No target purchase contract, required
+buyer execution, payment or foundation. Seeding activated other policy too,
+so the inactive/active comparison is not an isolated offer ablation. The final
+208 offer has no completed subsequent receipt window. This does not close 1.5.
+
+- [Active offer evidence and hashes](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#active-szeged-offer-verified-without-forcing-a-purchase)
+- Related: [AI-C147](#ai-c147), [AI-C148](#ai-c148).

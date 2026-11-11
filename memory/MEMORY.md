@@ -99,10 +99,22 @@ leaders/currentcontrollers/existingpropertiesBEFOREwrites, seedsonlynilfrom
 archivedoriginalAI[1..5]/human0. Productionunchanged.11Python+Nodepass;
 Astrareviewpassed. Newpreflightrequiresactiveversionedpacket/admittedpid/tag
 andrecordsoptionalexacttargetreceipt beforeautoplay.
-Observe04 now running under sharedcontroller: launcher20292 start14:22:39
-local, sameDesktoproot/szeged-buyer-observe-04. Explicitseatmigration,
-buyerobserveonly. Checkexactprocess/artifactsbeforeanynextgame; no native
-buyerrestrictionyet. Exactoffer/receipt requiredbeforeattributingwinner.
+Observe04 completed200->208 normalcleanup/faultnull, bothstreamsexact.
+All6preseednil, enabled1version1/448entries/targetstagedpreflight.9offers
+8completedreceiptwindows8writes/eligiblecache,1citySelection,0siteWins.
+Tailors1365=180019Q8 (+6144vsinactive173875), Neighborhoodunchanged277389.
+No targetcontract/purchase/foundation; notisolatedablationotherpolicyactive.
+Astraindependentlyverified. AI-C149. Do notforceSzegedbidtomanufacturepurchase.
+Next naturallyfoundedNuremberg(201) frontier862vsowned788 at202; verifyID458758.
+Hamburg393221 frontier1011vsownedalts. Newfrontier_discovery --compare-owned
+Continentsonly stages3mainfiles, requiresactivepolicy200, plays202, readonly
+surveyscorrectpurchase-cityownedemptyplots+allcityquotes862/1011.8tests pass.
+CURRENT sharedcontroller continents-owned-comparison-01 launcher13100 start
+14:34:20local (sameDesktoproot). Checkactualhandle/artifactsterminalbefore
+newsession. No buyerrestrictionyet. Surveyomitsno-Base/invalidsites: absence
+of788isnotproofit'sweak. Protection/reservationarenotallmodeledinsurvey.
+ValidateparsedbuyerquotecompletenessagainstcurrentGermancitiesbeforeunique
+buyerclaims. Astrareviewed; no source/gameplaywriteissue.
 No feature-offer ablation allowed in buyer A/B arms.
 
 Read-only lineage hooks:3e10fd RDI CityBuild,RBX newtree,ESI rootTreeID;

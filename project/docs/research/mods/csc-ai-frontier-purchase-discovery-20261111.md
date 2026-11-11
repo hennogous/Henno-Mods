@@ -478,6 +478,47 @@ independently verified the provenance hashes and reviewed the migration.
 The migrated observe04 must qualify a published packet and the exact target
 offer; the earlier observe03 cannot serve as its matched policy control.
 
+### Active Szeged offer verified without forcing a purchase
+
+The migrated szeged-buyer-observe-04 completed 200→208 with normal exit,
+verified preference restoration and package retirement, and no owned processes.
+All six properties were logged nil before migration. The source preflight then
+confirmed original human seat 0, original AI seats 1–5, enabled native policy,
+version 1, 448 entries, initialized Base tags and the exact target staged.
+
+Nine +6,144-Q8 offers were published for Tailors 1365 on 200–208. The eight
+completed packet windows each recorded one score write and eligible cache read;
+their counters include one city-selection read and no site win. The final
+turn-208 offer has no completed subsequent readback window. Both observers
+were fault-free: two purchase records and ten selector records exactly equal
+their streams. Astra independently verified these facts and cleanup.
+
+On turn 205, the target's cached value was 180,019 Q8 versus 173,875 in the
+inactive run: exactly +6,144, matching the published +24 utility band. The
+Neighborhood still won at plot 1360 with 277,389 Q8. The target remained
+unowned and empty and produced no observed purchase contract. This is active
+offer delivery, not paid acquisition or an isolated ablation: seeding enabled
+other CSC policy too. Do not run the buyer restriction without a target
+contract or raise this site's bid simply to manufacture one.
+
+Next inspect Continents frontier 862 versus owned 788 in the naturally founded
+Nuremberg, and Hamburg frontier 1011 versus its owned alternatives. The former
+city was founded on 201 and selected Bakers on 202 in the earlier trace; confirm
+its city ID directly. A survey at 202 must explain any omitted candidate rather
+than treating the surviving rows as an exhaustive native choice set. Supply,
+material-cover protection and reservation are separate gates. Current bank and
+every city's quote must be recorded before choosing another purchase fixture.
+
+Artifact SHA-256:
+
+| File | SHA-256 |
+| --- | --- |
+| Staged publisher, including diagnostic seat migration | 7b2920617228997196a651a0101c29352768170a36e43650d2529cafcf5f82e6 |
+| Staged UI quote bypass | 8910f9a55ed5674b590a167a1c26e05eea9718807d1e6e7c2b863b7d4060453f |
+| Purchase observer | 8fb6bf9037e296b414acb0c917e29bc2090d5e02a30560281b88d7f768e3aa95 |
+| Purchase trace | 19a16af62dcf9d3fdf71e1997f3ce373f8093c3de3049e05285a3749506173c5 |
+| Selector trace | faf0ad6a2da6dc2b9b20aa7664ad1c798fae8567e4b39eb899022087c48dfd41 |
+
 ### Artifact identities
 
 | World | Save SHA-256 | Survey SHA-256 |
