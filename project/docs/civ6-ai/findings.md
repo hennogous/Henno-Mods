@@ -2530,3 +2530,31 @@ Quarter comparison each turn. Adding Sugar to the sole projected customer
 footprint 720 would trade a customer point for a material point, not establish +4.
 
 - [Matched evidence and next controlled case](../research/mods/csc-ai-boston-material-preference-20261111.md)
+
+## AI-C151
+
+**An ordinary main-policy material-aware preference changed Government to Bakers**
+
+Status: accepted; Astra validated **Problem 1.1 levels 1–3** at the owned,
+Base+Specialty-qualified Quarter choice/request scope.
+
+Both matched arms reopen one verified, explicitly prepared turn-22 derivative
+(SHA-256 `bdcd0d5e9f77e494ef2e7467fa8ad3c29c0167260561bfca07401ebd241aedd1`).
+The unchanged main model reports adjacency 4, viable Cattle Base and Sugar
+Specialty, an existing City Center and retained future-customer footprint.
+Only the target's ordinary +12,288 Q8 entry differs in the initial packet.
+
+Native scoring changed 19,623→31,911. The first completed target receipt
+recorded one write, eligible read, city selection and site win. Control chose
+Government on Cattle 796; treatment chose Bakers 721, submitted contract 225
+and reserved that site. Both completed 22→33 with verified normal cleanup.
+
+**Limits:** No Quarter foundation/completion by 33; the retained Bakers plan
+was replaced by Preserve on 29. No acquisition claim: ownership and Sugar
+were explicit common fixture edits. This proves joint type/site choice, not
+relocation among Bakers sites or necessity of the +48 rather than +24 band.
+The latter would also clear this source's logged Government value, so 1.4
+remains open. Dynamic shipping policy contains no test-city coordinates.
+
+- [Source, matched result and limits](../research/mods/csc-ai-boston-material-preference-20261111.md#strong-material-pair-changed-native-choice-no-construction-yet)
+- Related: accepted negative [AI-C150](#ai-c150).

@@ -6,6 +6,10 @@ qualification remains separate. The full goal is active and incomplete.
 
 ## Completed representative scopes
 
+- **1.1 Material-aware Quarter choice/request — levels 1–3.** A matched
+  ordinary +48 offer on the shared Base+Specialty-qualified source changed
+  Government to Bakers, with exact native write, site win, request and
+  reservation. No Quarter construction completed. [AI-C151](findings.md#ai-c151).
 - **1.8 Weak-site suppression — levels 1–3.** Matched main-policy deductions
   changed Nicopolis's native site and request, including dynamic frontier
   coverage. This proves suppression of known weak sites, not that every
@@ -18,26 +22,24 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 1.1 Materials
+## Active problem: 1.2 Neighbors
 
-**Acceptance:** a material-aware preference from reusable main CSC code changes
-a native Quarter choice toward a legal site with viable mapped Base supply.
-Verify actual supply, the published offer and the native comparison. Do not
-substitute a score-gap-derived diagnostic pulse.
+**Acceptance:** a mapped existing or specific feasible future customer/provider
+contribution changes a native Quarter choice through reusable main policy.
+Trace contribution, offer and comparison; do not assume later customer construction.
 
-The matched Boston 22→33 replay delivered the ordinary +24 preference:
-28,795→34,939 Q8, one write and eligible native comparison, zero wins. Both
-arms chose Campus; physical snapshots matched. Astra validated the negative
-result: **1.1 remains open**, with integrated delivery established. [AI-C150](findings.md#ai-c150).
-Next inspect a controlled stronger-material derivative. Preserve the sole future
-customer footprint and require the unchanged model to qualify the +48 band;
-do not reuse the old gap-derived pulse or count fixture ownership as buying.
+The first Boston +24 pair remains an accepted negative result. The prepared
++4 source's ordinary +48 preference changed Government to Bakers, closing 1.1
+at the stated scope. Its +24 band would already beat Government, so removing
+only the future customer's one point may change the score without changing
+the choice. Review that discriminating margin before spending another replay.
+1.4 strong-over-viable preference and 1.6 construction remain open.
 
 ## Evidence levels by sub-problem
 
 | Item | 1: Mechanism | 2: Changed decision/action | 3: Integrated reproduction |
 | --- | --- | --- | --- |
-| 1.1 Materials | Score delivery verified | Pending | Pending causal case |
+| 1.1 Materials | Verified | Quarter choice/request changed | **Complete at stated scope** |
 | 1.2 Neighbors | Forecast change verified | Pending | Pending causal case |
 | 1.3 Rivers | Model checked; isolated native path pending | Pending | Pending |
 | 1.4 Combined adjacency | Score delivery verified | Pending | Pending causal case |

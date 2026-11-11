@@ -1,9 +1,10 @@
-# Boston: ordinary material preference reaches the comparison without winning
+# Boston: matched material preference and native choice
 
 Problem **1.1**, evidence levels 1–3. Acceptance is a changed native Quarter
 choice toward a legal site with viable mapped Base, produced by reusable main
-CSC code. **The first matched pair does not meet the changed-choice condition.**
-Astra independently audited both arms and agrees with this negative result.
+CSC code. The first pair is a valid negative result. The later strong-material
+pair changes Government to Bakers and closes that scope, validated by Astra.
+Neither pair establishes Quarter construction or native tile acquisition.
 
 ## Matched ordinary-policy test
 
@@ -100,3 +101,50 @@ diagnostic initial-offer guard accepts only the existing +24/+48 bands. Five
 Lua helper checks and nine discovery checks pass, including rejection of changed
 source facts, a missing mutation API before either edit, duplicate offers and
 gap-derived bid 10,730. Astra reviewed the fixture and these scientific guards.
+
+## Strong-material pair: changed native choice, no construction yet
+
+**AI-C151 closes Problem 1.1 levels 1–3** at the representative scope of a
+material-aware, owned Quarter choice/request. Astra independently verified the
+source, isolated initial packet, native result and both terminal sessions.
+This later result does not overwrite the first pair's valid negative result.
+
+Artifacts: `boston-material-strong-control-01` and
+`boston-material-strong-treatment-01`, under the same artifact root above.
+Both reopen the exact prepared derivative and run 22→33. Package manifests
+differ only in the staged publisher; its text differs only in the control
+Boolean. The initial retained packet differs exactly by
+`(3,131073,36,721,+12288)`; all other initial entries match and the other four
+policy-array counts are zero in both arms. The extra resource can affect native
+valuation too, so **compare these two arms to each other**, not to the original
+Campus result.
+
+| Observed native path | Control: target offer removed | Treatment: ordinary main offer |
+| --- | --- | --- |
+| First Boston district choice, 22 | Government Plaza, logged value 96 | Bakers, logged value 124 |
+| Reserved plot | 796, Cattle | 721, supplied Quarter site |
+| Target cache | No staged target | 19,623→31,911 Q8, exact +12,288 |
+| First completed target receipt, observed 23 | Staged 0 | Write 1, eligible read 1, city selection 1, site win 1 |
+| Quarter request | Absent | Contract 225 submitted on 22 |
+| Later outcome | Government replaces Cattle by 29 | Bakers plan retained through 28, then Preserve selected on 29 |
+| Quarter foundation/completion through 33 | Absent | Absent |
+
+Both `complete.json` records verify 11 turns. Both `session-closed.json` records
+verify normal exit, owner absence, preferences and packages. Treatment retained
+Cattle 796 through 33, but it remained unimproved. That is an incidental
+consequence of choosing the Quarter instead of Government, not an independent
+material-protection ablation or evidence of a working Service.
+
+The treatment is the reusable main CSC scanner, supplier reader, site model,
+publisher and CE adapter operating on live facts. Only old-save role metadata,
+receipts and the control's one-pair removal are diagnostic. The fixture's map
+coordinates do not enter shipping policy. This demonstrates joint district-type
+and site choice, **not relocation between two Bakers sites**.
+
+**Limits:** 1.5 acquisition and 1.6 construction remain open. Do not also close
+1.4: the pair isolates the whole positive offer, not the strong-over-viable
+increment. In this source, the +24 band would yield 25,767 Q8 (100.65 utility),
+already above Government's logged 96. A future-customer-point ablation that
+only changes +48→+24 is therefore unlikely to change this initial choice.
+The active next acceptance is 1.2: trace a mapped existing or specific feasible
+future customer's contribution through policy and a controlled native choice.

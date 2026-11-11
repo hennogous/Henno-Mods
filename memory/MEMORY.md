@@ -159,8 +159,15 @@ SaveComplete/hashnativebackup bdcd0d5e9f77e494ef2e7467fa8ad3c29c0167260561bfca07
 Exactfixtureedits722Bostonownership+Sugar;bankunchanged45;actualmain721
 adj4/+12288/Base1Spec1/pending0,retainedfuturehost720. No buyingclaim.
 Maintained--boston-preparedsamecheckpointbotharms;5helper+9discoveryPASS.
-CURRENT boston-material-strong-control-01 sharedcontroller through33; inspect
-exacthandle/artifactsbeforenextsession. Noexternalwriter;mainpolicyunchanged.
+Strongcontrol01/treatment01 BOTH TERMINAL22→33/verifiednormalcleanup.
+Astraapproves1.1levels1–3CLOSED ownedBase+SpecQuarterchoice/request.
+Initialpacketdiffexact721+12288,otherarrays0/0/0/0;sample19623→31911;
+v1onewrite/eligible/selection/WIN. Government79696→Bakers721124,
+request22522/reservation721. QuarterNOTfounded/completed33;planreplaced
+Preserve29. ControlGovernmentdestroyedCattle29;treatmentretainedunimproved.
+C151. Not1.4:raw19623+6144=25767alreadybeatsGov96. Active1.2customer
+contribution;reviewmeaningfulmarginalcasebeforepoint-ablationexpectednegative.
+No controllerownednow. Neverclaimconstruction/acquisitionfromthiscase.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.
 No feature-offer ablation allowed in buyer A/B arms.
 

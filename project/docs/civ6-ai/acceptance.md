@@ -38,6 +38,10 @@ to duplicate an already proved consumer or completion path.
 
 ## Astra-validated completed scopes
 
+- **1.1, levels 1–3: material-aware owned Quarter choice/request.** AI-C151's
+  ordinary +48 main offer on a Base+Specialty-qualified site changed Government
+  to Bakers, with exact native write, site win, request and reservation. Explicit
+  fixture ownership proves no buying; no Quarter completed through 33.
 - **1.8, levels 1–3: known weak-site suppression.** AI-C138's isolated
   production deduction changes the owned-site winner/request; AI-C139's
   dynamic frontier scanner reproduces suppression without fixed-plot policy.
@@ -51,8 +55,7 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.1.** The matched ordinary-policy Boston test delivered +24
-but left the native Campus choice unchanged. [AI-C150](findings.md#ai-c150)
-therefore establishes integrated delivery, not closure. A controlled stronger
-material case must independently qualify the ordinary +48 band while retaining
-real customer space; fixture resource/ownership edits prove no buying capability.
+**Active item: 1.2.** Trace the mapped neighbor contribution through the ordinary
+offer to a changed native choice. AI-C151 closes 1.1 but does not establish the
+necessity of its strong-band increment: ordinary +24 would also beat this source's
+Government. The first +24 Boston pair remains a valid negative result, AI-C150.
