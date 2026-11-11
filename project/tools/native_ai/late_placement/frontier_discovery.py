@@ -121,6 +121,7 @@ def run(args):
     host_scout=getattr(args,'host_choice_scout',None)
     early_host=getattr(args,'early_host_scout',False)
     without_early_host=getattr(args,'early_without_washington_host',False)
+    early_endpoint=getattr(args,'early_through',24)
     host_mode=bool(host_scout or early_host)
     assert not boston_arm or boston and 23<=args.through<=40
     assert not prepare_specialty or boston and not boston_arm and not prepared
@@ -128,6 +129,7 @@ def run(args):
     assert not host_scout or args.case==['baseline-fractal'] and not getattr(args,'compare_owned',False)
     assert not early_host or boston and not (boston_arm or prepare_specialty or prepared or host_scout)
     assert not without_early_host or early_host
+    assert 24<=early_endpoint<=30
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     assert load(reference / 'complete.json')['verified'] and load(reference / 'session-closed.json')['verified']
     assert load(previous / 'complete.json')['verified'] and load(previous / 'session-closed.json')['verified']
@@ -232,7 +234,7 @@ def run(args):
             if without_early_host:replacements[SCANNER]=without_washington_future_host(replacements[SCANNER])
             host_scope=[] # Player-scoped native Quarter rows, including non-winning sites.
             replacements[relative]=stage_host_reader(replacements[relative],host_scope,
-                start=22,end=24,players=[1,2,3,4,5])
+                start=22,end=early_endpoint,players=[1,2,3,4,5])
     if boston:
         # Match this older save's CSC identity while keeping the verified
         # carrier's gameplay content identical across future matched arms.
@@ -273,6 +275,7 @@ def run(args):
         host_choice_scope=host_scope,
         early_host_scout=early_host,
         early_without_washington_host=without_early_host,
+        early_endpoint=early_endpoint if early_host else None,
         packages={source.name: pin for source,pin in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     shutil.copyfile(HERE / 'frontier_site_survey.lua', out / 'frontier_site_survey.lua')
@@ -450,7 +453,7 @@ end
                 # includes Makwa206 but not Diara's later207 comparison.
                 # These existing CE records nominate a comparison; they do
                 # not establish the row's effective reservation threshold.
-                endpoint=24 if early_host else 207
+                endpoint=early_endpoint if early_host else 207
                 controller.study_endpoint=endpoint
                 controller.play(endpoint)
                 boundary=controller.state_read('host-scout-endpoint')
@@ -517,7 +520,7 @@ end
             for source in installed:
                 packages[source].rename(out/source.name)
     assert session.closed
-    advanced=args.through-22 if boston_arm else 2 if early_host else 7 if host_scout else 2 if compare_owned else 0
+    advanced=args.through-22 if boston_arm else early_endpoint-22 if early_host else 7 if host_scout else 2 if compare_owned else 0
     write_json(out/'complete.json',dict(verified=True,turns_advanced=advanced,cases=args.case))
 
 
@@ -542,6 +545,8 @@ if __name__=='__main__':
         help='Original Boston-world source only: qualify all original seats and inspect main Quarter offers/native choices22→24')
     parser.add_argument('--early-without-washington-host',action='store_true',
         help='Diagnostic early control: withhold only future-host869 from player3/Bakers before the potential cache')
+    parser.add_argument('--early-through',type=int,default=24,
+        help='Early existing-world endpoint24–30; default24; extend only for a declared later decision window')
     args=parser.parse_args()
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))

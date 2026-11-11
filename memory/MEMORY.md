@@ -221,6 +221,13 @@ C153/STATUS/acceptanceupdated. NotmarginalGoldonly,notlocationrelocation,
 NOTquarter/customerconstruction/Granary/Service. No game/controllerownednow.
 ACTIVE1.3 river/Millgeometry→offer→changednativeQuarterchoice; reusecurrent
 component/native datasets beforechoosingreplay. Preserve1.1/1.2/1.8/2.2closures.
+CURRENT sharedcontroller river-london-full-01 exec43460 unchanged22→26.
+LondonP4/c65536/Bakers2495sourceadj4/+48 =BaseMaize2496+CC+futureCommercial2569
++prospectiveWaterMillRIVERcount3→amount1. Cache22=26984/23=25329. HolySite143
+completes23;fresh24outsideoldendpoint. Astraapprovesbounded26observation FIRST,
+noRivercontrolunlessusefulcomparison. RuleGATEScompanionlogsactiveNow/inPlan/
+requiredMill; existingruleformatpreserved.4early+6reader+9discovery+5BostonPASS.
+DoNOTeditpinnedsourcewhilelive. 1.2closurecommitted4c08a42f.
 FirstCLIpreflightusedwrongprevioussurveyshape andstoppedBEFORElaunch/output;
 correctrunusesowned-site-survey-all-customers-01. Inspecthandlebeforeanynextgame.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.

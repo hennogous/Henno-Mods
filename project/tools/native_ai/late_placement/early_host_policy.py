@@ -84,6 +84,11 @@ function CSC_EARLY_DIAG_Retained(entries,turn,nextVersion)
    for _,detail in ipairs(forecast.details)do
     print('CSC_EARLY_RULE',turn,nextVersion,entry.player,entry.city,entry.plot,
      detail.rule,detail.count,detail.amount,detail.inPlan)
+    if detail.requiresBuilding then
+     -- A projected Mill adjacency is not current output on this empty site.
+     print('CSC_EARLY_RULE_GATES',turn,nextVersion,entry.player,entry.city,entry.plot,
+      detail.rule,detail.activeNow,detail.inPlan,detail.requiresBuilding)
+    end
    end
   end
  end
