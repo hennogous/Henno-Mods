@@ -240,6 +240,9 @@ local function betterQuarterSite(candidate, best)
     if candidate.workingBase ~= best.workingBase then return candidate.workingBase end
     if candidate.base ~= best.base then return candidate.base > best.base end
     if candidate.specialty ~= best.specialty then return candidate.specialty > best.specialty end
+    if (candidate.purchaseGold or 0) ~= (best.purchaseGold or 0) then
+        return (candidate.purchaseGold or 0) < (best.purchaseGold or 0)
+    end
     return candidate.plot < best.plot
 end
 
@@ -249,7 +252,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     local bids, potential, legalCustomers, placedHosts, futureCityTypes = {}, {}, {}, {}, {}
     local nominated = {}
     local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, bothPending=0, deferCities=0, futureUnknown=0,
-        offered=0, strong=0, frontierObserved=0, frontierBids=0, frontierUncertain=0}
+        offered=0, strong=0, frontierObserved=0, frontierBids=0, frontierUncertain=0,
+        frontierOffers=0, frontierQuoteUnknown=0}
     local district = profile.district
     local readLegalTargets = ui and ui.GetLegalDistrictTargets
     if not A.ByDistrict[district.DistrictType] or type(readLegalTargets) ~= 'function' then return bids, counts end
@@ -354,6 +358,28 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         return best, projected and projected.district, projectedPlot
     end
 
+    -- One common site model for owned and purchasable footprints. The caller
+    -- establishes ownership/geometry and known owned Base supply first.
+    -- Pending research and customer construction affect tie-breaks, not the
+    -- long-term map potential. This returns a policy candidate, not an order.
+    local function suppliedSite(city, plot, supply)
+        local host, futureDistrict, futurePlot =
+            hostReadiness(Map.GetAdjacentPlots(plot:GetX(), plot:GetY()), true, siting.byIndex)
+        if not host then return nil end
+        local ready, working = false, false
+        for _, material in ipairs(supply.base) do
+            ready = ready or material.ready
+            working = working or material.working
+        end
+        local candidate = {player=pid, city=city:GetID(), district=district.Index, plot=plot:GetIndex(),
+            pending=(ready and 0 or 1)+(host == 2 and 0 or 1), workingBase=working == true,
+            base=#supply.base, specialty=#supply.specialty,
+            adjacency=score(district.DistrictType, plot, city, pid, true, futureDistrict).total}
+        -- Current native targets alone can justify a separate customer offer.
+        if ready and futurePlot then candidate.futureHost = legalCustomers[futurePlot] end
+        return candidate
+    end
+
     local function nominateCustomer(candidate, delta)
         local key = candidate.city .. ':' .. candidate.district .. ':' .. candidate.plot
         local bid = nominated[key]
@@ -369,7 +395,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         bids[#bids + 1] = bid
     end
 
-    local function frontierDeductions(city)
+    local function frontierForecasts(city)
+        local best
         local center = Map.GetPlot(city:GetX(), city:GetY())
         local key = pid .. ':' .. city:GetID() .. ':' .. center:GetIndex()
         local indices = frontierGeometry[key]
@@ -412,7 +439,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                             end
                         end
                     end
-                    if coversMaterial or not uncertain and allBaseTypesVisible and not possibleBase then
+                    local weakSite = coversMaterial or not uncertain and allBaseTypesVisible and not possibleBase
+                    if weakSite then
                         -- BUILD-operation targets omit unowned plots. Publish
                         -- a conservative radius-three frontier candidate here.
                         -- CE still requires the exact proposing city and a live
@@ -423,9 +451,43 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                     elseif uncertain or not allBaseTypesVisible then
                         counts.frontierUncertain = counts.frontierUncertain + 1
                     end
+                    -- Preserve deductions independently of quote availability.
+                    -- Positive offers need known owned supply and a credible
+                    -- neighbor, then a positive city quote. Missing/declined
+                    -- quotes earn no boost; they never invent a new penalty.
+                    if not weakSite and not protectedPlots[index]
+                        and type(ui.GetPlotPurchaseQuote) == 'function' then
+                        local supply = readSuppliers(player, plot, profile)
+                        if #supply.base > 0 then
+                            local candidate = suppliedSite(city, plot, supply)
+                            if candidate then
+                                local ok, quote = pcall(ui.GetPlotPurchaseQuote, pid, city:GetID(), index)
+                                if ok and type(quote) == 'number' and quote > 0 then
+                                    candidate.frontier, candidate.purchaseGold = true, quote
+                                    if betterQuarterSite(candidate, best) then best = candidate end
+                                else
+                                    counts.frontierQuoteUnknown = counts.frontierQuoteUnknown + 1
+                                end
+                            end
+                        end
+                    end
                 end
             end
         end
+        if best then
+            -- Publish one frontier alternative per city/profile, alongside
+            -- owned offers. Same Q8 bands, not a purchase or forced Quarter.
+            -- Refresh every packet: changed ownership/supply/quotes remove or
+            -- replace it. Do not gate on today's bank or earmarked funds: the
+            -- native contract can retain a worthwhile target while saving.
+            -- Frontier offers do not nominate customer construction in advance
+            -- of acquiring their Quarter footprint.
+            best.delta = best.adjacency >= preferredAdjacency and preferredSiteBidQ8 or viableSiteBidQ8
+            best.futureHost = nil
+            bids[#bids + 1] = best
+            counts.frontierOffers = counts.frontierOffers + 1
+        end
+        return best ~= nil
     end
 
     for _, city in player:GetCities():Members() do
@@ -456,33 +518,19 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                         counts.noBase = counts.noBase + 1
                         candidate.delta, candidate.weak = -noBasePenaltyQ8, true
                     else
-                        local host, futureDistrict, futurePlot =
-                            hostReadiness(Map.GetAdjacentPlots(plot:GetX(), plot:GetY()), true, siting.byIndex)
-                        if not host and not futureTypesKnown then
+                        local viable = suppliedSite(city, plot, supply)
+                        if not viable and not futureTypesKnown then
                             -- Missing actor metadata is uncertainty, not proof
                             -- that no customer can ever fit. Leave this pair
                             -- neutral rather than inventing a boost or penalty.
                             counts.futureUnknown = counts.futureUnknown + 1
                             uncertainFuture = true
-                        elseif not host then
+                        elseif not viable then
                             counts.noHost = counts.noHost + 1
                             candidate.delta, candidate.weak = -noCustomerPenaltyQ8, true
                         else
-                            local ready, working = false, false
-                            for _, material in ipairs(supply.base) do
-                                ready = ready or material.ready
-                                working = working or material.working
-                            end
-                            -- Record the unfinished links even when both can
-                            -- be prepared later. They do not erase the site.
-                            candidate.pending = (ready and 0 or 1) + (host == 2 and 0 or 1)
+                            candidate = viable
                             if candidate.pending == 2 then counts.bothPending = counts.bothPending + 1 end
-                            candidate.workingBase = working == true
-                            candidate.base, candidate.specialty = #supply.base, #supply.specialty
-                            candidate.adjacency = score(district.DistrictType, plot, city, pid, true, futureDistrict).total
-                            -- Only a ready Base and a current native host
-                            -- target can justify acting ahead of the Quarter.
-                            if ready and futurePlot then candidate.futureHost = legalCustomers[futurePlot] end
                             if betterQuarterSite(candidate, best) then best = candidate end
                         end
                     end
@@ -490,6 +538,10 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                 end
             end
             counts.legal = counts.legal + legal
+            -- A viable frontier offer is an investment option too. Do not
+            -- report a city as deferred merely because its owned sites lose.
+            -- Unowned supplier acquisition remains a separate problem.
+            local offeredFrontier = frontierForecasts(city)
             if best then
                 local strong = best.adjacency >= preferredAdjacency
                 best.delta = strong and preferredSiteBidQ8 or viableSiteBidQ8
@@ -508,16 +560,12 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                         end
                     end
                 end
-            elseif legal > 0 and not uncertainFuture then
+            elseif legal > 0 and not uncertainFuture and not offeredFrontier then
                 -- This counter describes a known absence of worthwhile sites,
                 -- not missing actor metadata. Neither count submits a native
                 -- city-level deferral contract.
                 counts.deferCities = counts.deferCities + 1
             end
-            -- A potential supplier on purchasable land keeps this first
-            -- frontier policy neutral. Its acquisition belongs to problem 1.5.
-            -- Positive Quarter and customer offers retain their owned targets.
-            frontierDeductions(city)
         end
     end
 

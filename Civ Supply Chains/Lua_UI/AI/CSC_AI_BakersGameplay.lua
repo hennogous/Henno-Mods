@@ -12,6 +12,7 @@ local placement = CSC_AI_QuarterPlacement
 local identityPrefix = 'CSC_AI_OriginalHuman_'
 local capacity = 4096 -- CE batch contract, across all original AI players.
 local customerReceiptLimit = 16 -- Each customer read scans the native district journal.
+local frontierReceiptLimit = 32 -- Bounded exact-pair readback of new purchase-site offers.
 local buildingReceiptLimit = 96
 local lastTurn
 local districtCount
@@ -31,6 +32,16 @@ local function reportReceipts(turn, version)
     -- window, and forecast, comparison and score-write counts are distinct.
     local previous = previousOffers
     if not previous or previous.version ~= version then return end
+    for i = 1, math.min(#previous.frontier, frontierReceiptLimit) do
+        local site = previous.frontier[i]
+        local result = readReceipt(CE_AIDistrictScoresReceipt, version, site.player, site.city, site.district, site.plot)
+        print(string.format('CSC_AI_FRONTIER_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d result=%s',
+            turn, version, site.player, site.city, site.district, site.plot, result))
+    end
+    if #previous.frontier > frontierReceiptLimit then
+        print(string.format('CSC_AI_FRONTIER_RECEIPTS_OMITTED turn=%d version=%d count=%d',
+            turn, version, #previous.frontier-frontierReceiptLimit))
+    end
     for i = 1, math.min(#previous.customers, customerReceiptLimit) do
         local site = previous.customers[i]
         local result = readReceipt(CE_AIDistrictScoresReceipt, version, site.player, site.city, site.district, site.plot)
@@ -231,7 +242,7 @@ local function refresh(turn)
     local siteBids, weakSites, customerSites = 0, 0, 0
     -- Save the exact published identities for readback on the next boundary.
     -- Receipt caps limit logging work. They do not limit what CE receives.
-    local tracked = {version=version + 1, customers={}, buildings={}}
+    local tracked = {version=version + 1, customers={}, buildings={}, frontier={}}
     for _, entry in ipairs(entries) do
         if entry.weak then
             weakSites = weakSites + 1
@@ -242,6 +253,17 @@ local function refresh(turn)
             end
         elseif entry.delta > 0 then
             siteBids = siteBids + 1
+            if entry.frontier then
+                -- Log only entries retained in the committed packet, not
+                -- proposals omitted by its capacity. Publication still is
+                -- distinct from CE consumption, native choice and purchase.
+                print(string.format('CSC_AI_FRONTIER_OFFER turn=%d version=%d player=%d city=%d district=%d plot=%d adjacency=%.3f quote=%.3f deltaQ8=%d',
+                    turn,version+1,entry.player,entry.city,entry.district,entry.plot,
+                    entry.adjacency,entry.purchaseGold,entry.delta))
+                if type(CE_AIDistrictScoresReceipt) == 'function' then
+                    tracked.frontier[#tracked.frontier + 1] = entry
+                end
+            end
         end
     end
     if type(CE_AIBuildingNominationReceipt) == 'function' and #nominations <= capacity then

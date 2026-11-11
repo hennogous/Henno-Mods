@@ -192,6 +192,213 @@ also still needed for the future-host policy. Capture actual Treasury and
 Economic's accounted balance/accounts alongside the quote; the
 [savings mechanism](civ6-economic-plot-savings-20261111.md) is now traced statically.
 
+## Bounded positive frontier candidate and Szeged comparison
+
+The next candidate shares one `suppliedSite` evaluator between owned and
+unowned footprints. Frontier eligibility requires revealed unowned geometry
+beside own land, known viable owned Base supply, no covered/protected material,
+an evidenced mapped host or actor-permitted future footprint, and a positive
+UI quote for an unambiguous proposing-city buyer. A missing, declined or
+competing equal/cheaper quote suppresses the positive candidate without
+creating a penalty. Existing conservative frontier deductions remain separate.
+
+For each city/profile, publish at most one positive frontier candidate alongside
+the existing owned offer. Rank by projected adjacency, pending links, working
+Base and material counts; price breaks otherwise equal candidates, then plot
+index makes ties stable. Use the same +24 utility band below +4 and +48 at +4
+as owned sites. These are bounded early-score preferences, not purchase orders.
+The actual Treasury and earmarked funds are deliberately **not** eligibility
+gates: the native contract can retain the target and save. They remain required
+test observations. This first frontier increment does not nominate an advance
+customer build or acquire a separate unowned supplier.
+
+The read-only quote bridge is in `CSC_AdjacencyUI.lua`. The publisher logs
+`CSC_AI_FRONTIER_OFFER` only for entries retained in the committed packet, with
+its version and exact identity. On the next boundary it reads the previous
+packet's exact-pair CE receipt before the counters reset. Readback is capped
+at 32 frontier entries per publication and explicitly reports omissions.
+Publication, native score consumption, selection, request and acquisition are
+still distinct stages. The policy re-reads ownership/supply/quote each packet;
+only city-to-plot geometry and loaded type definitions are cached.
+
+### Matched test design
+
+The source-identified Szeged case reuses `nicopolis_replay.py`'s exclusive
+controller, package pins and native observers. It now stages exactly the two
+main AI files and their quote bridge, preserving the frozen carrier's unrelated
+content. The treatment is main CSC source. The control changes one condition
+in the staged scanner to omit only player 2 / city 589829 / Tailors 37 / plot
+1365 from the positive frontier path. All other frontier offers, owned bids,
+material protection and weak-site deductions remain active in both arms.
+This ablation is diagnostic code outside the shipped policy.
+
+Before advancing, the fixture verifies the exact saved city/name/plots and
+quotes plot 1365 across every Hungarian city. It requires the proposing city
+to have the uniquely cheapest positive quote and sufficient source Treasury;
+ties, a cheaper other buyer or insufficient bank stop the fixture. That
+current-cash preflight is not a production policy veto. Subsequent native
+receipts still determine the real buyer and price at execution.
+
+Start with an Online turn-208 endpoint. Observe exact CE receipts, native
+district checks and retained trees, comparison, requests and purchase attempts,
+then command/debit/ownership and foundation if reached. Continue a concrete
+accepted request rather than treating an unconsumed offer as follow-through.
+The intended claim is a credible +3 Quarter footprint and own-funds acquisition;
+Szeged's later-stage prospective neighbor does not establish a Stage 2 Harbor
+Service. Supplier buying remains a separate open branch of 1.5.
+
+### Szeged preflight stopped on tied city quotes
+
+The szeged-frontier-control-01 run loaded the pinned source and stopped before
+autoplay or native observer attachment. Its six UI quotes for plot 1365 were:
+
+| City | City ID | Quote, Gold |
+| --- | ---: | ---: |
+| Buda | 65536 | -1 |
+| Esztergom | 131073 | -1 |
+| Szekesfehervar | 196610 | -1 |
+| Miskolc | 262147 | -1 |
+| Debrecen | 524292 | 85 |
+| Szeged | 589829 | 85 |
+
+The fixture rejected the ambiguous buyer as designed. It advanced zero turns
+and the shared controller verified exit zero, restoration of preferences,
+absence of owned processes and exact package retirement. This is a failed
+fixture qualification, not a native purchase failure or completed control arm.
+The raw quotes and Lua assertion survive in its command journal and failure
+record. The assertion occurred before the new bank qualification read.
+
+Debrecen appeared first in the UI enumeration. We did **not** observe native
+purchase tie order or a Debrecen acquisition in this run. The targeted native
+buyer retains its first cheapest quote, so the proposing city is not guaranteed.
+The earlier Debrecen alternative is also not a persuasive purchase fixture:
+its owned Bakers plot 1143 already has a +4 projection and +48 offer, versus
++3 frontier sites at 130 Gold. Do not force the weaker paid option to obtain
+a purchase demonstration.
+
+### Native ownership dependency
+
+Ghidra identity was rechecked as Windows XP2 reference
+324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c,
+whose file-backed text matches patched Steam XP2 092abfbb.
+
+| Boundary | Verified behavior |
+| --- | --- |
+| Shipped Build City District XML, node 5 | Purchase Plot binds Location and Contract; optional Required City is not bound |
+| XML node 6 | Reserve Plot receives the original City explicitly |
+| PurchasePlotNode Update 55ed80 | Matching player ownership can satisfy the node |
+| ReservePlotNode Update 55ef10 | Calls the original city's CityBuild reservation |
+| TryReservePlot 3ea040, comparison 3ea090–3ea099 | Requires the plot's purchase-city ID (CityAttributes+0xc) to match City+0xa8; mismatch returns -1 |
+| BUILD CanStart 6831e0 → CanZone f9d50 → placement 25a360 | Normal ownership checks also reject a different owning city |
+| SwapTileOwner Start 682740 → SwapPlotFromCity 11d590 | Separate validated swap/annex route, absent from the inspected district tree/path |
+
+This is a direct ownership dependency, not proof that AI never swaps by any
+other indirect command route. No live wrong-city purchase was demonstrated.
+Astra independently checked these functions and the shipped bindings.
+The captured static evidence is under
+Desktop/Codex/csc-ai-problems-1-2-20261110/purchase-city-lineage-static-20261111/.
+
+The production candidate now rejects tied/cheaper competing buyers. Failed
+reads of another city's quote remain unknown rather than evidence of no
+competition. The bounded first implementation scans current city quotes for
+promising frontier candidates and has no long-lived quote cache. It still
+does not check Treasury. **Publication-time uniqueness is not a durable
+buyer guarantee:** prices and city state can change while a retained native
+contract waits, and withdrawing a score preference does not cancel it.
+Overlapping buyers and execution-time buyer binding remain open under 1.5.
+
+### Next native interface investigation
+
+The intended extension is a contract-specific required buyer, preserving
+native quotes, savings, payment and annexation. First trace an initialized
+purchase contract to its originating district tree and city. Control IDs
+are not city IDs: AddToAiControl creates a new tree controller. GetMyCities
+can return none or several and its normal implementation can allocate, so
+do not call it from a supposedly read-only probe as a shortcut.
+
+The reviewed probe adds two read-only boundaries: CheckForDistrict 3e10fd
+links CityBuild to its new tree, and post-Initialize 55dc9f links that tree
+to the contract. The existing savings receipt at 45918f matches only a
+previously observed contract's exact target pointer and revalidates its ID,
+owner control, player and coordinates. An unobserved/reloaded lineage remains
+unknown; initialization is still distinct from submission or acceptance.
+The known Nicopolis 200–206 replay can qualify this link despite its cash
+shortfall. No buyer override has been implemented.
+
+### Verified fresh contract lineage
+
+The nicopolis-purchase-lineage-01 replay completed 200→206 with normal exit
+zero, preference restoration, no owned processes and exact package retirement.
+Its optional new hooks were read-only; the main CSC policy ran from the staged
+scanner, publisher and quote bridge. Both native traces had no fault.
+
+| Native turn / boundary | Receipt |
+| --- | --- |
+| 203, district-tree installation | Player 1, Nicopolis city 524295, tree 60686355, control 60817429 |
+| 203, post-initialization | Purchase contract 4333, same control/tree, target 401, origin city 524295 |
+| 203, behavior-tree log | Purchase 31 5: Accepted on #4333 |
+| 204 and 205, targeted savings | Exact observed contract target pointer, revalidated contract 4333 and originating city 524295 |
+
+All **24 purchase receipts** exactly match their streamed journal. Removing
+the two creation records and the added lineage fields leaves the same 22
+receipts as AI-C144. The district-selector record is identical too. Bank and
+savings values reproduce AI-C144; the site was not bought or founded.
+Here "the site" is target 401. Nearby 398 became Nicopolis-owned by an
+unresolved route; it is not a measured paid purchase.
+A known contract with an unobserved tree is separately tested: contract
+identity can be known while originCity remains null. Unknown XY pointers
+and stale identities never fabricate city provenance.
+
+These results establish the city→tree→contract→attempt link for a fresh
+plan. Initialization alone is not submission or acceptance; the separate
+behavior log and later native attempts supply those stages here. Reloaded
+contracts and execution-time buyer constraints remain unimplemented.
+
+Artifact SHA-256:
+
+| File | SHA-256 |
+| --- | --- |
+| Scanner | c1a3525a7e492e7e3baf55bdc87005eedfc28e98c7181d25e3b0cc416478e496 |
+| Publisher | ef7440c08fbcc9b4dba5b1a0152098895aea33bdfa5cbc5e060ab5fdb28c46ca |
+| Quote bridge | 0c7b20c3489523f3b6610107dd89c8245afd4708553c74792864db1c3757830c |
+| Native observer | 3184f001bacb208ff4d42fc9ea536b3213d8c3c522edbe99b0bb6d863ca77354 |
+| Purchase trace | a865d62c911157e41fca8308e041e3c396e739335d339130021da04b11a5bd84 |
+
+### Positive frontier offers reached native consumers
+
+The same replay provides bounded delivery evidence for the new main-mod
+frontier adapter. Nine exact-pair CE receipts across three pairs reported
+staging; eight reported a score attempt/write and an eligible cache read.
+The summed citySelections counter was two, with zero site wins; one selector
+can read more than one tracked pair. The remaining
+receipt had a cache read but an ineligible pair and no score attempt/write.
+No frontier readback omissions or placement/publication exceptions were logged.
+
+The pairs were player 3 / city 393221 / Bakers 36 / plot 1011, and player 3 /
+city 458758 / plot 862 for Bakers 36 and Tailors 37. Offers used the +24
+utility band and observed quotes. These are per-publication counters, not
+nine distinct sites or eight purchases. They establish consumption and native
+score changes, not causal selection, acquisition, foundation or quality
+improvement. No positive-offer ablation comparison has completed yet.
+Astra independently verified the lineage, stream equality, native acceptance,
+artifact hashes, cleanup and summed frontier receipts.
+
+### Buyer prototype still to test
+
+The next controlled comparison should keep the exact Szeged offer and its
+diagnostic quote-screen bypass identical, then compare native buyer selection
+with and without a contract-specific restriction. Merely disabling the offer
+under the same restriction would test a different question. Before any quote
+mutation, bind the selected Quarter/site to tree installation in the same
+CheckForDistrict invocation (thread, CityBuild and frame), then to the exact
+contract. A scoped quote-return prototype can reject other buyers while
+preserving the intended city's price, savings and normal command.
+
+This is a proposed diagnostic, not a shipping CE capability. It still needs
+implementation, failure tests, native receipts, payment, ownership and actual
+foundation. CE integration then needs lifecycle, cancellation and reload
+behavior reviewed with Henno before any upstream PR.
+
 ### Artifact identities
 
 | World | Save SHA-256 | Survey SHA-256 |

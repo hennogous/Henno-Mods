@@ -30,6 +30,21 @@ const EconomicWeightsCountOffset = 0x1f0;
 const EconomicSavingsOffset = 0x250;
 const PlayerTreasuryOffset = 0x780;
 const TreasuryGoldOffset = 0xa8;
+// Optional read-only lineage for fresh district plans. These midpoints follow
+// tree installation and purchase-contract initialization, before registers are
+// reused. They add no purchase, required buyer or native call. Reloaded plans
+// with no observed creation remain explicitly unknown.
+const DistrictTreeInstalled = 0x3e10fd; // RDI CityBuild, RBX child tree, ESI root tree ID.
+const PurchaseInitialized = 0x55dc9f; // R15 contract, RSI executing tree, RBP player.
+const CityBuildCityOffset = 0x90;
+const TreeParentOffset = 0x120;
+const TreeControlOffset = 0x1b0;
+const TreeIdOffset = 0x1c8;
+const ContractIdOffset = 0x110;
+const ContractControlOffset = 0x128;
+const ContractPlayerOffset = 0x140;
+const ContractTargetOffset = 0x178;
+const PlayerIdOffset = 0xd8;
 const CityIdOffset = 0xa8;
 const CityOwnerOffset = 0xd8;
 const TargetXOnFrame = 0x67;
@@ -73,6 +88,81 @@ rpc.exports = {
         fingerprint(TargetedSavingsCheck, '488bac24d0000000418bdfc1e308');
         fingerprint(0x459095, '48894c2408'); // Saved Economic receiver.
         fingerprint(0x4590a5, '4881ec80000000488be9'); // Audited frame size.
+        const createdTrees = new Map(), knownContracts = new Map();
+        const emit = receipt => {
+            if (records.length >= 512) throw Error('Purchase trace capacity');
+            records.push(receipt);
+            if (scope.streamRecords) send({kind: 'plot-purchase-receipt', receipt});
+        };
+        const fail = error => {
+            fault = String(error);
+            if (scope.streamRecords) send({kind: 'plot-purchase-fault', fault});
+        };
+        const turnNow = () => read(ptr(read(gameSlot, 0, 'ptr')), GameTurnOffset, 'i32');
+        const ancestry = tree => {
+            const path = [], seen = new Set();
+            while (!tree.isNull()) {
+                const key = tree.toString();
+                if (seen.has(key) || path.length >= 32) throw Error('Invalid purchase tree ancestry');
+                seen.add(key); path.push(tree);
+                const parent = ptr(read(tree, TreeParentOffset, 'ptr'));
+                if (parent.isNull()) return {path, root: tree};
+                tree = parent;
+            }
+            throw Error('Missing purchase tree');
+        };
+        if (scope.observeLineage === true) {
+            if (!Number.isInteger(scope.city) || scope.city < 0) throw Error('Missing lineage city scope');
+            fingerprint(DistrictTreeInstalled, '488d8b70020000440fb64540');
+            fingerprint(PurchaseInitialized, '488bd0488d4c2430e834f8e9ff');
+            listeners.push(Interceptor.attach(core.base.add(DistrictTreeInstalled), function () {
+                if (fault) return;
+                try {
+                    const city = ptr(read(this.context.rdi, CityBuildCityOffset, 'ptr'));
+                    if (read(city, CityOwnerOffset, 'i32') !== scope.player ||
+                        read(city, CityIdOffset, 'i32') !== scope.city) return;
+                    const tree = this.context.rbx, chain = ancestry(tree);
+                    const treeId = read(chain.root, TreeIdOffset, 'i32');
+                    if (treeId !== this.context.rsi.toInt32()) throw Error('Installed root tree identity differs');
+                    if (createdTrees.size >= 64) throw Error('District tree binding capacity');
+                    const binding = {city: scope.city, treeId, tree: tree.toString(),
+                        root: chain.root.toString(), control: read(chain.root, TreeControlOffset, 'i32')};
+                    createdTrees.set(tree.toString(), binding);
+                    emit({kind: 'district-tree-created', turn: turnNow(), player: scope.player, ...binding});
+                } catch (error) { fail(error); }
+            }));
+            listeners.push(Interceptor.attach(core.base.add(PurchaseInitialized), function () {
+                if (fault) return;
+                try {
+                    if (read(this.context.rbp, PlayerIdOffset, 'i32') !== scope.player) return;
+                    const contract = this.context.r15;
+                    const x = read(contract, ContractTargetOffset, 'i32');
+                    const y = read(contract, ContractTargetOffset + 4, 'i32');
+                    if (x < 0 || x >= scope.width || y < 0 || y >= scope.height) throw Error('Invalid contract target');
+                    const plot = y * scope.width + x;
+                    if (!targets.has(plot)) return;
+                    const chain = ancestry(this.context.rsi);
+                    const ownerControl = read(contract, ContractControlOffset, 'i32');
+                    const rootTreeId = read(chain.root, TreeIdOffset, 'i32');
+                    // Control IDs are not city IDs. Join only an observed
+                    // creation on this ancestry with the same root identity;
+                    // pointer reuse or an unobserved/reloaded tree is unknown.
+                    const origins = chain.path.map(tree => createdTrees.get(tree.toString()))
+                        .filter(origin => origin && origin.treeId === rootTreeId &&
+                            origin.root === chain.root.toString() && origin.control === ownerControl);
+                    const cities = [...new Set(origins.map(origin => origin.city))];
+                    if (read(contract, ContractPlayerOffset, 'i32') !== scope.player ||
+                        ownerControl !== read(chain.root, TreeControlOffset, 'i32'))
+                        throw Error('Purchase contract/root owner differs');
+                    const binding = {contract: contract.toString(), contractId: read(contract, ContractIdOffset, 'i32'),
+                        ownerControl, plot, x, y, rootTreeId,
+                        executingTree: this.context.rsi.toString(), originCity: cities.length === 1 ? cities[0] : null};
+                    if (knownContracts.size >= 64) throw Error('Purchase binding capacity');
+                    knownContracts.set(contract.add(ContractTargetOffset).toString(), binding);
+                    emit({kind: 'purchase-contract-created', turn: turnNow(), player: scope.player, ...binding});
+                } catch (error) { fail(error); }
+            }));
+        }
         const commandLocation = context => ({city: context.rdi,
             x: read(context.rbp, TargetXOnFrame, 'i32'),
             y: read(context.rbp, TargetYOnFrame, 'i32')});
@@ -125,6 +215,24 @@ rpc.exports = {
             const gold = context.r15.toInt32();
             const factorQ8 = context.rdi.toInt32();
             const minimumPlotFundQ8 = gold * factorQ8;
+            let lineage;
+            if (scope.observeLineage === true) {
+                // Match an observed live target pointer; never infer an object
+                // by subtracting a guessed offset from an arbitrary XY pointer.
+                const binding = knownContracts.get(context.r12.toString());
+                lineage = {known: false};
+                if (binding) {
+                    const contract = ptr(binding.contract);
+                    if (read(contract, ContractIdOffset, 'i32') !== binding.contractId ||
+                        read(contract, ContractControlOffset, 'i32') !== binding.ownerControl ||
+                        read(contract, ContractPlayerOffset, 'i32') !== scope.player ||
+                        read(contract, ContractTargetOffset, 'i32') !== binding.x ||
+                        read(contract, ContractTargetOffset + 4, 'i32') !== binding.y)
+                        throw Error('Retained purchase contract identity changed');
+                    lineage = {known: true, contractId: binding.contractId, ownerControl: binding.ownerControl,
+                        originCity: binding.originCity, rootTreeId: binding.rootTreeId};
+                }
+            }
             const economic = ptr(read(context.rsp, EconomicReceiverOnStack, 'ptr'));
             const savings = ptr(read(economic, EconomicSavingsOffset, 'ptr'));
             // Match the saved receiver to the same live funds being tested.
@@ -153,7 +261,7 @@ rpc.exports = {
                 throw Error('Unexpected targeted purchase arithmetic range');
             return {gold, plotQ8, slushQ8, factorQ8, minimumPlotFundQ8,
                 treasuryQ8, accountedQ8, unaccountedQ8: treasuryQ8 - accountedQ8,
-                savingsQ8, savingWeights, totalWeight,
+                savingsQ8, savingWeights, totalWeight, ...(lineage ? {lineage} : {}),
                 passesPlotFund: plotQ8 >= minimumPlotFundQ8,
                 passesCombinedFunds: gold <= Math.floor((plotQ8 + slushQ8) / 256)};
         });

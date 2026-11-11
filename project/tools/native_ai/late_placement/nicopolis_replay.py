@@ -1,13 +1,17 @@
-"""Replay the pinned Nicopolis weak-site case through the shared controller.
+"""Replay source-identified plot-purchase cases through the shared controller.
 
-This is a diagnostic fixture, outside CSC's shipped policy. It observes the
-ordinary district selector and plot state. The frontier mode adds exactly one
-early score entry to test CE admission before generalizing frontier coverage.
+This diagnostic observes the ordinary district selector, purchase attempts
+and plot state. Integrated treatment stages main CSC AI plus its UI quote
+bridge. Its matched ablation suppresses only positive frontier offers. The
+historical Nicopolis frontier mode injects one early deduction into its old
+carrier; it is not shipped policy. All fixtures share exclusive ownership,
+bounded native receipt streams and verified restoration.
 """
 import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import sys
@@ -20,61 +24,77 @@ from ce_replay import DLL, HOTFIX_EXE_SHA, verify_modules
 from driver import (
     HERE, STUDY, HOTFIX_SHA, XP2_IMAGE_SIZE, HeldProcess, NativeSession, configure,
     flags, launch, load, make_probe_controller, manifest, native_inventory, parse, read,
-    restore_preferences, sha, write_json,
+    restore_preferences, sha, write_json, lua,
 )
 
 CE_SHA = 'f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07'
 SAVE_SHA = 'e333251ec7318fb6b170678a956c28e02e2f9b01c4c4753c99e84b1a112fe19a'
 PACKAGES = ('CSC Bakers Development CE', 'CSC Bakers Development Mod')
 SCANNER = Path('Lua_UI/AI/CSC_AI_AdjacencyScan.lua')
+QUOTE_BRIDGE = Path('Lua_UI/Adjacencies/CSC_AdjacencyUI.lua')
 LOGS = ('Lua.log', 'AI_CityBuild.csv', 'AI_Behavior_Trees.csv', 'City_BuildQueue.csv')
+
+# Explicit, source-identified fixtures share lifecycle and instrumentation.
+# The Szeged case is a viable +3 later-stage customer prospect, not a +4 or
+# Stage 2 Harbor claim. Its source bank/quotes must qualify again before play.
+CASES = {
+    'nicopolis': dict(sha256=SAVE_SHA, player=1, city=524295, name='LOC_CITY_NAME_NICOPOLIS',
+        profile='BAKERS', district=36, plots=[398,472,401], purchasePlots=[398,401]),
+    'szeged': dict(sha256='c50976621de17e38f998fad916b22a1bd219f4cdc9af508d90b8846d011fbf91',
+        player=2,city=589829,name='LOC_CITY_NAME_SZEGED',profile='TAILORS',district=37,
+        plots=[1365],purchasePlots=[1365]),
+}
 
 # The source property reads are diagnostic only. Unowned neighboring deposits
 # are logged separately because ReadSuppliers intentionally counts owned supply.
 WATCHER = """
 local placement=assert(CSC_AI_QuarterPlacement)
-local profile=placement.StageTwoProfiles()[1]
-local player=Players[1]
-assert(profile.key=='BAKERS')
-function CSC_NICOPOLIS_Snapshot()
+local scope=__SCOPE__
+local profile
+for _,p in ipairs(placement.StageTwoProfiles())do if p.key==scope.profile then profile=p end end
+assert(profile and profile.district.Index==scope.district)
+local player=Players[scope.player]
+function CSC_PURCHASE_Snapshot()
     local turn=Game.GetCurrentGameTurn()
     if turn<200 or turn>__ENDPOINT__ then return end
-    for _,index in ipairs({398,472,401}) do
+    for _,index in ipairs(scope.plots) do
         local plot=assert(Map.GetPlotByIndex(index))
         local buyer=Cities.GetPlotPurchaseCity(plot)
         local supply=placement.ReadSuppliers(player,plot,profile)
-        print('CSC_NICOPOLIS_SNAPSHOT',turn,index,plot:GetOwner(),buyer and buyer:GetID() or -1,
+        print('CSC_PURCHASE_SNAPSHOT',turn,index,plot:GetOwner(),buyer and buyer:GetID() or -1,
             plot:GetDistrictType(),#supply.base,#supply.specialty,
-            plot:CanHaveDistrict(profile.district.Index,1,524295))
+            plot:CanHaveDistrict(profile.district.Index,scope.player,scope.city))
         for _,neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY())) do
             local resource=GameInfo.Resources[neighbor:GetResourceType()]
-            local revealed=PlayersVisibility[1]:IsRevealed(neighbor:GetX(),neighbor:GetY())
-            local visible=resource and revealed and CSC_Adjacency.ResourceVisible(1,resource.Index)
+            local revealed=PlayersVisibility[scope.player]:IsRevealed(neighbor:GetX(),neighbor:GetY())
+            local visible=resource and revealed and CSC_Adjacency.ResourceVisible(scope.player,resource.Index)
             local district=GameInfo.Districts[neighbor:GetDistrictType()]
-            print('CSC_NICOPOLIS_SITE_NEIGHBOR',turn,index,neighbor:GetIndex(),neighbor:GetOwner(),revealed,
+            print('CSC_PURCHASE_SITE_NEIGHBOR',turn,index,neighbor:GetIndex(),neighbor:GetOwner(),revealed,
                 visible and resource.ResourceType or '-',neighbor:GetImprovementType(),
                 district and district.DistrictType or '-',
                 visible and CSC_Adjacency.HasTag(profile.base,resource.ResourceType) or false,
                 visible and CSC_Adjacency.HasTag(profile.specialty,resource.ResourceType) or false,
                 profile.customers[neighbor:GetDistrictType()]~=nil,
-                district and CSC_Adjacency.HasTag('CLASS_CSC_BAKERS_SALES',district.DistrictType) or false)
+                district and CSC_Adjacency.HasTag('CLASS_CSC_'..profile.key..'_SALES',district.DistrictType) or false)
         end
     end
-    local candidate=Map.GetPlotByIndex(398)
+    local city=assert(CityManager.GetCity(scope.player,scope.city))
+    print('CSC_PURCHASE_CITY',turn,city:GetName(),city:GetPopulation(),city:GetBuildQueue():CurrentlyBuilding())
+    local candidate=Map.GetPlotByIndex(scope.purchasePlots[1])
     for _,plot in ipairs(Map.GetAdjacentPlots(candidate:GetX(),candidate:GetY())) do
         local resource=GameInfo.Resources[plot:GetResourceType()]
-        local revealed=PlayersVisibility[1]:IsRevealed(plot:GetX(),plot:GetY())
-        local visible=resource and revealed and CSC_Adjacency.ResourceVisible(1,resource.Index)
-        print('CSC_NICOPOLIS_NEIGHBOR',turn,plot:GetIndex(),plot:GetOwner(),revealed,
+        local revealed=PlayersVisibility[scope.player]:IsRevealed(plot:GetX(),plot:GetY())
+        local visible=resource and revealed and CSC_Adjacency.ResourceVisible(scope.player,resource.Index)
+        print('CSC_PURCHASE_NEIGHBOR',turn,plot:GetIndex(),plot:GetOwner(),revealed,
             visible and resource.ResourceType or '-',plot:GetDistrictType())
         if visible then
-            print('CSC_NICOPOLIS_ADJACENT_RESOURCE',turn,plot:GetIndex(),plot:GetOwner(),
+            print('CSC_PURCHASE_ADJACENT_RESOURCE',turn,plot:GetIndex(),plot:GetOwner(),
                 resource.ResourceType,CSC_Adjacency.HasTag(profile.base,resource.ResourceType))
         end
     end
 end
-CSC_NICOPOLIS_Snapshot()
-GameEvents.OnGameTurnStarted.Add(CSC_NICOPOLIS_Snapshot)
+CSC_PURCHASE_Snapshot()
+GameEvents.OnGameTurnStarted.Add(CSC_PURCHASE_Snapshot)
 """
 
 FRONTIER_PROBE = b"""    -- Diagnostic fixture only. Plot 398 was admitted by the stock
@@ -95,7 +115,69 @@ def entry_keys(profile):
     return {(row['id'], row['subscription'], row['file']) for row in profile['entries']}
 
 
+def ablate_frontier_offer(source, case):
+    # Counterfactual diagnostic only, applied to the staged copy. Preserve
+    # all other players, owned offers and frontier deductions. This removes
+    # the exact fixture pair from the new positive-candidate path; it does
+    # not overwrite a native score or submit another action in its place.
+    needle=b"and type(ui.GetPlotPurchaseQuote) == 'function' then"
+    assert source.count(needle)==1
+    condition=(f"and type(ui.GetPlotPurchaseQuote) == 'function' and not "
+        f"(pid == {case['player']} and city:GetID() == {case['city']} "
+        f"and district.Index == {case['district']} and index == {case['purchasePlots'][0]}) then")
+    return source.replace(needle,condition.encode('ascii'))
+
+
+def qualify_purchase(controller, out, case):
+    # Fixture qualification only. Never expose this current-bank test as a
+    # live policy gate: native Economic is allowed to retain a plan and save.
+    # Quotes from every city identify ambiguity before autoplay. The live
+    # attempt observer still records which buyer actually wins later.
+    code='local scope='+lua(case)+"""
+local player=assert(Players[scope.player])
+local city=assert(CityManager.GetCity(scope.player,scope.city))
+assert(not player:IsHuman() and city:GetName()==scope.name)
+local target=scope.purchasePlots[1]
+local plot=assert(Map.GetPlotByIndex(target))
+assert(plot:GetOwner()==-1 and plot:GetDistrictType()==-1,'Fixture footprint already occupied')
+local row=assert(GameInfo.Districts[scope.district])
+local quote,buyer,count
+count=0
+local quotes={}
+for _,c in player:GetCities():Members()do
+ local q=c:GetGold():GetPlotPurchaseCost(target)
+ print('CSC_PURCHASE_CITY_QUOTE',c:GetID(),c:GetName(),target,tostring(q))
+ count=count+1
+ quotes[#quotes+1]={city=c:GetID(),quote=q}
+ if q and q>0 and(not quote or q<quote)then quote,buyer=q,c:GetID()end
+end
+assert(quote and buyer==scope.city,'Fixture has no unambiguous proposing-city purchase quote')
+for _,r in ipairs(quotes)do
+ assert(r.city==buyer or not r.quote or r.quote<=0 or r.quote>quote,'Fixture buyer quote tied')
+end
+local bank=player:GetTreasury():GetGoldBalance()
+assert(bank>=quote,'Fixture lacks actual Treasury for its source quote')
+local queue=city:GetBuildQueue()
+print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city,target,quote,bank,count,
+ queue:CanProduce(row.Hash,false,true),queue:CurrentlyBuilding(),
+ city:GetDistricts():GetNumAllowedDistrictsRequiringPopulation(),
+ city:GetDistricts():GetNumZonedDistrictsRequiringPopulation())
+"""
+    raw=controller.cmd(code,'PlotInfo','qualify-source-purchase')
+    (out/'source-purchase-qualification.txt').write_text(raw,encoding='utf-8')
+    matches=re.findall(r'CSC_PURCHASE_QUALIFIED\t200\t(\d+)\t(\d+)\t(\d+)\t([^\t\r\n]+)\t([^\t\r\n]+)\t(\d+)',raw)
+    assert len(matches)==1,'Missing purchase fixture qualification'
+    pid,city,plot,quote,bank,count=matches[0]
+    assert (int(pid),int(city),int(plot))==(case['player'],case['city'],case['purchasePlots'][0])
+    assert float(bank)>=float(quote)>0
+    assert len(re.findall(r'CSC_PURCHASE_CITY_QUOTE\t',raw))==int(count)
+    write_json(out/'source-purchase-qualification.json',dict(verified=True,player=int(pid),city=int(city),
+        plot=int(plot),quote=float(quote),treasuryGold=float(bank),cities_quoted=int(count)))
+
+
 def run(args):
+    case_name = getattr(args, 'case', 'nicopolis')
+    case = CASES[case_name]
     out = args.output.resolve()
     home, user_root = args.my_games.resolve(), args.user_root.resolve()
     reference = args.reference.resolve(strict=True)
@@ -106,9 +188,9 @@ def run(args):
     assert load(reference / 'session-closed.json')['verified']
     meta = load(checkpoint / 'checkpoint.json')
     save = Path(meta['native_save']).resolve(strict=True)
-    assert meta['verified'] and meta['turn'] == 200 and meta['sha256'] == SAVE_SHA
+    assert meta['verified'] and meta['turn'] == 200 and meta['sha256'] == case['sha256']
     assert save.parent == (home / 'Saves/Single').resolve()
-    assert sha(save) == sha(checkpoint / 'endpoint.Civ6Save') == SAVE_SHA
+    assert sha(save) == sha(checkpoint / 'endpoint.Civ6Save') == case['sha256']
     packages = {reference / name: home / 'Mods' / name for name in PACKAGES}
     original_pins = {source: manifest(source) for source in packages}
     pins = {source: dict(value) for source, value in original_pins.items()}
@@ -122,7 +204,7 @@ def run(args):
     assert sha(binary) == HOTFIX_EXE_SHA
     recovery = args.recover_from.resolve(strict=True) if args.recover_from else None
     replacements = {}
-    if args.mode != 'original':
+    if case_name == 'nicopolis' and args.mode != 'original':
         original_run = args.original_run.resolve(strict=True)
         assert load(original_run / 'complete.json')['verified']
         trace = load(original_run / 'selector-trace.json')
@@ -131,6 +213,7 @@ def run(args):
         frontier, = (row for row in selected['sites'] if row['plot'] == 398)
         assert frontier['owned'] == 0 and frontier['frontier'] == 1 and frontier['reservation'] == -1
     if args.mode == 'frontier':
+        assert case_name == 'nicopolis', 'One-tile historical probe belongs to Nicopolis only'
         before = (csc / SCANNER).read_bytes()
         newline = b'\r\n' if b'\r\n' in before else b'\n'
         needle = b'    return bids, counts' + newline + b'end'
@@ -138,10 +221,12 @@ def run(args):
         modified = before.replace(needle, FRONTIER_PROBE.replace(b'\n', newline) + needle)
         replacements[SCANNER] = modified
     elif args.mode == 'integrated':
-        # Stage only the two production AI files being qualified. Unrelated
+        # Stage only the two production AI files and their UI quote bridge. Unrelated
         # worktree gameplay, art and content cannot enter this saved fixture.
-        for relative in (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')):
+        for relative in (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'), QUOTE_BRIDGE):
             replacements[relative] = (args.policy_root / relative).read_bytes()
+        if getattr(args, 'without_frontier_offers', False):
+            replacements[SCANNER] = ablate_frontier_offer(replacements[SCANNER],case)
     for relative, data in replacements.items():
         pins[csc][str(relative)] = dict(sha256=hashlib.sha256(data).hexdigest(), size=len(data))
     # Recovery must match the exact staged production files, not the older
@@ -157,10 +242,16 @@ def run(args):
     assert frida.__version__ == '17.24.3'
     assert Path(frida.__file__).resolve().is_relative_to(args.dependencies.resolve())
     out.mkdir(parents=True)
-    write_json(out / 'inputs.json', dict(mode=args.mode, through=args.through, save_sha256=SAVE_SHA,
+    write_json(out / 'inputs.json', dict(mode=args.mode, case=case,
+        observePurchases=args.observe_purchases,
+        observePurchaseLineage=getattr(args,'observe_purchase_lineage',False),
+        without_frontier_offers=getattr(args,'without_frontier_offers',False),
+        ablationScope=dict(player=case['player'],city=case['city'],district=case['district'],
+            plot=case['purchasePlots'][0]) if getattr(args,'without_frontier_offers',False) else None,
+        through=args.through, save_sha256=case['sha256'],
         ce_sha256=CE_SHA, packages={source.name: value for source, value in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
-    (out / 'plot-watcher.lua').write_text(WATCHER.replace('__ENDPOINT__', str(args.through)), encoding='utf-8')
+    (out / 'plot-watcher.lua').write_text(WATCHER.replace('__ENDPOINT__', str(args.through)).replace('__SCOPE__',lua(case)), encoding='utf-8')
     if recovery:
         shutil.copyfile(recovery / 'original-preferences.json', out / 'original-preferences.json')
     controller = make_probe_controller(out, user_root=user_root)
@@ -224,15 +315,16 @@ assert(chosen and Modding.CanEnableMod(chosen.Handle)=='OK')
 Modding.EnableMod(chosen.Handle,true)
 """, 'MainMenu')
         assert {key for key, value in flags(controller, 'verify-local-pair')['mods'].items() if value} == test_ids
-        session.issue_load_once(save, sha256=SAVE_SHA, native_directory=home / 'Saves/Single', turn=200)
+        session.issue_load_once(save, sha256=case['sha256'], native_directory=home / 'Saves/Single', turn=200)
 
         plots = []
 
         def ready():
             verify_modules(session, (packages[ce] / ce_relative).resolve(), out, HOTFIX_SHA)
             controller.cmd(read(out / 'plot-watcher.lua'), 'CSC_AI_BakersGameplay', 'watch-source-plots')
-            raw = controller.cmd("""
-local city=assert(CityManager.GetCity(1,524295))
+            raw = controller.cmd('local scope='+lua(case)+"""
+local city=assert(CityManager.GetCity(scope.player,scope.city))
+assert(city:GetName()==scope.name,'Wrong source city')
 local center=assert(Map.GetPlot(city:GetX(),city:GetY()))
 local indices={}
 for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3)) do
@@ -241,13 +333,20 @@ end
 print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
 """, 'CSC_AI_BakersGameplay', 'scope-radius-three-plots')
             plots.extend(parse(raw, 'CSC_REPLAY_PLOTS'))
-            assert len(plots) == len(set(plots)) and 398 in plots and 472 in plots and len(plots) <= 36
+            assert len(plots) == len(set(plots)) and set(case['plots']) <= set(plots) and len(plots) <= 36
+            if case_name != 'nicopolis':
+                qualify_purchase(controller,out,case)
             return True
 
         session.ready_after_issue(200, ('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=ready)
         modules = load(out / 'loaded-modules.json')
-        scope = dict(player=1, city=524295, width=74, height=46, districtCount=38, district=36,
-            plots=sorted(plots), cePath=modules[DLL]['path'], streamRecords=True)
+        scope = dict(player=case['player'], city=case['city'], width=74, height=46, districtCount=38, district=case['district'],
+            plots=sorted(plots), cePath=modules[DLL]['path'], streamRecords=True, traceTree=case_name!='nicopolis')
+        if scope['traceTree']:
+            # CE owns CheckForDistrict's entry detour. The existing observer's
+            # threshold mode reads its untouched CityBuild caller instead;
+            # no exclusion/repair treatment is enabled by this scope.
+            scope['thresholdPlot']=case['purchasePlots'][0]
         write_json(out / 'scope.json', scope)
         sources = (STUDY / 'observer.js', HERE / 'dam_site_observer.js')
         for path in sources:
@@ -275,14 +374,15 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
             # Other paid plots for this player serve as a natural positive
             # control for the command callbacks. Targeted savings observations
             # remain restricted to the two diagnostic footprints.
-            purchase_scope = dict(player=1, width=74, height=46, plots=[398,401],
-                allCommandPlots=True, streamRecords=True)
+            purchase_scope = dict(player=case['player'], width=74, height=46, plots=case['purchasePlots'],
+                allCommandPlots=True, streamRecords=True, city=case['city'],
+                observeLineage=getattr(args,'observe_purchase_lineage',False))
             write_json(out / 'purchase-scope.json', purchase_scope)
             assert purchase_observer.exports_sync.init(
                 dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE),
                 purchase_scope)
         controller.study_endpoint = args.through
-        print('Nicopolis diagnostic armed', args.mode, flush=True)
+        print('Purchase diagnostic armed', case_name, args.mode, flush=True)
         controller.play(args.through)
         trace = observer.exports_sync.freeze()
         write_json(out / 'selector-trace.json', trace)
@@ -299,7 +399,7 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
         attachment = None
         state = controller.state_read('replay-end')
         assert state['turn'] == args.through and not state['active']
-        raw = controller.cmd('CSC_NICOPOLIS_Snapshot()', 'CSC_AI_BakersGameplay', 'endpoint-readback')
+        raw = controller.cmd('CSC_PURCHASE_Snapshot()', 'CSC_AI_BakersGameplay', 'endpoint-readback')
         (out / 'endpoint-plots.txt').write_text(raw, encoding='utf-8')
         for name in LOGS:
             shutil.copyfile(user_root / 'Logs' / name, out / name)
@@ -347,6 +447,9 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=('original', 'frontier', 'integrated'), required=True)
+    parser.add_argument('--case',choices=tuple(CASES),default='nicopolis')
+    parser.add_argument('--without-frontier-offers',action='store_true',
+        help='Diagnostic ablation of the exact fixture pair only; other frontier offers remain active')
     for name in ('output', 'reference', 'checkpoint', 'my-games', 'user-root', 'dependencies'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--recover-from', type=Path)
@@ -354,9 +457,17 @@ if __name__ == '__main__':
     parser.add_argument('--policy-root', type=Path)
     parser.add_argument('--through', type=int, default=208)
     parser.add_argument('--observe-purchases', action='store_true')
+    parser.add_argument('--observe-purchase-lineage',action='store_true',
+        help='Read-only tree/contract creation links; requires --observe-purchases')
     options = parser.parse_args()
-    if options.mode != 'original' and not options.original_run:
+    if options.case == 'nicopolis' and options.mode != 'original' and not options.original_run:
         parser.error('non-original modes require --original-run')
     if options.mode == 'integrated' and not options.policy_root:
         parser.error('integrated requires --policy-root')
+    if options.case != 'nicopolis' and options.mode != 'integrated':
+        parser.error('new purchase fixtures require the integrated main CSC policy')
+    if options.without_frontier_offers and options.mode != 'integrated':
+        parser.error('positive-frontier ablation requires integrated mode')
+    if options.observe_purchase_lineage and not options.observe_purchases:
+        parser.error('lineage observation requires --observe-purchases')
     run(options)

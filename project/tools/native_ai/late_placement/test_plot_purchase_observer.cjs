@@ -14,12 +14,15 @@ const instructions = new Map([
     [0x45918f, '488bac24d0000000418bdfc1e308'],
     [0x459095, '48894c2408'],
     [0x4590a5, '4881ec80000000488be9'],
+    [0x3e10fd, '488d8b70020000440fb64540'],
+    [0x55dc9f, '488bd0488d4c2430e834f8e9ff'],
 ]);
 class Pointer {
     constructor(value) { this.value = Number(value); }
     add(offset) { return new Pointer(this.value + offset); }
     toString() { return String(this.value); }
     toInt32() { return this.value | 0; }
+    isNull() { return this.value === 0; }
     readByteArray(size) {
         const bytes = Buffer.from(instructions.get(this.value) || '', 'hex');
         assert.equal(bytes.length, size);
@@ -127,4 +130,47 @@ for (const [label, breakRead, restoreRead, pattern] of [
     assert.equal(streamed[0].kind,'plot-purchase-fault',label);
     assert.equal(hooks.size,0,label);
 }
-console.log('Purchase observer: signed Q8, savings boundaries, player/plot filters and detach passed');
+// Optional lineage joins exact tree creation to contract initialization,
+// then matches the observed XY pointer at the attempt. No city/control-ID
+// equality or arbitrary subtraction from an XY pointer is permitted.
+streamed.length=0;
+const lineageContext={...context,rpc:{exports:{}}};
+vm.createContext(lineageContext);
+vm.runInContext(fs.readFileSync(__dirname+'/plot_purchase_observer.js','utf8'),lineageContext);
+lineageContext.rpc.exports.init({path:'pinned.dll',image_size:123},
+    {player:1,city:524295,width:74,height:46,plots:[401],streamRecords:true,observeLineage:true});
+const contract=0xc0000, root=0xd0000, child=0xd1000, build=0xe0000;
+put(build,0x90,city);put(root,0x120,0);put(child,0x120,root);
+put(root,0x1c8,91);put(root,0x1b0,4001);put(player,0xd8,1);
+put(contract,0x110,4333);put(contract,0x128,4001);put(contract,0x140,1);
+put(contract,0x178,31);put(contract,0x17c,5);
+fire(0x3e10fd,{rdi:ptr(build),rbx:ptr(child),rsi:ptr(91)});
+fire(0x55dc9f,{r15:ptr(contract),rsi:ptr(child),rbp:ptr(player)});
+fire(0x45918f,{r12:ptr(contract+0x178)});
+fire(0x45918f); // Same XY in another buffer has no known contract binding.
+const unobservedContract=0xc1000, unobservedTree=0xd2000;
+put(unobservedTree,0x120,0);put(unobservedTree,0x1c8,92);put(unobservedTree,0x1b0,4002);
+put(unobservedContract,0x110,4334);put(unobservedContract,0x128,4002);put(unobservedContract,0x140,1);
+put(unobservedContract,0x178,31);put(unobservedContract,0x17c,5);
+fire(0x55dc9f,{r15:ptr(unobservedContract),rsi:ptr(unobservedTree),rbp:ptr(player)});
+fire(0x45918f,{r12:ptr(unobservedContract+0x178)});
+put(contract,0x110,4334);
+fire(0x45918f,{r12:ptr(contract+0x178)});
+fire(0x459169); // Suppressed after stale identity fault.
+const lineage=lineageContext.rpc.exports.freeze();
+assert.match(lineage.fault,/Retained purchase contract identity changed/);
+assert.equal(lineage.records.length,6);
+assert.equal(lineage.records[0].city,524295);
+assert.equal(lineage.records[1].originCity,524295);
+assert.equal(lineage.records[1].ownerControl,4001);
+assert.equal(lineage.records[2].lineage.contractId,4333);
+assert.equal(lineage.records[2].lineage.originCity,524295);
+assert.equal(lineage.records[2].lineage.known,true);
+assert.equal(lineage.records[3].lineage.known,false);
+assert.equal(lineage.records[4].originCity,null);
+assert.equal(lineage.records[5].lineage.known,true);
+assert.equal(lineage.records[5].lineage.originCity,null);
+assert.equal(streamed.length,7);
+assert.equal(streamed[6].kind,'plot-purchase-fault');
+assert.equal(hooks.size,0);
+console.log('Purchase observer: Q8, funds, lineage, unknown/stale bindings, filters and detach passed');

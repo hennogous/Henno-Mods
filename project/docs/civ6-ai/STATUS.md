@@ -12,38 +12,31 @@ in the [numbered roadmap](roadmap.md). The goal remains open.
 
 ## Active problem: 1.5, acquiring a worthwhile site
 
-The latest exact replay followed Nicopolis's accepted frontier request through
-turn 216. The site stayed unowned and empty. Eleven Economic attempts obtained
-valid city quotes, but the earmarked plot fund remained below the native
-threshold. Savings accumulated while the quote changed. Actual Treasury and
-net income were not captured by that native observer.
+The main mod now publishes bounded positive frontier offers using the same
+site model and +24/+48 bands as owned sites. Nine exact-pair CE receipts across
+three pairs confirmed staging; eight confirmed score writes. The summed
+citySelections counter was two, with no site wins. This proves delivery, not
+purchase or better placement. [AI-C147](findings.md#ai-c147).
 
-All 121 purchase observations and two district selections matched their streamed
-journals exactly. The controller verified normal exit, preference restoration
-and temporary-package retirement. Astra independently reviewed the decoding,
-fund arithmetic and limits. See [AI-C141](findings.md#ai-c141) and its evidence.
+The next dependency is **buying for the intended city**. Szeged and Debrecen
+both quote 85 Gold for Szeged's prospective plot. The native purchase node can
+accept same-player ownership, but reservation requires the original city's
+ownership. The preflight stopped before play. The current quote guard avoids
+ambiguous buyers; it cannot bind a retained contract's eventual buyer.
+[AI-C145](findings.md#ai-c145).
 
-The zero-turn survey found 34 known-Base frontier pairs with positive UI quotes.
-Exact model inspection of Fractal/Pangaea then found no +4 pair among their 30
-leads: Szeged Tailors projects +3 and Takamatsu Bakers +2. A future-type filter
-removed 86 invalid alternatives, including foreign unique districts; valid
-alternatives kept those maxima unchanged. The final source refinements pass
-focused offline checks. The preliminary live filter run closed normally with
-zero turns advanced. This is input correctness, not proof of a native choice
-change. See [AI-C143](findings.md#ai-c143).
+We now have a verified native link from city to new district tree, initialized
+purchase contract and later purchase attempt. The six-turn Nicopolis replay
+linked city 524295 to contract 4333 and target 401; all 24 receipts matched
+the stream and cleanup verified. That target still lacked cash and remained
+unowned. Nearby 398 became owned through an unresolved route.
+[AI-C146](findings.md#ai-c146).
 
-The native savings allocator is now traced: it distributes unaccounted bank
-changes and caps the plot account at 150 Gold, transferring overflow to slush.
-That is a static mechanism, not a live allocation receipt or tile-price cap.
-The six-turn accounting replay now joins those fields at turns 204 and 205:
-actual bank was about 60 and 44 Gold against a 145-Gold quote, with zero
-plot/slush funds. It reproduced the earlier native choice and purchase checks
-and closed cleanly, without a purchase. [AI-C144](findings.md#ai-c144).
-Next qualify an affordable viable or strong site and implement its bounded
-positive frontier offer. Then trace native payment, ownership,
-reservation and construction. A supplier deposit outside the border is a separate
-purchase problem. The Nicopolis site still has an unrevealed neighbor and cannot
-qualify as an improved chain opportunity.
+Next prototype a contract-specific required buyer, preserving native prices,
+savings and payment. Compare it with the unrestricted buyer under the same
+Szeged offer, then follow actual debit, ownership, reservation and foundation.
+Reload/lifecycle support and the maintainable CE API remain open. Supplier
+acquisition is a separate 1.5 branch. No buyer override exists yet.
 
 ## What remains open
 

@@ -35,23 +35,56 @@ forecast changed. Final guards, ordering and direct-family refinements passed
 AI-C143 scopes this. Future sites still allow growth/research; unknown static
 metadata stays neutral. Host 1290 is Debrecen 524292 (3/4 specialty slots);
 Szeged has 2/2. Loaded Quarters do not require specialty capacity.
-Positive frontier offers remain unimplemented. Need a discriminating 1.2 native
-case and an affordable 1.5 fixture, paid purchase and construction. AI-N114:
-Economic allocates bank minus accounted balance; plot account cap 150 Gold,
-overflow to slush; known spending adjusts accounted balance. Static mechanism,
-not a live reconciled allocation cycle.
-nicopolis-bank-attempt-01 closed normally 200->206, scanner 5e20093b and
-observer 98470b8f. All 22 purchase and one selector receipts exactly match
-streams; original fields equal AI-C141 over the common interval. Zero native
-faults. Turn 204 bank 60.00390625, turn 205 bank 44.28515625, both quotes 145.
-Bank = accounted balance; funds [0,0,0,bank], weights 3/4/1/1. AI-C144 proves
-cash shortfall too; native rejection still occurred at the earlier plot gate.
-No paid command; 401 unowned at 206. Positive GP funds do not prove GP eligibility.
-Final future-type source ran in this replay without placement exceptions;
-two-world filter counts still describe preliminary bytes. Upstream CE develop
-remained 2986a746 at 12:26 local. Full goal open; no upstream PR authorized.
-The discovery tool and six tests are under project/tools/native_ai/late_placement.
-No game/controller is currently owned. Main production tuning was unchanged.
+Positive frontier offers now share the suppliedSite evaluator with owned
+sites, +24 viable/+48 at+4, one frontier alternative per city/profile. They
+require known owned Base and an actor-permitted host, plus an unambiguous
+positive proposer quote. Missing/tied/cheaper other buyer stays neutral; no
+Treasury veto. No long-lived quote cache. Main publisher logs committed offers
+and bounded32 previous-version frontier receipts before counter reset.
+
+Szeged control01 stopped before autoplay: six quotes, Debrecen524292 and
+Szeged589829 both85; four others-1. Normal cleanup. This is qualification
+failure, not native buying failure. UI city order does not prove native order.
+N115/C145: PurchasePlotNode accepts player ownership; ReservePlotNode and
+TryReservePlot require original purchase-city ownership. No automatic swap in
+this path; do not generalize to every AI command. Current quote uniqueness is
+NOT durable buyer binding. Debrecen owned1143 is+4, so do not force frontier
+995(+3) as an inferior purchase fixture.
+
+nicopolis-purchase-lineage-01 completed200->206, normal closure, no native
+faults. All24purchase receipts=stream; remove2creationrecords+lineage fields
+and they exactly equal C144's22 records. Selector identical. At203 city524295
+created tree60686355/control60817429; contract4333 initialized for401 and
+accepted in behavior log. 204/205 matched exact target pointer, revalidated
+contract and originCity524295. Bank60.00390625/44.28515625 vs145 quote; funds
+[0,0,0,bank]. Target401 remained unowned;398becameNicopolis-owned, causeunknown.
+C146. C147 frontier counters:9staged,8attempts/writes/eligible reads,9cacheReads,
+summedcitySelections2,siteWins0; no errors/omissions. Three p3 pairs: city393221
+Bakers1011, city458758 Bakers/Tailors862. Native delivery only, not causalwin.
+
+Next: explicit required-buyer prototype A/B under identical Szeged offer and
+staged UI quote-screen bypass for that exact tuple. No prototype write exists
+yet. Keep ordinary quote/funds/commands. Bind selected Quarter/site to same
+CheckForDistrict invocation (thread+CityBuild+frame) before tree/contractjoin;
+replace/invalidate on every selector result, consume on tree installation.
+Require fully revalidated contract and selected district/target before excluding
+other-city positive quote at459169 (RAX=-1). Comparison A unrestricted vs B
+restricted tests buyer constraint; later no-offer arm tests bid causality.
+Need synthetic wrongdistrict/city/target, stale/failedselector, unknown/reused
+contract and disabled-mode tests BEFORE mutation. Later CE typed API needs
+contract-lifetime cancellation/reload binding; no upstream PR authorized.
+
+Read-only lineage hooks:3e10fd RDI CityBuild,RBX newtree,ESI rootTreeID;
+55dc9f R15 initializedcontract,RSI executingtree,RBP player. Contract+110 ID,
++128 ownercontrol,+140 player,+178 XY. Tree+120 parent,+1b0control,+1c8ID.
+Existing45918f R12 must exactly equal observed contract+178, then revalidate.
+Control IDs are not city IDs. Do not call allocating GetMyCities as shortcut.
+Astra independently validated ABI/code/tests/live counts/hashes/cleanup.
+Unobserved tree can mean known contract but originCity=null. Cold-reload
+contracts outside minimal trace. Source artifacts and proof hashes in report.
+Five purchase fixture tests,8type tests,10grouped scanner checks,Node observer
+including unknown/stale bindings pass. Current CE develop still2986a746 checked
+13:16local. No game/controller remains owned. Goal remains open.
 Evidence is `Desktop/Codex/csc-ai-problems-1-2-20261110`, especially
 `nicopolis-original-durable-01`, `nicopolis-frontier-durable-01` and
 `nicopolis-integrated-frontier-01`. The durable shared-controller

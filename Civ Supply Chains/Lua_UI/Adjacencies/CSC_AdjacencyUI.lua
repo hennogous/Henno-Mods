@@ -61,3 +61,35 @@ ExposedMembers.CSC_Adjacency.HasWorkingDistrictAt = function(x, y)
     local district = CityManager.GetDistrictAt(x, y);
     return district and district:IsComplete() and not district:IsPillaged();
 end;
+
+-- Gameplay lacks this city Gold method. A price alone is insufficient:
+-- Economic can buy for a different city, while district reservation requires
+-- the original city's ownership (AI-N115). Only quote an unambiguous intended
+-- buyer here; tied/cheaper other buyers leave the positive offer neutral.
+-- This is a current quote screen, not a lifetime ownership guarantee or proof
+-- of command legality, funds, payment or construction. The native contract
+-- still buys normally. Cross-city purchase/transfer support remains open.
+-- This first implementation scans own cities per promising target. It can be
+-- quadratic across overlapping city candidates. Measure before broadening it;
+-- any later memoization must last one publication, not survive changed quotes.
+ExposedMembers.CSC_Adjacency.GetPlotPurchaseQuote = function(playerID, cityID, plotIndex)
+    local city = CityManager.GetCity(playerID, cityID);
+    if not city or type(city.GetGold) ~= 'function' then return nil; end
+    local gold = city:GetGold();
+    if not gold or type(gold.GetPlotPurchaseCost) ~= 'function' then return nil; end
+    local ok, value = pcall(gold.GetPlotPurchaseCost, gold, plotIndex);
+    if not ok or type(value) ~= 'number' or value <= 0 then return nil; end
+    local player = Players[playerID];
+    if not player then return nil; end
+    for _, other in player:GetCities():Members() do
+        if other:GetID() ~= cityID then
+            local otherGold = other:GetGold();
+            if not otherGold or type(otherGold.GetPlotPurchaseCost) ~= 'function' then return nil; end
+            local quoted, cost = pcall(otherGold.GetPlotPurchaseCost, otherGold, plotIndex);
+            -- Incomplete buyer information cannot prove that this city wins.
+            if not quoted or type(cost) ~= 'number' then return nil; end
+            if cost > 0 and cost <= value then return nil; end
+        end
+    end
+    return value;
+end;

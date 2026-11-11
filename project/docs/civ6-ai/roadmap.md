@@ -32,19 +32,18 @@ and placement. Plot 401 has no known Base and still has an unrevealed neighbor.
 Distinguish
 missing owned supply from a supplier that could be acquired. Positive
 frontier bids still need their separately qualified purchase path.
-The zero-turn discovery found 34 known-Base frontier pairs across three worlds.
-Exact Fractal/Pangaea model checks found none of their 30 pairs at +4: Szeged
-projects +3 and Takamatsu +2. Actor/type filtering removes invalid unique and
-duplicate-family futures while leaving research and growth as future timing
-questions. The preliminary matched filter inspection changed no maximum
-forecast; it does not close 1.2's native-choice proof. A qualified purchase
-fixture and bounded positive frontier offer remain open. Native Economic's
-bank-difference allocation and 150-Gold plot-account cap are statically traced;
-the matched 204/205 receipts now show bank balances of about 60/44 Gold
-against a 145-Gold quote as well as failed plot/slush gates. No purchase
-resulted. Next qualify an actually affordable site and trace paid execution.
-[Model and eligibility evidence](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#exact-model-inspection-and-future-type-correction),
-[savings mechanism](../research/mods/civ6-economic-plot-savings-20261111.md).
+The positive frontier adapter is now implemented. Exact receipts show native
+score writes/cache reads, but no site win or acquisition yet. The Szeged
+preflight stopped on tied Debrecen/Szeged quotes. Static checks show a purchase
+for another friendly city cannot satisfy the original city's reservation in
+this district path. The current quote screen is conservative and cannot bind
+a retained contract's later buyer. The new Nicopolis lineage replay verified
+city → district tree → accepted contract 4333 → target 401 → savings attempts.
+Next compare an explicit required-buyer prototype against the ordinary buyer
+under an identical Szeged offer, then trace native payment and foundation.
+Do not buy Debrecen's weaker +3 frontier merely to obtain a result when its
+owned +4 option is available. Supplier buying and contract reload/lifecycle
+remain open under 1.5. [Buyer dependency and lineage](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#native-ownership-dependency).
 
 ### Earlier Stage 2 development evidence
 
@@ -389,6 +388,9 @@ until the active check closes or an explicit dependency needs attention.
   frontier candidate per city. Trace an eligible supplier through
   that selection and the quote before testing a preference. Preserve
   native legality and treasury checks.
+  Honor the proposing city's ownership requirement when several cities can
+  buy the target. A required-buyer binding must cover the retained contract's
+  execution, cancellation and reload, not just the current score packet.
   [Native purchase routes](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md#buying-a-future-site).
 - **1.6 Construction readiness and follow-through.** Check unlocks, legal
   siting, capacity and the preparation window before committing. Trace the

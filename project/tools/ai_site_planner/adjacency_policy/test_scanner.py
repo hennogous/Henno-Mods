@@ -82,6 +82,7 @@ end
 PlayersVisibility = {[1]={IsRevealed=function(_, x) return x~=17 end}}
 Cities = {GetPlotPurchaseCity=function(p) if p.id~=19 then return city end end}
 local center = {GetOwner=function() return 1 end, GetDistrictType=function() return 0 end,
+    GetResourceType=function() return -1 end,
     GetIndex=function() return 2 end, GetX=city.GetX, GetY=city.GetY}
 Map = {
     GetPlot=function() return center end,
@@ -202,6 +203,43 @@ plots[31].GetResourceType=function() return 88 end
 assert(bids(bakers, {}, readLegalTargets)[31].delta==-65536)
 plots[31].owner=1
 PlayersVisibility[1].IsRevealed=function(_, x) return x~=17 end
+
+-- A bounded frontier preference shares the owned-site model and Q8 bands.
+-- Exercise the actual UI quote bridge too. No bank read is permitted here:
+-- savings and command affordability remain the native buyer's responsibility.
+local quotes={[31]=85,[32]=70}
+city.GetGold=function()return {GetPlotPurchaseCost=function(_,index)return quotes[index]end}end
+player.GetTreasury=function()error('Live siting must not gate on current cash')end
+pendingBase.GetResourceType=function()return 88 end
+for _,id in ipairs({31,32})do
+    plots[id].owner=-1;plots[id].base=1;plots[id].river=0
+    plots[id].neighbors={center,pendingBase}
+    plots[id].GetResourceType=function()return -1 end
+end
+frontier,frontierCounts=bids(bakers,{},readLegalTargets)
+assert(not frontier[31] and frontier[32].delta==6144 and frontier[32].frontier
+    and frontier[32].purchaseGold==70 and frontierCounts.frontierOffers==1)
+local savedTargets=targets
+unlocked=true;targets={13}
+frontier,frontierCounts=bids(bakers,{},readLegalTargets)
+assert(frontier[13].weak and frontier[32].frontier and frontierCounts.deferCities==0)
+targets=savedTargets;unlocked=false
+quotes[31]=70
+assert(bids(bakers,{},readLegalTargets)[31].delta==6144) -- Stable lower-plot tie.
+quotes[31]=85;plots[31].river=4
+assert(bids(bakers,{},readLegalTargets)[31].delta==12288) -- Better adjacency first.
+assert(bids(bakers,{[31]=true},readLegalTargets)[32].delta==6144)
+quotes[31]=nil;quotes[32]=-1
+frontier,frontierCounts=bids(bakers,{},readLegalTargets)
+assert(not frontier[31] and not frontier[32] and frontierCounts.frontierQuoteUnknown==2)
+quotes[31]=85;plots[31].base=0
+assert(not bids(bakers,{},readLegalTargets)[31])
+plots[31].base=1;plots[31].owner=1
+assert(not bids(bakers,{},readLegalTargets)[31])
+plots[31].owner=-1;plots[31].GetResourceType=function()return 88 end
+assert(bids(bakers,{},readLegalTargets)[31].delta==-65536)
+plots[31].owner=1;plots[32].owner=1
+city.GetGold=nil
 
 -- The same gate accepts a future Harbor before it can be built, then
 -- nominates the actual legal host of an existing Tailors chain.

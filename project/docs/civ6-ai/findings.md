@@ -2376,3 +2376,79 @@ justify general subsidies or higher Quarter bids.
 
 - [Evidence, schema and hashes](../research/mods/civ6-economic-plot-savings-20261111.md#runtime-attempt-balances-the-same-nicopolis-start-through-206)
 - Related: [AI-C141](#ai-c141), [AI-C143](#ai-c143), [AI-N114](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n114).
+
+## AI-C145
+
+**Szeged's frontier fixture has tied buyers and is not yet a purchase-to-foundation test**
+
+Status: accepted. Evidence: runtime preflight, static.
+
+The exact turn-200 Fractal preflight returned 85-Gold quotes for plot 1365
+from both Debrecen and Szeged; the other four Hungarian cities returned -1.
+The fixture stopped before autoplay. Static inspection shows why buyer
+identity matters: the purchase node accepts same-player ownership, but the
+next reservation checks the original city's purchase-city ownership.
+
+**Scope:** Same source save as AI-C143, staged main CSC AI/quote bridge and
+verified CE carrier. Six UI reads, archived failure/journal, zero advancement
+and verified shared-controller closure. Native purchase and reserve functions
+were checked on reference 324c51e9 with byte-matched hotfix text.
+
+**Limits:** No native quote tie was resolved, no tile was bought, and no live
+wrong-city reservation failed. UI iteration order does not prove native
+iteration order. The current quote guard screens ambiguous buyers but cannot
+bind a retained contract's later execution. Overlapping-city acquisition and
+durable buyer binding remain open 1.5 dependencies.
+
+- [Evidence and native ownership checks](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#szeged-preflight-stopped-on-tied-city-quotes)
+- Related: [AI-C143](#ai-c143), [AI-C144](#ai-c144).
+
+## AI-C146
+
+**Fresh purchase-contract lineage identifies Nicopolis at the later savings attempts**
+
+Status: accepted. Evidence: runtime, static, diagnostic tests.
+
+The 200–206 replay linked Nicopolis city 524295 to tree 60686355 and control
+60817429, then initialized purchase contract 4333 targeting plot 401. The
+behavior log separately recorded acceptance. Both later savings attempts
+matched the exact observed target pointer and revalidated the contract with
+origin city 524295. All 24 purchase receipts equal the streamed journal.
+
+**Scope:** Source-identified Continents checkpoint and same CE binary as
+AI-C144, current main CSC scanner/publisher/quote bridge. Read-only native
+boundaries at 3e10fd, 55dc9f and existing 45918f. Normal cleanup, no native
+faults; the older purchase/selector observations matched over the interval.
+
+**Limits:** Fresh creation only. Known contract identity does not necessarily
+prove originCity for an unobserved tree. No buyer override, payment or foundation
+at target 401, reload binding or Workshop delivery was demonstrated. Plot 401
+remained unowned; nearby 398 became Nicopolis-owned by an unresolved route.
+
+- [Evidence and hashes](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#verified-fresh-contract-lineage)
+- Related: [AI-C144](#ai-c144), [AI-C145](#ai-c145).
+
+## AI-C147
+
+**The main-mod positive frontier offers reached native score writes and cache reads**
+
+Status: accepted. Evidence: runtime receipts, source.
+
+Nine per-publication CE receipts across three player-3 pairs reported staging;
+eight recorded a score attempt/write and eligible cache read. The summed
+citySelections counter was two, with no site win; this need not mean two
+distinct selector invocations. One receipt read an ineligible cached pair
+without attempting a score write. No frontier readback omissions or placement
+exceptions were logged.
+
+**Scope:** The same six-turn current-source replay as AI-C146. Exact pairs
+were city 393221 Bakers plot 1011, and city 458758 Bakers/Tailors plot 862.
+The new offers used the existing +24 utility band and positive city quotes
+qualified by the current competing-buyer screen.
+
+**Limits:** Counters describe packet windows, not distinct acquired sites.
+No completed positive-offer ablation, changed winner, acquisition, construction,
+retained ownership guarantee or realised chain benefit was established.
+
+- [Native receipt evidence](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#positive-frontier-offers-reached-native-consumers)
+- Related: [AI-C145](#ai-c145), [AI-C146](#ai-c146).
