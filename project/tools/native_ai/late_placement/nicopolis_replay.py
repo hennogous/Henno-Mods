@@ -6,6 +6,10 @@ bridge. Its matched ablation suppresses only positive frontier offers. The
 historical Nicopolis frontier mode injects one early deduction into its old
 carrier; it is not shipped policy. All fixtures share exclusive ownership,
 bounded native receipt streams and verified restoration.
+
+The explicit Szeged buyer prototype changes only the staged copy's quote
+screen and, in restrict mode, the known contract's competing native buyer.
+It is not a shipping setting or general CE API.
 """
 import argparse
 import hashlib
@@ -44,6 +48,52 @@ CASES = {
         player=2,city=589829,name='LOC_CITY_NAME_SZEGED',profile='TAILORS',district=37,
         plots=[1365],purchasePlots=[1365]),
 }
+
+# This untuned save intentionally predates the policy's persisted seat metadata.
+# A diagnostic may seed it from these acknowledged turn-1 records, never from
+# current autoplay IsHuman. Pin the provenance as well as the existing save pin.
+SZEGED_SEAT_PROVENANCE = {
+    'source.json':'78ba15dbf5e3cd294f348fa4f8fcaa2452acc878cfeebc1ecfdfcd12202ba827',
+    'protocol.json':'7580f6ef2b91df169194e06047317c42d52d03521483cfedd895c11d3c41da8e',
+    'checkpoint.json':'b6ddc2beba796c37ed4d772b0302d2cf4e0a1f7910478b310ee1d21d14e7fde5',
+    'commands/0011-fresh-start-identity.lua':'1e106ef8430e4f49e373015f3ab6fd90934a127bce70e5f78ab41779241cb1e7',
+    'commands/0011-fresh-start-identity.txt':'0e82197375287974257aedab7082e023f7ca9073b13bf85edfb155f72c71b5ab',
+}
+
+
+def seed_source_seats(source, checkpoint, case):
+    assert case==CASES['szeged'],'Seat migration is qualified only for the pinned untuned Fractal fixture'
+    for name,digest in SZEGED_SEAT_PROVENANCE.items():
+        assert sha(checkpoint/name)==digest,'Original-seat provenance differs: '+name
+    original=load(checkpoint/'source.json')
+    assert original['original_ai']==[1,2,3,4,5]
+    assert load(checkpoint/'protocol.json')['untuned'] is True
+    seats=[dict(player=r['player'],leader=r['leader'],human=0 if r['player'] in original['original_ai'] else 1)
+        for r in original['starts']]
+    assert [r['player'] for r in seats]==list(range(6))
+    # Validate the WHOLE set before any property write. Preserve matching
+    # existing values and abort on conflict. Identical bytes are staged in
+    # both buyer arms; this is not a production late-save migration feature.
+    prefix='''-- DIAGNOSTIC ONLY: seed missing original-seat metadata from pinned turn-1 provenance.
+do
+ local seats=__SEATS__
+ assert(Game.GetCurrentGameTurn()==200,'Seat fixture turn changed')
+ local missing={}
+ for _,r in ipairs(seats) do
+  local p=assert(Players[r.player]);local config=assert(PlayerConfigurations[r.player])
+  assert(config:GetLeaderTypeName()==r.leader,'Seat fixture leader changed')
+  assert(p:IsHuman()==(r.human==1),'Seat fixture current controller changed')
+  local key='CSC_AI_OriginalHuman_'..r.player
+  local previous=Game:GetProperty(key)
+  assert(previous==nil or previous==r.human,'Conflicting original-seat metadata')
+  print('CSC_DIAGNOSTIC_SOURCE_SEAT',r.player,tostring(previous),r.human)
+  if previous==nil then missing[#missing+1]={key=key,value=r.human} end
+ end
+ for _,r in ipairs(missing)do Game:SetProperty(r.key,r.value)end
+ print('CSC_DIAGNOSTIC_SOURCE_SEATS_SEEDED',#missing)
+end
+'''.replace('__SEATS__',lua(seats))
+    return prefix.encode('utf-8')+source,dict(files=SZEGED_SEAT_PROVENANCE,seats=seats)
 
 # The source property reads are diagnostic only. Unowned neighboring deposits
 # are logged separately because ReadSuppliers intentionally counts owned supply.
@@ -128,12 +178,72 @@ def ablate_frontier_offer(source, case):
     return source.replace(needle,condition.encode('ascii'))
 
 
-def qualify_purchase(controller, out, case):
+def bypass_szeged_quote_screen(source, case):
+    # Identical diagnostic bypass in observe/restrict arms. The production
+    # UI file stays conservative. The shared controller holds the inactive
+    # source until the prototype's scoped native instrumentation is armed.
+    assert case==CASES['szeged']
+    needle=b"    if not ok or type(value) ~= 'number' or value <= 0 then return nil; end"
+    assert source.count(needle)==1
+    newline=b'\r\n' if b'\r\n' in source else b'\n'
+    addition=(b'    -- Diagnostic Szeged buyer prototype only; not shipping policy.'+newline
+        +b'    if playerID == 2 and cityID == 589829 and plotIndex == 1365 then return value; end')
+    return source.replace(needle,needle+newline+addition)
+
+
+def qualify_integrated_policy(controller, out, case):
+    # Loading the production files is not evidence that they publish anything.
+    # In particular an untuned checkpoint has no original-seat properties;
+    # the production safety gate deliberately refuses to infer them at turn200.
+    # Capture every gate BEFORE asserting, without initializing the model or
+    # changing identities. A failed qualification must stop before autoplay.
+    code='local scope='+lua(case)+"""
+local ui=ExposedMembers and ExposedMembers.CSC_Adjacency
+local bridge=CSC_AI_DistrictBridge
+print('CSC_POLICY_BRIDGE',bridge and bridge.Available() or false)
+print('CSC_POLICY_SINGLE_PLAYER',ui and type(ui.IsSinglePlayer)=='function' and ui.IsSinglePlayer() or false)
+print('CSC_POLICY_NATIVE',bridge and bridge.Status() or 'unavailable')
+if bridge and type(CE_AIDistrictScoresReceipt)=='function' then
+ local status=bridge.Status()
+ local version=status and tonumber(status:match('"version":(%d+)'))
+ if version then print('CSC_POLICY_TARGET_RECEIPT',
+  CE_AIDistrictScoresReceipt(version,scope.player,scope.city,scope.district,scope.purchasePlots[1])) end
+end
+for _,p in ipairs(PlayerManager.GetAliveMajors()) do
+ local original=Game:GetProperty('CSC_AI_OriginalHuman_'..p:GetID())
+ print('CSC_POLICY_SEAT',p:GetID(),tostring(original),p:IsHuman())
+end
+local profile
+for _,p in ipairs(CSC_AI_QuarterPlacement.StageTwoProfiles())do if p.key==scope.profile then profile=p end end
+print('CSC_POLICY_BASE_TAG',profile and profile.base or 'missing',
+ profile and CSC_Adjacency.Tags[profile.base]~=nil or false)
+"""
+    raw=controller.cmd(code,'CSC_AI_BakersGameplay','qualify-integrated-policy')
+    (out/'policy-qualification.txt').write_text(raw,encoding='utf-8')
+    statuses=re.findall(r'CSC_POLICY_NATIVE\t(\{[^\r\n]+\})',raw)
+    status=json.loads(statuses[0]) if len(statuses)==1 else None
+    seats=[dict(player=int(pid),originalHuman=None if original=='nil' else int(original),human=human=='true')
+        for pid,original,human in re.findall(r'CSC_POLICY_SEAT\t(\d+)\t(nil|0|1)\t(true|false)',raw)]
+    target=next((seat for seat in seats if seat['player']==case['player']),None)
+    verified=(bool(re.search(r'CSC_POLICY_BRIDGE\ttrue',raw))
+        and bool(re.search(r'CSC_POLICY_SINGLE_PLAYER\ttrue',raw))
+        and status is not None and status.get('ready')==1 and status.get('faults')==0
+        and status.get('enabled')==1 and status.get('version',0)>0
+        and target is not None and target['originalHuman']==0 and not target['human']
+        and bool(re.search(r'CSC_POLICY_BASE_TAG\t[^\t\r\n]+\ttrue',raw)))
+    receipts=re.findall(r'CSC_POLICY_TARGET_RECEIPT\t(\{[^\r\n]+\})',raw)
+    target_receipt=json.loads(receipts[0]) if len(receipts)==1 else None
+    write_json(out/'policy-qualification.json',dict(verified=verified,native=status,seats=seats,targetReceipt=target_receipt))
+    assert verified,'Integrated policy is inactive or unqualified; inspect policy-qualification.json before autoplay'
+
+
+def qualify_purchase(controller, out, case, allow_tied=False):
     # Fixture qualification only. Never expose this current-bank test as a
     # live policy gate: native Economic is allowed to retain a plan and save.
     # Quotes from every city identify ambiguity before autoplay. The live
     # attempt observer still records which buyer actually wins later.
-    code='local scope='+lua(case)+"""
+    assert not allow_tied or case==CASES['szeged']
+    code='local scope='+lua(case)+'\nlocal allowTied='+('true' if allow_tied else 'false')+"""
 local player=assert(Players[scope.player])
 local city=assert(CityManager.GetCity(scope.player,scope.city))
 assert(not player:IsHuman() and city:GetName()==scope.name)
@@ -141,7 +251,7 @@ local target=scope.purchasePlots[1]
 local plot=assert(Map.GetPlotByIndex(target))
 assert(plot:GetOwner()==-1 and plot:GetDistrictType()==-1,'Fixture footprint already occupied')
 local row=assert(GameInfo.Districts[scope.district])
-local quote,buyer,count
+local quote,buyer,count,proposerQuote
 count=0
 local quotes={}
 for _,c in player:GetCities():Members()do
@@ -149,19 +259,36 @@ for _,c in player:GetCities():Members()do
  print('CSC_PURCHASE_CITY_QUOTE',c:GetID(),c:GetName(),target,tostring(q))
  count=count+1
  quotes[#quotes+1]={city=c:GetID(),quote=q}
+ if c:GetID()==scope.city then proposerQuote=q end
  if q and q>0 and(not quote or q<quote)then quote,buyer=q,c:GetID()end
 end
-assert(quote and buyer==scope.city,'Fixture has no unambiguous proposing-city purchase quote')
-for _,r in ipairs(quotes)do
- assert(r.city==buyer or not r.quote or r.quote<=0 or r.quote>quote,'Fixture buyer quote tied')
+if allowTied then
+ -- Deliberately ambiguous diagnostic pair, not ordinary purchase qualification.
+ assert(proposerQuote and proposerQuote>0 and quote==proposerQuote,'Prototype proposer is not a cheapest buyer')
+ local ties=0
+ for _,r in ipairs(quotes)do if r.quote==proposerQuote then ties=ties+1 end end
+ assert(ties>=2,'Expected prototype buyer ambiguity changed')
+ quote=proposerQuote
+else
+ assert(quote and buyer==scope.city,'Fixture has no unambiguous proposing-city purchase quote')
+ for _,r in ipairs(quotes)do
+  assert(r.city==buyer or not r.quote or r.quote<=0 or r.quote>quote,'Fixture buyer quote tied')
+ end
 end
 local bank=player:GetTreasury():GetGoldBalance()
 assert(bank>=quote,'Fixture lacks actual Treasury for its source quote')
 local queue=city:GetBuildQueue()
+local function optional(object,method,...)
+ if not object or type(object[method])~='function' then return 'unknown' end
+ local ok,value=pcall(object[method],object,...)
+ if ok and value~=nil then return value end
+ return 'unknown'
+end
 print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city,target,quote,bank,count,
- queue:CanProduce(row.Hash,false,true),queue:CurrentlyBuilding(),
- city:GetDistricts():GetNumAllowedDistrictsRequiringPopulation(),
- city:GetDistricts():GetNumZonedDistrictsRequiringPopulation())
+ optional(queue,'CanProduce',row.Hash,false,true),
+ optional(queue,'GetCurrentProductionTypeHash'),
+ optional(city:GetDistricts(),'GetNumAllowedDistrictsRequiringPopulation'),
+ optional(city:GetDistricts(),'GetNumZonedDistrictsRequiringPopulation'))
 """
     raw=controller.cmd(code,'PlotInfo','qualify-source-purchase')
     (out/'source-purchase-qualification.txt').write_text(raw,encoding='utf-8')
@@ -172,7 +299,8 @@ print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city
     assert float(bank)>=float(quote)>0
     assert len(re.findall(r'CSC_PURCHASE_CITY_QUOTE\t',raw))==int(count)
     write_json(out/'source-purchase-qualification.json',dict(verified=True,player=int(pid),city=int(city),
-        plot=int(plot),quote=float(quote),treasuryGold=float(bank),cities_quoted=int(count)))
+        plot=int(plot),quote=float(quote),treasuryGold=float(bank),cities_quoted=int(count),
+        purpose='buyer-prototype' if allow_tied else 'unambiguous-purchase',ambiguousBuyer=allow_tied))
 
 
 def run(args):
@@ -204,6 +332,7 @@ def run(args):
     assert sha(binary) == HOTFIX_EXE_SHA
     recovery = args.recover_from.resolve(strict=True) if args.recover_from else None
     replacements = {}
+    seat_provenance = None
     if case_name == 'nicopolis' and args.mode != 'original':
         original_run = args.original_run.resolve(strict=True)
         assert load(original_run / 'complete.json')['verified']
@@ -227,6 +356,11 @@ def run(args):
             replacements[relative] = (args.policy_root / relative).read_bytes()
         if getattr(args, 'without_frontier_offers', False):
             replacements[SCANNER] = ablate_frontier_offer(replacements[SCANNER],case)
+        if getattr(args,'prototype_buyer',None):
+            replacements[QUOTE_BRIDGE]=bypass_szeged_quote_screen(replacements[QUOTE_BRIDGE],case)
+        if getattr(args,'seed_source_seats',False):
+            relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+            replacements[relative],seat_provenance=seed_source_seats(replacements[relative],checkpoint,case)
     for relative, data in replacements.items():
         pins[csc][str(relative)] = dict(sha256=hashlib.sha256(data).hexdigest(), size=len(data))
     # Recovery must match the exact staged production files, not the older
@@ -245,6 +379,8 @@ def run(args):
     write_json(out / 'inputs.json', dict(mode=args.mode, case=case,
         observePurchases=args.observe_purchases,
         observePurchaseLineage=getattr(args,'observe_purchase_lineage',False),
+        prototypeBuyer=getattr(args,'prototype_buyer',None),
+        sourceSeatMigration=seat_provenance,
         without_frontier_offers=getattr(args,'without_frontier_offers',False),
         ablationScope=dict(player=case['player'],city=case['city'],district=case['district'],
             plot=case['purchasePlots'][0]) if getattr(args,'without_frontier_offers',False) else None,
@@ -321,6 +457,8 @@ Modding.EnableMod(chosen.Handle,true)
 
         def ready():
             verify_modules(session, (packages[ce] / ce_relative).resolve(), out, HOTFIX_SHA)
+            if args.mode == 'integrated':
+                qualify_integrated_policy(controller,out,case)
             controller.cmd(read(out / 'plot-watcher.lua'), 'CSC_AI_BakersGameplay', 'watch-source-plots')
             raw = controller.cmd('local scope='+lua(case)+"""
 local city=assert(CityManager.GetCity(scope.player,scope.city))
@@ -335,7 +473,7 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
             plots.extend(parse(raw, 'CSC_REPLAY_PLOTS'))
             assert len(plots) == len(set(plots)) and set(case['plots']) <= set(plots) and len(plots) <= 36
             if case_name != 'nicopolis':
-                qualify_purchase(controller,out,case)
+                qualify_purchase(controller,out,case,allow_tied=bool(getattr(args,'prototype_buyer',None)))
             return True
 
         session.ready_after_issue(200, ('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=ready)
@@ -361,9 +499,10 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
             image_size=XP2_IMAGE_SIZE), scope)
         observer.exports_sync.advance()
         if args.observe_purchases:
-            # Separate read-only script with its own RPC state. Its hooks sit
-            # in Economic::TryPurchasePlot and Purchase::Start and do not
-            # alter CE's district callers or the game's purchase decisions.
+            # Separate script with its own RPC state. Default is read-only.
+            # Explicit buyer-prototype restrict mode can exclude a competing
+            # city for the verified selected Quarter's contract. Prices/funds/
+            # payment stay native; it never forces a district choice.
             purchase_sources = (STUDY / 'observer.js', HERE / 'plot_purchase_observer.js')
             shutil.copyfile(purchase_sources[1], out / purchase_sources[1].name)
             purchase_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n"
@@ -376,7 +515,9 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
             # remain restricted to the two diagnostic footprints.
             purchase_scope = dict(player=case['player'], width=74, height=46, plots=case['purchasePlots'],
                 allCommandPlots=True, streamRecords=True, city=case['city'],
-                observeLineage=getattr(args,'observe_purchase_lineage',False))
+                observeLineage=getattr(args,'observe_purchase_lineage',False),
+                prototypeBuyer=getattr(args,'prototype_buyer',None),district=case['district'],
+                selectorObserverVerified=True) # init above verified the unpatched call/return window.
             write_json(out / 'purchase-scope.json', purchase_scope)
             assert purchase_observer.exports_sync.init(
                 dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE),
@@ -459,6 +600,10 @@ if __name__ == '__main__':
     parser.add_argument('--observe-purchases', action='store_true')
     parser.add_argument('--observe-purchase-lineage',action='store_true',
         help='Read-only tree/contract creation links; requires --observe-purchases')
+    parser.add_argument('--prototype-buyer',choices=('observe','restrict'),
+        help='Szeged diagnostic only: allow its tied quote; restrict mode can exclude other native buyers')
+    parser.add_argument('--seed-source-seats',action='store_true',
+        help='Diagnostic Szeged fixture only: seed absent seat properties from pinned turn-1 records')
     options = parser.parse_args()
     if options.case == 'nicopolis' and options.mode != 'original' and not options.original_run:
         parser.error('non-original modes require --original-run')
@@ -470,4 +615,11 @@ if __name__ == '__main__':
         parser.error('positive-frontier ablation requires integrated mode')
     if options.observe_purchase_lineage and not options.observe_purchases:
         parser.error('lineage observation requires --observe-purchases')
+    if options.prototype_buyer and (options.case!='szeged' or options.mode!='integrated'
+            or not options.observe_purchases or not options.observe_purchase_lineage):
+        parser.error('buyer prototype requires integrated Szeged with purchase and lineage observation')
+    if options.prototype_buyer and options.without_frontier_offers:
+        parser.error('buyer comparison requires the same active offer in both arms; do not ablate it')
+    if options.seed_source_seats and (options.case!='szeged' or options.mode!='integrated'):
+        parser.error('source-seat migration is qualified only for integrated Szeged')
     run(options)

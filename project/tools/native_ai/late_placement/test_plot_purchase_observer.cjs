@@ -16,6 +16,8 @@ const instructions = new Map([
     [0x4590a5, '4881ec80000000488be9'],
     [0x3e10fd, '488d8b70020000440fb64540'],
     [0x55dc9f, '488bd0488d4c2430e834f8e9ff'],
+    [0x3e0f37, 'e8143b0000'],
+    [0x3e0f29, 'c74540f1d8ffffc74544f1d8ffff'],
 ]);
 class Pointer {
     constructor(value) { this.value = Number(value); }
@@ -67,7 +69,11 @@ put(stack, 0xd0, plotFund); put(stack, 0xd8, slushFund);
 put(plotFund, 0, 6400); put(slushFund, 0, 19200); put(debit, 0, -25600);
 const registers = {rbp: ptr(city), r12: ptr(xy), rax: ptr(100),
     r14: ptr(city), r15: ptr(100), rdi: ptr(64), rsp: ptr(stack)};
-const fire = (site, overrides = {}) => hooks.get(site).call({context: {...registers, ...overrides}});
+const fire = (site, overrides = {}, threadId = 7) => {
+    const cpu={...registers,...overrides};
+    hooks.get(site).call({context:cpu,threadId});
+    return cpu;
+};
 fire(0x459169);
 fire(0x45918f); // Exact equality passes both native savings comparisons.
 put(plotFund, 0, 6399); put(slushFund, 0, 19201);
@@ -173,4 +179,85 @@ assert.equal(lineage.records[5].lineage.originCity,null);
 assert.equal(streamed.length,7);
 assert.equal(streamed[6].kind,'plot-purchase-fault');
 assert.equal(hooks.size,0);
-console.log('Purchase observer: Q8, funds, lineage, unknown/stale bindings, filters and detach passed');
+
+function buyerPrototype(options={}) {
+    streamed.length=0;
+    const isolated={...context,rpc:{exports:{}}};
+    vm.createContext(isolated);
+    vm.runInContext(fs.readFileSync(__dirname+'/plot_purchase_observer.js','utf8'),isolated);
+    isolated.rpc.exports.init({path:'pinned.dll',image_size:123},
+        {player:2,city:589829,district:37,width:74,height:46,plots:[1365],
+            streamRecords:true,observeLineage:true,prototypeBuyer:options.mode||'restrict',
+            selectorObserverVerified:true});
+    const other=0xf0000, alternateBuild=0xe1000;
+    put(city,0xd8,2);put(city,0xa8,options.otherOrigin?524292:589829);
+    put(other,0xd8,2);put(other,0xa8,524292);
+    put(player,0xd8,2);put(build,0x90,city);put(alternateBuild,0x90,city);
+    put(root,0x120,0);put(root,0x1c8,91);put(root,0x1b0,4001);
+    put(child,0x120,root);
+    put(contract,0x110,4333);put(contract,0x128,4001);put(contract,0x140,2);
+    put(contract,0x178,33);put(contract,0x17c,18);
+    put(xy,0,33);put(xy,4,18);
+    const plot=options.selectedPlot===undefined?1365:options.selectedPlot;
+    put(frame,0x40,plot%74);put(frame,0x44,Math.floor(plot/74));
+    if (!options.noSelection) {
+        fire(0x3e0f3c,{rdi:ptr(build),rbp:ptr(frame),rax:ptr(options.district===undefined?37:options.district)});
+        if (options.failedAfterMatch)
+            fire(0x3e0f3c,{rdi:ptr(build),rbp:ptr(frame),rax:ptr(-1)});
+        if (options.replacedAfterMatch)
+            fire(0x3e0f3c,{rdi:ptr(build),rbp:ptr(frame),rax:ptr(6)});
+        if (options.otherSelectorAfterMatch) {
+            put(alternateBuild,0x90,other);
+            fire(0x3e0f3c,{rdi:ptr(alternateBuild),rbp:ptr(frame+512),rax:ptr(37)});
+            put(alternateBuild,0x90,city);
+        }
+    }
+    fire(0x3e10fd,{rdi:ptr(options.otherBuild?alternateBuild:build),
+        rbp:ptr(options.otherFrame?frame+256:frame),rbx:ptr(child),rsi:ptr(91)},options.otherThread?8:7);
+    fire(0x55dc9f,{r15:ptr(contract),rsi:ptr(child),rbp:ptr(player)});
+    if (options.staleContract) put(contract,0x110,4334);
+    if (options.staleControl) put(contract,0x128,4002);
+    if (options.stalePlayer) put(contract,0x140,3);
+    if (options.staleTarget) put(contract,0x178,32);
+    if (options.fillCapacity) {
+        const remaining=512-streamed.length;
+        for(let i=0;i<remaining;i++)
+            fire(0x459169,{rbp:ptr(city),r12:ptr(contract+0x178),rax:ptr(85)});
+    }
+    const original=options.gold===undefined?85:options.gold;
+    const cpu=fire(0x459169,{rbp:ptr(options.intendedBuyer?city:other),
+        r12:ptr(options.unknownPointer?xy:contract+0x178),rax:ptr(original)});
+    const result=JSON.parse(JSON.stringify(isolated.rpc.exports.freeze()));
+    assert.equal(hooks.size,0);
+    return {cpu,result};
+}
+let probe=buyerPrototype();
+assert.equal(probe.result.fault,null);
+assert.equal(probe.cpu.rax.toInt32(),-1);
+assert.equal(probe.result.records.at(-1).originalGold,85);
+assert.equal(probe.result.records.at(-1).excluded,true);
+assert.equal(probe.result.records.at(-1).requiredBuyer,589829);
+for(const options of [{mode:'observe'},{intendedBuyer:true},{gold:-1},{gold:0},
+        {district:36},{selectedPlot:1364},{noSelection:true},{otherOrigin:true},
+        {failedAfterMatch:true},{replacedAfterMatch:true},{otherFrame:true},
+        {otherBuild:true},{otherThread:true},{unknownPointer:true},{otherSelectorAfterMatch:true}]) {
+    probe=buyerPrototype(options);
+    assert.equal(probe.result.fault,null,JSON.stringify(options));
+    assert.equal(probe.cpu.rax.toInt32(),options.gold===undefined?85:options.gold,JSON.stringify(options));
+    assert.equal(probe.result.records.at(-1).excluded,false,JSON.stringify(options));
+}
+for(const [options,pattern] of [[{staleContract:true},/identity changed/],
+        [{staleControl:true},/identity changed/],[{stalePlayer:true},/identity changed/],
+        [{fillCapacity:true},/trace capacity/]]) {
+    probe=buyerPrototype(options);
+    assert.match(probe.result.fault,pattern);
+    assert.equal(probe.cpu.rax.toInt32(),85); // Failure precedes the native write.
+    assert(probe.result.records.every(row=>!row.excluded));
+}
+// A changed target outside the explicit prototype scope is ignored before
+// any binding is used. It must not authorize a write or fabricate a receipt.
+probe=buyerPrototype({staleTarget:true});
+assert.equal(probe.result.fault,null);
+assert.equal(probe.cpu.rax.toInt32(),85);
+assert(probe.result.records.every(row=>!row.excluded));
+console.log('Purchase observer: Q8, lineage, scoped buyer constraint, mismatch/stale/capacity guards and detach passed');

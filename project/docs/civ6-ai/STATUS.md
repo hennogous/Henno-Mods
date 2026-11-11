@@ -32,11 +32,19 @@ the stream and cleanup verified. That target still lacked cash and remained
 unowned. Nearby 398 became owned through an unresolved route.
 [AI-C146](findings.md#ai-c146).
 
-Next prototype a contract-specific required buyer, preserving native prices,
-savings and payment. Compare it with the unrestricted buyer under the same
-Szeged offer, then follow actual debit, ownership, reservation and foundation.
+The required-buyer prototype's read-only run verified both selector listeners
+against the same Neighborhood decision. It did not establish active CSC
+publication: the older untuned checkpoint lacks the early identity-capture
+path, and the watcher had no initialized Base tags. This is not a frontier
+offer losing. [AI-C148](findings.md#ai-c148).
+
+Next qualify every policy gate before autoplay. Any fixture-only migration of
+missing seat metadata must use archived original identities, preserve existing
+values and keep production's safety gate intact. Then compare the required
+buyer with the unrestricted buyer under identical active offers, preserving
+native prices, savings and payment; follow debit, ownership and foundation.
 Reload/lifecycle support and the maintainable CE API remain open. Supplier
-acquisition is a separate 1.5 branch. No buyer override exists yet.
+acquisition is a separate 1.5 branch. No buyer override has run live yet.
 
 ## What remains open
 

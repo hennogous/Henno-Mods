@@ -394,10 +394,89 @@ CheckForDistrict invocation (thread, CityBuild and frame), then to the exact
 contract. A scoped quote-return prototype can reject other buyers while
 preserving the intended city's price, savings and normal command.
 
-This is a proposed diagnostic, not a shipping CE capability. It still needs
-implementation, failure tests, native receipts, payment, ownership and actual
-foundation. CE integration then needs lifecycle, cancellation and reload
-behavior reviewed with Henno before any upstream PR.
+This is a diagnostic, not a shipping CE capability. The tool now implements
+explicit observe/restrict modes. Both stage the same player/city/plot-specific
+UI quote-screen bypass; the native restriction additionally requires selected
+Tailors district 37 and its exact contract lineage. Production CSC's quote
+screen remains conservative.
+
+The selector result is replaced or invalidated on every result, then consumed
+on tree installation only with matching thread, CityBuild, frame and turn.
+The known contract is revalidated before each optional quote exclusion.
+Missing, mismatched or stale provenance cannot authorize a register write.
+Native prices, funds checks and command/payment paths remain in place.
+The synthetic matrix covers intended/other buyer, nonpositive quote, disabled
+mode, wrong district/target/city, missing/failed/replaced selection, mismatched
+frame/build/thread, unknown target pointer, stale contract fields and record
+capacity before mutation. A later fault invalidates a run; it cannot undo
+earlier exclusions.
+
+The first two observe attempts stopped before autoplay and closed normally:
+01 exposed a diagnostic context mismatch (UI uses GetCurrentProductionTypeHash,
+not Gameplay's CurrentlyBuilding); 02 exposed our first observer's patch in
+the second observer's original-byte guard. Optional metadata is now non-fatal.
+The selector observer first verifies the original full 16-byte call/return
+window. Only after its successful initialization does the second observer
+accept that same attachment's proof and verify the untouched call plus XY
+initialization. An observe run must still prove both listeners receive the
+same live selection before restriction is enabled.
+
+Payment, intended-city ownership and actual foundation still require live
+evidence. CE integration then needs lifecycle, cancellation and reload behavior
+reviewed with Henno before any upstream PR.
+
+### Szeged observer coexistence passed; active treatment was not established
+
+The szeged-buyer-observe-03 replay completed 200→208 and closed normally:
+native exit zero, no owned processes, verified preferences and exact package
+retirement. Both native traces were fault-free. Their streams exactly match
+the two purchase-observer records and ten selector-observer records. Both
+listeners at the shared return point saw turn 205's district 10 at plot 1360;
+the native city-build log identifies the resulting request as Neighborhood.
+The purchase observer also linked that selection to tree 50135054 and control
+50266128. This qualifies listener coexistence and same-invocation provenance.
+
+Tailors at unowned 1365 had a cached value of 173,875 Q8; the winning pair had
+277,389 Q8. No purchase contract or buyer quote for the target was observed,
+and it remained unowned and empty at 208. **This is not an active-offer loss:**
+the run has no successful publisher/frontier logs, and its watcher found no
+initialized Cotton Base tag. The earlier discovery initialized its model
+explicitly, whereas this watcher relies on normal publisher initialization.
+
+The publisher initializes the model after its UI, CE and original-seat safety
+gates. The source baseline's archived turn-1 identity check explicitly required
+the original-human properties to be absent, because tuning was disabled there.
+That provides the original-identity provenance for a controlled migration.
+Do not infer original identities from current autoplay IsHuman or relax the
+production safety gate. The next replay now captures every gate and requires
+an enabled, versioned production packet before autoplay. A restricted-buyer arm
+must wait for a real target contract; increasing bids solely to exercise the
+hook would be a separate artificial diagnostic, not worthwhile acquisition.
+
+Astra independently verified both streams, selection/tree identities and
+cleanup, and identified the missing publication evidence. This does not close
+Problem 1.5 or validate any native buyer restriction.
+
+The zero-turn szeged-policy-gate-01 confirmed bridge availability and
+single-player mode, with native ready=1, enabled=0, version=0 and faults=0.
+The absent-property logging call itself failed: this native GetProperty can
+return zero Lua values, so tostring(Game:GetProperty(...)) may call tostring
+without an argument. Assigning the result to a local first records nil safely.
+The run stopped before autoplay and cleanup verified. Its failure receipt
+retains the partial gate output; it has no complete policy-qualification JSON.
+
+The explicit --seed-source-seats diagnostic pins source.json, protocol,
+checkpoint and acknowledged turn-1 identity command/reply hashes. Its staged
+publisher prelude validates turn 200, all six recorded leader/seat identities,
+current controllers and every existing property before any write. Only missing
+properties are populated from archived original identities; matching values
+survive and conflicts abort. Production source and its late-load safety gate
+remain unchanged. Both buyer arms must stage identical migration bytes.
+Tests execute the Lua for zero-return reads, conflicting final-seat metadata,
+wrong leader/controller/turn, matching values and repeated execution. Astra
+independently verified the provenance hashes and reviewed the migration.
+The migrated observe04 must qualify a published packet and the exact target
+offer; the earlier observe03 cannot serve as its matched policy control.
 
 ### Artifact identities
 

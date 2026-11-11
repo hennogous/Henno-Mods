@@ -39,8 +39,13 @@ for another friendly city cannot satisfy the original city's reservation in
 this district path. The current quote screen is conservative and cannot bind
 a retained contract's later buyer. The new Nicopolis lineage replay verified
 city → district tree → accepted contract 4333 → target 401 → savings attempts.
-Next compare an explicit required-buyer prototype against the ordinary buyer
-under an identical Szeged offer, then trace native payment and foundation.
+The read-only Szeged prototype verified both native selector listeners, but
+did not establish active policy. Its untuned source intentionally lacked the
+original-seat metadata. The replay now requires active publication before
+autoplay; explicit fixture migration uses pinned turn-1 identities rather than
+current autoplay identities. Qualify its exact frontier offer before comparing
+the required-buyer prototype with the ordinary buyer, then trace native payment
+and foundation. [AI-C148](findings.md#ai-c148).
 Do not buy Debrecen's weaker +3 frontier merely to obtain a result when its
 owned +4 option is available. Supplier buying and contract reload/lifecycle
 remain open under 1.5. [Buyer dependency and lineage](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#native-ownership-dependency).

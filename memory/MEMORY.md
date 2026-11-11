@@ -63,16 +63,47 @@ summedcitySelections2,siteWins0; no errors/omissions. Three p3 pairs: city393221
 Bakers1011, city458758 Bakers/Tailors862. Native delivery only, not causalwin.
 
 Next: explicit required-buyer prototype A/B under identical Szeged offer and
-staged UI quote-screen bypass for that exact tuple. No prototype write exists
-yet. Keep ordinary quote/funds/commands. Bind selected Quarter/site to same
+staged UI quote-screen bypass for that exact tuple. Diagnostic prototype now
+implemented in project tool only (--prototype-buyer observe/restrict); source
+CSC stays conservative. No native buyer mutation tested yet. Keep ordinary
+quote/funds/commands. Bind selected Quarter/site to same
 CheckForDistrict invocation (thread+CityBuild+frame) before tree/contractjoin;
 replace/invalidate on every selector result, consume on tree installation.
 Require fully revalidated contract and selected district/target before excluding
 other-city positive quote at459169 (RAX=-1). Comparison A unrestricted vs B
 restricted tests buyer constraint; later no-offer arm tests bid causality.
-Need synthetic wrongdistrict/city/target, stale/failedselector, unknown/reused
-contract and disabled-mode tests BEFORE mutation. Later CE typed API needs
+Synthetic mismatch/stale/unknown/disabled/capacity cases pass. Later CE typed API needs
 contract-lifetime cancellation/reload binding; no upstream PR authorized.
+
+Observe01 stopped0turns on UI queue getter mismatch; use UI
+GetCurrentProductionTypeHash, Gameplay CurrentlyBuilding. Optional preflight
+metadata now safe/unknown; core quote/bank/ownership checks stay mandatory.
+Observe02 passed source85/719.7734 but stopped0turns on fingerprint: first
+dam_site observer had already hooked3e0f3c. Both closed normally. New coordinated
+guard requires selectorObserverVerified from successful original full16-byte
+window verification, checks untouched3e0f37 call5bytes +3e0f29 XYinit14bytes,
+then shares Frida's same interception point. Need live SAME-selection receipts
+from both observers before launching restrict. Eight Python fixtures +Node
+matrix pass; Astra reviewed source/ABI/scope.
+Observe03 completed200->208, normal cleanup/faultnull. Selector10records and
+purchase2records exactly equalstreams. Bothlisteners205district10/1360
+(Neighborhood percitybuildlog), tree50135054/control50266128. TargetTailors1365
+173875Q8 vswinner277389, no targetcontract. NOT an activeoffer loss: no publisher
+logs/initializedCottonBase. Baselinefractalsource turn1 asserted seatproperties
+nil; productionfailsclosedatlateunknownseats. AI-C148.
+Gate01 stopped0turns, normalcleanup: bridgetrue/singleplayertrue/CEready1
+enabled0/version0/fault0. Diagnostic tostring(Game:GetProperty()) threwbecause
+nativezero-return; localassignmentfixed. Explicit --seed-source-seats nowpins
+source/protocol/checkpoint/acknowledgedturn1command+reply, validatesALLsix
+leaders/currentcontrollers/existingpropertiesBEFOREwrites, seedsonlynilfrom
+archivedoriginalAI[1..5]/human0. Productionunchanged.11Python+Nodepass;
+Astrareviewpassed. Newpreflightrequiresactiveversionedpacket/admittedpid/tag
+andrecordsoptionalexacttargetreceipt beforeautoplay.
+Observe04 now running under sharedcontroller: launcher20292 start14:22:39
+local, sameDesktoproot/szeged-buyer-observe-04. Explicitseatmigration,
+buyerobserveonly. Checkexactprocess/artifactsbeforeanynextgame; no native
+buyerrestrictionyet. Exactoffer/receipt requiredbeforeattributingwinner.
+No feature-offer ablation allowed in buyer A/B arms.
 
 Read-only lineage hooks:3e10fd RDI CityBuild,RBX newtree,ESI rootTreeID;
 55dc9f R15 initializedcontract,RSI executingtree,RBP player. Contract+110 ID,

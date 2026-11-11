@@ -2452,3 +2452,29 @@ retained ownership guarantee or realised chain benefit was established.
 
 - [Native receipt evidence](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#positive-frontier-offers-reached-native-consumers)
 - Related: [AI-C145](#ai-c145), [AI-C146](#ai-c146).
+
+## AI-C148
+
+**Szeged's two selector listeners agree, but the replay did not establish active CSC policy**
+
+Status: accepted. Evidence: runtime journals, archived setup, source review.
+
+The 200–208 observer replay captured the same turn-205 Neighborhood selection
+from both listeners at the shared native return point: district 10, plot 1360,
+followed by tree 50135054. Both streams exactly match their final records,
+both traces are fault-free, and shared-controller cleanup verified.
+
+**Scope:** The exact Fractal checkpoint from AI-C145, staged current scanner,
+publisher and diagnostic quote bypass; observe mode made no native buyer writes.
+The target Tailors pair at 1365 had 173,875 Q8 against the winning 277,389 Q8.
+No target purchase contract was observed; the site remained unowned and empty.
+
+**Limits:** No successful publisher logs or initialized Cotton Base tag were
+recorded. This cannot be counted as a delivered frontier offer losing. The
+untuned source's turn-1 identity check required absent original-seat properties;
+the production policy intentionally refuses to infer those identities at a
+late load. Direct gate qualification precedes further buyer tests. No native
+buyer restriction or worthwhile acquisition has been demonstrated.
+
+- [Evidence and next qualification](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#szeged-observer-coexistence-passed-active-treatment-was-not-established)
+- Related: [AI-C145](#ai-c145), [AI-C147](#ai-c147).
