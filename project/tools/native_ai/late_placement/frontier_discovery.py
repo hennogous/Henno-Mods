@@ -19,10 +19,11 @@ from types import SimpleNamespace
 from nicopolis_replay import CE_SHA, DLL, HOTFIX_EXE_SHA, SCANNER, QUOTE_BRIDGE, CASES, qualify_integrated_policy
 from ce_bakers_fresh import package_identity
 from ce_replay import verify_modules
-from boston_material_policy import provenance as boston_provenance, stage as stage_boston_policy
+from boston_material_policy import provenance as boston_provenance, stage as stage_boston_policy, PREPARE_SPECIALTY
 from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, flags,
     launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json, lua)
+from full_game_controller.checkpoint import save_inactive_boundary
 
 
 def ui_readback(controller, case, state):
@@ -111,7 +112,11 @@ def run(args):
     home, user_root = args.my_games.resolve(), args.user_root.resolve()
     boston = args.case == ['boston-selection']
     boston_arm=getattr(args,'boston_arm',None)
+    prepare_specialty=getattr(args,'boston_prepare_specialty',False)
+    prepared=getattr(args,'boston_prepared',None)
     assert not boston_arm or boston and 23<=args.through<=40
+    assert not prepare_specialty or boston and not boston_arm and not prepared
+    assert not prepared or boston and boston_arm and not prepare_specialty
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     assert load(reference / 'complete.json')['verified'] and load(reference / 'session-closed.json')['verified']
     assert load(previous / 'complete.json')['verified'] and load(previous / 'session-closed.json')['verified']
@@ -133,6 +138,23 @@ def run(args):
                     shutil.copyfileobj(old,restored)
             assert sha(source)==meta['sha256']
             saves[name]=dict(path=str(source),sha256=meta['sha256'],turn=22)
+            if prepared:
+                # Both arms reopen the SAME saved derivative, never replay
+                # resource/ownership edits separately. These are fixture edits,
+                # not native acquisition or shipping CSC map intervention.
+                assert load(prepared/'complete.json')['verified']
+                assert load(prepared/'session-closed.json')['verified']
+                evidence=load(prepared/'specialty-preparation.json')
+                assert evidence['original_save_sha256']==meta['sha256']
+                assert evidence['edits']==[dict(plot=722,owner=3,city=131073),
+                    dict(plot=722,resource='RESOURCE_SUGAR')]
+                assert evidence['policy_delta_q8']==12288 and evidence['adjacency']==4
+                checkpoint=load(prepared/'prepared-checkpoint.json')
+                source=Path(checkpoint['native_save']).resolve(strict=True)
+                assert checkpoint['verified'] and checkpoint['turn']==22
+                assert source.parent==(home/'Saves/Single').resolve()
+                assert sha(source)==sha(Path(checkpoint['archive']))==checkpoint['sha256']
+                saves[name]=dict(path=str(source),sha256=checkpoint['sha256'],turn=22)
             identities[name]=[dict(player=3,city=131073,name='LOC_CITY_NAME_BOSTON',plot=721)]
             continue
         meta = load(args.worlds / name / 'checkpoint.json')
@@ -170,15 +192,17 @@ def run(args):
     replacements = {relative: (args.policy_root / relative).read_bytes() for relative in
         (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE)}
     role_provenance=None
-    if boston_arm:
+    if boston_arm or prepare_specialty:
         # Reproduce the actual current reusable modules, not just a new
         # scanner calling a historical policy helper in the carrier.
         for filename in ('CSC_AI_QuarterPlacement.lua','CSC_AI_DistrictBridge.lua'):
             relative=Path('Lua_UI/AI')/filename
             replacements[relative]=(args.policy_root/relative).read_bytes()
         role_provenance=boston_provenance(args.worlds)
-        relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
-        replacements[relative]=stage_boston_policy(replacements[relative],boston_arm,args.through)
+        if boston_arm:
+            relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+            replacements[relative]=stage_boston_policy(replacements[relative],boston_arm,args.through,
+                expected_delta=12288 if prepared else 6144)
     if boston:
         # Match this older save's CSC identity while keeping the verified
         # carrier's gameplay content identical across future matched arms.
@@ -215,11 +239,12 @@ def run(args):
     write_json(out / 'inputs.json', dict(saves=saves, identities=identities, ce_sha256=CE_SHA,
         require_model=args.require_model,compare_owned=compare_owned,boston_arm=boston_arm,
         through=args.through if boston_arm else None,role_provenance=role_provenance,
+        prepare_specialty=prepare_specialty,prepared_source=str(prepared) if prepared else None,
         packages={source.name: pin for source,pin in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     shutil.copyfile(HERE / 'frontier_site_survey.lua', out / 'frontier_site_survey.lua')
     if boston:shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
-    if boston_arm:shutil.copyfile(HERE/'boston_material_policy.py',out/'boston_material_policy.py')
+    if boston_arm or prepare_specialty:shutil.copyfile(HERE/'boston_material_policy.py',out/'boston_material_policy.py')
     controller = make_probe_controller(out, user_root=user_root)
     controller.study_endpoint = 22 if boston else 200
     session = NativeSession(out,controller,inventory=native_inventory,hold=HeldProcess,write=write_json)
@@ -264,6 +289,19 @@ Modding.EnableMod(selected.Handle,true)
                 verify()
                 carrier=packages[csc] if boston else packages[ce]
                 verify_modules(session,(carrier / ce_relative).resolve(),case,HOTFIX_SHA)
+                if prepare_specialty:
+                    raw=session.issue_once('prepare-boston-specialty',PREPARE_SPECIALTY,'CSC_AI_BakersGameplay')
+                    (case/'specialty-preparation.txt').write_text(raw,encoding='utf-8')
+                    assert 'CSC_MATERIAL_PREPARED\t722\tRESOURCE_SUGAR\t3\t131073\t2' in raw
+                if prepared:
+                    # Assert persisted facts after reload, in addition to the
+                    # host's saved-byte hashes, before qualifying publication.
+                    session.issue_once('verify-prepared-boston','''
+local p=assert(Map.GetPlotByIndex(722))
+assert(p:GetOwner()==3 and Cities.GetPlotPurchaseCity(p):GetID()==131073)
+assert(p:GetResourceType()==GameInfo.Resources.RESOURCE_SUGAR.Index)
+assert(p:GetDistrictType()==-1 and p:GetImprovementType()==-1)
+''','CSC_AI_BakersGameplay')
                 if boston_arm:
                     qualify_integrated_policy(controller,case,dict(player=3,city=131073,
                         district=36,profile='BAKERS',purchasePlots=[721]))
@@ -298,9 +336,48 @@ end
                 ui_readback(controller,case,state)
                 write_json(case / 'survey.json',state)
                 if boston:
+                    # Read only the six neighboring plots before designing a
+                    # controlled material fixture. A resource on the sole future
+                    # customer footprint can trade one benefit for another;
+                    # CanHaveResource supplies native map suitability, not an
+                    # instruction to create a resource or change ownership.
+                    raw=controller.cmd('''
+local site=assert(Map.GetPlotByIndex(721))
+for _,plot in ipairs(Map.GetAdjacentPlots(site:GetX(),site:GetY())) do
+ local owner=Cities.GetPlotPurchaseCity(plot)
+ local terrain=GameInfo.Terrains[plot:GetTerrainType()]
+ local feature=GameInfo.Features[plot:GetFeatureType()]
+ print('CSC_MATERIAL_NEIGHBOR',plot:GetIndex(),plot:GetOwner(),owner and owner:GetID() or -1,
+  terrain and terrain.TerrainType or '-',feature and feature.FeatureType or '-',
+  plot:GetDistrictType(),plot:GetResourceType(),plot:GetImprovementType(),
+  PlayersVisibility[3]:IsRevealed(plot:GetX(),plot:GetY()))
+ for resource in GameInfo.Resources()do
+  if CSC_Adjacency.HasTag('CLASS_CSC_BAKERS_SPEC',resource.ResourceType)then
+   print('CSC_MATERIAL_RESOURCE_POTENTIAL',plot:GetIndex(),resource.ResourceType,
+    ResourceBuilder.CanHaveResource(plot,resource.Index))
+  end
+ end
+end
+''','CSC_AI_BakersGameplay','boston-neighbor-geometry')
+                    (case/'neighbor-geometry.txt').write_text(raw,encoding='utf-8')
                     raw=controller.cmd('CSC_QUARTER_SURVEY_PLAYERS={3};\n'+read(out/'quarter_site_survey.lua'),
                         'CSC_AI_BakersGameplay','boston-current-policy-offers')
                     (case/'actual-policy-survey.txt').write_text(raw,encoding='utf-8')
+                    if prepare_specialty:
+                        # Do not assume the new material buys a stronger band:
+                        # the unchanged main model and retained host must show it.
+                        assert re.search(r'CSC_QUARTER_SURVEY_SITE\t3\t131073\tLOC_CITY_NAME_BOSTON\tBAKERS\t36\t721\t12288\t4\t',raw)
+                        target=next(r for r in state['sites'] if r['player']==3
+                            and r['city']==131073 and r['profile']=='BAKERS' and r['plot']==721)
+                        assert any(h['plot']==720 for h in target['futureHosts'])
+                        assert any(s['plot']==722 for s in target['supply']['specialty'])
+                        checkpoint=save_inactive_boundary(controller,turn=22,name='CSC_BOSTON_MATERIAL_STRONG',
+                            native_directory=home/'Saves/Single',archive=out/'prepared.Civ6Save')
+                        write_json(out/'prepared-checkpoint.json',checkpoint)
+                        write_json(out/'specialty-preparation.json',dict(
+                            original_save_sha256=source['sha256'],
+                            edits=[dict(plot=722,owner=3,city=131073),dict(plot=722,resource='RESOURCE_SUGAR')],
+                            policy_delta_q8=12288,adjacency=4,proof='cases/boston-selection/specialty-preparation.txt'))
                 return True
 
             session.ready_after_issue(source['turn'],('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),eligibility=ready)
@@ -376,6 +453,10 @@ if __name__=='__main__':
     parser.add_argument('--boston-arm',choices=('control','treatment'),
         help='Matched Boston material preference: control removes only its retained positive offer')
     parser.add_argument('--through',type=int,default=33)
+    parser.add_argument('--boston-prepare-specialty',action='store_true',
+        help='Diagnostic only: prepare and save one terrain-valid Sugar722/ownership derivative; advance zero turns')
+    parser.add_argument('--boston-prepared',type=Path,
+        help='Matched arms only: reopen the exact verified strong-material derivative directory')
     args=parser.parse_args()
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))

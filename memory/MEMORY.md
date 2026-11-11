@@ -153,6 +153,14 @@ physical13snapshotsidentical. Actual28795→34939,onewrite/eligiblecomparison,
 Base/SpecMustOwn1. Nextread6neighbors;Astraapprovescontrolledderivative
 otheremptyrevealednativelyvalidSpecneighbor+explicitfixtureownershipifneeded,
 samepreparedsavebotharms,requireactualmodel+4/+12288,neverraisebidtogap.
+Geometry01terminal0turnsnormalcleanup:722unownedrevealedGrassMarshSugarvalid;
+720GrassHillsSugarINVALID/Teavalid. Strongprepare01TERMINAL0turnsnormalcleanup,
+SaveComplete/hashnativebackup bdcd0d5e9f77e494ef2e7467fa8ad3c29c0167260561bfca07401ebd241aedd1.
+Exactfixtureedits722Bostonownership+Sugar;bankunchanged45;actualmain721
+adj4/+12288/Base1Spec1/pending0,retainedfuturehost720. No buyingclaim.
+Maintained--boston-preparedsamecheckpointbotharms;5helper+9discoveryPASS.
+CURRENT boston-material-strong-control-01 sharedcontroller through33; inspect
+exacthandle/artifactsbeforenextsession. Noexternalwriter;mainpolicyunchanged.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.
 No feature-offer ablation allowed in buyer A/B arms.
 

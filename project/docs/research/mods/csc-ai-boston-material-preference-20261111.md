@@ -76,3 +76,27 @@ City Center 795 and Base 796. Use the same derivative in both arms and require
 the unchanged model to independently produce +4/+12,288 before testing the
 ordinary strong-site preference. If either qualification fails or both arms
 make the same decision, retain that result without gap-derived bid escalation.
+
+The subsequent `boston-material-geometry-01` survey completed at turn 22 with
+zero turns advanced and verified normal cleanup. Native `CanHaveResource`
+accepts Sugar on revealed, empty, unowned **722** (Grass/Marsh). It rejects Sugar
+on **720** (Grass Hills); Tea is suitable there, but would still consume that
+customer footprint. Thus the earlier Sugar-on-720 idea was unsuitable for two
+independent reasons. The controlled preparation uses 722, preserving 720.
+
+`boston-material-strong-prepare-01` then completed at turn 22 with zero turns
+advanced, native SaveComplete, matching native/archive hashes and normal cleanup.
+The common derivative SHA-256 is
+`bdcd0d5e9f77e494ef2e7467fa8ad3c29c0167260561bfca07401ebd241aedd1`.
+It contains exactly the declared ownership and Sugar edits at 722; treasury
+remained 45 Gold. The actual main-policy survey reports Base 1, Specialty 1,
+pending 0, adjacency 4 and +12,288 Q8 for 721. The independent geometry survey
+retains future-host 720 and viable Specialty 722. These qualify a controlled
+test input, not a native decision effect. Both arms must reopen this exact save.
+
+The maintained runner checks original provenance, the derivative's verified
+preparation/closure, both saved hashes and persisted Sugar ownership. The
+diagnostic initial-offer guard accepts only the existing +24/+48 bands. Five
+Lua helper checks and nine discovery checks pass, including rejection of changed
+source facts, a missing mutation API before either edit, duplicate offers and
+gap-derived bid 10,730. Astra reviewed the fixture and these scientific guards.
