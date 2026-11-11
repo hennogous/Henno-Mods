@@ -2,6 +2,8 @@
 
 Dated reports preserve observations, failed tests and corrections. Start with [current status](STATUS.md) and the [roadmap](roadmap.md); old reports do not define current policy.
 
+- [Native Economic plot savings and accounting —11 November 2026](../research/mods/civ6-economic-plot-savings-20261111.md)
+
 - [AI research publishing](../../../memory/feedback_ai_publishing.md)
 - [AI test-game reporting and unattended evidence](../../../memory/feedback_ai_test_game_reporting.md)
 - [Model allocation for the CSC AI research thread](../../../memory/feedback_ai_thread_model_split.md)
