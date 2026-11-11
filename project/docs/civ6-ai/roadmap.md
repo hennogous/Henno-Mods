@@ -22,8 +22,14 @@ Keep the Stage 2 chain results as follow-through evidence.
 The active 1.8 case is Nicopolis. A single owned-site deduction changed
 the native winner and request. The integrated frontier correction also
 changed the previously unpriced frontier choice and produced a purchase
-request for plot 401. Classify that site's chain prospects and trace its
-acquisition under 1.5 before counting a placement improvement. Distinguish
+request for plot 401. Through turn 216 it stayed unowned and empty;
+the tree retained its request through 213 before the city selected Harbor.
+Economic still attempted it on 214. Eleven captured attempts had positive
+city quotes but insufficient earmarked plot funds. Savings accumulated;
+the quote also changed. The next 1.5 fixture needs known credible supply,
+actual treasury and income alongside these fund checks, then paid acquisition
+and placement. Plot 401 has no known Base and still has an unrevealed neighbor.
+Distinguish
 missing owned supply from a supplier that could be acquired. Positive
 frontier bids still need their separately qualified purchase path.
 

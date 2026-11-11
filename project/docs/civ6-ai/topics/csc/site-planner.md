@@ -187,12 +187,25 @@ changed the winner to plot 401, where Civ requested a purchase. The new
 site's supply, customer path and completed foundation remain to be verified.
 [AI-C139]
 
+The longer continuation retained the accepted request through turn 213.
+Plot 401 was still unowned and empty on 216, with no known Base and
+one remaining unrevealed neighbor. The city chose Harbor on 215.
+The scoped purchase observer recorded no events; it does not explain
+which upstream gate blocked acquisition. The next step traces quotes
+and savings rather than increasing the Quarter's site bid. [AI-C140]
+
+That trace found eleven positive Nicopolis quotes but insufficient
+earmarked plot funds. The funds accumulated naturally, coming close
+on turn 213, before the quote increased again. Actual treasury was
+not captured. This diagnoses the native savings gate; the next buying
+fixture needs known chain potential and actual paid acquisition. [AI-C141]
+
 | Problem | Coverage and next proof |
 | --- | --- |
 | 1.1 Materials | Owned, revealed deposits and the status of their mapped improvements. Qualify working, repairable, unlocked and locked suppliers in live choices. Unowned supply needs 1.5. |
 | 1.2 Neighbors | Existing mapped customers across stages and enabled goods providers, plus one feasible future footprint. Qualify the actual site choice separately from the Stage 2 customer and Service gates. |
 | 1.3 Rivers and 1.4 adjacency | Loaded Production and Gold adjacency, including the projected local Mill branch. The current bands still use projected yield. Compare pre-Mill and eventual site value in live cases before pricing the delay. |
-| 1.5 Buying | Positive offers use owned sites and suppliers. The frontier scan can publish deductions before acquisition. Verify both native buying routes below before adding purchase preferences. |
+| 1.5 Buying | Positive offers use owned sites and suppliers. Frontier deductions can reach native scores before acquisition. Nicopolis reached eleven targeted purchase attempts but lacked earmarked plot funds. Qualify a credible footprint and the separate supplier route, including actual treasury and paid acquisition. |
 | 1.6 Follow-through | Native UI build targets supply immediate legality. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |
 | 1.7 Defer | Track whether the city leaves the Quarter uncommitted when every site is weak, then reconsider after a specific new opportunity. Withholding a positive bid alone cannot demonstrate deferral. |
 | 1.8 Discourage poor sites | Nicopolis's scoped deduction changed the native site and request. A subsequent one-tile frontier deduction reached CE, but Civ found another frontier site. The new map scan covers known material losses across frontier candidates. Qualify its native choices and resulting foundations. |

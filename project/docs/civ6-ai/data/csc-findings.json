@@ -2110,5 +2110,29 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C138", "AI-N069", "AI-N110"]
+  },
+  {
+    "id": "AI-C140",
+    "title": "Nicopolis retained a frontier purchase request without acquiring its Quarter site",
+    "statement": "The integrated replay retained accepted plot-401 purchase request 4333 on turns 203–213. At turn 216 that site remained unowned and empty; the turn-215 joint selector had chosen Harbor elsewhere. The scoped paid-purchase observer recorded no events or fault.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Same turn-200 Continents checkpoint and CE DLL as AI-C139, integrated production scanner, through turn 216. Player 1, Nicopolis city 524295. Source and endpoint neighbor readbacks distinguish visible Base absence from unrevealed land.",
+    "limits": "No positive purchase event validated the four command callbacks in this interval. This command-only observer did not identify an upstream gate; AI-C141 subsequently diagnoses the captured earmarked-funds obstacle. Plot 398's acquisition mechanism remains unresolved. Plot 401 has no known Base but still has unrevealed neighboring land; it is not a demonstrated good chain site. No Quarter foundation or Service benefit was established.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C139", "AI-N069"]
+  },
+  {
+    "id": "AI-C141",
+    "title": "Nicopolis's frontier purchase attempts reached an insufficient plot savings fund",
+    "statement": "Eleven targeted Economic attempts on turns 204–214 obtained a positive Nicopolis quote for plot 401 and reached the savings gate. In every captured check the earmarked plot fund was below one quarter of the current quote. Funds accumulated naturally, but the quote changed and the site remained unowned at 216.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "static"],
+    "scope": "Same turn-200 Continents checkpoint, CE DLL and integrated CSC policy as AI-C140. Native quote return RVA 459169 and selected-city savings point 45918f. The 121 purchase receipts and two selector receipts exactly match their streamed journals. Selector and behavior-tree outputs are byte-identical to AI-C140's replay.",
+    "limits": "Combined funds were also insufficient in the captured inputs, but that second native comparison follows the first failing gate. Actual treasury and income were not captured. No paid-command positive control, acquisition, Quarter foundation or improved chain was established. Economic's turn-214 attempt prevents treating that turn's Not Buying anything tree text as cancellation evidence.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C140", "AI-N069", "AI-N113"]
   }
 ]

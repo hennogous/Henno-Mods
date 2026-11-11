@@ -518,3 +518,126 @@ classify plot 401's full chain prospects. A changed native
 winner therefore establishes delivery and coverage without
 proving an improved site or a completed Quarter. Its actual
 purchase, supplier and customer path are the next follow-up.
+
+### Following the frontier request through turn 216
+
+The `nicopolis-purchase-401-01` continuation used the same turn-200
+save, CE DLL and integrated production scanner. A separate read-only
+observer watched the plot branch of `Purchase::Start`: its recomputed
+quote, the negative Q8 argument at the Gold debit call, that call's return,
+and the annex call's return. Native identities and instruction fingerprints
+were checked before attaching. Boundary snapshots covered plots 398,
+401 and 472 and the revealed facts around them.
+
+The turn-203 winner again was Bakers at plot 401, 391,714 Q8.
+The district tree reported the same accepted plot-purchase request
+**4333** on turns 203–213. On 214 it said `Not Buying anything`.
+The next observed joint comparison, on 215, chose Harbor at plot
+327, 362,786 Q8. At the turn-216 endpoint plot 401 was still unowned
+and empty. It had no known adjacent Bakers Base. Neighbor 402
+remained unrevealed; 328, unrevealed at source, was now revealed
+without a resource. This is an uncertain site under the frontier
+policy, rather than a demonstrated good supply-chain site.
+
+The scoped purchase trace contained **zero events and no observer
+fault**. Plot 398 had become Nicopolis-owned and remained empty,
+with zero viable owned Base and one Specialty supplier. Without a
+positive purchase event validating these callbacks in this interval,
+the empty trace does not establish its acquisition mechanism. It also
+does not identify which quote, budget, command or contract gate kept
+plot 401 unbought. A debit-return record would repeat the preserved
+Q8 argument; it would not independently measure a treasury change.
+
+The shared controller closed with native exit code zero, no remaining
+owned process, verified preference restoration and verified package
+retirement. Independent Astra review agreed that the evidence proves
+neither paid acquisition nor an improved Quarter foundation. Problems
+1.5 and 1.6 remain open here. The next diagnostic follows the request
+upstream through the city quotes and earmarked plot/slush savings.
+
+Evidence hashes:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `purchase-trace.json` | `5b89c221819eab292290ef7ffe8ca3eaabfd6c6e869069bf08c684869391c853` |
+| `AI_Behavior_Trees.csv` | `86462c9806211e7bf5dd53e752a0439751f16bdbe8327275223dd5f5f898503e` |
+| `selector-trace.json` | `159874048c7b59271742006d6b5805c66484754058e26cbd1b73856f4ca67469` |
+
+The first attempt at the upstream diagnostic, `nicopolis-purchase-budget-01`,
+was interrupted before menu configuration. Its worker and native process
+were absent on recovery. No preference snapshot or controller command
+journal existed. Both temporary packages exactly matched the recorded
+manifests and were retired. It produced no gameplay evidence and is not
+counted as an engine failure.
+
+The second attempt, `nicopolis-purchase-budget-02`, reached a turn-210
+progress receipt but left neither a final native trace nor a closure
+receipt. Its recorded worker and native process were absent on recovery.
+Henno reported Shadow instability that morning. This attempt supplies
+no conclusion about purchases or the game engine. The follow-up adds
+immediately streamed, host-synced partial receipts so delivered native
+observations can survive a worker or machine interruption. Asynchronous
+trailing messages may still be lost. Exact integrated package recovery
+retains the original preference snapshot for final restoration.
+
+### Native quotes reached an insufficient earmarked plot fund
+
+The `nicopolis-purchase-budget-03` replay retained the same integrated
+policy and exact checkpoint. Its complete selector trace and behavior-tree
+CSV were byte-identical to `nicopolis-purchase-401-01`. Adding the read-only
+Economic observations did not change those recorded choices or requests.
+The frozen purchase trace contains 110 per-city quotes and eleven
+selected-city savings checks on turns 204–214, with no observer fault.
+Both streamed journals match their final traces exactly in content and
+order: 121 purchase observations and two district selections.
+
+Only Nicopolis had a positive quote for plot 401 in each attempt; the
+other nine player-1 cities returned `-1`. The native selected-city
+savings check recorded the following values, converted from Q8 to Gold:
+
+| Turn | Quote | Plot fund | Slush fund | Required plot fund | Combined funds |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 204–206 | 145 | 0 | 0 | 36.25 | 0 |
+| 211 | 150 | 24.1484 | 75.0742 | 37.5 | 99.2227 |
+| 213 | 120 | 29.0234 | 87.7070 | 30 | 116.7305 |
+| 214 | 150 | 33.3398 | 101.1328 | 37.5 | 134.4727 |
+
+The Q8 factor was 64, representing one quarter of the quoted cost.
+In all eleven samples the earmarked plot fund was below that first
+threshold. The combined funds were also below the quote, but this is
+a reconstructed predicate: the native combined-funds branch follows
+the first check and is skipped when the first fails. The Ghidra recheck
+confirmed quote return `459169`, saved fund pointers at stack
+`+0xd0/+0xd8`, the Q8 cost multiplication, first rejection at
+`4591b0`, and the later combined-funds rejection at `4591c9`.
+
+The funds were not permanently zero. The AI accumulated them naturally,
+and on 213 it lacked only 250 Q8 in its plot fund and 837 Q8 in the
+combined funds. The quote changed again before the next attempt. This
+does not establish how much actual treasury Gold the player held: its
+earmarked savings and displayed treasury are separate observations.
+Increasing the Quarter's site value alone would not make the captured
+fund balances meet this gate. A subsidy or own-funds allocation would
+need separate delivery and accounting evidence.
+
+There were no command-level quote, debit or annex receipts for any
+player-1 plot in this interval. The paid-command callbacks still lack a
+natural positive control. Economic attempted plot 401 on 214 even
+though that turn's tree log said `Not Buying anything`; that text must
+not be equated with contract cancellation. The endpoint still had
+unowned, empty plot 401 and no known adjacent Base. The next acquisition
+fixture should have credible known supply and customer geometry and
+record actual treasury and income alongside quotes and earmarked funds.
+
+`purchase-trace.json` SHA-256 is
+`ed2e45457960f0ec740b9d19fd9b7f20822bc4bf9b075005c022bc6deff888eb`.
+Selector and behavior-tree hashes match the preceding evidence table.
+Independent Astra review confirmed the register/stack decoding, arithmetic,
+stream equality and the distinction between the binding first check and
+the unexecuted second predicate. This diagnoses the funding gate and
+does not close the acquisition, foundation or profitable-chain tests.
+
+The shared controller verified normal closure at 216: native exit zero,
+no remaining owned process, original preferences restored and exact
+temporary packages retired. All observers and recovery code remain
+diagnostic tools outside the CSC mod. Production tuning was unchanged.

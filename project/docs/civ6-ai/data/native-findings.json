@@ -1920,5 +1920,17 @@
     "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
     "topic": "topics/native/district-choice.md",
     "related": ["AI-N006", "AI-N110"]
+  },
+  {
+    "id": "AI-N113",
+    "title": "The plot-purchase contract update predicate only checks unowned status",
+    "statement": "PurchasePlotContract::Update resolves its stored target plot and returns whether the owner is the unowned sentinel. This routine does not quote the tile or test earmarked savings, so a retained request does not establish affordability or execution.",
+    "status": "accepted",
+    "evidence_types": ["static"],
+    "scope": "Windows XP2 Ghidra reference 324c51e9 with byte-matched patched Steam text 092abfbb. Complete decompile of RVA 3fa260; target coordinate value at contract +0x178 and plot-data owner byte +0x1c.",
+    "limits": "The inspected update predicate is only one contract lifecycle stage. Outer scheduling, command validity, execution, expiry and cancellation can impose additional gates. No paid purchase is established by this static result.",
+    "sources": ["project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"],
+    "topic": "topics/native/district-choice.md",
+    "related": ["AI-N069", "AI-C140"]
   }
 ]

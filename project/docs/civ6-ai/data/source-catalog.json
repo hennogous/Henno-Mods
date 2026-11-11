@@ -536,8 +536,8 @@
       "title": "District score components, refresh and tile purchases",
       "kind": "report",
       "date": "20261104",
-      "bytes": 21238,
-      "sha256": "04c075217ba985915c6f32c208bc3b22b80c77253a68eb9e4efc1604c9576437",
+      "bytes": 21895,
+      "sha256": "eb1aa268e4061ba1bf495b50d04dd75011ddfde9a8ea03e9fe17f8549b994e70",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/civ6-district-cache-timing-and-purchases-20261104.md"
     },
@@ -1716,8 +1716,8 @@
       "title": "Shared Stage 2 AI policy on Fractal",
       "kind": "report",
       "date": "20261108",
-      "bytes": 27986,
-      "sha256": "e6f36ebd34cffced981afef6026b6d3d2c772f282697908676c0783314ff6a58",
+      "bytes": 34943,
+      "sha256": "232f80644968f6785d57a2decc54b5d3f6216d32e200e71eadb93be98e680cee",
       "hash_encoding": "UTF-8 without BOM; LF newlines",
       "site_path": "sources/project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"
     },

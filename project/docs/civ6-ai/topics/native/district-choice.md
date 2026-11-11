@@ -111,6 +111,16 @@ using improvement forecasts and a feature heuristic. This is not a universal
 highest-yield-tile auction. Requested targets have a more permissive savings
 hurdle than routine purchases. [AI-N069]
 
+The purchase contract's own update predicate checks that its target
+is still unowned. It does not quote the tile or test savings. A retained
+request must therefore be followed through Economic execution and the
+native command before counting an acquisition. [AI-N113]
+
+Nicopolis's runtime trace reached eleven positive city quotes and
+insufficient earmarked plot funds. Those funds accumulated while
+the quote changed. The observed funds are separate from actual
+treasury, which that trace did not capture. [AI-C141]
+
 The routine buyer receives one cached coordinate per city from
 CityBuild's frontier resource scan. The frontier test checks for a
 neighbor owned by the player, while the purchase command checks the

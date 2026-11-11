@@ -4,17 +4,30 @@ User goal is Problems **1.1–1.8 and 2.1–2.2**, with demonstrable native
 effects for each and Astra validation. Use the current handbook roadmap.
 Nicopolis's owned-site deduction has a matched choice/request effect
 (AI-C138). The integrated conservative frontier scan also reached CE
-and changed the winning frontier site (AI-C139). All three durable
-runs closed cleanly through 208 and restored preferences. No current
-game/controller process is owned by this investigation.
-Next inspect Nicopolis plot **401** and its actual purchase, supplier
-and customer path. Neither better placement nor the full goal is proved.
+and changed the winning frontier site (AI-C139). The longer replay through
+216 left plot 401 unowned and empty (AI-C140). The recovered budget
+diagnostic recorded eleven native targeted attempts: positive Nicopolis
+quotes but insufficient earmarked plot funds (AI-C141). Funds accumulated
+and quotes changed; actual Treasury was not captured. N113 identifies
+the ownership-only purchase-contract update predicate. Astra verified
+the native ABI, savings arithmetic and exact stream/trace equality.
+`nicopolis-purchase-budget-03` closed normally, restored original preferences
+and retired exact packages. No game/controller remains owned by this work.
+Next find a credible known-supply frontier footprint in existing saves,
+record actual Treasury/income plus earmarked funds, and qualify paid
+acquisition and foundation. Plot 401 still has an unrevealed neighbor
+and cannot demonstrate better chain quality. The full goal is not proved.
 Evidence is `Desktop/Codex/csc-ai-problems-1-2-20261110`, especially
 `nicopolis-original-durable-01`, `nicopolis-frontier-durable-01` and
 `nicopolis-integrated-frontier-01`. The durable shared-controller
 fixture is `project/tools/native_ai/late_placement/nicopolis_replay.py`.
 The source-verified original run preserved an unverified turn-203
 autosave as `purchase-lead-turn203.Civ6Save` with adjacent provenance.
+Budget attempts 01 and 02 were interrupted during Shadow instability;
+neither is a game-engine failure or completed test. The runner now
+supports exact integrated recovery, immediate host-synced partial native
+receipt journals and failure-path cleanup. Final streams matched all
+121 purchase receipts and two selector receipts in the successful run.
 Canonical findings and scope are in the handbook, including frontier
 uncertainty guards and the remaining owned-supply/purchase asymmetry.
 

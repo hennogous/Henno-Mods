@@ -198,6 +198,16 @@ all per-turn displayed Gold. No independent N-turn purchase countdown was found
 inside these inspected routines. Successful buying is still distinct from
 reservation, clearance, production and completion.
 
+The 11 November Ghidra recheck of `PurchasePlotContract::Update`
+at `3fa260` found an ownership-only update predicate: resolve the
+stored coordinate at contract `+0x178`, obtain the plot data, and
+return whether its owner byte at `+0x1c` is `-1`. That routine
+does not quote the plot or test savings. Its continued acceptance
+therefore cannot establish purchase affordability. Scheduling,
+execution and cancellation have additional paths. The Nicopolis
+replay retained one request for eleven sampled turns while its
+target stayed unowned. [Runtime continuation](csc-ai-shared-stage-two-fractal-20261108.md#following-the-frontier-request-through-turn-216).
+
 The two late pilot cases do **not** establish actual tile purchases. Their
 behavior logs say `SUCCESS, Purchase Plot, Not Buying anything` before reservation
 (The Hague74; Pokrovka92). That node can succeed on an already-owned location

@@ -18,8 +18,13 @@ build any Quarter. In a matched Nicopolis test, one deduction changed the
 chosen site and the resulting request. The alternative was an unowned
 tile outside our scanner. The integrated frontier correction now reaches
 that native score and changes the winner. Civ requested a different plot
-purchase. Inspecting that site's chain prospects and following the actual
-acquisition is the next test.
+purchase. That request persisted through turn 213, but the plot stayed
+unowned and empty through 216. Its supply prospects remain uncertain
+because a neighboring tile is unrevealed. The native trace now shows
+positive city quotes but insufficient earmarked plot funds across eleven
+attempts. Savings accumulated while the quote changed. The next test
+needs a site with known credible supply and customer space, plus actual
+treasury and income, before qualifying an acquisition policy.
 Tile buying follows in separate footprint and supplier tests that track
 the AI's savings, actual spending and follow-through.
 [Placement capability and test sequence](../topics/csc/site-planner.md#quarter-placement-capability).
