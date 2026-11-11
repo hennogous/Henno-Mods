@@ -145,9 +145,14 @@ sourceinitialmatch1/delta6144/removalexpected andexactReceiptstaged0vs1required
 beforeautoplay. Endpointrejectsdiag/mainpublisher/industryfailures.4Luahelper
 checks+9surveychecks passed; Astrareviewfixesapplied. Useroriginalturn3save
 remainsverified, bothcopiespreserved.
-CURRENT sharedcontroller boston-material-control-01 launcher22164started
-21:12:50local11Nov; source22through33. Inspectexacthandle/artifactsbefore
-nextsession. NoFrida/externalwriter. Mustcompareagainstsamecarriertreatment
+Bostonmaterialcontrol01/treatment01 bothTERMINAL22→33 verifiednormalcleanup.
+Astraauditedexactone-pairablation:6144onlypacketdiff,60otherentriesretained,
+physical13snapshotsidentical. Actual28795→34939,onewrite/eligiblecomparison,
+0wins; bothCampus944purchase225. 1.1OPEN, deliveryonly. AI-C150/report.
+720onlyfuturecustomerfootprint;Sugar720tradesfuture+1formaterial+1.
+Base/SpecMustOwn1. Nextread6neighbors;Astraapprovescontrolledderivative
+otheremptyrevealednativelyvalidSpecneighbor+explicitfixtureownershipifneeded,
+samepreparedsavebotharms,requireactualmodel+4/+12288,neverraisebidtogap.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.
 No feature-offer ablation allowed in buyer A/B arms.
 

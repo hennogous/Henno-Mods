@@ -2503,3 +2503,30 @@ so the inactive/active comparison is not an isolated offer ablation. The final
 
 - [Active offer evidence and hashes](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#active-szeged-offer-verified-without-forcing-a-purchase)
 - Related: [AI-C147](#ai-c147), [AI-C148](#ai-c148).
+
+## AI-C150
+
+**Boston's ordinary material-aware offer reached native comparison without changing the choice**
+
+Status: accepted negative result. Evidence: matched one-pair ablation, native
+score/receipt, city-choice logs and physical snapshots; independently audited by Astra.
+
+The main CSC policy supplied +6,144 Q8 to Bakers 721 in Boston on turn 22,
+raising its native score from 28,795 to 34,939. One completed packet window
+recorded a write, eligible cache read and city selection, with zero site wins.
+Both arms selected Campus 944 and accepted purchase request 225. All 13
+physical/queue snapshots through 33 matched. Both sessions closed normally.
+
+**Scope:** Same checkpoint and frozen gameplay carrier; current four main AI
+modules and quote bridge; missing saved player-3 role migrated from pinned
+original-AI provenance. Control removes only the retained target entry after
+capacity trimming; all other initial entries and policy-array counts match.
+No external native score writer. Current site has viable Cattle Base, no
+Specialty and projected adjacency 3, justifying the ordinary +24 band.
+
+**Limits:** Verifies integrated delivery, not a changed native choice, construction
+or Problem 1.1 closure. Later retained Campus planning is not evidence of a fresh
+Quarter comparison each turn. Adding Sugar to the sole projected customer
+footprint 720 would trade a customer point for a material point, not establish +4.
+
+- [Matched evidence and next controlled case](../research/mods/csc-ai-boston-material-preference-20261111.md)

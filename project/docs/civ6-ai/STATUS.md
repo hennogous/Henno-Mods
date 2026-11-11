@@ -25,12 +25,13 @@ a native Quarter choice toward a legal site with viable mapped Base supply.
 Verify actual supply, the published offer and the native comparison. Do not
 substitute a score-gap-derived diagnostic pulse.
 
-Boston turn 22 is the closest known decision window. Its old diagnostic pulse
-changed Campus to Bakers and reached completion, but the pulse was chosen from
-the control's score gap. First inspect the current shared model: its +24 band
-would not clear the historical gap; +48 might, if the site genuinely qualifies.
-The current zero-turn survey computes model offers only. An integrated replay
-still needs independently qualified original seats and active publication.
+The matched Boston 22→33 replay delivered the ordinary +24 preference:
+28,795→34,939 Q8, one write and eligible native comparison, zero wins. Both
+arms chose Campus; physical snapshots matched. Astra validated the negative
+result: **1.1 remains open**, with integrated delivery established. [AI-C150](findings.md#ai-c150).
+Next inspect a controlled stronger-material derivative. Preserve the sole future
+customer footprint and require the unchanged model to qualify the +48 band;
+do not reuse the old gap-derived pulse or count fixture ownership as buying.
 
 ## Evidence levels by sub-problem
 

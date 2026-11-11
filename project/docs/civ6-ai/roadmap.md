@@ -60,7 +60,7 @@ remain open under 1.5. [Buyer dependency and lineage](../research/mods/csc-ai-fr
 
 ### Earlier Stage 2 development evidence
 
-**Active 2.2 â€” preserve Heidelberg's only viable supplier.**
+**Separate absolute-exclusion qualification — preserve Heidelberg's only viable supplier.**
 The integrated repair build's normal-start repeat matched the previous
 turn-249 development result. Melbourne reached 132 active turns,
 Launceston 60, Magdeburg 35 and Heidelberg 26. Heidelberg's Farm repair

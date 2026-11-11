@@ -51,6 +51,8 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.1.** Boston turn 22 is a candidate fixture, not completed
-evidence. Its old successful pulse was gap-derived. First inspect the current
-model's actual band; only then run an ordinary-policy matched ablation.
+**Active item: 1.1.** The matched ordinary-policy Boston test delivered +24
+but left the native Campus choice unchanged. [AI-C150](findings.md#ai-c150)
+therefore establishes integrated delivery, not closure. A controlled stronger
+material case must independently qualify the ordinary +48 band while retaining
+real customer space; fixture resource/ownership edits prove no buying capability.
