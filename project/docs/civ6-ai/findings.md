@@ -2,6 +2,8 @@
 
 Maintained Markdown. Preserve scope, evidence and superseded status when correcting a finding.
 
+Latest placement investigation: [AI-C142](#ai-c142).
+
 ## AI-C001
 
 **The objective is empire benefit**
@@ -2290,3 +2292,31 @@ Eleven targeted Economic attempts on turns 204–214 obtained a positive Nicopol
 - [Evidence: csc-ai-shared-stage-two-fractal-20261108.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md)
 
 Related: [AI-C140](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c140), [AI-N069](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n069), [AI-N113](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n113).
+
+## AI-C142
+
+**Three saved-world surveys found frontier leads with known supply and positive quotes**
+
+Status: accepted. Evidence: runtime, source.
+
+A zero-turn shared-controller survey found 34 city/profile/plot pairs with known
+viable owned Base supply and positive UI quotes across the existing Continents,
+Pangaea and Fractal turn-200 worlds. Two pairs had a working Base, 26 had future
+customer geometry, and none had an existing mapped owned host. No supplier-only
+purchase lead met the separate revealed/unowned/adjacent-Base enumeration.
+
+**Scope:** Exact archived saves, same verified CE carrier and current integrated
+scanner/publisher. Per-world city/name/owned-plot checks, independent Gameplay
+and UI readbacks, and verified normal restoration. Counts include multiple city
+or profile offers on the same physical plot.
+
+**Limits:** Discovery is not native choice, acquisition, capacity, reservation,
+construction or benefit evidence. Future footprints are alternatives. Gameplay
+quotes were unavailable to the diagnostic; UI provided the prices. All strict
+UI queries returned false at the inactive observer boundary, with the effect
+of caller/turn/overload semantics unresolved. That does not establish the native
+Economic consumer's eligibility. Producer unlocks do not establish local build
+requirements. Szeged plot 1365 remains a lead, not a qualified +4 site.
+
+- [Evidence and artifact hashes](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md)
+- Related: [AI-C141](#ai-c141), [native purchase gates](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md).

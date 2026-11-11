@@ -18,7 +18,7 @@ are retired. The public CSC player documentation site remains independent.
 
 1. Record the result in its dated evidence report: exact input identities, intervention, native consumer, observed outcome and limits.
 2. Update the focused engine reference/AI-N entry if it teaches reusable engine behaviour. Update CSC Markdown/AI-C entries for the mod application. Link the evidence rather than copying a diary everywhere.
-3. Preserve stable IDs and superseded assertions. New generic engine IDs follow AI-N113; new CSC IDs follow AI-C141 until a later entry claims them. Check the maintained registers before allocating one.
+3. Preserve stable IDs and superseded assertions. Allocate the next unused ID from the maintained register; inspect it rather than inferring the next ID from an old report.
 4. Update status and the affected numbered roadmap item. Distinguish input, proposal, native comparison, request, execution, completion and realised benefit.
 5. Check changed links and evidence scope. Run meaningful code tests when implementation changes. Knowledge edits do not need Quartz, Mermaid rendering or a website deployment.
 6. Make regular scoped commits and pushes in each affected repo. Keep unrelated workspace changes out. Review CE contributions with Henno before any upstream PR.

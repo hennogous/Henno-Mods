@@ -1,5 +1,24 @@
 # Late district placement trial
 
+## Finding a credible frontier purchase fixture
+
+`frontier_discovery.py` loads the existing hash-verified Continents, Pangaea
+and Fractal turn-200 saves in one shared session, without advancing turns.
+It stages only the current production scanner/publisher in a frozen carrier.
+`frontier_site_survey.lua` enumerates unowned footprint leads with known
+owned Base supply; supplier-only acquisition leads are separate. Optional
+Gameplay fields retain explicit availability/error data. Independent UI
+reads join quotes and economy by scoped identities. The inactive observer
+`uiCanStartAtBoundary` result is not proof of native Economic legality.
+Future hosts are alternative geometry, not simultaneous projects or admitted
+builds. Inspect capacity, reservations, native funds and actual execution
+before calling a discovery lead a qualified purchase opportunity.
+
+Use `--help` for explicit artifact roots and optional individual `--case`.
+`test_frontier_discovery.py` uses the existing isolated Lua 5.1/Lupa dependency
+to check filtering and missing-input behaviour; its UI join fixture does not
+prove live API parity. See the [three-world evidence](../../../docs/research/mods/csc-ai-frontier-purchase-discovery-20261111.md).
+
 ## Finding comparable owned Quarter sites
 
 `quarter_site_survey.lua` is a read-only diagnostic for an inactive saved

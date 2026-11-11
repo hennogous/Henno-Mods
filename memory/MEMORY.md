@@ -18,10 +18,23 @@ the ownership-only purchase-contract update predicate. Astra verified
 the native ABI, savings arithmetic and exact stream/trace equality.
 `nicopolis-purchase-budget-03` closed normally, restored original preferences
 and retired exact packages. No game/controller remains owned by this work.
-Next find a credible known-supply frontier footprint in existing saves,
-record actual Treasury/income plus earmarked funds, and qualify paid
-acquisition and foundation. Plot 401 still has an unrevealed neighbor
-and cannot demonstrate better chain quality. The full goal is not proved.
+The zero-turn `frontier-discovery-three-saves-01` completed and closed normally.
+It found 4/10/20 known-Base frontier pairs in Continents/Pangaea/Fractal, with
+34 positive UI quotes, two working Base leads and zero existing mapped hosts.
+No supplier-only lead was found. AI-C142 documents its scope. Gameplay quote
+calls were unavailable; independent UI reads succeeded. UI CanStart was false
+for all at the inactive observer boundary: do NOT treat it as native Economic
+legality or discard every lead on that basis. Read caller/turn/overload first.
+Next inspect Fractal Szeged (player2 city589829) Tailors plot1365: working Cotton
+1366, two river edges, future host alternatives at1290, quote85, Treasury719.7734.
+Need exact shared-model adjacency/host types, capacity, reservation/current
+request, native earmarked funds, then a matched integrated frontier offer.
+Host1290 belongs to OTHER friendly city524292, so check cross-city rules and
+that city's plan. Do not require immediate customer admission for long-term
+geometry. Positive frontier offers are NOT implemented (only deductions).
+This is not yet a qualified +4 site or Stage2 Harbor chain. Full goal remains open.
+The discovery tool and six tests are under project/tools/native_ai/late_placement.
+No game/controller is currently owned. Main production tuning was unchanged.
 Evidence is `Desktop/Codex/csc-ai-problems-1-2-20261110`, especially
 `nicopolis-original-durable-01`, `nicopolis-frontier-durable-01` and
 `nicopolis-integrated-frontier-01`. The durable shared-controller

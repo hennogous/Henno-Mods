@@ -23,10 +23,14 @@ journals exactly. The controller verified normal exit, preference restoration
 and temporary-package retirement. Astra independently reviewed the decoding,
 fund arithmetic and limits. See [AI-C141](findings.md#ai-c141) and its evidence.
 
-The next test needs a frontier footprint with **known credible Base supply,
-a concrete customer path and a positive quote**. Discover it in existing saves;
-then observe Treasury/income separately from earmarked funds, paid acquisition,
-reservation and construction. A supplier deposit outside the border is a separate
+The zero-turn survey of three existing saves found 34 known-Base frontier
+pairs with positive UI quotes. Szeged Tailors plot 1365 has working Cotton,
+two river edges and future customer space, quoted at 85 Gold. It is the next
+lead to inspect for actual projected adjacency, host type, capacity and current
+commitment. Its future host belongs to another friendly city, so cross-city
+rules and that city's plan also need checking. Positive frontier offers still
+need implementation. See [AI-C142](findings.md#ai-c142). Then trace native earmarked funds,
+paid acquisition, reservation and construction. A supplier deposit outside the border is a separate
 purchase problem. The Nicopolis site still has an unrevealed neighbor and cannot
 qualify as an improved chain opportunity.
 
@@ -47,4 +51,4 @@ RHAI5 compatibility is deferred. No upstream CE PR is authorized yet.
 Keep engine facts in the [civ6-ai skill](https://github.com/hennogous/civ6-ai/blob/main/SKILL.md).
 CSC applications and test outcomes belong here. [The archive](library.md) retains
 old investigations and corrections; it is supporting evidence rather than a
-required reading sequence. No test game is currently owned by this investigation.
+required reading sequence. Test ownership and interruption recovery are recorded in each run's controller receipts.

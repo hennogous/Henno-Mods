@@ -228,3 +228,5 @@ Dated reports preserve observations, failed tests and corrections. Start with [c
 - [Native validation limit —23 October observer defeat](../../tools/ai_baseline/full_game_controller/README.md)
 - [Offline CSC site planner](../../tools/ai_site_planner/README.md)
 - [Native AI static extraction](../../tools/native_ai/README.md)
+
+- [Frontier purchase discovery — 11 November 2026](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md)

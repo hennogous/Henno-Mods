@@ -32,6 +32,11 @@ and placement. Plot 401 has no known Base and still has an unrevealed neighbor.
 Distinguish
 missing owned supply from a supplier that could be acquired. Positive
 frontier bids still need their separately qualified purchase path.
+The zero-turn discovery found 34 known-Base frontier pairs across the three
+existing worlds. Inspect Szeged Tailors plot 1365 first: working Cotton,
+two river edges and future customer space. Its 85 Gold quote is a discovery
+lead; projected adjacency, admission, commitments and native funds still
+need qualification. [Discovery evidence](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md).
 
 ### Earlier Stage 2 development evidence
 
