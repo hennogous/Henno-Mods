@@ -30,10 +30,21 @@ Trace contribution, offer and comparison; do not assume later customer construct
 
 The first Boston +24 pair remains an accepted negative result. The prepared
 +4 source's ordinary +48 preference changed Government to Bakers, closing 1.1
-at the stated scope. Its +24 band would already beat Government, so removing
+at the stated scope. Arithmetic suggests +24 may already suffice, so removing
 only the future customer's one point may change the score without changing
 the choice. Review that discriminating margin before spending another replay.
 1.4 strong-over-viable preference and 1.6 construction remain open.
+
+The bounded Fractal customer scout captured current native offers, caches and
+nine winners without an extra hook. Makwa's positive source offer became a
+deduction before its fresh comparison; the other compared candidates were far
+behind. This supplies no changed-choice case. Prefer an earlier archived window
+and capture contemporaneous supply facts. [AI-C152](findings.md#ai-c152).
+
+Astra recommends the archived turn-22 world, scoped through 24: Delhi's fresh
+turn-23 Preserve value 145 is a closer lead. Its pinned original scout supports
+all five original AI seats; qualify all properties before nil-only migration and
+use identical setup in later comparison arms. Keep map facts and bands unchanged.
 
 ## Evidence levels by sub-problem
 

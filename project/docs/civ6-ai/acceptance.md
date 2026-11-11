@@ -57,5 +57,6 @@ Astra independently audited these closure scopes on the resumed goal.
 
 **Active item: 1.2.** Trace the mapped neighbor contribution through the ordinary
 offer to a changed native choice. AI-C151 closes 1.1 but does not establish the
-necessity of its strong-band increment: ordinary +24 would also beat this source's
-Government. The first +24 Boston pair remains a valid negative result, AI-C150.
+necessity of its strong-band increment: arithmetic suggests ordinary +24 might
+already suffice. That ablation remains unrun. The first +24 Boston pair remains
+a valid negative result, AI-C150.

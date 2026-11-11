@@ -176,8 +176,22 @@ Newhost_choice_policy.py read-onlyexistingCETraceReadfixedprefix(append-safe,
 samegen/version,exactoffset/count,rawindices), 20pairs+nativeBestcityrecords.
 ExplicitArmAFTERmainpreflight avoidsstartupfalsefault;strictafterarm;bound207
 capturesMakwa206 NOT Diara207.5reader+9discovery+5BostonchecksPASS/Astrareview.
-CURRENT sharedcontroller host-choice-fractal-scout-01 exec17078 launched:
-Fractal200→207 main4AI/UI, pinnedwholeworldseats seed, NOFrida/newhook/pulse.
+Host-choice-fractal-scout01 TERMINAL200→207/7turnsverifiednormalcleanup.
+9BEGIN/ENDmarkersmatch;5445prefixrecordsfiltered281unique=136net136cache9best,
+no failures. NativeCEprefixreader validated WITHOUTFrida/newhook/pulse.
+Makwa2678initiallyvalidBaseFlax2603+TailorsSpecSilver2752/futurehosts2604,2677;
+TailorsNOexistingHarbor/otherhost. First2pubs+12288/+6144;frompub3both-65536.
+206Neighborhood2677wins228579;priorcache2678Bakers111521/Tailors111094.
+2603Flaxcoords13,35=heldMistawasisEncampmentplan,production201/buildqueue202;
+likelysupplylossbutNOendpointphysicalfacts, don'tstateexactclassifiercause.
+Otherpositivecomparedcandidategaps>=150145;no1.2case. C152/report.
+Nextearlyarchiveddecisionwindow withcurrentfactsATcomparison, notlargerbid.
+No controllerownednow. AstraindependentlyvalidatedC152negative/counts/cleanup.
+NextsourceAstraapproved: originalBostonworld22→24, earlyDelhi23Preserve145
+vsBakers1061Base987 (Pokrovka22Preserve248;Washington23Bakers181at870 secondary).
+PinnedscoutcivicsEXACT1..5 supportsall5originalAIrole migration; validateALL
+players/configs/propertiesBEFOREnil-onlywrites, sameall5setupbothfuturearms.
+P3-onlyoldrunsnotmatchingcontrols. CaptureCURRENTmodel/supplyatcomparison.
 FirstCLIpreflightusedwrongprevioussurveyshape andstoppedBEFORElaunch/output;
 correctrunusesowned-site-survey-all-customers-01. Inspecthandlebeforeanynextgame.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.

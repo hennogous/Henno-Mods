@@ -75,3 +75,63 @@ threshold or close 1.2 by itself. Any subsequent ablation keeps current eligibil
 fixes, ordinary bands and other policy, restricting only mapped host recognition
 where justified; Stage-2-only recognition does not necessarily erase all real
 later-stage adjacency value.
+
+## Scout result: current delivery verified, no discriminating choice
+
+`host-choice-fractal-scout-01` completed **200→207**, seven turns, with verified
+normal exit, owner absence, preferences and packages. All nine prefix begin/end
+markers match. Seven nonempty publication prefixes contain 5,445 native records;
+the declared filter retains **281 unique generation/index records**: 136 NetValue,
+136 cache and nine actual winners. No reader, main publisher or placement failure
+was logged. These are complete sampled prefixes, not a claim that no later native
+callbacks appended before the next publication.
+
+The current turn-200 map/model survey qualifies Makwa 2678's potential:
+
+- Bakers: working Flax Base at 2603, City Center customer at 2751, projected local
+  Wind Mill hill contribution; combined 3 becomes 4 with a feasible future
+  Commercial/Entertainment footprint at 2604 or 2677.
+- Tailors: working Flax Base 2603 and Silver Specialty 2752, no existing adjacent
+  host. Specific future Holy Site/Commercial/Theater footprints at 2604 or 2677
+  yield projected 3. These are later-stage customer paths, not a Harbor claim.
+
+However, the qualifying offers do not persist to the fresh choice. The first
+two publications apply +12,288/+6,144 to Bakers/Tailors 2678. From publication 3
+onward both receive **−65,536**. At the turn-206 comparison, the recorded winner
+is Neighborhood 2677 at **228,579 Q8**. The preceding same-window caches hold
+Bakers 2678 at **111,521** and Tailors at **111,094**. These were no longer positive
+customer-aware offers losing a close comparison.
+
+The source Flax at 2603 is (13,35). Mistawasis's retained Encampment plan reserves
+that coordinate, selects production on 201, and the city queue records Encampment
+construction on 202. **Inference:** this plausibly explains loss of the shared
+supplier. Endpoint physical supplier facts were not captured, so the exact
+classifier cause is not proved and must not be stated as a verified harvest,
+resource removal or model defect.
+
+Other observed candidate/winner pairs are also unpromising: the smallest preceding
+cache gap among positively offered compared candidates is **150,145 Q8**, far
+larger than the relevant ordinary host-policy increment. Cache and winner records
+are ordered observations, not an atomic matrix/threshold snapshot. No causal
+ablation or **1.2 closure** follows from this scout.
+
+One useful measurement distinction is explicit in the native records: in the
+first window Bakers 2678 goes **176,661→188,949** at NetValue, then reaches
+**195,405** after cache aggregation. The raw +48 input and downstream cache total
+are different stages. Do not substitute one for the other's units or timing.
+
+Next prefer an earlier archived decision window with ordinary-score competition,
+while keeping current policy bands. Retained turn-200 plans and supplier loss
+make this particular later comparison unsuitable; do not enlarge its bid to
+manufacture a win. Capture live supply/site facts at the actual comparison in
+future scouts so a source-qualified site is not silently treated as still viable.
+
+Astra independently reproduced the prefix counts, native measurements, timing
+limits and terminal cleanup. Its next recommendation is the archived early
+turn-22 world through 24, prioritizing Delhi's turn-23 Preserve comparison
+(logged 145) beside Bakers candidate 1061 / Base 987. Pokrovka's Preserve 248
+on 22 and Washington's already-winning Bakers 181 on 23 are secondary leads.
+The pinned scout explicitly contains original AI seats 1–5 and restored human 0;
+any broadened migration must validate every seat/configuration/property before
+nil-only writes and be identical in later paired arms. The older player-3-only
+runs are leads, not matching controls for a new all-five setup.

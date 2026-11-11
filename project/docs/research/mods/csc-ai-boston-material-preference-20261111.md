@@ -123,7 +123,7 @@ Campus result.
 | --- | --- | --- |
 | First Boston district choice, 22 | Government Plaza, logged value 96 | Bakers, logged value 124 |
 | Reserved plot | 796, Cattle | 721, supplied Quarter site |
-| Target cache | No staged target | 19,623→31,911 Q8, exact +12,288 |
+| Native NetValue before/after intervention | No staged target | 19,623→31,911 Q8, exact +12,288 |
 | First completed target receipt, observed 23 | Staged 0 | Write 1, eligible read 1, city selection 1, site win 1 |
 | Quarter request | Absent | Contract 225 submitted on 22 |
 | Later outcome | Government replaces Cattle by 29 | Bakers plan retained through 28, then Preserve selected on 29 |
@@ -143,8 +143,9 @@ and site choice, **not relocation between two Bakers sites**.
 
 **Limits:** 1.5 acquisition and 1.6 construction remain open. Do not also close
 1.4: the pair isolates the whole positive offer, not the strong-over-viable
-increment. In this source, the +24 band would yield 25,767 Q8 (100.65 utility),
-already above Government's logged 96. A future-customer-point ablation that
-only changes +48→+24 is therefore unlikely to change this initial choice.
+increment. At this intervention boundary, +24 would yield 25,767 Q8 (100.65
+utility), already above Government's logged 96. This arithmetic makes a
++48→+24 customer-point ablation an unlikely discriminating case; the weaker
+band's full native comparison has not been run on this derivative.
 The active next acceptance is 1.2: trace a mapped existing or specific feasible
 future customer's contribution through policy and a controlled native choice.

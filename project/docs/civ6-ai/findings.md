@@ -2553,8 +2553,35 @@ and reserved that site. Both completed 22→33 with verified normal cleanup.
 was replaced by Preserve on 29. No acquisition claim: ownership and Sugar
 were explicit common fixture edits. This proves joint type/site choice, not
 relocation among Bakers sites or necessity of the +48 rather than +24 band.
-The latter would also clear this source's logged Government value, so 1.4
-remains open. Dynamic shipping policy contains no test-city coordinates.
+Arithmetic suggests +24 may already suffice, but that ablation has not been
+run; 1.4 remains open. Dynamic shipping policy contains no test-city coordinates.
 
 - [Source, matched result and limits](../research/mods/csc-ai-boston-material-preference-20261111.md#strong-material-pair-changed-native-choice-no-construction-yet)
 - Related: accepted negative [AI-C150](#ai-c150).
+
+## AI-C152
+
+**Current customer-aware offers reached native scoring, but Makwa lost its positive eligibility before selection**
+
+Status: accepted observation, not a causal choice comparison.
+
+A bounded main-policy Fractal replay through inactive 207 captured 281 unique
+scoped native NetValue/cache/winner records from seven publication prefixes.
+Makwa 2678 initially qualified working Base/Specialty and specific later-stage
+customer footprints. Bakers/Tailors received +12,288/+6,144 for two publications,
+then −65,536 from publication 3. At the fresh 206 comparison Neighborhood won
+at 228,579 Q8; preceding caches for the two Quarter rows were 111,521/111,094.
+
+**Scope:** Same pinned Fractal-200 source, current four main AI modules and UI
+bridge, explicit original-seat migration from pinned provenance; existing CE
+read-only trace API, no Frida hook or diagnostic score writer. Seven turns and
+normal cleanup verified. Initial NetValue and downstream cache totals are
+distinguished; no effective reservation threshold was captured.
+
+**Limits:** No changed native choice or 1.2 closure. The source Flax coordinate
+matches a retained neighboring Encampment plan entering construction, but no
+endpoint physical supplier snapshot proves the exact eligibility-loss cause.
+Other positively offered compared candidates were far behind their winners.
+Do not treat a source-qualified future chain as still viable at a later choice.
+
+- [Acceptance, source facts and native measurements](../research/mods/csc-ai-customer-access-choice-20261111.md#scout-result-current-delivery-verified-no-discriminating-choice)
