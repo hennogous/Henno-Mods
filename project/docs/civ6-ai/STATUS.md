@@ -1,6 +1,6 @@
 # Current CSC AI status
 
-Updated 11 November 2026. Goal: Problems **1.1–1.8 and 2.1–2.2**, through
+Updated 12 November 2026. Goal: Problems **1.1–1.8 and 2.1–2.2**, through
 [levels 1–3](acceptance.md). Representative cases close capabilities; broader
 qualification remains separate. The full goal is active and incomplete.
 
@@ -14,6 +14,10 @@ qualification remains separate. The full goal is active and incomplete.
   Hub 869 changes Washington's native choice at 870 from Holy Site to Bakers,
   with a matching construction request. Complete packet comparison isolates
   that host path. The location itself does not change. [AI-C153](findings.md#ai-c153).
+- **1.3 Rivers — levels 1–3.** Withholding one prospective river-Mill input
+  reranks the main owned-site offer and changes the native Bakers location and
+  request2497→2571. Complete packet audit isolates that path; no realised yield
+  or Quarter completion is implied. [AI-C156](findings.md#ai-c156).
 - **1.8 Weak-site suppression — levels 1–3.** Matched main-policy deductions
   changed Nicopolis's native site and request, including dynamic frontier
   coverage. This proves suppression of known weak sites, not that every
@@ -26,30 +30,21 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 1.3 Rivers
+## Active problem: 1.4 Combined adjacency
 
-**Acceptance:** real river/Mill geometry changes the main policy's offer and a
-native Quarter choice in a controlled comparison. Trace the river contribution,
-the prospective Mill branch, published Q8 bid and consumed choice. Distinguish
-current output from forecast benefits; do not assume construction.
+**Acceptance:** the shared model's combined adjacency preference changes a
+native choice toward a qualified strong site rather than a weaker alternative,
+using ordinary policy bands. Trace live components, candidate ranking, full
+packet differences and the native choice/request. Construction remains 1.6.
 
-The customer-access case is complete: all first-window entries match, and the
-only second-window difference is Washington Bakers 870, +24 versus a no-host
-−128. Same native input; changed type, request and reservation. Both sessions
-closed normally and Astra approved the scope. No customer or Quarter completion
-is implied. For rivers, reuse recorded offer components to choose a discriminating
-window before another replay; a changed adjacency value alone is insufficient.
-
-London's next comparison was captured: Dockyard wins 53,439 versus the river
-Quarter's 25,329. New Liverpool chooses a strong Quarter, but its river point
-does not change the +48 band. [AI-C154](findings.md#ai-c154). The replacement
-turn25 source is now saved and normally closed: the third Base is Flax beneath
-the City Center, counted for adjacency but not a viable supplier. Maize and
-Wheat are viable. [AI-C155](findings.md#ai-c155). Next prepare one common one-Base
-derivative, preserving real rivers and future host2571, then compare the ordinary
-full model with its exact river-rule ablation. A fresh native changed choice is
-still required. The earlier rotating candidate failed qualification at27 with
-an AI observer and yielded no inspection facts; raw descriptors are rejected.
+The river case is complete and Astra-approved. Each arm consumes 175 entries;
+all 174 common pairs have identical native inputs/results/cache. Only the +48
+owned offer moves2497→2571, with matching native winner/request. The main planner
+reranked rather than retaining a +24 offer at 2497. Each selected site rates 4 in
+its respective model, so this does not also close 1.4. Both later produce
+Stonehenge, leaving 1.6 open. Both runs closed normally. Next inspect existing
+candidate/component records for a discriminating strong-versus-weaker comparison
+before selecting another bounded replay. No new world search is prescribed.
 
 ## Evidence levels by sub-problem
 
@@ -57,7 +52,7 @@ an AI observer and yielded no inspection facts; raw descriptors are rejected.
 | --- | --- | --- | --- |
 | 1.1 Materials | Verified | Quarter choice/request changed | **Complete at stated scope** |
 | 1.2 Neighbors | Verified | Future-host path changes type/request | **Complete at stated scope** |
-| 1.3 Rivers | Model checked; isolated native path pending | Pending | Pending |
+| 1.3 Rivers | Verified | Quarter site/request changed | **Complete at stated scope** |
 | 1.4 Combined adjacency | Score delivery verified | Pending | Pending causal case |
 | 1.5 Buying | Request/attempt lineage verified | Paid acquisition pending | Pending |
 | 1.6 Follow-through | Verified | Diagnostic construction completed | Causal main-policy reproduction pending |

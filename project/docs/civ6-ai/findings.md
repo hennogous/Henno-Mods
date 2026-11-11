@@ -133,7 +133,7 @@ The generic bonus-resource proxy changed native values and siting, but rewarded 
 
 **Limits:** Removing it is not itself proved to improve the economy. Broader guidance can incidentally help, so removal and exact-material replacement require their own outcome evidence.
 
-- [Evidence: csc-ai-density-v4-20261017-turn250.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-density-v4-20261017-turn250.md)
+- [Evidence: csc-ai-density-v4-20261017-turn 250.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-density-v4-20261017-turn 250.md)
 - [Evidence: csc-ai-mechanism-tests-20261025-results.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-mechanism-tests-20261025-results.md)
 - [Evidence: csc-future-economy-forecast-20261103.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-future-economy-forecast-20261103.md)
 
@@ -186,7 +186,7 @@ The historical 90/900 package reached improvement density 7.76/city versus 5.22 
 
 - [Evidence: csc-ai-rh-builders-20261017-turn200.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-rh-builders-20261017-turn200.md)
 - [Evidence: csc-ai-rh-builders-20261017.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-rh-builders-20261017.md)
-- [Evidence: csc-ai-density-v4-20261017-turn250.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-density-v4-20261017-turn250.md)
+- [Evidence: csc-ai-density-v4-20261017-turn 250.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-density-v4-20261017-turn 250.md)
 - [Evidence: csc-ai-native-builder-consumers-20261028.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-native-builder-consumers-20261028.md)
 - [Evidence: csc-ai-native-builder-priority-20261028.md](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/research/mods/csc-ai-native-builder-priority-20261028.md)
 
@@ -832,7 +832,7 @@ Status: accepted. Evidence: source, inference.
 
 Installed RH5.097 defines positive and negative district adjacencies using RH_YIELD_LAST_RESORT, including reciprocal Industrial Zone/infrastructure relationships. This implements general placement-score steering through SQL. No direct native district-score hook was found in the reviewed package; CSC's prototype can instead supply independently calculated signed per-pair adjustments.
 
-**Scope:** Read-only4 November2026 installed Workshop3792072489, manifest5.097, RH_Districts.sql, RH_Improvements.sql, complete file inventory and bounded Lua/SQL searches. No game, attachment or tuning change.
+**Scope:** Read-only4 November 2026 installed Workshop3792072489, manifest5.097, RH_Districts.sql, RH_Improvements.sql, complete file inventory and bounded Lua/SQL searches. No game, attachment or tuning change.
 
 **Limits:** Source establishes technique and intent, not measured runtime efficacy or the author's complete knowledge. Package absence cannot exclude external or unpublished tooling. Custom yield amounts and bias fields are not measured Q8 additions. Older public-source yield identifiers differ.
 
@@ -918,7 +918,7 @@ Status: accepted. Evidence: source.
 
 The two Bakers Mill rules now explicitly use CITY_DISTRICTS and require a functioning local Mill in its own Quarter. Wind has one +1 step and Water three; the old twenty numeric-bit building attachments are removed while their compatibility definitions remain dormant. Actual shared-core writes clear legacy flags and publish the new steps. Generic rules and the v2 placement policy are unchanged.
 
-**Scope:** 4 November2026 source implementation and executed offline SQL/Lua5.1 fixtures on an in-memory clone of the immutable frozen MAB database. Local, remote, foreign, wrong-location and pillaged states; actual UI/GP adapters; duplicate compilation; dormant legacy references; stale properties; legal ranges; scanner and generic-bit preservation. MAB source review confirms omitted CSC CollectionType inherited its generic player-wide default.
+**Scope:** 4 November 2026 source implementation and executed offline SQL/Lua5.1 fixtures on an in-memory clone of the immutable frozen MAB database. Local, remote, foreign, wrong-location and pillaged states; actual UI/GP adapters; duplicate compilation; dormant legacy references; stale properties; legal ranges; scanner and generic-bit preservation. MAB source review confirms omitted CSC CollectionType inherited its generic player-wide default.
 
 **Limits:** Initial implementation was offline-only with FireTuner kept open. The later focused AI-C058/AI-C059 study verifies20 native payout/locality cases and the smaller forecast graph, with one direct Quarter-repair failure retained. Normal production repair, old-save migration, decision causality and benefit remain unverified. Bounds reduce capacity but do not restore AI condition handling. UI exact location relies on validated OnePerCity/prerequisite semantics when its API lacks GetBuildingLocation.
 
@@ -2651,14 +2651,14 @@ has verified origin/bytes, not yet a reload-verified clock or predecision state.
 Status: accepted read-only source observation; independently audited by Astra.
 No 1.3 decision-effect or completion claim.
 
-The verified paused turn25 source reproduces Base count 3: Flax2572 under City
-Center, Wheat2498 and Maize2496. Only Wheat and Maize are viable suppliers. The
+The verified paused turn 25 source reproduces Base count 3: Flax2572 under City
+Center, Wheat 2498 and Maize 2496. Only Wheat and Maize are viable suppliers. The
 loaded resource adjacency handler permits the occupied Flax plot, whereas the
 supplier reader excludes districts and checks improvement viability. The two
 counts answer different questions; no duplicate-count bug is established.
 
 Two real river edges yield one prospective Water Mill Production point,
-explicitly inactive now. Specific future host2571 is empty, owned, revealed,
+explicitly inactive now. Specific future host 2571 is empty, owned, revealed,
 actor-permitted and geometrically feasible. Source save, inactive human0 phase
 and normal cleanup are verified. The raw rotating autosave failed clock/role
 qualification before inspection and is not an interchangeable input.
@@ -2667,3 +2667,30 @@ qualification before inspection and is not an interchangeable input.
 derivative and isolated river comparison remain necessary to close 1.3.
 
 - [Source, plot-level reconciliation and controlled comparison](../research/mods/csc-ai-river-choice-20261111.md#verified-paused-source-and-reconciled-materials)
+
+## AI-C156
+
+**Prospective river-Mill valuation changes the native Quarter location**
+
+Status: accepted; Astra validated **Problem 1.3 levels 1–3** on 12 November 2026.
+
+Matched25→27 runs load the same verified one-Base Liverpool derivative. The
+only control change withholds2497's prospective Water Mill river rule in CSC's
+model. Its direct forecast falls 4→3, and the main planner reranks its owned
+offer: +12,288 Q8 at 2497 with the rule, versus +12,288 at 2571 without it.
+The native Bakers winner and request 263 move **2497/32,096→2571/35,395**.
+
+Each complete first packet has 175 eligible net/cache records. All 174 shared
+pairs have identical raw input, result, eligibility and cache. Those two offer
+identities are the only union differences; other policy arrays are empty.
+Both winners match observed net/cache/request-value records. Both sessions close
+normally. Reusable shipping model and publisher supply the effect dynamically;
+test coordinates exist only in the diagnostic counterfactual and map setup.
+
+**Limits:** Site reranking, not a fixed-site +48→+24 realised bid or marginal-yield
+calibration. CE does not record the unbid counterpart's raw/cache score; absence
+means zero CSC adjustment, not a measured zero/equal native baseline. Both
+selected sites rate 4 in their respective models. Both later produce Stonehenge.
+No 1.4 strong-over-weak or 1.6 construction completion claim follows.
+
+- [Matched evidence and independent acceptance](../research/mods/csc-ai-river-choice-20261111.md#matched-result-13-closed-at-levels-13)

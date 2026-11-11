@@ -1,4 +1,19 @@
-# Current CSC AI work — 11 November 2026
+# Current CSC AI work — 12 November 2026
+
+AI-C156 closes **1.3 levels1–3**, independently approved by Astra: matched
+liverpool-river-full-01/control-01 both25→27 normalclosed. Shared source270fd8a…;
+one exact river-rule model ablation makes2497 forecast4→3; mainownedoffer
+RERANKS +12288 from2497 to2571, notfixed+48→+24. NativeQuarterwinner/request263/
+reservationmoves2497(32096;input19808)→2571(35395;input23107). Eachpacket175Net+
+175Cache;174commonkeysidenticalinputs/results/cache/eligibility; onlytwounion
+differences. Otherarrayszero. CEdoesnottraceunbidcounterparts: zeroCSCdelta,
+unknownrawnativescores. Actualfuturehosts2498full/2645control; conditional2571
+remainsphysicalalternative. BothlaterStonehengequeue; NO1.4/1.6claim.
+Sealedrepoauditcsc-ai-river-choice-20261111-audit.json and maintained
+audit_river_choice.py. No liveownedworker/game remains. Currentitem **1.4**:
+combinedadjacency preference must changechoice towardstrongsitevsweakeroption,
+ordinarybands. Beforelaunch inspectexistingcandidatefacts/ranking forbounded
+discriminatingcomparison. PreserveC151/C153/C156/C138-139/C065closures.
 
 Latest river work: 1.3 remains active. liverpool-source-inspection-01 rejected
 raw rotating25 at actual27/AIobserver before facts; normal closure verified.

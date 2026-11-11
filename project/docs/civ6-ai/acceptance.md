@@ -47,6 +47,10 @@ to duplicate an already proved consumer or completion path.
   Native type at plot 870 changes Holy Site→Bakers, with the corresponding
   request/reservation. This includes removal of the no-host deduction; it is
   not a one-Gold marginal calibration or customer/Quarter construction proof.
+- **1.3, levels 1–3: prospective river-Mill input changes Quarter location.**
+  AI-C156 isolates one river rule in the live model. The ordinary owned offer
+  reranks2497→2571 and changes the native Bakers winner/request, with the full
+  packet union audited. Both winners rate 4; neither Quarter completes.
 - **1.8, levels 1–3: known weak-site suppression.** AI-C138's isolated
   production deduction changes the owned-site winner/request; AI-C139's
   dynamic frontier scanner reproduces suppression without fixed-plot policy.
@@ -60,7 +64,9 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.3.** Isolate real river/Mill geometry through the ordinary model
-and a changed native Quarter choice. The first +24 Boston pair and the broad
+**Active item: 1.4.** Isolate combined adjacency preference toward a qualified
+strong site rather than a weaker alternative. Use ordinary main-policy bands.
+The river comparison supports site reranking but both chosen sites rate 4, so
+it does not close this item. The first +24 Boston pair and the broad
 customer scouts remain valid negative results. No strong-band-only, acquisition
 or construction completion follows from the accepted 1.1/1.2 cases.

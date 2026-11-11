@@ -1,0 +1,177 @@
+{
+  "artifact_audit_verified": true,
+  "closure_claim": false,
+  "scope": "Problem1.3 prospective Water Mill river input; not realised yield or construction",
+  "source": {
+    "boston-selection": {
+      "path": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Saves\\Single\\CSC_LIVERPOOL_ONE_BASE_7e3fbe53553d.Civ6Save",
+      "sha256": "270fd8a38fc8815ec9873542849bbb131577984330d89de9e74587d116239db4",
+      "turn": 25
+    }
+  },
+  "manifest_differences": [
+    [
+      "CSC Bakers Development Mod",
+      "Lua_UI\\AI\\CSC_AI_AdjacencyScan.lua"
+    ]
+  ],
+  "first_window_versions": {
+    "full": 1,
+    "control": 1
+  },
+  "complete_packet_counts": {
+    "full": 175,
+    "control": 175
+  },
+  "common_native_pair_count": 174,
+  "common_native_baselines_equal": true,
+  "packet_differences": [
+    {
+      "key": [
+        4,
+        131073,
+        36,
+        2497
+      ],
+      "full_delta": 12288,
+      "control_delta": 0,
+      "full_native_record": {
+        "k": "net",
+        "generation": 4,
+        "version": 1,
+        "player": 4,
+        "city": 131073,
+        "district": 36,
+        "plot": 2497,
+        "base": 19808,
+        "result": 32096,
+        "reason": 0,
+        "eligible": 1
+      },
+      "control_native_record": null
+    },
+    {
+      "key": [
+        4,
+        131073,
+        36,
+        2571
+      ],
+      "full_delta": 0,
+      "control_delta": 12288,
+      "full_native_record": null,
+      "control_native_record": {
+        "k": "net",
+        "generation": 4,
+        "version": 1,
+        "player": 4,
+        "city": 131073,
+        "district": 36,
+        "plot": 2571,
+        "base": 23107,
+        "result": 35395,
+        "reason": 0,
+        "eligible": 1
+      }
+    }
+  ],
+  "common_cache_differences": [],
+  "unpaired_native_baseline_limit": "CE records published pairs; each promoted site has no raw counterpart record in the other arm",
+  "retained_city_offers": {
+    "full": [
+      [
+        "2423",
+        "12288",
+        "4",
+        "3",
+        "1",
+        "0",
+        "DISTRICT_COMMERCIAL_HUB",
+        "2497"
+      ],
+      [
+        "2497",
+        "12288",
+        "4",
+        "3",
+        "1",
+        "0",
+        "DISTRICT_COMMERCIAL_HUB",
+        "2498"
+      ]
+    ],
+    "control": [
+      [
+        "2423",
+        "12288",
+        "4",
+        "3",
+        "1",
+        "0",
+        "DISTRICT_COMMERCIAL_HUB",
+        "2497"
+      ],
+      [
+        "2571",
+        "12288",
+        "4",
+        "3",
+        "1",
+        "0",
+        "DISTRICT_COMMERCIAL_HUB",
+        "2645"
+      ]
+    ]
+  },
+  "other_arrays_identical_zero": true,
+  "promoted_winners_match_net_and_cache": true,
+  "winners": {
+    "full": {
+      "k": "best",
+      "generation": 4,
+      "version": 1,
+      "player": 4,
+      "city": 131073,
+      "district": 36,
+      "plot": 2497,
+      "base": 32096,
+      "result": 32096,
+      "reason": 0,
+      "eligible": 1
+    },
+    "control": {
+      "k": "best",
+      "generation": 4,
+      "version": 1,
+      "player": 4,
+      "city": 131073,
+      "district": 36,
+      "plot": 2571,
+      "base": 35395,
+      "result": 35395,
+      "reason": 0,
+      "eligible": 1
+    }
+  },
+  "native_choice_changed": true,
+  "pins": {
+    "full": {
+      "inputs.json": "90d22db848f8c164d6c8477593deec9204d95020d29cabbf7acaf381f63bd360",
+      "Lua.log": "5680b3efaa322e3b8851d9d0364abe3a795c363e5a444bc426da0eb78cf65d41",
+      "AI_CityBuild.csv": "4a859d27af9f56956b3fb3797661bf54a9ba98c056e3f6d0c5dbfe07d550122f",
+      "AI_Behavior_Trees.csv": "a5a0b2fda2a10863c414bb4edc9a1076281e9f37e29df241174bd53fd95d918a",
+      "City_BuildQueue.csv": "d86b0fb95c9dd38e45b38c3a6475a491c4e103b4ea3357a8cae31b51e2726589",
+      "complete.json": "b79357f818424a9ad497af6f3da3b463f25768c288aa36572a63dcef798dbdd0",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15"
+    },
+    "control": {
+      "inputs.json": "816f723a40b92e52846a45c2fb89b36b642b903291fd1d4b643e0f78c2ee96d0",
+      "Lua.log": "4879e4b382fe1b6932220f2a367aaa5661b7f16cd14ff5bb8515cde74b07bc94",
+      "AI_CityBuild.csv": "367ce96b2c8575527fad922be2c0a9f1ac1940ea265bf508ada5716c0b69a815",
+      "AI_Behavior_Trees.csv": "6f9ea0be468c2a95150a37d919c013fd80b19261e6847152c2221ee95966b2e7",
+      "City_BuildQueue.csv": "d86b0fb95c9dd38e45b38c3a6475a491c4e103b4ea3357a8cae31b51e2726589",
+      "complete.json": "b79357f818424a9ad497af6f3da3b463f25768c288aa36572a63dcef798dbdd0",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15"
+    }
+  }
+}

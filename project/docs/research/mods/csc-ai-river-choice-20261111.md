@@ -1,11 +1,32 @@
 # River valuation: prospective Mill benefit and native Quarter choice
 
-Active **Problem 1.3**, after Astra-validated representative completion of 1.1
-and 1.2. Acceptance: real river/Mill geometry changes the reusable main policy's
+**Problem 1.3 completed at levels 1–3**, validated by Astra on 12 November 2026.
+Acceptance: real river/Mill geometry changes the reusable main policy's
 offer and a native Quarter choice in a controlled comparison. Trace the exact
 loaded rule, prospective versus current value, ordinary Q8 offer, consumed
 comparison and changed type/site. A forecast or write alone is insufficient.
 Construction completion remains 1.6.
+
+## Native evidence scope
+
+These replays use the already reverse-engineered CE early district NetValue
+write, cache observation and joint best-district/site selector. They add no
+native hook. The CE build SHA-256 is
+`f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07`;
+the loaded XP2 baseline is
+`092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f`;
+DX11 executable is
+`d1a0cfd439e7451be515f47595cfa0b6b983f56d1faf4ea434a4ce3b21491ebe`.
+Module verification receipts and complete staged package hashes live in each
+run. Gameplay outside the current four main AI modules and UI bridge is the
+pinned diagnostic carrier; these are not tests of unrelated concurrent edits.
+
+Scores are Q8 utility, 256 per native utility point. The planner's Production
+plus Gold adjacency total is a separate quantity used to choose ordinary policy
+bands. Native cache/selector records and behavior/production logs establish
+consumption, request and later competition separately. Generation/index-keyed
+prefixes are completed reads of a sampled trace prefix, not a claim that tracing
+was disabled or the entire native game frozen.
 
 ## Existing lead and bounded observation
 
@@ -154,3 +175,78 @@ Both comparison arms must load the same saved derivative, revalidate those
 facts, and use unchanged main-policy bands. Only the control withholds the exact
 prospective river rule in CSC's model for 2497. This map preparation is not an
 AI action, native purchase or shipping policy.
+
+## Common derivative and full river arm
+
+`liverpool-one-base-source-01` performed the two declared resource removals,
+advanced zero turns and saved once at inactive human-0 turn 25. Post-edit facts
+give exactly one Base contribution and viable supplier, Maize 2496; forecast
+4 = Base 1 + projected Water Mill 1 + City Center Gold 1 + future customer Gold 1.
+The common save SHA-256 is
+`270fd8a38fc8815ec9873542849bbb131577984330d89de9e74587d116239db4`.
+Creation closed normally with restoration verified.
+
+Removing Wheat 2498 also makes that owned tile available as a prospective
+Commercial Hub footprint. The actual main planner chooses **2498**, not 2571;
+2571 remains a separately verified feasible alternative. Inspect the retained
+offer's selected footprint in both arms, rather than treating the conditional
+2571 inspection as proof of the planner's chosen host.
+
+`liverpool-river-full-01` completed 25→27 and closed normally. All175 first-packet
+entries reached the native consumer, with no omitted entries; other initial
+Builder, nomination, repair, exclusion and customer-site arrays are explicitly
+zero. At the fresh 25 comparison, Bakers 2497 is written **19,808→32,096 Q8**
+(ordinary +48), and the observed cache, winner and request-value records agree.
+The AI submits district construction request 263 at utility 125. On 26 it instead
+puts Stonehenge, utility 140, into production. This is not Quarter completion.
+Astra independently audited the full arm. Causality still requires the matched
+control, full packet/native-baseline audit and changed native choice.
+
+## Matched result: 1.3 closed at levels 1–3
+
+`liverpool-river-control-01` also completed 25→27 and closed normally. It loads
+the exact same common save and differs only in the scanner's diagnostic
+counterfactual: withhold the loaded prospective Water Mill river rule for 2497.
+Main CSC still ranks all sites, selects future footprints and publishes its
+ordinary score bands. No external native score writer supplies the treatment.
+
+The hypothesised fixed-site +48→+24 bid did **not** occur. The direct model for
+2497 falls 4→3, but the reusable planner instead moves its one owned-site +48
+offer to another site it rates 4, **2571**, with prospective Commercial Hub 2645.
+The full arm's owned offer is2497 with future Commercial Hub 2498. The frontier
+2423 offer stays identical. This reranking is the observed causal policy path.
+
+| First packet / fresh 25 decision | Full river model | Scoped river omission |
+| --- | --- | --- |
+| Published and consumed entries | 175 | 175 |
+| CSC adjustment2497 | +12,288 Q8 | No entry: zero CSC adjustment |
+| CSC adjustment2571 | No entry: zero CSC adjustment | +12,288 Q8 |
+| Native winning Quarter site | Bakers 2497 | Bakers 2571 |
+| Winner's observed input→result/cache | 19,808→32,096 | 23,107→35,395 |
+| District request | 263, value 125, site2497 | 263, value 138, site2571 |
+
+All **174 shared pairs** have identical native input, result, eligibility and
+cache values. These are the only two differences in the complete packet union.
+Other initial Builder, nomination, repair, exclusion and customer-site arrays
+are identically zero. Both promoted winners match their observed net, cache,
+best and request-value records; behavior logs show the corresponding reservation.
+
+**Observation limit:** CE records published pairs. Neither promoted plot has a
+raw/native-cache counterpart in the other arm. An absent entry establishes zero
+CSC adjustment, not a zero native score or a measured equal raw baseline for
+that unbid pair. The controlled source, exact one-rule code difference, complete
+packet union and unchanged common values establish this causal choice claim;
+do not invent the missing baseline or an isolated marginal native conversion.
+
+Astra independently audited both arms and approved **1.3 levels 1–3**:
+prospective river/Mill input→dynamic main-model site ranking→ordinary published
+offer→native Quarter location/request. No additional observer is required for
+this scope. Both arms later choose Stonehenge for production. No realised Mill
+yield, Quarter completion, strong-over-weak preference or 1.4/1.6 closure follows.
+
+The [sealed JSON audit](csc-ai-river-choice-20261111-audit.json) records source,
+package difference, full packet union, explicit null counterpart records,
+cache comparison, winners and artifact hashes. The maintained
+`project/tools/native_ai/late_placement/audit_river_choice.py` reproduces its
+artifact checks; its `closure_claim=false` deliberately leaves scientific
+acceptance to the independent review recorded here.
