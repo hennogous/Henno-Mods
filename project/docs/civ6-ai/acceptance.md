@@ -42,6 +42,11 @@ to duplicate an already proved consumer or completion path.
   ordinary +48 main offer on a Base+Specialty-qualified site changed Government
   to Bakers, with exact native write, site win, request and reservation. Explicit
   fixture ownership proves no buying; no Quarter completed through 33.
+- **1.2, levels 1–3: a specific prospective customer changes Quarter choice.**
+  AI-C153 isolates future Commercial Hub 869's eligibility/projection path.
+  Native type at plot 870 changes Holy Site→Bakers, with the corresponding
+  request/reservation. This includes removal of the no-host deduction; it is
+  not a one-Gold marginal calibration or customer/Quarter construction proof.
 - **1.8, levels 1–3: known weak-site suppression.** AI-C138's isolated
   production deduction changes the owned-site winner/request; AI-C139's
   dynamic frontier scanner reproduces suppression without fixed-plot policy.
@@ -55,8 +60,7 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.2.** Trace the mapped neighbor contribution through the ordinary
-offer to a changed native choice. AI-C151 closes 1.1 but does not establish the
-necessity of its strong-band increment: arithmetic suggests ordinary +24 might
-already suffice. That ablation remains unrun. The first +24 Boston pair remains
-a valid negative result, AI-C150.
+**Active item: 1.3.** Isolate real river/Mill geometry through the ordinary model
+and a changed native Quarter choice. The first +24 Boston pair and the broad
+customer scouts remain valid negative results. No strong-band-only, acquisition
+or construction completion follows from the accepted 1.1/1.2 cases.

@@ -207,13 +207,20 @@ Bakers870 source22noHost-32768, raw40267→7499. At23futureCommercial869 yields
 adj3vswithoutfuture2/+6144, SAMEbase40267→46411winner+pv/request241/reserve870.
 LaterstageCommerciallink, NOTGranary/S2Service. Noexistinghost; actualcause
 new869eligibilitynotphysicallycaptured—doNOTinferpurchase/harvest.
-CURRENT sharedcontroller host-choice-early-without869-01 exec46473 through24:
+Host-choice-early-without869-01 TERMINAL22→24/2turnsnormalverifiedcleanup:
 sameall5source/telemetry, ONLYstagedscannerfutureHost869false forpid3/BAKERS
 BEFOREcache. Ordinarymodelmayfindalternatives; inspectWHOLEpacket beforechoice.
-4early+6readerchecksPASS;Astraproposedcontrolscientificallyvalid. Reusefullscout
-onlyifallstagedconfigidenticalexceptguard; askAstra toverifycompleteNetcoverage
-aspacketcomparison (else repeatfullwithcompletepacketlogger, don'tweakenclaim).
-DoNOTeditpinnedsourcewhileownerlive; inspectexacthandlebeforenextsession.
+4early+6readerchecksPASS. ASTRA APPROVES1.2LEVELS1–3 CLOSED atfutureCommercial869
+eligibility/projection→QuarterTYPEatSAME870/request scope. FullBakers46411 vs
+controlHolySite42385; bothrequest241/reserve56,11. ALL297rawNetinputsidentical;
+v1all145net/cachematch;v2ONLY870delta6144vs-32768/cache46411vs7499.
+OtherarraysEXPLICITzeroallowances/nominations/repairs/exclusionsmatching22/23/24.
+Noomissions/faults;modules/source/surveyidentical;SCANNERdiffONLYguard,remove
+guardgivesbyteequality. Derivedaudit host-choice-early-comparison-01/audit.json.
+C153/STATUS/acceptanceupdated. NotmarginalGoldonly,notlocationrelocation,
+NOTquarter/customerconstruction/Granary/Service. No game/controllerownednow.
+ACTIVE1.3 river/Millgeometry→offer→changednativeQuarterchoice; reusecurrent
+component/native datasets beforechoosingreplay. Preserve1.1/1.2/1.8/2.2closures.
 FirstCLIpreflightusedwrongprevioussurveyshape andstoppedBEFORElaunch/output;
 correctrunusesowned-site-survey-all-customers-01. Inspecthandlebeforeanynextgame.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.

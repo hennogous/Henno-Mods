@@ -1,0 +1,92 @@
+{
+  "verified": true,
+  "scope": "Problem1.2 future-host eligibility/projection, joint type choice at same tile; not construction",
+  "source": {
+    "boston-selection": {
+      "path": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Saves\\Single\\CSC_BAKERS_SELECTION_5b1be63cde26.Civ6Save",
+      "sha256": "9675be27c614a2429a9cdca485a09a8d7421e627cc7833cb472bb9b1c390f55a",
+      "turn": 22
+    }
+  },
+  "manifest_differences": [
+    [
+      "CSC Bakers Development Mod",
+      "Lua_UI\\AI\\CSC_AI_AdjacencyScan.lua"
+    ]
+  ],
+  "coverage": {
+    "full": {
+      "1": 145,
+      "2": 152
+    },
+    "control": {
+      "1": 145,
+      "2": 152
+    }
+  },
+  "packet_differences": {
+    "1": [],
+    "2": [
+      {
+        "key": [
+          3,
+          65536,
+          36,
+          870
+        ],
+        "full_delta": 6144,
+        "control_delta": -32768
+      }
+    ]
+  },
+  "all_native_baselines_equal": true,
+  "other_arrays_identical_zero": true,
+  "winners": {
+    "full": {
+      "k": "best",
+      "generation": 6,
+      "version": 2,
+      "player": 3,
+      "city": 65536,
+      "district": 36,
+      "plot": 870,
+      "base": 46411,
+      "result": 46411,
+      "reason": 0,
+      "eligible": 1
+    },
+    "control": {
+      "k": "best",
+      "generation": 6,
+      "version": 2,
+      "player": 3,
+      "city": 65536,
+      "district": 1,
+      "plot": 870,
+      "base": 42385,
+      "result": 42385,
+      "reason": 0,
+      "eligible": 1
+    }
+  },
+  "pins": {
+    "full": {
+      "inputs.json": "45003b23c372f955c671133d4179918a9909a5e15f2d008ccc262850deba2c1f",
+      "Lua.log": "2bdcf33a2f18b3510261d1fb27840abfd5d478ef57d67f07d6ffc9cbbcbab350",
+      "AI_Behavior_Trees.csv": "5d2a1d8f6e916cf235fc4f32b18a2a4cf2a605a4646033c412f9bfe22ca7c09a",
+      "AI_CityBuild.csv": "1c1f38f51672a51b736e73e55e5c1285762050a0b6d95231706ad1d228ca0ba8",
+      "complete.json": "b79357f818424a9ad497af6f3da3b463f25768c288aa36572a63dcef798dbdd0",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "CSC_AI_AdjacencyScan.lua": "f138efacfe23962ccc87e0559eb4c0b0e0e73c10d59116ea3443d4789929d7bc"
+    },
+    "control": {
+      "inputs.json": "44de5f915cbf33437d0cf27db50dcc20d9992751a48006c03d2e5f08b3291bb4",
+      "Lua.log": "81b6903f9342c70d0746686704e655ffb4730e40b24de23f8e3b7d133b11772c",
+      "AI_Behavior_Trees.csv": "1445ec337ef3bb66106aeb673fdd8cb6bf0c5570773c8d536dd4d6fb5b1e1561",
+      "AI_CityBuild.csv": "927f07d9ffd90cdc7c7a8ec02bdc9a55f2716a14b0c02e0a3f3aae636b36dfeb",
+      "complete.json": "b79357f818424a9ad497af6f3da3b463f25768c288aa36572a63dcef798dbdd0",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "CSC_AI_AdjacencyScan.lua": "04720b28cf9db8774c0f28eff92fe5b713cbee570af3e170a2e4a0c3c44bac91"
+    }
+  }
+}

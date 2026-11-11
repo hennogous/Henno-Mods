@@ -2585,3 +2585,37 @@ Other positively offered compared candidates were far behind their winners.
 Do not treat a source-qualified future chain as still viable at a later choice.
 
 - [Acceptance, source facts and native measurements](../research/mods/csc-ai-customer-access-choice-20261111.md#scout-result-current-delivery-verified-no-discriminating-choice)
+
+## AI-C153
+
+**Crediting a specific future customer changes Holy Site to Bakers at the same tile**
+
+Status: accepted; Astra validated **Problem 1.2 levels 1–3** at the prospective
+Commercial Hub eligibility/projection → Quarter type-choice/request scope.
+
+Two matched turn-22→24 replays use the same original source, all-five-AI role
+migration, current four main AI modules and UI bridge. The sole staged policy
+difference makes player 3's Bakers model ignore future-host footprint 869 before
+its potential-cache lookup. The ordinary model remains free to find alternatives.
+
+All 145 first-window district entries and native cache values match. Of 152
+second-window entries, only Washington Bakers 870 changes: **−32,768 Q8** without
+the host path versus **+6,144** with it. Every native input baseline matches;
+the target is 40,267 in both arms. Other policy arrays are explicitly logged as
+identical zeros. There are no capacity omissions or native failures.
+
+With the prospective Commercial Hub at 869, the model reports adjacency 3 versus
+2 without that future district. Native Bakers 870 becomes **46,411 Q8** and wins.
+Without that path it becomes **7,499**, and **Holy Site 870 wins at 42,385**.
+Both submit their corresponding construction request 241 and reserve (56,11).
+Both sessions complete with verified normal cleanup.
+
+**Limits:** The district **type** changes at the **same plot**, not a relocation.
+The causal contribution includes removal of the no-host deduction and enabling
+the ordinary positive offer; it does not isolate a marginal Gold point. This is
+a later-stage customer path, not proof of a Granary, customer construction,
+Quarter completion or realised Service. The full dynamic main policy contains
+no test-city coordinates; the scoped exclusion exists only in the diagnostic
+control. Broader customer configurations remain qualification.
+
+- [Matched packet audit, source and scope](../research/mods/csc-ai-customer-access-choice-20261111.md#matched-result-problem-12-closed-at-levels-13)

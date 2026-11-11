@@ -204,3 +204,48 @@ including avoidance of the no-host deduction, rather than a marginal Gold point
 alone. Artifact directory: `host-choice-early-without869-01`. A closure requires
 a changed native choice, matching staged configuration except for that predicate,
 complete predecision packet comparison and Astra validation.
+
+## Matched result: Problem 1.2 closed at levels 1–3
+
+**AI-C153**, independently audited and approved by Astra. Both two-turn sessions
+closed normally with exit 0, owner absence and preference/package restoration.
+The experiment needs no repeat: existing native entry coverage and explicit
+zero-array publication logs establish the complete predecision packet comparison.
+
+| Evidence | Full model (`host-choice-early-scout-01`) | Footprint withheld (`host-choice-early-without869-01`) |
+| --- | --- | --- |
+| Source, role migration, initial model survey, native modules | Identical | Identical |
+| Staged package difference | Scanner | Only the scoped future-host guard |
+| Publication 1 | 145 unique consumed entries | Same 145 entries, deltas, inputs and caches |
+| Publication 2 | 152 unique consumed entries | Same keys; only Bakers 870's delta changes |
+| Bakers 870 native input | 40,267 Q8 | 40,267 Q8 |
+| Its intervention / resulting cache | +6,144 / 46,411 | −32,768 / 7,499 |
+| Native turn-23 winner | Bakers 870, 46,411 | Holy Site 870, 42,385 |
+| Request and reservation | Bakers contract 241; (56,11) | Holy Site contract 241; (56,11) |
+
+All 297 consumed NetValue records in each arm have reason 0 and eligible 1;
+counts exactly equal the published packet sizes and every tuple is unique.
+All native input baselines match. Initial three observed native choices match;
+Washington's fresh comparison is the differing choice. Builder allowances,
+building nominations, repairs and supplier exclusions are explicitly logged as
+zero in both arms on 22,23,24. No district-entry capacity omission occurs.
+
+The model uses live supply, mapped district definitions and permanent future
+placement rules. Crediting Commercial Hub 869 makes 870 viable and adds the
+ordinary +24 offer; withholding it leaves the no-host deduction. This is a
+**host-eligibility/projection capability**, not a calibrated one-Gold marginal
+experiment. The selected **district type changes at the same footprint**.
+
+Native construction requests are observed, but no construction continuation was
+run. Customer construction, Quarter completion, Granary/Stage 2 chains and
+realised Services remain unproved. Likewise this is not a strong-over-viable-band
+test for 1.4 or a native tile purchase for 1.5.
+
+The [paired audit](csc-ai-customer-access-choice-20261111-audit.json) is committed
+beside this report and saved at `host-choice-early-comparison-01/audit.json`, including source hashes, manifest
+differences, per-window coverage, the sole changed tuple, matching native inputs,
+other-array checks, winners and raw artifact hashes. The control scanner with
+its exact guard removed is byte-identical to the full scanner; publisher and
+all other packaged files match. Diagnostic coordinates do not enter CSC's
+shipping policy. Preserve this completed scope; broader qualification remains
+separate.

@@ -10,6 +10,10 @@ qualification remains separate. The full goal is active and incomplete.
   ordinary +48 offer on the shared Base+Specialty-qualified source changed
   Government to Bakers, with exact native write, site win, request and
   reservation. No Quarter construction completed. [AI-C151](findings.md#ai-c151).
+- **1.2 Future customer access — levels 1–3.** Crediting prospective Commercial
+  Hub 869 changes Washington's native choice at 870 from Holy Site to Bakers,
+  with a matching construction request. Complete packet comparison isolates
+  that host path. The location itself does not change. [AI-C153](findings.md#ai-c153).
 - **1.8 Weak-site suppression — levels 1–3.** Matched main-policy deductions
   changed Nicopolis's native site and request, including dynamic frontier
   coverage. This proves suppression of known weak sites, not that every
@@ -22,36 +26,26 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 1.2 Neighbors
+## Active problem: 1.3 Rivers
 
-**Acceptance:** a mapped existing or specific feasible future customer/provider
-contribution changes a native Quarter choice through reusable main policy.
-Trace contribution, offer and comparison; do not assume later customer construction.
+**Acceptance:** real river/Mill geometry changes the main policy's offer and a
+native Quarter choice in a controlled comparison. Trace the river contribution,
+the prospective Mill branch, published Q8 bid and consumed choice. Distinguish
+current output from forecast benefits; do not assume construction.
 
-The first Boston +24 pair remains an accepted negative result. The prepared
-+4 source's ordinary +48 preference changed Government to Bakers, closing 1.1
-at the stated scope. Arithmetic suggests +24 may already suffice, so removing
-only the future customer's one point may change the score without changing
-the choice. Review that discriminating margin before spending another replay.
-1.4 strong-over-viable preference and 1.6 construction remain open.
-
-The bounded Fractal customer scout captured current native offers, caches and
-nine winners without an extra hook. Makwa's positive source offer became a
-deduction before its fresh comparison; the other compared candidates were far
-behind. This supplies no changed-choice case. Prefer an earlier archived window
-and capture contemporaneous supply facts. [AI-C152](findings.md#ai-c152).
-
-Astra recommends the archived turn-22 world, scoped through 24: Delhi's fresh
-turn-23 Preserve value 145 is a closer lead. Its pinned original scout supports
-all five original AI seats; qualify all properties before nil-only migration and
-use identical setup in later comparison arms. Keep map facts and bands unchanged.
+The customer-access case is complete: all first-window entries match, and the
+only second-window difference is Washington Bakers 870, +24 versus a no-host
+−128. Same native input; changed type, request and reservation. Both sessions
+closed normally and Astra approved the scope. No customer or Quarter completion
+is implied. For rivers, reuse recorded offer components to choose a discriminating
+window before another replay; a changed adjacency value alone is insufficient.
 
 ## Evidence levels by sub-problem
 
 | Item | 1: Mechanism | 2: Changed decision/action | 3: Integrated reproduction |
 | --- | --- | --- | --- |
 | 1.1 Materials | Verified | Quarter choice/request changed | **Complete at stated scope** |
-| 1.2 Neighbors | Forecast change verified | Pending | Pending causal case |
+| 1.2 Neighbors | Verified | Future-host path changes type/request | **Complete at stated scope** |
 | 1.3 Rivers | Model checked; isolated native path pending | Pending | Pending |
 | 1.4 Combined adjacency | Score delivery verified | Pending | Pending causal case |
 | 1.5 Buying | Request/attempt lineage verified | Paid acquisition pending | Pending |
