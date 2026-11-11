@@ -32,6 +32,9 @@ end
 
 local A=CSC_Adjacency
 local geometry={}
+-- City-to-plot geometry is immutable within a game. Ownership, visibility,
+-- materials and native eligibility are read afresh on each publication.
+local frontierGeometry = {}
 local quarters={'DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_CSC_TAILORS_QUARTER'}
 local function totals()return {production=0,gold=0}end
 local function yieldKey(y)if y=='YIELD_PRODUCTION'then return 'production'elseif y=='YIELD_GOLD'then return 'gold'end end
@@ -124,7 +127,8 @@ end
 function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, ui)
     local bids, potential, legalCustomers, placedHosts = {}, {}, {}, {}
     local nominated = {}
-    local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, bothPending=0, deferCities=0, offered=0, strong=0}
+    local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, bothPending=0, deferCities=0,
+        offered=0, strong=0, frontierObserved=0, frontierBids=0, frontierUncertain=0}
     local district = profile.district
     local readLegalTargets = ui and ui.GetLegalDistrictTargets
     if not A.ByDistrict[district.DistrictType] or type(readLegalTargets) ~= 'function' then return bids, counts end
@@ -132,6 +136,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     if next(siting.byIndex) == nil then return bids, counts end
     local pid = player:GetID()
     local visibility = PlayersVisibility[pid]
+    local allBaseTypesVisible
     local hosts = {}
     -- Use the UI's current native targets for customer bids. Future host
     -- geometry below is a planning hint and can never create a customer bid.
@@ -235,6 +240,65 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         bids[#bids + 1] = bid
     end
 
+    local function frontierDeductions(city)
+        local center = Map.GetPlot(city:GetX(), city:GetY())
+        local key = pid .. ':' .. city:GetID() .. ':' .. center:GetIndex()
+        local indices = frontierGeometry[key]
+        if not indices then
+            indices = {}
+            for _, plot in ipairs(A.PlotsInBand(center, 1, 3)) do indices[#indices + 1] = plot:GetIndex() end
+            frontierGeometry[key] = indices
+        end
+        for _, index in ipairs(indices) do
+            local plot = Map.GetPlotByIndex(index)
+            if plot:GetOwner() == -1 and plot:GetDistrictType() == -1
+                and visibility:IsRevealed(plot:GetX(), plot:GetY())
+                and plot:CanHaveDistrict(district.Index, pid, city:GetID()) then
+                local frontier, uncertain, possibleBase = false, false, false
+                for _, neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
+                    local owner = neighbor:GetOwner()
+                    frontier = frontier or owner == pid
+                    if not visibility:IsRevealed(neighbor:GetX(), neighbor:GetY()) then
+                        uncertain = true
+                    elseif owner == pid or owner == -1 then
+                        local resource = GameInfo.Resources[neighbor:GetResourceType()]
+                        if resource and A.ResourceVisible(pid, resource.Index)
+                            and A.HasTag(profile.base, resource.ResourceType) then possibleBase = true end
+                    end
+                end
+                if frontier then
+                    counts.frontierObserved = counts.frontierObserved + 1
+                    local resource = GameInfo.Resources[plot:GetResourceType()]
+                    local coversMaterial = resource and A.ResourceVisible(pid, resource.Index)
+                        and (A.HasTag(profile.base, resource.ResourceType) or A.HasTag(profile.specialty, resource.ResourceType))
+                    -- A hidden mapped Base type prevents a negative conclusion
+                    -- from the visible map. Check unlock visibility globally,
+                    -- rather than allowing policy to infer hidden deposits.
+                    if allBaseTypesVisible == nil then
+                        allBaseTypesVisible = true
+                        for definition in GameInfo.Resources() do
+                            if A.HasTag(profile.base, definition.ResourceType) and not A.ResourceVisible(pid, definition.Index) then
+                                allBaseTypesVisible = false
+                                break
+                            end
+                        end
+                    end
+                    if coversMaterial or not uncertain and allBaseTypesVisible and not possibleBase then
+                        -- BUILD-operation targets omit unowned plots. Publish
+                        -- a conservative radius-three frontier candidate here.
+                        -- CE still requires the exact proposing city and a live
+                        -- native eligible row before applying this Q8 deduction.
+                        bids[#bids + 1] = {player=pid, city=city:GetID(), district=district.Index,
+                            plot=index, delta=-noBasePenaltyQ8, weak=true}
+                        counts.frontierBids = counts.frontierBids + 1
+                    elseif uncertain or not allBaseTypesVisible then
+                        counts.frontierUncertain = counts.frontierUncertain + 1
+                    end
+                end
+            end
+        end
+    end
+
     for _, city in player:GetCities():Members() do
         -- Price every eligible weak site. Permanent site potential comes
         -- first. Readiness distinguishes sites with equal projected yield.
@@ -312,6 +376,10 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
             elseif legal > 0 then
                 counts.deferCities = counts.deferCities + 1
             end
+            -- A potential supplier on purchasable land keeps this first
+            -- frontier policy neutral. Its acquisition belongs to problem 1.5.
+            -- Positive Quarter and customer offers retain their owned targets.
+            frontierDeductions(city)
         end
     end
 

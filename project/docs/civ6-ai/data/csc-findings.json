@@ -2098,5 +2098,17 @@
     "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
     "topic": "topics/csc/site-planner.md",
     "related": ["AI-C137", "AI-N069", "AI-N110"]
+  },
+  {
+    "id": "AI-C139",
+    "title": "The existing CE hook accepts Quarter score entries for unowned frontier plots",
+    "statement": "A scoped entry lowered Nicopolis frontier plot 398 by 65536 Q8 before acquisition. The integrated CSC frontier scan reproduced that score and the native switch to plot 401 with an accepted purchase request, using the same CE DLL.",
+    "status": "accepted",
+    "evidence_types": ["runtime", "source"],
+    "scope": "Matched turn-200 Continents replays through 208. Player 1 city 524295, Bakers district 36. The integrated arm changed only the production scanner and publisher and contained no fixed-plot injection.",
+    "limits": "Frontier enumeration is a conservative map candidate set that CE filters. Plot 401's full chain quality and eventual foundation were not established. The frontier policy leaves uncertain supply neutral and does not yet price missing customer footprints. The owned-site scan has separate purchase and visibility gaps.",
+    "sources": ["project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md"],
+    "topic": "topics/csc/site-planner.md",
+    "related": ["AI-C138", "AI-N069", "AI-N110"]
   }
 ]

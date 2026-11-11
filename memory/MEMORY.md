@@ -1,4 +1,24 @@
-# Current Bakers AI work — 8 November 2026
+# Current CSC AI work — 11 November 2026
+
+User goal is Problems **1.1–1.8 and 2.1–2.2**, with demonstrable native
+effects for each and Astra validation. Use the current handbook roadmap.
+Nicopolis's owned-site deduction has a matched choice/request effect
+(AI-C138). The integrated conservative frontier scan also reached CE
+and changed the winning frontier site (AI-C139). All three durable
+runs closed cleanly through 208 and restored preferences. No current
+game/controller process is owned by this investigation.
+Next inspect Nicopolis plot **401** and its actual purchase, supplier
+and customer path. Neither better placement nor the full goal is proved.
+Evidence is `Desktop/Codex/csc-ai-problems-1-2-20261110`, especially
+`nicopolis-original-durable-01`, `nicopolis-frontier-durable-01` and
+`nicopolis-integrated-frontier-01`. The durable shared-controller
+fixture is `project/tools/native_ai/late_placement/nicopolis_replay.py`.
+The source-verified original run preserved an unverified turn-203
+autosave as `purchase-lead-turn203.Civ6Save` with adjacent provenance.
+Canonical findings and scope are in the handbook, including frontier
+uncertainty guards and the remaining owned-supply/purchase asymmetry.
+
+## Earlier Bakers AI work — 8 November 2026
 
 Active next tests **13.1, producer repair**, and **14.1, earlier chain
 investment**. Supplier retention **2.2** needs an eligible threat and

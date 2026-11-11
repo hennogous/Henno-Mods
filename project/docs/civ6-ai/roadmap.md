@@ -20,11 +20,12 @@ Keep the Stage 2 chain results as follow-through evidence.
 [Coverage review and test sequence](topics/csc/site-planner.md#quarter-placement-capability).
 
 The active 1.8 case is Nicopolis. A single owned-site deduction changed
-the native winner and request, but Civ's alternative was an unowned tile
-outside the scanner. Verify a negative-only frontier correction using
-the actual native candidate and distinguish missing owned supply from
-a supplier that could be acquired under 1.5. Keep positive frontier bids
-for the separately qualified purchase path.
+the native winner and request. The integrated frontier correction also
+changed the previously unpriced frontier choice and produced a purchase
+request for plot 401. Classify that site's chain prospects and trace its
+acquisition under 1.5 before counting a placement improvement. Distinguish
+missing owned supply from a supplier that could be acquired. Positive
+frontier bids still need their separately qualified purchase path.
 
 ### Earlier Stage 2 development evidence
 

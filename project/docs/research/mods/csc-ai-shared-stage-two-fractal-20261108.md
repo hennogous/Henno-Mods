@@ -468,3 +468,53 @@ load and verified a clean exit. The durable fixture runner is
 `project/tools/native_ai/late_placement/nicopolis_replay.py`.
 Its separate frontier mode is a scoped diagnostic of CE admission,
 rather than the production frontier policy.
+
+### Frontier score admission
+
+The `nicopolis-frontier-durable-01` diagnostic added one negative
+entry for unowned Bakers plot 398 while retaining every existing
+offer and deduction. On turn 203 its finished score fell from
+396,462 to 330,926 Q8. Owned plot 472 stayed at 347,924 Q8.
+The native selector chose another unowned frontier site, plot 401,
+at 391,714 Q8. The CE DLL was unchanged.
+
+This establishes that the existing CE score hook can consume an
+entry for a proposing city before that city owns the plot. The
+BUILD-operation target list used by the owned planner is therefore
+too narrow for weak-site coverage. A second footprint can evade
+a deduction applied only to the first recorded case.
+
+The integrated correction enumerates radius-three map geometry,
+requiring an unowned, revealed, district-free site adjacent to
+the player's land and passing `CanHaveDistrict`. It prices
+covering a visible mapped material with the existing deduction.
+It also prices an absent Base only when all neighboring plots
+are revealed, all mapped Base resource types are visible, and
+there is no visible own or unowned mapped Base nearby. Fog,
+hidden Base types and potential supplier acquisitions keep
+this frontier deduction neutral. CE still validates the native
+row's city and eligibility before applying an entry.
+
+These extra uncertainty guards apply to the new frontier scan.
+The existing owned-site scan still uses owned viable suppliers
+and needs separate purchase-path qualification. The correction
+does not yet price a missing frontier customer footprint.
+
+The `nicopolis-integrated-frontier-01` replay staged the two
+production files, the scanner and its publisher, from the main
+CSC source. It contained no fixed-plot score injection. On turn
+203 it reproduced the diagnostic's 330,926 Q8 at plot 398,
+347,924 at owned plot 472, and selected frontier plot 401 at
+391,714 Q8. The district tree reserved plot 401 and issued
+an accepted purchase request. The packet contained at most
+520 entries through turn 208 and reported no omitted entries.
+No planner failure was recorded. The independent Astra review
+found no correctness blocker in the new frontier path.
+
+All six neighbors of plot 398 were revealed at the source
+snapshot. Its visible neighboring resources were Silver and
+Salt, neither a Bakers Base. The current readbacks did not
+classify plot 401's full chain prospects. A changed native
+winner therefore establishes delivery and coverage without
+proving an improved site or a completed Quarter. Its actual
+purchase, supplier and customer path are the next follow-up.

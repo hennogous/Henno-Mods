@@ -16,8 +16,10 @@ is needed to test placement.
 We track weak-site deductions separately from whether the city waits to
 build any Quarter. In a matched Nicopolis test, one deduction changed the
 chosen site and the resulting request. The alternative was an unowned
-tile outside our scanner. Covering those frontier candidates is the next
-weak-placement test.
+tile outside our scanner. The integrated frontier correction now reaches
+that native score and changes the winner. Civ requested a different plot
+purchase. Inspecting that site's chain prospects and following the actual
+acquisition is the next test.
 Tile buying follows in separate footprint and supplier tests that track
 the AI's savings, actual spending and follow-through.
 [Placement capability and test sequence](../topics/csc/site-planner.md#quarter-placement-capability).

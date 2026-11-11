@@ -43,6 +43,9 @@ run, after checking the live inventory and hashes. Run through a hidden
 background process on Shadow when the runner must outlive a chat tool
 session. The runner continues to use the shared controller for every
 native operation and restores preferences before retiring its packages.
+`--mode integrated --policy-root <CSC source>` instead stages only the
+production scanner and its publisher, with their exact bytes recorded
+in the input manifest. That arm has no fixed-plot score injection.
 
 For a normal-start development run, `ce_bakers_fresh.py` can
 capture intermediate chain dependencies with `--census-turns`

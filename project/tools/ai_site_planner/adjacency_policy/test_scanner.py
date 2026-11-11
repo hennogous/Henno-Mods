@@ -31,7 +31,7 @@ local queue = {
     CanProduce=function(_, hash, _, test) assert(hash==1001 and test); return unlocked end,
 }
 GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER.Hash = 1001
-GameInfo.Resources = {[88]={ResourceType='RESOURCE_CATTLE'}}
+GameInfo.Resources = info({{Index=88,ResourceType='RESOURCE_CATTLE'}},'ResourceType')
 CSC_Adjacency.HasTag = function(tag, kind) return tag=='CLASS_CSC_BAKERS_BASE' and kind=='RESOURCE_CATTLE' end
 local cattleVisible = true
 CSC_Adjacency.ResourceVisible = function() return cattleVisible end
@@ -48,7 +48,8 @@ local function makeSite(id, river, host, base, spec, resource)
         id=id, river=river, hills=0, host=host, base=base, spec=spec,
         IsRiver=plot.IsRiver, GetRiverCrossingCount=plot.GetRiverCrossingCount,
         GetX=function() return id end, GetY=function() return 3 end,
-        GetOwner=function() return 1 end, GetDistrictType=function() return -1 end,
+        GetIndex=function() return id end,
+        GetOwner=function(s) return s.owner or 1 end, GetDistrictType=function() return -1 end,
         GetResourceType=function() return resource or -1 end,
         CanHaveDistrict=function(_, district, owner, cityID)
             assert(district==1 and owner==1 and cityID==15); gameplayChecked[id]=true; return id~=22
@@ -68,14 +69,25 @@ makeSite(19, 6, true, 1, 1)
 makeSite(20, 6, true, 1, 1)
 makeSite(21, 4, true, 1, 1)
 makeSite(22, 6, true, 1, 1)
+local frontierPlots = {}
+for id=31,36 do makeSite(id,0,false,0,0); frontierPlots[#frontierPlots+1]=plots[id] end
+-- Ring geometry stays fixed while visibility and ownership change below.
+CSC_Adjacency.PlotsInBand=function(center, first, last)
+    if first==1 and last==3 then return frontierPlots end
+    assert(first==1 and last==1)
+    return Map.GetAdjacentPlots(center:GetX(),center:GetY())
+end
 PlayersVisibility = {[1]={IsRevealed=function(_, x) return x~=17 end}}
 Cities = {GetPlotPurchaseCity=function(p) if p.id~=19 then return city end end}
 local center = {GetOwner=function() return 1 end, GetDistrictType=function() return 0 end,
     GetIndex=function() return 2 end, GetX=city.GetX, GetY=city.GetY}
 Map = {
+    GetPlot=function() return center end,
     GetPlotByIndex=function(id) return plots[id] end,
     GetPlotDistance=function(_, _, x) return x==20 and 4 or 2 end,
-    GetAdjacentPlots=function(x) return plots[x].host and {center} or {} end,
+    GetAdjacentPlots=function(x)
+        return plots[x].neighbors or (plots[x].host and {center} or {})
+    end,
 }
 CityOperationTypes = {BUILD=1, PARAM_DISTRICT_TYPE=2, PARAM_X=3, PARAM_Y=4}
 CityOperationResults = {PLOTS=5}
@@ -142,6 +154,52 @@ existing, placed = false, true
 assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 placed, unlocked = false, false
 assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==7)
+
+-- Frontier coverage uses geometry even when the BUILD-operation target list
+-- is empty. A possible purchasable supplier or unseen neighbor stays neutral.
+existing, placed, unlocked = false, false, false
+local ownedNeighbor={GetOwner=function() return 1 end, GetX=function() return 98 end,
+    GetY=function() return 3 end, GetResourceType=function() return -1 end}
+plots[31].owner=-1
+plots[31].neighbors={ownedNeighbor}
+local frontier, frontierCounts=bids(bakers, {}, readLegalTargets)
+assert(frontier[31].delta==-65536 and frontierCounts.frontierBids==1 and frontierCounts.legal==0)
+local pendingBase={GetOwner=function() return -1 end, GetX=function() return 99 end,
+    GetY=function() return 3 end, GetResourceType=function() return 88 end}
+plots[31].neighbors={ownedNeighbor,pendingBase}
+assert(not bids(bakers, {}, readLegalTargets)[31])
+pendingBase.GetOwner=function() return 1 end
+assert(not bids(bakers, {}, readLegalTargets)[31])
+pendingBase.GetOwner=function() return 2 end
+assert(bids(bakers, {}, readLegalTargets)[31].delta==-65536)
+pendingBase.GetOwner=function() return -1 end
+pendingBase.GetResourceType=function() return -1 end
+PlayersVisibility[1].IsRevealed=function(_, x) return x~=99 end
+assert(not bids(bakers, {}, readLegalTargets)[31])
+PlayersVisibility[1].IsRevealed=function(_, x) return x~=17 end
+plots[31].neighbors={ownedNeighbor}
+cattleVisible=false
+assert(not bids(bakers, {}, readLegalTargets)[31])
+cattleVisible=true
+plots[31].owner=2
+assert(not bids(bakers, {}, readLegalTargets)[31])
+plots[31].owner=-1
+plots[31].neighbors={pendingBase}
+assert(not bids(bakers, {}, readLegalTargets)[31])
+plots[31].neighbors={ownedNeighbor}
+PlayersVisibility[1].IsRevealed=function(_, x) return x~=31 end
+assert(not bids(bakers, {}, readLegalTargets)[31])
+PlayersVisibility[1].IsRevealed=function(_, x) return x~=17 end
+local canHaveFrontier=plots[31].CanHaveDistrict
+plots[31].CanHaveDistrict=function() return false end
+assert(not bids(bakers, {}, readLegalTargets)[31])
+plots[31].CanHaveDistrict=canHaveFrontier
+plots[31].neighbors={ownedNeighbor,pendingBase}
+PlayersVisibility[1].IsRevealed=function(_, x) return x~=99 end
+plots[31].GetResourceType=function() return 88 end
+assert(bids(bakers, {}, readLegalTargets)[31].delta==-65536)
+plots[31].owner=1
+PlayersVisibility[1].IsRevealed=function(_, x) return x~=17 end
 
 -- The same gate accepts a future Harbor before it can be built, then
 -- nominates the actual legal host of an existing Tailors chain.

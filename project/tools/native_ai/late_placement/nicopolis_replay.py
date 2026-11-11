@@ -17,7 +17,7 @@ from ce_bakers_fresh import package_identity
 from ce_replay import DLL, HOTFIX_EXE_SHA, verify_modules
 from driver import (
     HERE, STUDY, HOTFIX_SHA, XP2_IMAGE_SIZE, HeldProcess, NativeSession, configure,
-    flags, launch, load, make_probe_controller, manifest, native_inventory, read,
+    flags, launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json,
 )
 
@@ -110,7 +110,8 @@ def run(args):
             assert destination.is_dir() and manifest(destination) == pins[source]
         else:
             assert not destination.exists()
-    if args.mode == 'frontier':
+    replacements = {}
+    if args.mode != 'original':
         assert not recovery, 'Complete preference recovery before a frontier test'
         original_run = args.original_run.resolve(strict=True)
         assert load(original_run / 'complete.json')['verified']
@@ -119,12 +120,20 @@ def run(args):
         assert selected['winner'] == dict(district=36, x=28, y=5, q8=396462)
         frontier, = (row for row in selected['sites'] if row['plot'] == 398)
         assert frontier['owned'] == 0 and frontier['frontier'] == 1 and frontier['reservation'] == -1
+    if args.mode == 'frontier':
         before = (csc / SCANNER).read_bytes()
         newline = b'\r\n' if b'\r\n' in before else b'\n'
         needle = b'    return bids, counts' + newline + b'end'
         assert before.count(needle) == 1
         modified = before.replace(needle, FRONTIER_PROBE.replace(b'\n', newline) + needle)
-        pins[csc][str(SCANNER)] = dict(sha256=hashlib.sha256(modified).hexdigest(), size=len(modified))
+        replacements[SCANNER] = modified
+    elif args.mode == 'integrated':
+        # Stage only the two production AI files being qualified. Unrelated
+        # worktree gameplay, art and content cannot enter this saved fixture.
+        for relative in (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')):
+            replacements[relative] = (args.policy_root / relative).read_bytes()
+    for relative, data in replacements.items():
+        pins[csc][str(relative)] = dict(sha256=hashlib.sha256(data).hexdigest(), size=len(data))
     sys.path.insert(0, str(args.dependencies.resolve(strict=True)))
     import frida
     assert frida.__version__ == '17.24.3'
@@ -150,9 +159,9 @@ def run(args):
             if not recovery:
                 shutil.copytree(source, destination)
             installed.append(source)
-        if args.mode == 'frontier':
-            (packages[csc] / SCANNER).write_bytes(modified)
-            (out / 'frontier-scanner.lua').write_bytes(modified)
+        for relative, data in replacements.items():
+            (packages[csc] / relative).write_bytes(data)
+            (out / relative.name).write_bytes(data)
         verify_packages()
         session.start(lambda: launch(SimpleNamespace(binary=binary), out))
         session.wait_context('MainMenu')
@@ -177,15 +186,28 @@ Modding.EnableMod(chosen.Handle,true)
         assert {key for key, value in flags(controller, 'verify-local-pair')['mods'].items() if value} == test_ids
         session.issue_load_once(save, sha256=SAVE_SHA, native_directory=home / 'Saves/Single', turn=200)
 
+        plots = []
+
         def ready():
             verify_modules(session, (packages[ce] / ce_relative).resolve(), out, HOTFIX_SHA)
             controller.cmd(read(out / 'plot-watcher.lua'), 'CSC_AI_BakersGameplay', 'watch-source-plots')
+            raw = controller.cmd("""
+local city=assert(CityManager.GetCity(1,524295))
+local center=assert(Map.GetPlot(city:GetX(),city:GetY()))
+local indices={}
+for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3)) do
+    indices[#indices+1]=plot:GetIndex()
+end
+print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
+""", 'CSC_AI_BakersGameplay', 'scope-radius-three-plots')
+            plots.extend(parse(raw, 'CSC_REPLAY_PLOTS'))
+            assert len(plots) == len(set(plots)) and 398 in plots and 472 in plots and len(plots) <= 36
             return True
 
         session.ready_after_issue(200, ('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=ready)
         modules = load(out / 'loaded-modules.json')
         scope = dict(player=1, city=524295, width=74, height=46, districtCount=38, district=36,
-            plots=[398,400,472,474,475,548,621,622], cePath=modules[DLL]['path'])
+            plots=sorted(plots), cePath=modules[DLL]['path'])
         write_json(out / 'scope.json', scope)
         sources = (STUDY / 'observer.js', HERE / 'dam_site_observer.js')
         for path in sources:
@@ -236,12 +258,15 @@ Modding.EnableMod(chosen.Handle,true)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--mode', choices=('original', 'frontier'), required=True)
+    parser.add_argument('--mode', choices=('original', 'frontier', 'integrated'), required=True)
     for name in ('output', 'reference', 'checkpoint', 'my-games', 'user-root', 'dependencies'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--recover-from', type=Path)
     parser.add_argument('--original-run', type=Path)
+    parser.add_argument('--policy-root', type=Path)
     options = parser.parse_args()
-    if options.mode == 'frontier' and not options.original_run:
-        parser.error('frontier requires --original-run')
+    if options.mode != 'original' and not options.original_run:
+        parser.error('non-original modes require --original-run')
+    if options.mode == 'integrated' and not options.policy_root:
+        parser.error('integrated requires --policy-root')
     run(options)

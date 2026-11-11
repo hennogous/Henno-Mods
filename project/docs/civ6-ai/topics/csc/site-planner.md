@@ -139,6 +139,15 @@ The separate Stage 2 customer offer requires a current native build
 target. A ready existing chain can bid 40 utility points. A selected +4
 Quarter plan with a ready Base can tentatively bid 16 on its projected
 Stage 2 host. These prospective bids require live comparison evidence.
+
+The frontier extension can deduct 256 utility points for covering a known
+mapped material or for a known absence of Base in the adjacent own and
+unowned tiles. It uses revealed radius-three candidates beside the player's
+land. Fog, hidden Base types and possible supplier acquisitions keep the
+absence deduction neutral. The cache stores geometry only. CE validates
+the proposing city's native row before consuming each offer.
+These safeguards apply to frontier sites. Owned-site treatment of supply
+that could be purchased remains part of 1.5.
 `CSC_AI_QUARTER_PLAN` counts sites with both links pending separately from
 cities where the policy found no viable offer. The native comparison and
 actual commitment need separate evidence.
@@ -172,15 +181,21 @@ The penalty has a demonstrated effect on the individual choice. Reliable
 avoidance of poor Quarter placements still needs frontier coverage and
 foundation evidence. [AI-C138]
 
+The existing CE interface also accepted a score deduction before Nicopolis
+owned the site. The integrated frontier scan reproduced that deduction and
+changed the winner to plot 401, where Civ requested a purchase. The new
+site's supply, customer path and completed foundation remain to be verified.
+[AI-C139]
+
 | Problem | Coverage and next proof |
 | --- | --- |
 | 1.1 Materials | Owned, revealed deposits and the status of their mapped improvements. Qualify working, repairable, unlocked and locked suppliers in live choices. Unowned supply needs 1.5. |
 | 1.2 Neighbors | Existing mapped customers across stages and enabled goods providers, plus one feasible future footprint. Qualify the actual site choice separately from the Stage 2 customer and Service gates. |
 | 1.3 Rivers and 1.4 adjacency | Loaded Production and Gold adjacency, including the projected local Mill branch. The current bands still use projected yield. Compare pre-Mill and eventual site value in live cases before pricing the delay. |
-| 1.5 Buying | The integrated publisher uses owned sites and suppliers. Verify both native buying routes below before giving either one a CSC preference. |
+| 1.5 Buying | Positive offers use owned sites and suppliers. The frontier scan can publish deductions before acquisition. Verify both native buying routes below before adding purchase preferences. |
 | 1.6 Follow-through | Native UI build targets supply immediate legality. Track fresh comparisons, retained requests, reservation, foundation and completion independently. |
 | 1.7 Defer | Track whether the city leaves the Quarter uncommitted when every site is weak, then reconsider after a specific new opportunity. Withholding a positive bid alone cannot demonstrate deferral. |
-| 1.8 Discourage poor sites | Nicopolis's scoped deduction changed the native site and request. The alternative was an unpriced frontier tile. Verify negative frontier coverage, distinguish potential purchased supply, and follow the resulting foundations. |
+| 1.8 Discourage poor sites | Nicopolis's scoped deduction changed the native site and request. A subsequent one-tile frontier deduction reached CE, but Civ found another frontier site. The new map scan covers known material losses across frontier candidates. Qualify its native choices and resulting foundations. |
 
 ### Placement and purchase tests
 

@@ -164,6 +164,12 @@ local function refresh(turn)
                         turn, id, profile.key, counts.legal, counts.noBase, counts.coversMaterial,
                         counts.noHost, counts.bothPending, counts.deferCities, counts.offered, counts.strong))
                 end
+                if counts and (counts.frontierObserved or 0) > 0 then
+                    -- These are proposed deductions on map candidates. The
+                    -- CE consumer still validates the native frontier row.
+                    print(string.format('CSC_AI_FRONTIER_QUARTER_PLAN turn=%d player=%d key=%s observed=%d bids=%d uncertain=%d',
+                        turn, id, profile.key, counts.frontierObserved, counts.frontierBids, counts.frontierUncertain))
+                end
             else
                 print(string.format('CSC_AI_INDUSTRY_PLACEMENT_FAILED turn=%d player=%d key=%s %s',
                     turn, id, profile.key, tostring(industryBids)))
