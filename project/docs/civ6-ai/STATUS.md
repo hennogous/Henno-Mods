@@ -40,6 +40,13 @@ closed normally and Astra approved the scope. No customer or Quarter completion
 is implied. For rivers, reuse recorded offer components to choose a discriminating
 window before another replay; a changed adjacency value alone is insufficient.
 
+London's next comparison was captured: Dockyard wins 53,439 versus the river
+Quarter's 25,329. New Liverpool chooses a strong Quarter, but its river point
+does not change the +48 band. [AI-C154](findings.md#ai-c154). Next reload the
+preserved Liverpool predecision candidate, verify its clock/state and reconcile
+three counted Base plots versus two viable suppliers before a controlled
+one-Base river case. No map preparation has been performed.
+
 ## Evidence levels by sub-problem
 
 | Item | 1: Mechanism | 2: Changed decision/action | 3: Integrated reproduction |

@@ -2619,3 +2619,27 @@ no test-city coordinates; the scoped exclusion exists only in the diagnostic
 control. Broader customer configurations remain qualification.
 
 - [Matched packet audit, source and scope](../research/mods/csc-ai-customer-access-choice-20261111.md#matched-result-problem-12-closed-at-levels-13)
+
+## AI-C154
+
+**London's projected river-Mill offer lost to Dockyard; Liverpool's river point is band-redundant**
+
+Status: accepted observation; independently verified by Astra. No 1.3 closure.
+
+An unchanged main-policy replay through 26 captures London's fresh 24 choice:
+Dockyard 2566 at 53,439 Q8 versus Bakers 2495 at 25,329. The loaded river rule
+counts three edges for one projected Water Mill point, explicitly inactive now
+and included in plan. It supports adjacency 4 and the ordinary +48 offer.
+The later 41,021 cache occurs under retained Dockyard planning, not a fresh loss.
+
+New Liverpool chooses Bakers 2497 on 25 at 37,520 Q8. Its adjacency 6 falls only
+to 5 without its river point, so that ablation would keep the same +48 band.
+The run completes four turns with verified normal cleanup, six matching prefix
+pairs and 1,251 unique native records.
+
+**Limits:** Delivery and candidate qualification only, not a changed river-driven
+choice. A controlled one-Base Liverpool case is proposed, but its Base rule count
+3 versus two viable suppliers must first be reconciled. Preserved autosave 25
+has verified origin/bytes, not yet a reload-verified clock or predecision state.
+
+- [Measurements and bounded next case](../research/mods/csc-ai-river-choice-20261111.md#observation-result-and-next-representative-case)

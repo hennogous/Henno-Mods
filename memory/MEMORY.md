@@ -221,13 +221,25 @@ C153/STATUS/acceptanceupdated. NotmarginalGoldonly,notlocationrelocation,
 NOTquarter/customerconstruction/Granary/Service. No game/controllerownednow.
 ACTIVE1.3 river/Millgeometry→offer→changednativeQuarterchoice; reusecurrent
 component/native datasets beforechoosingreplay. Preserve1.1/1.2/1.8/2.2closures.
-CURRENT sharedcontroller river-london-full-01 exec43460 unchanged22→26.
+River-london-full01TERMINALunchanged22→26/4turnsverifiednormalcleanup.
 LondonP4/c65536/Bakers2495sourceadj4/+48 =BaseMaize2496+CC+futureCommercial2569
 +prospectiveWaterMillRIVERcount3→amount1. Cache22=26984/23=25329. HolySite143
 completes23;fresh24outsideoldendpoint. Astraapprovesbounded26observation FIRST,
 noRivercontrolunlessusefulcomparison. RuleGATEScompanionlogsactiveNow/inPlan/
 requiredMill; existingruleformatpreserved.4early+6reader+9discovery+5BostonPASS.
-DoNOTeditpinnedsourcewhilelive. 1.2closurecommitted4c08a42f.
+Astraaudit6prefixpairs/1251unique. Londonfresh24RND2566=53439 vsQuarter2495=25329;
+later41021busyplanNOTfreshloss. NoRivercontroluseful. NaturalLiverpoolP4/131073
+founded24/fresh25Bakers2497=37520(raw25232+12288);adj6Riveroff→5still48band.
+RawBasecount3vsReadSuppliers2(Maize2496/Wheat2498). FrozenAdjCore countsbool
+matchingplotsNOTquantity; exactthirdplotunreconciled. Astrarecommendscontrolled
+one-countedVIABLEBaseLiverpool25fixture, preserveRiver/CC/futurehost2571,
+commonsavedderivativebotharms andindependent4→3ordinarymodelqualification.
+BEFOREprepare:reloadsourceclock/state/neighbors. Archivedowned-sessionAuto25
+river-london-full01/source-autosaves/candidate-25.Civ6Save SHA
+c598a84182c5c716e9f9626d4ece83ce77c89bc461d22d03d932cead03623b35;
+originmtimewithinownedrun/header/bytesverified, SAVEDCLOCK/PREDECISIONUNVERIFIED.
+Companioncandidate-25.jsonoriginproof. No mapeditsyet; no controllerownednow.
+1.2closurecommitted4c08a42f. C154Londonnegative/report/STATUSupdated.
 FirstCLIpreflightusedwrongprevioussurveyshape andstoppedBEFORElaunch/output;
 correctrunusesowned-site-survey-all-customers-01. Inspecthandlebeforeanynextgame.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.

@@ -47,3 +47,48 @@ This would test the value of a **prospective Water Mill river benefit**, not
 whether that Mill has been built or has begun paying. If the full Quarter offer
 still loses by a wide margin, retain the measurement and do not run an ablation
 that cannot satisfy the changed-choice acceptance condition.
+
+## Observation result and next representative case
+
+`river-london-full-01` completed **22→26**, four turns, normal exit 0 with owner
+absence and verified preference/package restoration. Six prefix begin/end pairs
+match; 1,251 retained native records have unique generation/index keys. Astra
+independently verified the result and the longer archived timing leads.
+
+At London's fresh **24** comparison, Royal Navy Dockyard 2566 wins at
+**53,439 Q8**, versus Bakers 2495 at **25,329**. The later Bakers cache rises to
+41,021 while the Dockyard plan is retained; that is not another fresh loss.
+The river rule is explicitly `activeNow=false`, `inPlan=true`, requiring
+`BUILDING_CSC_BAKERS_WATER_MILL` throughout. Thus the projected +1 is delivered
+through the +48 offer, but no discriminating river-choice case is established.
+Do not run the proposed London ablation just to observe another changed score.
+
+A newly founded **Liverpool, player 4 / city 131073**, makes a fresh **25**
+Bakers choice at **2497**, score **37,520 = 25,232 + 12,288 Q8**. This is a genuine
+native Quarter win and request, but the model gives adjacency **6**: Base rule
+count 3, prospective Water Mill +1, City Center +1 and future Commercial Hub
+2571 +1. Removing only the river point leaves 5 and the same +48 band. It is
+therefore also unsuitable for that isolated ablation. The nearby frontier 2423
+has adjacency 4 from Base +1, projected river +2 and future customer +1, but the
+owned site wins.
+
+Astra recommends a controlled **predecision Liverpool-25 one-Base case** if the
+natural leads remain non-discriminating. First reconcile Base rule count 3 with
+the two viable supplier records (Maize 2496 and Wheat 2498). The loaded adjacency
+core counts matching resource plots, not resource quantity; the supplier reader
+has additional viability restrictions. The exact third counted plot is not yet
+identified. Do not guess which removal produces one counted, viable Base.
+
+Preserve the real river, City Center and future customer footprint. Save one
+common derivative for both arms, require the unchanged ordinary model to give
+4 versus 3 when the exact river rule is withheld, and measure fresh native
+values. This is a representative controlled case, not natural-game reliability
+or a reason to change a score band to fit a known gap.
+
+The autosave written during this verified owned session is preserved at
+`river-london-full-01/source-autosaves/candidate-25.Civ6Save`, SHA-256
+`c598a84182c5c716e9f9626d4ece83ce77c89bc461d22d03d932cead03623b35`.
+File header, size, hash and creation within the owned run's time interval are
+verified. **Its actual saved clock and predecision state remain unverified by
+reload**; the filename alone is not that proof. The companion origin JSON records
+this limitation. No resources or other map facts have been edited for this case.
