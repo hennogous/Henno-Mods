@@ -135,3 +135,31 @@ The pinned scout explicitly contains original AI seats 1–5 and restored human 
 any broadened migration must validate every seat/configuration/property before
 nil-only writes and be identical in later paired arms. The older player-3-only
 runs are leads, not matching controls for a new all-five setup.
+
+## Early scout protocol
+
+`--early-host-scout` loads the original turn-22 source, with **no map preparation**,
+and runs only through inactive 24. The additional setup/acknowledgment and turn-8
+checkpoint ancestry are hash-pinned in `early_host_policy.py`. Expected leaders
+are Cleopatra, Gandhi, Tomyris, Teddy Roosevelt, Victoria and Hojo. Every seat's
+life/major/controller/leader/property and the Boston identity must pass before
+any missing original-role metadata is restored. All five AI seats are admitted;
+the original human remains excluded.
+
+The existing trace reader keeps published Quarter rows and actual native winners
+for those players. Passive candidate metadata retains the future district and
+footprint already selected by the live model. After capacity trimming but **before
+Commit**, `CSC_EARLY_RETAINED_OFFER` logs the offer, its adjacency, its planned
+Mill forecast without an added future district, and actual supplies. Separate
+supplier and rule lines explain working status, availability and contributions.
+These are retained proposals; join them to CE's matching version/generation
+and native records before claiming consumption. CE ignores the diagnostic keys;
+ordinary bands, eligibility and gameplay facts remain unchanged.
+
+Three early-migration/staging checks, six trace-reader checks, nine discovery
+checks and five Boston helper checks pass. Astra independently verified the
+ancestry hashes, all-before-write guards, passive metadata, forecast argument
+semantics, arming and endpoint scope before launch. Artifact directory:
+`host-choice-early-scout-01` under the same research root. The goal is to qualify
+a discriminating customer-contribution comparison, not to claim closure from
+another successfully delivered score.

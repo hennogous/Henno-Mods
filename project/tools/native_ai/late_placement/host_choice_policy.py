@@ -26,6 +26,8 @@ def candidate_scope(previous, expanded):
 PREFIX="""-- Diagnostic native prefix reader, before main CSC publication resets counters.
 local hostScope=__SCOPE__
 local hostCities,hostPairs={},{}
+local hostPlayers=__PLAYERS__
+local hostQuarterTypes={}
 local hostArmed=false
 for _,r in ipairs(hostScope)do
  local city=r.player..':'..r.city
@@ -34,7 +36,7 @@ end
 function CSC_HOST_DIAG_Snapshot()
  assert(hostArmed,'Host reader has not been armed after initial qualification')
  local turn=Game.GetCurrentGameTurn()
- if turn<200 or turn>207 then return end
+ if turn<__START__ or turn>__END__ then return end
  local initial=CE_AIDistrictScoresStatus()
  local generation=assert(tonumber(initial:match('"generation":(%d+)')))
  local version=assert(tonumber(initial:match('"version":(%d+)')))
@@ -63,7 +65,8 @@ function CSC_HOST_DIAG_Snapshot()
    local plot=assert(tonumber(raw:match('"plot":(-?%d+)')))
    local city=player..':'..cityID
    if hostPairs[city..':'..district..':'..plot]
-    or hostCities[city] and raw:match('"k":"best"')then
+    or hostCities[city] and raw:match('"k":"best"')
+    or hostPlayers[player] and (hostQuarterTypes[district] or raw:match('"k":"best"'))then
     print('CSC_HOST_NATIVE',turn,generation,offset+readCount,raw)
    end
    readCount=readCount+1
@@ -78,6 +81,11 @@ function CSC_HOST_DIAG_Snapshot()
 end
 function CSC_HOST_DIAG_Arm()
  assert(not hostArmed,'Host reader was already armed')
+ if next(hostPlayers)then
+  for _,profile in ipairs(CSC_AI_QuarterPlacement.StageTwoProfiles())do
+   hostQuarterTypes[profile.district.Index]=true
+  end
+ end
  hostArmed=true
  print('CSC_HOST_DIAG_ARMED',Game.GetCurrentGameTurn())
  CSC_HOST_DIAG_Snapshot()
@@ -93,5 +101,9 @@ end)
 """
 
 
-def stage(source,scope):
-    return PREFIX.replace('__SCOPE__',lua(scope)).encode('utf-8')+source
+def stage(source,scope,*,start=200,end=207,players=()):
+    assert 0<=start<end<=start+8
+    assert len(set(players))==len(players) and all(0<p<64 for p in players)
+    prefix=PREFIX.replace('__SCOPE__',lua(scope)).replace('__PLAYERS__',lua({p:True for p in players}))
+    prefix=prefix.replace('__START__',str(start)).replace('__END__',str(end))
+    return prefix.encode('utf-8')+source

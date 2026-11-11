@@ -192,6 +192,14 @@ vsBakers1061Base987 (Pokrovka22Preserve248;Washington23Bakers181at870 secondary)
 PinnedscoutcivicsEXACT1..5 supportsall5originalAIrole migration; validateALL
 players/configs/propertiesBEFOREnil-onlywrites, sameall5setupbothfuturearms.
 P3-onlyoldrunsnotmatchingcontrols. CaptureCURRENTmodel/supplyatcomparison.
+CURRENT sharedcontroller host-choice-early-scout-01 exec29643 original22→24.
+Maintained--early-host-scout addsNOmapedits; expected6leadersfrompinned
+scout03setup+ACK/turn8ancestor/discoveryload ancestry; all6checksBEFOREnil-only
+rolewrites. HostTraceprefixreadsall5AIpublishedQuarterrows+nativewinners.
+PassivefutureDistrict/Plotmetadata+RETAINED_OFFERbeforeCommitlogs supplies/
+withoutfuturemodel/rules; joinversion/nativeCEbeforeclaimingdelivery.
+3early+6reader+9discovery+5BostonPASS, actualancestorhashesPASS/Astrareview.
+DoNOTeditpinnedsourcewhileownerlive; inspectexacthandlebeforenextsession.
 FirstCLIpreflightusedwrongprevioussurveyshape andstoppedBEFORElaunch/output;
 correctrunusesowned-site-survey-all-customers-01. Inspecthandlebeforeanynextgame.
 before1.1closure; unchangedchoicewouldretainonlydeliveryevidence.

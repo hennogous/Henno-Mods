@@ -82,5 +82,16 @@ end
         vm.globals().CSC_HOST_DIAG_Arm()
         with self.assertRaisesRegex(Exception,'already armed'):vm.globals().CSC_HOST_DIAG_Arm()
 
+    def test_early_player_scope_keeps_all_published_quarter_rows_and_winner(self):
+        vm=self.fixture()
+        vm.execute('''Game.GetCurrentGameTurn=function()return 23 end
+CSC_AI_QuarterPlacement={StageTwoProfiles=function()return {
+ {district={Index=36}},{district={Index=37}}}end}''')
+        vm.execute(stage(b'',[],start=22,end=24,players=[4]).decode('utf-8'))
+        vm.globals().CSC_HOST_DIAG_Arm()
+        native=[line for line in vm.globals().output.values() if line.startswith('CSC_HOST_NATIVE\t')]
+        self.assertEqual(len(native),3)
+        with self.assertRaises(AssertionError):stage(b'',[],start=22,end=24,players=[0])
+
 
 if __name__=='__main__':unittest.main()
