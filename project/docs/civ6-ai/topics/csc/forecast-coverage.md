@@ -12,6 +12,16 @@ attachments have one classification and were observed in both cities. These
 counts measure inventory coverage, **not the percentage of gameplay value the
 AI understands**. [AI-C059](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c059) [AI-N074](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n074)
 
+## Stage 3 encoding review, 11 November 2026
+
+The inspected worktree replaces decimal population-return bits with fifteen
+Bit/256 coefficients and Q8-suffixed properties. This improves representation,
+but does not certify AI forecasts. The known initializer drops fractional
+coefficients; if these City Center roots are reached without their property
+gates, the surviving coefficients sum to 127 per citizen per payout stream.
+That is a conditional source/static risk, not an observed score or Quarter
+honeypot. Their contribution remains unmeasured. [Review and source hashes](../../../research/mods/csc-ai-stage3-q8-forecast-risk-20261111.md).
+
 ## Where this fits into district placement
 
 ```mermaid
@@ -71,7 +81,7 @@ assigns to losing a CSC supplier or switching off a Service.
 | Storekeeper: growth, Engineer GPP, marker | **Zero here** | Roots return zero without reaching the child effects. Melbourne's live Food surplus and same-player Engineer reference put the two benefits near 21 utility points if enabled over the Mill forecast window. The proxy still needs an admitted positive case. [AI-C114](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c114) |
 | Innkeeper: Housing, Merchant GPP, slot | **Zero here** | Roots return zero without children. Housing, GPP, the marker grant and staffing are separate questions. |
 | Groundskeeper/Ride Technician: Tourism, Engineer GPP, slot | **Mixed** | Reached Tourism and grant children lack analyzers. One Zoo GPP branch receives value; others return zero. Nonzero GPP does not certify the full material/civic/customer gates. |
-| Bakery ↔ Market ordinary population sales | **Unmeasured** | City Center consumers, not Bakery roots. Current implementation uses0.105 per customer citizen for customer Food and seller Production/Gold; ordinary sales do not require Service materials/civics. |
+| Bakery ↔ Market ordinary population sales | **Unmeasured** | City Center consumers, not Bakery roots. Current implementation uses0.101 per customer citizen for customer Food and seller Production/Gold; ordinary sales do not require Service materials/civics. |
 | Café ↔ Zoo/Ferris ordinary sales | **Unmeasured** | City Center consumers. Each customer site contributes floor(its city population/5), with Culture to customer and Production/Gold to seller. These are separate from Tourism and Services. |
 | River Access / No River Access and Mill alternatives | **Structural** | Own raw flags are zero and excluded from direct district addition. River Access nevertheless receives Water value through prerequisite propagation; timing and mutual exclusion matter. |
 
