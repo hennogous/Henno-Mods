@@ -64,6 +64,7 @@ rpc.exports = {
         const record = receipt => {
             if (records.length >= 64) throw Error('District selector evidence bound');
             records.push(receipt);
+            if (scope.streamRecords) send({kind: 'district-selector-receipt', receipt});
             if (scope.offerRepair && receipt.kind.startsWith('repair-'))
                 send({kind: 'quarter-repair-receipt', receipt});
         };

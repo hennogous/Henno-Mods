@@ -7,10 +7,12 @@ early score entry to test CE admission before generalizing frontier coverage.
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
 import traceback
+import time
 from types import SimpleNamespace
 
 from ce_bakers_fresh import package_identity
@@ -36,14 +38,27 @@ local player=Players[1]
 assert(profile.key=='BAKERS')
 function CSC_NICOPOLIS_Snapshot()
     local turn=Game.GetCurrentGameTurn()
-    if turn<200 or turn>208 then return end
-    for _,index in ipairs({398,472}) do
+    if turn<200 or turn>__ENDPOINT__ then return end
+    for _,index in ipairs({398,472,401}) do
         local plot=assert(Map.GetPlotByIndex(index))
         local buyer=Cities.GetPlotPurchaseCity(plot)
         local supply=placement.ReadSuppliers(player,plot,profile)
         print('CSC_NICOPOLIS_SNAPSHOT',turn,index,plot:GetOwner(),buyer and buyer:GetID() or -1,
             plot:GetDistrictType(),#supply.base,#supply.specialty,
             plot:CanHaveDistrict(profile.district.Index,1,524295))
+        for _,neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY())) do
+            local resource=GameInfo.Resources[neighbor:GetResourceType()]
+            local revealed=PlayersVisibility[1]:IsRevealed(neighbor:GetX(),neighbor:GetY())
+            local visible=resource and revealed and CSC_Adjacency.ResourceVisible(1,resource.Index)
+            local district=GameInfo.Districts[neighbor:GetDistrictType()]
+            print('CSC_NICOPOLIS_SITE_NEIGHBOR',turn,index,neighbor:GetIndex(),neighbor:GetOwner(),revealed,
+                visible and resource.ResourceType or '-',neighbor:GetImprovementType(),
+                district and district.DistrictType or '-',
+                visible and CSC_Adjacency.HasTag(profile.base,resource.ResourceType) or false,
+                visible and CSC_Adjacency.HasTag(profile.specialty,resource.ResourceType) or false,
+                profile.customers[neighbor:GetDistrictType()]~=nil,
+                district and CSC_Adjacency.HasTag('CLASS_CSC_BAKERS_SALES',district.DistrictType) or false)
+        end
     end
     local candidate=Map.GetPlotByIndex(398)
     for _,plot in ipairs(Map.GetAdjacentPlots(candidate:GetX(),candidate:GetY())) do
@@ -86,6 +101,7 @@ def run(args):
     reference = args.reference.resolve(strict=True)
     checkpoint = args.checkpoint.resolve(strict=True)
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
+    assert 201 <= args.through <= 224, 'This fixture uses a bounded continuation of the turn-200 save'
     assert load(reference / 'complete.json')['verified']
     assert load(reference / 'session-closed.json')['verified']
     meta = load(checkpoint / 'checkpoint.json')
@@ -105,14 +121,8 @@ def run(args):
     binary = Path(load(reference / 'launch-bootstrap.json')['binary'])
     assert sha(binary) == HOTFIX_EXE_SHA
     recovery = args.recover_from.resolve(strict=True) if args.recover_from else None
-    for source, destination in packages.items():
-        if recovery:
-            assert destination.is_dir() and manifest(destination) == pins[source]
-        else:
-            assert not destination.exists()
     replacements = {}
     if args.mode != 'original':
-        assert not recovery, 'Complete preference recovery before a frontier test'
         original_run = args.original_run.resolve(strict=True)
         assert load(original_run / 'complete.json')['verified']
         trace = load(original_run / 'selector-trace.json')
@@ -134,25 +144,55 @@ def run(args):
             replacements[relative] = (args.policy_root / relative).read_bytes()
     for relative, data in replacements.items():
         pins[csc][str(relative)] = dict(sha256=hashlib.sha256(data).hexdigest(), size=len(data))
+    # Recovery must match the exact staged production files, not the older
+    # frozen carrier before those substitutions. No arbitrary package reuse.
+    for source, destination in packages.items():
+        if recovery:
+            assert destination.is_dir() and manifest(destination) == pins[source]
+            assert load(recovery / 'inputs.json')['packages'][source.name] == pins[source]
+        else:
+            assert not destination.exists()
     sys.path.insert(0, str(args.dependencies.resolve(strict=True)))
     import frida
     assert frida.__version__ == '17.24.3'
     assert Path(frida.__file__).resolve().is_relative_to(args.dependencies.resolve())
     out.mkdir(parents=True)
-    write_json(out / 'inputs.json', dict(mode=args.mode, save_sha256=SAVE_SHA,
+    write_json(out / 'inputs.json', dict(mode=args.mode, through=args.through, save_sha256=SAVE_SHA,
         ce_sha256=CE_SHA, packages={source.name: value for source, value in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
-    (out / 'plot-watcher.lua').write_text(WATCHER, encoding='utf-8')
+    (out / 'plot-watcher.lua').write_text(WATCHER.replace('__ENDPOINT__', str(args.through)), encoding='utf-8')
     if recovery:
         shutil.copyfile(recovery / 'original-preferences.json', out / 'original-preferences.json')
     controller = make_probe_controller(out, user_root=user_root)
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
     installed = []
-    observer = attachment = None
+    observer = purchase_observer = attachment = None
     restore_allowed = False
+    stream_errors = []
 
     def verify_packages():
         assert all(manifest(packages[source]) == pins[source] for source in installed)
+
+    def stream_receipts(name):
+        # Frida delivers bounded callback messages on its host thread. Each
+        # append is flushed to disk before returning. A surviving journal is
+        # explicitly partial evidence; only endpoint and closure receipts can
+        # establish a completed replay. No console command is issued here.
+        def receive(message, data):
+            try:
+                with (out / (name + '-live.ndjson')).open('a', encoding='utf-8') as stream:
+                    stream.write(json.dumps(dict(partial=True, captured_unix=time.time(), message=message)) + '\n')
+                    stream.flush()
+                    os.fsync(stream.fileno())
+            except Exception as error:
+                stream_errors.append(dict(observer=name, error=str(error), captured_unix=time.time()))
+                # A full disk can also prevent this error receipt. Retain the
+                # in-memory error so the replay cannot report complete below.
+                try:
+                    write_json(out / 'receipt-stream-errors.json', stream_errors)
+                except OSError:
+                    pass
+        return receive
 
     try:
         for source, destination in packages.items():
@@ -207,7 +247,7 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
         session.ready_after_issue(200, ('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=ready)
         modules = load(out / 'loaded-modules.json')
         scope = dict(player=1, city=524295, width=74, height=46, districtCount=38, district=36,
-            plots=sorted(plots), cePath=modules[DLL]['path'])
+            plots=sorted(plots), cePath=modules[DLL]['path'], streamRecords=True)
         write_json(out / 'scope.json', scope)
         sources = (STUDY / 'observer.js', HERE / 'dam_site_observer.js')
         for path in sources:
@@ -216,22 +256,49 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
         code += '\n'.join(read(out / path.name) for path in sources)
         attachment = frida.attach(session.owner.pid)
         observer = attachment.create_script(code)
+        observer.on('message', stream_receipts('selector'))
         observer.load()
         assert observer.exports_sync.init(dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'],
             image_size=XP2_IMAGE_SIZE), scope)
         observer.exports_sync.advance()
-        controller.study_endpoint = 208
+        if args.observe_purchases:
+            # Separate read-only script with its own RPC state. Its hooks sit
+            # in Economic::TryPurchasePlot and Purchase::Start and do not
+            # alter CE's district callers or the game's purchase decisions.
+            purchase_sources = (STUDY / 'observer.js', HERE / 'plot_purchase_observer.js')
+            shutil.copyfile(purchase_sources[1], out / purchase_sources[1].name)
+            purchase_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n"
+            purchase_code += '\n'.join(read(path) for path in purchase_sources)
+            purchase_observer = attachment.create_script(purchase_code)
+            purchase_observer.on('message', stream_receipts('purchase'))
+            purchase_observer.load()
+            # Other paid plots for this player serve as a natural positive
+            # control for the command callbacks. Targeted savings observations
+            # remain restricted to the two diagnostic footprints.
+            purchase_scope = dict(player=1, width=74, height=46, plots=[398,401],
+                allCommandPlots=True, streamRecords=True)
+            write_json(out / 'purchase-scope.json', purchase_scope)
+            assert purchase_observer.exports_sync.init(
+                dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE),
+                purchase_scope)
+        controller.study_endpoint = args.through
         print('Nicopolis diagnostic armed', args.mode, flush=True)
-        controller.play(208)
+        controller.play(args.through)
         trace = observer.exports_sync.freeze()
         write_json(out / 'selector-trace.json', trace)
         assert trace['fault'] is None and trace['active'] == 0
+        if purchase_observer:
+            purchase_trace = purchase_observer.exports_sync.freeze()
+            write_json(out / 'purchase-trace.json', purchase_trace)
+            assert purchase_trace['fault'] is None
+            purchase_observer.unload()
+            purchase_observer = None
         observer.unload()
         observer = None
         attachment.detach()
         attachment = None
         state = controller.state_read('replay-end')
-        assert state['turn'] == 208 and not state['active']
+        assert state['turn'] == args.through and not state['active']
         raw = controller.cmd('CSC_NICOPOLIS_Snapshot()', 'CSC_AI_BakersGameplay', 'endpoint-readback')
         (out / 'endpoint-plots.txt').write_text(raw, encoding='utf-8')
         for name in LOGS:
@@ -240,10 +307,27 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
         write_json(out / 'failure.json', dict(error=str(error), traceback=traceback.format_exc()))
         raise
     finally:
-        if observer:
-            observer.unload()
+        # A timeout must retain whatever the native callbacks already saw.
+        # Cleanup faults must also leave the shared controller an opportunity
+        # to restore preferences and release its exclusively owned process.
+        cleanup_errors = []
+        for name, script in (('purchase', purchase_observer), ('selector', observer)):
+            if script:
+                try:
+                    write_json(out / (name + '-partial-trace.json'), script.exports_sync.freeze())
+                except Exception as error:
+                    cleanup_errors.append(dict(operation=name + '-freeze', error=str(error)))
+                try:
+                    script.unload()
+                except Exception as error:
+                    cleanup_errors.append(dict(operation=name + '-unload', error=str(error)))
         if attachment:
-            attachment.detach()
+            try:
+                attachment.detach()
+            except Exception as error:
+                cleanup_errors.append(dict(operation='detach', error=str(error)))
+        if cleanup_errors:
+            write_json(out / 'observer-cleanup-errors.json', cleanup_errors)
         if session.owner is not None and session.owner.poll() is None:
             # configure saves preferences before its first mutation. Recover
             # that snapshot even when later configuration checks fail.
@@ -253,7 +337,11 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
         if session.closed and restore_allowed:
             for source in installed:
                 packages[source].rename(out / source.name)
-    write_json(out / 'complete.json', dict(verified=True, turns_advanced=8))
+        if cleanup_errors and sys.exc_info()[0] is None:
+            raise RuntimeError('Observer cleanup failed; see observer-cleanup-errors.json')
+    assert session.closed, 'Endpoint captured without verified shared-session closure'
+    assert not stream_errors, 'Native receipt stream failed; partial evidence only'
+    write_json(out / 'complete.json', dict(verified=True, turns_advanced=args.through-200))
 
 
 if __name__ == '__main__':
@@ -264,6 +352,8 @@ if __name__ == '__main__':
     parser.add_argument('--recover-from', type=Path)
     parser.add_argument('--original-run', type=Path)
     parser.add_argument('--policy-root', type=Path)
+    parser.add_argument('--through', type=int, default=208)
+    parser.add_argument('--observe-purchases', action='store_true')
     options = parser.parse_args()
     if options.mode != 'original' and not options.original_run:
         parser.error('non-original modes require --original-run')

@@ -46,6 +46,29 @@ native operation and restores preferences before retiring its packages.
 `--mode integrated --policy-root <CSC source>` instead stages only the
 production scanner and its publisher, with their exact bytes recorded
 in the input manifest. That arm has no fixed-plot score injection.
+`--observe-purchases --through 216` adds read-only receipts at the plot
+purchase command's quote, debit and annex sites and at the earlier
+Economic targeted city-quote and savings checks. It extends the boundary
+watcher; the default endpoint remains 208. Command observations cover all
+plots for player 1 to seek a natural positive control, while the Economic
+observations remain scoped to plots 398 and 401. Receipts name the actual
+buying city, signed Q8 debit argument and raw plot/slush funds. Savings
+predicates reconstruct the next comparisons; they do not prove execution.
+The debit-return repeats a preserved argument rather than a measured
+treasury change. Annex return needs an independent ownership readback.
+An empty trace without a positive control cannot explain acquisition origin.
+On failures the runner attempts to archive partial traces before unloading,
+and observer cleanup errors do not prevent shared-session restoration.
+Opt-in native receipts are also streamed immediately to `*-live.ndjson`.
+Each delivered host message is flushed and synced, with `partial=true`;
+asynchronous trailing messages can still be lost in a machine failure.
+Compare a successful run's streamed receipts with its endpoint trace before
+using the stream as a complete interval. Exact-package recovery checks both
+the staged production manifest and interrupted inputs and preserves the
+outer original-preferences snapshot.
+Run `node project/tools/native_ai/late_placement/test_plot_purchase_observer.cjs`
+for synthetic decoding, savings-boundary and filter checks; native ABI
+validation remains a separate Ghidra/runtime requirement.
 
 For a normal-start development run, `ce_bakers_fresh.py` can
 capture intermediate chain dependencies with `--census-turns`
