@@ -77,6 +77,17 @@ local function score(district,plot,city,pid,omitDetails,futureDistrict)
  return {production=planned.production,gold=planned.gold,total=planned.production+planned.gold,current=now,details=details,requiresBuilding=mill}
 end
 
+-- Shared read-only model boundary for focused inspection and future footprint
+-- planning. This is the same function used by live QuarterSiteForecasts below:
+-- results are Production/Gold per turn, not native Q8 utility or a build bid.
+-- The caller supplies an evidenced future district type (at most one) and
+-- establishes its footprint geometry. This calculation alone establishes no
+-- unlock, population capacity, reservation, purchase or construction legality.
+-- current follows current rule eligibility; total follows the planner's chosen
+-- prospective Mill/neighbor assumptions. Neither proves realised output for
+-- an unbuilt Quarter. requiresBuilding identifies the projected Mill branch.
+CSC_AI_QuarterAdjacencyValue = score
+
 
 local preferredAdjacency = 4
 -- The threshold above counts yield per turn. The bands below are policy
@@ -112,6 +123,116 @@ local function getSitingDistricts(profile)
     return result
 end
 
+local futureTypeCache = {}
+
+-- CanHaveDistrict is a geometry query: it can accept another civilization's
+-- unique district. Future planning needs the actor's permanent type rules as
+-- well. Follow the shipped UI's civilization/leader-trait and replacement
+-- convention, including inherited leaders and explicit exclusions. This is
+-- deliberately separate from research and population, which can change later.
+-- Cache only the definition/configuration mask; city presence stays live.
+local function futureTypeRules(pid)
+    local config = PlayerConfigurations and PlayerConfigurations[pid]
+    if not config or type(config.GetCivilizationTypeName) ~= 'function'
+        or type(config.GetLeaderTypeName) ~= 'function' then return nil end
+    local civ, leader = config:GetCivilizationTypeName(), config:GetLeaderTypeName()
+    if not civ or civ == '' or not leader or leader == '' then return nil end
+    for _, name in ipairs({'Districts', 'Leaders', 'CivilizationTraits', 'LeaderTraits',
+        'DistrictReplaces', 'ExcludedDistricts'}) do
+        -- Missing metadata is not an empty set of traits/replacements. Never
+        -- turn an unavailable catalogue into evidence for a no-host penalty.
+        if not GameInfo[name] then return nil end
+    end
+    local signature = civ .. '|' .. leader
+    local cached = futureTypeCache[pid]
+    if cached and cached.signature == signature then return cached end
+    local traits, leaders, definitions, parents, allowed = {}, {}, {}, {}, {}
+    local current = leader
+    while current and not leaders[current] do
+        leaders[current] = true
+        local row = GameInfo.Leaders and GameInfo.Leaders[current]
+        current = row and row.InheritFrom
+    end
+    if GameInfo.CivilizationTraits then for row in GameInfo.CivilizationTraits() do
+        if row.CivilizationType == civ then traits[row.TraitType] = true end
+    end end
+    if GameInfo.LeaderTraits then for row in GameInfo.LeaderTraits() do
+        if leaders[row.LeaderType] then traits[row.TraitType] = true end
+    end end
+    for row in GameInfo.Districts() do
+        definitions[row.DistrictType] = row
+        if not row.TraitType or row.TraitType == '' or traits[row.TraitType] then allowed[row.DistrictType] = true end
+    end
+    if GameInfo.DistrictReplaces then for row in GameInfo.DistrictReplaces() do
+        parents[row.CivUniqueDistrictType] = row.ReplacesDistrictType
+    end end
+    local replaced = {}
+    for unique, base in pairs(parents) do
+        if allowed[unique] then replaced[base] = true end
+    end
+    for base in pairs(replaced) do allowed[base] = nil end
+    -- Match TechAndCivicUnlockables.RemoveReplacedUnlockables: an excluded
+    -- unique does not resurrect the base it replaced. These are the shipped
+    -- UI conventions, not a claim to reproduce every native admission gate.
+    if GameInfo.ExcludedDistricts then for row in GameInfo.ExcludedDistricts() do
+        if traits[row.TraitType] then allowed[row.DistrictType] = nil end
+    end end
+    local function family(kind)
+        -- CSC's supported replacement vocabulary is direct, one level.
+        -- Do not invent transitive inheritance for modded replacement chains.
+        return parents[kind] or kind
+    end
+    cached = {signature=signature, allowed=allowed, definitions=definitions, family=family}
+    futureTypeCache[pid] = cached
+    return cached
+end
+
+function CSC_AI_FutureDistrictTypes(pid, city)
+    local rules = futureTypeRules(pid)
+    if not rules or not city then return nil end -- Unknown actor: no invented future type.
+    local districts, present, presentDefinitions = city:GetDistricts(), {}, {}
+    local function observe(definition)
+        if definition then
+            local family = rules.family(definition.DistrictType)
+            if family then present[family] = true end
+            presentDefinitions[#presentDefinitions+1] = definition
+        end
+    end
+    if type(districts.GetNumDistricts) == 'function' and type(districts.GetDistrictByIndex) == 'function' then
+        for i=0,districts:GetNumDistricts()-1 do
+            local placed = districts:GetDistrictByIndex(i)
+            if placed then observe(GameInfo.Districts[placed:GetType()]) end
+        end
+    else
+        for _, definition in pairs(rules.definitions) do
+            if districts:HasDistrict(definition.Index) then observe(definition) end
+        end
+    end
+    local blocked = {}
+    local function block(kind)
+        if kind and kind ~= '' then
+            local family = rules.family(kind)
+            if family then blocked[family] = true end
+        end
+    end
+    for _, definition in ipairs(presentDefinitions) do
+        block(definition.MutuallyExclusiveDistrict)
+        local base = rules.definitions[rules.family(definition.DistrictType)]
+        if base then block(base.MutuallyExclusiveDistrict) end
+    end
+    local result = {}
+    for kind in pairs(rules.allowed) do
+        local definition, family = rules.definitions[kind], rules.family(kind)
+        local base = family and rules.definitions[family]
+        local exclusive = definition.MutuallyExclusiveDistrict or base and base.MutuallyExclusiveDistrict
+        local exclusiveFamily = exclusive and rules.family(exclusive)
+        local onePerCity = definition.OnePerCity ~= false and definition.OnePerCity ~= 0
+        if family and not blocked[family] and not (onePerCity and present[family])
+            and not (exclusiveFamily and present[exclusiveFamily]) then result[definition.Index] = true end
+    end
+    return result
+end
+
 local function betterQuarterSite(candidate, best)
     if not best then return true end
     if candidate.adjacency ~= best.adjacency then return candidate.adjacency > best.adjacency end
@@ -125,9 +246,9 @@ end
 -- Quarter siting values loaded sales and goods-provider links across stages.
 -- The separate Stage 2 customer bid still needs a current native target.
 function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, ui)
-    local bids, potential, legalCustomers, placedHosts = {}, {}, {}, {}
+    local bids, potential, legalCustomers, placedHosts, futureCityTypes = {}, {}, {}, {}, {}
     local nominated = {}
-    local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, bothPending=0, deferCities=0,
+    local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, bothPending=0, deferCities=0, futureUnknown=0,
         offered=0, strong=0, frontierObserved=0, frontierBids=0, frontierUncertain=0}
     local district = profile.district
     local readLegalTargets = ui and ui.GetLegalDistrictTargets
@@ -135,6 +256,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     local siting = getSitingDistricts(profile)
     if next(siting.byIndex) == nil then return bids, counts end
     local pid = player:GetID()
+    local futureTypesKnown = futureTypeRules(pid) ~= nil
     local visibility = PlayersVisibility[pid]
     local allBaseTypesVisible
     local hosts = {}
@@ -177,10 +299,17 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
             and not protectedPlots[index] and plot:GetResourceType() == -1 then
             local owner = Cities.GetPlotPurchaseCity(plot)
             if owner and owner:GetOwner() == pid then
+                local cityID = owner:GetID()
+                if futureCityTypes[cityID] == nil then
+                    -- One city snapshot per profile publication; new districts
+                    -- are observed on the next publication, not cached forever.
+                    futureCityTypes[cityID] = CSC_AI_FutureDistrictTypes(pid, owner) or false
+                end
+                local permitted = futureCityTypes[cityID]
                 for _, host in ipairs(siting.buildable) do
                     -- Growth and research can make this footprint buildable
                     -- later. Immediate Harbor bids still use native targets.
-                    if not owner:GetDistricts():HasDistrict(host.Index)
+                    if permitted and permitted[host.Index]
                         and plot:CanHaveDistrict(host.Index, pid, owner:GetID()) then
                         found = {rank=0, district=host.DistrictType}
                         break
@@ -304,7 +433,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         -- first. Readiness distinguishes sites with equal projected yield.
         if not city:GetDistricts():HasDistrict(district.Index) then
             local cityID = city:GetID()
-            local best
+            local best, uncertainFuture
             local legal = 0
             for _, index in ipairs(readLegalTargets(pid, cityID, district.Hash)) do
                 local plot = Map.GetPlotByIndex(index)
@@ -329,7 +458,13 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                     else
                         local host, futureDistrict, futurePlot =
                             hostReadiness(Map.GetAdjacentPlots(plot:GetX(), plot:GetY()), true, siting.byIndex)
-                        if not host then
+                        if not host and not futureTypesKnown then
+                            -- Missing actor metadata is uncertainty, not proof
+                            -- that no customer can ever fit. Leave this pair
+                            -- neutral rather than inventing a boost or penalty.
+                            counts.futureUnknown = counts.futureUnknown + 1
+                            uncertainFuture = true
+                        elseif not host then
                             counts.noHost = counts.noHost + 1
                             candidate.delta, candidate.weak = -noCustomerPenaltyQ8, true
                         else
@@ -373,7 +508,10 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                         end
                     end
                 end
-            elseif legal > 0 then
+            elseif legal > 0 and not uncertainFuture then
+                -- This counter describes a known absence of worthwhile sites,
+                -- not missing actor metadata. Neither count submits a native
+                -- city-level deferral contract.
                 counts.deferCities = counts.deferCities + 1
             end
             -- A potential supplier on purchasable land keeps this first

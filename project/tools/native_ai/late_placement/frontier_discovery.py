@@ -27,7 +27,8 @@ def ui_readback(controller, case, state):
     keys = sorted({(row['player'],row['city'],row['plot']) for group in ('sites','supplierLeads')
         for row in state[group]})
     scope = dict(plots=[dict(player=p,city=c,plot=t) for p,c,t in keys],
-        players=[row['player'] for row in state['players']])
+        players=[row['player'] for row in state['players']],
+        cities=[dict(player=r['player'],city=r['city']) for r in state.get('cityStates',[])])
     code = 'local scope=' + lua(scope) + '''
 local function safe(object,name,...)
  if not object or type(object[name])~='function' then return nil end
@@ -47,15 +48,21 @@ for _,pid in ipairs(scope.players) do
  local t=assert(Players[pid]):GetTreasury()
  print('CSC_FRONTIER_UI_ECONOMY',pid,t:GetGoldBalance(),tostring(safe(t,'GetGoldYield')),tostring(safe(t,'GetTotalMaintenance')))
 end
-print('CSC_FRONTIER_UI_END',Game.GetCurrentGameTurn(),#scope.plots,#scope.players)
+for _,r in ipairs(scope.cities) do
+ local c=assert(CityManager.GetCity(r.player,r.city));local d=c:GetDistricts()
+ print('CSC_FRONTIER_UI_CITY',r.player,r.city,tostring(safe(d,'GetNumAllowedDistrictsRequiringPopulation')),
+  tostring(safe(d,'GetNumZonedDistrictsRequiringPopulation')),c:GetPopulation())
+end
+print('CSC_FRONTIER_UI_END',Game.GetCurrentGameTurn(),#scope.plots,#scope.players,#scope.cities)
 '''
     (case/'ui-readback.lua').write_text(code,encoding='utf-8')
     raw=controller.cmd(code,'PlotInfo','frontier-ui-' + case.name)
     (case/'ui-readback.txt').write_text(raw,encoding='utf-8')
     quotes=re.findall(r'CSC_FRONTIER_UI_QUOTE\t(\d+)\t(\d+)\t(\d+)\t([^\t\r\n]+)\t([^\t\r\n]+)',raw)
     economies=re.findall(r'CSC_FRONTIER_UI_ECONOMY\t(\d+)\t([^\t\r\n]+)\t([^\t\r\n]+)\t([^\t\r\n]+)',raw)
-    ends=re.findall(r'CSC_FRONTIER_UI_END\t(\d+)\t(\d+)\t(\d+)',raw)
-    assert ends==[(str(state['turn']),str(len(keys)),str(len(scope['players'])))], 'Incomplete UI survey'
+    cities=re.findall(r'CSC_FRONTIER_UI_CITY\t(\d+)\t(\d+)\t([^\t\r\n]+)\t([^\t\r\n]+)\t([^\t\r\n]+)',raw)
+    ends=re.findall(r'CSC_FRONTIER_UI_END\t(\d+)\t(\d+)\t(\d+)\t(\d+)',raw)
+    assert ends==[(str(state['turn']),str(len(keys)),str(len(scope['players'])),str(len(scope['cities'])))], 'Incomplete UI survey'
     assert len(quotes)==len(keys) and len(economies)==len(scope['players'])
     number=lambda text:None if text=='nil' else float(text)
     # This observer-boundary query is not the native Economic consumer. A
@@ -68,6 +75,10 @@ print('CSC_FRONTIER_UI_END',Game.GetCurrentGameTurn(),#scope.plots,#scope.player
             row['ui']=by_key[(row['player'],row['city'],row['plot'])]
     state['uiEconomy']=[dict(player=int(p),treasuryGold=number(g),goldYield=number(y),maintenance=number(m))
         for p,g,y,m in economies]
+    by_city={(int(p),int(c)):dict(allowedDistricts=number(a),zonedDistricts=number(z),population=number(n))
+        for p,c,a,z,n in cities}
+    assert len(by_city)==len(scope['cities'])
+    for row in state.get('cityStates',[]):row['ui']=by_city[(row['player'],row['city'])]
 
 
 def run(args):
@@ -118,6 +129,7 @@ def run(args):
         pins[csc][str(relative)] = dict(size=len(data), sha256=hashlib.sha256(data).hexdigest())
     out.mkdir(parents=True)
     write_json(out / 'inputs.json', dict(saves=saves, identities=identities, ce_sha256=CE_SHA,
+        require_model=args.require_model,
         packages={source.name: pin for source,pin in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     shutil.copyfile(HERE / 'frontier_site_survey.lua', out / 'frontier_site_survey.lua')
@@ -177,6 +189,8 @@ end
                     'CSC_AI_BakersGameplay','frontier-survey-' + name)
                 state=parse(raw,'CSC_FRONTIER_SURVEY')
                 assert state['turn']==200 and state['mutationCommands']==0 and state['players']
+                assert not args.require_model or state['modelAvailable'], 'Shared production model unavailable'
+                assert not args.require_model or state['typeFilterAvailable'], 'Future district eligibility unavailable'
                 assert all(row['supply']['base'] for row in state['sites'])
                 write_json(case / 'gameplay-survey.json',state)
                 ui_readback(controller,case,state)
@@ -208,6 +222,7 @@ if __name__=='__main__':
     for name in ('output','reference','previous-survey','worlds','my-games','user-root','policy-root'):
         parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--case',action='append',choices=('run-v3-continents','baseline-pangaea','baseline-fractal'))
+    parser.add_argument('--require-model',action='store_true',help='Require the shared read-only production adjacency calculator')
     args=parser.parse_args()
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))

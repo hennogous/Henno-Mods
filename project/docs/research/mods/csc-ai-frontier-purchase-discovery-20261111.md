@@ -109,6 +109,89 @@ common-model offer, then compare it with a scoped ablation while observing
 comparison, request, native payment, ownership and foundation.
 Keep the existing native competition and actual own-funds constraints intact.
 
+## Exact model inspection and future-type correction
+
+The zero-turn `frontier-model-two-saves-01` inspection loaded the same Fractal
+and Pangaea saves and called the live scanner's shared read-only adjacency
+function. None of their 30 known-Base frontier pairs reached +4, even taking
+the maximum of one future neighbor alternative. This diagnostic maximum is
+not the live planner's traversal choice, nor a native utility score.
+
+Szeged plot 1365 is **2 Production + 1 projected Gold = +3**: Cotton supplies
+one Production, two river edges supply another, and one future Holy Site or
+Commercial Hub can add one Gold. Neither alternative is a Stage 2 Harbor.
+Takamatsu plot 756 is **1 Production + 1 projected Gold = +2**. Its flat inland
+site gets no extra adjacency from its projected Wind Mill branch.
+
+The unfiltered geometry query also accepted Lavra and Suguba for Hungary,
+and Street Carnival, Suguba and Hippodrome for Japan. Consequently the earlier
+26 future-host leads in AI-C142 mean raw geometry, not verified actor eligibility.
+
+The main scanner now applies civilization/leader traits (including inherited
+leaders), direct unique replacements, explicit exclusions, existing district
+families and mutual exclusion to prospective empty footprints. It follows
+shipped `Civ6Common.lua` and `TechAndCivicUnlockables.lua` conventions. It does
+**not** require the future district's current unlock or population capacity.
+An existing native customer target remains authoritative for an immediate bid.
+Missing required metadata leaves a supplied site neutral, with no invented
+no-host deduction or city-deferral count. This is a scoped planning filter,
+not a reproduction of every native district-admission rule.
+
+### Matched zero-turn filter inspection
+
+`frontier-filter-two-saves-01` advanced zero turns and verified normal exit,
+preference restoration, process absence and exact package retirement.
+The same 30 city/profile/plot pairs remained. Future alternatives changed:
+
+| World | Raw alternatives | Filtered alternatives | Pairs with changed alternatives | Pairs losing all future hosts | Maximum forecast changed |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Fractal | 94 | 42 | 17 | 0 | 0 |
+| Pangaea | 60 | 26 | 8 | 0 | 0 |
+
+These counts include multiple district types/footprints per Quarter site;
+they must not be added together as future adjacency. Szeged retained only
+Holy Site/Commercial Hub at Debrecen plot 1290. Takamatsu retained Commercial
+Hub/Entertainment Complex at its two other-city footprints. Their +3/+2
+maxima were unchanged. This demonstrates removal of invalid possibilities,
+**not** a changed native decision, acquisition or closure of Problem 1.2.
+
+UI capacity reads succeeded where Gameplay's optional getters were absent:
+
+| Player 2 city | Population | Allowed specialty districts | Zoned specialty districts | Current production |
+| --- | ---: | ---: | ---: | --- |
+| Fractal Szeged | 5 | 2 | 2 | Settler |
+| Fractal Debrecen | 10 | 4 | 3 | University |
+| Pangaea Takamatsu | 1 | 1 | 0 | Nothing |
+| Pangaea Yokohama | 4 | 2 | 1 | Industrial Zone |
+| Pangaea Shizuoka | 7 | 3 | 2 | Lighthouse |
+
+These counts inform timing; they do not invalidate a future footprint merely
+because a city needs to grow first. They are not proof of all reservations or
+requests. The loaded Quarter definitions do not require specialty capacity.
+
+The archived filter scanner SHA-256 is
+`a0fb022f8078371455e7b43378990137ae76f0b416ab39dbff675db51de83253`.
+The unfiltered model scanner is
+`4045300c94eda59e37642cfab26760e678c7b7eb7aadf5d67f2c6e1c614d7325`.
+Subsequent Astra review corrected replacement ordering to suppress the base
+before exclusions, made family expansion one level, and hardened unknown
+metadata handling. Those refinements pass eight helper tests, ten grouped
+scanner checks and seven discovery checks. They were made **after** the live
+run staged its bytes and are not claimed as live-tested final source.
+Astra independently checked the source corrections and archived counts.
+
+Filtered survey SHA-256 values:
+
+- Fractal: `b2bd552ad291e2407b4ec4ed3adebb98122b59a13b27470ba1a27227b5d688b0`
+- Pangaea: `57b9c4b62250383897224b438c1e00360406d71c03cdc1a38724295f33eabb44`
+
+The next purchase fixture can use a transparently labelled viable +3 site or
+an earlier genuinely +4 opportunity; do not rename either discovered lead a
+strong site to force a demonstration. A discriminating native comparison is
+also still needed for the future-host policy. Capture actual Treasury and
+Economic's accounted balance/accounts alongside the quote; the
+[savings mechanism](civ6-economic-plot-savings-20261111.md) is now traced statically.
+
 ### Artifact identities
 
 | World | Save SHA-256 | Survey SHA-256 |

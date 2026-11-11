@@ -2320,3 +2320,59 @@ requirements. Szeged plot 1365 remains a lead, not a qualified +4 site.
 
 - [Evidence and artifact hashes](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md)
 - Related: [AI-C141](#ai-c141), [native purchase gates](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md).
+
+## AI-C143
+
+**Future-host geometry needs actor eligibility; two purchase leads remain below +4**
+
+Status: accepted. Evidence: runtime, source, offline tests.
+
+The shared production adjacency model gave Szeged Tailors plot 1365 a maximum
+of +3 and Takamatsu Bakers plot 756 +2, each with at most one future neighbor.
+Raw CanHaveDistrict geometry accepted foreign unique districts. A matched
+zero-turn filter inspection removed 86 alternatives across Fractal and Pangaea;
+valid alternatives remained for all 25 pairs that previously had futures and
+none of the 30 frontier pairs' maximum scores changed.
+
+**Scope:** Same archived turn-200 source saves and verified CE/CSC carrier as
+AI-C142, with exact staged scanner identities in the report. Civilizational
+traits, unique replacements and city presence constrain prospective geometry
+separately from research and growth. Current native targets still control
+immediate customer offers. UI capacity and production were captured separately.
+
+**Limits:** The live result uses the preliminary filter version; Astra's later
+ordering, direct-family and missing-metadata refinements have focused offline
+coverage, not a final-source runtime claim. Neither diagnostic submitted a new
+purchase treatment or established a changed native choice. Problem 1.2 and
+1.5 remain open. AI-C142's original future geometry counts must not be read as
+verified actor eligibility or assured adjacency.
+
+- [Evidence, corrections and hashes](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#exact-model-inspection-and-future-type-correction)
+- Related: [AI-C142](#ai-c142), [native savings](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n114).
+
+## AI-C144
+
+**Two matched Nicopolis purchase attempts lacked actual Treasury as well as plot funds**
+
+Status: accepted. Evidence: runtime, static, diagnostic tests.
+
+The exact-source 200–206 replay captured actual and accounted bank balances
+of 60.00390625 Gold on turn 204 and 44.28515625 on 205 against the unchanged
+145-Gold plot quote. Plot/slush funds were zero; the remaining savings were
+in the Great People account. Live weights were 3/4/1/1. At both checks the
+bank itself was insufficient, so earmarking was not the only purchase gate.
+
+**Scope:** Same save and CE carrier as AI-C141, current main CSC source,
+read-only callback at the audited targeted savings boundary. All 22 purchase
+and one selector receipts equal their streams and match the earlier replay
+over the common interval when the added accounting fields are removed.
+Normal controller cleanup and zero native faults were verified.
+
+**Limits:** No paid purchase or Quarter construction. Zero unaccounted balance
+at the attempt is not zero income or a measured allocation history. A positive
+Great People account is not proof that buying a Great Person was eligible.
+The native account cap remains static evidence. This does not close 1.5 or
+justify general subsidies or higher Quarter bids.
+
+- [Evidence, schema and hashes](../research/mods/civ6-economic-plot-savings-20261111.md#runtime-attempt-balances-the-same-nicopolis-start-through-206)
+- Related: [AI-C141](#ai-c141), [AI-C143](#ai-c143), [AI-N114](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n114).

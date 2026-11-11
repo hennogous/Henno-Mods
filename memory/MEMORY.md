@@ -25,14 +25,31 @@ No supplier-only lead was found. AI-C142 documents its scope. Gameplay quote
 calls were unavailable; independent UI reads succeeded. UI CanStart was false
 for all at the inactive observer boundary: do NOT treat it as native Economic
 legality or discard every lead on that basis. Read caller/turn/overload first.
-Next inspect Fractal Szeged (player2 city589829) Tailors plot1365: working Cotton
-1366, two river edges, future host alternatives at1290, quote85, Treasury719.7734.
-Need exact shared-model adjacency/host types, capacity, reservation/current
-request, native earmarked funds, then a matched integrated frontier offer.
-Host1290 belongs to OTHER friendly city524292, so check cross-city rules and
-that city's plan. Do not require immediate customer admission for long-term
-geometry. Positive frontier offers are NOT implemented (only deductions).
-This is not yet a qualified +4 site or Stage2 Harbor chain. Full goal remains open.
+The exact zero-turn model survey found no +4 among 30 Fractal/Pangaea frontier
+pairs: Szeged 1365 = +3 (Cotton 1P, river 1P, future 1G), Takamatsu 756 = +2.
+Neither is a +4 site or Stage 2 Harbor chain. Raw CanHaveDistrict accepted
+foreign unique districts. Preliminary run frontier-filter-two-saves-01 closed
+normally with zero turns advanced: alternatives 94->42 and 60->26, no maximum
+forecast changed. Final guards, ordering and direct-family refinements passed
+8 helper / 10 scanner / 7 discovery checks and Astra review, after live staging.
+AI-C143 scopes this. Future sites still allow growth/research; unknown static
+metadata stays neutral. Host 1290 is Debrecen 524292 (3/4 specialty slots);
+Szeged has 2/2. Loaded Quarters do not require specialty capacity.
+Positive frontier offers remain unimplemented. Need a discriminating 1.2 native
+case and an affordable 1.5 fixture, paid purchase and construction. AI-N114:
+Economic allocates bank minus accounted balance; plot account cap 150 Gold,
+overflow to slush; known spending adjusts accounted balance. Static mechanism,
+not a live reconciled allocation cycle.
+nicopolis-bank-attempt-01 closed normally 200->206, scanner 5e20093b and
+observer 98470b8f. All 22 purchase and one selector receipts exactly match
+streams; original fields equal AI-C141 over the common interval. Zero native
+faults. Turn 204 bank 60.00390625, turn 205 bank 44.28515625, both quotes 145.
+Bank = accounted balance; funds [0,0,0,bank], weights 3/4/1/1. AI-C144 proves
+cash shortfall too; native rejection still occurred at the earlier plot gate.
+No paid command; 401 unowned at 206. Positive GP funds do not prove GP eligibility.
+Final future-type source ran in this replay without placement exceptions;
+two-world filter counts still describe preliminary bytes. Upstream CE develop
+remained 2986a746 at 12:26 local. Full goal open; no upstream PR authorized.
 The discovery tool and six tests are under project/tools/native_ai/late_placement.
 No game/controller is currently owned. Main production tuning was unchanged.
 Evidence is `Desktop/Codex/csc-ai-problems-1-2-20261110`, especially

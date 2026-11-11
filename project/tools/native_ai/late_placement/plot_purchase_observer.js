@@ -15,6 +15,21 @@ const GoldDebitReturn = 0x68137e;
 const PlotAnnexReturn = 0x6813a2;
 const TargetedCityQuoteReturn = 0x459169;
 const TargetedSavingsCheck = 0x45918f;
+// TryPurchasePlot saves its original Economic receiver at entry RSP+8.
+// Seven pushes and its 0x80-byte frame put that slot at RSP+0xc0 here.
+// The slot is overwritten later in this routine: read only at 45918f.
+// Names/offsets come from 092abfbb's byte-matched reference, constructor,
+// DoTurnActivate and Spend (AI-N114). Read failures latch a diagnostic fault;
+// no guessed zero balance is emitted and no target memory is written.
+const EconomicReceiverOnStack = 0xc0;
+const EconomicPlayerOffset = 0x98;
+const EconomicAccountedBalanceOffset = 0x120;
+const EconomicTotalWeightOffset = 0x1c8;
+const EconomicWeightsOffset = 0x1e0;
+const EconomicWeightsCountOffset = 0x1f0;
+const EconomicSavingsOffset = 0x250;
+const PlayerTreasuryOffset = 0x780;
+const TreasuryGoldOffset = 0xa8;
 const CityIdOffset = 0xa8;
 const CityOwnerOffset = 0xd8;
 const TargetXOnFrame = 0x67;
@@ -56,6 +71,8 @@ rpc.exports = {
         fingerprint(PlotAnnexReturn, '0fb787d80000004c8d4567');
         fingerprint(TargetedCityQuoteReturn, '85c07e104d85f67405');
         fingerprint(TargetedSavingsCheck, '488bac24d0000000418bdfc1e308');
+        fingerprint(0x459095, '48894c2408'); // Saved Economic receiver.
+        fingerprint(0x4590a5, '4881ec80000000488be9'); // Audited frame size.
         const commandLocation = context => ({city: context.rdi,
             x: read(context.rbp, TargetXOnFrame, 'i32'),
             y: read(context.rbp, TargetYOnFrame, 'i32')});
@@ -108,6 +125,25 @@ rpc.exports = {
             const gold = context.r15.toInt32();
             const factorQ8 = context.rdi.toInt32();
             const minimumPlotFundQ8 = gold * factorQ8;
+            const economic = ptr(read(context.rsp, EconomicReceiverOnStack, 'ptr'));
+            const savings = ptr(read(economic, EconomicSavingsOffset, 'ptr'));
+            // Match the saved receiver to the same live funds being tested.
+            // A readable unrelated pointer must not qualify as Economic.
+            if (savings.toString() !== slushFund.toString() ||
+                savings.add(8).toString() !== plotFund.toString() ||
+                read(economic, EconomicWeightsCountOffset, 'i32') !== 4)
+                throw Error('Economic receiver/fund layout differs');
+            const player = ptr(read(economic, EconomicPlayerOffset, 'ptr'));
+            const treasury = ptr(read(player, PlayerTreasuryOffset, 'ptr'));
+            const treasuryQ8 = read(treasury, TreasuryGoldOffset, 'i32');
+            const accountedQ8 = read(economic, EconomicAccountedBalanceOffset, 'i32');
+            const weights = ptr(read(economic, EconomicWeightsOffset, 'ptr'));
+            const savingsQ8 = [0, 4, 8, 12].map(offset => read(savings, offset, 'i32'));
+            const savingWeights = [0, 4, 8, 12].map(offset => read(weights, offset, 'i32'));
+            const totalWeight = read(economic, EconomicTotalWeightOffset, 'i32');
+            if (savingWeights.some(weight => weight < 0) || totalWeight <= 0 ||
+                savingWeights.reduce((sum, weight) => sum + weight, 0) !== totalWeight)
+                throw Error('Unexpected Economic saving weights');
             // These predicates reconstruct the next native checks. They do
             // not claim the branch ran, nor that command validation passed.
             // Restrict the arithmetic to the non-overflow range seen in the
@@ -116,6 +152,8 @@ rpc.exports = {
                 plotQ8 + slushQ8 > 0x7fffffff || plotQ8 + slushQ8 < -0x80000000)
                 throw Error('Unexpected targeted purchase arithmetic range');
             return {gold, plotQ8, slushQ8, factorQ8, minimumPlotFundQ8,
+                treasuryQ8, accountedQ8, unaccountedQ8: treasuryQ8 - accountedQ8,
+                savingsQ8, savingWeights, totalWeight,
                 passesPlotFund: plotQ8 >= minimumPlotFundQ8,
                 passesCombinedFunds: gold <= Math.floor((plotQ8 + slushQ8) / 256)};
         });

@@ -10,6 +10,8 @@ POLICY=false;MILLS=false
 city={GetBuildings=function()return {HasBuilding=function()return MILLS end}end}
 player={IsHuman=function()return false end,GetCities=function()return {Members=function()local once=false;return function()if not once then once=true;return 1,city end end end}end,GetCulture=function()return {IsPolicyActive=function()return POLICY end}end}
 Players={[1]=player}
+PlayerConfigurations={[1]={GetCivilizationTypeName=function()return 'CIV_TEST' end,GetLeaderTypeName=function()return 'LEADER_TEST' end}}
+for _,name in ipairs({'Leaders','CivilizationTraits','LeaderTraits','DistrictReplaces','ExcludedDistricts'})do GameInfo[name]=info({},'Type')end
 plot={river=0,hills=0,IsRiver=function(s)return s.river>0 end,GetRiverCrossingCount=function(s)return s.river end}
 function rule(id,y,amount,owner,key)return {ID=id,YieldType=y,YieldChange=amount,ModifierOwner=owner or'DistrictModifiers',WhoIsTheOwner=key,ProvideType='SelfBonus',AdjacencyType='FROM_RIVER_CROSSING'}end
 local base=rule('materials','YIELD_PRODUCTION',1);local sales=rule('customers','YIELD_GOLD',1)
@@ -25,7 +27,7 @@ function CSC_Adjacency.Count(r,p,c,pid)if r.ID=='materials'then return 2 elseif 
 BAKERS_SITES = r"""
 local existing, placed, unlocked = false, false, true
 local targetsRead, checked, gameplayChecked = 0, {}, {}
-local cityDistricts = {HasDistrict=function(_, id) assert(id==1); return existing end}
+local cityDistricts = {HasDistrict=function(_, id) return existing and id==1 end}
 local queue = {
     HasBeenPlaced=function(_, hash) assert(hash==1001); return placed end,
     CanProduce=function(_, hash, _, test) assert(hash==1001 and test); return unlocked end,
@@ -263,6 +265,21 @@ rules[#rules+1]={ID='futureProvider', YieldType='YIELD_PRODUCTION', YieldChange=
 plots[24].CanHaveDistrict=function(_, district) return district==6 end
 assert(bids(tailors, {}, legal)[23].adjacency==6 and not bids(tailors, {}, legal)[24])
 plots[24].CanHaveDistrict=canHaveDistrict
+-- Missing actor metadata does not mean an otherwise promising city has
+-- no future customer. Suppress forecast-only credit without a false penalty
+-- or a city-deferral count; current native customer targets still work.
+local savedConfig=PlayerConfigurations[1]
+PlayerConfigurations[1]=nil
+local unknown, unknownCounts=bids(tailors, {}, legal)
+assert(not unknown[23] and unknownCounts.futureUnknown==1 and unknownCounts.noHost==0
+    and unknownCounts.deferCities==0)
+PlayerConfigurations[1]=savedConfig
+local savedTraits=GameInfo.CivilizationTraits
+GameInfo.CivilizationTraits=nil
+unknown,unknownCounts=bids(tailors, {}, legal)
+assert(not unknown[23] and unknownCounts.futureUnknown==1 and unknownCounts.noHost==0
+    and unknownCounts.deferCities==0)
+GameInfo.CivilizationTraits=savedTraits
 -- Existing and pillaged Harbors keep their long-term adjacency. A built
 -- Harbor's observed rule amount replaces the future projection.
 local pillaged=false
@@ -286,7 +303,7 @@ assert(next((bids(tailors, {[24]=true}, legal, {chain})))==nil)
 def main():
  a=argparse.ArgumentParser();a.add_argument('--dependencies',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);args=a.parse_args();sys.path.insert(0,str(args.dependencies));from lupa.lua51 import LuaRuntime
  lua=LuaRuntime(unpack_returned_tuples=True);lua.execute('DefenseTypes={DISTRICT_GARRISON=0,DISTRICT_OUTER=1}');lua.execute((ROOT/'Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyCore.lua').read_text(encoding='utf-8-sig'));lua.execute(HARNESS)
- score=lua.execute(SCANNER.read_text(encoding='utf-8')+'\nreturn score');g=lua.globals();checks=[]
+ score=lua.execute(SCANNER.read_text(encoding='utf-8')+'\nassert(CSC_AI_QuarterAdjacencyValue==score);return score');g=lua.globals();checks=[]
  def check(name,quarter,river,hills,expected,current=None):
   g.plot.river=river;g.plot.hills=hills;r=score('DISTRICT_CSC_'+quarter+'_QUARTER',g.plot,g.city,1)
   actual=(r['production'],r['gold']);assert actual==expected,(name,actual,expected)

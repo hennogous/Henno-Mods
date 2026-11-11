@@ -132,6 +132,14 @@ if its district still needs research or population. The model credits one
 future neighbor to avoid assuming every eligible tile will be developed.
 Stage 2 Service still requires its own customer and building.
 
+Empty future footprints now also pass actor/type rules: civilization and
+inherited leader traits, direct unique replacements, exclusions, existing
+district families and mutual exclusion. Missing metadata stays neutral.
+Raw `CanHaveDistrict` geometry alone admitted foreign unique districts in the
+saved-world survey. The preliminary filter removed invalid alternatives but
+changed none of those frontier pairs' maximum forecasts; native-choice proof
+and final-source live qualification remain separate. [AI-C143](../../findings.md#ai-c143)
+
 A Quarter can receive the 48-point offer at projected adjacency of +4 or
 more with both links pending. Viable sites below +4 can earn 24 points.
 Readiness breaks ties. Existing finite weak-site deductions remain in use.

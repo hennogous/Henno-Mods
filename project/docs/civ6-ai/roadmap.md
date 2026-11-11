@@ -32,11 +32,19 @@ and placement. Plot 401 has no known Base and still has an unrevealed neighbor.
 Distinguish
 missing owned supply from a supplier that could be acquired. Positive
 frontier bids still need their separately qualified purchase path.
-The zero-turn discovery found 34 known-Base frontier pairs across the three
-existing worlds. Inspect Szeged Tailors plot 1365 first: working Cotton,
-two river edges and future customer space. Its 85 Gold quote is a discovery
-lead; projected adjacency, admission, commitments and native funds still
-need qualification. [Discovery evidence](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md).
+The zero-turn discovery found 34 known-Base frontier pairs across three worlds.
+Exact Fractal/Pangaea model checks found none of their 30 pairs at +4: Szeged
+projects +3 and Takamatsu +2. Actor/type filtering removes invalid unique and
+duplicate-family futures while leaving research and growth as future timing
+questions. The preliminary matched filter inspection changed no maximum
+forecast; it does not close 1.2's native-choice proof. A qualified purchase
+fixture and bounded positive frontier offer remain open. Native Economic's
+bank-difference allocation and 150-Gold plot-account cap are statically traced;
+the matched 204/205 receipts now show bank balances of about 60/44 Gold
+against a 145-Gold quote as well as failed plot/slush gates. No purchase
+resulted. Next qualify an actually affordable site and trace paid execution.
+[Model and eligibility evidence](../research/mods/csc-ai-frontier-purchase-discovery-20261111.md#exact-model-inspection-and-future-type-correction),
+[savings mechanism](../research/mods/civ6-economic-plot-savings-20261111.md).
 
 ### Earlier Stage 2 development evidence
 

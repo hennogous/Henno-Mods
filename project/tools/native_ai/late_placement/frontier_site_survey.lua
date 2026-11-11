@@ -51,15 +51,34 @@ local function unlocked(player, row)
     return (not row.PrereqTech or tech and player:GetTechs():HasTech(tech.Index))
         and (not row.PrereqCivic or civic and player:GetCulture():HasCivic(civic.Index)) or false
 end
-local result = {turn=Game.GetCurrentGameTurn(), mutationCommands=0, players={}, sites={}, supplierLeads={}}
+local model=CSC_AI_QuarterAdjacencyValue
+local result = {turn=Game.GetCurrentGameTurn(), mutationCommands=0, players={}, sites={}, supplierLeads={},
+    modelAvailable=type(model)=='function',typeFilterAvailable=type(CSC_AI_FutureDistrictTypes)=='function',
+    cityStates={},districtCatalog={},adjacencyRules={}}
+for definition in GameInfo.Districts() do
+    result.districtCatalog[#result.districtCatalog+1]={index=definition.Index,type=definition.DistrictType,
+        requiresPopulation=definition.RequiresPopulation}
+end
+for _,profile in ipairs(P.StageTwoProfiles()) do result.adjacencyRules[profile.key]=A.ByDistrict and A.ByDistrict[profile.district.DistrictType] end
 local width, height = Map.GetGridSize(); result.width, result.height = width, height
 for pid=0,63 do
     local player = Players[pid]
     if player and player:IsAlive() and player:IsMajor() and not player:IsHuman() then
+        local permittedByCity={}
+        local function permittedFor(city)
+            local id=city:GetID()
+            if permittedByCity[id]==nil then
+                permittedByCity[id]=result.typeFilterAvailable
+                    and CSC_AI_FutureDistrictTypes(pid,city) or false
+            end
+            return permittedByCity[id]
+        end
+        local config=PlayerConfigurations and PlayerConfigurations[pid]
         local treasury = player:GetTreasury()
         local goldYield,yieldError=call(treasury,'GetGoldYield')
         local maintenance,maintenanceError=call(treasury,'GetTotalMaintenance')
         local economy = {player=pid, treasuryGold=treasury:GetGoldBalance(),
+            civilization=call(config,'GetCivilizationTypeName'),leader=call(config,'GetLeaderTypeName'),
             goldYield=goldYield, maintenance=maintenance,
             goldYieldAvailable=type(goldYield)=='number', maintenanceAvailable=type(maintenance)=='number',
             goldYieldError=yieldError, maintenanceError=maintenanceError,
@@ -67,6 +86,15 @@ for pid=0,63 do
         result.players[#result.players + 1] = economy
         for _, city in player:GetCities():Members() do
             economy.cities = economy.cities + 1
+            local districts=city:GetDistricts()
+            local queue=call(city,'GetBuildQueue')
+            local building=call(queue,'CurrentlyBuilding')
+            result.cityStates[#result.cityStates+1]={player=pid,city=city:GetID(),name=city:GetName(),
+                typeFilterKnown=permittedFor(city)~=false,
+                population=call(city,'GetPopulation'),
+                allowedDistricts=call(districts,'GetNumAllowedDistrictsRequiringPopulation'),
+                zonedDistricts=call(districts,'GetNumZonedDistrictsRequiringPopulation'),
+                currentlyBuilding=building and tostring(building) or nil}
             local center = assert(Map.GetPlot(city:GetX(),city:GetY()))
             for _, profile in ipairs(P.StageTwoProfiles()) do
                 local hostTypes, hostDefinitions = mappedHosts(profile)
@@ -103,22 +131,45 @@ for pid=0,63 do
                                         elseif n:GetOwner() == pid then
                                             if hostTypes[n:GetDistrictType()] then
                                                 row.hosts[#row.hosts+1] = {plot=n:GetIndex(),district=n:GetDistrictType(),
+                                                    districtType=GameInfo.Districts[n:GetDistrictType()].DistrictType,
                                                     stageTwo=profile.customers[n:GetDistrictType()]~=nil}
                                             elseif n:GetDistrictType() == -1 and n:GetResourceType() == -1 then
                                                 local owner=Cities.GetPlotPurchaseCity(n)
                                                 if owner and owner:GetOwner()==pid then
+                                                    local permitted=permittedFor(owner)
                                                     for _, host in ipairs(hostDefinitions) do
                                                         -- Potential geometry ignores current population and
                                                         -- research admission, matching long-term site planning.
-                                                        if not owner:GetDistricts():HasDistrict(host.Index)
+                                                        if permitted and permitted[host.Index]
                                                             and n:CanHaveDistrict(host.Index,pid,owner:GetID()) then
                                                             row.futureHosts[#row.futureHosts+1]={plot=n:GetIndex(),
-                                                                city=owner:GetID(),district=host.Index}
+                                                                city=owner:GetID(),district=host.Index,districtType=host.DistrictType,
+                                                                stageTwo=profile.customers[host.Index]~=nil}
                                                         end
                                                     end
                                                 end
                                             end
                                         end
+                                    end
+                                    if result.modelAvailable then
+                                        row.forecast=model(profile.district.DistrictType,site,city,pid,false)
+                                        local best,bestType=row.forecast,nil
+                                        local seen={}
+                                        row.futureForecasts={}
+                                        for _,host in ipairs(row.futureHosts) do
+                                            if not seen[host.districtType] then
+                                                seen[host.districtType]=true
+                                                local value=model(profile.district.DistrictType,site,city,pid,true,host.districtType)
+                                                row.futureForecasts[#row.futureForecasts+1]={districtType=host.districtType,
+                                                    production=value.production,gold=value.gold,total=value.total}
+                                                if value.total>best.total then best,bestType=value,host.districtType end
+                                            end
+                                        end
+                                        -- Diagnostic maximum across alternatives, with one
+                                        -- future type at a time. This is not the live
+                                        -- traversal heuristic or an admitted customer bid.
+                                        row.bestFutureType=bestType
+                                        row.maximumProjection=model(profile.district.DistrictType,site,city,pid,false,bestType)
                                     end
                                     result.sites[#result.sites+1]=row
                                     assert(#result.sites<=512,'Frontier discovery evidence bound')

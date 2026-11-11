@@ -8,7 +8,7 @@ from frontier_discovery import ui_readback
 
 FIXTURE = '''
 output={};print=function(s)output[#output+1]=s end
-local function rows(values)return setmetatable(values,{__call=function(self)local n=0;return function()n=n+1;return self[n]end end})end
+function rows(values)local indexed={};for _,r in ipairs(values)do indexed[r.Index]=r end;return setmetatable(indexed,{__call=function()local n=0;return function()n=n+1;return values[n]end end})end
 local district={HasDistrict=function()return false end}
 local treasury={GetGoldBalance=function()return 50 end,GetGoldYield=function()return 10 end,GetTotalMaintenance=function()return 2 end}
 gold={GetPlotPurchaseCost=function(self,index)assert(index==31);return 145 end}
@@ -78,7 +78,7 @@ class Discovery(unittest.TestCase):
                 assert context == 'PlotInfo' and 'CanStartCommand' in code
                 return ('O\0CSC_FRONTIER_UI_QUOTE\t1\t42\t31\t145\ttrue\r\n'
                     'O\0CSC_FRONTIER_UI_ECONOMY\t1\t150\t12\t2\r\n'
-                    'O\0CSC_FRONTIER_UI_END\t200\t1\t1\r\n')
+                    'O\0CSC_FRONTIER_UI_END\t200\t1\t1\t0\r\n')
         state=dict(turn=200,players=[dict(player=1)],sites=[dict(player=1,city=42,plot=31)],
             supplierLeads=[dict(player=1,city=42,plot=31)])
         parent=Path(__file__).resolve().parent
@@ -88,6 +88,26 @@ class Discovery(unittest.TestCase):
         self.assertEqual(state['sites'][0]['ui'],dict(quote=145.0,uiCanStartAtBoundary=True))
         self.assertEqual(state['supplierLeads'][0]['ui'],state['sites'][0]['ui'])
         self.assertEqual(state['uiEconomy'][0]['treasuryGold'],150)
+
+    def test_future_projection_uses_one_alternative(self):
+        data=self.sample('''
+GameInfo.Districts=rows({{Index=0,DistrictType='DISTRICT_CITY_CENTER'},
+ {Index=4,DistrictType='DISTRICT_HARBOR'},{Index=5,DistrictType='DISTRICT_COMMERCIAL_HUB'}})
+host.GetDistrictType=function()return -1 end
+city.GetOwner=function()return 1 end
+Cities={GetPlotPurchaseCity=function()return city end}
+CSC_Adjacency.HasTag=function(tag,kind)return tag=='CLASS_CSC_BAKERS_SALES' end
+CSC_AI_FutureDistrictTypes=function()return {[4]=true,[5]=true}end
+CSC_AI_QuarterAdjacencyValue=function(kind,site,city,pid,omit,future)
+ local gold=future=='DISTRICT_COMMERCIAL_HUB' and 3 or future=='DISTRICT_HARBOR' and 2 or 1
+ return {production=1,gold=gold,total=1+gold,current={production=1,gold=1},details={}}
+end
+''')
+        row=data['sites'][0]
+        self.assertTrue(data['modelAvailable'])
+        self.assertEqual(len(row['futureForecasts']),2)
+        self.assertEqual(row['bestFutureType'],'DISTRICT_COMMERCIAL_HUB')
+        self.assertEqual(row['maximumProjection']['total'],4)
 
 
 if __name__ == '__main__':
