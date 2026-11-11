@@ -1,7 +1,7 @@
 # Producer and customer follow-through
 
-The corresponding engine model is [prerequisite value and production](../native/production-and-prerequisites.md)
-and [prospective modifier evaluation](../native/modifier-forecasts.md). These
+The corresponding engine model is [prerequisite value and production](https://github.com/hennogous/civ6-ai/blob/main/references/engine/production-and-prerequisites.md)
+and [prospective modifier evaluation](https://github.com/hennogous/civ6-ai/blob/main/references/engine/modifier-forecasts.md). These
 separate missing-prerequisite foresight from an actual customer-building gate.
 
 The AI can value a missing building and complete useful work in individual cases. The question is how that work passes caches, contracts and competing production, then keeps functioning supply.
@@ -19,26 +19,26 @@ At turns 63 and 66, the Granary produced 2 Food against a base of 1, the Water
 Mill produced 1 Production and 1 Gold, and the Storekeeper marker and Growth
 property were active. The earlier replay also showed the ordinary exchange
 still producing after the supplier was lost, while Storekeeper stayed absent.
-[AI-C061] [AI-C062]
+[AI-C061](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c061) [AI-C062](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c062)
 [Boston evidence and turn-66 checkpoint](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#retained-stage-2-chain-verified-at-turns-63-and-66).
 
 The first long continuation kept the same chain working for 141 full turns.
 The Pasture first failed on turn 207, when a blizzard was logged nearby. The
 turn-210 save showed Cattle without a Pasture, a pillaged Water Mill, an intact
 Granary and zero Storekeeper Growth even though its marker still existed.
-[AI-C063] [Retention and damage evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-chain-stayed-active-for-141-turns-before-damage).
+[AI-C063](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c063) [Retention and damage evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-chain-stayed-active-for-141-turns-before-damage).
 
 In a separate continuation from turn 90, the same chain worked through the
 turn-242 save. The original supplier, Mill, Granary and Storekeeper held
 through 152 completed turns, with Granary and Mill Food verified separately.
 The earlier Boston blizzard did not recur in this playthrough.
-[AI-C064] [152-turn audit](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
+[AI-C064](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c064) [152-turn audit](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-same-chain-passed-152-turns-in-a-separate-continuation).
 
 The late Boston chain's stock Mill repair waited behind Encampment and
 restored its building yields. The Pasture remained missing. In a separate
 early test with only the Mill pillaged, the city repaired it after finishing
 University. The existing Pasture and Granary then supported the restored
-exchange and Storekeeper. [AI-C069]
+exchange and Storekeeper. [AI-C069](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c069)
 [Mill-only recovery evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#mill-only-damage-restored-the-full-service).
 
 ## The Wind Mill needed an ordinary nomination in Melbourne
@@ -50,14 +50,14 @@ native building cache value, and the queue refreshed and accepted
 it at the next opening. Melbourne completed the Mill and operated
 Storekeeper on turns 138–143. The matched control completed the
 Amphitheater and had no working Storekeeper in Melbourne.
-[AI-C090] [AI-C091] [AI-C092]
+[AI-C090](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c090) [AI-C091](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c091) [AI-C092](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c092)
 [Matched production and payout](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
 
 The main CSC publisher now bids for an unlocked, missing Mill when
 the working Base, customer and Feudalism are in place. The CE review
 build changed the ordinary nomination once and reproduced the offer,
 completion and Storekeeper at the same checkpoint without an external
-writer. The amount is an initial calibration. [AI-C093]
+writer. The amount is an initial calibration. [AI-C093](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c093)
 [Integrated replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#integrated-ce-nomination-reproduced-melbournes-wind-mill-and-service).
 
 A City Center building that replaces Granary can serve as a
@@ -66,7 +66,7 @@ Granary's outgoing exchange attachments to those building definitions.
 The native functioning-building requirement and receiving Food modifier
 both resolve the target through the owning player's replacement table.
 This has been checked in the executable. The matched payout tests used
-the ordinary Granary. [AI-N102]
+the ordinary Granary. [AI-N102](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n102)
 [Replacement trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#granary-exchange-resolves-the-receiving-players-building-replacement).
 
 ## Ancyra still needed both buildings
@@ -77,25 +77,25 @@ scores. In both read-only replays the AI finished Art Museum, then
 used production for Walls and Line Infantry. Ancyra still needed
 both buildings at 135, with the Rice Farm working. Pricing the first
 investment requires its immediate benefits and an estimate of when
-the second building could arrive. [AI-C125]
+the second building could arrive. [AI-C125](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c125)
 
 Ancyra's Granary was legal but lost twice to Castle in ordinary
 nomination. Its available production slot went to a Cuirassier
 contract. The missing Mill meant the Granary would still be one
 step short of completing the exchange. The comparison margins
-measure the competition in this city. [AI-C094]
+measure the competition in this city. [AI-C094](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c094)
 [Granary decision trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#ancyras-legal-granary-lost-nomination-and-a-military-contract-took-production).
 
 In Trebizond a working Water Mill could supply the Granary as
 soon as it existed. The legal Granary lost its ordinary
 nomination to Library, and neither earlier queue opening
 included a Granary offer. The Wheat Farm remained a separate
-Storekeeper requirement. [AI-C095]
+Storekeeper requirement. [AI-C095](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c095)
 [Trebizond control trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#trebizonds-working-mill-gave-a-closer-granary-comparison).
 
 A matched test changed the nomination to Granary, and the game
 validated that offer at its own cache value. Theater Square still
-occupied production at the endpoint. [AI-C096]
+occupied production at the endpoint. [AI-C096](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c096)
 [Trebizond nomination replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-matched-trebizond-nomination-produced-a-valid-granary-offer).
 
 Trebizond bought that exact Granary offer through its ordinary
@@ -103,7 +103,7 @@ Gold budget. It used its open production slots for Library and
 Encampment. The Water Mill was pillaged by the late endpoint.
 A shorter replay captured the exchange before the damage.
 The Granary gained one Food, and the Mill gained one Production
-and one Gold. [AI-C097] [AI-C099]
+and one Gold. [AI-C097](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c097) [AI-C099](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c099)
 [Purchase trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#trebizond-bought-the-granary-through-the-admitted-contract).
 
 The native Granary forecast returned zero for its four CSC
@@ -111,35 +111,35 @@ exchange roots. Civ's Food weighting and income timing put the
 incoming Food at about 18–19 score points in this city. The
 initial reusable preference credits 18 points for that Food
 when an adjacent working Mill can already supply it. Production,
-Gold and future Service are separate terms. [AI-C100]
+Gold and future Service are separate terms. [AI-C100](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c100)
 [Forecast calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-granary-valuation-priced-food-and-returned-zero-for-the-exchange-roots).
 
 The clean CE replay applied the 18-point preference to the
 correct Granary. Library kept the nomination at this opening.
 The qualification uses CE telemetry because an exit hook on
 the selector changes the return address used by CE's caller
-guard. [AI-C101]
+guard. [AI-C101](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c101)
 [Clean integration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-clean-replay-applied-the-calibrated-granary-food-bid).
 
 Same-player native Production and Gold samples added about
 17.5 points each in the observed income window. CSC now rounds
 all three terms down to a 52-point preference for the immediate
 exchange. The integrated replay delivered the full bid and
-Library still won this opening. [AI-C102] [AI-C103]
+Library still won this opening. [AI-C102](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c102) [AI-C103](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c103)
 
 In the ordinary Small Continents development game, Melbourne's
 Wind Mill bid reached native nomination. The city queued a Knight
 and later an Industrial Zone, then spent Gold on a later Mill offer
 on turn 113. The native Storekeeper effect operated from turn 114.
 Nomination, production choice and economic purchase are separate
-observations. The run lacks a matched no-bid arm. [AI-C104]
+observations. The run lacks a matched no-bid arm. [AI-C104](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c104)
 
 In the same game, Launceston bought its Water Mill first. The
 52-point bid then reached its Granary nomination. The city bought
 the resulting offer and Storekeeper operated from turn 189.
 This closes live follow-through for one customer. A matched
 comparison would be needed to attribute the nomination to the bid.
-[AI-C105]
+[AI-C105](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c105)
 
 A customer city can sit beside more than one working Mill. The
 publisher now emits a single calibrated preference for each
@@ -148,7 +148,7 @@ reproduced the duplicate and verifies the corrected packet.
 The reviewed CE already kept the largest bid per native key.
 CSC's change saves duplicate work and packet space. The
 incremental benefits from a second Mill remain unpriced.
-[AI-C109]
+[AI-C109](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c109)
 
 [Full exchange calibration](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#native-player-weights-calibrate-the-full-ordinary-granary-exchange).
 

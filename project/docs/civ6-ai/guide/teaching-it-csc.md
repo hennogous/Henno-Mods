@@ -119,7 +119,7 @@ with only one Mill per Quarter. [Native gate and UI evidence](../../research/mod
 
 An offline Tailors evaluator compares 44 copied cases using explicit yield, cost, timing and development assumptions. It explains when developing an existing Quarter becomes attractive and how that changes with the horizon or construction costs.
 
-It is **not** the active native policy, and its partial review utility is not native utility. Services, empire priorities and competing land uses need fuller treatment. Try the [interactive comparison](https://hennogous.github.io/Henno-Mods/ai/static/site-planner-review.html) to explore its assumptions.
+It is **not** the active native policy, and its partial review utility is not native utility. Services, empire priorities and competing land uses need fuller treatment. See the [planner documentation](../topics/csc/site-planner.md) for its assumptions and current limits.
 
 ## Placement is the first decision
 
@@ -139,4 +139,4 @@ does not test a new correction or prove better choices.
 
 **Continue:** [What we’re investigating](what-next.md).
 
-Evidence and design: [site-planner reference](../topics/csc/site-planner.md), [confirmed objectives](../../integrations/csc-ai-objectives.md), [soft-penalty cases](../../research/mods/csc-ai-placement-penalties-20261103.md), and [modifier forecast limitations](../topics/native/modifier-forecasts.md).
+Evidence and design: [site-planner reference](../topics/csc/site-planner.md), [confirmed objectives](../../integrations/csc-ai-objectives.md), [soft-penalty cases](../../research/mods/csc-ai-placement-penalties-20261103.md), and [modifier forecast limitations](https://github.com/hennogous/civ6-ai/blob/main/references/engine/modifier-forecasts.md).

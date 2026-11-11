@@ -1,6 +1,5 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
-import { aiHandbookConfig } from "./quartz.ai.config"
 
 /**
  * Quartz 4 Configuration
@@ -94,4 +93,4 @@ const config: QuartzConfig = {
   },
 }
 
-export default process.env.CSC_AI_HANDBOOK === "1" ? aiHandbookConfig(config) : config
+export default config

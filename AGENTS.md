@@ -8,16 +8,16 @@
 
 ## AI knowledge base
 
-Start AI research at `project/docs/civ6-ai/index.md` and the installed `civ6-ai`
-skill. The maintained handbook reconciles the dated AI reports; use its finding
-IDs, scope, evidence and corrections before relying on an old experiment diary.
-Keep generic engine behaviour separate from CSC applications and intended design.
-After an investigation, update affected topics/findings and preserve the evidence
-record. Henno requested regular verified commits and pushes of this content on
-3 November 2026; keep unrelated workspace changes out of those commits. The existing
-Quartz/Pages workflow publishes the handbook at
-https://hennogous.github.io/Henno-Mods/ai/ alongside the public CSC documentation.
-See `project/docs/civ6-ai/maintenance.md` for builds, source hashes and corrections.
+Start at `project/docs/civ6-ai/index.md`, its short `STATUS.md`, and the installed
+`civ6-ai` skill. CSC objectives, policy, AI-C findings and dated evidence live in
+repo Markdown. Reusable engine knowledge and AI-N findings are maintained in the
+skill's focused `references/engine/` files. Preserve IDs, binary scope, limits,
+evidence and corrections; old reports and JSON snapshots are historical records.
+After research, update the relevant Markdown and make scoped commits and pushes
+in the affected repositories. Henno retired the AI handbook's Quartz publishing
+on 11 November 2026; these updates need no website build or source-catalogue
+refresh. The public CSC player site continues separately. See
+`project/docs/civ6-ai/maintenance.md` for the simplified maintenance workflow.
 
 ## AI tuning comments
 

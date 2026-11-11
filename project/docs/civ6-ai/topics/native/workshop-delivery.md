@@ -11,7 +11,7 @@ mod package. CE uses that path. An independent local prototype now also loads
 this way, publishes tiny score adjustments from packaged Lua without Frida or
 Python, and clears its policy on same-process game-context recreation.
 This corrects the earlier implication that a launcher/manual DLL installation
-is unavoidable. The native component can be supplied by a dependency. [AI-N070]
+is unavoidable. The native component can be supplied by a dependency. [AI-N070](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n070)
 
 ```mermaid
 flowchart TD
@@ -27,7 +27,7 @@ Current CE has memory access, but arbitrary cache writes need a verified safe
 window, identity and analysis-generation handling. Its general RegisterCallEvent
 is documented as unfinished and the inspected implementation has ABI/lifetime
 concerns. Neither an entry callback nor a named processor establishes a safe
-ordinary district-score writer. [AI-N059] [AI-N071]
+ordinary district-score writer. [AI-N059](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n059) [AI-N071](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n071)
 
 A Lua-only package depending on stock CE now reads real shared scores:55 city
 observations and174 score reads in Online1–3, with no CSC DLL, Frida or memory
@@ -43,12 +43,12 @@ policy. The corrected native test has passed fresh1–6, a second observation-on
 context1–2, and reload of the saved6 with identical captured scanner facts.
 The Online100 run completed with101 exact Lua/Python plan comparisons,
 73 positive and14,584 negative native changes, and zero native faults.
-All29,479 records across score/cache/winner/PV tracing reconstructed. [AI-N072]
+All29,479 records across score/cache/winner/PV tracing reconstructed. [AI-N072](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n072)
 
 This restores the current bounded CSC policy and diagnostic capabilities without
 a Python/Frida policy worker. It does not establish identical historical outcomes
 or economic benefit; gameplay-event publication has different timing from the
-old inactive-boundary controller. [AI-C052]
+old inactive-boundary controller. [AI-C052](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c052)
 
 The [parity report](../../../research/mods/csc-ce-policy-parity-20261104.md)
 preserves the first reporting failure and both transport corrections. The API

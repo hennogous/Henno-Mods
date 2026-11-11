@@ -31,4 +31,4 @@ Note: If you want to jump over all the nerdy mod design considerations and just 
 - [[reference/materials|Materials Table]]
 
 For the engine investigations and CSC AI experiments, see the separate
-[Civilization VI AI handbook](https://hennogous.github.io/Henno-Mods/ai/).
+[Civilization VI AI research](https://hennogous.github.io/Henno-Mods/ai/).

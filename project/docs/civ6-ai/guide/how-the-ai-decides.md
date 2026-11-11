@@ -19,7 +19,7 @@ Adjacency enters a broader estimate containing supported yields and effects, emp
 If the tile has an intact improvement, Civ deducts its estimated remaining value
 from the turn the district is expected to be ready. For a farm that can include
 its Food, its own adjacency and Housing. A pillaged improvement skips that debit.
-[How the improvement is valued](../topics/native/district-score-anatomy.md#what-does-it-cost-to-replace-an-improvement).
+[How the improvement is valued](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-score-anatomy.md#what-does-it-cost-to-replace-an-improvement).
 
 The selector also has a reserved score for an invalid option. A
 finite penalty can still leave a site in contention. The two
@@ -90,4 +90,4 @@ We trace those stages separately. A score change, selected request, completed Qu
 
 **Continue:** [Steering the AI](steering-the-ai.md).
 
-Technical evidence: [score anatomy](../topics/native/district-score-anatomy.md), [district choice](../topics/native/district-choice.md), [requests and production](../topics/native/production-and-prerequisites.md), and [timing and purchases](../../research/mods/civ6-district-cache-timing-and-purchases-20261104.md).
+Technical evidence: [score anatomy](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-score-anatomy.md), [district choice](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md), [requests and production](https://github.com/hennogous/civ6-ai/blob/main/references/engine/production-and-prerequisites.md), and [timing and purchases](../../research/mods/civ6-district-cache-timing-and-purchases-20261104.md).

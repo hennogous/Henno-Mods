@@ -14,29 +14,29 @@
 > hook addresses and caller layout match the prior build. The stock replay
 > matches the earlier Delhi scores and winner. A separate CE candidate updates
 > the target identity while shared executable compatibility
-> remains with upstream. [AI-N078] [Hotfix comparison](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md)
+> remains with upstream. [AI-N078](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n078) [Hotfix comparison](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md)
 
 > **7 November CE load check:** The new score carrier and unchanged upstream
 > CE both crashed before gameplay on the patched DX11 executable. The shared
 > event hook overwrites an instruction in the faulting loop. Stock XP2 still
-> supports matched decision tests. [AI-N089]
+> supports matched decision tests. [AI-N089](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n089)
 > [Crash and hook evidence](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md#the-first-ce-replay-stopped-during-load)
 
 > **Corrected CE profile:** The compatibility-only build loaded the failing
 > fixture and reached turn 2. Layering the score API on top reproduced the
-> early and late writes and reached native Bakers selection. [AI-N090]
+> early and late writes and reached native Bakers selection. [AI-N090](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n090)
 > [Matched replay and address evidence](../../../research/mods/csc-ai-xp2-november-hotfix-20261106.md#corrected-shared-ce-loads-and-accepts-district-scores)
 
 > **6 November stock write:** Frida changed one guarded cell on the patched
 > stock build. Delhi switched from Neighborhood to Bakers and reserved the
 > target site. Its Craftsmanship preparation expired and the tile remained
-> empty through turn 25. [AI-N080]
+> empty through turn 25. [AI-N080](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n080)
 > [Live bid and follow-through](../../../research/mods/csc-ai-hotfix-live-bid-20261106.md)
 
 > **6 November matched Boston replay:** After a natural Craftsmanship unlock,
 > one late bid changed the turn-22 district selector from Campus to Bakers.
 > Boston reserved our site, placed its foundation and completed the Quarter.
-> The control later founded Bakers on a different plot. [AI-N083]
+> The control later founded Bakers on a different plot. [AI-N083](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n083)
 > [Exact save, scores and construction timeline](../../../research/mods/csc-ai-bakers-natural-research-20261106.md)
 
 ## Late write reaches district selection and preparation
@@ -46,7 +46,7 @@ The Delhi replay changes one completed district-site cell on return from
 248,223 Q8 in the control. The pulse raised Bakers at plot 1210 from 104,621 to
 248,479 Q8 after aggregation. The native winner and plot-specific present value
 both read that exact value. Delhi reserved the site and submitted its missing
-Craftsmanship goal through the native district tree. [AI-N075]
+Craftsmanship goal through the native district tree. [AI-N075](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n075)
 
 This boundary supports corrections measured in the final score's units. The
 original trial used Frida. A matched CE replay used its new guarded Lua entry
@@ -54,7 +54,7 @@ to reproduce the same Bakers choice, reservation and civic goal. An early
 Tailors adjustment also reached NetValue in the same calculation. The caller
 supplies the expected entry and final scores and a measured delta. The main
 CSC Lua library owns the policy, and recurring publication still needs fresh
-component evidence. [AI-N077]
+component evidence. [AI-N077](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n077)
 [CE late score API](../../../research/mods/csc-ce-late-score-api-20261105.md)
 
 ## Earlier bridge tests
@@ -64,13 +64,13 @@ district score/cache boundary. In a matched one-save trial, a single+1 utility
 adjustment reached the completed cache, native winner's score, present value
 and new district request. The isolated Win64 host also passed167 checks.
 General arbitrary-policy authoring and a shipping extension remain future work.
-[AI-N036] [AI-N061] [AI-N062]
+[AI-N036](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n036) [AI-N061](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n061) [AI-N062](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n062)
 
 The [next controlled trial](../../../research/mods/civ6-district-placement-choice-20261103.md)
 tests a distinct preferred Tailors site and natural construction, with the old
 CSC tuning [retired](../../../integrations/csc-ai-reset-20261103.md). Its first
 interval captured fresh values while Sydney finished an existing Aerodrome;
-a new selection needs its own observed opportunity. [AI-N063]
+a new selection needs its own observed opportunity. [AI-N063](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n063)
 
 The [offline feasibility report](../../../research/mods/civ6-district-score-extension-20261103.md)
 contains the current-build code, ABI and source details. The
@@ -85,7 +85,7 @@ before that store. Its result uses output storage and returns a pointer; a
 generic replacement of RAX with an integer would not implement the required
 contract. The experimental adapter preserves that pointer and adjusts only its
 pointed signed32 score; isolated ABI checks and the untouched native trace now
-validate this limited integration. [AI-N053] [AI-N061]
+validate this limited integration. [AI-N053](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n053) [AI-N061](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n061)
 
 ```mermaid
 flowchart TD
@@ -107,7 +107,7 @@ A copied numeric table or pure function could express Base/Both combinations,
 future customer paths, scarcity, development delay, supply preservation and
 competing uses of land. Rules could be authored in data or calculated beforehand
 in Lua at a verified context boundary. The proposed native callback would perform
-a fast lookup rather than call Lua or Python for every candidate. [AI-N060]
+a fast lookup rather than call Lua or Python for every candidate. [AI-N060](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n060)
 
 This route can influence AI decisions without adding an ordinary gameplay yield
 or a synthetic map feature. Original human identities, including autoplay role
@@ -120,12 +120,12 @@ single exact original-AI tuple; it does not yet provide the general authoring la
 cases return the invalid sentinel. “Not invalid” does not establish a successful
 candidate. A first limited adapter could preserve all zero results, but it would
 then omit legal zero-score opportunities too. Valid negative values are not
-automatically rejected by the native selector. [AI-N054]
+automatically rejected by the native selector. [AI-N054](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n054)
 
 **The stage defines the units.** At the proposed pre-store point the addition is
 Q8 AI utility. Positive district preference processing and the later
 positive-score future-building gate follow it. A batch addition after preferences
-or after future-building aggregation would have different semantics. [AI-N055]
+or after future-building aggregation would have different semantics. [AI-N055](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n055)
 That aggregation can also reset a qualifying positive first-row entry before
 adding building value; the adjustment is not guaranteed to survive every row
 unchanged.
@@ -133,13 +133,13 @@ unchanged.
 **The cache has other readers.** Six observed direct present-value call sites
 include request updates, triggers, production interruption review and a district
 production-effect analyser. Some convert Q8 to integers; the no-plot overload
-has a zero floor. Coherence means respecting those transformations. [AI-N056]
+has a zero floor. Coherence means respecting those transformations. [AI-N056](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n056)
 
 **Influence can persist.** District cache values are serialized and restored.
 Existing requests can retain higher earlier extra present value. Removing a
 bonus therefore need not immediately reverse an old commitment, and repeated
 addition to a restored cache could compound it. Load identity, fresh analysis,
-policy version and disabling need their own contract. [AI-N057] [AI-N058]
+policy version and disabling need their own contract. [AI-N057](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n057) [AI-N058](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n058)
 
 ## Released CE1.3 APIs do not supply it
 
@@ -147,7 +147,7 @@ Pinned Community Extension source shows an entry callback that requests no Lua
 return values, and a processor registry whose native callers must be implemented.
 Its `DistrictTargetChooser` handles Congress choices. Ordinary district scoring
 would require new native integration; naming a processor or property is insufficient.
-Installed CE/source correspondence and compatibility were not established. [AI-N059]
+Installed CE/source correspondence and compatibility were not established. [AI-N059](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n059)
 
 A Frida/CModule host first implemented the experimental route. The
 [CE fork parity port](../../../research/mods/csc-ce-policy-parity-20261104.md)
@@ -173,13 +173,13 @@ request-value fields changed in the city-build and behavior-tree logs; the
 production-queue logs were identical. The Quarter remained unbuilt. This proves
 delivery into request valuation, not a caused choice switch or economic benefit.
 Both sessions normally closed with settings, original save and installed package
-verified. [AI-N062]
+verified. [AI-N062](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n062)
 
 The separate native test host now verifies pointer identity, no-op behaviour,
 scope, arithmetic, immutable publication and native filtering before JavaScript.
 It also exercises the three downstream monitor signatures. The no-write Civ
 baseline then recorded the exact fresh candidate through cache, winner and PV,
-with no errors and verified normal closure. [AI-N061]
+with no errors and verified normal closure. [AI-N061](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n061)
 
 This first implementation uses one immutable **single-load window**. Its host
 generation labels are not native analysis epochs. VirtualQuery checks readable
@@ -192,7 +192,7 @@ plot2272 at585,676 Q8; Tailors scored243,277. Adding the measured gap plus256
 made Tailors win at585,932, and the AI submitted its ordinary Quarter request
 with logged value2288.0. Pre-decision physical, production and research facts
 matched. Only one definitely unreserved Tailors site qualified, so this was
-not a move between two Quarter sites. [AI-N064]
+not a move between two Quarter sites. [AI-N064](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n064)
 
 The first follow-through observed no Quarter foundation through253, then
 stalled while attempting254 and closed normally. After fixing the missing
@@ -201,7 +201,7 @@ passed254 and an actual Tailors foundation appeared at the preferred tile.
 The AI selected its waiting Quarter request after the existing Bomber finished;
 no order or foundation was scripted. The same contract and physical Quarter
 completed at255, after which the city moved to Artillery.
-[AI-N065] See the [placement-choice report](../../../research/mods/civ6-district-placement-choice-20261103.md).
+[AI-N065](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n065) See the [placement-choice report](../../../research/mods/civ6-district-placement-choice-20261103.md).
 
 Policy refresh, native generations, saved influence and a useful material/customer
 formula remain separate work. Chain outcomes and empire benefit come later.

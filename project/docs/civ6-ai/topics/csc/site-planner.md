@@ -104,7 +104,7 @@ In the Kőszeg follow-through, CSC's existing once-per-turn Lighthouse
 offer was available when the ordinary building comparison ran. CE
 applied the offer at that comparison. A city may keep forecasting the
 building for several turns between ordinary comparisons. The replay
-supports keeping the existing refresh cadence. [AI-C134]
+supports keeping the existing refresh cadence. [AI-C134](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c134)
 [Lighthouse follow-through](../../../research/mods/csc-ai-shared-stage-two-fractal-20261108.md#lighthouse-follow-through).
 
 The Dockmaster premium on a ready Textile Workshop bid now requires
@@ -160,18 +160,18 @@ Tailors site with both links pending. No Tailors offer reached the +4 band
 in that game. The control and restart completed the same 13 Bakers and 15
 Tailors on the same plots. Confirmed Storekeeper activity also matched.
 This narrows the next test to a city where a viable long-term offer can
-actually compete with a weaker site. [AI-C135]
+actually compete with a weaker site. [AI-C135](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c135)
 
 The all-stage revision increased strong Bakers offers from 11 to 21 and
 strong Tailors offers from zero to two across the same three saved positions.
 Those surveys held the game state and legal pairs fixed. They measured CSC
-offers before any native comparison. [AI-C136]
+offers before any native comparison. [AI-C136](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c136)
 
 In matched Aachen replays, the wider neighbor forecast raised the
 finished score of Tailors plot 1094 by 45,056 Q8 at four native comparisons.
 An Encampment won each time. This shows the adjustment survived aggregation
 in this case. A changed winner and placement still need a closer comparison
-with a known reservation threshold. [AI-C137]
+with a known reservation threshold. [AI-C137](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c137)
 
 In Nicopolis, omitting only the weak-site deduction on Bakers plot 472
 changed the native winner and reservation to that tile. With the deduction,
@@ -179,26 +179,26 @@ Civ chose unowned plot 398 and requested its purchase. The latter tile was
 outside the owned-site scanner, so the test also exposed a coverage gap.
 The penalty has a demonstrated effect on the individual choice. Reliable
 avoidance of poor Quarter placements still needs frontier coverage and
-foundation evidence. [AI-C138]
+foundation evidence. [AI-C138](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c138)
 
 The existing CE interface also accepted a score deduction before Nicopolis
 owned the site. The integrated frontier scan reproduced that deduction and
 changed the winner to plot 401, where Civ requested a purchase. The new
 site's supply, customer path and completed foundation remain to be verified.
-[AI-C139]
+[AI-C139](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c139)
 
 The longer continuation retained the accepted request through turn 213.
 Plot 401 was still unowned and empty on 216, with no known Base and
 one remaining unrevealed neighbor. The city chose Harbor on 215.
 The scoped purchase observer recorded no events; it does not explain
 which upstream gate blocked acquisition. The next step traces quotes
-and savings rather than increasing the Quarter's site bid. [AI-C140]
+and savings rather than increasing the Quarter's site bid. [AI-C140](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c140)
 
 That trace found eleven positive Nicopolis quotes but insufficient
 earmarked plot funds. The funds accumulated naturally, coming close
 on turn 213, before the quote increased again. Actual treasury was
 not captured. This diagnoses the native savings gate; the next buying
-fixture needs known chain potential and actual paid acquisition. [AI-C141]
+fixture needs known chain potential and actual paid acquisition. [AI-C141](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c141)
 
 | Problem | Coverage and next proof |
 | --- | --- |
@@ -242,14 +242,14 @@ fixture needs known chain potential and actual paid acquisition. [AI-C141]
    and placement separately. High adjacency is a screening signal alongside
    the credible supply/customer path and the quoted cost.
 
-[Native purchase routes and savings checks](../native/district-choice.md#buying-a-future-site).
+[Native purchase routes and savings checks](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md#buying-a-future-site).
 
 ## Earlier offline placement model
 
 The fresh planner starts with an offline investment review. Its first Tailors
 profile evaluates **44 copied historical cases**, with separate yield, cost,
 timing, supply and customer explanations. It imports no retired tuning policy
-and sends no native incentive. [AI-C048]
+and sends no native incentive. [AI-C048](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c048)
 
 Read the [first review and actual case tables](../../../research/mods/csc-ai-site-evaluator-20261103.md).
 Use the [interactive comparison](https://hennogous.github.io/Henno-Mods/ai/static/site-planner-review.html)
@@ -345,7 +345,7 @@ The Online100 game recorded52 native adjustments with no errors. All7 promoted
 Bakers sites founded and completed;23 other Quarters founded below4 in their
 preceding scans. No Tailors site qualified in this world. The machine interruption
 and recovery are retained in the evidence, not treated as uninterrupted parity.
-This is placement follow-through, not causal or economic-benefit proof. [AI-C049]
+This is placement follow-through, not causal or economic-benefit proof. [AI-C049](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c049)
 The richer investment evaluator remains available for later refinement.
 
 The scanner now lives in the main CSC `Lua_UI/AI` folder with the late
@@ -390,14 +390,14 @@ zero also removes the later future-building uplift. No unconditional poor-site
 ban is added. The recovered Online100 game founded ten promoted Quarters and
 four below-4 Quarters (12 total completions), with13,881 deductions,75 additions
 and zero native errors in completed windows. The positive-only pilot had23
-below-4 foundations; this is descriptive, not a matched causal comparison. [AI-C050]
+below-4 foundations; this is descriptive, not a matched causal comparison. [AI-C050](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c050)
 
 The exceptions identify two different gaps. The Hague and Pokrovka entered native
 requests before their sites first appeared in the scanner; later negative values
 did not retract the retained requests. Delhi and Majapahit remained positive
 after deduction and won with much larger final cached values after downstream
 native valuation. The next placement refinement should cover candidates before
-request admission and use a [native-versus-CSC component ledger](../native/district-score-anatomy.md)
+request admission and use a [native-versus-CSC component ledger](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-score-anatomy.md)
 before deciding on final-aggregate changes. Simply raising a late subtraction
 would not solve both problems. The report preserves
 the controller interruption, exact scanner-fact recovery comparison and all four
@@ -410,7 +410,7 @@ attributes the dominant weak-site uplift to generated Mill adjacency encoding
 bits. The Wind Mill contributes over99.8% of each admitted building sum; the
 native interpreter credits all ten magnitudes without their gameplay owner
 property gates. The remaining building benefits are much smaller and are not
-all individually attributed. [AI-C053] See the
+all individually attributed. [AI-C053](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c053) See the
 [component report](../../../research/mods/csc-ai-bakers-forecast-components-20261104.md).
 The immediate model task is a targeted forecast correction, not a stronger
 blanket site penalty. No correction or new policy was installed by that study.
@@ -421,7 +421,7 @@ Wind +1 switch and three Water unit steps.317 actual shared-Lua count cases
 preserve current numerical payouts; no replacement was installed at that stage. Smaller bounds
 contain phantom magnitude but do not restore omitted gates. Both Mills share
 the leak; forecast readiness and native mutual canonicalization explain their
-different reported values and admission. [AI-C054] [AI-C055]
+different reported values and admission. [AI-C054](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c054) [AI-C055](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c055)
 
 **Later4 November implementation:** the recommended one/three unit steps are
 now in source, with explicit CITY scope and functioning local-Mill eligibility.
@@ -429,13 +429,13 @@ The old player-wide behavior came from CSC omitting MAB's scope override. The
 focused actual SQL/Lua checks cover the new graph and scanner; generic rules and
 the v2 policy weights are unchanged. At that stage no installation or native game
 check was performed, per Henno's offline-only choice. The earlier317-case study remains
-historical proposal evidence. [Implementation](../../../research/mods/csc-ai-local-mill-unit-steps-20261104.md). [AI-C056]
+historical proposal evidence. [Implementation](../../../research/mods/csc-ai-local-mill-unit-steps-20261104.md). [AI-C056](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c056)
 
 **4 November carrier checkpoint:** The
 [CE fork parity port](../../../research/mods/csc-ce-policy-parity-20261104.md)
 completed Online100 with the same v2 policy and full native diagnostics.
 CSC Lua/SQL now has a qualified development path through a CE dependency;
-stock CE still lacks the API and upstream release remains separate. [AI-C052]
+stock CE still lacks the API and upstream release remains separate. [AI-C052](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c052)
 This clears the development-carrier prerequisite for later model work; it does
 not establish the economic quality of the current rule or authorize another game.
 
@@ -446,7 +446,7 @@ The isolated CSC copy includes the reviewed local-Mill unit steps. That is
 carrier qualification, not an isolated native Mill yield/forecast comparison or
 evidence of better economic outcomes. All preferences and earlier development
 packages were restored; human CSC/stock CE remained unchanged.
-[Qualification](../../../research/mods/csc-ce-develop-port-20261105.md). [AI-C052] [AI-C056]
+[Qualification](../../../research/mods/csc-ce-develop-port-20261105.md). [AI-C052](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c052) [AI-C056](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c056)
 
 **5 November isolated Mill/building checkpoint:**20 native payout/locality cases
 pass, while direct Quarter repair retains a failed native Production assertion
@@ -460,7 +460,7 @@ fails to recover the affected checkpoint at turn4; this is not yet a pristine
 ordinary-pillage reproduction. Activation/invalidation and one measured forecast
 correction remain separate questions.
 [Combined results](../../../research/mods/csc-ai-mill-building-study-20261105.md).
-[AI-C058] [AI-C059] [AI-N074]
+[AI-C058](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c058) [AI-C059](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c059) [AI-N074](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n074)
 
 Review the assumptions and case explanations. Extend profiles to Bakers and
 later Quarters, and gather only missing facts that could change a choice:

@@ -1,9 +1,12 @@
-name: Deploy Quartz site to GitHub Pages
+name: Publish CSC player documentation
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'docs/**'
+      - '.github/workflows/deploy.yml'
 
 permissions:
   contents: read
@@ -24,22 +27,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Check AI handbook sources
-        run: |
-          python3 -B -m unittest discover -s project/tools/ai_knowledge -p test_prepare.py -v
-          python3 -B -m unittest discover -s project/tools/ai_site_planner -p test_evaluator.py -v
-          python3 -B -m unittest discover -s project/tools/ai_site_planner/adjacency_policy -p test_policy.py -v
-          python3 -B project/tools/ai_knowledge/prepare.py
       - name: Install Quartz dependencies
         run: cd docs && npm ci
       - name: Build Quartz
         run: cd docs && npx quartz build -d content
-      - name: Build and verify AI handbook
-        run: |
-          node project/tools/ai_knowledge/build.mjs --base-url=hennogous.github.io/Henno-Mods/ai
-          node project/tools/ai_knowledge/verify.mjs
-          mkdir -p docs/public/ai
-          cp -R docs/.ai-handbook/site/. docs/public/ai/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

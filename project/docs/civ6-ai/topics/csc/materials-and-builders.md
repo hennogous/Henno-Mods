@@ -5,47 +5,47 @@ A valid material can be locked, unowned, unsafe, unassigned, reserved for a dest
 Boston's only Cattle survived a matched Campus placement test and became a
 working Pasture. A later Farm job for the Feudalism boost removed the Pasture
 and harvested the deposit. The same Builder, exact plot and distinct native
-operations identify work clearance as the cause. [AI-N087]
+operations identify work clearance as the cause. [AI-N087](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n087)
 [Boston's exchange and Builder-loss evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-ordinary-exchange-worked-then-a-feudalism-boost-consumed-the-base).
 
 The main CSC publisher also preserved that supplier in a matched CE replay.
 The AI put Campus on plot 720 and worked the Cattle on plot 796 by turn 37.
 This verifies automatic district protection for the fixture. Builder
-clearance is a separate decision. [AI-C065]
+clearance is a separate decision. [AI-C065](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c065)
 [Automatic publisher evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-district-protection-replay).
 
 The follow-up traced two callers of the same improvement site selector.
 Boost planning can skip a city whose location result is empty. Ordinary
 planning can defer creating an improvement tree. A guarded replay used
 both paths to keep Boston's exact Pasture through Storekeeper activation.
-[AI-N088] [Native paths and retained replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#guarding-the-boost-decision-before-reservation).
+[AI-N088](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n088) [Native paths and retained replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#guarding-the-boost-decision-before-reservation).
 
 A stock GameCore probe filtered the protected row before native ranking.
 The boost route initially deferred Boston's Farm, and later calls retained
 eligible same-city alternatives. The supplier survived through Storekeeper.
-[AI-N091] [Candidate filtering replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
+[AI-N091](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n091) [Candidate filtering replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#builder-candidate-filtering-before-native-ranking).
 
 The earlier improvement forecast supplies that ranking cache directly.
 CE can scope a score change to one improvement on a protected supplier
 site without replacing the selector. An already assigned job can reach
-execution without another score calculation. [AI-N092]
+execution without another score calculation. [AI-N092](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n092)
 [CE score producer and execution limits](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#ce-score-producer-and-execution-limits).
 
 CSC's live supplier scan now feeds that CE capability. In the matched
 Boston replay the treatment retained the Cattle Pasture and verified
-Storekeeper while the control lost the deposit. [AI-C066]
+Storekeeper while the control lost the deposit. [AI-C066](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c066)
 [Automatic Builder protection evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#automatic-builder-protection-in-the-matched-ce-replay).
 
 After a blizzard, a stock continuation kept the damaged Cattle deposit but
 did not rebuild the Pasture or repair the Mill by turn 234. A Wonder claim
 on the Cattle plot and a Spaceport in production give two separate recovery
-dependencies to trace. [AI-C067]
+dependencies to trace. [AI-C067](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c067)
 [Stock recovery baseline](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#natural-recovery-after-the-boston-blizzard).
 
 The main CSC Wonder policy redirected the native claim to another site.
 Boston's Cattle remained physically developable, and both links remained
 down by turn 222. Selection and execution of a Pasture job remain
-separate checks. [AI-C068]
+separate checks. [AI-C068](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c068)
 [Matched Wonder protection](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#matched-wonder-protection-changed-the-reservation).
 
 When the Spaceport and Research Lab finished, Boston's eligible Water Mill
@@ -53,149 +53,149 @@ repair won the building comparison. The city queued an admitted Theater
 Square contract. A later Mill contract lost to Encampment, then executed
 after that district completed. The Mill's building yields returned while
 the missing Pasture kept Storekeeper inactive.
-[AI-C069] [Mill repair choice](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
+[AI-C069](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c069) [Mill repair choice](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-mill-won-the-building-comparison-and-missed-the-queue).
 
 Removing only the Pasture in the early Boston fixture exposed separate
 job and plot gates. The old plot reservation no longer resolved. The
 ordinary improvement slot was occupied, then a different job won.
 An Irrigation boost made a new claim and its Builder harvested the
-Cattle. [AI-N096] [AI-C070]
+Cattle. [AI-N096](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n096) [AI-C070](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c070)
 [Supplier replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#isolating-the-missing-pasture).
 
 Both turn-72 CE arms lost the Cattle. The treatment logged the expected
 ineligible Farm values, while the same Irrigation job reached execution.
 The forecast receipts alone cannot distinguish a fresh selection from
-a job carrying a prior location. [AI-C071]
+a job carrying a prior location. [AI-C071](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c071)
 [Matched supplier failure](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-turn-72-protection-arms-both-lost-the-cattle).
 
 The turn-69 comparison caught the actual Farm selection before the
 Irrigation reservation. The treatment redirected the job and kept the
 Cattle through turn 81. Boston's first two open ordinary job slots
 went to a Camp elsewhere. A Pasture remained legal and Storekeeper
-stayed inactive. [AI-C072]
+stayed inactive. [AI-C072](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c072)
 [Earlier matched protection](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#earlier-protection-redirected-the-boost-and-preserved-the-deposit).
 
 Holding protection constant, a bounded Pasture bid won the next
 ordinary job in treatment. The AI assigned a Builder and restored
 the original Pasture. Storekeeper and the Mill's supplier output
 returned at both subsequent samples. The control kept its Cattle
-with the Pasture missing. [AI-C073]
+with the Pasture missing. [AI-C073](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c073)
 [Matched Pasture recovery](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-bounded-pasture-bid-restored-storekeeper-in-the-matched-replay).
 
 The main CSC publisher and the CE bid API reproduced that recovery.
 The treatment restored the Pasture and activated the native growth
 modifier on Boston's exact City Center recipient. The control kept
-protection and still lacked the Pasture. [AI-C075]
+protection and still lacked the Pasture. [AI-C075](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c075)
 [Integrated publisher and exact recipient evidence](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-main-csc-supplier-publisher-uses-the-existing-ce-score-hook).
 
 The naturally damaged chain had a different dependency. The Cattle
 survived, but the Mill stayed pillaged and Boston never submitted
 its repair through turn 264. The supplier preference needed the
-Mill. [AI-C076]
+Mill. [AI-C076](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c076)
 [Simultaneous damage and the production queue](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#preserving-the-natural-supplier-did-not-resolve-simultaneous-damage).
 
 On the turn-258 replay the Mill was eligible in all six building
 comparisons. Military Academy won the building ranking, and the
 queue eventually trained Modern Armor through its generic offense
-fallback. [AI-C078]
+fallback. [AI-C078](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c078)
 [The Mill's nomination and queue competition](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#military-academy-beat-the-eligible-mill-in-building-selection).
 
 The turn-261 repeat separated two barriers. Academy beat the Mill
 by 60,619 Q8 at the building comparison. A 1,428,800 Q8 project
 beat Academy, then failed execution. Boston went straight to generic
 offense. A larger Mill bid would also have to beat the failed project
-if the existing queue order stays in place. [AI-C079]
+if the existing queue order stays in place. [AI-C079](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c079)
 [Exact queue operands](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-rejected-project-sent-the-queue-straight-to-generic-offense).
 
 A matched preference lifted the eligible Mill to 783,717 Q8 and
 won the building ranking. The same unadvanceable project won the
 category comparison, so the city still reached generic offense.
-The other observed building winner came from threat review. [AI-C080]
+The other observed building winner came from threat review. [AI-C080](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c080)
 
 In a separate matched replay, the native eligibility check excluded
 the unavailable project before ranking. Boston then chose a valid
 Terrestrial Laser at the same score. Neither arm restored Storekeeper.
-[AI-C082] [Matched project eligibility replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#project-eligibility-preserved-a-valid-terrestrial-laser).
+[AI-C082](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c082) [Matched project eligibility replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#project-eligibility-preserved-a-valid-terrestrial-laser).
 
 A later Mill-only baseline kept the Pasture and Granary working.
 Boston took a Theater Square contract, offered the Mill repair the
 following turn, and executed it after Theater Square completed.
-The exchange and Storekeeper were working at turn 126. [AI-C083]
+The exchange and Storekeeper were working at turn 126. [AI-C083](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c083)
 [Mill-only contract and payouts](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#boston-repaired-the-mill-after-theater-square).
 
 In the turn-100 normal-start run, Alexandria Troas had the Mill,
 Granary and Feudalism. Its only mapped Base was unimproved Cattle.
 The exact Pasture bid reached the native scorer, but the city kept
 reserving another site and had no Pasture at the endpoint. Trace
-proposal admission and worker assignment on this save. [AI-C084]
+proposal admission and worker assignment on this save. [AI-C084](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c084)
 [Normal-start follow-through](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#normal-start-follow-through-to-turn-100).
 
 The turn-112 replay found that Alexandria's ordinary improvement
 tree was occupied on nine checks. When the slot opened, the
 selected improvement was Pasture but another tile led by 5,888 Q8
 in all three comparisons. The Bakers supplier was selectable.
-[AI-C085] [Competing Pasture trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#alexandria-selected-a-different-pasture).
+[AI-C085](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c085) [Competing Pasture trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#alexandria-selected-a-different-pasture).
 
 Adding 6,144 Q8 in the matched diagnostic changed all three
 locations and reached native Builder assignment. The Pasture was
 still absent at 112 while the assigned work was in its movement
 step. A continuation without the extra bid reselected and built
-the competing Pasture. [AI-C086]
+the competing Pasture. [AI-C086](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c086)
 [Matched choice and assignment](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-extra-pasture-bid-changed-location-and-assignment).
 
 Keeping the extra bid on the same turn-112 save redirected the new
 job to the Bakers supplier. The AI completed the Pasture at 118
 and the exact City Center received Storekeeper Growth on turns
-119–121. [AI-C087]
+119–121. [AI-C087](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c087)
 [Matched execution and Service](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#keeping-the-bid-active-completed-the-bakers-pasture-and-storekeeper).
 
 The integrated publisher and widened CE cap then reproduced the
 same work and three Storekeeper turns without a diagnostic hook.
-[AI-C088] [Integrated calibration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-integrated-supplier-bid-reproduced-storekeeper-without-a-diagnostic-hook).
+[AI-C088](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c088) [Integrated calibration replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-integrated-supplier-bid-reproduced-storekeeper-without-a-diagnostic-hook).
 
 The later ordinary-start game delivered the same bid to Aigai's
 Pasture scorer. The Cattle remained unimproved at 150 while other
 jobs held reservations. A second start with the same setup diverged
 and called the city at that site Alexandria Troas. It reserved and
 improved the Cattle, and Storekeeper operated from 119. Trace the
-open admission and assignment to explain the difference. [AI-C110]
+open admission and assignment to explain the difference. [AI-C110](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c110)
 
 The 105–120 follow-up captured the successful branch. The exact
 Pasture won the first three open ordinary comparisons. On turn
 109 the city failed to find an available Builder despite owning
 two with charges. One reached the tile later, built the Pasture
 on 118, and Storekeeper operated on 119. The original Aigai
-branch remains unresolved. [AI-C111]
+branch remains unresolved. [AI-C111](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c111)
 
 In the Melbourne opening diagnostic, the stock improvement tree
 reserved the bare Rice for a Farm even with the Wind Mill unbuilt.
 It found no available Builder on the next six logged checks. Its
 Builder contract was submitted to six cities. Melbourne validated it on
 receipt but had no queue comparison while producing Kōtoku-in. The Rice
-remained bare at the end of the replay. [AI-C113]
+remained bare at the end of the replay. [AI-C113](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c113)
 
 The extended trace observed the same request in nine native queue
 openings across the six cities. It stayed valid at 300 points and
 lost to higher offers. Adelaide chose another Builder request at
 371 points. This is competition between requests, even when their
-result would be the same unit type. [AI-C115]
+result would be the same unit type. [AI-C115](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c115)
 
 At Melbourne's first failed Rice recruitment, the charged Builder
 beside the tile already had another controller and was marked as
 processed for the turn. The complete repeat traced that unit through
 Sydney's Farm repair and Canberra's Outback Station. Melbourne's
-ten recruitment checks found no eligible Builder. [AI-C116]
+ten recruitment checks found no eligible Builder. [AI-C116](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c116)
 
 The next normal-start repeat recorded four operating chains by 200.
 Alexandria's 69 active turns ended after 187. At the archived boundary
 its Quarter and Water Mill were pillaged while its Cattle Pasture and
 Granary still worked. This isolates a producer-side recovery case from
-the earlier missing-Builder problem. [AI-C117]
+the earlier missing-Builder problem. [AI-C117](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c117)
 
 Through turn 214, Alexandria's Mill had a high advisory score and
 failed the repair requirements in all ten observed comparisons. The
 host Quarter remained pillaged. Check the district's repair eligibility
-and nomination before calibrating a Mill preference. [AI-C118]
+and nomination before calibrating a Mill preference. [AI-C118](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c118)
 
 The Quarter's repair was legal on turn 200. Its cached district
 score was below Aerodrome on both open comparisons, while the other
@@ -205,101 +205,101 @@ repair had eight Production remaining, but both the Quarter and
 Mill were still pillaged at turn 229. The turn-201 replay confirmed
 the Quarter used the default threshold despite a cached reservation ID.
 It was admitted and lost on the relative score.
-[AI-C119]
+[AI-C119](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c119)
 
 A separate district tree reserved the pillaged Quarter and submitted
 a repair request alongside the stock Aerodrome request. Its decoded
 value was inflated. The controller lost its tuner context on the next
-turn, leaving repair and Service recovery unverified. [AI-C120]
+turn, leaving repair and Service recovery unverified. [AI-C120](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c120)
 
 The corrected probe submitted a separate repair at 5,645 whole value
 units, the normal conversion of the Quarter's native plot score.
 Aerodrome still submitted at 7,216. When Broadcast Center finished,
 the repair request reached production and the Quarter was restored.
 The later Aerodrome request also entered native progress. The Water Mill
-was still pillaged at 214, leaving the second repair open. [AI-C121]
+was still pillaged at 214, leaving the second repair open. [AI-C121](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c121)
 
 The restored Quarter made the Water Mill repair eligible. Stock AI
 requested it, completed it on 220, and restored the active Storekeeper
 growth effect on 221. The follow-up applied no Mill preference.
-[AI-C122]
+[AI-C122](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c122)
 
 Packaged CE and CSC reproduced the Quarter repair from the same
 source. The four-field request used the native score. CE recognized
 the active repair when CSC published it again. The same packages then
 reproduced the Mill repair and eight active Storekeeper turns. In the
 matched control, disabling repair nominations with the same CE binary
-left both the Quarter and Mill pillaged at turn 214. [AI-C123]
+left both the Quarter and Mill pillaged at turn 214. [AI-C123](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c123)
 
 An exact save made while the Quarter repair was pending retained the
 original request after reload. The AI used that request, CE suppressed
 the duplicate, and the physical Quarter recovered. The Mill remained
-pillaged at this separate replay's endpoint. [AI-C124]
+pillaged at this separate replay's endpoint. [AI-C124](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c124)
 
 With the repair build running from normal setup, the earlier Small
 Continents development seed repeated the same four Services. Only
 Melbourne reached 100 active turns. Heidelberg's Dam again removed
 the only Maize despite the exact deduction. Alexandria's damaged
 chain also lacked its Pasture and fell outside the working-supplier
-repair gate. [AI-C126]
+repair gate. [AI-C126](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c126)
 
 Before the Dam reservation, Heidelberg had a second legal site on
 the same river, covering the same five floodplain tiles. Its Farm
 had no resource. In the read-only replay the Maize site's final Dam
-score led, the city took that site, and Storekeeper stopped. [AI-C127]
+score led, the city took that site, and Storekeeper stopped. [AI-C127](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c127)
 
 The matched treatment excluded the sole Maize tile in one ordinary
 comparison. The AI preferred Harbor elsewhere over the remaining
 Dam site, and the Harbor entered production. The original Maize
-Farm and Storekeeper survived to the measured endpoint. [AI-C128]
+Farm and Storekeeper survived to the measured endpoint. [AI-C128](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c128)
 
 In Heidelberg, the ordinary
 improvement tree repaired the Maize Farm during a three-turn
 Storekeeper lapse. The native effect resumed on 187 for the same
-Quarter and customer. [AI-C106]
+Quarter and customer. [AI-C106](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c106)
 
 Heidelberg then placed a Dam on that same Maize tile. CE had
 deducted 24,576 Q8 from the exact district-site pair while the
 Farm and Service still worked. The Dam entered the queue on 206
 and Storekeeper stayed down from 207 through the endpoint.
 This leaves permanent last-supplier protection open even where
-the score deduction reaches the district. [AI-C107]
+the score deduction reaches the district. [AI-C107](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c107)
 
 Melbourne had a reversible supplier loss in the same game. Its
 Rice deposit survived but the Farm was gone. The exact Builder
 bid reached the scorer, the city rebuilt the Farm on 241, and
-Storekeeper resumed on 242. [AI-C108]
+Storekeeper resumed on 242. [AI-C108](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c108)
 
 The same packages then ran from normal setup. Alexandria's
 Storekeeper operated for six measured turns after the native
 Pasture completed. Other cities still had production or
-placement gaps. [AI-C089]
+placement gaps. [AI-C089](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c089)
 [Fresh calibrated game](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-fresh-calibrated-game-activated-one-storekeeper).
 
 The same game's Melbourne Wind Mill passed requirements but
 lost its ordinary building comparison to Amphitheater. Two
 earlier queue openings accepted existing contracts. A nomination
-bid needs separate checks for production and payout. [AI-C090]
+bid needs separate checks for production and payout. [AI-C090](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c090)
 [Melbourne building trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbournes-available-wind-mill-lost-the-ordinary-building-nomination).
 
 The matched nomination bid changed the valid offer to Wind
 Mill. Its score came from the ordinary building cache, below
 the boosted nomination score. The Commercial Hub was still
-in production at the endpoint. [AI-C091]
+in production at the endpoint. [AI-C091](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c091)
 [Nomination and offer pricing](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#the-wind-mill-nomination-changed-without-carrying-its-premium-into-the-offer).
 
 At the next production opening the native queue raised the
 same offer's value and accepted it without another adjustment.
 Melbourne completed the Mill on turn 137 and operated Storekeeper
 on 138–143. The replay establishes follow-through from one
-diagnostic nomination. [AI-C092]
+diagnostic nomination. [AI-C092](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c092)
 [Production and payout trace](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#melbourne-executed-the-wind-mill-offer-at-its-native-refreshed-value).
 
 Charleston later received the same bounded supplier preference
 for a Maize Farm. The Farm worked at the endpoint and Charleston
 operated Storekeeper on 176–177, while Alexandria and Melbourne
 remained active. This is a second supplier resource and a third
-working chain in the development game. [AI-C098]
+working chain in the development game. [AI-C098](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c098)
 [Charleston follow-through](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#charleston-activated-a-third-storekeeper-after-a-farm-bid).
 
 A committed Clear Plot job still has to select a worker with charges
@@ -308,7 +308,7 @@ replay a one-shot failure stopped the old harvest, and an ordinary
 job later claimed the same tile and rebuilt the Pasture. Storekeeper
 resumed. The main CSC and CE guard reproduced that result without
 Frida. Other destructive routes remain open.
-[AI-N097] [AI-C074] [AI-C077]
+[AI-N097](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n097) [AI-C074](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c074) [AI-C077](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c077)
 [Committed-harvest replay](../../../research/mods/csc-ai-bakers-natural-research-20261106.md#a-committed-harvest-failed-safely-and-boston-used-the-plot-again).
 
 ```mermaid

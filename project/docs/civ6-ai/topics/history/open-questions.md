@@ -1,6 +1,6 @@
 # Questions that remain open
 
-We now know enough to ask narrower questions. The priorities below are a research backlog, not an instruction to resume the paused optimisation campaign. Each question distinguishes the mechanism already established from the decision or benefit still needing evidence. **[AI-H004]**
+We now know enough to ask narrower questions. The priorities below are a research backlog, not an instruction to resume the paused optimisation campaign. Each question distinguishes the mechanism already established from the decision or benefit still needing evidence. **[AI-H004](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/history-findings.md#ai-h004)**
 
 ## 1. Can we supply an arbitrary, local district incentive coherently?
 
@@ -11,11 +11,11 @@ and saved6 reload. The one-entry prototypes below are the earlier evidence trail
 not the current capability limit. Released stock CE still lacks the interface;
 upstream adoption and release qualification remain open. The current research
 priority is component attribution and justified CSC corrections, as explained in
-[the reader agenda](../../guide/what-next.md). [AI-N072] [AI-C052]
+[the reader agenda](../../guide/what-next.md). [AI-N072](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n072) [AI-C052](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c052)
 
 **Known:** ordinary district scoring consumes native adjacency and dynamic custom yields. Lua can evaluate arbitrary accessible state to return a Boolean strategy condition. No ordinary numerical per-candidate Lua callback was established in the inspected interfaces.
 
-**Open:** how to qualify a general author-defined function of player, city, district, plot and current state, including refresh, persistence and shipping integration. A fixed one-entry experimental bridge now exists; its bounded evidence must remain separate from a general policy interface. **[AI-H012]**
+**Open:** how to qualify a general author-defined function of player, city, district, plot and current state, including refresh, persistence and shipping integration. A fixed one-entry experimental bridge now exists; its bounded evidence must remain separate from a general policy interface. **[AI-H012](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/history-findings.md#ai-h012)**
 
 **Offline progress,3 November:** the [extension study](../native/native-placement-extension.md)
 identifies the NetValue output/canonical-store boundary, observes six direct
@@ -26,17 +26,17 @@ passes167 isolated native assertions and a matched no-write/nonzero trial.
 A single+256 Q8 input reached the cache, winner score and present value, with
 new-request integer value1326→1327. The winner stayed the same and the Quarter
 remained unbuilt. The implementation uses one immutable single-load window,
-not an observed native generation API. [AI-N061] [AI-N062]
+not an observed native generation API. [AI-N061](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n061) [AI-N062](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n062)
 
 The subsequent clean-rules Sydney trial changed the winning type from
 Neighborhood to Tailors at the same plot and produced a native Tailors request.
 The pre-decision facts matched, and the declared bonus was the observed score
 gap plus256 Q8. This establishes a type switch, not a Quarter site relocation
-or completed construction. [AI-N064]
+or completed construction. [AI-N064](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n064)
 
 The shared-controller replay then observed the same native request selected
 after its Bomber finished, a preferred-tile foundation at254 and completion at255.
-No district order or foundation was scripted. [AI-N065]
+No district order or foundation was scripted. [AI-N065](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n065)
 
 **Useful next evidence:** qualify policy freshness/lifetime and develop the material/customer formula offline. A Quarter site-switch trial still needs two qualified competing sites. Shipping integration and useful chain outcomes remain later gates.
 
@@ -54,11 +54,11 @@ Sources: [forecast channels](../../../research/mods/csc-future-economy-forecast-
 
 ## 3. Can we observe a complete natural district decision at reasonable cost?
 
-**Known:** the static route and weight units are established. The two early-turn observers captured too many unrelated evaluations and no useful target decision. The later native-filtered prototype captured a complete scoped choice through cache, winner, present value and native request. A matched incentive then changed the selected district type at one tile. [AI-N061] [AI-N062] [AI-N064]
+**Known:** the static route and weight units are established. The two early-turn observers captured too many unrelated evaluations and no useful target decision. The later native-filtered prototype captured a complete scoped choice through cache, winner, present value and native request. A matched incentive then changed the selected district type at one tile. [AI-N061](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n061) [AI-N062](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n062) [AI-N064](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n064)
 
 **Open:** broader component attribution and physical follow-through beyond this bounded single-city case. Partial visibility must not be presented as an exhaustive ranking or complete native reservation interpretation.
 
-**Useful next evidence:** retain native filtering and finite budgets, then choose a case that resolves a remaining decision or construction question. The earlier failed observers do not justify another address-only retry or a larger cap. **[AI-H008]**
+**Useful next evidence:** retain native filtering and finite budgets, then choose a case that resolves a remaining decision or construction question. The earlier failed observers do not justify another address-only retry or a larger cap. **[AI-H008](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/history-findings.md#ai-h008)**
 
 Source: [observer closure and measurement limit](../../../research/mods/csc-native-quarter-placement-control-evidence-20261101.md).
 
@@ -106,7 +106,7 @@ Source: [current source and interpreter study](../../../research/mods/csc-future
 
 **Known:** some selected interventions work mechanically; several individual chains developed. The selective and customer-aware screens did not establish improved combined chain outcomes. Working producers and materials may provide partial benefits before a full-supply milestone.
 
-**Open:** sustained, worthwhile, balanced performance over meaningful horizons and multiple maps under both profiles. No single same-map joint-package comparison establishes general capability or isolates each input. **[AI-H002]**
+**Open:** sustained, worthwhile, balanced performance over meaningful horizons and multiple maps under both profiles. No single same-map joint-package comparison establishes general capability or isolates each input. **[AI-H002](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/history-findings.md#ai-h002)**
 
 **Useful next evidence:** after a justified mechanism change, compare total and opportunity-adjusted outcomes, completion delays, repair/retention, actual returns, acquisition/subsidy costs and displaced military/economic development. Keep late investments right-censored and report missing observation intervals. Service-to-strategy matching belongs after the basic chain capabilities are dependable, though native strategy/need sensitivity already exists.
 
@@ -114,6 +114,6 @@ Sources: [objective](../../../integrations/csc-ai-objectives.md), [selective scr
 
 ## Questions that should not be reopened from stale status
 
-The UI helper cold-start question is closed at the capability level by the two later diagnostic startups; the v2 report's earlier “pending” wording is historical. The root cause of the reproducible lens-panel exit failure was investigated and corrected, with dedicated exit checks; callback fan-out in the later placement observers was a different issue. The old arbitrary native economic-job route remains unestablished rather than a ready execution interface. **[AI-H010] [AI-H011]**
+The UI helper cold-start question is closed at the capability level by the two later diagnostic startups; the v2 report's earlier “pending” wording is historical. The root cause of the reproducible lens-panel exit failure was investigated and corrected, with dedicated exit checks; callback fan-out in the later placement observers was a different issue. The old arbitrary native economic-job route remains unestablished rather than a ready execution interface. **[AI-H010](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/history-findings.md#ai-h010) [AI-H011](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/history-findings.md#ai-h011)**
 
 Sources: [later cold-start evidence](../../../research/mods/csc-native-quarter-placement-weights-20261101.md#native-baseline-initial1-gate), [UI exit investigation](../../../research/mods/csc-ui-exit-crash-20261031.md), [job feasibility boundary](../../../research/mods/csc-ai-native-material-job-feasibility-20261030.md).

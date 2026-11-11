@@ -1,5 +1,10 @@
 # Current CSC AI work — 11 November 2026
 
+Henno authorized docs simplification: repo Markdown for status/roadmap/CSC
+findings/evidence; generic engine chapters and AI-N findings in the separate
+`civ6-ai` skill repo. AI Quartz publication is retired, public CSC site remains.
+See the current maintenance doc and memory/feedback_ai_publishing.md.
+
 User goal is Problems **1.1–1.8 and 2.1–2.2**, with demonstrable native
 effects for each and Astra validation. Use the current handbook roadmap.
 Nicopolis's owned-site deduction has a matched choice/request effect
@@ -28,7 +33,7 @@ neither is a game-engine failure or completed test. The runner now
 supports exact integrated recovery, immediate host-synced partial native
 receipt journals and failure-path cleanup. Final streams matched all
 121 purchase receipts and two selector receipts in the successful run.
-Canonical findings and scope are in the handbook, including frontier
+Canonical findings and scope are in maintained Markdown and skill references, including frontier
 uncertainty guards and the remaining owned-supply/purchase asymmetry.
 
 ## Earlier Bakers AI work — 8 November 2026

@@ -10,7 +10,7 @@ Quarter actions are inactive. It reconciles22 gameplay groups and4 common
 building components with the closed native capture: all88 building-root
 attachments have one classification and were observed in both cities. These
 counts measure inventory coverage, **not the percentage of gameplay value the
-AI understands**. [AI-C059] [AI-N074]
+AI understands**. [AI-C059](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c059) [AI-N074](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n074)
 
 ## Where this fits into district placement
 
@@ -66,9 +66,9 @@ assigns to losing a CSC supplier or switching off a Service.
 | Wind hill Production / Water river-edge Production | **Misvalued** | Small1/3 capacity is respected, but all steps are credited without real candidate geometry/property conditions. Correct eligibility; do not add another unconditional Mill bonus. |
 | Improved Base → Mill Food; Specialty → Café Food | **Unmeasured** | Improvement-owned effects are outside the building-root vector. Native live building income is an established input, but these specific future supplies were not attributed. Existing improvements and future Builder work need separate treatment. |
 | Mill/Café → material-improvement Production and Gold | **Missing here** | Producer wrappers return false with a null improvement iterator. This is genuine output to eligible improvements, not another Quarter adjacency bonus. |
-| Mill ↔ adjacent Granary | **Mixed** | In Trebizond, the unbuilt Granary's reciprocal roots returned zero with a working Mill. In Melbourne, an existing Granary's +1 Production and +1 Gold were already credited to the unbuilt Wind Mill as city yield changes. The Mill's prospective +1 Food to the Granary returned zero. Price each direction in the valuation path that actually consumes it. [AI-C099] [AI-C100] [AI-C102] [AI-C112] |
+| Mill ↔ adjacent Granary | **Mixed** | In Trebizond, the unbuilt Granary's reciprocal roots returned zero with a working Mill. In Melbourne, an existing Granary's +1 Production and +1 Gold were already credited to the unbuilt Wind Mill as city yield changes. The Mill's prospective +1 Food to the Granary returned zero. Price each direction in the valuation path that actually consumes it. [AI-C099](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c099) [AI-C100](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c100) [AI-C102](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c102) [AI-C112](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c112) |
 | Mill ↔ local Bakery/Café | **Mixed** | Food and Production/Gold exchanges receive value. Bakery/Café also credit both mutually exclusive Mill variants. Preserve the exchange while correcting the alternatives. |
-| Storekeeper: growth, Engineer GPP, marker | **Zero here** | Roots return zero without reaching the child effects. Melbourne's live Food surplus and same-player Engineer reference put the two benefits near 21 utility points if enabled over the Mill forecast window. The proxy still needs an admitted positive case. [AI-C114] |
+| Storekeeper: growth, Engineer GPP, marker | **Zero here** | Roots return zero without reaching the child effects. Melbourne's live Food surplus and same-player Engineer reference put the two benefits near 21 utility points if enabled over the Mill forecast window. The proxy still needs an admitted positive case. [AI-C114](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c114) |
 | Innkeeper: Housing, Merchant GPP, slot | **Zero here** | Roots return zero without children. Housing, GPP, the marker grant and staffing are separate questions. |
 | Groundskeeper/Ride Technician: Tourism, Engineer GPP, slot | **Mixed** | Reached Tourism and grant children lack analyzers. One Zoo GPP branch receives value; others return zero. Nonzero GPP does not certify the full material/civic/customer gates. |
 | Bakery ↔ Market ordinary population sales | **Unmeasured** | City Center consumers, not Bakery roots. Current implementation uses0.105 per customer citizen for customer Food and seller Production/Gold; ordinary sales do not require Service materials/civics. |
@@ -129,7 +129,7 @@ for a Water Mill recipient. The difference is calculated from the three raw
 building forecasts that actually entered the district sum, with Civ's positive
 building gate reapplied. The main CSC Lua policy returned a deduction of
 4,398 Q8. The native replay applied it, leaving the Bakers site at 100,223 Q8
-and preserving Delhi's Neighborhood choice. [AI-C060]
+and preserving Delhi's Neighborhood choice. [AI-C060](https://github.com/hennogous/Henno-Mods/blob/main/project/docs/civ6-ai/findings.md#ai-c060)
 [Calibrated Bakers trial](../../../research/mods/csc-ai-late-placement-20261105.md)
 
 1. **Attribute ordinary population sales and material inputs.** They are central
@@ -157,5 +157,5 @@ Evidence: [coverage reconciliation](../../../research/mods/csc-ai-effect-coverag
 [measured components](../../../research/mods/csc-ai-mill-building-study-20261105.md),
 [source inventory](https://github.com/hennogous/Henno-Mods/blob/main/project/tools/native_ai/mill_building_study/ledger/README.md)
 and [machine-readable map](https://github.com/hennogous/Henno-Mods/blob/main/project/tools/native_ai/mill_building_study/ledger/forecast_coverage.json).
-The [modifier interpreter reference](../native/modifier-forecasts.md) explains
+The [modifier interpreter reference](https://github.com/hennogous/civ6-ai/blob/main/references/engine/modifier-forecasts.md) explains
 why missing handlers, skipped requirements and absent context differ.

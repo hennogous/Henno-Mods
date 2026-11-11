@@ -1,36 +1,20 @@
-# Research library
+# Research archive
 
-This is the supporting corpus behind the [current reading guide](index.md). Existing reports and links are preserved so we can check evidence and correct our understanding. You can read the guide without following these records.
+Use [current status](STATUS.md) and the [roadmap](roadmap.md) for the current
+picture. This archive supports checking evidence and reconciling corrections.
+A dated exploration records what was known then, not a new instruction or a
+claim that its old implementation remains active.
 
-Search starts in **Current guide**. Select **Full research library** to include detailed topics, reports and historical explorations. A dated report records what was known then; use the guide and reconciled technical topics for today’s interpretation.
-
-## Current technical explanations
-
-- [Architecture](topics/native/architecture.md) and [district choice](topics/native/district-choice.md)
-- [District score components](topics/native/district-score-anatomy.md)
-- [Empire needs](topics/native/empire-needs.md)
-- [Prerequisites, requests and production](topics/native/production-and-prerequisites.md)
-- [Modifier forecasts and their limits](topics/native/modifier-forecasts.md)
-- [Native placement interface](topics/native/native-placement-extension.md) and [CE delivery](topics/native/workshop-delivery.md)
-- [CSC effect-by-effect forecast coverage](topics/csc/forecast-coverage.md)
-- [CSC site planning](topics/csc/site-planner.md) and [other CSC topics](topics/csc/index.md)
-
-## Evidence and verification
-
-- [Original reports and implementation records](evidence.md) — dated source documents
-- [Finding register](findings.md) — assertions with scope, evidence and limitations
-- [Diagram atlas](diagrams.md) — diagrams from maintained explanations
-- [Coverage and provenance](coverage.md) — what was consolidated
-- [Evidence and instrumentation](topics/native/evidence-and-instrumentation.md)
-
-## Historical exploration and corrections
-
+- [Dated evidence reports](evidence.md)
+- [CSC findings and their limits](findings.md)
+- [Reusable engine references and findings](https://github.com/hennogous/civ6-ai/blob/main/SKILL.md)
+- [Corrections and superseded ideas](topics/history/corrections-and-cautions.md)
 - [Research journey](topics/history/research-journey.md)
-- [Corrections, superseded ideas and cautions](topics/history/corrections-and-cautions.md)
-- [Full question backlog](topics/history/open-questions.md)
+- [Historical chat findings](history-findings.md)
+- [Older question backlog](topics/history/open-questions.md)
+- [CSC forecast coverage](topics/csc/forecast-coverage.md) and [placement implementation](topics/csc/site-planner.md)
+- [CE fork and delivery](topics/native/workshop-delivery.md)
+- [Consolidation scope](coverage.md) and [glossary](glossary.md)
 
-Age alone does not invalidate evidence. We preserve older work here rather than presenting every exploration as current guidance. Superseded conclusions remain marked in the correction and finding registers.
-
-## Project reference
-
-[Roadmap](roadmap.md) · [Glossary](glossary.md) · [Maintenance](maintenance.md) · [CSC player documentation](https://hennogous.github.io/Henno-Mods/)
+Historical structured data is preserved in [data/](data/README.md). The former
+website-generated navigation and search are no longer needed to read this corpus.

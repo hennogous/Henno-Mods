@@ -1,7 +1,7 @@
 # Material opportunities and placement incentives
 
-For the engine side of these experiments, read [joint district/site choice](../native/district-choice.md)
-and [empire priorities](../native/empire-needs.md). Those explain where a placement
+For the engine side of these experiments, read [joint district/site choice](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md)
+and [empire priorities](https://github.com/hennogous/civ6-ai/blob/main/references/engine/empire-needs.md). Those explain where a placement
 signal enters and why raw adjacency does not determine the final choice.
 
 Geography, city access, native valuation and later preservation are separate problems. A map can lack an entire material class; a city can lack a legal owned site; an AI can choose another site for genuine economic reasons.

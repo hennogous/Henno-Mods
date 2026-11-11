@@ -1,7 +1,7 @@
 # Research guidance and strategy lifecycle
 
-For the wider valuation context, see [empire needs](../native/empire-needs.md)
-and [modding controls](../native/modding-controls.md). A research-specific
+For the wider valuation context, see [empire needs](https://github.com/hennogous/civ6-ai/blob/main/references/engine/empire-needs.md)
+and [modding controls](https://github.com/hennogous/civ6-ai/blob/main/references/engine/modding-controls.md). A research-specific
 working consumer and a district preference can have different units and limits.
 
 Research work moved from named favorites to candidate-score controls, construction goals and dormant-effect forecasts. Locate the working consumer and natural decision boundary before increasing a number.

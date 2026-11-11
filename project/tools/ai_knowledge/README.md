@@ -1,3 +1,16 @@
+# Retired AI handbook renderer
+
+Retired from routine research and CI on 11 November 2026 at Henno's request.
+Current knowledge is plain Markdown plus the concrete `civ6-ai` skill references.
+Start at [CSC AI research](../../docs/civ6-ai/index.md).
+
+The files below preserve the former Quartz projection/build implementation for
+historical reproducibility. Do not run these commands or refresh its catalogue
+as part of ordinary findings, roadmap or skill updates. The current public CSC
+site uses its normal Quartz configuration and does not import this handbook.
+
+---
+
 # AI handbook build
 
 The maintained content is [the handbook](../../docs/civ6-ai/index.md).

@@ -376,7 +376,7 @@ until the active check closes or an explicit dependency needs attention.
   frontier candidate per city. Trace an eligible supplier through
   that selection and the quote before testing a preference. Preserve
   native legality and treasury checks.
-  [Native purchase routes](topics/native/district-choice.md#buying-a-future-site).
+  [Native purchase routes](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md#buying-a-future-site).
 - **1.6 Construction readiness and follow-through.** Check unlocks, legal
   siting, capacity and the preparation window before committing. Trace the
   proposal through production, foundation and completion. Distinguish a new
@@ -605,6 +605,6 @@ overlap where it changes choices. Cache local relationships and refresh
 affected scopes with periodic reconciliation. Track runtime overhead and
 worst turns in a developed empire. Compare working supply, Service uptime,
 costs and displaced investments in matched standalone CSC and RH tests.
-[Production and prerequisites](topics/native/production-and-prerequisites.md) ·
+[Production and prerequisites](https://github.com/hennogous/civ6-ai/blob/main/references/engine/production-and-prerequisites.md) ·
 [Material work](topics/csc/materials-and-builders.md) ·
 [Research guidance](topics/csc/research-and-strategies.md).

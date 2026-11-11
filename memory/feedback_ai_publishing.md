@@ -1,3 +1,18 @@
+# AI knowledge maintenance — current direction
+
+On 11 November 2026 Henno authorized simplifying AI knowledge to committed
+Markdown plus concrete reusable learnings in the separate `civ6-ai` skill.
+This supersedes the former routine AI Quartz build/deploy/catalogue checks.
+
+Keep repo status/roadmap/CSC findings and evidence readable directly on GitHub.
+Engine facts and AI-N records have one maintained home in skill references.
+Keep IDs, binary scope, limitations and corrections. JSON data and renderer
+files remain historical snapshots. Make scoped commits and pushes in both
+repos. The public CSC player site still uses its own Quartz publication;
+validate that pipeline when changing it, not for every AI research update.
+
+## Earlier policy (superseded for AI handbook publishing)
+
 # AI research publishing
 
 Current direction, 3 November 2026: after the Quartz publishing failure, Henno

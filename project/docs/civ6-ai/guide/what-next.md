@@ -99,7 +99,7 @@ normal-start placement policy currently works on owned Quarter sites.
 Acquiring a Quarter footprint and acquiring an adjacent resource are
 separate decisions. For Bakers Stage 2, the Quarter can already be on
 city land while the material that makes the site viable is beyond it.
-[Land acquisition](../topics/native/district-choice.md#buying-a-future-site).
+[Land acquisition](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md#buying-a-future-site).
 
 The first turn-100 development game finished four AI Bakers
 Quarters. None had an active Storekeeper. Alexandria Troas had

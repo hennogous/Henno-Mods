@@ -1,5 +1,7 @@
 # CSC Project Resources
 
+**AI research:** [Start here](docs/civ6-ai/index.md) · [Current status](docs/civ6-ai/STATUS.md) · [Numbered roadmap](docs/civ6-ai/roadmap.md). Reusable engine knowledge lives in the [civ6-ai skill](https://github.com/hennogous/civ6-ai).
+
 **CSC AI direction:** [Durable objective and decision principles](docs/integrations/csc-ai-objectives.md) — competent, worthwhile supply chains supporting empire priorities; confirmed 28 October 2026.
 
 
