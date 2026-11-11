@@ -163,3 +163,44 @@ semantics, arming and endpoint scope before launch. Artifact directory:
 `host-choice-early-scout-01` under the same research root. The goal is to qualify
 a discriminating customer-contribution comparison, not to claim closure from
 another successfully delivered score.
+
+## Early measurements and the specific control
+
+The early scout completed its two observation turns and normal cleanup. Four
+prefix begin/end pairs match; **599 unique native records** comprise 297 NetValue,
+297 cache, four winners and one present-value consumer. Source leader/role
+validation passed and all five AI seats were active. No diagnostic or main-policy
+failure was logged.
+
+Delhi 1061 does receive a main +48 offer: Base 987, projected Water Mill river
+benefit, City Center and future Commercial Hub 1135 combine to adjacency 4.
+However, the actual turn-23 cache is **23,659 Q8**, while Preserve wins at
+**37,221**. This is not the close comparison suggested by the older logged
+Preserve value alone. Do not run an unnecessary customer-point ablation there.
+
+Washington **player 3 / city 65536 / Bakers 870** is more useful:
+
+| Window | Current main-policy facts | Native result |
+| --- | --- | --- |
+| Source 22 / publication 1 | Base Cattle 796 and projected Wind Mill hill value; no existing/future host; adjacency 2; no-host −32,768 | NetValue 40,267→7,499 |
+| Publication 2 / decision 23 | Selected future Commercial Hub **869**; adjacency 3 versus 2 without the future district; viable +6,144 | Same native input 40,267→46,411; actual Bakers winner, present-value consumer, request 241 and reservation 870 |
+
+This prospective customer is a **later-stage Commercial Hub link**, not a
+demonstrated Stage 2 Granary or Service. The source of its newly recognized
+eligibility has not been physically reconstructed; the retained model selection
+and its consumed offer are directly recorded.
+
+The full arm has complete district-entry coverage: publication counts
+145/152 equal the unique consumed NetValue key counts 145/152, all reason 0 and
+eligible 1, with zero capacity omissions. The diagnostic control withholds only
+player 3/Bakers/future footprint 869 **before the potential-cache lookup**. Real
+map facts, native legality, ordinary bands and other policy stay unchanged.
+Because the helper serves multiple city candidates, inspect every delivered
+packet difference and permit the model to find another host or candidate. Do
+not assume only 870 changes or that Tailors 947 must win.
+
+The control tests the specific **future-host eligibility/projection path**,
+including avoidance of the no-host deduction, rather than a marginal Gold point
+alone. Artifact directory: `host-choice-early-without869-01`. A closure requires
+a changed native choice, matching staged configuration except for that predicate,
+complete predecision packet comparison and Astra validation.

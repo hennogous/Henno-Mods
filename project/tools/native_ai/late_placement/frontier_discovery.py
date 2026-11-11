@@ -23,7 +23,7 @@ from ce_bakers_fresh import package_identity
 from ce_replay import verify_modules
 from boston_material_policy import provenance as boston_provenance, stage as stage_boston_policy, PREPARE_SPECIALTY
 from host_choice_policy import candidate_scope, stage as stage_host_reader
-from early_host_policy import source_provenance as early_provenance, stage as stage_early_facts
+from early_host_policy import source_provenance as early_provenance, stage as stage_early_facts, without_washington_future_host
 from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, flags,
     launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json, lua)
@@ -120,12 +120,14 @@ def run(args):
     prepared=getattr(args,'boston_prepared',None)
     host_scout=getattr(args,'host_choice_scout',None)
     early_host=getattr(args,'early_host_scout',False)
+    without_early_host=getattr(args,'early_without_washington_host',False)
     host_mode=bool(host_scout or early_host)
     assert not boston_arm or boston and 23<=args.through<=40
     assert not prepare_specialty or boston and not boston_arm and not prepared
     assert not prepared or boston and boston_arm and not prepare_specialty
     assert not host_scout or args.case==['baseline-fractal'] and not getattr(args,'compare_owned',False)
     assert not early_host or boston and not (boston_arm or prepare_specialty or prepared or host_scout)
+    assert not without_early_host or early_host
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     assert load(reference / 'complete.json')['verified'] and load(reference / 'session-closed.json')['verified']
     assert load(previous / 'complete.json')['verified'] and load(previous / 'session-closed.json')['verified']
@@ -227,6 +229,7 @@ def run(args):
             role_provenance=early_provenance(args.worlds)
             relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
             replacements[SCANNER],replacements[relative]=stage_early_facts(replacements[SCANNER],replacements[relative])
+            if without_early_host:replacements[SCANNER]=without_washington_future_host(replacements[SCANNER])
             host_scope=[] # Player-scoped native Quarter rows, including non-winning sites.
             replacements[relative]=stage_host_reader(replacements[relative],host_scope,
                 start=22,end=24,players=[1,2,3,4,5])
@@ -269,6 +272,7 @@ def run(args):
         prepare_specialty=prepare_specialty,prepared_source=str(prepared) if prepared else None,
         host_choice_scope=host_scope,
         early_host_scout=early_host,
+        early_without_washington_host=without_early_host,
         packages={source.name: pin for source,pin in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     shutil.copyfile(HERE / 'frontier_site_survey.lua', out / 'frontier_site_survey.lua')
@@ -536,6 +540,8 @@ if __name__=='__main__':
         help='Fractal only: prior host-survey artifact root; read current native candidate/winner trace prefixes through207')
     parser.add_argument('--early-host-scout',action='store_true',
         help='Original Boston-world source only: qualify all original seats and inspect main Quarter offers/native choices22→24')
+    parser.add_argument('--early-without-washington-host',action='store_true',
+        help='Diagnostic early control: withhold only future-host869 from player3/Bakers before the potential cache')
     args=parser.parse_args()
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))

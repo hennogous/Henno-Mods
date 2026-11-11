@@ -199,6 +199,20 @@ rolewrites. HostTraceprefixreadsall5AIpublishedQuarterrows+nativewinners.
 PassivefutureDistrict/Plotmetadata+RETAINED_OFFERbeforeCommitlogs supplies/
 withoutfuturemodel/rules; joinversion/nativeCEbeforeclaimingdelivery.
 3early+6reader+9discovery+5BostonPASS, actualancestorhashesPASS/Astrareview.
+Earlyscout01TERMINAL22→24/2turnsverifiednormalcleanup/Astraaudited.
+4prefixpairs599unique=297net297cache4best1pv. Allpacketdistrictentriesconsumed
+uniquely145v1/152v2 reason0eligible1, noomissions; noStage2chains/summaryrows.
+Delhi1061+48but23cache23659vsPreserve37221, notclose. BETTERWashington3/65536
+Bakers870 source22noHost-32768, raw40267→7499. At23futureCommercial869 yields
+adj3vswithoutfuture2/+6144, SAMEbase40267→46411winner+pv/request241/reserve870.
+LaterstageCommerciallink, NOTGranary/S2Service. Noexistinghost; actualcause
+new869eligibilitynotphysicallycaptured—doNOTinferpurchase/harvest.
+CURRENT sharedcontroller host-choice-early-without869-01 exec46473 through24:
+sameall5source/telemetry, ONLYstagedscannerfutureHost869false forpid3/BAKERS
+BEFOREcache. Ordinarymodelmayfindalternatives; inspectWHOLEpacket beforechoice.
+4early+6readerchecksPASS;Astraproposedcontrolscientificallyvalid. Reusefullscout
+onlyifallstagedconfigidenticalexceptguard; askAstra toverifycompleteNetcoverage
+aspacketcomparison (else repeatfullwithcompletepacketlogger, don'tweakenclaim).
 DoNOTeditpinnedsourcewhileownerlive; inspectexacthandlebeforenextsession.
 FirstCLIpreflightusedwrongprevioussurveyshape andstoppedBEFORElaunch/output;
 correctrunusesowned-site-survey-all-customers-01. Inspecthandlebeforeanynextgame.

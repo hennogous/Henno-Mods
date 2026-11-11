@@ -2,7 +2,7 @@
 from pathlib import Path
 import unittest
 from lupa.lua51 import LuaRuntime
-from early_host_policy import ROLE_PREFIX,stage
+from early_host_policy import ROLE_PREFIX,stage,FUTURE_HOST_ABLATION,without_washington_future_host
 
 
 FIXTURE='''
@@ -53,6 +53,18 @@ class EarlyHostPolicy(unittest.TestCase):
         self.assertLess(code.index('    CSC_EARLY_DIAG_Retained(entries,turn,version+1)'),code.index('local accepted, message = bridge.Publish('))
         for source in (modified_scanner,modified_publisher):
             LuaRuntime().eval('function(code)return assert(loadstring(code))end')(source.decode('utf-8-sig'))
+
+    def test_one_future_host_is_blocked_before_a_cached_true(self):
+        for player,key,index,blocked in [(3,'BAKERS',869,True),(1,'BAKERS',869,False),
+                (3,'TAILORS',869,False),(3,'BAKERS',868,False)]:
+            vm=LuaRuntime();vm.execute('pid='+str(player)+';profile={key="'+key+'"};index='+str(index))
+            fn=vm.eval('function()'+FUTURE_HOST_ABLATION.decode()+"return 'cached true' end")
+            self.assertEqual(fn(),False if blocked else 'cached true')
+        root=Path(__file__).resolve().parents[4]/'Civ Supply Chains/Lua_UI/AI'
+        source=(root/'CSC_AI_AdjacencyScan.lua').read_bytes()
+        modified=without_washington_future_host(source)
+        self.assertEqual(modified.replace(FUTURE_HOST_ABLATION,b''),source)
+        LuaRuntime().eval('function(code)return assert(loadstring(code))end')(modified.decode('utf-8-sig'))
 
 
 if __name__=='__main__':unittest.main()

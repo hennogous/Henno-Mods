@@ -104,3 +104,18 @@ def stage(scanner,publisher):
     publisher=ROLE_PREFIX.encode('utf-8')+publisher.replace(needle,
         b'    CSC_EARLY_DIAG_Retained(entries,turn,version+1)\n'+needle)
     return scanner,publisher
+
+
+FUTURE_HOST_ABLATION=b"""        -- Diagnostic counterfactual only: withhold one prospective
+        -- customer footprint from player3's Bakers model. Existing districts,
+        -- real map legality, supply, score bands and CE writes are untouched.
+        -- This helper serves multiple sites: audit the WHOLE packet afterwards.
+        if pid == 3 and profile.key == 'BAKERS' and index == 869 then return false end
+"""
+
+
+def without_washington_future_host(scanner):
+    needle=b'        if potential[index] ~= nil then return potential[index] end'
+    assert scanner.count(needle)==1
+    # Before the cache: the control must not retain a previous true result.
+    return scanner.replace(needle,FUTURE_HOST_ABLATION+needle)
