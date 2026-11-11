@@ -2643,3 +2643,27 @@ choice. A controlled one-Base Liverpool case is proposed, but its Base rule coun
 has verified origin/bytes, not yet a reload-verified clock or predecision state.
 
 - [Measurements and bounded next case](../research/mods/csc-ai-river-choice-20261111.md#observation-result-and-next-representative-case)
+
+## AI-C155
+
+**Liverpool's third Base contribution is a resource beneath its City Center**
+
+Status: accepted read-only source observation; independently audited by Astra.
+No 1.3 decision-effect or completion claim.
+
+The verified paused turn25 source reproduces Base count 3: Flax2572 under City
+Center, Wheat2498 and Maize2496. Only Wheat and Maize are viable suppliers. The
+loaded resource adjacency handler permits the occupied Flax plot, whereas the
+supplier reader excludes districts and checks improvement viability. The two
+counts answer different questions; no duplicate-count bug is established.
+
+Two real river edges yield one prospective Water Mill Production point,
+explicitly inactive now. Specific future host2571 is empty, owned, revealed,
+actor-permitted and geometrically feasible. Source save, inactive human0 phase
+and normal cleanup are verified. The raw rotating autosave failed clock/role
+qualification before inspection and is not an interchangeable input.
+
+**Limits:** Frozen-carrier rule behavior and source facts only. A shared one-Base
+derivative and isolated river comparison remain necessary to close 1.3.
+
+- [Source, plot-level reconciliation and controlled comparison](../research/mods/csc-ai-river-choice-20261111.md#verified-paused-source-and-reconciled-materials)

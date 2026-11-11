@@ -96,7 +96,7 @@ end
 """
 
 
-def stage(scanner,publisher):
+def stage(scanner,publisher,*,migrate_roles=True):
     # Passive metadata only: retain the exact host already selected by the live
     # model. CE reads only its required numeric entry fields; these extra keys
     # cannot alter its packet or supply/placement policy.
@@ -106,7 +106,11 @@ def stage(scanner,publisher):
     needle=b'    local accepted, message = bridge.Publish('
     assert publisher.count(needle)==1
     assert publisher.index(b'for i = #entries, capacity + 1, -1')<publisher.index(needle)
-    publisher=ROLE_PREFIX.encode('utf-8')+publisher.replace(needle,
+    # A derivative saved by the shared controller already persists original
+    # roles. Reuse only passive telemetry there; the turn22 migration is valid
+    # solely for the pinned legacy source and must never run at a later clock.
+    prefix=ROLE_PREFIX if migrate_roles else 'function CSC_EARLY_DIAG_Retained'+ROLE_PREFIX.split('function CSC_EARLY_DIAG_Retained',1)[1]
+    publisher=prefix.encode('utf-8')+publisher.replace(needle,
         b'    CSC_EARLY_DIAG_Retained(entries,turn,version+1)\n'+needle)
     return scanner,publisher
 

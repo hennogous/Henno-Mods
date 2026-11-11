@@ -92,3 +92,65 @@ File header, size, hash and creation within the owned run's time interval are
 verified. **Its actual saved clock and predecision state remain unverified by
 reload**; the filename alone is not that proof. The companion origin JSON records
 this limitation. No resources or other map facts have been edited for this case.
+
+## Rejected rotating save and corrected source preparation
+
+`liverpool-source-inspection-01` failed **before inspection or eligibility**.
+The shared controller expected inactive turn 25, but the first native handoff
+was turn **27**, with player 0 still AI-controlled. The controller rejected the
+source. Normal cleanup succeeded (native exit 0, owners absent, preferences and
+packages verified). No Liverpool material facts or fixture edits came from this
+attempt. File-origin verification is preserved; saved clock qualification failed.
+
+This failure matches the previously documented AI-observer rotating-autosave
+hazard in the natural-research report. The caller chose an unsuitable input;
+the controller correctly refused to normalize its clock or change its role.
+
+The replacement is a bounded replay of the exact verified turn-22 source to
+inactive turn 25, followed by read-only reconciliation and the shared
+`save_inactive_boundary` helper. `--early-save-liverpool` requires the unchanged
+all-five-AI scout and endpoint 25. The reload mode now rejects raw origin JSON
+before launch and requires a normally closed creation run, source lineage,
+verified native SaveComplete, unchanged inactive human-0 phase, matching save
+hashes and the same main AI sources. Reload still independently checks actual
+clock and roles. This qualifies a source; it does not establish an uncommitted
+native district slot or close 1.3. Astra approved that distinction and route.
+
+## Verified paused source and reconciled materials
+
+`liverpool-paused-source-01` completed the bounded **22→25** replay and closed
+normally with exit 0, absent owners and verified preference/package restoration.
+The shared helper observed exactly one SaveComplete and unchanged inactive
+turn 25 with human player 0. The archived source SHA-256 is
+`72929ef428403116ad9b34ce7fcaa4133ed44aa572513c07c2678ab97930c9b4`.
+It does not overwrite Henno's separately preserved turn-3 game.
+
+The read-only inspection reconciles all three Base contributions:
+
+| Plot | Material | State | Counted adjacency | Viable supplier |
+| --- | --- | --- | --- | --- |
+| 2572 | CSC Flax | Under Liverpool City Center | 1 | No: district occupies tile; Farm query false |
+| 2498 | Wheat | Liverpool-owned, unimproved | 1 | Yes: Farm allowed and unlocked |
+| 2496 | Maize | London-owned, unimproved | 1 | Yes: same player; Farm allowed and unlocked |
+
+The adjacency handler counts matching owned resource plots; it does not impose
+the supplier reader's no-district and improvement-viability gates. This is not
+duplicate counting or resource-quantity multiplication. These are the actual
+loaded frozen-carrier rules, not a claim about all future CSC implementations.
+
+Site 2497 remains empty with two real river edges, no Bakers Quarter and no
+current production. Its projected Water Mill contributes 1 Production
+(`activeNow=false`, `inPlan=true`). City Center supplies 1 Gold; an explicitly
+conditional Commercial Hub projection supplies another 1. Host 2571 is empty,
+owned by Liverpool, revealed, actor-permitted and geometrically feasible.
+The full forecast is 6. Original roles persist as human 0 and AI 1–5.
+
+Astra independently audited the files and normal closure. Source qualification
+is complete; native freshness of the next district comparison remains unproved.
+The controlled derivative removes Flax 2572 and Wheat 2498 once, retaining
+Maize 2496, actual rivers, City Center and host 2571. All original resource,
+ownership and district facts are asserted before either diagnostic write.
+Both comparison arms must load the same saved derivative, revalidate those
+facts, and use unchanged main-policy bands. Only the control withholds the exact
+prospective river rule in CSC's model for 2497. This map preparation is not an
+AI action, native purchase or shipping policy.

@@ -42,10 +42,14 @@ window before another replay; a changed adjacency value alone is insufficient.
 
 London's next comparison was captured: Dockyard wins 53,439 versus the river
 Quarter's 25,329. New Liverpool chooses a strong Quarter, but its river point
-does not change the +48 band. [AI-C154](findings.md#ai-c154). Next reload the
-preserved Liverpool predecision candidate, verify its clock/state and reconcile
-three counted Base plots versus two viable suppliers before a controlled
-one-Base river case. No map preparation has been performed.
+does not change the +48 band. [AI-C154](findings.md#ai-c154). The replacement
+turn25 source is now saved and normally closed: the third Base is Flax beneath
+the City Center, counted for adjacency but not a viable supplier. Maize and
+Wheat are viable. [AI-C155](findings.md#ai-c155). Next prepare one common one-Base
+derivative, preserving real rivers and future host2571, then compare the ordinary
+full model with its exact river-rule ablation. A fresh native changed choice is
+still required. The earlier rotating candidate failed qualification at27 with
+an AI observer and yielded no inspection facts; raw descriptors are rejected.
 
 ## Evidence levels by sub-problem
 

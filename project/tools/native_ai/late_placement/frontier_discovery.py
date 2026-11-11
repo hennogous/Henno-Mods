@@ -28,6 +28,37 @@ from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, fla
     launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json, lua)
 from full_game_controller.checkpoint import save_inactive_boundary
+from liverpool_river_policy import PREPARE as PREPARE_RIVER, without_river
+
+
+def liverpool_checkpoint(folder, home, world_sha, policy_root):
+    """Accept an inactive shared-controller save, never a rotating autosave.
+
+    The failed raw turn25 autosave resumed at27 with an AI observer. File
+    provenance alone cannot qualify a predecision source. Require the exact
+    source-creation ledger, normal closure and unchanged main AI sources before
+    launch; the actual reload must still pass the controller's clock/role gate.
+    A paused save does not by itself prove a fresh district comparison.
+    """
+    assert folder.is_dir(), 'Liverpool source must be a verified paused-source run directory, not an autosave descriptor'
+    assert load(folder/'complete.json')['verified']
+    assert load(folder/'session-closed.json')['verified']
+    origin=load(folder/'liverpool-source.json')
+    assert origin['verified'] and origin['source_world_sha256']==world_sha
+    assert origin['native_fresh_comparison_verified'] is False
+    assert origin['main_policy_sha256']=={str(p):sha(policy_root/p) for p in (
+        SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+        Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))}
+    checkpoint=load(folder/'checkpoint.json')
+    assert checkpoint['verified'] and checkpoint['turn']==25
+    assert checkpoint['save_complete_event'] and checkpoint['native_phase_unchanged']
+    for key in ('before','after'):
+        phase=checkpoint[key]
+        assert phase['turn']==25 and not phase['active'] and phase['local_player']==0 and phase['player0_human']
+    source=Path(checkpoint['native_save']).resolve(strict=True)
+    assert source.parent==(home/'Saves/Single').resolve()
+    assert sha(source)==sha(Path(checkpoint['archive']))==checkpoint['sha256']
+    return dict(path=str(source),sha256=checkpoint['sha256'],turn=25)
 
 
 def ui_readback(controller, case, state):
@@ -122,14 +153,22 @@ def run(args):
     early_host=getattr(args,'early_host_scout',False)
     without_early_host=getattr(args,'early_without_washington_host',False)
     early_endpoint=getattr(args,'early_through',24)
-    host_mode=bool(host_scout or early_host)
+    save_liverpool=getattr(args,'early_save_liverpool',False)
+    liverpool_source=getattr(args,'liverpool_source',None)
+    prepare_river=getattr(args,'liverpool_prepare_river',False)
+    river_arm=getattr(args,'liverpool_river_arm',None)
+    host_mode=bool(host_scout or early_host or river_arm)
     assert not boston_arm or boston and 23<=args.through<=40
     assert not prepare_specialty or boston and not boston_arm and not prepared
     assert not prepared or boston and boston_arm and not prepare_specialty
     assert not host_scout or args.case==['baseline-fractal'] and not getattr(args,'compare_owned',False)
     assert not early_host or boston and not (boston_arm or prepare_specialty or prepared or host_scout)
     assert not without_early_host or early_host
+    assert not save_liverpool or early_host and early_endpoint==25 and not without_early_host
     assert 24<=early_endpoint<=30
+    assert not liverpool_source or boston and not (boston_arm or prepare_specialty or prepared or host_scout or early_host)
+    assert not prepare_river or liverpool_source and not river_arm
+    assert not river_arm or liverpool_source and not prepare_river
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     assert load(reference / 'complete.json')['verified'] and load(reference / 'session-closed.json')['verified']
     assert load(previous / 'complete.json')['verified'] and load(previous / 'session-closed.json')['verified']
@@ -169,6 +208,12 @@ def run(args):
                 assert sha(source)==sha(Path(checkpoint['archive']))==checkpoint['sha256']
                 saves[name]=dict(path=str(source),sha256=checkpoint['sha256'],turn=22)
             identities[name]=[dict(player=3,city=131073,name='LOC_CITY_NAME_BOSTON',plot=721)]
+            if liverpool_source:
+                saves[name]=liverpool_checkpoint(liverpool_source,home,meta['sha256'],args.policy_root)
+                if river_arm:
+                    preparation=load(liverpool_source/'river-preparation.json')
+                    assert preparation['verified'] and preparation['removed_plots']==[2572,2498]
+                identities[name]=[dict(player=4,city=131073,name='LOC_CITY_NAME_LIVERPOOL',plot=2497)]
             continue
         meta = load(args.worlds / name / 'checkpoint.json')
         source = Path(meta['native_save']).resolve(strict=True)
@@ -206,7 +251,7 @@ def run(args):
         (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE)}
     role_provenance=None
     host_scope=None
-    if boston_arm or prepare_specialty or host_mode:
+    if boston_arm or prepare_specialty or host_mode or liverpool_source:
         # Reproduce the actual current reusable modules, not just a new
         # scanner calling a historical policy helper in the carrier.
         for filename in ('CSC_AI_QuarterPlacement.lua','CSC_AI_DistrictBridge.lua'):
@@ -235,6 +280,14 @@ def run(args):
             host_scope=[] # Player-scoped native Quarter rows, including non-winning sites.
             replacements[relative]=stage_host_reader(replacements[relative],host_scope,
                 start=22,end=early_endpoint,players=[1,2,3,4,5])
+        if river_arm:
+            relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+            replacements[SCANNER],replacements[relative]=stage_early_facts(
+                replacements[SCANNER],replacements[relative],migrate_roles=False)
+            if river_arm=='control':replacements[SCANNER]=without_river(replacements[SCANNER])
+            host_scope=[]
+            replacements[relative]=stage_host_reader(replacements[relative],host_scope,
+                start=25,end=27,players=[1,2,3,4,5])
     if boston:
         # Match this older save's CSC identity while keeping the verified
         # carrier's gameplay content identical across future matched arms.
@@ -276,6 +329,9 @@ def run(args):
         early_host_scout=early_host,
         early_without_washington_host=without_early_host,
         early_endpoint=early_endpoint if early_host else None,
+        early_save_liverpool=save_liverpool,
+        liverpool_source=str(liverpool_source) if liverpool_source else None,
+        liverpool_prepare_river=prepare_river,liverpool_river_arm=river_arm,
         packages={source.name: pin for source,pin in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     shutil.copyfile(HERE / 'frontier_site_survey.lua', out / 'frontier_site_survey.lua')
@@ -285,8 +341,10 @@ def run(args):
         shutil.copyfile(HERE/'host_choice_policy.py',out/'host_choice_policy.py')
         shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
     if early_host:shutil.copyfile(HERE/'early_host_policy.py',out/'early_host_policy.py')
+    if liverpool_source or save_liverpool:shutil.copyfile(HERE/'liverpool_inspection.lua',out/'liverpool_inspection.lua')
+    if prepare_river or river_arm:shutil.copyfile(HERE/'liverpool_river_policy.py',out/'liverpool_river_policy.py')
     controller = make_probe_controller(out, user_root=user_root)
-    controller.study_endpoint = 22 if boston else 200
+    controller.study_endpoint = 25 if liverpool_source else 22 if boston else 200
     session = NativeSession(out,controller,inventory=native_inventory,hold=HeldProcess,write=write_json)
     installed = []
 
@@ -329,6 +387,32 @@ Modding.EnableMod(selected.Handle,true)
                 verify()
                 carrier=packages[csc] if boston else packages[ce]
                 verify_modules(session,(carrier / ce_relative).resolve(),case,HOTFIX_SHA)
+                if liverpool_source:
+                    if prepare_river:
+                        raw=session.issue_once('prepare-common-river-source',PREPARE_RIVER,'CSC_AI_BakersGameplay')
+                        (case/'river-preparation.txt').write_text(raw,encoding='utf-8')
+                        assert 'CSC_LIVERPOOL_RIVER_PREPARED\t2572\t2498\t2496\t4' in raw
+                    raw=controller.cmd(read(out/'liverpool_inspection.lua'),'CSC_AI_BakersGameplay','inspect-liverpool-river-source')
+                    (case/'liverpool-inspection.txt').write_text(raw,encoding='utf-8')
+                    facts=parse(raw,'CSC_LIVERPOOL_INSPECTION')
+                    write_json(case/'liverpool-inspection.json',facts)
+                    assert facts['turn']==25 and facts['mutationCommands']==0
+                    assert facts['site']['district']==-1 and not facts['hasQuarter'],'Autosave already contains a Quarter'
+                    assert [r.get('originalHuman')for r in facts['originalRoles']]==[1,0,0,0,0,0]
+                    if prepare_river or river_arm:
+                        assert facts['baseRule']['count']==1
+                        assert [r['plot']for r in facts['supply']['base']]==[2496]
+                        assert facts['riverEdges']==2 and facts['futureHost']['plot']==2571
+                        assert facts['futureHost']['permitted'] and facts['futureHost']['geometry']
+                        assert facts['futureHost']['district']==-1 and facts['futureHost']['ownerCity']==131073
+                        assert facts['forecast']['requiresBuilding']=='BUILDING_CSC_BAKERS_WATER_MILL'
+                        assert facts['forecast']['total']==(3 if river_arm=='control' else 4)
+                    if not prepare_river:
+                        qualify_integrated_policy(controller,case,dict(player=4,city=131073,
+                            district=36,profile='BAKERS',purchasePlots=[2497]))
+                    write_json(out/'source-qualified.json',dict(verified=True,turn=25,
+                        save_sha256=source['sha256'],quarter_unbuilt=True,
+                        native_fresh_comparison_verified=False,inspection='cases/boston-selection/liverpool-inspection.json'))
                 if prepare_specialty:
                     raw=session.issue_once('prepare-boston-specialty',PREPARE_SPECIALTY,'CSC_AI_BakersGameplay')
                     (case/'specialty-preparation.txt').write_text(raw,encoding='utf-8')
@@ -354,7 +438,8 @@ assert(p:GetDistrictType()==-1 and p:GetImprovementType()==-1)
                 if compare_owned:
                     qualify_integrated_policy(controller,case,CASES['nicopolis'])
                 if host_mode:
-                    target=dict(player=1,city=65536,district=36,profile='BAKERS',purchasePlots=[1061]) if early_host else \
+                    target=dict(player=4,city=131073,district=36,profile='BAKERS',purchasePlots=[2497]) if river_arm else \
+                        dict(player=1,city=65536,district=36,profile='BAKERS',purchasePlots=[1061]) if early_host else \
                         dict(player=4,city=655369,district=36,profile='BAKERS',purchasePlots=[2678])
                     qualify_integrated_policy(controller,case,target)
                     raw=session.issue_once('arm-host-reader','CSC_HOST_DIAG_Arm()','CSC_AI_BakersGameplay')
@@ -371,11 +456,12 @@ do
 end
 """)
                 prefix='CSC_FRONTIER_COMPARISON='+lua({3:{131073:True}})+'\n' if boston else ''
+                if liverpool_source:prefix='CSC_FRONTIER_COMPARISON='+lua({4:{131073:True}})+'\n'
                 if host_scout:
                     cities={}
                     for row in host_scope:cities.setdefault(row['player'],{})[row['city']]=True
                     prefix='CSC_FRONTIER_COMPARISON='+lua(cities)+'\n'
-                if early_host:
+                if early_host or river_arm:
                     prefix='''CSC_FRONTIER_COMPARISON={}
 for pid=1,5 do
  local cities={};CSC_FRONTIER_COMPARISON[pid]=cities
@@ -424,7 +510,7 @@ for _,plot in ipairs(Map.GetAdjacentPlots(site:GetX(),site:GetY())) do
 end
 ''','CSC_AI_BakersGameplay','boston-neighbor-geometry')
                     (case/'neighbor-geometry.txt').write_text(raw,encoding='utf-8')
-                    players='{1,2,3,4,5}' if early_host else '{3}'
+                    players='{4}' if liverpool_source else '{1,2,3,4,5}' if early_host else '{3}'
                     raw=controller.cmd('CSC_QUARTER_SURVEY_PLAYERS='+players+';\n'+read(out/'quarter_site_survey.lua'),
                         'CSC_AI_BakersGameplay','boston-current-policy-offers')
                     (case/'actual-policy-survey.txt').write_text(raw,encoding='utf-8')
@@ -443,6 +529,15 @@ end
                             original_save_sha256=source['sha256'],
                             edits=[dict(plot=722,owner=3,city=131073),dict(plot=722,resource='RESOURCE_SUGAR')],
                             policy_delta_q8=12288,adjacency=4,proof='cases/boston-selection/specialty-preparation.txt'))
+                    if prepare_river:
+                        checkpoint=save_inactive_boundary(controller,turn=25,name='CSC_LIVERPOOL_ONE_BASE',
+                            native_directory=home/'Saves/Single',archive=out/'source.Civ6Save')
+                        write_json(out/'checkpoint.json',checkpoint)
+                        write_json(out/'liverpool-source.json',load(liverpool_source/'liverpool-source.json'))
+                        write_json(out/'river-preparation.json',dict(verified=True,
+                            parent_save_sha256=source['sha256'],removed_plots=[2572,2498],
+                            physical_river_edges=2,retained_base_plot=2496,future_host_plot=2571,
+                            native_fresh_comparison_verified=False))
                 return True
 
             session.ready_after_issue(source['turn'],('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),eligibility=ready)
@@ -453,7 +548,7 @@ end
                 # includes Makwa206 but not Diara's later207 comparison.
                 # These existing CE records nominate a comparison; they do
                 # not establish the row's effective reservation threshold.
-                endpoint=early_endpoint if early_host else 207
+                endpoint=27 if river_arm else early_endpoint if early_host else 207
                 controller.study_endpoint=endpoint
                 controller.play(endpoint)
                 boundary=controller.state_read('host-scout-endpoint')
@@ -464,6 +559,27 @@ end
                     shutil.copyfile(user_root/'Logs'/log,out/log)
                 for failure in ('CSC_HOST_DIAG_FAILED','CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED'):
                     assert failure not in read(out/'Lua.log'),'Policy/reader failure: '+failure
+                if save_liverpool:
+                    # Replay the verified22 source normally, then save only once
+                    # autoplay has returned the observer to human/inactive25.
+                    # This is source preparation, not a river treatment or a
+                    # native-choice claim. The inspection makes no map edits.
+                    raw=controller.cmd(read(out/'liverpool_inspection.lua'),
+                        'CSC_AI_BakersGameplay','inspect-paused-liverpool')
+                    (case/'liverpool-inspection.txt').write_text(raw,encoding='utf-8')
+                    facts=parse(raw,'CSC_LIVERPOOL_INSPECTION')
+                    write_json(case/'liverpool-inspection.json',facts)
+                    assert facts['turn']==25 and facts['mutationCommands']==0
+                    assert facts['site']['district']==-1 and not facts['hasQuarter']
+                    assert [r.get('originalHuman')for r in facts['originalRoles']]==[1,0,0,0,0,0]
+                    checkpoint=save_inactive_boundary(controller,turn=25,name='CSC_LIVERPOOL_RIVER_INPUT',
+                        native_directory=home/'Saves/Single',archive=out/'source.Civ6Save')
+                    write_json(out/'checkpoint.json',checkpoint)
+                    write_json(out/'liverpool-source.json',dict(verified=True,
+                        source_world_sha256=source['sha256'],native_fresh_comparison_verified=False,
+                        main_policy_sha256={str(p):sha(args.policy_root/p) for p in (
+                            SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                            Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))}))
                 print('Host-choice scout complete',endpoint,flush=True)
             if boston_arm:
                 controller.study_endpoint=args.through
@@ -520,7 +636,7 @@ end
             for source in installed:
                 packages[source].rename(out/source.name)
     assert session.closed
-    advanced=args.through-22 if boston_arm else early_endpoint-22 if early_host else 7 if host_scout else 2 if compare_owned else 0
+    advanced=args.through-22 if boston_arm else 2 if river_arm else early_endpoint-22 if early_host else 7 if host_scout else 2 if compare_owned else 0
     write_json(out/'complete.json',dict(verified=True,turns_advanced=advanced,cases=args.case))
 
 
@@ -547,6 +663,14 @@ if __name__=='__main__':
         help='Diagnostic early control: withhold only future-host869 from player3/Bakers before the potential cache')
     parser.add_argument('--early-through',type=int,default=24,
         help='Early existing-world endpoint24–30; default24; extend only for a declared later decision window')
+    parser.add_argument('--liverpool-source',type=Path,
+        help='Zero-turn reload of a verified paused Liverpool source run directory; raw autosave descriptors are rejected')
+    parser.add_argument('--early-save-liverpool',action='store_true',
+        help='Requires unchanged early scout through25: inspect and save the shared-controller inactive boundary')
+    parser.add_argument('--liverpool-prepare-river',action='store_true',
+        help='Diagnostic only: remove the two prequalified Base resources and save one common one-Base derivative')
+    parser.add_argument('--liverpool-river-arm',choices=('full','control'),
+        help='Matched one-Base source25→27; control omits only the exact prospective Water Mill rule at2497')
     args=parser.parse_args()
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))

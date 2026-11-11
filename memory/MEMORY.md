@@ -1,5 +1,20 @@
 # Current CSC AI work — 11 November 2026
 
+Latest river work: 1.3 remains active. liverpool-source-inspection-01 rejected
+raw rotating25 at actual27/AIobserver before facts; normal closure verified.
+Replacement liverpool-paused-source-01 replayed exact22→25 and saved once through
+shared helper, SHA72929ef428403116ad9b34ce7fcaa4133ed44aa572513c07c2678ab97930c9b4,
+inactivehuman0; exit0/ownersabsent/preferences/packagesverified. AI-C155:
+Base3=Flax2572underCC(nonviable),Wheat2498(viable),LondonMaize2496(viable).
+River2edges→prospectiveWaterMill1,actualhost2571emptyowned/permitted/geometrytrue.
+Astra auditedfacts+scope. New --early-save-liverpool and strictcheckpointloader
+rejectrawdescriptors. Common one-Base derivative removesFlax2572+Wheat2498,
+retainsMaize/rivers/CC/host, alloriginalsprevalidated. Inprogress run
+liverpool-one-base-source-01 uses sharedcontroller; do not edit pinnedtools
+untilterminal. Then matched25→27 full/control --liverpool-river-arm, exactriver
+modelablation only2497, ordinary4/+48vs3/+24; requirefreshnativechangedchoice,
+wholepacket/baselineaudit+Astravalidation. No1.3closureyet.
+
 Henno authorized docs simplification: repo Markdown for status/roadmap/CSC
 findings/evidence; generic engine chapters and AI-N findings in the separate
 `civ6-ai` skill repo. AI Quartz publication is retired, public CSC site remains.

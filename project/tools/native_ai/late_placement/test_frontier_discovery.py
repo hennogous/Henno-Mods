@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 import tempfile
 from lupa.lua51 import LuaRuntime
-from frontier_discovery import ui_readback
+from frontier_discovery import ui_readback, liverpool_checkpoint, SCANNER, QUOTE_BRIDGE, sha
 
 FIXTURE = '''
 output={};print=function(s)output[#output+1]=s end
@@ -140,6 +140,36 @@ end
                 else:
                     with self.assertRaisesRegex(AssertionError,'Incomplete all-city'):
                         ui_readback(Controller(quotes),Path(folder),state)
+
+    def test_liverpool_source_requires_inactive_checkpoint_and_same_policy(self):
+        # Guard the exact observed autosave failure: origin metadata and a
+        # plausible filename never substitute for verified inactive human0.
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);run=root/'run';run.mkdir()
+            home=root/'home';native=home/'Saves/Single/source.Civ6Save'
+            native.parent.mkdir(parents=True);native.write_bytes(b'CIV6-test')
+            archive=run/'source.Civ6Save';archive.write_bytes(native.read_bytes())
+            policy=root/'policy'
+            paths=(SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))
+            for p in paths:
+                (policy/p).parent.mkdir(parents=True,exist_ok=True);(policy/p).write_bytes(b'unchanged')
+            def write(name,value):(run/name).write_text(json.dumps(value),encoding='utf-8')
+            write('complete.json',dict(verified=True));write('session-closed.json',dict(verified=True))
+            write('liverpool-source.json',dict(verified=True,source_world_sha256='world',
+                native_fresh_comparison_verified=False,main_policy_sha256={str(p):sha(policy/p)for p in paths}))
+            phase=dict(turn=25,active=False,local_player=0,player0_human=True)
+            checkpoint=dict(verified=True,turn=25,save_complete_event=True,native_phase_unchanged=True,
+                before=phase,after=phase,native_save=str(native),archive=str(archive),sha256=sha(native))
+            write('checkpoint.json',checkpoint)
+            self.assertEqual(liverpool_checkpoint(run,home,'world',policy)['turn'],25)
+            with self.assertRaisesRegex(AssertionError,'not an autosave descriptor'):
+                liverpool_checkpoint(run/'liverpool-source.json',home,'world',policy)
+            checkpoint['after']=dict(phase,turn=27,player0_human=False);write('checkpoint.json',checkpoint)
+            with self.assertRaises(AssertionError):liverpool_checkpoint(run,home,'world',policy)
+            checkpoint['after']=phase;write('checkpoint.json',checkpoint)
+            (policy/SCANNER).write_bytes(b'changed')
+            with self.assertRaises(AssertionError):liverpool_checkpoint(run,home,'world',policy)
 
 
 if __name__ == '__main__':
