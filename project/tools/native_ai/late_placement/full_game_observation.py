@@ -8,6 +8,7 @@ Service effect. The existing Storekeeper watcher supplies that extra evidence.
 """
 from pathlib import Path
 import re
+import time
 from driver import lua,read,write_json,require
 from customer_adjacency_policy import database_snapshot,qualify_database
 
@@ -82,6 +83,28 @@ def finish(out,endpoint=250):
     write_json(out/'full-game-observation-complete.json',dict(verified=True,turns=sorted(snapshots)))
 
 
+def observe_inactive_storekeeper(controller,out,turn):
+    """Wait for the UI's clock, without advancing or relabelling a sample.
+
+    Core can reach an inactive boundary before the UI publishes that clock.
+    The first200 trial observed Core55/UI54. Retry only this read-only query;
+    never resend autoplay, save, a bid or any gameplay order to settle it.
+    A later UI clock, malformed reply or30-second lag remains a hard failure.
+    """
+    deadline=time.monotonic()+30
+    reader=read(out/'storekeeper_runtime.lua')
+    code=("if Game.GetCurrentGameTurn()=="+str(turn)+" then\n"
+        +'CSC_BAKERS_STOREKEEPER_WATCH=false\n'+reader
+        +"\nelse print('CSC_STOREKEEPER_WAIT',Game.GetCurrentGameTurn()) end")
+    while True:
+        raw=controller.cmd(code,'PlotInfo','storekeeper-inactive-boundary-'+str(turn))
+        if re.search(r'CSC_STOREKEEPER_END\t'+str(turn)+r'\t',raw):return
+        pending=re.search(r'CSC_STOREKEEPER_WAIT\s+(\d+)',raw)
+        require(pending and int(pending[1])<turn,'Unexpected inactive-boundary Storekeeper reply')
+        require(time.monotonic()<deadline,'UI clock did not settle for Storekeeper observation')
+        time.sleep(.25)
+
+
 def play(controller,out,user_root,*,start,endpoint,saves=None):
     """Use the shared controller's guarded five-turn operations throughout.
 
@@ -102,10 +125,7 @@ def play(controller,out,user_root,*,start,endpoint,saves=None):
         if boundary<endpoint:
             log=read(user_root/'Logs/Lua.log')
             if not re.search(r'CSC_STOREKEEPER_END\t'+str(boundary)+r'\t',log):
-                code='CSC_BAKERS_STOREKEEPER_WATCH=false\n'+read(out/'storekeeper_runtime.lua')
-                raw=controller.cmd(code,'PlotInfo','storekeeper-inactive-boundary-'+str(boundary))
-                require(re.search(r'CSC_STOREKEEPER_END\t'+str(boundary)+r'\t',raw),
-                    'Missing inactive-boundary Storekeeper observation')
+                observe_inactive_storekeeper(controller,out,boundary)
         write_json(out/'full-game-last-boundary.json',dict(verified=True,turn=boundary,endpoint=endpoint))
         if saves is not None and boundary in(50,100,150,200):
             from full_game_controller.checkpoint import save_inactive_boundary

@@ -1,4 +1,4 @@
-# Quarter adjacency census and conservative forecast revision — 12 November 2026
+# Quarter adjacency census and conservative forecast revision â€” 12 November 2026
 
 AI-C170. Problems 1.1, 1.2, 1.4 and 1.8. These measurements precede the new policy.
 
@@ -90,7 +90,7 @@ Quarter already qualifies as +4 without speculative customer yield.
 
 At +3 the best viable site retains +24 native utility points; at +4 or higher,
 +48. Below +3, every qualifying owned/frontier pair receives a finite deduction:
-+2 → −64, +1 → −128, +0 → −192 utility points, encoded at 256 Q8 units per point.
++2 â†’ âˆ’64, +1 â†’ âˆ’128, +0 â†’ âˆ’192 utility points, encoded at 256 Q8 units per point.
 There is no positive placement or purchase offer below +3. Stronger no-Base and
 material-covering deductions remain. Low adjacency alone adds no hard decline.
 These are initial policy bands, not calibrated welfare estimates. Native later
@@ -117,3 +117,16 @@ Artifacts: `Desktop/Codex/csc-ai-harmonised-250-20261112/{bakers,tailors}-adjace
 Source save SHA-256: `5b4a41cc16b33a010b87896b3f4accc9084c25ef58da41b6a745b01b8d38bf36`.
 CE SHA-256: `a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb`.
 WildW develop rechecked unchanged at `2986a746b396eb93aad14f9afffb043a09c2c489`.
+
+
+### First200 attempt: observation timing failure
+
+`csc-ai-conservative200-20261112/run-continents` reached Core55 after a verified
+turn50 save, then rejected an inactive-boundary Storekeeper read stamped UI54.
+This is a cross-context clock lag, not evidence of a policy fault. The controller
+closed normally (exit0, no remaining owner, packages/preferences verified).
+The partial attempt is retained. Its strict check prevented a stale sample from
+being silently attributed to55. The read helper now waits up to30 seconds for
+the exact UI clock, retrying only the read; no autoplay or order is repeated.
+Eight offline observer fixtures pass, including lag, overrun and wrong-footer
+cases. A fresh same-seed retry is the requested200 test; no policy/package changes.

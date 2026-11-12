@@ -1,4 +1,4 @@
-# Conservative Quarter scoring — 12 November 2026
+# Conservative Quarter scoring â€” 12 November 2026
 
 Henno requested: exclude future customer yield from site forecasts; retain
 materials, rivers/local Wind hill and built customers; further discourage below
@@ -30,3 +30,11 @@ T3/T204/T216 saves remain untouched. Worker targets200, saves checkpoints, close
 normally and restores packages/preferences. Check about every15min. Finish with
 terminal/session/save/module/pin audit and comparison at200 before reporting.
 WildW develop unchanged2986a746; reviewed CE03 used, no PR.
+
+
+First attempt TERMINAL: strict Core55/UI54 Storekeeper observation mismatch;
+verified boundary50 saved, normal exit0 and package/preferences restoration.
+Session44721/Python14240/native15872 no longer owns console. No policy fault
+established. Read-only exact UI-clock settlement fix passes8 observer tests.
+Restart authorised requested test in run-continents-retry01, SAME frozen640
+package and seeds; preserve first attempt. Replace owner IDs with retry receipts.
