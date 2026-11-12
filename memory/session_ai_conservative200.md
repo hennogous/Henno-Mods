@@ -47,3 +47,21 @@ actual sample. Separate diagnostic prefix avoids Service-parser pollution.
 Eight revised fixtures pass. Retry02 CURRENT, tool session39218, same640-file
 package; source commits01f5f3c4 policy/fcfff70a observer. Do not edit imported
 sources or access FireTuner while that worker lives. Original goal still paused.
+
+
+FINAL retry02 COMPLETE200, tool session39218 exit0, native/controller absent,
+preferences restored, both640-file package manifests and endpoint save hash
+independently match. Source/map/starts/units exact prior; only2mainAI files differ.
+All8censuses/200packets/81capability readbacks pass; max782/4096 entries, no omission
+or policy fault. All198Storekeeper clocks2..199 complete; deferred55 collected
+naturally.32completeQuarters (18Bakers14Tailors),13current>=3,5>=4;19below3.
+Bakers4physical/activeStage2 chains,287effect-chain-turns; Tailors0. Previous200
+had29complete/6Bakerschains/312chain-turns. New42cities vs35; production1356.03,
+netGold573.45,Food251 vs873.23/346.83/247. Current+4Bakers5/18, Tailors0/14;
+local-Mill Bakers potential7/18. Weak Quarter spam not solved; don't report closure.
+Old200adjacency unavailable: usable-material census omits Maize underCityCenter,
+so attempted reconstruction fails250crosscheck; don't publish invented old200adj.
+FullreportAI-C170 in csc-ai-quarter-adjacency-20261112.md; comparison JSON in
+Desktop/Codex/csc-ai-conservative200-20261112. No further games authorised by
+this completed single-run task, no oldgoal resume. Native save and endpoint
+SHA c78c7f04715bec20df20d3652251c91fc042a667a12c0f95f29b2e43e8363708.

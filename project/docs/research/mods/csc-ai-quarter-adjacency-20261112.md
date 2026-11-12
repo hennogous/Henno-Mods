@@ -101,8 +101,8 @@ site rules; unavailable completion earns no forecast credit. Packets refresh
 with ordinary main CSC publication. Actual adjacency gameplay is unchanged.
 Offline Lua fixtures cover removal of future credit, complete versus foundation,
 pillaged completed Harbor, local Mills, weak owned/frontier penalties, missing
-purchase quotes, stronger protection and future-type eligibility. Live efficacy
-of this revision remains pending.
+purchase quotes, stronger protection and future-type eligibility. Live efficacy was pending at implementation; the completed trial below now
+records the outcome.
 
 Henno then authorised one fresh normal Online-speed game through turn 200.
 Use the preceding Continents seeds 18461107 / 29461107 and exact frozen gameplay
@@ -143,3 +143,135 @@ clock afterward. No sample is relabelled, no autoplay/order is resent, and the
 final audit still checks actual coverage. Diagnostic deferral messages use a
 separate prefix so they cannot be parsed as Service samples. Eight observer
 fixtures pass. Retry02 uses exactly the same640-file gameplay package.
+
+
+## Completed fresh Online test through turn 200
+
+Retry02 completed normally at200 with exactly the preceding gameplay package
+and only the two main CSC AI files changed. The same initial map, original AI
+seats, leaders, starting plots and units are independently verified. Both CE
+and CSC archived file manifests match every executed package file, the native
+endpoint save matches its archive, all eight25-turn censuses are complete and
+normal exit0/settings/package restoration are verified. The original two
+failed observation attempts remain recorded above; no result was selected by
+changing the seeds. The old goal remains paused; this was the newly requested
+single-game trial.
+
+**Assessment:** deductions reach native scores, but weak Quarter proliferation
+is not solved. Total complete Quarters increase29→32 while AI cities increase
+35→42. Bakers has some substantially stronger sites, but Tailors remains weak.
+Current endpoint quality cannot establish the quality available at construction
+time or attribute conquered Quarters to CSC guidance. Further numerical increases
+should follow a concrete poor site's native decision/forecast trace, including
+its construction origin and any retained plan, rather than assume that every
+poor endpoint was a fresh comparison accepting our positive bid.
+
+### Direct current adjacency at200
+
+| Quarter | Complete | +0 | +1 | +2 | +3 | +4 | +5 | At least +3 | At least +4 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Bakers | 18 | 1 | 3 | 3 | 6 | 3 | 2 | 11 (61.1%) | 5 (27.8%) |
+| Tailors | 14 | 1 | 8 | 3 | 2 | 0 | 0 | 2 (14.3%) | 0 |
+| Combined | 32 | 2 | 11 | 6 | 8 | 3 | 2 | 13 (40.6%) | 5 (15.6%) |
+
+19/32 (59.4%) remain below+3. The Bakers local-Mill projection has seven sites
+at+4 or more, rather than the five currently there. Tailors has no local-Mill
+adjacency branch. Current rule totals and prospective local-Mill geometry are
+separate from a realised Service. Those geometric columns are raw rule
+observations, not a replay of policy bids or a construction promise.
+
+Earlier directly measured adjacency was at250 (3/36 at+4), not200. Do not treat
+that as a matching-clock placement-quality comparison. The old200 census did
+not record adjacency totals/river edges, and its usable-material rows omit
+resources underneath City Centers even though adjacency can count those
+resources. A trial reconstruction fails the independent250 check (e.g. Maize
+under Alexandria by the Latmus's City Center), so no reconstructed old200
+adjacency number is published. The new passive reader fixes that data gap for
+future studies.
+
+### Matched-clock physical comparison
+
+Each column is the same turn200 census. The historical untuned column also
+has older gameplay/CE content, so it is descriptive, not a tuning-only control.
+Previous and revised tuning differ only in the two documented AI modules.
+
+| Metric | Historical untuned | Previous tuning | Revised tuning |
+| --- | ---: | ---: | ---: |
+| Completed Bakers | 16 | 14 | 18 |
+| Bakers with Base | 6 | 12 | 16 |
+| Bakers with improved Base | 3 | 8 | 12 |
+| Bakers with both material classes | 0 | 1 | 2 |
+| Bakers with improved Base and Spec | 0 | 1 | 2 |
+| Bakers with Stage2 producer | 7 | 11 | 11 |
+| Bakers with working Stage2 producer | 7 | 11 | 10 |
+| Bakers adjacent to Stage2 customer | 5 | 8 | 13 |
+| Bakers with customer building | 1 | 8 | 4 |
+| Bakers with physical Stage2 chain / active property | 1 | 6 | 4 |
+| Completed Tailors | 14 | 15 | 14 |
+| Tailors with Base | 0 | 12 | 10 |
+| Tailors with improved Base | 0 | 8 | 6 |
+| Tailors with both material classes | 0 | 3 | 1 |
+| Tailors with improved Base and Spec | 0 | 2 | 1 |
+| Tailors with Stage2 producer | 7 | 10 | 11 |
+| Tailors adjacent to Stage2 customer | 0 | 1 | 0 |
+| Tailors with customer building | 0 | 0 | 0 |
+| Tailors with physical Stage2 chain / active property | 0 | 0 | 0 |
+
+Native Storekeeper history covers every interior turn2–199 (198 clocks), with
+no missing sample or ambiguous attribution. It confirms four Bakers chains and
+287 chain-turns, versus six chains/312 under the preceding tuning and39 in the
+historical untuned comparison. The four new chain durations are123,109,50 and5
+turns; first activation is77. The deferred55 observation was supplied naturally
+by later play. Two chains exceed100 active turns, but this is not completion
+of the old multi-game/recovery goal. All observed Stage3/4 Service properties
+remain zero. Tailors still has no Harbor Stage2 chain. Bakers' new bottleneck
+includes nine adjacent City Centers without the Granary, versus none of the
+previous tuning's eight adjacent Stage2 customers missing that building.
+
+### Empire output at200
+
+Outputs below are total per turn across the five original AI seats, not
+cumulative production/Gold/Food earned. Food is surplus; Gold is net of reported
+maintenance. These are one game's outcomes, with different expansion/war
+history, and do not establish that the mod is overpowered.
+
+| Metric | Previous tuning | Revised tuning |
+| --- | ---: | ---: |
+| Cities | 35.00 | 42.00 |
+| Population | 383.00 | 451.00 |
+| Production / turn | 873.23 | 1356.03 |
+| Net Gold / turn | 346.83 | 573.45 |
+| Food surplus / turn | 247.00 | 251.00 |
+
+Revised averages per original AI: Production271.21, net Gold114.69 and Food
+surplus50.20; previous174.65,69.37 and49.40. There are42 rather than35 cities,
+and Production per city is32.29 rather than24.95. Eight milestone economy and
+physical-chain snapshots are retained in the comparison artifact for trends.
+
+### Native acceptance and bounded work
+
+All200 ordinary main CSC publications succeed; maximum782 district entries
+against capacity4096; zero district entries omitted; no policy/observation
+failure in the successful run. All nine capabilities report ready/no fault at
+preflight and every25-turn census (81 readbacks). The bounded native Quarter
+samples contain795 writes of−16,384 Q8 (−64 utility points), as well as other
+negative and positive bands. These are repeated, bounded comparison samples,
+not795 distinct sites, selections or constructed districts. Missing samples
+cannot prove absence of an intervention. Final packet200 is installed and
+fault-free; its zero comparison count is expected before a subsequent AI turn.
+
+Per-turn scans/logging still operate with their existing bounds. A zero Lua
+clock reading is not an overhead benchmark; this game does not isolate mature
+empire performance from its different expansion and decisions.
+
+### Artifacts and retained state
+
+- Run: `Desktop/Codex/csc-ai-conservative200-20261112/run-continents-retry02`.
+- Comparison and full per-Quarter adjacency rows: sibling `comparison.json`.
+- Main policy commit: `01f5f3c4`; observer correction: `fcfff70a`.
+- Verified turn200 save: `CSC_BAKERS_FRESH_83e454644e7d.Civ6Save` and archived
+  `endpoint.Civ6Save`, both SHA-256
+  `c78c7f04715bec20df20d3652251c91fc042a667a12c0f95f29b2e43e8363708`.
+- All temporary installed development packages retired into the run archive;
+  original user preferences restored; no game/controller owner remains.
+- Protected T3/T204/T216 saves were not modified or deleted. No PR submitted.

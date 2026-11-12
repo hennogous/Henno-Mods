@@ -2758,3 +2758,11 @@ Both match the verified inactive endpoint, SHA-256
 `43f3aaaa6abbb21cdc54d08590e50d510ee084fd2b9c124ec29bbab68e62cc10`.
 SaveComplete observed, phase unchanged; provenance in backup preservation.json.
 Do not delete. This adds to, and does not replace, the protected T204/T3 saves.
+
+
+- 12 November conservative Quarter forecast trial COMPLETE200: see
+  [current trial and terminal state](session_ai_conservative200.md). No future
+  customer credit; finite penalties below+3. All200 packets accepted/no faults,
+  but19/32 complete Quarters remain below+3; Bakers4 chains/287chain-turns,
+  Tailors0. Normal exit/restoration and full package/save audit pass. Old goal
+  remains paused; no ongoing game/controller. AI-C170 contains full results.

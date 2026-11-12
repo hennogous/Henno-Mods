@@ -1,12 +1,15 @@
 # Explainable Quarter site planning
 
-**12 November follow-up, Problems 1.2/1.4/1.8:** the complete turn-250 adjacency
-census finds only 3/36 complete Quarters at +4 and 25/36 below +3. Henno has
-removed future-customer yield credit and requested finite suppression below +3.
-The revised integrated policy passes offline checks; one fresh same-seed Online
-run through turn 200 is authorised, with live efficacy still pending. Earlier
-controlled closures and full-run reports retain their executed-version scope.
-[All Quarter measurements and revision](../../../research/mods/csc-ai-quarter-adjacency-20261112.md).
+**12 November follow-up, Problems 1.2/1.4/1.8:** conservative forecasts now
+exclude future/foundation customer yield and penalise viable sites below+3.
+The fresh same-seed Online200 trial is complete and independently audited:
+32 complete Quarters,13 at+3 or better,5 at+4 or better;19 remain below+3.
+Bakers has4 active Stage2 chains/287 native chain-turns (previous6/312), Tailors0.
+All200 publications succeed with no omissions or policy faults. This revision
+lands but does not solve weak Quarter proliferation. Both early observation
+failures, exact package parity, final cleanup and comparison limits are retained.
+Earlier scoped capability closures keep their original meaning. The old goal
+remains paused. [Full measurements and completed trial](../../../research/mods/csc-ai-quarter-adjacency-20261112.md).
 
 ## In-mod Stage 2 integration trial
 
