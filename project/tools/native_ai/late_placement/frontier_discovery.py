@@ -32,10 +32,36 @@ from early_host_policy import source_provenance as early_provenance, stage as st
 from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, flags,
     launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json, lua)
-from full_game_controller.checkpoint import save_inactive_boundary
+from full_game_controller.checkpoint import save_inactive_boundary, archive_autosave_window
 from liverpool_river_policy import PREPARE as PREPARE_RIVER, without_river
 from liverpool_adjacency_policy import PREPARE as PREPARE_ADJACENCY, without_promotions, without_strong_promotions
 from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint, PREPARE_RELEASE
+
+
+def defer_autosave_source(folder, home, world_sha, policy_root):
+    """File provenance ONLY; the exclusive cold load must qualify the phase.
+
+    The parent made one acknowledged manual-save request but wrote no file.
+    Its preserved autosave is never called an inactive checkpoint from its
+    filename. Accept only that declared failed parent, identical main policy,
+    and equal archived/native bytes; reject live clock/role drift afterwards.
+    """
+    meta=load(folder/'source.json')
+    assert meta['verified_file_copy'] and not meta['qualified_inactive_source']
+    assert meta['requires_cold_qualification'] and meta['expected_turn']==30
+    assert meta['parent_source_sha256']==world_sha
+    parent=Path(meta['parent'])
+    assert load(parent/'session-closed.json')['verified']
+    assert not (parent/'complete.json').exists()
+    assert 'Native checkpoint file did not settle; never resend blindly' in json.dumps(load(parent/'failure.json'))
+    assert meta['main_policy_sha256']=={str(p):sha(policy_root/p)for p in (
+        SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+        Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))}
+    source=Path(meta['native_save']).resolve(strict=True)
+    assert source.parent==(home/'Saves/Single').resolve()
+    assert sha(source)==sha(Path(meta['archive']))==meta['sha256']
+    return dict(path=str(source),sha256=meta['sha256'],turn=30,
+        requires_cold_qualification=True)
 
 
 def liverpool_checkpoint(folder, home, world_sha, policy_root):
@@ -160,6 +186,9 @@ def run(args):
     early_host=getattr(args,'early_host_scout',False)
     without_early_host=getattr(args,'early_without_washington_host',False)
     early_endpoint=getattr(args,'early_through',24)
+    defer_scout=getattr(args,'defer_scout',False)
+    defer_resume=getattr(args,'defer_resume',None)
+    defer_no_checkpoints=getattr(args,'defer_no_checkpoints',False)
     save_liverpool=getattr(args,'early_save_liverpool',False)
     liverpool_source=getattr(args,'liverpool_source',None)
     prepare_river=getattr(args,'liverpool_prepare_river',False)
@@ -177,7 +206,10 @@ def run(args):
     assert not early_host or boston and not (boston_arm or prepare_specialty or prepared or host_scout)
     assert not without_early_host or early_host
     assert not save_liverpool or early_host and early_endpoint==25 and not without_early_host
-    assert 24<=early_endpoint<=30
+    assert 24<=early_endpoint<=(40 if defer_scout else 30)
+    assert not defer_scout or early_host and not without_early_host and 32<=early_endpoint<=40 and early_endpoint%2==0
+    assert not defer_resume or defer_scout and 32<=early_endpoint<=38
+    assert not defer_no_checkpoints or defer_resume
     assert not liverpool_source or boston and not (boston_arm or prepare_specialty or prepared or host_scout or early_host)
     assert not prepare_river or liverpool_source and not river_arm
     assert not river_arm or liverpool_source and not prepare_river
@@ -206,6 +238,8 @@ def run(args):
                     shutil.copyfileobj(old,restored)
             assert sha(source)==meta['sha256']
             saves[name]=dict(path=str(source),sha256=meta['sha256'],turn=22)
+            if defer_resume:
+                saves[name]=defer_autosave_source(defer_resume,home,meta['sha256'],args.policy_root)
             if prepared:
                 # Both arms reopen the SAME saved derivative, never replay
                 # resource/ownership edits separately. These are fixture edits,
@@ -264,6 +298,12 @@ def run(args):
     csc_id, _ = package_identity(csc)
     ce_relative = Path('Binaries/Win64') / DLL
     assert sha(ce / ce_relative) == CE_SHA
+    # Historical carrier content stays pinned; a declared current supported
+    # CE build can replace only its DLL. Pin both carrier copies, including
+    # the embedded proxy required by the old Boston save's recorded mod ID.
+    ce_override=getattr(args,'ce_dll',None)
+    effective_ce_sha=sha(ce_override) if ce_override else CE_SHA
+    assert not ce_override or effective_ce_sha==args.ce_sha,'CE override differs from its explicit SHA256 pin'
     binary = Path(load(reference / 'launch-bootstrap.json')['binary'])
     assert sha(binary) == HOTFIX_EXE_SHA
     compare_owned=getattr(args,'compare_owned',False)
@@ -298,11 +338,13 @@ def run(args):
         if early_host:
             role_provenance=early_provenance(args.worlds)
             relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
-            replacements[SCANNER],replacements[relative]=stage_early_facts(replacements[SCANNER],replacements[relative])
+            replacements[SCANNER],replacements[relative]=stage_early_facts(
+                replacements[SCANNER],replacements[relative],migrate_roles=not defer_resume)
             if without_early_host:replacements[SCANNER]=without_washington_future_host(replacements[SCANNER])
             host_scope=[] # Player-scoped native Quarter rows, including non-winning sites.
             replacements[relative]=stage_host_reader(replacements[relative],host_scope,
-                start=22,end=early_endpoint,players=[1,2,3,4,5])
+                start=30 if defer_resume else 22,end=early_endpoint,players=[1,2,3,4,5],
+                window_limit=18 if defer_scout and not defer_resume else 8)
         if liverpool_arm:
             relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
             replacements[SCANNER],replacements[relative]=stage_early_facts(
@@ -348,13 +390,16 @@ def run(args):
         replacements[relative]=ET.tostring(root,encoding='utf-8',xml_declaration=True)
         replacements[config]=(f"UPDATE GameCores SET PackageId='{csc_id}', DllPrefix='GameCore_XP2_CE_AI' "
             "WHERE GameCore='Expansion2';\n").encode()
-        replacements[proxy]=(ce/ce_relative).read_bytes()
+        replacements[proxy]=(ce_override or ce/ce_relative).read_bytes()
     pins = {source: manifest(source) for source in packages}
+    if ce_override:
+        pins[ce][str(ce_relative)]=dict(size=ce_override.stat().st_size,sha256=effective_ce_sha)
     import hashlib
     for relative, data in replacements.items():
         pins[csc][str(relative)] = dict(size=len(data), sha256=hashlib.sha256(data).hexdigest())
     out.mkdir(parents=True)
-    write_json(out / 'inputs.json', dict(saves=saves, identities=identities, ce_sha256=CE_SHA,
+    write_json(out / 'inputs.json', dict(saves=saves, identities=identities, ce_sha256=effective_ce_sha,
+        ce_dll=str(ce_override.resolve())if ce_override else None,
         require_model=args.require_model,compare_owned=compare_owned,boston_arm=boston_arm,
         save_owned_comparison=save_owned,
         nuremberg_source=str(nuremberg_source)if nuremberg_source else None,
@@ -365,6 +410,9 @@ def run(args):
         early_host_scout=early_host,
         early_without_washington_host=without_early_host,
         early_endpoint=early_endpoint if early_host else None,
+        defer_scout=defer_scout,
+        defer_resume=str(defer_resume)if defer_resume else None,
+        defer_no_checkpoints=defer_no_checkpoints,
         early_save_liverpool=save_liverpool,
         liverpool_source=str(liverpool_source) if liverpool_source else None,
         liverpool_prepare_river=prepare_river,liverpool_river_arm=river_arm,
@@ -383,7 +431,7 @@ def run(args):
     if prepare_flat or adjacency_arm:shutil.copyfile(HERE/'liverpool_adjacency_policy.py',out/'liverpool_adjacency_policy.py')
     if nuremberg_source:shutil.copyfile(HERE/'nuremberg_purchase_policy.py',out/'nuremberg_purchase_policy.py')
     controller = make_probe_controller(out, user_root=user_root)
-    controller.study_endpoint = 202 if nuremberg_source else 25 if liverpool_source else 22 if boston else 200
+    controller.study_endpoint = 30 if defer_resume else 202 if nuremberg_source else 25 if liverpool_source else 22 if boston else 200
     session = NativeSession(out,controller,inventory=native_inventory,hold=HeldProcess,write=write_json)
     installed = []
 
@@ -394,6 +442,8 @@ def run(args):
         for source,destination in packages.items():
             shutil.copytree(source,destination)
             installed.append(source)
+        if ce_override:
+            shutil.copyfile(ce_override,packages[ce]/ce_relative)
         for relative,data in replacements.items():
             target=packages[csc]/relative
             target.parent.mkdir(parents=True,exist_ok=True)
@@ -424,8 +474,23 @@ Modding.EnableMod(selected.Handle,true)
 
             def ready():
                 verify()
+                if defer_resume:
+                    # These metadata survived in the autosave or this source
+                    # is rejected. Never migrate roles or normalize autoplay.
+                    raw=controller.cmd('''local leaders={'LEADER_CLEOPATRA','LEADER_GANDHI','LEADER_TOMYRIS','LEADER_T_ROOSEVELT','LEADER_VICTORIA','LEADER_HOJO'}
+assert(Game.GetCurrentGameTurn()==30 and not AutoplayManager.IsActive() and Game.GetLocalPlayer()==0)
+for pid=0,5 do
+ local p=assert(Players[pid]);local c=assert(PlayerConfigurations[pid])
+ assert(p:IsAlive() and p:IsMajor() and p:IsHuman()==(pid==0))
+ assert(c:GetLeaderTypeName()==leaders[pid+1])
+ assert(Game:GetProperty('CSC_AI_OriginalHuman_'..pid)==(pid==0 and 1 or 0))
+end
+print('CSC_DEFER_COLD_SOURCE_QUALIFIED',Game.GetCurrentGameTurn())''',
+                        'CSC_AI_BakersGameplay','defer-cold-source-roles')
+                    assert 'CSC_DEFER_COLD_SOURCE_QUALIFIED\t30' in raw
                 carrier=packages[csc] if boston else packages[ce]
                 verify_modules(session,(carrier / ce_relative).resolve(),case,HOTFIX_SHA)
+                assert sha(carrier/ce_relative)==effective_ce_sha,'Loaded CE copy differs from qualification pin'
                 if nuremberg_source:
                     qualify_integrated_policy(controller,case,dict(player=3,city=458758,
                         district=36,profile='BAKERS',purchasePlots=[788]))
@@ -639,7 +704,40 @@ end
                 # not establish the row's effective reservation threshold.
                 endpoint=27 if liverpool_arm else early_endpoint if early_host else 207
                 controller.study_endpoint=endpoint
-                controller.play(endpoint)
+                if defer_scout:
+                    # The unresolved1.7 test needs a source BEFORE the fresh
+                    # comparison. Keep sparse inactive checkpoints from30 on,
+                    # rather than rerunning the whole opening after finding a
+                    # lead. Saving leaves the native clock/phase unchanged;
+                    # every intervening AI action remains ordinary gameplay.
+                    for boundary_turn in range(30,endpoint+1,2):
+                        # An accepted cold source already is at30. Zero-turn
+                        # autoplay is not a pause operation and is forbidden.
+                        if boundary_turn>source['turn']:controller.play(boundary_turn)
+                        controller.cmd('CSC_HOST_DIAG_Snapshot()','CSC_AI_BakersGameplay',
+                            'defer-scout-prefix-'+str(boundary_turn))
+                        if defer_no_checkpoints:
+                            # The accepted30 source needs no new manual save.
+                            # Retain rotating autosaves as FILE PROVENANCE only;
+                            # every future use must cold-qualify its actual phase.
+                            # This avoids making a decision scout depend on the
+                            # unresolved acknowledged-but-unwritten manual save.
+                            if boundary_turn>source['turn']:
+                                receipts=archive_autosave_window(home/'Saves/Single',
+                                    out/('autosaves-'+str(boundary_turn)),boundary_turn-1,boundary_turn,
+                                    int(load(out/'launch-bootstrap.json')['time']*1_000_000_000))
+                                write_json(out/('autosaves-'+str(boundary_turn)+'.json'),receipts)
+                            continue
+                        checkpoint=save_inactive_boundary(controller,turn=boundary_turn,
+                            name='CSC_DEFER_WINDOW_'+str(boundary_turn),native_directory=home/'Saves/Single',
+                            archive=out/('window-'+str(boundary_turn)+'.Civ6Save'))
+                        write_json(out/('window-'+str(boundary_turn)+'.json'),dict(
+                            checkpoint=checkpoint,source_world_sha256=source['sha256'],
+                            main_policy_sha256={str(p):sha(args.policy_root/p)for p in (
+                                SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                                Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))}))
+                else:
+                    controller.play(endpoint)
                 boundary=controller.state_read('host-scout-endpoint')
                 assert boundary['turn']==endpoint and not boundary['active']
                 raw=controller.cmd('CSC_HOST_DIAG_Snapshot()','CSC_AI_BakersGameplay','host-terminal-prefix')
@@ -765,6 +863,8 @@ if __name__=='__main__':
         parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--case',action='append',choices=('run-v3-continents','baseline-pangaea','baseline-fractal','boston-selection'))
     parser.add_argument('--require-model',action='store_true',help='Require the shared read-only production adjacency calculator')
+    parser.add_argument('--ce-dll',type=Path,help='Explicit supported-build CE DLL; requires its exact SHA256')
+    parser.add_argument('--ce-sha',help='SHA256 pin for the explicitly supplied CE DLL')
     parser.add_argument('--compare-owned',action='store_true',
         help='Continents only: advance naturally to202 and inspect Nuremberg/Hamburg owned alternatives')
     parser.add_argument('--save-owned-comparison',action='store_true',
@@ -788,6 +888,12 @@ if __name__=='__main__':
         help='Diagnostic early control: withhold only future-host869 from player3/Bakers before the potential cache')
     parser.add_argument('--early-through',type=int,default=24,
         help='Early existing-world endpoint24–30; default24; extend only for a declared later decision window')
+    parser.add_argument('--defer-scout',action='store_true',
+        help='Read-only1.7 lead search through even32–40; preserve inactive matched-window sources every2turns from30')
+    parser.add_argument('--defer-resume',type=Path,
+        help='One cold qualification of preserved raw30; reject drift/resumed autoplay, then scout at most38')
+    parser.add_argument('--defer-no-checkpoints',action='store_true',
+        help='Qualified30 continuation only: no manual saves; archive autosaves as provenance-only sources')
     parser.add_argument('--liverpool-source',type=Path,
         help='Zero-turn reload of a verified paused Liverpool source run directory; raw autosave descriptors are rejected')
     parser.add_argument('--early-save-liverpool',action='store_true',
@@ -801,6 +907,7 @@ if __name__=='__main__':
     parser.add_argument('--liverpool-adjacency-arm',choices=('full','control','viable'),
         help='Strong4/weaker3 source25→27; control removes positive site offers; viable withholds strong-only promotions')
     args=parser.parse_args()
+    if bool(args.ce_dll)!=bool(args.ce_sha):parser.error('CE override needs both --ce-dll and --ce-sha')
     args.case=args.case or ['run-v3-continents','baseline-pangaea','baseline-fractal']
     assert len(args.case)==len(set(args.case))
     if 'boston-selection' in args.case and args.case!=['boston-selection']:

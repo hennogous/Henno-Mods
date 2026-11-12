@@ -93,5 +93,11 @@ CSC_AI_QuarterPlacement={StageTwoProfiles=function()return {
         self.assertEqual(len(native),3)
         with self.assertRaises(AssertionError):stage(b'',[],start=22,end=24,players=[0])
 
+    def test_extended_scout_does_not_relax_ordinary_window_guard(self):
+        with self.assertRaises(AssertionError):stage(b'',[],start=22,end=40,players=[1])
+        self.assertIn(b'if turn<22 or turn>40',stage(b'',[],start=22,end=40,players=[1],window_limit=18))
+        with self.assertRaises(AssertionError):stage(b'',[],start=22,end=41,players=[1],window_limit=18)
+        with self.assertRaises(AssertionError):stage(b'',[],start=200,end=218,players=[1],window_limit=18)
+
 
 if __name__=='__main__':unittest.main()

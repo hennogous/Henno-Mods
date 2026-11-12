@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 import tempfile
 from lupa.lua51 import LuaRuntime
-from frontier_discovery import ui_readback, liverpool_checkpoint, SCANNER, QUOTE_BRIDGE, sha
+from frontier_discovery import ui_readback, liverpool_checkpoint, defer_autosave_source, SCANNER, QUOTE_BRIDGE, sha
 
 FIXTURE = '''
 output={};print=function(s)output[#output+1]=s end
@@ -170,6 +170,32 @@ end
             checkpoint['after']=phase;write('checkpoint.json',checkpoint)
             (policy/SCANNER).write_bytes(b'changed')
             with self.assertRaises(AssertionError):liverpool_checkpoint(run,home,'world',policy)
+
+    def test_raw_deferral_source_is_provenance_only_and_rejects_policy_drift(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);run=root/'source';run.mkdir()
+            parent=root/'failed-parent';parent.mkdir()
+            (parent/'session-closed.json').write_text(json.dumps(dict(verified=True)))
+            (parent/'failure.json').write_text(json.dumps(dict(error=
+                'Native checkpoint file did not settle; never resend blindly')))
+            home=root/'home';native=home/'Saves/Single/source.Civ6Save'
+            native.parent.mkdir(parents=True);native.write_bytes(b'CIV6-provenance-only')
+            archive=run/'source.Civ6Save';archive.write_bytes(native.read_bytes())
+            policy=root/'policy'
+            paths=(SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))
+            for p in paths:
+                (policy/p).parent.mkdir(parents=True,exist_ok=True);(policy/p).write_bytes(b'unchanged')
+            meta=dict(verified_file_copy=True,qualified_inactive_source=False,
+                requires_cold_qualification=True,expected_turn=30,parent=str(parent),
+                parent_source_sha256='world',native_save=str(native),archive=str(archive),
+                sha256=sha(native),main_policy_sha256={str(p):sha(policy/p)for p in paths})
+            (run/'source.json').write_text(json.dumps(meta))
+            result=defer_autosave_source(run,home,'world',policy)
+            self.assertTrue(result['requires_cold_qualification'])
+            self.assertEqual(result['turn'],30)
+            (policy/SCANNER).write_bytes(b'changed')
+            with self.assertRaises(AssertionError):defer_autosave_source(run,home,'world',policy)
 
 
 if __name__ == '__main__':

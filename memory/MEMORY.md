@@ -1,3 +1,91 @@
+# Current1.7 continuation — worker96151 LIVE
+
+User says usage renewed; activegoalunchanged. Eightof10closed;1.7then2.1open.
+Currentworker96151 defer-resume30-scout38-02 exclusive sharedcontroller, qualified
+raw30 source41a7640894bf722177169f2d2fb832a4958d30d31d1d7aadb98fb13ffb24f616.
+Main5AI/driver/hostreader/checkpointfilesPINNED untilterminal. Noexternalconsole.
+SameCE73eed; all6roles/clock30/inactive/human0/worldchecks repeated, no normalization.
+NOmanualsave requests in02; archivepostlaunchautosavesprovenanceONLY forfuturecoldqualification.
+Earlier59223 defer-resume30-scout38-01 TERMINALexit1/normalclosedverified. Actual
+cold30qualified, all6UIpermissionflagscorrect true,true,true,false,false,false;
+solemanualsaveACKtrue/nofile,timeout. ThisrulesoutmissingUIgatesforTHISrequest,
+notnativecausesgenerally. Causeunresolved. Noresend. Astraapprovednextbounded
+30→38continuationafterverifiedclosure. Savehelpergatesfix+testscommitted/pushed
+2500bb07.41focusedtestsPASS withTMP/TEMPworkspace toavoid sandboxTempACLerrors.
+Scoutearly30completed2640uniqueHOST/7freshchoices/no strictmarginlead;reportupdated.
+DriverexplicitCEoverride,raw30provenance/coldchecks,18maxoriginal22windowor8turn
+resumed30window,newtests/docsuncommitted. Agent /root/astra_purchase_followthrough_review
+completedread-onlyfallback:ifscoutnone,onecommonNicopolis200radius4revealedfixture,
+qualifyprofileallweak+allBasevisible,thenfresh203withALLdistrictnativecachevalues.
+Current401neutralbecause402fog;owned472raw413460/full347924,otherdistrictunknown.
+No bandchanges toforcepass. LiverpoolremoveMaize2496negativepriorraw23107<Holy23425.
+C153partialreconsiderationonly; no1.7closureyet. NoPRs. Keepuserpreservedsaves.
+
+# Live1.7boundedscout — exec41544
+
+PreviousgoalturnPROGRESSclosed1.5/1.6; current1.7discriminatingfirststagecase.
+LIVE41544 defer-scout-early30-01 original22→30, inspectNEWchoicesafter24.
+Pollsamehandle; noexternalconsole; 5mainAI/driver/early_host_policy/host_choice_policy
+PINNED. Noablation/mapedits/scorewriters. LatestCE73eedexplicitlystagedbothnormalCE
+andoldBostonembeddedproxy. Driverfrontier_discovery.py --ce-dll/--ce-sha newpin
+plumbing;10source/diagnosticguardspass. WildWdevelop2986a746unchangedchecked.
+Commandargsreferenceweak-site-scout-continents-01,previousowned-site-survey-01,
+worldsDesktop/Codex/csc-bakers-natural-20261106, --caseboston-selection
+--early-host-scout --early-through30 --require-model. Orig22save9675be27…390f55a.
+ArtifactrootDesktop/Codex/csc-ai-problems-1-2-20261110.
+Mainrolesmigratedfromqualified6leaderspreviousprotocol; currentpolicyall5AI,
+originalhuman0excluded. No1.7closureyet. NeedstrictmarginweakQuarterraw>OtherWinner
+andfullpolicyresult<Other; allcity/profileoptionsmustknownweak. NativeHOSTtrace
+existinghelpercapturesNet/cache/best beforepublicationretirement.
+Newreportcsc-ai-quarter-deferral-20261112.md recordsacceptance/oldnegativewindows/
+newscoutpurpose. Report/evidence/driver/memoryuncommitted. C153cannotclosefirst
+stage(Astraaudited); profile-specificBakersweakonlyscopeallowed, NOTallindustries.
+Eightof10closed; open1.7then2.1. CSCfdc1a611+skill77c6130pushed. NoPRs.
+
+# 1.7 screen result — do not repeat non-discriminating windows
+
+Astrareviewcompleted: C153partialreuseONLY. Washington22Campusretainedplan,
+notpolicycausedfreshdeferral. At23Bakersrawmax40267<controlHolySite42385;
+otherthreeearlyfreshchoicesalsoallRawQuarterbelowVanilla(Pokrovka15464<63630,
+Boston31918<39269,Delhi17391<37221). Weakdeductionablationtherewouldnotchangechoice.
+ScopeBakers-weak-onlyispermittedrepresentative;TailorsviablelimitsallQuarterclaim.
+NeedfirstdiscriminatingweakQuarter→otherinvestment comparison, thennewcredible
+factbeforepublication→dynamicfreshQuarterchoice. No newnativedeferralcontract,
+constructioncompletionorlongqualificationrequiredfor1.7. Keep1.5/1.6closed.
+Rootscreenedhost-choice-fractal-scout-01 rich281nativeHOSTrecords: noNonQuarter
+winnerwithweakQuarterrawabovewinner. weak-site-scout-continents-01 usesold6tuple
+samplelog+weak-site-trace.json (notHOSTformat). Its30comparisonsyield4strict
+penalty-marginleads, allNicopolisP1/c524295 weakBakersplots474/475/400/472 vs
+Quarterwinner398; theseproveplacementreranking, notdeferral. No newqualified
+firststageleadfromthesearchives; don'tclaimCSVPresentValueisGetBestDistrictcache.
+Nextstepboundedscoutforfreshmarginalcomparisonwherealltestedprofilepotential
+sitesareknownweak. Canreuseexistingweak_site_scout.js/earlysharedcontroller;
+avoidbuildingnewtoolingunlessneededfornativecomparison/weak-scopefacts.
+No1.7implementationchangesornewlivegameyet. No liveworker. CSCpushfdc1a611,
+skillpush77c6130. Onlynewmemorycarryoveruncommittedbesideunrelateddirtywork.
+
+# Current 1.7 review after pushed 1.5 closure
+
+Latestpushed CSCfdc1a611; skill77c6130. Noownedlivegame/worker.
+Astraexistingagent /root/astra_purchase_followthrough_review RUNNINGread-only
+reviewof1.7reuse. Acceptancealreadyannounced:policycausedweak-onlyQuarterdeferral/
+otherinvestmentthencrediblechangedfacts→dynamicnativechoice/request;nocounterclosure.
+CurrentcodeonlycountsdeferCities whennobest/noFrontier, per-sitepenalties/nooffers
+areactualmechanism (notnativecitydeferralcontract). EarlyC153ispossiblepartialreuse:
+host-choice-early-scout-01 vs host-choice-early-without869-01;22Bakers870nohost
+-32768,23newfutureCommercialHub869 +6144→nativeBakers46411/request241.
+Controlled869withheld23nativeHolySite42385/request241. Entirepacketisolated.
+Gaps:why869becamerecognizednotphysicallyreconstructed;Source22Bakersallweakbut
+Tailors1020viable+6144 (soNOTwholecityallquartersweak). ToldAstraexplicitly;
+don'tclaim1.7closedfromthiswithoutreview. CurrentFutureHostrequiresownedneighbor,
+emptyresource-freeplot,allowedactortype+CanHaveDistrict;cacheonlyperpublication.
+Maybe869naturallyacquired22→23 orfeature/unlockchanged;thisisHYPOTHESISonly.
+Archivedsource22rawsurveyhasno869record (surveyonlyfrontier+Boston721neighbors).
+Usefulfiles: project/docs/research/mods/csc-ai-customer-access-choice-20261111.md
+andproject/tools/native_ai/late_placement/early_host_policy.py. Sharedcontroller
+frontier_discovery.py alreadyhas--early-host-scout/--without-washington-future-host.
+No1.7codechangesornewgameyet;reviewnextneededacceptancetestnotnewtoolbacklog.
+
 # Latest closure — 1.5 and 1.6 complete, eight of ten
 
 AstraindependentlyAPPROVESAI-C163:1.5levels1–3 withpriorC162footprint. Eightclosed:

@@ -101,8 +101,12 @@ end)
 """
 
 
-def stage(source,scope,*,start=200,end=207,players=()):
-    assert 0<=start<end<=start+8
+def stage(source,scope,*,start=200,end=207,players=(),window_limit=8):
+    # Ordinary matched windows retain their eight-turn guard. The explicit
+    # early1.7 scout may read up to18 turns with sparse saved boundaries;
+    # each generation still has the same trace/page/capacity checks above.
+    assert window_limit==8 or window_limit==18 and start==22 and end<=40 and not scope
+    assert 0<=start<end<=start+window_limit
     assert len(set(players))==len(players) and all(0<p<64 for p in players)
     prefix=PREFIX.replace('__SCOPE__',lua(scope)).replace('__PLAYERS__',lua({p:True for p in players}))
     prefix=prefix.replace('__START__',str(start)).replace('__END__',str(end))
