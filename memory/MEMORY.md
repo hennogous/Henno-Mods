@@ -18,6 +18,21 @@ STATUS/roadmap/acceptance/findingsAI-C167 updated9of10,2.1active. Stale1.7openwo
 reconciledinC165/C166/reports. Washingtonhelper/driverflag/test/audit/docs readycommit.
 NoPR. Previousnegativecommit22a2455cpushed;fixtureearlierebb379a7pushed.
 
+NEW2.1ASTRALEAD: Hamburg P3/c393221 source202, exactoldsurvey
+continents-owned-comparison-01/cases/run-v3-continents/owned-comparison-202/
+gameplay-survey.json. Confirmedofflinepop7,currentEncampment,ownedemptyTailors1083,
+soleBaseSheep1084readytrue/unimproved, potentialHarbor1082+1156, noexistingadjHost.
+Native nuremberg-ownership-integrated-01 showsEncampment4192complete207→freshTheater
+4493at208value2195. NativeHarborMARGINUNKNOWN! Firstread-onlyqualification current
+symbolicHarborID/currentlegalownedunprotectedHarborplots/capacity(needroom2districts)/
+Quarter1083emptyresourcefree+supplier1084. OnlyifpasscommoncontrolledcompletedTailors
+1083canexercise+40path; preservecommonfixture+SQLprivateyieldbotharms, ablateonly
+citycustomerCEbid. ObserveactualnativecompetitionbeforecommittingA/B. No140turnreplay,
+noforcedqueue/tech/pop, no marginassumption. Currentpinned200sourcecouldwarmup202
+usingfrontier_discovery --compare-owned; oldverifiedpaused202sourcescheckmainhashes
+andmayrejectnewdeclinecode. Reusesharedcontroller, existingnativeobserverall38columns
+andCEtrace; no newaddressneeded. Astrahascompletedreview; followupfornextdesign/audit.
+
 CURRENT2.1offline report csc-ai-customer-placement-20261112.md; no newlivegame.
 CurrentCE+SQLcustomerpaths Stage2ONLY; BakersCityCenterexplicitlyexcluded,
 soeffectivelyTailors→Harbor/replacements. LaterBakerscustomerdistricts onlyaffect

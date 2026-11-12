@@ -65,9 +65,29 @@ causality merely by reusing their successful Quarter comparisons.
 
 ## Next unresolved dependency
 
-Identify a source with a genuinely missing Tailors customer and resource-free
-native-legal Harbor candidates at a known fresh comparison. Qualify the actual
-main offer and native margin before selecting an ablation. Preserve the
+**Astra's best bounded geometry/timing lead is Hamburg**, player3/city393221,
+at202. The archived owned comparison records population7, Encampment in
+production, owned empty prospective Tailors1083, ready unimproved Sheep1084,
+no adjacent host and potential Harbor footprints1082/1156. The later native
+lifecycle in nuremberg-ownership-integrated-01 completes Encampment4192 at207
+and opens a fresh Theater request4493 at208, value2195.
+
+Source survey:
+continents-owned-comparison-01/cases/run-v3-continents/owned-comparison-202/gameplay-survey.json.
+These are geometry and timing observations, **not a competitive Harbor margin**.
+First qualify current symbolic district types, native Harbor targets, capacity,
+protection, empty1083 and viable1084 without edits. Do not infer the current
+native index from the old survey.
+
+If those checks pass, a single declared common completed-Tailors1083 fixture
+could exercise the existing +40 customer path. It must leave room for Harbor,
+preserve suppliers, and be identical in both arms. Observe actual native
+competition before committing to an ablation; preserve the fixture and SQL
+connector while withholding only the targeted Lua customer contribution.
+The known208 window can shift after a controlled fixture, so actual native
+timing and the queue must be recorded rather than forced.
+
+Qualify the actual main offer and native margin before selecting an ablation. Preserve the
 private-yield path unless testing it explicitly; do not attribute its effect
 to the CE bid. Existing native/CE readers are sufficient to begin; no new
 address or score probe is justified yet.
