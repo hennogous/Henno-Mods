@@ -53,8 +53,10 @@ and correct-city ownership, with exact stream agreement and normal cleanup.
 **No 1.5 closure:** the purchase node waits until timeout despite ownership,
 and the Quarter has no foundation through 216. The predeclared footprint-level
 ablation changes Bakers to Tailors, but both arms buy the same tile: acquisition
-causality is **not** demonstrated. Next trace completion of the already-paid
-purchase prerequisite using live contract status and eligibility receipts. Supplier
+causality is **not** demonstrated. The closed 202–205 probe confirms state 3 after payment,
+Economic eligibility false at 204 and a subsequent decorator read of the same
+retained state 3. Next test a guarded native acknowledgement of actual acquisition;
+native lifecycle repair is still unimplemented. Supplier
 acquisition/improvement remains a separate unresolved route.
 [Acquisition evidence and limits](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
 

@@ -21,10 +21,15 @@ For 1.5, the controlled Nuremberg release now reaches a main-policy Quarter
 selection, accepted purchase contract, sufficient savings and command admission.
 Correct-city ownership is observed. Its acquisition uses XP1's purchase handler,
 which explains the original base-only observer's missing debit callbacks.
-Measure that debit with the expanded observer, compare the predeclared
-Bakers+Tailors footprint-offer ablation, and verify foundation. The separate
-supplier acquisition/improvement route remains required. No 1.5 closure follows
-from ownership alone. [Evidence](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
+The expanded observer now verifies native payment and correct-city ownership.
+The declared two-profile control still buys the same tile, choosing Tailors
+instead of Bakers: no acquisition causality claim. The full arm's purchase
+contract stays in waiting state 3 after payment, becomes ineligible to Economic,
+and times out without foundation. The next step is a native lifecycle repair
+using live plan scope, followed by a discriminating acquisition comparison.
+The separate supplier acquisition/improvement route remains required. No 1.5
+closure follows from ownership alone.
+[Evidence](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
 
 ### Current capability â€” Quarter placement (1.1â€“1.8) and related districts (2.1â€“2.2)
 

@@ -2765,6 +2765,13 @@ or unresolved callbacks. Normal exit/restoration and the inactive endpoint save
 are verified. Base-only callbacks had missed payment because XP1's distinct
 purchase implementation ran; see reusable engine finding AI-N117.
 
+The later closed read-only 202–205 probe confirms runtime vtable 9fa930 and
+status 3 after payment. At 204, Economic eligibility returns false with status
+still 3; the construction decorator subsequently reads the same retained
+contract in state 3. Its purchase child does not reach the owner check while
+the decorator waits. These are observed eligibility/decorator boundaries,
+not proof of completed vector compaction or a universal purchase defect.
+
 **Limits:** A controlled footprint-release fixture, not evidence that buying
 was necessary in the original owned world. The matched positive-offer ablation
 must still establish acquisition causality. Foundation and the separate supplier
@@ -2772,6 +2779,7 @@ acquisition/improvement route remain required. No subsidy, forced purchase or
 direct ownership write occurs in the observed full arm.
 
 - [Paid acquisition, failed foundation and sealed native evidence](../research/mods/csc-ai-nuremberg-acquisition-20261112.md#measured-full-arm-paid-acquisition-failed-foundation)
+- [Native lifecycle state and dispatch](../research/mods/csc-ai-nuremberg-acquisition-20261112.md#lifecycle-result-paid-ineligible-still-waiting)
 
 ## AI-C160
 

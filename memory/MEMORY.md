@@ -18,10 +18,20 @@ bothpay40Gold203andownintendedcity204. Negative acquisitioncausality, Astra
 validated. Local Bakers36rowsonly788diff(-12288); packet502→500,bids27→25,
 otherarraycounts/previews match (notcompleteallplayerpacketproof). Sealedcontrol
 JSON inrepo. C159paidpartial/C160negativeacceptedbyAstra. Do notbroadenablation.
-Current shared worker `nuremberg-purchase-lifecycle-01`, exec17117,202–205,
-same policy/expandedobservers +optionalknowncontractstatus/vtable/Economic
-eligibility/decoratorstatusprobe; no writes. Do not edit pinned tooling until
-terminal. Endpoint205includesAI204; inactive204wouldstopbeforepruneprocessing.
+Lifecycle `nuremberg-purchase-lifecycle-01`, exec17117, is terminal/closedverified
+202–205.27purchase/5selector streamsexact/faultnull/pending0, Astraauditpassed.
+Runtimevtable9fa930 execute3f82c0/update3fa260/eligibility3fa880. Createdstate1;
+203eligibletrue/state3, pay40/commandreturnstate3/decorator3;204eligibilityfalse/
+state3/decorator3. Ownershipcorrect205/nofoundation. Endpoint205SHA6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03.
+Noownedliveworker/game remains. SealedlifecycleJSON inrepo. Next controlled
+acknowledgement prototype must verifyactualcurrentintendedcityownership and
+use nativearchive-aware assignment64a6d0(contract+a0,&int32seven), neverraw+b0
+write; leave normaldecorator/handlecleanup. Generictrackedassignment, NOTa
+semanticCompleteContract helper. Provennativeidiom BuildingCreated3f81d0 /
+DistrictCreated3f8210. Astrafindingownershipreadpath beforeprototype. No shipping
+fix/integrationyet. CorrectCEreviewcheckout (f812) is
+`Desktop/Codex/csc-gamecore-hotfix-20261106/ce-guidance-receipts-review` d8df47d;
+develop-port/source atba06976 isolder, do notaccidentallybasefixthere.
 No 1.5 closure: matched acquisition causality, foundation and separate supplier
 acquisition/improvement still required. Astra investigating purchase completion
 lifecycle; do not assume enginebug without live status/vtable/prune evidence.

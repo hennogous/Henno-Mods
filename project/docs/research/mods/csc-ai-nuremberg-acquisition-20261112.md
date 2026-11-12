@@ -257,6 +257,44 @@ contracts are ignored, known ones are revalidated, and no state is changed.
 Neither eligibility rejection nor decorator observation is labelled completed
 vector removal or destruction.
 
+### Lifecycle result: paid, ineligible, still waiting
+
+`nuremberg-purchase-lifecycle-01` completes 202–205 with normal closure,
+verified restoration and exact stream agreement: 27 purchase / 5 selector
+records, no faults or unresolved callback pairs. The
+[sealed lifecycle capsule](csc-ai-nuremberg-acquisition-20261112-lifecycle.json)
+preserves native state/dispatch records and their source hashes.
+
+The actual contract vtable is **9fa930**, with Execute thunk **3f82c0**,
+Update **3fa260** and eligibility thunk **3fa880**. This confirms the class
+used in the static lifecycle trace rather than assuming it from mapped names.
+
+| Native boundary | Turn | Contract state / result |
+| --- | ---: | --- |
+| Purchase contract created | 202 | State 1 |
+| Economic eligibility, compaction pass | 203 | True, state 3 |
+| Paid purchase command returns | 203 | State 3; measured −40 Gold |
+| Construction decorator reads contract | 203 | State 3, waiting |
+| Economic eligibility, compaction pass | 204 | False, state 3 |
+| Construction decorator reads retained contract | 204 | State 3, waiting |
+
+Both eligibility midpoints, 457515 and 45755f, return from vtable+80;
+they are **not** the ownership-only Update call. False selects the native
+removal branch. The decorator at 55a056 still resolves the same ID/control/
+player/target, then reads state 3. It does not execute the Purchase Plot child
+while that retained contract blocks it. A READY child log is not evidence
+that its owner check ran. These observations explain the specific waiting
+path behind the full arm's timeout; final vector compaction/destruction was
+not separately observed.
+
+At inactive 205 the plot is still empty and owned by Nuremberg. Its verified
+paused save SHA is
+`6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03`.
+The next implementation question is how to acknowledge completed acquisition
+through a normal native lifecycle operation, scoped dynamically to CSC's plans.
+No contract status was written in this probe, and no repair is yet integrated.
+Do not generalize this controlled release case to every natural purchase.
+
 ## Operational scope
 
 The same CE f812 and current DX11 binary identity used in the accepted placement
