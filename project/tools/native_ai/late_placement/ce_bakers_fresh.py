@@ -982,7 +982,7 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
                   qualification=args.qualification, observer_boundary=args.observe_supplier_at)
     if getattr(args,'harmonised_observation',False):
         from full_game_observation import finish
-        finish(out)
+        finish(out,args.through)
 
 
 if __name__ == '__main__':
@@ -993,10 +993,10 @@ if __name__ == '__main__':
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--map', choices=MAPS, default='Continents')
     parser.add_argument('--harmonised-observation',action='store_true',
-                        help='Passive25-turn two-Quarter/economy census and capability preflight; normal250-turn start only')
+                        help='Passive25-turn two-Quarter/economy census and capability preflight; normal200/250-turn start only')
     parser.add_argument('--map-size', choices=MAP_SIZES, default='small')
     parser.add_argument('--interval-minutes', type=int, default=30,
-                        help='Maximum wall time of one continuous autoplay window (30–240)')
+                        help='Maximum wall time of one continuous autoplay window (30â€“240)')
     parser.add_argument('--untuned', action='store_true', help='Remove only the CSC runtime policy action locally')
     parser.add_argument('--qualification', action='store_true',
                         help='Record a preselected fresh Standard run with strict Storekeeper turn coverage')
@@ -1088,7 +1088,7 @@ if __name__ == '__main__':
                 or options.granary_components or options.granary_ce_replay or options.movement_only
                 or options.calibration_replay or options.mill_ce_replay
                 or not 1 < options.observe_supplier_at < options.through <= options.observe_supplier_at + 15):
-            parser.error('Fresh supplier observation needs an exact target, a read-only probe, --saves and a window of 1–15 turns')
+            parser.error('Fresh supplier observation needs an exact target, a read-only probe, --saves and a window of 1â€“15 turns')
     elif options.resume_from:
         if not (options.saves and (options.supplier or options.wind_mill or options.granary or options.dam_sites
                                   or options.water_mill_repair)

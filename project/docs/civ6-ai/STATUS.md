@@ -1,5 +1,13 @@
 # Current CSC AI status
 
+**12 November follow-up, Problems 1.2/1.4/1.8:** the complete turn-250 adjacency
+census finds only 3/36 complete Quarters at +4 and 25/36 below +3. Henno has
+removed future-customer yield credit and requested finite suppression below +3.
+The revised integrated policy passes offline checks; one fresh same-seed Online
+run through turn 200 is authorised, with live efficacy still pending. Earlier
+controlled closures and full-run reports retain their executed-version scope.
+[All Quarter measurements and revision](../research/mods/csc-ai-quarter-adjacency-20261112.md).
+
 Updated 12 November 2026. Goal: Problems **1.1–1.8 and 2.1–2.2**, through
 [completion contract](acceptance.md), including Henno's12 November clarification
 for native-system guidance. All ten scoped solutions are integrated; the current

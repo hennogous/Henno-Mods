@@ -3,11 +3,20 @@ from pathlib import Path
 import tempfile
 import unittest
 from lupa.lua51 import LuaRuntime
-from full_game_observation import archive_censuses,play,HERE
+from full_game_observation import archive_censuses,play,finish,HERE
 from driver import lua
 
 
 class FullGameObservation(unittest.TestCase):
+    def test_200_endpoint_requires_exactly_its_eight_milestones(self):
+        with tempfile.TemporaryDirectory()as d:
+            root=Path(d)
+            log=''.join('CSC_FULL_RUN_CENSUS_BEGIN\t'+str(t)+'\nCSC_ENDPOINT_END\t'+str(t)+'\t0\n'
+                for t in range(25,201,25))
+            (root/'Lua.log').write_text(log,encoding='utf-8')
+            finish(root,200)
+            with self.assertRaises(RuntimeError):finish(root,250)
+
     def test_complete_rows_preserve_baseline_format(self):
         with tempfile.TemporaryDirectory()as d:
             rows=archive_censuses('''CSC_FULL_RUN_CENSUS_BEGIN\t200

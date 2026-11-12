@@ -35,7 +35,7 @@ def archive_censuses(log,out):
 
 
 def install(controller,out,players,user_root,endpoint):
-    require(endpoint==250,'The requested integrated trial ends at250')
+    require(endpoint in (200,250),'Integrated trials end at200 or250')
     scope=lua(dict(players=sorted(players)))
     preflight=read(HERE/'full_game_preflight.lua').replace('__SCOPE__',scope)
     raw=controller.cmd(preflight,'CSC_AI_BakersGameplay','full-game-capability-preflight')
@@ -72,13 +72,13 @@ print('CSC_FULL_RUN_OBSERVATION_INSTALLED')
         (out/name).write_bytes((HERE/name).read_bytes())
 
 
-def finish(out):
+def finish(out,endpoint=250):
     log=read(out/'Lua.log')
     for failure in('CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED',
             'CSC_FULL_RUN_OBSERVATION_FAILED'):
         require(failure not in log,'Integrated run logged '+failure)
     snapshots=archive_censuses(log,out)
-    require(set(snapshots)==set(range(25,251,25)),'Missing full-game milestone')
+    require(set(snapshots)==set(range(25,endpoint+1,25)),'Missing full-game milestone')
     write_json(out/'full-game-observation-complete.json',dict(verified=True,turns=sorted(snapshots)))
 
 

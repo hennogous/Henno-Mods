@@ -41,7 +41,7 @@ local function yieldKey(y)if y=='YIELD_PRODUCTION'then return 'production'elseif
 -- Count Production and Gold with the same rule engine as gameplay. Keep the
 -- active and planned totals separate because a new Bakers site can later gain
 -- one Mill's adjacency. River sites plan for Water and inland sites for Wind.
-local function score(district,plot,city,pid,omitDetails,futureDistrict)
+local function score(district,plot,city,pid,omitDetails,completedDistricts)
  local now,planned,percent,nowPercent=totals(),totals(),totals(),totals();local details={};local mill=nil
  if district=='DISTRICT_CSC_BAKERS_QUARTER'then
   mill=plot:IsRiver()and'BUILDING_CSC_BAKERS_WATER_MILL'or'BUILDING_CSC_BAKERS_WIND_MILL'
@@ -53,16 +53,18 @@ local function score(district,plot,city,pid,omitDetails,futureDistrict)
    local millRule=r.ModifierOwner=='BuildingModifiers'and(r.WhoIsTheOwner=='BUILDING_CSC_BAKERS_WATER_MILL'or r.WhoIsTheOwner=='BUILDING_CSC_BAKERS_WIND_MILL')
    local projected=millRule and r.WhoIsTheOwner==mill or not millRule and active
    if active or projected then
-    local count=A.Count(r,plot,city,pid);local amount=A.Amount(r,count)
-    local plannedAmount = amount
-    -- Credit one evidenced future host through the loaded adjacency rule.
-    -- Its tile is currently empty and contributes only to projected yield.
-    if futureDistrict and projected and
-     ((r.AdjacencyType=='FROM_RINGS_TYPETAG_DISTRICT' and A.HasTag(r.CustomAdjacentObject,futureDistrict))
-     or (r.AdjacencyType=='FROM_RINGS_CAO_DISTRICT' and r.CustomAdjacentObject==futureDistrict)) then
-     local first,last=A.Bounds(r)
-     if first<=1 and last>=1 then plannedAmount=A.Amount(r,count+1) end
+    -- Live policy supplies a publication-local completion map. District
+    -- foundations and hypothetical neighbors earn no forecast yield. Keep
+    -- raw diagnostics unchanged when this optional filter is absent; actual
+    -- gameplay adjacency and saved properties have their own rule contract.
+    local districtSource=r.AdjacencyType=='FROM_RINGS_TYPETAG_DISTRICT'
+     or r.AdjacencyType=='FROM_RINGS_CAO_DISTRICT'
+    local projectPlot
+    if districtSource and completedDistricts then
+     projectPlot=function(p)return completedDistricts[p:GetIndex()] and p or nil end
     end
+    local count=A.Count(r,plot,city,pid,projectPlot);local amount=A.Amount(r,count)
+    local plannedAmount = amount
     if r.ProvideType=='SelfBonus'then
      if active then now[key]=now[key]+amount end
      if projected then planned[key]=planned[key]+plannedAmount end
@@ -80,11 +82,11 @@ end
 -- Shared read-only model boundary for focused inspection and future footprint
 -- planning. This is the same function used by live QuarterSiteForecasts below:
 -- results are Production/Gold per turn, not native Q8 utility or a build bid.
--- The caller supplies an evidenced future district type (at most one) and
--- establishes its footprint geometry. This calculation alone establishes no
+-- Live callers supply completed district plots; future footprints never add
+-- adjacency. This calculation alone establishes no
 -- unlock, population capacity, reservation, purchase or construction legality.
 -- current follows current rule eligibility; total follows the planner's chosen
--- prospective Mill/neighbor assumptions. Neither proves realised output for
+-- prospective local Mill assumptions. Neither proves realised output for
 -- an unbuilt Quarter. requiresBuilding identifies the projected Mill branch.
 CSC_AI_QuarterAdjacencyValue = score
 
@@ -95,6 +97,12 @@ local preferredAdjacency = 4
 -- They leave Civ's later forecast contributions and final comparison in play.
 local preferredSiteBidQ8 = 48 * 256
 local viableSiteBidQ8 = 24 * 256
+local minimumAdjacency = 3
+-- Initial finite suppression band, not a calibrated economic conversion:
+-- each missing yield below +3 removes 64 native utility points (Q8).
+-- +2/-64, +1/-128, +0/-192 remain weaker than the no-Base/-256 guard.
+-- Refresh with each packet; never turn low adjacency alone into a hard ban.
+local lowAdjacencyPenaltyQ8 = 64 * 256
 local noBasePenaltyQ8 = 256 * 256
 local noCustomerPenaltyQ8 = 128 * 256
 -- Existing Quarters use CSC_AI_Connectors.sql's native private-yield
@@ -258,13 +266,38 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     local nominated = {}
     local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, bothPending=0, deferCities=0, futureUnknown=0,
         offered=0, strong=0, frontierObserved=0, frontierBids=0, frontierUncertain=0,
-        frontierOffers=0, frontierQuoteUnknown=0}
+        frontierOffers=0, frontierQuoteUnknown=0, lowAdjacency=0}
     local district = profile.district
     local readLegalTargets = ui and ui.GetLegalDistrictTargets
     if not A.ByDistrict[district.DistrictType] or type(readLegalTargets) ~= 'function' then return bids, counts end
     local siting = getSitingDistricts(profile)
     if next(siting.byIndex) == nil then return bids, counts end
     local pid = player:GetID()
+    -- Snapshot each district once per player/profile publication, avoiding a
+    -- UI round trip for every site/rule. Unknown completion earns no credit.
+    -- A completed pillaged district retains physical adjacency; repair value
+    -- is a separate decision. Nothing here writes gameplay adjacency state.
+    local completedDistricts = {}
+    for _, ownerCity in player:GetCities():Members() do
+        local ds = ownerCity:GetDistricts()
+        if type(ds.GetNumDistricts)=='function' and type(ds.GetDistrictByIndex)=='function' then
+            for i=0,ds:GetNumDistricts()-1 do
+                local d=ds:GetDistrictByIndex(i)
+                if d and d:IsComplete() then
+                    local p=Map.GetPlot(d:GetX(),d:GetY())
+                    if p then completedDistricts[p:GetIndex()]=true end
+                end
+            end
+        end
+    end
+    local function suppressLowAdjacency(candidate)
+        if candidate.adjacency >= minimumAdjacency then return false end
+        candidate.delta = -(minimumAdjacency-candidate.adjacency)*lowAdjacencyPenaltyQ8
+        candidate.weak = true
+        counts.lowAdjacency = counts.lowAdjacency + 1
+        bids[#bids+1] = candidate
+        return true
+    end
     local futureTypesKnown = futureTypeRules(pid) ~= nil
     local visibility = PlayersVisibility[pid]
     local allBaseTypesVisible
@@ -400,9 +433,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                 if rank and (not best or rank > best) then best = rank end
             end
         end
-        -- Existing hosts contribute through the real adjacency rules. One
-        -- additional empty footprint can enter the forecast once. This avoids
-        -- assuming several future districts can all compete for the same land.
+        -- Future footprints establish feasibility only. They do not contribute
+        -- yield; an actual completed neighbor is required for forecast credit.
         return best, projected and projected.district, projectedPlot
     end
 
@@ -422,7 +454,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         local candidate = {player=pid, city=city:GetID(), district=district.Index, plot=plot:GetIndex(),
             pending=(ready and 0 or 1)+(host == 2 and 0 or 1), workingBase=working == true,
             base=#supply.base, specialty=#supply.specialty,
-            adjacency=score(district.DistrictType, plot, city, pid, true, futureDistrict).total}
+            adjacency=score(district.DistrictType, plot, city, pid, true, completedDistricts).total}
         -- Current native targets alone can justify a separate customer offer.
         if ready and futurePlot then candidate.futureHost = legalCustomers[futurePlot] end
         return candidate
@@ -489,7 +521,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                         local supply = readSuppliers(player, plot, profile)
                         if #supply.base > 0 then
                             local candidate = suppliedSite(city, plot, supply)
-                            if candidate then
+                            if candidate and not suppressLowAdjacency(candidate) then
                                 local ok, quote = pcall(ui.GetPlotPurchaseQuote, pid, city:GetID(), index)
                                 if ok and type(quote) == 'number' and quote > 0 then
                                     candidate.frontier, candidate.purchaseGold = true, quote
@@ -560,7 +592,13 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                         else
                             candidate = viable
                             if candidate.pending == 2 then counts.bothPending = counts.bothPending + 1 end
-                            if betterQuarterSite(candidate, best) then best = candidate end
+                            if candidate.adjacency < minimumAdjacency then
+                                -- Append through the common weak-site path;
+                                -- preserve the stronger material guards above.
+                                candidate.delta = -(minimumAdjacency-candidate.adjacency)*lowAdjacencyPenaltyQ8
+                                candidate.weak = true
+                                counts.lowAdjacency = counts.lowAdjacency + 1
+                            elseif betterQuarterSite(candidate, best) then best = candidate end
                         end
                     end
                     if candidate.weak then

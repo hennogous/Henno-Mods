@@ -3106,3 +3106,16 @@ was exercised. Verified250 save SHA256:
 5b4a41cc16b33a010b87896b3f4accc9084c25ef58da41b6a745b01b8d38bf36.
 
 - [Integration review, full protocol, comparison tables and artifact identities](../research/mods/csc-ai-harmonised-250-20261112.md)
+
+
+<a id="ai-c170"></a>
+## AI-C170 — Full Quarter adjacency census and conservative forecast revision
+
+Exact turn-250 package, two zero-turn shared-controller reads, all 165 stored
+rule encodings agree. Only 2/16 complete Bakers and 1/20 Tailors have +4;
+25/36 are below +3. Material adjacency improvements do not imply high total
+adjacency. Henno's revised main policy excludes future/foundation customer
+credit, retains prospective local Mill effects, removes positive bids below +3
+and adds finite deductions. Offline checks pass; a fresh turn-200 run is
+requested. Live efficacy is pending, and endpoint state is not placement-time
+causal attribution. [Full tables, policy and limits](../research/mods/csc-ai-quarter-adjacency-20261112.md).

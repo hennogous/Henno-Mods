@@ -132,6 +132,18 @@ for _, pid in ipairs(CSC_ENDPOINT_PLAYERS) do
                     end
                     emit("QUARTER", p.key, pid, city:GetID(), id, district:IsComplete(),
                         district:IsPillaged(), plot:IsRiver(), properties[1], properties[2], properties[3])
+                    -- Passive adjacency evidence for placement-quality audits.
+                    -- Current uses actual loaded rules, not a policy bid. The
+                    -- prospective local Mill is reported separately; neither
+                    -- column assumes a future customer or proves a Service.
+                    if CSC_AI_QuarterAdjacencyValue then
+                        local value=CSC_AI_QuarterAdjacencyValue(
+                            GameInfo.Districts[district:GetType()].DistrictType,plot,city,pid,true)
+                        local complete=district:IsComplete()
+                        emit("ADJACENCY",p.key,pid,city:GetID(),id,
+                            complete and value.current.production or 0,
+                            complete and value.current.gold or 0,value.production,value.gold)
+                    end
                     for typeName, stage in pairs(p.producers) do
                         local status = buildingAt(city, typeName, id)
                         if status > 0 then emit("PRODUCER", id, stage, typeName, status) end

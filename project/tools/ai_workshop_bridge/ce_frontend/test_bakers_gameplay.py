@@ -386,7 +386,7 @@ class BakersGameplayTest(unittest.TestCase):
         self.assertIn('CSC_AI_BAKERS_DISTRICT_SAMPLES turn=5 previousVersion=4 samples=[[3,42,1,101,12288,0]]',
                       messages)
         self.assertIn('CSC_AI_QUARTER_PLAN turn=5 player=3 key=BAKERS legal=2 noBase=1 coversMaterial=0 noHost=0 '
-                      'bothPending=0 deferCities=0 offers=1 strong=1', messages)
+                      'bothPending=0 deferCities=0 offers=1 strong=1 lowAdjacency=0', messages)
         lua.execute("""
             CE_AIDistrictScoresStatus=function()
                 local rows = {}

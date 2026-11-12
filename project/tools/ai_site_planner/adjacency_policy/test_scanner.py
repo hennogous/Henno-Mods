@@ -27,7 +27,11 @@ function CSC_Adjacency.Count(r,p,c,pid)if r.ID=='materials'then return 2 elseif 
 BAKERS_SITES = r"""
 local existing, placed, unlocked = false, false, true
 local targetsRead, checked, gameplayChecked = 0, {}, {}
-local cityDistricts = {HasDistrict=function(_, id) return existing and id==1 end}
+local harborComplete=true
+local cityDistricts = {HasDistrict=function(_, id) return existing and id==1 end,
+ GetNumDistricts=function()return 2 end,
+ GetDistrictByIndex=function(_,i)return {GetX=function()return i==0 and 2 or 24 end,
+ GetType=function()return i==0 and 0 or -1 end,GetY=function()return 3 end,IsComplete=function()return i==0 or harborComplete end}end}
 local queue = {
     HasBeenPlaced=function(_, hash) assert(hash==1001); return placed end,
     CanProduce=function(_, hash, _, test) assert(hash==1001 and test); return unlocked end,
@@ -85,7 +89,7 @@ local center = {GetOwner=function() return 1 end, GetDistrictType=function() ret
     GetResourceType=function() return -1 end,
     GetIndex=function() return 2 end, GetX=city.GetX, GetY=city.GetY}
 Map = {
-    GetPlot=function() return center end,
+    GetPlot=function(x) return x==2 and center or plots[x] end,
     GetPlotByIndex=function(id) return plots[id] end,
     GetPlotDistance=function(_, _, x) return x==20 and 4 or 2 end,
     GetAdjacentPlots=function(x)
@@ -139,6 +143,28 @@ cattleVisible = true
 targets = {18}
 sites = bids(bakers, {}, readLegalTargets)
 assert(sites[18].adjacency==3 and sites[18].delta==6144)
+-- Every weak legal pair is penalised, even beside a positively bid site.
+local savedSales=CSC_Adjacency.ByDistrict[bakers.district.DistrictType][2]
+local savedCount=CSC_Adjacency.Count
+CSC_Adjacency.Count=function(r,p,c,pid,project)
+ if r==savedSales then return 0 end
+ return savedCount(r,p,c,pid,project)
+end
+targets={18,21}
+local weak,weakCounts=bids(bakers,{},readLegalTargets)
+assert(weak[18].adjacency==2 and weak[18].delta==-16384 and weak[18].weak
+ and weak[21].delta==12288 and weakCounts.lowAdjacency==1)
+for _,n in ipairs({0,1})do
+ CSC_Adjacency.Count=function(r,p,c,pid,project)
+  if r==savedSales then return 0 end
+  if r.ID=='materials' then return n end
+  return savedCount(r,p,c,pid,project)
+ end
+ targets={18}
+ local low=bids(bakers,{},readLegalTargets)[18]
+ assert(low.adjacency==n and low.delta==-(3-n)*64*256)
+end
+CSC_Adjacency.Count=savedCount
 targets = {11,21}
 plots[21].baseLocked = true
 sites = bids(bakers, {}, readLegalTargets)
@@ -156,7 +182,7 @@ assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 existing, placed = false, true
 assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 placed, unlocked = false, false
-assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==7)
+assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==10)
 
 -- Frontier coverage uses geometry even when the BUILD-operation target list
 -- is empty. A possible purchasable supplier or unseen neighbor stays neutral.
@@ -224,6 +250,18 @@ unlocked=true;targets={13}
 frontier,frontierCounts=bids(bakers,{},readLegalTargets)
 assert(frontier[13].weak and frontier[32].frontier and frontierCounts.deferCities==0)
 targets=savedTargets;unlocked=false
+local frontierCount=CSC_Adjacency.Count
+CSC_Adjacency.Count=function(r,p,c,pid,project)
+ if r==savedSales then return 0 end
+ return frontierCount(r,p,c,pid,project)
+end
+local lowFrontier,lowCounts=bids(bakers,{},readLegalTargets)
+assert(lowFrontier[31].delta==-16384 and lowFrontier[32].delta==-16384
+ and lowCounts.frontierOffers==0 and lowCounts.lowAdjacency==2)
+-- Low scores are still covered when no purchase quote exists.
+quotes[31]=nil
+assert(bids(bakers,{},readLegalTargets)[31].delta==-16384)
+quotes[31]=85;CSC_Adjacency.Count=frontierCount
 quotes[31]=70
 assert(bids(bakers,{},readLegalTargets)[31].delta==6144) -- Stable lower-plot tie.
 quotes[31]=85;plots[31].river=4
@@ -261,9 +299,9 @@ rules[#rules+1]={ID='futureHarbor', YieldType='YIELD_GOLD', YieldChange=1,
     ModifierOwner='DistrictModifiers', ProvideType='SelfBonus', AdjacencyType='FROM_RINGS_TYPETAG_DISTRICT',
     CustomAdjacentObject='TAILORS_FIXTURE_HOST', Rings=1}
 local count=CSC_Adjacency.Count
-CSC_Adjacency.Count=function(rule, center, city, pid)
-    if rule.ID=='futureHarbor' then return plots[24]:GetDistrictType()==4 and 1 or 0 end
-    return count(rule,center,city,pid)
+CSC_Adjacency.Count=function(rule, center, city, pid, projectPlot)
+    if rule.ID=='futureHarbor' then return plots[24]:GetDistrictType()==4 and (not projectPlot or projectPlot(plots[24],rule)) and 1 or 0 end
+    return count(rule,center,city,pid,projectPlot)
 end
 local hasTag=CSC_Adjacency.HasTag
 CSC_Adjacency.HasTag=function(tag, kind)
@@ -276,11 +314,11 @@ local function legal(_, _, hash)
     if hash==1002 then return {23} end
     return harborUnlocked and slots>0 and {24} or {}
 end
-assert(bids(tailors, {}, legal)[23].adjacency==6)
+assert(bids(tailors, {}, legal)[23].adjacency==5)
 slots=0
 plots[23].baseLocked=true
 local future, counts=bids(tailors, {}, legal)
-assert(future[23].adjacency==6 and future[23].delta==12288 and counts.bothPending==1 and counts.deferCities==0)
+assert(future[23].adjacency==5 and future[23].delta==12288 and counts.bothPending==1 and counts.deferCities==0)
 harborUnlocked=true
 assert(bids(tailors, {}, legal)[23].delta==12288)
 slots=1
@@ -296,12 +334,12 @@ assert(bids(tailors, {[24]=true}, legal)[23].delta==-32768)
 -- Harbor is impossible. It does not manufacture a Stage 2 customer bid.
 local canHaveDistrict=plots[24].CanHaveDistrict
 plots[24].CanHaveDistrict=function(_, district) return district==5 end
-assert(bids(tailors, {}, legal)[23].adjacency==6 and not bids(tailors, {}, legal)[24])
+assert(bids(tailors, {}, legal)[23].adjacency==5 and not bids(tailors, {}, legal)[24])
 rules[#rules+1]={ID='futureProvider', YieldType='YIELD_PRODUCTION', YieldChange=1,
     ModifierOwner='DistrictModifiers', ProvideType='SelfBonus', AdjacencyType='FROM_RINGS_TYPETAG_DISTRICT',
     CustomAdjacentObject='CLASS_CSC_TAILORS_GOODS_PROVIDER', Rings=1}
 plots[24].CanHaveDistrict=function(_, district) return district==6 end
-assert(bids(tailors, {}, legal)[23].adjacency==6 and not bids(tailors, {}, legal)[24])
+assert(bids(tailors, {}, legal)[23].adjacency==5 and not bids(tailors, {}, legal)[24])
 plots[24].CanHaveDistrict=canHaveDistrict
 -- Missing actor metadata does not mean an otherwise promising city has
 -- no future customer. Suppress forecast-only credit without a false penalty
@@ -327,6 +365,9 @@ CityManager.GetDistrictAt=function(x, y)
 end
 plots[24].GetDistrictType=function() return 4 end
 assert(bids(tailors, {}, legal)[23].adjacency==6)
+harborComplete=false
+assert(bids(tailors, {}, legal)[23].adjacency==5) -- Foundation earns no customer credit.
+harborComplete=true
 pillaged=true
 assert(bids(tailors, {}, legal)[23].adjacency==6)
 plots[24].GetDistrictType=function() return -1 end
