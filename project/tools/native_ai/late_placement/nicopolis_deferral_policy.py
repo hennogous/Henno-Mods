@@ -82,7 +82,30 @@ end
 """
 
 
-def stage(publisher,*,arm=None):
+OPPORTUNITY_RECEIPT=b'''-- Diagnostic lineage for the changed supplier only.
+do
+ local profile
+ for _,p in ipairs(CSC_AI_QuarterPlacement.StageTwoProfiles())do if p.key=='BAKERS'then profile=p end end
+ assert(profile)
+ local supplier=assert(Map.GetPlotByIndex(471));local owner=Cities.GetPlotPurchaseCity(supplier)
+ print('CSC_DEFERRAL_TRACKED_SUPPLIER',turn,version+1,supplier:GetOwner(),owner and owner:GetID()or -1,
+  supplier:GetResourceType(),supplier:GetImprovementType(),tostring(supplier:IsImprovementPillaged()))
+ for _,index in ipairs({397,398,472})do
+  local plot=assert(Map.GetPlotByIndex(index))
+  local supply=CSC_AI_QuarterPlacement.ReadSuppliers(Players[1],plot,profile)
+  for _,base in ipairs(supply.base)do
+   print('CSC_DEFERRAL_TRACKED_BASE',turn,version+1,index,base.plot,tostring(base.ready),tostring(base.working))
+  end
+  -- Read the still-active PREVIOUS publication before the ordinary commit.
+  -- A missing new proposal alone is not proof that an old decline retired.
+  print('CSC_DEFERRAL_DECLINE_PREVIOUS',turn,version,index,
+   CE_AIDistrictDeclineReceipt(version,1,524295,36,index))
+ end
+end
+'''
+
+
+def stage(publisher,*,arm=None,opportunity=False):
     """Observe retained main packets; do not change their contents or lifetime."""
     needle=b'    local accepted, message = bridge.Publish('
     assert publisher.count(needle)==1
@@ -90,6 +113,7 @@ def stage(publisher,*,arm=None):
     # The production locals are `turn`, `version` and `entries`. Keep the
     # diagnostic's version equal to the exact next committed main packet.
     receipt=RECEIPT.replace('nextVersion','(version+1)').encode('utf-8')
+    if opportunity:receipt+=OPPORTUNITY_RECEIPT
     if arm=='control':
         # Only the target city's Bakers admission scopes are removed. Numeric
         # deductions and every other player/city/district intervention remain.

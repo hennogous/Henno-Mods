@@ -105,7 +105,12 @@ def stage(source,scope,*,start=200,end=207,players=(),window_limit=8):
     # Ordinary matched windows retain their eight-turn guard. The explicit
     # early1.7 scout may read up to18 turns with sparse saved boundaries;
     # each generation still has the same trace/page/capacity checks above.
-    assert window_limit==8 or window_limit==18 and start==22 and end<=40 and not scope
+    # The longer opportunity continuation is restricted to three exact pairs
+    # in one city so ordinary native planning can resume without a forced reset.
+    opportunity_scope={(r['player'],r['city'],r['district'],r['plot'])for r in scope}
+    assert (window_limit==8 or window_limit==18 and start==22 and end<=40 and not scope
+        or window_limit==54 and start==200 and end<=254 and not players and opportunity_scope=={
+            (1,524295,36,397),(1,524295,36,398),(1,524295,36,472)})
     assert 0<=start<end<=start+window_limit
     assert len(set(players))==len(players) and all(0<p<64 for p in players)
     prefix=PREFIX.replace('__SCOPE__',lua(scope)).replace('__PLAYERS__',lua({p:True for p in players}))

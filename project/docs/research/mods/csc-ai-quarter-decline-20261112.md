@@ -137,3 +137,27 @@ capacity and the retained Hippodrome plan/queue. Any ownership transfer must
 preserve resource/improvement/terrain and carry **no native-acquisition claim**.
 Do not cancel the retained plan or add production. Let ordinary planning resume;
 completion is not a new acceptance gate. **1.7 remains open.**
+
+## Bounded reconsideration continuation
+
+`nicopolis_replay.py --deferral-opportunity` repeats the full arm from the
+same turn200 source. At204 it requires the established Hippodrome472 choice,
+then inspects the actual main planner, legal free footprints397/398, current
+queue, population and available district-capacity getters. It permits one
+declared transfer of existing farmed Flax471 from player11 to Nicopolis.
+Resource, improvement, terrain, river edges, queue, population and Treasury
+must remain unchanged. This is diagnostic opportunity creation, not buying.
+
+The same exclusive shared-controller owner continues ordinary turns, checking
+finite boundaries214–254. It neither cancels the retained Hippodrome plan nor
+orders a Quarter, grants production or forces a replanning event. Read-only
+receipts remain restricted to the three supplier-adjacent candidate pairs.
+
+Success requires a fresh native selection and unique Bakers request at a
+previously declined site that the main supplier reader now connects to471.
+The exact consumed publication must show the owner/city/material facts and
+retired decline; the native Best record must come from a complete checked
+trace prefix. An unrelated Bakers choice or an incomplete reader prefix
+cannot qualify. Astra reviewed these checks before launch. The focused
+driver/fixture suite passes29 tests; the JavaScript observer syntax check
+passes. No continuation outcome is claimed here yet.

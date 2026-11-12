@@ -99,5 +99,13 @@ CSC_AI_QuarterPlacement={StageTwoProfiles=function()return {
         with self.assertRaises(AssertionError):stage(b'',[],start=22,end=41,players=[1],window_limit=18)
         with self.assertRaises(AssertionError):stage(b'',[],start=200,end=218,players=[1],window_limit=18)
 
+    def test_opportunity_window_is_limited_to_exact_three_pairs(self):
+        scope=[dict(player=1,city=524295,district=36,plot=p)for p in (397,398,472)]
+        self.assertIn(b'if turn<200 or turn>254',stage(b'',scope,start=200,end=254,window_limit=54))
+        for changed in (scope[:-1],scope+[dict(player=1,city=524295,district=36,plot=399)]):
+            with self.assertRaises(AssertionError):stage(b'',changed,start=200,end=254,window_limit=54)
+        with self.assertRaises(AssertionError):stage(b'',scope,start=200,end=255,window_limit=54)
+        with self.assertRaises(AssertionError):stage(b'',scope,start=200,end=254,players=[1],window_limit=54)
+
 
 if __name__=='__main__':unittest.main()

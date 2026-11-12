@@ -61,8 +61,16 @@ rpc.exports = {
         const gameSlot = core.base.add(GAME_INSTANCE_SLOT);
         const targets = new Set(scope.plots);
         const currentTurn = () => read(read(gameSlot, 0, 'ptr'), GAME_TURN, 'i32');
+        // Ordinary diagnostic windows retain64 records. The explicit one-city
+        // opportunity continuation also records retained-tree checks for up to
+        // fifty turns;256 bounds that longer read-only journal without a new
+        // native hook, score treatment or unbounded background collection.
+        const recordLimit = scope.recordLimit === undefined ? 64 : scope.recordLimit;
+        if (recordLimit !== 64 && !(recordLimit === 256 && scope.opportunityMode === true &&
+                scope.player === 1 && scope.city === 524295))
+            throw Error('Unqualified longer selector journal');
         const record = receipt => {
-            if (records.length >= 64) throw Error('District selector evidence bound');
+            if (records.length >= recordLimit) throw Error('District selector evidence bound');
             records.push(receipt);
             if (scope.streamRecords) send({kind: 'district-selector-receipt', receipt});
             if (scope.offerRepair && receipt.kind.startsWith('repair-'))
