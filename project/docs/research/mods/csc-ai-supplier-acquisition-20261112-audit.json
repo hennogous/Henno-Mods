@@ -1,0 +1,289 @@
+{
+  "artifact_audit_verified": true,
+  "scope": "Supplier route qualification; no supplier-bid purchase-necessity claim",
+  "source_sha256": "9eff6d6c10e7c95af1f5ac37ee64c364f3174e4beefd1116c33769a905ff1d49",
+  "ce_sha256": "73eed1070742ba9a8bb9ba722a09b0229aebcc35c7423e81b7e8f075928d1eed",
+  "package_differences": [
+    [
+      "CSC Bakers Development Mod",
+      "Lua_UI\\AI\\CSC_AI_QuarterPlacement.lua"
+    ]
+  ],
+  "mapped_forecast_delta": {
+    "improvement": 1,
+    "control_q8": 42255,
+    "full_q8": 48911,
+    "delta_q8": 6656
+  },
+  "native_candidate_unchanged": true,
+  "measured_payment": {
+    "kind": "debit-return",
+    "turn": 220,
+    "player": 3,
+    "city": 458758,
+    "plot": 861,
+    "handler": "xp1",
+    "deltaQ8": -11520,
+    "threadId": 20188,
+    "callerStack": "0x381eae0",
+    "treasury": "0x127927690",
+    "treasuryBeforeQ8": 108531,
+    "treasuryAfterQ8": 97011,
+    "measuredDeltaQ8": -11520,
+    "deltaMatched": true
+  },
+  "physical_supplier_timeline": [
+    {
+      "turn": 216,
+      "plot": 861,
+      "owner": -1,
+      "city": -1,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 217,
+      "plot": 861,
+      "owner": -1,
+      "city": -1,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 218,
+      "plot": 861,
+      "owner": -1,
+      "city": -1,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 219,
+      "plot": 861,
+      "owner": -1,
+      "city": -1,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 220,
+      "plot": 861,
+      "owner": -1,
+      "city": -1,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 221,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 222,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 223,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 224,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 224,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 224,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 225,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 226,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": -1,
+      "pillaged": false
+    },
+    {
+      "turn": 227,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": 1,
+      "pillaged": false
+    },
+    {
+      "turn": 228,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": 1,
+      "pillaged": false
+    },
+    {
+      "turn": 229,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": 1,
+      "pillaged": false
+    },
+    {
+      "turn": 230,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": 1,
+      "pillaged": false
+    },
+    {
+      "turn": 230,
+      "plot": 861,
+      "owner": 3,
+      "city": 458758,
+      "resource": 54,
+      "improvement": 1,
+      "pillaged": false
+    }
+  ],
+  "first_improved_turn": 227,
+  "endpoint_checkpoint": {
+    "verified": true,
+    "turn": 230,
+    "requested_name": "CSC_PURCHASE_FOLLOWTHROUGH",
+    "unique_name": "CSC_PURCHASE_FOLLOWTHROUGH_6419a87cf4a2",
+    "native_save": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Saves\\Single\\CSC_PURCHASE_FOLLOWTHROUGH_6419a87cf4a2.Civ6Save",
+    "archive": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\nuremberg-supplier-follow-01\\endpoint.Civ6Save",
+    "sha256": "cfd13b36014a9713b8ce2f4f83a39e3a56c6a3ea3ec44071716cd674eeff483e",
+    "size": 2329910,
+    "save_requests": 1,
+    "save_complete_event": true,
+    "initial_ack": true,
+    "UI_phase": {
+      "turn": 230,
+      "active": false,
+      "local_player": 0,
+      "player0_human": true,
+      "player0_alive": true
+    },
+    "UI_clock_lag": 0,
+    "native_phase_unchanged": true,
+    "before": {
+      "turn": 230,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794454177.8580198,
+      "player0_alive": true
+    },
+    "after": {
+      "turn": 230,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794454184.1930482,
+      "player0_alive": true
+    },
+    "native_pid": 21216,
+    "worlds_created": 0
+  },
+  "native_improvement_rows": [
+    "226, 3, City LOC_CITY_NAME_NUREMBERG, Build City Improvement, SUCCESS, Build Improvement, Building Improvement: IMPROVEMENT_FARM",
+    "227, 3, City LOC_CITY_NAME_NUREMBERG, Build City Improvement, SUCCESS, Build Improvement, Building Improvement: IMPROVEMENT_FARM"
+  ],
+  "pins": {
+    "full": {
+      "inputs.json": "1f44f6ed6e49f776415488412253701a17dcbf81519fc7d1f68ac7f43758e3a2",
+      "complete.json": "021d8031867b2dce75c6d9b1b5269f598c579ca1a6085350e12c0f4615a9484a",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "purchase-trace.json": "d0e3b020729c78603b49c631121a2a110576eef581629aef74ac634bace712ae",
+      "purchase-live.ndjson": "1fb002a3584497fa68a0e4d4768af75993178554fb79ab630b5c62f034567ad9",
+      "selector-trace.json": "a3f5799910f3fa01694aa010f4112248d5876f4090667f487d8670861b7ba679",
+      "selector-live.ndjson": "a90bbffbb146594b7e4ac227ee39be71fc5c5200e90f0888ba31e7a9e608839f",
+      "Lua.log": "470f8e3382d998d2ab099773fd980d6cb842699ca10c09b447031d9c829c5576",
+      "AI_CityBuild.csv": "40e8c48cd10a7379d6c9af9dfcb5f24162b751b1ec465b43a05d85bea408c934",
+      "AI_Behavior_Trees.csv": "cb0aca32c7385abde7fc5d32c2ae27fa8a0d8e17c338b09d771678610cd4ecce",
+      "endpoint-checkpoint.json": "ce26c8c3a3194c8e2d837d1067b40abdd2e562f37337fe2ec3a5c6ef785fce54",
+      "supplier-chain-qualification.txt": "60d4eb0ce1ac909ef28f08b47ca9d52fbd5bd892a2eaa3293938fd810146cf4c"
+    },
+    "control": {
+      "inputs.json": "9e20a6317466410c6b9c7c7c4fdc303e0d57bcd330404a59757b0cb3eca01856",
+      "complete.json": "0235dcac9844e51d522ddcc0875f8c3e04ef620cdb873f06506914862491b3a5",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "purchase-trace.json": "5da481a00e0acbd15640706f0376493c230d2634300861f734db4b5cdc35f6d6",
+      "purchase-live.ndjson": "9cd289e28a19cf4083c2457dd4465ef5a1b2668ebe769dd173e244b4fd8d4686",
+      "selector-trace.json": "7587bbdf190994fdd304353dc302ac4fd41b8058d4f5ff03dba1d7da59bdcf6f",
+      "selector-live.ndjson": "5d839a30dce3523d6330565c77007d48af6948ec19777f9d4bdf518815000774",
+      "Lua.log": "b7856580822b22147223dd38c695ef50fce42c8cdc20ad38db05f524462ebd34",
+      "AI_CityBuild.csv": "b450b7b32a933c4d9cc4121652d26664fb7aee21019fccf7c11222424daacce2",
+      "AI_Behavior_Trees.csv": "a892ddf98e48ceb6f92a293a005478ee053798123940dda3cfa160f996577939",
+      "endpoint-checkpoint.json": "0899ddf1fa2dc7c514cdae571424d3d4e409d4682cdc32cf1740058789cb34a2",
+      "supplier-chain-qualification.txt": "ddb179ce044a306d08e5175dce055835cc77405d85523cde0e396eff4741e48e"
+    },
+    "follow": {
+      "inputs.json": "5b7bdd005bfa72848d3f9c748db9c6619fd52f8cea51d07fec9ae37e3b09ffeb",
+      "complete.json": "25b5cb14393af01be6217a5a8c23b5aa00b3b92cf84e931931e19786198bb1e6",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "purchase-trace.json": "0a112ac0392c3cf4eb0e8642ca36ebd1ff09a29d7fe8e347b9afc968e54fdd41",
+      "selector-trace.json": "6c0ccedcaf3b83fdf98d725c98119d0ef259772b6b95c6356ba4464eddd2809c",
+      "selector-live.ndjson": "766a008d1e03314868362f19ac96512f1fa6571e4191c7b53d87778413b9c55e",
+      "Lua.log": "19fb63b25b6a28ac2d31de9ef68a46da4ca522efea04ebb584a51e450d7c0ca4",
+      "AI_CityBuild.csv": "ec100f66203851799ff593c03fad3155df95ffae0470dc08e8ca6aa6ee1c29ce",
+      "AI_Behavior_Trees.csv": "9ccdf10702e19391eb2cad808e6101861d76a722333748d75af9808da61550d6",
+      "endpoint-checkpoint.json": "0a37fd14ae828b6b7cb0357d2b13ef8755cb0cd5d001541a8e6cced425f4cdac",
+      "supplier-chain-qualification.txt": "533cde8d578db386455033f078329ad2465c7e000f33e0fe36d05eb2baf23360"
+    }
+  }
+}

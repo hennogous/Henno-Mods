@@ -2864,3 +2864,37 @@ The common ownership-release fixture is explicit, not itself a native purchase.
 Broader seeds/configurations are separate qualification.
 
 - [Implementation, binary identity, tests and sealed fresh/reload evidence](../research/mods/csc-ce-ownership-completion-20261112.md)
+
+## AI-C163
+
+**Main CSC's existing improvement hook reaches native supplier buying and actual Farm completion**
+
+Status: accepted integrated qualification; independently audited by Astra.
+With AI-C162, closes representative 1.5 levels1–3.
+
+Dynamic main code derives an adjacent unowned Base offer from a healthy
+completed Quarter with no viable owned Base. Its capped26-unit offer reaches
+the actual Farm forecast: native42,255→48,911 Q8, exactly+6,656, with every other
+first-window improvement score unchanged. The control preserves identical
+allowances/protection but omits only that positive bid. Both cache861 as their
+sole resource-frontier candidate; no supplier-bid purchase necessity is claimed.
+
+The unchanged main arm pays45 Gold through the native XP1 purchase handler at220,
+measured108,531→97,011 Q8, and obtains861 for the intended city. The unowned
+offer retires221. Ordinary improvement planning reserves(47,11), finds a Builder
+and travels; native Farm construction succeeds226, with retained Flax and an
+unpillaged Farm physically present227–230. The continuation loads the verified
+paid224 save and uses identical packages, without further map edits or commands.
+
+Control6purchase/3selector, full22/8 and follow0/7 records exactly match journals,
+with no faults/pending pairs and verified normal cleanup. Astra independently
+hashes all642 archived package files per arm, verifies intermediate/terminal
+save hashes and recomputes the sealed audit. The footprint's controlled action
+effect remains established in AI-C162; the written separate supplier requirement
+is paid acquisition through actual improvement, not another changed-buying test.
+
+**Limits:** Common diagnostic ownership release creates the acquisition need;
+it is not itself an AI purchase. No Service, general buying reliability,
+exhaustive supplier alternatives or supplier-bid purchase necessity is proved.
+
+- [Policy, native path, observed failures and sealed audit](../research/mods/csc-ai-supplier-acquisition-20261112.md)

@@ -63,6 +63,8 @@ CASES['nuremberg-supplier-prepare']=dict(CASES['nuremberg'],turn=216,
     sha256='22998f016e31272f53e1d1f4a1446b954c0aa9688c5072a74d9694f181b80fc8')
 CASES['nuremberg-supplier']=dict(CASES['nuremberg-supplier-prepare'],
     sha256='9eff6d6c10e7c95af1f5ac37ee64c364f3174e4beefd1116c33769a905ff1d49')
+CASES['nuremberg-supplier-follow']=dict(CASES['nuremberg-supplier'],turn=224,max_turn=230,
+    sha256='858c4af2ebedc72ae2ecd0e81f3b438651f018354f795b550db2670e739d855b')
 
 # This untuned save intentionally predates the policy's persisted seat metadata.
 # A diagnostic may seed it from these acknowledged turn-1 records, never from
@@ -348,7 +350,7 @@ def run(args):
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     prepare_supplier=case_name=='nuremberg-supplier-prepare'
     supplier_case=case_name.startswith('nuremberg-supplier')
-    assert (source_turn < args.through <= 224 or prepare_supplier and args.through==source_turn), 'This fixture uses a bounded continuation of its verified source'
+    assert (source_turn < args.through <= case.get('max_turn',224) or prepare_supplier and args.through==source_turn), 'This fixture uses a bounded continuation of its verified source'
     assert not prepare_supplier or args.mode=='integrated' and args.save_endpoint
     assert load(reference / 'complete.json')['verified']
     assert load(reference / 'session-closed.json')['verified']
@@ -358,7 +360,22 @@ def run(args):
     assert save.parent == (home / 'Saves/Single').resolve()
     assert sha(save) == sha(checkpoint / case.get('archive','endpoint.Civ6Save')) == case['sha256']
     source_policy=getattr(args,'source_policy_root',None) or args.policy_root
-    if case_name=='nuremberg-supplier':
+    if case_name=='nuremberg-supplier-follow':
+        # Follow the paid, owned supplier while the already-assigned native
+        # Builder travels. This is not a new common fixture or a new purchase.
+        assert load(checkpoint/'complete.json')==dict(verified=True,turns_advanced=8)
+        assert load(checkpoint/'session-closed.json')['verified']
+        parent=load(checkpoint/'inputs.json')
+        assert parent['case']==CASES['nuremberg-supplier'] and not parent['supplier_no_bid']
+        trace=load(checkpoint/'purchase-trace.json');assert trace['fault']is None
+        debits=[r for r in trace['records']if r['kind']=='debit-return'and r.get('plot')==861]
+        assert len(debits)==1 and debits[0]['city']==458758 and debits[0]['deltaMatched'] and debits[0]['measuredDeltaQ8']==-45*256
+        assert meta['save_complete_event'] and meta['native_phase_unchanged']
+        assert all(meta[p]['turn']==224 and not meta[p]['active'] and meta[p]['local_player']==0 and meta[p]['player0_human']for p in ('before','after'))
+        for relative in (SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua')):
+            assert sha(source_policy/relative)==parent['packages']['CSC Bakers Development Mod'][str(relative)]['sha256']
+    elif case_name=='nuremberg-supplier':
         assert load(checkpoint/'prepared-source-audit.json')['verified']
         assert load(checkpoint/'session-closed.json')['verified']
         assert load(checkpoint/'supplier-preparation.json')['native_purchase'] is False
@@ -578,7 +595,14 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
 """, 'CSC_AI_BakersGameplay', 'scope-radius-three-plots')
             plots.extend(parse(raw, 'CSC_REPLAY_PLOTS'))
             assert len(plots) == len(set(plots)) and set(case['plots']) <= set(plots) and len(plots) <= 36
-            if case_name=='nuremberg-reload':
+            if case_name=='nuremberg-supplier-follow':
+                raw=controller.cmd('''local p=assert(Map.GetPlotByIndex(861));local city=assert(Cities.GetPlotPurchaseCity(p))
+assert(p:GetOwner()==3 and city:GetID()==458758 and p:GetDistrictType()==-1 and p:GetImprovementType()==-1)
+assert(p:GetResourceType()==GameInfo.Resources.RESOURCE_CSC_FLAX.Index)
+print('CSC_SUPPLIER_OWNED_SOURCE',Game.GetCurrentGameTurn(),p:GetOwner(),city:GetID(),p:GetImprovementType())''',
+                    'CSC_AI_BakersGameplay','qualify-paid-supplier-source')
+                (out/'owned-supplier-qualification.txt').write_text(raw,encoding='utf-8')
+            elif case_name=='nuremberg-reload':
                 raw=controller.cmd('''local plot=assert(Map.GetPlotByIndex(788))
 local city=assert(Cities.GetPlotPurchaseCity(plot))
 assert(plot:GetOwner()==3 and city:GetID()==458758 and plot:GetDistrictType()==-1)

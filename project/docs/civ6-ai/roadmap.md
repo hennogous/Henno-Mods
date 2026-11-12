@@ -14,27 +14,26 @@ Work sequentially from the earliest unclosed item, state its acceptance test
 before investigation, and preserve Astra-validated scoped closures. Broad
 qualification and the older multi-seed Stage 2 milestone below are follow-up
 work, not additional conditions for closing this goal's placement capabilities.
-Current item: **1.5 Supplier acquisition**. **1.1, 1.2, 1.3, 1.4, 1.6, 1.8
-and 2.2** meet levels 1–3 at the recorded representative scopes: seven of ten.
+Current item: **1.7 Defer and reconsider**. **1.1, 1.2, 1.3, 1.4, 1.5,
+1.6, 1.8 and 2.2** meet levels 1–3 at the recorded representative scopes:
+eight of ten. **2.1** remains after 1.7.
 
-The Quarter-footprint portion of 1.5 is integrated and Astra-validated. The
-native paid purchase obtains the intended site; generic CE plus dynamic main
-CSC acknowledges the fulfilled ownership prerequisite and ordinary construction
-reaches physical completion at 213. The old paid-but-waiting plan reproduces
-that result after reload without a new target payment or creation-registry
-binding. This also closes representative 1.6. The unchanged baseline buys but
-leaves the site empty through 216. Promotion necessity for buying remains a
-valid negative; an additional BUY-versus-NOT-BUY gate was not agreed.
-[AI-C162 and sealed terminal evidence](../research/mods/csc-ce-ownership-completion-20261112.md).
+**1.5 closes with Astra's independent audit.** Its causal integrated footprint
+workflow reaches paid intended-city ownership and completed construction,
+including reload recovery. The separate supplier route delivers the exact
++6,656-Q8 Farm offer, pays45 Gold at220, obtains intended ownership and completes
+the native Farm at226; physical Flax/Farm is retained227–230. Every archived
+package and terminal journal is checked. The supplier candidate is unchanged
+in the control; the written acceptance does not require an extra supplier
+BUY-versus-NOT-BUY result. No Service or broad reliability claim follows.
+[AI-C162](findings.md#ai-c162), [AI-C163](findings.md#ai-c163).
 
-**Next acceptance: separate supplier acquisition and improvement under 1.5.**
-Derive the material need from a live chain, trace the routine frontier-resource
-candidate and correct-city quote, then test a bounded reusable preference.
-Require consumption, a controlled relevant action change, actual native debit
-and intended ownership, followed by a supplier improvement. The current owned-
-supply reader deliberately excludes unowned land; footprint offers do not
-supply this capability. Preserve savings, legality and Treasury checks. Broader
-qualification stays separate. 1.7 and 2.1 remain open after 1.5.
+**Next acceptance for 1.7:** a weak-only city defers the Quarter or chooses
+another investment because of policy, then dynamically reconsiders after a
+credible opportunity appears. Observe the actual native comparisons/requests
+and the shared model's changed live facts in each stage. A deferral counter or
+score change alone is insufficient. Reuse existing sources and consumers where
+possible; do not expand this into multi-seed qualification.
 
 ### Current capability â€” Quarter placement (1.1â€“1.8) and related districts (2.1â€“2.2)
 
@@ -424,6 +423,10 @@ until the active check closes or an explicit dependency needs attention.
   buy the target. A required-buyer binding must cover the retained contract's
   execution, cancellation and reload, not just the current score packet.
   [Native purchase routes](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-choice.md#buying-a-future-site).
+  **Levels1–3 complete at representative scope, Astra-approved:** causal paid
+  footprint follow-through plus separately paid and improved supplier.
+  [AI-C162](findings.md#ai-c162), [AI-C163](findings.md#ai-c163). Supplier-bid
+  purchase necessity and broader acquisition reliability are not claimed.
 - **1.6 Construction readiness and follow-through.** Check unlocks, legal
   siting, capacity and the preparation window before committing. Trace the
   proposal through production, foundation and completion. Distinguish a new

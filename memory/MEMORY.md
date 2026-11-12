@@ -1,3 +1,55 @@
+# Latest closure — 1.5 and 1.6 complete, eight of ten
+
+AstraindependentlyAPPROVESAI-C163:1.5levels1–3 withpriorC162footprint. Eightclosed:
+1.1/1.2/1.3/1.4/1.5/1.6/1.8/2.2. NEXT1.7defer/reconsider; then2.1customerplacement.
+Allworkers4405/36648/4865TERMINALexit0/closedverified; NOownedlivegame/worker.
+FullsuppliernativeFarmforecast+6656exactfirst3turns; solecandidate861unchanged.
+Paid45Gold220(-11520Q8), ownedintendedP3/c458758221; offerretires221. Native
+FarmSUCCESS226, physicalFlax54+Farm1unpillaged227→230. No Serviceclaim.
+Control6purchase/3selector,full22/8,follow0/7 exactjournals/nofault/pending0;
+Astrahashesall642packagefilesperarm, validatespaid224858c4af…→230cfd13b36…savechain.
+SealedrepoJSON csc-ai-supplier-acquisition-20261112-audit.json; maintainedauditscript
+samepurpose. Sourcecommonrelease861explicitNOTpurchase; noextraBUYnecessitygate.
+STATUS/roadmap/acceptance/findings/reportupdated. Changesneedscopedcommit/push.
+AI-N119skillneedsruntimebid/purchase/Farmupdate+commit/push. Preserveallusersaves.
+Before1.7investigation stateacceptance:weak-onlycitypolicycausedeferral/other
+investment,thencrediblechangedlivefacts→dynamicnativereconsideration/request.
+Astrareviewrequired. No tools/fixtures merelyforadditionalqualification.
+
+# Current live supplier follow-through
+
+EXEC4865 LIVE nuremberg-supplier-follow-01,224→230 from858c4af2…739d855b.
+Poll4865, notterminal4405/36648. MainAI/driver/supplierhelper/observerfilesPINNED;
+noexternalconsolewhileexclusivesharedcontrollerlives. NoextraCEhooks or mapedits.
+4405full216→224 TERMINALexit0/closedverified:22purchase8selector exactjournals,
+nofaultpending0. Control6/3exact. Farm1 exact+6656 (42255→48911 first), sole
+candidate861unchanged. ActualnativeXP1purchase220 price45Gold(initialquote40),
+108531→97011Q8 debitmatched-11520, annexP3/c458758, physicalowned221onward.
+Mainunownedofferretires221. FarmABSENT224. NativeCityImprovementtree223reserves
+47,11, findsBuilder, MoveUnitRUNNINGtowardtarget. Continuealreadyassignedplan,
+notbid escalation. Source224verifiedSaveComplete/inactive0/phaseunchanged.
+Astrareviewpaidpartialpending;1.5stillopenuntilactualFarm+terminalAstraaudit.
+Audithelpernewuncommitted audit_supplier_acquisition.py --full/control/follow/output
+joinsnativepayment+exactmappedscore+physicalFarm; willnotpasspaidbutunimproved.
+Docs/STATUSupdatedpaidpartial;uncommittedsincelastpush e57cb3b7. Drivernewcasefollow
+withstrongparentdebit/source/main5fileguards;13qualificationtestsstillpass.
+
+# Latest live worker — supplier full arm
+
+EXEC4405 LIVE nuremberg-supplier-full-01 through224 fromcommon216SHA9eff6d…,
+unchangedmain+CE73eed, readonlyobservers. Pollsamehandle, notold36648.
+AllAI/driver/supplierhelper/observerfilesPINNED. Noexternalconsole.
+Control36648 TERMINALexit0/closedverified216→219. Nativeentry216cacheinvalid,
+Analyze216861 solefrontierresource Farm1max42255;21732347;21831937.
+No861paymentthrough219. BothMillsabsent, workingGranary787; existingownedjobgate
+willholdafterbuying. Fullfirst3turnsexactdeliverycompare,tailfollowacq/improvement.
+Astraacceptanceaudit: supplierBUYvsNOTBUY isNOTanotheragreedgate. 1.5controlled
+actioneffectalreadyfootprint; separatelyqualifysupplierpayment/ownership/improvement.
+DoNOTinventcompetitortosatisfyextraacceptance. Preservecontrolsolecandidateand
+nosupplierpurchase-necessityclaim. NeedAstraauditfullafterterminalforclosure.
+CSCpush e57cb3b7, skillpushb1c25c2 (AI-N119static). Currentdocs/memoryuncommitted
+clarification whileworkerlive. Alloldclosedscopesremainvalid. NoPRs.
+
 # Active supplier replay — 12 November 2026
 
 LIVEworkerexec36648 nuremberg-supplier-control-01,216→219; pollsamehandle.

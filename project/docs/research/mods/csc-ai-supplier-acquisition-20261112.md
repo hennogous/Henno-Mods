@@ -2,9 +2,14 @@
 
 Active **1.5** after the Astra-validated footprint workflow and representative
 1.6 closure. Acceptance: a dynamically derived supplier offer is consumed by
-native code, changes the relevant buying action against a controlled ablation,
-and reaches payment, intended ownership and an actual supplier improvement.
-No closure is claimed by this report yet.
+native code and reaches payment, intended ownership and an actual supplier
+improvement. The controlled action effect for item 1.5 is already established
+by the footprint workflow; the written separate supplier gate requires
+acquisition through improvement, not an additional BUY-versus-NOT-BUY effect.
+Astra's terminal audit now approves representative1.5 levels1–3, combining
+this separate supplier qualification with the accepted footprint workflow.
+The dated partial results below retain the distinction between pending and
+completed evidence.
 
 ## Reuse the improvement forecast
 
@@ -98,3 +103,81 @@ Lua fixture checks quote priority and deterministic ties across neighbor order.
 exclusive shared controller with unchanged main code plus the declared exact
 bid ablation. It is an instrumented finite comparison, not an outcome-only
 full-game run. Do not claim a terminal result before its completion/cleanup audit.
+
+## Control 216–219 and acceptance clarification
+
+The control closes normally, complete/verified with three turns advanced. At
+routine entry216 its cached coordinate is invalid. CityBuild later caches861;
+it is the **only** resource-frontier candidate in this city. Farm index1 is
+its maximum at42,255 Q8, then32,347 at217 and31,937 at218. Entry217 plot/slush
+funds are both zero; entry218 records2,569/7,988 Q8. These are entry snapshots,
+not necessarily the balances at Nuremberg's own later gate. No861 debit or
+acquisition occurs in this short control. The healthy Quarter has no owned
+viable Base, neither Mill, and a working adjacent Granary. That Granary satisfies
+the existing owned supplier-job gate if861 is acquired.
+
+Astra rechecked the original completion contract: **a separate supplier
+BUY-versus-NOT-BUY comparison is not required**. The controlled action effect
+already established for 1.5's footprint workflow remains valid; the separate
+supplier route must qualify native acquisition through actual improvement.
+Do not invent a competing tile merely to force another causal buying result.
+The unchanged main-CSC arm, `nuremberg-supplier-full-01`, runs216–224. Its first
+three turns compare exact mapped score consumption; its longer tail follows
+actual acquisition/development. No supplier-bid purchase necessity is claimed.
+Astra must audit terminal traces, payment, ownership and improvement before
+1.5 can close. The full arm has now closed normally; its result follows.
+
+## Integrated delivery and paid acquisition, improvement still pending
+
+The full arm reaches224 and closes normally, with22 purchase /8 selector
+records exactly matching journals and no native faults or pending pairs. The
+control has6/3 exact records. The unchanged main offer adds exactly6,656 Q8 to
+the mapped Farm index1: first native value42,255→48,911. The next two matched
+turns likewise differ by6,656. The native candidate remains861 in both arms;
+this is delivery evidence, not supplier-bid purchase necessity.
+
+On220 the XP1 native purchase handler quotes **45 Gold**, then Treasury changes
+108,531→97,011 Q8, a measured11,520-Q8 debit matching that actual price. The
+initial40-Gold source quote is not substituted for execution cost. Native owner
+and Culture annex receipts identify player3/city458758; physical snapshots
+confirm ownership from221. The unowned acquisition offer retires at221.
+
+The native Build City Improvement tree reserves(47,11), finds a Builder and
+reports Move Unit running toward it at223. The actual Flax remains unimproved
+at the inactive224 boundary. **Do not close1.5 yet.** The paid224 endpoint is
+saved with verified SaveComplete and phase unchanged, SHA
+`858c4af2ebedc72ae2ecd0e81f3b438651f018354f795b550db2670e739d855b`.
+
+`nuremberg-supplier-follow-01` continues that exact owned source224–230 with
+identical policy packages, no further map edits, funds, units or bid escalation.
+It addresses the outstanding actual-improvement outcome; it is not a separate
+qualification scenario. The maintained audit joins this continuation to the
+original native payment and matched delivery prefixes. Its default success gate
+requires the physical Farm, so paid-but-unimproved evidence cannot pass as closure.
+
+## Terminal supplier outcome and 1.5 closure
+
+The unchanged224–230 continuation closes normally after six turns. Native
+Build City Improvement reports **SUCCESS, IMPROVEMENT_FARM at226**. Physical
+snapshots confirm plot861, player3/city458758, retained Flax54, Farm1 and no
+pillage from227 through230. Earlier READY nodes print a default Barbarian Camp
+type; those are not execution/type evidence and are not counted.
+
+Follow has zero purchase and seven selector records, no faults or pending
+callbacks and verified normal cleanup. There is no second861 payment. The
+terminal inactive save SHA is
+`cfd13b36014a9713b8ce2f4f83a39e3a56c6a3ea3ec44071716cd674eeff483e`.
+The [sealed audit](csc-ai-supplier-acquisition-20261112-audit.json) joins exact
+matched delivery, actual price/debit, intermediate224 save identity, identical
+continuation packages and physical improvement. Reproduce with
+`audit_supplier_acquisition.py --full <full-01> --control <control-01> --follow <follow-01> --output <fresh-audit.json>`.
+
+Astra independently recomputed the audit, checked both save copies, all native
+journals and **642 archived package files per arm**. **1.5 closes at agreed
+levels1–3**, using AI-C162's causal integrated footprint workflow plus this paid-
+and-improved supplier route. Candidate861 remains unchanged in the short control;
+no supplier-bid purchase necessity, exhaustive alternative search, Service or
+multi-seed reliability is claimed. Broader qualification remains separate.
+
+Next sequential item is **1.7 defer and reconsider**. No owned live worker or
+game remains after this result.

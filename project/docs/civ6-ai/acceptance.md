@@ -61,9 +61,13 @@ to duplicate an already proved consumer or completion path.
   (AI-C161), and fresh/reload reproduction through generic CE and dynamic main
   CSC. Native request/production/foundation lead to physical IsComplete at 213.
   No Service or universal acquisition reliability is claimed.
-- **1.5 footprint portion, levels 1–3.** The same case verifies native 40-Gold
-  payment, intended-city ownership and foundation, plus recovery after reload.
-  The separate supplier acquisition and improvement route remains open.
+- **1.5, levels 1–3: integrated footprint and supplier acquisition.** AI-C162
+  verifies native40-Gold footprint payment, intended ownership and construction,
+  including reload recovery. AI-C163 separately verifies exact mapped supplier
+  score consumption, native45-Gold purchase, intended ownership and actual Farm
+  construction at226, physically retained227–230. Astra audits both scopes.
+  The supplier was already the sole control candidate: no additional supplier
+  BUY-versus-NOT-BUY effect is required or claimed.
 - **1.8, levels 1–3: known weak-site suppression.** AI-C138's isolated
   production deduction changes the owned-site winner/request; AI-C139's
   dynamic frontier scanner reproduces suppression without fixed-plot policy.
@@ -77,8 +81,9 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.5 supplier acquisition and improvement.** The Quarter-footprint
-portion and representative 1.6 are Astra-validated complete. Do not reopen them
-merely for broader qualification. Verify the separate native supplier buying
-route through an actual improvement. Earlier negative bid and acquisition-
-necessity results remain valid. [AI-C162](findings.md#ai-c162).
+**Active item: 1.7 defer and reconsider.** In a weak-only city, demonstrate a
+policy-caused decision to leave the Quarter uncommitted or choose another
+investment; then demonstrate dynamic reconsideration when a credible new
+opportunity becomes available. Keep the recorded 1.5/1.6 closures intact;
+additional acquisition seeds and purchase-necessity studies are qualification,
+not new acceptance gates. 2.1 remains after 1.7.

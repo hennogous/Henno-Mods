@@ -22,6 +22,10 @@ qualification remains separate. The full goal is active and incomplete.
   native Quarter site/request from viable 3-adjacency site 2571 to strong
   4-adjacency site 2497, with complete packet/cache audit. This does not prove premium
   necessity or construction. [AI-C158](findings.md#ai-c158).
+- **1.5 Tile acquisition — levels 1–3.** Paid Quarter-footprint follow-through
+  combines with native paid supplier acquisition and actual Farm completion.
+  No supplier-bid purchase necessity or Service is implied.
+  [AI-C162](findings.md#ai-c162), [AI-C163](findings.md#ai-c163).
 - **1.6 Construction follow-through — levels 1–3.** Causal Quarter preference
   and an integrated ownership-prerequisite repair proceed through request,
   production, foundation and physical completion. Fresh and retained-plan
@@ -38,41 +42,30 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 1.5 Supplier acquisition
+## Active problem: 1.7 Defer and reconsider
 
-**Acceptance:** a worthwhile Quarter-footprint purchase reaches native request,
-savings/legality checks, payment, ownership by the intended city and foundation.
-Qualify the separate supplier acquisition route through acquisition and
-improvement. Diagnostic ownership assignment is not a native purchase.
+**Acceptance:** a weak-only city leaves the Quarter uncommitted or chooses
+another investment because of policy, then reconsiders after a credible new
+opportunity. Require the native comparison/request in both stages and dynamic
+main CSC reproduction, not just a logged deferral count or a score write.
+Use representative cases; additional seeds remain separate qualification.
 
-**Quarter-footprint acquisition now meets levels 1–3; 1.6 follow-through is
-closed at the representative scope.** The generic CE ownership capability and
-main CSC's dynamic live scopes reproduce the controlled remedy without an
-external writer. Nuremberg pays 40 Gold at 203, owns the intended site and
-founds Bakers at 209; physical IsComplete is true from 213. Loading the old
-paid-but-waiting turn-205 plan also reaches completion, without fresh contract
-creation or another target payment. Astra independently audited both terminal
-runs, exact journals, source/package identities and the causal comparison.
-[AI-C162](findings.md#ai-c162), [integration and sealed evidence](../research/mods/csc-ce-ownership-completion-20261112.md).
+**1.5 is now closed at levels 1–3, independently approved by Astra.** Its
+integrated footprint workflow (AI-C162) reaches paid ownership and completed
+construction. The separate supplier route (AI-C163) delivers +6,656 Q8 to the
+mapped Farm forecast, pays45 Gold at220, obtains intended-city ownership, and
+executes Farm construction at226. Physical Flax plus an unpillaged Farm remain
+at227–230. The unowned offer retires after ownership. Exact journals, checkpoint
+hashes, every archived package file and normal cleanup pass.
 
-**1.5 remains open for a separate supplier purchase through improvement.**
-Acceptance: a live-material-derived offer must be consumed by the relevant
-native buying decision, change a relevant native action against its control,
-reach native payment and intended ownership, then an actual supplier improvement.
-Main CSC now proposes a bounded 26-unit improvement bid for an adjacent,
-quoted unowned Base when a healthy completed Quarter has no viable owned Base.
-The existing improvement forecast also feeds routine resource buying; no new
-CE API is needed. The matched supplier test is pending native action evidence.
-The common zero-turn source is saved and separately qualified despite a
-post-save missing-log wrapper failure. Keep native savings, legality and
-Treasury checks. [Policy and limits](../research/mods/csc-ai-supplier-acquisition-20261112.md).
+The supplier was already the control's sole resource candidate; no supplier-bid
+purchase necessity is claimed. The controlled action effect is established in
+the accepted footprint workflow; the written separate supplier gate requires
+paid acquisition through improvement, not another BUY-versus-NOT-BUY result.
+No Service or overlapping-buyer reliability is claimed.
+[Supplier evidence and sealed audit](../research/mods/csc-ai-supplier-acquisition-20261112.md).
 
-The positive-offer control still buys the same footprint for Tailors, so
-promotion necessity is not demonstrated. That negative remains valid. A
-BUY-versus-NOT-BUY test is not an extra footprint acceptance gate; the causal
-paid-but-stuck→construction repair supplies that action effect. No Services or
-overlapping-buyer reliability are claimed. **Seven of ten sub-problems close at
-levels 1–3; open: 1.5, 1.7 and 2.1.**
+**Eight of ten sub-problems close at levels 1–3. Open: 1.7 and 2.1.**
 
 ## Evidence levels by sub-problem
 
@@ -82,14 +75,14 @@ levels 1–3; open: 1.5, 1.7 and 2.1.**
 | 1.2 Neighbors | Verified | Future-host path changes type/request | **Complete at stated scope** |
 | 1.3 Rivers | Verified | Quarter site/request changed | **Complete at stated scope** |
 | 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
-| 1.5 Buying | Footprint request/debit/ownership verified | Paid-site follow-through changes | **Footprint complete**; supplier purchase/improvement open |
+| 1.5 Buying | Footprint and supplier delivery verified | Causal footprint follow-through; supplier paid and improved | **Complete at stated scope** |
 | 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
 | 1.7 Defer/reconsider | Partial; weak-site mechanism exists | Pending | Pending |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
 | 2.1 Customer sites | Exact Harbor writes verified | Isolated offer ablation pending | Causal reproduction pending |
 | 2.2 Protect materials | Verified | Verified, supplier retained | **Complete finite-penalty scope** |
 
-## Queued acquisition work
+## Retained acquisition negatives and limits
 
 The Szeged fixture received eight native writes and eligible cache reads.
 Its +24 offer did not beat Neighborhood, and no purchase contract appeared.
