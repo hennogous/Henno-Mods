@@ -38,3 +38,12 @@ Session44721/Python14240/native15872 no longer owns console. No policy fault
 established. Read-only exact UI-clock settlement fix passes8 observer tests.
 Restart authorised requested test in run-continents-retry01, SAME frozen640
 package and seeds; preserve first attempt. Replace owner IDs with retry receipts.
+
+
+Retry01 TERMINAL normally at Core55/UI54 again. No30s settle: prior assumption
+superseded. Exact-clock read now records deferral and lets passive TurnBegin
+observe its real UI clock during ordinary play; final audit still checks every
+actual sample. Separate diagnostic prefix avoids Service-parser pollution.
+Eight revised fixtures pass. Retry02 CURRENT, tool session39218, same640-file
+package; source commits01f5f3c4 policy/fcfff70a observer. Do not edit imported
+sources or access FireTuner while that worker lives. Original goal still paused.

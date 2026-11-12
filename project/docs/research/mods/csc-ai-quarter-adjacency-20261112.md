@@ -130,3 +130,16 @@ being silently attributed to55. The read helper now waits up to30 seconds for
 the exact UI clock, retrying only the read; no autoplay or order is repeated.
 Eight offline observer fixtures pass, including lag, overrun and wrong-footer
 cases. A fresh same-seed retry is the requested200 test; no policy/package changes.
+
+
+### Retry01 correction: inactive UI clock does not necessarily settle
+
+The same Core55/UI54 state persisted for30 seconds, so retry01 also closed
+normally before further play. The settling assumption above is superseded.
+The UI can remain on its prior observer turn while inactive. The helper now
+records an explicit deferral and continues ordinary play; only a matching clock
+runs the snapshot, and the passive TurnBegin watcher can provide the deferred
+clock afterward. No sample is relabelled, no autoplay/order is resent, and the
+final audit still checks actual coverage. Diagnostic deferral messages use a
+separate prefix so they cannot be parsed as Service samples. Eight observer
+fixtures pass. Retry02 uses exactly the same640-file gameplay package.
