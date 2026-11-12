@@ -1,3 +1,69 @@
+# NEXT1.7 reconsideration; deferral half PROVED, allworkersTERMINAL
+
+PreviousgoalturnPROGRESS: implementedtypedDeclineCE+main3Lua, controllednative
+causaldeferral. Full02(worker19268) andcontrol01(worker90477) complete200→204exit0,
+normalclosedverified. Prototypefull01(12145) alsoterminal. NOcurrentgame/worker.
+Native sourceforkcommit e4f3228pushed codex/ce-purchase-ownership-ack, NO PR.
+CEcorrectedbuild03 a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb
+Desktop/Codex/csc-ce-develop-port-20261105/environment/outputs/decline-api-20261112-03/
+Binaries/Win64/GameCore_XP2_CE_FinalRelease.dll. Builds01/02prototypeonly.
+Native166selftests+4hookgroup+instructionrelayPASS. CurrentMSVCbuildmetadataretained.
+WildWdeveloprechecked2986a746unchanged. Nativeprojectworktreecleanatsourcecommit.
+SkillAI-N120cdd1bebpushed. CSCmaincurrentchangesreadytocommit; latestoldcommitf1f6944e.
+
+SEALEDproject/docs/research/mods/csc-ai-quarter-decline-20261112-audit.json,
+maintainedaudit toolaudit_quarter_decline.py. Artifactrootunchanged.
+Full deferral-nicopolis-full-02 vs deferral-nicopolis-control-01 bothsourcee333251…
+sameCE03/Main5/samebalancedradius4knowledgefixture. ExactlyONEfilediffpublisher
+controlstripsONLYP1/c524295/d36declines. Numericentries+physicalfacts+ALL36x38
+postselectorcache/flags/reservationsEXACTEQUAL. 11fullmasks/0control; originalscores
+restored. 203fullHipprodrome31/472306049 request4333priority1195;controlBakers36/
+472347924 same4333priority1359. D31runtimeCONFIRMEDHIPPODROME (earlierPreservewordwrong).
+Astra /root/astra_purchase_followthrough_review independentlyrehashes642filesperarm,
+exactjournals/matrices/scopes/requests. APPROVESlevels1–3forDEFERRALHALFonlyAI-C165.
+Whole1.7STILLOPEN. Eightof10closed;2.1after1.7. DoNOTclaim9yet.
+
+Currentmainfeature: basePotentialAt cachedperplayer/profile/publication,6neighbors+
+1resourceDefpass. Unknownneighbors/hiddenBasetypes/missingdefs/ANYrevealedownedOR
+unownedadjacentmappedBase preventsdecline. RawBasepotentialkeepssiteeligibleeven
+locked/unknownimprovement. Weakbidmetadata declineNoBaseonlyforprovenabsenceof
+currentadjacentpath. Publisherusesretainedentries, boundedoptionalcapability,
+Begin/Allow/Commit replacement, priorversionexact64receipts(limitlogged). APIabsent/
+overflowkeepsfiniteguidance. BridgeABIparsesNUMERIC1(10notaccepted). Main3files
+explanatorycommentsupdated.65focusedLua/driverPASS inclbothprofiles/withdrawal/ABI/
+fallback/rejection. NativeAPIStage/Status/Receipt keyed4tupleversioned,existinghook
+RAIIpercellnotwholerow. Noaddresses/MH/newDLLinCSC. Registry/contextlifecycleexisting.
+Maskuses DeclinedScore=InvalidScore-1=-2559745; MASKORIGINAL>=floor inclzero/negative/
+atfloor, preservebelowfloor+extremeprotected. GetBest nativepredicatereservation<cell
+&&runningBest<=cell; reservedprioritybelowfloorcouldadmitflooritself.166testscoveredge,
+reserved/frontier/nesting/retirement/all-or-nonejournalcapacity/badrowpointer/INTMAX.
+Vectorreservebad_alloccaughtBEFOREwrites; sortedcityrangeboundslookups. Receipts
+considered≠masked,originalQ8onlymeaningfulmasked>0; retirementrestoresnotnewcounters.
+
+NEXTacceptanceremaining: credibleBaseopportunity→automaticdeclinewithdrawal→FRESH
+Quarterchoice/request. Astrarecommends existingFARMEDFLAX471 currentlyowner11/C65536,
+resource54/improvement1, adjacent472. DiagnosticterritorialtransfertoP1/Nicopolis
+isminimalfactchange; PRESERVEresource/improvement/terrain, NO nativeacquisitionclaim.
+FIRSTINSPECT freelegalQuarter397/398 outsidecurrentHippodromereservation472 and
+actualmainviability/Base/customergeometry; inspectpopulation/districtcapacity/queue/
+retainedcontract. DoNOTcancel/reset/clearanyplanoraddproduction/gold/tech/pop.
+AftertransferverifyGetPlotPurchaseCity=Nicopolis+mainSupplyrecognition; nextordinary
+publicationwithdrawsrelevantscopes. LetnormalAIplanningresume. Nativefreshcomparison
+mayoccurbeforecompletion; completionisNOTanewgate. Ifretainedplanmeanswait, wait.
+Queue203Settler25.2/175,Prod8.4; couldtake20–50turnsnaturally. Needqualificationnot
+skiptoanotherfixtureorforceplanreset. MainCscnewcodeisallactualpolicy.
+
+No treatment204checkpointpreserved: full02autosavesoverwrittenbycontrol01. Easiest
+isREPLAYsame200→204fullonceinnewsharedowner, inspect+transfer204, continuebounded
+214/224/etcuntilfreshQuarterrequest. Extendexistingnicopolisdriverpurposefullyfor
+thisremainingtest; current--deferral-knowledge-scoutforces204. DiagnosticREVEALprefix
+only200, stagehostreaderwindow200–204 currentlymax8 guard. Canstopnativehostreaderafter
+204anduseexistingselectorFridajournal+mainDeclinepriorreceipts/modelmetadataforlater
+phase; don'texpandtoolingunlessneeded. Observer64recordbound, keeponecityscope.
+FuturefollowthroughneedsCommonFactfixturewriter+read-onlyexactaudits; no external
+policywriter/nativechoice. PreserveallnamedHenno saves(T3/T204/T216). Externalnative/
+skill/git/networkwritesrequiresescalation. NoComputerUse. Sharedcontrollerexclusive.
+
 # NEXT1.7implementation: typed district-site decline; NO LIVE WORKER
 
 76102TERMINALexit0/completeverified/normalclosedverified.96151/59223terminal.

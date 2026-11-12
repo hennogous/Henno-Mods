@@ -90,13 +90,24 @@ function B.OwnershipLimit(status)
     return math.min(tonumber(status:match('"capacity":(%d+)')) or 0,MAX_OWNERSHIP_SCOPES)
 end
 
+function B.DeclineStatus()
+    if type(CE_AIDistrictDeclineStage)=='function' and type(CE_AIDistrictDeclineStatus)=='function'
+        and type(CE_AIDistrictDeclineReceipt)=='function' then return CE_AIDistrictDeclineStatus() end
+end
+function B.DeclineLimit(status)
+    if type(status)~='string' or tonumber(status:match('"abi":(%d+)'))~=1
+        or tonumber(status:match('"ready":(%d+)'))~=1 or tonumber(status:match('"faults":(%d+)'))~=0 then return 0 end
+    return math.min(tonumber(status:match('"capacity":(%d+)')) or 0,4096)
+end
+
 -- District scores address a player, city, district index and plot index.
 -- Building bids address a player, city and building index. The Builder
 -- allowlist and bids address a supplier plot and an improvement index.
 -- A supplier exclusion is a separate selector input keyed to the whole plot
 -- in its owning city. A repair identifies an existing district footprint.
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
-    builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions,ownershipScopes,ownershipLimit)
+    builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions,ownershipScopes,ownershipLimit,
+    declines,declineLimit)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -175,6 +186,24 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         if not (integer(e.player,0,63) and allowed[e.player] and integer(e.city,0,2147483647)
             and integer(e.plot,0,width*height-1)) then return reject('Invalid supplier exclusion') end
     end
+    -- A typed decline is selection admission, not a score or an instruction
+    -- to cancel a plan. Its lifetime is exactly this complete publication.
+    -- Missing optional support is handled by the caller's zero-capacity list;
+    -- supplied but malformed/unsupported scopes must reject the whole packet.
+    if declines and (type(declines)~='table' or #declines>(declineLimit or 0) or #declines>4096
+        or (#declines>0 and type(CE_AIDistrictDeclineStage)~='function')) then
+        return reject('Invalid district decline batch')
+    end
+    local declineKeys={}
+    for _,e in ipairs(declines or {}) do
+        if not(integer(e.player,0,63) and allowed[e.player] and integer(e.city,0,2147483647)
+            and integer(e.district,1,districtCount-1) and integer(e.plot,0,width*height-1)) then
+            return reject('Invalid district decline scope')
+        end
+        local key=e.player..':'..e.city..':'..e.district..':'..e.plot
+        if declineKeys[key] then return reject('Duplicate district decline scope') end
+        declineKeys[key]=true
+    end
     -- Begin opens staging. Nothing here queues an action. Commit publishes
     -- the packet for later native calls. If validation or a native call fails,
     -- Disable clears the policy so an older or incomplete offer cannot linger.
@@ -213,6 +242,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         end
         for _,e in ipairs(ownershipScopes or {}) do
             assert(CE_AIDistrictPurchaseCompletionStage(e.player,e.city,e.district)==1,'Native ownership scope rejected')
+        end
+        for _,e in ipairs(declines or {}) do
+            assert(CE_AIDistrictDeclineStage(e.player,e.city,e.district,e.plot)==1,'Native district decline rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

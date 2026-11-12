@@ -38,6 +38,8 @@ do
  local profile
  for _,p in ipairs(placement.StageTwoProfiles())do if p.key=='BAKERS' then profile=p end end
  assert(profile)
+ print('CSC_DEFERRAL_DISTRICT_TYPES',turn,GameInfo.Districts[31].DistrictType,
+  GameInfo.Districts[36].DistrictType,GameInfo.Districts[37].DistrictType)
  local allVisible=true
  for definition in GameInfo.Resources() do
   if CSC_Adjacency.HasTag(profile.base,definition.ResourceType)
@@ -68,18 +70,40 @@ do
    local plot=assert(Map.GetPlotByIndex(entry.plot))
    local supply=placement.ReadSuppliers(Players[1],plot,profile)
    print('CSC_DEFERRAL_RETAINED',turn,nextVersion,entry.plot,entry.delta,
-    tostring(entry.weak),#supply.base,#supply.specialty)
+    tostring(entry.weak),#supply.base,#supply.specialty,tostring(entry.declineNoBase))
+  end
+ end
+ for _,scope in ipairs(declines or {})do
+  if scope.player==1 and scope.city==524295 and scope.district==profile.district.Index then
+   print('CSC_DEFERRAL_DECLINE_RETAINED',turn,nextVersion,scope.plot)
   end
  end
 end
 """
 
 
-def stage(publisher):
+def stage(publisher,*,arm=None):
     """Observe retained main packets; do not change their contents or lifetime."""
     needle=b'    local accepted, message = bridge.Publish('
     assert publisher.count(needle)==1
+    assert arm in (None,'full','control')
     # The production locals are `turn`, `version` and `entries`. Keep the
     # diagnostic's version equal to the exact next committed main packet.
     receipt=RECEIPT.replace('nextVersion','(version+1)').encode('utf-8')
+    if arm=='control':
+        # Only the target city's Bakers admission scopes are removed. Numeric
+        # deductions and every other player/city/district intervention remain.
+        # Filter before both actual publication and committed-scope logging.
+        receipt=b'''-- Diagnostic matched control; no shipping policy toggle.
+do
+ local removed=0
+ for i=#declines,1,-1 do
+  local scope=declines[i]
+  if scope.player==1 and scope.city==524295 and scope.district==36 then
+   table.remove(declines,i);removed=removed+1
+  end
+ end
+ print('CSC_DEFERRAL_DECLINES_WITHHELD',turn,version+1,removed)
+end
+'''+receipt
     return REVEAL.encode('utf-8')+publisher.replace(needle,receipt+needle)

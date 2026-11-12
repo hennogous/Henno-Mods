@@ -1,5 +1,9 @@
 # Quarter deferral and reconsideration
 
+The later [typed-decline implementation and matched evidence](csc-ai-quarter-decline-20261112.md)
+supersede the proposal at the end of this report. The deferral half is now
+Astra-audited through levels1–3; later reconsideration remains open.
+
 Active **1.7**, after1.5 and1.6 closed. Acceptance: ordinary CSC policy causes a
 weak-only Quarter profile to remain uncommitted or lose to another investment,
 then dynamically reconsiders after a credible new opportunity. Observe actual

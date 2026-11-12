@@ -347,7 +347,9 @@ print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city
 def run(args):
     case_name = getattr(args, 'case', 'nicopolis')
     deferral_scout=getattr(args,'deferral_knowledge_scout',False)
+    deferral_arm=getattr(args,'deferral_arm',None)
     assert not deferral_scout or case_name=='nicopolis' and args.mode=='integrated' and args.through==204
+    assert not deferral_arm or deferral_scout
     case = dict(CASES[case_name])
     source_turn=case.get('turn',200)
     out = args.output.resolve()
@@ -457,7 +459,7 @@ def run(args):
             from nicopolis_deferral_policy import stage as stage_deferral
             from host_choice_policy import stage as stage_host_reader
             relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
-            replacements[relative]=stage_host_reader(stage_deferral(replacements[relative]),[],
+            replacements[relative]=stage_host_reader(stage_deferral(replacements[relative],arm=deferral_arm),[],
                 start=200,end=204,players=[1])
         if getattr(args, 'without_frontier_offers', False):
             replacements[SCANNER] = ablate_frontier_offer(replacements[SCANNER],case)
@@ -493,6 +495,7 @@ def run(args):
         save_endpoint=getattr(args,'save_endpoint',False),
         supplier_no_bid=getattr(args,'supplier_no_bid',False),
         deferral_knowledge_scout=deferral_scout,
+        deferral_arm=deferral_arm,
         prototypeBuyer=getattr(args,'prototype_buyer',None),
         sourceSeatMigration=seat_provenance,
         without_frontier_offers=getattr(args,'without_frontier_offers',False),
@@ -583,6 +586,15 @@ Modding.EnableMod(chosen.Handle,true)
             if args.mode == 'integrated':
                 qualify_integrated_policy(controller,out,case)
                 if deferral_scout:
+                    if deferral_arm:
+                        raw=controller.cmd('''local status=assert(CE_AIDistrictDeclineStatus())
+assert(status:match('"ready":1') and status:match('"faults":0'))
+local version=assert(tonumber(CE_AIDistrictScoresStatus():match('"version":(%d+)')))
+local receipt=assert(CE_AIDistrictDeclineReceipt(version,1,524295,36,472))
+assert(receipt:match('"staged":'''+('0'if deferral_arm=='control'else'1')+''''))
+print('CSC_DEFERRAL_API_QUALIFIED',status,receipt)''',
+                            'CSC_AI_BakersGameplay','qualify-deferral-api')
+                        (out/'decline-api-qualification.txt').write_text(raw,encoding='utf-8')
                     raw=controller.cmd('CSC_HOST_DIAG_Arm()','CSC_AI_BakersGameplay','arm-deferral-reader')
                     (out/'initial-native-prefix.txt').write_text(raw,encoding='utf-8')
                 if ownership_bytes and not deferral_scout:
@@ -774,6 +786,8 @@ if __name__ == '__main__':
     parser.add_argument('--supplier-no-bid',action='store_true',help='Diagnostic supplier case only: keep mapped allowances/protection but remove its exact positive bid')
     parser.add_argument('--deferral-knowledge-scout',action='store_true',
         help='Nicopolis200-204 only: common radius4 revelation, ordinary main policy, read all selector matrix columns')
+    parser.add_argument('--deferral-arm',choices=('full','control'),
+        help='Knowledge fixture with typed-decline API: control omits only Nicopolis Bakers admission scopes')
     parser.add_argument('--mode', choices=('original', 'frontier', 'integrated'), required=True)
     parser.add_argument('--case',choices=tuple(CASES),default='nicopolis')
     parser.add_argument('--without-frontier-offers',action='store_true',

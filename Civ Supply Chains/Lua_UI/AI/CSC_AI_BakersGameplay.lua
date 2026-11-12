@@ -4,6 +4,9 @@
 -- Civ still owns candidate legality, selection, queueing and execution.
 -- Optional ownership scopes let CE acknowledge an already-fulfilled purchase
 -- prerequisite for a native Quarter plan. They never buy land or force a bid.
+-- Optional typed declines withhold proven no-Base district-site pairs from a
+-- fresh native comparison. Each turn's live potential replaces the scopes;
+-- CE restores score bytes after selection and never cancels retained plans.
 include('CSC_AdjacencyCore')
 include('CSC_AI_AdjacencyScan')
 include('CSC_AI_QuarterPlacement')
@@ -16,6 +19,7 @@ local capacity = 4096 -- CE batch contract, across all original AI players.
 local customerReceiptLimit = 16 -- Each customer read scans the native district journal.
 local frontierReceiptLimit = 32 -- Bounded exact-pair readback of new purchase-site offers.
 local buildingReceiptLimit = 96
+local declineReceiptLimit = 64 -- Bounded readback; every native key remains queryable.
 local lastTurn
 local districtCount
 local previousOffers
@@ -36,6 +40,16 @@ local function reportReceipts(turn, version)
     -- window, and forecast, comparison and score-write counts are distinct.
     local previous = previousOffers
     if not previous or previous.version ~= version then return end
+    for i = 1, math.min(#(previous.declines or {}), declineReceiptLimit) do
+        local site = previous.declines[i]
+        local result = readReceipt(CE_AIDistrictDeclineReceipt, version, site.player, site.city, site.district, site.plot)
+        print(string.format('CSC_AI_DECLINE_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d result=%s',
+            turn,version,site.player,site.city,site.district,site.plot,result))
+    end
+    if #(previous.declines or {}) > declineReceiptLimit then
+        print(string.format('CSC_AI_DECLINE_RECEIPTS_OMITTED turn=%d version=%d count=%d',
+            turn,version,#previous.declines-declineReceiptLimit))
+    end
     for i = 1, math.min(#previous.frontier, frontierReceiptLimit) do
         local site = previous.frontier[i]
         local result = readReceipt(CE_AIDistrictScoresReceipt, version, site.player, site.city, site.district, site.plot)
@@ -147,6 +161,8 @@ local function refresh(turn)
         and math.min(256, tonumber(exclusionStatus:match('"capacity":(%d+)')) or 0) or 0
     local ownershipStatus = bridge.OwnershipStatus()
     local ownershipLimit = bridge.OwnershipLimit(ownershipStatus)
+    local declineStatus = bridge.DeclineStatus()
+    local declineLimit = bridge.DeclineLimit(declineStatus)
     local ownershipScopes = {}
     -- Read exact scopes only after a reported acknowledgement. This avoids
     -- scanning every native scope merely to report zero each turn. The last
@@ -238,6 +254,17 @@ local function refresh(turn)
     table.sort(entries, priority)
     local omitted = math.max(0, #entries - capacity)
     for i = #entries, capacity + 1, -1 do entries[i] = nil end
+    -- Only retained, validated planner entries may request admission control.
+    -- No-Base evidence is per-site; a neutral/potential site stays eligible.
+    -- Stable packet ordering bounds scopes without a second map scan. Missing
+    -- capability or overflow leaves the ordinary finite deductions in force.
+    local declines, omittedDeclines = {}, 0
+    for _,entry in ipairs(entries) do
+        if entry.declineNoBase then
+            if #declines < declineLimit then declines[#declines+1]=entry
+            else omittedDeclines=omittedDeclines+1 end
+        end
+    end
     local width, height = Map.GetGridSize()
     -- Dropping part of a site's improvement allowlist can forbid a valid job.
     -- Send Builder, building and repair lists only when each fits as a whole.
@@ -253,8 +280,11 @@ local function refresh(turn)
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit,
         #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
-        exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit)
+        exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit,
+        declines,declineLimit)
     assert(accepted, message)
+    print(string.format('CSC_AI_DECLINES turn=%d version=%d scopes=%d omitted=%d previous=%s',
+        turn,version+1,#declines,omittedDeclines,declineStatus or 'unavailable; finite guidance retained'))
     -- These are committed improvement proposals, not buying or assignment
     -- receipts. Native candidate, payment and actual improvement are separate.
     if allowances <= capacity then
@@ -298,7 +328,7 @@ local function refresh(turn)
     local siteBids, weakSites, customerSites = 0, 0, 0
     -- Save the exact published identities for readback on the next boundary.
     -- Receipt caps limit logging work. They do not limit what CE receives.
-    local tracked = {version=version + 1, customers={}, buildings={}, frontier={}}
+    local tracked = {version=version + 1, customers={}, buildings={}, frontier={},declines=declines}
     for _, entry in ipairs(entries) do
         if entry.weak then
             weakSites = weakSites + 1

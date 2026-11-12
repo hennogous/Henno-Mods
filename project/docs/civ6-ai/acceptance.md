@@ -87,3 +87,10 @@ investment; then demonstrate dynamic reconsideration when a credible new
 opportunity becomes available. Keep the recorded 1.5/1.6 closures intact;
 additional acquisition seeds and purchase-necessity studies are qualification,
 not new acceptance gates. 2.1 remains after 1.7.
+
+**Recorded partial completion:** AI-C165 demonstrates levels1–3 for causal
+deferral: eleven dynamic no-Base scopes change the native request from Bakers
+to Hippodrome with identical restored numerical matrices. Astra independently
+audits both arms. Whole1.7 stays open until a credible new Base opportunity
+withdraws scopes and produces a fresh Quarter choice/request. Retained plans
+must proceed through ordinary AI handling; completion is not an added gate.

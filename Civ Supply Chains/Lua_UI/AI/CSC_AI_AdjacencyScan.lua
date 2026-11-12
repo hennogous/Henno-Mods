@@ -263,6 +263,49 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
     local futureTypesKnown = futureTypeRules(pid) ~= nil
     local visibility = PlayersVisibility[pid]
     local allBaseTypesVisible
+    local baseTypesDefined
+    local basePotential = {}
+    local function basePotentialAt(plot)
+        -- Admission requires stronger evidence than a finite preference. A
+        -- known owned OR unowned adjacent Base may become a supplier later;
+        -- unknown geography/visibility/definitions cannot prove its absence.
+        -- Cache only within this player/profile/publication. Six neighbors per
+        -- site, and one resource-definition pass, keep recurring work bounded.
+        local index = plot:GetIndex()
+        if basePotential[index] then return basePotential[index] end
+        if allBaseTypesVisible == nil then
+            local ok, visible, defined = pcall(function()
+                local count, revealed = 0, true
+                for definition in GameInfo.Resources() do
+                    if A.HasTag(profile.base, definition.ResourceType) then
+                        count = count + 1
+                        if not A.ResourceVisible(pid, definition.Index) then revealed = false end
+                    end
+                end
+                return revealed, count > 0
+            end)
+            allBaseTypesVisible = ok and visible == true
+            baseTypesDefined = ok and defined == true
+        end
+        local facts = {frontier=false, uncertain=false, possibleBase=false}
+        for _, neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
+            local owner = neighbor:GetOwner()
+            facts.frontier = facts.frontier or owner == pid
+            if not visibility:IsRevealed(neighbor:GetX(), neighbor:GetY()) then
+                facts.uncertain = true
+            elseif owner == pid or owner == -1 then
+                local resource = GameInfo.Resources[neighbor:GetResourceType()]
+                if resource and A.ResourceVisible(pid, resource.Index)
+                    and A.HasTag(profile.base, resource.ResourceType) then facts.possibleBase = true end
+            end
+        end
+        -- Potential supply stays eligible even when its improvement is locked
+        -- or feasibility is unknown. Only proven absence requests a decline.
+        facts.noBasePath = baseTypesDefined and allBaseTypesVisible
+            and not facts.uncertain and not facts.possibleBase
+        basePotential[index] = facts
+        return facts
+    end
     local hosts = {}
     -- Use the UI's current native targets for customer bids. Future host
     -- geometry below is a planning hint and can never create a customer bid.
@@ -410,18 +453,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
             if plot:GetOwner() == -1 and plot:GetDistrictType() == -1
                 and visibility:IsRevealed(plot:GetX(), plot:GetY())
                 and plot:CanHaveDistrict(district.Index, pid, city:GetID()) then
-                local frontier, uncertain, possibleBase = false, false, false
-                for _, neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(), plot:GetY())) do
-                    local owner = neighbor:GetOwner()
-                    frontier = frontier or owner == pid
-                    if not visibility:IsRevealed(neighbor:GetX(), neighbor:GetY()) then
-                        uncertain = true
-                    elseif owner == pid or owner == -1 then
-                        local resource = GameInfo.Resources[neighbor:GetResourceType()]
-                        if resource and A.ResourceVisible(pid, resource.Index)
-                            and A.HasTag(profile.base, resource.ResourceType) then possibleBase = true end
-                    end
-                end
+                local baseFacts = basePotentialAt(plot)
+                local frontier, uncertain, possibleBase = baseFacts.frontier, baseFacts.uncertain, baseFacts.possibleBase
                 if frontier then
                     counts.frontierObserved = counts.frontierObserved + 1
                     local resource = GameInfo.Resources[plot:GetResourceType()]
@@ -430,15 +463,6 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                     -- A hidden mapped Base type prevents a negative conclusion
                     -- from the visible map. Check unlock visibility globally,
                     -- rather than allowing policy to infer hidden deposits.
-                    if allBaseTypesVisible == nil then
-                        allBaseTypesVisible = true
-                        for definition in GameInfo.Resources() do
-                            if A.HasTag(profile.base, definition.ResourceType) and not A.ResourceVisible(pid, definition.Index) then
-                                allBaseTypesVisible = false
-                                break
-                            end
-                        end
-                    end
                     local weakSite = coversMaterial or not uncertain and allBaseTypesVisible and not possibleBase
                     if weakSite then
                         -- BUILD-operation targets omit unowned plots. Publish
@@ -446,7 +470,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                         -- CE still requires the exact proposing city and a live
                         -- native eligible row before applying this Q8 deduction.
                         bids[#bids + 1] = {player=pid, city=city:GetID(), district=district.Index,
-                            plot=index, delta=-noBasePenaltyQ8, weak=true}
+                            plot=index, delta=-noBasePenaltyQ8, weak=true, declineNoBase=baseFacts.noBasePath}
                         counts.frontierBids = counts.frontierBids + 1
                     elseif uncertain or not allBaseTypesVisible then
                         counts.frontierUncertain = counts.frontierUncertain + 1
@@ -534,7 +558,13 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                             if betterQuarterSite(candidate, best) then best = candidate end
                         end
                     end
-                    if candidate.weak then bids[#bids + 1] = candidate end
+                    if candidate.weak then
+                        -- The numeric deduction remains usable on older CE.
+                        -- This optional typed input affects only a fresh joint
+                        -- selector; no retained district plan is cancelled.
+                        candidate.declineNoBase = basePotentialAt(plot).noBasePath
+                        bids[#bids + 1] = candidate
+                    end
                 end
             end
             counts.legal = counts.legal + legal

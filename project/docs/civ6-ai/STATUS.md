@@ -53,10 +53,13 @@ Use representative cases; additional seeds remain separate qualification.
 **Latest verified outcome:** all11 known-no-Base Bakers pairs in the Nicopolis
 knowledge fixture consume their finite deductions, but Bakers still wins.
 This is a policy limitation, independently audited by Astra, not an inert API.
-[AI-C164](findings.md#ai-c164). Next: implement a typed, transient per-cell
-selector decline only for proven absence of Base potential, then test causal
-deferral and dynamic withdrawal. It is proposed, not implemented. Unknown or
-possible supply stays eligible; other districts and retained plans stay native.
+[AI-C164](findings.md#ai-c164). The integrated typed-decline comparison now
+changes Bakers to Hippodrome with identical numerical matrices and actual
+construction requests, independently audited by Astra. This closes levels1–3
+for the **deferral half**, not whole1.7. Unknown/potential supply remains
+eligible; other district columns and retained plans stay native. Next: a
+credible new Base opportunity, scope withdrawal and a fresh Quarter
+choice/request. [Evidence](../research/mods/csc-ai-quarter-decline-20261112.md).
 
 **1.5 is now closed at levels 1–3, independently approved by Astra.** Its
 integrated footprint workflow (AI-C162) reaches paid ownership and completed
@@ -85,7 +88,7 @@ No Service or overlapping-buyer reliability is claimed.
 | 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
 | 1.5 Buying | Footprint and supplier delivery verified | Causal footprint follow-through; supplier paid and improved | **Complete at stated scope** |
 | 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
-| 1.7 Defer/reconsider | Partial; weak-site mechanism exists | Pending | Pending |
+| 1.7 Defer/reconsider | Typed decline verified | Deferral/request changed; reconsideration pending | Dynamic deferral integrated; whole item open |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
 | 2.1 Customer sites | Exact Harbor writes verified | Isolated offer ablation pending | Causal reproduction pending |
 | 2.2 Protect materials | Verified | Verified, supplier retained | **Complete finite-penalty scope** |

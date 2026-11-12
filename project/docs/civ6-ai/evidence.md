@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [Typed Quarter-site declines and native boundary correction —12 November2026](../research/mods/csc-ai-quarter-decline-20261112.md)
+
 - [Quarter deferral and reconsideration —12 November2026](../research/mods/csc-ai-quarter-deferral-20261112.md)
 
 - [Supplier acquisition: reuse of native improvement forecasts —12 November2026](../research/mods/csc-ai-supplier-acquisition-20261112.md)

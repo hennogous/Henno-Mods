@@ -37,13 +37,13 @@ possible; do not expand this into multi-seed qualification.
 
 **Verified limitation and next implementation:** AI-C164's eleven known-no-Base
 Bakers pairs all receive−65,536 Q8, but native Bakers472 still wins347,924.
-Astra independently audits this negative. Implement a generic typed per-cell
-CE selector decline for proven absence of any credible Base path, following
-the existing transient supplier-mask lifecycle. This is proposed, not yet
-implemented. Unknown or unowned possible supply prevents decline; missing CE
-support retains finite guidance. Preserve other district cells and retained
-plans. Matched control omits only decline scopes, then treatment must withdraw
-them and produce a fresh Quarter choice after a credible new opportunity.
+Astra independently audits this negative. The integrated generic typed per-cell
+CE selector decline now changes the native Bakers request to Hippodrome in a
+matched comparison with identical36×38 numerical matrices. Astra validates
+levels1–3 for this **deferral half**, not whole1.7. Unknown/unowned possible
+supply prevents decline; missing CE support retains finite guidance. Other
+district cells and retained plans stay native. Next treatment must withdraw
+scopes and produce a fresh Quarter choice after a credible new opportunity.
 Do not increase a penalty merely to beat this fixture's competing cache.
 [Evidence and design boundaries](../research/mods/csc-ai-quarter-deferral-20261112.md).
 

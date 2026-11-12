@@ -1,0 +1,191 @@
+{
+  "verified_deferral_half": true,
+  "whole_1_7_complete": false,
+  "full": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-full-02",
+  "control": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-control-01",
+  "source_sha256": "e333251ec7318fb6b170678a956c28e02e2f9b01c4c4753c99e84b1a112fe19a",
+  "ce_sha256": "a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb",
+  "package_file_differences": [
+    [
+      "CSC Bakers Development Mod",
+      "Lua_UI\\AI\\CSC_AI_BakersGameplay.lua"
+    ]
+  ],
+  "all_archived_packages_rehashed": true,
+  "exact_equal_matrix": {
+    "rows": 36,
+    "columns": 38,
+    "flags_and_reservations": true
+  },
+  "identical_numeric_bakers_inputs": 11,
+  "temporary_declines": 11,
+  "full_choice": {
+    "district": 31,
+    "x": 28,
+    "y": 6,
+    "q8": 306049
+  },
+  "control_choice": {
+    "district": 36,
+    "x": 28,
+    "y": 6,
+    "q8": 347924
+  },
+  "full_request": "203, 1, LOC_CITY_NAME_NICOPOLIS, , CONTRACT 4333, SUBMITTED, NO_UNIT, NO_BUILDING, DISTRICT_HIPPODROME, VALUE 1195.0, Build City District",
+  "control_request": "203, 1, LOC_CITY_NAME_NICOPOLIS, , CONTRACT 4333, SUBMITTED, NO_UNIT, NO_BUILDING, DISTRICT_CSC_BAKERS_QUARTER, VALUE 1359.0, Build City District",
+  "native_masks": [
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 397,
+      "base": 320687,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 398,
+      "base": 330926,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 400,
+      "base": 340948,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 401,
+      "base": 326178,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 472,
+      "base": 347924,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 474,
+      "base": 340948,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 475,
+      "base": 332787,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 548,
+      "base": 328580,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 550,
+      "base": 301691,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 621,
+      "base": 330051,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    },
+    {
+      "k": "decline",
+      "generation": 10,
+      "version": 4,
+      "player": 1,
+      "city": 524295,
+      "district": 36,
+      "plot": 622,
+      "base": 334154,
+      "result": -2559745,
+      "reason": 0,
+      "eligible": 1
+    }
+  ],
+  "hashes": {
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-full-02\\Lua.log": "d2b2f7f0b604109f01202429fc20aa2fefe8f79e65d4f1b98d2ea8ead8dbe876",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-full-02\\selector-trace.json": "b6d1a486d920b40074eb076fdf09ab5d6858dcd5dd98e21ba98c3fffb00a09c0",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-full-02\\inputs.json": "e96031bf98cc4e3e3f25e7c343fae51cd4edd0ac3d595ca8ab4b760d62353356",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-control-01\\Lua.log": "5d17033efd9aeca50d3468cad9acdb58c4c278b8ddef61ee6795bf99cf101749",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-control-01\\selector-trace.json": "c7667cd98463249c8f08375c4a20207e240aa6dc63d8b614b2b3d1119e4001f1",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-control-01\\inputs.json": "4be9733d4554396d91b3bc92d2584427e09630cb6617d3cc171872ba93a563fd"
+  },
+  "remaining": "Credible new Base opportunity, dynamic scope withdrawal and a fresh Quarter choice/request in continued treatment.",
+  "limits": "Representative controlled knowledge fixture. No construction, realised Service or broader qualification claim. Astra review required."
+}

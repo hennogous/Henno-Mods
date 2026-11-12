@@ -2,7 +2,7 @@
 
 Maintained Markdown. Preserve scope, evidence and superseded status when correcting a finding.
 
-Latest placement investigation: [AI-C164](#ai-c164).
+Latest placement investigation: [AI-C165](#ai-c165).
 
 ## AI-C001
 
@@ -2924,3 +2924,37 @@ or validated as a solution yet. Unknown/potential supply must remain eligible.
 
 - [Investigation, limits and proposed next implementation](../research/mods/csc-ai-quarter-deferral-20261112.md)
 - [Sealed native/facts/source audit](../research/mods/csc-ai-quarter-deferral-20261112-audit.json)
+
+## AI-C165
+
+**Typed main-CSC declines causally defer a known-no-Base Bakers investment**
+
+Status: accepted first-stage partial; independently audited by Astra. Levels1–3
+for the deferral half of1.7; the complete sub-problem remains open.
+
+The matched current-main policy changes native203 selection/request from
+Bakers472347,924 Q8 to Hippodrome472306,049. Both requests have contract4333;
+submitted priorities are1359 and1195 respectively. The source, corrected CE
+binary, numeric offers and entire36x38 restored matrix—including native flags
+and reservation IDs—are exactly equal. Only the publisher's diagnostic removal
+of P1/Nicopolis/Bakers decline scopes differs. Full has11 target masks, control
+none. Every applicable pair has known absence of owned/unowned adjacent Base,
+with hidden/uncertain sources excluded from that conclusion.
+
+Main CSC computes this per site/profile/player from live facts and publishes
+an optional versioned admission scope. CE masks only the specific district
+column during ordinary selection and restores exact bytes. It leaves other
+districts, retained plans and production competition intact. Missing optional
+CE support retains finite guidance. Both Quarter profiles use the same model.
+
+Astra independently rehashes all642 package files per arm, reproduces the scoped
+ablation, journal/matrix equality, exact masks and changed actual requests.
+Normal closure and no faults are verified. A prototype's earlier conversational
+alternative name Preserve was wrong; runtime definitions confirm Hippodrome.
+
+Limits: controlled knowledge fixture; no construction or Service claim. A
+credible new Base opportunity must still withdraw scopes and produce a fresh
+Quarter choice/request in continued treatment. Do not count1.7 closed yet.
+
+- [Implementation, native correction, tests and limits](../research/mods/csc-ai-quarter-decline-20261112.md)
+- [Sealed matched audit](../research/mods/csc-ai-quarter-decline-20261112-audit.json)
