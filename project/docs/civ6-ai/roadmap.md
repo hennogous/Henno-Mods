@@ -28,12 +28,24 @@ in the control; the written acceptance does not require an extra supplier
 BUY-versus-NOT-BUY result. No Service or broad reliability claim follows.
 [AI-C162](findings.md#ai-c162), [AI-C163](findings.md#ai-c163).
 
-**Next acceptance for 1.7:** a weak-only city defers the Quarter or chooses
+**Next acceptance for 1.7:** a weak-only Quarter profile in a city defers or chooses
 another investment because of policy, then dynamically reconsiders after a
 credible opportunity appears. Observe the actual native comparisons/requests
 and the shared model's changed live facts in each stage. A deferral counter or
 score change alone is insufficient. Reuse existing sources and consumers where
 possible; do not expand this into multi-seed qualification.
+
+**Verified limitation and next implementation:** AI-C164's eleven known-no-Base
+Bakers pairs all receive−65,536 Q8, but native Bakers472 still wins347,924.
+Astra independently audits this negative. Implement a generic typed per-cell
+CE selector decline for proven absence of any credible Base path, following
+the existing transient supplier-mask lifecycle. This is proposed, not yet
+implemented. Unknown or unowned possible supply prevents decline; missing CE
+support retains finite guidance. Preserve other district cells and retained
+plans. Matched control omits only decline scopes, then treatment must withdraw
+them and produce a fresh Quarter choice after a credible new opportunity.
+Do not increase a penalty merely to beat this fixture's competing cache.
+[Evidence and design boundaries](../research/mods/csc-ai-quarter-deferral-20261112.md).
 
 ### Current capability â€” Quarter placement (1.1â€“1.8) and related districts (2.1â€“2.2)
 

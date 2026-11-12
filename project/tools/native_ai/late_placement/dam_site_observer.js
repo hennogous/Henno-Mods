@@ -186,10 +186,23 @@ rpc.exports = {
                         winner.q8 = read(scores, district * 4, 'i32');
                     if (targets.has(plot)) {
                         const reservation = ptr(read(row, ROW_RESERVATION, 'ptr'));
-                        sites.push({plot, q8: scores.isNull() ? null : read(scores, scope.district * 4, 'i32'),
+                        const site = {plot, q8: scores.isNull() ? null : read(scores, scope.district * 4, 'i32'),
                             eligible: read(row, ROW_ELIGIBLE, 'u8'), owned: read(row, ROW_OWNED, 'u8'),
                             frontier: read(row, ROW_FRONTIER, 'u8'),
-                            reservation: reservation.isNull() ? null : read(reservation, 0, 'i32')});
+                            reservation: reservation.isNull() ? null : read(reservation, 0, 'i32')};
+                        // Optional read-only1.7 diagnostic: the chosen Quarter
+                        // alone cannot reveal the best competing investment.
+                        // Read the same audited contiguous i32 Q8 row at the
+                        // existing selector return; never write or rerank it.
+                        // Native eligibility/reservation fields remain attached:
+                        // a large cached value is not necessarily selectable.
+                        if (scope.allDistrictScores === true) {
+                            if (scope.districtCount !== 38 || scores.isNull())
+                                throw Error('Full matrix requires the pinned38-column world');
+                            site.scoresQ8 = Array.from({length: scope.districtCount},
+                                (_, column) => read(scores, column * 4, 'i32'));
+                        }
+                        sites.push(site);
                     }
                 }
                 if (winner && winner.q8 === undefined) throw Error('Native winner row is absent');

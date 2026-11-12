@@ -7,6 +7,11 @@ historical Nicopolis frontier mode injects one early deduction into its old
 carrier; it is not shipped policy. All fixtures share exclusive ownership,
 bounded native receipt streams and verified restoration.
 
+The explicit Nicopolis knowledge scout reveals its radius4 once before main
+publication and reads all38 native district columns at the existing selector
+return. It changes knowledge only; ordinary main CSC supplies every score bid.
+This is a bounded lead screen, not evidence of policy-caused deferral yet.
+
 The explicit Szeged buyer prototype changes only the staged copy's quote
 screen and, in restrict mode, the known contract's competing native buyer.
 It is not a shipping setting or general CE API.
@@ -341,6 +346,8 @@ print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city
 
 def run(args):
     case_name = getattr(args, 'case', 'nicopolis')
+    deferral_scout=getattr(args,'deferral_knowledge_scout',False)
+    assert not deferral_scout or case_name=='nicopolis' and args.mode=='integrated' and args.through==204
     case = dict(CASES[case_name])
     source_turn=case.get('turn',200)
     out = args.output.resolve()
@@ -443,6 +450,15 @@ def run(args):
         for relative in (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'), QUOTE_BRIDGE,
                 Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua')):
             replacements[relative] = (args.policy_root / relative).read_bytes()
+        if deferral_scout:
+            # One declared knowledge fixture, followed by ordinary main CSC
+            # policy. Existing selector/CE readers observe the fresh comparison;
+            # no score treatment, subsidy or direct district order is added.
+            from nicopolis_deferral_policy import stage as stage_deferral
+            from host_choice_policy import stage as stage_host_reader
+            relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+            replacements[relative]=stage_host_reader(stage_deferral(replacements[relative]),[],
+                start=200,end=204,players=[1])
         if getattr(args, 'without_frontier_offers', False):
             replacements[SCANNER] = ablate_frontier_offer(replacements[SCANNER],case)
         if getattr(args,'supplier_no_bid',False):
@@ -476,6 +492,7 @@ def run(args):
         repairOwnedPurchase=getattr(args,'repair_owned_purchase',False),
         save_endpoint=getattr(args,'save_endpoint',False),
         supplier_no_bid=getattr(args,'supplier_no_bid',False),
+        deferral_knowledge_scout=deferral_scout,
         prototypeBuyer=getattr(args,'prototype_buyer',None),
         sourceSeatMigration=seat_provenance,
         without_frontier_offers=getattr(args,'without_frontier_offers',False),
@@ -487,6 +504,9 @@ def run(args):
         ownership_ce_dll=str(ownership_dll.resolve()) if ownership_dll else None,
         ce_sha256=effective_ce_sha, packages={source.name: value for source, value in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
+    if deferral_scout:
+        for name in ('nicopolis_deferral_policy.py','host_choice_policy.py'):
+            shutil.copyfile(HERE/name,out/name)
     (out / 'plot-watcher.lua').write_text(WATCHER.replace('__ENDPOINT__', str(args.through)).replace('__SCOPE__',lua(case)), encoding='utf-8')
     if recovery:
         shutil.copyfile(recovery / 'original-preferences.json', out / 'original-preferences.json')
@@ -562,7 +582,10 @@ Modding.EnableMod(chosen.Handle,true)
             verify_modules(session, (packages[ce] / ce_relative).resolve(), out, HOTFIX_SHA)
             if args.mode == 'integrated':
                 qualify_integrated_policy(controller,out,case)
-                if ownership_bytes:
+                if deferral_scout:
+                    raw=controller.cmd('CSC_HOST_DIAG_Arm()','CSC_AI_BakersGameplay','arm-deferral-reader')
+                    (out/'initial-native-prefix.txt').write_text(raw,encoding='utf-8')
+                if ownership_bytes and not deferral_scout:
                     raw=controller.cmd('''local s=assert(CE_AIDistrictPurchaseCompletionStatus())
 print('CSC_OWNERSHIP_API_STATUS',s)
 assert(s:match('"ready":1') and s:match('"faults":0'),'Ownership capability unavailable')
@@ -617,6 +640,7 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
         modules = load(out / 'loaded-modules.json')
         scope = dict(player=case['player'], city=case['city'], width=74, height=46, districtCount=38, district=case['district'],
             plots=sorted(plots), cePath=modules[DLL]['path'], streamRecords=True, traceTree=case_name!='nicopolis')
+        if deferral_scout:scope['allDistrictScores']=True
         if scope['traceTree']:
             # CE owns CheckForDistrict's entry detour. The existing observer's
             # threshold mode reads its untouched CityBuild caller instead;
@@ -685,6 +709,9 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
         assert state['turn'] == args.through and not state['active']
         raw = controller.cmd('CSC_PURCHASE_Snapshot()', 'CSC_AI_BakersGameplay', 'endpoint-readback')
         (out / 'endpoint-plots.txt').write_text(raw, encoding='utf-8')
+        if deferral_scout:
+            raw=controller.cmd('CSC_HOST_DIAG_Snapshot()','CSC_AI_BakersGameplay','terminal-deferral-prefix')
+            (out/'terminal-native-prefix.txt').write_text(raw,encoding='utf-8')
         if getattr(args,'save_endpoint',False):
             # Preserve the paused endpoint, with native SaveComplete and the
             # shared controller's phase checks. Rotating autoplay saves are
@@ -745,6 +772,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--save-endpoint',action='store_true',help='Preserve one verified inactive endpoint checkpoint')
     parser.add_argument('--supplier-no-bid',action='store_true',help='Diagnostic supplier case only: keep mapped allowances/protection but remove its exact positive bid')
+    parser.add_argument('--deferral-knowledge-scout',action='store_true',
+        help='Nicopolis200-204 only: common radius4 revelation, ordinary main policy, read all selector matrix columns')
     parser.add_argument('--mode', choices=('original', 'frontier', 'integrated'), required=True)
     parser.add_argument('--case',choices=tuple(CASES),default='nicopolis')
     parser.add_argument('--without-frontier-offers',action='store_true',
@@ -774,7 +803,11 @@ if __name__ == '__main__':
     options = parser.parse_args()
     if options.supplier_no_bid and (options.case!='nuremberg-supplier' or options.mode!='integrated'):
         parser.error('Supplier ablation requires the explicit integrated supplier case')
-    if options.ownership_ce_dll and (not options.case.startswith('nuremberg') or options.mode!='integrated'
+    if options.deferral_knowledge_scout and (options.case!='nicopolis' or options.mode!='integrated'
+            or options.through!=204 or not options.ownership_ce_dll or options.without_frontier_offers
+            or options.repair_owned_purchase or options.prototype_buyer or options.seed_source_seats):
+        parser.error('knowledge scout requires pinned current CE, full main Nicopolis200→204 and no other treatment')
+    if options.ownership_ce_dll and (not (options.case.startswith('nuremberg') or options.deferral_knowledge_scout) or options.mode!='integrated'
             or not options.ownership_ce_sha or options.repair_owned_purchase or options.prototype_buyer
             or options.without_frontier_offers or not options.source_policy_root):
         parser.error('integrated ownership validation requires full main Nuremberg, historical source policy and explicit CE pin; no external treatment')

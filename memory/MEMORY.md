@@ -1,3 +1,72 @@
+# NEXT1.7implementation: typed district-site decline; NO LIVE WORKER
+
+76102TERMINALexit0/completeverified/normalclosedverified.96151/59223terminal.
+Latestnativeartifact deferral-nicopolis-knowledge-01 sourcee333251…200→204CE73eed.
+SEALEDproject/docs/research/mods/csc-ai-quarter-deferral-20261112-audit.json:
+36rows;11eligibleowned/frontierBakersrows allknownnoBase/allBasetypesvisible,
+retainedweak−65536==nativeNetexact==cache, including2reservedrows. Actual203v4g10
+Bakers472413460→347924wins; bestUNRESERVEDothercache306049,d31,472 isleadonly,
+NOTcounterfactualactualwinner. PositiveQuarter324406590owned0/frontier0notselectable.
+AstraindependentlyAUDITED/APPROVESnegative AI-C164. 1.7OPEN; noclosureorbandchange.
+KnowledgefixturebalancesVisibility+1/-1; exploredpersists/livevisionunchanged;
+main5exactexceptdeclaredpublisherdiagnostic/knowledgeprefix. No otherfactwrites.
+Nativeprobeall38Q8columns usesexistingreturnhook/noaddresses/newMH. No faults.
+
+Astrarecommends actualpolicyrevision NOTlargerpenalty/numericalceiling: genericCE
+TYPEDDECLINE keyed(player,city,district,plot) duringoriginal_bestONLY, restoreexact
+scorebytesbeforeCEcache/Bestreaders/nativepreparation. FollowSupplierRowMask idioms.
+NATIVEFLOORimportant: GetBestDistrict canselectZERO/NEGATIVEabovefloor; maskALL
+above-floorcells, leavefloor/belowflooralone. RESERVEDCANWINabovepriority: doNOT
+reuse resolve_late_cell unreserved-only restriction. Keepreservationhandles/trees
+untouched. Freshcomparisonadmissiononly, noabort/cancelqueuedplans. Boundedversioned
+stage/status/exactreceipts, noexpectedBefore/native-scoreLua handshake, nonewaddress.
+CurrentCEcleancheckoutDesktop/Codex/csc-gamecore-hotfix-20261106/ce-purchase-ownership-review
+branchcodex/ce-purchase-ownership-ack pushed d8df459…; AIDistrictScores.cpp Policy,
+SupplierRowMask533,hook_best586,l_supplier_exclusion908 are nearestpatterns.
+No native/API/mainpolicyimplementation written yet. Proposal documentedroadmap/STATUS.
+
+CSCguard MUST proveabsence ofcredibleadjacentBasepath, NOTjust#ReadSuppliers.base0.
+Sharedpotentialhelperuseperprofile/playerpublication: unknownneighbors OR mappedBase
+notvisible OR adjacentREVEALEDOWNEDORUNOWNEDpotentialBase preventsdecline.
+No needimprovementguesswhennoresourceexists; unknownfeasibilitystaysneutral.
+LimitinitialpolicytoNoBaseonly, NOTbelow4/noHost. Withdrawdynamicallylivefacts.
+NoCEcapability→existingfiniteguidancefallback. KeepBakers+Tailorsgenericprofiles.
+Per-celldeclines naturallydeferprofileonlywhenALLnativeselectablepairsdeclined;
+neverassumeoutsidefrontier/unknownpairsareweak. Reusecachedgeometrybounded6neighbors.
+
+Acceptance SAME: matchedcommonknowledgefixture/fullmainbotharms, controlomitsONLY
+newtargetdeclines(scopedP1c524295), allotherpolicy/earlypenaltiesremain. Actualnative
+Other/noQuartervscontrolBakers request; thencredibleBaseopportunity→dynamicdecline
+withdrawal→FRESHQuarterchoice/request. Nofoundation/completiongate. RetainedOtherplan
+mayneednormalcompletionbeforefreshcomparison; no forcedreset/nativechoice. Do notraise
+numericbandjusttooutbid306049. Commonknowledgefixture/physicalfacts mustmatcharms;
+manualsavesunreliableinold22source, avoidblindretries orbroadercontrollerdetour.
+Astrareview eachclosure required. Eightof10closed;1.7then2.1open.
+
+Currentchangesreadytocommit: nativeprobe/helper/tests+AI-C164/report/STATUS/roadmap/
+acceptance/memory. Lastpush8caeaee6; controllergates2500bb07. NoPRs. Preserveallnamed
+Henno games(T3/T204/T216). Externalnativewrites/git/buildrequiresescalatedtool.
+
+# LIVE1.7 Nicopolisknowledge screen — worker76102
+
+96151TERMINALexit1/closedverified Native ten-minute stall at36. No ownedearlysGame.
+Partiallogsarchived2447uniqueHOST/7freshchoices/0strictleads; no complete.json.
+59223manualsavefailurestillpreserved; causeunresolved despiteUIgatestrue.
+Currentworker76102 deferral-nicopolis-knowledge-01 source200e333251…→204, shared
+controllerexclusive, noexternalconsole. Main5AI/nicopolisdriver/deferralhelper/
+hostreader/dam_site_observer.js PINNED. MainCE73eed exactnormalcarrier.
+Diagnosticcommonknowledgeedit radius4 aroundP1/c524295 BEFOREmainpublication;
+balancedVisibility+1/-1, assertrevealpersist/livevisionunchanged. Resource/owner/
+Treasury/bands/nativeactionsunchanged. MainpublisherlogsRETAINEDnotPUBLISHED,
+Basevisibility/allsitefacts. Existingselectorhookcapturesall38Q8columns with
+nativeeligibility/frontier/owned/reservation. ScoutleadONLY, no1.7closureclaim.
+Astraread-onlyreviewAPPROVEDboundedlead screen. EveryselectableBakersrowmustjoin
+matchingversionfacts+consumedweakentry;neutral/possibleBase/hiddenresource/missing
+entrypreventsallweakclaim. CachednonQuartervalueisleadnotactualcounterfactualchoice.
+23fixture/hosttests+nodecheckPASS. Newcode/docsuncommitted; lastpush8caeaee6
+boundedscout/negativeevidence,2500bb07savepermissiongates. NoPRs. Eightof10closed,
+1.7then2.1open. StopNicopolisifnomargin; nobandraising toforcefixture.
+
 # Current1.7 continuation — worker96151 LIVE
 
 User says usage renewed; activegoalunchanged. Eightof10closed;1.7then2.1open.

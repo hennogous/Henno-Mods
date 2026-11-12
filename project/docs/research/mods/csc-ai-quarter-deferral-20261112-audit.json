@@ -1,0 +1,535 @@
+{
+  "verified": true,
+  "artifact": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-nicopolis-knowledge-01",
+  "source_sha256": "e333251ec7318fb6b170678a956c28e02e2f9b01c4c4753c99e84b1a112fe19a",
+  "ce_sha256": "73eed1070742ba9a8bb9ba722a09b0229aebcc35c7423e81b7e8f075928d1eed",
+  "turn": 203,
+  "version": 4,
+  "generation": 10,
+  "selector_sha256": "c7667cd98463249c8f08375c4a20207e240aa6dc63d8b614b2b3d1119e4001f1",
+  "lua_sha256": "6e432f0a76881b9d23e6f38424fb2cb8da0a3ddb1d4e71e4163cf7bfd6360515",
+  "main_policy_sha256": {
+    "Lua_UI\\AI\\CSC_AI_AdjacencyScan.lua": "c1a3525a7e492e7e3baf55bdc87005eedfc28e98c7181d25e3b0cc416478e496",
+    "Lua_UI\\AI\\CSC_AI_BakersGameplay.lua": "ccd80059cfc7c23d59553e269fbe99627429226e67e64f2486f6005203e0caab",
+    "Lua_UI\\AI\\CSC_AI_QuarterPlacement.lua": "d4c77ebbb6aa62a9f086e6804d9db324cf4c3039e2a2208573363a34add5e29a",
+    "Lua_UI\\AI\\CSC_AI_DistrictBridge.lua": "232799c41c18f8cd20992b7361ce7bd1b7fa10177dbc47f5f882072a547c7259",
+    "Lua_UI\\Adjacencies\\CSC_AdjacencyUI.lua": "2c3c9a93f1a6bb2e5f981781fad3e9d44f9300f4d595d27ad2c0aa6d197c13c9"
+  },
+  "known_weak_applicable_bakers_pairs": [
+    {
+      "plot": 622,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 622,
+        "base": 399690,
+        "result": 334154,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 622,
+        "base": 334154,
+        "result": 334154,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": 1,
+        "city": 524295,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": 55050257
+    },
+    {
+      "plot": 548,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 548,
+        "base": 394116,
+        "result": 328580,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 548,
+        "base": 328580,
+        "result": 328580,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": 1,
+        "city": 524295,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 474,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 474,
+        "base": 406484,
+        "result": 340948,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 474,
+        "base": 340948,
+        "result": 340948,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 1
+      },
+      "facts": {
+        "owner": 1,
+        "city": 524295,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 621,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 621,
+        "base": 395587,
+        "result": 330051,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 621,
+        "base": 330051,
+        "result": 330051,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": 1,
+        "city": 524295,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": 53018628
+    },
+    {
+      "plot": 475,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 475,
+        "base": 398323,
+        "result": 332787,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 475,
+        "base": 332787,
+        "result": 332787,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": 1,
+        "city": 524295,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 400,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 400,
+        "base": 406484,
+        "result": 340948,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 400,
+        "base": 340948,
+        "result": 340948,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 1
+      },
+      "facts": {
+        "owner": 1,
+        "city": 524295,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 398,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 398,
+        "base": 396462,
+        "result": 330926,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 398,
+        "base": 330926,
+        "result": 330926,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 1
+      },
+      "facts": {
+        "owner": -1,
+        "city": -1,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 472,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 472,
+        "base": 413460,
+        "result": 347924,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 472,
+        "base": 347924,
+        "result": 347924,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": 1,
+        "city": 524295,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 550,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 550,
+        "base": 367227,
+        "result": 301691,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 550,
+        "base": 301691,
+        "result": 301691,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": -1,
+        "city": -1,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 401,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 401,
+        "base": 391714,
+        "result": 326178,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 401,
+        "base": 326178,
+        "result": 326178,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": -1,
+        "city": -1,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    },
+    {
+      "plot": 397,
+      "net": {
+        "k": "net",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 397,
+        "base": 386223,
+        "result": 320687,
+        "reason": 0,
+        "eligible": 1
+      },
+      "cache": {
+        "k": "cache",
+        "generation": 10,
+        "version": 4,
+        "player": 1,
+        "city": 524295,
+        "district": 36,
+        "plot": 397,
+        "base": 320687,
+        "result": 320687,
+        "reason": 0,
+        "eligible": 1
+      },
+      "retained": {
+        "delta": -65536,
+        "weak": true,
+        "base": 0,
+        "specialty": 0
+      },
+      "facts": {
+        "owner": -1,
+        "city": -1,
+        "district": -1,
+        "legal": true,
+        "revealed": true,
+        "uncertain": false,
+        "possibleBase": false
+      },
+      "reservation": -1
+    }
+  ],
+  "native_winner": {
+    "k": "best",
+    "generation": 10,
+    "version": 4,
+    "player": 1,
+    "city": 524295,
+    "district": 36,
+    "plot": 472,
+    "base": 347924,
+    "result": 347924,
+    "reason": 0,
+    "eligible": 1
+  },
+  "best_unreserved_other_cache": {
+    "q8": 306049,
+    "district": 31,
+    "plot": 472
+  },
+  "quarter_deferral_demonstrated": false,
+  "limits": "Representative negative.11eligible owned/frontier Bakers rows, including reserved rows, are knownnoBase and consumed-65536.324haspositivecache butneitherowned norfrontier; not selectable in thiscomparison. Othercacheleadisnotacounterfactualactualwinner. No1.7closure."
+}

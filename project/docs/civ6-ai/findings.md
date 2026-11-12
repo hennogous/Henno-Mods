@@ -2,7 +2,7 @@
 
 Maintained Markdown. Preserve scope, evidence and superseded status when correcting a finding.
 
-Latest placement investigation: [AI-C142](#ai-c142).
+Latest placement investigation: [AI-C164](#ai-c164).
 
 ## AI-C001
 
@@ -2898,3 +2898,29 @@ it is not itself an AI purchase. No Service, general buying reliability,
 exhaustive supplier alternatives or supplier-bid purchase necessity is proved.
 
 - [Policy, native path, observed failures and sealed audit](../research/mods/csc-ai-supplier-acquisition-20261112.md)
+
+## AI-C164
+
+**Known no-Base Bakers sites can still win after every finite penalty lands**
+
+Status: verified representative negative; no1.7 closure.
+
+In the explicit Nicopolis knowledge fixture, all11 eligible owned/frontier
+Bakers rows have revealed surroundings, all mapped Base types visible, no
+adjacent owned/unowned Base potential and exactly consumed weak deductions.
+At turn203/version4, site472 reads413,460→347,924 Q8 at Net and347,924 at cache,
+actual selection and present value. Bakers still wins. The best unreserved
+other-district cache is306,049, district31 at472; it is not an observed
+counterfactual choice. A406,590 cache at324 is neither owned nor frontier.
+
+The shared controller completes200→204 and closes normally. Every main policy
+module matches current source, apart from declared diagnostic publisher
+metadata and balanced radius4 knowledge revelation. No resource, ownership,
+funds, score band or native action is forced. The current finite guidance is
+acknowledged and effective at changing values, but insufficient for deferral
+in this case. Astra recommends a separately typed, transient per-district-site
+selector decline for proven absence of Base potential; it is not implemented
+or validated as a solution yet. Unknown/potential supply must remain eligible.
+
+- [Investigation, limits and proposed next implementation](../research/mods/csc-ai-quarter-deferral-20261112.md)
+- [Sealed native/facts/source audit](../research/mods/csc-ai-quarter-deferral-20261112-audit.json)

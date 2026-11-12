@@ -81,7 +81,7 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.7 defer and reconsider.** In a weak-only city, demonstrate a
+**Active item: 1.7 defer and reconsider.** For a weak-only Quarter profile in a city, demonstrate a
 policy-caused decision to leave the Quarter uncommitted or choose another
 investment; then demonstrate dynamic reconsideration when a credible new
 opportunity becomes available. Keep the recorded 1.5/1.6 closures intact;

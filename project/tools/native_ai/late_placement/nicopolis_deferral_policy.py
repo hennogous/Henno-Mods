@@ -1,0 +1,85 @@
+"""Declared knowledge fixture for the remaining1.7 deferral comparison.
+
+Diagnostic only: reveal radius4 around pinned Nicopolis before the first main
+publication, so radius3 frontier sites cannot escape deductions merely because
+an adjacent tile is unexplored. This changes AI knowledge, never map contents,
+ownership, Treasury, score bands or native decisions. The ordinary main CSC
+model then decides whether those sites really are weak; this fixture promises
+no particular winner. Native matrices are read by the existing selector probe.
+"""
+
+REVEAL="""-- Diagnostic common knowledge fixture, not shipping CSC policy.
+do
+ assert(Game.GetCurrentGameTurn()==200,'Nicopolis knowledge fixture requires200')
+ local city=assert(CityManager.GetCity(1,524295))
+ assert(city:GetName()=='LOC_CITY_NAME_NICOPOLIS')
+ local player=assert(Players[1]);assert(player:IsAlive() and not player:IsHuman())
+ local visibility=assert(PlayersVisibility[1]);local changed={}
+ for index=0,Map.GetPlotCount()-1 do
+  local plot=assert(Map.GetPlotByIndex(index))
+  if Map.GetPlotDistance(city:GetX(),city:GetY(),plot:GetX(),plot:GetY())<=4
+   and not visibility:IsRevealed(index) then
+   -- Balanced visibility counts leave explored knowledge without granting
+   -- ongoing sight of foreign units. Verify both contracts immediately.
+   local visibleBefore=visibility:IsVisible(index)
+   visibility:ChangeVisibilityCount(index,1)
+   visibility:ChangeVisibilityCount(index,-1);changed[#changed+1]=index
+   assert(visibility:IsRevealed(index),'Declared knowledge edit did not land')
+   assert(visibility:IsVisible(index)==visibleBefore,'Knowledge fixture changed live sight')
+  end
+ end
+ print('CSC_DEFERRAL_COMMON_REVEAL',Game.GetCurrentGameTurn(),#changed,table.concat(changed,','))
+end
+"""
+
+RECEIPT="""-- Diagnostic packet metadata, not a native acceptance receipt.
+do
+ local placement=assert(CSC_AI_QuarterPlacement)
+ local profile
+ for _,p in ipairs(placement.StageTwoProfiles())do if p.key=='BAKERS' then profile=p end end
+ assert(profile)
+ local allVisible=true
+ for definition in GameInfo.Resources() do
+  if CSC_Adjacency.HasTag(profile.base,definition.ResourceType)
+   and not CSC_Adjacency.ResourceVisible(1,definition.Index)then allVisible=false end
+ end
+ print('CSC_DEFERRAL_BASE_VISIBILITY',turn,nextVersion,tostring(allVisible))
+ local city=assert(CityManager.GetCity(1,524295))
+ local center=assert(Map.GetPlot(city:GetX(),city:GetY()))
+ local visibility=assert(PlayersVisibility[1])
+ for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
+  local uncertain,possibleBase=false,false
+  for _,neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
+   if not visibility:IsRevealed(neighbor:GetIndex())then uncertain=true
+   elseif neighbor:GetOwner()==1 or neighbor:GetOwner()==-1 then
+    local resource=GameInfo.Resources[neighbor:GetResourceType()]
+    if resource and CSC_Adjacency.ResourceVisible(1,resource.Index)
+     and CSC_Adjacency.HasTag(profile.base,resource.ResourceType)then possibleBase=true end
+   end
+  end
+  local buyer=Cities.GetPlotPurchaseCity(plot)
+  print('CSC_DEFERRAL_SITE_FACTS',turn,nextVersion,plot:GetIndex(),plot:GetOwner(),
+   buyer and buyer:GetID() or -1,plot:GetDistrictType(),
+   tostring(plot:CanHaveDistrict(profile.district.Index,1,524295)),
+   tostring(visibility:IsRevealed(plot:GetIndex())),tostring(uncertain),tostring(possibleBase))
+ end
+ for _,entry in ipairs(entries)do
+  if entry.player==1 and entry.city==524295 and entry.district==profile.district.Index then
+   local plot=assert(Map.GetPlotByIndex(entry.plot))
+   local supply=placement.ReadSuppliers(Players[1],plot,profile)
+   print('CSC_DEFERRAL_RETAINED',turn,nextVersion,entry.plot,entry.delta,
+    tostring(entry.weak),#supply.base,#supply.specialty)
+  end
+ end
+end
+"""
+
+
+def stage(publisher):
+    """Observe retained main packets; do not change their contents or lifetime."""
+    needle=b'    local accepted, message = bridge.Publish('
+    assert publisher.count(needle)==1
+    # The production locals are `turn`, `version` and `entries`. Keep the
+    # diagnostic's version equal to the exact next committed main packet.
+    receipt=RECEIPT.replace('nextVersion','(version+1)').encode('utf-8')
+    return REVEAL.encode('utf-8')+publisher.replace(needle,receipt+needle)

@@ -44,11 +44,19 @@ qualification does not erase them unless it contradicts the original evidence.
 
 ## Active problem: 1.7 Defer and reconsider
 
-**Acceptance:** a weak-only city leaves the Quarter uncommitted or chooses
+**Acceptance:** a weak-only Quarter profile in a city remains uncommitted or chooses
 another investment because of policy, then reconsiders after a credible new
 opportunity. Require the native comparison/request in both stages and dynamic
 main CSC reproduction, not just a logged deferral count or a score write.
 Use representative cases; additional seeds remain separate qualification.
+
+**Latest verified outcome:** all11 known-no-Base Bakers pairs in the Nicopolis
+knowledge fixture consume their finite deductions, but Bakers still wins.
+This is a policy limitation, independently audited by Astra, not an inert API.
+[AI-C164](findings.md#ai-c164). Next: implement a typed, transient per-cell
+selector decline only for proven absence of Base potential, then test causal
+deferral and dynamic withdrawal. It is proposed, not implemented. Unknown or
+possible supply stays eligible; other districts and retained plans stay native.
 
 **1.5 is now closed at levels 1–3, independently approved by Astra.** Its
 integrated footprint workflow (AI-C162) reaches paid ownership and completed
