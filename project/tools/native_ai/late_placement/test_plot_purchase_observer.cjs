@@ -10,6 +10,9 @@ const instructions = new Map([
     [0x681346, '8bf085c00f8eca000000'],
     [0x681379, 'e8621fccff8b4567488d8f800b0000'],
     [0x6813a2, '0fb787d80000004c8d4567'],
+    [0x71c63e, '8bd885c00f8e27020000'],
+    [0x71c671, 'e86a6cc2ff8b4538488d8f800b0000'],
+    [0x71c69a, '0fb787d80000004c8d4538'],
     [0x459169, '85c07e104d85f67405'],
     [0x45918f, '488bac24d0000000418bdfc1e308'],
     [0x459095, '48894c2408'],
@@ -18,6 +21,11 @@ const instructions = new Map([
     [0x55dc9f, '488bd0488d4c2430e834f8e9ff'],
     [0x3e0f37, 'e8143b0000'],
     [0x3e0f29, 'c74540f1d8ffffc74544f1d8ffff'],
+    [0x4591f3, '84c00f84ca000000'],
+    [0x45921f, '84c00f849e000000'],
+    [0x459241, '418bc5488d9424c0000000'],
+    [0x11b100, '405556415441564157'],
+    [0x616a0, '448944241889542410'],
 ]);
 class Pointer {
     constructor(value) { this.value = Number(value); }
@@ -85,9 +93,9 @@ fire(0x459169); // Untargeted Economic quote is filtered.
 put(city, 0xd8, 2);
 fire(0x681346, {rdi: ptr(city), rbp: ptr(frame)}); // Foreign player filtered.
 put(city, 0xd8, 1); put(frame, 0x67, 30);
-const command = {rdi: ptr(city), rbp: ptr(frame), rsi: ptr(-25600), rdx: ptr(debit)};
+const command = {rdi: ptr(city), rbp: ptr(frame), rsi: ptr(-25600), rdx: ptr(debit), rcx:ptr(treasury),r14:ptr(treasury)};
 fire(0x681346, command); // Other own paid plot is a potential positive control.
-fire(0x681379, command); fire(0x68137e, command); fire(0x6813a2, command);
+fire(0x681379, command); put(treasury,0xa8,104960); fire(0x68137e, command); fire(0x6813a2, command);
 const result = JSON.parse(JSON.stringify(context.rpc.exports.freeze()));
 assert.equal(result.fault, null);
 assert.equal(result.records.length, 8);
@@ -109,6 +117,13 @@ assert.deepEqual(result.records.slice(4).map(r => r.kind),
 assert(result.records.slice(4).every(r => r.plot === 400 && r.city === 524295 && r.turn === 203));
 assert.equal(result.records[5].deltaQ8, -25600);
 assert.equal(result.records[6].deltaQ8, -25600);
+assert.equal(result.records[5].treasuryBeforeQ8,130560);
+assert.equal(result.records[6].treasuryBeforeQ8,130560);
+assert.equal(result.records[6].treasuryAfterQ8,104960);
+assert.equal(result.records[6].measuredDeltaQ8,-25600);
+assert.equal(result.records[6].deltaMatched,true);
+assert.equal(result.pendingDebits,0);
+put(treasury,0xa8,130560);
 assert.equal(hooks.size, 0);
 // A stale receiver or incomplete read is a failed observation, not a valid
 // zero balance. Freeze still detaches; later callbacks stay suppressed.
@@ -260,4 +275,118 @@ probe=buyerPrototype({staleTarget:true});
 assert.equal(probe.result.fault,null);
 assert.equal(probe.cpu.rax.toInt32(),85);
 assert(probe.result.records.every(row=>!row.excluded));
-console.log('Purchase observer: Q8, lineage, scoped buyer constraint, mismatch/stale/capacity guards and detach passed');
+// Actual Treasury measurements are distinct from the preserved debit argument.
+// Pair threads/stacks without inventing success for an incomplete/mismatched
+// callback. Interleaving may include another synchronous debit in the interval;
+// keep its measured mismatch rather than silently attributing only our delta.
+function debitCase(mode,handler='base') {
+    const fresh={...context,rpc:{exports:{}}};vm.createContext(fresh);
+    vm.runInContext(fs.readFileSync(__dirname+'/plot_purchase_observer.js','utf8'),fresh);
+    fresh.rpc.exports.init({path:'pinned.dll',image_size:123},
+        {player:1,width:74,height:46,plots:[401],allCommandPlots:true});
+    put(city,0xd8,1);put(city,0xa8,524295);put(frame,0x67,30);put(frame,0x6b,5);
+    put(game,0xc0,203);put(treasury,0xa8,130560);
+    const xp1=handler==='xp1',call=xp1?0x71c671:0x681379,returnedSite=xp1?0x71c676:0x68137e;
+    const treasuryRegister=xp1?'r15':'r14',deltaRegister=xp1?'rbx':'rsi';
+    const nativeCommand={...command,[treasuryRegister]:ptr(treasury),[deltaRegister]:ptr(-25600)};
+    put(frame,0x38,30);put(frame,0x3c,5);
+    if(mode==='missing-thread')hooks.get(call).call({context:{...registers,...nativeCommand}});
+    else if(mode==='wrong-receiver')fire(call,{...nativeCommand,[treasuryRegister]:ptr(treasury+4096)});
+    else {
+        fire(call,nativeCommand);
+        if(mode==='duplicate')fire(call,nativeCommand);
+        else if(mode==='capacity')for(let thread=8;thread<=39;thread++)fire(call,nativeCommand,thread);
+        else if(mode==='interleaved') {
+            fire(call,nativeCommand,8);put(treasury,0xa8,104960);fire(returnedSite,nativeCommand,8);
+            put(treasury,0xa8,79360);fire(returnedSite,nativeCommand,7);
+        } else if(mode!=='missing-return') {
+            put(treasury,0xa8,104960);
+            const returned={...nativeCommand};let thread=7;
+            if(mode==='wrong-thread')thread=8;
+            if(mode==='wrong-stack')returned.rsp=ptr(stack+8);
+            if(mode==='wrong-treasury')returned[treasuryRegister]=ptr(treasury+4096);
+            if(mode==='wrong-argument')returned[deltaRegister]=ptr(-25599);
+            if(mode==='wrong-city-pointer') {
+                put(city+4096,0xd8,1);put(city+4096,0xa8,524295);returned.rdi=ptr(city+4096);
+            }
+            fire(mode==='cross-handler'?(xp1?0x68137e:0x71c676):returnedSite,returned,thread);
+        }
+    }
+    return JSON.parse(JSON.stringify(fresh.rpc.exports.freeze()));
+}
+let debits=debitCase('normal');assert.equal(debits.fault,null);assert.equal(debits.pendingDebits,0);
+assert.equal(debits.records[1].measuredDeltaQ8,-25600);assert.equal(debits.records[1].deltaMatched,true);
+assert.equal(debits.records[0].threadId,7);assert.equal(debits.records[1].callerStack,String(stack));
+debits=debitCase('interleaved');assert.equal(debits.fault,null);assert.equal(debits.pendingDebits,0);
+assert.deepEqual(debits.records.filter(r=>r.kind==='debit-return').map(r=>[r.threadId,r.measuredDeltaQ8,r.deltaMatched]),
+    [[8,-25600,true],[7,-51200,false]]);
+for(const [mode,pattern]of [['missing-return',/Unreturned/],['wrong-thread',/Unmatched/],
+        ['wrong-stack',/Unmatched/],['wrong-treasury',/Unmatched/],['wrong-argument',/Unmatched/],
+        ['wrong-city-pointer',/Unmatched/],['missing-thread',/Ambiguous/],
+        ['wrong-receiver',/receiver differs/],['duplicate',/Ambiguous/],['capacity',/excessive/]]) {
+    debits=debitCase(mode);assert.match(debits.fault,pattern,mode);
+    assert(debits.records.every(r=>r.kind!=='debit-return'),mode);
+}
+// Same decoding/failure contract for the expansion handler that the live game
+// actually dispatched. Its own frame/register layout must not borrow the base
+// handler's values. Cross-handler returns never complete a pending payment.
+debits=debitCase('normal','xp1');assert.equal(debits.fault,null);
+assert.equal(debits.records[1].handler,'xp1');assert.equal(debits.records[1].measuredDeltaQ8,-25600);
+assert.equal(debits.records[1].deltaMatched,true);
+for(const mode of ['missing-return','wrong-thread','wrong-stack','wrong-treasury','wrong-argument',
+    'wrong-city-pointer','missing-thread','wrong-receiver','duplicate','capacity','cross-handler']) {
+    debits=debitCase(mode,'xp1');assert(debits.fault,mode);
+    assert(debits.records.every(r=>r.kind!=='debit-return'),mode);
+}
+// Verify positive whole-Gold quote and matching annex use XP1's XY slots.
+{
+    const fresh={...context,rpc:{exports:{}}};vm.createContext(fresh);
+    vm.runInContext(fs.readFileSync(__dirname+'/plot_purchase_observer.js','utf8'),fresh);
+    fresh.rpc.exports.init({path:'pinned.dll',image_size:123},{player:1,width:74,height:46,plots:[401]});
+    put(frame,0x38,31);put(frame,0x3c,5);put(frame,0x67,30);put(frame,0x6b,5);
+    fire(0x71c63e,{rdi:ptr(city),rbp:ptr(frame),rax:ptr(40)});
+    fire(0x71c69a,{rdi:ptr(city),rbp:ptr(frame)});
+    const xp=fresh.rpc.exports.freeze();assert.equal(xp.fault,null);
+    assert.equal(xp.records.length,2);assert.equal(xp.records[0].gold,40);
+    assert(xp.records.every(r=>r.handler==='xp1'&&r.plot===401));
+}
+function executionCase(mode) {
+    const fresh={...context,rpc:{exports:{}},Process:{...context.Process,
+        enumerateModules:()=>[{path:'pinned.dll',size:0x1000000,base:ptr(0)}]}};
+    vm.createContext(fresh);vm.runInContext(fs.readFileSync(__dirname+'/plot_purchase_observer.js','utf8'),fresh);
+    fresh.rpc.exports.init({path:'pinned.dll',image_size:0x1000000},
+        {player:1,width:74,height:46,plots:[401],observeExecution:true});
+    put(city,0xd8,1);put(city,0xa8,524295);put(game,0xc0,203);
+    put(xy,0,31);put(xy,4,5);put(player,0xd8,1);put(player,0x288,1);
+    const culture=0x100000,plotInstance=0x110000;
+    put(culture,0,city);put(plotInstance,0x28,(5<<16)|31);
+    if(mode==='bad-economic-player')put(player,0xd8,2);
+    fire(0x4591f3,{r14:ptr(city),rax:ptr(1)});
+    if(mode==='denied') {
+        put(player,0x288,0);fire(0x45921f,{r14:ptr(city),rax:ptr(256)}); // AL0 despite nonzeroRAX.
+    }else if(mode!=='bad-economic-player') {
+        fire(0x45921f,{r14:ptr(city),rax:ptr(1)});
+        fire(0x459241,{r14:ptr(city),rax:ptr(0)}); // Return is not a successBoolean.
+    }
+    const annex={context:{rcx:ptr(culture),rdx:ptr(xy)},returnAddress:ptr(mode==='outside-caller'?0x2000000:0x6813a2)};
+    const owner={context:{rcx:ptr(plotInstance),rdx:ptr(1),r8:ptr(524295)},returnAddress:ptr(0x4c63a)};
+    hooks.get(0x11b100).onEnter.call(annex);
+    if(mode!=='missing-annex-return')hooks.get(0x11b100).onLeave.call(annex);
+    hooks.get(0x616a0).onEnter.call(owner);hooks.get(0x616a0).onLeave.call(owner);
+    return JSON.parse(JSON.stringify(fresh.rpc.exports.freeze()));
+}
+let execution=executionCase('normal');assert.equal(execution.fault,null);assert.equal(execution.pendingExecutions,0);
+assert.deepEqual(execution.records.map(r=>r.kind),['targeted-request-built','targeted-command-checked',
+    'targeted-command-returned','culture-annex-return','plot-set-owner-return']);
+assert.equal(execution.records[0].requestBuilt,true);assert.equal(execution.records[1].commandAdmitted,true);
+assert.equal(execution.records[2].managerStartReturned,true);assert(!('success'in execution.records[2]));
+assert.equal(execution.records[3].callerRva,0x6813a2);assert.equal(execution.records[4].requestedCity,524295);
+assert(execution.records.every(r=>!['quote','debit-call','debit-return'].includes(r.kind)));
+execution=executionCase('denied');assert.equal(execution.fault,null);
+assert.equal(execution.records[1].commandAdmitted,false);assert.equal(execution.records[1].playerTurnActive,false);
+execution=executionCase('outside-caller');assert.equal(execution.fault,null);
+assert.equal(execution.records.find(r=>r.kind==='culture-annex-return').callerRva,null);
+execution=executionCase('missing-annex-return');assert.match(execution.fault,/Unreturned observed execution/);
+assert.equal(execution.pendingExecutions,1);assert(!execution.records.some(r=>r.kind==='culture-annex-return'));
+execution=executionCase('bad-economic-player');assert.match(execution.fault,/Execution Economic player differs/);
+console.log('Purchase observer: measured debits, admission/execution, acquisition callers, lineage and guarded detach passed');

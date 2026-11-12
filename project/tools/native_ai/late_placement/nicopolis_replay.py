@@ -30,6 +30,8 @@ from driver import (
     flags, launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json, lua,
 )
+from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint
+from full_game_controller.checkpoint import save_inactive_boundary
 
 CE_SHA = 'f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07'
 SAVE_SHA = 'e333251ec7318fb6b170678a956c28e02e2f9b01c4c4753c99e84b1a112fe19a'
@@ -47,6 +49,11 @@ CASES = {
     'szeged': dict(sha256='c50976621de17e38f998fad916b22a1bd219f4cdc9af508d90b8846d011fbf91',
         player=2,city=589829,name='LOC_CITY_NAME_SZEGED',profile='TAILORS',district=37,
         plots=[1365],purchasePlots=[1365]),
+    # Common diagnostic release, not a bought tile. The separate source ledger
+    # and inactive202 save must qualify again before observing native payment.
+    'nuremberg':dict(sha256='d579ecc2c54909f1b21aaa96caad237daeb9fc0f67cd78c8602191c70c2a9026',
+        player=3,city=458758,name='LOC_CITY_NAME_NUREMBERG',profile='BAKERS',district=36,
+        turn=202,archive='source.Civ6Save',plots=[788,861,713],purchasePlots=[788]),
 }
 
 # This untuned save intentionally predates the policy's persisted seat metadata.
@@ -172,9 +179,15 @@ def ablate_frontier_offer(source, case):
     # not overwrite a native score or submit another action in its place.
     needle=b"and type(ui.GetPlotPurchaseQuote) == 'function' then"
     assert source.count(needle)==1
+    # Nuremberg tests one footprint's acquisition guidance. Both supported
+    # Quarters can promote that same land: leaving Tailors active would not
+    # remove CSC's positive acquisition signal for the footprint. Other older
+    # fixtures retain their declared individual district/site intervention.
+    district_condition=('(district.Index == 36 or district.Index == 37)'
+        if case==CASES['nuremberg'] else f"district.Index == {case['district']}")
     condition=(f"and type(ui.GetPlotPurchaseQuote) == 'function' and not "
         f"(pid == {case['player']} and city:GetID() == {case['city']} "
-        f"and district.Index == {case['district']} and index == {case['purchasePlots'][0]}) then")
+        f"and {district_condition} and index == {case['purchasePlots'][0]}) then")
     return source.replace(needle,condition.encode('ascii'))
 
 
@@ -292,7 +305,7 @@ print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city
 """
     raw=controller.cmd(code,'PlotInfo','qualify-source-purchase')
     (out/'source-purchase-qualification.txt').write_text(raw,encoding='utf-8')
-    matches=re.findall(r'CSC_PURCHASE_QUALIFIED\t200\t(\d+)\t(\d+)\t(\d+)\t([^\t\r\n]+)\t([^\t\r\n]+)\t(\d+)',raw)
+    matches=re.findall(r'CSC_PURCHASE_QUALIFIED\t'+str(case.get('turn',200))+r'\t(\d+)\t(\d+)\t(\d+)\t([^\t\r\n]+)\t([^\t\r\n]+)\t(\d+)',raw)
     assert len(matches)==1,'Missing purchase fixture qualification'
     pid,city,plot,quote,bank,count=matches[0]
     assert (int(pid),int(city),int(plot))==(case['player'],case['city'],case['purchasePlots'][0])
@@ -305,20 +318,26 @@ print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city
 
 def run(args):
     case_name = getattr(args, 'case', 'nicopolis')
-    case = CASES[case_name]
+    case = dict(CASES[case_name])
+    source_turn=case.get('turn',200)
     out = args.output.resolve()
     home, user_root = args.my_games.resolve(), args.user_root.resolve()
     reference = args.reference.resolve(strict=True)
     checkpoint = args.checkpoint.resolve(strict=True)
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
-    assert 201 <= args.through <= 224, 'This fixture uses a bounded continuation of the turn-200 save'
+    assert source_turn < args.through <= 224, 'This fixture uses a bounded continuation of its verified source'
     assert load(reference / 'complete.json')['verified']
     assert load(reference / 'session-closed.json')['verified']
     meta = load(checkpoint / 'checkpoint.json')
     save = Path(meta['native_save']).resolve(strict=True)
-    assert meta['verified'] and meta['turn'] == 200 and meta['sha256'] == case['sha256']
+    assert meta['verified'] and meta['turn'] == source_turn and meta['sha256'] == case['sha256']
     assert save.parent == (home / 'Saves/Single').resolve()
-    assert sha(save) == sha(checkpoint / 'endpoint.Civ6Save') == case['sha256']
+    assert sha(save) == sha(checkpoint / case.get('archive','endpoint.Civ6Save')) == case['sha256']
+    if case_name=='nuremberg':
+        qualified=nuremberg_checkpoint(checkpoint,home,SAVE_SHA,args.policy_root)
+        assert qualified['sha256']==case['sha256']
+        released=load(checkpoint/'release-preparation.json')
+        assert released['verified'] and released['released_plot']==788 and released['native_purchase'] is False
     packages = {reference / name: home / 'Mods' / name for name in PACKAGES}
     original_pins = {source: manifest(source) for source in packages}
     pins = {source: dict(value) for source, value in original_pins.items()}
@@ -350,9 +369,10 @@ def run(args):
         modified = before.replace(needle, FRONTIER_PROBE.replace(b'\n', newline) + needle)
         replacements[SCANNER] = modified
     elif args.mode == 'integrated':
-        # Stage only the two production AI files and their UI quote bridge. Unrelated
+        # Stage all four production AI modules and their UI quote bridge. Unrelated
         # worktree gameplay, art and content cannot enter this saved fixture.
-        for relative in (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'), QUOTE_BRIDGE):
+        for relative in (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'), QUOTE_BRIDGE,
+                Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua')):
             replacements[relative] = (args.policy_root / relative).read_bytes()
         if getattr(args, 'without_frontier_offers', False):
             replacements[SCANNER] = ablate_frontier_offer(replacements[SCANNER],case)
@@ -379,18 +399,22 @@ def run(args):
     write_json(out / 'inputs.json', dict(mode=args.mode, case=case,
         observePurchases=args.observe_purchases,
         observePurchaseLineage=getattr(args,'observe_purchase_lineage',False),
+        observePurchaseExecution=getattr(args,'observe_purchase_execution',False),
+        save_endpoint=getattr(args,'save_endpoint',False),
         prototypeBuyer=getattr(args,'prototype_buyer',None),
         sourceSeatMigration=seat_provenance,
         without_frontier_offers=getattr(args,'without_frontier_offers',False),
-        ablationScope=dict(player=case['player'],city=case['city'],district=case['district'],
+        ablationScope=dict(player=case['player'],city=case['city'],districts=([36,37]if case_name=='nuremberg'else[case['district']]),
             plot=case['purchasePlots'][0]) if getattr(args,'without_frontier_offers',False) else None,
         through=args.through, save_sha256=case['sha256'],
+        source_turn=source_turn,dependencies=str(args.dependencies.resolve()),frida_version=frida.__version__,
         ce_sha256=CE_SHA, packages={source.name: value for source, value in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     (out / 'plot-watcher.lua').write_text(WATCHER.replace('__ENDPOINT__', str(args.through)).replace('__SCOPE__',lua(case)), encoding='utf-8')
     if recovery:
         shutil.copyfile(recovery / 'original-preferences.json', out / 'original-preferences.json')
     controller = make_probe_controller(out, user_root=user_root)
+    controller.study_endpoint=args.through
     session = NativeSession(out, controller, inventory=native_inventory, hold=HeldProcess, write=write_json)
     installed = []
     observer = purchase_observer = attachment = None
@@ -451,7 +475,7 @@ assert(chosen and Modding.CanEnableMod(chosen.Handle)=='OK')
 Modding.EnableMod(chosen.Handle,true)
 """, 'MainMenu')
         assert {key for key, value in flags(controller, 'verify-local-pair')['mods'].items() if value} == test_ids
-        session.issue_load_once(save, sha256=case['sha256'], native_directory=home / 'Saves/Single', turn=200)
+        session.issue_load_once(save, sha256=case['sha256'], native_directory=home / 'Saves/Single', turn=source_turn)
 
         plots = []
 
@@ -476,7 +500,7 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
                 qualify_purchase(controller,out,case,allow_tied=bool(getattr(args,'prototype_buyer',None)))
             return True
 
-        session.ready_after_issue(200, ('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=ready)
+        session.ready_after_issue(source_turn, ('GameCore_Tuner', 'PlotInfo', 'CSC_AI_BakersGameplay'), eligibility=ready)
         modules = load(out / 'loaded-modules.json')
         scope = dict(player=case['player'], city=case['city'], width=74, height=46, districtCount=38, district=case['district'],
             plots=sorted(plots), cePath=modules[DLL]['path'], streamRecords=True, traceTree=case_name!='nicopolis')
@@ -516,6 +540,7 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
             purchase_scope = dict(player=case['player'], width=74, height=46, plots=case['purchasePlots'],
                 allCommandPlots=True, streamRecords=True, city=case['city'],
                 observeLineage=getattr(args,'observe_purchase_lineage',False),
+                observeExecution=getattr(args,'observe_purchase_execution',False),
                 prototypeBuyer=getattr(args,'prototype_buyer',None),district=case['district'],
                 selectorObserverVerified=True) # init above verified the unpatched call/return window.
             write_json(out / 'purchase-scope.json', purchase_scope)
@@ -542,6 +567,13 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
         assert state['turn'] == args.through and not state['active']
         raw = controller.cmd('CSC_PURCHASE_Snapshot()', 'CSC_AI_BakersGameplay', 'endpoint-readback')
         (out / 'endpoint-plots.txt').write_text(raw, encoding='utf-8')
+        if getattr(args,'save_endpoint',False):
+            # Preserve the paused endpoint, with native SaveComplete and the
+            # shared controller's phase checks. Rotating autoplay saves are
+            # useful backups but do not qualify a later exact-boundary replay.
+            checkpoint=save_inactive_boundary(controller,turn=args.through,name='CSC_PURCHASE_FOLLOWTHROUGH',
+                native_directory=home/'Saves/Single',archive=out/'endpoint.Civ6Save')
+            write_json(out/'endpoint-checkpoint.json',checkpoint)
         for name in LOGS:
             shutil.copyfile(user_root / 'Logs' / name, out / name)
     except Exception as error:
@@ -582,11 +614,12 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
             raise RuntimeError('Observer cleanup failed; see observer-cleanup-errors.json')
     assert session.closed, 'Endpoint captured without verified shared-session closure'
     assert not stream_errors, 'Native receipt stream failed; partial evidence only'
-    write_json(out / 'complete.json', dict(verified=True, turns_advanced=args.through-200))
+    write_json(out / 'complete.json', dict(verified=True, turns_advanced=args.through-source_turn))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--save-endpoint',action='store_true',help='Preserve one verified inactive endpoint checkpoint')
     parser.add_argument('--mode', choices=('original', 'frontier', 'integrated'), required=True)
     parser.add_argument('--case',choices=tuple(CASES),default='nicopolis')
     parser.add_argument('--without-frontier-offers',action='store_true',
@@ -600,6 +633,8 @@ if __name__ == '__main__':
     parser.add_argument('--observe-purchases', action='store_true')
     parser.add_argument('--observe-purchase-lineage',action='store_true',
         help='Read-only tree/contract creation links; requires --observe-purchases')
+    parser.add_argument('--observe-purchase-execution',action='store_true',
+        help='Read-only request/admission/dispatch and acquisition-caller receipts; requires --observe-purchases')
     parser.add_argument('--prototype-buyer',choices=('observe','restrict'),
         help='Szeged diagnostic only: allow its tied quote; restrict mode can exclude other native buyers')
     parser.add_argument('--seed-source-seats',action='store_true',
@@ -615,6 +650,8 @@ if __name__ == '__main__':
         parser.error('positive-frontier ablation requires integrated mode')
     if options.observe_purchase_lineage and not options.observe_purchases:
         parser.error('lineage observation requires --observe-purchases')
+    if options.observe_purchase_execution and not options.observe_purchases:
+        parser.error('execution observation requires --observe-purchases')
     if options.prototype_buyer and (options.case!='szeged' or options.mode!='integrated'
             or not options.observe_purchases or not options.observe_purchase_lineage):
         parser.error('buyer prototype requires integrated Szeged with purchase and lineage observation')

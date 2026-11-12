@@ -1,11 +1,15 @@
 'use strict';
 
 // Purchase evidence for the audited Windows XP2 hotfix 092abfbb.
-// Four sites are inside the plot branch of Purchase::Start (680f70).
-// RDI is the buying City; RBP+0x67/0x6b hold its target XY throughout.
+// Four sites per implementation are inside the plot branch of Purchase::Start.
+// Expansion games can dispatch XP1::Purchase::Start (71c3b0), not the base
+// implementation (680f70). Nuremberg's live Annex caller71c69a exposed that
+// coverage gap. Both implementations are independently fingerprinted below.
+// RDI is the buying City; frame locations and preserved registers differ.
 // The quote is whole Gold. The debit's low signed dword is Q8 Gold.
-// The returned debit call records its preserved argument, not a measured
-// treasury balance change. Pair command receipts with Gameplay ownership.
+// At the existing debit call/return boundaries, pair thread+stack+city+XY and
+// measure the receiver's Treasury balance. The preserved argument alone is
+// not payment evidence. Pair measured payment with Gameplay city ownership.
 // Two earlier sites in Economic::TryPurchasePlot (459090) expose each city's
 // quote and the selected city's savings gates. They do not submit a purchase.
 // Default mode is read-only. Explicit Szeged prototype mode can exclude a
@@ -17,8 +21,32 @@ const PlotQuoteReturn = 0x681346;
 const GoldDebitCall = 0x681379;
 const GoldDebitReturn = 0x68137e;
 const PlotAnnexReturn = 0x6813a2;
+// XP1 ABI verified against reference SHA324c51e9 text matching hotfix092abfbb:
+// RDI=City, R15=Treasury, EBX=negativeQ8 debit after the call; XY=RBP+38/+3c.
+// Observe both dispatch targets without changing the handler or game state.
+const PurchaseHandlers = [
+    {name:'base',quote:PlotQuoteReturn,debit:GoldDebitCall,returned:GoldDebitReturn,
+        annex:PlotAnnexReturn,x:0x67,y:0x6b,treasury:'r14',delta:'rsi',
+        quoteBytes:'8bf085c00f8eca000000',debitBytes:'e8621fccff8b4567488d8f800b0000',
+        annexBytes:'0fb787d80000004c8d4567'},
+    {name:'xp1',quote:0x71c63e,debit:0x71c671,returned:0x71c676,
+        annex:0x71c69a,x:0x38,y:0x3c,treasury:'r15',delta:'rbx',
+        quoteBytes:'8bd885c00f8e27020000',debitBytes:'e86a6cc2ff8b4538488d8f800b0000',
+        annexBytes:'0fb787d80000004c8d4538'},
+];
 const TargetedCityQuoteReturn = 0x459169;
 const TargetedSavingsCheck = 0x45918f;
+// Optional execution provenance after a qualified quote/fund check. AL is a
+// Boolean at the first two TEST instructions. The third boundary proves only
+// that Manager::Start returned, not success (EAX is overwritten next).
+const TargetedRequestBuilt = 0x4591f3;
+const TargetedCommandChecked = 0x45921f;
+const TargetedCommandReturned = 0x459241;
+const CultureAnnexEntry = 0x11b100;
+const PlotSetOwnerEntry = 0x616a0;
+const CultureCityOffset = 0;
+const PlotCoordinatesOffset = 0x28; // Packed signed16X/signed16Y, XP2 reference.
+const PlayerTurnActiveOffset = 0x288; // Lua lIsTurnActive6ee350 and Manager.CanStart13560.
 // TryPurchasePlot saves its original Economic receiver at entry RSP+8.
 // Seven pushes and its 0x80-byte frame put that slot at RSP+0xc0 here.
 // The slot is overwritten later in this routine: read only at 45918f.
@@ -53,14 +81,14 @@ const DistrictSelectionReturn = 0x3e0f3c; // RAX district, RDI CityBuild, RBP+40
 const DistrictSelectionXY = 0x40;
 const CityIdOffset = 0xa8;
 const CityOwnerOffset = 0xd8;
-const TargetXOnFrame = 0x67;
-const TargetYOnFrame = 0x6b;
 const GameInstanceSlot = 0xb8aa68;
 const GameTurnOffset = 0xc0;
 const memory = createStudyMemoryIO({ptr, findRangeByAddress: p => Process.findRangeByAddress(p)});
 const listeners = [];
 const records = [];
 let fault = null;
+let pendingDebitCount = () => 0;
+let pendingExecutionCount = () => 0;
 
 function read(address, offset, type) {
     const result = memory.read(address.toString(), offset, type);
@@ -80,6 +108,8 @@ rpc.exports = {
             scope.plots.some(plot => !Number.isInteger(plot) || plot < 0 || plot >= scope.width * scope.height) ||
             !Number.isInteger(scope.player) || scope.player < 0 || scope.player >= 64)
             throw Error('Unexpected plot purchase observation scope');
+        if(scope.observeExecution!==undefined&&typeof scope.observeExecution!=='boolean')
+            throw Error('Execution observation must be explicit Boolean');
         const targets = new Set(scope.plots);
         const prototypeBuyer = scope.prototypeBuyer;
         if (prototypeBuyer !== undefined && prototypeBuyer !== null &&
@@ -93,14 +123,18 @@ rpc.exports = {
                 b => b.toString(16).padStart(2, '0')).join('');
             if (actual !== expected) throw Error(`Purchase fingerprint differs at ${rva.toString(16)}`);
         };
-        fingerprint(PlotQuoteReturn, '8bf085c00f8eca000000');
-        fingerprint(GoldDebitCall, 'e8621fccff8b4567488d8f800b0000');
-        fingerprint(PlotAnnexReturn, '0fb787d80000004c8d4567');
+        for(const handler of PurchaseHandlers) {
+            fingerprint(handler.quote,handler.quoteBytes);
+            fingerprint(handler.debit,handler.debitBytes);
+            fingerprint(handler.annex,handler.annexBytes);
+        }
         fingerprint(TargetedCityQuoteReturn, '85c07e104d85f67405');
         fingerprint(TargetedSavingsCheck, '488bac24d0000000418bdfc1e308');
         fingerprint(0x459095, '48894c2408'); // Saved Economic receiver.
         fingerprint(0x4590a5, '4881ec80000000488be9'); // Audited frame size.
         const createdTrees = new Map(), knownContracts = new Map(), pendingSelections = new Map();
+        const pendingDebits = new Map(); // At most32 synchronous observed plot commands.
+        let executionPending = 0;
         const emit = receipt => {
             if (records.length >= 512) throw Error('Purchase trace capacity');
             records.push(receipt);
@@ -238,9 +272,9 @@ rpc.exports = {
                 } catch (error) { fail(error); }
             }));
         }
-        const commandLocation = context => ({city: context.rdi,
-            x: read(context.rbp, TargetXOnFrame, 'i32'),
-            y: read(context.rbp, TargetYOnFrame, 'i32')});
+        const commandLocation = handler => context => ({city: context.rdi,
+            x: read(context.rbp, handler.x, 'i32'),
+            y: read(context.rbp, handler.y, 'i32')});
         // At both Economic sites R12 still points to the requested XY.
         // RBP is the quoted City at 459169; R14 is the cheapest positive
         // quote's City at 45918f. Stack slots hold the saved Q8 fund pointers.
@@ -260,7 +294,7 @@ rpc.exports = {
                     if (records.length >= 512) throw Error('Purchase trace capacity');
                     const turn = read(ptr(read(gameSlot, 0, 'ptr')), GameTurnOffset, 'i32');
                     const receipt = {kind, turn, player, city: read(city, CityIdOffset, 'i32'), plot};
-                    if (value) Object.assign(receipt, value(this.context));
+                    if (value) Object.assign(receipt, value(this.context, this.threadId, receipt));
                     records.push(receipt);
                     // Stream bounded observations to the host immediately.
                     // A machine/worker interruption can bypass finally and
@@ -273,13 +307,53 @@ rpc.exports = {
             }));
         };
         const allCommandPlots = scope.allCommandPlots === true;
-        attach(PlotQuoteReturn, 'quote', commandLocation,
-            context => ({gold: context.rax.toInt32()}), allCommandPlots);
-        attach(GoldDebitCall, 'debit-call', commandLocation,
-            context => ({deltaQ8: read(context.rdx, 0, 'i32')}), allCommandPlots);
-        attach(GoldDebitReturn, 'debit-return', commandLocation,
-            context => ({deltaQ8: context.rsi.toInt32()}), allCommandPlots);
-        attach(PlotAnnexReturn, 'annex-return', commandLocation, null, allCommandPlots);
+        for(const handler of PurchaseHandlers) {
+            const locate=commandLocation(handler);
+            attach(handler.quote, 'quote', locate,
+                context => ({handler:handler.name,gold: context.rax.toInt32()}), allCommandPlots);
+            attach(handler.debit, 'debit-call', locate,
+                (context, thread, receipt) => {
+                    // Windowsx64 ABI: RCX is Treasury*, RDX points to signed Q8
+                    // delta. Each descriptor's CALL invokes ChangeGoldBalance
+                    // RVA3432e0; that routine reads/writes Treasury+a8 via
+                    // SetGoldBalance, saturating only on int32 overflow. Read the
+                    // actual balance instead of assuming the requested delta ran.
+                    const key = `${thread}:${context.rsp}`;
+                    if (!Number.isInteger(thread) || thread <= 0 || pendingDebits.has(key) || pendingDebits.size >= 32)
+                        throw Error('Ambiguous or excessive pending plot debit');
+                    const deltaQ8 = read(context.rdx, 0, 'i32');
+                    const treasury = context.rcx;
+                    if (treasury.toString() !== context[handler.treasury].toString())
+                        throw Error('Plot debit Treasury receiver differs');
+                    const beforeQ8 = read(treasury, TreasuryGoldOffset, 'i32');
+                    pendingDebits.set(key, {handler:handler.name,treasury: treasury.toString(), beforeQ8, deltaQ8,
+                        city: receipt.city, cityPointer: context.rdi.toString(), plot: receipt.plot, turn: receipt.turn});
+                    return {handler:handler.name,deltaQ8, threadId: thread, callerStack: context.rsp.toString(),
+                        treasury: treasury.toString(), treasuryBeforeQ8: beforeQ8};
+                }, allCommandPlots);
+            attach(handler.returned, 'debit-return', locate,
+                (context, thread, receipt) => {
+                    // CALL and its following instruction have the same caller
+                    // RSP. RCX may be clobbered on return, so borrow only the exact
+                    // receiver paired at this thread/stack boundary. Same-address
+                    // reuse without a completed pair is an observation failure.
+                    const key = `${thread}:${context.rsp}`;
+                    const pending = pendingDebits.get(key);
+                    if (!Number.isInteger(thread) || thread <= 0 || !pending || pending.handler!==handler.name || pending.city !== receipt.city ||
+                        pending.cityPointer !== context.rdi.toString() || pending.treasury !== context[handler.treasury].toString() || pending.plot !== receipt.plot ||
+                        pending.turn !== receipt.turn || pending.deltaQ8 !== context[handler.delta].toInt32())
+                        throw Error('Unmatched plot debit return');
+                    const afterQ8 = read(ptr(pending.treasury), TreasuryGoldOffset, 'i32');
+                    pendingDebits.delete(key);
+                    return {handler:handler.name,deltaQ8: pending.deltaQ8, threadId: thread, callerStack: context.rsp.toString(), treasury: pending.treasury,
+                        treasuryBeforeQ8: pending.beforeQ8, treasuryAfterQ8: afterQ8,
+                        measuredDeltaQ8: afterQ8 - pending.beforeQ8,
+                        // Notifications inside SetGoldBalance can cause nested
+                        // effects. A mismatch stays explicit, never payment success.
+                        deltaMatched: afterQ8 - pending.beforeQ8 === pending.deltaQ8};
+                }, allCommandPlots);
+            attach(handler.annex, 'annex-return', locate,()=>({handler:handler.name}), allCommandPlots);
+        }
         attach(TargetedCityQuoteReturn, 'targeted-city-quote', targetedLocation('rbp'),
             context => {
                 const originalGold = context.rax.toInt32();
@@ -355,11 +429,92 @@ rpc.exports = {
                 passesPlotFund: plotQ8 >= minimumPlotFundQ8,
                 passesCombinedFunds: gold <= Math.floor((plotQ8 + slushQ8) / 256)};
         });
+        if (scope.observeExecution === true) {
+            // Audited original bytes on SHA092abfbb's text-identical reference.
+            // These optional observations resolve ownership without a known
+            // paid-branch callback; they never grant admission or issue actions.
+            fingerprint(TargetedRequestBuilt,'84c00f84ca000000');
+            fingerprint(TargetedCommandChecked,'84c00f849e000000');
+            fingerprint(TargetedCommandReturned,'418bc5488d9424c0000000');
+            fingerprint(CultureAnnexEntry,'405556415441564157');
+            fingerprint(PlotSetOwnerEntry,'448944241889542410');
+            const admissionState = context => {
+                // The saved Economic receiver remains at callerRSP+c0 until
+                // after these three boundaries. Check its player before
+                // describing the measured IsTurnActive byte; do not invoke
+                // a native getter from a supposedly read-only callback.
+                const economic=ptr(read(context.rsp,EconomicReceiverOnStack,'ptr'));
+                const player=ptr(read(economic,EconomicPlayerOffset,'ptr'));
+                if(read(player,PlayerIdOffset,'i32')!==scope.player)throw Error('Execution Economic player differs');
+                return {playerTurnActive:read(player,PlayerTurnActiveOffset,'u8')!==0};
+            };
+            attach(TargetedRequestBuilt,'targeted-request-built',targetedLocation('r14'),
+                context=>({requestBuilt:(context.rax.toInt32()&255)!==0,...admissionState(context)}));
+            attach(TargetedCommandChecked,'targeted-command-checked',targetedLocation('r14'),
+                context=>({commandAdmitted:(context.rax.toInt32()&255)!==0,...admissionState(context)}));
+            attach(TargetedCommandReturned,'targeted-command-returned',targetedLocation('r14'),
+                context=>({managerStartReturned:true,...admissionState(context)}));
+            const caller = address => {
+                // Windows user pointers fit53-bit integers. Preserve an outside
+                // caller's address with unknownRVA rather than wrapping it into
+                // this GameCore's address range or inventing an attribution.
+                const absolute=Number(address.toString()),base=Number(core.base.toString());
+                if(!Number.isSafeInteger(absolute)||!Number.isSafeInteger(base))throw Error('Unsafe caller pointer');
+                const rva=absolute-base;
+                return {caller:address.toString(),callerRva:rva>=0&&rva<core.size?rva:null};
+            };
+            const scopedPlot = (x,y) => x>=0&&x<scope.width&&y>=0&&y<scope.height&&targets.has(y*scope.width+x);
+            listeners.push(Interceptor.attach(core.base.add(CultureAnnexEntry),{
+                onEnter() {
+                    if(fault)return;
+                    try {
+                        const city=ptr(read(this.context.rcx,CultureCityOffset,'ptr'));
+                        if(read(city,CityOwnerOffset,'i32')!==scope.player)return;
+                        const x=read(this.context.rdx,0,'i32'),y=read(this.context.rdx,4,'i32');
+                        if(!scopedPlot(x,y))return;
+                        this.annexReceipt={kind:'culture-annex-return',turn:turnNow(),player:scope.player,
+                            city:read(city,CityIdOffset,'i32'),plot:y*scope.width+x,...caller(this.returnAddress)};
+                        if(++executionPending>32)throw Error('Execution return capacity');
+                    }catch(error){fail(error);}
+                },
+                onLeave() {
+                    if(!this.annexReceipt)return;
+                    executionPending--;
+                    if(!fault)try{emit(this.annexReceipt);}catch(error){fail(error);}
+                }
+            }));
+            listeners.push(Interceptor.attach(core.base.add(PlotSetOwnerEntry),{
+                onEnter() {
+                    if(fault)return;
+                    try {
+                        const packed=read(this.context.rcx,PlotCoordinatesOffset,'i32');
+                        const x=(packed<<16)>>16,y=packed>>16;
+                        if(!scopedPlot(x,y))return;
+                        this.ownerReceipt={kind:'plot-set-owner-return',turn:turnNow(),plot:y*scope.width+x,
+                            requestedPlayer:this.context.rdx.toInt32(),requestedCity:this.context.r8.toInt32(),
+                            ...caller(this.returnAddress)};
+                        if(++executionPending>32)throw Error('Execution return capacity');
+                    }catch(error){fail(error);}
+                },
+                onLeave() {
+                    if(!this.ownerReceipt)return;
+                    executionPending--;
+                    if(!fault)try{emit(this.ownerReceipt);}catch(error){fail(error);}
+                }
+            }));
+            pendingExecutionCount=()=>executionPending;
+        }
         Interceptor.flush();
+        // Expose unresolved pairs only at freeze; never interpret a call with
+        // no observed return as a measured payment or resend the game command.
+        pendingDebitCount = () => pendingDebits.size;
         return true;
     },
     freeze() {
         for (const listener of listeners) listener.detach();
-        return {records, fault};
+        const pendingDebits = pendingDebitCount();
+        const pendingExecutions=pendingExecutionCount();
+        return {records, fault: fault || (pendingDebits ? 'Unreturned observed plot debit' :
+            pendingExecutions?'Unreturned observed execution callback':null), pendingDebits,pendingExecutions};
     },
 };

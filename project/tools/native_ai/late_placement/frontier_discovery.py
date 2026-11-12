@@ -35,6 +35,7 @@ from driver import (HERE, HOTFIX_SHA, HeldProcess, NativeSession, configure, fla
 from full_game_controller.checkpoint import save_inactive_boundary
 from liverpool_river_policy import PREPARE as PREPARE_RIVER, without_river
 from liverpool_adjacency_policy import PREPARE as PREPARE_ADJACENCY, without_promotions, without_strong_promotions
+from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint, PREPARE_RELEASE
 
 
 def liverpool_checkpoint(folder, home, world_sha, policy_root):
@@ -165,6 +166,8 @@ def run(args):
     river_arm=getattr(args,'liverpool_river_arm',None)
     prepare_flat=getattr(args,'liverpool_prepare_flat_alternative',False)
     adjacency_arm=getattr(args,'liverpool_adjacency_arm',None)
+    nuremberg_source=getattr(args,'nuremberg_source',None)
+    release_nuremberg=getattr(args,'nuremberg_prepare_release',False)
     liverpool_arm=river_arm or adjacency_arm
     host_mode=bool(host_scout or early_host or liverpool_arm)
     assert not boston_arm or boston and 23<=args.through<=40
@@ -180,6 +183,8 @@ def run(args):
     assert not river_arm or liverpool_source and not prepare_river
     assert sum(bool(x)for x in (prepare_river,river_arm,prepare_flat,adjacency_arm))<=1
     assert not (prepare_flat or adjacency_arm)or liverpool_source
+    assert not nuremberg_source or args.case==['run-v3-continents'] and not (host_mode or getattr(args,'compare_owned',False))
+    assert not release_nuremberg or nuremberg_source
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     assert load(reference / 'complete.json')['verified'] and load(reference / 'session-closed.json')['verified']
     assert load(previous / 'complete.json')['verified'] and load(previous / 'session-closed.json')['verified']
@@ -248,6 +253,9 @@ def run(args):
                 break
         assert len(selected) == 2
         identities[name] = selected
+        if nuremberg_source:
+            saves[name]=nuremberg_checkpoint(nuremberg_source,home,meta['sha256'],args.policy_root)
+            identities[name]=[dict(player=3,city=458758,name='LOC_CITY_NAME_NUREMBERG',plot=787)]
     packages = {reference / name: home / 'Mods' / name for name in
         ('CSC Bakers Development CE', 'CSC Bakers Development Mod')}
     assert not any(path.exists() for path in packages.values())
@@ -259,12 +267,14 @@ def run(args):
     binary = Path(load(reference / 'launch-bootstrap.json')['binary'])
     assert sha(binary) == HOTFIX_EXE_SHA
     compare_owned=getattr(args,'compare_owned',False)
+    save_owned=getattr(args,'save_owned_comparison',False)
     assert not compare_owned or args.case==['run-v3-continents'],'Owned comparison is pinned to the Continents fixture'
+    assert not save_owned or compare_owned,'The saved acquisition source requires the pinned Continents comparison'
     replacements = {relative: (args.policy_root / relative).read_bytes() for relative in
         (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE)}
     role_provenance=None
     host_scope=None
-    if boston_arm or prepare_specialty or host_mode or liverpool_source:
+    if boston_arm or prepare_specialty or host_mode or liverpool_source or compare_owned or nuremberg_source:
         # Reproduce the actual current reusable modules, not just a new
         # scanner calling a historical policy helper in the carrier.
         for filename in ('CSC_AI_QuarterPlacement.lua','CSC_AI_DistrictBridge.lua'):
@@ -303,6 +313,14 @@ def run(args):
             host_scope=[]
             replacements[relative]=stage_host_reader(replacements[relative],host_scope,
                 start=25,end=27,players=[1,2,3,4,5])
+        if save_owned:
+            # Preserve the known202 source using current main policy, not the
+            # rotating AI-observer autosave from the historical comparison.
+            # Original roles already persist in this tuned source; no migration.
+            relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+            replacements[SCANNER],replacements[relative]=stage_early_facts(
+                replacements[SCANNER],replacements[relative],migrate_roles=False)
+            replacements[relative]=stage_host_reader(replacements[relative],[],start=200,end=202,players=[3])
     if boston:
         # Match this older save's CSC identity while keeping the verified
         # carrier's gameplay content identical across future matched arms.
@@ -338,6 +356,9 @@ def run(args):
     out.mkdir(parents=True)
     write_json(out / 'inputs.json', dict(saves=saves, identities=identities, ce_sha256=CE_SHA,
         require_model=args.require_model,compare_owned=compare_owned,boston_arm=boston_arm,
+        save_owned_comparison=save_owned,
+        nuremberg_source=str(nuremberg_source)if nuremberg_source else None,
+        nuremberg_prepare_release=release_nuremberg,
         through=args.through if boston_arm else None,role_provenance=role_provenance,
         prepare_specialty=prepare_specialty,prepared_source=str(prepared) if prepared else None,
         host_choice_scope=host_scope,
@@ -353,15 +374,16 @@ def run(args):
     shutil.copyfile(HERE / 'frontier_site_survey.lua', out / 'frontier_site_survey.lua')
     if boston:shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
     if boston_arm or prepare_specialty:shutil.copyfile(HERE/'boston_material_policy.py',out/'boston_material_policy.py')
-    if host_mode:
+    if host_mode or save_owned:
         shutil.copyfile(HERE/'host_choice_policy.py',out/'host_choice_policy.py')
         shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
-    if early_host:shutil.copyfile(HERE/'early_host_policy.py',out/'early_host_policy.py')
+    if early_host or save_owned:shutil.copyfile(HERE/'early_host_policy.py',out/'early_host_policy.py')
     if liverpool_source or save_liverpool:shutil.copyfile(HERE/'liverpool_inspection.lua',out/'liverpool_inspection.lua')
     if prepare_river or river_arm:shutil.copyfile(HERE/'liverpool_river_policy.py',out/'liverpool_river_policy.py')
     if prepare_flat or adjacency_arm:shutil.copyfile(HERE/'liverpool_adjacency_policy.py',out/'liverpool_adjacency_policy.py')
+    if nuremberg_source:shutil.copyfile(HERE/'nuremberg_purchase_policy.py',out/'nuremberg_purchase_policy.py')
     controller = make_probe_controller(out, user_root=user_root)
-    controller.study_endpoint = 25 if liverpool_source else 22 if boston else 200
+    controller.study_endpoint = 202 if nuremberg_source else 25 if liverpool_source else 22 if boston else 200
     session = NativeSession(out,controller,inventory=native_inventory,hold=HeldProcess,write=write_json)
     installed = []
 
@@ -404,6 +426,13 @@ Modding.EnableMod(selected.Handle,true)
                 verify()
                 carrier=packages[csc] if boston else packages[ce]
                 verify_modules(session,(carrier / ce_relative).resolve(),case,HOTFIX_SHA)
+                if nuremberg_source:
+                    qualify_integrated_policy(controller,case,dict(player=3,city=458758,
+                        district=36,profile='BAKERS',purchasePlots=[788]))
+                if release_nuremberg:
+                    raw=session.issue_once('prepare-nuremberg-release',PREPARE_RELEASE,'CSC_AI_BakersGameplay')
+                    (case/'release-preparation.txt').write_text(raw,encoding='utf-8')
+                    assert 'CSC_NUREMBERG_RELEASED\t788\t-1\t' in raw
                 if liverpool_source:
                     if prepare_flat:
                         raw=session.issue_once('prepare-common-adjacency-source',PREPARE_ADJACENCY,'CSC_AI_BakersGameplay')
@@ -461,6 +490,9 @@ assert(p:GetDistrictType()==-1 and p:GetImprovementType()==-1)
                     (case/'initial-receipt.txt').write_text(raw,encoding='utf-8')
                 if compare_owned:
                     qualify_integrated_policy(controller,case,CASES['nicopolis'])
+                    if save_owned:
+                        raw=session.issue_once('arm-owned-source-reader','CSC_HOST_DIAG_Arm()','CSC_AI_BakersGameplay')
+                        (case/'initial-native-prefix.txt').write_text(raw,encoding='utf-8')
                 if host_mode:
                     target=dict(player=4,city=131073,district=36,profile='BAKERS',purchasePlots=[2497]) if liverpool_arm else \
                         dict(player=1,city=65536,district=36,profile='BAKERS',purchasePlots=[1061]) if early_host else \
@@ -481,6 +513,7 @@ end
 """)
                 prefix='CSC_FRONTIER_COMPARISON='+lua({3:{131073:True}})+'\n' if boston else ''
                 if liverpool_source:prefix='CSC_FRONTIER_COMPARISON='+lua({4:{131073:True}})+'\n'
+                if nuremberg_source:prefix='CSC_FRONTIER_COMPARISON='+lua({3:{458758:True}})+'\n'
                 if host_scout:
                     cities={}
                     for row in host_scope:cities.setdefault(row['player'],{})[row['city']]=True
@@ -500,8 +533,29 @@ end
                 assert not args.require_model or state['typeFilterAvailable'], 'Future district eligibility unavailable'
                 assert all(row['supply']['base'] for row in state['sites'])
                 write_json(case / 'gameplay-survey.json',state)
+                if nuremberg_source:state['buyerPlots']=[dict(player=3,plot=788)]
                 ui_readback(controller,case,state)
                 write_json(case / 'survey.json',state)
+                if release_nuremberg:
+                    # A source edit is not acquisition. Qualify the released
+                    # plot's NEW all-city quotes; the older85 quote was for862.
+                    target=next(row for row in state['sites']if row['player']==3 and row['city']==458758
+                        and row['plot']==788 and row['profile']=='BAKERS')
+                    assert not target.get('ownedComparison') and target['maximumProjection']['total']>=4
+                    quotes=[row for row in state['buyerQuotes']if row['player']==3 and row['plot']==788]
+                    intended=next(row for row in quotes if row['city']==458758)['quote']
+                    assert intended>0 and all(row['city']==458758 or row['quote']<=0 or row['quote']>intended for row in quotes), \
+                        'Released788 has no unambiguous intended buyer; do not launch purchase arms'
+                    bank=next(row['treasuryGold']for row in state['uiEconomy']if row['player']==3)
+                    assert bank>=intended,'Current treasury is insufficient; native savings remain a separate gate'
+                    checkpoint=save_inactive_boundary(controller,turn=202,name='CSC_NUREMBERG_RELEASED',
+                        native_directory=home/'Saves/Single',archive=out/'source.Civ6Save')
+                    write_json(out/'checkpoint.json',checkpoint)
+                    write_json(out/'owned-comparison-source.json',load(nuremberg_source/'owned-comparison-source.json'))
+                    write_json(out/'release-preparation.json',dict(verified=True,
+                        parent_save_sha256=source['sha256'],released_plot=788,player=3,city=458758,
+                        native_purchase=False,native_funds_verified=False,treasury_gold=bank,quote_gold=intended,
+                        expected_adjacency=target['maximumProjection']['total'],all_city_quotes=quotes))
                 if host_scout:
                     raw=controller.cmd('CSC_QUARTER_SURVEY_PLAYERS={1,2,3,4,5};\n'+read(out/'quarter_site_survey.lua'),
                         'CSC_AI_BakersGameplay','host-current-policy-offers')
@@ -659,11 +713,33 @@ end
                 cities={r['city']:r for r in state['cityStates'] if r['player']==3}
                 assert cities[393221]['name']=='LOC_CITY_NAME_HAMBURG'
                 assert cities[458758]['name']=='LOC_CITY_NAME_NUREMBERG'
-                state['buyerPlots']=[dict(player=3,plot=index) for index in (862,1011)]
+                state['buyerPlots']=[dict(player=3,plot=index) for index in ((788,862,1011)if save_owned else (862,1011))]
                 ui_readback(controller,comparison,state)
                 write_json(comparison/'survey.json',state)
+                if save_owned:
+                    target=next(row for row in state['sites']if row['player']==3 and row['city']==458758
+                        and row['profile']=='BAKERS' and row['plot']==788)
+                    assert target['ownedComparison'] and target['maximumProjection']['total']>=4
+                    assert target['supply']['base'] and any(host['plot']==713 for host in target['futureHosts'])
+                    raw=controller.cmd('CSC_QUARTER_SURVEY_PLAYERS={3};\n'+read(out/'quarter_site_survey.lua'),
+                        'CSC_AI_BakersGameplay','owned-current-policy-offers-202')
+                    (comparison/'actual-policy-survey.txt').write_text(raw,encoding='utf-8')
+                    raw=controller.cmd('CSC_HOST_DIAG_Snapshot()','CSC_AI_BakersGameplay','owned-source-terminal-prefix')
+                    (comparison/'native-prefix.txt').write_text(raw,encoding='utf-8')
+                    checkpoint=save_inactive_boundary(controller,turn=202,name='CSC_NUREMBERG_ACQUISITION_SOURCE',
+                        native_directory=home/'Saves/Single',archive=out/'source.Civ6Save')
+                    write_json(out/'checkpoint.json',checkpoint)
+                    write_json(out/'owned-comparison-source.json',dict(verified=True,
+                        source_world_sha256=source['sha256'],player=3,city=458758,plot=788,
+                        native_fresh_comparison_verified=False,
+                        main_policy_sha256={str(p):sha(args.policy_root/p)for p in (
+                            SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                            Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))}))
                 for log in ('Lua.log','AI_CityBuild.csv','AI_Behavior_Trees.csv'):
                     shutil.copyfile(user_root/'Logs'/log,out/log)
+                if save_owned:
+                    for failure in ('CSC_HOST_DIAG_FAILED','CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED'):
+                        assert failure not in read(out/'Lua.log'),'Source policy/reader failure: '+failure
                 print('Owned/frontier comparison complete at202',flush=True)
             if index + 1 < len(args.case):
                 session.issue_once('menu-' + name,'Events.ExitToMainMenu();','PlotInfo')
@@ -691,6 +767,12 @@ if __name__=='__main__':
     parser.add_argument('--require-model',action='store_true',help='Require the shared read-only production adjacency calculator')
     parser.add_argument('--compare-owned',action='store_true',
         help='Continents only: advance naturally to202 and inspect Nuremberg/Hamburg owned alternatives')
+    parser.add_argument('--save-owned-comparison',action='store_true',
+        help='Requires compare-owned: use all current main modules and save verified inactive202 for acquisition qualification')
+    parser.add_argument('--nuremberg-source',type=Path,
+        help='Verified paused202 source directory for zero-turn acquisition-fixture qualification')
+    parser.add_argument('--nuremberg-prepare-release',action='store_true',
+        help='Diagnostic only: release empty788 once, qualify its actual new quote/buyer and save the common derivative')
     parser.add_argument('--boston-arm',choices=('control','treatment'),
         help='Matched Boston material preference: control removes only its retained positive offer')
     parser.add_argument('--through',type=int,default=33)

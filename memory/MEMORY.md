@@ -1,5 +1,32 @@
 # Current CSC AI work — 12 November 2026
 
+Active 1.5: Nuremberg released source202 SHA d579ecc2…; execution repeat202–204
+closed verified. RequestBuilt/CommandAdmitted true, physical ownership P3/c458758.
+Culture Annex caller71c69a proves dispatch through XP1 Purchase::Start71c3b0;
+the old observer covered only base680f70. No measured payment in that repeat.
+Astra verified XP1 quote71c63e/debitcall71c671/return71c676/annex71c69a,
+RDI City, RBP+38/+3c XY, R15 Treasury, EBX negative Q8 debit. Shared descriptors
+now cover both handlers; Node guard suite and13 purchase-fixture checks pass.
+Live shared worker `nuremberg-purchase-paid-full-01`, exec87194,202–216,
+expanded read-only observers and --save-endpoint. Do not edit pinned tooling
+until terminal. Predeclared control withholds positive Bakers AND Tailors
+frontier candidates at P3/c458758/788; preserve other channels, audit reranking.
+No 1.5 closure: payment, matched acquisition causality, foundation and separate
+supplier acquisition/improvement still required. Report csc-ai-nuremberg-
+acquisition-20261112.md. Existing Lua51 dependency root for offline checks:
+`C:/Users/Shadow/Desktop/Codex/csc-adjacencies/test-deps` on PYTHONPATH.
+Frida17.24.3: `C:/Users/Shadow/Desktop/Codex/csc-ce-ai-tooling-probe-20261028/dependencies`.
+
+Henno requested preservation of the current game. The shared replay had already
+closed normally at turn 204. Its endpoint autosave is now preserved byte-for-byte
+as `Saves/Single/Henno_Preserved_Nuremberg_T204_20261112.Civ6Save`, with backup
+`C:/Users/Shadow/Desktop/Codex/csc-ai-preserve-nuremberg-20261112/preserved-game.Civ6Save`
+and `preservation.json`. All three SHA-256 hashes match:
+`819d36af685d313d1a3d089bc0cf923991972b1a25aadd20547bdc55fcfcc39f`.
+Do not delete either copy. This is a preserved rotating autosave, not a qualified
+inactive-boundary checkpoint; do not silently substitute it for the verified
+202 source in controlled replays.
+
 **Latest: AI-C158 closes1.4 levels1–3, Astra-approved.** liverpool-adjacency-
 full-01 vsviable-01 sameflatsource4603843…; nativeweak2571/adj3/+6144/result29251
 →strong2497/adj4/+12288/result32096, request263/reservation55,34→55,33.

@@ -17,6 +17,15 @@ work, not additional conditions for closing this goal's placement capabilities.
 Current item: **1.5 Tile acquisition**. **1.1 material-aware choice**, **1.2 future customer access**, **1.3 river-aware site ranking**, **1.4 combined strong-site guidance**, **1.8 suppression** and **2.2 finite material
 protection** already meet levels 1â€“3 at the recorded representative scopes.
 
+For 1.5, the controlled Nuremberg release now reaches a main-policy Quarter
+selection, accepted purchase contract, sufficient savings and command admission.
+Correct-city ownership is observed. Its acquisition uses XP1's purchase handler,
+which explains the original base-only observer's missing debit callbacks.
+Measure that debit with the expanded observer, compare the predeclared
+Bakers+Tailors footprint-offer ablation, and verify foundation. The separate
+supplier acquisition/improvement route remains required. No 1.5 closure follows
+from ownership alone. [Evidence](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
+
 ### Current capability â€” Quarter placement (1.1â€“1.8) and related districts (2.1â€“2.2)
 
 The first increment targets choices among owned sites for Bakers and Tailors.

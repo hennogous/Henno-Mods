@@ -2,6 +2,8 @@
 
 Dated reports preserve observations, failed tests and corrections. Start with [current status](STATUS.md) and the [roadmap](roadmap.md); old reports do not define current policy.
 
+- [Nuremberg acquisition: native request, expansion command path and measured-payment test — 12 November 2026](../research/mods/csc-ai-nuremberg-acquisition-20261112.md)
+
 - [Native Economic plot savings and accounting —11 November 2026](../research/mods/civ6-economic-plot-savings-20261111.md)
 
 - [AI research publishing](../../../memory/feedback_ai_publishing.md)

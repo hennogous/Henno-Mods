@@ -43,6 +43,13 @@ class Controller:
 
 
 class Qualification(unittest.TestCase):
+    def test_qualification_uses_declared_checkpoint_clock(self):
+        with tempfile.TemporaryDirectory()as folder:
+            controller=Controller('Game.GetCurrentGameTurn=function()return 202 end')
+            qualify_purchase(controller,Path(folder),dict(CASES['szeged'],turn=202))
+            record=json.loads((Path(folder)/'source-purchase-qualification.json').read_text())
+            self.assertTrue(record['verified'])
+
     def test_policy_gate_logs_zero_return_property_without_masking_inactivity(self):
         class PolicyController(Controller):
             def cmd(self,code,state,label):
@@ -167,6 +174,20 @@ print=function()end
             with self.subTest(change=change):
                 vm.execute('prices={85,130,-1};'+change)
                 self.assertIsNone(quote())
+
+    def test_nuremberg_control_withholds_both_profiles_at_one_footprint(self):
+        path=Path(__file__).resolve().parents[4]/'Civ Supply Chains/Lua_UI/AI/CSC_AI_AdjacencyScan.lua'
+        source=path.read_bytes();changed=ablate_frontier_offer(source,CASES['nuremberg'])
+        differences=[(a,b)for a,b in zip(source.splitlines(),changed.splitlines())if a!=b]
+        self.assertEqual(len(differences),1)
+        condition='(pid == 3 and city:GetID() == 458758 and (district.Index == 36 or district.Index == 37) and index == 788)'
+        self.assertIn(condition.encode(),differences[0][1])
+        vm=LuaRuntime()
+        predicate=vm.eval('function(pid,id,d,index)local city={GetID=function()return id end};local district={Index=d};return '+condition+' end')
+        for pid,city,district,index in ((3,458758,36,788),(3,458758,37,788),
+                (2,458758,36,788),(3,458757,36,788),(3,458758,35,788),(3,458758,36,789)):
+            self.assertEqual(predicate(pid,city,district,index),pid==3 and city==458758 and district in(36,37)and index==788)
+        vm.eval('function(code)return assert(loadstring(code))end')(changed.decode('utf-8-sig'))
 
     def test_explicit_prototype_qualification_records_ambiguity(self):
         with tempfile.TemporaryDirectory() as path:

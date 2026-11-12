@@ -41,15 +41,18 @@ savings/legality checks, payment, ownership by the intended city and foundation.
 Qualify the separate supplier acquisition route through acquisition and
 improvement. Diagnostic ownership assignment is not a native purchase.
 
-Both river-aware ranking and combined strong-site preference are complete at
-their independently validated scopes. The latter changes Quarter 2571/29,251 to
-Quarter 2497/32,096; all 173 common native/cache records match, with exactly three
-positive-offer differences. The no-promotion Holy Site negative is preserved.
-Both arms later produce Stonehenge. A verified inactive turn-27 checkpoint
-preserves the full native Quarter plan for later 1.6. All sessions closed
-normally. Next qualify an existing worthwhile acquisition candidate against
-real treasury, native savings, buyer identity and contractual lifetime before
-another bounded purchase replay. [Strong-site evidence](../research/mods/csc-ai-combined-adjacency-choice-20261112.md#matched-result-14-closed-at-levels-13).
+The verified inactive Nuremberg 202 source supports one explicit diagnostic
+release of a worthwhile empty footprint. New quotes identify only Nuremberg as
+buyer at 40 Gold. Ordinary main CSC guidance selects Bakers there, creates its
+purchase contract and passes the observed savings and native admission checks.
+The tile becomes owned by the intended city. The missing payment callbacks
+were traced to dispatch through **XP1::Purchase::Start**, outside the original
+base-only observer's coverage. Both implementations are now covered by the
+same guarded balance measurement. **No paid-acquisition or 1.5 closure yet.**
+Next measure payment, then compare with the predeclared footprint-level
+Bakers+Tailors positive-offer ablation and follow the foundation. Supplier
+acquisition/improvement remains a separate unresolved route.
+[Acquisition evidence and limits](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
 
 ## Evidence levels by sub-problem
 
@@ -77,9 +80,9 @@ lineage is verified, but payment and intended-city annexation are not.
 The two-turn Nuremberg/Hamburg comparison qualified complete seven-city quote
 sets and ample Treasury. Nuremberg's owned 788 is stronger than frontier 862;
 Hamburg's free 1085 matches frontier 1011. Those comparisons establish no
-economic reason to buy. The preserved 202 source can support an explicitly
-controlled ownership-release acquisition fixture later; that would not prove
-buying was useful in the original world.
+economic reason to buy. The preserved 202 source now supports the explicitly
+controlled release fixture above; this does not prove buying was useful in
+the original world, where the tile was already owned.
 
 No upstream CE PR is authorized. Stock AI remains the target; RHAI5 and the
 older multi-seed Stage 2 milestone are follow-up qualification. Keep engine
