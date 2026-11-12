@@ -36,9 +36,10 @@ class CheckpointTests(unittest.TestCase):
    def ready(self,*args):pass
    def state_read(self,label):
     self.reads+=1
-    return dict(turn=125 if phase_change and self.reads>1 else 124,active=False,remaining=0,local_player=0,player0_human=True)
+    return dict(turn=125 if phase_change and self.requests>0 else 124,active=False,remaining=0,local_player=0,player0_human=True)
    def cmd(self,code,state,label):
     if label=='checkpoint-ui-phase':return 'CSC_EXACT_CHECKPOINT_UI 124 false 0 true true'
+    if label=='checkpoint-save-readiness':return 'CSC_EXACT_SAVE_READY true true true false false false'
     if label.startswith('save-exact-boundary'):
      self.requests+=1;self.name=json.loads(re.search(r'CSC_EXACT_CHECKPOINT_SAVE=\{name=("[^"]+")',code)[1]);(root/(self.name+'.Civ6Save')).write_bytes(b'CIV6'+b'0'*100010)
      if missing_ack:raise MissingAcknowledgment('fixture delayed ack','')
@@ -76,6 +77,16 @@ class CheckpointTests(unittest.TestCase):
  def test_existing_archive_blocks_before_any_native_request(self):
   r,root=self.fixture();(root/'archive.Civ6Save').write_bytes(b'preserve archive')
   with self.assertRaisesRegex(AssertionError,'Never overwrite'):self.save(r,root)
+  self.assertEqual(r.requests,0)
+
+ def test_save_permission_failure_never_submits_a_save(self):
+  r,root=self.fixture();original=r.cmd
+  def pending(code,state,label):
+   if label=='checkpoint-save-readiness':return 'CSC_EXACT_SAVE_READY true true false false false false'
+   return original(code,state,label)
+  r.cmd=pending
+  with patch('full_game_controller.checkpoint.time.monotonic',side_effect=[0,0,100]),patch('full_game_controller.checkpoint.time.sleep'):
+   with self.assertRaisesRegex(TimeoutError,'no SaveGame request sent'):self.save(r,root)
   self.assertEqual(r.requests,0)
 
 if __name__=='__main__':unittest.main()

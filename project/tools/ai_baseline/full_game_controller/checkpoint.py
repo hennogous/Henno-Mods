@@ -56,6 +56,30 @@ def validate_ui_save_phase(core,ui):
     return core['turn']-ui['turn']
 
 
+def wait_save_ui_gate(r,timeout):
+    """Read the shipped save permission before issuing the one-shot request.
+
+    Inactive autoplay and a human return seat do not establish an active local
+    turn. LocalPlayerActionSupport.lua permits a single-player save only while
+    that player's turn is active. Also wait for the UI's Core-busy flag to clear;
+    these queries never activate a turn or repeat a SaveGame command.
+    """
+    deadline=time.monotonic()+timeout;last=None
+    while time.monotonic()<deadline:
+        raw=r.cmd("""local p=Players[0];local c=PlayerConfigurations[0]
+print('CSC_EXACT_SAVE_READY',UI.HasFeature('Saving'),c and c:IsAlive() or false,
+ p and p:IsTurnActive() or false,GameConfiguration.IsNetworkMultiplayer(),UI.IsGameCoreBusy(),WorldBuilder:IsActive())""",
+            'PlotInfo','checkpoint-save-readiness')
+        matches=re.findall(r'CSC_EXACT_SAVE_READY\s+(true|false)\s+(true|false)\s+(true|false)\s+(true|false)\s+(true|false)\s+(true|false)',raw)
+        assert matches,'Missing native/UI save-readiness observation'
+        last=dict(zip(('saving_feature','config_alive','local_turn_active','network_game','core_busy','world_builder'),
+            (value=='true'for value in matches[-1])))
+        if last['saving_feature'] and last['config_alive'] and (last['network_game'] or last['local_turn_active']) and not last['core_busy'] and not last['world_builder']:
+            return last
+        time.sleep(.5)
+    raise TimeoutError('Save permission did not settle; no SaveGame request sent: '+json.dumps(last))
+
+
 def save_inactive_boundary(r,*,turn,name,native_directory,archive,timeout=60):
     assert re.fullmatch(r'[A-Za-z0-9_-]{1,96}',name),'Safe unique save name required'
     requested_name=name;archive=Path(archive);name=checkpoint_name(name,archive)
@@ -68,8 +92,17 @@ def save_inactive_boundary(r,*,turn,name,native_directory,archive,timeout=60):
     t,a,p,h,alive=re.findall(r'CSC_EXACT_CHECKPOINT_UI\s+(\d+)\s+(true|false)\s+(-?\d+)\s+(true|false)\s+(true|false)',raw)[-1]
     ui=dict(turn=int(t),active=a=='true',local_player=int(p),player0_human=h=='true',player0_alive=alive=='true')
     ui_lag=validate_ui_save_phase(proof,ui)
+    save_gate=wait_save_ui_gate(r,timeout)
+    current=r.state_read('exact-checkpoint-ready-to-save')
+    assert all(proof[k]==current[k]for k in('turn','active','remaining','local_player','player0_human')),'Native phase changed while awaiting save permission'
     n=json.dumps(name)
     code="""assert(not AutoplayManager.IsActive()and Game.GetLocalPlayer()==0 and(Game.GetCurrentGameTurn()==%d or Game.GetCurrentGameTurn()==%d))
+-- Recheck permission in the SAME UI command as the sole request. The native
+-- turn can change between transport replies; an earlier ready flag is no lease.
+local p,c=Players[0],PlayerConfigurations[0]
+assert(UI.HasFeature('Saving') and c and c:IsAlive() and p
+ and (GameConfiguration.IsNetworkMultiplayer() or p:IsTurnActive())
+ and not UI.IsGameCoreBusy() and not WorldBuilder:IsActive(),'Save permission changed before request')
 if CSC_EXACT_CHECKPOINT_SAVE and CSC_EXACT_CHECKPOINT_SAVE.handler then Events.SaveComplete.Remove(CSC_EXACT_CHECKPOINT_SAVE.handler)end
 CSC_EXACT_CHECKPOINT_SAVE={name=%s,completed=false}
 CSC_EXACT_CHECKPOINT_SAVE.handler=function()CSC_EXACT_CHECKPOINT_SAVE.completed=true end
@@ -97,4 +130,4 @@ print('CSC_EXACT_CHECKPOINT_REQUESTED',%s)"""%(turn,turn-1,n,n,n)
     after=r.state_read('exact-checkpoint-after');assert all(proof[k]==after[k]for k in('turn','active','remaining','local_player','player0_human'))
     return {'verified':True,'turn':turn,'requested_name':requested_name,'unique_name':name,'native_save':str(native),'archive':str(archive),'sha256':digest,
             'size':native.stat().st_size,'save_requests':1,'save_complete_event':True,'initial_ack':acknowledged,
-            'UI_phase':ui,'UI_clock_lag':ui_lag,'native_phase_unchanged':True,'before':proof,'after':after,'native_pid':r.game_pid,'worlds_created':0}
+            'UI_phase':ui,'UI_clock_lag':ui_lag,'save_ui_gate':save_gate,'native_phase_unchanged':True,'before':proof,'after':after,'native_pid':r.game_pid,'worlds_created':0}
