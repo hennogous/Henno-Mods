@@ -41,23 +41,26 @@ savings/legality checks, payment, ownership by the intended city and foundation.
 Qualify the separate supplier acquisition route through acquisition and
 improvement. Diagnostic ownership assignment is not a native purchase.
 
-The verified inactive Nuremberg 202 source supports one explicit diagnostic
-release of a worthwhile empty footprint. New quotes identify only Nuremberg as
-buyer at 40 Gold. Ordinary main CSC guidance selects Bakers there, creates its
-purchase contract and passes the observed savings and native admission checks.
-The tile becomes owned by the intended city. The missing payment callbacks
-were traced to dispatch through **XP1::Purchase::Start**, outside the original
-base-only observer's coverage. Both implementations are now covered by the
-same guarded balance measurement. The full arm now verifies a **40-Gold debit**
-and correct-city ownership, with exact stream agreement and normal cleanup.
-**No 1.5 closure:** the purchase node waits until timeout despite ownership,
-and the Quarter has no foundation through 216. The predeclared footprint-level
-ablation changes Bakers to Tailors, but both arms buy the same tile: acquisition
-causality is **not** demonstrated. The closed 202–205 probe confirms state 3 after payment,
-Economic eligibility false at 204 and a subsequent decorator read of the same
-retained state 3. Next test a guarded native acknowledgement of actual acquisition;
-native lifecycle repair is still unimplemented. Supplier
-acquisition/improvement remains a separate unresolved route.
+**Paid footprint follow-through is demonstrated diagnostically; integration is
+next.** Nuremberg pays 40 Gold and obtains the intended site, but its native
+purchase contract remains waiting and times out. A guarded native acknowledgement
+on the identical source changes that to request at 203, production selection at
+208, physical Bakers foundation at 209 and native COMPLETED contract at 212.
+The unchanged arm has no Quarter through 216. Astra verifies the controlled
+comparison, exact traces and normal cleanup. No score, funds or build command
+is forced by the acknowledgement.
+
+The positive-offer control still buys the same land for Tailors, so promotion
+necessity is not demonstrated. That negative remains valid. Astra confirms a
+BUY-versus-NOT-BUY test is not an extra acceptance gate: the agreed footprint
+workflow requires paid acquisition, correct-city ownership and foundation,
+with a relevant controlled action effect.
+
+**No 1.5 closure yet.** Move the repair into a generic CE capability and dynamic
+main-CSC adapter, reproduce it without the external writer and verify native
+tree identity after reload. The separate supplier acquisition/improvement
+route remains unresolved. The ownership-release setup is an explicit common
+fixture, not a native purchase. Physical IsComplete is not independently read.
 [Acquisition evidence and limits](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
 
 ## Evidence levels by sub-problem
@@ -68,7 +71,7 @@ acquisition/improvement remains a separate unresolved route.
 | 1.2 Neighbors | Verified | Future-host path changes type/request | **Complete at stated scope** |
 | 1.3 Rivers | Verified | Quarter site/request changed | **Complete at stated scope** |
 | 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
-| 1.5 Buying | Request/admission/debit/ownership verified | Matched acquisition causality and foundation pending | Partial; supplier route pending |
+| 1.5 Buying | Request/admission/debit/ownership verified | Diagnostic acknowledgement changes paid-site follow-through | CE/main repair and supplier route pending |
 | 1.6 Follow-through | Verified | Diagnostic construction completed | Causal main-policy reproduction pending |
 | 1.7 Defer/reconsider | Partial; weak-site mechanism exists | Pending | Pending |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |

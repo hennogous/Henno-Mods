@@ -1,0 +1,994 @@
+{
+  "artifact_audit_verified": true,
+  "closure_claim": false,
+  "integrated": false,
+  "scope": "Diagnostic acknowledgement changes paid-footprint follow-through; no acquisition-causality/supplier/main-integration claim",
+  "source_sha256": "d579ecc2c54909f1b21aaa96caad237daeb9fc0f67cd78c8602191c70c2a9026",
+  "ce_sha256": "f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07",
+  "staged_packages_identical": true,
+  "first_native_selection_identical": {
+    "kind": "selection",
+    "turn": 202,
+    "winner": {
+      "district": 36,
+      "x": 48,
+      "y": 10,
+      "q8": 286075
+    },
+    "sites": [
+      {
+        "plot": 861,
+        "q8": 208880,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 788,
+        "q8": 286075,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 713,
+        "q8": 213135,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 712,
+        "q8": 212211,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 786,
+        "q8": 207903,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 860,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 936,
+        "q8": 265024,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 862,
+        "q8": 270256,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 789,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 714,
+        "q8": 209973,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 640,
+        "q8": 209973,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 639,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 638,
+        "q8": 199488,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 711,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 785,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 859,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 934,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 935,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 1010,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 937,
+        "q8": 265801,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 863,
+        "q8": 278770,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 790,
+        "q8": 278770,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 715,
+        "q8": 278770,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 641,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 566,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 565,
+        "q8": 284023,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 564,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 563,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 637,
+        "q8": 283078,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 710,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 784,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 858,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 933,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 1007,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 1008,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 1009,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      }
+    ]
+  },
+  "trace_stream_counts": {
+    "purchase": 41,
+    "selector": 17
+  },
+  "purchase_records": [
+    {
+      "kind": "district-tree-created",
+      "turn": 202,
+      "player": 3,
+      "city": 458758,
+      "cityPointer": "0xf8ae0c20",
+      "treeId": 59244585,
+      "tree": "0x16c072930",
+      "root": "0x16c072930",
+      "control": 59375659
+    },
+    {
+      "kind": "purchase-contract-created",
+      "turn": 202,
+      "player": 3,
+      "contract": "0xee11a8c0",
+      "contractId": 4316,
+      "ownerControl": 59375659,
+      "plot": 788,
+      "x": 48,
+      "y": 10,
+      "rootTreeId": 59244585,
+      "executingTree": "0x16c072930",
+      "originCity": 458758,
+      "originCityPointer": "0xf8ae0c20",
+      "contractStatus": 1,
+      "contractVtableRva": 10463536,
+      "executeRva": 4162240,
+      "updateRva": 4170336,
+      "eligibilityRva": 4171904
+    },
+    {
+      "kind": "purchase-economic-eligibility",
+      "turn": 203,
+      "player": 3,
+      "phase": "compaction",
+      "eligible": true,
+      "contractId": 4316,
+      "ownerControl": 59375659,
+      "originCity": 458758,
+      "rootTreeId": 59244585,
+      "contractStatus": 3,
+      "contractVtableRva": 10463536,
+      "executeRva": 4162240,
+      "updateRva": 4170336,
+      "eligibilityRva": 4171904
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 65536,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 131073,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 196610,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 262147,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 327684,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 393221,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "gold": 40
+    },
+    {
+      "kind": "targeted-savings",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "gold": 40,
+      "plotQ8": 38400,
+      "slushQ8": 119183,
+      "factorQ8": 64,
+      "minimumPlotFundQ8": 2560,
+      "treasuryQ8": 196668,
+      "accountedQ8": 196668,
+      "unaccountedQ8": 0,
+      "savingsQ8": [
+        119183,
+        0,
+        38400,
+        39085
+      ],
+      "savingWeights": [
+        3,
+        4,
+        1,
+        1
+      ],
+      "totalWeight": 9,
+      "lineage": {
+        "known": true,
+        "contractId": 4316,
+        "ownerControl": 59375659,
+        "originCity": 458758,
+        "rootTreeId": 59244585
+      },
+      "passesPlotFund": true,
+      "passesCombinedFunds": true,
+      "contractId": 4316,
+      "ownerControl": 59375659,
+      "originCity": 458758,
+      "rootTreeId": 59244585,
+      "contractStatus": 3,
+      "contractVtableRva": 10463536,
+      "executeRva": 4162240,
+      "updateRva": 4170336,
+      "eligibilityRva": 4171904
+    },
+    {
+      "kind": "targeted-request-built",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "requestBuilt": true,
+      "playerTurnActive": true
+    },
+    {
+      "kind": "targeted-command-checked",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "commandAdmitted": true,
+      "playerTurnActive": true
+    },
+    {
+      "kind": "quote",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1",
+      "gold": 40
+    },
+    {
+      "kind": "debit-call",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1",
+      "deltaQ8": -10240,
+      "threadId": 8496,
+      "callerStack": "0x6ed9ead0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 196668
+    },
+    {
+      "kind": "debit-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "contractId": 4316,
+      "contractPointer": "0xee11a8c0",
+      "ownerControl": 59375659,
+      "rootTreeId": 59244585,
+      "handler": "xp1",
+      "deltaQ8": -10240,
+      "threadId": 8496,
+      "callerStack": "0x6ed9ead0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 196668,
+      "treasuryAfterQ8": 186428,
+      "measuredDeltaQ8": -10240,
+      "deltaMatched": true
+    },
+    {
+      "kind": "plot-set-owner-return",
+      "turn": 203,
+      "plot": 788,
+      "requestedPlayer": 3,
+      "requestedCity": 458758,
+      "caller": "0x1063ec63b",
+      "callerRva": 312891
+    },
+    {
+      "kind": "culture-annex-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "caller": "0x106abc69a",
+      "callerRva": 7456410
+    },
+    {
+      "kind": "annex-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1"
+    },
+    {
+      "kind": "targeted-command-returned",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "managerStartReturned": true,
+      "playerTurnActive": true,
+      "contractId": 4316,
+      "ownerControl": 59375659,
+      "originCity": 458758,
+      "rootTreeId": 59244585,
+      "contractStatus": 3,
+      "contractVtableRva": 10463536,
+      "executeRva": 4162240,
+      "updateRva": 4170336,
+      "eligibilityRva": 4171904
+    },
+    {
+      "kind": "quote",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 859,
+      "handler": "xp1",
+      "gold": 85
+    },
+    {
+      "kind": "debit-call",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 859,
+      "handler": "xp1",
+      "deltaQ8": -21760,
+      "threadId": 8496,
+      "callerStack": "0x6ed9eae0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 186428
+    },
+    {
+      "kind": "debit-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 859,
+      "handler": "xp1",
+      "deltaQ8": -21760,
+      "threadId": 8496,
+      "callerStack": "0x6ed9eae0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 186428,
+      "treasuryAfterQ8": 164668,
+      "measuredDeltaQ8": -21760,
+      "deltaMatched": true
+    },
+    {
+      "kind": "annex-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 859,
+      "handler": "xp1"
+    },
+    {
+      "kind": "purchase-decorator-status",
+      "turn": 203,
+      "player": 3,
+      "contractId": 4316,
+      "ownerControl": 59375659,
+      "originCity": 458758,
+      "rootTreeId": 59244585,
+      "contractStatus": 3,
+      "contractVtableRva": 10463536,
+      "executeRva": 4162240,
+      "updateRva": 4170336,
+      "eligibilityRva": 4171904
+    },
+    {
+      "kind": "purchase-executing-tree",
+      "turn": 203,
+      "contractId": 4316,
+      "city": 458758,
+      "player": 3,
+      "district": 36,
+      "x": 48,
+      "y": 10,
+      "rootTreeId": 59244585,
+      "rootControl": 59375659
+    },
+    {
+      "kind": "purchase-acknowledgement-intent",
+      "turn": 203,
+      "player": 3,
+      "plot": 788,
+      "city": 458758,
+      "contractId": 4316
+    },
+    {
+      "kind": "purchase-acknowledgement",
+      "turn": 203,
+      "player": 3,
+      "plot": 788,
+      "city": 458758,
+      "contractId": 4316,
+      "acknowledged": true,
+      "writeKind": "native-tracked-assignment",
+      "before": 3,
+      "after": 7,
+      "owner": 3,
+      "purchaseCity": 458758,
+      "paymentTurn": 203,
+      "measuredPaymentQ8": -10240
+    },
+    {
+      "kind": "quote",
+      "turn": 205,
+      "player": 3,
+      "city": 458758,
+      "plot": 711,
+      "handler": "xp1",
+      "gold": 85
+    },
+    {
+      "kind": "debit-call",
+      "turn": 205,
+      "player": 3,
+      "city": 458758,
+      "plot": 711,
+      "handler": "xp1",
+      "deltaQ8": -21760,
+      "threadId": 8496,
+      "callerStack": "0x6ed9eae0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 235678
+    },
+    {
+      "kind": "debit-return",
+      "turn": 205,
+      "player": 3,
+      "city": 458758,
+      "plot": 711,
+      "handler": "xp1",
+      "deltaQ8": -21760,
+      "threadId": 8496,
+      "callerStack": "0x6ed9eae0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 235678,
+      "treasuryAfterQ8": 213918,
+      "measuredDeltaQ8": -21760,
+      "deltaMatched": true
+    },
+    {
+      "kind": "annex-return",
+      "turn": 205,
+      "player": 3,
+      "city": 458758,
+      "plot": 711,
+      "handler": "xp1"
+    },
+    {
+      "kind": "quote",
+      "turn": 208,
+      "player": 3,
+      "city": 131073,
+      "plot": 941,
+      "handler": "xp1",
+      "gold": 130
+    },
+    {
+      "kind": "debit-call",
+      "turn": 208,
+      "player": 3,
+      "city": 131073,
+      "plot": 941,
+      "handler": "xp1",
+      "deltaQ8": -33280,
+      "threadId": 8496,
+      "callerStack": "0x6ed9ead0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 126845
+    },
+    {
+      "kind": "debit-return",
+      "turn": 208,
+      "player": 3,
+      "city": 131073,
+      "plot": 941,
+      "handler": "xp1",
+      "deltaQ8": -33280,
+      "threadId": 8496,
+      "callerStack": "0x6ed9ead0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 126845,
+      "treasuryAfterQ8": 93565,
+      "measuredDeltaQ8": -33280,
+      "deltaMatched": true
+    },
+    {
+      "kind": "annex-return",
+      "turn": 208,
+      "player": 3,
+      "city": 131073,
+      "plot": 941,
+      "handler": "xp1"
+    },
+    {
+      "kind": "quote",
+      "turn": 213,
+      "player": 3,
+      "city": 458758,
+      "plot": 563,
+      "handler": "xp1",
+      "gold": 130
+    },
+    {
+      "kind": "debit-call",
+      "turn": 213,
+      "player": 3,
+      "city": 458758,
+      "plot": 563,
+      "handler": "xp1",
+      "deltaQ8": -33280,
+      "threadId": 8496,
+      "callerStack": "0x6ed9eae0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 109169
+    },
+    {
+      "kind": "debit-return",
+      "turn": 213,
+      "player": 3,
+      "city": 458758,
+      "plot": 563,
+      "handler": "xp1",
+      "deltaQ8": -33280,
+      "threadId": 8496,
+      "callerStack": "0x6ed9eae0",
+      "treasury": "0x127de8bf0",
+      "treasuryBeforeQ8": 109169,
+      "treasuryAfterQ8": 75889,
+      "measuredDeltaQ8": -33280,
+      "deltaMatched": true
+    },
+    {
+      "kind": "annex-return",
+      "turn": 213,
+      "player": 3,
+      "city": 458758,
+      "plot": 563,
+      "handler": "xp1"
+    },
+    {
+      "kind": "district-tree-created",
+      "turn": 213,
+      "player": 3,
+      "city": 458758,
+      "cityPointer": "0xf8ae0c20",
+      "treeId": 63504421,
+      "tree": "0x16c0791e0",
+      "root": "0x16c0791e0",
+      "control": 63635495
+    }
+  ],
+  "physical_target_timeline": [
+    {
+      "turn": 202,
+      "owner": -1,
+      "city": -1,
+      "district": -1
+    },
+    {
+      "turn": 203,
+      "owner": -1,
+      "city": -1,
+      "district": -1
+    },
+    {
+      "turn": 204,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 205,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 206,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 207,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 208,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 209,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 210,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 211,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 212,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 213,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 214,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 215,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 216,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    },
+    {
+      "turn": 216,
+      "owner": 3,
+      "city": 458758,
+      "district": 36
+    }
+  ],
+  "first_foundation_snapshot": 209,
+  "native_request_rows": [
+    "203, 3, LOC_CITY_NAME_NUREMBERG, , CONTRACT 4349, SUBMITTED, NO_UNIT, NO_BUILDING, DISTRICT_CSC_BAKERS_QUARTER, VALUE 1117.0, Build City District",
+    "208, 3, LOC_CITY_NAME_NUREMBERG, , , DISTRICT_CSC_BAKERS_QUARTER, Build City District, CONTRACT 4349",
+    "212, 3, LOC_CITY_NAME_NUREMBERG, , CONTRACT 4349, COMPLETED, NO_UNIT, NO_BUILDING, DISTRICT_CSC_BAKERS_QUARTER, VALUE 2489.7, Build City District"
+  ],
+  "completion_limit": "COMPLETED contract212 plus physical district presence; physical IsComplete flag not independently read",
+  "baseline_limit": "Paid same plot but no Quarter foundation through216, purchase contract timed out213",
+  "endpoint_checkpoint": {
+    "verified": true,
+    "turn": 216,
+    "requested_name": "CSC_PURCHASE_FOLLOWTHROUGH",
+    "unique_name": "CSC_PURCHASE_FOLLOWTHROUGH_9149429a7124",
+    "native_save": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Saves\\Single\\CSC_PURCHASE_FOLLOWTHROUGH_9149429a7124.Civ6Save",
+    "archive": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\nuremberg-purchase-acknowledgement-02\\endpoint.Civ6Save",
+    "sha256": "75b47c2b62aa60d2058368ed22604909a66bd67094e463a64685e1ea072df83d",
+    "size": 2267852,
+    "save_requests": 1,
+    "save_complete_event": true,
+    "initial_ack": true,
+    "UI_phase": {
+      "turn": 216,
+      "active": false,
+      "local_player": 0,
+      "player0_human": true,
+      "player0_alive": true
+    },
+    "UI_clock_lag": 0,
+    "native_phase_unchanged": true,
+    "before": {
+      "turn": 216,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794447446.0781794,
+      "player0_alive": true
+    },
+    "after": {
+      "turn": 216,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794447452.4981544,
+      "player0_alive": true
+    },
+    "native_pid": 19724,
+    "worlds_created": 0
+  },
+  "pins": {
+    "unchanged": {
+      "inputs.json": "ae897112fed7beb05ebb8bb2c0fcbfb2b46791cb6ed32dcd79310dddee807643",
+      "complete.json": "7a30b91e0a771147a29ac7f66a90e7d4eedb4c265518e29162e2580b0c3b0d4d",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "purchase-trace.json": "78c890aeda891b0aabf2fda605e3dffe0afae02c3106a577223e804329263db2",
+      "purchase-live.ndjson": "65536b9f686b8ef07d0d5217b5038f94ec0e7f267044fe4d8b1c05bf64cf1600",
+      "selector-trace.json": "4b05b8705ac48098c51dfbacca945d763bbf6c91ce08fb92faad07838b56d73b",
+      "selector-live.ndjson": "a581c6695763cf536025534303fb4546f41be0e9e7e7dbcafa30c77c53fa0080",
+      "Lua.log": "1f095112ed0c75b2b5e66294f8ffb7bd677aa6f0938edafb1812aeeb97da1ae2",
+      "AI_CityBuild.csv": "510432d8de0c546fbc35b1a867323ea06e3b378ce4e4dd7cbef048c10c8fb6c5",
+      "AI_Behavior_Trees.csv": "2bc26bc4c77531a5c9363f7ed52e51e06dfd65defe65b9ddd33dc51821c63ab7",
+      "endpoint-checkpoint.json": "25cfc414072a81f74dfd6ab2f7d32a0cab2a0cfe4fa2a3b882ae125c7aa1573b"
+    },
+    "acknowledgement": {
+      "inputs.json": "45b015d69ebae724ee2d2def017798e3bec1f0827723bd5e1f32ce7ce04192c6",
+      "complete.json": "7a30b91e0a771147a29ac7f66a90e7d4eedb4c265518e29162e2580b0c3b0d4d",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "purchase-trace.json": "a714e56e13317c008ae7f84827451b37402a07b698465ea671551e974d102bf8",
+      "purchase-live.ndjson": "a6bc8d930499d3fc7b62d7999e6ec6742f40c4fd13365c3ea394aa9f88851eba",
+      "selector-trace.json": "e351026dbd503c0124ccf25d067162dd4113689bc3f7f8c44f9fa614ac133668",
+      "selector-live.ndjson": "9c6d9d4da2e0715f6f68f88a6820cdfbb13407a7bb60d7051b7174686bc71190",
+      "Lua.log": "0b86c75e14262829fcbe6dbc7d75848142e3b739ae440fbd6b0f632ad8c6d0dc",
+      "AI_CityBuild.csv": "7536b9262347c423c30df72582da45acadb65a2e621959e0c917a9e24af63c2a",
+      "AI_Behavior_Trees.csv": "5b77c71321c45df15be2116b580c719a56b396a54724246f95cf7e9be9138863",
+      "endpoint-checkpoint.json": "a4ec981259bc955ea8d1b55522d37c44ae6351a961681594bb64f409d0cbb6c6"
+    }
+  },
+  "diagnostic_sources": {
+    "nicopolis_replay.py": "a469d5e8c1a58a701d3d33919417efa31d7d51d6d838fc62dbc606ec8bedcd98",
+    "plot_purchase_observer.js": "d1c8c02aba0697706b8384d811baaab5eaf3e23e18dc581a76fccd708a79712a",
+    "purchase_acknowledgement.js": "dbf63378e609767c41c0bb59229ebdeb48d3e40d40e7fd0d12146a9d7e2cd055"
+  }
+}

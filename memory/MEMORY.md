@@ -25,15 +25,25 @@ Runtimevtable9fa930 execute3f82c0/update3fa260/eligibility3fa880. Createdstate1;
 state3/decorator3. Ownershipcorrect205/nofoundation. Endpoint205SHA6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03.
 SealedlifecycleJSON inrepo. Ack-01 exec99408 FAILEDi8unsupportedbeforeanywrite,
 ran216/finallyclosedverifiedexit0, no complete.json/endpointsave. Fixedu8signed
-decode; stricttypefixtureadded. CurrentLIVEsharedworkerack-02 exec16377,
-`nuremberg-purchase-acknowledgement-02`202–216, diagnostictrackedackonly;
-allmainpolicyunchanged. Pin nicopolis_replay.py,plot_purchase_observer.js,
-newpurchase_acknowledgement.js untilterminal. Newfactorytests+observerguards
+decode; stricttypefixtureadded. Ack-02 exec16377 is TERMINAL closedverified
+202–216.41purchase/17selector exactlymatchstreams/faultnull/allpending0.
+One4316payment40Gold linkedcontract/pointer/control/root, nativeTreeTuplematch,
+oneintent+ack2033→7. NativePurchaseDone/request4349SUBMITTED2031117,
+selected208, physicalB36at788first209, nativeCOMPLETED2122489.7. Noindependent
+physicalIsCompleteflagyet. Baselineallpackages/source/CE/firstselectorincluding
+matrixexactidentical butNOQuarter216. AstraauditeddiagnosticcausalityPASS.
+SealedackJSON inrepo. Paused216SHA75b47c2b62aa60d2058368ed22604909a66bd67094e463a64685e1ea072df83d.
+Noownedliveworker/game remains. NEXTgenericCE stage(player,city,district)scope
++typedDecorator55a030entryhook anddynamicmainCSCpublisher, noexternalwriter.
+Needreload205nativeplanfromlifecyclecheckpoint toverifyreconstructionalongside
+integration. CEisolatedcheckout preparedunchangedatd8df47d:
+`Desktop/Codex/csc-gamecore-hotfix-20261106/ce-purchase-ownership-review`, branch
+codex/ce-purchase-ownership-ack. NoCEcodechangesyet. Newfactorytests+observerguards
 pass: nullgame/map, contract-linkedadmittedpayment, reservedintent/outcome
 journal(includingcapacityrace), signedowner, nativeassignment/deduplication.
 AtdecoratorR14actualexecutingtreeanalysisdistrict29c/city2f0/plot308 and
 parent120rootIDs mustmatchindependentfreshcreationbinding beforeack. This
-runtime tuple supportsproposedCEdynamic/reloadpathbutnotqualifiedyet.
+runtime tuple supportsproposedCEdynamicpath; reloadstillunverified.
 Diagnosticcode isseparatefromshippingintegration, source-reviewedbyAstra.
 Controlled
 acknowledgement prototype verifiesactualcurrentintendedcityownership and
@@ -44,9 +54,11 @@ DistrictCreated3f8210. Astrafindingownershipreadpath beforeprototype. No shippin
 fix/integrationyet. CorrectCEreviewcheckout (f812) is
 `Desktop/Codex/csc-gamecore-hotfix-20261106/ce-guidance-receipts-review` d8df47d;
 develop-port/source atba06976 isolder, do notaccidentallybasefixthere.
-No 1.5 closure: matched acquisition causality, foundation and separate supplier
-acquisition/improvement still required. Astra investigating purchase completion
-lifecycle; do not assume enginebug without live status/vtable/prune evidence.
+No1.5closure: CE/mainintegration andseparatesupplierroute stillrequired.
+Astraacceptanceaudit: BUYvsNOTBUYwasOURstrongerresearchtarget, notuser's
+acceptancegate. Integratedcausalpaid-but-stuck→foundation qualifiesfootprint
+workflow; preserveC160negativepromotionnecessity andDON'Tmanufacturea
+differentEconomicbidtestmerelytoclaimnecessity. Updatedroadmapmustsaythis.
 Report csc-ai-nuremberg-
 acquisition-20261112.md. Existing Lua51 dependency root for offline checks:
 `C:/Users/Shadow/Desktop/Codex/csc-adjacencies/test-deps` on PYTHONPATH.

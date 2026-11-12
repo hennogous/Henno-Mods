@@ -25,8 +25,13 @@ The expanded observer now verifies native payment and correct-city ownership.
 The declared two-profile control still buys the same tile, choosing Tailors
 instead of Bakers: no acquisition causality claim. The full arm's purchase
 contract stays in waiting state 3 after payment, becomes ineligible to Economic,
-and times out without foundation. The next step is a native lifecycle repair
-using live plan scope, followed by a discriminating acquisition comparison.
+and times out without foundation. A diagnostic tracked acknowledgement now
+releases the ordinary request and causes a physical foundation at 209; the
+unchanged arm has none through 216. Next integrate this into CE and main CSC.
+The earlier proposed BUY-versus-NOT-BUY comparison was a stronger research target,
+not an additional user acceptance gate. Astra confirms that a causal integrated
+repair of the paid footprint workflow can satisfy that scope; the negative
+promotion-necessity result remains recorded.
 The separate supplier acquisition/improvement route remains required. No 1.5
 closure follows from ownership alone.
 [Evidence](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).

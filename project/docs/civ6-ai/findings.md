@@ -2803,3 +2803,34 @@ counts alone do not establish equality. The full arm lacks foundation through
 force a buying difference. Supplier acquisition remains separate.
 
 - [Matched negative and sealed comparison](../research/mods/csc-ai-nuremberg-acquisition-20261112.md#matched-result-quarter-identity-changes-acquisition-does-not)
+
+## AI-C161
+
+**A tracked acknowledgement releases a paid Quarter plan into native construction**
+
+Status: accepted diagnostic effect; independently audited by Astra. Main-CSC/
+CE integration and the separate supplier route remain open; no 1.5 closure.
+
+On identical source, CE binary and every staged package, the first native
+Bakers selection is unchanged. One measured 40-Gold debit for contract 4316
+is followed by a guarded native tracked state assignment 3→7, after current
+intended-city ownership and executing-tree identity are verified. The normal
+decorator progresses: request 4349 submitted at 203, production selected at
+208, physical Bakers 788 first observed at 209, native COMPLETED row at 212.
+Without acknowledgement, the same paid plan times out and has no foundation
+through 216. No reservation, production value or build command is forced.
+
+All 41 purchase / 17 selector records match their journals, with no faults or
+pending pairs. Exactly one linked payment, tuple, intent and acknowledgement
+are observed. Both sessions close normally. The paused 216 checkpoint is
+verified. Astra validates diagnostic causality and the limits below.
+
+**Limits:** An external native experiment, not reusable main-mod integration.
+The physical IsComplete flag was not separately read; retain that limit for
+1.6. Promotion necessity for buying remains negative in AI-C160. As clarified
+against the agreed acceptance contract, an integrated causal repair of this
+paid footprint workflow can satisfy that part of 1.5; an additional changed
+Economic purchase command is not mandatory. Supplier acquisition still needs
+its own outcome evidence.
+
+- [Acknowledgement comparison and acceptance clarification](../research/mods/csc-ai-nuremberg-acquisition-20261112.md#acknowledgement-result-native-request-foundation-and-completed-contract)

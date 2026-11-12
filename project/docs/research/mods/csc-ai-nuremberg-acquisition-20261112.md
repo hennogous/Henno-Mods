@@ -339,6 +339,110 @@ Its receipt would mean ownership prerequisite fulfilled, not paid purchase:
 cultural acquisition can legitimately satisfy ownership too. Runtime reload
 reconstruction and the CE/main adapter are not yet implemented or qualified.
 
+### Acknowledgement result: native request, foundation and completed contract
+
+`nuremberg-purchase-acknowledgement-02` closes normally at 216 with restoration
+verified. All **41 purchase / 17 selector** records match their journals exactly;
+there are no faults or pending debit/execution/command/acknowledgement receipts.
+Source save, CE DLL, every staged-package entry and the first native selector
+return (including its complete recorded site matrix) equal the unchanged arm.
+The sole declared game-state intervention is the tracked acknowledgement.
+The [sealed comparison](csc-ai-nuremberg-acquisition-20261112-acknowledgement.json)
+preserves native records, physical snapshots, build rows and all source hashes.
+
+One observed contract 4316 pays 40 Gold, bound through its admitted command's
+thread, pointer, ID, control and root. The executing-tree tuple matches its
+independent creation binding. One intent/outcome pair verifies **3→7 at 203**,
+after a fresh owner 3 / purchase-city 458758 check. No other acknowledgement runs.
+
+| Outcome | Unchanged full arm | Diagnostic acknowledgement |
+| --- | --- | --- |
+| Payment | 40 Gold at 203 | 40 Gold at 203 |
+| Purchase prerequisite | Waiting, then timeout at 213 | Done after acknowledgement at 203 |
+| Ordinary Quarter request | Not reached | Contract 4349 submitted at 203, value 1,117 |
+| Production selection | No Quarter through 216 | Bakers selected at 208 |
+| First physical foundation | None through 216 | Bakers 788 at 209 |
+| Native Quarter completion | None | COMPLETED contract at 212 |
+
+The city moves to Medieval Walls after the Quarter. Physical snapshots retain
+district 36 at 788 through 216. The separate physical IsComplete flag was not
+independently read; preserve that limit for any later 1.6 completion claim.
+The verified paused endpoint is `CSC_PURCHASE_FOLLOWTHROUGH_9149429a7124.Civ6Save`,
+SHA `75b47c2b62aa60d2058368ed22604909a66bd67094e463a64685e1ea072df83d`.
+Astra independently verifies the complete comparison and diagnostic causality.
+
+**No integration closure yet:** the repair still uses external instrumentation.
+It changes paid-site follow-through, not whether the native AI buys this tile.
+Reusable generic CE/main-CSC integration and the separate supplier acquisition/
+improvement route remain required.
+
+### Acceptance clarification: workflow effect, not promotion necessity
+
+Astra reviewed the original user goal and `acceptance.md`: 1.5 requires the
+paid request→ownership→foundation chain plus a controlled relevant native-action
+change. Requiring an additional BUY-versus-NOT-BUY result was a stronger research
+target introduced in this investigation, not another agreed acceptance gate.
+An integrated acknowledgement that reproducibly changes paid-but-stuck into
+foundation can meet the **footprint workflow** scope at levels 1–3. It cannot
+close the separate supplier route or be called integrated while run externally.
+
+This clarifies the earlier roadmap instruction to seek a discriminating buying
+comparison; it does not pretend that comparison succeeded. AI-C160 remains a
+negative result: Quarter promotion changed Bakers/Tailors identity while both
+arms bought 788. A new direct Economic bidding mechanism is not required merely
+to demonstrate necessity where vanilla already wants to buy the right land.
+
+An isolated CE worktree is prepared at
+`Desktop/Codex/csc-gamecore-hotfix-20261106/ce-purchase-ownership-review`, branch
+`codex/ce-purchase-ownership-ack`, from reviewed d8df47d. It is still unchanged.
+No upstream PR or native binary change has been made.
+
+### Next integration contract
+
+Implement a generic ownership-prerequisite capability in that isolated CE
+checkout, then publish its numeric player/city/district scopes from main CSC's
+live original-AI cities and supported Quarter profiles. It must contain no
+test city, plot, contract ID or external policy writer. The ownership receipt
+must not claim payment: the native tree can legitimately receive land through
+cultural growth as well as a purchase. Existing native buying and production
+competition remain responsible for their actions.
+
+The proposed boundary is the complete native UpdateContract at 55a030,
+through CE's shared Runtime hook layer. Its ABI is bool/AL return with arguments
+`(handle*, executingTree*, bool timeout, bool wait, bool nativeFlag5, uint32_t* result)`.
+Forward every argument and invoke the original exactly once. Before the original,
+only an allowed, revalidated PurchasePlotContract in waiting state 3 may be
+acknowledged after its executing trigger, bounded root control and current
+intended-city ownership all agree. Native assignment and decorator cleanup
+follow the validated idiom; do not erase handles or force the child node.
+
+Native reads for the integration are already scoped and verified:
+
+- Executing analysis: district +29c, City pointer +2f0, Plot pointer +308.
+  Parent +120 leads to root control +1b0 and ID +1c8 with cycle/depth checks.
+- Pure map lookup 52d00 takes Map pointer and int32 XY; pure attributes lookup
+  5f090 delegates to pool lookup 4c210. Owner is signed8 at attributes+1c and
+  purchase-city ID is int32 at +c. The prototype contains full fingerprints.
+- BehaviorTree::Read 543450 and serializer 48d2c0 support reconstructing city/
+  plot trigger references on reload. This has static evidence only so far.
+
+Follow the existing Begin/Allow/Commit, typed HKS binding, publication lifetime,
+failure behavior and named-address conventions. Keep native callbacks free of
+Lua calls and long scans. Scope lookup must be bounded, and context reset must
+retire publication without keeping raw saved-game pointers alive. Add a scoped
+receipt that can distinguish consideration, ownership match and acknowledgement
+without relying only on a clipped first-sample list.
+
+Verify native guards and API publication offline, then run the real CE/main
+integration with the external acknowledgement option absent. The preserved
+inactive 205 lifecycle source contains the still-waiting native plan and correct
+ownership, making it useful for the necessary save/reload identity check. Retain
+the unchanged 202–216 arm for the causal follow-through comparison. Read the
+physical district completion flag during that integrated run rather than
+silently treating the native COMPLETED row as an independent physical flag.
+Supplier acquisition/improvement follows the footprint workflow; it is not
+closed by this repair.
+
 ## Operational scope
 
 The same CE f812 and current DX11 binary identity used in the accepted placement
