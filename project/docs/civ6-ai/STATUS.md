@@ -1,11 +1,11 @@
 # Current CSC AI status
 
 **12 November follow-up, Problems 1.2/1.4/1.8:** conservative forecasts now
-exclude future/foundation customer yield and penalise viable sites below+3.
-The fresh same-seed Online200 trial is complete and independently audited:
-32 complete Quarters,13 at+3 or better,5 at+4 or better;19 remain below+3.
-Bakers has4 active Stage2 chains/287 native chain-turns (previous6/312), Tailors0.
-All200 publications succeed with no omissions or policy faults. This revision
+exclude future/foundation customer yield and penalise viable sites below +3.
+The fresh same-seed Online-speed turn-200 trial is complete and independently audited:
+32 complete Quarters, 13 at +3 or better, 5 at +4 or better; 19 remain below +3.
+Bakers has 4 active Stage 2 chains/287 native chain-turns (previous 6/312), Tailors 0.
+All 200 publications succeed with no omissions or policy faults. This revision
 lands but does not solve weak Quarter proliferation. Both early observation
 failures, exact package parity, final cleanup and comparison limits are retained.
 Earlier scoped capability closures keep their original meaning. The old goal
@@ -13,11 +13,11 @@ remains paused. [Full measurements and completed trial](../research/mods/csc-ai-
 
 Updated 12 November 2026. Goal: Problems **1.1–1.8 and 2.1–2.2**, through
 [completion contract](acceptance.md), including Henno's12 November clarification
-for native-system guidance. All ten scoped solutions are integrated; the current
-task has completed one normal 250-turn game and historical baseline comparison.
+for native-system guidance. All ten scoped solutions are integrated; the preceding
+trial completed one normal 250-turn game and historical baseline comparison.
 Prior controlled evidence and its limits remain recorded below.
 
-**Latest result, independently audited by Astra:** all ten paths are harmonised
+**Previous 250-turn result, independently audited by Astra:** all ten paths are harmonised
 in main CSC; the full game reaches 250 and closes normally. At the comparable
 200 clock, completed Quarters are 30 → 29, those with Base 6 → 24, improved
 Base 3 → 16 and Bakers Stage 2 active properties 1 → 6. Confirmed Storekeeper

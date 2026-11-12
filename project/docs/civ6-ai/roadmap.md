@@ -1,11 +1,11 @@
 # CSC AI roadmap
 
 **12 November follow-up, Problems 1.2/1.4/1.8:** conservative forecasts now
-exclude future/foundation customer yield and penalise viable sites below+3.
-The fresh same-seed Online200 trial is complete and independently audited:
-32 complete Quarters,13 at+3 or better,5 at+4 or better;19 remain below+3.
-Bakers has4 active Stage2 chains/287 native chain-turns (previous6/312), Tailors0.
-All200 publications succeed with no omissions or policy faults. This revision
+exclude future/foundation customer yield and penalise viable sites below +3.
+The fresh same-seed Online-speed turn-200 trial is complete and independently audited:
+32 complete Quarters, 13 at +3 or better, 5 at +4 or better; 19 remain below +3.
+Bakers has 4 active Stage 2 chains/287 native chain-turns (previous 6/312), Tailors 0.
+All 200 publications succeed with no omissions or policy faults. This revision
 lands but does not solve weak Quarter proliferation. Both early observation
 failures, exact package parity, final cleanup and comparison limits are retained.
 Earlier scoped capability closures keep their original meaning. The old goal
@@ -20,7 +20,7 @@ evidence.
 
 ## Current milestone and active problem
 
-The active goal follows the [levels 1â€“3 completion contract](acceptance.md).
+The paused placement goal follows the [levels 1â€“3 completion contract](acceptance.md).
 Work sequentially from the earliest unclosed item, state its acceptance test
 before investigation, and preserve Astra-validated scoped closures. Broad
 qualification and the older multi-seed Stage 2 milestone below are follow-up

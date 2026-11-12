@@ -3116,10 +3116,10 @@ rule encodings agree. Only 2/16 complete Bakers and 1/20 Tailors have +4;
 25/36 are below +3. Material adjacency improvements do not imply high total
 adjacency. Henno's revised main policy excludes future/foundation customer
 credit, retains prospective local Mill effects, removes positive bids below +3
-and adds finite deductions. The completed same-seed200 trial has32 complete Quarters,13 at+3 or better
-and5 at+4 or better:19 remain below+3. All200 packets and81 native capability
+and adds finite deductions. The completed same-seed turn-200 trial has 32 complete Quarters, 13 at +3 or better
+and 5 at +4 or better:19 remain below +3. All 200 packets and 81 native capability
 readbacks pass, with bounded evidence of−64 native utility writes. Four Bakers
-chains deliver287 actual chain-turns, versus previous6/312; Tailors remains0.
+chains deliver 287 actual chain-turns, versus previous 6/312; Tailors remains0.
 Native delivery works, but broad weak-placement suppression remains unsolved.
 Two early observation failures and their clock-deferral correction are retained.
 Endpoint state is not placement-time causal attribution. [Full tables, policy and limits](../research/mods/csc-ai-quarter-adjacency-20261112.md).
