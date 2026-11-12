@@ -1,8 +1,10 @@
 # Current CSC AI status
 
 Updated 12 November 2026. Goal: Problems **1.1–1.8 and 2.1–2.2**, through
-[levels 1–3](acceptance.md). Representative cases close capabilities; broader
-qualification remains separate. The full goal is active and incomplete.
+[completion contract](acceptance.md), including Henno's12 November clarification
+for native-system guidance. All ten scoped solutions are integrated; the current
+task is one normal250-turn game and historical baseline comparison. Prior
+controlled evidence and its limits remain recorded below.
 
 ## Completed representative scopes
 
@@ -49,14 +51,14 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 2.1 Customer-district placement
+## Current task: harmonised250-turn run; native2.1 route accepted
 
-**Acceptance:** isolate main CSC's mapped customer-site contribution and show
-an actual native customer-district choice changing toward a site adjacent to
-its provider Quarter or a specific credible future Quarter footprint. Keep
-standalone district value, legality and material protection intact. Require
-the consumed contribution, native choice/request and dynamic main integration.
-Construction and broader qualification are separate.
+**Native route accepted under Henno's clarified criterion:** loaded mapped
+private-yield adjacency, verified native consumption and dynamic main CSC
+integration suffice. An isolated changed-choice result is optional; evaluate
+actual placements in the normal game. Preserve standalone valuation and
+material protection. The production scanner now leaves existing-Quarter
+co-location to native SQL and retains +16 only for credible future footprints.
 
 Current2.1 scope is Tailors→Harbor/replacements: the Stage2 registry excludes
 City Center nominations, so Bakers' zero customer offers are expected. The
@@ -71,7 +73,7 @@ save, with definitions/bias preserved. A fresh game is not required to load
 this SQL change. The completed pair proves native consumption: adjacent
 Harbors gain11113/11117 Q8, while competing Water Entertainment values on
 those plots decrease5568/5569 Q8. The other1364 matrix cells match.
-Both arms select/request Theater; customer-choice causality remains open.
+Both arms select/request Theater; no changed-choice win is claimed.
 This is not a purely additive Harbor bonus. Astra independently validates
 the partial result, package hashes, trace journals and cleanup.
 [AI-C168](findings.md#ai-c168).
@@ -108,7 +110,9 @@ paid acquisition through improvement, not another BUY-versus-NOT-BUY result.
 No Service or overlapping-buyer reliability is claimed.
 [Supplier evidence and sealed audit](../research/mods/csc-ai-supplier-acquisition-20261112.md).
 
-**Nine of ten sub-problems close at levels 1–3. Open: 2.1 only.**
+**All ten scoped solution paths are integrated.** Native2.1 qualifies under
+the revised criterion; its practical outcomes join the requested full run.
+See the [harmonisation review and run protocol](../research/mods/csc-ai-harmonised-250-20261112.md).
 
 ## Evidence levels by sub-problem
 
@@ -122,7 +126,7 @@ No Service or overlapping-buyer reliability is claimed.
 | 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
 | 1.7 Defer/reconsider | Typed decline and ordinary withdrawal verified | Causal deferral plus later supported Quarter choice/request | **Complete composite representative scope** |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
-| 2.1 Customer sites | Native SQL valuation isolated; CE writes also verified | ON/OFF retains Theater; changed customer choice pending | Causal reproduction pending |
+| 2.1 Customer sites | Native SQL valuation isolated | ON/OFF retains Theater; isolated choice change optional by user clarification | **Integrated native route; normal-game outcomes next** |
 | 2.2 Protect materials | Verified | Verified, supplier retained | **Complete finite-penalty scope** |
 
 ## Retained acquisition negatives and limits

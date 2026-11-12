@@ -497,6 +497,12 @@ def run(args):
                     and load(other_source.parent / 'result.json')['reached'] == QUALIFICATION_ENDPOINT,
                     'The matched qualification arm must have archived its full tuned run')
     out.mkdir(parents=True)
+    if getattr(args,'harmonised_observation',False):
+        require(not(prior or args.untuned or args.probe_dependencies or args.observe_supplier_at
+            or args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair),
+            'Full integrated observation requires a normal tuned start without diagnostic interventions')
+        protocol['harmonised_observation']=True
+        shutil.copyfile(Path(__file__),out/Path(__file__).name)
     write_json(out / 'packages.json', {str(source): dict(install=str(local[source]), files=files)
                                        for source, files in installed_pins.items()})
     write_json(out / 'protocol.json', protocol)
@@ -734,6 +740,9 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
             raw = controller.cmd(scope + read(HERE / 'retention_cohort.lua'),
                                  'CSC_AdjacencyGameplay', 'install-bakers-census-watch')
             require('CSC_BAKERS_CENSUS_WATCH_INSTALLED' in raw, 'Milestone census watch was not installed')
+        if getattr(args,'harmonised_observation',False):
+            from full_game_observation import install
+            install(controller,out,players,args.user_root,args.through)
         probe_start = start
         if args.observe_supplier_at is not None:
             # Rotating autosaves can retain an AI-controlled return player.
@@ -901,7 +910,11 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             spec = dict(path=modules['GameCore_XP2_FinalRelease.dll']['path'], image_size=XP2_IMAGE_SIZE)
             require(observer.exports_sync.init(spec, scope), 'Decision observer installation failed')
             observer.exports_sync.advance(probe_start)
-        controller.play(args.through)
+        if getattr(args,'harmonised_observation',False):
+            from full_game_observation import play
+            play(controller,out,args.user_root,start=start,endpoint=args.through,saves=args.saves)
+        else:
+            controller.play(args.through)
         if observer:
             trace = observer.exports_sync.freeze()
             write_json(out / trace_name, trace)
@@ -967,6 +980,9 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
                     shutil.copyfile(log, out / name)
     summarize_run(out, players, start, args.through, args.untuned, checkpoint, args.census_turns,
                   qualification=args.qualification, observer_boundary=args.observe_supplier_at)
+    if getattr(args,'harmonised_observation',False):
+        from full_game_observation import finish
+        finish(out)
 
 
 if __name__ == '__main__':
@@ -976,6 +992,8 @@ if __name__ == '__main__':
     for name in ('map-seed', 'game-seed', 'through'):
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--map', choices=MAPS, default='Continents')
+    parser.add_argument('--harmonised-observation',action='store_true',
+                        help='Passive25-turn two-Quarter/economy census and capability preflight; normal250-turn start only')
     parser.add_argument('--map-size', choices=MAP_SIZES, default='small')
     parser.add_argument('--interval-minutes', type=int, default=30,
                         help='Maximum wall time of one continuous autoplay window (30–240)')

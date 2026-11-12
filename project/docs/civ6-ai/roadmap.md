@@ -14,8 +14,12 @@ Work sequentially from the earliest unclosed item, state its acceptance test
 before investigation, and preserve Astra-validated scoped closures. Broad
 qualification and the older multi-seed Stage 2 milestone below are follow-up
 work, not additional conditions for closing this goal's placement capabilities.
-Current item: **2.1 Customer-district placement**. **1.1–1.8 and2.2** meet
-levels1–3 at the recorded representative scopes: nine of ten.
+Henno clarified on12 November that native-system guidance needs verified
+inputs/consumption and integration, with practical outcomes assessed in normal
+play; an isolated changed-choice result is optional for that route. All ten
+scoped paths are integrated under that rule. Current task: harmonise the main
+CSC implementation, run one normal250-turn game, and compare its200 sample
+with the historical baseline before reporting250 follow-through.
 
 **1.7 closes with Astra's independent audit at a composite scope.** C165 proves
 causal deferral; Washington22→24 proves a genuine prior no-Base scope, exact
@@ -25,7 +29,7 @@ Quarter request. No uninterrupted single-city cycle or construction is claimed.
 [AI-C165](findings.md#ai-c165), [AI-C166](findings.md#ai-c166),
 [AI-C167](findings.md#ai-c167).
 
-Next2.1: test native adjacency/private yield first, as Henno requests.
+Native2.1: tested native adjacency/private yield first, as Henno requests.
 The qualified common Hamburg208 source supports cold ON/OFF comparisons;
 both arms withhold the optional CE customer bonus. Only the native
 Harbor–Tailors adjacency link differs. The actual loaded gameplay DB confirms
@@ -33,11 +37,12 @@ SQL OFF applies to this saved world while preserving Yield/rule identities and
 bias. The completed comparison changes exactly four native matrix cells:
 two adjacent Harbor values increase and competing Water Entertainment values
 on those plots decrease. Both arms select/request Theater. Astra validates
-this mechanism evidence; changed customer-choice causality remains open.
-[AI-C168](findings.md#ai-c168). No2.1 closure is claimed.
+this mechanism evidence; no changed-choice win is claimed.
+[AI-C168](findings.md#ai-c168). The native route meets the clarified criterion.
 Keep standalone value, legality, other guidance and material protection.
-The other nine capabilities are candidates for broader full-game qualification;
-check the complete normal CSC package/current CE integration before launching.
+Remove the overlapping completed-Quarter CE +40 preference, retain future16,
+and verify the complete normal CSC/current CE snapshot before the full run.
+[Harmonisation and protocol](../research/mods/csc-ai-harmonised-250-20261112.md).
 
 **1.5 closes with Astra's independent audit.** Its causal integrated footprint
 workflow reaches paid intended-city ownership and completed construction,

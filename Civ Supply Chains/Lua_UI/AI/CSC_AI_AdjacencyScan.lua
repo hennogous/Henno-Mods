@@ -97,9 +97,14 @@ local preferredSiteBidQ8 = 48 * 256
 local viableSiteBidQ8 = 24 * 256
 local noBasePenaltyQ8 = 256 * 256
 local noCustomerPenaltyQ8 = 128 * 256
-local customerSiteBidQ8 = 40 * 256
--- An unbuilt Quarter may never be chosen. Give its concrete customer site
--- a smaller starting preference than a host that can serve a working Quarter.
+-- Existing Quarters use CSC_AI_Connectors.sql's native private-yield
+-- adjacency, consumed by Civ's ordinary site valuation (AI-C168). Do not add
+-- another CE bid for that same relationship. The intended CE package loads
+-- both the SQL and this publisher; missing native SQL is a deployment failure,
+-- not a reason to silently stack an alternative incentive.
+-- SQL cannot see an unbuilt Quarter. A concrete, credible future footprint
+-- therefore retains this modest 16-point Q8 preference, subject to the live
+-- legal-target and supplier guards below. It remains a proposal, not an order.
 local futureCustomerSiteBidQ8 = 16 * 256
 local sitingDistricts = {}
 
@@ -427,8 +432,8 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         local key = candidate.city .. ':' .. candidate.district .. ':' .. candidate.plot
         local bid = nominated[key]
         if bid then
-            -- An existing Quarter can strengthen an earlier prospective
-            -- offer. The CE packet still carries only one entry for the pair.
+            -- Several prospective Quarters can nominate the same customer.
+            -- Keep one preference rather than stacking speculative benefits.
             bid.delta = math.max(bid.delta, delta)
             return
         end
@@ -599,20 +604,10 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
         end
     end
 
-    -- Several Quarters can share one customer district. Credit each legal
-    -- district-site pair once and leave the final Harbor choice to Civ.
-    for _, chain in ipairs(chains) do
-        if chain.profile == profile and chain.ready and #chain.supply.base > 0 then
-            local neighbors = Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())
-            if not hostReadiness(neighbors, false, profile.customers) then
-                for _, neighbor in ipairs(neighbors) do
-                    for _, candidate in ipairs(legalCustomers[neighbor:GetIndex()] or {}) do
-                        nominateCustomer(candidate, customerSiteBidQ8)
-                    end
-                end
-            end
-        end
-    end
+    -- Completed-Quarter co-location stays with the native SQL adjacency.
+    -- MaterialDeductions independently protects supplier plots for EVERY
+    -- district, including customers; removing the old +40 offer does not
+    -- relax that protection or force a district over a working supplier.
     return bids, counts
 end
 

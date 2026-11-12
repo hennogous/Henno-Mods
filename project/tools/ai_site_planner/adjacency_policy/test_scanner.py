@@ -334,7 +334,9 @@ existing=true
 local chain={profile=tailors, ready=true, plot=plots[23], supply={base={true}}}
 assert(next((bids(tailors, {}, legal, {chain})))==nil)
 harborUnlocked=true
-assert(bids(tailors, {}, legal, {chain,chain})[24].delta==10240)
+-- Existing Quarter co-location is supplied by native SQL. The live Lua
+-- scanner must not stack another +40 CE entry, even with duplicate chains.
+assert(next((bids(tailors, {}, legal, {chain,chain})))==nil)
 assert(next((bids(tailors, {[24]=true}, legal, {chain})))==nil)
 """
 

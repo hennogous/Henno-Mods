@@ -4,6 +4,14 @@ Agreed with Henno on 11 November 2026. The active goal closes each numbered
 sub-problem at levels 1–3 below, using representative controlled cases.
 Additional seeds, configurations and edge cases belong to level 4.
 
+**12 November clarification from Henno:** when guidance uses a native game
+system, verified native inputs/consumption and reusable integration suffice
+for the mechanism; an isolated changed-choice result is not a completion
+requirement for that route. Assess its practical outcomes in ordinary games.
+This explicitly qualifies the earlier controlled-choice rule below. Native
+payment, construction and retention outcomes remain required where those
+are the capability itself. Do not relabel old negative comparisons as wins.
+
 1. **Mechanism:** native code receives and consumes the intervention.
 2. **Decision effect:** a controlled comparison changes the relevant native
    choice or action. A score write alone does not close a placement problem.
@@ -29,7 +37,7 @@ evidence invalidates the original claim.
 | 1.6 Follow-through | A causal integrated Quarter preference proceeds through request, production, foundation and completion. Reuse the placement case where possible. |
 | 1.7 Defer/reconsider | A weak-only city leaves the Quarter uncommitted or chooses another investment because of policy, then reconsiders after a credible new opportunity. |
 | 1.8 Poor sites | An isolated main-policy deduction makes a known weak site lose the native comparison/request. Record the replacement outcome, without claiming universal weak-site avoidance or automatically better supply. |
-| 2.1 Customer placement | An isolated reusable customer-site preference changes a native site choice. Preserve ordinary standalone valuation. A win while boosted is insufficient without causal comparison. |
+| 2.1 Customer placement | Native adjacency: verify loaded mapped private-yield links, native valuation and reusable main integration; evaluate placements in normal play. An isolated changed-choice result is optional under Henno's12 November clarification. Preserve ordinary standalone valuation and material protection. |
 | 2.2 Material protection | Automatic live supplier detection changes a destructive district choice and retains the material/improvement. A finite-penalty case qualifies that mechanism; absolute exclusions and retained commitments are separate claims. |
 
 A representative case may support several items when its trace establishes
@@ -88,13 +96,12 @@ fresh supported Bakers choice/request. These separate cases establish both
 capabilities; no uninterrupted single-city cycle or Quarter construction is
 claimed. AI-C166's continuous Nicopolis negative remains preserved.
 
-**Active item: 2.1 customer placement.** Isolate the mapped customer-site
-contribution and require a changed native district choice/request, with live
-main integration. Preserve standalone value and material protection.
-AI-C168 independently verifies the native private-yield SQL mechanism after
-reload: four final matrix cells change, while Theater's actual request does
-not. That closes the consumption question for this path, not2.1's changed
-customer choice/request. Both diagnostic arms withhold the optional CE bonus.
+**2.1 native route verified under the clarified rule.** AI-C168 independently
+verifies the main private-yield SQL mechanism after reload: four final matrix
+cells change, while Theater's actual request does not. No changed-choice win
+is claimed. The harmonised production scanner removes the overlapping +40
+completed-Quarter CE bid, retaining +16 only for a credible future footprint.
+The requested normal250-turn run now evaluates all ten integrated solutions.
 
 **Recorded partial completion:** AI-C165 demonstrates levels1–3 for causal
 deferral: eleven dynamic no-Base scopes change the native request from Bakers

@@ -3035,8 +3035,11 @@ AI-C166's continuous negative remains preserved. Active goal item:2.1.
 
 **Native private-yield customer adjacency changes final valuations after reload, while Theater still wins**
 
-Status: accepted partial mechanism evidence, independently audited by Astra.
-Problem2.1's changed actual customer choice/request remains open.
+Status: accepted native mechanism evidence, independently audited by Astra.
+Henno's subsequent12 November clarification accepts native inputs/consumption
+and integration without requiring an isolated changed-choice result. This
+native2.1 route qualifies under that rule; the actual Theater result stays
+unchanged. Normal-game outcomes are the next assessment.
 
 The same qualified Hamburg208 source contains completed Tailors1083 and
 preserved Sheep1084. Both diagnostic arms remove only the optional intact
