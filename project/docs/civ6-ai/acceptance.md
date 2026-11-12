@@ -101,7 +101,10 @@ verifies the main private-yield SQL mechanism after reload: four final matrix
 cells change, while Theater's actual request does not. No changed-choice win
 is claimed. The harmonised production scanner removes the overlapping +40
 completed-Quarter CE bid, retaining +16 only for a credible future footprint.
-The requested normal250-turn run now evaluates all ten integrated solutions.
+The requested normal 250-turn run evaluates the integrated solutions; its
+observed outcomes and unexercised conditional paths are recorded in
+[AI-C169](findings.md#ai-c169). All ten paths are harmonised in main CSC;
+this single-game outcome is not universal reliability or all-stage Service success.
 
 **Recorded partial completion:** AI-C165 demonstrates levels1–3 for causal
 deferral: eleven dynamic no-Base scopes change the native request from Bakers

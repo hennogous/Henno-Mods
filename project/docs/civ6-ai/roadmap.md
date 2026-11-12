@@ -17,9 +17,13 @@ work, not additional conditions for closing this goal's placement capabilities.
 Henno clarified on12 November that native-system guidance needs verified
 inputs/consumption and integration, with practical outcomes assessed in normal
 play; an isolated changed-choice result is optional for that route. All ten
-scoped paths are integrated under that rule. Current task: harmonise the main
-CSC implementation, run one normal250-turn game, and compare its200 sample
-with the historical baseline before reporting250 follow-through.
+scoped paths are integrated under that rule. The harmonised normal 250-turn
+run is complete, with independently audited baseline comparison and cleanup.
+At 200, material-aware placement and Bakers operation improve substantially;
+Tailors customer access remains weak and production is lower. Further native
+ON/OFF work is deferred until requested, as Henno directed.
+[Results and limits](../research/mods/csc-ai-harmonised-250-20261112.md),
+[AI-C169](findings.md#ai-c169).
 
 **1.7 closes with Astra's independent audit at a composite scope.** C165 proves
 causal deferral; Washington22→24 proves a genuine prior no-Base scope, exact
@@ -40,8 +44,8 @@ on those plots decrease. Both arms select/request Theater. Astra validates
 this mechanism evidence; no changed-choice win is claimed.
 [AI-C168](findings.md#ai-c168). The native route meets the clarified criterion.
 Keep standalone value, legality, other guidance and material protection.
-Remove the overlapping completed-Quarter CE +40 preference, retain future16,
-and verify the complete normal CSC/current CE snapshot before the full run.
+The overlapping completed-Quarter CE +40 preference is removed; future 16
+remains. The complete CSC/current CE snapshot passes the normal 250-turn run.
 [Harmonisation and protocol](../research/mods/csc-ai-harmonised-250-20261112.md).
 
 **1.5 closes with Astra's independent audit.** Its causal integrated footprint

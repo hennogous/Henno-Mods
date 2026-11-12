@@ -3,8 +3,21 @@
 Updated 12 November 2026. Goal: Problems **1.1–1.8 and 2.1–2.2**, through
 [completion contract](acceptance.md), including Henno's12 November clarification
 for native-system guidance. All ten scoped solutions are integrated; the current
-task is one normal250-turn game and historical baseline comparison. Prior
-controlled evidence and its limits remain recorded below.
+task has completed one normal 250-turn game and historical baseline comparison.
+Prior controlled evidence and its limits remain recorded below.
+
+**Latest result, independently audited by Astra:** all ten paths are harmonised
+in main CSC; the full game reaches 250 and closes normally. At the comparable
+200 clock, completed Quarters are 30 → 29, those with Base 6 → 24, improved
+Base 3 → 16 and Bakers Stage 2 active properties 1 → 6. Confirmed Storekeeper
+activity is 39 → 312 chain-turns through 199. Tailors Stage 2 remains zero:
+material supply improves, but Harbor/customer access does not form a chain.
+Production is down 7.8%, net Gold up 11.9% and Food surplus up 9.3%, with
+37 → 35 cities. This is a same-initial-world historical comparison with changed
+gameplay/CE content, not a causal tuning-only balance test. At 250, Bakers
+reaches eight physical/active-property chains; Tailors remains zero.
+[Full results and limits](../research/mods/csc-ai-harmonised-250-20261112.md),
+[AI-C169](findings.md#ai-c169).
 
 ## Completed representative scopes
 
@@ -51,7 +64,10 @@ controlled evidence and its limits remain recorded below.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Current task: harmonised250-turn run; native2.1 route accepted
+## Integrated placement scope; native 2.1 route accepted
+
+The complete normal run is now recorded in AI-C169; conditional mechanisms
+without an opportunity in that world retain their separate earlier evidence.
 
 **Native route accepted under Henno's clarified criterion:** loaded mapped
 private-yield adjacency, verified native consumption and dynamic main CSC
@@ -110,8 +126,8 @@ paid acquisition through improvement, not another BUY-versus-NOT-BUY result.
 No Service or overlapping-buyer reliability is claimed.
 [Supplier evidence and sealed audit](../research/mods/csc-ai-supplier-acquisition-20261112.md).
 
-**All ten scoped solution paths are integrated.** Native2.1 qualifies under
-the revised criterion; its practical outcomes join the requested full run.
+**All ten scoped solution paths are integrated.** Native 2.1 qualifies under
+the revised criterion; practical outcomes are recorded in the completed full run.
 See the [harmonisation review and run protocol](../research/mods/csc-ai-harmonised-250-20261112.md).
 
 ## Evidence levels by sub-problem
@@ -126,7 +142,7 @@ See the [harmonisation review and run protocol](../research/mods/csc-ai-harmonis
 | 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
 | 1.7 Defer/reconsider | Typed decline and ordinary withdrawal verified | Causal deferral plus later supported Quarter choice/request | **Complete composite representative scope** |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
-| 2.1 Customer sites | Native SQL valuation isolated | ON/OFF retains Theater; isolated choice change optional by user clarification | **Integrated native route; normal-game outcomes next** |
+| 2.1 Customer sites | Native SQL valuation isolated | ON/OFF retains Theater; isolated choice change optional by user clarification | **Integrated; 250-turn outcomes in AI-C169** |
 | 2.2 Protect materials | Verified | Verified, supplier retained | **Complete finite-penalty scope** |
 
 ## Retained acquisition negatives and limits

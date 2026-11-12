@@ -1,64 +1,73 @@
-# LIVE250 full CSC harmonised run — do not edit pinned code
+# COMPLETED: harmonised main CSC + normal250 full run, 12 Nov
 
-User explicitly paused original goal, then NEW task: native game systems need
-verified inputs/consumption+integration, NOT isolated changed-choice result.
-Verify/harmonise all10 solutions, run ONE complete250-turn normal game first,
-comparebaseline. Future matchedSQLnativeON/OFFinterestingbutAFTERthisfullgame.
-Do not resume old2.1causalfixturechasing. Revisedacceptance/status/roadmap saved.
+No game/worker running. session49403 worker17260 TERMINAL exit0. Originalgoal
+was user-paused; subsequent NEW task completed: native-system inputs/consumption
++integration suffice (isolated changed-choice gate optional); verifyall10main
+solutions, runONE250turnnormalgame, baselinecomparison. No moregames/matchedSQL
+trials untilrequested. Goalcontrolleftpaused;doNOTresumeold2.1causalfixturehunt.
 
-Astra independentlyreviewedall10main pathsforBakers+Tailors, nofixturepolicy.
-Minimalharmony: REMOVEcompletedQuarterCE+40customerbranch;nativeprivateyield+1
-suppliesthatrole. KeepfuturefootprintCE+16;materialprotection/allotherbands/
-acquisition/declines/Builder/building/repairadaptersunchanged. Scanner10PASS,
-CEfrontend12PASS, passiveobs6PASS, sharedcontroller40PASS. Astrapreflightbug
-fixed: assertALL9getterstypesBEFOREtableconstruction(otherwisenilvanishes).
-All9missing-getterfixturespass;exclusionstatuscorrectlyhasnofaultsfield.
-Astrareviewacknolaunchblockers. Maincode/docs/testscommittedPUSHED857fdb4d.
+Astra independentlyreviewsall10mainpaths(Bakers/Tailors,nofixturepolicy).
+Harmonisation source: removedexistingQuarterCE+40customerbranch;nativeprivate
+adjacency+1 does thatrole. FuturefootprintCE+16 retained;allotherbands/material
+protection/acquisition/decline/Builder/building/repairlogicpreserved. Maincode/
+setup/tests/docspushed857fdb4d; standalonecomparison+tests/memory84e5e511.
+Tests10scanner+12CEfrontend+6fullobs+40sharedcontroller+7resultsPASS.
 
-Worker unifiedexecsession49403, Pythonworker17260. Rootartifact:
-C:/Users/Shadow/Desktop/Codex/csc-ai-harmonised-250-20261112
-Runfolder run-continents. ONEsharedcontrollerNativeSessionownsallconsole/game.
-CE03 a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb,
-WildW develop recheckedunchanged2986a746…. Maincompletepackage634files built
-nativeFiraxismanifestfromcurrentdeclaredCSCgameplay/UI +installedcookedart
-(no unrelatedartcook). frozen/CSC andfrozen/CE; all6AIfilehashessourcematch.
-TemporaryCSCcarrierA17+explicitCEdependencyonlymetadatachanges. Samepolicy
-insideCSC, NOFrida/externalpolicy/AItestmodes/forcedunlocks/worldedits/RHAI5.
-Regularmapassistanceactive. OriginalinstalledCSCread-only/unchanged.
+FullartifactrootDesktop/Codex/csc-ai-harmonised-250-20261112, run-continents.
+Complete634fileCSCpackagebuiltcurrentdeclaredgameplay/UI(nativeFiraxismanifest)
+plusinstalledcookedart (notunrelatednewartcook), temporarycarrierA17+CEdependency.
+All6AIfilehashesmatchmainCSC. SupportedCE03a849eff8;stockXP2092abfbb… .
+WildWdevelopunchanged2986a746beforelaunch. NoFrida,externalpolicy,AItestmodes,
+forcedunlocks/worldedits/RHAI5. NormalSmallAncientPrinceContinentsOnline seeds
+18461107/29461107;originalAI1–5/observer0. Nativeprefightall9healthgood,private3
+links/default1/bias25/directDBverified. Entireinitialmap74x46/-935087381,
+leaders/starts/units/roles EXACTMATCHbaseline. Currentcontent/CEdifferent:
+historicaldescriptivecomparison,NOTAI-onlycausaltreatment. All5AIsalive250.
 
-LIVE preflightpassed at1: all9CEconsumerstatusready/faultfree(wherefieldexists),
-originalAIroles1–5correct/human0persisted, native3Harbor+replacementlinks,
-Yielddefault1/bias25/directloadedDBverified. STARTmap74x46hash-935087381,
-leaders/startingplots/units/exactoriginalAIrosterALLMATCHhistoricalbaseline.
-Onlygameplay/CEpackagesdiffer→historicaldescriptivecomparison,notAI-onlycausal.
-NormalSmallAncientPrinceContinentsOnline map18461107/game29461107, END250.
+AstraAUDITPASS: ALL634CSC+6CEfiles rehashed;all10censuses25..250reconstructed
+fromrawLua;comparisonexact;nativeStorekeepereffects2..249248samplesnogaps,
+noambiguousattribution. 250publications,max632entries,omitted0;decline/exclusion
+omissions0;nopolicy/industry/observer/Storekeeperfaults. All9healthx11checks.
+Exact250inactiveboundary/saveComplete/unchangedphase/normalexit0/ownersabsent/
+preferences+packageRestorationPASS. TemporaryModsfoldersremoved(retiredinto
+archive),originalinstalledCSCunchanged. Saves50/100/150/200+250preserved.
+Endpoint250sha5b4a41cc16b33a010b87896b3f4accc9084c25ef58da41b6a745b01b8d38bf36.
 
-Controlleruses<=5turnfinitewindows soexistingpopup/victoryguardswork; lands
-on25multiples. allow_one_more_turnshippedUIonly. PassiveStorekeeperUIreader
-fillsmissinginactivehandoffclocksONLYifENDrowabsent; nofacts/bids/queueswrite.
-Fullcensus25..250 recordsB/Tsuppliers/customers/buildings/properties+economy,
-plushealth. NativeStorekeepereffectwatchpereachinteriorclock2..249. Saves50/
-100/150/200and250endpoint; keepnamedT3/T204/T216usersavesprotected. Normal
-cleanuprestoresprefs/retirestemporarymods. Continuousrunrequiresnoagentconsole.
-DO NOT edit ce_bakers_fresh.py/full_game_observation.py/full_game_census.lua/
-full_game_preflight.lua/retention_cohort.lua/storekeeper_runtime.lua orshared
-full_game_controller sources/frozenpackages until workerterminal.
-CheckOUTCOMErunsaboutEVERY15MIN only; setupfailureearlierifneeded.
-Lastsetupread18:08 local: turn13active/boundary11; nofailure. Nextnormalcheck
-about18:23local. Nativeowneridentityjson: {"pid":13576,"executable_path":"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sid Meier's Civilization VI\\Base\\Binaries\\Win64Steam\\CivilizationVI.exe","creation_filetime":134389767165292199}
+KEYSTATS baseline200→new200→new250 (originalAI1–5ONLY):
+CompletedQuarters30→29→36; adjacentownedBase6→24→30; improvedBase3→16→24;
+noBase24→5→6; bothmaterials0→4→5;bothimproved0→3→4;river2→9→10;
+allstageadjSales10→16→20. Improved=compatible/unpillaged,notcitizen-worked.
+Bakerscomplete16→14→16,producer2working7→11→15,Stage2customer5→8→9,
+workingcustomerbuilding1→8→8, physicalchain/nativeactiveproperty1→6→8.
+Tailorscomplete14→15→20,Base0→12→16,improved0→8→12,producer2working7→10→16,
+Stage2customer0→1→1,workingcustomerbuilding0→0→1,physical/activechain0→0→0.
+SoleTailorHarbor isP5/c196610Quarterplot2762→Harbor2836;at200nolph,250working
+Lighthouse,BUTQuarterhasNOMATERIAL/PRODUCERrowsbothclocks. Customerbottleneck.
+AllB/TStage3/4Serviceproperties0,despiteTailors6stage3(5working)/3stage4producers250.
+NativeStorekeeperMATCHED2..199baseline39→new312chainturns(8x),NOT19baseline.
+Full2..2499chains685activechainturns;2chainsresumeacross3gaps,causesunisolated.
+Endpoint250propertiesarenotsameclockasUIeffecthistorythrough249.
 
-OFFLINE allowed: docs andstandaloneanalysis full_game_results.py (NOTimported
-byworker) promotedunchangedexistingbaseline summarize/economy functions.
-Baselinefolder Desktop/Codex/csc-ai-integrated-20261108/endpoint-detail-baseline/
-continents.json at200. BaselineBakerscomplete16/base6/baseimproved3/prod2=7/
-Stage2customer5/withbuilding1/serviceproperty1/physicalchain1; Tailorscomplete14/
-base0/prod2=7/Stage2customer0/service0. Baseline5alive37cities372pop,
-Production946.75390625,grossGold792.0859375,maintenance482,netGold310.0859375,
-FoodSurplus226,goldreserves1064.1484375. Improvedmeansvalidunpillagedimprovement,
-notnecessarilycitizenworked. Fullrun200sampleFAIRclockcomparison;250followthrough
-notbaseline250 (noneexists). OriginalAIonlyexcludeobserver+citystates.
-Needfinishverified250,census/Storekeepercoverage/cleanupchecks, compare200+250,
-Astraoutcomeaudit,docupdate+commits/pushes. No upstreamPR.
+Economybaseline200→new200→250:
+Cities37→35→43,pop372→383→489;Prod946.75390625→873.23046875→1461.94140625;
+grossGold792.0859375→890.83203125→1744.83984375;
+netGold310.0859375→346.83203125→807.83984375;FoodSurplus226→247→282;
+treasury1064.1484375→1475.29296875→2720.0234375.
+At200Prod-7.8%,netGold+11.9%,Food+9.3%,pop+3.0%;2fewercities.
+PerCityProd25.59→24.95(-2.5%). Mixedeconomy,notgeneralproductionincrease.
+8nativeownershipacksobserved,NOTindependentlymeasuredpayments;ZEROunowned
+supplieracquisitionoffers,ZEROfuture16customerreceipts. Existingnativeadjseparate.
+All10wired/healthy≠everyconditionalpathtriggeredinthisworld;oldproofsscopeintact.
+
+Durableprojectreport project/docs/research/mods/csc-ai-harmonised-250-20261112.md
+hasfulltables/protocol/hashes/limits. NewAI-C169;STATUS/roadmap/acceptanceupdated.
+Standalone full_game_results.py usesoldbaselineaggregation withclock/roster/
+footer/denominatorguards;compareall3windows200/200/250,all10trendclocks;unmatched
+inputslabeldowngraded;cityless/eliminatedseatszerooriginalaverages/percityNone.
+Astrareviewapproved. No newenginefindingneededforsingleCSCoutcomes;AI-N122
+andC168remainnativeconsumptionproof;skill50094fflatest. No PRs.
+Results AI-C169/report/status/roadmap/acceptance now recorded and link/diff checks pass.
+Final scoped documentation push and user result complete this task. Do not start additional testing.
 
 # CURRENT2.1 Native private-yield consumption VERIFIED; choice still open
 

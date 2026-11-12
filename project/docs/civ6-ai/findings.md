@@ -3067,3 +3067,42 @@ This is filtered coverage, not a logged complete-world packet comparison.
 No shipping policy band changes, construction or broader qualification follows.
 
 - [Common fixture, direct DB check, exact scores and limits](../research/mods/csc-ai-customer-placement-20261112.md#completed-native-onoff-comparison)
+
+## AI-C169
+
+**A harmonised normal game reaches 250 with substantially better material placement and Bakers operation; Tailors customers remain weak**
+
+Status: accepted single-game outcome evidence, independently audited by Astra.
+All ten scoped implementation paths were reviewed in main CSC. Existing
+Quarter co-location now uses native SQL; the overlapping +40 CE bid is removed,
+while future-footprint +16 and other guidance/protection remain. Henno's revised
+native-system criterion accepts consumption/integration without an isolated
+changed-choice gate. This does not establish universal placement reliability.
+
+Normal Small Ancient Prince Continents/Online, seeds18461107/29461107, exactly
+matches the historical baseline's initial map, leaders, starts, units and AI
+roster. Different whole gameplay/CE packages make this a descriptive comparison,
+not an AI-only causal test. At200, completed Quarters30→29, adjacent owned
+Base6→24 and improved Base3→16. Bakers physical Stage2/active property1→6;
+Tailors remains0. Production946.75→873.23, net Gold310.09→346.83 and Food
+surplus226→247; cities37→35, population372→383.
+
+At250 there are36 completed Quarters,30 with Base and24 with improved Base.
+Bakers physical Stage2/active property reaches8; Tailors remains0. Its sole
+adjacent Harbor/Lighthouse serves an unsupplied Quarter without a producer.
+All observed Stage3/4 Service properties remain0. Native Storekeeper effect
+history independently confirms39→312 active chain-turns over matching2–199;
+the new2–249 window has nine chains/685 active chain-turns, complete248-clock
+coverage and no ambiguous attribution. Two chains resume after lapses; causes
+are not isolated. Endpoint properties and the effect-history cutoff differ.
+
+All634 CSC +6 CE package hashes, ten25-turn censuses, module pins, all totals
+and normal cleanup pass independent audit. There are250 publications, max632
+district entries, no district/decline/exclusion omissions and no reported policy
+or observation faults. Eight ownership acknowledgements occur; payments are
+not independently measured. No supplier-acquisition offers or future-footprint
+customer receipts occur. Readiness does not prove every conditional capability
+was exercised. Verified250 save SHA256:
+5b4a41cc16b33a010b87896b3f4accc9084c25ef58da41b6a745b01b8d38bf36.
+
+- [Integration review, full protocol, comparison tables and artifact identities](../research/mods/csc-ai-harmonised-250-20261112.md)
