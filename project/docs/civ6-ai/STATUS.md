@@ -59,10 +59,13 @@ runs, exact journals, source/package identities and the causal comparison.
 Acceptance: a live-material-derived offer must be consumed by the relevant
 native buying decision, change a relevant native action against its control,
 reach native payment and intended ownership, then an actual supplier improvement.
-No supplier offer exists in the current main code: the owned-supply reader
-intentionally excludes unowned land. Inspect the routine frontier-resource
-candidate and city quote before adding a preference. Keep native savings,
-legality and Treasury checks.
+Main CSC now proposes a bounded 26-unit improvement bid for an adjacent,
+quoted unowned Base when a healthy completed Quarter has no viable owned Base.
+The existing improvement forecast also feeds routine resource buying; no new
+CE API is needed. The matched supplier test is pending native action evidence.
+The common zero-turn source is saved and separately qualified despite a
+post-save missing-log wrapper failure. Keep native savings, legality and
+Treasury checks. [Policy and limits](../research/mods/csc-ai-supplier-acquisition-20261112.md).
 
 The positive-offer control still buys the same footprint for Tailors, so
 promotion necessity is not demonstrated. That negative remains valid. A

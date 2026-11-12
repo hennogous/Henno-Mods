@@ -78,7 +78,8 @@ improvement, pillaged = 5, false
 Map = {GetPlot=function() return quarter end, GetPlotByIndex=function() return pasture end,
     GetAdjacentPlots=function() return {pasture} end, GetGridSize=function() return 40,30 end}
 Cities = {GetPlotPurchaseCity=function() return {GetOwner=function() return 3 end,GetID=function() return 42 end} end}
-ImprovementBuilder = {CanHaveImprovement=function(_, _, team) assert(team==9); return true end}
+-- The native wrapper's third argument is player ID; team 9 deliberately differs.
+ImprovementBuilder = {CanHaveImprovement=function(_, _, playerID) assert(playerID==3); return true end}
 local properties = {}
 turn = 1
 Game = {GetCurrentGameTurn=function() return turn end,GetProperty=function(_,k) return properties[k] end,

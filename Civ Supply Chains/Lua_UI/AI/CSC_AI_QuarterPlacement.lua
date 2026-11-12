@@ -169,7 +169,9 @@ function P.ReadSuppliers(player, quarter, profile)
                     ready = true -- An existing compatible improvement can be used or repaired.
                     break
                 end
-                if ImprovementBuilder.CanHaveImprovement(plot, improvement, player:GetTeam()) then
+                -- Native Lua wrapper 1a2a0 consumes a PLAYER ID, not a team.
+                -- Its ownership-sensitive query is appropriate for this owned reader.
+                if ImprovementBuilder.CanHaveImprovement(plot, improvement, playerID) then
                     viable = true
                     ready = ready or improvementUnlocked(player, improvement)
                 end
@@ -221,7 +223,7 @@ end
 -- deposits exist. CE and the game still own assignment and execution.
 local function offerBaseJob(player, chain, recover, bid)
     if bid <= 0 or chain.workingBase then return end
-    local team = player:GetTeam()
+    local playerID = player:GetID()
     local best, bestRepair
     for _, material in ipairs(chain.supply.base) do
         local plot = Map.GetPlotByIndex(material.plot)
@@ -229,7 +231,7 @@ local function offerBaseJob(player, chain, recover, bid)
         for _, index in ipairs(materialOptions()[plot:GetResourceType()]) do
             local repair = current == index and plot:IsImprovementPillaged()
             local buildable = repair or improvementUnlocked(player, index)
-                and ImprovementBuilder.CanHaveImprovement(plot, index, team)
+                and ImprovementBuilder.CanHaveImprovement(plot, index, playerID)
             if buildable and (not best or repair and not bestRepair
                 or repair == bestRepair and material.plot < best) then
                 best, bestRepair = material.plot, repair
@@ -451,6 +453,63 @@ function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominati
         end
     end
     return entries, builderSites, nominations, repairs, chains, exclusions
+end
+
+-- An unowned supplier needs its own investment, separate from buying a Quarter
+-- footprint. The existing CE improvement bid feeds the native plot forecast:
+-- AnalyzeCityPlots ranks resource frontier rows, then Economic quotes its cached
+-- winner and applies its ordinary savings, legality and Treasury checks. This
+-- publishes neither a purchase command nor a Builder assignment.
+function P.SupplierAcquisitionOffers(player, chains, ui, builderBidLimit)
+    local result, seen = {}, {}
+    local delta = math.min(builderBidLimit or 0, EARLY_SUPPLIER_BID_Q8)
+    if delta <= 0 or not ui or type(ui.GetPlotPurchaseQuote) ~= 'function' then return result end
+    local pid, options = player:GetID(), materialOptions()
+    for _, chain in ipairs(chains) do
+        -- Repair/develop an already viable owned deposit before buying another.
+        -- This first scarcity policy secures Base for healthy completed Quarters;
+        -- it prices future supply even before the producer is constructed.
+        if chain.ready and #chain.supply.base == 0 then
+            local best
+            for _, plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())) do
+                local resource = GameInfo.Resources[plot:GetResourceType()]
+                if plot:GetOwner() == -1 and plot:GetDistrictType() == -1 and plot:GetImprovementType() == -1
+                    and resource and options[resource.Index]
+                    and PlayersVisibility[pid]:IsRevealed(plot:GetX(), plot:GetY())
+                    and CSC_Adjacency.ResourceVisible(pid, resource.Index)
+                    and CSC_Adjacency.HasTag(chain.profile.base, resource.ResourceType) then
+                    local improvements = {}
+                    for _, index in ipairs(options[resource.Index]) do
+                        if improvementUnlocked(player, index) then improvements[#improvements + 1] = index end
+                    end
+                    -- Lua CanHaveImprovement forces the native ownership check
+                    -- and rejects ordinary unowned tiles. Do not call it here
+                    -- or invent a fourth ignore-ownership argument. These are
+                    -- mapped, unlocked proposals: native row admission validates
+                    -- actor/geometry and preserves zero/negative scores before CE
+                    -- can add the finite 26-unit Q8 early-supplier band.
+                    local ok, quote = false, nil
+                    if #improvements > 0 then
+                        ok, quote = pcall(ui.GetPlotPurchaseQuote, pid, chain.city:GetID(), plot:GetIndex())
+                    end
+                    if ok and type(quote) == 'number' and quote > 0
+                        and (not best or quote < best.purchaseGold
+                            or quote == best.purchaseGold and plot:GetIndex() < best.plot) then
+                        best = {player=pid, city=chain.city:GetID(), plot=plot:GetIndex(), improvements=improvements,
+                            deltaQ8=delta, acquisition=true, purchaseGold=quote, quarter=chain.plot:GetIndex()}
+                    end
+                end
+            end
+            if best then
+                -- One deterministic option per chain, no stacking when several
+                -- Quarters share it. Rebuild from live ownership/quotes each
+                -- publication; acquisition retires this offer on the next turn.
+                local key = best.city .. ':' .. best.plot
+                if not seen[key] then result[#result + 1], seen[key] = best, true end
+            end
+        end
+    end
+    return result
 end
 
 -- Diagnostic only. The late-placement research driver supplies exact native

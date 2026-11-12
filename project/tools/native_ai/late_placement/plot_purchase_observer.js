@@ -125,6 +125,9 @@ rpc.exports = {
             throw Error('Unexpected plot purchase observation scope');
         if(scope.observeExecution!==undefined&&typeof scope.observeExecution!=='boolean')
             throw Error('Execution observation must be explicit Boolean');
+        if(scope.observeRoutine!==undefined&&(typeof scope.observeRoutine!=='boolean'||
+                !Number.isInteger(scope.city)||scope.city<0))
+            throw Error('Routine observation requires explicit Boolean and city identity');
         if(scope.observeLifecycle!==undefined&&typeof scope.observeLifecycle!=='boolean')
             throw Error('Lifecycle observation must be explicit Boolean');
         if(scope.observeLifecycle===true&&scope.observeLineage!==true)
@@ -174,6 +177,8 @@ rpc.exports = {
             if (scope.streamRecords) send({kind: 'plot-purchase-fault', fault});
         };
         const turnNow = () => read(ptr(read(gameSlot, 0, 'ptr')), GameTurnOffset, 'i32');
+        if(scope.observeRoutine===true)
+            observeRoutineSupplier({core,scope,read,fingerprint,emit,fail,turnNow,listeners,isFaulted:()=>Boolean(fault)});
         const ancestry = tree => {
             const path = [], seen = new Set();
             while (!tree.isNull()) {

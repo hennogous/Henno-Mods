@@ -31,6 +31,7 @@ from driver import (
     restore_preferences, sha, write_json, lua,
 )
 from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint, owned_checkpoint
+from supplier_purchase_policy import PREPARE as PREPARE_SUPPLIER, INSPECT as INSPECT_SUPPLIER, without_supplier_bid
 from full_game_controller.checkpoint import save_inactive_boundary
 
 CE_SHA = 'f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07'
@@ -57,6 +58,11 @@ CASES = {
 }
 CASES['nuremberg-reload']=dict(CASES['nuremberg'],turn=205,archive='endpoint.Civ6Save',
     metadata='endpoint-checkpoint.json',sha256='6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03')
+CASES['nuremberg-supplier-prepare']=dict(CASES['nuremberg'],turn=216,
+    metadata='endpoint-checkpoint.json',archive='endpoint.Civ6Save',purchasePlots=[861],
+    sha256='22998f016e31272f53e1d1f4a1446b954c0aa9688c5072a74d9694f181b80fc8')
+CASES['nuremberg-supplier']=dict(CASES['nuremberg-supplier-prepare'],
+    sha256='9eff6d6c10e7c95af1f5ac37ee64c364f3174e4beefd1116c33769a905ff1d49')
 
 # This untuned save intentionally predates the policy's persisted seat metadata.
 # A diagnostic may seed it from these acknowledged turn-1 records, never from
@@ -150,6 +156,9 @@ function CSC_PURCHASE_Snapshot()
         end
     end
     local candidate=Map.GetPlotByIndex(scope.purchasePlots[1])
+    local candidateCity=Cities.GetPlotPurchaseCity(candidate)
+    print('CSC_SUPPLIER_STATE',turn,candidate:GetIndex(),candidate:GetOwner(),candidateCity and candidateCity:GetID() or -1,
+        candidate:GetResourceType(),candidate:GetImprovementType(),candidate:IsImprovementPillaged())
     for _,plot in ipairs(Map.GetAdjacentPlots(candidate:GetX(),candidate:GetY())) do
         local resource=GameInfo.Resources[plot:GetResourceType()]
         local revealed=PlayersVisibility[scope.player]:IsRevealed(plot:GetX(),plot:GetY())
@@ -337,7 +346,10 @@ def run(args):
     reference = args.reference.resolve(strict=True)
     checkpoint = args.checkpoint.resolve(strict=True)
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
-    assert source_turn < args.through <= 224, 'This fixture uses a bounded continuation of its verified source'
+    prepare_supplier=case_name=='nuremberg-supplier-prepare'
+    supplier_case=case_name.startswith('nuremberg-supplier')
+    assert (source_turn < args.through <= 224 or prepare_supplier and args.through==source_turn), 'This fixture uses a bounded continuation of its verified source'
+    assert not prepare_supplier or args.mode=='integrated' and args.save_endpoint
     assert load(reference / 'complete.json')['verified']
     assert load(reference / 'session-closed.json')['verified']
     meta = load(checkpoint / case.get('metadata','checkpoint.json'))
@@ -345,7 +357,22 @@ def run(args):
     assert meta['verified'] and meta['turn'] == source_turn and meta['sha256'] == case['sha256']
     assert save.parent == (home / 'Saves/Single').resolve()
     assert sha(save) == sha(checkpoint / case.get('archive','endpoint.Civ6Save')) == case['sha256']
-    if case_name=='nuremberg':
+    source_policy=getattr(args,'source_policy_root',None) or args.policy_root
+    if case_name=='nuremberg-supplier':
+        assert load(checkpoint/'prepared-source-audit.json')['verified']
+        assert load(checkpoint/'session-closed.json')['verified']
+        assert load(checkpoint/'supplier-preparation.json')['native_purchase'] is False
+        assert meta['save_complete_event'] and meta['native_phase_unchanged']
+        assert all(meta[p]['turn']==216 and not meta[p]['active'] and meta[p]['player0_human'] for p in ('before','after'))
+    elif prepare_supplier:
+        assert load(checkpoint/'complete.json')==dict(verified=True,turns_advanced=14)
+        assert load(checkpoint/'session-closed.json')['verified']
+        parent=load(checkpoint/'inputs.json')
+        assert parent['mode']=='integrated' and not parent['repairOwnedPurchase']
+        for relative in (SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua')):
+            assert sha(source_policy/relative)==parent['packages']['CSC Bakers Development Mod'][str(relative)]['sha256']
+    elif case_name=='nuremberg':
         # Source provenance and treatment code are distinct. A new integrated
         # adapter intentionally changes main Lua; qualify the save against its
         # recorded historical main files, then pin the current staged treatment.
@@ -401,6 +428,9 @@ def run(args):
             replacements[relative] = (args.policy_root / relative).read_bytes()
         if getattr(args, 'without_frontier_offers', False):
             replacements[SCANNER] = ablate_frontier_offer(replacements[SCANNER],case)
+        if getattr(args,'supplier_no_bid',False):
+            relative=Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua')
+            replacements[relative]=without_supplier_bid(replacements[relative],case)
         if getattr(args,'prototype_buyer',None):
             replacements[QUOTE_BRIDGE]=bypass_szeged_quote_screen(replacements[QUOTE_BRIDGE],case)
         if getattr(args,'seed_source_seats',False):
@@ -428,6 +458,7 @@ def run(args):
         observePurchaseLifecycle=getattr(args,'observe_purchase_lifecycle',False),
         repairOwnedPurchase=getattr(args,'repair_owned_purchase',False),
         save_endpoint=getattr(args,'save_endpoint',False),
+        supplier_no_bid=getattr(args,'supplier_no_bid',False),
         prototypeBuyer=getattr(args,'prototype_buyer',None),
         sourceSeatMigration=seat_provenance,
         without_frontier_offers=getattr(args,'without_frontier_offers',False),
@@ -522,9 +553,18 @@ local status=assert(CE_AIDistrictScoresStatus())
 local version=assert(tonumber(status:match('"version":(%d+)')))
 local receipt=CE_AIDistrictPurchaseCompletionReceipt(version,'''+str(case['player'])+','+str(case['city'])+','+str(case['district'])+''')
 print('CSC_OWNERSHIP_API_RECEIPT',receipt)
-assert(receipt:match('"staged":1'),'Main CSC did not publish the native ownership scope')''',
+assert(receipt:match('"staged":'''+('0'if supplier_case else'1')+''''),'Unexpected main CSC ownership scope for this source')''',
                         'CSC_AI_BakersGameplay','qualify-main-ownership-api')
                     (out/'ownership-api-qualification.txt').write_text(raw,encoding='utf-8')
+            if prepare_supplier:
+                raw=controller.cmd(PREPARE_SUPPLIER,'CSC_AI_BakersGameplay','prepare-common-supplier-source')
+                (out/'supplier-preparation.txt').write_text(raw,encoding='utf-8')
+                assert re.search(r'CSC_SUPPLIER_RELEASED\s+216\s+861\s+',raw)
+                write_json(out/'supplier-preparation.json',dict(verified=True,parent_save_sha256=case['sha256'],
+                    released_plot=861,quarter_plot=788,turn=216,native_purchase=False,common_fixture=True))
+            if supplier_case:
+                raw=controller.cmd(INSPECT_SUPPLIER,'CSC_AI_BakersGameplay','inspect-supplier-chain')
+                (out/'supplier-chain-qualification.txt').write_text(raw,encoding='utf-8')
             controller.cmd(read(out / 'plot-watcher.lua'), 'CSC_AI_BakersGameplay', 'watch-source-plots')
             raw = controller.cmd('local scope='+lua(case)+"""
 local city=assert(CityManager.GetCity(scope.player,scope.city))
@@ -576,7 +616,8 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
             # Explicit buyer-prototype restrict mode can exclude a competing
             # city for the verified selected Quarter's contract. Prices/funds/
             # payment stay native; it never forces a district choice.
-            purchase_sources = (STUDY / 'observer.js', HERE/'purchase_acknowledgement.js',HERE / 'plot_purchase_observer.js')
+            purchase_sources = (STUDY / 'observer.js', HERE/'purchase_acknowledgement.js',
+                HERE/'routine_supplier_observer.js',HERE / 'plot_purchase_observer.js')
             for path in purchase_sources[1:]:shutil.copyfile(path,out/path.name)
             purchase_code = "'use strict';\nconst CSC_LATE_PLACEMENT_COMPOSITE = true;\n"
             purchase_code += '\n'.join(read(path) for path in purchase_sources)
@@ -591,6 +632,7 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
                 observeLineage=getattr(args,'observe_purchase_lineage',False),
                 observeExecution=getattr(args,'observe_purchase_execution',False),
                 observeLifecycle=getattr(args,'observe_purchase_lifecycle',False),
+                observeRoutine=case_name=='nuremberg-supplier',
                 repairOwnedPurchase=getattr(args,'repair_owned_purchase',False),
                 prototypeBuyer=getattr(args,'prototype_buyer',None),district=case['district'],
                 selectorObserverVerified=True) # init above verified the unpatched call/return window.
@@ -600,7 +642,8 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
                 purchase_scope)
         controller.study_endpoint = args.through
         print('Purchase diagnostic armed', case_name, args.mode, flush=True)
-        controller.play(args.through)
+        if args.through>source_turn:
+            controller.play(args.through)
         trace = observer.exports_sync.freeze()
         write_json(out / 'selector-trace.json', trace)
         assert trace['fault'] is None and trace['active'] == 0
@@ -626,7 +669,13 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
                 native_directory=home/'Saves/Single',archive=out/'endpoint.Civ6Save')
             write_json(out/'endpoint-checkpoint.json',checkpoint)
         for name in LOGS:
-            shutil.copyfile(user_root / 'Logs' / name, out / name)
+            source=user_root / 'Logs' / name
+            # A zero-turn source preparation may create no native AI logs.
+            # Outcome runs still require every log; never hide a missing trace.
+            if prepare_supplier and not source.exists():
+                write_json(out/('absent-'+name+'.json'),dict(turns_advanced=0,reason='No AI activation during source preparation'))
+            else:
+                shutil.copyfile(source, out / name)
     except Exception as error:
         write_json(out / 'failure.json', dict(error=str(error), traceback=traceback.format_exc()))
         raise
@@ -671,6 +720,7 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--save-endpoint',action='store_true',help='Preserve one verified inactive endpoint checkpoint')
+    parser.add_argument('--supplier-no-bid',action='store_true',help='Diagnostic supplier case only: keep mapped allowances/protection but remove its exact positive bid')
     parser.add_argument('--mode', choices=('original', 'frontier', 'integrated'), required=True)
     parser.add_argument('--case',choices=tuple(CASES),default='nicopolis')
     parser.add_argument('--without-frontier-offers',action='store_true',
@@ -698,6 +748,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed-source-seats',action='store_true',
         help='Diagnostic Szeged fixture only: seed absent seat properties from pinned turn-1 records')
     options = parser.parse_args()
+    if options.supplier_no_bid and (options.case!='nuremberg-supplier' or options.mode!='integrated'):
+        parser.error('Supplier ablation requires the explicit integrated supplier case')
     if options.ownership_ce_dll and (not options.case.startswith('nuremberg') or options.mode!='integrated'
             or not options.ownership_ce_sha or options.repair_owned_purchase or options.prototype_buyer
             or options.without_frontier_offers or not options.source_policy_root):

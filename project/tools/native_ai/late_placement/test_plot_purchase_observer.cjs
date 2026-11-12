@@ -473,3 +473,43 @@ for(const mode of ['ack-journal-full','ack-journal-exact','ack-journal-race']) {
     }
 }
 console.log('Purchase observer: measured debits, admission/execution, acquisition callers, lineage and guarded detach passed');
+
+// Read-only routine decoding: the row feature is not the improvement, the
+// maximum can be negative, and cached XY/funds do not imply admission/payment.
+{
+hooks.clear();
+vm.runInContext(fs.readFileSync(__dirname+'/routine_supplier_observer.js','utf8'),context);
+const build=0xc0000,rows=0xd0000,values=0xe0000,manager=0xf0000,node=0x100000;
+put(city,0xd8,1);put(city,0xa8,524295);put(build,0x90,city);
+put(build,0x4c8,rows);put(build,0x4d8,2);put(build,0x488,2);
+put(build,0x238,47);put(build,0x23c,11);
+for(let i=0;i<2;i++) {
+    const row=rows+i*0x78,v=values+i*16;
+    put(row,0,4+i);put(row,4,i===0?-1:7);put(row,0x57,1);
+    put(row,8,47+i);put(row,12,11);put(row,0x30,v);
+    put(v,0,i===0?100:-10);put(v,4,i===0?200:-20);
+}
+put(player,0xd8,1);put(player,0x6d0,manager);put(manager,0xd0,node);
+put(node,0,city);put(node,0x10,0);put(city,0x1948,build);
+put(economic,0x250,slushFund);put(slushFund,0,10000);put(slushFund,8,20000);
+const routineRows=[],routineFaults=[],routineListeners=[];
+context.observeRoutineSupplier({core:{base:ptr(0)},scope:{player:1,city:524295,width:74,height:46,plots:[861]},
+    read:(p,o,t)=>{const value=cells.get(Number(p.toString())+o);assert.notEqual(value,undefined);return t==='ptr'?String(value):value;},
+    fingerprint:(rva,bytes)=>assert([0x3de990,0x458530].includes(rva)&&bytes.length===32),
+    emit:r=>routineRows.push(r),fail:e=>routineFaults.push(String(e)),turnNow:()=>216,listeners:routineListeners});
+const invocation={};hooks.get(0x3de990).onEnter.call(invocation,[ptr(build)]);
+hooks.get(0x3de990).onLeave.call(invocation);
+hooks.get(0x458530).onEnter.call({},[ptr(economic)]);
+assert.equal(routineFaults.length,0);assert.equal(routineRows.length,2);
+assert.equal(routineRows[0].frontier[0].maximumQ8,200);
+assert.equal(routineRows[0].frontier[0].improvement,1);
+assert.equal(routineRows[0].frontier[0].scoresQ8[1],200);
+assert.equal(routineRows[0].frontier[1].feature,7);
+assert.equal(routineRows[0].frontier[1].maximumQ8,-10);
+assert.equal(routineRows[1].cached.x,47);assert.equal(routineRows[1].plotFundQ8,20000);
+put(build,0x4d8,257);hooks.get(0x3de990).onLeave.call(invocation);
+assert.match(routineFaults[0],/row bounds/);
+hooks.get(0x458530).onEnter.call({},[ptr(economic)]);assert.equal(routineRows.length,2);
+routineListeners.forEach(listener=>listener.detach());assert.equal(hooks.size,0);
+console.log('Routine supplier observer: bounded rows, feature/max fields, cached XY/funds and fault latch passed');
+}

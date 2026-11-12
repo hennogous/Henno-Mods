@@ -192,6 +192,12 @@ local function refresh(turn)
             builderSites[#builderSites + 1] = site
             allowances = allowances + #site.improvements
         end
+        if protectBuilders then
+            for _, site in ipairs(placement.SupplierAcquisitionOffers(player, chains, ui, builderBidLimit)) do
+                builderSites[#builderSites + 1] = site
+                allowances = allowances + #site.improvements
+            end
+        end
         -- An unsupported placement read must leave the working supplier
         -- protection active. A fresh native site score is still required.
         for _, profile in ipairs(placement.StageTwoProfiles()) do
@@ -249,6 +255,17 @@ local function refresh(turn)
         #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
         exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit)
     assert(accepted, message)
+    -- These are committed improvement proposals, not buying or assignment
+    -- receipts. Native candidate, payment and actual improvement are separate.
+    if allowances <= capacity then
+        for _, site in ipairs(builderSites) do
+            if site.acquisition then
+                print(string.format('CSC_AI_SUPPLIER_ACQUISITION_OFFER turn=%d version=%d player=%d city=%d quarter=%d plot=%d quote=%s deltaQ8=%d improvements=%s',
+                    turn,version+1,site.player,site.city,site.quarter,site.plot,tostring(site.purchaseGold),
+                    site.deltaQ8 or 0,table.concat(site.improvements,',')))
+            end
+        end
+    end
     previousOwnershipScopes = #ownershipScopes<=ownershipLimit and ownershipScopes or {}
     if ownershipStatus then
         print(string.format('CSC_AI_OWNERSHIP_COMPLETION turn=%d scopes=%d omitted=%d previous=%s',turn,

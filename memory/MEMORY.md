@@ -1,3 +1,25 @@
+# Active supplier replay — 12 November 2026
+
+LIVEworkerexec36648 nuremberg-supplier-control-01,216→219; pollsamehandle.
+AllmainAI/driver/supplierpolicy/routine+purchaseobserversPINNED. Do notedituntilterminal.
+Noexternalconsolewhileexclusivecontrollerlives. Mainpolicyuncommitted4Lua+JSfixture
+work: dynamicSupplierAcquisitionOffers inQuarterPlacement +publisher append/log,
+modest26*256 onquotedunownedBasewhenhealthycompleteQuarterhasZEROviableownedBase.
+ReuseexistingCEImprovementNet hook; noCEchange. CorrectownedqueryGetTeam→GetID.
+Controlonlyexact861bidnil; allowances/protectionsretained. Nativeobserverreadonly
+AnalyzeCityPlots rowscachedcandidate +routineENTRYfunds (NOTactualcitygatefunds),
+targetscoresfullarraytomatchmappedFarmbid. AstrareviewnoABI/policyblocker.
+Tests4supplier+5publisher+4ownership+13qualification+Nodeobserverfixturespass.
+Preparedsource nuremberg-supplier-source-01 turn216SHA9eff6d6c10e7c95af1f5ac37ee64c364f3174e4beefd1116c33769a905ff1d49.
+Explicitcommonrelease861fromcompletedQuarter788,notpurchase; quote40uniqueall7,
+bank236.0195; adjacentBuilder9306118at47,10charges3. Originalzero-turnwrapper
+FAILEDcopyabsentAI_CityBuild afterverifiedSaveComplete; normalclosedverified.
+DoNOTfabricatecomplete.json; prepared-source-audit.jsonseparatelyqualifiessource.
+NextcontrolreadyINSPECTrecordsproducer/customergatesbeforeAI; readoutput.
+No1.5supplierconsumption/choice/purchase/improvementclaimedyet. Needfullmatchedarm.
+WildWdeveloprechecked2986a746 unchanged. EngineAI-N119staticfindingaddeduncommitted
+skillrepo. Reportcsc-ai-supplier-acquisition-20261112.md. Priorclosurebelowvalid.
+
 # Latest CSC AI result — 12 November 2026
 
 AI-C162 closes representative1.6 levels1–3, Astra-approved; footprint1.5 also
