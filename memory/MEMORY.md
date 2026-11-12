@@ -1,3 +1,23 @@
+# Latest CSC AI result — 12 November 2026
+
+AI-C162 closes representative1.6 levels1–3, Astra-approved; footprint1.5 also
+complete, supplier purchase/improvement remainsopen. Sevenof10closed:
+1.1/1.2/1.3/1.4/1.6/1.8/2.2. Nextsequential1.5supplier, then1.7/2.1.
+CE branchcodex/ce-purchase-ownership-ack commitd8df45989 pushed, noPR.
+DLL73eed1070742ba9a8bb9ba722a09b0229aebcc35c7423e81b7e8f075928d1eed.
+MainCSC2files dynamiclive scopes, nativeowned prerequisite3→7 (notpurchase).
+Fresh nuremberg-ownership-integrated-01:38purchase/17selector exactstreams,
+40Gold203; foundation209/physicalcomplete213. Reload nuremberg-ownership-reload-01:
+13/12exact, retained4316ack206 nofreshcreation/newtargetpayment, samephysicaltimeline.
+Bothterminalclosedverified, noownedliveworker. SealedJSONcapsules/report
+csc-ce-ownership-completion-20261112, Astraindependentlyaudited hashes/traces.
+UpdatedSTATUS/acceptance/roadmap/findings. Do not inventextraBUYnecessitygate.
+Currentowned-supplyreaderexcludesunownedland; nointegratedsupplierbuyingoffer.
+InspectCityBuildAnalyzeCityPlots3de990 +EconomicPurchasePlots458530:
+cacheCityBuild238/23c, onefrontierresourcecandidate, nativecost/savingschecks.
+FirstGhidra324c… identityconfirmed. No newnativehookimplementedforsupplier.
+Previousmemorybelowishistorical; preserveprotectedT3/T204/T216saves.
+
 # Current CSC AI work — 12 November 2026
 
 Active 1.5: Nuremberg released source202 SHA d579ecc2…; execution repeat202–204
@@ -2160,3 +2180,12 @@ CURRENT RH5 test24October: study csc-rh5-profile150-20261024/active-run.json -> 
   preserved. See project/docs/art/modern-level2-con-pil.md and project_modern_bakery.md.
 
 - 29 October modern storage M/L first Blender candidates: historical scale, balanced cross-gable, compact flatbed and separate handling props; candidate shared atlases only. See [modern storage](project_modern_storage_concepts.md) and project/docs/art/modern-storage-first-version.md. No AE installation.
+
+User-requested preservation (latest): verified shared-controller reload replay
+finished at turn 216 and closed normally. Keep
+`Saves/Single/Henno_Preserved_Nuremberg_T216_20261112.Civ6Save` and backup
+`C:/Users/Shadow/Desktop/Codex/csc-ai-preserve-nuremberg-t216-20261112/preserved-game.Civ6Save`.
+Both match the verified inactive endpoint, SHA-256
+`43f3aaaa6abbb21cdc54d08590e50d510ee084fd2b9c124ec29bbab68e62cc10`.
+SaveComplete observed, phase unchanged; provenance in backup preservation.json.
+Do not delete. This adds to, and does not replace, the protected T204/T3 saves.

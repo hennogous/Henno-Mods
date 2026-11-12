@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [CE/main-CSC ownership completion integration — 12 November 2026](../research/mods/csc-ce-ownership-completion-20261112.md)
+
 Dated reports preserve observations, failed tests and corrections. Start with [current status](STATUS.md) and the [roadmap](roadmap.md); old reports do not define current policy.
 
 - [Nuremberg acquisition: native request, expansion command path and measured-payment test — 12 November 2026](../research/mods/csc-ai-nuremberg-acquisition-20261112.md)

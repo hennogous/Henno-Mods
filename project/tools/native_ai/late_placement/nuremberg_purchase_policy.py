@@ -33,6 +33,34 @@ def source_checkpoint(folder,home,world_sha,policy_root):
     return dict(path=str(native),sha256=checkpoint['sha256'],turn=202)
 
 
+def owned_checkpoint(folder,home,policy_root):
+    """Qualify the preserved, paid-but-waiting205 plan for CE reload validation.
+
+    No fresh quote/payment is implied: the closed parent replay measured203's
+    debit. Current treatment is staged separately from these historical files.
+    """
+    assert load(folder/'complete.json')==dict(verified=True,turns_advanced=3)
+    assert load(folder/'session-closed.json')['verified']
+    inputs=load(folder/'inputs.json')
+    assert inputs['source_turn']==202 and inputs['through']==205
+    assert inputs['save_sha256']=='d579ecc2c54909f1b21aaa96caad237daeb9fc0f67cd78c8602191c70c2a9026'
+    assert not inputs.get('repairOwnedPurchase')
+    recorded={key.replace('\\','/'):value for key,value in inputs['packages']['CSC Bakers Development Mod'].items()}
+    for relative in MAIN_FILES:assert sha(policy_root/relative)==recorded[relative.as_posix()]['sha256']
+    trace=load(folder/'purchase-trace.json');assert trace['fault']is None
+    assert any(r['kind']=='debit-return'and r.get('plot')==788 and r['measuredDeltaQ8']==-10240
+        and r['deltaMatched']for r in trace['records'])
+    checkpoint=load(folder/'endpoint-checkpoint.json')
+    assert checkpoint['verified']and checkpoint['turn']==205 and checkpoint['save_complete_event']and checkpoint['native_phase_unchanged']
+    for name in('before','after'):
+        phase=checkpoint[name]
+        assert phase['turn']==205 and not phase['active']and phase['local_player']==0 and phase['player0_human']
+    native=Path(checkpoint['native_save']).resolve(strict=True)
+    assert native.parent==(home/'Saves/Single').resolve()
+    assert sha(native)==sha(Path(checkpoint['archive']))==checkpoint['sha256']=='6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03'
+    return dict(path=str(native),sha256=checkpoint['sha256'],turn=205)
+
+
 PREPARE_RELEASE=r'''
 assert(Game.GetCurrentGameTurn()==202 and Players[0]:IsHuman() and not AutoplayManager.IsActive())
 local player=assert(Players[3]);assert(not player:IsHuman())

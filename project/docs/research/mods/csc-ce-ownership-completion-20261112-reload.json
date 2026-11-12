@@ -1,0 +1,174 @@
+{
+  "artifact_audit_verified": true,
+  "independently_validated_by": "Astra",
+  "scope": "Retained-plan reload of integrated Quarter-footprint follow-through; supplier acquisition remains open",
+  "source_sha256": "6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03",
+  "ce_sha256": "73eed1070742ba9a8bb9ba722a09b0229aebcc35c7423e81b7e8f075928d1eed",
+  "external_writer": false,
+  "packages_identical_to_fresh": true,
+  "trace_stream_counts": {
+    "purchase": 13,
+    "selector": 12
+  },
+  "main_scope_receipts": [
+    {
+      "turn": 206,
+      "version": 1,
+      "player": 3,
+      "city": 458758,
+      "district": 36,
+      "receipt": {
+        "staged": 1,
+        "considered": 1,
+        "owned": 1,
+        "acknowledged": 1,
+        "rejected": 0,
+        "contract": 4316,
+        "plot": 788,
+        "before": 3,
+        "after": 7
+      }
+    }
+  ],
+  "no_new_target_payment": true,
+  "no_fresh_target_creation": true,
+  "physical_district_timeline": [
+    {
+      "turn": 209,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": false,
+      "pillaged": false
+    },
+    {
+      "turn": 210,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": false,
+      "pillaged": false
+    },
+    {
+      "turn": 211,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": false,
+      "pillaged": false
+    },
+    {
+      "turn": 212,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": false,
+      "pillaged": false
+    },
+    {
+      "turn": 213,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": true,
+      "pillaged": false
+    },
+    {
+      "turn": 214,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": true,
+      "pillaged": false
+    },
+    {
+      "turn": 215,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": true,
+      "pillaged": false
+    },
+    {
+      "turn": 216,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": true,
+      "pillaged": false
+    },
+    {
+      "turn": 216,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "district": 36,
+      "complete": true,
+      "pillaged": false
+    }
+  ],
+  "endpoint_checkpoint": {
+    "verified": true,
+    "turn": 216,
+    "requested_name": "CSC_PURCHASE_FOLLOWTHROUGH",
+    "unique_name": "CSC_PURCHASE_FOLLOWTHROUGH_b6d38566d497",
+    "native_save": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Saves\\Single\\CSC_PURCHASE_FOLLOWTHROUGH_b6d38566d497.Civ6Save",
+    "archive": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\nuremberg-ownership-reload-01\\endpoint.Civ6Save",
+    "sha256": "43f3aaaa6abbb21cdc54d08590e50d510ee084fd2b9c124ec29bbab68e62cc10",
+    "size": 2257089,
+    "save_requests": 1,
+    "save_complete_event": true,
+    "initial_ack": true,
+    "UI_phase": {
+      "turn": 216,
+      "active": false,
+      "local_player": 0,
+      "player0_human": true,
+      "player0_alive": true
+    },
+    "UI_clock_lag": 0,
+    "native_phase_unchanged": true,
+    "before": {
+      "turn": 216,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794450894.544126,
+      "player0_alive": true
+    },
+    "after": {
+      "turn": 216,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794450901.2356582,
+      "player0_alive": true
+    },
+    "native_pid": 15976,
+    "worlds_created": 0
+  },
+  "pins": {
+    "inputs.json": "371e61ed63eec46d67dc25e5da38501b1e4b8522121c2f0ef19ffa5b93a6e5f3",
+    "complete.json": "4281c73591e89e6ac345142b2571449e128ab759c694d14526754a028dc469f5",
+    "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+    "purchase-trace.json": "1b75c92510daa24f0fef1cde7fcfb93da3da5b59d20c6ff01f67dc51f8a3a034",
+    "purchase-live.ndjson": "52bb0f0e913630cbf3667a19af6f41ffaf976cfeec0556e8e084e8bfd7e4faff",
+    "selector-trace.json": "67fc2c6d04e85f0f8ddcf6198b57d62e83a0f76ed03a5b1a41a6046cc5f45129",
+    "selector-live.ndjson": "c1c3290d783223e4b326ab1b4719e25b177e2263a609a2a1bcd1b9a1229f028f",
+    "Lua.log": "65c0336f6aae610c01ee211191f50c77884976c70a99dfa4a8cab206b168d79b",
+    "AI_CityBuild.csv": "210c4f4ef9416e4efbf68a9e9c1b3b687921630446fbf4e378d124621946fb26",
+    "AI_Behavior_Trees.csv": "9e28ee6352f1dac2acd55e95bd3100d6a007ed1e0754aaf80bb127c31412e798",
+    "endpoint-checkpoint.json": "17dd20f72e67686a1298356625bd96e532e7df4222c8baa72bb7e018195bb492",
+    "ownership-api-qualification.txt": "d029ac99e03fcdeea4d552db2a267fe5381e5f1fc1f967b782a0291ef6218624"
+  }
+}

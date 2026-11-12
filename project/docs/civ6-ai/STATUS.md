@@ -22,6 +22,10 @@ qualification remains separate. The full goal is active and incomplete.
   native Quarter site/request from viable 3-adjacency site 2571 to strong
   4-adjacency site 2497, with complete packet/cache audit. This does not prove premium
   necessity or construction. [AI-C158](findings.md#ai-c158).
+- **1.6 Construction follow-through — levels 1–3.** Causal Quarter preference
+  and an integrated ownership-prerequisite repair proceed through request,
+  production, foundation and physical completion. Fresh and retained-plan
+  reload pass; no realised Service is implied. [AI-C162](findings.md#ai-c162).
 - **1.8 Weak-site suppression — levels 1–3.** Matched main-policy deductions
   changed Nicopolis's native site and request, including dynamic frontier
   coverage. This proves suppression of known weak sites, not that every
@@ -34,34 +38,38 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 1.5 Tile acquisition
+## Active problem: 1.5 Supplier acquisition
 
 **Acceptance:** a worthwhile Quarter-footprint purchase reaches native request,
 savings/legality checks, payment, ownership by the intended city and foundation.
 Qualify the separate supplier acquisition route through acquisition and
 improvement. Diagnostic ownership assignment is not a native purchase.
 
-**Paid footprint follow-through is demonstrated diagnostically; integration is
-next.** Nuremberg pays 40 Gold and obtains the intended site, but its native
-purchase contract remains waiting and times out. A guarded native acknowledgement
-on the identical source changes that to request at 203, production selection at
-208, physical Bakers foundation at 209 and native COMPLETED contract at 212.
-The unchanged arm has no Quarter through 216. Astra verifies the controlled
-comparison, exact traces and normal cleanup. No score, funds or build command
-is forced by the acknowledgement.
+**Quarter-footprint acquisition now meets levels 1–3; 1.6 follow-through is
+closed at the representative scope.** The generic CE ownership capability and
+main CSC's dynamic live scopes reproduce the controlled remedy without an
+external writer. Nuremberg pays 40 Gold at 203, owns the intended site and
+founds Bakers at 209; physical IsComplete is true from 213. Loading the old
+paid-but-waiting turn-205 plan also reaches completion, without fresh contract
+creation or another target payment. Astra independently audited both terminal
+runs, exact journals, source/package identities and the causal comparison.
+[AI-C162](findings.md#ai-c162), [integration and sealed evidence](../research/mods/csc-ce-ownership-completion-20261112.md).
 
-The positive-offer control still buys the same land for Tailors, so promotion
-necessity is not demonstrated. That negative remains valid. Astra confirms a
-BUY-versus-NOT-BUY test is not an extra acceptance gate: the agreed footprint
-workflow requires paid acquisition, correct-city ownership and foundation,
-with a relevant controlled action effect.
+**1.5 remains open for a separate supplier purchase through improvement.**
+Acceptance: a live-material-derived offer must be consumed by the relevant
+native buying decision, change a relevant native action against its control,
+reach native payment and intended ownership, then an actual supplier improvement.
+No supplier offer exists in the current main code: the owned-supply reader
+intentionally excludes unowned land. Inspect the routine frontier-resource
+candidate and city quote before adding a preference. Keep native savings,
+legality and Treasury checks.
 
-**No 1.5 closure yet.** Move the repair into a generic CE capability and dynamic
-main-CSC adapter, reproduce it without the external writer and verify native
-tree identity after reload. The separate supplier acquisition/improvement
-route remains unresolved. The ownership-release setup is an explicit common
-fixture, not a native purchase. Physical IsComplete is not independently read.
-[Acquisition evidence and limits](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
+The positive-offer control still buys the same footprint for Tailors, so
+promotion necessity is not demonstrated. That negative remains valid. A
+BUY-versus-NOT-BUY test is not an extra footprint acceptance gate; the causal
+paid-but-stuck→construction repair supplies that action effect. No Services or
+overlapping-buyer reliability are claimed. **Seven of ten sub-problems close at
+levels 1–3; open: 1.5, 1.7 and 2.1.**
 
 ## Evidence levels by sub-problem
 
@@ -71,8 +79,8 @@ fixture, not a native purchase. Physical IsComplete is not independently read.
 | 1.2 Neighbors | Verified | Future-host path changes type/request | **Complete at stated scope** |
 | 1.3 Rivers | Verified | Quarter site/request changed | **Complete at stated scope** |
 | 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
-| 1.5 Buying | Request/admission/debit/ownership verified | Diagnostic acknowledgement changes paid-site follow-through | CE/main repair and supplier route pending |
-| 1.6 Follow-through | Verified | Diagnostic construction completed | Causal main-policy reproduction pending |
+| 1.5 Buying | Footprint request/debit/ownership verified | Paid-site follow-through changes | **Footprint complete**; supplier purchase/improvement open |
+| 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
 | 1.7 Defer/reconsider | Partial; weak-site mechanism exists | Pending | Pending |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
 | 2.1 Customer sites | Exact Harbor writes verified | Isolated offer ablation pending | Causal reproduction pending |

@@ -10,6 +10,7 @@ local names={'Begin','Allow','Entry','Commit','Disable','Status'}
 local MAX_BUILDER_BID_Q8=64*256
 local MAX_NOMINATION_BID_Q8=512*256
 local MAX_REPAIR_CANDIDATES=256
+local MAX_OWNERSHIP_SCOPES=4096
 local function integer(x,low,high)
     local kind=type(x)
     return (kind=='number' or kind=='integer') and x==math.floor(x) and x>=low and x<=high
@@ -77,6 +78,17 @@ function B.ExclusionStatus()
         return CE_AISupplierExclusionStatus()
     end
 end
+function B.OwnershipStatus()
+    if type(CE_AIDistrictPurchaseCompletionStage)=='function'
+        and type(CE_AIDistrictPurchaseCompletionStatus)=='function'
+        and type(CE_AIDistrictPurchaseCompletionReceipt)=='function' then
+        return CE_AIDistrictPurchaseCompletionStatus()
+    end
+end
+function B.OwnershipLimit(status)
+    if type(status)~='string' or not status:match('"ready":1') or not status:match('"faults":0') then return 0 end
+    return math.min(tonumber(status:match('"capacity":(%d+)')) or 0,MAX_OWNERSHIP_SCOPES)
+end
 
 -- District scores address a player, city, district index and plot index.
 -- Building bids address a player, city and building index. The Builder
@@ -84,7 +96,7 @@ end
 -- A supplier exclusion is a separate selector input keyed to the whole plot
 -- in its owning city. A repair identifies an existing district footprint.
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
-    builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions)
+    builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions,ownershipScopes,ownershipLimit)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -143,6 +155,22 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         repairCities[key]=true
     end
     if exclusions and #exclusions>256 then return reject('Supplier exclusion batch too large') end
+    -- These are ownership-prerequisite scopes, not bids or purchase orders.
+    -- The native executing tree supplies the actual contract/plot. Missing
+    -- optional capability leaves ordinary district guidance available.
+    if ownershipScopes and type(ownershipScopes)~='table' then return reject('Invalid ownership scopes') end
+    if ownershipScopes and (#ownershipScopes>(ownershipLimit or 0) or #ownershipScopes>MAX_OWNERSHIP_SCOPES
+        or (#ownershipScopes>0 and type(CE_AIDistrictPurchaseCompletionStage)~='function')) then
+        return reject('Invalid ownership scope capacity')
+    end
+    local ownershipKeys={}
+    for _,e in ipairs(ownershipScopes or {}) do
+        if not(integer(e.player,0,63) and allowed[e.player] and integer(e.city,0,2147483647)
+            and integer(e.district,1,districtCount-1)) then return reject('Invalid ownership scope') end
+        local key=e.player..':'..e.city..':'..e.district
+        if ownershipKeys[key] then return reject('Duplicate ownership scope') end
+        ownershipKeys[key]=true
+    end
     for _,e in ipairs(exclusions or {}) do
         if not (integer(e.player,0,63) and allowed[e.player] and integer(e.city,0,2147483647)
             and integer(e.plot,0,width*height-1)) then return reject('Invalid supplier exclusion') end
@@ -182,6 +210,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         end
         for _,e in ipairs(exclusions or {}) do
             assert(CE_AISupplierExclusionStage(e.player,e.city,e.plot)==1,'Native supplier exclusion rejected')
+        end
+        for _,e in ipairs(ownershipScopes or {}) do
+            assert(CE_AIDistrictPurchaseCompletionStage(e.player,e.city,e.district)==1,'Native ownership scope rejected')
         end
         assert(CE_AIDistrictScoresCommit()==1,'Native commit rejected')
     end)

@@ -2,6 +2,8 @@
 -- plan site and investment bids, then publish one versioned packet to CE.
 -- Each native decision consumes the relevant part of that packet when it runs.
 -- Civ still owns candidate legality, selection, queueing and execution.
+-- Optional ownership scopes let CE acknowledge an already-fulfilled purchase
+-- prerequisite for a native Quarter plan. They never buy land or force a bid.
 include('CSC_AdjacencyCore')
 include('CSC_AI_AdjacencyScan')
 include('CSC_AI_QuarterPlacement')
@@ -17,6 +19,8 @@ local buildingReceiptLimit = 96
 local lastTurn
 local districtCount
 local previousOffers
+local previousOwnershipScopes = {}
+local reportedOwnershipUnavailable = false
 
 local function readReceipt(getter, ...)
     -- Observability is optional on older CE builds. A readback fault must
@@ -141,9 +145,36 @@ local function refresh(turn)
     local exclusionStatus = bridge.ExclusionStatus()
     local exclusionLimit = exclusionStatus and exclusionStatus:match('"ready":1')
         and math.min(256, tonumber(exclusionStatus:match('"capacity":(%d+)')) or 0) or 0
+    local ownershipStatus = bridge.OwnershipStatus()
+    local ownershipLimit = bridge.OwnershipLimit(ownershipStatus)
+    local ownershipScopes = {}
+    -- Read exact scopes only after a reported acknowledgement. This avoids
+    -- scanning every native scope merely to report zero each turn. The last
+    -- publication is retained locally until its receipts have been consumed.
+    if ownershipStatus and (tonumber(ownershipStatus:match('"acknowledged":(%d+)')) or 0)>0 then
+        for _,scope in ipairs(previousOwnershipScopes) do
+            local receipt=readReceipt(CE_AIDistrictPurchaseCompletionReceipt,version,scope.player,scope.city,scope.district)
+            if (tonumber(receipt:match('"acknowledged":(%d+)')) or 0)>0 then
+                print(string.format('CSC_AI_OWNERSHIP_RECEIPT turn=%d version=%d player=%d city=%d district=%d %s',
+                    turn,version,scope.player,scope.city,scope.district,receipt))
+            end
+        end
+    end
     local allowances, stageTwo = 0, {}
     for _, id in ipairs(players) do
         local player = Players[id]
+        if ownershipLimit>0 then
+            -- O(cities * supported Quarters), no tile scan and no cached game
+            -- pointers. The native executing tree supplies the chosen site.
+            -- A founded Quarter no longer needs a purchase prerequisite scope.
+            for _,city in player:GetCities():Members() do
+                for _,profile in ipairs(placement.StageTwoProfiles()) do
+                    if not city:GetDistricts():HasDistrict(profile.district.Index) then
+                        ownershipScopes[#ownershipScopes+1]={player=id,city=city:GetID(),district=profile.district.Index}
+                    end
+                end
+            end
+        end
         -- Take one chain snapshot per player. Supply protection marks plots
         -- before placement plans run, so a customer bid cannot promote a site
         -- already flagged by this player's material deductions.
@@ -216,8 +247,16 @@ local function refresh(turn)
     local accepted, message = bridge.Publish(version + 1, width, height, districtCount, players, entries,
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit,
         #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
-        exclusions)
+        exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit)
     assert(accepted, message)
+    previousOwnershipScopes = #ownershipScopes<=ownershipLimit and ownershipScopes or {}
+    if ownershipStatus then
+        print(string.format('CSC_AI_OWNERSHIP_COMPLETION turn=%d scopes=%d omitted=%d previous=%s',turn,
+            #previousOwnershipScopes,#ownershipScopes-#previousOwnershipScopes,ownershipStatus))
+    elseif not reportedOwnershipUnavailable then
+        print('CSC_AI_OWNERSHIP_COMPLETION capability unavailable; ordinary score guidance remains available')
+        reportedOwnershipUnavailable=true
+    end
     -- Chain totals describe the snapshot used to plan. The active column is
     -- a source-property read, while the native receipts describe score delivery.
     for key, totals in pairs(stageTwo) do

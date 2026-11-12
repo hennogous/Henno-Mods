@@ -30,7 +30,7 @@ from driver import (
     flags, launch, load, make_probe_controller, manifest, native_inventory, parse, read,
     restore_preferences, sha, write_json, lua,
 )
-from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint
+from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint, owned_checkpoint
 from full_game_controller.checkpoint import save_inactive_boundary
 
 CE_SHA = 'f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07'
@@ -55,6 +55,8 @@ CASES = {
         player=3,city=458758,name='LOC_CITY_NAME_NUREMBERG',profile='BAKERS',district=36,
         turn=202,archive='source.Civ6Save',plots=[788,861,713],purchasePlots=[788]),
 }
+CASES['nuremberg-reload']=dict(CASES['nuremberg'],turn=205,archive='endpoint.Civ6Save',
+    metadata='endpoint-checkpoint.json',sha256='6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03')
 
 # This untuned save intentionally predates the policy's persisted seat metadata.
 # A diagnostic may seed it from these acknowledged turn-1 records, never from
@@ -137,6 +139,16 @@ function CSC_PURCHASE_Snapshot()
     end
     local city=assert(CityManager.GetCity(scope.player,scope.city))
     print('CSC_PURCHASE_CITY',turn,city:GetName(),city:GetPopulation(),city:GetBuildQueue():CurrentlyBuilding())
+    -- Physical completion is independent of the request's COMPLETED log.
+    local districts=city:GetDistricts()
+    for index=0,districts:GetNumDistricts()-1 do
+        local district=districts:GetDistrictByIndex(index)
+        if district and district:GetType()==scope.district then
+            local plot=assert(Map.GetPlot(district:GetX(),district:GetY()))
+            print('CSC_PURCHASE_DISTRICT_STATE',turn,scope.player,scope.city,plot:GetIndex(),
+                district:GetType(),district:IsComplete(),district:IsPillaged())
+        end
+    end
     local candidate=Map.GetPlotByIndex(scope.purchasePlots[1])
     for _,plot in ipairs(Map.GetAdjacentPlots(candidate:GetX(),candidate:GetY())) do
         local resource=GameInfo.Resources[plot:GetResourceType()]
@@ -328,16 +340,23 @@ def run(args):
     assert source_turn < args.through <= 224, 'This fixture uses a bounded continuation of its verified source'
     assert load(reference / 'complete.json')['verified']
     assert load(reference / 'session-closed.json')['verified']
-    meta = load(checkpoint / 'checkpoint.json')
+    meta = load(checkpoint / case.get('metadata','checkpoint.json'))
     save = Path(meta['native_save']).resolve(strict=True)
     assert meta['verified'] and meta['turn'] == source_turn and meta['sha256'] == case['sha256']
     assert save.parent == (home / 'Saves/Single').resolve()
     assert sha(save) == sha(checkpoint / case.get('archive','endpoint.Civ6Save')) == case['sha256']
     if case_name=='nuremberg':
-        qualified=nuremberg_checkpoint(checkpoint,home,SAVE_SHA,args.policy_root)
+        # Source provenance and treatment code are distinct. A new integrated
+        # adapter intentionally changes main Lua; qualify the save against its
+        # recorded historical main files, then pin the current staged treatment.
+        source_policy=getattr(args,'source_policy_root',None) or args.policy_root
+        qualified=nuremberg_checkpoint(checkpoint,home,SAVE_SHA,source_policy)
         assert qualified['sha256']==case['sha256']
         released=load(checkpoint/'release-preparation.json')
         assert released['verified'] and released['released_plot']==788 and released['native_purchase'] is False
+    elif case_name=='nuremberg-reload':
+        source_policy=args.source_policy_root
+        assert owned_checkpoint(checkpoint,home,source_policy)['sha256']==case['sha256']
     packages = {reference / name: home / 'Mods' / name for name in PACKAGES}
     original_pins = {source: manifest(source) for source in packages}
     pins = {source: dict(value) for source, value in original_pins.items()}
@@ -347,6 +366,12 @@ def run(args):
     test_ids = {ce_id, csc_id}
     ce_relative = Path('Binaries/Win64') / DLL
     assert sha(ce / ce_relative) == CE_SHA
+    ownership_dll=getattr(args,'ownership_ce_dll',None)
+    ownership_bytes=ownership_dll.read_bytes() if ownership_dll else None
+    effective_ce_sha=hashlib.sha256(ownership_bytes).hexdigest() if ownership_bytes else CE_SHA
+    if ownership_bytes:
+        assert effective_ce_sha==args.ownership_ce_sha,'Integrated CE build differs from the explicit qualified pin'
+        pins[ce][str(ce_relative)]=dict(sha256=effective_ce_sha,size=len(ownership_bytes))
     binary = Path(load(reference / 'launch-bootstrap.json')['binary'])
     assert sha(binary) == HOTFIX_EXE_SHA
     recovery = args.recover_from.resolve(strict=True) if args.recover_from else None
@@ -410,7 +435,9 @@ def run(args):
             plot=case['purchasePlots'][0]) if getattr(args,'without_frontier_offers',False) else None,
         through=args.through, save_sha256=case['sha256'],
         source_turn=source_turn,dependencies=str(args.dependencies.resolve()),frida_version=frida.__version__,
-        ce_sha256=CE_SHA, packages={source.name: value for source, value in pins.items()}))
+        source_policy_root=str(source_policy.resolve()) if case_name.startswith('nuremberg') else None,
+        ownership_ce_dll=str(ownership_dll.resolve()) if ownership_dll else None,
+        ce_sha256=effective_ce_sha, packages={source.name: value for source, value in pins.items()}))
     shutil.copyfile(Path(__file__), out / Path(__file__).name)
     (out / 'plot-watcher.lua').write_text(WATCHER.replace('__ENDPOINT__', str(args.through)).replace('__SCOPE__',lua(case)), encoding='utf-8')
     if recovery:
@@ -455,6 +482,8 @@ def run(args):
         for relative, data in replacements.items():
             (packages[csc] / relative).write_bytes(data)
             (out / relative.name).write_bytes(data)
+        if ownership_bytes:
+            (packages[ce]/ce_relative).write_bytes(ownership_bytes)
         verify_packages()
         session.start(lambda: launch(SimpleNamespace(binary=binary), out))
         session.wait_context('MainMenu')
@@ -485,6 +514,17 @@ Modding.EnableMod(chosen.Handle,true)
             verify_modules(session, (packages[ce] / ce_relative).resolve(), out, HOTFIX_SHA)
             if args.mode == 'integrated':
                 qualify_integrated_policy(controller,out,case)
+                if ownership_bytes:
+                    raw=controller.cmd('''local s=assert(CE_AIDistrictPurchaseCompletionStatus())
+print('CSC_OWNERSHIP_API_STATUS',s)
+assert(s:match('"ready":1') and s:match('"faults":0'),'Ownership capability unavailable')
+local status=assert(CE_AIDistrictScoresStatus())
+local version=assert(tonumber(status:match('"version":(%d+)')))
+local receipt=CE_AIDistrictPurchaseCompletionReceipt(version,'''+str(case['player'])+','+str(case['city'])+','+str(case['district'])+''')
+print('CSC_OWNERSHIP_API_RECEIPT',receipt)
+assert(receipt:match('"staged":1'),'Main CSC did not publish the native ownership scope')''',
+                        'CSC_AI_BakersGameplay','qualify-main-ownership-api')
+                    (out/'ownership-api-qualification.txt').write_text(raw,encoding='utf-8')
             controller.cmd(read(out / 'plot-watcher.lua'), 'CSC_AI_BakersGameplay', 'watch-source-plots')
             raw = controller.cmd('local scope='+lua(case)+"""
 local city=assert(CityManager.GetCity(scope.player,scope.city))
@@ -498,7 +538,14 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
 """, 'CSC_AI_BakersGameplay', 'scope-radius-three-plots')
             plots.extend(parse(raw, 'CSC_REPLAY_PLOTS'))
             assert len(plots) == len(set(plots)) and set(case['plots']) <= set(plots) and len(plots) <= 36
-            if case_name != 'nicopolis':
+            if case_name=='nuremberg-reload':
+                raw=controller.cmd('''local plot=assert(Map.GetPlotByIndex(788))
+local city=assert(Cities.GetPlotPurchaseCity(plot))
+assert(plot:GetOwner()==3 and city:GetID()==458758 and plot:GetDistrictType()==-1)
+print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),city:GetID(),plot:GetDistrictType())''',
+                    'CSC_AI_BakersGameplay','qualify-owned-reload-source')
+                (out/'owned-reload-qualification.txt').write_text(raw,encoding='utf-8')
+            elif case_name != 'nicopolis':
                 qualify_purchase(controller,out,case,allow_tied=bool(getattr(args,'prototype_buyer',None)))
             return True
 
@@ -633,6 +680,9 @@ if __name__ == '__main__':
     parser.add_argument('--recover-from', type=Path)
     parser.add_argument('--original-run', type=Path)
     parser.add_argument('--policy-root', type=Path)
+    parser.add_argument('--source-policy-root',type=Path,help='Historical main files matching the source ledger; current policy is staged separately')
+    parser.add_argument('--ownership-ce-dll',type=Path,help='Explicit supported-build CE DLL for main ownership API validation')
+    parser.add_argument('--ownership-ce-sha',help='Exact SHA256 pin for that integrated CE build')
     parser.add_argument('--through', type=int, default=208)
     parser.add_argument('--observe-purchases', action='store_true')
     parser.add_argument('--repair-owned-purchase',action='store_true',
@@ -648,6 +698,12 @@ if __name__ == '__main__':
     parser.add_argument('--seed-source-seats',action='store_true',
         help='Diagnostic Szeged fixture only: seed absent seat properties from pinned turn-1 records')
     options = parser.parse_args()
+    if options.ownership_ce_dll and (not options.case.startswith('nuremberg') or options.mode!='integrated'
+            or not options.ownership_ce_sha or options.repair_owned_purchase or options.prototype_buyer
+            or options.without_frontier_offers or not options.source_policy_root):
+        parser.error('integrated ownership validation requires full main Nuremberg, historical source policy and explicit CE pin; no external treatment')
+    if options.case=='nuremberg-reload'and not options.ownership_ce_dll:
+        parser.error('retained-plan reload requires the explicitly qualified integrated ownership CE build')
     if options.repair_owned_purchase and (options.case!='nuremberg' or options.mode!='integrated'
             or not options.observe_purchase_lifecycle or not options.observe_purchase_execution
             or not options.observe_purchases or not options.observe_purchase_lineage

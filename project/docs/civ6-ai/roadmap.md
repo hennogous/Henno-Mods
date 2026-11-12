@@ -14,27 +14,27 @@ Work sequentially from the earliest unclosed item, state its acceptance test
 before investigation, and preserve Astra-validated scoped closures. Broad
 qualification and the older multi-seed Stage 2 milestone below are follow-up
 work, not additional conditions for closing this goal's placement capabilities.
-Current item: **1.5 Tile acquisition**. **1.1 material-aware choice**, **1.2 future customer access**, **1.3 river-aware site ranking**, **1.4 combined strong-site guidance**, **1.8 suppression** and **2.2 finite material
-protection** already meet levels 1â€“3 at the recorded representative scopes.
+Current item: **1.5 Supplier acquisition**. **1.1, 1.2, 1.3, 1.4, 1.6, 1.8
+and 2.2** meet levels 1–3 at the recorded representative scopes: seven of ten.
 
-For 1.5, the controlled Nuremberg release now reaches a main-policy Quarter
-selection, accepted purchase contract, sufficient savings and command admission.
-Correct-city ownership is observed. Its acquisition uses XP1's purchase handler,
-which explains the original base-only observer's missing debit callbacks.
-The expanded observer now verifies native payment and correct-city ownership.
-The declared two-profile control still buys the same tile, choosing Tailors
-instead of Bakers: no acquisition causality claim. The full arm's purchase
-contract stays in waiting state 3 after payment, becomes ineligible to Economic,
-and times out without foundation. A diagnostic tracked acknowledgement now
-releases the ordinary request and causes a physical foundation at 209; the
-unchanged arm has none through 216. Next integrate this into CE and main CSC.
-The earlier proposed BUY-versus-NOT-BUY comparison was a stronger research target,
-not an additional user acceptance gate. Astra confirms that a causal integrated
-repair of the paid footprint workflow can satisfy that scope; the negative
-promotion-necessity result remains recorded.
-The separate supplier acquisition/improvement route remains required. No 1.5
-closure follows from ownership alone.
-[Evidence](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
+The Quarter-footprint portion of 1.5 is integrated and Astra-validated. The
+native paid purchase obtains the intended site; generic CE plus dynamic main
+CSC acknowledges the fulfilled ownership prerequisite and ordinary construction
+reaches physical completion at 213. The old paid-but-waiting plan reproduces
+that result after reload without a new target payment or creation-registry
+binding. This also closes representative 1.6. The unchanged baseline buys but
+leaves the site empty through 216. Promotion necessity for buying remains a
+valid negative; an additional BUY-versus-NOT-BUY gate was not agreed.
+[AI-C162 and sealed terminal evidence](../research/mods/csc-ce-ownership-completion-20261112.md).
+
+**Next acceptance: separate supplier acquisition and improvement under 1.5.**
+Derive the material need from a live chain, trace the routine frontier-resource
+candidate and correct-city quote, then test a bounded reusable preference.
+Require consumption, a controlled relevant action change, actual native debit
+and intended ownership, followed by a supplier improvement. The current owned-
+supply reader deliberately excludes unowned land; footprint offers do not
+supply this capability. Preserve savings, legality and Treasury checks. Broader
+qualification stays separate. 1.7 and 2.1 remain open after 1.5.
 
 ### Current capability â€” Quarter placement (1.1â€“1.8) and related districts (2.1â€“2.2)
 

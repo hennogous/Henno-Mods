@@ -56,6 +56,14 @@ to duplicate an already proved consumer or completion path.
   preserving viable guidance. Native choice/request changes weaker 3-adjacency
   2571→strong 4-adjacency site 2497. Complete packet/cache audit and Astra review pass.
   Premium/comparator necessity and construction are not claimed.
+- **1.6, levels 1–3: integrated construction follow-through.** AI-C162 combines
+  the causal main Quarter preference (AI-C160), isolated ownership remedy
+  (AI-C161), and fresh/reload reproduction through generic CE and dynamic main
+  CSC. Native request/production/foundation lead to physical IsComplete at 213.
+  No Service or universal acquisition reliability is claimed.
+- **1.5 footprint portion, levels 1–3.** The same case verifies native 40-Gold
+  payment, intended-city ownership and foundation, plus recovery after reload.
+  The separate supplier acquisition and improvement route remains open.
 - **1.8, levels 1–3: known weak-site suppression.** AI-C138's isolated
   production deduction changes the owned-site winner/request; AI-C139's
   dynamic frontier scanner reproduces suppression without fixed-plot policy.
@@ -69,8 +77,8 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.5.** Verify a worthwhile footprint's native payment,
-intended-city ownership and foundation, and the separate supplier acquisition/
-improvement route. The first +24 Boston pair and broad customer scouts remain
-valid negative results. Acquisition and construction completion do not follow
-from the accepted placement-choice cases.
+**Active item: 1.5 supplier acquisition and improvement.** The Quarter-footprint
+portion and representative 1.6 are Astra-validated complete. Do not reopen them
+merely for broader qualification. Verify the separate native supplier buying
+route through an actual improvement. Earlier negative bid and acquisition-
+necessity results remain valid. [AI-C162](findings.md#ai-c162).

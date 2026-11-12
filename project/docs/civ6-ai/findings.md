@@ -2834,3 +2834,33 @@ Economic purchase command is not mandatory. Supplier acquisition still needs
 its own outcome evidence.
 
 - [Acknowledgement comparison and acceptance clarification](../research/mods/csc-ai-nuremberg-acquisition-20261112.md#acknowledgement-result-native-request-foundation-and-completed-contract)
+
+## AI-C162
+
+**Generic CE ownership acknowledgement and dynamic main CSC complete the paid Quarter plan, including reload**
+
+Status: accepted integrated effect; independently audited by Astra. Closes
+representative 1.6 levels 1–3 and the Quarter-footprint portion of 1.5.
+
+The fresh 202–216 replay uses the same released source and identical first
+native selection matrix as the unchanged paid-but-stuck baseline. Only the CE
+DLL and two main CSC modules differ. One measured 40-Gold payment at 203 acquires
+788 for player 3/city 458758. Main's live player/city/Quarter scopes authorize
+native acknowledgement 4316, state 3→7. Ordinary request and production produce
+foundation at 209 and physical IsComplete=true from 213. No external writer,
+funding, reservation or build command supplies the effect.
+
+Reloading the verified inactive paid-but-waiting turn-205 plan, using the same
+packages, acknowledges retained 4316 without a fresh creation-registry entry
+or new target payment. Ordinary request 4408 reaches the same physical timeline.
+Fresh 38/17 purchase/selector records and reload 13/12 exactly match their
+journals; faults/pending pairs are zero and both sessions close normally.
+Together with causal Quarter preference AI-C160 and isolated acknowledgement
+AI-C161, this establishes integrated follow-through through completion.
+
+**Limits:** Supplier acquisition/improvement remains open under 1.5. No Service,
+promotion-caused buying or overlapping-city buyer reliability is established.
+The common ownership-release fixture is explicit, not itself a native purchase.
+Broader seeds/configurations are separate qualification.
+
+- [Implementation, binary identity, tests and sealed fresh/reload evidence](../research/mods/csc-ce-ownership-completion-20261112.md)
