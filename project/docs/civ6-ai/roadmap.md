@@ -18,6 +18,14 @@ Current item: **1.7 Defer and reconsider**. **1.1, 1.2, 1.3, 1.4, 1.5,
 1.6, 1.8 and 2.2** meet levels 1–3 at the recorded representative scopes:
 eight of ten. **2.1** remains after 1.7.
 
+Latest1.7 continuation: controlled farmed-Base opportunity withdraws declines
+at the ordinary205 publication. Fresh220/235/252 comparisons choose other
+districts; no later Quarter request through254. Exact receipts locate the
+initial loss in native input valuation, despite an improved CSC bid. Preserve
+deferral and withdrawal proofs; choose an evidenced competitive decision
+window before another run. Do not inflate bids or extend this episode blindly.
+[AI-C166](findings.md#ai-c166).
+
 **1.5 closes with Astra's independent audit.** Its causal integrated footprint
 workflow reaches paid intended-city ownership and completed construction,
 including reload recovery. The separate supplier route delivers the exact

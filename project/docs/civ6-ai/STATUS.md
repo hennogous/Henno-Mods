@@ -61,6 +61,15 @@ eligible; other district columns and retained plans stay native. Next: a
 credible new Base opportunity, scope withdrawal and a fresh Quarter
 choice/request. [Evidence](../research/mods/csc-ai-quarter-decline-20261112.md).
 
+The200→254 continuation now proves **automatic ordinary-publication withdrawal**
+after a controlled transfer of existing farmed Base471. It produces fresh
+Holy Site, Commercial Hub and Water Entertainment Complex requests, rather
+than Bakers. The main Quarter bid improves; native input valuation falls.
+All packages and cleanup pass audit. No extra continuation or bid increase is
+justified by this episode. Next: identify an already evidenced competitive
+Quarter decision window for the remaining fresh request.
+[AI-C166](findings.md#ai-c166), [continuation](../research/mods/csc-ai-quarter-reconsideration-20261112.md).
+
 **1.5 is now closed at levels 1–3, independently approved by Astra.** Its
 integrated footprint workflow (AI-C162) reaches paid ownership and completed
 construction. The separate supplier route (AI-C163) delivers +6,656 Q8 to the
@@ -88,7 +97,7 @@ No Service or overlapping-buyer reliability is claimed.
 | 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
 | 1.5 Buying | Footprint and supplier delivery verified | Causal footprint follow-through; supplier paid and improved | **Complete at stated scope** |
 | 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
-| 1.7 Defer/reconsider | Typed decline verified | Deferral/request changed; reconsideration pending | Dynamic deferral integrated; whole item open |
+| 1.7 Defer/reconsider | Typed decline and ordinary withdrawal verified | Deferral/request changed; later Quarter request pending | Dynamic deferral/withdrawal integrated; whole item open |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
 | 2.1 Customer sites | Exact Harbor writes verified | Isolated offer ablation pending | Causal reproduction pending |
 | 2.2 Protect materials | Verified | Verified, supplier retained | **Complete finite-penalty scope** |

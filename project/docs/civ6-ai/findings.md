@@ -2958,3 +2958,38 @@ Quarter choice/request in continued treatment. Do not count1.7 closed yet.
 
 - [Implementation, native correction, tests and limits](../research/mods/csc-ai-quarter-decline-20261112.md)
 - [Sealed matched audit](../research/mods/csc-ai-quarter-decline-20261112-audit.json)
+
+## AI-C166
+
+**A new working Base automatically retires declines; later native comparisons still prefer other districts**
+
+Status: independently audited by Astra; accepted automatic-withdrawal evidence
+and representative negative for the remaining1.7 Quarter request. Whole1.7 is open.
+
+The same200 source reproduces the full203 Hippodrome choice, then a declared
+204 transfer of existing farmed Flax471 creates working Nicopolis Base supply
+for397/472. Only owner and purchasing city change. Resource, Farm, terrain,
+queue, population and funds remain unchanged; CE status/version remains
+unchanged during the edit. Main CSC withdraws both declines at the ordinary
+205/version6 publication, confirmed by exact receipts at206.
+
+Fresh220/235/252 comparisons choose Holy Site, Commercial Hub and Water
+Entertainment Complex. Bakers472's own bid improves from-65,536 to+6,144 Q8.
+Its203→220 final change decomposes exactly into-203,143 native input,
++71,680 changed CSC bid and+323 downstream. The initial failed reconsideration
+does not come from stale declines or a downstream valuation cliff. Neutral397
+has selector matrix scores but no matched CE Net/cache component split.
+
+The controller completes54 turns through254 and closes normally. Astra
+independently verifies642 package hashes,62 selector receipts against their
+stream,56 matching prefix boundaries, zero diagnostic/native faults, actual
+requests and absence of a Bakers request. The working Farm persists at254;
+both supported footprints remain legal. No further automatic continuation
+or policy-band increase is justified by this episode.
+
+Limits: controlled territorial opportunity, not native buying; no Quarter
+request, construction, Service or complete1.7 claim. A competitive early
+Washington23 choice is an existing lead, not new withdrawal evidence yet.
+
+- [Continuation, exact score ledger and next step](../research/mods/csc-ai-quarter-reconsideration-20261112.md)
+- [Sealed terminal audit](../research/mods/csc-ai-quarter-reconsideration-20261112-audit.json)

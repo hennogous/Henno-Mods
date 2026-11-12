@@ -1,3 +1,52 @@
+# NEXT1.7 competitive early window; worker45043 TERMINAL
+
+Finisheddeferral-nicopolis-opportunity-01 200→254exit0, normalclosedverified,
+nativeinventory[]. Controlled471ownershiponly204; mainworkingBase397/472;
+ordinary205/version6 withdrawal exactreceipts206. NO Bakersrequest. Fresh203
+Hippo31/472306049;220Holy4/327379115;235Commercial6/472280910;252WaterEntertainment24/
+327706175. Bakers472cached347924,216784,217353,307724.203→220 exactledger:
+nativeNetbase413460→210317 (−203143), main−65536→+6144 (+71680), later+323.
+Thus lostcompetitionnotstaleDecline/notdownstreamcliff. Through254Farmintact/
+ownerNicopolis,397472legalempty,pop6,currentModernArmor,newtree95092769. Noimminent
+competitivewindow→NOadditionalNicopoliscontinuation/resources/customer/bandinflation.
+Audittool audit_deferral_opportunity.py + sealedcsc-ai-quarter-reconsideration-
+20261112-audit.json passes642hashes/main5reconstruction/completeprefixes/withdrawal/
+exactmatrixcomponentjoins. Neutral397omitted→NOCEcomponentrecords; keepselectoronly,
+flagcomponent_split_availableFalse, doNOTforcecachejointhere. Astra independently
+reproducesaudit+62receipts/56prefixes/noerrors; APPROVESwithdrawal+NEGATIVEonlyAI-C166.
+Whole1.7OPEN, eightof10closed,2.1after. Report/STATUS/roadmap/acceptance/findings
+updated; currentuncommittedaudit/docs/memoryreadyforscopedcommit. Fixtureebb379a7pushed.
+
+NEXTconcreteleadexistingWashingtonP3/c65536/Bakers870, source22→fresh23 (AI-C153).
+Nativeinput40267+ordinary6144=46411 beatsHoly42385, request241. Sole documented
+BaseCattle796. FIRSTOFFLINEqualifyexact22sourceinventory/alladjacentBase/visibility/
+ownership. Minimalabsent→restoredexistingBase couldtestordinarywithdrawalbefore23
+knowncompetitivechoice. ThiswouldjoinremaininglegwithC165causaldeferral, NOTprove
+oneuninterruptedcitycycle; don'tsilentlyreinterpretacceptance. AskAstrareviewdesign.
+DoNOTlaunchanotherlongrun/speculativenewprobe. No1.7closurewithoutfreshQuarterrequest
+andAstrareview. No currentgame; main/source/driverunpin. NamedHennoT3/T204/T216protected.
+
+# PREVIOUS LIVE1.7 opportunity continuation — worker45043 (Python6480)
+
+Usage renewed12Nov; sharedownerworker45043 LIVE, gamePID19264. Do NOT use
+another console or edit pinned main5/driver/helper/observer/hostreader files.
+Artifact .../csc-ai-problems-1-2-20261110/deferral-nicopolis-opportunity-01.
+CSC fixture/tests/docs committed+pushed ebb379a7;29focusedPASS+nodecheck.
+WildWdevelop unchanged2986a746. Same supportedCE03 a849eff8; no PR.
+At204 repeats original full203Hippodrome31/472306049. Sole controlled ownership
+transfer farmedFlax471 (54/Farm1) owner11/C65536→P1/Nicopolis524295. Resource,
+Farm/terrain/river/queue/pop/funds unchanged. Free legal397, UIallowed2/zoned0,
+pop5/Settler. MainReadSuppliers now workingBase471 for397+472. Ordinary
+publications205+ retire both declines (exact staged0 receipts verified through212).
+CONTINUING naturally214/224/etc through254max, stop atfirst qualifying fresh
+Quarterchoice/request; NO planreset/cancel/production/grants. No acquisition claim.
+Success parser binds actualfresh selection atpreviouslydeclined471-supportedsite,
+unique request, activepublication/nativeBest completecheckedprefix, maintracked
+material, andexactpriorversionstaged0. Astra read-onlyreview APPROVED boundeddesign
+after actual_endpoint savefix+prefixfailurefix. Asked preaudit files; fullclosure
+stillrequires terminalevidence+Astravalidation. Deferralhalf AI-C165 closedlevels1–3;
+whole1.7open, eightof10closed,2.1after. Usernamedsavesprotected. No desktopautomation.
+
 # NEXT1.7 reconsideration; deferral half PROVED, allworkersTERMINAL
 
 PreviousgoalturnPROGRESS: implementedtypedDeclineCE+main3Lua, controllednative

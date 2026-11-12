@@ -94,3 +94,11 @@ to Hippodrome with identical restored numerical matrices. Astra independently
 audits both arms. Whole1.7 stays open until a credible new Base opportunity
 withdraws scopes and produces a fresh Quarter choice/request. Retained plans
 must proceed through ordinary AI handling; completion is not an added gate.
+
+**Further partial evidence:** AI-C166 verifies automatic withdrawal at the
+ordinary205 publication after existing farmed Base471 changes ownership.
+Fresh220/235/252 comparisons select other districts, so no fresh Quarter
+request is demonstrated through254. Astra independently audits the negative
+and preserved withdrawal scope. Do not retest withdrawal or increase bids to
+force this episode; qualify an evidenced competitive decision window for the
+remaining choice/request leg.
