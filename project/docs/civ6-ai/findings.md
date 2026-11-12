@@ -2743,3 +2743,55 @@ no 1.6 construction claim. The full native plan is preserved at inactive turn 27
 later follow-through. No-promotion Holy Site result AI-C157 remains negative.
 
 - [Matched evidence and independent acceptance](../research/mods/csc-ai-combined-adjacency-choice-20261112.md#matched-result-14-closed-at-levels-13)
+
+## AI-C159
+
+**Main CSC guidance reaches a paid footprint acquisition, but its purchase node times out**
+
+Status: accepted partial observation; independently verified by Astra.
+No 1.5 closure or acquisition-causality claim.
+
+The qualified inactive Nuremberg source explicitly releases empty 788 once as
+common diagnostic preparation. Ordinary integrated guidance then selects Bakers
+there at 286,075 Q8 and creates purchase contract 4316. The expansion handler
+measures a 40-Gold debit at 203: Treasury 196,668→186,428 Q8, with exact paired
+thread/stack/city/target/receiver and matching signed delta. Physical snapshots
+show player 3 / intended city 458758 ownership from 204 through 216.
+
+The purchase node nevertheless waits through 10/10 and fails at 213. Campus is
+selected at 214; the Quarter has no foundation through 216. Both terminal native
+traces exactly match their streams (36 purchase / 18 selector), with no faults
+or unresolved callbacks. Normal exit/restoration and the inactive endpoint save
+are verified. Base-only callbacks had missed payment because XP1's distinct
+purchase implementation ran; see reusable engine finding AI-N117.
+
+**Limits:** A controlled footprint-release fixture, not evidence that buying
+was necessary in the original owned world. The matched positive-offer ablation
+must still establish acquisition causality. Foundation and the separate supplier
+acquisition/improvement route remain required. No subsidy, forced purchase or
+direct ownership write occurs in the observed full arm.
+
+- [Paid acquisition, failed foundation and sealed native evidence](../research/mods/csc-ai-nuremberg-acquisition-20261112.md#measured-full-arm-paid-acquisition-failed-foundation)
+
+## AI-C160
+
+**Withholding both Quarter promotions changes the winning type but not the paid land acquisition**
+
+Status: accepted controlled negative; independently validated by Astra.
+No acquisition-causality or 1.5 closure claim.
+
+The same inactive Nuremberg source and exact predeclared Bakers+Tailors
+footprint-candidate exclusion change the native winner from Bakers 788 /
+286,075 Q8 to Tailors 788 / 277,289 Q8. Both arms pay 40 Gold at 203 and have
+correct-city ownership at 204. The complete local Bakers matrix differs only
+at 788, where the control loses 12,288 Q8; 35 other rows match exactly.
+The manifests differ only in the declared staged scanner transformation.
+Both sessions close normally and their native traces match the streams.
+
+**Limits:** A Quarter identity effect, not demonstrated necessity for buying
+the tile. Other players' complete packet entries were not all traced; packet
+counts alone do not establish equality. The full arm lacks foundation through
+216; the control ends at 204. Do not enlarge this ablation retrospectively to
+force a buying difference. Supplier acquisition remains separate.
+
+- [Matched negative and sealed comparison](../research/mods/csc-ai-nuremberg-acquisition-20261112.md#matched-result-quarter-identity-changes-acquisition-does-not)

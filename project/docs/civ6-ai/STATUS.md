@@ -48,9 +48,13 @@ purchase contract and passes the observed savings and native admission checks.
 The tile becomes owned by the intended city. The missing payment callbacks
 were traced to dispatch through **XP1::Purchase::Start**, outside the original
 base-only observer's coverage. Both implementations are now covered by the
-same guarded balance measurement. **No paid-acquisition or 1.5 closure yet.**
-Next measure payment, then compare with the predeclared footprint-level
-Bakers+Tailors positive-offer ablation and follow the foundation. Supplier
+same guarded balance measurement. The full arm now verifies a **40-Gold debit**
+and correct-city ownership, with exact stream agreement and normal cleanup.
+**No 1.5 closure:** the purchase node waits until timeout despite ownership,
+and the Quarter has no foundation through 216. The predeclared footprint-level
+ablation changes Bakers to Tailors, but both arms buy the same tile: acquisition
+causality is **not** demonstrated. Next trace completion of the already-paid
+purchase prerequisite using live contract status and eligibility receipts. Supplier
 acquisition/improvement remains a separate unresolved route.
 [Acquisition evidence and limits](../research/mods/csc-ai-nuremberg-acquisition-20261112.md).
 
@@ -62,7 +66,7 @@ acquisition/improvement remains a separate unresolved route.
 | 1.2 Neighbors | Verified | Future-host path changes type/request | **Complete at stated scope** |
 | 1.3 Rivers | Verified | Quarter site/request changed | **Complete at stated scope** |
 | 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
-| 1.5 Buying | Request/attempt lineage verified | Paid acquisition pending | Pending |
+| 1.5 Buying | Request/admission/debit/ownership verified | Matched acquisition causality and foundation pending | Partial; supplier route pending |
 | 1.6 Follow-through | Verified | Diagnostic construction completed | Causal main-policy reproduction pending |
 | 1.7 Defer/reconsider | Partial; weak-site mechanism exists | Pending | Pending |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |

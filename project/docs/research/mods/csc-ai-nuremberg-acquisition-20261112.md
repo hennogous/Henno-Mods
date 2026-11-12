@@ -150,7 +150,51 @@ a separate `Desktop/Codex/csc-ai-preserve-nuremberg-20261112` backup. All hashes
 match `819d36af685d313d1a3d089bc0cf923991972b1a25aadd20547bdc55fcfcc39f`.
 This preserved autosave is not silently promoted to an inactive replay source.
 
-## Predeclared causal control, held pending measured payment
+## Measured full arm: paid acquisition, failed foundation
+
+`nuremberg-purchase-paid-full-01` completes 202–216 and closes normally:
+exit 0, owners absent, preferences restored and packages retired. The terminal
+traces match all streamed records exactly: 36 purchase and 18 selector records,
+no faults and no pending debit/execution callbacks. The
+[sealed full-arm capsule](csc-ai-nuremberg-acquisition-20261112-full.json)
+preserves the relevant native records, complete first city/site matrix, ownership
+timeline, endpoint receipt and hashes of the underlying artifacts.
+
+At 202 the native selection is Bakers 788 at **286,075 Q8** (1,117 whole utility
+points in the request log), followed by purchase contract 4316. At 203 the
+expanded observer measures the XP1 handler's **40-Gold payment**:
+
+| Measurement | Q8 Gold | Gold |
+| --- | ---: | ---: |
+| Treasury immediately before debit | 196,668 | 768.234375 |
+| Treasury immediately after debit | 186,428 | 728.234375 |
+| Measured difference | −10,240 | −40 |
+
+The signed debit argument matches that measured difference. Handler, thread,
+caller stack, city identity, Treasury receiver, target and turn match across
+the pair. Annex returns from XP1 and physical snapshots show player 3 /
+purchasing city 458758 from 204 through 216. The observer also measures other
+ordinary paid plots for the same player; its positive coverage is no longer
+limited to the targeted attempt.
+
+**The Quarter does not reach foundation.** Purchase contract 4316 remains
+waiting through 10/10 at 212 and the tree fails at 213. At 214 the next native
+district selection is Campus (46,10), 485,797 Q8. Plot 788 remains district −1
+through 216. Production moves from Ancient to Medieval Walls during the window.
+Do not explain this as merely losing the final production auction: the purchase
+node did not release its already-paid prerequisite to the reservation/build path.
+Its completion lifecycle is the next unresolved foundation dependency.
+
+The shared controller saves a verified inactive human-0 endpoint at 216,
+`CSC_PURCHASE_FOLLOWTHROUGH_3ff4c61621fb.Civ6Save`, SHA-256
+`2d567261de7ba582dded065ab5f6d039639ad990200f3ad6206e3b422f51421c`.
+SaveComplete, unchanged native phase and archive/native equality are verified.
+
+This establishes a paid acquisition following ordinary integrated guidance.
+It does not yet establish that guidance caused acquisition, nor close 1.5:
+the matched control, foundation and separate supplier route remain required.
+
+## Predeclared causal control
 
 Astra recommends withholding positive Bakers **and Tailors** frontier offers
 for exactly player3/city458758/plot788. The intervention unit is one footprint's
@@ -162,10 +206,56 @@ actively promoted by Tailors and answer a narrower question.
 The staged control now withholds both profile IDs 36 and 37 at this footprint;
 the main CSC sources are unchanged. An isolated Lua predicate check verifies
 that other players, cities, districts and sites remain outside the exclusion.
-Do not launch that control until the full arm's native payment is measured.
+The measured full arm qualifies launching the same-source 202–204 control.
+Both arms use identical expanded observer coverage. The exclusion removes the
+footprint from positive candidate selection: a different frontier fallback or
+deferral outcome can follow. Audit these consequences rather than promising
+that exactly two final packet entries disappear.
 If both matched arms buy788, preserve that result; do not broaden the intervention
 afterward merely to manufacture acquisition causality. Supplier acquisition and
 improvement are still separate unresolved work.
+
+### Matched result: Quarter identity changes, acquisition does not
+
+`nuremberg-purchase-paid-control-01` closes normally after 202–204 with a verified
+inactive endpoint. Both traces exactly match their streams, with no faults or
+pending callbacks. The package manifests differ only in the scanner's exact
+declared footprint exclusion; source bytes reproduce that transformation.
+The [sealed comparison](csc-ai-nuremberg-acquisition-20261112-control.json)
+preserves the audit, native differences and file hashes.
+
+| First native comparison / outcome | Main full arm | Footprint-offer control |
+| --- | --- | --- |
+| Bakers score at 788 | 286,075 Q8 | 273,787 Q8 |
+| Winning Quarter at 788 | Bakers, 286,075 Q8 | Tailors, 277,289 Q8 |
+| Native payment at 203 | 40 Gold | 40 Gold |
+| Ownership at 204 | Nuremberg | Nuremberg |
+| District at 204 | None | None |
+
+Of 36 Bakers city/site rows, 35 are byte-for-field identical; only 788 loses
+12,288 Q8. Main placement bids fall 27→25 and total packet entries 502→500.
+Weak-site count 261 and customer count 0 match. Builder allowances remain 20,
+building nominations 1 (same preview), repairs 0 and exclusions 20. These
+counts do not establish equality of every other packet entry; this is a full
+local Bakers matrix comparison, not the complete all-player CE packet audit
+used for the earlier Liverpool tests.
+
+**Negative for acquisition causality:** without CSC's positive candidates for
+this footprint, native Tailors still wants the same land and pays the same
+40 Gold. The guidance demonstrably changes Quarter identity, but necessity
+for buying this tile is not shown. Keep this declared result; do not broaden
+the exclusion after seeing it to manufacture a purchase difference.
+
+The remaining immediate issue is the full arm's purchase contract completion.
+Static inspection suggests that Economic can remove a newly ineligible local
+handle after ownership while the tree still retains a waiting contract. This
+is a hypothesis, not yet an engine-defect finding. A read-only 202–205 repeat
+records actual contract status/vtable and dispatch, the two Economic eligibility
+returns and the decorator's retained status. Inactive 204 stops before AI turn
+204; endpoint 205 is needed to observe that post-purchase processing. Unknown
+contracts are ignored, known ones are revalidated, and no state is changed.
+Neither eligibility rejection nor decorator observation is labelled completed
+vector removal or destruction.
 
 ## Operational scope
 

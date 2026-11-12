@@ -7,12 +7,25 @@ the old observer covered only base680f70. No measured payment in that repeat.
 Astra verified XP1 quote71c63e/debitcall71c671/return71c676/annex71c69a,
 RDI City, RBP+38/+3c XY, R15 Treasury, EBX negative Q8 debit. Shared descriptors
 now cover both handlers; Node guard suite and13 purchase-fixture checks pass.
-Live shared worker `nuremberg-purchase-paid-full-01`, exec87194,202–216,
-expanded read-only observers and --save-endpoint. Do not edit pinned tooling
-until terminal. Predeclared control withholds positive Bakers AND Tailors
-frontier candidates at P3/c458758/788; preserve other channels, audit reranking.
-No 1.5 closure: payment, matched acquisition causality, foundation and separate
-supplier acquisition/improvement still required. Report csc-ai-nuremberg-
+Full `nuremberg-purchase-paid-full-01` exec87194 is terminal exit0/closedverified.
+36purchase/18selector records exactly match streams; actual788debit203 is
+196668→186428 Q8 (-40Gold), owned intendedcity204–216, no foundation. Purchase
+4316 waits10/10 thenfails213; Campus selected214. Sealed full JSON inrepo.
+Paused216endpoint SHA2d567261de7ba582dded065ab5f6d039639ad990200f3ad6206e3b422f51421c.
+Control `nuremberg-purchase-paid-control-01` exec74748 is terminal/closedverified.
+Bothprofiles excludedat788; nativewinnerTailors788277289 vsfullBakers788286075;
+bothpay40Gold203andownintendedcity204. Negative acquisitioncausality, Astra
+validated. Local Bakers36rowsonly788diff(-12288); packet502→500,bids27→25,
+otherarraycounts/previews match (notcompleteallplayerpacketproof). Sealedcontrol
+JSON inrepo. C159paidpartial/C160negativeacceptedbyAstra. Do notbroadenablation.
+Current shared worker `nuremberg-purchase-lifecycle-01`, exec17117,202–205,
+same policy/expandedobservers +optionalknowncontractstatus/vtable/Economic
+eligibility/decoratorstatusprobe; no writes. Do not edit pinned tooling until
+terminal. Endpoint205includesAI204; inactive204wouldstopbeforepruneprocessing.
+No 1.5 closure: matched acquisition causality, foundation and separate supplier
+acquisition/improvement still required. Astra investigating purchase completion
+lifecycle; do not assume enginebug without live status/vtable/prune evidence.
+Report csc-ai-nuremberg-
 acquisition-20261112.md. Existing Lua51 dependency root for offline checks:
 `C:/Users/Shadow/Desktop/Codex/csc-adjacencies/test-deps` on PYTHONPATH.
 Frida17.24.3: `C:/Users/Shadow/Desktop/Codex/csc-ce-ai-tooling-probe-20261028/dependencies`.

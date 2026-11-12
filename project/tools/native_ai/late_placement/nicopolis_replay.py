@@ -400,6 +400,7 @@ def run(args):
         observePurchases=args.observe_purchases,
         observePurchaseLineage=getattr(args,'observe_purchase_lineage',False),
         observePurchaseExecution=getattr(args,'observe_purchase_execution',False),
+        observePurchaseLifecycle=getattr(args,'observe_purchase_lifecycle',False),
         save_endpoint=getattr(args,'save_endpoint',False),
         prototypeBuyer=getattr(args,'prototype_buyer',None),
         sourceSeatMigration=seat_provenance,
@@ -541,6 +542,7 @@ print('CSC_REPLAY_PLOTS=['..table.concat(indices,',')..']')
                 allCommandPlots=True, streamRecords=True, city=case['city'],
                 observeLineage=getattr(args,'observe_purchase_lineage',False),
                 observeExecution=getattr(args,'observe_purchase_execution',False),
+                observeLifecycle=getattr(args,'observe_purchase_lifecycle',False),
                 prototypeBuyer=getattr(args,'prototype_buyer',None),district=case['district'],
                 selectorObserverVerified=True) # init above verified the unpatched call/return window.
             write_json(out / 'purchase-scope.json', purchase_scope)
@@ -631,6 +633,8 @@ if __name__ == '__main__':
     parser.add_argument('--policy-root', type=Path)
     parser.add_argument('--through', type=int, default=208)
     parser.add_argument('--observe-purchases', action='store_true')
+    parser.add_argument('--observe-purchase-lifecycle',action='store_true',
+        help='Read-only known contract status/dispatch, Economic eligibility and decorator state; requires lineage')
     parser.add_argument('--observe-purchase-lineage',action='store_true',
         help='Read-only tree/contract creation links; requires --observe-purchases')
     parser.add_argument('--observe-purchase-execution',action='store_true',
@@ -640,6 +644,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed-source-seats',action='store_true',
         help='Diagnostic Szeged fixture only: seed absent seat properties from pinned turn-1 records')
     options = parser.parse_args()
+    if options.observe_purchase_lifecycle and not(options.observe_purchases and options.observe_purchase_lineage):
+        parser.error('lifecycle observation requires purchase and lineage observation')
     if options.case == 'nicopolis' and options.mode != 'original' and not options.original_run:
         parser.error('non-original modes require --original-run')
     if options.mode == 'integrated' and not options.policy_root:

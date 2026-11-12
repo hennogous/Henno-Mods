@@ -47,6 +47,16 @@ const PlotSetOwnerEntry = 0x616a0;
 const CultureCityOffset = 0;
 const PlotCoordinatesOffset = 0x28; // Packed signed16X/signed16Y, XP2 reference.
 const PlayerTurnActiveOffset = 0x288; // Lua lIsTurnActive6ee350 and Manager.CanStart13560.
+// Optional narrow lifecycle probe, motivated by paid788 remaining in a waiting
+// decorator. Both Economic boundaries return from vtable+80 eligibility, NOT
+// Update. The decorator boundary resolves the retained contract before reading
+// its status. All are byte-audited on reference324c51e9 / hotfix092abfbb text.
+const EconomicEligibilityChecks = [
+    {rva:0x457515,handle:'rbx',phase:'leading',bytes:'84c074094883c310'},
+    {rva:0x45755f,handle:'rdi',phase:'compaction',bytes:'84c0740f488bcb488bd7'},
+];
+const DecoratorContractStatus = 0x55a056;
+const ContractStatusOffset = 0xb0; // Decorator55a030:1/3 waiting,5 executing,7 success.
 // TryPurchasePlot saves its original Economic receiver at entry RSP+8.
 // Seven pushes and its 0x80-byte frame put that slot at RSP+0xc0 here.
 // The slot is overwritten later in this routine: read only at 45918f.
@@ -110,6 +120,10 @@ rpc.exports = {
             throw Error('Unexpected plot purchase observation scope');
         if(scope.observeExecution!==undefined&&typeof scope.observeExecution!=='boolean')
             throw Error('Execution observation must be explicit Boolean');
+        if(scope.observeLifecycle!==undefined&&typeof scope.observeLifecycle!=='boolean')
+            throw Error('Lifecycle observation must be explicit Boolean');
+        if(scope.observeLifecycle===true&&scope.observeLineage!==true)
+            throw Error('Lifecycle observation requires known contract lineage');
         const targets = new Set(scope.plots);
         const prototypeBuyer = scope.prototypeBuyer;
         if (prototypeBuyer !== undefined && prototypeBuyer !== null &&
@@ -168,6 +182,29 @@ rpc.exports = {
                 read(contract, ContractTargetOffset + 4, 'i32') !== binding.y)
                 throw Error('Retained purchase contract identity changed');
             return binding;
+        };
+        const contractState = contract => {
+            // Never interpret an arbitrary handle as a purchase contract.
+            // A maximum64-entry observed binding set is sufficient here; all
+            // fields are revalidated before any status/vtable read. Unknown or
+            // reloaded instances remain unobserved, not guessed from city IDs.
+            const binding=[...knownContracts.values()].find(row=>row.contract===contract.toString());
+            if(!binding)return null;
+            validatedContract(contract.add(ContractTargetOffset));
+            const vtable=ptr(read(contract,0,'ptr'));
+            const relative=address=>{
+                const value=Number(address.toString())-Number(core.base.toString());
+                if(!Number.isSafeInteger(value)||value<0||value>=core.size)
+                    throw Error('Purchase contract dispatch outside audited GameCore');
+                return value;
+            };
+            return {contractId:binding.contractId,ownerControl:binding.ownerControl,
+                originCity:binding.originCity,rootTreeId:binding.rootTreeId,
+                contractStatus:read(contract,ContractStatusOffset,'i32'),
+                contractVtableRva:relative(vtable),
+                executeRva:relative(ptr(read(vtable,0x20,'ptr'))),
+                updateRva:relative(ptr(read(vtable,0x50,'ptr'))),
+                eligibilityRva:relative(ptr(read(vtable,0x80,'ptr')))};
         };
         if (prototypeBuyer) {
             // The already initialized selector observer verified the complete
@@ -268,7 +305,8 @@ rpc.exports = {
                     }
                     if (knownContracts.size >= 64) throw Error('Purchase binding capacity');
                     knownContracts.set(contract.add(ContractTargetOffset).toString(), binding);
-                    emit({kind: 'purchase-contract-created', turn: turnNow(), player: scope.player, ...binding});
+                    emit({kind: 'purchase-contract-created', turn: turnNow(), player: scope.player, ...binding,
+                        ...(scope.observeLifecycle?contractState(contract):{})});
                 } catch (error) { fail(error); }
             }));
         }
@@ -427,8 +465,37 @@ rpc.exports = {
                 treasuryQ8, accountedQ8, unaccountedQ8: treasuryQ8 - accountedQ8,
                 savingsQ8, savingWeights, totalWeight, ...(lineage ? {lineage} : {}),
                 passesPlotFund: plotQ8 >= minimumPlotFundQ8,
-                passesCombinedFunds: gold <= Math.floor((plotQ8 + slushQ8) / 256)};
+                passesCombinedFunds: gold <= Math.floor((plotQ8 + slushQ8) / 256),
+                ...(scope.observeLifecycle&&validatedContract(context.r12)?
+                    contractState(context.r12.add(-ContractTargetOffset)):{})};
         });
+        if(scope.observeLifecycle===true) {
+            for(const boundary of EconomicEligibilityChecks)fingerprint(boundary.rva,boundary.bytes);
+            fingerprint(DecoratorContractStatus,'8b88b000000083f905');
+            for(const boundary of EconomicEligibilityChecks) {
+                listeners.push(Interceptor.attach(core.base.add(boundary.rva),function(){
+                    if(fault)return;
+                    try {
+                        const player=ptr(read(this.context.r15,EconomicPlayerOffset,'ptr'));
+                        if(read(player,PlayerIdOffset,'i32')!==scope.player)return;
+                        const contract=ptr(read(this.context[boundary.handle],0,'ptr'));
+                        const state=contractState(contract);if(!state)return;
+                        // ALfalse selects removal in native code. This receipt
+                        // observes that predicate, not completion of vector
+                        // compaction, destruction or any contract state write.
+                        emit({kind:'purchase-economic-eligibility',turn:turnNow(),player:scope.player,
+                            phase:boundary.phase,eligible:(this.context.rax.toInt32()&255)!==0,...state});
+                    }catch(error){fail(error);}
+                }));
+            }
+            listeners.push(Interceptor.attach(core.base.add(DecoratorContractStatus),function(){
+                if(fault)return;
+                try {
+                    const state=contractState(this.context.rax);if(!state)return;
+                    emit({kind:'purchase-decorator-status',turn:turnNow(),player:scope.player,...state});
+                }catch(error){fail(error);}
+            }));
+        }
         if (scope.observeExecution === true) {
             // Audited original bytes on SHA092abfbb's text-identical reference.
             // These optional observations resolve ownership without a known
@@ -453,7 +520,9 @@ rpc.exports = {
             attach(TargetedCommandChecked,'targeted-command-checked',targetedLocation('r14'),
                 context=>({commandAdmitted:(context.rax.toInt32()&255)!==0,...admissionState(context)}));
             attach(TargetedCommandReturned,'targeted-command-returned',targetedLocation('r14'),
-                context=>({managerStartReturned:true,...admissionState(context)}));
+                context=>({managerStartReturned:true,...admissionState(context),
+                    ...(scope.observeLifecycle&&validatedContract(context.r12)?
+                        contractState(context.r12.add(-ContractTargetOffset)):{})}));
             const caller = address => {
                 // Windows user pointers fit53-bit integers. Preserve an outside
                 // caller's address with unknownRVA rather than wrapping it into

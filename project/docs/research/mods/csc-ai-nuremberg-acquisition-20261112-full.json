@@ -1,0 +1,990 @@
+{
+  "artifact_audit_verified": true,
+  "closure_claim": false,
+  "scope": "1.5 full acquisition arm; controlled causality, foundation and separate supplier route remain outstanding",
+  "source_sha256": "d579ecc2c54909f1b21aaa96caad237daeb9fc0f67cd78c8602191c70c2a9026",
+  "trace_stream_counts": {
+    "purchase": 36,
+    "selector": 18
+  },
+  "session_closed": {
+    "verified": true,
+    "native_exit_code": 0,
+    "owners_absent": true,
+    "preferences_verified": true,
+    "package_callback_completed": true
+  },
+  "first_selection": {
+    "kind": "selection",
+    "turn": 202,
+    "winner": {
+      "district": 36,
+      "x": 48,
+      "y": 10,
+      "q8": 286075
+    },
+    "sites": [
+      {
+        "plot": 861,
+        "q8": 208880,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 788,
+        "q8": 286075,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 713,
+        "q8": 213135,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 712,
+        "q8": 212211,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 786,
+        "q8": 207903,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 860,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 936,
+        "q8": 265024,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 862,
+        "q8": 270256,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 789,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 714,
+        "q8": 209973,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 640,
+        "q8": 209973,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 639,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 638,
+        "q8": 199488,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 711,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 785,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 859,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 934,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 935,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 1010,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 937,
+        "q8": 265801,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 863,
+        "q8": 278770,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 790,
+        "q8": 278770,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 715,
+        "q8": 278770,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 641,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 566,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 565,
+        "q8": 284023,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 564,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 563,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 637,
+        "q8": 283078,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 710,
+        "q8": -2559744,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 784,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 858,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 933,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 1007,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      {
+        "plot": 1008,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      },
+      {
+        "plot": 1009,
+        "q8": -2559744,
+        "eligible": 0,
+        "owned": 1,
+        "frontier": 0,
+        "reservation": -1
+      }
+    ]
+  },
+  "target_purchase_records": [
+    {
+      "kind": "purchase-contract-created",
+      "turn": 202,
+      "player": 3,
+      "contract": "0x169aff600",
+      "contractId": 4316,
+      "ownerControl": 59375659,
+      "plot": 788,
+      "x": 48,
+      "y": 10,
+      "rootTreeId": 59244585,
+      "executingTree": "0x10d4e8fb0",
+      "originCity": 458758
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 65536,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 131073,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 196610,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 262147,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 327684,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 393221,
+      "plot": 788,
+      "gold": -1
+    },
+    {
+      "kind": "targeted-city-quote",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "gold": 40
+    },
+    {
+      "kind": "targeted-savings",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "gold": 40,
+      "plotQ8": 38400,
+      "slushQ8": 119183,
+      "factorQ8": 64,
+      "minimumPlotFundQ8": 2560,
+      "treasuryQ8": 196668,
+      "accountedQ8": 196668,
+      "unaccountedQ8": 0,
+      "savingsQ8": [
+        119183,
+        0,
+        38400,
+        39085
+      ],
+      "savingWeights": [
+        3,
+        4,
+        1,
+        1
+      ],
+      "totalWeight": 9,
+      "lineage": {
+        "known": true,
+        "contractId": 4316,
+        "ownerControl": 59375659,
+        "originCity": 458758,
+        "rootTreeId": 59244585
+      },
+      "passesPlotFund": true,
+      "passesCombinedFunds": true
+    },
+    {
+      "kind": "targeted-request-built",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "requestBuilt": true,
+      "playerTurnActive": true
+    },
+    {
+      "kind": "targeted-command-checked",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "commandAdmitted": true,
+      "playerTurnActive": true
+    },
+    {
+      "kind": "quote",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1",
+      "gold": 40
+    },
+    {
+      "kind": "debit-call",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1",
+      "deltaQ8": -10240,
+      "threadId": 19460,
+      "callerStack": "0x7fead0",
+      "treasury": "0xfc6252a0",
+      "treasuryBeforeQ8": 196668
+    },
+    {
+      "kind": "debit-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1",
+      "deltaQ8": -10240,
+      "threadId": 19460,
+      "callerStack": "0x7fead0",
+      "treasury": "0xfc6252a0",
+      "treasuryBeforeQ8": 196668,
+      "treasuryAfterQ8": 186428,
+      "measuredDeltaQ8": -10240,
+      "deltaMatched": true
+    },
+    {
+      "kind": "plot-set-owner-return",
+      "turn": 203,
+      "plot": 788,
+      "requestedPlayer": 3,
+      "requestedCity": 458758,
+      "caller": "0xb255c63b",
+      "callerRva": 312891
+    },
+    {
+      "kind": "culture-annex-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "caller": "0xb2c2c69a",
+      "callerRva": 7456410
+    },
+    {
+      "kind": "annex-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1"
+    },
+    {
+      "kind": "targeted-command-returned",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "managerStartReturned": true,
+      "playerTurnActive": true
+    }
+  ],
+  "target_ownership_timeline": [
+    {
+      "turn": 202,
+      "owner": -1,
+      "city": -1,
+      "district": -1
+    },
+    {
+      "turn": 203,
+      "owner": -1,
+      "city": -1,
+      "district": -1
+    },
+    {
+      "turn": 204,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 205,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 206,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 207,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 208,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 209,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 210,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 211,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 212,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 213,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 214,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 215,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 216,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    },
+    {
+      "turn": 216,
+      "owner": 3,
+      "city": 458758,
+      "district": -1
+    }
+  ],
+  "later_selections": [
+    {
+      "kind": "selection",
+      "turn": 214,
+      "winner": {
+        "district": 2,
+        "x": 46,
+        "y": 10,
+        "q8": 485797
+      },
+      "sites": [
+        {
+          "plot": 861,
+          "q8": 385198,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": 59506726
+        },
+        {
+          "plot": 788,
+          "q8": 467184,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": 62914578
+        },
+        {
+          "plot": 713,
+          "q8": 391317,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 712,
+          "q8": 389360,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": 59441194
+        },
+        {
+          "plot": 786,
+          "q8": 384531,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 860,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 936,
+          "q8": 426157,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 862,
+          "q8": 453137,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 789,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": 62521367
+        },
+        {
+          "plot": 714,
+          "q8": 388241,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 640,
+          "q8": 388241,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 639,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 638,
+          "q8": 384531,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 711,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 785,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 859,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": 59899930
+        },
+        {
+          "plot": 934,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 935,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 1010,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 937,
+          "q8": 441773,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 863,
+          "q8": 441773,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 790,
+          "q8": 376237,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 715,
+          "q8": 376237,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 641,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 566,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 565,
+          "q8": 383021,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 564,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 563,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 637,
+          "q8": 381066,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 710,
+          "q8": -2559744,
+          "eligible": 1,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 784,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 0,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 858,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 933,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 1007,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 0,
+          "frontier": 1,
+          "reservation": -1
+        },
+        {
+          "plot": 1008,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        },
+        {
+          "plot": 1009,
+          "q8": -2559744,
+          "eligible": 0,
+          "owned": 1,
+          "frontier": 0,
+          "reservation": -1
+        }
+      ]
+    }
+  ],
+  "measured_payment": {
+    "kind": "debit-return",
+    "turn": 203,
+    "player": 3,
+    "city": 458758,
+    "plot": 788,
+    "handler": "xp1",
+    "deltaQ8": -10240,
+    "threadId": 19460,
+    "callerStack": "0x7fead0",
+    "treasury": "0xfc6252a0",
+    "treasuryBeforeQ8": 196668,
+    "treasuryAfterQ8": 186428,
+    "measuredDeltaQ8": -10240,
+    "deltaMatched": true
+  },
+  "foundation_observed": false,
+  "endpoint_checkpoint": {
+    "verified": true,
+    "turn": 216,
+    "requested_name": "CSC_PURCHASE_FOLLOWTHROUGH",
+    "unique_name": "CSC_PURCHASE_FOLLOWTHROUGH_3ff4c61621fb",
+    "native_save": "C:\\Users\\Shadow\\Documents\\My Games\\Sid Meier's Civilization VI\\Saves\\Single\\CSC_PURCHASE_FOLLOWTHROUGH_3ff4c61621fb.Civ6Save",
+    "archive": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\nuremberg-purchase-paid-full-01\\endpoint.Civ6Save",
+    "sha256": "2d567261de7ba582dded065ab5f6d039639ad990200f3ad6206e3b422f51421c",
+    "size": 2267396,
+    "save_requests": 1,
+    "save_complete_event": true,
+    "initial_ack": true,
+    "UI_phase": {
+      "turn": 216,
+      "active": false,
+      "local_player": 0,
+      "player0_human": true,
+      "player0_alive": true
+    },
+    "UI_clock_lag": 0,
+    "native_phase_unchanged": true,
+    "before": {
+      "turn": 216,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794444294.3567927,
+      "player0_alive": true
+    },
+    "after": {
+      "turn": 216,
+      "active": false,
+      "remaining": 0,
+      "local_player": 0,
+      "player0_human": true,
+      "time": 1794444300.7664034,
+      "player0_alive": true
+    },
+    "native_pid": 11716,
+    "worlds_created": 0
+  },
+  "pins": {
+    "inputs.json": "ae897112fed7beb05ebb8bb2c0fcbfb2b46791cb6ed32dcd79310dddee807643",
+    "complete.json": "7a30b91e0a771147a29ac7f66a90e7d4eedb4c265518e29162e2580b0c3b0d4d",
+    "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+    "selector-trace.json": "4b05b8705ac48098c51dfbacca945d763bbf6c91ce08fb92faad07838b56d73b",
+    "selector-live.ndjson": "a581c6695763cf536025534303fb4546f41be0e9e7e7dbcafa30c77c53fa0080",
+    "purchase-trace.json": "78c890aeda891b0aabf2fda605e3dffe0afae02c3106a577223e804329263db2",
+    "purchase-live.ndjson": "65536b9f686b8ef07d0d5217b5038f94ec0e7f267044fe4d8b1c05bf64cf1600",
+    "Lua.log": "1f095112ed0c75b2b5e66294f8ffb7bd677aa6f0938edafb1812aeeb97da1ae2",
+    "AI_CityBuild.csv": "510432d8de0c546fbc35b1a867323ea06e3b378ce4e4dd7cbef048c10c8fb6c5",
+    "AI_Behavior_Trees.csv": "2bc26bc4c77531a5c9363f7ed52e51e06dfd65defe65b9ddd33dc51821c63ab7",
+    "City_BuildQueue.csv": "7af9d55765a97d38fa43aaa41b62bfb2e56a4016cedd841039c6f5c2c45e5cfa",
+    "endpoint-checkpoint.json": "25cfc414072a81f74dfd6ab2f7d32a0cab2a0cfe4fa2a3b882ae125c7aa1573b"
+  }
+}

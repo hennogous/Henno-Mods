@@ -1,0 +1,133 @@
+{
+  "artifact_audit_verified": true,
+  "closure_claim": false,
+  "acquisition_causality_demonstrated": false,
+  "scope": "Predeclared two-profile footprint candidate ablation: Quarter type changes, both arms buy the same plot",
+  "source_sha256": "d579ecc2c54909f1b21aaa96caad237daeb9fc0f67cd78c8602191c70c2a9026",
+  "manifest_differences": [
+    [
+      "CSC Bakers Development Mod",
+      "Lua_UI\\AI\\CSC_AI_AdjacencyScan.lua"
+    ]
+  ],
+  "control_scope": {
+    "player": 3,
+    "city": 458758,
+    "districts": [
+      36,
+      37
+    ],
+    "plot": 788
+  },
+  "first_selections": [
+    {
+      "turn": 202,
+      "winner": {
+        "district": 36,
+        "x": 48,
+        "y": 10,
+        "q8": 286075
+      }
+    },
+    {
+      "turn": 202,
+      "winner": {
+        "district": 37,
+        "x": 48,
+        "y": 10,
+        "q8": 277289
+      }
+    }
+  ],
+  "bakers_native_rows_compared": 36,
+  "bakers_row_changes": [
+    {
+      "plot": 788,
+      "full": {
+        "plot": 788,
+        "q8": 286075,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      },
+      "control": {
+        "plot": 788,
+        "q8": 273787,
+        "eligible": 1,
+        "owned": 0,
+        "frontier": 1,
+        "reservation": -1
+      }
+    }
+  ],
+  "payments": [
+    {
+      "kind": "debit-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1",
+      "deltaQ8": -10240,
+      "threadId": 19460,
+      "callerStack": "0x7fead0",
+      "treasury": "0xfc6252a0",
+      "treasuryBeforeQ8": 196668,
+      "treasuryAfterQ8": 186428,
+      "measuredDeltaQ8": -10240,
+      "deltaMatched": true
+    },
+    {
+      "kind": "debit-return",
+      "turn": 203,
+      "player": 3,
+      "city": 458758,
+      "plot": 788,
+      "handler": "xp1",
+      "deltaQ8": -10240,
+      "threadId": 22148,
+      "callerStack": "0x381ead0",
+      "treasury": "0x13d095e30",
+      "treasuryBeforeQ8": 196668,
+      "treasuryAfterQ8": 186428,
+      "measuredDeltaQ8": -10240,
+      "deltaMatched": true
+    }
+  ],
+  "control_target_ownership": {
+    "turn": 204,
+    "owner": 3,
+    "city": 458758,
+    "district": -1
+  },
+  "limit": "Full city Bakers row matrix, not a complete all-player CE packet. Candidate exclusion can induce fallback or deferral; unchanged counts alone do not prove identical arrays.",
+  "pins": {
+    "full": {
+      "inputs.json": "ae897112fed7beb05ebb8bb2c0fcbfb2b46791cb6ed32dcd79310dddee807643",
+      "complete.json": "7a30b91e0a771147a29ac7f66a90e7d4eedb4c265518e29162e2580b0c3b0d4d",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "selector-trace.json": "4b05b8705ac48098c51dfbacca945d763bbf6c91ce08fb92faad07838b56d73b",
+      "selector-live.ndjson": "a581c6695763cf536025534303fb4546f41be0e9e7e7dbcafa30c77c53fa0080",
+      "purchase-trace.json": "78c890aeda891b0aabf2fda605e3dffe0afae02c3106a577223e804329263db2",
+      "purchase-live.ndjson": "65536b9f686b8ef07d0d5217b5038f94ec0e7f267044fe4d8b1c05bf64cf1600",
+      "Lua.log": "1f095112ed0c75b2b5e66294f8ffb7bd677aa6f0938edafb1812aeeb97da1ae2",
+      "AI_CityBuild.csv": "510432d8de0c546fbc35b1a867323ea06e3b378ce4e4dd7cbef048c10c8fb6c5",
+      "AI_Behavior_Trees.csv": "2bc26bc4c77531a5c9363f7ed52e51e06dfd65defe65b9ddd33dc51821c63ab7",
+      "endpoint-checkpoint.json": "25cfc414072a81f74dfd6ab2f7d32a0cab2a0cfe4fa2a3b882ae125c7aa1573b"
+    },
+    "control": {
+      "inputs.json": "eb685e0e46098337bcda7d561e4b340915bde6e897f686bfffdd6ecb82c6cae4",
+      "complete.json": "af09227b14fc18ccbe280cb641fb1b16e8b314aa4a29a8ea69b1c07e8dc70770",
+      "session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+      "selector-trace.json": "a698582fe001a7d84b0eee857522d72372bbeb88f277f81736e58ecd5929922f",
+      "selector-live.ndjson": "449f6171d4df0e491797273cf879f5e855728036284fb8ace3bf4af6bcc53a33",
+      "purchase-trace.json": "5877ea526e65df5ff5fa249dba59b49c0a27ea529ef6ffeed26696507e52c56d",
+      "purchase-live.ndjson": "a65434080d0dcd8203c98992a5fb25fbfb538bd4aa238310a14a1deac98f8283",
+      "Lua.log": "5dd2f8ad13f9277bfa7fd1f0b235d596dda57a7d4d5628c7e91d83ceac70ed25",
+      "AI_CityBuild.csv": "7ee59d367eb8096ae4d9f2cc902b95f8dbc31f48b272ea30003bb9048d4e0d12",
+      "AI_Behavior_Trees.csv": "7699805a0493619017266b59e2ab8f22924ef19e6f323ca419d7c5e7ddeb3efa",
+      "endpoint-checkpoint.json": "75ad48470995ac9b1aaac28ebc46e01985e4ba1f5553fb21bec0379c11896d9e"
+    }
+  }
+}

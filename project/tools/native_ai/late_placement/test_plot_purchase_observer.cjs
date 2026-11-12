@@ -26,6 +26,9 @@ const instructions = new Map([
     [0x459241, '418bc5488d9424c0000000'],
     [0x11b100, '405556415441564157'],
     [0x616a0, '448944241889542410'],
+    [0x457515,'84c074094883c310'],
+    [0x45755f,'84c0740f488bcb488bd7'],
+    [0x55a056,'8b88b000000083f905'],
 ]);
 class Pointer {
     constructor(value) { this.value = Number(value); }
@@ -389,4 +392,42 @@ assert.equal(execution.records.find(r=>r.kind==='culture-annex-return').callerRv
 execution=executionCase('missing-annex-return');assert.match(execution.fault,/Unreturned observed execution/);
 assert.equal(execution.pendingExecutions,1);assert(!execution.records.some(r=>r.kind==='culture-annex-return'));
 execution=executionCase('bad-economic-player');assert.match(execution.fault,/Execution Economic player differs/);
+// Lifecycle receipts require a freshly observed contract, revalidate identity
+// and record actual dispatch instead of assuming the base class. AL describes
+// eligibility only; no completion or successful removal field is synthesized.
+function lifecycleCase(mode) {
+    const fresh={...context,rpc:{exports:{}},Process:{...context.Process,
+        enumerateModules:()=>[{path:'pinned.dll',size:0x1000000,base:ptr(0)}]}};
+    vm.createContext(fresh);vm.runInContext(fs.readFileSync(__dirname+'/plot_purchase_observer.js','utf8'),fresh);
+    fresh.rpc.exports.init({path:'pinned.dll',image_size:0x1000000},
+        {player:1,city:524295,width:74,height:46,plots:[401],observeLineage:true,observeLifecycle:true});
+    put(city,0xd8,1);put(city,0xa8,524295);put(build,0x90,city);
+    put(root,0x120,0);put(child,0x120,root);put(root,0x1c8,91);put(root,0x1b0,4001);
+    put(contract,0x110,4333);put(contract,0x128,4001);put(contract,0x140,1);
+    put(contract,0x178,31);put(contract,0x17c,5);put(contract,0xb0,0);
+    put(contract,0,0x9fa930);put(0x9fa930,0x20,0x3f82c0);
+    put(0x9fa930,0x50,0x3fa260);put(0x9fa930,0x80,0x3fa880);
+    put(player,0xd8,1);put(economic,0x98,player);
+    const handle=0x120000;put(handle,0,contract);
+    fire(0x3e10fd,{rdi:ptr(build),rbx:ptr(child),rsi:ptr(91)});
+    fire(0x55dc9f,{r15:ptr(contract),rsi:ptr(child),rbp:ptr(player)});
+    put(contract,0xb0,3);
+    if(mode==='stale')put(contract,0x110,4334);
+    if(mode==='unknown')put(handle,0,contract+4096);
+    fire(0x457515,{r15:ptr(economic),rbx:ptr(handle),rax:ptr(1)});
+    fire(0x45755f,{r15:ptr(economic),rdi:ptr(handle),rax:ptr(256)}); // ALfalse.
+    fire(0x55a056,{rax:ptr(mode==='unknown'?contract+4096:contract)});
+    return JSON.parse(JSON.stringify(fresh.rpc.exports.freeze()));
+}
+let lifecycle=lifecycleCase('normal');assert.equal(lifecycle.fault,null);
+assert.deepEqual(lifecycle.records.map(r=>r.kind),['district-tree-created','purchase-contract-created',
+    'purchase-economic-eligibility','purchase-economic-eligibility','purchase-decorator-status']);
+assert.equal(lifecycle.records[1].contractStatus,0);
+assert.equal(lifecycle.records[2].eligible,true);assert.equal(lifecycle.records[3].eligible,false);
+assert(lifecycle.records.slice(2).every(r=>r.contractStatus===3&&r.contractVtableRva===0x9fa930&&
+    r.executeRva===0x3f82c0&&r.updateRva===0x3fa260&&r.eligibilityRva===0x3fa880));
+assert(lifecycle.records.every(r=>!('removed'in r)&&!('completed'in r)));
+lifecycle=lifecycleCase('unknown');assert.equal(lifecycle.fault,null);assert.equal(lifecycle.records.length,2);
+lifecycle=lifecycleCase('stale');assert.match(lifecycle.fault,/identity changed/);
+assert.equal(lifecycle.records.length,2);
 console.log('Purchase observer: measured debits, admission/execution, acquisition callers, lineage and guarded detach passed');
