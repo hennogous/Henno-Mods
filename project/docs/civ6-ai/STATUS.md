@@ -58,6 +58,13 @@ standalone district value, legality and material protection intact. Require
 the consumed contribution, native choice/request and dynamic main integration.
 Construction and broader qualification are separate.
 
+Current2.1 scope is Tailors→Harbor/replacements: the Stage2 registry excludes
+City Center nominations, so Bakers' zero customer offers are expected. The
+old Fractal run has five native customer comparisons and three exact wins,
+but no isolated customer-signal ablation yet. Its later200 source has no
+current customer offers. First qualify an actual missing-Harbor window.
+[Scoping and existing leads](../research/mods/csc-ai-customer-placement-20261112.md).
+
 **Latest verified outcome:** 1.7 is complete at the stated composite scope.
 Washington22/version1 stages the actual no-Base decline. Exact restoration of
 existing Cattle796 leaves that publication intact; ordinary23/version2

@@ -18,6 +18,20 @@ STATUS/roadmap/acceptance/findingsAI-C167 updated9of10,2.1active. Stale1.7openwo
 reconciledinC165/C166/reports. Washingtonhelper/driverflag/test/audit/docs readycommit.
 NoPR. Previousnegativecommit22a2455cpushed;fixtureearlierebb379a7pushed.
 
+CURRENT2.1offline report csc-ai-customer-placement-20261112.md; no newlivegame.
+CurrentCE+SQLcustomerpaths Stage2ONLY; BakersCityCenterexplicitlyexcluded,
+soeffectivelyTailors→Harbor/replacements. LaterBakerscustomerdistricts onlyaffect
+Quartersiting; don'tclaimcustomerbidsforthose. Astra independentlyconfirmed.
+CurrentexistingQuarterbid40Q8 units*256; futureQuarter16*256 butsamecitybothpop
+districtguardwithholds. Noevidenceconsumerinert. Fractalarchived141P4c5898322383,
+167P2c5242951437notwin,169/176samepairwins,178P5c65536648notwin. All28offerswritten/
+eligible. FractalDistrict4=HARBOR, ContinentsDistrict4=HOLYSITE; per-worldcatalog!
+ExistingFractal200→207hostscoutcustomer0;Washington22→24zero;Nicopolis200→254zero.
+No pre141saveidentified; don'trerun140turnsspeculatively. NeedmissingTailorsHarbor/
+resourcefreeownedlegalcandidates+knownfreshcomparison. Astraagentcurrentlyread-only
+reviewingexistingarchives/candidatequalification; followupifidle.1.7C167COMMITPUSHED
+bbd48940; negative22a2455c; allourscode/docs werecleanbeforethis2.1scopeupdate.
+
 NEXT2.1acceptance STATED: isolate actualmainmappedcustomer-site contribution,
 show nativecustomerDistrictchoice/requestchanges towardadjacentexistingQuarter
 orcrediblefutureQuarterfootprint, preservestandalonevalue/legality/otherpolicy/
