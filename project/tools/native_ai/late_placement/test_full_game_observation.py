@@ -8,17 +8,20 @@ from driver import lua
 
 
 class FullGameObservation(unittest.TestCase):
-    def test_inactive_read_waits_for_ui_clock_and_never_relabels_it(self):
+    def test_inactive_read_defers_lagging_clock_and_never_relabels_it(self):
         class Controller:
             def __init__(self,replies):self.replies=iter(replies);self.codes=[]
             def cmd(self,code,*args):self.codes.append(code);return next(self.replies)
         with tempfile.TemporaryDirectory()as d:
             root=Path(d);(root/'storekeeper_runtime.lua').write_text('snapshot()',encoding='utf-8')
-            controller=Controller(['CSC_STOREKEEPER_WAIT\t54','CSC_STOREKEEPER_END\t55\t0'])
-            observe_inactive_storekeeper(controller,root,55)
-            self.assertEqual(len(controller.codes),2)
+            controller=Controller(['CSC_FULL_RUN_UI_CLOCK_DEFERRED\t54'])
+            self.assertFalse(observe_inactive_storekeeper(controller,root,55))
+            self.assertTrue((root/'deferred-ui-boundary-55.json').exists())
+            self.assertEqual(len(controller.codes),1)
             self.assertIn('if Game.GetCurrentGameTurn()==55 then',controller.codes[0])
-            for reply in ('CSC_STOREKEEPER_WAIT\t56','CSC_STOREKEEPER_END\t54\t0'):
+            self.assertTrue(observe_inactive_storekeeper(
+                Controller(['CSC_STOREKEEPER_END\t55\t0']),root,55))
+            for reply in ('CSC_FULL_RUN_UI_CLOCK_DEFERRED\t56','CSC_STOREKEEPER_END\t54\t0'):
                 with self.assertRaises(RuntimeError):
                     observe_inactive_storekeeper(Controller([reply]),root,55)
 

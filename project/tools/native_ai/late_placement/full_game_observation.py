@@ -8,7 +8,6 @@ Service effect. The existing Storekeeper watcher supplies that extra evidence.
 """
 from pathlib import Path
 import re
-import time
 from driver import lua,read,write_json,require
 from customer_adjacency_policy import database_snapshot,qualify_database
 
@@ -84,25 +83,27 @@ def finish(out,endpoint=250):
 
 
 def observe_inactive_storekeeper(controller,out,turn):
-    """Wait for the UI's clock, without advancing or relabelling a sample.
+    """Observe the exact UI clock or defer to its passive TurnBegin watcher.
 
     Core can reach an inactive boundary before the UI publishes that clock.
-    The first200 trial observed Core55/UI54. Retry only this read-only query;
-    never resend autoplay, save, a bid or any gameplay order to settle it.
-    A later UI clock, malformed reply or30-second lag remains a hard failure.
+    The first200 trial observed Core55/UI54; the retry showed that this lag
+    can persist while inactive. Waiting cannot make the UI start its next
+    turn. Keep a separate deferral receipt, then allow ordinary play to publish
+    that UI clock. The terminal Service audit still verifies actual coverage.
+    Never relabel54 as55 or resend any gameplay order to settle observation.
+    A later UI clock or malformed reply remains a hard failure.
     """
-    deadline=time.monotonic()+30
     reader=read(out/'storekeeper_runtime.lua')
     code=("if Game.GetCurrentGameTurn()=="+str(turn)+" then\n"
         +'CSC_BAKERS_STOREKEEPER_WATCH=false\n'+reader
-        +"\nelse print('CSC_STOREKEEPER_WAIT',Game.GetCurrentGameTurn()) end")
-    while True:
-        raw=controller.cmd(code,'PlotInfo','storekeeper-inactive-boundary-'+str(turn))
-        if re.search(r'CSC_STOREKEEPER_END\t'+str(turn)+r'\t',raw):return
-        pending=re.search(r'CSC_STOREKEEPER_WAIT\s+(\d+)',raw)
-        require(pending and int(pending[1])<turn,'Unexpected inactive-boundary Storekeeper reply')
-        require(time.monotonic()<deadline,'UI clock did not settle for Storekeeper observation')
-        time.sleep(.25)
+        +"\nelse print('CSC_FULL_RUN_UI_CLOCK_DEFERRED',Game.GetCurrentGameTurn()) end")
+    raw=controller.cmd(code,'PlotInfo','storekeeper-inactive-boundary-'+str(turn))
+    if re.search(r'CSC_STOREKEEPER_END\t'+str(turn)+r'\t',raw):return True
+    pending=re.search(r'CSC_FULL_RUN_UI_CLOCK_DEFERRED\s+(\d+)',raw)
+    require(pending and int(pending[1])<turn,'Unexpected inactive-boundary Storekeeper reply')
+    write_json(out/('deferred-ui-boundary-'+str(turn)+'.json'),
+        dict(core_turn=turn,ui_turn=int(pending[1]),deferred=True,relabeled=False))
+    return False
 
 
 def play(controller,out,user_root,*,start,endpoint,saves=None):
