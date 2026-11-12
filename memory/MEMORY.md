@@ -23,8 +23,20 @@ Lifecycle `nuremberg-purchase-lifecycle-01`, exec17117, is terminal/closedverifi
 Runtimevtable9fa930 execute3f82c0/update3fa260/eligibility3fa880. Createdstate1;
 203eligibletrue/state3, pay40/commandreturnstate3/decorator3;204eligibilityfalse/
 state3/decorator3. Ownershipcorrect205/nofoundation. Endpoint205SHA6977d48d856ea1f08f8f1876371898495a3e182d9b8d7cffbee0de09fdab1a03.
-Noownedliveworker/game remains. SealedlifecycleJSON inrepo. Next controlled
-acknowledgement prototype must verifyactualcurrentintendedcityownership and
+SealedlifecycleJSON inrepo. Ack-01 exec99408 FAILEDi8unsupportedbeforeanywrite,
+ran216/finallyclosedverifiedexit0, no complete.json/endpointsave. Fixedu8signed
+decode; stricttypefixtureadded. CurrentLIVEsharedworkerack-02 exec16377,
+`nuremberg-purchase-acknowledgement-02`202–216, diagnostictrackedackonly;
+allmainpolicyunchanged. Pin nicopolis_replay.py,plot_purchase_observer.js,
+newpurchase_acknowledgement.js untilterminal. Newfactorytests+observerguards
+pass: nullgame/map, contract-linkedadmittedpayment, reservedintent/outcome
+journal(includingcapacityrace), signedowner, nativeassignment/deduplication.
+AtdecoratorR14actualexecutingtreeanalysisdistrict29c/city2f0/plot308 and
+parent120rootIDs mustmatchindependentfreshcreationbinding beforeack. This
+runtime tuple supportsproposedCEdynamic/reloadpathbutnotqualifiedyet.
+Diagnosticcode isseparatefromshippingintegration, source-reviewedbyAstra.
+Controlled
+acknowledgement prototype verifiesactualcurrentintendedcityownership and
 use nativearchive-aware assignment64a6d0(contract+a0,&int32seven), neverraw+b0
 write; leave normaldecorator/handlecleanup. Generictrackedassignment, NOTa
 semanticCompleteContract helper. Provennativeidiom BuildingCreated3f81d0 /

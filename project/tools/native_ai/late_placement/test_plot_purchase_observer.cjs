@@ -396,11 +396,20 @@ execution=executionCase('bad-economic-player');assert.match(execution.fault,/Exe
 // and record actual dispatch instead of assuming the base class. AL describes
 // eligibility only; no completion or successful removal field is synthesized.
 function lifecycleCase(mode) {
+    const acknowledgementMode=mode.startsWith('ack-journal');let writeAttempts=0;
     const fresh={...context,rpc:{exports:{}},Process:{...context.Process,
         enumerateModules:()=>[{path:'pinned.dll',size:0x1000000,base:ptr(0)}]}};
+    if(acknowledgementMode)fresh.createPurchasedContractAcknowledgement=()=>({observeDebit(){},
+        tryAcknowledge(contract,binding,state,turn,beforeWrite){
+            beforeWrite();++writeAttempts;
+            if(mode==='ack-journal-race')fire(0x459169); // Cannot take the reserved outcome slot.
+            return {acknowledged:true,before:3,after:7};
+        }});
     vm.createContext(fresh);vm.runInContext(fs.readFileSync(__dirname+'/plot_purchase_observer.js','utf8'),fresh);
     fresh.rpc.exports.init({path:'pinned.dll',image_size:0x1000000},
-        {player:1,city:524295,width:74,height:46,plots:[401],observeLineage:true,observeLifecycle:true});
+        {player:1,city:524295,district:36,width:74,height:46,plots:[401],observeLineage:true,
+            observeLifecycle:true,observeExecution:mode==='payment-binding',repairOwnedPurchase:acknowledgementMode,
+            streamRecords:acknowledgementMode});
     put(city,0xd8,1);put(city,0xa8,524295);put(build,0x90,city);
     put(root,0x120,0);put(child,0x120,root);put(root,0x1c8,91);put(root,0x1b0,4001);
     put(contract,0x110,4333);put(contract,0x128,4001);put(contract,0x140,1);
@@ -408,12 +417,28 @@ function lifecycleCase(mode) {
     put(contract,0,0x9fa930);put(0x9fa930,0x20,0x3f82c0);
     put(0x9fa930,0x50,0x3fa260);put(0x9fa930,0x80,0x3fa880);
     put(player,0xd8,1);put(economic,0x98,player);
+    put(player,0x288,1);put(xy,0,31);put(xy,4,5);
+    const treePlot=0x130000;put(treePlot,0x28,(5<<16)|31);
+    put(child,0x2f0,city);put(child,0x308,treePlot);put(child,0x29c,36);
     const handle=0x120000;put(handle,0,contract);
     fire(0x3e10fd,{rdi:ptr(build),rbx:ptr(child),rsi:ptr(91)});
     fire(0x55dc9f,{r15:ptr(contract),rsi:ptr(child),rbp:ptr(player)});
     put(contract,0xb0,3);
     if(mode==='stale')put(contract,0x110,4334);
     if(mode==='unknown')put(handle,0,contract+4096);
+    if(acknowledgementMode) {
+        const limit=mode==='ack-journal-full'?509:508;
+        for(let count=streamed.length;count<limit;count++)fire(0x459169);
+        fire(0x55a056,{rax:ptr(contract),r14:ptr(child)});
+        return {...JSON.parse(JSON.stringify(fresh.rpc.exports.freeze())),writeAttempts};
+    }
+    if(mode==='payment-binding') {
+        fire(0x45921f,{r14:ptr(city),r12:ptr(contract+0x178),rax:ptr(1)});
+        put(frame,0x67,31);put(frame,0x6b,5);put(treasury,0xa8,130560);
+        fire(0x681379,command);put(treasury,0xa8,104960);fire(0x68137e,command);
+        fire(0x459241,{r14:ptr(city),r12:ptr(contract+0x178)});
+        return JSON.parse(JSON.stringify(fresh.rpc.exports.freeze()));
+    }
     fire(0x457515,{r15:ptr(economic),rbx:ptr(handle),rax:ptr(1)});
     fire(0x45755f,{r15:ptr(economic),rdi:ptr(handle),rax:ptr(256)}); // ALfalse.
     fire(0x55a056,{rax:ptr(mode==='unknown'?contract+4096:contract)});
@@ -430,4 +455,21 @@ assert(lifecycle.records.every(r=>!('removed'in r)&&!('completed'in r)));
 lifecycle=lifecycleCase('unknown');assert.equal(lifecycle.fault,null);assert.equal(lifecycle.records.length,2);
 lifecycle=lifecycleCase('stale');assert.match(lifecycle.fault,/identity changed/);
 assert.equal(lifecycle.records.length,2);
+lifecycle=lifecycleCase('payment-binding');assert.equal(lifecycle.fault,null);
+let linked=lifecycle.records.find(r=>r.kind==='debit-return');assert.equal(linked.contractId,4333);
+assert.equal(linked.contractPointer,String(contract));assert.equal(linked.ownerControl,4001);
+assert.equal(linked.rootTreeId,91);assert.equal(lifecycle.pendingCommands,0);
+for(const mode of ['ack-journal-full','ack-journal-exact','ack-journal-race']) {
+    streamed.length=0;lifecycle=lifecycleCase(mode);assert.equal(lifecycle.pendingAcknowledgements,0,mode);
+    if(mode==='ack-journal-full'){
+        assert.match(lifecycle.fault,/journal capacity/);assert.equal(lifecycle.writeAttempts,0);
+        assert(!lifecycle.records.some(r=>r.kind==='purchase-acknowledgement-intent'));
+    }else{
+        assert.equal(lifecycle.writeAttempts,1);assert.equal(lifecycle.records.length,512);
+        assert.equal(lifecycle.records.at(-2).kind,'purchase-acknowledgement-intent');
+        assert.equal(lifecycle.records.at(-1).acknowledged,true);
+        if(mode==='ack-journal-race')assert.match(lifecycle.fault,/trace capacity/);
+        else assert.equal(lifecycle.fault,null);
+    }
+}
 console.log('Purchase observer: measured debits, admission/execution, acquisition callers, lineage and guarded detach passed');

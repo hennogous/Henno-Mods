@@ -295,6 +295,50 @@ through a normal native lifecycle operation, scoped dynamically to CSC's plans.
 No contract status was written in this probe, and no repair is yet integrated.
 Do not generalize this controlled release case to every natural purchase.
 
+### Controlled acknowledgement prototype
+
+The next experiment leaves the shared source, main policy, native prices and
+production values unchanged. At the decorator's existing status read, it may
+acknowledge only the observed purchase after verifying the current intended
+city owns the target. It uses the native completion idiom demonstrated by
+BuildingCreated 3f81d0 / DistrictCreated 3f8210: tracked assignment 64a6d0 of
+int32 state 7 through `contract+a0`. It never writes `contract+b0` directly,
+removes a handle, reserves land or issues a build command.
+
+**Acceptance for this diagnostic:** the ordinary decorator consumes that
+acknowledgement, submits the native Quarter request and reaches a physical
+foundation through 216, compared with the unchanged full arm's timeout.
+An acknowledged state alone does not prove any of the downstream steps.
+Even a positive result is not level-3 integration or acquisition causality.
+
+`nuremberg-purchase-acknowledgement-01` is a failed tooling attempt, not a
+construction comparison. Its owner decoder requested unsupported `i8`; the
+shared memory adapter rejected the read before tracked assignment. The native
+trace is faulted and the driver exits unsuccessfully, with normal game exit
+and restoration verified. No completion receipt or contract write is claimed.
+
+The corrected `-02` prototype reads supported `u8` and converts the signed
+owner explicitly. Its synthetic reader now enforces the real adapter's type
+vocabulary. It also rejects null game/map pointers, binds the debit to the
+admitted request's thread/contract/pointer/control/root identities, and reserves
+intent/outcome journal space before any assignment. Capacity exhaustion and
+interleaved receipt cases are covered by fixtures. An outcome reservation
+survives ordinary callbacks; a post-write failure remains explicitly unverified.
+
+At the same pre-write boundary it records the executing tree's district,
+city and plot, then compares them with the independently observed creation
+binding. R14 is the **executing** BehaviorTree: analysis district is +29c,
+City pointer +2f0 and Plot pointer +308. Root IDs require a bounded parent+120
+walk; root analysis is not substituted for the current trigger. Missing or
+inconsistent identity prevents acknowledgement.
+
+These checks test the identity path proposed for a later generic CE capability.
+The proposed shipping scope would be numeric player/city/district allowances
+published dynamically by main CSC, with current native tree/ownership validation.
+Its receipt would mean ownership prerequisite fulfilled, not paid purchase:
+cultural acquisition can legitimately satisfy ownership too. Runtime reload
+reconstruction and the CE/main adapter are not yet implemented or qualified.
+
 ## Operational scope
 
 The same CE f812 and current DX11 binary identity used in the accepted placement

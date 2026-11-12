@@ -17,6 +17,9 @@
 // the selected Quarter/site and contract's originating city. It never changes
 // price calculation, funds, payment or ownership directly. This is diagnostic
 // tooling, not CSC shipping policy or a finished CE lifecycle implementation.
+// The separate explicit repairOwnedPurchase experiment may acknowledge a paid,
+// correctly owned contract through the tracked native setter. Default remains
+// read-only. That experiment is not evidence of a dynamically integrated fix.
 const PlotQuoteReturn = 0x681346;
 const GoldDebitCall = 0x681379;
 const GoldDebitReturn = 0x68137e;
@@ -99,6 +102,8 @@ const records = [];
 let fault = null;
 let pendingDebitCount = () => 0;
 let pendingExecutionCount = () => 0;
+let pendingAcknowledgementCount = () => 0;
+let pendingCommandCount = () => 0;
 
 function read(address, offset, type) {
     const result = memory.read(address.toString(), offset, type);
@@ -124,6 +129,8 @@ rpc.exports = {
             throw Error('Lifecycle observation must be explicit Boolean');
         if(scope.observeLifecycle===true&&scope.observeLineage!==true)
             throw Error('Lifecycle observation requires known contract lineage');
+        if(scope.repairOwnedPurchase!==undefined&&typeof scope.repairOwnedPurchase!=='boolean')
+            throw Error('Purchase repair must be explicit Boolean');
         const targets = new Set(scope.plots);
         const prototypeBuyer = scope.prototypeBuyer;
         if (prototypeBuyer !== undefined && prototypeBuyer !== null &&
@@ -148,9 +155,17 @@ rpc.exports = {
         fingerprint(0x4590a5, '4881ec80000000488be9'); // Audited frame size.
         const createdTrees = new Map(), knownContracts = new Map(), pendingSelections = new Map();
         const pendingDebits = new Map(); // At most32 synchronous observed plot commands.
+        const commandBindings=new Map(); // Thread-bound admitted command, retired on return.
+        let reservedAcknowledgements=0;
+        const acknowledgement=scope.repairOwnedPurchase===true?
+            createPurchasedContractAcknowledgement({core,scope,read,fingerprint}):null;
         let executionPending = 0;
-        const emit = receipt => {
-            if (records.length >= 512) throw Error('Purchase trace capacity');
+        const emit = (receipt,consumeReservation=false) => {
+            if(consumeReservation) {
+                if(reservedAcknowledgements<1)throw Error('Missing acknowledgement journal reservation');
+                --reservedAcknowledgements;
+            }
+            if (records.length+reservedAcknowledgements >= 512) throw Error('Purchase trace capacity');
             records.push(receipt);
             if (scope.streamRecords) send({kind: 'plot-purchase-receipt', receipt});
         };
@@ -256,7 +271,7 @@ rpc.exports = {
                     const treeId = read(chain.root, TreeIdOffset, 'i32');
                     if (treeId !== this.context.rsi.toInt32()) throw Error('Installed root tree identity differs');
                     if (createdTrees.size >= 64) throw Error('District tree binding capacity');
-                    const binding = {city: scope.city, treeId, tree: tree.toString(),
+                    const binding = {city: scope.city,cityPointer:city.toString(),treeId, tree: tree.toString(),
                         root: chain.root.toString(), control: read(chain.root, TreeControlOffset, 'i32')};
                     if (prototypeBuyer) {
                         const pending = pendingSelections.get(this.threadId);
@@ -293,7 +308,8 @@ rpc.exports = {
                         throw Error('Purchase contract/root owner differs');
                     const binding = {contract: contract.toString(), contractId: read(contract, ContractIdOffset, 'i32'),
                         ownerControl, plot, x, y, rootTreeId,
-                        executingTree: this.context.rsi.toString(), originCity: cities.length === 1 ? cities[0] : null};
+                        executingTree: this.context.rsi.toString(), originCity: cities.length === 1 ? cities[0] : null,
+                        originCityPointer:cities.length===1?origins[0].cityPointer:null};
                     if (prototypeBuyer) {
                         // The nearest observed ancestor must be this exact
                         // invocation's selected Quarter and target. An old
@@ -329,15 +345,14 @@ rpc.exports = {
                         throw Error('Invalid purchase coordinates');
                     const plot = y * scope.width + x;
                     if (!targets.has(plot) && !allPlots) return;
-                    if (records.length >= 512) throw Error('Purchase trace capacity');
+                    if (records.length+reservedAcknowledgements >= 512) throw Error('Purchase trace capacity');
                     const turn = read(ptr(read(gameSlot, 0, 'ptr')), GameTurnOffset, 'i32');
                     const receipt = {kind, turn, player, city: read(city, CityIdOffset, 'i32'), plot};
                     if (value) Object.assign(receipt, value(this.context, this.threadId, receipt));
-                    records.push(receipt);
                     // Stream bounded observations to the host immediately.
                     // A machine/worker interruption can bypass finally and
                     // must not discard every receipt before endpoint freeze.
-                    if (scope.streamRecords) send({kind: 'plot-purchase-receipt', receipt});
+                    emit(receipt);
                 } catch (error) {
                     fault = String(error);
                     if (scope.streamRecords) send({kind: 'plot-purchase-fault', fault});
@@ -365,7 +380,8 @@ rpc.exports = {
                         throw Error('Plot debit Treasury receiver differs');
                     const beforeQ8 = read(treasury, TreasuryGoldOffset, 'i32');
                     pendingDebits.set(key, {handler:handler.name,treasury: treasury.toString(), beforeQ8, deltaQ8,
-                        city: receipt.city, cityPointer: context.rdi.toString(), plot: receipt.plot, turn: receipt.turn});
+                        city: receipt.city, cityPointer: context.rdi.toString(), plot: receipt.plot, turn: receipt.turn,
+                        command:commandBindings.get(thread)});
                     return {handler:handler.name,deltaQ8, threadId: thread, callerStack: context.rsp.toString(),
                         treasury: treasury.toString(), treasuryBeforeQ8: beforeQ8};
                 }, allCommandPlots);
@@ -383,12 +399,18 @@ rpc.exports = {
                         throw Error('Unmatched plot debit return');
                     const afterQ8 = read(ptr(pending.treasury), TreasuryGoldOffset, 'i32');
                     pendingDebits.delete(key);
-                    return {handler:handler.name,deltaQ8: pending.deltaQ8, threadId: thread, callerStack: context.rsp.toString(), treasury: pending.treasury,
+                    const command=pending.command;
+                    const binding=command&&command.turn===receipt.turn&&command.city===receipt.city&&command.plot===receipt.plot?
+                        {contractId:command.contractId,contractPointer:command.contractPointer,
+                            ownerControl:command.ownerControl,rootTreeId:command.rootTreeId}:{};
+                    const value={...binding,handler:handler.name,deltaQ8: pending.deltaQ8, threadId: thread, callerStack: context.rsp.toString(), treasury: pending.treasury,
                         treasuryBeforeQ8: pending.beforeQ8, treasuryAfterQ8: afterQ8,
                         measuredDeltaQ8: afterQ8 - pending.beforeQ8,
                         // Notifications inside SetGoldBalance can cause nested
                         // effects. A mismatch stays explicit, never payment success.
                         deltaMatched: afterQ8 - pending.beforeQ8 === pending.deltaQ8};
+                    if(acknowledgement)acknowledgement.observeDebit({...receipt,...value});
+                    return value;
                 }, allCommandPlots);
             attach(handler.annex, 'annex-return', locate,()=>({handler:handler.name}), allCommandPlots);
         }
@@ -493,6 +515,46 @@ rpc.exports = {
                 try {
                     const state=contractState(this.context.rax);if(!state)return;
                     emit({kind:'purchase-decorator-status',turn:turnNow(),player:scope.player,...state});
+                    if(acknowledgement) {
+                        const binding=validatedContract(this.context.rax.add(ContractTargetOffset));
+                        // R14 is the executing tree, not necessarily the root.
+                        // Match its live trigger against the independent fresh
+                        // creation binding before any mutation. This also tests
+                        // the identity path proposed for the future CE adapter.
+                        const tree=this.context.r14,chain=ancestry(tree);
+                        const city=ptr(read(tree,0x2f0,'ptr')),plot=ptr(read(tree,0x308,'ptr'));
+                        if(city.isNull()||plot.isNull())throw Error('Missing executing tree identity');
+                        const packed=read(plot,0x28,'i32');
+                        const tuple={city:read(city,CityIdOffset,'i32'),player:read(city,CityOwnerOffset,'i32'),
+                            district:read(tree,0x29c,'i32'),x:(packed<<16)>>16,y:packed>>16,
+                            rootTreeId:read(chain.root,TreeIdOffset,'i32'),rootControl:read(chain.root,TreeControlOffset,'i32')};
+                        emit({kind:'purchase-executing-tree',turn:turnNow(),contractId:binding.contractId,...tuple});
+                        if(tuple.city!==binding.originCity||city.toString()!==binding.originCityPointer||
+                            tuple.player!==scope.player||tuple.district!==scope.district||
+                            tuple.x!==binding.x||tuple.y!==binding.y||tuple.rootTreeId!==binding.rootTreeId||
+                            tuple.rootControl!==binding.ownerControl)throw Error('Executing tree differs from purchase lineage');
+                        const header={turn:turnNow(),player:scope.player,plot:binding.plot,
+                            city:binding.originCity,contractId:binding.contractId};
+                        let reserved=false;
+                        try {
+                            const result=acknowledgement.tryAcknowledge(this.context.rax,binding,state,turnNow(),()=>{
+                                // Reserve the outcome even if other callbacks
+                                // run during a native read/call. No assignment
+                                // may precede this journal admission and intent.
+                                if(records.length+reservedAcknowledgements+2>512)
+                                    throw Error('No acknowledgement journal capacity');
+                                ++reservedAcknowledgements;reserved=true;
+                                emit({kind:'purchase-acknowledgement-intent',...header});
+                            });
+                            if(result)emit({kind:'purchase-acknowledgement',...header,...result},reserved);
+                            else if(reserved)throw Error('Reserved acknowledgement produced no outcome');
+                        }catch(error){
+                            if(reserved&&reservedAcknowledgements>0)
+                                emit({kind:'purchase-acknowledgement',...header,acknowledged:false,
+                                    writeResult:'unverified',error:String(error)},true);
+                            throw error;
+                        }
+                    }
                 }catch(error){fail(error);}
             }));
         }
@@ -518,11 +580,26 @@ rpc.exports = {
             attach(TargetedRequestBuilt,'targeted-request-built',targetedLocation('r14'),
                 context=>({requestBuilt:(context.rax.toInt32()&255)!==0,...admissionState(context)}));
             attach(TargetedCommandChecked,'targeted-command-checked',targetedLocation('r14'),
-                context=>({commandAdmitted:(context.rax.toInt32()&255)!==0,...admissionState(context)}));
+                (context,thread,receipt)=>{
+                    const admitted=(context.rax.toInt32()&255)!==0;
+                    const binding=scope.observeLineage?validatedContract(context.r12):null;
+                    if(admitted&&binding&&binding.originCity===receipt.city) {
+                        if(!Number.isInteger(thread)||thread<=0||commandBindings.has(thread)||commandBindings.size>=32)
+                            throw Error('Ambiguous purchase command binding');
+                        commandBindings.set(thread,{turn:receipt.turn,city:receipt.city,plot:receipt.plot,
+                            contractId:binding.contractId,contractPointer:binding.contract,
+                            ownerControl:binding.ownerControl,rootTreeId:binding.rootTreeId});
+                    }
+                    return {commandAdmitted:admitted,...admissionState(context)};
+                });
             attach(TargetedCommandReturned,'targeted-command-returned',targetedLocation('r14'),
-                context=>({managerStartReturned:true,...admissionState(context),
-                    ...(scope.observeLifecycle&&validatedContract(context.r12)?
-                        contractState(context.r12.add(-ContractTargetOffset)):{})}));
+                (context,thread)=>{
+                    const result={managerStartReturned:true,...admissionState(context),
+                        ...(scope.observeLifecycle&&validatedContract(context.r12)?
+                            contractState(context.r12.add(-ContractTargetOffset)):{})};
+                    commandBindings.delete(thread);
+                    return result;
+                });
             const caller = address => {
                 // Windows user pointers fit53-bit integers. Preserve an outside
                 // caller's address with unknownRVA rather than wrapping it into
@@ -577,13 +654,18 @@ rpc.exports = {
         // Expose unresolved pairs only at freeze; never interpret a call with
         // no observed return as a measured payment or resend the game command.
         pendingDebitCount = () => pendingDebits.size;
+        pendingAcknowledgementCount=()=>reservedAcknowledgements;
+        pendingCommandCount=()=>commandBindings.size;
         return true;
     },
     freeze() {
         for (const listener of listeners) listener.detach();
         const pendingDebits = pendingDebitCount();
         const pendingExecutions=pendingExecutionCount();
+        const pendingAcknowledgements=pendingAcknowledgementCount(),pendingCommands=pendingCommandCount();
         return {records, fault: fault || (pendingDebits ? 'Unreturned observed plot debit' :
-            pendingExecutions?'Unreturned observed execution callback':null), pendingDebits,pendingExecutions};
+            pendingExecutions?'Unreturned observed execution callback':pendingAcknowledgements?
+                'Unresolved acknowledgement journal':pendingCommands?'Unreturned purchase command':null),
+            pendingDebits,pendingExecutions,pendingAcknowledgements,pendingCommands};
     },
 };
