@@ -2929,8 +2929,8 @@ or validated as a solution yet. Unknown/potential supply must remain eligible.
 
 **Typed main-CSC declines causally defer a known-no-Base Bakers investment**
 
-Status: accepted first-stage partial; independently audited by Astra. Levels1–3
-for the deferral half of1.7; the complete sub-problem remains open.
+Status: accepted deferral leg; independently audited by Astra. Together with
+AI-C167 it closes1.7 at levels1–3 at a composite representative scope.
 
 The matched current-main policy changes native203 selection/request from
 Bakers472347,924 Q8 to Hippodrome472306,049. Both requests have contract4333;
@@ -2952,9 +2952,10 @@ ablation, journal/matrix equality, exact masks and changed actual requests.
 Normal closure and no faults are verified. A prototype's earlier conversational
 alternative name Preserve was wrong; runtime definitions confirm Hippodrome.
 
-Limits: controlled knowledge fixture; no construction or Service claim. A
-credible new Base opportunity must still withdraw scopes and produce a fresh
-Quarter choice/request in continued treatment. Do not count1.7 closed yet.
+Limits: controlled knowledge fixture; no construction or Service claim.
+Opportunity-driven withdrawal and a fresh Quarter choice/request were then
+missing; AI-C167 now establishes that leg in
+the separately qualified Washington window. No uninterrupted city cycle is claimed.
 
 - [Implementation, native correction, tests and limits](../research/mods/csc-ai-quarter-decline-20261112.md)
 - [Sealed matched audit](../research/mods/csc-ai-quarter-decline-20261112-audit.json)
@@ -2964,7 +2965,8 @@ Quarter choice/request in continued treatment. Do not count1.7 closed yet.
 **A new working Base automatically retires declines; later native comparisons still prefer other districts**
 
 Status: independently audited by Astra; accepted automatic-withdrawal evidence
-and representative negative for the remaining1.7 Quarter request. Whole1.7 is open.
+and representative negative for the then-missing1.7 Quarter request. AI-C167
+later closes that leg separately; this continuous episode remains negative.
 
 The same200 source reproduces the full203 Hippodrome choice, then a declared
 204 transfer of existing farmed Flax471 creates working Nicopolis Base supply
@@ -2993,3 +2995,38 @@ Washington23 choice is an existing lead, not new withdrawal evidence yet.
 
 - [Continuation, exact score ledger and next step](../research/mods/csc-ai-quarter-reconsideration-20261112.md)
 - [Sealed terminal audit](../research/mods/csc-ai-quarter-reconsideration-20261112-audit.json)
+
+## AI-C167
+
+**Ordinary main withdrawal after restored Base leads to a native Bakers choice and request**
+
+Status: accepted; independently audited by Astra. With AI-C165's causal
+deferral, **Problem1.7 closes at levels1–3 at a composite representative scope**.
+
+The exact original22 source temporarily lacks existing Cattle796 during initial
+main publication. All mapped Base types and six site870 neighbors are visible;
+no other credible adjacent Base remains. Main22/version1 genuinely stages the
+870 no-Base scope. At paused22 a single acknowledged command restores the exact
+source Cattle/count1, preserving ownership, improvement, terrain, funds, queue,
+population and publication version. No forced refresh or native action occurs.
+
+Ordinary23/version2 recognizes ready, unimproved Cattle796 and withdraws the
+scope. Exact previous-version readback at24 records staged0. Actual native
+Net/cache/Best/present-value reads40267+6144=46411 Q8, selects Bakers870,
+reserves56,11 and submits contract241 at value181. Main's uncertainty guard,
+ordinary bands and generic replacement lifecycle supply the intervention;
+fixed city/plot coordinates occur only in the diagnostic fixture.
+
+Astra independently verifies source,644 package hashes, reconstructed main
+staging, four complete trace prefixes, actual request/reservation/acceptance,
+normal exit0, owner absence and preference/package restoration. The related
+fixture/driver suite passes27 checks.
+
+Limits: separate cases establish causal deferral and opportunity-driven
+reconsideration. Washington's earlier Campus plan is not policy-caused
+deferral; no uninterrupted single-city cycle, Quarter construction, native
+acquisition, working Pasture, Service or broad qualification is claimed.
+AI-C166's continuous negative remains preserved. Active goal item:2.1.
+
+- [Source, protocol, result and limits](../research/mods/csc-ai-quarter-reconsideration-washington-20261112.md)
+- [Sealed remaining-leg audit](../research/mods/csc-ai-quarter-reconsideration-washington-20261112-audit.json)

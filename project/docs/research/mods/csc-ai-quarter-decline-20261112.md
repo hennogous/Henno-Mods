@@ -1,6 +1,9 @@
 # Typed Quarter-site declines
 
-Active1.7. [AI-C164](../../civ6-ai/findings.md#ai-c164) establishes the need:
+This report establishes1.7's deferral leg. The later
+[Washington result](csc-ai-quarter-reconsideration-washington-20261112.md)
+closes the capability at a composite representative scope.
+[AI-C164](../../civ6-ai/findings.md#ai-c164) establishes the need:
 all11 known-no-Base Bakers pairs consumed their finite deductions, yet a weak
 Quarter still won. Increasing a penalty until that example passes does not
 express a stable rule about unusable supply potential.
@@ -129,14 +132,16 @@ Astra independently reproduces the audit: **levels1–3 are demonstrated for
 the deferral half**, not whole1.7. This is a changed native choice/request from
 dynamic main CSC, rather than a score-counter claim.
 
-The remaining evidence is a credible new Base opportunity, dynamic scope
+The then-remaining evidence was a credible new Base opportunity, dynamic scope
 withdrawal and a fresh Quarter choice/request in continued treatment. Existing
 farmed Flax471 can supply a minimal diagnostic territorial-change fixture;
 first inspect legal free Quarter397/398, customer geometry, population,
 capacity and the retained Hippodrome plan/queue. Any ownership transfer must
 preserve resource/improvement/terrain and carry **no native-acquisition claim**.
 Do not cancel the retained plan or add production. Let ordinary planning resume;
-completion is not a new acceptance gate. **1.7 remains open.**
+completion is not a new acceptance gate. The continuous Nicopolis test
+subsequently established withdrawal but no Quarter request; Washington
+established the remaining leg. Both outcomes remain recorded separately.
 
 ## Bounded reconsideration continuation
 
@@ -160,4 +165,6 @@ retired decline; the native Best record must come from a complete checked
 trace prefix. An unrelated Bakers choice or an incomplete reader prefix
 cannot qualify. Astra reviewed these checks before launch. The focused
 driver/fixture suite passes29 tests; the JavaScript observer syntax check
-passes. No continuation outcome is claimed here yet.
+passes. The subsequent [Nicopolis negative](csc-ai-quarter-reconsideration-20261112.md)
+and [Washington remaining-leg success](csc-ai-quarter-reconsideration-washington-20261112.md)
+record the outcomes.

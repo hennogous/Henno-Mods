@@ -81,24 +81,27 @@ Primary evidence: [finding register](findings.md#ai-c065),
 [weak-site comparison](findings.md#ai-c138), [frontier integration](findings.md#ai-c139).
 Astra independently audited these closure scopes on the resumed goal.
 
-**Active item: 1.7 defer and reconsider.** For a weak-only Quarter profile in a city, demonstrate a
-policy-caused decision to leave the Quarter uncommitted or choose another
-investment; then demonstrate dynamic reconsideration when a credible new
-opportunity becomes available. Keep the recorded 1.5/1.6 closures intact;
-additional acquisition seeds and purchase-necessity studies are qualification,
-not new acceptance gates. 2.1 remains after 1.7.
+**1.7 complete at levels1–3, composite representative scope; Astra approved.**
+AI-C165 establishes causal native deferral. AI-C167 establishes an actual prior
+main no-Base scope, changed Base facts, ordinary-publication withdrawal and
+fresh supported Bakers choice/request. These separate cases establish both
+capabilities; no uninterrupted single-city cycle or Quarter construction is
+claimed. AI-C166's continuous Nicopolis negative remains preserved.
+
+**Active item: 2.1 customer placement.** Isolate the mapped customer-site
+contribution and require a changed native district choice/request, with live
+main integration. Preserve standalone value and material protection.
 
 **Recorded partial completion:** AI-C165 demonstrates levels1–3 for causal
 deferral: eleven dynamic no-Base scopes change the native request from Bakers
 to Hippodrome with identical restored numerical matrices. Astra independently
-audits both arms. Whole1.7 stays open until a credible new Base opportunity
-withdraws scopes and produces a fresh Quarter choice/request. Retained plans
-must proceed through ordinary AI handling; completion is not an added gate.
+audits both arms. The then-missing fresh Quarter request is now established
+by AI-C167. Retained plans proceeded through ordinary handling; completion
+was not an added gate.
 
 **Further partial evidence:** AI-C166 verifies automatic withdrawal at the
 ordinary205 publication after existing farmed Base471 changes ownership.
 Fresh220/235/252 comparisons select other districts, so no fresh Quarter
 request is demonstrated through254. Astra independently audits the negative
-and preserved withdrawal scope. Do not retest withdrawal or increase bids to
-force this episode; qualify an evidenced competitive decision window for the
-remaining choice/request leg.
+and preserved withdrawal scope. The later Washington request closes the
+remaining leg without increasing bids or extending this episode.

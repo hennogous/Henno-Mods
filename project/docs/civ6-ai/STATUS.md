@@ -30,6 +30,13 @@ qualification remains separate. The full goal is active and incomplete.
   and an integrated ownership-prerequisite repair proceed through request,
   production, foundation and physical completion. Fresh and retained-plan
   reload pass; no realised Service is implied. [AI-C162](findings.md#ai-c162).
+- **1.7 Defer/reconsider — levels 1–3, composite representative scope.**
+  Nicopolis's typed declines causally change Bakers to Hippodrome. Washington's
+  genuine no-Base scope withdraws after restored Cattle through ordinary23
+  publication; native Bakers870 wins and receives request241. Astra audits
+  both legs. Separate cases establish these capabilities; no uninterrupted
+  single-city cycle or Quarter construction is claimed.
+  [AI-C165](findings.md#ai-c165), [AI-C167](findings.md#ai-c167).
 - **1.8 Weak-site suppression — levels 1–3.** Matched main-policy deductions
   changed Nicopolis's native site and request, including dynamic frontier
   coverage. This proves suppression of known weak sites, not that every
@@ -42,32 +49,29 @@ qualification remains separate. The full goal is active and incomplete.
 Astra independently validated these closure scopes on the resumed goal. Later
 qualification does not erase them unless it contradicts the original evidence.
 
-## Active problem: 1.7 Defer and reconsider
+## Active problem: 2.1 Customer-district placement
 
-**Acceptance:** a weak-only Quarter profile in a city remains uncommitted or chooses
-another investment because of policy, then reconsiders after a credible new
-opportunity. Require the native comparison/request in both stages and dynamic
-main CSC reproduction, not just a logged deferral count or a score write.
-Use representative cases; additional seeds remain separate qualification.
+**Acceptance:** isolate main CSC's mapped customer-site contribution and show
+an actual native customer-district choice changing toward a site adjacent to
+its provider Quarter or a specific credible future Quarter footprint. Keep
+standalone district value, legality and material protection intact. Require
+the consumed contribution, native choice/request and dynamic main integration.
+Construction and broader qualification are separate.
 
-**Latest verified outcome:** all11 known-no-Base Bakers pairs in the Nicopolis
-knowledge fixture consume their finite deductions, but Bakers still wins.
-This is a policy limitation, independently audited by Astra, not an inert API.
-[AI-C164](findings.md#ai-c164). The integrated typed-decline comparison now
-changes Bakers to Hippodrome with identical numerical matrices and actual
-construction requests, independently audited by Astra. This closes levels1–3
-for the **deferral half**, not whole1.7. Unknown/potential supply remains
-eligible; other district columns and retained plans stay native. Next: a
-credible new Base opportunity, scope withdrawal and a fresh Quarter
-choice/request. [Evidence](../research/mods/csc-ai-quarter-decline-20261112.md).
+**Latest verified outcome:** 1.7 is complete at the stated composite scope.
+Washington22/version1 stages the actual no-Base decline. Exact restoration of
+existing Cattle796 leaves that publication intact; ordinary23/version2
+withdraws it. Native Net/cache/Best reads40267+6144=46411, selects Bakers870,
+reserves it and submits request241. All644 package hashes, source, diagnostic
+staging and cleanup pass independent Astra review.
+[Evidence](../research/mods/csc-ai-quarter-reconsideration-washington-20261112.md).
 
-The200→254 continuation now proves **automatic ordinary-publication withdrawal**
+The preserved Nicopolis200→254 continuation proves ordinary-publication withdrawal
 after a controlled transfer of existing farmed Base471. It produces fresh
 Holy Site, Commercial Hub and Water Entertainment Complex requests, rather
 than Bakers. The main Quarter bid improves; native input valuation falls.
-All packages and cleanup pass audit. No extra continuation or bid increase is
-justified by this episode. Next: identify an already evidenced competitive
-Quarter decision window for the remaining fresh request.
+All packages and cleanup pass audit. It remains a negative for later Quarter
+selection; the composite closure does not turn it into a successful city cycle.
 [AI-C166](findings.md#ai-c166), [continuation](../research/mods/csc-ai-quarter-reconsideration-20261112.md).
 
 **1.5 is now closed at levels 1–3, independently approved by Astra.** Its
@@ -85,7 +89,7 @@ paid acquisition through improvement, not another BUY-versus-NOT-BUY result.
 No Service or overlapping-buyer reliability is claimed.
 [Supplier evidence and sealed audit](../research/mods/csc-ai-supplier-acquisition-20261112.md).
 
-**Eight of ten sub-problems close at levels 1–3. Open: 1.7 and 2.1.**
+**Nine of ten sub-problems close at levels 1–3. Open: 2.1 only.**
 
 ## Evidence levels by sub-problem
 
@@ -97,7 +101,7 @@ No Service or overlapping-buyer reliability is claimed.
 | 1.4 Combined adjacency | Verified | Stronger Quarter site/request wins | **Complete at stated scope** |
 | 1.5 Buying | Footprint and supplier delivery verified | Causal footprint follow-through; supplier paid and improved | **Complete at stated scope** |
 | 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
-| 1.7 Defer/reconsider | Typed decline and ordinary withdrawal verified | Deferral/request changed; later Quarter request pending | Dynamic deferral/withdrawal integrated; whole item open |
+| 1.7 Defer/reconsider | Typed decline and ordinary withdrawal verified | Causal deferral plus later supported Quarter choice/request | **Complete composite representative scope** |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
 | 2.1 Customer sites | Exact Harbor writes verified | Isolated offer ablation pending | Causal reproduction pending |
 | 2.2 Protect materials | Verified | Verified, supplier retained | **Complete finite-penalty scope** |

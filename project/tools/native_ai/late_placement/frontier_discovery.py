@@ -11,6 +11,9 @@ trace prefixes through207; it adds no native hook or policy treatment.
 Liverpool modes preserve inactive checkpoints and compare current main CSC
 guidance with scoped input/offer ablations. Explicit source-preparation flags
 make declared common map edits, never shipping policy or native AI actions.
+The explicit Washington22→24 opportunity temporarily removes then restores
+one original resource. Main CSC alone publishes the prior decline and ordinary
+withdrawal; native choice/request must be demonstrated separately in the audit.
 Physical surveys, committed offers, native values and requests are separate
 evidence steps; a saved plan does not establish construction completion.
 """
@@ -36,6 +39,7 @@ from full_game_controller.checkpoint import save_inactive_boundary, archive_auto
 from liverpool_river_policy import PREPARE as PREPARE_RIVER, without_river
 from liverpool_adjacency_policy import PREPARE as PREPARE_ADJACENCY, without_promotions, without_strong_promotions
 from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint, PREPARE_RELEASE
+from washington_opportunity import stage as stage_washington_opportunity, RESTORE as RESTORE_WASHINGTON_BASE
 
 
 def defer_autosave_source(folder, home, world_sha, policy_root):
@@ -184,6 +188,7 @@ def run(args):
     prepared=getattr(args,'boston_prepared',None)
     host_scout=getattr(args,'host_choice_scout',None)
     early_host=getattr(args,'early_host_scout',False)
+    washington_opportunity=getattr(args,'washington_opportunity',False)
     without_early_host=getattr(args,'early_without_washington_host',False)
     early_endpoint=getattr(args,'early_through',24)
     defer_scout=getattr(args,'defer_scout',False)
@@ -205,6 +210,10 @@ def run(args):
     assert not host_scout or args.case==['baseline-fractal'] and not getattr(args,'compare_owned',False)
     assert not early_host or boston and not (boston_arm or prepare_specialty or prepared or host_scout)
     assert not without_early_host or early_host
+    assert not washington_opportunity or (early_host and early_endpoint==24 and not (
+        without_early_host or save_liverpool or defer_scout or defer_resume or liverpool_source)
+        and getattr(args,'ce_dll',None) and args.ce_sha==
+        'a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb')
     assert not save_liverpool or early_host and early_endpoint==25 and not without_early_host
     assert 24<=early_endpoint<=(40 if defer_scout else 30)
     assert not defer_scout or early_host and not without_early_host and 32<=early_endpoint<=40 and early_endpoint%2==0
@@ -340,6 +349,8 @@ def run(args):
             relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
             replacements[SCANNER],replacements[relative]=stage_early_facts(
                 replacements[SCANNER],replacements[relative],migrate_roles=not defer_resume)
+            if washington_opportunity:
+                replacements[relative]=stage_washington_opportunity(replacements[relative])
             if without_early_host:replacements[SCANNER]=without_washington_future_host(replacements[SCANNER])
             host_scope=[] # Player-scoped native Quarter rows, including non-winning sites.
             replacements[relative]=stage_host_reader(replacements[relative],host_scope,
@@ -408,6 +419,7 @@ def run(args):
         prepare_specialty=prepare_specialty,prepared_source=str(prepared) if prepared else None,
         host_choice_scope=host_scope,
         early_host_scout=early_host,
+        washington_opportunity=washington_opportunity,
         early_without_washington_host=without_early_host,
         early_endpoint=early_endpoint if early_host else None,
         defer_scout=defer_scout,
@@ -426,6 +438,7 @@ def run(args):
         shutil.copyfile(HERE/'host_choice_policy.py',out/'host_choice_policy.py')
         shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
     if early_host or save_owned:shutil.copyfile(HERE/'early_host_policy.py',out/'early_host_policy.py')
+    if washington_opportunity:shutil.copyfile(HERE/'washington_opportunity.py',out/'washington_opportunity.py')
     if liverpool_source or save_liverpool:shutil.copyfile(HERE/'liverpool_inspection.lua',out/'liverpool_inspection.lua')
     if prepare_river or river_arm:shutil.copyfile(HERE/'liverpool_river_policy.py',out/'liverpool_river_policy.py')
     if prepare_flat or adjacency_arm:shutil.copyfile(HERE/'liverpool_adjacency_policy.py',out/'liverpool_adjacency_policy.py')
@@ -698,6 +711,16 @@ end
             shutil.copyfile(out/'session-source-ready.json',case/'source-ready.json')
             print('Frontier survey complete',name,flush=True)
             if host_mode:
+                if washington_opportunity:
+                    # The actual main22 packet must first contain a no-Base
+                    # decline. Restore only the temporarily absent original
+                    # resource, then let ordinary23 replace that packet. No
+                    # native planning/queue or score command is issued here.
+                    raw=session.issue_once('restore-washington-base',RESTORE_WASHINGTON_BASE,
+                        'CSC_AI_BakersGameplay')
+                    (case/'washington-base-restored.txt').write_text(raw,encoding='utf-8')
+                    assert re.search(r'CSC_WASH_PRIOR_SCOPE\s+22\s+\d+\s+\{[^\r\n]*"staged":1',raw)
+                    assert re.search(r'CSC_WASH_BASE_RESTORED\s+22\s+796\s+\d+\s+1\s+2',raw)
                 # Early24 includes the recorded Delhi23 choice; Fractal207
                 # includes Makwa206 but not Diara's later207 comparison.
                 # These existing CE records nominate a comparison; they do
@@ -739,6 +762,10 @@ end
                 else:
                     controller.play(endpoint)
                 boundary=controller.state_read('host-scout-endpoint')
+                if washington_opportunity:
+                    raw=controller.cmd('CSC_WASH_OPPORTUNITY_Snapshot()',
+                        'CSC_AI_BakersGameplay','washington-opportunity-endpoint')
+                    (case/'washington-opportunity-endpoint.txt').write_text(raw,encoding='utf-8')
                 assert boundary['turn']==endpoint and not boundary['active']
                 raw=controller.cmd('CSC_HOST_DIAG_Snapshot()','CSC_AI_BakersGameplay','host-terminal-prefix')
                 (case/'host-terminal-prefix.txt').write_text(raw,encoding='utf-8')
@@ -884,6 +911,8 @@ if __name__=='__main__':
         help='Fractal only: prior host-survey artifact root; read current native candidate/winner trace prefixes through207')
     parser.add_argument('--early-host-scout',action='store_true',
         help='Original Boston-world source only: qualify all original seats and inspect main Quarter offers/native choices22→24')
+    parser.add_argument('--washington-opportunity',action='store_true',
+        help='Early22→24 only: temporary absence/restoration of original Cattle796, current pinned CE; no bid or plan override')
     parser.add_argument('--early-without-washington-host',action='store_true',
         help='Diagnostic early control: withhold only future-host869 from player3/Bakers before the potential cache')
     parser.add_argument('--early-through',type=int,default=24,

@@ -1,0 +1,70 @@
+{
+  "verified_reconsideration_leg": true,
+  "astra_review_required": true,
+  "composite_deferral_evidence": "AI-C165",
+  "single_city_uninterrupted_cycle": false,
+  "folder": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01",
+  "source_sha256": "9675be27c614a2429a9cdca485a09a8d7421e627cc7833cb472bb9b1c390f55a",
+  "ce_sha256": "a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb",
+  "package_files_rehashed": 644,
+  "all_main_modules_reconstructed": true,
+  "prior_scope": {
+    "staged": 1,
+    "considered": 0,
+    "masked": 0,
+    "restored": 0,
+    "rejected": 0,
+    "originalQ8": 0
+  },
+  "retired_scope": {
+    "staged": 0,
+    "considered": 0,
+    "masked": 0,
+    "restored": 0,
+    "rejected": 0,
+    "originalQ8": 0
+  },
+  "ordinary_withdrawal_publication": {
+    "turn": 23,
+    "version": 2
+  },
+  "native_net": {
+    "k": "net",
+    "generation": 6,
+    "version": 2,
+    "player": 3,
+    "city": 65536,
+    "district": 36,
+    "plot": 870,
+    "base": 40267,
+    "result": 46411,
+    "reason": 0,
+    "eligible": 1
+  },
+  "native_best": {
+    "k": "best",
+    "generation": 6,
+    "version": 2,
+    "player": 3,
+    "city": 65536,
+    "district": 36,
+    "plot": 870,
+    "base": 46411,
+    "result": 46411,
+    "reason": 0,
+    "eligible": 1
+  },
+  "actual_request": "23, 3, LOC_CITY_NAME_WASHINGTON, , CONTRACT 241, SUBMITTED, NO_UNIT, NO_BUILDING, DISTRICT_CSC_BAKERS_QUARTER, VALUE 181.0, Build City District",
+  "prefix_count": 4,
+  "unique_native_records": 693,
+  "hashes": {
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01\\inputs.json": "62535e3890841ea1f16693647847eaf3041b3fe96bdae8aaff6c309db6143b6f",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01\\Lua.log": "6b2bb9f209188686c57dd7ee6c19c2b0eb8f03433a8e50e084c5f2755c0a4f07",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01\\AI_CityBuild.csv": "1c1f38f51672a51b736e73e55e5c1285762050a0b6d95231706ad1d228ca0ba8",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01\\controller-journal.ndjson": "a0a29dc2950edf2013c2ac136938fdd56beded856c378fdd5bfdc15b1f4f07bd",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01\\complete.json": "b79357f818424a9ad497af6f3da3b463f25768c288aa36572a63dcef798dbdd0",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01\\session-closed.json": "f79f0dbbec87f8b1b945945413297a8f75d5dcd36d9ce18f6a6588369b320c15",
+    "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-problems-1-2-20261110\\deferral-washington-opportunity-01\\washington_opportunity.py": "5fc538848c00685c0b671e8928223a1c8773cd60cd9fba020bebccef0e22b7c1"
+  },
+  "limits": "Existing Cattle temporarily absent then exactly restored. No native acquisition, Quarter construction or Service claim."
+}

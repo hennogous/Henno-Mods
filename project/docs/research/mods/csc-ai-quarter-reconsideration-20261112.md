@@ -1,6 +1,8 @@
 # Quarter deferral: automatic withdrawal, no later Quarter request
 
-Problem **1.7 remains open**. The preceding [matched comparison](csc-ai-quarter-decline-20261112.md)
+This episode left **1.7 open**; the later
+[Washington result](csc-ai-quarter-reconsideration-washington-20261112.md) closes
+it at an explicitly composite scope. The preceding [matched comparison](csc-ai-quarter-decline-20261112.md)
 proves causal deferral at levels1–3. This continuation proves automatic
 withdrawal after a controlled usable Base opportunity, but its three later
 native comparisons choose other districts. It does not demonstrate the
@@ -96,7 +98,8 @@ Fixture/tooling commit: `ebb379a7`. No upstream PR was created.
 Astra independently reproduces the sealed audit and verifies all62 selector
 receipts against the live stream and56 matching native-prefix boundaries.
 It accepts the automatic-withdrawal scope and the negative later-request
-result. **Whole1.7 is not closed.**
+result. This episode alone did not close1.7; the negative is preserved after
+the separate Washington closure.
 
 Keep the causal deferral and automatic withdrawal proofs. The remaining
 acceptance gap is a fresh Quarter choice/request after improved opportunity.

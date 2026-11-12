@@ -1,3 +1,62 @@
+# NEXT2.1 ONLY;1.7 CLOSED; nineof10 closed
+
+Worker95962 TERMINALexit0,22→24normalclosedverified, no ownedgame. Washington
+remainingleg SUCCESS, Astra INDEPENDENTLYAPPROVESWHOLE1.7levels1–3 COMPOSITEscope
+withC165causaldeferral. Source9675be27…currentCE03a849eff8;644packagehashes/
+main5reconstruction/4completeprefixes/source/save/actualrequest/normalcleanupPASS.
+Actual22/v1noBaseDecline870staged1. TemporarilyabsentoriginalCattle796restoredpaused22
+resource1count1writes2, no forcedpub/gold/pop/queue/owner/terrainchange. Ordinary23/v2
+withdraws, exact24/v2staged0. Net40267+6144=46411, cacheBestPV46411, nativeBakers870,
+reserved56,11, submittedcontract241value181, accepted181. LiveBase796readytrue/
+workingfalse (UNIMPROVED). NoPasture/Service/constructionclaim. No uninterrupted
+singlecitycycle: C165causaldeferralNicopolis + C167Washingtonwithdrawal/choice are
+SEPARATErepresentativecases; C166Nicopolis254negativepreservedpermanently. DoNOT
+addsamecitycyclegateorcallCampusplanpolicydeferral. Allgenericmainpolicyunchanged.
+Newreport csc-ai-quarter-reconsideration-washington-20261112.md andsealed-audit.json;
+audit_washington_opportunity.py reproduciblePASS,27focusedfixture/drivertestsPASS.
+STATUS/roadmap/acceptance/findingsAI-C167 updated9of10,2.1active. Stale1.7openwording
+reconciledinC165/C166/reports. Washingtonhelper/driverflag/test/audit/docs readycommit.
+NoPR. Previousnegativecommit22a2455cpushed;fixtureearlierebb379a7pushed.
+
+NEXT2.1acceptance STATED: isolate actualmainmappedcustomer-site contribution,
+show nativecustomerDistrictchoice/requestchanges towardadjacentexistingQuarter
+orcrediblefutureQuarterfootprint, preservestandalonevalue/legality/otherpolicy/
+materialprotection. Scorewritealoneinsufficient. Constructionnotnewgate.
+FirstoutsideCiv: existing28Harborreceipts/3wins(2383,1437) inFractalv3report:
+project/docs/research/mods/csc-ai-shared-stage-two-fractal-20261108.md.
+Findspecificcompetitivecomparison, thenonecitycustomer-offerablation matchedarms.
+DoNOTstartspeculativelonggames. MaincustomerSiteBid40*256,projectedfuturequarter
+smaller. Existingprivateyieldmayalsodriveneighborvalue—identifyactualactivepath,
+don'tassumeCEbidnecessary. Relevantmain AdjacencyScan.lua nominateCustomer blocks.
+UseAstrareviewandvalidateclosure. GoalACTIVE/incompleteuntil2.1closed.
+
+# PREVIOUS LIVE1.7 Washington remaining leg — worker95962
+
+Worker95962 sharedcontroller LIVE (do not console/edit pinnedmain5,frontierdriver,
+washington_opportunity.py,early_host_policy,hostreader). Outputdeferral-washington-
+opportunity-01 under .../csc-ai-problems-1-2-20261110. Original22source9675be27…
+exists/hashverified. CE03a849eff8 same. WildWdeveloprecheck2986a746 unchanged.
+New Washingtonfixture/helper+driverflag/tests UNCOMMITTED,27focusedPASS. Astra
+PRELAUNCHAPPROVED afterfixInitialize: includedCorehasEMPTYtags; explicitly
+A.Initialize() readonlyDBcache BEFOREallBasevisibility/neighborchecks; teststarts
+emptytags. No livepolicychange. SoletempCattle796Resourceabsence(beforemain22pub)
+thenEXACTrestore atpaused22 requiringactualCEdecline870staged1. Alloriginalsource
+guardsbeforeremoval; restorepreservesowner/terrain/noimprovement/queue/pop/gold and
+CEversion(no forcedpub). Ordinary23mustwithdraw andfreshBakers870requestmustoccur.
+Driverbounded22→24 only, flagsdisallowotherablations; supportedCEpinrequired.
+Snapshotprecommitlogsread-onlymaterial+declinepreviouspublication; HOSTreaderactual
+Best/cache/Net records+AI_CityBuildrequests. No Frida/newnativeaddress needed.
+Astra explicitlyaccepts COMPLETIONCOMPOSITEscope: C165causaldeferral + Washington
+actualpriorNoBaseScope→ordinarywithdrawal→supportedQuarterchoice/request canclose1.7.
+DoNOTaddsameuninterruptedcitycyclegate orsecondcausaldeferral; doNOTclaimWashington's
+pre-existingCampusplanwaspolicydeferral. Nicopolisnegative254remainspermanent.
+StillOPENuntilactualrequestandAstraaudit; eightof10closed,2.1next.
+
+Previousnegative/docs/auditCOMMITTEDPUSHED22a2455c (fixtureearlierebb379a7).
+Nextawaitworker95962 terminal, auditallpackages/onlytwoResourceedits,priorstaged1,
+ordinary23activepublicationstaged0,exactBest+request. Ifpreparefailscheckfailure
+andnormalcleanup, no blindresourceeditretry. NamedHenno savesprotected.
+
 # NEXT1.7 competitive early window; worker45043 TERMINAL
 
 Finisheddeferral-nicopolis-opportunity-01 200→254exit0, normalclosedverified,

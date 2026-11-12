@@ -14,17 +14,21 @@ Work sequentially from the earliest unclosed item, state its acceptance test
 before investigation, and preserve Astra-validated scoped closures. Broad
 qualification and the older multi-seed Stage 2 milestone below are follow-up
 work, not additional conditions for closing this goal's placement capabilities.
-Current item: **1.7 Defer and reconsider**. **1.1, 1.2, 1.3, 1.4, 1.5,
-1.6, 1.8 and 2.2** meet levels 1–3 at the recorded representative scopes:
-eight of ten. **2.1** remains after 1.7.
+Current item: **2.1 Customer-district placement**. **1.1–1.8 and2.2** meet
+levels1–3 at the recorded representative scopes: nine of ten.
 
-Latest1.7 continuation: controlled farmed-Base opportunity withdraws declines
-at the ordinary205 publication. Fresh220/235/252 comparisons choose other
-districts; no later Quarter request through254. Exact receipts locate the
-initial loss in native input valuation, despite an improved CSC bid. Preserve
-deferral and withdrawal proofs; choose an evidenced competitive decision
-window before another run. Do not inflate bids or extend this episode blindly.
-[AI-C166](findings.md#ai-c166).
+**1.7 closes with Astra's independent audit at a composite scope.** C165 proves
+causal deferral; Washington22→24 proves a genuine prior no-Base scope, exact
+Base restoration, ordinary23 withdrawal and actual Bakers870 choice/request241.
+The Nicopolis200→254 negative remains: withdrawal there did not produce a
+Quarter request. No uninterrupted single-city cycle or construction is claimed.
+[AI-C165](findings.md#ai-c165), [AI-C166](findings.md#ai-c166),
+[AI-C167](findings.md#ai-c167).
+
+Next2.1: use existing Harbor receipts to select a competitive native comparison,
+then isolate only the mapped customer contribution while preserving standalone
+value, legality, other policy and material protection. A score write alone
+does not close it; require a changed native choice/request and main integration.
 
 **1.5 closes with Astra's independent audit.** Its causal integrated footprint
 workflow reaches paid intended-city ownership and completed construction,
@@ -36,22 +40,15 @@ in the control; the written acceptance does not require an extra supplier
 BUY-versus-NOT-BUY result. No Service or broad reliability claim follows.
 [AI-C162](findings.md#ai-c162), [AI-C163](findings.md#ai-c163).
 
-**Next acceptance for 1.7:** a weak-only Quarter profile in a city defers or chooses
-another investment because of policy, then dynamically reconsiders after a
-credible opportunity appears. Observe the actual native comparisons/requests
-and the shared model's changed live facts in each stage. A deferral counter or
-score change alone is insufficient. Reuse existing sources and consumers where
-possible; do not expand this into multi-seed qualification.
-
-**Verified limitation and next implementation:** AI-C164's eleven known-no-Base
+**1.7 preserved limitation and delivery boundaries:** AI-C164's eleven known-no-Base
 Bakers pairs all receive−65,536 Q8, but native Bakers472 still wins347,924.
 Astra independently audits this negative. The integrated generic typed per-cell
 CE selector decline now changes the native Bakers request to Hippodrome in a
 matched comparison with identical36×38 numerical matrices. Astra validates
-levels1–3 for this **deferral half**, not whole1.7. Unknown/unowned possible
+this deferral leg and the separate AI-C167 withdrawal/choice leg. Unknown/unowned possible
 supply prevents decline; missing CE support retains finite guidance. Other
-district cells and retained plans stay native. Next treatment must withdraw
-scopes and produce a fresh Quarter choice after a credible new opportunity.
+district cells and retained plans stay native. Composite1.7 closure does not
+claim a successful uninterrupted Nicopolis cycle or construction.
 Do not increase a penalty merely to beat this fixture's competing cache.
 [Evidence and design boundaries](../research/mods/csc-ai-quarter-deferral-20261112.md).
 
