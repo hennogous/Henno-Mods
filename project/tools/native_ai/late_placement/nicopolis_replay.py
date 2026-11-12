@@ -41,6 +41,7 @@ from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint,
 from supplier_purchase_policy import PREPARE as PREPARE_SUPPLIER, INSPECT as INSPECT_SUPPLIER, without_supplier_bid
 from full_game_controller.checkpoint import save_inactive_boundary
 from deferral_opportunity import TRANSFER as TRANSFER_OPPORTUNITY, UI_CAPACITY, qualify_before, qualify_after, quarter_request_after, parse_snapshot as opportunity_snapshot
+from customer_adjacency_policy import source_case as customer_source_case,stage_publisher as native_customer_publisher,stage_metadata as native_customer_metadata,SQL_PATH as CUSTOMER_SQL_PATH,WATCHER as CUSTOMER_WATCHER
 
 CE_SHA = 'f8121151c787e4dcd4fea876eaaef5d6d1bb2b54561bc94d9d7da6385f21aa07'
 SAVE_SHA = 'e333251ec7318fb6b170678a956c28e02e2f9b01c4c4753c99e84b1a112fe19a'
@@ -73,6 +74,7 @@ CASES['nuremberg-supplier']=dict(CASES['nuremberg-supplier-prepare'],
     sha256='9eff6d6c10e7c95af1f5ac37ee64c364f3174e4beefd1116c33769a905ff1d49')
 CASES['nuremberg-supplier-follow']=dict(CASES['nuremberg-supplier'],turn=224,max_turn=230,
     sha256='858c4af2ebedc72ae2ecd0e81f3b438651f018354f795b550db2670e739d855b')
+CASES['hamburg-customer']=dict(turn=208,max_turn=210) # Exact source/type/plots come from the qualified common checkpoint.
 
 # This untuned save intentionally predates the policy's persisted seat metadata.
 # A diagnostic may seed it from these acknowledged turn-1 records, never from
@@ -349,6 +351,8 @@ print('CSC_PURCHASE_QUALIFIED',Game.GetCurrentGameTurn(),scope.player,scope.city
 
 def run(args):
     case_name = getattr(args, 'case', 'nicopolis')
+    customer=case_name=='hamburg-customer'
+    customer_arm=getattr(args,'native_customer_arm',None)
     deferral_scout=getattr(args,'deferral_knowledge_scout',False)
     deferral_arm=getattr(args,'deferral_arm',None)
     opportunity=getattr(args,'deferral_opportunity',False)
@@ -361,6 +365,13 @@ def run(args):
     home, user_root = args.my_games.resolve(), args.user_root.resolve()
     reference = args.reference.resolve(strict=True)
     checkpoint = args.checkpoint.resolve(strict=True)
+    assert not customer_arm or customer
+    assert not customer or (customer_arm in('on','off')and args.mode=='integrated'and args.through==210
+        and args.ownership_ce_dll and args.ownership_ce_sha==
+        'a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb'
+        and not(args.observe_purchases or args.without_frontier_offers or args.repair_owned_purchase
+            or args.prototype_buyer or args.seed_source_seats or args.save_endpoint or deferral_scout))
+    if customer:case=customer_source_case(checkpoint,home,args.policy_root)
     assert not out.exists() and not native_inventory(), 'Fresh output and exclusive native session required'
     prepare_supplier=case_name=='nuremberg-supplier-prepare'
     supplier_case=case_name.startswith('nuremberg-supplier')
@@ -457,6 +468,18 @@ def run(args):
         for relative in (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'), QUOTE_BRIDGE,
                 Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua')):
             replacements[relative] = (args.policy_root / relative).read_bytes()
+        if customer:
+            # Native sufficiency first: both arms withhold the same optional
+            # CE customer bonus. Only one native adjacency-link SQL row differs.
+            from host_choice_policy import stage as customer_reader
+            relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
+            keys=[dict(player=3,city=393221,district=case['district'],plot=p)for p in case['purchasePlots']]
+            replacements[relative]=customer_reader(native_customer_publisher(replacements[relative]),
+                keys,start=208,end=210,players=[3])
+            metadata,=csc.glob('*.modinfo')
+            relative=metadata.relative_to(csc)
+            replacements[relative],replacements[CUSTOMER_SQL_PATH]=native_customer_metadata(
+                replacements.get(relative,metadata.read_bytes()),customer_arm)
         if deferral_scout:
             # One declared knowledge fixture, followed by ordinary main CSC
             # policy. Existing selector/CE readers observe the fresh comparison;
@@ -509,6 +532,7 @@ def run(args):
         deferral_knowledge_scout=deferral_scout,
         deferral_arm=deferral_arm,
         deferral_opportunity=opportunity,
+        native_customer_arm=customer_arm,
         prototypeBuyer=getattr(args,'prototype_buyer',None),
         sourceSeatMigration=seat_provenance,
         without_frontier_offers=getattr(args,'without_frontier_offers',False),
@@ -526,7 +550,11 @@ def run(args):
     if opportunity:
         for name in ('deferral_opportunity.py','deferral_opportunity_inspect.lua'):
             shutil.copyfile(HERE/name,out/name)
-    (out / 'plot-watcher.lua').write_text(WATCHER.replace('__ENDPOINT__', str(args.through)).replace('__SCOPE__',lua(case)), encoding='utf-8')
+    if customer:
+        for name in('customer_adjacency_policy.py','host_choice_policy.py'):
+            shutil.copyfile(HERE/name,out/name)
+    watcher=CUSTOMER_WATCHER.replace('__LINK_COUNT__','1'if customer_arm=='on'else'0')if customer else WATCHER
+    (out / 'plot-watcher.lua').write_text(watcher.replace('__ENDPOINT__', str(args.through)).replace('__SCOPE__',lua(case)), encoding='utf-8')
     if recovery:
         shutil.copyfile(recovery / 'original-preferences.json', out / 'original-preferences.json')
     controller = make_probe_controller(out, user_root=user_root)
@@ -613,7 +641,7 @@ print('CSC_DEFERRAL_API_QUALIFIED',status,receipt)''',
                         (out/'decline-api-qualification.txt').write_text(raw,encoding='utf-8')
                     raw=controller.cmd('CSC_HOST_DIAG_Arm()','CSC_AI_BakersGameplay','arm-deferral-reader')
                     (out/'initial-native-prefix.txt').write_text(raw,encoding='utf-8')
-                if ownership_bytes and not deferral_scout:
+                if ownership_bytes and not deferral_scout and not customer:
                     raw=controller.cmd('''local s=assert(CE_AIDistrictPurchaseCompletionStatus())
 print('CSC_OWNERSHIP_API_STATUS',s)
 assert(s:match('"ready":1') and s:match('"faults":0'),'Ownership capability unavailable')
@@ -634,6 +662,22 @@ assert(receipt:match('"staged":'''+('0'if supplier_case else'1')+''''),'Unexpect
                 raw=controller.cmd(INSPECT_SUPPLIER,'CSC_AI_BakersGameplay','inspect-supplier-chain')
                 (out/'supplier-chain-qualification.txt').write_text(raw,encoding='utf-8')
             controller.cmd(read(out / 'plot-watcher.lua'), 'CSC_AI_BakersGameplay', 'watch-source-plots')
+            if customer:
+                # SQL-backed definitions must qualify in the loaded-game DB,
+                # independently of the Lua view. Do not advance a wrong arm.
+                from customer_adjacency_policy import database_snapshot,qualify_database
+                db=database_snapshot(user_root/'Cache/DebugGameplay.sqlite')
+                write_json(out/'loaded-customer-database.json',db)
+                qualify_database(db,customer_arm)
+                raw=controller.cmd('''assert(Game.GetCurrentGameTurn()==208)
+local q=Map.GetPlotByIndex('''+str(case['quarterPlot'])+''')
+assert(q:GetOwner()==3 and q:GetDistrictType()==GameInfo.Districts.DISTRICT_CSC_TAILORS_QUARTER.Index)
+local p=Map.GetPlotByIndex(1084)
+assert(p:GetOwner()==3 and p:GetResourceType()==GameInfo.Resources.RESOURCE_SHEEP.Index)
+CSC_HOST_DIAG_Arm()
+print('CSC_CUSTOMER_SOURCE_QUALIFIED',Game.GetCurrentGameTurn())''',
+                    'CSC_AI_BakersGameplay','qualify-native-customer-source')
+                (out/'customer-source-qualification.txt').write_text(raw,encoding='utf-8')
             raw = controller.cmd('local scope='+lua(case)+"""
 local city=assert(CityManager.GetCity(scope.player,scope.city))
 assert(city:GetName()==scope.name,'Wrong source city')
@@ -660,7 +704,7 @@ assert(plot:GetOwner()==3 and city:GetID()==458758 and plot:GetDistrictType()==-
 print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),city:GetID(),plot:GetDistrictType())''',
                     'CSC_AI_BakersGameplay','qualify-owned-reload-source')
                 (out/'owned-reload-qualification.txt').write_text(raw,encoding='utf-8')
-            elif case_name != 'nicopolis':
+            elif case_name != 'nicopolis'and not customer:
                 qualify_purchase(controller,out,case,allow_tied=bool(getattr(args,'prototype_buyer',None)))
             return True
 
@@ -668,7 +712,7 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
         modules = load(out / 'loaded-modules.json')
         scope = dict(player=case['player'], city=case['city'], width=74, height=46, districtCount=38, district=case['district'],
             plots=sorted(plots), cePath=modules[DLL]['path'], streamRecords=True, traceTree=case_name!='nicopolis')
-        if deferral_scout:scope['allDistrictScores']=True
+        if deferral_scout or customer:scope['allDistrictScores']=True
         if opportunity:
             # Reuse the existing verified activation/threshold readers to see
             # why a retained plan delays a fresh comparison. No plan is reset.
@@ -781,9 +825,9 @@ print('CSC_OWNERSHIP_RELOAD_SOURCE',Game.GetCurrentGameTurn(),plot:GetOwner(),ci
         attachment = None
         state = controller.state_read('replay-end')
         assert state['turn'] == actual_endpoint and not state['active']
-        raw = controller.cmd('CSC_PURCHASE_Snapshot()', 'CSC_AI_BakersGameplay', 'endpoint-readback')
+        raw = controller.cmd('CSC_CUSTOMER_Snapshot()'if customer else'CSC_PURCHASE_Snapshot()', 'CSC_AI_BakersGameplay', 'endpoint-readback')
         (out / 'endpoint-plots.txt').write_text(raw, encoding='utf-8')
-        if deferral_scout:
+        if deferral_scout or customer:
             raw=controller.cmd('CSC_HOST_DIAG_Snapshot()','CSC_AI_BakersGameplay','terminal-deferral-prefix')
             (out/'terminal-native-prefix.txt').write_text(raw,encoding='utf-8')
         if getattr(args,'save_endpoint',False):
@@ -854,6 +898,8 @@ if __name__ == '__main__':
     parser.add_argument('--deferral-opportunity',action='store_true',
         help='Full knowledge arm only: inspect/transfer existing farmed Base at204, then wait naturally through bounded214-254')
     parser.add_argument('--mode', choices=('original', 'frontier', 'integrated'), required=True)
+    parser.add_argument('--native-customer-arm',choices=('on','off'),
+        help='Hamburg common208→210: native private-yield link on/off, optional CE customer bonus absent in BOTH arms')
     parser.add_argument('--case',choices=tuple(CASES),default='nicopolis')
     parser.add_argument('--without-frontier-offers',action='store_true',
         help='Diagnostic ablation of the exact fixture pair only; other frontier offers remain active')
@@ -886,7 +932,7 @@ if __name__ == '__main__':
             or (options.through!=204 and not options.deferral_opportunity) or not options.ownership_ce_dll or options.without_frontier_offers
             or options.repair_owned_purchase or options.prototype_buyer or options.seed_source_seats):
         parser.error('knowledge scout requires pinned current CE, full main Nicopolis200→204 and no other treatment')
-    if options.ownership_ce_dll and (not (options.case.startswith('nuremberg') or options.deferral_knowledge_scout) or options.mode!='integrated'
+    if options.ownership_ce_dll and (not (options.case.startswith('nuremberg') or options.deferral_knowledge_scout or options.case=='hamburg-customer') or options.mode!='integrated'
             or not options.ownership_ce_sha or options.repair_owned_purchase or options.prototype_buyer
             or options.without_frontier_offers or not options.source_policy_root):
         parser.error('integrated ownership validation requires full main Nuremberg, historical source policy and explicit CE pin; no external treatment')

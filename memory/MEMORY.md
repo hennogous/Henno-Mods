@@ -1,4 +1,68 @@
-# NEXT2.1 ONLY;1.7 CLOSED; nineof10 closed
+# CURRENT2.1 Native private-yield consumption VERIFIED; choice still open
+
+User steering: native SQL/private yield FIRST; if a fresh start is needed,
+make it a full integrated run also observing the other capabilities. User
+correctly asks direct loaded gameplay DB checks. Other nine capabilities
+(1.1–1.8 and2.2) remain Astra-closed levels1–3. Goal active/incomplete; no
+new acceptance gates. Full qualification separate; no PRs. No game currently.
+
+BOTH native pair workers TERMINAL complete208→210, exit0, normalclosed:
+customer-hamburg-native-on-01 and customer-hamburg-native-off-01 under
+Desktop/Codex/csc-ai-problems-1-2-20261110. Same common source SHA
+35407699072ab37774799ea4cb7bd4aa45e43b8d00f1fc5147a227ad61e7ec0e,
+current CE03 a849eff8. WildW develop rechecked unchanged2986a746… .
+Only package difference Data/CSC_DIAG_NATIVE_CUSTOMER_LINK.sql contents;
+metadata identical, optional Hamburg CE +10240 customer entries REMOVED
+botharms (zero rejected by bridge), other guidance/protection unchanged.
+
+Direct DebugGameplay.sqlite and GameInfo show OFF removes Harbor–Tailors
+link after cold saved-world load; rule156/Yield row7/default1/bias25 and
+replacement links preserved. ON DB captured afterclose/beforenextload;
+OFF beforeplay. Therefore fresh game NOT needed for THIS SQL change.
+ACTUAL native208 full36x38 matrix ONminusOFF FOUR changes: Harbor4/1156
++11113Q8,4/1082 +11117; WaterEntertainment24/1156 -5568,24/1082 -5569.
+Other1364cells and ALL row eligibility/ownership/frontier/reservation same.
+Both Theater8/1231=558486, request4489 value2181.0. NonadjHarbor1303 exactly
+458350. NOT pure additive Harbor bonus, not universal43.4point conversion;
+WEC exactbranch untraced (consistentknownalternative-landdeduction only).
+Astra independent allpackagehashes/trace-streams/matrices/DB/cleanupauditPASS;
+285 filtered native records sameMULTISET (orderdiff), not fullworldpacket.
+AI-C168partial mechanism, AI-N122 generic. 2.1actualchoiceeffectNOTCLOSED.
+Skill updated+PUSHED50094ff; priorfixturefindingAI-N121 fad9b91.
+
+Common208 preparation customer-hamburg-common-02 SUCCESS: atinactive208
+CoalPowerPlantqueued, pop7/gold400.59765625 unchanged. Exactly3declaredwrites
+removeordinaryLMill/Woods1083 + completedTailors37 (object3604529); Sheep1084
+preserved, legalHarbor1082/1156. TailorsRequiresPopFALSE,HarborTRUE;onefreeslot
+suffices. Not AIQuarterconstruction. Source202common-01UNSAVEDfailure retained,
+combinedaftercheck failed exactfieldunknown; nativefactory canpopqueuedDistrict.
+Revisedpreparationwaits208 nonDistrictqueue, logsindividualafterfields.
+No PopFront invocation captured. GhidraAI-N121 evidence archived common-01.
+
+NEXT: native-only customer guidance promising; no need to forceHarbor over
+legitimateTheater. Astra suggests naturalTheatercompletion217/fresh218 lead
+(bound219), qualifyACTUALcapacity/legality beforecontinuation. No ON210save
+was made, so existing208common remains source. Do not removequeuedTheater.
+Native1yieldalready~43effectivepoints here; existingQuarterCE+40 potentially
+overlaps, but this DOESNOTproveharmfuldoublecredit/equivalence. Astra sayskeep
+shippingpolicyfixed throughnextnaturalcomparison; futurefootprintCE+16distinct
+becauseSQLcannotseeunbuiltQuarter. No native-only shipping change yet.
+
+WholecurrentnormalCSC/currentCE deployment preflight needed before fullruns:
+controlledpairs stage5currentmainmodules in frozen carrier, not wholelatestmod.
+User askedother9ready: candidatesforfullqualificationYES, not longrunreliability.
+ModBuddy actionJSON checkPASS; AI manifestmodules/publisher/connectors present,
+connectors gatedcurrentCE modIDa6ce92d2…. Ordinary installedmod lastbuiltNov11
+19:43, so rebuild/deploy currentcandidate beforeclaimfullnormalpackagevalidated.
+No automatic freshfullgame launched yet; userconditionfreshneededNOTmet.
+
+Built diagnostictools + guards/readDBchecks; 35focusedtestsPASS. Connection
+lifetime fix closing(sqlite3.connect) aftercompletedpair avoidsWindowsfilehold;
+fixturefailed-temp tmp0gzcz3wm explicitlycleanedinsideworkspace. No mainAIpolicy
+bandchanges; CSC_AI_Connectors.sql COMMENTSONLY documentsbias/nativeevidence.
+AI-C168 report/STATUS/roadmap/acceptance/findings andtools ready scopedcommit.
+
+# PREVIOUS NEXT2.1 ONLY;1.7 CLOSED; nineof10 closed
 
 Worker95962 TERMINALexit0,22→24normalclosedverified, no ownedgame. Washington
 remainingleg SUCCESS, Astra INDEPENDENTLYAPPROVESWHOLE1.7levels1–3 COMPOSITEscope

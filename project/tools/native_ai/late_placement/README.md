@@ -1,5 +1,32 @@
 # Late district placement trial
 
+## Native customer adjacency comparison
+
+`frontier_discovery.py --compare-owned --save-owned-comparison
+--hamburg-customer-inspect --hamburg-customer-prepare` qualifies one common
+inactive208 Hamburg source. Its diagnostic Tailors creation preserves the
+Sheep, queue, population and funds; it is not evidence of AI construction.
+The source and all guards are recorded before saving. Preparation refuses a
+currently queued district because the native creation factory can disturb it.
+
+`nicopolis_replay.py --mode integrated --case hamburg-customer
+--native-customer-arm on|off --through 210` uses that exact checkpoint and the
+explicit current CE pin. Both arms withhold Hamburg's optional CE customer
+bonus; only the native Harbor–Tailors private-yield link differs. The same
+metadata/action/file exists in each arm. The OFF action removes the link,
+preserving Yield/rule identities, bias, replacements and other policy.
+SQL has global district-pair scope, despite the city-scoped observations.
+
+Before advancing, the runner checks actual GameInfo and reads the loaded
+`Cache/DebugGameplay.sqlite` in read-only mode, archiving the relevant rows.
+Wrong/missing SQL treatment aborts. These checks establish definitions, not
+native valuation: the existing observer reads the full selector matrix,
+winner and request window. CE customer entries are deliberately absent, so
+their missing score receipts do not mean the native adjacency is inert.
+
+If saved-world loading does not apply the changed SQL, use a fresh integrated
+full-game run. Never infer this solely from presence of the SQL source file.
+
 ## Finding a credible frontier purchase fixture
 
 `frontier_discovery.py` loads the existing hash-verified Continents, Pangaea

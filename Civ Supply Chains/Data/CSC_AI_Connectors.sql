@@ -13,7 +13,7 @@ INSERT OR IGNORE INTO Yields
         (   YieldType,                  Name,                          IconString,   OccupiedCityChange,   DefaultValue   )
 VALUES  (   'YIELD_CSC_AI_PLACEMENT',   'LOC_CSC_AI_PLACEMENT_NAME',   '',           0,                    1   );
 
--- 25 is the native yield bias for this yield, distinct from a Q8 bid.
+-- 25 is a +25% native yield-weight bias, not 25 score points or a Q8 bid.
 INSERT INTO AiFavoredItems
         (   ListType,   Item,   Favored,   Value   )
 SELECT 'DefaultYieldBias', 'YIELD_CSC_AI_PLACEMENT', 0, 25
@@ -46,6 +46,12 @@ JOIN DistrictReplaces r ON r.ReplacesDistrictType = e.Customer;
 -- Attach +1 private yield per adjacent mapped Quarter to the customer
 -- district's score input. Critical material plots are handled by the
 -- separate native supplier protections that accompany the Lua policy.
+-- AI-C168 isolates this SQL link after a saved-world load: it changes the
+-- native final Harbor values and competing Water Entertainment values on
+-- the same footprints. It is therefore not a fixed, purely additive bid;
+-- native forecasts and alternative-land valuation still process the input.
+-- SQL rows alone prove loading, not consumption or a changed choice. The
+-- matched case verifies consumption but retains the Theater winner.
 INSERT OR IGNORE INTO Adjacency_YieldChanges
         (   ID,   Description,   YieldType,   YieldChange,   TilesRequired,   AdjacentDistrict   )
 SELECT

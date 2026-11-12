@@ -40,6 +40,7 @@ from liverpool_river_policy import PREPARE as PREPARE_RIVER, without_river
 from liverpool_adjacency_policy import PREPARE as PREPARE_ADJACENCY, without_promotions, without_strong_promotions
 from nuremberg_purchase_policy import source_checkpoint as nuremberg_checkpoint, PREPARE_RELEASE
 from washington_opportunity import stage as stage_washington_opportunity, RESTORE as RESTORE_WASHINGTON_BASE
+from customer_placement_fixture import qualify_hamburg,native_signal_active
 
 
 def defer_autosave_source(folder, home, world_sha, policy_root):
@@ -317,8 +318,14 @@ def run(args):
     assert sha(binary) == HOTFIX_EXE_SHA
     compare_owned=getattr(args,'compare_owned',False)
     save_owned=getattr(args,'save_owned_comparison',False)
+    inspect_customer=getattr(args,'hamburg_customer_inspect',False)
+    prepare_customer=getattr(args,'hamburg_customer_prepare',False)
     assert not compare_owned or args.case==['run-v3-continents'],'Owned comparison is pinned to the Continents fixture'
     assert not save_owned or compare_owned,'The saved acquisition source requires the pinned Continents comparison'
+    assert not inspect_customer or (compare_owned and save_owned and ce_override and effective_ce_sha==
+        'a849eff803d68f7dc4061421c98812ae466b50f0d96a790f884f0f7bcf60eafb'),\
+        'Hamburg inspection requires the current pinned CE and saved owned202 comparison'
+    assert not prepare_customer or inspect_customer,'A common Quarter fixture requires the full read-only preflight'
     replacements = {relative: (args.policy_root / relative).read_bytes() for relative in
         (SCANNER, Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE)}
     role_provenance=None
@@ -373,7 +380,8 @@ def run(args):
             relative=Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua')
             replacements[SCANNER],replacements[relative]=stage_early_facts(
                 replacements[SCANNER],replacements[relative],migrate_roles=False)
-            replacements[relative]=stage_host_reader(replacements[relative],[],start=200,end=202,players=[3])
+            replacements[relative]=stage_host_reader(replacements[relative],[],start=200,
+                end=208 if prepare_customer else 202,players=[3])
     if boston:
         # Match this older save's CSC identity while keeping the verified
         # carrier's gameplay content identical across future matched arms.
@@ -413,6 +421,8 @@ def run(args):
         ce_dll=str(ce_override.resolve())if ce_override else None,
         require_model=args.require_model,compare_owned=compare_owned,boston_arm=boston_arm,
         save_owned_comparison=save_owned,
+        hamburg_customer_inspect=inspect_customer,
+        hamburg_customer_prepare=prepare_customer,
         nuremberg_source=str(nuremberg_source)if nuremberg_source else None,
         nuremberg_prepare_release=release_nuremberg,
         through=args.through if boston_arm else None,role_provenance=role_provenance,
@@ -439,6 +449,10 @@ def run(args):
         shutil.copyfile(HERE/'quarter_site_survey.lua',out/'quarter_site_survey.lua')
     if early_host or save_owned:shutil.copyfile(HERE/'early_host_policy.py',out/'early_host_policy.py')
     if washington_opportunity:shutil.copyfile(HERE/'washington_opportunity.py',out/'washington_opportunity.py')
+    if inspect_customer:
+        for filename in('hamburg_customer_inspect.lua','customer_placement_fixture.py'):
+            shutil.copyfile(HERE/filename,out/filename)
+    if prepare_customer:shutil.copyfile(HERE/'hamburg_customer_prepare.lua',out/'hamburg_customer_prepare.lua')
     if liverpool_source or save_liverpool:shutil.copyfile(HERE/'liverpool_inspection.lua',out/'liverpool_inspection.lua')
     if prepare_river or river_arm:shutil.copyfile(HERE/'liverpool_river_policy.py',out/'liverpool_river_policy.py')
     if prepare_flat or adjacency_arm:shutil.copyfile(HERE/'liverpool_adjacency_policy.py',out/'liverpool_adjacency_policy.py')
@@ -822,11 +836,12 @@ end
                 # Nuremberg is founded naturally on 201. Pause at 202 rather
                 # than inventing it in the source. Native AI and main CSC run
                 # during these two turns; this is not a zero-turn survey.
-                controller.study_endpoint=202
-                controller.play(202)
+                comparison_turn=208 if prepare_customer else 202
+                controller.study_endpoint=comparison_turn
+                controller.play(comparison_turn)
                 boundary=controller.state_read('comparison-boundary')
-                assert boundary['turn']==202 and not boundary['active']
-                comparison=case/'owned-comparison-202'
+                assert boundary['turn']==comparison_turn and not boundary['active']
+                comparison=case/('customer-preparation-208'if prepare_customer else'owned-comparison-202')
                 comparison.mkdir()
                 prefix='CSC_FRONTIER_COMPARISON='+lua({3:{393221:True,458758:True}})+'\n'
                 raw=controller.cmd(prefix+read(out/'frontier_site_survey.lua'),
@@ -834,14 +849,60 @@ end
                 (comparison/'gameplay-survey.txt').write_text(raw,encoding='utf-8')
                 state=parse(raw,'CSC_FRONTIER_SURVEY')
                 write_json(comparison/'gameplay-survey.json',state)
-                assert state['turn']==202 and state['mutationCommands']==0
+                assert state['turn']==comparison_turn and state['mutationCommands']==0
                 cities={r['city']:r for r in state['cityStates'] if r['player']==3}
                 assert cities[393221]['name']=='LOC_CITY_NAME_HAMBURG'
                 assert cities[458758]['name']=='LOC_CITY_NAME_NUREMBERG'
                 state['buyerPlots']=[dict(player=3,plot=index) for index in ((788,862,1011)if save_owned else (862,1011))]
                 ui_readback(controller,comparison,state)
                 write_json(comparison/'survey.json',state)
-                if save_owned:
+                customer_qualified=None
+                if inspect_customer:
+                    # No Quarter is placed in this qualification. Native legal
+                    # Harbor targets differ from archived potential geometry;
+                    # unavailable capacity remains unknown and prevents edits.
+                    raw=controller.cmd(read(out/'hamburg_customer_inspect.lua'),
+                        'CSC_AI_BakersGameplay','inspect-hamburg-customer-202')
+                    (comparison/'customer-inspection.txt').write_text(raw,encoding='utf-8')
+                    facts=parse(raw,'CSC_HAMBURG_CUSTOMER_INSPECT')
+                    write_json(comparison/'customer-inspection.json',facts)
+                    customer_qualified=qualify_hamburg(facts,cities[393221],allow_lumber_mill=prepare_customer,
+                        expected_turn=comparison_turn)
+                    customer_qualified['native_signal_active']=native_signal_active(facts)
+                    if prepare_customer and not customer_qualified['native_signal_active']:
+                        customer_qualified['eligible']=False
+                        customer_qualified['reasons'].append('Native private-yield adjacency is not active; no native-first fixture')
+                    write_json(comparison/'customer-preflight.json',customer_qualified)
+                    if customer_qualified['eligible']:
+                        if prepare_customer:
+                            chosen=customer_qualified['quarter_plot']
+                            raw=session.issue_once('prepare-hamburg-common-quarter',
+                                'CSC_HAMBURG_CUSTOMER_PREPARE_PLOT='+str(chosen)+';\n'+read(out/'hamburg_customer_prepare.lua'),
+                                'CSC_AI_BakersGameplay')
+                            (comparison/'common-quarter-created.txt').write_text(raw,encoding='utf-8')
+                            assert re.search(r'CSC_CUSTOMER_COMMON_CREATED\s+208\s+'+str(chosen)+r'\s+',raw)
+                            raw=controller.cmd(read(out/'hamburg_customer_inspect.lua'),
+                                'CSC_AI_BakersGameplay','inspect-hamburg-prepared-common-world')
+                            (comparison/'common-world-inspection.txt').write_text(raw,encoding='utf-8')
+                            after=parse(raw,'CSC_HAMBURG_CUSTOMER_INSPECT')
+                            assert after['city']['hasQuarter'] and not after['city']['hasHarbor']
+                            assert native_signal_active(after)
+                            write_json(comparison/'common-world-inspection.json',after)
+                        # Only a qualified lead needs a reusable source. Keep
+                        # this independent of the old Nuremberg strong-site
+                        # gates, which are unrelated to customer placement.
+                        checkpoint=save_inactive_boundary(controller,turn=comparison_turn,name='CSC_HAMBURG_CUSTOMER_COMMON'if prepare_customer else'CSC_HAMBURG_CUSTOMER_SOURCE',
+                            native_directory=home/'Saves/Single',archive=out/'source.Civ6Save')
+                        write_json(out/'checkpoint.json',checkpoint)
+                        write_json(out/'customer-placement-source.json',dict(verified=True,
+                            source_world_sha256=source['sha256'],player=3,city=393221,plot=customer_qualified['quarter_plot'],
+                            prepared_quarter=prepare_customer,
+                            turn=comparison_turn,inspection_relative=str(comparison.relative_to(out)),
+                            native_score_margin_known=False,inspection_eligible=True,
+                            main_policy_sha256={str(p):sha(args.policy_root/p)for p in (
+                                SCANNER,Path('Lua_UI/AI/CSC_AI_BakersGameplay.lua'),QUOTE_BRIDGE,
+                                Path('Lua_UI/AI/CSC_AI_QuarterPlacement.lua'),Path('Lua_UI/AI/CSC_AI_DistrictBridge.lua'))}))
+                if save_owned and not inspect_customer:
                     target=next(row for row in state['sites']if row['player']==3 and row['city']==458758
                         and row['profile']=='BAKERS' and row['plot']==788)
                     assert target['ownedComparison'] and target['maximumProjection']['total']>=4
@@ -865,7 +926,7 @@ end
                 if save_owned:
                     for failure in ('CSC_HOST_DIAG_FAILED','CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED'):
                         assert failure not in read(out/'Lua.log'),'Source policy/reader failure: '+failure
-                print('Owned/frontier comparison complete at202',flush=True)
+                print('Owned/frontier comparison complete at',comparison_turn,flush=True)
             if index + 1 < len(args.case):
                 session.issue_once('menu-' + name,'Events.ExitToMainMenu();','PlotInfo')
                 session.wait_context('MainMenu',180)
@@ -880,7 +941,7 @@ end
             for source in installed:
                 packages[source].rename(out/source.name)
     assert session.closed
-    advanced=args.through-22 if boston_arm else 2 if liverpool_arm else early_endpoint-22 if early_host else 7 if host_scout else 2 if compare_owned else 0
+    advanced=args.through-22 if boston_arm else 2 if liverpool_arm else early_endpoint-22 if early_host else 7 if host_scout else 8 if prepare_customer else 2 if compare_owned else 0
     write_json(out/'complete.json',dict(verified=True,turns_advanced=advanced,cases=args.case))
 
 
@@ -896,6 +957,10 @@ if __name__=='__main__':
         help='Continents only: advance naturally to202 and inspect Nuremberg/Hamburg owned alternatives')
     parser.add_argument('--save-owned-comparison',action='store_true',
         help='Requires compare-owned: use all current main modules and save verified inactive202 for acquisition qualification')
+    parser.add_argument('--hamburg-customer-inspect',action='store_true',
+        help='Read-only2.1 Harbor/Quarter/supplier/capacity qualification at owned202; requires current pinned CE and saved comparison')
+    parser.add_argument('--hamburg-customer-prepare',action='store_true',
+        help='Requires inspection: prepare one common completed Tailors on a qualified footprint, save202; not AI construction')
     parser.add_argument('--nuremberg-source',type=Path,
         help='Verified paused202 source directory for zero-turn acquisition-fixture qualification')
     parser.add_argument('--nuremberg-prepare-release',action='store_true',

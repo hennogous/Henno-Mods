@@ -25,10 +25,19 @@ Quarter request. No uninterrupted single-city cycle or construction is claimed.
 [AI-C165](findings.md#ai-c165), [AI-C166](findings.md#ai-c166),
 [AI-C167](findings.md#ai-c167).
 
-Next2.1: use existing Harbor receipts to select a competitive native comparison,
-then isolate only the mapped customer contribution while preserving standalone
-value, legality, other policy and material protection. A score write alone
-does not close it; require a changed native choice/request and main integration.
+Next2.1: test native adjacency/private yield first, as Henno requests.
+The qualified common Hamburg208 source supports cold ON/OFF comparisons;
+both arms withhold the optional CE customer bonus. Only the native
+Harbor–Tailors adjacency link differs. The actual loaded gameplay DB confirms
+SQL OFF applies to this saved world while preserving Yield/rule identities and
+bias. The completed comparison changes exactly four native matrix cells:
+two adjacent Harbor values increase and competing Water Entertainment values
+on those plots decrease. Both arms select/request Theater. Astra validates
+this mechanism evidence; changed customer-choice causality remains open.
+[AI-C168](findings.md#ai-c168). No2.1 closure is claimed.
+Keep standalone value, legality, other guidance and material protection.
+The other nine capabilities are candidates for broader full-game qualification;
+check the complete normal CSC package/current CE integration before launching.
 
 **1.5 closes with Astra's independent audit.** Its causal integrated footprint
 workflow reaches paid intended-city ownership and completed construction,

@@ -3030,3 +3030,37 @@ AI-C166's continuous negative remains preserved. Active goal item:2.1.
 
 - [Source, protocol, result and limits](../research/mods/csc-ai-quarter-reconsideration-washington-20261112.md)
 - [Sealed remaining-leg audit](../research/mods/csc-ai-quarter-reconsideration-washington-20261112-audit.json)
+
+## AI-C168
+
+**Native private-yield customer adjacency changes final valuations after reload, while Theater still wins**
+
+Status: accepted partial mechanism evidence, independently audited by Astra.
+Problem2.1's changed actual customer choice/request remains open.
+
+The same qualified Hamburg208 source contains completed Tailors1083 and
+preserved Sheep1084. Both diagnostic arms remove only the optional intact
+CE +10240 Harbor customer offers. Their sole package difference is SQL:
+OFF deletes the Harbor–Tailors private-yield link. Rule/Yield identities,
+DefaultValue1, bias25 and replacement-district links remain. The actual
+loaded gameplay DB and GameInfo both confirm the arm after saved-world load.
+
+At the native208 selector, ON minus OFF is Harbor1156 +11113 Q8 and
+Harbor1082 +11117; Water Entertainment values on the same plots change−5568
+and−5569. Other1364 of1368 cells and all row eligibility/ownership/frontier/
+reservation fields match. This is consumed native valuation, not a purely
+additive Harbor bonus. The exact competing-value branch is not traced here.
+
+Both select Theater1231 at558486 Q8 and submit request4489 at2181.0.
+Native private adjacency therefore works in this loaded world but does not
+change the choice. This case does not require a fresh start; do not generalize
+that to arbitrary SQL changes or serialized modifier attachments.
+
+Astra rehashes every archived package file, matches both four-record traces
+to their streams and compares the complete36×38 matrices. Both208→210 runs
+close normally with exit0, owners absent and preferences/packages restored.
+The285-record filtered native prefix multisets match; callback order differs.
+This is filtered coverage, not a logged complete-world packet comparison.
+No shipping policy band changes, construction or broader qualification follows.
+
+- [Common fixture, direct DB check, exact scores and limits](../research/mods/csc-ai-customer-placement-20261112.md#completed-native-onoff-comparison)

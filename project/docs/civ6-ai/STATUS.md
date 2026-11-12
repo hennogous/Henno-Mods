@@ -62,10 +62,22 @@ Current2.1 scope is Tailors→Harbor/replacements: the Stage2 registry excludes
 City Center nominations, so Bakers' zero customer offers are expected. The
 old Fractal run has five native customer comparisons and three exact wins,
 but no isolated customer-signal ablation yet. Its later200 source has no
-current customer offers. First qualify an actual missing-Harbor window.
+current customer offers. The common Hamburg208 checkpoint now qualifies a
+completed Tailors, preserved Sheep and two legal adjacent Harbor sites.
+Henno requests native private-yield adjacency first: both diagnostic arms
+withhold the optional CE customer bonus and vary only the native link.
+The loaded gameplay DB confirms the OFF link is absent after loading that
+save, with definitions/bias preserved. A fresh game is not required to load
+this SQL change. The completed pair proves native consumption: adjacent
+Harbors gain11113/11117 Q8, while competing Water Entertainment values on
+those plots decrease5568/5569 Q8. The other1364 matrix cells match.
+Both arms select/request Theater; customer-choice causality remains open.
+This is not a purely additive Harbor bonus. Astra independently validates
+the partial result, package hashes, trace journals and cleanup.
+[AI-C168](findings.md#ai-c168).
 [Scoping and existing leads](../research/mods/csc-ai-customer-placement-20261112.md).
 
-**Latest verified outcome:** 1.7 is complete at the stated composite scope.
+**Latest completed capability:** 1.7 is complete at the stated composite scope.
 Washington22/version1 stages the actual no-Base decline. Exact restoration of
 existing Cattle796 leaves that publication intact; ordinary23/version2
 withdraws it. Native Net/cache/Best reads40267+6144=46411, selects Bakers870,
@@ -110,7 +122,7 @@ No Service or overlapping-buyer reliability is claimed.
 | 1.6 Follow-through | Verified | Causal preference and acknowledgement lead to physical completion | **Complete at stated scope** |
 | 1.7 Defer/reconsider | Typed decline and ordinary withdrawal verified | Causal deferral plus later supported Quarter choice/request | **Complete composite representative scope** |
 | 1.8 Poor sites | Verified | Verified, scoped suppression | **Complete at stated scope** |
-| 2.1 Customer sites | Exact Harbor writes verified | Isolated offer ablation pending | Causal reproduction pending |
+| 2.1 Customer sites | Native SQL valuation isolated; CE writes also verified | ON/OFF retains Theater; changed customer choice pending | Causal reproduction pending |
 | 2.2 Protect materials | Verified | Verified, supplier retained | **Complete finite-penalty scope** |
 
 ## Retained acquisition negatives and limits

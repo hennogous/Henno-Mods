@@ -91,6 +91,10 @@ claimed. AI-C166's continuous Nicopolis negative remains preserved.
 **Active item: 2.1 customer placement.** Isolate the mapped customer-site
 contribution and require a changed native district choice/request, with live
 main integration. Preserve standalone value and material protection.
+AI-C168 independently verifies the native private-yield SQL mechanism after
+reload: four final matrix cells change, while Theater's actual request does
+not. That closes the consumption question for this path, not2.1's changed
+customer choice/request. Both diagnostic arms withhold the optional CE bonus.
 
 **Recorded partial completion:** AI-C165 demonstrates levels1–3 for causal
 deferral: eleven dynamic no-Base scopes change the native request from Bakers
