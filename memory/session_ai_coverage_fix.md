@@ -1,147 +1,73 @@
-# CURRENT: fresh250-01 running, check every15min
+# Completed: managed Quarter delivery and fresh Online250
 
-Owningworker60300 launched14:10UTC (processIDfromsession-owner.json). Root:
-Desktop/Codex/csc-ai-placement-coverage-20261113/fresh250-01. Do notconnectsecond
-console or edit importeddriver/controller/observer orpinnedfrozen03packages.
-NativeDLL400e675522916ce54a17a6765132da89ee23c90304a89e721c6289c31327394f,
-CEcode dbfb93b pushed, CSCmaincode be00cad9 pushed. OnlymainCSCpolicy; nofixture
-flags. Sharedcontrollerownslaunch/autoplay/save/cleanup. FullgameOnline250,
-SmallContinentsPrince seeds18461107/29461107,5originalAIs+observer0, noRHAI5.
-Read-onlyfullobservations+economicpreflightenabled. Endpointstart250matchesoldrun.
+13 November2026. No test worker/game owned by this task remains active. Old
+scheduled goal stays PAUSED; this was separately authorised work. No PR created.
 
-Replay04finished175 exit0/restored, fullobservercomplete. delivery-audit.json:
-4actualpositiveBest events across3sites, adjacencies5/4/3/4,exactbid/write/consumer;
-1retainedrequestreduction;7705nonemptyIDcellwrites(notunique/liveproof). Native
-matrixroundmedian16.693ms,max28.205 (excludesLua/masks/requests). NooriginalAI
-foundationby175 sofollowthroughunproved. Astraindependentauditrequested.
-AllNative243 +Runtime4/instructionpass,25economy19frontend25observerresults.
-After04, observerdiagnosticchangedONLYtoomitunqualifiedexistingDistrictfieldonPV;
-10observerchecksPASS. NoCSCpolicyorCEcodechangesafterqualifiedfrozen03.
+## Read first
 
-Atfirstcheckverifyfreshsource/map/startsequaloldsource.json,pins/nativehealth/
-preflight; at25/50/100 etcfullcensusesandplacementrecords. Fulloutcomefinishneeds
-comparepreviousassisted250 (26quarters,8>=3,4>=4,112Storekeeperchainturns,0Tailors),
-reportplacement-timeoriginalAIsseparatefromp0/citystates/captures,services/econand
-normalclosure. Historicaluntunedbaselinechangedcontentnotcausal. Regularscoped
-commits/pushes;noPR. NoQuartzbuild. OldautomaticgoalremainsPAUSED.
+- project/docs/research/mods/csc-ai-quality-placement-250-20261113.md: audited
+  outcome, performance, provenance, mixed economics and next dependency.
+- project/docs/research/mods/csc-ai-managed-placement-20261113.md: native trace,
+  architecture, corrections, failed packages/replays and delivery qualification.
+- project/docs/civ6-ai/STATUS.md and roadmap.md: current scope and stable IDs.
 
---- Previous notes / failure evidence below ---
+## Source and evidence pins
 
-# CURRENT: replay04 active, physical footprint fix qualified offline
+CSC policy be00cad9; CE dbfb93b on codex/quarter-value-delivery; subsequent CSC
+commits update docs/observation only. Native DLL SHA256:
+400e675522916ce54a17a6765132da89ee23c90304a89e721c6289c31327394f.
+Engine XP2 SHA092abfbb. Artifact root:
+C:/Users/Shadow/Desktop/Codex/csc-ai-placement-coverage-20261113.
+Qualified inputs frozen03/candidate-packages03.json; outcome fresh250-01;
+fresh250-audit.json and fresh250-save-audit.json. Exact639 CSC+6 CE files match
+previous gameplay; only five main AI modules and CE DLL differ. UI binding
+49c23e05 is present. Five saves50/100/150/200/250 independently hash-verified.
+Endpoint hash daaa67639b3a693bdd2ae08a6101e231c787ee12087037abef75766069ba091a.
+All10 censuses25..250, nativeexit0/restoredprefs/packages, ownersabsent verified.
 
-Sharedcontroller44874/worker6252, rootnewroot/replay150-175-04; last160
-at13:59UTC. No secondconsole or edits to imported controller/packagefiles.
-CE243checks+4Runtime/instructionPASS; codefixdbfb93b pushed (a95 wasbadflag).
-Release02DLL400e675522916ce54a17a6765132da89ee23c90304a89e721c6289c31327394f,
-frozen03/Candidate-packages03 usesactualarchiveUI49c23e05, fiveAIfileoverlayonly.
-Astra final review no demonstrated codeblocker. Realfootprint usesalreadyqualified
-repairgetter11e520 andactualcollection; allsharedmasksalsoexemptactualdistricts.
-Replay04 preliminarypositive: p3c65536Bakers1094+5 bid319757Q8 (raw246029+
-preference73728) equalsactualFinalwriteandBest atdrain158,existingDistrict0.
-Badretainedp1Bakers987againrebased410368→-262144. NootherQwinnersyet.
-Needfinalclosed175audit→freshnormalOnline250sameContinentsseeds18461107/29461107.
-NoPR; oldgoalpaused; newfix/testauthorised. CSCscopedcommitstillpending.
-Nativeaddressproof district-footprint-binary-qualification.json; Ghidrahelper
-exportghidra-district-at-reference.json; engineciv6-ai2bdcf6cpushedstillvalid.
-Fullgamefreshdriverce_bakers_fresh.py ordinarymainpolicywith --harmonised-observation
---economy-preflight --through250, frozen03inputs, newDLLSHA,5turninternalwindows;
-externalcheck15min. Preserveallfailed01/02/03inputs/results andcorrected04.
+## Result
 
---- Prior notes superseded by latest block ---
+57 new-site comparisons (36B/21T), all exact positive bids/prior writes; four
+retained-request reductions. Seven AI foundations (5B/2T), allBase/forecast>=3;
+ALL seven actual>=3 at250, two both-material sites retainboth in100..250censuses.
+Heldcomplete9 vs26old; current>=3 7vs8, >=4 3vs4. Remainingbadheldpair iscity-state
+capture at148 (B1799/T1726), notguidedconstruction. No first-observed/deferred
+observergaps.15 city/type nominations,7foundations,8unbuilt;19siteidentities
+includealternatives,notconstructionrate. Player4buildsnoQuarter.
 
-# CURRENT: physical-footprint correction, no game active
+NativeStorekeeper153chainturns vs112,2AI-foundedchains, one116turnsuninterrupted,
+other37with66turnpillagegap165..230andresumption231. TailorsStage2zero, Stage3
+activepropertyoneeachfamily. Bothmaterialsworkingonlyoneof2dual-sites;Builders,
+customercompletionandrepairsremainopen. NativeGDPnotuniformlybetter:Prod250
+-5.9%,Gold200-38.8%/250+89.3%,Food250+8.1%. Oneassistancecomparison,nobalanceverdict.
+Nativework248 roundsmedian13.5405ms/max29.357,coarseLua46svs69/max1seach.
+Two unavailablequotesat174 safelydefer; no policy/economic/observerfault/fallback.
+Astra independently audits inputs,allnumbers,provenance and limits.
 
-Replay03 COMPLETED175 exit0/restored but FAILED qualification: +50 is improvement
-presence, not district. Improved empty sites bypassed valuation. Native commit
-A95e697 contains that defect; do NOT start fullgame with DLL91f2830f.
-REA actualevaluatorbody(old34recordbundle ev550ac...) and Ghidra11e520helper
-prove properlookup. Full160helperbytes and5952evaluatorbytes matchcurrent092 vs
-reference324, proofnewroot/district-footprint-binary-qualification.json.
-CurrentuncommittedCEfix: actual DistrictAt11e520(city+b58,&xy),typeF0; +50/51
-notusedasexemptions. Allmanagedcell/masks/requestandsharedSupplier/Decline use
-actualfootprint, preservingfoundations/pillaged, whileimprovedemptyremainsmanaged.
-Compiled241checksPASS; final243checksbuilding session64143 (+stalescopes).
-Astrareviewfoundsharedmaskgapnowfixed; requestfinalskimafter243PASS.
-NeedbuildRelease02 DLL newpath (reuseoldobj okay), package frozen03 fromactual
-archive +fiveAI modules +newDLL. CandidateUI49c23e05. Runreplay150-175-04 and
-verifyimprovednew-site scores/requests +nofalseexistingflagbeforefreshOnline250.
-No native/proxygame runningcurrently. Oldautomaticgoalpaused; explicitnewtestscopeactive.
+## Corrections retained
 
-The provisionalAI-C175/report incorrectlycalledTailors2321 existing; correct
-that claim explicitly (no silenterase). It waswrongflag and actuallynewfoundation159.
-Requestrebase410368→-262144 isvalidrealwrite. Replay03 completefoundations4,
-3below3;4completionsallbelow3. Read-onlyobservercomplete,nofault0deferred.
-Needrecordallfailuresinclpackaging01/02; independentfixturetestsnowmustnotmirror
-cacheflagassumption. Nativeheaderflagsrenamed HasImprovement50/CompletedDistrict51.
-CEengineAPI docs+243nativecases+sharedrepairconstant movedtonativeheader.
-CEcodea95 alreadypushed; correctednativecommitnotyet. Skill2bdcf6c pushedvalid
-N125/N023facts. CSCchangesnotcommittedyet. MainLua5filesunchangedsincefrozen02.
-Sourcespinnedwhileworkeractive. Do notstartfreshfullgameuntilnewqualifierpasses.
+Initialfrozen hadobsoleteUI 2c3c9a93 (noeconomicreaders). Replay01stopped165;
+02factscompleted151; bothcleanrestoration,neitherdeliveryqualification.
+CorrectedUI replay03completed175 butFAILED: row50=improvement, notdistrict.
+Neverusethebad a95e697/DLL91f2830f candidate asqualified. Row51 onlycompleted/
+nonpillaged. Actualfootprintgetter11e520(city+b58,xy) coversfoundations/repairs;
+allmanagedandsharedsupplier/declinemasksnowuseactualcollection. Full160helper/
+5952evaluatorbytes match324reference/current092; proofJSON+Ghidra export inroot.
+Replay04complete175qualifies4positiveB comparisons(+5/4/3/4), oneoldrequest
+410368→-262144, noAI foundations inshortwindow. Do notsubstitutereplay04foroutcome.
+Native243+Runtime4/instructionchecks,25economy19frontend25observer/resultsPASS;
+lastread-onlyobserverfieldscopefixpasses10checks. No further game is needed.
 
---- Earlier notes, superseded by correction above ---
+## Knowledge and next work
 
-# Latest: corrected-package consumer qualification active
+Skill2bdcf6c rechecksN023/recordsN125;0bc0440 recordsN126 correctedphysicalflags.
+AI-C175 scoped delivery/corrections; AI-C176 full outcome. CEsource/skill clean;
+CSC has unrelated active SQL/art/UI edits, preserve them. Only scopedAI/docs
+changes staged/pushed. Main CSC source updated; tests use isolatedmain-policy
+carriers, not a permanent overwrite of the user's installed gameplay/art.
+No upstream PR/release submitted. No AI Quartz build/publication required.
 
-Shared-controller worker70224 (process7864), replay150-175-03 under
-Desktop/Codex/csc-ai-placement-coverage-20261113. No second console client.
-Current164 at13:40UTC. Pinned inputs frozen02,639CSC+6CE, DLL91f2830f....
-New ordinary Online250 game is still pending. Main CSC only, no fixture policy.
-The old automatic goal is still paused; this is a separate authorised task.
-
-All Astra code blockers fixed;235native+4Runtime/instructionchecks,25economy,
-19frontend and25observer/results tests pass. CE code committed/pusheda95e697
-branchcodex/quarter-value-delivery; civ6-ai2bdcf6c recordsAI-N125/N023recheck.
-No PR. CSC scoped commit still pending; unrelated SQL/art/UI dirty files preserved.
-REA32-record currentconsumerbundle exported into newroot and sessionclosed.
-
-Packaging correction: initialfrozen usedobsoleteUI SHA2c3c9a93 missingeconomic
-readhelpers; candidate01 deliberatelystopped165, nativeexit0/restored, incomplete.
-Facts02 completed151+cleanclosed and diagnosedcostUInil,readinessinf despite
-production39.6/unlockdone. Correctfrozen02copiedactualsuccessful250 archive;
-UI matches current/archive49c23e05; onlyfiveAI modules andCE DLLdiffer.
-Candidate-packages02.json haspins. Replay03 requireslivefinite readiness and
-helpers beforeautoplay. It has6/6/6/2/0positiveoffers at151,0unknown. Request
-rebase actuallyreducesp1c65536Bakersplot987old410368→-262144Q8(packet3,
-drain153). ExistingTailors2321p5nativevalue371357preservedexistingDistrict1.
-Native reservedwritesnonzero;82managedpasses~6134us/sampleglobalround.
-Need final replayhealth/consumer/placement audit, thenfreshnormal Online250,
-15minchecks, final comparison/report, scopedcommits/pushes. Sources/packages
-muststaypinnedwhileworkeractive. Docsreportalreadyhasfailuresandpartialpositiveevidence.
-
---- Earlier implementation notes (blockers below are now resolved) ---
-
-# Active: managed Quarter delivery fix and new game authorised (13 November)
-
-The latest user authorises fixing delivery/quality and a NEW test game. Earlier
-stop notes in MEMORY.md are superseded for this task. Old automatic goal paused.
-No game/worker currently active. No PR. User prioritises output quality over neat
-architecture subject to bounded performance. Use shared controller only.
-
-Uncommitted CE candidate: Desktop/Codex/csc-ai-economy-20261113/ce-source,
-branch codex/quarter-value-delivery. New artifacts root:
-Desktop/Codex/csc-ai-placement-coverage-20261113. Initial220nativechecks passed.
-Current code adds managed type defaults, sparse positive final bids, refreshes
-aggregation/Best/Location/Present consumers and rebases sticky district requests.
-REA actual092abfbb confirms UnitRequest.Update max(old,current), so cache-only
-lowering cannot retire old bids. REA session still open; export retained evidence.
-
-Astra review completed read-only. Fix before qualification:
-- RequestUpdate returns AL bool, require unit178/building190 both -1 first.
-- optional managed trace must never disable policy; separate legacy write budget;
-  bound traces/sample only changed cells, reserve core journal room, stress tests.
-- locationless request must use current column max; preserve repair exemptions.
-- Location should apply SupplierRowMask too, with existing footprints native.
-- Mill alternatives must be ranked on final placement objective, not raw economy
-  before +3 gate/premium. Reproduced Water+2 rejection despite viable Wind+3.
-- verify all three new native instruction prefixes, not only whole binary hash.
-
-Current main CSC changes EconomyFacts/Model-adapters/bridge/gameplay, read-only
-placement observer and API preflight. 24economytests pass before review fixes.
-Quality bands +3/+4/+5/+6+ add96/192/288/384 native utility only to profitable
-investments; noBase/below3 defer. Future customers excluded; local Mill allowed.
-Need frontend/observer regression tests, short live delivery qualification then
-normal Online250 matched map game, main CSC+CE only, checks about15min.
-Use archived639-file CSC content with only new main AI/UI files for isolation;
-workspace has unrelated dirty SQL/art/UI work, preserve it. Pin source/package.
-Current native compile build-checks.cmd in new artifact root. MSVC CE-v143 exists.
-See session_ai_placement_time.md for old game/results and exact checkpoint150.
+Next within current placement capability is1.5/1.6: classifyeight nominatedbut
+unbuiltcity/types (acquisition/capacity/competition), notblanketraisebids. Broader
+Stage2 goal,all8families,multiseed/balancing andRHAI5 remain separate/paused.
+Userprefershighestqualityoutputoverarchitecturalneatness,withperformancebounded.

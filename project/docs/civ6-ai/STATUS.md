@@ -1,20 +1,28 @@
 # Current CSC AI status
 
-**Current authorised work, 13 November: correct Quarter delivery, then a fresh
-Online250 game.** Active problems **1.6/1.8**, preserving **2.2**. The first
-candidate exposed two concrete errors: obsolete packaged UI readers and a cached
-improvement flag misidentified as district presence. Both are corrected;243
-native,25 economy,19 frontend and25 observer/result checks pass. Astra's final
-source review finds no demonstrated code blocker. Replay04 completes175 with
-four exact positive native comparisons (+3/+4/+5 sites), a retained-request
-reduction, zero native faults and clean restoration. It has no new AI foundation,
-so this qualifies delivery only. The fresh ordinary Online250 game is now running
-from the same source, using the shared controller and main CSC policy only. No upstream
-PR; the old automatic goal stays paused. Output quality takes precedence over
-architectural neatness, with bounded work and measured overhead.
-[Candidate, corrections and evidence](../research/mods/csc-ai-managed-placement-20261113.md).
+**Latest result, 13 November: Online game to turn 250 completed and cleanly restored.**
+All seven Quarters founded by the guided major AIs retain Base and reach actual
++3 or better at turn 250. All 57 new-site comparisons (36B/21T) consume their exact
+positive bid. Held Quarters fall 26 to 9 versus the previous same-seed assistance;
+the two remaining weak holdings were captured from a city-state. This improves
+selectivity, not the absolute number of strong held sites (8 to 7).
 
-## Previous investigation and results (historical)
+Storekeeper delivers 153 chain-turns versus 112, across two AI-founded chains;
+one has a 66-turn damage lapse before recovery. Tailors Stage 2 remains zero.
+Matrix refresh peaks at 29.36 ms per round; coarse Lua publication totals 46 s versus 69.
+All inputs/starts match; this is one assistance-revision comparison, not a new
+untuned baseline or a balance verdict. No game/test worker remains active.
+[Results, provenance, limits and next scope](../research/mods/csc-ai-quality-placement-250-20261113.md).
+
+**Active scope:** 1.6 / 1.8 delivery and poor-site selectivity are verified at this
+binary/seed. Next placement dependency is 1.5 / 1.6: eight nominated city/type
+pairs do not reach foundation; separate acquisition/capacity/competition before
+raising bids. Builder development and Tailors customer completion stay open.
+CE `dbfb93b`/main CSC `be00cad9` are committed/pushed; no upstream PR. The older
+automatic goal remains paused. Outcome quality takes priority over architectural
+neatness, with measured bounds.
+
+## Earlier implementation and investigations (historical)
 
 **Earlier stop: REA investigation,13 November; superseded by the authorised fix/test above.**
 The fresh lifecycle run stopped at160 through the shared controller, exited0
@@ -150,7 +158,7 @@ actual placements in the normal game. Preserve standalone valuation and
 material protection. The production scanner now leaves existing-Quarter
 co-location to native SQL and retains +16 only for credible future footprints.
 
-Current2.1 scope is Tailors→Harbor/replacements: the Stage2 registry excludes
+Current2.1 scope is Tailors→Harbor/replacements: the Stage 2 registry excludes
 City Center nominations, so Bakers' zero customer offers are expected. The
 old Fractal run has five native customer comparisons and three exact wins,
 but no isolated customer-signal ablation yet. Its later200 source has no

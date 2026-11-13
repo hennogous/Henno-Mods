@@ -6,8 +6,9 @@ qualification. It does not establish construction or sustained benefit. Its Rele
 DLL SHA256 is400e675522916ce54a17a6765132da89ee23c90304a89e721c6289c31327394f.
 Use frozen03/candidate-packages03.json. Earlier packages, preliminary observations
 and failed qualifications below are historical evidence, not current acceptance.
-The fresh ordinary Online250 game is now running through the shared controller;
-main CSC policy and the pinned CE fork are the only tuning code.
+The fresh ordinary Online250 game subsequently completes and restores cleanly;
+[its audited outcome](csc-ai-quality-placement-250-20261113.md) supersedes pending
+status notes below. Main CSC policy and the CE fork are the only tuning code.
 
 ## Question and acceptance
 
@@ -258,3 +259,12 @@ belongs to observer player0. Those limits remain live outcome questions.
 Reusable flag/footprint knowledge is now AI-N126, committed/pushed in civ6-ai
 0bc0440; N023/N125 in2bdcf6c remain valid. The earlier false exemption claim is
 explicitly corrected above, not used as repair evidence.
+
+
+## Final outcome reference
+
+The fresh250 completes with57 exact new-site comparisons and seven AI-founded
+Quarters, all Base-supported and actual+3 or better at250. No new poor foundation
+is observed. The nine held sites include two weaker city-state captures. This
+is one-seed placement/selectivity evidence, not general CSC AI completion.
+[Complete audit, economics, Services, captures, performance and next dependency](csc-ai-quality-placement-250-20261113.md).

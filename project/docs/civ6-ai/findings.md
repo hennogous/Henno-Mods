@@ -2,7 +2,7 @@
 
 Maintained Markdown. Preserve scope, evidence and superseded status when correcting a finding.
 
-Latest placement investigation: [AI-C175](#ai-c175).
+Latest placement outcome: [AI-C176](#ai-c176).
 
 ## AI-C001
 
@@ -3258,3 +3258,33 @@ failures are preserved; they must not be counted as successful qualification.
 235 native/25 economy checks and two Astra reviews precede the live window.
 
 [Code, native semantics, failed packages, input hashes and qualification](../research/mods/csc-ai-managed-placement-20261113.md).
+
+
+<a id="ai-c176"></a>
+## AI-C176 - Exact Quarter delivery improves normal-game placement selectivity
+
+Same normal Small Continents/Online/Prince initial world as the preceding
+assisted 250-turn run: map/game seeds 18461107 / 29461107, matching original AI/map/starts/units.
+Only the CE DLL and five main CSC AI modules differ; gameplay SQL/UI/art match.
+The corrected actual-district guard and managed valuation are main-mod policy,
+with no external policy or world edits. Native exit 0, restoration and all ten
+censuses/five checkpoint hashes are verified.
+
+All 57 new-site Best results (36 Bakers / 21 Tailors) exactly match their positive
+published bids and prior writes. Seven AI foundations (5B/2T) all have Base and
+forecast +3 or better, allowing one local Mill. Three initially rely on that Mill;
+all seven have actual +3 or better by turn 250 and retain Base. Two dual-material sites
+retain both throughout censuses 100–250, but one lacks a working Base improvement.
+Held Quarters fall 26 to 9; current +3 holdings fall 8 to 7. Both weak new holdings are a
+city-state pair captured at turn 148, not policy-founded sites. Stronger proportions do
+not establish more strong sites or a general economic benefit.
+
+Native Storekeeper effects total 153 chain-turns versus 112, across two
+AI-founded chains. One lapses on turns 165–230 with Mill/Quarter damage before recovery.
+Tailors Stage 2 stays zero; each family has a Stage 3 active property. Eight of 15
+nominated city/type pairs remain unfounded. No broad follow-through/Builder/
+Service or multi-seed closure is claimed. Matrix cost maximum 29.357 ms per round
+excludes other work; coarse Lua 46 s versus 69 s supports bounded measured overhead.
+
+Astra independently reproduces inputs, delivery, provenance, materials, Services,
+timing and mixed economic results. [Outcome tables, exact artifacts and limits](../research/mods/csc-ai-quality-placement-250-20261113.md).

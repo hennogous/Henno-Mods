@@ -9,16 +9,15 @@ This implements the architecture agreed on 6 November (commit `057d4c55`). The
 Quarter's forecast at the late district-value boundary, rather than trying to
 reconstruct and subtract each of Civ's modifier-interpreter mistakes.
 
-**Revision status,13 November:** main CSC candidate reviewed by Astra, with243
-native and25 Lua economy checks passing. Replay03 completed175 but exposed an
-incorrect improvement/district flag; it is a failed delivery qualifier. The
-corrected candidate queries the actual district collection, preserving foundations
-and repairs independently of cached flags. Replay04 completes175 with four
-exact positive native comparisons (+3/+4/+5 sites) and a retained-request
-reduction; no new AI foundation occurs in that short window. The fresh ordinary
-Online250 game now measures outcome, with no external tuning policy. Earlier smoke evidence applies only
-to its recorded source, not automatically to this revision.
-[Candidate, corrections and evidence](../research/mods/csc-ai-managed-placement-20261113.md).
+**Revision status, 13 November:** corrected source passes 243 native checks and
+25 economy tests, with Astra review and controlled delivery qualification.
+The normal Online game to turn 250 run completes: 57 exact new-site comparisons; all seven
+AI-founded Quarters have Base and actual +3 or better at turn 250. Held Quarters drop
+26 to 9 (two weak captures), with two operating Bakers Stage 2 chains and no
+Tailors Stage 2 chain. This verifies placement selectivity in one world, not
+all follow-through, building, Builder or Service capabilities.
+[Full outcome and limitations](../research/mods/csc-ai-quality-placement-250-20261113.md),
+[implementation and corrected assumptions](../research/mods/csc-ai-managed-placement-20261113.md).
 
 ## From the world to a decision
 
@@ -34,7 +33,7 @@ flowchart TD
     PLAN["Planning adapters<br/>legal targets, frontier quotes,<br/>ownership completion and place/defer scopes"]
     SQL["Native customer-placement signal<br/>SQL private-yield adjacency<br/>one signal per mapped district–Quarter edge"]
     PACKET["Versioned CE packet<br/>bounded; refreshed each AI turn<br/>no duplicate early and complete bids"]
-    CE["Native decision boundaries<br/>refresh after aggregation and before consumers<br/>reprice retained new-Quarter requests<br/>supplier guards + ownership acknowledgement"]
+    CE["CE DLL / native decision boundaries<br/>refresh after aggregation and before consumers<br/>reprice retained new-Quarter requests<br/>supplier guards + ownership acknowledgement"]
     CIV["Civ compares and executes<br/>other districts, units and projects still compete<br/>native treasury, queues and worker allocation"]
     OBS["Evidence<br/>published → read / compared → selected / requested<br/>→ owned / built → actual economic benefit"]
     DB --> FACTS
@@ -201,7 +200,7 @@ Neither window establishes improved placement or Services.
 
 The completed normal Online250 run confirms continued publication and native
 consumption, but not the intended placement quality: 26 completed Quarters,
-8 currently at +3 or better, 4 at +4 or better, one active Bakers Stage2 chain
+8 currently at +3 or better, 4 at +4 or better, one active Bakers Stage 2 chain
 and no Tailors chain. Readiness and architecture coverage are not outcome
 closure. The next diagnostic records foundation/completion geometry and the
 actual native winning score, separating retained-plan timing from valuation
