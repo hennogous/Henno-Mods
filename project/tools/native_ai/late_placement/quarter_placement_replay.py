@@ -15,11 +15,14 @@ from ce_replay import DLL,HOTFIX_EXE_SHA,verify_modules
 from driver import (HERE,HOTFIX_SHA,HeldProcess,NativeSession,configure,flags,launch,load,lua,
     make_probe_controller,manifest,native_inventory,read,restore_preferences,sha,write_json)
 from full_game_controller.checkpoint import save_inactive_boundary
+from district_admission_watch import AdmissionWatch,validate_options
 
 NAMES=('CSC Bakers Development CE','CSC Bakers Development Mod')
 
 
 def run(a):
+    admission_enabled=getattr(a,'admission_probe',False)
+    validate_options(admission_enabled,getattr(a,'frida_deps',None),getattr(a,'admission_binary',None))
     source=a.source.resolve(strict=True);out=a.output.resolve();home=a.my_games.resolve(strict=True)
     assert load(source/'result.json')['closed']and load(source/'session-closed.json')['verified']
     checkpoint=load(source/('checkpoint-'+str(a.start)+'.json'))
@@ -50,6 +53,15 @@ def run(a):
         changed_from_archived=differences))
     for name in('quarter_placement_replay.py','quarter_placement_watch.lua','quarter_economy_facts_probe.lua'):
         shutil.copyfile(HERE/name,out/name)
+    admission=None
+    if admission_enabled:
+        # Diagnostic only: the same archived main CSC policy still supplies all
+        # bids. Reuse explicit existing Frida dependencies; do not install them.
+        # No attachment happens until the controller qualifies the loaded save.
+        for name in('district_admission_watch.py','district_admission_watch.js'):
+            shutil.copyfile(HERE/name,out/name)
+        admission=AdmissionWatch(directory=a.frida_deps,binary=a.admission_binary,
+            output=out,start=a.start,through=a.through,write=write_json)
     controller=make_probe_controller(out,user_root=a.user_root)
     controller.study_endpoint=a.through
     controller.allow_observer_warning_dismissal=controller.allow_observer_first_meet_dismissal=True
@@ -78,12 +90,18 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
                 facts=controller.cmd('CSC_QUARTER_FACTS_REQUIRE_READY='+str(a.require_ready).lower()+'\n'+read(out/'quarter_economy_facts_probe.lua'),'CSC_AI_BakersGameplay','read-economic-readiness-facts')
                 (out/'economic-readiness-facts.txt').write_text(facts,encoding='utf-8')
                 assert 'CSC_QUARTER_FACT_PROBE_COMPLETE'in facts
+            if admission:
+                admission.attach(session.owner,load(out/'loaded-modules.json'))
             return True
         session.load_once(save,sha256=checkpoint['sha256'],native_directory=home/'Saves/Single',turn=a.start,
             contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),eligibility=capture)
         cursor=a.start
         while cursor<a.through:
-            cursor=min(cursor+5,a.through);controller.play(cursor)
+            endpoint=min(cursor+5,a.through)
+            # RPC labels only bound the observational interval; they do not
+            # advance Civ. The shared controller remains the sole turn driver.
+            if admission:admission.window(cursor,endpoint)
+            cursor=endpoint;controller.play(cursor)
             write_json(out/'last-boundary.json',dict(turn=cursor,verified=True))
         status=controller.cmd("print('CSC_QUARTER_REPLAY_NATIVE '..CE_AIDistrictScoresStatus())",'CSC_AI_BakersGameplay','native-delivery-health')
         (out/'native-health.txt').write_text(status,encoding='utf-8')
@@ -99,17 +117,20 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
     finally:
         if session.owner is not None and session.owner.poll()is None:
             session.close(restore_preferences=lambda:restore_preferences(controller,out)
-                if(out/'original-preferences.json').exists()else None,restore_package=verify)
+                if(out/'original-preferences.json').exists()else None,restore_package=verify,
+                before_menu=admission.freeze if admission else lambda:None,
+                after_native_exit=admission.after_exit if admission else lambda:None)
         if session.closed:
             for p in copied:packages[p].rename(out/p.name)
             for name in LOGS:
                 log=a.user_root/'Logs'/name
                 if log.is_file():shutil.copyfile(log,out/name)
     assert session.closed and sha(save)==checkpoint['sha256']
+    if admission:admission.qualify()
     log=read(out/'Lua.log')
     assert 'CSC_QUARTER_WATCH_FAULT'not in log and 'CSC_AI_BAKERS_DISTRICTS_FAILED'not in log
     write_json(out/'complete.json',dict(verified=True,start=a.start,through=a.through,
-        external_policy=False,read_only_observer=True))
+        external_policy=False,read_only_observer=True,admission_probe=admission_enabled))
 
 
 if __name__=='__main__':
@@ -118,5 +139,9 @@ if __name__=='__main__':
     parser.add_argument('--facts-probe',action='store_true')
     parser.add_argument('--require-ready',action='store_true')
     parser.add_argument('--ce',type=Path);parser.add_argument('--csc',type=Path)
+    parser.add_argument('--admission-probe',action='store_true',
+        help='Observe Quarter request admission; never changes bids or decisions')
+    parser.add_argument('--frida-deps',type=Path,help='Explicit existing Frida 17.24.3 package directory')
+    parser.add_argument('--admission-binary',type=Path,help='Explicit original patched XP2 DLL (SHA092abfbb)')
     parser.add_argument('--start',type=int,required=True);parser.add_argument('--through',type=int,required=True)
     run(parser.parse_args())
