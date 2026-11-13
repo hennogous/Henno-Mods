@@ -56,4 +56,30 @@ packet[1].delta=0;packet[1].finalQ8=-16384
         l=self.make('packet[1].delta=0;packet[1].finalQ8=0')
         self.assertFalse(l.eval('CSC_AI_DistrictBridge.Publish(1,74,46,80,{1},packet)')[0])
         self.assertEqual(l.eval("table.concat(calls,',')"),'Disable')
+    def managed(self,extra=''):
+        return self.make('''
+CE_AIDistrictScoresManagedType=function(...)calls[#calls+1]='ManagedType';return 1 end
+CE_AIDistrictScoresFinalEntry=function(...)calls[#calls+1]='FinalEntry';return 1 end
+packet[1].delta=0;packet[1].finalQ8=100
+managed={{player=1,district=36,fallbackQ8=-262144}}
+function publishManaged()
+ return CSC_AI_DistrictBridge.Publish(1,74,46,80,{1},packet,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,managed)
+end
+'''+extra)
+    def test_managed_defaults_stage_before_complete_offers(self):
+        l=self.managed();self.assertTrue(l.eval('publishManaged()'))
+        self.assertEqual(l.eval("table.concat(calls,',')"),'Begin,Allow,ManagedType,FinalEntry,Commit')
+    def test_managed_default_cannot_be_positive(self):
+        l=self.managed('managed[1].fallbackQ8=1')
+        self.assertFalse(l.eval('publishManaged()')[0])
+        self.assertEqual(l.eval("table.concat(calls,',')"),'Disable')
+    def test_managed_default_rejects_mixed_additive_and_duplicate_scope(self):
+        for extra in ('packet[1].finalQ8=nil;packet[1].delta=256','managed[2]=managed[1]'):
+            l=self.managed(extra);self.assertFalse(l.eval('publishManaged()')[0])
+            self.assertEqual(l.eval("table.concat(calls,',')"),'Disable')
+    def test_managed_scopes_allow_new_cities_without_site_entries(self):
+        l=self.managed('packet={}')
+        self.assertTrue(l.eval('publishManaged()'))
+        self.assertEqual(l.eval("table.concat(calls,',')"),'Begin,Allow,ManagedType,Commit')
+
 if __name__=='__main__':unittest.main()

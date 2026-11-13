@@ -207,8 +207,41 @@ function F.New(player,placement,ui)
                 elseif rule.ProvideType=='SelfMultiplier'then percents[rule.YieldType]=(percents[rule.YieldType]or 0)+amount end
             end
         end
-        for yield,amount in pairs(sums)do sums[yield]=amount*(1+(percents[yield]or 0)/100)end
-        return sums
+        local raw={};for yield,amount in pairs(sums)do raw[yield]=amount;sums[yield]=amount*(1+(percents[yield]or 0)/100)end
+        return sums,percents,raw
+    end
+    local geometry={}
+    function snapshot.Geometry(city,plot,profile)
+        -- Cheap admission uses the same loaded adjacency rules as the full
+        -- ledger. Cache once per publication/site. Future customer districts
+        -- earn nothing; a single possible local Mill is the explicit allowance.
+        -- This upper bound lets weak sites defer before building full ledgers.
+        local key=city:GetID()..':'..profile.key..':'..plot:GetIndex()
+        if geometry[key]then return geometry[key]end
+        local direct,percent,raw=snapshot.DirectAmounts(city,plot,profile)
+        local result={direct=direct,mills={},base=(direct.YIELD_PRODUCTION or 0)+(direct.YIELD_GOLD or 0)}
+        result.upper=result.base
+        if profile.key=='BAKERS'then
+            for _,kind in ipairs({'BUILDING_CSC_BAKERS_WIND_MILL','BUILDING_CSC_BAKERS_WATER_MILL'})do
+                if kind~='BUILDING_CSC_BAKERS_WATER_MILL'or plot:IsRiver()then
+                    local extra,extraPercent=0,0
+                    for _,rule in ipairs(CSC_Adjacency.ByDistrict[profile.district.DistrictType]or{})do
+                        if rule.ModifierOwner=='BuildingModifiers'and rule.WhoIsTheOwner==kind and rule.YieldType=='YIELD_PRODUCTION'then
+                            local amount=CSC_Adjacency.Amount(rule,CSC_Adjacency.Count(rule,plot,city,pid))
+                            if rule.ProvideType=='SelfBonus'then extra=extra+amount
+                            elseif rule.ProvideType=='SelfMultiplier'then extraPercent=extraPercent+amount end
+                        end
+                    end
+                    -- Mills currently modify Production only. Apply the same
+                    -- live percentage as direct adjacency, including policies;
+                    -- the previous hard-coded terrain count omitted that step.
+                    local delta=((raw.YIELD_PRODUCTION or 0)+extra)*(1+((percent.YIELD_PRODUCTION or 0)+extraPercent)/100)
+                        -(direct.YIELD_PRODUCTION or 0)
+                    result.mills[kind]=delta;result.upper=math.max(result.upper,result.base+delta)
+                end
+            end
+        end
+        geometry[key]=result;return result
     end
     local lostAdjacency={}
     function snapshot.SupplyAdjacencyLoss(chain,removed)
@@ -297,7 +330,8 @@ function F.New(player,placement,ui)
                 end
             end
         end
-        for yield,amount in pairs(snapshot.DirectAmounts(cityObject,plot,profile))do
+        local geometry=snapshot.Geometry(cityObject,plot,profile)
+        for yield,amount in pairs(geometry.direct)do
             site.direct[#site.direct+1]={id=yield,yield=yield,amount=amount}
             if yield=='YIELD_PRODUCTION'or yield=='YIELD_GOLD'then site.adjacency=site.adjacency+amount end
         end
@@ -309,7 +343,7 @@ function F.New(player,placement,ui)
                     if stage==2 then
                         local water=definition.BuildingType=='BUILDING_CSC_BAKERS_WATER_MILL'
                         if not water or plot:IsRiver()then
-                            b.terrain=profile.key=='BAKERS'and(water and math.floor(plot:GetRiverCrossingCount()/2)or(plot:IsHills()and 1 or 0))or 0
+                            b.terrain=geometry.mills[definition.BuildingType]or 0
                             -- An already present alternative forbids switching
                             -- Mills merely because the other now quotes better.
                             local other=water and GameInfo.Buildings.BUILDING_CSC_BAKERS_WIND_MILL or GameInfo.Buildings.BUILDING_CSC_BAKERS_WATER_MILL

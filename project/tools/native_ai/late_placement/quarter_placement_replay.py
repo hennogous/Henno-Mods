@@ -1,8 +1,9 @@
 """Read-only Quarter lifecycle/selector replay of an archived inactive checkpoint.
 
-The shared controller owns launch, load, autoplay and cleanup. Exact archived
-CSC/CE packages retain the policy under test. This adds observations only; it
-does not inject a bid, unlock, treasury change or district order.
+The shared controller owns launch, load, autoplay and cleanup. Defaults use
+exact archived CSC/CE policy; explicit paired --ce/--csc inputs qualify a new
+integrated candidate against that checkpoint. Input identities/differences are
+recorded. The observer injects no bid, unlock, gold or district order.
 """
 import argparse
 from pathlib import Path
@@ -27,19 +28,27 @@ def run(a):
     save=Path(checkpoint['native_save']).resolve(strict=True)
     assert save.parent==(home/'Saves/Single').resolve()
     assert sha(save)==checkpoint['sha256']==sha(source/('turn-'+str(a.start)+'.Civ6Save'))
-    packages={source/name:home/'Mods'/name for name in NAMES}
-    assert not out.exists()and not native_inventory()and not any(p.exists()for p in packages.values())
-    ledger=load(source/'packages.json');pins={p:manifest(p)for p in packages}
-    for p in packages:
+    archived={source/name:home/'Mods'/name for name in NAMES}
+    assert not out.exists()and not native_inventory()and not any(p.exists()for p in archived.values())
+    ledger=load(source/'packages.json');archive_pins={p:manifest(p)for p in archived}
+    for p in archived:
         proof,=[row for row in ledger.values()if Path(row['install']).name==p.name]
-        assert pins[p]==proof['files'],'Archived package changed'
+        assert archive_pins[p]==proof['files'],'Archived package changed'
+    assert bool(a.ce)==bool(a.csc),'Candidate override requires both explicit packages'
+    inputs=[a.ce.resolve(strict=True),a.csc.resolve(strict=True)]if a.ce else list(archived)
+    packages=dict(zip(inputs,archived.values()));pins={p:manifest(p)for p in packages}
+    for old,new in zip(archived,packages):
+        assert package_identity(old)[0]==package_identity(new)[0],'Candidate save identity differs'
+    differences={new.name:[name for name in sorted(set(archive_pins[old])|set(pins[new]))
+        if archive_pins[old].get(name)!=pins[new].get(name)]for old,new in zip(archived,packages)}
     ce,csc=packages;ce_id,_=package_identity(ce);csc_id,_=package_identity(csc)
     binary=Path(load(source/'launch-bootstrap.json')['binary']);assert sha(binary)==HOTFIX_EXE_SHA
     out.mkdir(parents=True)
     write_json(out/'inputs.json',dict(source=str(source),save_sha256=checkpoint['sha256'],
         start=a.start,through=a.through,read_only_observer=True,external_policy=False,
-        packages={p.name:pin for p,pin in pins.items()}))
-    for name in('quarter_placement_replay.py','quarter_placement_watch.lua'):
+        packages={str(p):pin for p,pin in pins.items()},candidate_override=bool(a.ce),
+        changed_from_archived=differences))
+    for name in('quarter_placement_replay.py','quarter_placement_watch.lua','quarter_economy_facts_probe.lua'):
         shutil.copyfile(HERE/name,out/name)
     controller=make_probe_controller(out,user_root=a.user_root)
     controller.study_endpoint=a.through
@@ -65,6 +74,10 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
             raw=controller.cmd(read(out/'quarter_placement_watch.lua'),'CSC_AI_BakersGameplay','install-placement-watch')
             (out/'watch-install.txt').write_text(raw,encoding='utf-8')
             assert 'CSC_QUARTER_WATCH_INSTALLED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw
+            if a.facts_probe:
+                facts=controller.cmd('CSC_QUARTER_FACTS_REQUIRE_READY='+str(a.require_ready).lower()+'\n'+read(out/'quarter_economy_facts_probe.lua'),'CSC_AI_BakersGameplay','read-economic-readiness-facts')
+                (out/'economic-readiness-facts.txt').write_text(facts,encoding='utf-8')
+                assert 'CSC_QUARTER_FACT_PROBE_COMPLETE'in facts
             return True
         session.load_once(save,sha256=checkpoint['sha256'],native_directory=home/'Saves/Single',turn=a.start,
             contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),eligibility=capture)
@@ -72,6 +85,9 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
         while cursor<a.through:
             cursor=min(cursor+5,a.through);controller.play(cursor)
             write_json(out/'last-boundary.json',dict(turn=cursor,verified=True))
+        status=controller.cmd("print('CSC_QUARTER_REPLAY_NATIVE '..CE_AIDistrictScoresStatus())",'CSC_AI_BakersGameplay','native-delivery-health')
+        (out/'native-health.txt').write_text(status,encoding='utf-8')
+        assert '\"ready\":1'in status and '\"enabled\":1'in status and '\"faults\":0'in status
         raw=controller.cmd("CSC_QUARTER_PLACEMENT_WATCH.Drain();print('CSC_QUARTER_WATCH_DRAINED')",
             'CSC_AI_BakersGameplay','drain-final-placement-journal')
         assert 'CSC_QUARTER_WATCH_DRAINED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw
@@ -99,5 +115,8 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for name in('source','output','my-games','user-root'):parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--facts-probe',action='store_true')
+    parser.add_argument('--require-ready',action='store_true')
+    parser.add_argument('--ce',type=Path);parser.add_argument('--csc',type=Path)
     parser.add_argument('--start',type=int,required=True);parser.add_argument('--through',type=int,required=True)
     run(parser.parse_args())

@@ -1,6 +1,19 @@
 # Current CSC AI status
 
-**Current instruction: outcome tests stopped; REA investigation, 13 November.**
+**Current authorised work, 13 November: correct Quarter delivery, then a fresh
+Online250 game.** Active problems **1.6/1.8**, preserving **2.2**. The first
+candidate exposed two concrete errors: obsolete packaged UI readers and a cached
+improvement flag misidentified as district presence. Both are corrected;243
+native,25 economy,19 frontend and25 observer/result checks pass. Astra's final
+source review finds no demonstrated code blocker. Replay04 now qualifies the
+actual district lookup and consumer values before a fresh full game. No upstream
+PR; the old automatic goal stays paused. Output quality takes precedence over
+architectural neatness, with bounded work and measured overhead.
+[Candidate, corrections and evidence](../research/mods/csc-ai-managed-placement-20261113.md).
+
+## Previous investigation and results (historical)
+
+**Earlier stop: REA investigation,13 November; superseded by the authorised fix/test above.**
 The fresh lifecycle run stopped at160 through the shared controller, exited0
 and restored preferences. Turn150 is saved. No further game or tuning change.
 REA on the actual updated DLL confirms a native reservation is a threshold,

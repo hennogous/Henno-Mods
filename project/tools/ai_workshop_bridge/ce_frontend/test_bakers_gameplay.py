@@ -99,7 +99,7 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
-    def test_oversized_economic_replacement_falls_back_before_partial_trimming(self):
+    def test_oversized_managed_packet_preserves_defaults_and_highest_positive_offers(self):
         lua=LuaRuntime()
         lua.execute(FIXTURE)
         messages=[]
@@ -114,14 +114,19 @@ ExposedMembers.CSC_Adjacency={IsSinglePlayer=function()return true end}
 CSC_AI_QuarterPlacement.MaterialDeductions=function()return{},{},{},{},{},{}end
 CSC_AI_QuarterSiteForecasts=function()return{{player=3,city=42,district=1,plot=100,delta=256}}end
 CSC_AI_EconomyAdapters.Snapshot=function(_,_,ui)return{ui=ui,QuoteCount=function()return 0 end}end
+CSC_AI_EconomyAdapters.DeferredQuarterQ8=-262144
+CE_AIDistrictScoresManagedType=function(player,district,default)assert(player==3 and district==3 and default==-262144);managed=true;return 1 end
+CE_AIDistrictScoresFinalEntry=function(...)packet[#packet+1]={...};return 1 end
 CSC_AI_EconomyAdapters.QuarterBids=function()
- local entries={};for i=1,4097 do entries[i]={finalQ8=i,delta=0}end
- return entries,{evaluated=4097,final=4097,unknown=0,streams=0,omissions=0}
+ local entries={};for i=1,4097 do entries[i]={player=3,city=i,district=3,plot=100,finalQ8=i,delta=0}end
+ entries[#entries+1]={player=3,city=42,district=1,plot=100,delta=-512}
+ return entries,{evaluated=4097,final=4097,unknown=0,streams=0,omissions=0,managed=true}
 end
 boundary()
-assert(packet and #packet==1 and packet[1][5]==256 and version==1)
+assert(packet and #packet==4096 and packet[1][5]==-512 and version==1 and managed)
+assert(packet[2][5]==4097 and packet[4096][5]==3)
 ''')
-        self.assertTrue(any('CSC_AI_ECONOMY_CAPACITY_FALLBACK' in message for message in messages))
+        self.assertTrue(any('CSC_AI_ECONOMY_CAPACITY_TRIM' in message for message in messages))
 
     def test_owned_supplier_readiness_distinguishes_unlock_and_repair(self):
         lua = LuaRuntime()

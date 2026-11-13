@@ -113,6 +113,26 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.assertFalse(partial['measurementComplete'])
         self.assertEqual(len(partial['faults']),1)
 
+    def test_managed_defaults_and_consumer_phases_preserve_native_order(self):
+        self.vm.execute('''
+CSC_AI_DistrictBridge.Publish(4,74,46,38,{1},{},nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,
+ {{player=1,district=37,fallbackQ8=-262144}})
+''')
+        records=[dict(k=kind,version=4,generation=3,player=1,city=327684,district=37,plot=plot,
+                      base=999,result=result,reason=0,eligible=1,reservationId=17,phase=phase,existingDistrict=0)
+                 for kind,plot,result,phase in [('final',1062,-262144,2),('location',1062,-262144,3),
+                                                ('request',1062,-262144,5),('pv',-1,0,4),('best',1062,-262144,2)]]
+        self.vm.globals().trace=json.dumps(dict(records=records),separators=(',',':'))
+        self.vm.execute('CSC_QUARTER_PLACEMENT_WATCH.Drain()')
+        output=self.output()
+        self.assertIn('CSC_QUARTER_WATCH_LOCATION',output)
+        self.assertIn('CSC_QUARTER_WATCH_REQUEST',output)
+        aggregate=next(line for line in output.splitlines()if line.startswith('CSC_QUARTER_WATCH_VALUE'))
+        self.assertIn('aggregate=true',aggregate)
+        best=next(line for line in output.splitlines()if line.startswith('CSC_QUARTER_WATCH_BEST'))
+        for field in ('fallback=true','bidQ8=-262144','reservationId=17','phase=2','lastWriteOrdinal=1','nativeOrdinal=5'):
+            self.assertIn(field,best)
+
     def test_clean_but_interrupted_run_is_not_a_complete_measurement(self):
         partial=parse(self.output())
         self.assertTrue(partial['observerFaultFree'])

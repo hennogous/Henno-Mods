@@ -7,7 +7,8 @@ assert(not CSC_QUARTER_PLACEMENT_WATCH, 'Duplicate placement observer')
 local B=assert(CSC_AI_DistrictBridge)
 local A=assert(CSC_Adjacency)
 local P=assert(CSC_AI_QuarterPlacement)
-local watched,offers,lastWrite,seen={},{},{},{}
+local watched,offers,lastWrite,seen,managedDefaults={},{},{},{},{}
+local publicationVersion
 for _,profile in ipairs(P.StageTwoProfiles())do watched[profile.district.Index]=profile end
 local function key(player,city,district,plot)
  return table.concat({player,city,district,plot},':')
@@ -29,14 +30,19 @@ local function drain()
  for offset=0,total-1,64 do
   local page=assert(CE_AIDistrictScoresTraceRead(offset,64,generation))
   assert(not page:find('"stale":true',1,true),'Publication changed during journal read')
+  local ordinal=0
   for record in page:gmatch('{[^{}]+}')do
    local kind=record:match('"k":"([^"]+)"')
-   if kind=='final'or kind=='best'then
+   if kind then ordinal=ordinal+1 end
+   if kind=='final'or kind=='best'or kind=='location'or kind=='request'or kind=='pv'then
     local row={}
     for _,name in ipairs({'version','generation','player','city','district','plot','base','result','reason','eligible'})do
      row[name]=assert(number(record,name))
     end
     if watched[row.district]then
+     row.nativeOrdinal=offset+ordinal
+     row.reservationId=number(record,'reservationId');row.phase=number(record,'phase')
+     row.existingDistrict=number(record,'existingDistrict')
      row.observedTurn=Game.GetCurrentGameTurn()
      local id=key(row.player,row.city,row.district,row.plot)
      if kind=='final'then
@@ -47,8 +53,15 @@ local function drain()
       local bid=offers[id];local write=lastWrite[id]
       row.bidVersion=bid and bid.version;row.bidQ8=bid and bid.finalQ8
       row.bidAdjacency=bid and bid.adjacency
+      row.bidEconomicQ8=bid and bid.economicQ8;row.bidPreferenceQ8=bid and bid.preferenceQ8
+      if not bid and managedDefaults[row.player..':'..row.district]then
+       row.bidVersion=publicationVersion;row.bidQ8=managedDefaults[row.player..':'..row.district];row.fallback=true
+      end
       row.lastWriteVersion=write and write.version;row.lastWriteQ8=write and write.result
-      best[#best+1]=row
+      row.lastWriteOrdinal=write and write.nativeOrdinal
+      if kind=='pv'and row.plot==-1 then row.aggregate=true end
+      if kind=='best'then best[#best+1]=row
+      else emit(kind=='location'and'LOCATION'or kind=='request'and'REQUEST'or'VALUE',row)end
      end
     end
    end
@@ -162,10 +175,14 @@ B.Publish=function(version,width,height,count,players,entries,...)
  local accepted,message=publish(version,width,height,count,players,entries,...)
  if accepted then
   offers={}
+  publicationVersion=version;managedDefaults={}
+  for _,scope in ipairs(select(14,...)or{})do
+   managedDefaults[scope.player..':'..scope.district]=scope.fallbackQ8
+  end
   for _,entry in ipairs(entries)do
    if watched[entry.district]then
     offers[key(entry.player,entry.city,entry.district,entry.plot)]={version=version,
-     finalQ8=entry.finalQ8,adjacency=entry.adjacency}
+     finalQ8=entry.finalQ8,adjacency=entry.adjacency,economicQ8=entry.economicQ8,preferenceQ8=entry.preferenceQ8}
    end
   end
  end

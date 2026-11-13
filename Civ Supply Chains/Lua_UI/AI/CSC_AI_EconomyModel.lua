@@ -196,7 +196,7 @@ function M.Price(result,price,horizon)
     return total
 end
 
-function M.Forecast(site,price)
+function M.Forecast(site,price,placementObjective)
     assert(present(site.horizon) and site.horizon>0,'Finite forecast horizon required')
     if not present(site.quarterReady)then return nil,'Quarter readiness unavailable'end
     local best
@@ -230,8 +230,16 @@ function M.Forecast(site,price)
                 if alternative.valueQ8>=result.valueQ8 then plan,result=reduced,alternative end
             end
         end
-        if not best or result.valueQ8>best.valueQ8 or result.valueQ8==best.valueQ8
-            and tostring(result.alternative or '')<tostring(best.alternative or '')then best=result end
+        -- Placement must compare the final bid of each feasible producer plan.
+        -- Selecting raw economics first can reject a profitable Wind +3 plan
+        -- merely because earlier Water +2 pays slightly more. Other consumers
+        -- (building marginals/supplier losses) retain the raw economic objective.
+        -- This callback only ranks already priced plans; it adds no game reads
+        -- or extra alternative enumeration to the bounded search above.
+        result.selectionQ8=placementObjective and placementObjective(result)or result.valueQ8
+        if not best or result.selectionQ8>best.selectionQ8 or result.selectionQ8==best.selectionQ8
+            and (result.valueQ8>best.valueQ8 or result.valueQ8==best.valueQ8
+            and tostring(result.alternative or '')<tostring(best.alternative or ''))then best=result end
     end end
     return best
 end

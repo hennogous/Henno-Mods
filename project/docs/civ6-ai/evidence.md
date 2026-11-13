@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [Managed Quarter values at native consumers and retained requests -13 November2026](../research/mods/csc-ai-managed-placement-20261113.md)
+
 - [Typed Quarter-site declines and native boundary correction —12 November2026](../research/mods/csc-ai-quarter-decline-20261112.md)
 
 - [Quarter deferral and reconsideration —12 November2026](../research/mods/csc-ai-quarter-deferral-20261112.md)

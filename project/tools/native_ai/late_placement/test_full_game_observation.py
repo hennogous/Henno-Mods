@@ -67,13 +67,16 @@ CSC_ENDPOINT_END\t200\t2
             'CE_AIBuildingNominationStatus','CE_AIDistrictRepairStatus',
             'CE_AISupplierExclusionStatus','CE_AIDistrictPurchaseCompletionStatus','CE_AIDistrictDeclineStatus',
             'CE_AIEconomyStatus','CE_AIDistrictScoresFinalEntry','CE_AIYieldStreamValue',
-            'CE_AIYieldFixedValue','CE_AIAmenityStreamValue')
+            'CE_AIYieldFixedValue','CE_AIAmenityStreamValue','CE_AIDistrictScoresManagedType','CE_AIDistrictScoresManagedReceipt',
+            'ExposedMembers.CSC_Adjacency.GetEconomyCityNumber','ExposedMembers.CSC_Adjacency.GetEconomyResearchNumbers',
+            'ExposedMembers.CSC_Adjacency.GetEconomyPlotFacts')
         for absent in (None,)+names:
             vm=LuaRuntime();vm.execute('''print=function()end
 Game={GetCurrentGameTurn=function()return 1 end}
 AutoplayManager={IsActive=function()return false end}
 GameInfo={};CSC_AI_QuarterPlacement={};CSC_AI_QuarterSiteForecasts=function()end;CSC_AI_DistrictBridge={}
 CSC_AI_EconomyModel={};CSC_AI_EconomyFacts={};CSC_AI_EconomyAdapters={}
+ExposedMembers={CSC_Adjacency={}}
 ''')
             for name in names:vm.execute(name+'=function()return \'{"ready":1,"faults":0}\'end')
             vm.execute('CE_AIEconomyStatus=function()return \'{"pricingReady":1,"finalReady":1}\'end')

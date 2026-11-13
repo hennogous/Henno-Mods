@@ -1,6 +1,19 @@
 # CSC AI roadmap
 
-**Current: no active game; native delivery investigation under1.6/1.8.** Henno
+**Current authorised work, 13 November: correct Quarter delivery, then a fresh
+Online250 game.** Active problems **1.6/1.8**, preserving **2.2**. The first
+candidate exposed two concrete errors: obsolete packaged UI readers and a cached
+improvement flag misidentified as district presence. Both are corrected;243
+native,25 economy,19 frontend and25 observer/result checks pass. Astra's final
+source review finds no demonstrated code blocker. Replay04 now qualifies the
+actual district lookup and consumer values before a fresh full game. No upstream
+PR; the old automatic goal stays paused. Output quality takes precedence over
+architectural neatness, with bounded work and measured overhead.
+[Candidate, corrections and evidence](../research/mods/csc-ai-managed-placement-20261113.md).
+
+## Previous investigation and results (historical)
+
+**Earlier investigation under1.6/1.8 (historical).** Henno
 stopped the fresh outcome run at160 and requested REA. The updated DLL's selector
 can outbid plot reservations, while our complete-value adapter skips all
 nonempty IDs. Sinope has a preceding Builder reservation and reads native1736

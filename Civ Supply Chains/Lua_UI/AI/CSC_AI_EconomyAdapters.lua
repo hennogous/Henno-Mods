@@ -11,6 +11,7 @@ local F=CSC_AI_EconomyFacts
 
 function E.Available()
     if type(CE_AIEconomyStatus)~='function'or type(CE_AIDistrictScoresFinalEntry)~='function'
+        or type(CE_AIDistrictScoresManagedType)~='function'or type(CE_AIDistrictScoresManagedReceipt)~='function'
         or type(CE_AIYieldStreamValue)~='function'or type(CE_AIAmenityStreamValue)~='function'
         or type(CE_AIYieldFixedValue)~='function'then
         return false,'CE economic pricing/final-score API unavailable'
@@ -73,121 +74,111 @@ function E.Snapshot(player,placement,ui)
     return snapshot
 end
 
+-- Initial siting preferences are native Q8 utility, not additional gameplay
+-- yields. +3/+4/+5/+6+ profitable sites receive +96/+192/+288/+384 utility;
+-- both material classes add16 for later-stage flexibility. These bounded bands
+-- are estimates against observed native improvement bids around163 utility.
+-- They do not make an otherwise losing investment profitable or guarantee it
+-- beats another district/unit. Below+3 and no-Base sites defer this publication.
+-- Managed CE types withhold nonpositive options from fresh proposals because
+-- vanilla GetBestDistrict can otherwise select the least-negative candidate.
+E.DeferredQuarterQ8=-1024*256
+function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
+    if quote.adjacency+1e-6<3 or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
+    local penalty=math.max(0,-(legacyDelta or 0))
+    if coversOwnMaterial then penalty=math.max(penalty,256*256)end
+    local value=quote.valueQ8-penalty
+    if value<=0 then return value,'economics'end
+    local premium=math.min(4,math.max(0,quote.adjacency-2))*96*256
+    if (site.specialtyCount or 0)>0 then premium=premium+16*256 end
+    return math.floor(math.max(-4096*256,math.min(4096*256,value+premium))+.5),'positive'
+end
+
 function E.QuarterBids(snapshot,placement,protectedPlots,early)
-    local result,replace={},{}
-    local prior={}
-    for _,entry in ipairs(early)do
-        prior[entry.city..':'..entry.district..':'..entry.plot]=entry
-    end
-    local stats={evaluated=0,final=0,unknown=0,buyerBlocked=0,streams=0,omissions=0,min=nil,max=nil}
+    local result,prior,managed={},{},{}
+    local profiles=placement.StageTwoProfiles()
+    for _,profile in ipairs(profiles)do managed[profile.district.Index]=true end
+    for _,entry in ipairs(early)do prior[entry.city..':'..entry.district..':'..entry.plot]=entry end
+    local stats={evaluated=0,final=0,unknown=0,buyerBlocked=0,streams=0,omissions=0,
+        qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,managed=true}
     local player,pid=snapshot.player,snapshot.id
     local visibility=PlayersVisibility[pid]
-    local function quoteCandidate(city,plot,profile,old)
-        local index=plot:GetIndex()
-        stats.evaluated=stats.evaluated+1
-        local site,reason=snapshot.Site(city,plot,profile)
-        local quote
-        if site then
-            if old and old.frontier then site.purchaseGold=old.purchaseGold end
-            quote,reason=M.Forecast(site,snapshot.Price)
-        end
-        if quote then
-            local key=city:GetID()..':'..profile.district.Index..':'..index
-            -- A complete Quarter valuation replaces the early
-            -- +24/+48 heuristic and Civ's building premium.
-            -- Preserve finite material/no-host policy where it
-            -- exceeds the ordinary below+3 quality deduction.
-            local penalty=quote.adjacency<3 and math.floor((3-quote.adjacency)*64*256+.5)or 0
-            if old and old.delta<0 then penalty=math.max(penalty,-old.delta)end
-            local resource=GameInfo.Resources[plot:GetResourceType()]
-            if site.baseCount==0 or resource and(CSC_Adjacency.HasTag(profile.base,resource.ResourceType)
-                or CSC_Adjacency.HasTag(profile.specialty,resource.ResourceType))then penalty=math.max(penalty,256*256)end
-            local bid=math.max(-4096*256,math.min(4096*256,quote.valueQ8-penalty))
-            -- A known invoice is enough to compare sites coherently, but not
-            -- enough to promote a purchase for this particular city. Economic
-            -- may pick another buyer; CE acknowledges intended ownership only
-            -- after it exists. Preserve the old unambiguous-buyer safeguard.
-            if old and old.frontier and bid>0 then
-                local eligible,exclusive=pcall(snapshot.ui.GetPlotPurchaseQuote,pid,city:GetID(),index)
-                if not eligible or exclusive==nil then bid=0;stats.buyerBlocked=stats.buyerBlocked+1 end
-            end
-            local entry={player=pid,city=city:GetID(),district=profile.district.Index,plot=index,
-                delta=0,finalQ8=bid,economy=true,adjacency=quote.adjacency,
-                declineNoBase=old and old.declineNoBase,weak=bid<=0,
-                frontier=old and old.frontier,purchaseGold=old and old.purchaseGold}
-            result[#result+1]=entry;replace[key]=true
-            stats.final=stats.final+1;stats.streams=stats.streams+#quote.streams
-            stats.omissions=stats.omissions+#quote.omissions
-            stats.min=math.min(stats.min or bid,bid);stats.max=math.max(stats.max or bid,bid)
-        else
-            stats.unknown=stats.unknown+1
-            if stats.unknown<=3 then
-                print(string.format('CSC_AI_ECONOMY_QUOTE_UNAVAILABLE turn=%d player=%d city=%d plot=%d reason=%s',Game.GetCurrentGameTurn(),pid,city:GetID(),index,tostring(reason)))
-            end
-        end
-    end
-
-    for _,profile in ipairs(placement.StageTwoProfiles())do
-        for _,city in player:GetCities():Members()do
-            if not city:GetDistricts():HasDistrict(profile.district.Index)then
-                for _,index in ipairs(snapshot.ui.GetLegalDistrictTargets(pid,city:GetID(),profile.district.Hash))do
-                    local plot=Map.GetPlotByIndex(index)
-                    local owner=plot and Cities.GetPlotPurchaseCity(plot)
-                    if owner and owner:GetID()==city:GetID()and plot:GetOwner()==pid
-                        and plot:GetDistrictType()==-1
-                        and visibility:IsRevealed(plot:GetX(),plot:GetY())
-                        and Map.GetPlotDistance(city:GetX(),city:GetY(),plot:GetX(),plot:GetY())<=3
-                        and plot:CanHaveDistrict(profile.district.Index,pid,city:GetID())then
-                        local key=city:GetID()..':'..profile.district.Index..':'..index
-                        quoteCandidate(city,plot,profile,prior[key])
-                    end
-                end
-            end
-        end
-    end
-    -- Native plot-analysis rows also admit unowned frontier sites; the BUILD
-    -- target list omits them. Cover every revealed radius-three frontier pair,
-    -- not only the old planner's favourite, or an untouched building premium
-    -- could beat all fully priced owned sites. Payment remains entirely native.
-    for _,profile in ipairs(placement.StageTwoProfiles())do
+    for _,profile in ipairs(profiles)do
         for _,city in player:GetCities():Members()do
             if not city:GetDistricts():HasDistrict(profile.district.Index)then
                 local center=Map.GetPlot(city:GetX(),city:GetY())
                 for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
-                    if plot:GetOwner()==-1 and plot:GetDistrictType()==-1
-                        and visibility:IsRevealed(plot:GetX(),plot:GetY())
-                        and plot:CanHaveDistrict(profile.district.Index,pid,city:GetID())then
-                        local frontier=false
-                        for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
-                            frontier=frontier or near:GetOwner()==pid
-                        end
-                        if frontier then
-                            local ok,invoice=pcall(snapshot.ui.GetRawPlotPurchaseQuote,pid,city:GetID(),plot:GetIndex())
-                            if ok and (type(invoice)=='number'or type(invoice)=='integer')and invoice>0 then
-                                local key=city:GetID()..':'..profile.district.Index..':'..plot:GetIndex()
-                                local original=prior[key];local entry={}
-                                for k,v in pairs(original or{})do entry[k]=v end
-                                entry.delta=entry.delta or 0;entry.frontier=true;entry.purchaseGold=invoice
-                                quoteCandidate(city,plot,profile,entry)
-                            else stats.unknown=stats.unknown+1 end
+                    local owner=plot:GetOwner()
+                    local assigned=owner==pid and Cities.GetPlotPurchaseCity(plot)
+                    local frontier=false
+                    if owner==-1 then for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
+                        frontier=frontier or near:GetOwner()==pid
+                    end end
+                    if plot:GetDistrictType()==-1 and visibility:IsRevealed(plot:GetX(),plot:GetY())
+                        and (assigned and assigned:GetID()==city:GetID()or frontier)then
+                        -- Enumerate a bounded superset of native map potential,
+                        -- including future unlocks. Current CanProduce/BUILD
+                        -- and CanHaveDistrict filters are deliberately absent.
+                        -- CE preserves native invalid scores and eligibility;
+                        -- an overinclusive quote cannot legalise a placement.
+                        stats.evaluated=stats.evaluated+1
+                        local geometry=snapshot.Geometry(city,plot,profile)
+                        if geometry.upper+1e-6<3 then stats.qualityDeferred=stats.qualityDeferred+1
+                        else
+                            local invoice=0
+                            if frontier then invoice=snapshot.ui.GetRawPlotPurchaseQuote(pid,city:GetID(),plot:GetIndex())end
+                            if invoice==nil or invoice<0 then stats.invoiceDeferred=stats.invoiceDeferred+1
+                            else
+                                local old=prior[city:GetID()..':'..profile.district.Index..':'..plot:GetIndex()]
+                                local resource=GameInfo.Resources[plot:GetResourceType()]
+                                local covers=resource and(CSC_Adjacency.HasTag(profile.base,resource.ResourceType)
+                                    or CSC_Adjacency.HasTag(profile.specialty,resource.ResourceType))
+                                local site,reason=snapshot.Site(city,plot,profile)
+                                local quote
+                                if site then
+                                    site.purchaseGold=invoice
+                                    quote,reason=M.Forecast(site,snapshot.Price,function(alternative)
+                                        return E.PlacementValue(alternative,site,old and old.delta,covers)
+                                    end)
+                                end
+                                if not quote then
+                                    stats.unknown=stats.unknown+1
+                                    if stats.unknown<=3 then print(string.format('CSC_AI_ECONOMY_QUOTE_UNAVAILABLE turn=%d player=%d city=%d plot=%d reason=%s',
+                                        Game.GetCurrentGameTurn(),pid,city:GetID(),plot:GetIndex(),tostring(reason)))end
+                                else
+                                    local bid,why=E.PlacementValue(quote,site,old and old.delta,covers)
+                                    stats.streams=stats.streams+#quote.streams;stats.omissions=stats.omissions+#quote.omissions
+                                    if why=='quality'then stats.qualityDeferred=stats.qualityDeferred+1
+                                    elseif why=='economics'then stats.economicDeferred=stats.economicDeferred+1
+                                    else
+                                        -- A correct invoice alone does not prove
+                                        -- this city will be the native buyer.
+                                        if frontier and snapshot.ui.GetPlotPurchaseQuote(pid,city:GetID(),plot:GetIndex())==nil then
+                                            stats.buyerBlocked=stats.buyerBlocked+1
+                                        else
+                                            result[#result+1]={player=pid,city=city:GetID(),district=profile.district.Index,
+                                                plot=plot:GetIndex(),delta=0,finalQ8=bid,economy=true,adjacency=quote.adjacency,
+                                                economicQ8=quote.valueQ8,preferenceQ8=bid-quote.valueQ8,
+                                                baseCount=site.baseCount,specialtyCount=site.specialtyCount,
+                                                frontier=frontier,purchaseGold=frontier and invoice or nil}
+                                            stats.final=stats.final+1
+                                            stats.min=math.min(stats.min or bid,bid);stats.max=math.max(stats.max or bid,bid)
+                                        end
+                                    end
+                                end
+                            end
                         end
                     end
                 end
             end
         end
     end
-    -- Whole-value replacement must cover the comparison coherently. If any
-    -- owned legal quote is unavailable, retain this player's old compact
-    -- policy rather than leave an unpriced native-premium candidate among
-    -- fully replaced peers. Diagnostics never describe that as integration.
-    if stats.unknown>0 then stats.fallback=true;stats.final=0;return early,stats end
-    -- One score entry per pair. Do not sum a whole economic bid with the old
-    -- adjacency preference or native future-building forecast. Unquoted frontier
-    -- deductions remain finite guidance; quoted investment options use the
-    -- same final bid and native acquisition machinery as owned candidates.
-    for _,entry in ipairs(early)do
-        if not replace[entry.city..':'..entry.district..':'..entry.plot]then result[#result+1]=entry end
-    end
+    -- Sparse positive bids plus a declared negative default own the WHOLE
+    -- managed type. Weak, unknown, unavailable and newly founded-city options
+    -- defer rather than inherit an untouched native building premium. This
+    -- keeps packets small for future Quarters. Other district/material bids
+    -- stay intact; no old additive Quarter score is mixed with whole values.
+    for _,entry in ipairs(early)do if not managed[entry.district]then result[#result+1]=entry end end
     return result,stats
 end
 

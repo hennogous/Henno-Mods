@@ -9,11 +9,14 @@ This implements the architecture agreed on 6 November (commit `057d4c55`). The
 Quarter's forecast at the late district-value boundary, rather than trying to
 reconstruct and subtract each of Civ's modifier-interpreter mistakes.
 
-**Revision status:** integrated in main CSC and reviewed by Astra. The final source
-passes a fresh native smoke with exact complete-value writes, cache reads and
-eligible comparisons. The preceding 30-turn window demonstrates repeated
-publication/consumption. Placement quality, investment completion and Services
-remain outcome questions. [Exact revisions and evidence](../research/mods/csc-ai-central-economy-20261113.md).
+**Revision status,13 November:** main CSC candidate reviewed by Astra, with243
+native and25 Lua economy checks passing. Replay03 completed175 but exposed an
+incorrect improvement/district flag; it is a failed delivery qualifier. The
+corrected candidate queries the actual district collection, preserving foundations
+and repairs independently of cached flags. Replay04 must qualify that live
+behavior before the fresh Online250 game. Earlier smoke evidence applies only
+to its recorded source, not automatically to this revision.
+[Candidate, corrections and evidence](../research/mods/csc-ai-managed-placement-20261113.md).
 
 ## From the world to a decision
 
@@ -29,7 +32,7 @@ flowchart TD
     PLAN["Planning adapters<br/>legal targets, frontier quotes,<br/>ownership completion and place/defer scopes"]
     SQL["Native customer-placement signal<br/>SQL private-yield adjacency<br/>one signal per mapped district–Quarter edge"]
     PACKET["Versioned CE packet<br/>bounded; refreshed each AI turn<br/>no duplicate early and complete bids"]
-    CE["Native decision boundaries<br/>late Quarter score replacement<br/>district selection and supplier guards<br/>purchase prerequisite acknowledgement"]
+    CE["Native decision boundaries<br/>refresh after aggregation and before consumers<br/>reprice retained new-Quarter requests<br/>supplier guards + ownership acknowledgement"]
     CIV["Civ compares and executes<br/>other districts, units and projects still compete<br/>native treasury, queues and worker allocation"]
     OBS["Evidence<br/>published → read / compared → selected / requested<br/>→ owned / built → actual economic benefit"]
     DB --> FACTS
@@ -67,13 +70,13 @@ and acceptance data. All reusable CSC policy is in `Civ Supply Chains/Lua_UI/AI/
 | UI read boundary | `Lua_UI/Adjacencies/CSC_AdjacencyUI.lua`: raw invoices and UI-only cost/yield/research reads return scalars/plain records; the older exclusive-buyer screen stays separate. |
 | Live facts | `CSC_AI_EconomyFacts.lua`: loaded definitions, completed customer footprints, actual buildings, research paths, construction estimates, supplier observations and per-publication caches. |
 | Central rules | `CSC_AI_EconomyModel.lua`: transaction recipients, population rounding, exclusive producers, prerequisite and queue timing, bounded optional investment plans, recurring yields and marginal loss. No game writes. |
-| Economic decisions | `CSC_AI_EconomyAdapters.lua`: native pricing, complete Quarter bids, weak-site policy and material-loss quotes. Unknown inputs retain the established fallback policy. |
+| Economic decisions | `CSC_AI_EconomyAdapters.lua`: native pricing, complete Quarter bids, weak-site policy and material-loss quotes. Managed types defer unquoted/unknown sites; unavailable economic capability retains the older policy explicitly. |
 | Placement preparation | `CSC_AI_AdjacencyScan.lua`: adjacency, viable present/future footprints, quoted frontier options and poor-site/deferral facts. Future customer space can establish feasibility; it earns no speculative customer yield. |
 | Existing chain decisions | `CSC_AI_QuarterPlacement.lua`: shared suppliers/chains, material deductions, exclusions, supplier acquisition, Builder and building/repair offers. Economic loss enriches protection; structural safeguards remain. |
 | Publication | `CSC_AI_BakersGameplay.lua`: despite its historical name, coordinates Bakers and Tailors; refreshes and publishes one bounded packet, then reads receipts. |
 | Transport | `CSC_AI_DistrictBridge.lua`: validates and publishes typed CE entries atomically. Complete Quarter bids are exclusive with the old early score adjustment for the same pair. |
 | Native database input | `Data/CSC_AI_Connectors.sql`: moderate private-yield adjacency for mapped customer districts, with replacement expansion and edge deduplication; also retains the existing modest Builder controls. |
-| CE mechanism | Isolated CE feature branch `codex/quarter-economy-forecast`: generic final-entry transport and read-only native economic quotes. CSC rules do not belong in CE. No upstream PR is submitted. |
+| CE mechanism | Isolated CE feature branch `codex/quarter-value-delivery`: managed-type defaults, consumer refresh, retained-request repricing and native economic quotes. CSC rules do not belong in CE. No upstream PR is submitted. |
 
 The adjacent Builder, building, research and recovery problems remain distinct
 roadmap capabilities. Keeping their working adapters does not mean the new
@@ -86,11 +89,11 @@ economic bid has solved those capabilities or priced every Service.
 | **1.1 Materials** | Actual mapped Base/Specialty, viable improvements, working supply and tile staffing. | Quarter economic bid plus existing material-aware planning. |
 | **1.2 Neighbors** | Completed mapped customer footprints and eligible future buildings; feasible future footprints remain preparation facts. | Quarter transaction ledger; no yield credited to an unbuilt customer district. City Lights mappings follow loaded rules; unsupported contracts fall back. |
 | **1.3 Rivers** | Loaded river adjacency and one eligible local Mill; Wind terrain and Water river edges are alternatives. | Direct adjacency now and producer-terrain income only after its Mill. |
-| **1.4 Adjacency** | Current materials, terrain and completed customers; alternative Mill geometry. | Same economic bid across sites, with the agreed below-+3 deduction. +4 is a preference, not a compulsory order. |
+| **1.4 Adjacency** | Current materials, terrain and completed customers; alternative Mill geometry. | Same economic bid across sites, with a +3 minimum and bounded +3/+4/+5/+6+ preference bands for profitable alternatives. +4 is a preference, not a compulsory order. |
 | **1.5 Tile purchase** | Native quoted footprint cost and credible supply; separate supplier-acquisition facts. | Frontier bid, native savings/payment, intended-city ownership acknowledgement and supplier purchase route. No subsidy or direct purchase is introduced. |
-| **1.6 Follow-through** | Unlock estimates, native legal targets and population-limited capacity. | Native district comparison → request/tree → foundation → completion. Existing commitments are not cancelled by a refreshed score. |
-| **1.7 Place or defer** | Whether a credible Base/customer path exists, with unknown distinguished from absent. | Existing typed per-site decline scopes plus finite complete values; fresh facts withdraw deferral. |
-| **1.8 Poor placement** | Missing Base, covering mapped materials, absent customer path and low realised adjacency. | Complete Quarter valuation plus bounded placement deductions; receipt alone does not prove suppression. |
+| **1.6 Follow-through** | Unlock estimates, native legal targets and population-limited capacity. | Native district comparison → request/tree → foundation → completion. Retained new-Quarter request values are repriced through the native tracked setter; reservations, queues and existing foundations/repairs remain native. |
+| **1.7 Place or defer** | Whether a credible Base/customer path exists, with unknown distinguished from absent. | Negative managed default plus sparse positive offers. Nonpositive new investments are withheld during native placement selection; fresh facts can promote them next turn. |
+| **1.8 Poor placement** | Missing Base, covering mapped materials, absent customer path and low realised adjacency. | Complete Quarter valuation, +3/no-Base gate and bounded profitable-site preferences; actual native choice and foundation quality qualify suppression. |
 | **2.1 Customer placement** | Shared customer registry and district replacement families. | Native SQL private-yield adjacency for ordinary mapped districts; bounded future-footprint guidance stays in its existing adapter. City Center settlement and Wonder placement are separate consumers. |
 | **2.2 Material protection** | Shared retained chains, last viable/working Base or Specialty, marginal lost transactions. | Existing district deductions and qualified native exclusion, Wonder and destructive-Builder guards. Economic quotes enrich rather than replace structural protection. |
 
@@ -105,7 +108,7 @@ ownership, research, staffing, construction and quotes expire with the snapshot.
 Raw invoices price all known frontier alternatives. Positive purchase guidance
 still requires an unambiguous intended buyer; otherwise the complete bid is at
 most zero. The CE ownership hook recognises an already-correct purchase and does
-not choose Economic's buyer. Retained plans and later quote changes remain native.
+not choose Economic's buyer. Civ retains plans, reservations and execution; the managed request adapter refreshes the value of new-Quarter requests.
 
 CE publishes a new version atomically and consumes entries when its native
 decision runs. A packet is neither a reservation nor a construction command.
@@ -129,17 +132,44 @@ not priced. It supports the current unit-transfer contract and checks the loaded
 leaf amounts; a changed unsupported contract is reported rather than guessed.
 City Lights and other optional integrations require their own acceptance data.
 
-If CE pricing is unavailable, an input is unknown, or a complete replacement
-would exceed the packet budget, retain coherent established guidance. Do not
-silently publish zero, disable unrelated protection, or leave half of a site's
-competition on an incomparable valuation. Native invalid cells remain protected;
-complete bids do not make an illegal site legal. The current implementation
-also skips every nonempty reservation ID. REA and the poor-placement trace
-identify this as a coverage mismatch: the native selector can still compare
-those cells. Owned future candidates can also fall outside the current BUILD
-target list. Complete ownership is the intended architecture, not a proven
-property of every native candidate in this version. [Delivery gap and next
-verification](../research/mods/csc-ai-reservation-write-gap-20261113.md).
+For a managed Quarter type, unknown or omitted sites receive a negative default,
+not an untouched native building premium. The adapter quotes revealed owned
+and frontier radius-three potential without requiring a current BUILD menu
+entry. Native eligibility, invalid sentinels and legality remain authoritative.
+Sparse positive offers can be trimmed at capacity while retaining the defaults;
+material protection keeps precedence. Missing economic capability is separately
+logged and keeps the established non-economic path rather than claiming whole
+valuation. Existing district foundations/repairs are outside new-investment
+ownership, determined from the actual city district collection. Row+50 is
+improvement presence; row+51 omits incomplete/pillaged districts. Neither
+cached flag is an adequate exemption.
+
+CE refreshes the matrix after aggregation and immediately before joint selection,
+type-specific location selection and present-value reads. A reserved tile can be
+priced: Civ still applies its reservation thresholds. GetBest can choose negative
+scores, so nonpositive managed new investments are temporarily masked and every
+byte restored afterwards. Location also respects critical supplier exclusions.
+
+Native UnitRequestContract.Update keeps max(previous,current). An additional
+post-update adapter rebases only managed new-Quarter requests through the native
+tracked-value setter. Building/unit branches, invalid updates and existing
+footprints remain native. Locationless requests use the native zero-floored
+column maximum, with an existing-Quarter guard. This changes the offer, never
+creates a request or cancels a reservation.
+
+The initial preference estimates are96/192/288/384 native utility for profitable
++3/+4/+5/+6+ alternatives, plus16 for both material classes. They cannot make a
+loss-making investment positive. Mill alternatives are ranked on the final
+placement bid, so a profitable Wind+3 option can beat an earlier Water+2 option.
+These bands need outcome calibration; they are not inferred exact vanilla prices.
+
+Each native pass is bounded to37 rows and at most16 managed types per player.
+No hook calls Lua. Counters distinguish delivery, masks, reserved-cell writes and
+retained-request changes and report native processing time. Managed samples are
+lossy/bounded (2048 per packet), separate from legacy write budgets and reserve
+half the core journal for other evidence. Dropped samples are explicit; missing
+samples must not be called absence of delivery. Performance and actual native
+consumption remain live qualification requirements for this candidate.
 
 ## How we judge a change
 

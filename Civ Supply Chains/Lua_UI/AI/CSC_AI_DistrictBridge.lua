@@ -107,7 +107,7 @@ end
 -- in its owning city. A repair identifies an existing district footprint.
 function B.Publish(version,width,height,districtCount,originalAI,entries,builderSites,protectWonders,protectHarvests,
     builderBidLimit,nominations,nominationLimit,repairs,repairLimit,exclusions,ownershipScopes,ownershipLimit,
-    declines,declineLimit)
+    declines,declineLimit,managedTypes)
     if not B.Available() then return false,'CE district-score capability unavailable' end
     local function reject(message) B.Disable();return false,message end
     if not(integer(version,1,2147483647) and integer(width,1,256) and integer(height,1,256)
@@ -117,6 +117,21 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
     for _,pid in ipairs(originalAI) do
         if not integer(pid,0,63) or allowed[pid] then return reject('Invalid original AI identities') end
         allowed[pid]=true
+    end
+    -- Managed types own new-investment values at all native readers, including
+    -- new cities not yet in a Lua snapshot. A nonpositive default means defer;
+    -- native repair, legality, reservations and unrelated bids remain intact.
+    local managedKeys,managedCounts={},{}
+    if managedTypes and(type(managedTypes)~='table'or #managedTypes>256)then return reject('Invalid managed district types')end
+    for _,scope in ipairs(managedTypes or{})do
+        if not(integer(scope.player,0,63)and allowed[scope.player]and integer(scope.district,1,districtCount-1)
+            and integer(scope.fallbackQ8,-1048576,0)and type(CE_AIDistrictScoresManagedType)=='function')then
+            return reject('Invalid managed district type')
+        end
+        local key=scope.player..':'..scope.district
+        managedCounts[scope.player]=(managedCounts[scope.player]or 0)+1
+        if managedKeys[key]or managedCounts[scope.player]>16 then return reject('Duplicate or excessive managed district types')end
+        managedKeys[key]=true
     end
     -- Validate the entire packet before entering native staging. Original-human
     -- identity capture is caller-owned; current autoplay IsHuman is insufficient.
@@ -130,6 +145,7 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
             return reject('Invalid district-site entry')
         end
         local key=e.player..':'..e.city..':'..e.district..':'..e.plot
+        if managedKeys[e.player..':'..e.district]and e.finalQ8==nil then return reject('Managed type mixes additive and complete scores')end
         if keys[key] then return reject('Duplicate district-site entry') end
         keys[key]=true
     end
@@ -214,6 +230,9 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
     local ok,message=pcall(function()
         assert(CE_AIDistrictScoresBegin(version,width,height,districtCount)==1,'Native begin rejected')
         for _,pid in ipairs(originalAI) do assert(CE_AIDistrictScoresAllow(pid)==1,'Native identity rejected') end
+        for _,scope in ipairs(managedTypes or{})do
+            assert(CE_AIDistrictScoresManagedType(scope.player,scope.district,scope.fallbackQ8)==1,'Native managed type rejected')
+        end
         for _,e in ipairs(entries) do
             if e.finalQ8~=nil then
                 -- This is the whole CSC Quarter bid after native building

@@ -2,6 +2,10 @@
 -- plan site and investment bids, then publish one versioned packet to CE.
 -- Each native decision consumes the relevant part of that packet when it runs.
 -- Civ still owns candidate legality, selection, queueing and execution.
+-- Complete economy mode declares managed Quarter types with a negative default:
+-- only profitable +3-or-better sites get positive offers. CE refreshes the
+-- shared cache at its consumers and reprices retained new-Quarter requests;
+-- nonpositive proposals defer, while existing foundations/repairs stay native.
 -- Optional ownership scopes let CE acknowledge an already-fulfilled purchase
 -- prerequisite for a native Quarter plan. They never buy land or force a bid.
 -- Optional typed declines withhold proven no-Base district-site pairs from a
@@ -43,6 +47,11 @@ local function reportReceipts(turn, version)
     -- window, and forecast, comparison and score-write counts are distinct.
     local previous = previousOffers
     if not previous or previous.version ~= version then return end
+    for _,scope in ipairs(previous.managed or{})do
+        local result=readReceipt(CE_AIDistrictScoresManagedReceipt,version,scope.player,scope.district)
+        print(string.format('CSC_AI_QUARTER_COVERAGE turn=%d version=%d player=%d district=%d result=%s',
+            turn,version,scope.player,scope.district,result))
+    end
     for i=1,math.min(#(previous.economy or {}),customerReceiptLimit)do
         local site=previous.economy[i]
         local result=readReceipt(CE_AIDistrictScoresReceipt,version,site.player,site.city,site.district,site.plot)
@@ -114,6 +123,7 @@ local function priority(a, b)
     -- Wide weak-site coverage must never crowd out supplier protection or
     -- a positive bid for a viable Quarter or its customer.
     if (a.weak == true) ~= (b.weak == true) then return not a.weak end
+    if a.finalQ8 and b.finalQ8 and a.finalQ8~=b.finalQ8 then return a.finalQ8>b.finalQ8 end
     if a.delta ~= b.delta then return a.delta < b.delta end
     if a.player ~= b.player then return a.player < b.player end
     if a.city ~= b.city then return a.city < b.city end
@@ -153,7 +163,7 @@ local function refresh(turn)
 
     local started = os.clock()
     local entries, builderSites, nominations, repairs, exclusions = {}, {}, {}, {}, {}
-    local fallbackEntries={}
+    local managedTypes={}
     -- A CE build may expose district scoring without every optional consumer.
     -- Give the planner zero capacity for unsupported bids and enable only the
     -- protection hooks that report readiness. Harvest shares the Builder sites.
@@ -264,14 +274,19 @@ local function refresh(turn)
                     turn, id, profile.key, tostring(industryBids)))
             end
         end
-        for _,entry in ipairs(playerEntries)do fallbackEntries[#fallbackEntries+1]=entry end
         if economy then
             local ok,replacement,counts=pcall(CSC_AI_EconomyAdapters.QuarterBids,economy,placement,protectedPlots,playerEntries)
             if ok then
                 playerEntries=replacement
+                if counts.managed then for _,profile in ipairs(placement.StageTwoProfiles())do
+                    managedTypes[#managedTypes+1]={player=id,district=profile.district.Index,
+                        fallbackQ8=CSC_AI_EconomyAdapters.DeferredQuarterQ8}
+                end end
                 print(string.format('CSC_AI_ECONOMY_PLAN turn=%d player=%d evaluated=%d final=%d unknown=%d streams=%d omissions=%d quotes=%d minQ8=%d maxQ8=%d buyerBlocked=%d',
                     turn,id,counts.evaluated,counts.final,counts.unknown,counts.streams,counts.omissions,
                     economy.QuoteCount(),counts.min or 0,counts.max or 0,counts.buyerBlocked or 0))
+                print(string.format('CSC_AI_QUARTER_DEFERRALS turn=%d player=%d quality=%d economics=%d invoice=%d unknown=%d',
+                    turn,id,counts.qualityDeferred or 0,counts.economicDeferred or 0,counts.invoiceDeferred or 0,counts.unknown or 0))
             else print(string.format('CSC_AI_ECONOMY_FAILED turn=%d player=%d reason=%s',turn,id,tostring(replacement)))end
         end
         for _,entry in ipairs(playerEntries)do entries[#entries+1]=entry end
@@ -285,15 +300,12 @@ local function refresh(turn)
             if chain.active then totals.active = totals.active + 1 end
         end
     end
-    -- Prioritise the supplier relationships most at risk if the map exceeds
-    -- the shared table limit. Stable tie-breaks make the packet reproducible.
-    -- Never trim a partial whole-value replacement: an omitted Quarter site
-    -- would keep Civ's building premium and compete in a different valuation.
-    -- Fall back for the whole publication before applying the legacy compact
-    -- packet's existing protection-first bound. No native path is disabled.
+    -- Retain structural protection first and the strongest positive Quarter
+    -- investments next. Managed defaults cover omitted pairs: table pressure
+    -- defers those investments rather than reviving an untouched native building
+    -- premium. Other bounded lists keep their own all-or-nothing contracts.
     if #entries>capacity then
-        print(string.format('CSC_AI_ECONOMY_CAPACITY_FALLBACK turn=%d entries=%d limit=%d',turn,#entries,capacity))
-        entries=fallbackEntries
+        print(string.format('CSC_AI_ECONOMY_CAPACITY_TRIM turn=%d entries=%d limit=%d managedTypes=%d',turn,#entries,capacity,#managedTypes))
     end
     table.sort(entries, priority)
     local omitted = math.max(0, #entries - capacity)
@@ -325,7 +337,7 @@ local function refresh(turn)
         allowances <= capacity and builderSites or nil, protectWonders, protectHarvests, builderBidLimit,
         #nominations <= capacity and nominations or nil, nominationLimit, publishRepairs and repairs or nil, repairLimit,
         exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit,
-        declines,declineLimit)
+        declines,declineLimit,managedTypes)
     assert(accepted, message)
     print(string.format('CSC_AI_DECLINES turn=%d version=%d scopes=%d omitted=%d previous=%s',
         turn,version+1,#declines,omittedDeclines,declineStatus or 'unavailable; finite guidance retained'))
@@ -372,7 +384,7 @@ local function refresh(turn)
     local siteBids, weakSites, customerSites = 0, 0, 0
     -- Save the exact published identities for readback on the next boundary.
     -- Receipt caps limit logging work. They do not limit what CE receives.
-    local tracked = {version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={}}
+    local tracked = {version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={},managed=managedTypes}
     for _, entry in ipairs(entries) do
         if entry.finalQ8~=nil then tracked.economy[#tracked.economy+1]=entry end
         if entry.weak then

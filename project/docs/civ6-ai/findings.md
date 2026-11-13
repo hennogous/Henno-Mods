@@ -2,7 +2,7 @@
 
 Maintained Markdown. Preserve scope, evidence and superseded status when correcting a finding.
 
-Latest placement investigation: [AI-C165](#ai-c165).
+Latest placement investigation: [AI-C175](#ai-c175).
 
 ## AI-C001
 
@@ -3221,3 +3221,37 @@ nativeexit0/preferences restored/save150 preserved. It remains an incomplete
 observation and no further outcome game was started.
 
 [Exact code paths, native/CSC comparison, evidence bundle and correction plan](../research/mods/csc-ai-reservation-write-gap-20261113.md).
+
+
+<a id="ai-c175"></a>
+## AI-C175 - Managed delivery reaches reserved cells and reduces a retained Quarter request
+
+**Scope:** 13 November candidate on CE branch `codex/quarter-value-delivery`
+code a95e697, Steam XP2 SHA092abfbb; main CSC economic policy only in a pinned
+carrier. Static investigation confirms separate aggregation, selection, location,
+present-value and retained-max request boundaries. Sparse managed Quarter offers
+and negative defaults cover new investments; existing footprints remain native.
+
+In the corrected turn150 replay, a journal drained at153 records player1,
+city65536, Bakers36, plot987, packet3/generation8: retained request value410368
+Q8 is reduced through the native tracked setter to the published deferred
+-262144 Q8. This is an actual native request-value write, not just accepted
+Lua staging. Native receipts also show writes to nonempty reservation cells;
+nonempty ID alone does not prove the controller is still live. **Correction from the completed replay:** the Tailors2321 row marked
+existingDistrict=1 was actually an improved empty tile, later founded159.
+Row+50 was misidentified: it means HasImprovement. This is a real bypass,
+not evidence that an existing-foundation exemption works. The corrected
+candidate uses the actual city district collection; neither row+50 nor the
+completed/unpillaged-only row+51 establishes physical foundation/repair state. The corrected package restores the required economic UI readers;
+qualifying positive bids and finite readiness are observed again.
+
+**Limits:** the journal drain clock is not asserted to be the precise native
+write turn. This establishes consumer/request delivery in a scoped replay,
+not calibrated placement quality, new Quarter completion or sustained Services.
+The first corrected-package replay completes175 cleanly but fails quality
+qualification on that improved-tile bypass. Native footprint correction and a
+new replay precede the fresh250 outcome. Earlier packaging
+failures are preserved; they must not be counted as successful qualification.
+235 native/25 economy checks and two Astra reviews precede the live window.
+
+[Code, native semantics, failed packages, input hashes and qualification](../research/mods/csc-ai-managed-placement-20261113.md).

@@ -89,7 +89,7 @@ assert(snapshot.DirectAmounts(city,center,profile,2).YIELD_PRODUCTION==0)
 assert(snapshot.SupplyAdjacencyLoss({city=city,plot=center,profile=profile},2).YIELD_PRODUCTION==2)
 ''')
 
-    def test_complete_bid_covers_owned_and_all_quoted_frontier_or_falls_back(self):
+    def test_complete_bid_covers_future_owned_and_quoted_frontier_with_managed_deferral(self):
         vm = LuaRuntime()
         vm.execute('''
 CSC_AI_EconomyModel={Forecast=function(site)return{valueQ8=site.value,adjacency=4,streams={},omissions={}}end}
@@ -109,12 +109,13 @@ Map={GetPlotByIndex=function(i)return plots[i]end,GetPlot=function()return plots
  GetPlotDistance=function()return 1 end,GetAdjacentPlots=function()return{plots[1]}end}
 Cities={GetPlotPurchaseCity=function(p)if p:GetOwner()==1 then return city end end}
 GameInfo={Resources={}};Game={GetCurrentGameTurn=function()return 3 end};print=function()end
-CSC_Adjacency={PlotsInBand=function()return{plots[2],plots[3]}end,HasTag=function()return false end}
+CSC_Adjacency={PlotsInBand=function()return{plots[1],plots[2],plots[3]}end,HasTag=function()return false end}
 local profile={key='BAKERS',district={Index=36,Hash=1}}
 placement={StageTwoProfiles=function()return{profile}end}
 invoice=40
 snapshot={player=player,id=1,cities={[7]={object=city}},
- ui={GetLegalDistrictTargets=function()return{1}end,GetPlotPurchaseQuote=function()return 40 end,GetRawPlotPurchaseQuote=function(_,_,i)if i==3 then return invoice end;return 50 end},
+ ui={GetLegalDistrictTargets=function()error('Current production menu must not limit native future bids')end,GetPlotPurchaseQuote=function()return 40 end,GetRawPlotPurchaseQuote=function(_,_,i)if i==3 then return invoice end;return 50 end},
+ Geometry=function()return{upper=4}end,
  Site=function(_,p)return{value=p:GetIndex()*1000,baseCount=1}end,Price=function()end}
 early={{player=1,city=7,district=36,plot=1,delta=48*256}}
 ''')
@@ -122,14 +123,78 @@ early={{player=1,city=7,district=36,plot=1,delta=48*256}}
         vm.execute('''
 local entries,stats=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
 assert(#entries==3 and stats.final==3)
-for _,entry in ipairs(entries)do assert(entry.delta==0 and entry.finalQ8==entry.plot*1000)end
+for _,entry in ipairs(entries)do assert(entry.delta==0 and entry.finalQ8>entry.plot*1000)end
 snapshot.ui.GetPlotPurchaseQuote=function()return nil end
 local blocked,scope=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
-assert(#blocked==3 and scope.buyerBlocked==2 and blocked[1].finalQ8==1000)
-assert(blocked[2].finalQ8==0 and blocked[3].finalQ8==0)
+assert(#blocked==1 and scope.buyerBlocked==2 and blocked[1].finalQ8>1000 and scope.managed)
 invoice=nil
 local fallback,failed=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
-assert(fallback==early and failed.final==0 and failed.fallback)
+assert(#fallback==1 and failed.invoiceDeferred==1 and failed.managed and not failed.fallback)
+''')
+
+    def test_quality_bands_cannot_turn_an_economic_loss_into_a_positive_investment(self):
+        vm=LuaRuntime(unpack_returned_tuples=True)
+        vm.execute('CSC_AI_EconomyModel={};CSC_AI_EconomyFacts={}')
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+local s={baseCount=1,specialtyCount=0}
+assert(E.PlacementValue({adjacency=2,valueQ8=1000000},s)==E.DeferredQuarterQ8)
+assert(E.PlacementValue({adjacency=4,valueQ8=-1},s)==-1)
+local a=E.PlacementValue({adjacency=3,valueQ8=100*256},s)
+local b=E.PlacementValue({adjacency=4,valueQ8=100*256},s)
+assert(a>100*256 and b>a and b<500*256)
+assert(E.PlacementValue({adjacency=8,valueQ8=100*256},s)<600*256)
+s.baseCount=0;assert(E.PlacementValue({adjacency=5,valueQ8=1000000},s)==E.DeferredQuarterQ8)
+s.baseCount=1;s.specialtyCount=1
+assert(E.PlacementValue({adjacency=4,valueQ8=100*256},s)>b)
+assert(E.PlacementValue({adjacency=4,valueQ8=100*256},s,-200*256)<=0)
+''')
+
+    def test_placement_ranks_feasible_mills_after_quality_gate_and_premium(self):
+        vm=LuaRuntime()
+        vm.execute((AI/'CSC_AI_EconomyModel.lua').read_text(encoding='utf-8'))
+        vm.execute('CSC_AI_EconomyFacts={}')
+        vm.execute((AI/'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local M,E=CSC_AI_EconomyModel,CSC_AI_EconomyAdapters
+local site={city=1,horizon=50,quarterReady=0,adjacency=2,baseCount=1,materialYield='YIELD_FOOD',
+ direct={{id='base',yield='YIELD_PRODUCTION',amount=2}},
+ suppliers={{kind='base',plot=10,city=1,ready=0,worked=true}},seconds={
+ {type='WATER',unlock=0,turns=8,terrain=0},
+ {type='WIND',unlock=20,turns=8,terrain=1}}}
+local function price(stream,horizon)return math.floor(stream.amount*(horizon-stream.ready)*256)end
+assert(M.Forecast(site,price).alternative=='WATER')
+local function placement(q)return E.PlacementValue(q,site)end
+local chosen=M.Forecast(site,price,placement)
+assert(chosen.alternative=='WIND' and chosen.adjacency==3 and chosen.selectionQ8>0)
+-- Water +3 earns more raw utility, but profitable Wind +4 earns the stronger
+-- placement bid. Neither premium may resurrect a loss-making producer plan.
+site.adjacency=3;site.seconds[2].terrain=1
+site.seconds[1].terrain=0
+local raw=M.Forecast(site,price)
+assert(raw.alternative=='WATER')
+chosen=M.Forecast(site,price,placement)
+assert(chosen.alternative=='WIND' and chosen.adjacency==4)
+site.direct[1].amount=-100
+assert(M.Forecast(site,price,placement).selectionQ8<=0)
+''')
+
+    def test_local_mill_geometry_uses_live_counts_and_production_multiplier(self):
+        vm=self.facts_vm()
+        vm.execute('''
+CSC_Adjacency={ByDistrict={QUARTER={
+ {ModifierOwner='BuildingModifiers',WhoIsTheOwner='BUILDING_CSC_BAKERS_WIND_MILL',YieldType='YIELD_PRODUCTION',ProvideType='SelfBonus'},
+ {ModifierOwner='BuildingModifiers',WhoIsTheOwner='BUILDING_CSC_BAKERS_WATER_MILL',YieldType='YIELD_PRODUCTION',ProvideType='SelfBonus'}}},
+ Count=function()return 1 end,Amount=function()return 1 end}
+local snapshot=CSC_AI_EconomyFacts.New(player,placement,{})
+snapshot.DirectAmounts=function()return{YIELD_PRODUCTION=2},{YIELD_PRODUCTION=100},{YIELD_PRODUCTION=1}end
+local city={GetID=function()return 7 end}
+local plot={GetIndex=function()return 99 end,IsRiver=function()return false end}
+local geometry=snapshot.Geometry(city,plot,{key='BAKERS',district={DistrictType='QUARTER'}})
+assert(geometry.base==2 and geometry.upper==4)
+assert(geometry.mills.BUILDING_CSC_BAKERS_WIND_MILL==2)
+assert(geometry.mills.BUILDING_CSC_BAKERS_WATER_MILL==nil)
 ''')
 
     def test_native_customer_sql_deduplicates_all_stages_and_expands_replacements(self):
