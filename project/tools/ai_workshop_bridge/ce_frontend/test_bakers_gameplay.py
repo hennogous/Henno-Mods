@@ -99,6 +99,30 @@ CE_AIDistrictScoresStatus = function() return '{"ready":1,"faults":0,"version":'
 
 
 class BakersGameplayTest(unittest.TestCase):
+    def test_oversized_economic_replacement_falls_back_before_partial_trimming(self):
+        lua=LuaRuntime()
+        lua.execute(FIXTURE)
+        messages=[]
+        lua.globals().print=messages.append
+        def include(name):
+            if name!='CSC_AdjacencyCore':
+                lua.execute((SOURCE/f'{name}.lua').read_text(encoding='utf-8'))
+        lua.globals().include=include
+        include('CSC_AI_BakersGameplay')
+        lua.execute('''
+ExposedMembers.CSC_Adjacency={IsSinglePlayer=function()return true end}
+CSC_AI_QuarterPlacement.MaterialDeductions=function()return{},{},{},{},{},{}end
+CSC_AI_QuarterSiteForecasts=function()return{{player=3,city=42,district=1,plot=100,delta=256}}end
+CSC_AI_EconomyAdapters.Snapshot=function(_,_,ui)return{ui=ui,QuoteCount=function()return 0 end}end
+CSC_AI_EconomyAdapters.QuarterBids=function()
+ local entries={};for i=1,4097 do entries[i]={finalQ8=i,delta=0}end
+ return entries,{evaluated=4097,final=4097,unknown=0,streams=0,omissions=0}
+end
+boundary()
+assert(packet and #packet==1 and packet[1][5]==256 and version==1)
+''')
+        self.assertTrue(any('CSC_AI_ECONOMY_CAPACITY_FALLBACK' in message for message in messages))
+
     def test_owned_supplier_readiness_distinguishes_unlock_and_repair(self):
         lua = LuaRuntime()
         lua.execute(FIXTURE)

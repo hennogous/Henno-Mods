@@ -8,6 +8,9 @@
 -- fresh native comparison. Each turn's live potential replaces the scopes;
 -- CE restores score bytes after selection and never cancels retained plans.
 include('CSC_AdjacencyCore')
+include('CSC_AI_EconomyModel')
+include('CSC_AI_EconomyFacts')
+include('CSC_AI_EconomyAdapters')
 include('CSC_AI_AdjacencyScan')
 include('CSC_AI_QuarterPlacement')
 include('CSC_AI_DistrictBridge')
@@ -40,6 +43,15 @@ local function reportReceipts(turn, version)
     -- window, and forecast, comparison and score-write counts are distinct.
     local previous = previousOffers
     if not previous or previous.version ~= version then return end
+    for i=1,math.min(#(previous.economy or {}),customerReceiptLimit)do
+        local site=previous.economy[i]
+        local result=readReceipt(CE_AIDistrictScoresReceipt,version,site.player,site.city,site.district,site.plot)
+        print(string.format('CSC_AI_ECONOMY_RECEIPT turn=%d version=%d player=%d city=%d district=%d plot=%d bidQ8=%d result=%s',
+            turn,version,site.player,site.city,site.district,site.plot,site.finalQ8,result))
+    end
+    if #(previous.economy or {})>customerReceiptLimit then
+        print(string.format('CSC_AI_ECONOMY_RECEIPTS_OMITTED turn=%d version=%d count=%d',turn,version,#previous.economy-customerReceiptLimit))
+    end
     for i = 1, math.min(#(previous.declines or {}), declineReceiptLimit) do
         local site = previous.declines[i]
         local result = readReceipt(CE_AIDistrictDeclineReceipt, version, site.player, site.city, site.district, site.plot)
@@ -141,6 +153,7 @@ local function refresh(turn)
 
     local started = os.clock()
     local entries, builderSites, nominations, repairs, exclusions = {}, {}, {}, {}, {}
+    local fallbackEntries={}
     -- A CE build may expose district scoring without every optional consumer.
     -- Give the planner zero capacity for unsupported bids and enable only the
     -- protection hooks that report readiness. Harvest shares the Builder sites.
@@ -179,6 +192,18 @@ local function refresh(turn)
     local allowances, stageTwo = 0, {}
     for _, id in ipairs(players) do
         local player = Players[id]
+        local playerEntries={}
+        local economy,playerUI=nil,ui
+        if CSC_AI_EconomyAdapters then
+            local ok,value,reason=pcall(CSC_AI_EconomyAdapters.Snapshot,player,placement,ui)
+            if ok and value then economy=value;playerUI=economy.ui
+            else
+                -- A missing/failed economic quote must preserve the proven
+                -- native/protection paths. It is explicit fallback, not a
+                -- successful transaction forecast or a zero-value economy.
+                print(string.format('CSC_AI_ECONOMY_UNAVAILABLE turn=%d player=%d reason=%s',turn,id,tostring(ok and reason or value)))
+            end
+        end
         if ownershipLimit>0 then
             -- O(cities * supported Quarters), no tile scan and no cached game
             -- pointers. The native executing tree supplies the chosen site.
@@ -195,13 +220,13 @@ local function refresh(turn)
         -- before placement plans run, so a customer bid cannot promote a site
         -- already flagged by this player's material deductions.
         local deductions, sites, bids, candidates, chains, threatened = placement.MaterialDeductions(player, protectBuilders,
-            builderBidLimit, nominationLimit, ui.CanProduceItem, repairLimit > 0)
+            builderBidLimit, nominationLimit, playerUI.CanProduceItem, repairLimit > 0,economy)
         for _, bid in ipairs(bids) do nominations[#nominations + 1] = bid end
         for _, candidate in ipairs(candidates) do repairs[#repairs + 1] = candidate end
         for _, site in ipairs(threatened or {}) do exclusions[#exclusions + 1] = site end
         local protectedPlots = {}
         for _, entry in ipairs(deductions) do
-            entries[#entries + 1] = entry
+            playerEntries[#playerEntries + 1] = entry
             protectedPlots[entry.plot] = true
         end
         for _, site in ipairs(sites) do
@@ -209,7 +234,7 @@ local function refresh(turn)
             allowances = allowances + #site.improvements
         end
         if protectBuilders then
-            for _, site in ipairs(placement.SupplierAcquisitionOffers(player, chains, ui, builderBidLimit)) do
+            for _, site in ipairs(placement.SupplierAcquisitionOffers(player, chains, playerUI, builderBidLimit)) do
                 builderSites[#builderSites + 1] = site
                 allowances = allowances + #site.improvements
             end
@@ -218,9 +243,9 @@ local function refresh(turn)
         -- protection active. A fresh native site score is still required.
         for _, profile in ipairs(placement.StageTwoProfiles()) do
             local ok, industryBids, counts = pcall(CSC_AI_QuarterSiteForecasts, player, profile, chains,
-                placement.ReadSuppliers, protectedPlots, ui)
+                economy and function(_,plot,p)return economy.Supply(plot,p)end or placement.ReadSuppliers, protectedPlots, playerUI)
             if ok then
-                for _, bid in ipairs(industryBids) do entries[#entries + 1] = bid end
+                for _, bid in ipairs(industryBids) do playerEntries[#playerEntries + 1] = bid end
                 -- This is CSC's assessment of the current legal targets.
                 -- The engine may still pick a penalized or unassisted site.
                 if counts and counts.legal > 0 then
@@ -239,6 +264,17 @@ local function refresh(turn)
                     turn, id, profile.key, tostring(industryBids)))
             end
         end
+        for _,entry in ipairs(playerEntries)do fallbackEntries[#fallbackEntries+1]=entry end
+        if economy then
+            local ok,replacement,counts=pcall(CSC_AI_EconomyAdapters.QuarterBids,economy,placement,protectedPlots,playerEntries)
+            if ok then
+                playerEntries=replacement
+                print(string.format('CSC_AI_ECONOMY_PLAN turn=%d player=%d evaluated=%d final=%d unknown=%d streams=%d omissions=%d quotes=%d minQ8=%d maxQ8=%d buyerBlocked=%d',
+                    turn,id,counts.evaluated,counts.final,counts.unknown,counts.streams,counts.omissions,
+                    economy.QuoteCount(),counts.min or 0,counts.max or 0,counts.buyerBlocked or 0))
+            else print(string.format('CSC_AI_ECONOMY_FAILED turn=%d player=%d reason=%s',turn,id,tostring(replacement)))end
+        end
+        for _,entry in ipairs(playerEntries)do entries[#entries+1]=entry end
         for _, chain in ipairs(chains or {}) do
             local key = chain.profile.key
             local totals = stageTwo[key] or {placed=0, complete=0, supplied=0, active=0}
@@ -251,6 +287,14 @@ local function refresh(turn)
     end
     -- Prioritise the supplier relationships most at risk if the map exceeds
     -- the shared table limit. Stable tie-breaks make the packet reproducible.
+    -- Never trim a partial whole-value replacement: an omitted Quarter site
+    -- would keep Civ's building premium and compete in a different valuation.
+    -- Fall back for the whole publication before applying the legacy compact
+    -- packet's existing protection-first bound. No native path is disabled.
+    if #entries>capacity then
+        print(string.format('CSC_AI_ECONOMY_CAPACITY_FALLBACK turn=%d entries=%d limit=%d',turn,#entries,capacity))
+        entries=fallbackEntries
+    end
     table.sort(entries, priority)
     local omitted = math.max(0, #entries - capacity)
     for i = #entries, capacity + 1, -1 do entries[i] = nil end
@@ -328,8 +372,9 @@ local function refresh(turn)
     local siteBids, weakSites, customerSites = 0, 0, 0
     -- Save the exact published identities for readback on the next boundary.
     -- Receipt caps limit logging work. They do not limit what CE receives.
-    local tracked = {version=version + 1, customers={}, buildings={}, frontier={},declines=declines}
+    local tracked = {version=version + 1, customers={}, buildings={}, frontier={},declines=declines,economy={}}
     for _, entry in ipairs(entries) do
+        if entry.finalQ8~=nil then tracked.economy[#tracked.economy+1]=entry end
         if entry.weak then
             weakSites = weakSites + 1
         elseif entry.customer then

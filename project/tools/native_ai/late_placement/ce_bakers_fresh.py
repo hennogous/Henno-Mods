@@ -915,6 +915,9 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             play(controller,out,args.user_root,start=start,endpoint=args.through,saves=args.saves)
         else:
             controller.play(args.through)
+        if getattr(args,'economy_preflight',False):
+            from economy_preflight import inspect
+            inspect(controller,out)
         if observer:
             trace = observer.exports_sync.freeze()
             write_json(out / trace_name, trace)
@@ -992,6 +995,8 @@ if __name__ == '__main__':
     for name in ('map-seed', 'game-seed', 'through'):
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--map', choices=MAPS, default='Continents')
+    parser.add_argument('--economy-preflight',action='store_true',
+                        help='Read-only native economic quotes and district-slot checks at the endpoint')
     parser.add_argument('--harmonised-observation',action='store_true',
                         help='Passive25-turn two-Quarter/economy census and capability preflight; normal200/250-turn start only')
     parser.add_argument('--map-size', choices=MAP_SIZES, default='small')

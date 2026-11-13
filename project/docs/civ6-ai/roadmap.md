@@ -1,19 +1,21 @@
 # CSC AI roadmap
 
-**13 November architecture work in progress:** [architecture and diagram](architecture.md)
-map the agreed central economy, decision adapters and native systems to all of
-Problems **1.1–1.8 and 2.1–2.2**. The new complete Quarter bid is undergoing
-implementation, regression checks and Astra review. It has not yet qualified
-in a live game; previous closures below describe the earlier tested versions.
+**13 November central-model integration:** [architecture and diagram](architecture.md)
+map the agreed economy, decision adapters and native systems to all of
+Problems **1.1–1.8 and 2.1–2.2**. Main CSC now publishes complete late Quarter
+values. Astra reviews the implementation and reproduces 22 economic tests; the
+final source passes a fresh native smoke with exact writes/cache reads/eligible
+comparisons. A preceding 30-turn window verifies repeated delivery, not improved
+placement or Services. [Evidence, revisions and limits](../research/mods/csc-ai-central-economy-20261113.md).
 The original 6 November decision is preserved in commit `057d4c55`.
 
 **13 November correction:** canonical design requires Quarters to consume
 population-limited district slots. Both active SQL definitions incorrectly used
 `RequiresPopulation=0`; source now uses 1, with a passing SQLite regression. Prior
-full games used the wrong setting; fresh native validation is pending. The late
-score write is proven, but recurring transaction-based future-building valuation
-is not integrated into normal-game policy. Early site heuristics do not close
-that architecture gap. [Correction and scope](../research/mods/csc-ai-quarter-adjacency-20261112.md#correction-district-slots-and-the-intended-transaction-forecast).
+full games used the wrong setting. Fresh loaded-definition reads now verify 1
+for both Quarters. Recurring transaction valuation is integrated through the
+central model and late adapter above; slot-constrained normal-play quality
+remains to measure. [Correction and scope](../research/mods/csc-ai-quarter-adjacency-20261112.md#correction-district-slots-and-the-intended-transaction-forecast).
 
 **12 November follow-up, Problems 1.2/1.4/1.8:** conservative forecasts now
 exclude future/foundation customer yield and penalise viable sites below +3.
@@ -466,8 +468,9 @@ until the active check closes or an explicit dependency needs attention.
   source, ideally with viable Specialty as well. Distinguish deposits from
   working supply and include enabled compatibility mappings.
 - **1.2 Neighbors.** Value mapped customer districts and City Lights goods
-  providers. Credit a future neighbor only where a specific legal adjacent
-  footprint can serve it.
+  providers. Keep a specific feasible future footprint as preparation evidence,
+  without crediting its adjacency or transactions before the district is complete.
+  Forecast future eligible buildings only in already completed customer districts.
 - **1.3 Rivers.** Value the river effects the Quarter can actually realise,
   including the local Mill geometry where applicable.
 - **1.4 Adjacency.** Combine the actual sources and favor sites around +4 or

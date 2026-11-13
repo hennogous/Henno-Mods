@@ -44,4 +44,16 @@ class FrontendTests(unittest.TestCase):
     def test_havok_native_integer_type_tag(self):
         l=self.make("local baseType=type;function type(x) if baseType(x)=='number'and x==math.floor(x)then return 'integer' end;return baseType(x)end")
         self.assertTrue(l.eval('CSC_AI_DistrictBridge.Publish(1,74,46,80,{1},packet)'))
+    def test_complete_value_uses_exclusive_native_final_transport(self):
+        l=self.make('''
+CE_AIDistrictScoresFinalEntry=function(...)calls[#calls+1]='FinalEntry';return 1 end
+packet[1].delta=0;packet[1].finalQ8=-16384
+''')
+        self.assertTrue(l.eval('CSC_AI_DistrictBridge.Publish(1,74,46,80,{1},packet)'))
+        self.assertIn('FinalEntry',l.eval("table.concat(calls,',')"))
+        self.assertNotIn(',Entry,',','+l.eval("table.concat(calls,',')")+',')
+    def test_complete_value_without_native_support_is_rejected_before_begin(self):
+        l=self.make('packet[1].delta=0;packet[1].finalQ8=0')
+        self.assertFalse(l.eval('CSC_AI_DistrictBridge.Publish(1,74,46,80,{1},packet)')[0])
+        self.assertEqual(l.eval("table.concat(calls,',')"),'Disable')
 if __name__=='__main__':unittest.main()

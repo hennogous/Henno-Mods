@@ -3123,3 +3123,24 @@ chains deliver 287 actual chain-turns, versus previous 6/312; Tailors remains0.
 Native delivery works, but broad weak-placement suppression remains unsolved.
 Two early observation failures and their clock-deferral correction are retained.
 Endpoint state is not placement-time causal attribution. [Full tables, policy and limits](../research/mods/csc-ai-quarter-adjacency-20261112.md).
+
+
+<a id="ai-c171"></a>
+## AI-C171 — Central economy drives complete late Quarter bids
+
+Main CSC's shared facts/model/adapters cover the ownership of Problems1.1–1.8
+and2.1–2.2. Native recurring/fixed/amenity quotes qualify on the exact supported
+XP2 image. Initial3-turn smoke is a preserved negative: native prices work but
+readiness facts are unavailable and established guidance remains active.
+Corrected30-turn main-mod-only window publishes4,628 complete entries across
+refreshes, no unknown quotes/omissions/faults, and448 bounded receipts including
+413 with writes. All448 show cache reads;49 show eligible city comparisons.
+There are no site wins in that bounded receipt sample. Final review revision
+repeats16 exact native writes/cache reads/comparisons in a fresh3-turn window;
+all eight AI/UI files match source pins, native facts/prices and restoration pass.
+Astra reviews all ten paths and independently reproduces22 economic tests.
+No improved placement, paid purchase or Service outcome is claimed for this
+valuation. Existing representative closures keep their version/scope.
+
+[Architecture and diagram](architecture.md),
+[implementation, exact revisions, audit and limitations](../research/mods/csc-ai-central-economy-20261113.md).

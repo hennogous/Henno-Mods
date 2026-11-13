@@ -390,16 +390,26 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
     end
 end
 
-local function materialRisk(player, builderBidLimit, nominationLimit, canProduceBuilding, admitRepairs)
+local function materialRisk(player, builderBidLimit, nominationLimit, canProduceBuilding, admitRepairs,economy)
     -- Share deduplication and city queue reads across all chains for this player.
     local risks, recover, nominations, repairs = {}, {}, {}, {}
     local seen, repairCities = {}, {}
     local limits = {builder=math.min(builderBidLimit or 0, READY_SUPPLIER_BID_Q8),
         nomination=nominationLimit or 0, repair=admitRepairs, trainableShips={}}
-    local chains = P.ReadChains(player)
+    local chains = economy and economy.chains or P.ReadChains(player)
     for _, chain in ipairs(chains) do
         priceSupply(risks, chain.supply.base, chain.active)
         priceSupply(risks, chain.supply.specialty, false)
+        if economy and CSC_AI_EconomyAdapters then
+            -- The central ledger supplies marginal ordinary economic loss;
+            -- structural last-deposit/active-Service floors remain deliberate
+            -- protection policy, not substitute forecasts of yield income.
+            for _,kind in ipairs({'base','specialty'})do for _,material in ipairs(chain.supply[kind])do
+                local value=CSC_AI_EconomyAdapters.SupplyValue(economy,chain,material.plot)
+                if value then risks[material.plot]=math.max(risks[material.plot]or 0,
+                    math.min(256*256,math.max(0,value)))end
+            end end
+        end
         if chain.complete and (limits.builder > 0 or limits.nomination > 0 or limits.repair) then
             connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduceBuilding, seen, repairCities)
         end
@@ -412,11 +422,11 @@ end
 -- A supplier can be in a different city from the Quarter. Key the deduction
 -- to the city that could actually place a district there, as CE expects.
 function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominationLimit,
-    canProduceBuilding, admitRepairs)
+    canProduceBuilding, admitRepairs,economy)
     local playerID = player:GetID()
     local entries, builderSites, exclusions = {}, {}, {}
     local risks, recover, nominations, repairs, chains = materialRisk(player, builderBidLimit,
-        nominationLimit, canProduceBuilding, admitRepairs)
+        nominationLimit, canProduceBuilding, admitRepairs,economy)
     for index, cost in pairs(risks) do
         local plot = Map.GetPlotByIndex(index)
         local city = Cities.GetPlotPurchaseCity(plot)

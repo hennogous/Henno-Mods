@@ -93,3 +93,53 @@ ExposedMembers.CSC_Adjacency.GetPlotPurchaseQuote = function(playerID, cityID, p
     end
     return value;
 end;
+
+-- Economic valuation needs this city's actual invoice even when another city
+-- has an equal/cheaper one. The exclusive-buyer helper above remains the
+-- conservative admission screen for the older positive purchase offer. Price
+-- is not payment, affordability, legality or an ownership-completion receipt.
+ExposedMembers.CSC_Adjacency.GetRawPlotPurchaseQuote = function(playerID, cityID, plotIndex)
+    local city = CityManager.GetCity(playerID, cityID);
+    local gold = city and city:GetGold();
+    if not gold or type(gold.GetPlotPurchaseCost) ~= 'function' then return nil; end
+    local ok, value = pcall(gold.GetPlotPurchaseCost, gold, plotIndex);
+    if ok and (type(value) == 'number' or type(value) == 'integer') and value > 0 then return value; end
+end;
+
+-- These wrappers are UI-only native reads, not production instructions. Some
+-- Gameplay objects omit the cost/yield methods despite sharing their names
+-- with UI objects. Return numbers only; never pass UI-owned objects to Gameplay.
+-- EconomyFacts memoizes each player/city/item within one publication.
+local function economyNumber(object, method, ...)
+    if not object or type(object[method]) ~= 'function' then return nil; end
+    local ok, value = pcall(object[method], object, ...);
+    if ok and (type(value) == 'number' or type(value) == 'integer') and value == value then return value; end
+end
+
+ExposedMembers.CSC_Adjacency.GetEconomyCityNumber = function(playerID, cityID, kind, index)
+    local city = CityManager.GetCity(playerID, cityID);
+    if not city then return nil; end
+    if kind == 'yield' then return economyNumber(city, 'GetYield', index); end
+    local queue = city:GetBuildQueue();
+    if kind == 'building' then return economyNumber(queue, 'GetBuildingCost', index); end
+    if kind == 'district' then return economyNumber(queue, 'GetDistrictCost', index); end
+end;
+
+ExposedMembers.CSC_Adjacency.GetEconomyResearchNumbers = function(playerID, kind, index)
+    local player = Players[playerID];
+    if not player then return nil; end
+    local object = kind == 'tech' and player:GetTechs() or player:GetCulture();
+    return {
+        cost = economyNumber(object, kind == 'tech' and 'GetResearchCost' or 'GetCultureCost', index),
+        progress = economyNumber(object, kind == 'tech' and 'GetResearchProgress' or 'GetCulturalProgress', index),
+        rate = economyNumber(object, kind == 'tech' and 'GetScienceYield' or 'GetCultureYield')
+    };
+end;
+
+ExposedMembers.CSC_Adjacency.GetEconomyPlotFacts = function(index)
+    local plot = Map.GetPlotByIndex(index);
+    if not plot then return nil; end
+    local facts = {workers=economyNumber(plot, 'GetWorkerCount'), yields={}};
+    for yield in GameInfo.Yields() do facts.yields[yield.YieldType] = economyNumber(plot, 'GetYield', yield.Index); end
+    return facts;
+end;

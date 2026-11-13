@@ -123,8 +123,12 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
     for _,e in ipairs(entries) do
         if type(e)~='table' or not(integer(e.player,0,63) and allowed[e.player]
             and integer(e.city,0,2147483647) and integer(e.district,1,districtCount-1)
-            and integer(e.plot,0,width*height-1) and integer(e.delta,-262144,1048576)
-            and e.delta~=0) then return reject('Invalid district-site entry') end
+            and integer(e.plot,0,width*height-1)
+            and(e.finalQ8~=nil and integer(e.finalQ8,-1048576,1048576)and e.delta==0
+                and type(CE_AIDistrictScoresFinalEntry)=='function'
+                or e.finalQ8==nil and integer(e.delta,-262144,1048576)and e.delta~=0)) then
+            return reject('Invalid district-site entry')
+        end
         local key=e.player..':'..e.city..':'..e.district..':'..e.plot
         if keys[key] then return reject('Duplicate district-site entry') end
         keys[key]=true
@@ -211,7 +215,13 @@ function B.Publish(version,width,height,districtCount,originalAI,entries,builder
         assert(CE_AIDistrictScoresBegin(version,width,height,districtCount)==1,'Native begin rejected')
         for _,pid in ipairs(originalAI) do assert(CE_AIDistrictScoresAllow(pid)==1,'Native identity rejected') end
         for _,e in ipairs(entries) do
-            assert(CE_AIDistrictScoresEntry(e.player,e.city,e.district,e.plot,e.delta)==1,'Native entry rejected')
+            if e.finalQ8~=nil then
+                -- This is the whole CSC Quarter bid after native building
+                -- aggregation, exclusive with an early entry for the same key.
+                assert(CE_AIDistrictScoresFinalEntry(e.player,e.city,e.district,e.plot,e.finalQ8)==1,'Native final entry rejected')
+            else
+                assert(CE_AIDistrictScoresEntry(e.player,e.city,e.district,e.plot,e.delta)==1,'Native entry rejected')
+            end
         end
         for _,site in ipairs(builderSites or {}) do
             for _,kind in ipairs(site.improvements) do

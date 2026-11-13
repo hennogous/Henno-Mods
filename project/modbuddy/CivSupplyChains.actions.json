@@ -1410,7 +1410,10 @@
         "files": [
           "Lua_UI/AI/CSC_AI_AdjacencyScan.lua",
           "Lua_UI/AI/CSC_AI_QuarterPlacement.lua",
-          "Lua_UI/AI/CSC_AI_DistrictBridge.lua"
+          "Lua_UI/AI/CSC_AI_DistrictBridge.lua",
+          "Lua_UI/AI/CSC_AI_EconomyModel.lua",
+          "Lua_UI/AI/CSC_AI_EconomyFacts.lua",
+          "Lua_UI/AI/CSC_AI_EconomyAdapters.lua"
         ]
       },
       {

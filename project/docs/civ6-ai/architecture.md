@@ -9,10 +9,11 @@ This implements the architecture agreed on 6 November (commit `057d4c55`). The
 Quarter's forecast at the late district-value boundary, rather than trying to
 reconstruct and subtract each of Civ's modifier-interpreter mistakes.
 
-**Revision status:** implementation and Astra review are in progress. The diagram
-shows the revised code's intended runtime path; it does not establish native
-acceptance or normal-game effectiveness. Earlier controlled successes retain
-their original scope; new economic bids need their own live qualification.
+**Revision status:** integrated in main CSC and reviewed by Astra. The final source
+passes a fresh native smoke with exact complete-value writes, cache reads and
+eligible comparisons. The preceding 30-turn window demonstrates repeated
+publication/consumption. Placement quality, investment completion and Services
+remain outcome questions. [Exact revisions and evidence](../research/mods/csc-ai-central-economy-20261113.md).
 
 ## From the world to a decision
 
@@ -57,10 +58,13 @@ where the game already exposes a suitable input, as with customer adjacency.
 
 ## Where the code lives
 
-All reusable CSC policy is in `Civ Supply Chains/Lua_UI/AI/`:
+The active economic families are Bakers and Tailors. The shared pipeline is
+reusable; the other six Quarters still need their gameplay/economic definitions
+and acceptance data. All reusable CSC policy is in `Civ Supply Chains/Lua_UI/AI/`:
 
 | Layer | Files and responsibility |
 |---|---|
+| UI read boundary | `Lua_UI/Adjacencies/CSC_AdjacencyUI.lua`: raw invoices and UI-only cost/yield/research reads return scalars/plain records; the older exclusive-buyer screen stays separate. |
 | Live facts | `CSC_AI_EconomyFacts.lua`: loaded definitions, completed customer footprints, actual buildings, research paths, construction estimates, supplier observations and per-publication caches. |
 | Central rules | `CSC_AI_EconomyModel.lua`: transaction recipients, population rounding, exclusive producers, prerequisite and queue timing, bounded optional investment plans, recurring yields and marginal loss. No game writes. |
 | Economic decisions | `CSC_AI_EconomyAdapters.lua`: native pricing, complete Quarter bids, weak-site policy and material-loss quotes. Unknown inputs retain the established fallback policy. |
@@ -98,6 +102,11 @@ and the [numbered roadmap](roadmap.md).
 
 The ordinary turn refresh creates one player snapshot. Static rules persist;
 ownership, research, staffing, construction and quotes expire with the snapshot.
+Raw invoices price all known frontier alternatives. Positive purchase guidance
+still requires an unambiguous intended buyer; otherwise the complete bid is at
+most zero. The CE ownership hook recognises an already-correct purchase and does
+not choose Economic's buyer. Retained plans and later quote changes remain native.
+
 CE publishes a new version atomically and consumes entries when its native
 decision runs. A packet is neither a reservation nor a construction command.
 
@@ -134,3 +143,18 @@ building can still lack supplies or customers. Diagnostics and controlled tests
 must identify the layer reached. Outcome games use only main CSC tuning, the
 shared controller and pinned packages. Their results determine calibration and
 remaining weaknesses; the diagram alone proves none of those outcomes.
+
+
+### Initial runtime qualification
+
+The fresh three-turn smoke (`csc-ai-economy-20261113/smoke03`) qualified native
+pricing for all five AI cities and restored preferences/packages with exit0.
+Both pricing and final interfaces reported ready. **No complete economic bid
+was demonstrated:** Quarter readiness was unavailable, so established guidance
+remained active. That result exposed the fact-binding gap; the next revision
+adds explicit UI-only numeric reads and separates raw invoices from the
+exclusive-buyer screen. The corrected 30-turn window demonstrates repeated
+complete bids and native consumption; the final review revision repeats the
+native acceptance in a fresh 3-turn smoke with 16 exact write/cache/comparison
+receipts. [Full audit](../research/mods/csc-ai-central-economy-20261113.md).
+Neither window establishes improved placement or Services.

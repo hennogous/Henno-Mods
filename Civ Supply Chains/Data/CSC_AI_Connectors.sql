@@ -28,14 +28,19 @@ CREATE TEMP TABLE CSC_AI_CustomerEdges (
     PRIMARY KEY (Customer, Quarter)
 );
 
--- City Centers are settlement decisions. Other mapped Stage 2 customers
--- can use normal district placement, including direct unique replacements.
+-- All mapped Stage2–4 customer districts use the same shared catalogue as
+-- the live economic facts adapter. One signal per district/Quarter edge avoids
+-- stacking +1 for every building stage. City Centers are settlement decisions;
+-- Wonder placement has its own native consumer and is not covered by this row.
+-- Existing future-footprint Lua guidance remains separate, with no yield from
+-- an unbuilt customer in the Quarter economic ledger.
 INSERT OR IGNORE INTO CSC_AI_CustomerEdges
         (   Customer,   Quarter   )
 SELECT m.DistrictType, q.DistrictType
 FROM CSC_QuarterCustomerBuildings m
 JOIN Districts q ON q.DistrictType = 'DISTRICT_CSC_' || m.QuarterKey || '_QUARTER'
-WHERE m.ProducerStage = 2 AND m.DistrictType <> 'DISTRICT_CITY_CENTER';
+WHERE m.ProducerStage BETWEEN 2 AND 4
+AND m.DistrictType NOT IN ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER');
 
 INSERT OR IGNORE INTO CSC_AI_CustomerEdges
         (   Customer,   Quarter   )
