@@ -9,7 +9,7 @@ This implements the architecture agreed on 6 November (commit `057d4c55`). The
 Quarter's forecast at the late district-value boundary, rather than trying to
 reconstruct and subtract each of Civ's modifier-interpreter mistakes.
 
-**Revision status, 13 November:** corrected source passes 243 native checks and
+**Preceding delivery revision, 13 November:** corrected source passes 243 native checks and
 25 economy tests, with Astra review and controlled delivery qualification.
 The normal Online game to turn 250 run completes: 57 exact new-site comparisons; all seven
 AI-founded Quarters have Base and actual +3 or better at turn 250. Held Quarters drop
@@ -22,9 +22,13 @@ all follow-through, building, Builder or Service capabilities.
 **Admission is a separate boundary.** A valuable future Quarter site can win a
 district nomination while the city has no population-limited district slot.
 Native validation then rejects the request before city logging or production
-competition. The current model still prices such future candidates; a new
-current-capacity publication gate has not been implemented. Preserve future
-potential and existing construction/repair when refining that adapter.
+competition. The publication adapter now defers positive offers for full or
+unknown allocations and rechecks next snapshot. UI counters cross-check population
+and live inventory; extra-allowance freshness remains partially observed. Future
+potential and existing construction/repair are retained. The capacity trial
+verifies delivery but has fewer foundations and no new Tailors. A possible missed
+same-round capacity opening remains a hypothesis to trace.
+[Capacity trial](../research/mods/csc-ai-capacity-placement-20261113.md).
 [Captured cases and limits](../research/mods/csc-ai-quarter-request-admission-20261113.md).
 
 ## From the world to a decision
@@ -37,6 +41,7 @@ flowchart TD
     MODEL["Central Quarter economy<br/>EconomyModel<br/>eligible investment plans and transaction ledger"]
     PRICE["CE read-only pricing<br/>native yield weights and discounting<br/>Q8 utility; unavailable is not zero"]
     SITE["Quarter bid adapter<br/>whole economic value + placement policy<br/>one value for each eligible district–tile pair"]
+    CAP["Current capacity gate<br/>UI used/allowed + live inventory<br/>full/unknown: defer new bid; recheck next snapshot"]
     PROTECT["Material-protection adapter<br/>economic loss + structural safeguards<br/>last Base / Specialty and working supply"]
     PLAN["Planning adapters<br/>legal targets, frontier quotes,<br/>ownership completion and place/defer scopes"]
     SQL["Native customer-placement signal<br/>SQL private-yield adjacency<br/>one signal per mapped district–Quarter edge"]
@@ -49,6 +54,8 @@ flowchart TD
     FACTS --> MODEL
     MODEL <--> PRICE
     MODEL --> SITE
+    FACTS --> CAP
+    CAP --> SITE
     MODEL --> PROTECT
     FACTS --> PLAN
     DB --> SQL
@@ -76,8 +83,8 @@ and acceptance data. All reusable CSC policy is in `Civ Supply Chains/Lua_UI/AI/
 
 | Layer | Files and responsibility |
 |---|---|
-| UI read boundary | `Lua_UI/Adjacencies/CSC_AdjacencyUI.lua`: raw invoices and UI-only cost/yield/research reads return scalars/plain records; the older exclusive-buyer screen stays separate. |
-| Live facts | `CSC_AI_EconomyFacts.lua`: loaded definitions, completed customer footprints, actual buildings, research paths, construction estimates, supplier observations and per-publication caches. |
+| UI read boundary | `Lua_UI/Adjacencies/CSC_AdjacencyUI.lua`: raw invoices, population-district allocation and UI-only cost/yield/research reads return scalars/plain records; the older exclusive-buyer screen stays separate. |
+| Live facts | `CSC_AI_EconomyFacts.lua`: loaded definitions, completed customer footprints, actual buildings, research paths, construction estimates, supplier observations and per-publication caches. Capacity population/inventory is cross-checked against live claims. |
 | Central rules | `CSC_AI_EconomyModel.lua`: transaction recipients, population rounding, exclusive producers, prerequisite and queue timing, bounded optional investment plans, recurring yields and marginal loss. No game writes. |
 | Economic decisions | `CSC_AI_EconomyAdapters.lua`: native pricing, complete Quarter bids, weak-site policy and material-loss quotes. Managed types defer unquoted/unknown sites; unavailable economic capability retains the older policy explicitly. |
 | Placement preparation | `CSC_AI_AdjacencyScan.lua`: adjacency, viable present/future footprints, quoted frontier options and poor-site/deferral facts. Future customer space can establish feasibility; it earns no speculative customer yield. |

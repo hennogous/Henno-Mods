@@ -1,5 +1,14 @@
 # Explainable Quarter site planning
 
+**Current implementation:** the central Quarter economy and late complete-value
+adapter are live in main CSC, with a current-capacity publication gate. The latest
+normal 250-turn trial verifies exact native bid delivery but fewer foundations
+and no new Tailors; customer layout and Builder execution remain weak links.
+Use [current architecture](../../architecture.md), [status](../../STATUS.md) and
+[capacity trial](../../../research/mods/csc-ai-capacity-placement-20261113.md).
+The dated sections below preserve earlier implementation/evidence, not current
+claims that late writes are diagnostic-only.
+
 **12 November follow-up, Problems 1.2/1.4/1.8:** conservative forecasts now
 exclude future/foundation customer yield and penalise viable sites below +3.
 The fresh same-seed Online-speed turn-200 trial is complete and independently audited:
@@ -11,10 +20,10 @@ failures, exact package parity, final cleanup and comparison limits are retained
 Earlier scoped capability closures keep their original meaning. The old goal
 remains paused. [Full measurements and completed trial](../../../research/mods/csc-ai-quarter-adjacency-20261112.md).
 
-**13 November diagnostic focus:** poor-site demand is not yet fully attributed.
+**Earlier 13 November diagnostic focus, superseded by the integration above:** poor-site demand was not yet fully attributed.
 Native future-building value can flatten site differences, but a recent traced
-case has a large positive input and zero later uplift. Main CSC still publishes
-early adjustments; the exact late building correction remains diagnostic-only.
+case had a large positive input and zero later uplift. At that stage main CSC published
+early adjustments and the exact late building correction was diagnostic-only.
 Trace the early component ledger and any later additions before increasing bids.
 [Evidence and next scope](../../../research/mods/csc-ai-quarter-adjacency-20261112.md#13-november-what-currently-explains-weak-quarter-demand).
 

@@ -1,37 +1,22 @@
 # CSC AI roadmap
 
-**Active Problem1.6 follow-up:** main CSC now withholds new positive Quarter
-offers when district allocation is full or UI/live inventory disagrees, and
-reconsiders next publication. A short50–64 replay qualifies the new fact reader
-and deferral; no new major-AI Quarter comparison occurs in that window. The
-authorised normal Online250 comparison is running with passive capacity and
-joint material/customer diagnostics. Outcome and bid/admission follow-through
-remain pending. [Candidate and acceptance](../research/mods/csc-ai-capacity-placement-20261113.md).
+**Latest 13 November result, Problem 1.6:** capacity-aware main CSC completes a
+normal Online250 and restores the session. New Quarter bids defer full/stale
+allocations and reconsider next publication. Eight native new-site winners
+match exact positive bids; all are Bakers. Four AI-founded Quarters versus
+seven previously, no new Tailors, and one working AI-founded Stage2 chain at250.
+Three of four have Base+completed mapped customer; two have improved Base+customer.
+The two additional held Quarters are captures. No broad improvement is claimed.
 
-**Latest result, 13 November: Online game to turn 250 completed and cleanly restored.**
-All seven Quarters founded by the guided major AIs retain Base and reach actual
-+3 or better at turn 250. All 57 new-site comparisons (36B/21T) consume their exact
-positive bid. Held Quarters fall 26 to 9 versus the previous same-seed assistance;
-the two remaining weak holdings were captured from a city-state. This improves
-selectivity, not the absolute number of strong held sites (8 to 7).
+**Next unresolved 1.6 dependency:** trace publication → capacity opens → native
+choice to establish whether the global refresh misses same-round opportunities.
+This is a timing hypothesis, not a proven cause. Do not raise bids to compensate
+for an unobserved boundary. Builder job completion/customer layout remain distinct
+follow-through gaps. Receipt audit establishes native work for improvement bids,
+material protection and buildings; harvest/district repair are unexercised here.
 
-Storekeeper delivers 153 chain-turns versus 112, across two AI-founded chains;
-one has a 66-turn damage lapse before recovery. Tailors Stage 2 remains zero.
-Matrix refresh peaks at 29.36 ms per round; coarse Lua publication totals 46 s versus 69.
-All inputs/starts match; this is one assistance-revision comparison, not a new
-untuned baseline or a balance verdict. No game/test worker remains active.
-[Results, provenance, limits and next scope](../research/mods/csc-ai-quality-placement-250-20261113.md).
-
-**Active scope:** 1.6 / 1.8 delivery and poor-site selectivity are verified at this
-binary/seed. Next placement dependency is 1.6: four native capacity-rejection cases are
-verified, while the two late nominations did not reproduce. Canberra remains
-capacity-blocked in the original 200 save; Sydney has room but its original
-site bid was withdrawn. Separate future-site value from current admission
-readiness before raising bids.
-[Native gate and qualified case evidence](../research/mods/csc-ai-quarter-request-admission-20261113.md). Builder development and Tailors customer completion stay open.
-CE `dbfb93b`/main CSC `be00cad9` are committed/pushed; no upstream PR. The older
-automatic goal remains paused. Outcome quality takes priority over architectural
-neatness, with measured bounds.
+[Full capacity trial and joint statistics](../research/mods/csc-ai-capacity-placement-20261113.md).
+The earlier automatic goal remains paused; no game remains and no upstream PR.
 
 ## Earlier implementation and investigations (historical)
 
@@ -560,7 +545,9 @@ until the active check closes or an explicit dependency needs attention.
   **13 November diagnosis:** native city admission can reject a population-full
   Quarter request before it is logged as SUBMITTED. Four cases are captured;
   the late two retain explicit reproduction limits. Future potential is not
-  current constructibility. A new readiness filter is not yet implemented.
+  current constructibility. The capacity gate is now implemented and qualified
+  in the Online250 trial (AI-C178), with lower foundation count and no new Tailors.
+  Same-round capacity/publication timing remains unverified.
 - **1.7 Place or defer.** Decide whether the best available Quarter site
   merits a bid now. Consider whether the Base supplier and customer path can
   be made usable and what would need to happen first. Reconsider as ownership,

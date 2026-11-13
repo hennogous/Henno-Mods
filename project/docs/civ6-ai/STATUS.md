@@ -1,43 +1,34 @@
 # Current CSC AI status
 
-**Active 13 November follow-up, Problem 1.6:** capacity-aware main CSC candidate
-`c900f162` is committed/pushed. The short50–64 replay closes/restores, with172 full
-deferrals and4 stale scopes; it does not exercise a new major-AI Quarter choice.
-A fresh normal Online250 game is now running through the shared controller,
-same comparison seed/content/CE, only four Lua capacity overlays. No external
-policy/probe mode or new DLL. Joint material/customer metrics are included,
-separating AI-founded holdings from captures and district adjacency from working
-customer buildings. [Candidate, review and pending outcome](../research/mods/csc-ai-capacity-placement-20261113.md).
+**Completed 13 November: capacity-aware Online game to turn 250, exit 0 and fully restored.**
+Main CSC now reads current district allocation once per city/publication and
+withholds new positive Quarter offers for full or stale scopes, reconsidering
+next refresh. Existing foundations/repairs stay outside this new-slot gate.
 
-**Latest result, 13 November: Online game to turn 250 completed and cleanly restored.**
-All seven Quarters founded by the guided major AIs retain Base and reach actual
-+3 or better at turn 250. All 57 new-site comparisons (36B/21T) consume their exact
-positive bid. Held Quarters fall 26 to 9 versus the previous same-seed assistance;
-the two remaining weak holdings were captured from a city-state. This improves
-selectivity, not the absolute number of strong held sites (8 to 7).
+Eight native new-site Quarter winners consume their exact bid and prior write,
+with available capacity recorded at publication. Positive Tailors writes/cache
+reads also occur, but no Tailors winner. Four AI-founded Bakers complete versus
+seven Quarters previously; all four retain Base, three have a completed mapped
+customer, two improved Base plus a customer, and one an operating Stage 2 chain.
+Six held Quarters include two city-state captures. **This is not a broad outcome
+improvement.** Storekeeper's 155 chain-turns comprise 97 captured and 58 AI-founded;
+Tailors Stage 2 stays at zero. Builder preferences, material protection and building receipts land,
+but improving suppliers and completing customer layouts remain weak links.
 
-Storekeeper delivers 153 chain-turns versus 112, across two AI-founded chains;
-one has a 66-turn damage lapse before recovery. Tailors Stage 2 remains zero.
-Matrix refresh peaks at 29.36 ms per round; coarse Lua publication totals 46 s versus 69.
-All inputs/starts match; this is one assistance-revision comparison, not a new
-untuned baseline or a balance verdict. No game/test worker remains active.
-[Results, provenance, limits and next scope](../research/mods/csc-ai-quality-placement-250-20261113.md).
-The follow-through investigation directly captures capacity rejection in Hobart,
-Antioch and Canberra Bakers at original sites, and Charleston at another replay
-site. Canberra Tailors and Sydney do not repeat in the late replay. Original
-turn-200 native UI still blocks Canberra for capacity; Sydney has room by then,
-but its original site bid was withdrawn after 176. Exact original late-call and
-withdrawal reasons remain scoped unknowns. All replays/inspection are closed;
-no main policy or CE DLL changed.
-[Admission evidence and limits](../research/mods/csc-ai-quarter-request-admission-20261113.md).
+Active next dependency under **1.6**: determine whether capacity opening after
+publication can lose a same-round opportunity before the next CSC refresh.
+This timing risk is a hypothesis. Trace it before changing cadence or bids.
+Maximum stale streak 3; 193 full→ready transitions; no packet or policy faults.
+Measured matrix median/max 8.083/13.977 ms, coarse Lua 29 s across 250 publications.
 
-**Active scope:** 1.6 / 1.8 delivery and poor-site selectivity are verified at this
-binary/seed. Next placement dependency is 1.6: separate future-site value from current
-admission readiness, and track why an offer is deferred or withdrawn before
-raising bids. Builder development and Tailors customer completion stay open.
-CE `dbfb93b`/main CSC `be00cad9` are committed/pushed; no upstream PR. The older
-automatic goal remains paused. Outcome quality takes priority over architectural
-neatness, with measured bounds.
+The legacy additive-only offer counter/frontier logger is corrected after this
+frozen trial; it was missing finalQ8 offers with delta 0. No scores change and no
+additional game is started. Source tests (30) pass; Astra independently reviews the
+policy and audits outcome/provenance. Code/results are committed and pushed;
+no upstream PR, no active game, older automatic goal remains paused.
+[Complete tables, evidence and limits](../research/mods/csc-ai-capacity-placement-20261113.md).
+[Preceding comparison](../research/mods/csc-ai-quality-placement-250-20261113.md)
+· [Native admission investigation](../research/mods/csc-ai-quarter-request-admission-20261113.md).
 
 ## Earlier implementation and investigations (historical)
 

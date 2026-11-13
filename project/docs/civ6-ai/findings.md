@@ -3323,3 +3323,36 @@ exit 0, bounded fault-free paired observations and unchanged archived policy/CE.
 The initial all-six capture assertion fails and is preserved as a correction.
 No new tuning, DLL or upstream PR. Reusable native mechanism: AI-N127.
 [Detailed evidence, diagram, per-case confidence and next scope](../research/mods/csc-ai-quarter-request-admission-20261113.md).
+
+<a id="ai-c178"></a>
+## AI-C178 — Capacity gating delivers actionable bids but does not broadly improve follow-through
+
+Main CSC reads stock UI used/allowed population-district counters once per city
+per publication, cross-checks population/live claims, and defers new positive
+Quarter offers in full or unknown scopes. New snapshots reconsider; existing
+foundations/repairs bypass the new-slot branch. Extra-allowance freshness is not
+independently proven. The short 50–64 qualification verifies the bridge and
+deferral, without a new major-AI Quarter winner.
+
+The normal same-seed Online-speed 250-turn comparison completes and restores
+with the same CE/content and four Lua changes. Eight new-site native Bakers
+winner records match exact positive bids and prior writes, all with available
+capacity at publication. Positive Tailors writes/cache reads occur but no new
+Tailors winner. Four guided foundations versus seven previously; six held
+Quarters include two city-state captures. Three of four AI-founded Quarters
+have Base plus a completed mapped customer, two improved Base plus a customer,
+and one an operating Stage 2 chain at 250. No broad outcome improvement is claimed.
+
+Storekeeper 155 chain-turns include 97 from a captured Quarter and 58 AI-founded;
+the latter lapses for 26 turns and resumes. Builder preferences, material
+protection and building comparisons have positive native receipts. Harvest and
+district repair interventions are unexercised here. Capacity opens after a
+publication could miss a same-round opportunity; that is a hypothesis, not
+the established cause of fewer foundations. Trace timing before increasing bids.
+
+A separate diagnostic-only source fix after this frozen run counts complete
+finalQ8 offers whose delta is zero and restores their frontier receipt tracking.
+The old zero legacy counter did not establish inert policy. All 30 central
+tests pass after the fix. Astra independently reviews code and audits delivery,
+joint counts, capture provenance, inputs and endpoint save. No DLL change,
+upstream PR or further game. [Full results and limitations](../research/mods/csc-ai-capacity-placement-20261113.md).

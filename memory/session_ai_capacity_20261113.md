@@ -1,41 +1,47 @@
-# Capacity-aware Quarter candidate — active Online250
+# Completed: capacity-aware Online-speed 250-turn game
 
-User asks add district capacity awareness, ensure bids land, fresh game and
-numbers; specifically count materials AND customers adjacent. No PR. Old goal
-remains paused; this fresh run separately authorised. No Computer Use.
+User scope: capacity awareness, native bid delivery, new game and numbers,
+especially materials AND customers; later asks whether other guidance lands.
+All done, no active test/game/worker. Old automatic goal stays PAUSED. No PR.
 
-Code c900f162 pushed. Four mod Lua overlays on exact previous frozen03 archive,
-unchanged CE400e6755. Artifact root Desktop/Codex/csc-ai-capacity-20261113,
-frozen01 CE/CSC639+6files. Central29/census13/observer8/placement10 tests pass;
-Astra no blocker, partial allowance-cache freshness limitation. Native existing
-footprint exemption regression remains in unchanged243-check DLL.
+Candidate c900f162, handoff1cc967f4; exact old frozen03 content/CE plus four Lua
+capacity overlays. Artifacts Desktop/Codex/csc-ai-capacity-20261113/fresh250.
+Same Small Continents/Prince/Online seeds18461107/29461107; full initial/protocol
+parity. Frozen CE400e6755 unchanged. Shared controller only, main CSC policy;
+no external probe policy, grants, unlocks or forced construction.15min checks.
 
-Short shared-controller replay50-64 finished exit0/restored. Ready232/full172/
-stale4 scope-publications; no new major-AI comparison, city-state Quarter only.
-Read-only facts probe verifies GetDistrictCapacity and cross-checks live counts.
+Short50-64 closed/restored, ready232/full172/stale4; no new major-AI winner.
+Fresh250 completed exit0, owners absent, preferences/packages restored.10censuses
+and5native/archive hashes verified. Endpoint35fe652f7915c23b42ec03f1abe5deac1831c3867bf26cbb795e6859a67e96fe.
+Audit scripts/results in artifact root, report AI-C178 in repo.
 
-Fresh250 worker session23106 launched, process controlled by shared controller.
-Output fresh250, Small Continents/Online/Prince, seeds18461107/29461107.
-Only main CSC policy; harmonised observation/economy-preflight passive readers.
-Do NOT open another console, edit imported/frozen code, or start more games.
-Check autonomous run about15min; last initial setup check18:59:44UTC shows host
-issued, source gate still pending load. First matched-source argument rejected
-BEFORE launch: flag is for opposite tuned/untuned states only. Retried without
-it; audit source/map/units parity afterwards (do not label causal untuned test).
+8/8 native new-site Best winners consume exact positive bid/priorwrite/version/
+ordinal and have published free capacity; ALL Bakers. Tailors654positive sampled
+windows,576writewindows/653cache-readwindows,0Best. Not a transport failure.
+4AI-foundedBakers vs7previous(5B2T).6held=5B1T,2city-state captures.
+AI-founded4allBase/currentloaded-rule>=4;3Base+completedcustomer,2improvedBase+
+customer,1both+customer,1workingStage2chain. Held6: Base+customer4,both+customer1,
+improvedBase+customer3. No newTailors.155Storekeeperchainturns=97captured+58
+AI-foundedMagdeburg;26-turnlapse218-243, resumes244. Prior153allAI-founded.
+No broad improvement claim. Berlinproducer+Granarybut3unimprovedBase; Aachen
+improvedmaterials/producerbutnocustomer. Concrete Builder/customer gaps.
 
-Prepared artifact audit_run.py (read-only, no Civ API) for final; run after full
-closure. It joins foundation identities, joint metrics, capacity states and
-exact positive Best bid/write/metadata. Needs final review/other audits (saves,
-native admission CSV, performance) before claims. No final outcome yet.
+Capacity5963full/5711ready/93stale, maxconsecutivestale3,193full->ready snapshots.
+Hypothesis: newcapacityafterglobalpublicationcanlosesame-roundopportunity before
+nextrefresh. NOT demonstrated cause. Trace phase/timing before changingcadence.
+NativeBuilder174positivewrites,2750destructivejobscorechanges;Wonder5348changes,
+supplierexclusions110530masks;building33forecasts/6comparisons+writes. Repeated
+workcounts,notcompletedactions. Harvest0rejections;districtrepair0offered/considered
+(unexercised,notinert). Ownership8considered/1ack,notpaidpurchaseproofhere.
 
-Metrics agent completed only full_game_results.py/census.lua/test files, in
-c900f162. Prior250 AI-founded7: Base+completed mappedcustomer6(4B2T), both+customer2B,
-improvedBase+customer4(3B1T), improvedBase+workingStage2customerbuilding2B.
-Allheld9includingcaptures: Base+customer7(5B2T),both2B,improvedBase4. Native
-CUSTOMER_HOST now separates actual completion/pillage; older false readiness
-ambiguous but no unknowns in inspected historical endpoints. Count once/Quarter.
+Found diagnosticbug: legacypositivecounter/frontiertrackingrequiresdelta>0;
+completefinalQ8entrieshavedelta0. AFTERfrozenrunfixsourceclassifiesfinalQ8,
+retainsunchangedpacket,logsdeltaandfinalandtracksfrontierreceipt.30centraltestsPASS;
+priorcensus13/observer8/placement10PASS. No newgame neededforbookkeeping.
+Astra independently audits source/outcomes andcatches actualendpointkey and
+saveprovenance. Otheragentvalidatesjointmetricsandraw-vsguidedcohorts.
 
-Pending: full run through250; final audit/joint comparison and report; scoped
-doc/result commits/push. test_full_game_observation.py one reader-list fixture
-update remains uncommitted after c900f162 (8tests PASS); stage with next scoped
-docs. Preserve huge unrelated dirty SQL/art/UI files. AI Quartz retired.
+Diagnostic bookkeeping fix f21b7766 committed/pushed; final docs committed with this handoff.
+Report project/docs/research/mods/csc-ai-capacity-placement-20261113.md has tables,
+alllimits,consumer audit andnextquestion. PreserveunrelateddirtySQL/art/UI files.
+MEMORY.md hasotherconcurrentunrelatedchanges; do not stage wholefile blindly.
