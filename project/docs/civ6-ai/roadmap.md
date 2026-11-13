@@ -1,5 +1,11 @@
 # CSC AI roadmap
 
+**New outcome test, 13 November:** the requested fresh Online-speed250-turn
+Continents run is being launched with the qualified main CSC economic model,
+CE delivery and read-only observations. Same comparison seeds, frozen packages,
+25-turn censuses and checkpoint saves. Results are pending; the earlier
+transport qualification below is not a claim of improved placement.
+
 **13 November central-model integration:** [architecture and diagram](architecture.md)
 map the agreed economy, decision adapters and native systems to all of
 Problems **1.1–1.8 and 2.1–2.2**. Main CSC now publishes complete late Quarter

@@ -1,3 +1,13 @@
+# ACTIVE: new 250-turn central-economy outcome run
+
+User authorised one new Online250 game after implementation. Running shared
+controller session23629; rootDesktop/Codex/csc-ai-economy-250-20261113,
+run-continents. See memory/session_ai_economy250.md FIRST for pins/protocol,
+check cadence15min, finalauditandcomparison. Noexternal/testpolicy. MainCSC+CE
+only. Do noteditimported/pinnedcode oropena secondconsoleclient. Originalold
+automaticgoalremainspaused. Previouscompletionnotesbelowarethesuperseded
+NOACTIVEGAMEstate beforethis NEW explicitrequest.
+
 # Latest completed work: central Quarter economy, 13 November
 
 User scope: all Problems1.1–1.8 and2.1–2.2 through central model + decision

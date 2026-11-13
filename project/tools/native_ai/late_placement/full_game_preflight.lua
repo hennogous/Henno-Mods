@@ -5,6 +5,8 @@
 local scope=__SCOPE__
 assert(Game.GetCurrentGameTurn()==1 and not AutoplayManager.IsActive())
 assert(CSC_AI_QuarterPlacement and CSC_AI_QuarterSiteForecasts and CSC_AI_DistrictBridge)
+assert(CSC_AI_EconomyModel and CSC_AI_EconomyFacts and CSC_AI_EconomyAdapters,
+ 'Central economic policy modules missing')
 assert(GameInfo.CSC_AI_Profile==nil,'Legacy policy loaded')
 -- Validate before constructing the table: a nil value otherwise vanishes
 -- from pairs(), which could silently skip a required missing consumer.
@@ -23,6 +25,13 @@ local readers={
  ownership=required('ownership',CE_AIDistrictPurchaseCompletionStatus),
  decline=required('decline',CE_AIDistrictDeclineStatus),
 }
+-- This trial qualifies the new main-mod economy, not successful legacy
+-- fallback. Require its transports now and check readiness at every census.
+local economyStatus=required('economy',CE_AIEconomyStatus)
+required('final value',CE_AIDistrictScoresFinalEntry)
+required('yield price',CE_AIYieldStreamValue)
+required('fixed price',CE_AIYieldFixedValue)
+required('amenity price',CE_AIAmenityStreamValue)
 function CSC_FULL_RUN_Health()
  for name,getter in pairs(readers)do
   assert(type(getter)=='function','Missing '..name..' consumer')
@@ -34,9 +43,17 @@ function CSC_FULL_RUN_Health()
    'Unavailable/faulted '..name..' consumer: '..tostring(status))
   print('CSC_FULL_RUN_HEALTH',Game.GetCurrentGameTurn(),name,status)
  end
+ local status=economyStatus()
+ assert(type(status)=='string'and status:match('"pricingReady":1')and status:match('"finalReady":1'),
+  'Economic pricing/final transport unavailable: '..tostring(status))
+ print('CSC_FULL_RUN_ECONOMY_HEALTH',Game.GetCurrentGameTurn(),status)
 end
 CSC_FULL_RUN_Health()
 local y=assert(GameInfo.Yields.YIELD_CSC_AI_PLACEMENT)
+for _,key in ipairs({'BAKERS','TAILORS'})do
+ local value=assert(GameInfo.Districts['DISTRICT_CSC_'..key..'_QUARTER']).RequiresPopulation
+ assert(value==true or value==1,'Quarter must consume a population-limited district slot')
+end
 assert(y.DefaultValue==1)
 local biases=0
 for r in GameInfo.AiFavoredItems()do
