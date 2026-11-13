@@ -13,6 +13,11 @@ Matrix refresh peaks at 29.36 ms per round; coarse Lua publication totals 46 s v
 All inputs/starts match; this is one assistance-revision comparison, not a new
 untuned baseline or a balance verdict. No game/test worker remains active.
 [Results, provenance, limits and next scope](../research/mods/csc-ai-quality-placement-250-20261113.md).
+Retrospective native logs separate the eight unbuilt nominations: six have no
+recorded Quarter construction request; Constantinople waits while other items
+are built, then drops its request; Geelong changes ownership after submission.
+Exact queue competitors and the six request gates remain unresolved. No new game
+is needed to establish these recorded stages. See the result report's follow-through audit.
 
 **Active scope:** 1.6 / 1.8 delivery and poor-site selectivity are verified at this
 binary/seed. Next placement dependency is 1.5 / 1.6: eight nominated city/type

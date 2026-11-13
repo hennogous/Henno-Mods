@@ -259,3 +259,69 @@ follow-through. Do not raise every bid to force more construction. The larger
 Stage 2 milestone, Builder development and Tailors customer completion remain
 open; this trial closes a concrete delivery gap and demonstrates better placement
 selectivity at a scoped, reproducible source/seed.
+
+## Retrospective follow-through audit: no new game required
+
+The eight unbuilt nominations can be investigated from this run's archived native
+logs. A positive published offer, a native Best district result, a construction
+request and an actual queue selection are distinct. In particular, the 15-pair
+count above is the set returned by the observed native district selector, not
+an inventory of every positive site offer CSC ever published.
+
+The offline join uses player, city ID and district type from the native Best
+record. It maps the city to the unique native tree Decode Trigger with the same
+player, preceding native turn and truncated utility value. All 45 Best records
+across the eight unbuilt pairs have a unique matching city name. The one-turn
+offset is the observer's next-publication drain, not a different decision clock.
+Searching the complete AI_CityBuild log by player, city name and Quarter type
+then finds only two submitted construction requests:
+
+| Original AI / city | Quarter | Observed native nomination turns | Construction request recorded |
+|---|---|---:|---|
+| 1 / Constantinople |Tailors |86-127 |2338, turn 127 |
+| 1 / Antioch (Byzantium) |Bakers |62-143 |None |
+| 4 / Canberra |Bakers |97-110 |None |
+| 4 / Canberra |Tailors |178-180 |None |
+| 4 / Sydney |Bakers |136-176 |None |
+| 4 / Hobart |Bakers |56 |None |
+| 4 / Geelong |Tailors |129-135 |2544, turn 135 |
+| 5 / Charleston |Bakers |122-130 |None |
+
+This means six cases lack a submitted Quarter construction request in the
+archived log. Their district trees repeatedly report Build Unit / Not Building;
+that text alone does not identify the failed native eligibility or request gate.
+It is not evidence of a Quarter losing a final production-score comparison.
+No absence claim is extended beyond this log or the original player identity.
+
+**Constantinople provides evidence consistent with competing production.**
+Contract 2338 is submitted on 127 at logged utility 1765. Its decorator records
+waiting 1 through 15 on 128-142; on 143 it fails with no contract, and on 144 the
+tree nominates an Industrial Zone. The production history finishes Bank on 131,
+selects Military Academy on 131 and Big Ben on 136, with no Tailors foundation.
+The separate queue log confirms Bank, Military Academy and Big Ben receive
+production during the waiting window. There is also a managed request reprice
+in packet 131 (observed 132), reducing its 451840 Q8 retained value to 316035 Q8.
+This establishes waiting/other construction and a lowered bid, not the exact
+Quarter-versus-Military-Academy/Big-Ben comparison or a causal rejection reason.
+
+**Geelong does not remain an Australian planning case.** Contract 2544 is
+submitted on 135 at utility 96, and waits one turn on 136. Native city-build
+records put Geelong under player 62 on 137 and player 2 on 146. The recorded
+ownership change interrupts attribution to player 4; do not classify its failure
+to build as merely a lost production auction. The means of ownership change
+are not established by these excerpts. Quarter foundation remains absent.
+
+The archives therefore support useful retrospective classification immediately.
+Exact numerical competitors and gate reasons were not logged at every native
+queue decision. If those become necessary, use a targeted replay from a saved
+checkpoint with additional read-only decision tracing; a fresh 250-turn game
+is not the first requirement. A replay would be a new diagnostic observation,
+not proof that every unrecorded original decision repeats identically.
+
+Evidence: `fresh250-01/placement-watch.json`, `AI_Behavior_Trees.csv`,
+`AI_CityBuild.csv` (request rows 4258 and 4712), and `City_BuildQueue.csv`.
+Preserved SHA256s, respectively for the three native CSVs:
+
+- AI_Behavior_Trees: `348abc3e8618cfe1e1da786346d39903886360a5f06ce63b140525062c2729b6`.
+- AI_CityBuild: `deaca2f937c2df95cf2e4713ff400e61b7815e0372e0dfe28e76eeb00fbc1136`.
+- City_BuildQueue: `62604042ad3544abcdccf6b3309591e9b56bada3ffd0a43c0eebdaa086feadf4`.
