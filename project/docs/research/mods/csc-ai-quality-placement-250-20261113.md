@@ -325,3 +325,12 @@ Preserved SHA256s, respectively for the three native CSVs:
 - AI_Behavior_Trees: `348abc3e8618cfe1e1da786346d39903886360a5f06ce63b140525062c2729b6`.
 - AI_CityBuild: `deaca2f937c2df95cf2e4713ff400e61b7815e0372e0dfe28e76eeb00fbc1136`.
 - City_BuildQueue: `62604042ad3544abcdccf6b3309591e9b56bada3ffd0a43c0eebdaa086feadf4`.
+
+
+The subsequent [native-admission investigation](csc-ai-quarter-request-admission-20261113.md)
+clarifies the six missing accepted-city requests: transient submissions can be
+rejected before the CSV logs SUBMITTED. Four city/Quarter cases reproduce native
+capacity rejection; the late two do not reproduce. Original saved-state checks
+and site-write histories distinguish continued capacity blocking from later
+free capacity, offer withdrawal and site reuse. The eight unbuilt nominations
+must not be treated as eight buildable projects that merely lost production.

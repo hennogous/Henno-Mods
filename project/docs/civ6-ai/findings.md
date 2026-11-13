@@ -2,7 +2,7 @@
 
 Maintained Markdown. Preserve scope, evidence and superseded status when correcting a finding.
 
-Latest placement outcome: [AI-C176](#ai-c176).
+Latest follow-through investigation: [AI-C177](#ai-c177); placement outcome: [AI-C176](#ai-c176).
 
 ## AI-C001
 
@@ -3288,3 +3288,38 @@ excludes other work; coarse Lua 46 s versus 69 s supports bounded measured overh
 
 Astra independently reproduces inputs, delivery, provenance, materials, Services,
 timing and mixed economic results. [Outcome tables, exact artifacts and limits](../research/mods/csc-ai-quality-placement-250-20261113.md).
+
+
+<a id="ai-c177"></a>
+## AI-C177 — Good-site nominations can fail native city admission on district capacity
+
+The eight unbuilt city/Quarter nominations in AI-C176 are not eight verified
+immediately constructible investments. For the six without accepted city CSV
+requests, REA/current SHA092abfbb identifies a request-admission boundary before
+production competition and before SUBMITTED logging. Three short archived-policy
+replays capture full-capacity rejection for Hobart, Antioch and Canberra Bakers
+at original footprints, and Charleston Bakers at another replay footprint.
+Required city matches, invalid-site is 0, population-block payload is nonzero,
+used slots equal allowed, and CanZone/Validate/Receive return false. One earlier
+Charleston attempt rejects before CanZone with its reason unobserved.
+
+The late Canberra Tailors/Sydney nominations do not repeat; the replay selects
+other districts and later has occupied district trees. Original 175 population
+and completed-district counts support historical capacity blocking. A no-turn
+inspection of the original 200 save confirms Canberra still needs population
+13, but Sydney has a free slot and passes the native type production query.
+Sydney's original-site bid is explicitly withdrawn after packet 176. Its exact
+original rejection and withdrawal cause remain unobserved. Do not generalise
+four scoped native captures into an exact trace of every original attempt.
+
+Original later plans also use some former candidate coordinates for Theater,
+Dam, IZ or Encampment, with selected/completed contract evidence; all-district
+foundation events were not captured. Other Quarter bids remain positive through
+249. Thus the diagnosis includes capacity, later site reuse and withdrawal,
+not a blanket inference that production bidders always beat the Quarter.
+
+All three replay sessions and the zero-turn inspection close/restored with
+exit 0, bounded fault-free paired observations and unchanged archived policy/CE.
+The initial all-six capture assertion fails and is preserved as a correction.
+No new tuning, DLL or upstream PR. Reusable native mechanism: AI-N127.
+[Detailed evidence, diagram, per-case confidence and next scope](../research/mods/csc-ai-quarter-request-admission-20261113.md).

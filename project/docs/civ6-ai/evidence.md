@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [Six unbuilt Quarter nominations: native admission, capacity and limits — 13 November 2026](../research/mods/csc-ai-quarter-request-admission-20261113.md)
+
 - [Corrected quarter-placement guidance: Online250 result — 13 November 2026](../research/mods/csc-ai-quality-placement-250-20261113.md)
 
 - [Managed Quarter values at native consumers and retained requests — 13 November 2026](../research/mods/csc-ai-managed-placement-20261113.md)

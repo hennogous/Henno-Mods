@@ -15,9 +15,12 @@ untuned baseline or a balance verdict. No game/test worker remains active.
 [Results, provenance, limits and next scope](../research/mods/csc-ai-quality-placement-250-20261113.md).
 
 **Active scope:** 1.6 / 1.8 delivery and poor-site selectivity are verified at this
-binary/seed. Next placement dependency is 1.5 / 1.6: eight nominated city/type
-pairs do not reach foundation; separate acquisition/capacity/competition before
-raising bids. Builder development and Tailors customer completion stay open.
+binary/seed. Next placement dependency is 1.6: four native capacity-rejection cases are
+verified, while the two late nominations did not reproduce. Canberra remains
+capacity-blocked in the original 200 save; Sydney has room but its original
+site bid was withdrawn. Separate future-site value from current admission
+readiness before raising bids.
+[Native gate and qualified case evidence](../research/mods/csc-ai-quarter-request-admission-20261113.md). Builder development and Tailors customer completion stay open.
 CE `dbfb93b`/main CSC `be00cad9` are committed/pushed; no upstream PR. The older
 automatic goal remains paused. Outcome quality takes priority over architectural
 neatness, with measured bounds.
@@ -546,6 +549,10 @@ until the active check closes or an explicit dependency needs attention.
   siting, capacity and the preparation window before committing. Trace the
   proposal through production, foundation and completion. Distinguish a new
   score from a retained request.
+  **13 November diagnosis:** native city admission can reject a population-full
+  Quarter request before it is logged as SUBMITTED. Four cases are captured;
+  the late two retain explicit reproduction limits. Future potential is not
+  current constructibility. A new readiness filter is not yet implemented.
 - **1.7 Place or defer.** Decide whether the best available Quarter site
   merits a bid now. Consider whether the Base supplier and customer path can
   be made usable and what would need to happen first. Reconsider as ownership,

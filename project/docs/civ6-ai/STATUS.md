@@ -13,15 +13,18 @@ Matrix refresh peaks at 29.36 ms per round; coarse Lua publication totals 46 s v
 All inputs/starts match; this is one assistance-revision comparison, not a new
 untuned baseline or a balance verdict. No game/test worker remains active.
 [Results, provenance, limits and next scope](../research/mods/csc-ai-quality-placement-250-20261113.md).
-Retrospective native logs separate the eight unbuilt nominations: six have no
-recorded Quarter construction request; Constantinople waits while other items
-are built, then drops its request; Geelong changes ownership after submission.
-Exact queue competitors and the six request gates remain unresolved. No new game
-is needed to establish these recorded stages. See the result report's follow-through audit.
+The follow-through investigation directly captures capacity rejection in Hobart,
+Antioch and Canberra Bakers at original sites, and Charleston at another replay
+site. Canberra Tailors and Sydney do not repeat in the late replay. Original
+turn-200 native UI still blocks Canberra for capacity; Sydney has room by then,
+but its original site bid was withdrawn after 176. Exact original late-call and
+withdrawal reasons remain scoped unknowns. All replays/inspection are closed;
+no main policy or CE DLL changed.
+[Admission evidence and limits](../research/mods/csc-ai-quarter-request-admission-20261113.md).
 
 **Active scope:** 1.6 / 1.8 delivery and poor-site selectivity are verified at this
-binary/seed. Next placement dependency is 1.5 / 1.6: eight nominated city/type
-pairs do not reach foundation; separate acquisition/capacity/competition before
+binary/seed. Next placement dependency is 1.6: separate future-site value from current
+admission readiness, and track why an offer is deferred or withdrawn before
 raising bids. Builder development and Tailors customer completion stay open.
 CE `dbfb93b`/main CSC `be00cad9` are committed/pushed; no upstream PR. The older
 automatic goal remains paused. Outcome quality takes priority over architectural

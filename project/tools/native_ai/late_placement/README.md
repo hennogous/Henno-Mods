@@ -1,5 +1,22 @@
 # Late district placement trial
 
+## Quarter request admission diagnostics
+
+`quarter_placement_replay.py --admission-probe` adds read-only native admission
+tracing to a short archived-save replay. Supply both `--frida-deps` (the existing
+qualified 17.24.3 package) and `--admission-binary` (original XP2 SHA092abfbb).
+The main archived CSC/CE packages still provide all policy. The observer records
+city/request identities, native validation and capacity flags; it changes no
+bid or game data. A missing `SUBMITTED` CSV row is not proof of no submission
+attempt: city acceptance validates before logging. Recording freezes before
+Menu and hooks remain resident until the controller-owned process exits.
+
+`--inspect-capacity --start N --through N` instead reads the original saved
+state's six city/Quarter cases using shipped UI capacity/production queries. It
+advances no turns and cannot be combined with the admission probe. Native UI
+legality, an observed request rejection and a changed AI decision are separate
+evidence. See [scope, results and limitations](../../../docs/research/mods/csc-ai-quarter-request-admission-20261113.md).
+
 ## Native customer adjacency comparison
 
 `frontier_discovery.py --compare-owned --save-owned-comparison

@@ -19,6 +19,14 @@ all follow-through, building, Builder or Service capabilities.
 [Full outcome and limitations](../research/mods/csc-ai-quality-placement-250-20261113.md),
 [implementation and corrected assumptions](../research/mods/csc-ai-managed-placement-20261113.md).
 
+**Admission is a separate boundary.** A valuable future Quarter site can win a
+district nomination while the city has no population-limited district slot.
+Native validation then rejects the request before city logging or production
+competition. The current model still prices such future candidates; a new
+current-capacity publication gate has not been implemented. Preserve future
+potential and existing construction/repair when refining that adapter.
+[Captured cases and limits](../research/mods/csc-ai-quarter-request-admission-20261113.md).
+
 ## From the world to a decision
 
 ```mermaid

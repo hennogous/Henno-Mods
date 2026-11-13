@@ -1,3 +1,39 @@
+# Completed follow-up: six unbuilt nominations, native admission
+
+No game/test worker remains. Three short replays and original-200 zero-turn
+inspection exit 0/restored. Old scheduled goal remains paused. No tuning/DLL
+changes or PR. New report: project/docs/research/mods/csc-ai-quarter-request-admission-20261113.md.
+Artifact root Desktop/Codex/csc-ai-district-admission-20261113. Read six-case-audit.json:
+verified four native case rejections, two negative reproductions, six original
+saved-state UI observations. Initial all-six assertion failed and is preserved;
+do not claim six exact native captures. REA closed/exported five current092
+records; nine full functions match reference324. Skill AI-N127 committed63912b6.
+
+Hobart56 (pop3/1used/1allowed), Antioch62 (2/1/1), Canberra Bakers106/110/112
+(9/3/3) reproduce at original sites with invalidSite0, nonzero population-block,
+CanZone/Validate/Receive false. Charleston124 (6/2/2) is another replay footprint
+2101, not original2398; turn122 rejects before CanZone for an unobserved reason.
+Native SUBMITTED is logged after city validation; missing CSV does not prove
+no transient request attempt. Raw +20 population field is NOT next-growth target.
+
+Late150-180 selects other districts; no p4 Quarter callbacks. Original175
+Canberra pop12/four counted and Sydney15/five counted suggest full capacity.
+Original200 UI: Canberra11/4/4 blocked needs13+, Sydney17/5/6 canProduce true.
+Hobart12/3/4 and Charleston11/3/4 also canProduce true; Antioch12/4/4 blocked.
+Sydney original1423 positive through176, withdrawn177-238, later Encampment
+plan on coordinates selected238/completed242. Withdrawal cause unobserved.
+Hobart/Antioch earlier candidate sites later have Theater/Dam/IZ selected and
+completed; other native Quarter bids persist through249. Do not equate no later
+Best to withdrawal, absent writes to occupation, or readiness with final auction.
+
+Diagnostics a1a5134f source qualified6guards/JS syntax/native prefix/currentSHA;
+subsequent zero-turn inspection extension + comments to commit with resultdocs.
+Main CSC/CE archived packages unchanged. Only optional diagnostic code changed.
+Next1.6: separate current admission readiness from retained future-site value;
+capacity filter not yet implemented. Exact original late two callbacks and
+Sydney withdrawal cause remain bounded unknowns. No more games needed for this
+investigation; don't broaden into price raises or new CE delivery work.
+
 # Completed: managed Quarter delivery and fresh Online250
 
 13 November2026. No test worker/game owned by this task remains active. Old

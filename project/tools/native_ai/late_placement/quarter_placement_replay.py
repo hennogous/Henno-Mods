@@ -27,7 +27,11 @@ def run(a):
     assert load(source/'result.json')['closed']and load(source/'session-closed.json')['verified']
     checkpoint=load(source/('checkpoint-'+str(a.start)+'.json'))
     assert checkpoint['turn']==a.start and checkpoint['verified']and checkpoint['save_complete_event']
-    assert 0<a.through-a.start<=30,'Use a short diagnostic window'
+    inspect_capacity=getattr(a,'inspect_capacity',False)
+    # A saved-state inspection advances no turns. Keep it explicit rather than
+    # silently treating a zero-length replay as a successful AI observation.
+    assert (a.through==a.start if inspect_capacity else 0<a.through-a.start<=30),'Use a short diagnostic window'
+    assert not(inspect_capacity and admission_enabled),'Capacity inspection uses shipped UI queries, not request hooks'
     save=Path(checkpoint['native_save']).resolve(strict=True)
     assert save.parent==(home/'Saves/Single').resolve()
     assert sha(save)==checkpoint['sha256']==sha(source/('turn-'+str(a.start)+'.Civ6Save'))
@@ -49,10 +53,12 @@ def run(a):
     out.mkdir(parents=True)
     write_json(out/'inputs.json',dict(source=str(source),save_sha256=checkpoint['sha256'],
         start=a.start,through=a.through,read_only_observer=True,external_policy=False,
+        inspect_capacity=inspect_capacity,turns_advanced=a.through-a.start,
         packages={str(p):pin for p,pin in pins.items()},candidate_override=bool(a.ce),
         changed_from_archived=differences))
     for name in('quarter_placement_replay.py','quarter_placement_watch.lua','quarter_economy_facts_probe.lua'):
         shutil.copyfile(HERE/name,out/name)
+    if inspect_capacity:shutil.copyfile(HERE/'district_capacity_inspect.lua',out/'district_capacity_inspect.lua')
     admission=None
     if admission_enabled:
         # Diagnostic only: the same archived main CSC policy still supplies all
@@ -92,6 +98,13 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
                 assert 'CSC_QUARTER_FACT_PROBE_COMPLETE'in facts
             if admission:
                 admission.attach(session.owner,load(out/'loaded-modules.json'))
+            if inspect_capacity:
+                # PlotInfo is a UI-cache context. The ordinary ProductionPanel
+                # uses these same CanProduce/requirements and capacity queries.
+                # Gameplay's similarly named binding is not interchangeable.
+                raw=controller.cmd(read(out/'district_capacity_inspect.lua'),'PlotInfo','inspect-saved-capacity')
+                (out/'saved-capacity.txt').write_text(raw,encoding='utf-8')
+                assert 'CSC_CAPACITY_FACTS_COMPLETE'in raw
             return True
         session.load_once(save,sha256=checkpoint['sha256'],native_directory=home/'Saves/Single',turn=a.start,
             contexts=('GameCore_Tuner','PlotInfo','CSC_AI_BakersGameplay'),eligibility=capture)
@@ -130,7 +143,8 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
     log=read(out/'Lua.log')
     assert 'CSC_QUARTER_WATCH_FAULT'not in log and 'CSC_AI_BAKERS_DISTRICTS_FAILED'not in log
     write_json(out/'complete.json',dict(verified=True,start=a.start,through=a.through,
-        external_policy=False,read_only_observer=True,admission_probe=admission_enabled))
+        external_policy=False,read_only_observer=True,admission_probe=admission_enabled,
+        inspect_capacity=inspect_capacity,turns_advanced=a.through-a.start))
 
 
 if __name__=='__main__':
@@ -143,5 +157,7 @@ if __name__=='__main__':
         help='Observe Quarter request admission; never changes bids or decisions')
     parser.add_argument('--frida-deps',type=Path,help='Explicit existing Frida 17.24.3 package directory')
     parser.add_argument('--admission-binary',type=Path,help='Explicit original patched XP2 DLL (SHA092abfbb)')
+    parser.add_argument('--inspect-capacity',action='store_true',
+        help='Read saved-city capacity and native production failure reasons; requires through=start and advances no turns')
     parser.add_argument('--start',type=int,required=True);parser.add_argument('--through',type=int,required=True)
     run(parser.parse_args())

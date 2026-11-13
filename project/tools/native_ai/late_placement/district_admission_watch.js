@@ -38,6 +38,8 @@ function city(build) {
 }
 function request(p) {
   if(p.isNull())return null;
+  // q8 is signed native utility (256 per whole point), not Gold. It joins
+  // the tree's truncated value to this request; recording it changes no bid.
   return {pointer:p.toString(),contract:p.add(0x110).readS32(),state:p.add(0xb0).readS32(),
     district:p.add(0x1a8).readS32(),unit:p.add(0x178).readS32(),building:p.add(0x190).readS32(),
     requiredCity:p.add(0x1d8).readS32(),q8:p.add(0x158).readS32(),
@@ -116,7 +118,9 @@ rpc.exports={
       });
       // CanZone RCX=BuildQueue, EDX=District, R8=XY(two i32), R9=requirements.
       // Requirements +1 is an independent invalid-site byte; +0x20 is the native
-      // required-population int. Validate rejects these flags even if CanZone's
+      // population-block payload, not the next growth threshold. Allowed slots
+      // can increase before the raw payload's population number is reached.
+      // Validate rejects these flags even if CanZone's
       // return bool is true. Preserve flags rather than inventing a single reason.
       attach('zone',{
         onEnter(args){this.frame=null;if(!enabled)return;
