@@ -240,7 +240,9 @@ VALUES
         /*  MilitaryDomain,             */  'NO_DOMAIN',
         /*  RequiresPlacement,          */  1,
         /*  Coast,                      */  0,
-        /*  RequiresPopulation,         */  0,
+        -- Quarters consume the city's population-limited specialty slot;
+        -- supply-chain-framework.md makes this an investment opportunity cost.
+        /*  RequiresPopulation,         */  1,
         /*  Aqueduct,                   */  0,
         /*  InternalOnly,               */  0,
         /*  NoAdjacentCity,             */  0,
