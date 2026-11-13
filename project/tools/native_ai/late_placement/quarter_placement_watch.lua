@@ -110,21 +110,28 @@ local function inspect(kind,player,districtID,cityID,x,y,districtType)
  local district=Players[player]:GetDistricts():FindID(districtID);assert(district)
  local index=Map.GetPlot(x,y):GetIndex();local previous=seen[index]
  local complete=district:IsComplete()
- if not previous then
-  snapshot(kind=='added'and'foundation'or'first-observed',player,cityID,districtID,x,y,districtType,complete)
- elseif previous.player~=player or previous.city~=cityID then
+ if previous and(previous.player~=player or previous.city~=cityID)then
   snapshot('ownership-change',player,cityID,districtID,x,y,districtType,complete)
+ elseif not previous or previous.districtID~=districtID then
+  snapshot(kind=='added'and'foundation'or'first-observed',player,cityID,districtID,x,y,districtType,complete)
+  -- Purchases/instant construction can first appear already complete. Keep
+  -- both lifecycle clocks; a later progress callback must not count it twice.
+  if kind=='added'and complete then
+   snapshot('completion',player,cityID,districtID,x,y,districtType,complete)
+  end
  elseif not previous.complete and complete then
   snapshot('completion',player,cityID,districtID,x,y,districtType,complete)
  end
- seen[index]={player=player,city=cityID,complete=complete}
+ seen[index]={player=player,city=cityID,districtID=districtID,complete=complete}
 end
 local function safe(callback,...)
  local ok,error=pcall(callback,...)
  if not ok then emit('FAULT',{turn=Game.GetCurrentGameTurn(),error=error})end
 end
 local function scan(kind)
- for _,player in ipairs(PlayerManager.GetAliveMajors())do
+ -- Seed city-states too: a later captured Quarter must not look newly founded
+ -- merely because its original owner was outside the Lua/CE scoring cohort.
+ for _,player in ipairs(PlayerManager.GetAlive())do
   for _,city in player:GetCities():Members()do
    local districts=city:GetDistricts()
    for i=0,districts:GetNumDistricts()-1 do
@@ -132,7 +139,7 @@ local function scan(kind)
     if d and watched[d:GetType()]then
      if kind=='seed'then
       local index=Map.GetPlot(d:GetX(),d:GetY()):GetIndex()
-      seen[index]={player=player:GetID(),city=city:GetID(),complete=d:IsComplete()}
+      seen[index]={player=player:GetID(),city=city:GetID(),districtID=d:GetID(),complete=d:IsComplete()}
       snapshot('loaded',player:GetID(),city:GetID(),d:GetID(),d:GetX(),d:GetY(),d:GetType(),d:IsComplete())
      else inspect('poll',player:GetID(),d:GetID(),city:GetID(),d:GetX(),d:GetY(),d:GetType())end
     end

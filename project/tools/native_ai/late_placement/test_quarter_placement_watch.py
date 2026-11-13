@@ -28,7 +28,7 @@ local empty={Members=function()return function()end end}
 city={GetDistricts=function()return {GetNumDistricts=function()return 0 end}end}
 Players={[1]={GetCities=function()return empty end,GetDistricts=function()return {FindID=function()return district end}end}}
 CityManager={GetCity=function()return city end}
-PlayerManager={GetAliveMajors=function()return {}end}
+PlayerManager={GetAlive=function()return {}end}
 GameInfo={Resources={},Improvements={}}
 CSC_AI_DistrictBridge={Publish=function(...)args={...};return accepted,'receipt'end}
 accepted=true
@@ -76,6 +76,19 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.assertNotIn('lastWriteQ8',best[0])
         self.assertIn('lastWriteQ8=100',best[1])
         self.assertIn('result=999',best[0])
+
+    def test_instant_completion_and_rebuilt_district_have_separate_lifecycles(self):
+        self.vm.execute('complete=true;added(1,42,327684,26,14,37);progress(1,42,327684,26,14,37)')
+        self.assertEqual(self.output().count('event=foundation'),1)
+        self.assertEqual(self.output().count('event=completion'),1)
+        self.vm.execute('complete=false;added(1,43,327684,26,14,37);complete=true;progress(1,43,327684,26,14,37)')
+        self.assertEqual(self.output().count('event=foundation'),2)
+        self.assertEqual(self.output().count('event=completion'),2)
+
+    def test_capture_is_not_a_new_foundation_even_if_native_id_changes(self):
+        self.vm.execute('complete=true;added(1,42,327684,26,14,37);Players[2]=Players[1];added(2,99,10,26,14,37)')
+        self.assertEqual(self.output().count('event=foundation'),1)
+        self.assertEqual(self.output().count('event=ownership-change'),1)
 
     def test_observer_failure_does_not_prevent_policy_publication(self):
         self.vm.execute('CE_AIDistrictScoresStatus=function()error("reader unavailable")end')
