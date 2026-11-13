@@ -65,3 +65,14 @@ FullreportAI-C170 in csc-ai-quarter-adjacency-20261112.md; comparison JSON in
 Desktop/Codex/csc-ai-conservative200-20261112. No further games authorised by
 this completed single-run task, no oldgoal resume. Native save and endpoint
 SHA c78c7f04715bec20df20d3652251c91fc042a667a12c0f95f29b2e43e8363708.
+
+
+13Nov correction from Henno: canonical framework/index explicitly require
+Quarters to consume district slots. RequiresPopulation0 in both active SQL files
+was a BUG, not intentional design. Source now1 with SQLite INSERT regression;
+no new game/freshnative validation. All previous fullruns used0, preserve scopes.
+Latewrite remains intended to reconcile site plus credible future transaction
+value after nativebuilding aggregation. Main normal publisher stillearlyonly;
+BakersAdjustment isdiagnostic, NOT recurring transaction forecast delivered.
+Objectives/roadmap/status now make gap explicit. Do not conflate actual later
+building-production bids with hypothetical building contribution to Quarter bid.

@@ -1,5 +1,13 @@
 # Current CSC AI status
 
+**13 November correction:** canonical design requires Quarters to consume
+population-limited district slots. Both active SQL definitions incorrectly used
+`RequiresPopulation=0`; source now uses 1, with a passing SQLite regression. Prior
+full games used the wrong setting; fresh native validation is pending. The late
+score write is proven, but recurring transaction-based future-building valuation
+is not integrated into normal-game policy. Early site heuristics do not close
+that architecture gap. [Correction and scope](../research/mods/csc-ai-quarter-adjacency-20261112.md#correction-district-slots-and-the-intended-transaction-forecast).
+
 **12 November follow-up, Problems 1.2/1.4/1.8:** conservative forecasts now
 exclude future/foundation customer yield and penalise viable sites below +3.
 The fresh same-seed Online-speed turn-200 trial is complete and independently audited:
@@ -12,7 +20,7 @@ Earlier scoped capability closures keep their original meaning. The old goal
 remains paused. [Full measurements and completed trial](../research/mods/csc-ai-quarter-adjacency-20261112.md).
 
 Updated 12 November 2026. Goal: Problems **1.1–1.8 and 2.1–2.2**, through
-[completion contract](acceptance.md), including Henno's12 November clarification
+[completion contract](acceptance.md), including Henno's 12 November clarification
 for native-system guidance. All ten scoped solutions are integrated; the preceding
 trial completed one normal 250-turn game and historical baseline comparison.
 Prior controlled evidence and its limits remain recorded below.

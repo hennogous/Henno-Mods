@@ -285,9 +285,11 @@ component ledger proving which route caused each poor placement.
 
 - **Broadly available investment:** both executed Quarter definitions unlock at
   Craftsmanship, have base Cost60, copy-based cost progression, maintenance1,
-  OnePerCity1 and RequiresPopulation0. They do not compete for a specialty
-  population slot. This is an admission/opportunity-cost fact, not measured
-  attribution of their scores or proof that those design settings should change.
+  `OnePerCity=1` and `RequiresPopulation=0`. They do not compete for a specialty
+  population slot. These are the executed settings, not a verified design decision. On13 November
+  Henno identified the mismatch: the canonical framework explicitly requires
+  district-slot consumption. `RequiresPopulation=0` is an implementation bug;
+  see the correction below. Its contribution to scores is not yet isolated.
 - **Weak geographic discrimination:** native positive future-building sums are
   shared across eligible sites of the city/type; captured building calls lack
   candidate coordinates. Several CSC conditions/alternative recipients are
@@ -330,3 +332,46 @@ Sources: [native component architecture](https://github.com/hennogous/civ6-ai/bl
 [current building-study scope](csc-ai-mill-building-study-20261105.md),
 [population-return risk](csc-ai-stage3-q8-forecast-risk-20261111.md),
 and main `CSC_AI_QuarterPlacement.lua` diagnostic/live boundary.
+
+
+## Correction: district slots and the intended transaction forecast
+
+Henno correctly identified on 13 November that the canonical design says
+Quarters consume district slots. Both the framework's Stage 2–4 section and the
+design index make that opportunity cost explicit. The executed Bakers/Tailors
+`RequiresPopulation=0` flags contradict the design; they are not an intentional
+minor-district rule. Earlier tests describe that implementation, not the
+intended population-slot-constrained game. Existing comparisons retain their
+executed-package scope, but cannot qualify the corrected design's behaviour.
+
+Both active Quarter definitions are now corrected to `RequiresPopulation=1`, with
+nearby comments explaining the opportunity cost. The regression executes the
+actual district INSERTs in SQLite and checks both slot consumption and
+`OnePerCity=1`. It passes for Bakers and Tailors. Fresh database/native placement
+validation remains pending; no game was launched for this correction. Archived
+packages and saves are preserved unchanged. Other unrelated SQL worktree edits
+are not part of this fix.
+
+The intended forecast is still the CSC chain's economic value: which supplier
+and customer transactions can operate once the relevant investments are made,
+their recipients/amounts, unlock and construction/improvement delays, costs and
+competing uses. Site adjacency is only one term. Under the 12 November direction,
+unbuilt customer districts add no adjacency or assumed sales; an existing
+customer district can support a forecast of its later mapped building, while
+known resources can support an improvement/producer forecast with explicit
+remaining work. An empty feasible footprint is not a functioning transaction.
+
+The late-write proof was precisely to intervene after Civ adds future-building
+value to a district-site pair. That capability is proven at its recorded scope,
+but does not automatically calculate CSC transactions or rewrite every building
+cache. The recent normal-game publisher still submits early adjustments; the
+calibrated late component correction is diagnostic-only. Completing a recurring
+transaction-grounded forecast and connecting it to the late district adapter
+remains implementation work. Actual building-production bids are a separate
+consumer and must use the same central chain model. The current early heuristic
+must not be described as having delivered this intended forecast architecture.
+
+Design: [framework](../../../../docs/content/design/supply-chain-framework.md#stage-2-4-quarters),
+[design index](../../../../docs/content/design/index.md).
+Proofs: [late-write consumer](csc-ai-late-placement-20261105.md),
+[CE API and its input limitations](csc-ce-late-score-api-20261105.md).

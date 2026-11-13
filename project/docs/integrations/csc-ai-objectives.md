@@ -13,11 +13,34 @@ and budgets. Success means functioning chains and realised empire benefit
 after costs, including displaced alternatives. Adjacency, construction and
 Service activations are useful intermediate measures.
 
+## Forecast architecture and district opportunity cost
+
+Quarters consume the ordinary population-limited specialty-district capacity,
+as the canonical framework specifies. Both active definitions are corrected to
+`RequiresPopulation=1` on 13 November; older trial packages used 0 and remain
+historical evidence of that different implementation.
+
+CSC's central chain model must value credible future supplier/producer/customer
+transactions, not merely assign adjacency bands. Keep physical site value and
+future building/transaction value explicit, with eligibility, recipients,
+remaining investments, timing and costs. Existing customer districts may support
+forecasts of future customer buildings; unbuilt customer districts earn no
+adjacency or assumed transaction value under Henno's 12 November direction.
+Use a late district-score adapter to reconcile the combined bid after native
+building aggregation, without counting the same benefits twice. This does not
+itself alter the actual building-production bid; that separate adapter must
+reuse the same model. Native strategic priorities, eligibility, commitments and
+competition with other investments remain meaningful.
+
+The late-write boundary has controlled proof. Its recurring valuation inputs
+and normal-game integration are still open; the early guidance in recent full
+games is an interim policy, not delivery of this full forecast architecture.
+
 ## Decisions to support
 
 | Decision | CSC contribution |
 | --- | --- |
-| Quarter siting and land | Prefer a viable adjacent Base source and ideally both Base and Specialty. Value the Quarter's actual river effects and customer or City Lights goods-provider links. Count future neighbors only where a specific legal footprint exists. Prefer combined adjacency around +4 and above, discourage individual sites with missing or destroyed supply-chain links, and support a worthwhile affordable tile purchase through native planning. |
+| Quarter siting and land | Prefer a viable adjacent Base source and ideally both Base and Specialty. Value the Quarter's actual river effects and customer or City Lights goods-provider links. Count only existing customer/provider districts in adjacency and assumed transactions. A specific future footprint establishes feasibility, not yield credit. Prefer combined adjacency around +4 and above, discourage individual sites with missing or destroyed supply-chain links, and support a worthwhile affordable tile purchase through native planning. |
 | Other districts | Value adjacency to existing or credible future provider Quarters. Prefer safe sites over mapped Base or Specialty deposits, improved or unimproved. Protect the last viable deposit of either class per Quarter, with particular urgency when the last working supplier sustains a Service. Price the opportunity cost of shifting an otherwise good native district. |
 | Material work and Builder supply | Prioritize Base improvement once its Stage 2 buyer is working, and Specialty once its Stage 4 buyer is working. Prepare necessary technologies in time. Give the actual job to a reachable Builder with charges, including from another city. Value another Builder when useful jobs exceed available capacity. |
 | Stage 2 producer | Value its technology or civic and construction when two or more viable Base materials are adjacent. One viable Base can still support a worthwhile producer. |

@@ -1,5 +1,13 @@
 # CSC AI roadmap
 
+**13 November correction:** canonical design requires Quarters to consume
+population-limited district slots. Both active SQL definitions incorrectly used
+`RequiresPopulation=0`; source now uses 1, with a passing SQLite regression. Prior
+full games used the wrong setting; fresh native validation is pending. The late
+score write is proven, but recurring transaction-based future-building valuation
+is not integrated into normal-game policy. Early site heuristics do not close
+that architecture gap. [Correction and scope](../research/mods/csc-ai-quarter-adjacency-20261112.md#correction-district-slots-and-the-intended-transaction-forecast).
+
 **12 November follow-up, Problems 1.2/1.4/1.8:** conservative forecasts now
 exclude future/foundation customer yield and penalise viable sites below +3.
 The fresh same-seed Online-speed turn-200 trial is complete and independently audited:
