@@ -1,3 +1,25 @@
+# Latest completed work: central Quarter economy, 13 November
+
+User scope: all Problems1.1–1.8 and2.1–2.2 through central model + decision
+adapters + native systems, plus a readable architecture diagram. COMPLETE as
+an integrated candidate; outcome improvement is not claimed. Start with
+`project/docs/civ6-ai/architecture.md` and `session_ai_economy_model.md`.
+
+CSC code/tests/evidence pushed `34fb0921`; initial architecture `de392005`.
+CE API pushed feature branch `codex/quarter-economy-forecast` code `6f53037`,
+docs `3421b37`; NO PR. Skill AI-N123 `b8b384c` pushed. Astra reviews all ten
+paths and independently reproduces22 economic tests;15frontend,28scanner,
+1SQLslot and184native+4hookgroup/instruction checks pass.
+
+Three shared-controller windows closed/restored: initial3 pricing-only negative,
+corrected30 main-policy delivery (4628 entries,413/448 sampled receipts with
+writes), final3 source-parity acceptance (16/16 writes/cache/comparisons).
+Artifacts Desktop/Codex/csc-ai-economy-20261113. No games or workers remain.
+No new full outcome game was launched. Earlier goal remains paused; don't resume
+it automatically. All own changes committed; unrelated existing work is preserved.
+
+Following material is historical context from the previous outcome run.
+
 # COMPLETED: harmonised main CSC + normal250 full run, 12 Nov
 
 No game/worker running. session49403 worker17260 TERMINAL exit0. Originalgoal

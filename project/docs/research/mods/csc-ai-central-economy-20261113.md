@@ -90,7 +90,7 @@ Artifact root: `C:/Users/Shadow/Desktop/Codex/csc-ai-economy-20261113/`.
 All windows use the shared controller, normal fresh Small Continents, Online
 speed, seeds 18461107/29461107, original AI players 1–5. The temporary package is a
 complete main CSC build with its local carrier identity and CE dependency; it
-contains no separate AI test policy, Frida, forced unlocks or world edits.
+contains no separate AI test policy, Frida, forced unlocks or diagnostic world edits.
 Diagnostic endpoint reads change no bids or gameplay state. The human installed
 CSC and original mod preferences are restored; temporary Mods folders are retired
 into the corresponding artifact directory after native exit.

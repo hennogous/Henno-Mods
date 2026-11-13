@@ -1,5 +1,15 @@
 # Central Quarter economy implementation — 13 November 2026
 
+COMPLETED: integrated candidate and architecture diagram pushed34fb0921 (initial
+docde392005). CE API6f53037/docs3421b37 pushed, noPR; skillb8b384c pushed.
+All finalsource8AI/UI hashes match frozen03; final3/preceding30 runtime evidence
+andAstrareview pass. No activegame/worker, allpreferences/packages restored.
+Next longer outcome qualification is follow-up, not an unfulfilled launch order.
+Durable status: project/docs/civ6-ai/architecture.md and research report
+csc-ai-central-economy-20261113.md. Earlier chronologicalnotes below retain their
+historical meaning. All source/tests/docs own changes committed; unrelateddirty
+work leftintact. Originalautomaticgoal remains paused.
+
 ACTIVE USER TASK: integrate accurate recurring building transaction forecasts
 and fulfil the already agreed central cross-Quarter model plus decision adapters.
 Do not stop at a plan or claim early heuristic tuning implements that model.
@@ -244,3 +254,7 @@ FINAL IMPLEMENTATION/ACCEPTANCE UPDATE:
   withonly3imports/contentforindex, preserveworktreeothers. Commit/pushscoped.
   Finaldiff/clean-ownscopecheck, repo-linksfinal. No sourcechangesneedednow.
   Do notclaimbetterplacement/fullgameoutcome;nextlonggameisonlyfollowup.
+
+Final follow-up: source/docs committed34fb0921 and pushed; stage-only3module
+registrations verified, allowncode clean. Finalcarryover/report wordingtouches
+committed separately after this note. No requiredimplementationwork remains.
