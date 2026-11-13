@@ -1,5 +1,10 @@
 # Current CSC AI status
 
+**Active follow-up:** a fresh ordinary Online-speed250 game now tests the timing
+correction in main CSC `5005dd01`, with the same comparison seed/content/CE and
+only passive diagnostics. Outcome, joint material/customer counts and native
+follow-through are pending. [Protocol](../research/mods/csc-ai-timing-correction-250-20261113.md).
+
 **Completed 13 November: the same-turn growth / late-bid defect is fixed.**
 The global publication can precede per-player city growth. In the unchanged-policy
 replay, Hobart58 and Canberra67 gain a district slot while the old negative Quarter

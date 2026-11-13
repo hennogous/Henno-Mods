@@ -1,0 +1,30 @@
+# Active: fresh250 after verified timing correction
+
+Latestuser "timeforanewgamerun?" authorisesnormalfreshOnline250. Oldgoalpaused.
+Sharedcontroller ownsworker51054; rootDesktop/Codex/csc-ai-timing-250-20261113,
+outputfresh250. No2ndconsole/ComputerUse/imported/frozenpackageedits/newgames.
+Checkabout15min afterinitialsetup. Initialsourcegatependingat21:12:14UTC;
+host-normal-startissued/ack. Do notmistakeloadackforsource/preflightreadiness.
+
+ProtocolSmallContinents/Small/Prince/Online250,seeds18461107/29461107,seats1–5,
+observer0. MainCSC5005dd01,3Luaoverlaysonexactoldcapacityfresh250archive,
+CE400e6755unchanged/native092abfbb. OnlymainCSCpolicy;harmonised-observation/
+economy-preflightpassivereaders. NoFrida/probe/externalAITestpolicy. NoRHAI5.
+WildWdevelopchecked21:09:52UTC remote==tracked2986a746; noadoptionmidcomparison.
+
+Frozen01andpackages-frozen.jsonretainallpins,excludeunrelateddirtySQL/art/UI.
+Copiedread-onlyaudits root/audit_run.py &delivery_audit.py compiledbutnotrun
+untilterminal. Windowsbaseline200historicalchangedcontent; earlierquality200/250
+isearlier*,priorgatedcapacityisprevious*,currenttimingiscurr*. Capacity-at-Best
+canlegitimatelybefull/stale; don'tassertused<allowedatpublicationanymore.
+Assertstateexistsandexactpositivewrite/version/precedingordinal. Oneprotocol
+initialparityauditatsetup,finalsave50/100/150/200/250hashpairs,all10censuses.
+
+Source43checks30central+10watch+3phasePASSpreviousverification; nonewfunctional
+changesneedrerun. MainCSCworkscopedclean;preserveotherdirtycontent. Skill3b529a8
+pushed6focusedreferences/N128+corrections; no newenginefactyetfromthisoutcometest.
+
+Projectreportcsc-ai-timing-correction-250-20261113.mdprotocolwritten,pendingresults.
+Needcompletegame/audit/finalnumbersincludingjointmaterial+customermetricsand
+AI-foundedvscapturedServices;updateSTATUS/roadmap/findingsAI-C180ifappropriate,
+scopedcommits/pushes. NoPR. Mainoldgoalscopeisnotautomaticallyresumed.
