@@ -68,6 +68,11 @@ print('CSC_FULL_RUN_OBSERVATION_INSTALLED')
     (out/'full-game-observer.lua').write_text(code,encoding='utf-8')
     raw=controller.cmd(code,'CSC_AI_BakersGameplay','install-passive-full-game-observer')
     require('CSC_FULL_RUN_OBSERVATION_INSTALLED'in raw,'Observer did not acknowledge installation')
+    placement=read(HERE/'quarter_placement_watch.lua')
+    (out/'quarter_placement_watch.lua').write_text(placement,encoding='utf-8')
+    raw=controller.cmd(placement,'CSC_AI_BakersGameplay','install-read-only-quarter-lifecycle')
+    require('CSC_QUARTER_WATCH_INSTALLED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw,
+        'Quarter lifecycle observer failed to initialise')
     for name in('full_game_census.lua','full_game_preflight.lua','full_game_observation.py','storekeeper_runtime.lua'):
         (out/name).write_bytes((HERE/name).read_bytes())
 
@@ -75,7 +80,7 @@ print('CSC_FULL_RUN_OBSERVATION_INSTALLED')
 def finish(out,endpoint=250):
     log=read(out/'Lua.log')
     for failure in('CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED',
-            'CSC_FULL_RUN_OBSERVATION_FAILED'):
+            'CSC_FULL_RUN_OBSERVATION_FAILED','CSC_QUARTER_WATCH_FAULT'):
         require(failure not in log,'Integrated run logged '+failure)
     snapshots=archive_censuses(log,out)
     require(set(snapshots)==set(range(25,endpoint+1,25)),'Missing full-game milestone')
@@ -134,3 +139,7 @@ def play(controller,out,user_root,*,start,endpoint,saves=None):
                 native_directory=saves,archive=out/('turn-'+str(boundary)+'.Civ6Save'))
             write_json(out/('checkpoint-'+str(boundary)+'.json'),checkpoint)
         cursor=boundary
+    raw=controller.cmd("CSC_QUARTER_PLACEMENT_WATCH.Drain();print('CSC_QUARTER_WATCH_DRAINED')",
+        'CSC_AI_BakersGameplay','drain-final-placement-journal')
+    require('CSC_QUARTER_WATCH_DRAINED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw,
+        'Final Quarter journal read failed')

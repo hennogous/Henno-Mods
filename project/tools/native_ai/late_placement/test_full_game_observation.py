@@ -89,6 +89,7 @@ CSC_AI_EconomyModel={};CSC_AI_EconomyFacts={};CSC_AI_EconomyAdapters={}
             def __init__(self):self.boundaries=[];self.samples=[]
             def play(self,turn):self.boundaries.append(turn)
             def cmd(self,code,context,label):
+                if label=='drain-final-placement-journal':return 'CSC_QUARTER_WATCH_DRAINED'
                 turn=int(label.rsplit('-',1)[1]);self.samples.append(turn)
                 return 'CSC_STOREKEEPER_END\t'+str(turn)+'\t0'
         with tempfile.TemporaryDirectory()as d:
