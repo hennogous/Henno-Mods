@@ -1,5 +1,12 @@
 # CSC AI roadmap
 
+**13 November architecture work in progress:** [architecture and diagram](architecture.md)
+map the agreed central economy, decision adapters and native systems to all of
+Problems **1.1–1.8 and 2.1–2.2**. The new complete Quarter bid is undergoing
+implementation, regression checks and Astra review. It has not yet qualified
+in a live game; previous closures below describe the earlier tested versions.
+The original 6 November decision is preserved in commit `057d4c55`.
+
 **13 November correction:** canonical design requires Quarters to consume
 population-limited district slots. Both active SQL definitions incorrectly used
 `RequiresPopulation=0`; source now uses 1, with a passing SQLite regression. Prior

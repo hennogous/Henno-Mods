@@ -3,6 +3,7 @@
 Start with **[current status](STATUS.md)**. It explains what we have proved,
 what remains open and which problem we are working on.
 
+- [Architecture and diagram](architecture.md): shared economy, decision adapters, native systems and all ten placement sub-problems.
 - [Numbered roadmap](roadmap.md): capabilities we want, in the agreed order.
 - [Completion contract](acceptance.md): evidence levels, finite acceptance tests and completed scopes.
 - [Current tuning and placement coverage](topics/csc/site-planner.md): what the running CSC code does and its evidence.
@@ -14,4 +15,4 @@ This is plain Markdown, committed and pushed with the code. Thread updates are
 the main progress narrative. The AI website was retired on 11 November 2026;
 reading or updating these docs requires no website build.
 
-[Maintenance](maintenance.md) · [CSC player documentation](https://hennogous.github.io/Henno-Mods/)
+[Maintenance](maintenance.md) Â· [CSC player documentation](https://hennogous.github.io/Henno-Mods/)
