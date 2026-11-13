@@ -4,8 +4,12 @@ The new250 outcome run COMPLETED exit0, all preferences/packages restored.
 See project/docs/research/mods/csc-ai-economy-250-20261113.md and
 memory/session_ai_placement_time.md for CURRENT work. User asks to diagnose
 poor placements and suggests recording adjacency at placement. Added read-only
-diagnostic observer (NOT policy) and launched shared-controller replay150–175,
-worker29516, root Desktop/Codex/csc-ai-placement-time-20261113/replay150-175-01.
+diagnostic observer (NOT policy). Replay150–175 completed closed/restored but
+globalobservercompletenessfailed(staleeventIDs); readableSinope+1foundation/
+completionandactualBest444512vsourbid-15437pointtoamissedreplacement.
+Fresh250NOWRUNNING shared-controllerworker99392,
+root Desktop/Codex/csc-ai-placement-time-20261113/fresh250. Same639+6packages,
+newread-onlyobserver/stale-eventhandling; no policy changes. Checkabout15min.
 Do not open another console. No policy weights/native code changed. Old goal
 stays paused. Earlier ACTIVE run notes below are historical.
 

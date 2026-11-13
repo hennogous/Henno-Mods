@@ -106,8 +106,17 @@ local function snapshot(kind,player,cityID,districtID,x,y,districtType,complete)
 end
 local function inspect(kind,player,districtID,cityID,x,y,districtType)
  if not watched[districtType]then return end
- local city=CityManager.GetCity(player,cityID);assert(city)
- local district=Players[player]:GetDistricts():FindID(districtID);assert(district)
+ local city=CityManager.GetCity(player,cityID)
+ local district=Players[player]and Players[player]:GetDistricts():FindID(districtID)
+ if not city or not district then
+  -- Ownership/city bookkeeping may invalidate an event's old identity before
+  -- Gameplay receives it. Do not invent a foundation or abort the policy.
+  -- Keep the raw clock/identity and let the next live census discover the
+  -- surviving object, explicitly as first-observed/ownership-change.
+  emit('DEFERRED',{event=kind,turn=Game.GetCurrentGameTurn(),player=player,city=cityID,
+   district=districtType,districtID=districtID,x=x,y=y,reason=not city and'city-unavailable'or'district-unavailable'})
+  return
+ end
  local index=Map.GetPlot(x,y):GetIndex();local previous=seen[index]
  local complete=district:IsComplete()
  if previous and(previous.player~=player or previous.city~=cityID)then

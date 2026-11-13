@@ -3169,3 +3169,26 @@ limit historical comparisons; do not attribute fewer Quarters or economic
 differences solely to this valuation. This does not close broad1.8 or Services.
 
 [Full result, exact package identities, comparison tables and diagnostic gap](../research/mods/csc-ai-economy-250-20261113.md).
+
+<a id="ai-c173"></a>
+## AI-C173 — A weak Quarter is weak at foundation and its native choice differs from the published complete bid
+
+Read-only turn150–175 replay of the exact central-economy CSC/CE snapshot records
+Sinope Tailors (player1/c327684/plot1062) at+1 when founded169 and completed172.
+In packet17 the native Best journal records444,512 Q8, versus accepted
+−15,437 Q8 for that identity. No preceding complete write is observed since
+load. Player2/c458757 Tailors2021 similarly reads471,871 versus20,909 Q8 and
+is+2 at foundation158. A separate+3 Bakers choice1012/player3/c524295 reads
+17,765 Q8, exactly its preceding packet22 complete write. This establishes
+initial weak geometry and inconsistent replacement at the native reader,
+not the cause of the mismatch or absence of any pre150 write.
+
+**Limits:** Two stale event-ID callbacks at163 fail global observational
+completeness. Individual emitted records remain available in an explicitly
+partial result; this is not an exhaustive placement census. Replay request/
+completion timing differs from the original game. Later foundation bids are
+not substituted for earlier selection bids. The next fresh250 preserves the
+policy and corrects only observation handling, recording deferred identities
+and separating loaded/captured/rebuilt Quarters from new foundations.
+
+[Protocol, partial records, observer checks and subsequent full-run scope](../research/mods/csc-ai-placement-time-20261113.md).

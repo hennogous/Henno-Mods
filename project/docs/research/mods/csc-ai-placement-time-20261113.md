@@ -68,11 +68,69 @@ Driver: `quarter_placement_replay.py`; result reader: `placement_watch_results.p
 The worker owns the console and restores preferences and temporary packages.
 This is a saved-game diagnostic, not an additional fresh qualification game.
 
-Thirteen observer/integration checks pass, including duplicate lifecycle events,
+Sixteen observer/integration checks pass, including duplicate lifecycle events,
 transparent publication forwarding, failed observations leaving policy intact,
 and preventing a future write from being assigned to a past selection. Initial
 live records demonstrate foundation/completion events and actual native operands.
-Full replay acceptance, cleanup and case conclusions are pending.
+
+### Completed replay: useful individual records, failed global completeness
+
+The replay reached175, saved and closed with exit0; owners are absent and exact
+mod preferences restored. The terminal observer assertion fails because two
+turn163 callbacks refer to a district object unavailable to Gameplay. This is
+preserved as a failed observation attempt, not silently accepted as complete.
+The result reader requires explicit `--partial` and sets
+`measurementComplete=false` when extracting its readable records.
+
+The individual, fully emitted records include:
+
+| Identity | Native selection | Published bid | Foundation | Completion |
+|---|---:|---:|---|---|
+|Sinope Tailors, player1/c327684/plot1062 |444,512 Q8 |−15,437 Q8 |169, +1 |172, +1 |
+|Player2/c458757 Tailors/plot2021 |471,871 Q8 |20,909 Q8 |158, +2 |not captured by175 |
+|Player3/c524295 Bakers/plot1012 |17,765 Q8 |17,765 Q8 |not captured by175 |not captured by175 |
+
+The Sinope choice occurs in packet17; the journal is drained at167. Foundation
+uses a later packet20 whose bid is26,378 Q8, so that foundation's bid must not be
+substituted for the earlier decision's bid. The +3 Bakers choice has an exact
+preceding complete write in packet22. Both poorer choices have no preceding
+complete write observed since load. This demonstrates a concrete discrepancy
+at the native reader and a separate case where the reader consumes our exact
+value. It does not identify why the poorer row escaped replacement, nor prove
+there was no write before150. The replay differs in subsequent timing from the
+original game; it is not a deterministic request/completion-time reproduction.
+
+The same packet contains **10 complete writes in Sinope's city** and **20 in
+the other Tailors city**, affecting other cells. This narrows the failure:
+the capability and city-wide path were active, but these particular winning
+cells did not receive their complete value. It does not identify the rejecting
+guard. The current native adapter checks row ownership/city, score-pointer
+aliasing, valid scores before/after aggregation and an empty reservation ID.
+Its reservation guard is stricter than the inspected native selector, which
+also admits a row whose old request no longer exists and can compare against a
+live reservation's threshold. Reservation and row state at the write boundary
+must be measured before relaxing any guard. These are hypotheses, not fixes.
+
+All four captured new foundations are below+3 (two+2, two+1), across original
+major AI owners. Therefore at least some low endpoint values reflect initially
+weak placement rather than only later supplier destruction. The incomplete
+observer prevents treating this as an exhaustive placement census.
+
+The revised reader records unavailable event identities as `DEFERRED` with raw
+identity and clock, then lets the next live census identify the surviving
+object. It does not fabricate foundation quality. It now seeds city-state
+holdings too, distinguishes ownership changes even when native IDs change,
+and handles instant completion and rebuilding. Diagnostics still cannot alter
+the policy; deferred/first-observed rows remain a reported coverage limit.
+
+### Fresh250 with lifecycle observations
+
+The next normal Small Continents Online game uses the **same frozen639+6 CSC/CE
+files**, seeds18461107/29461107 and original AI1–5. Only the read-only observation
+code changes. No policy/native binary change is bundled into this measurement.
+Shared-controller worker99392; artifacts `.../csc-ai-placement-time-20261113/fresh250`.
+Source parity, lifecycle coverage, native operand mismatches and endpoint
+comparison remain to audit. Check autonomous progress about every15minutes.
 
 WildW `develop` was checked again during this investigation and remains
 `2986a746b396eb93aad14f9afffb043a09c2c489`. No upstream PR is involved.

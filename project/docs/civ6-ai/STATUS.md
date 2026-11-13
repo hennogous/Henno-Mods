@@ -8,8 +8,13 @@ Service turns; Tailors has none. All 250 publications succeed without reported
 fallback or faults. This does not solve poor placement. Five sampled winning
 receipt rows have no write in that same packet window; retained plans and
 sampling prevent attributing the cause yet. We are adding read-only foundation,
-completion and native winning-operand records, first in a short turn150–175
-replay. No tuning weights change before that evidence. [Completed result and
+completion and native winning-operand records. The short turn150–175 replay
+records Sinope at +1 at foundation/completion and a native choice444,512 Q8
+versus our published−15,437 Q8. Another +3 choice consumes our exact write.
+Its global observer completeness fails on stale event identities; that gap is
+preserved and the reader fixed. A fresh250 now records the same diagnostics
+with unchanged policy. [Placement-time evidence and current run](../research/mods/csc-ai-placement-time-20261113.md).
+No tuning weights changed. [Completed prior result and
 limits](../research/mods/csc-ai-economy-250-20261113.md). The old goal stays paused.
 
 **13 November central-model integration:** [architecture and diagram](architecture.md)

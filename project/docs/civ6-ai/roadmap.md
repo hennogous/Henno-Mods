@@ -9,7 +9,13 @@ native selection, foundation and completion, recording adjacency at those
 events and the actual selected score. A fresh full run will use the same
 lifecycle instrumentation. Do not infer initial placement quality from the
 endpoint alone or change bands before resolving the observed winning-window
-write gap. [Full result and comparison limits](../research/mods/csc-ai-economy-250-20261113.md).
+write gap. The short replay confirms Sinope is+1 when founded and completed,
+with actual native444,512 Q8 versus published−15,437 Q8; a separate+3 choice
+reads its complete write exactly. Observer completeness fails on stale event
+identities, now explicitly deferred. A fresh250 with unchanged policy and
+revised read-only observations is running. [Placement-time case and current
+measurement](../research/mods/csc-ai-placement-time-20261113.md),
+[prior full result and comparison limits](../research/mods/csc-ai-economy-250-20261113.md).
 
 **13 November central-model integration:** [architecture and diagram](architecture.md)
 map the agreed economy, decision adapters and native systems to all of

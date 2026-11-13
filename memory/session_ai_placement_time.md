@@ -25,14 +25,30 @@ bidAdjacency preserves previous accepted planner value, not a pre-clear tile sca
 Desktop/Codex/.../test-temp; sandbox tempfile denied). Main CSC/native code
 unchanged. Full future driver installs observer and final-drains journal.
 
-Short replay launched worker29516 using quarter_placement_replay.py, exact
+Short replay COMPLETED worker29516 using quarter_placement_replay.py, exact
 archived packages, 150..175, no new game/world edits/test policy. Root
 Desktop/Codex/csc-ai-placement-time-20261113/replay150-175-01. Target original
 Sinope Tailors owner1 city327684 plot1062, request166/complete171. Starting150
 SHA e951c015f0d551946fb2a9ea8275db8d202aa7b9ec1129f61221340b753d48a3.
 Don't open second FireTuner client, edit pinned packages or touch protected saves.
-Check autonomous run ~15min; can work docs/offline meantime. No fresh full run
-launched yet. Need inspect result/FAULT/closure before progression.
+Replay reached175/saved/closedexit0/preferencesrestored/ownersabsent. Global
+measurement FAILED: stale DistrictAdded callbacks163 lacked currentdistrictID,
+twoFAULTs. Partial parser explicit --partial preserves measurementComplete=false.
+Fournewfoundations allpoor (two+2,two+1). SinopeactualBest444512 vsbid-15437packet17,
+foundation169+1/completion172+1; laterfoundationbid26378 mustnotreplacechoicebid.
+P2c458757Tailors2021 Best471871vsbid20909(+2), foundation158+2.
+P3c524295Bakers1012 Best17765==bid17765(+3), precedingFinalwritepacket22.
+Rootcauseofmissedreplacement remainsunresolved (notjustpenaltystrength).
+
+Revisedobserver tested16checks: handles staleeventidentity via DEFERRED rawrow,
+seedsallaliveincludingminors, catchesrebuilt/instantcompletequarter separately,
+ownershipchangesprecedeinstancechanges. Doesnot invent foundationifidentitymissing.
+Fresh250NOWRUNNING worker99392 rootDesktop/Codex/csc-ai-placement-time-20261113/fresh250,
+samefrozen639+6packages/seeds18461107/29461107; newREADONLYobservation only.
+No policy/native changes. Check~15min; lastcheck10:57UTC thenfreshlaunch11:00-ish.
+Needinitialparity/footer/faults atfirstcheck. NOsecondconsoleorpackageedits.
+full_game_observation.py/watcher alreadycopiedatreplayfreshinstall; do notedit
+workerimportedfunctions untilitfinishes. Canfinishdocs/memory/sourceparser/tests.
 
 Static native hypotheses (not verified causes): resolve_late_cell rejects any
 reservationID !=-1 but GetBestDistrict treats missing Control request as unreserved

@@ -90,6 +90,12 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.assertEqual(self.output().count('event=foundation'),1)
         self.assertEqual(self.output().count('event=ownership-change'),1)
 
+    def test_stale_event_is_explicitly_deferred_not_called_a_foundation(self):
+        self.vm.execute('Players[1].GetDistricts=function()return {FindID=function()return nil end}end;added(1,42,327684,26,14,37)')
+        self.assertIn('CSC_QUARTER_WATCH_DEFERRED',self.output())
+        self.assertNotIn('event=foundation',self.output())
+        self.assertNotIn('FAULT',self.output())
+
     def test_observer_failure_does_not_prevent_policy_publication(self):
         self.vm.execute('CE_AIDistrictScoresStatus=function()error("reader unavailable")end')
         self.assertEqual(self.publish(),(True,'receipt'))
@@ -103,6 +109,9 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.assertEqual(result['summary']['completion']['below3'],1)
         self.assertEqual(result['summary']['loaded']['count'],0)
         with self.assertRaisesRegex(AssertionError,'fault'):parse(self.output()+'\nCSC_QUARTER_WATCH_FAULT\terror=missing')
+        partial=parse(self.output()+'\nCSC_QUARTER_WATCH_FAULT\terror=missing',allow_faults=True)
+        self.assertFalse(partial['measurementComplete'])
+        self.assertEqual(len(partial['faults']),1)
 
 
 if __name__=='__main__':unittest.main()
