@@ -3387,3 +3387,40 @@ Both sessions complete/restored exit0; source/binary/save proofs and Astra audit
 verify. Short-window forecast cost increases; no full-game benefit claim follows.
 Skill3b529a8 and scoped CSC changes are pushed; no PR or active game remains.
 [Timing proof, correction, matched results and limits](../research/mods/csc-ai-capacity-timing-20261113.md).
+
+<a id="ai-c180"></a>
+## AI-C180 — The timing-corrected full game reproduces the earlier ungated trajectory
+
+Main CSC5005dd01 completes an ordinary Online250 on the comparison seed, with
+unchanged gameplay/CE and only the three qualified Lua overlays. Initial map,
+leaders, starts and units match; all ten censuses and five native/archive save
+hash pairs verify. Exit0 and restoration/owners-absent checks pass. No game remains.
+
+Seven guided foundations (five Bakers/two Tailors), versus four Bakers in the
+gated trial. All seven retain Base and have current loaded-rule totals>=3;
+three reach>=4. Six have Base plus a completed mapped customer, four improved
+Base plus a customer, two both material classes plus a customer. Nine held
+Quarters include two weak city-state captures. Two guided Bakers Stage2 chains
+deliver153 native chain-turns; one has a66-turn damage lapse and resumes231.
+Tailors Stage2 remains0, without adjacent Stage2 Harbors. Later-stage customer
+coverage is not Dockmaster operation.
+
+All57 recorded new-site native winner operands match exact bid/prior write/
+version and preceding ordinal (36B/21T). Their publication readiness is10ready,
+46full,1stale; this is planning metadata, not actual admission legality. All250
+publications succeed without omissions/trims/faults. Repair admission is exercised
+once; harvest intervention is unexercised. Receipt sampling caps are not packet loss.
+
+**Restoration rather than a new best:** AI_CityBuild.csv is byte-identical to the
+earlier ungated quality trial. All ten core censuses match after excluding only
+the added CUSTOMER_HOST observation and its footer count; Service ranges and
+economy match. This is bounded one-seed reproduction, not full-world/save identity
+or an improved balance result beyond that earlier trial. The gated run's155 total
+chain-turns included97 captured and58 guided, unlike the current153 all-guided.
+
+Matrix median/max14.639/21.078 ms and coarse Lua50 s across250 refreshes measure
+restored forecast work, not a whole-engine or eight-family benchmark. Native
+CanZone remains authoritative; no larger premium, forced winner or new DLL.
+Broader admission/queue, Builder, customer completion and repair latency remain
+separate gaps. Reusable timing stays AI-N128 in the skill; these are CSC outcomes.
+[Full protocol, joint tables, receipts, comparisons and evidence](../research/mods/csc-ai-timing-correction-250-20261113.md).

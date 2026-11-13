@@ -1,19 +1,23 @@
 # CSC AI roadmap
 
-**Latest 13 November, Problem1.6:** a phase replay confirms city growth after the
-once-per-round publication, leaving the original capacity gate's negative Quarter
-packet active during newly available slots. The corrected adapter retains the same
-economic bids before growth; capacity is observed, native admission stays final.
-A matched20-turn replay verifies exact earlier positive writes and two Quarter
-nominations versus zero, but no new guided foundation. No outcome gain is claimed.
-[Closed timing defect and paired evidence](../research/mods/csc-ai-capacity-timing-20261113.md).
+**Latest 13 November, Problem 1.6: the corrected timing completes a normal Online250.**
+Seven guided foundations (5B/2T) replace the gated trial's four Bakers. All retain
+Base and current rule totals of at least +3; six have completed customer adjacency,
+four improved Base plus a customer. All 57 recorded native winners consume exact
+bids. Two guided Bakers chains deliver 153 native chain-turns; Tailors Stage 2 is zero.
 
-The previous gated250-turn run remains historical (four guided Bakers/no Tailors,
-three with Base+customer, two with improved Base+customer). Its blanket suppression
-is superseded. Next1.6 work is legitimate nomination→admission→queue follow-through,
-with Builder completion/customer layout as separate dependencies. No forced winner,
-larger premium, new DLL or upstream PR. Tests and independent review pass; no game
-remains. The older automatic goal stays paused.
+The new run reproduces the earlier ungated city-build log byte for byte and all
+ten core censuses. It restores the prior result rather than exceeding it. Keep
+capacity observational at publication and native CanZone authoritative; global
+publication can precede in-turn growth. The economic formula/premiums stay unchanged.
+[Completed full-game results](../research/mods/csc-ai-timing-correction-250-20261113.md)
+· [Verified timing defect and correction](../research/mods/csc-ai-capacity-timing-20261113.md).
+
+Next 1.6 scope is legitimate nomination→admission→queue follow-through. Builder
+completion, customer layout/buildings and repair latency remain distinct gaps;
+more Tailors sites are not Dockmaster success without adjacent Harbors. No forced
+winner, new DLL or upstream PR. The session closes/restores; no game remains and
+the older automatic goal stays paused.
 
 ## Earlier implementation and investigations (historical)
 

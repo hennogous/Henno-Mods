@@ -4,7 +4,12 @@
 controls admission. A global publication can precede per-player growth in the same
 turn. Full/unknown allocation therefore no longer erases worthwhile future bids.
 The paired short replay verifies earlier positive delivery and exact native values;
-it does not improve construction in that window. [Timing evidence](../research/mods/csc-ai-capacity-timing-20261113.md).
+it does not improve construction in that window. A subsequent normal250 restores
+the earlier ungated result: seven guided foundations and57 exact native winner
+values, with byte-identical city-build logs and matching core censuses. This is
+reproduction, not a new outcome beyond that earlier trial.
+[Timing evidence](../research/mods/csc-ai-capacity-timing-20261113.md)
+· [Full-game results](../research/mods/csc-ai-timing-correction-250-20261113.md).
 
 The target is one shared account of a Quarter economy, with adapters that offer
 its value at the decisions Civ actually makes. Civ retains legality, competition,
