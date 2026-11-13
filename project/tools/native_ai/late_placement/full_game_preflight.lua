@@ -21,6 +21,7 @@ local ui=assert(ExposedMembers and ExposedMembers.CSC_Adjacency,'Missing economi
 required('city number',ui.GetEconomyCityNumber)
 required('research number',ui.GetEconomyResearchNumbers)
 required('plot facts',ui.GetEconomyPlotFacts)
+required('district capacity',ui.GetDistrictCapacity)
 local readers={
  district=required('district',CE_AIDistrictScoresStatus),
  builder=required('builder',CE_AIBuilderProtectionStatus),

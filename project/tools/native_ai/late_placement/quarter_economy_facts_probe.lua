@@ -3,9 +3,9 @@
 local ui=assert(ExposedMembers.CSC_Adjacency)
 local P=assert(CSC_AI_QuarterPlacement)
 local requireReady=CSC_QUARTER_FACTS_REQUIRE_READY==true
-local finiteSites=0
+local finiteSites,knownCapacity=0,0
 if requireReady then
- for _,name in ipairs({'GetEconomyCityNumber','GetEconomyResearchNumbers','GetEconomyPlotFacts'})do
+ for _,name in ipairs({'GetEconomyCityNumber','GetEconomyResearchNumbers','GetEconomyPlotFacts','GetDistrictCapacity'})do
   assert(type(ui[name])=='function','Missing economic UI reader '..name)
  end
 end
@@ -13,6 +13,11 @@ local function read(f,...)local ok,v=pcall(f,...);return ok and tostring(v)or'er
 for _,player in ipairs(PlayerManager.GetAliveMajors())do if not player:IsHuman()then
  local pid=player:GetID();local s=CSC_AI_EconomyAdapters.Snapshot(player,P,ui)
  assert(s,'Economic snapshot unavailable')
+ for _,city in player:GetCities():Members()do
+  local c=s.DistrictCapacity(city)
+  if c.known then knownCapacity=knownCapacity+1 end
+  print('CSC_QUARTER_CAPACITY_PROBE',pid,city:GetID(),tostring(c.population),tostring(c.used),tostring(c.allowed),c.reason)
+ end
  local count=0
  for _,profile in ipairs(P.StageTwoProfiles())do
   for _,city in player:GetCities():Members()do
@@ -41,4 +46,5 @@ for _,player in ipairs(PlayerManager.GetAliveMajors())do if not player:IsHuman()
  end
 end end
 assert(not requireReady or finiteSites>0,'No qualifying site has finite Quarter readiness')
+assert(not requireReady or knownCapacity>0,'No live capacity facts agreed with Gameplay')
 print('CSC_QUARTER_FACT_PROBE_COMPLETE',finiteSites)

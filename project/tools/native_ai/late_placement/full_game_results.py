@@ -5,6 +5,15 @@ materials (compatible, unpillaged; not necessarily worked by a citizen),
 producer/customer buildings and native Service properties. A ready physical
 chain, active property and independently observed Service effect stay distinct.
 Same seeds with changed gameplay/CE packages are descriptive, not causal.
+
+Joint material/customer counts are once per completed Quarter, never per edge.
+Their primary customer is a mapped, actually completed adjacent host; a separate
+footprint count includes unfinished hosts. City Centers count. Named Wonder
+customers require an actual matching building at that exact host (status > 0),
+so legacy generic DISTRICT_WONDER rows cannot create false customer promises.
+New CUSTOMER_HOST rows distinguish completion from pillage. Older CUSTOMER's
+"complete" field actually means complete AND unpillaged: a false field and a
+SALES-only row leave historical completion unknown, rather than proving absence.
 """
 from collections import Counter
 import json
@@ -14,7 +23,7 @@ import re
 
 PROFILES = ("BAKERS", "TAILORS")
 DETAILS = {"MATERIAL": "materials", "PRODUCER": "producers",
-           "SALES": "sales", "CUSTOMER": "customers"}
+           "SALES": "sales", "CUSTOMER": "customers", "CUSTOMER_HOST": "customer_hosts"}
 
 
 def census(path,expected_turn=None):
@@ -27,25 +36,84 @@ def census(path,expected_turn=None):
     assert expected_turn is None or turn==expected_turn,'Wrong comparison-window clock'
     return source
 
-def summarize(path):
-    source = census(path)
-    quarters, services = {}, {profile: Counter() for profile in PROFILES}
+def _entities(source):
+    """Keep holder/city/plot identity and raw material/customer facts for cohorts."""
+    quarters, services = {}, []
     for kind, value in source["rows"][:-1]:
         row = value.split("\t")
         if kind == "QUARTER":
             profile, pid, city, plot, complete, pillaged, river, *effect = row
             assert plot not in quarters
-            quarters[plot] = dict(profile=profile, complete=complete == "true",
+            quarters[plot] = dict(profile=profile, player=int(pid), city=int(city), plot=int(plot),
+                                  complete=complete == "true",
                                   ready=complete == "true" and pillaged == "false",
                                   effects=[float(x) for x in effect], river=river == "true",
-                                  materials=[], producers=[], sales=[], customers=[])
+                                  materials=[], producers=[], sales=[], customers=[], customer_hosts=[])
         elif kind in DETAILS:
             plot, *details = row
             quarters[plot][DETAILS[kind]].append(details)
         elif kind == "SERVICE_BUILDING":
             pid, city, building, pillaged = row
-            parts = building.split("_")
-            services[parts[2]][parts[4]] += 1
+            services.append((int(pid),int(city),building,pillaged))
+    return quarters, services
+
+
+def quarter_rows(path):
+    """Return raw per-Quarter identities/facts for independent origin attribution.
+
+    Player/city are current holders. A foundation-event join is needed to label
+    assisted origins versus captures; ownership alone is not such evidence.
+    Raw materials retain plot, BASE/SPEC, resource type and compatible/unpillaged
+    improvement status. Customers retain stage, host, readiness and building state.
+    """
+    return list(_entities(census(path))[0].values())
+
+
+def customer_coverage(quarter):
+    """Separate mapped geometry, known completion and unknown legacy completion.
+
+    SALES is the district-tag adjacency vocabulary; CUSTOMER adds stage-specific
+    mappings and unique replacements, including named Wonders. Their union is
+    geometric adjacency only. Missing customer buildings do not erase a normal
+    district's future customer role; an arbitrary Wonder is never a substitute
+    for the specifically mapped Wonder building.
+    """
+    confirmed=[row for row in quarter['customers']
+               if row[2]!='DISTRICT_WONDER' or int(row[4])>0]
+    named_wonders={row[0] for row in confirmed if row[2]=='DISTRICT_WONDER'}
+    sales={plot for plot,host in quarter['sales']
+           if host!='DISTRICT_WONDER' or plot in named_wonders}
+    footprints=sales|{row[0] for row in confirmed}
+    raw={plot for plot,_ in quarter['sales']}|{row[0] for row in quarter['customers']}
+    states={plot:(complete=='true',pillaged=='true')
+            for plot,_,complete,pillaged in quarter['customer_hosts']}
+    # Old readiness=true is enough to prove completion. False is ambiguous;
+    # do not silently count a pillaged but completed host as unfinished.
+    old_ready={plot for plot,_,_,complete,_ in confirmed if complete=='true'}
+    complete={plot for plot in footprints
+              if states.get(plot,(plot in old_ready,False))[0]}
+    unknown={plot for plot in footprints if plot not in states and plot not in old_ready}
+    return dict(confirmed=confirmed,footprints=footprints,complete=complete,
+                unknown=unknown,raw=raw,states=states)
+
+
+def summarize(path,*,quarter_filter=None):
+    """Aggregate held Quarters, optionally restricted by their explicit identity.
+
+    The default preserves every legacy count. An origin cohort can supply e.g.
+    lambda q: (q['player'],q['city'],q['plot']) in verified_foundations. Hidden
+    Service-building counts then use those selected Quarter cities; they remain
+    physical city-building observations, not independently active Service effects.
+    """
+    all_quarters, service_rows = _entities(census(path))
+    quarters={plot:q for plot,q in all_quarters.items()
+              if quarter_filter is None or quarter_filter(q)}
+    selected={(q['profile'],q['player'],q['city']) for q in quarters.values()}
+    services={profile: Counter() for profile in PROFILES}
+    for pid,city,building,pillaged in service_rows:
+        parts=building.split('_');profile=parts[2]
+        if quarter_filter is None or (profile,pid,city) in selected:
+            services[profile][parts[4]]+=1
     totals = {}
     for profile in PROFILES:
         stats = Counter()
@@ -69,6 +137,20 @@ def summarize(path):
             stats["sales"] += bool(quarter["sales"])
             stats["sales_outside_center"] += any(
                 host != "DISTRICT_CITY_CENTER" for _, host in quarter["sales"])
+            coverage=customer_coverage(quarter)
+            footprint=bool(coverage['footprints']);completed=bool(coverage['complete'])
+            stats['raw_customer_geometry_any']+=bool(coverage['raw'])
+            stats['customer_any_footprint']+=footprint
+            stats['customer_any_completed']+=completed
+            stats['customer_completion_unknown']+=bool(coverage['unknown'])
+            stats['customer_host_state_recorded']+=bool(quarter['customer_hosts'])
+            # Primary joint counts require a completed mapped customer. Broader
+            # footprint companions preserve future opportunities without treating
+            # them as an already-realised adjacency or economic exchange.
+            for label,material in [('base','BASE' in found),('both',{'BASE','SPEC'}<=found),
+                                   ('base_improved','BASE' in developed)]:
+                stats[label+'_customer_any']+=material and completed
+                stats[label+'_customer_any_footprint']+=material and footprint
             for stage in (2, 3, 4):
                 stage_producers = [int(status) for s, _, status in quarter["producers"] if int(s) == stage]
                 stage_hosts = [(plot, complete == "true", int(status))
@@ -81,6 +163,20 @@ def summarize(path):
                     status > 0 for _, _, status in stage_hosts)
                 stats[f"customer{stage}_with_building"] += any(status > 0 for _, _, status in stage_hosts)
                 stats[f"customer{stage}_working"] += working
+                mapped=[row for row in coverage['confirmed'] if int(row[1])==stage]
+                mapped_complete=any(row[0] in coverage['complete'] for row in mapped)
+                mapped_working=any(row[0] in coverage['complete'] and int(row[4])==2 and
+                    not coverage['states'].get(row[0],(False,False))[1] and
+                    (row[0] in coverage['states'] or row[3]=='true') for row in mapped)
+                stats[f'mapped_customer{stage}']+=bool(mapped)
+                stats[f'mapped_customer{stage}_completed']+=mapped_complete
+                stats[f'mapped_customer{stage}_with_working_building']+=mapped_working
+                stats[f'mapped_customer{stage}_without_working_building']+=bool(mapped) and not mapped_working
+                stats[f'mapped_customer{stage}_completed_without_working_building']+=mapped_complete and not mapped_working
+                if stage==2:
+                    stats['base_customer2']+=('BASE' in found) and mapped_complete
+                    stats['base_customer2_footprint']+=('BASE' in found) and bool(mapped)
+                    stats['base_improved_customer2_working']+=('BASE' in developed) and mapped_working
                 stats[f"service{stage}_property"] += quarter["ready"] and quarter["effects"][stage - 2] > 0
                 for plot, complete, status in stage_hosts:
                     key = (stage, plot)

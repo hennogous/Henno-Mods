@@ -285,8 +285,11 @@ local function refresh(turn)
                 print(string.format('CSC_AI_ECONOMY_PLAN turn=%d player=%d evaluated=%d final=%d unknown=%d streams=%d omissions=%d quotes=%d minQ8=%d maxQ8=%d buyerBlocked=%d',
                     turn,id,counts.evaluated,counts.final,counts.unknown,counts.streams,counts.omissions,
                     economy.QuoteCount(),counts.min or 0,counts.max or 0,counts.buyerBlocked or 0))
-                print(string.format('CSC_AI_QUARTER_DEFERRALS turn=%d player=%d quality=%d economics=%d invoice=%d unknown=%d',
-                    turn,id,counts.qualityDeferred or 0,counts.economicDeferred or 0,counts.invoiceDeferred or 0,counts.unknown or 0))
+                -- Capacity counters are city/Quarter scopes, not tile counts;
+                -- ready means a population slot, not full native admission.
+                print(string.format('CSC_AI_QUARTER_DEFERRALS turn=%d player=%d quality=%d economics=%d invoice=%d unknown=%d capacityReady=%d capacityFull=%d capacityUnknown=%d',
+                    turn,id,counts.qualityDeferred or 0,counts.economicDeferred or 0,counts.invoiceDeferred or 0,counts.unknown or 0,
+                    counts.capacityReady or 0,counts.capacityDeferred or 0,counts.capacityUnknown or 0))
             else print(string.format('CSC_AI_ECONOMY_FAILED turn=%d player=%d reason=%s',turn,id,tostring(replacement)))end
         end
         for _,entry in ipairs(playerEntries)do entries[#entries+1]=entry end

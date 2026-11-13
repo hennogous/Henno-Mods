@@ -89,7 +89,7 @@ assert(snapshot.DirectAmounts(city,center,profile,2).YIELD_PRODUCTION==0)
 assert(snapshot.SupplyAdjacencyLoss({city=city,plot=center,profile=profile},2).YIELD_PRODUCTION==2)
 ''')
 
-    def test_complete_bid_covers_future_owned_and_quoted_frontier_with_managed_deferral(self):
+    def bid_vm(self):
         vm = LuaRuntime()
         vm.execute('''
 CSC_AI_EconomyModel={Forecast=function(site)return{valueQ8=site.value,adjacency=4,streams={},omissions={}}end}
@@ -101,7 +101,7 @@ function plot(index,owner)
 end
 plots={[1]=plot(1,1),[2]=plot(2,-1),[3]=plot(3,-1)}
 local city={GetID=function()return 7 end,GetX=function()return 0 end,GetY=function()return 0 end,
- GetDistricts=function()return{HasDistrict=function()return false end}end}
+ GetDistricts=function()return{HasDistrict=function()return hasQuarter==true end}end}
 local player={GetID=function()return 1 end,GetCities=function()return{Members=function()
  local done=false;return function()if not done then done=true;return 1,city end end end}end}
 PlayersVisibility={[1]={IsRevealed=function()return true end}}
@@ -110,16 +110,21 @@ Map={GetPlotByIndex=function(i)return plots[i]end,GetPlot=function()return plots
 Cities={GetPlotPurchaseCity=function(p)if p:GetOwner()==1 then return city end end}
 GameInfo={Resources={}};Game={GetCurrentGameTurn=function()return 3 end};print=function()end
 CSC_Adjacency={PlotsInBand=function()return{plots[1],plots[2],plots[3]}end,HasTag=function()return false end}
-local profile={key='BAKERS',district={Index=36,Hash=1}}
+local profile={key='BAKERS',district={Index=36,Hash=1,RequiresPopulation=true}}
 placement={StageTwoProfiles=function()return{profile}end}
 invoice=40
 snapshot={player=player,id=1,cities={[7]={object=city}},
+ DistrictCapacity=function()return{known=true,used=1,allowed=2,population=4,reason='ready'}end,
  ui={GetLegalDistrictTargets=function()error('Current production menu must not limit native future bids')end,GetPlotPurchaseQuote=function()return 40 end,GetRawPlotPurchaseQuote=function(_,_,i)if i==3 then return invoice end;return 50 end},
  Geometry=function()return{upper=4}end,
  Site=function(_,p)return{value=p:GetIndex()*1000,baseCount=1}end,Price=function()end}
 early={{player=1,city=7,district=36,plot=1,delta=48*256}}
 ''')
         vm.execute((AI / 'CSC_AI_EconomyAdapters.lua').read_text(encoding='utf-8'))
+        return vm
+
+    def test_complete_bid_covers_future_owned_and_quoted_frontier_with_managed_deferral(self):
+        vm=self.bid_vm()
         vm.execute('''
 local entries,stats=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
 assert(#entries==3 and stats.final==3)
@@ -130,6 +135,74 @@ assert(#blocked==1 and scope.buyerBlocked==2 and blocked[1].finalQ8>1000 and sco
 invoice=nil
 local fallback,failed=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
 assert(#fallback==1 and failed.invoiceDeferred==1 and failed.managed and not failed.fallback)
+''')
+
+    def test_full_city_defers_new_quarter_preserves_protection_and_reconsiders_growth(self):
+        vm=self.bid_vm()
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.DistrictCapacity=function()return{known=true,used=2,allowed=2,population=6,reason='full'}end
+local geometry=snapshot.Geometry
+snapshot.Geometry=function()error('Full city must not price candidate ledgers')end
+early[#early+1]={player=1,city=7,district=10,plot=3,delta=-1000}
+local rows,stats=E.QuarterBids(snapshot,placement,{},early)
+assert(#rows==1 and rows[1].district==10 and stats.capacityDeferred==1 and stats.managed)
+snapshot.DistrictCapacity=function()return{known=true,used=2,allowed=3,population=7,reason='ready'}end
+snapshot.Geometry=geometry
+rows,stats=E.QuarterBids(snapshot,placement,{},early)
+assert(#rows==4 and stats.capacityReady==1 and stats.final==3)
+assert(rows[1].capacityUsed==2 and rows[1].capacityAllowed==3)
+''')
+
+    def test_unknown_capacity_is_not_free_and_existing_quarter_bypasses_new_slot_gate(self):
+        vm=self.bid_vm()
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+snapshot.DistrictCapacity=function()return{known=false,reason='stale'}end
+local rows,stats=E.QuarterBids(snapshot,placement,{},early)
+assert(#rows==0 and stats.capacityUnknown==1 and stats.managed)
+hasQuarter=true
+snapshot.DistrictCapacity=function()error('Existing construction must not need a new slot')end
+rows,stats=E.QuarterBids(snapshot,placement,{},early)
+assert(#rows==0 and stats.capacityUnknown==0 and stats.capacityDeferred==0)
+''')
+
+    def test_population_exempt_definition_does_not_need_capacity_reader(self):
+        vm=self.bid_vm()
+        vm.execute('''
+placement.StageTwoProfiles()[1].district.RequiresPopulation=0
+snapshot.DistrictCapacity=function()error('Exempt district needs no population slot')end
+local rows,stats=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
+assert(#rows==3 and stats.final==3 and stats.capacityReady==1 and stats.capacityUnknown==0)
+''')
+
+    def test_capacity_fact_batches_cache_once_and_reject_stale_population_or_inventory(self):
+        vm=self.facts_vm()
+        vm.execute('''
+GameInfo.Yields={YIELD_PRODUCTION={Index=1}}
+GameInfo.Districts={[1]={RequiresPopulation=true},[2]={RequiresPopulation=false},
+ [3]={RequiresPopulation=true,InternalOnly=true}}
+local function d(kind,index,complete)return{GetType=function()return kind end,
+ GetX=function()return index end,GetY=function()return 0 end,
+ IsComplete=function()return complete end,IsPillaged=function()return false end}end
+local inventory={d(2,10,true),d(1,11,false),d(3,12,true)}
+local city={GetID=function()return 7 end,GetPopulation=function()return 4 end,
+ GetBuildQueue=function()return{}end,GetBuildings=function()return{}end,
+ GetDistricts=function()return{GetNumDistricts=function()return #inventory end,
+ GetDistrictByIndex=function(_,i)return inventory[i+1]end}end}
+player.GetCities=function()return{Members=function()local done=false;return function()
+ if not done then done=true;return 1,city end end end}end
+Map={GetPlot=function(x)return{GetIndex=function()return x end}end}
+local calls=0;local ui={GetDistrictCapacity=function()calls=calls+1;return{population=4,used=1,allowed=3}end}
+local s=CSC_AI_EconomyFacts.New(player,placement,ui)
+assert(s.DistrictCapacity(city).known and s.DistrictCapacity(city).allowed==3 and calls==1)
+assert(s.cities[7].populationDistricts==1) -- unfinished counted; internal/exempt not counted
+ui.GetDistrictCapacity=function()return{population=3,used=1,allowed=3}end
+assert(CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).reason=='stale')
+ui.GetDistrictCapacity=function()return{population=4,used=0,allowed=3}end
+assert(not CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).known)
+ui.GetDistrictCapacity=nil
+assert(CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).reason=='unavailable')
 ''')
 
     def test_quality_bands_cannot_turn_an_economic_loss_into_a_positive_investment(self):

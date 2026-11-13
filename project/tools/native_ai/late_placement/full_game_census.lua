@@ -168,6 +168,25 @@ for _, pid in ipairs(CSC_ENDPOINT_PLAYERS) do
                                 local hostType = host.DistrictType
                                 if p.sales[hostType] then emit("SALES", id, nearID, hostType) end
                                 local buyer = Cities.GetPlotPurchaseCity(near)
+                                -- Exact host construction and pillage are separate.
+                                -- Legacy CUSTOMER's complete column below means
+                                -- complete AND unpillaged, and SALES has no such
+                                -- column. Keep it compatible while adding these
+                                -- facts so offline material/customer joint counts
+                                -- can include built-but-pillaged adjacency without
+                                -- inventing completion for an unfinished footprint.
+                                if buyer and buyer:GetOwner() == pid
+                                    and (p.sales[hostType] or p.customers[hostType]) then
+                                    local hostDistricts = buyer:GetDistricts()
+                                    for i = 0, hostDistricts:GetNumDistricts()-1 do
+                                        local d = hostDistricts:GetDistrictByIndex(i)
+                                        if d:GetX() == near:GetX() and d:GetY() == near:GetY() then
+                                            emit("CUSTOMER_HOST", id, nearID, hostType,
+                                                d:IsComplete(), d:IsPillaged())
+                                            break
+                                        end
+                                    end
+                                end
                                 for stage, types in pairs(p.customers[hostType] or {}) do
                                     local status, complete = 0, false
                                     if buyer and buyer:GetOwner() == pid then

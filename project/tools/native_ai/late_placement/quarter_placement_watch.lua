@@ -56,6 +56,11 @@ local function drain()
       row.bidVersion=bid and bid.version;row.bidQ8=bid and bid.finalQ8
       row.bidAdjacency=bid and bid.adjacency
       row.bidEconomicQ8=bid and bid.economicQ8;row.bidPreferenceQ8=bid and bid.preferenceQ8
+      -- These are the facts at publication, not a fresh admission result at
+      -- comparison or at this later drain. The actual native bid/write/result
+      -- remains separate from eligibility and eventual construction.
+      row.bidCapacityUsed=bid and bid.capacityUsed;row.bidCapacityAllowed=bid and bid.capacityAllowed
+      row.bidCapacityPopulation=bid and bid.capacityPopulation
       if not bid and managedDefaults[row.player..':'..row.district]then
        row.bidVersion=publicationVersion;row.bidQ8=managedDefaults[row.player..':'..row.district];row.fallback=true
       end
@@ -184,7 +189,8 @@ B.Publish=function(version,width,height,count,players,entries,...)
   for _,entry in ipairs(entries)do
    if watched[entry.district]then
     offers[key(entry.player,entry.city,entry.district,entry.plot)]={version=version,
-     finalQ8=entry.finalQ8,adjacency=entry.adjacency,economicQ8=entry.economicQ8,preferenceQ8=entry.preferenceQ8}
+     finalQ8=entry.finalQ8,adjacency=entry.adjacency,economicQ8=entry.economicQ8,preferenceQ8=entry.preferenceQ8,
+     capacityUsed=entry.capacityUsed,capacityAllowed=entry.capacityAllowed,capacityPopulation=entry.capacityPopulation}
    end
   end
  end

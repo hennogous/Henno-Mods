@@ -42,16 +42,24 @@ print('CSC_ECONOMY_PREFLIGHT_OK='..count)
         read_only=True,construction_or_service_claim=False))
     facts=controller.cmd('''
 local ui=assert(ExposedMembers.CSC_Adjacency)
+assert(type(ui.GetDistrictCapacity)=='function','District capacity UI reader unavailable')
+local capacityKnown=0
 for _,p in ipairs(PlayerManager.GetAliveMajors())do if not p:IsHuman()then
  local snapshot=CSC_AI_EconomyFacts.New(p,CSC_AI_QuarterPlacement,ui)
  for _,city in p:GetCities():Members()do
   local production=ui.GetEconomyCityNumber(p:GetID(),city:GetID(),'yield',GameInfo.Yields.YIELD_PRODUCTION.Index)
   local cost=ui.GetEconomyCityNumber(p:GetID(),city:GetID(),'district',GameInfo.Districts.DISTRICT_CSC_BAKERS_QUARTER.Index)
   local research=snapshot.Research('civic','CIVIC_CRAFTSMANSHIP')
+  -- Read-only qualification of the integrated fact bridge. This snapshot is
+  -- not an exact-time production admission; stale UI records remain explicit.
+  local capacity=snapshot.DistrictCapacity(city)
+  if capacity.known then capacityKnown=capacityKnown+1 end
+  print('CSC_ECONOMY_CAPACITY='..table.concat({p:GetID(),city:GetID(),tostring(capacity.population),tostring(capacity.used),tostring(capacity.allowed),capacity.reason},','))
   print('CSC_ECONOMY_FACTS='..table.concat({p:GetID(),city:GetID(),tostring(production),tostring(cost),tostring(research)},','))
   assert(production and production>0 and cost and cost>0 and research<math.huge,'Incomplete economic readiness facts')
  end
 end end
+assert(capacityKnown>0,'No live district capacity facts agreed with Gameplay')
 print('CSC_ECONOMY_FACTS_OK')
 ''','CSC_AI_BakersGameplay','read-only-economy-facts-preflight')
     (output/'economy-facts-preflight.txt').write_text(facts,encoding='utf-8')

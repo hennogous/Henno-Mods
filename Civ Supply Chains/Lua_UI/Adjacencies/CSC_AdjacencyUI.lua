@@ -125,6 +125,24 @@ ExposedMembers.CSC_Adjacency.GetEconomyCityNumber = function(playerID, cityID, k
     if kind == 'district' then return economyNumber(queue, 'GetDistrictCost', index); end
 end;
 
+-- Population-limited district admission is exposed only by the UI cache.
+-- Return plain facts, not UI objects or a production order. These are the stock
+-- CitySupport counters: zoned includes unfinished foundations, and allowed
+-- includes the city's extra allowance (rather than assuming population / 3).
+-- Gameplay cross-checks population and its live district inventory before
+-- using this record. Missing/lagging data defers a NEW Quarter for one snapshot;
+-- it never changes the treatment of an existing foundation or repair.
+ExposedMembers.CSC_Adjacency.GetDistrictCapacity = function(playerID, cityID)
+    local city = CityManager.GetCity(playerID, cityID);
+    if not city then return nil; end
+    local districts = city:GetDistricts();
+    return {
+        population = economyNumber(city, 'GetPopulation'),
+        used = economyNumber(districts, 'GetNumZonedDistrictsRequiringPopulation'),
+        allowed = economyNumber(districts, 'GetNumAllowedDistrictsRequiringPopulation')
+    };
+end;
+
 ExposedMembers.CSC_Adjacency.GetEconomyResearchNumbers = function(playerID, kind, index)
     local player = Players[playerID];
     if not player then return nil; end

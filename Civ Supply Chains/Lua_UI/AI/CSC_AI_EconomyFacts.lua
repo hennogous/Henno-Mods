@@ -176,14 +176,45 @@ function F.New(player,placement,ui)
             buildings=city:GetBuildings(),production=cityNumber(city,'yield',GameInfo.Yields.YIELD_PRODUCTION.Index)}
         snapshot.cities[row.id]=row
         local ds=city:GetDistricts()
+        row.populationDistricts=0
         for i=0,ds:GetNumDistricts()-1 do
             local d=ds:GetDistrictByIndex(i)
             if d then
                 local plot=Map.GetPlot(d:GetX(),d:GetY())
                 snapshot.districts[plot:GetIndex()]={city=row.id,complete=d:IsComplete(),
                     working=d:IsComplete()and not d:IsPillaged(),type=d:GetType()}
+                local definition=GameInfo.Districts[d:GetType()]
+                if not definition then row.capacityInventoryUnknown=true
+                elseif flag(definition.RequiresPopulation)and not flag(definition.InternalOnly)then
+                    -- Native admission counts unfinished/pillaged claims too.
+                    -- Filtering this inventory to functioning districts would
+                    -- incorrectly promise a slot already used by a foundation.
+                    row.populationDistricts=row.populationDistricts+1
+                end
             end
         end
+    end
+    function snapshot.DistrictCapacity(city)
+        local facts=snapshot.cities[city:GetID()]
+        if facts.capacity then return facts.capacity end
+        -- One bounded UI crossing per city/publication, shared by all Quarters.
+        -- A failed or stale read is unknown, never an invented free slot. The
+        -- native city admission remains authoritative after this snapshot.
+        local result={known=false,reason='unavailable'}
+        local ok,value=false,nil
+        if type(ui.GetDistrictCapacity)=='function'then
+            ok,value=pcall(ui.GetDistrictCapacity,pid,city:GetID())
+        end
+        if ok and type(value)=='table'and finite(value.population)and finite(value.used)
+            and finite(value.allowed)and value.used%1==0 and value.allowed%1==0 then
+            result.population,result.used,result.allowed=value.population,value.used,value.allowed
+            if not facts.capacityInventoryUnknown and value.population==facts.population
+                and value.used==facts.populationDistricts then
+                result.known=true
+                result.reason=value.used<value.allowed and'ready'or'full'
+            else result.reason='stale'end
+        end
+        facts.capacity=result;return result
     end
     function snapshot.Supply(plot,profile)
         local key=profile.key..':'..plot:GetIndex()
