@@ -176,6 +176,28 @@ local rows,stats=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},early)
 assert(#rows==3 and stats.final==3 and stats.capacityReady==1 and stats.capacityUnknown==0)
 ''')
 
+    def test_complete_frontier_bid_is_counted_and_tracked_without_changing_packet(self):
+        # Execute the real diagnostic tail, not a second implementation of its
+        # classification. No CE publisher or gameplay order is installed here.
+        vm=LuaRuntime()
+        vm.execute('''
+lines={};print=function(s)lines[#lines+1]=s end
+version=4;turn=5;capacity=4096;managedTypes={};declines={};nominations={}
+CE_AIDistrictScoresReceipt=function()end
+entries={
+ {player=1,city=7,district=36,plot=3,delta=0,finalQ8=2048,frontier=true,adjacency=4,purchaseGold=50},
+ {delta=0,finalQ8=-262144},{delta=256},{delta=128,customer=true},{delta=-256,weak=true},{delta=-128}}
+''')
+        source=(AI/'CSC_AI_BakersGameplay.lua').read_text(encoding='utf-8')
+        start=source.index('    local siteBids, weakSites, customerSites =')
+        vm.execute(source[start:source.index('    if builderStatus then',start)])
+        vm.execute('''
+assert(#previousOffers.frontier==1 and #previousOffers.economy==2)
+assert(previousOffers.frontier[1]==entries[1] and entries[1].delta==0 and entries[1].finalQ8==2048)
+assert(lines[1]:find('deltaQ8=0 finalQ8=2048',1,true))
+assert(lines[2]:find('bids=2 weak=1 customer=1',1,true))
+''')
+
     def test_capacity_fact_batches_cache_once_and_reject_stale_population_or_inventory(self):
         vm=self.facts_vm()
         vm.execute('''

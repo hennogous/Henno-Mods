@@ -397,15 +397,20 @@ local function refresh(turn)
             if type(CE_AIDistrictScoresReceipt) == 'function' then
                 tracked.customers[#tracked.customers + 1] = entry
             end
-        elseif entry.delta > 0 then
+        -- Complete Quarter values deliberately carry delta=0: CE replaces
+        -- the native operand with finalQ8. Count/track that published value,
+        -- otherwise the legacy additive-only diagnostic reports zero offers
+        -- and drops frontier-specific receipts despite successful delivery.
+        -- This bookkeeping changes no packet, score, request or game order.
+        elseif (entry.finalQ8 or entry.delta) > 0 then
             siteBids = siteBids + 1
             if entry.frontier then
                 -- Log only entries retained in the committed packet, not
                 -- proposals omitted by its capacity. Publication still is
                 -- distinct from CE consumption, native choice and purchase.
-                print(string.format('CSC_AI_FRONTIER_OFFER turn=%d version=%d player=%d city=%d district=%d plot=%d adjacency=%.3f quote=%.3f deltaQ8=%d',
+                print(string.format('CSC_AI_FRONTIER_OFFER turn=%d version=%d player=%d city=%d district=%d plot=%d adjacency=%.3f quote=%.3f deltaQ8=%d finalQ8=%s',
                     turn,version+1,entry.player,entry.city,entry.district,entry.plot,
-                    entry.adjacency,entry.purchaseGold,entry.delta))
+                    entry.adjacency,entry.purchaseGold,entry.delta,tostring(entry.finalQ8)))
                 if type(CE_AIDistrictScoresReceipt) == 'function' then
                     tracked.frontier[#tracked.frontier + 1] = entry
                 end
