@@ -3144,3 +3144,28 @@ valuation. Existing representative closures keep their version/scope.
 
 [Architecture and diagram](architecture.md),
 [implementation, exact revisions, audit and limitations](../research/mods/csc-ai-central-economy-20261113.md).
+
+<a id="ai-c172"></a>
+## AI-C172 — Complete economic bids survive a normal250 game; placement quality remains weak
+
+The qualified central model runs through250 normal Online turns, all639 CSC
+and6 CE files rehash exactly, and normal save/exit/preference restoration pass.
+There are250 publications/1,250 player plans,82,391 complete entries across
+refreshes, no reported unknown quotes, capacity fallback, omissions or faults.
+Among3,968 bounded exact receipts,1,536 show writes and394 eligible comparisons.
+All five sampled site-win rows show zero same-window writes. This is a timing/
+coverage question, not proof of a bypass: prior writes and retained plans are
+not resolved by those counters. Exact native winning operands need observation.
+
+The endpoint has26 completed Quarters,23 adjacent to Base,5 to both materials,
+18 to working Base and2 to both working materials. Only8 currently reach+3 and
+4 reach+4;18 remain below+3. These are endpoint states, not construction-time
+quality. One Bakers chain delivers112 measured native Storekeeper turns138–249;
+Tailors has no active Stage2 chain. Major-built origin attribution leaves15/21
+traced holdings currently below+3; city-state captures do not explain the result.
+City-states and autoplay p0 are outside Lua/CE scoring, but global SQL settings
+still affect them. Changed content, CE and the corrected district-slot flag
+limit historical comparisons; do not attribute fewer Quarters or economic
+differences solely to this valuation. This does not close broad1.8 or Services.
+
+[Full result, exact package identities, comparison tables and diagnostic gap](../research/mods/csc-ai-economy-250-20261113.md).

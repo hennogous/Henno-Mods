@@ -1,10 +1,16 @@
 # Current CSC AI status
 
-**New outcome test, 13 November:** the requested fresh Online-speed250-turn
-Continents run is being launched with the qualified main CSC economic model,
-CE delivery and read-only observations. Same comparison seeds, frozen packages,
-25-turn censuses and checkpoint saves. Results are pending; the earlier
-transport qualification below is not a claim of improved placement.
+**13 November outcome and active investigation, Problems 1.6/1.8:** the new
+normal Online250 run completed and restored the session cleanly. It has 26
+completed Quarters: 23 with Base materials, but only 8 at +3 or better and 4
+at +4 or better at the endpoint. One Bakers chain delivers 112 measured active
+Service turns; Tailors has none. All 250 publications succeed without reported
+fallback or faults. This does not solve poor placement. Five sampled winning
+receipt rows have no write in that same packet window; retained plans and
+sampling prevent attributing the cause yet. We are adding read-only foundation,
+completion and native winning-operand records, first in a short turn150–175
+replay. No tuning weights change before that evidence. [Completed result and
+limits](../research/mods/csc-ai-economy-250-20261113.md). The old goal stays paused.
 
 **13 November central-model integration:** [architecture and diagram](architecture.md)
 map the agreed economy, decision adapters and native systems to all of

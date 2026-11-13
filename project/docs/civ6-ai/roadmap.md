@@ -1,10 +1,15 @@
 # CSC AI roadmap
 
-**New outcome test, 13 November:** the requested fresh Online-speed250-turn
-Continents run is being launched with the qualified main CSC economic model,
-CE delivery and read-only observations. Same comparison seeds, frozen packages,
-25-turn censuses and checkpoint saves. Results are pending; the earlier
-transport qualification below is not a claim of improved placement.
+**13 November active work, Problems 1.6/1.8:** the central-economy Online250 run
+is complete: 26 completed Quarters, 8 at +3 or better, 4 at +4 or better, one
+working Bakers Stage2 chain and no Tailors chain at the endpoint. Native
+transport is healthy but poor placement remains unsolved. The next acceptance
+fixture traces Sinope's Tailors candidate from the turn150 save through its
+native selection, foundation and completion, recording adjacency at those
+events and the actual selected score. A fresh full run will use the same
+lifecycle instrumentation. Do not infer initial placement quality from the
+endpoint alone or change bands before resolving the observed winning-window
+write gap. [Full result and comparison limits](../research/mods/csc-ai-economy-250-20261113.md).
 
 **13 November central-model integration:** [architecture and diagram](architecture.md)
 map the agreed economy, decision adapters and native systems to all of

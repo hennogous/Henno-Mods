@@ -1,4 +1,15 @@
-# ACTIVE: new 250-turn central-economy outcome run
+# ACTIVE: poor-placement diagnostics, 13 November
+
+The new250 outcome run COMPLETED exit0, all preferences/packages restored.
+See project/docs/research/mods/csc-ai-economy-250-20261113.md and
+memory/session_ai_placement_time.md for CURRENT work. User asks to diagnose
+poor placements and suggests recording adjacency at placement. Added read-only
+diagnostic observer (NOT policy) and launched shared-controller replay150–175,
+worker29516, root Desktop/Codex/csc-ai-placement-time-20261113/replay150-175-01.
+Do not open another console. No policy weights/native code changed. Old goal
+stays paused. Earlier ACTIVE run notes below are historical.
+
+# Completed: new 250-turn central-economy outcome run
 
 User authorised one new Online250 game after implementation. Running shared
 controller session23629; rootDesktop/Codex/csc-ai-economy-250-20261113,

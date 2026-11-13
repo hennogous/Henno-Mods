@@ -1,4 +1,11 @@
-# Active central-economy 250-turn outcome test — 13 November
+# Completed central-economy 250-turn outcome test — 13 November
+
+COMPLETED exit0: all639CSC+6CEfiles audited, 250 publications, no economic
+fallback/unknown/fault/omission.26completedQ,8current>=3,4>=4;112native
+Storekeeper chain-turns, oneBakerschain, noTailors. See new report andAI-C172.
+Preferences restored/tempMods retired/checkpoint250 verified. Worker23629
+finished. Current follow-up is memory/session_ai_placement_time.md; the ACTIVE
+instructions below are preserved historical launch context, not current state.
 
 User explicitly requests: once implementation is done, go straight into one new
 250-turn game. Online speed inherited. This is NEW authorised work; earlier
@@ -48,3 +55,11 @@ NOTAI-onlycausal). Full-game_results helpersprovidecensus/economy/summarize.
 Needreporthonestnegativeoutcomes, updateSTATUS/roadmap/architectureifappropriate,
 scopedcommits/pushes. NoAstrareviewdelegationneeded unlessnewscopeauthorisation;
 previousAstrareview22testscompleted. No newtestgamesbeyondthisonewithoutneed.
+
+USERASKED diagnosticadequacy duringrun. Answeredincommentary: yesforlifecycle/
+transport/comparisonvsoutcome, limitsfullper-tileledger/winnercoverage. Atread
+Core125, completedboundary120 (after125pending), capshealthy125;1968exacteconomic
+receipts1135withwrites1968cache228comparisons;125publications latest557entries,
+omitted0, allknownfailure/unknown/capacityfallback flags0. Fullcensusfooters25,
+50,75,100,125 present. Nooutcomesclaimed; await250. Checkcadence15minfromthis
+requestedread. Sourcefrozen. Worker23629stillowner;don'topenconsole.

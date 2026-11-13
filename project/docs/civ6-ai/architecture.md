@@ -158,3 +158,13 @@ complete bids and native consumption; the final review revision repeats the
 native acceptance in a fresh 3-turn smoke with 16 exact write/cache/comparison
 receipts. [Full audit](../research/mods/csc-ai-central-economy-20261113.md).
 Neither window establishes improved placement or Services.
+
+### First long outcome test
+
+The completed normal Online250 run confirms continued publication and native
+consumption, but not the intended placement quality: 26 completed Quarters,
+8 currently at +3 or better, 4 at +4 or better, one active Bakers Stage2 chain
+and no Tailors chain. Readiness and architecture coverage are not outcome
+closure. The next diagnostic records foundation/completion geometry and the
+actual native winning score, separating retained-plan timing from valuation
+and later material loss. [Measurements and limitations](../research/mods/csc-ai-economy-250-20261113.md).
