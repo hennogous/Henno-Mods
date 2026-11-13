@@ -1,34 +1,34 @@
 # Current CSC AI status
 
-**Completed 13 November: capacity-aware Online game to turn 250, exit 0 and fully restored.**
-Main CSC now reads current district allocation once per city/publication and
-withholds new positive Quarter offers for full or stale scopes, reconsidering
-next refresh. Existing foundations/repairs stay outside this new-slot gate.
+**Completed 13 November: the same-turn growth / late-bid defect is fixed.**
+The global publication can precede per-player city growth. In the unchanged-policy
+replay, Hobart58 and Canberra67 gain a district slot while the old negative Quarter
+packet remains active; positive offers arrive only next round. The corrected main
+CSC adapter keeps useful future bids visible and treats capacity as a readiness
+annotation. Native CanZone still decides actual construction legality.
 
-Eight native new-site Quarter winners consume their exact bid and prior write,
-with available capacity recorded at publication. Positive Tailors writes/cache
-reads also occur, but no Tailors winner. Four AI-founded Bakers complete versus
-seven Quarters previously; all four retain Base, three have a completed mapped
-customer, two improved Base plus a customer, and one an operating Stage 2 chain.
-Six held Quarters include two city-state captures. **This is not a broad outcome
-improvement.** Storekeeper's 155 chain-turns comprise 97 captured and 58 AI-founded;
-Tailors Stage 2 stays at zero. Builder preferences, material protection and building receipts land,
-but improving suppliers and completing customer layouts remain weak links.
+A paired50–70 replay confirms Hobart's bid exists before growth and the native
+cache gets84,211 Q8 versus the old−262,144 default. Two exact positive Quarter
+nominations occur versus zero in control, with the economic formula unchanged.
+Theater/Campus still queue, and no new guided-major Quarter foundation occurs.
+This closes the demonstrated timing defect, not broad follow-through or an outcome
+improvement. Tests30 central/10 placement-observer/3 phase pass; Astra audits both
+arms. Both sessions close/restore with exit0. No game remains or upstream PR exists.
+[Evidence, matched comparison and limits](../research/mods/csc-ai-capacity-timing-20261113.md).
 
-Active next dependency under **1.6**: determine whether capacity opening after
-publication can lose a same-round opportunity before the next CSC refresh.
-This timing risk is a hypothesis. Trace it before changing cadence or bids.
-Maximum stale streak 3; 193 full→ready transitions; no packet or policy faults.
-Measured matrix median/max 8.083/13.977 ms, coarse Lua 29 s across 250 publications.
+The preceding250-turn gated trial remains historical: four guided Bakers versus
+seven Quarters previously, no new Tailors; only one guided Stage2 chain at250.
+[Joint material/customer counts and full result](../research/mods/csc-ai-capacity-placement-20261113.md).
+That blanket gate is superseded; its cheaper performance is not a new-candidate
+claim. The short corrected window costs more forecast work (matrix median13.33ms
+versus8.80ms), without omissions or faults.
 
-The legacy additive-only offer counter/frontier logger is corrected after this
-frozen trial; it was missing finalQ8 offers with delta 0. No scores change and no
-additional game is started. Source tests (30) pass; Astra independently reviews the
-policy and audits outcome/provenance. Code/results are committed and pushed;
-no upstream PR, no active game, older automatic goal remains paused.
-[Complete tables, evidence and limits](../research/mods/csc-ai-capacity-placement-20261113.md).
-[Preceding comparison](../research/mods/csc-ai-quality-placement-250-20261113.md)
-· [Native admission investigation](../research/mods/csc-ai-quarter-request-admission-20261113.md).
+Next under **1.6**: follow legitimate nominations through admission, retained
+plans and queue competition. Builder assignment/completion and customer layout
+remain concrete separate gaps. Do not increase all bids merely because a Quarter
+loses fairly. Reusable engine learnings are updated in the civ6-ai skill (AI-N128
+plus corrections/extensions to existing findings). Code/docs/skill are committed
+and pushed; older automatic goal remains paused.
 
 ## Earlier implementation and investigations (historical)
 

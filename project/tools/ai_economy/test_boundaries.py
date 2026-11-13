@@ -137,34 +137,35 @@ local fallback,failed=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},e
 assert(#fallback==1 and failed.invoiceDeferred==1 and failed.managed and not failed.fallback)
 ''')
 
-    def test_full_city_defers_new_quarter_preserves_protection_and_reconsiders_growth(self):
+    def test_full_city_retains_future_bids_and_protection_without_raising_values(self):
         vm=self.bid_vm()
         vm.execute('''
 local E=CSC_AI_EconomyAdapters
 snapshot.DistrictCapacity=function()return{known=true,used=2,allowed=2,population=6,reason='full'}end
-local geometry=snapshot.Geometry
-snapshot.Geometry=function()error('Full city must not price candidate ledgers')end
 early[#early+1]={player=1,city=7,district=10,plot=3,delta=-1000}
 local rows,stats=E.QuarterBids(snapshot,placement,{},early)
-assert(#rows==1 and rows[1].district==10 and stats.capacityDeferred==1 and stats.managed)
+assert(#rows==4 and rows[4].district==10 and stats.capacityFull==1 and stats.managed)
+assert(rows[1].capacityState=='full' and rows[1].capacityUsed==rows[1].capacityAllowed)
+local priorBid=rows[1].finalQ8
 snapshot.DistrictCapacity=function()return{known=true,used=2,allowed=3,population=7,reason='ready'}end
-snapshot.Geometry=geometry
 rows,stats=E.QuarterBids(snapshot,placement,{},early)
 assert(#rows==4 and stats.capacityReady==1 and stats.final==3)
-assert(rows[1].capacityUsed==2 and rows[1].capacityAllowed==3)
+assert(rows[1].capacityUsed==2 and rows[1].capacityAllowed==3 and rows[1].capacityState=='ready')
+assert(rows[1].finalQ8==priorBid) -- readiness labels do not inflate the economic price
 ''')
 
-    def test_unknown_capacity_is_not_free_and_existing_quarter_bypasses_new_slot_gate(self):
+    def test_unknown_capacity_keeps_planning_but_never_claims_free_capacity(self):
         vm=self.bid_vm()
         vm.execute('''
 local E=CSC_AI_EconomyAdapters
 snapshot.DistrictCapacity=function()return{known=false,reason='stale'}end
 local rows,stats=E.QuarterBids(snapshot,placement,{},early)
-assert(#rows==0 and stats.capacityUnknown==1 and stats.managed)
+assert(#rows==3 and stats.capacityUnknown==1 and stats.managed)
+assert(rows[1].capacityState=='stale' and rows[1].capacityUsed==nil and rows[1].capacityAllowed==nil)
 hasQuarter=true
 snapshot.DistrictCapacity=function()error('Existing construction must not need a new slot')end
 rows,stats=E.QuarterBids(snapshot,placement,{},early)
-assert(#rows==0 and stats.capacityUnknown==0 and stats.capacityDeferred==0)
+assert(#rows==0 and stats.capacityUnknown==0 and stats.capacityFull==0)
 ''')
 
     def test_population_exempt_definition_does_not_need_capacity_reader(self):

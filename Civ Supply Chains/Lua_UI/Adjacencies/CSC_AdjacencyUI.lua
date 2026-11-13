@@ -130,8 +130,9 @@ end;
 -- CitySupport counters: zoned includes unfinished foundations, and allowed
 -- includes the city's extra allowance (rather than assuming population / 3).
 -- Gameplay cross-checks population and its live district inventory before
--- using this record. Missing/lagging data defers a NEW Quarter for one snapshot;
--- it never changes the treatment of an existing foundation or repair.
+-- labelling current admission readiness. Missing/lagging data is unknown; it
+-- does not erase a future planning bid or alter foundations/repairs. Population
+-- can grow after publication but before the player's native district choice.
 ExposedMembers.CSC_Adjacency.GetDistrictCapacity = function(playerID, cityID)
     local city = CityManager.GetCity(playerID, cityID);
     if not city then return nil; end

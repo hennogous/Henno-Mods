@@ -4,7 +4,8 @@
 A city then gains a district slot while its packet still contains the managed
 negative default. The preceding capacity gate therefore excludes useful Quarter
 bids from a real same-turn decision window. This is a timing failure, not a case
-for increasing every bid. A matched correction replay is in progress below.
+for increasing every bid. A matched correction replay verifies timely positive
+delivery below; it does not produce new major-AI Quarter construction.
 
 ## What the completed 250-turn archive did and did not show
 
@@ -67,7 +68,8 @@ submission is not independently timestamped by this Lua observer. Its same-turn
 CSV admission and the phase records establish the omitted positive-bid window,
 not a counterfactual Quarter victory.
 
-Twenty publications, 1,326 phase records, no observer/policy faults. Both bindings
+Twenty observed publications plus the initial on-load packet, 1,326 phase records,
+no observer/policy faults. All three event bindings
 and their callbacks are exercised. Endpoint70 saves and native exit0/restoration
 verify. Artifact root: `Desktop/Codex/csc-ai-capacity-timing-20261113/`;
 `replay50-70/`, `control-audit.json`. The three offline observer tests verify
@@ -88,9 +90,66 @@ carried forward as a candidate performance claim. Candidate01 changes only the
 three main-mod files (adapter, publication diagnostics, UI comments) on the exact
 old archive; CE is unchanged. The later finalQ8 bookkeeping fix is also present.
 
-Matched candidate50–70 is pending. Required evidence: bid present before growth,
-exact native consumption, winner, request/queue outcome and all cleanup. A Quarter
-can lose fairly. Correct delivery does not establish more completed chains.
+### Matched candidate result
+
+The candidate replay completes70 with the same source save hash and loaded
+binary identities. Independently hashing both archived input trees confirms no
+CE difference and exactly the three intended CSC Lua overlays. Economic pricing
+and placement premiums are unchanged; formerly suppressed bids return to native
+competition. Thirty central tests, ten placement-observer tests and three phase
+observer tests pass. Astra reviews source and independently audits both arms.
+
+**Hobart's timing defect is removed:** publication58 sequence493 carries one
+Bakers offer at84,211 Q8 while population is still3. Growth58 sequence524 opens
+the second slot with that same packet9 and bid still present; activation528
+agrees. The exact native write for player4/city262147/district36/plot1345/version9
+is84,211, versus−262,144 in control. This is328.95 native utility points versus
+the old−1024 default, not Gold or a new premium.
+
+Canberra also retains a Tailors offer before its earlier59 population3→4 event:
+46,745 Q8 under packet10. At67 its native write for Tailors1124 is77,030 versus
+control−262,144. However its population trajectory diverges after64; candidate
+publication67 already sees population4. Do not claim an exact matched67 growth
+sequence. Hobart58 supplies the clean paired timing witness.
+
+Two new-site Quarter Best results consume exact bid/prior write/version and
+preceding native ordinal, compared with zero in control:
+
+| Candidate native winner | Packet | Exact Q8 value | Publication readiness |
+|---|---:|---:|---|
+| Hobart Bakers1345 |7|76,792|Full (one used/one allowed)|
+| Antioch Bakers912 |13|62,750|Full (one used/one allowed)|
+
+These are nominations, not admitted construction. Their record drain turns are
+not exact native instruction timestamps. A published-full record also does not
+prove the native city remained full later at comparison/admission.
+
+**No new guided-major Quarter foundation or completion occurs in either arm.**
+The raw lifecycle stream does include player6's Tailors1726 foundation55 in each
+arm; do not mistake it for guided placement. Berlin's existing Quarter contract
+still submits51, queues58 and cancels60 in both arms; it is not a new foundation.
+Theater363 submits58/queues62 in both Hobart arms. Canberra Campus submits67 at
+808 in control and806 in candidate, then queues69 versus68. Those numbers are
+logged values, not contract IDs. Native admission population is not independently
+hooked in these replays; this is not new proof of CanZone rejection/acceptance flags.
+
+Both arms publish21 times over50–70 inclusive: the initial on-load packet precedes
+observer installation, followed by20 observed publications. There are no packet
+omissions, trims, native/policy/observer faults or incomplete diagnostics. Candidate
+packet maximum124 entries versus118. Twenty measured matrix rounds have median/max
+13.3295/18.365 ms versus8.803/12.275 ms. Coarse publication totals4 s versus2 s.
+Removing the computational shortcut costs more forecast work, but this short and
+instrumented window is not a general performance or economic benchmark.
+
+Both endpoint archive hashes match completed saves; native exit0, owners absent,
+preferences restored and package checks verify. No game remains. Artifacts:
+`candidate50-70/`, `candidate01.json`, `matched-audit.json`, `matched_audit.py`.
+The first audit incorrectly counted20 total publications instead of excluding the
+initial on-load packet; the correction and explicit distinction are retained.
+
+The demonstrated timing defect is closed at this boundary. Broader construction
+and Service follow-through remain separate. No higher bid, growth estimator,
+per-population full-model refresh, new DLL or upstream PR is introduced.
 
 ## Skill boundary
 

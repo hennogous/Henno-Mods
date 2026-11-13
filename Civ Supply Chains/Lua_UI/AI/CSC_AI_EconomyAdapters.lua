@@ -101,32 +101,33 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
     for _,entry in ipairs(early)do prior[entry.city..':'..entry.district..':'..entry.plot]=entry end
     local stats={evaluated=0,final=0,unknown=0,buyerBlocked=0,streams=0,omissions=0,
         qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,managed=true,
-        capacityReady=0,capacityDeferred=0,capacityUnknown=0}
+        capacityReady=0,capacityFull=0,capacityUnknown=0}
     local player,pid=snapshot.player,snapshot.id
     local visibility=PlayersVisibility[pid]
     for _,profile in ipairs(profiles)do
         for _,city in player:GetCities():Members()do
             if not city:GetDistricts():HasDistrict(profile.district.Index)then
-                -- Keep spatial potential separate from an actionable new bid.
-                -- A full allocation rejects a request BEFORE city SUBMITTED
-                -- logging (AI-N127); raising utility cannot remove that gate.
-                -- No permanent plot blacklist is created. A fresh snapshot
-                -- rechecks this city next turn, including growth/new claims.
-                -- Explicitly population-exempt definitions need no slot.
+                -- Capacity describes CURRENT admission, not the lifetime of
+                -- a future district bid. Growth can happen after this global
+                -- publication and before that player's native district choice
+                -- (phase-observed on this binary; AI-N128).
+                -- Suppressing full scopes then leaves the new slot competing
+                -- against a stale negative Quarter value for the whole round.
+                -- Keep worthwhile economic bids visible; native CanZone still
+                -- gates actual construction (AI-N127). The economic formula and
+                -- placement premiums are unchanged, and
+                -- no missing/stale capacity is treated as a promised free slot.
                 local exempt=profile.district.RequiresPopulation==false or profile.district.RequiresPopulation==0
                 local capacity=not exempt and snapshot.DistrictCapacity and snapshot.DistrictCapacity(city)
                 local ready=exempt or capacity and capacity.known and capacity.used<capacity.allowed
                 if ready then stats.capacityReady=stats.capacityReady+1
-                elseif capacity and capacity.known then stats.capacityDeferred=stats.capacityDeferred+1
+                elseif capacity and capacity.known then stats.capacityFull=stats.capacityFull+1
                 else stats.capacityUnknown=stats.capacityUnknown+1 end
                 print(string.format('CSC_AI_QUARTER_CAPACITY turn=%d player=%d city=%d district=%d population=%d used=%d allowed=%d state=%s',
                     Game.GetCurrentGameTurn(),pid,city:GetID(),profile.district.Index,
                     capacity and capacity.population or -1,capacity and capacity.used or -1,
                     capacity and capacity.allowed or -1,exempt and'exempt'or capacity and capacity.reason or'unavailable'))
-                -- Deferred scopes retain the managed negative default. Existing
-                -- Quarter construction/repair is handled outside this branch,
-                -- and CE rechecks the physical footprint at native consumption.
-                if ready then
+                local capacityState=exempt and'exempt'or capacity and capacity.reason or'unavailable'
                 local center=Map.GetPlot(city:GetX(),city:GetY())
                 for _,plot in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
                     local owner=plot:GetOwner()
@@ -184,6 +185,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                                                 capacityUsed=capacity and capacity.used,
                                                 capacityAllowed=capacity and capacity.allowed,
                                                 capacityPopulation=capacity and capacity.population,
+                                                capacityState=capacityState,
                                                 frontier=frontier,purchaseGold=frontier and invoice or nil}
                                             stats.final=stats.final+1
                                             stats.min=math.min(stats.min or bid,bid);stats.max=math.max(stats.max or bid,bid)
@@ -193,7 +195,6 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                             end
                         end
                     end
-                end
                 end
             end
         end

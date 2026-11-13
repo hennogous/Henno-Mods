@@ -1,5 +1,10 @@
 # Capacity-aware Quarter offers and joint chain coverage
 
+**Historical policy notice:** the blanket full/unknown publication gate tested
+here is superseded by the [verified timing correction](csc-ai-capacity-timing-20261113.md).
+Capacity facts remain, but no longer veto worthwhile future bids for a whole round.
+The frozen-run measurements and their negative outcome limits below remain valid.
+
 Problem **1.6**, actionable Quarter offers, retaining **1.8** poor-site selectivity.
 The fresh ordinary Online250 game completes and restores cleanly. Capacity handling
 and native delivery work, but **this is not a broad outcome improvement**: four

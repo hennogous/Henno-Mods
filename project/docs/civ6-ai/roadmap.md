@@ -1,22 +1,19 @@
 # CSC AI roadmap
 
-**Latest 13 November result, Problem 1.6:** capacity-aware main CSC completes a
-normal Online250 and restores the session. New Quarter bids defer full/stale
-allocations and reconsider next publication. Eight native new-site winners
-match exact positive bids; all are Bakers. Four AI-founded Quarters versus
-seven previously, no new Tailors, and one working AI-founded Stage2 chain at250.
-Three of four have Base+completed mapped customer; two have improved Base+customer.
-The two additional held Quarters are captures. No broad improvement is claimed.
+**Latest 13 November, Problem1.6:** a phase replay confirms city growth after the
+once-per-round publication, leaving the original capacity gate's negative Quarter
+packet active during newly available slots. The corrected adapter retains the same
+economic bids before growth; capacity is observed, native admission stays final.
+A matched20-turn replay verifies exact earlier positive writes and two Quarter
+nominations versus zero, but no new guided foundation. No outcome gain is claimed.
+[Closed timing defect and paired evidence](../research/mods/csc-ai-capacity-timing-20261113.md).
 
-**Next unresolved 1.6 dependency:** trace publication → capacity opens → native
-choice to establish whether the global refresh misses same-round opportunities.
-This is a timing hypothesis, not a proven cause. Do not raise bids to compensate
-for an unobserved boundary. Builder job completion/customer layout remain distinct
-follow-through gaps. Receipt audit establishes native work for improvement bids,
-material protection and buildings; harvest/district repair are unexercised here.
-
-[Full capacity trial and joint statistics](../research/mods/csc-ai-capacity-placement-20261113.md).
-The earlier automatic goal remains paused; no game remains and no upstream PR.
+The previous gated250-turn run remains historical (four guided Bakers/no Tailors,
+three with Base+customer, two with improved Base+customer). Its blanket suppression
+is superseded. Next1.6 work is legitimate nomination→admission→queue follow-through,
+with Builder completion/customer layout as separate dependencies. No forced winner,
+larger premium, new DLL or upstream PR. Tests and independent review pass; no game
+remains. The older automatic goal stays paused.
 
 ## Earlier implementation and investigations (historical)
 
@@ -545,9 +542,10 @@ until the active check closes or an explicit dependency needs attention.
   **13 November diagnosis:** native city admission can reject a population-full
   Quarter request before it is logged as SUBMITTED. Four cases are captured;
   the late two retain explicit reproduction limits. Future potential is not
-  current constructibility. The capacity gate is now implemented and qualified
-  in the Online250 trial (AI-C178), with lower foundation count and no new Tailors.
-  Same-round capacity/publication timing remains unverified.
+  current constructibility. AI-C178 tests a blanket publication gate; AI-C179
+  supersedes it after proving growth later in the same round leaves stale negative
+  bids. Current capacity is observational; native admission remains authoritative.
+  Earlier positive delivery is verified, broad construction follow-through is not.
 - **1.7 Place or defer.** Decide whether the best available Quarter site
   merits a bid now. Consider whether the Base supplier and customer path can
   be made usable and what would need to happen first. Reconsider as ownership,

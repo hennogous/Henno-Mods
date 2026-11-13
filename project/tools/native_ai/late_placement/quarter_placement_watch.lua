@@ -61,6 +61,7 @@ local function drain()
       -- remains separate from eligibility and eventual construction.
       row.bidCapacityUsed=bid and bid.capacityUsed;row.bidCapacityAllowed=bid and bid.capacityAllowed
       row.bidCapacityPopulation=bid and bid.capacityPopulation
+      row.bidCapacityState=bid and bid.capacityState
       if not bid and managedDefaults[row.player..':'..row.district]then
        row.bidVersion=publicationVersion;row.bidQ8=managedDefaults[row.player..':'..row.district];row.fallback=true
       end
@@ -190,7 +191,8 @@ B.Publish=function(version,width,height,count,players,entries,...)
    if watched[entry.district]then
     offers[key(entry.player,entry.city,entry.district,entry.plot)]={version=version,
      finalQ8=entry.finalQ8,adjacency=entry.adjacency,economicQ8=entry.economicQ8,preferenceQ8=entry.preferenceQ8,
-     capacityUsed=entry.capacityUsed,capacityAllowed=entry.capacityAllowed,capacityPopulation=entry.capacityPopulation}
+     capacityUsed=entry.capacityUsed,capacityAllowed=entry.capacityAllowed,capacityPopulation=entry.capacityPopulation,
+     capacityState=entry.capacityState}
    end
   end
  end

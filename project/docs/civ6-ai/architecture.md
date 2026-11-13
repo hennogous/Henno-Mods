@@ -1,5 +1,11 @@
 # CSC AI architecture
 
+**Latest correction:** capacity is observed at publication, while native CanZone
+controls admission. A global publication can precede per-player growth in the same
+turn. Full/unknown allocation therefore no longer erases worthwhile future bids.
+The paired short replay verifies earlier positive delivery and exact native values;
+it does not improve construction in that window. [Timing evidence](../research/mods/csc-ai-capacity-timing-20261113.md).
+
 The target is one shared account of a Quarter economy, with adapters that offer
 its value at the decisions Civ actually makes. Civ retains legality, competition,
 production, purchases and execution. We do not order a city to build a chain.
@@ -22,12 +28,12 @@ all follow-through, building, Builder or Service capabilities.
 **Admission is a separate boundary.** A valuable future Quarter site can win a
 district nomination while the city has no population-limited district slot.
 Native validation then rejects the request before city logging or production
-competition. The publication adapter now defers positive offers for full or
-unknown allocations and rechecks next snapshot. UI counters cross-check population
-and live inventory; extra-allowance freshness remains partially observed. Future
-potential and existing construction/repair are retained. The capacity trial
-verifies delivery but has fewer foundations and no new Tailors. A possible missed
-same-round capacity opening remains a hypothesis to trace.
+competition. The first capacity adapter deferred full/unknown scopes, but a paired
+phase replay confirms growth after publication left a stale negative bid during
+newly available capacity. The corrected adapter retains future economic bids and
+records readiness without treating it as permission to construct. UI counters
+cross-check population/live inventory; extra-allowance freshness remains partially
+observed. Existing construction/repair stays separate.
 [Capacity trial](../research/mods/csc-ai-capacity-placement-20261113.md).
 [Captured cases and limits](../research/mods/csc-ai-quarter-request-admission-20261113.md).
 
@@ -41,7 +47,7 @@ flowchart TD
     MODEL["Central Quarter economy<br/>EconomyModel<br/>eligible investment plans and transaction ledger"]
     PRICE["CE read-only pricing<br/>native yield weights and discounting<br/>Q8 utility; unavailable is not zero"]
     SITE["Quarter bid adapter<br/>whole economic value + placement policy<br/>one value for each eligible district–tile pair"]
-    CAP["Current capacity gate<br/>UI used/allowed + live inventory<br/>full/unknown: defer new bid; recheck next snapshot"]
+    CAP["Current capacity facts<br/>UI used/allowed + live inventory<br/>readiness annotation; native admission remains final"]
     PROTECT["Material-protection adapter<br/>economic loss + structural safeguards<br/>last Base / Specialty and working supply"]
     PLAN["Planning adapters<br/>legal targets, frontier quotes,<br/>ownership completion and place/defer scopes"]
     SQL["Native customer-placement signal<br/>SQL private-yield adjacency<br/>one signal per mapped district–Quarter edge"]

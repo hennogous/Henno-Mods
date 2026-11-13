@@ -3327,6 +3327,10 @@ No new tuning, DLL or upstream PR. Reusable native mechanism: AI-N127.
 <a id="ai-c178"></a>
 ## AI-C178 — Capacity gating delivers actionable bids but does not broadly improve follow-through
 
+**Policy correction:** AI-C179 supersedes the blanket full/unknown publication
+gate after reproducing growth later in the same round. The frozen-run results
+below remain historical evidence, not the current gate's behaviour.
+
 Main CSC reads stock UI used/allowed population-district counters once per city
 per publication, cross-checks population/live claims, and defers new positive
 Quarter offers in full or unknown scopes. New snapshots reconsider; existing
@@ -3356,3 +3360,30 @@ The old zero legacy counter did not establish inert policy. All 30 central
 tests pass after the fix. Astra independently reviews code and audits delivery,
 joint counts, capture provenance, inputs and endpoint save. No DLL change,
 upstream PR or further game. [Full results and limitations](../research/mods/csc-ai-capacity-placement-20261113.md).
+
+<a id="ai-c179"></a>
+## AI-C179 — Growth after publication leaves Quarter bids stale for a real decision window
+
+An unchanged-policy50–70 replay records Hobart58 and Canberra67 publishing full
+population3/used1/allowed1, then growing to4/1/2 in the same round while the same
+packet still has no positive Quarter offer. The first positive publication is
+59/68. Native city logs accept competing Theater/Campus requests in58/67, before
+later physical queue/foundation. A free-slot snapshot next round therefore does
+not rule out an already chosen plan. This is not proof of native admission while
+actually full; the earlier stronger wording is corrected. Reusable phase finding:
+AI-N128, with exact binary scope and limits in the civ6-ai skill.
+
+Main CSC now retains the original worthwhile future bids and annotates capacity,
+leaving native CanZone to decide construction legality. The matched candidate
+has Hobart84,211-Q8 positive before growth and the same exact native write, versus
+control−262,144. Two new-site Quarter nominees consume exact bid/prior write/
+version and preceding ordinal, versus zero in control. No new guided-major Quarter
+foundation occurs in either arm; Theater/Campus still proceed. Candidate Canberra
+population diverges after64, so Hobart58 is the clean paired growth witness.
+
+No premium/formula increase, growth estimator, per-population model refresh,
+new DLL or forced production. Tests30 central,10 placement and3 phase pass.
+Both sessions complete/restored exit0; source/binary/save proofs and Astra audit
+verify. Short-window forecast cost increases; no full-game benefit claim follows.
+Skill3b529a8 and scoped CSC changes are pushed; no PR or active game remains.
+[Timing proof, correction, matched results and limits](../research/mods/csc-ai-capacity-timing-20261113.md).

@@ -1,7 +1,10 @@
 # Explainable Quarter site planning
 
 **Current implementation:** the central Quarter economy and late complete-value
-adapter are live in main CSC, with a current-capacity publication gate. The latest
+adapter are live in main CSC, with current-capacity diagnostics. A short paired
+replay corrects the earlier blanket gate because growth happens after publication
+within the same turn: [timing evidence](../../../research/mods/csc-ai-capacity-timing-20261113.md).
+The latest
 normal 250-turn trial verifies exact native bid delivery but fewer foundations
 and no new Tailors; customer layout and Builder execution remain weak links.
 Use [current architecture](../../architecture.md), [status](../../STATUS.md) and
