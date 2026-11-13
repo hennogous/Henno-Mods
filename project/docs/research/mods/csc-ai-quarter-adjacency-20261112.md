@@ -275,3 +275,58 @@ empire performance from its different expansion and decisions.
 - All temporary installed development packages retired into the run archive;
   original user preferences restored; no game/controller owner remains.
 - Protected T3/T204/T216 saves were not modified or deleted. No PR submitted.
+
+
+## 13 November: what currently explains weak Quarter demand?
+
+Read-only reconciliation, no game launched or tuning changed. The architecture
+explains several routes, but the latest run has no complete per-construction
+component ledger proving which route caused each poor placement.
+
+- **Broadly available investment:** both executed Quarter definitions unlock at
+  Craftsmanship, have base Cost60, copy-based cost progression, maintenance1,
+  OnePerCity1 and RequiresPopulation0. They do not compete for a specialty
+  population slot. This is an admission/opportunity-cost fact, not measured
+  attribution of their scores or proof that those design settings should change.
+- **Weak geographic discrimination:** native positive future-building sums are
+  shared across eligible sites of the city/type; captured building calls lack
+  candidate coordinates. Several CSC conditions/alternative recipients are
+  approximated or missed. These mechanisms are established in the building
+  study, but its exact magnitudes cannot be transferred to this run.
+- **Substantial value can precede the later building pass:** Nicopolis203's
+  recorded native input413,460 Q8 minus our65,536 leaves347,924, with zero later
+  addition. Its decomposition is still incomplete. Thus later building forecasts
+  cannot be assumed to explain every weak Quarter's positive score.
+- **Current-run lead:** Tailors plot698, player1/city458758, is complete with
+  +1 current adjacency at200. The bounded sample read at171 records an early
+  native value144,129 Q8, our−32,768 deduction and111,361 remaining. This proves
+  a deduction and positive remainder for that exact pair; it does not capture
+  final aggregation/selection or prove that171 was its construction decision.
+  Endpoint geography also need not equal placement-time geography.
+- **Limited live correction:** current main CSC publishes early site adjustments.
+  The `BakersAdjustment` late component correction is explicitly diagnostic-only
+  and needs supplied native component data; the main publisher does not call it.
+  The old enormous binary Mill graph was replaced, but this does not establish
+  that all geographic/recipient mistakes are dynamically corrected in play.
+- **Retained requests and later losses:** a construction request can retain a
+  prior higher valuation. Fresh site penalties do not automatically cancel it.
+  Captures and changed suppliers/customers further limit endpoint attribution.
+
+The15-bit population-return graph remains a conditional forecast risk, not a
+proven cause of Quarter spam. Its roots attach to City Centers; their actual
+contribution through the relevant Quarter consumer is unmeasured. Do not reuse
+old million-point Mill numbers as an explanation of the current run.
+
+Next diagnostic target: one weak Bakers and one weak Tailors, reconstructed
+from an existing save through a fresh comparison and the construction request.
+Record raw district-component contributions, the CSC deduction, admitted raw
+building values, final cache/competing district scores and request retention.
+Attribute any contribution to real versus unavailable CSC benefits before
+changing the band or replacing the score. No new full game is needed for that
+question, and none was launched in this reconciliation.
+
+Sources: [native component architecture](https://github.com/hennogous/civ6-ai/blob/main/references/engine/district-score-anatomy.md),
+[exact Nicopolis ledger](csc-ai-quarter-reconsideration-20261112.md),
+[current building-study scope](csc-ai-mill-building-study-20261105.md),
+[population-return risk](csc-ai-stage3-q8-forecast-risk-20261111.md),
+and main `CSC_AI_QuarterPlacement.lua` diagnostic/live boundary.

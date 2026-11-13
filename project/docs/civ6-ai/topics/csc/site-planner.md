@@ -11,6 +11,14 @@ failures, exact package parity, final cleanup and comparison limits are retained
 Earlier scoped capability closures keep their original meaning. The old goal
 remains paused. [Full measurements and completed trial](../../../research/mods/csc-ai-quarter-adjacency-20261112.md).
 
+**13 November diagnostic focus:** poor-site demand is not yet fully attributed.
+Native future-building value can flatten site differences, but a recent traced
+case has a large positive input and zero later uplift. Main CSC still publishes
+early adjustments; the exact late building correction remains diagnostic-only.
+Trace the early component ledger and any later additions before increasing bids.
+[Evidence and next scope](../../../research/mods/csc-ai-quarter-adjacency-20261112.md#13-november-what-currently-explains-weak-quarter-demand).
+
+
 ## In-mod Stage 2 integration trial
 
 CSC now builds a turn-local view of the loaded Bakers and Tailors
