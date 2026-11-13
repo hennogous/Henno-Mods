@@ -1,5 +1,13 @@
 # CSC AI roadmap
 
+**Active Problem1.6 follow-up:** main CSC now withholds new positive Quarter
+offers when district allocation is full or UI/live inventory disagrees, and
+reconsiders next publication. A short50–64 replay qualifies the new fact reader
+and deferral; no new major-AI Quarter comparison occurs in that window. The
+authorised normal Online250 comparison is running with passive capacity and
+joint material/customer diagnostics. Outcome and bid/admission follow-through
+remain pending. [Candidate and acceptance](../research/mods/csc-ai-capacity-placement-20261113.md).
+
 **Latest result, 13 November: Online game to turn 250 completed and cleanly restored.**
 All seven Quarters founded by the guided major AIs retain Base and reach actual
 +3 or better at turn 250. All 57 new-site comparisons (36B/21T) consume their exact

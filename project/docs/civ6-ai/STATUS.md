@@ -1,5 +1,14 @@
 # Current CSC AI status
 
+**Active 13 November follow-up, Problem 1.6:** capacity-aware main CSC candidate
+`c900f162` is committed/pushed. The short50–64 replay closes/restores, with172 full
+deferrals and4 stale scopes; it does not exercise a new major-AI Quarter choice.
+A fresh normal Online250 game is now running through the shared controller,
+same comparison seed/content/CE, only four Lua capacity overlays. No external
+policy/probe mode or new DLL. Joint material/customer metrics are included,
+separating AI-founded holdings from captures and district adjacency from working
+customer buildings. [Candidate, review and pending outcome](../research/mods/csc-ai-capacity-placement-20261113.md).
+
 **Latest result, 13 November: Online game to turn 250 completed and cleanly restored.**
 All seven Quarters founded by the guided major AIs retain Base and reach actual
 +3 or better at turn 250. All 57 new-site comparisons (36B/21T) consume their exact

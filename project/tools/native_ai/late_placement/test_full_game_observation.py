@@ -69,7 +69,7 @@ CSC_ENDPOINT_END\t200\t2
             'CE_AIEconomyStatus','CE_AIDistrictScoresFinalEntry','CE_AIYieldStreamValue',
             'CE_AIYieldFixedValue','CE_AIAmenityStreamValue','CE_AIDistrictScoresManagedType','CE_AIDistrictScoresManagedReceipt',
             'ExposedMembers.CSC_Adjacency.GetEconomyCityNumber','ExposedMembers.CSC_Adjacency.GetEconomyResearchNumbers',
-            'ExposedMembers.CSC_Adjacency.GetEconomyPlotFacts')
+            'ExposedMembers.CSC_Adjacency.GetEconomyPlotFacts','ExposedMembers.CSC_Adjacency.GetDistrictCapacity')
         for absent in (None,)+names:
             vm=LuaRuntime();vm.execute('''print=function()end
 Game={GetCurrentGameTurn=function()return 1 end}
