@@ -129,6 +129,7 @@ CSC_AI_DistrictBridge.Publish(4,74,46,38,{1},{},nil,nil,nil,nil,nil,nil,nil,nil,
         self.assertIn('CSC_QUARTER_WATCH_REQUEST',output)
         aggregate=next(line for line in output.splitlines()if line.startswith('CSC_QUARTER_WATCH_VALUE'))
         self.assertIn('aggregate=true',aggregate)
+        self.assertNotIn('existingDistrict=',aggregate)
         best=next(line for line in output.splitlines()if line.startswith('CSC_QUARTER_WATCH_BEST'))
         for field in ('fallback=true','bidQ8=-262144','reservationId=17','phase=2','lastWriteOrdinal=1','nativeOrdinal=5'):
             self.assertIn(field,best)

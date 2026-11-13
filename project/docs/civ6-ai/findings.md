@@ -3250,7 +3250,10 @@ write turn. This establishes consumer/request delivery in a scoped replay,
 not calibrated placement quality, new Quarter completion or sustained Services.
 The first corrected-package replay completes175 cleanly but fails quality
 qualification on that improved-tile bypass. Native footprint correction and a
-new replay precede the fresh250 outcome. Earlier packaging
+new replay precede the fresh250 outcome. Replay04 subsequently passes delivery
+qualification: four positive comparisons (+5/+4/+3/+4) exactly consume their
+published values, but no original-AI new foundation occurs by175. The fresh
+Online250 outcome is now pending. Earlier packaging
 failures are preserved; they must not be counted as successful qualification.
 235 native/25 economy checks and two Astra reviews precede the live window.
 

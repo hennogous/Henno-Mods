@@ -1,3 +1,32 @@
+# CURRENT: fresh250-01 running, check every15min
+
+Owningworker60300 launched14:10UTC (processIDfromsession-owner.json). Root:
+Desktop/Codex/csc-ai-placement-coverage-20261113/fresh250-01. Do notconnectsecond
+console or edit importeddriver/controller/observer orpinnedfrozen03packages.
+NativeDLL400e675522916ce54a17a6765132da89ee23c90304a89e721c6289c31327394f,
+CEcode dbfb93b pushed, CSCmaincode be00cad9 pushed. OnlymainCSCpolicy; nofixture
+flags. Sharedcontrollerownslaunch/autoplay/save/cleanup. FullgameOnline250,
+SmallContinentsPrince seeds18461107/29461107,5originalAIs+observer0, noRHAI5.
+Read-onlyfullobservations+economicpreflightenabled. Endpointstart250matchesoldrun.
+
+Replay04finished175 exit0/restored, fullobservercomplete. delivery-audit.json:
+4actualpositiveBest events across3sites, adjacencies5/4/3/4,exactbid/write/consumer;
+1retainedrequestreduction;7705nonemptyIDcellwrites(notunique/liveproof). Native
+matrixroundmedian16.693ms,max28.205 (excludesLua/masks/requests). NooriginalAI
+foundationby175 sofollowthroughunproved. Astraindependentauditrequested.
+AllNative243 +Runtime4/instructionpass,25economy19frontend25observerresults.
+After04, observerdiagnosticchangedONLYtoomitunqualifiedexistingDistrictfieldonPV;
+10observerchecksPASS. NoCSCpolicyorCEcodechangesafterqualifiedfrozen03.
+
+Atfirstcheckverifyfreshsource/map/startsequaloldsource.json,pins/nativehealth/
+preflight; at25/50/100 etcfullcensusesandplacementrecords. Fulloutcomefinishneeds
+comparepreviousassisted250 (26quarters,8>=3,4>=4,112Storekeeperchainturns,0Tailors),
+reportplacement-timeoriginalAIsseparatefromp0/citystates/captures,services/econand
+normalclosure. Historicaluntunedbaselinechangedcontentnotcausal. Regularscoped
+commits/pushes;noPR. NoQuartzbuild. OldautomaticgoalremainsPAUSED.
+
+--- Previous notes / failure evidence below ---
+
 # CURRENT: replay04 active, physical footprint fix qualified offline
 
 Sharedcontroller44874/worker6252, rootnewroot/replay150-175-04; last160

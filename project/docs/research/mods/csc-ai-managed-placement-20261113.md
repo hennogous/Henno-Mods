@@ -1,11 +1,13 @@
 # Managed Quarter delivery and quality candidate - 13 November 2026
 
 **Current status:** corrected footprint candidate passes243 native checks and
-Astra's final source review; replay04 is now the live qualification. Its Release02
+Astra's final source review; replay04 completes175 and passes delivery
+qualification. It does not establish construction or sustained benefit. Its Release02
 DLL SHA256 is400e675522916ce54a17a6765132da89ee23c90304a89e721c6289c31327394f.
 Use frozen03/candidate-packages03.json. Earlier packages, preliminary observations
 and failed qualifications below are historical evidence, not current acceptance.
-The fresh ordinary Online250 game has not yet started.
+The fresh ordinary Online250 game is now running through the shared controller;
+main CSC policy and the pinned CE fork are the only tuning code.
 
 ## Question and acceptance
 
@@ -216,3 +218,43 @@ reason0/existingDistrict0. This is a genuine positive new-site comparison,
 not a foundation exemption or merely accepted transport. The stale Bakers987
 request is again reduced410368 to-262144. Final lifecycle/health and placement
 counts are still pending; neither exact comparison guarantees completion.
+
+
+## Completed delivery qualification and new full game
+
+Replay04 completes150-175 with complete journal/lifecycle observation, native
+exit0, owners absent and preferences/packages restored. The independent audit
+record delivery-audit.json finds4 new-site Quarter comparison events across3
+sites, all original AI, adjacency5/4/3/4, all actual native values equal their
+positive publication and prior write. One retained request is reduced;7705
+nonempty-reservation-cell writes are counted (repeated writes, not distinct live
+claims). No new original-AI Quarter reaches foundation in this short window:
+this closes the demonstrated value-delivery gap, not follow-through or1.8.
+
+Managed matrix refresh takes median16.693ms/max28.205ms per sampled global round
+in this mature world. This excludes Lua, masks, request setters and unrelated
+engine work. All-eight-Quarter scale has not been measured. Optional read samples
+may drop at their documented limit; native Best comparison records retain their
+core budget. The observer now reports physical-presence metadata only for
+qualified Best/Location records, avoiding PV default fields masquerading as a
+fresh district observation;10 observer checks pass after that diagnostic fix.
+
+The authorised fresh **Online250** starts with main CSCbe00cad9, CEdbfb93b /
+DLL400e6755..., same639+6 content, Small Continents, Prince, map/game seeds
+18461107/29461107. Root fresh250-01. No pre-unlocks, subsidies, external
+AI/probe policy or custom production orders. Read-only observations capture
+selection-time bids, foundation/completion geometry,25-turn economics and
+Services. The shared controller owns console/launch/cleanup; agent checks are
+about15min apart. Current outcome is pending. The first packaging attempts and
+flag-bypass replay remain preserved; no outcome is inferred from readiness.
+
+
+Astra independently audits the completed replay04 and confirms all four exact
+write-before-comparison chains, request reduction,7705 nonempty-ID writes,
+25 timing packets and clean closure. **All four comparisons are Bakers sites
+on players1/3.** This does not independently establish Tailors positive selection,
+repair continuity, purchases, construction or Services. The one replay completion
+belongs to observer player0. Those limits remain live outcome questions.
+Reusable flag/footprint knowledge is now AI-N126, committed/pushed in civ6-ai
+0bc0440; N023/N125 in2bdcf6c remain valid. The earlier false exemption claim is
+explicitly corrected above, not used as repair evidence.

@@ -5,8 +5,11 @@ Online250 game.** Active problems **1.6/1.8**, preserving **2.2**. The first
 candidate exposed two concrete errors: obsolete packaged UI readers and a cached
 improvement flag misidentified as district presence. Both are corrected;243
 native,25 economy,19 frontend and25 observer/result checks pass. Astra's final
-source review finds no demonstrated code blocker. Replay04 now qualifies the
-actual district lookup and consumer values before a fresh full game. No upstream
+source review finds no demonstrated code blocker. Replay04 completes175 with
+four exact positive native comparisons (+3/+4/+5 sites), a retained-request
+reduction, zero native faults and clean restoration. It has no new AI foundation,
+so this qualifies delivery only. The fresh ordinary Online250 game is now running
+from the same source, using the shared controller and main CSC policy only. No upstream
 PR; the old automatic goal stays paused. Output quality takes precedence over
 architectural neatness, with bounded work and measured overhead.
 [Candidate, corrections and evidence](../research/mods/csc-ai-managed-placement-20261113.md).

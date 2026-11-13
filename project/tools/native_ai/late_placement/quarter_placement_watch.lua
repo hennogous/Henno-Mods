@@ -42,7 +42,9 @@ local function drain()
     if watched[row.district]then
      row.nativeOrdinal=offset+ordinal
      row.reservationId=number(record,'reservationId');row.phase=number(record,'phase')
-     row.existingDistrict=number(record,'existingDistrict')
+     -- Physical district presence is qualified on selection records only.
+     -- A native PV's default field is not a fresh footprint observation.
+     if kind=='best'or kind=='location'then row.existingDistrict=number(record,'existingDistrict')end
      row.observedTurn=Game.GetCurrentGameTurn()
      local id=key(row.player,row.city,row.district,row.plot)
      if kind=='final'then

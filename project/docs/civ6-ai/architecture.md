@@ -13,8 +13,10 @@ reconstruct and subtract each of Civ's modifier-interpreter mistakes.
 native and25 Lua economy checks passing. Replay03 completed175 but exposed an
 incorrect improvement/district flag; it is a failed delivery qualifier. The
 corrected candidate queries the actual district collection, preserving foundations
-and repairs independently of cached flags. Replay04 must qualify that live
-behavior before the fresh Online250 game. Earlier smoke evidence applies only
+and repairs independently of cached flags. Replay04 completes175 with four
+exact positive native comparisons (+3/+4/+5 sites) and a retained-request
+reduction; no new AI foundation occurs in that short window. The fresh ordinary
+Online250 game now measures outcome, with no external tuning policy. Earlier smoke evidence applies only
 to its recorded source, not automatically to this revision.
 [Candidate, corrections and evidence](../research/mods/csc-ai-managed-placement-20261113.md).
 
