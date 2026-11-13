@@ -96,6 +96,65 @@ to guided AI construction, 15 below +3; the new lifecycle observer identifies se
 AI foundations and none below +3. That older origin method left one holding
 unresolved, so it is not an equally complete foundation-time census.
 
+## Historical untuned baseline: compare turn 200 with turn 200
+
+The earlier table compares assistance revisions. The available **untuned stock-AI
+baseline ends at turn 200**, so the valid time comparison uses this run's 200
+census, not its 250 endpoint. Five original major AI seats and initial map,
+leaders, starts and units match. The baseline uses older CSC content and CE;
+notably, the current Quarters consume population-limited district slots.
+These are descriptive historical results, not an isolated tuning-only experiment.
+No new baseline game was launched for this comparison.
+
+| Turn 200, completed Quarters held | Historical untuned baseline | Latest guidance |
+|---|---:|---:|
+| Quarters |30 (16 Bakers / 14 Tailors) |9 (6 Bakers / 3 Tailors) |
+| With Base materials |6 / 30 (20%) |8 / 9 (89%) |
+| Without Base materials |24 |1 |
+| With compatible unpillaged Base improvement |3 |5 |
+| With Base and Specialty |0 |2 |
+| Both classes improved |0 |1 |
+| River sites |2 |6 |
+| Adjacent mapped customer district, any stage |10 |7 |
+| Current adjacency at least +3 |not recorded |7 / 9 |
+| Current adjacency at least +4 |not recorded |2 / 9 |
+| Working Stage 2 producer |14 |5 |
+| Adjacent Stage 2 customer district |5 |5 |
+| Working adjacent Stage 2 customer building |1 |2 |
+| Working physical / active-property Bakers Stage 2 chain |1 |1 |
+| Working physical / active-property Tailors Stage 2 chain |0 |0 |
+| Native Storekeeper chain-turns, turns 2–199 |39 |84 |
+
+The latest run is much more selective and develops more useful material-supported
+sites despite far fewer Quarters. It does **not** show stronger complete Stage 2
+coverage at the 200 endpoint. There are two Bakers chains with recorded operation
+before 200, but one is down at the census. The 84 chain-turns are 66 from player 1
+(turns 134–199) and 18 from player 3 (147–164); baseline activity is one chain on
+161–199. The recorded baseline has no comparable numeric adjacency census, so
+no baseline +3 or +4 percentage is inferred from material counts.
+
+| Turn 200 economy, totals for five original AI seats | Historical baseline | Latest guidance | Change |
+|---|---:|---:|---:|
+| Production/turn |946.75 |989.27 |+4.5% |
+| Net Gold/turn |310.09 |239.36 |−22.8% |
+| Food surplus/turn |226 |223 |−1.3% |
+| Cities |37 |40 |+8.1% |
+| Population |372 |423 |+13.7% |
+
+Per original AI, this is Production 189.35 → 197.85, net Gold 62.02 → 47.87,
+and Food surplus 45.2 → 44.6. More cities/population do not establish better
+per-city productivity: Production/city is 25.59 → 24.73 (−3.3%). The economic
+result remains mixed, and changed content, war and expansion prevent assigning
+these differences solely to our placement intervention.
+
+Sources: [baseline definitions and original matched v2 setup](csc-ai-integrated-stage-two-20261108.md),
+[historical detailed 200 census and totals](csc-ai-harmonised-250-20261112.md).
+Raw baseline: `csc-ai-integrated-20261108/endpoint-detail-baseline/continents.json`;
+aggregates: `csc-ai-harmonised-250-20261112/comparison.json`, window `baseline200`;
+latest: `fresh250-audit.json`, window `current200`. Storekeeper totals are clipped
+to the same 2–199 observation window. The baseline's paired v2 comparison was
+same-content at the time; this later candidate is not that original v2 package.
+
 ## Delivery and performance
 
 | Recorded measurement | Result |
