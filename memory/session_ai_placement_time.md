@@ -1,5 +1,91 @@
 # Placement-time investigation — 13 November
 
+## REA outcome (no new game/native code/tuning change)
+
+Fullreport csc-ai-reservation-write-gap-20261113.md; newAI-C174. Actualhotfix
+SHA092abfbb independentlydecompiledREA/Ghidra, notjustoldannotatedreference.
+GetBest3e4a50: reservedlive→prioritythreshold, staleFind4019f0missing→default
+floor, no positivegate. ReservePlotUpdate55ef10 priorityinteger<<8, TryReserve
+3ea040 liveotherclaimrequiresnew>old+5120Q8(20utility), verifieddirectconstant
+b65580=00140000. Release3e97e0 clearsonlymatchingID. Nativefloorb66cb0=00f1d8ff.
+
+ExistingAIBT COMPLETE readableeventlinesgiveSinopeexacttimeline:
+165 FarmtriggerValue163,ReservePlot26,14SUCCESS;
+166 QuartertriggerValue1736,ReservePlot26,14SUCCESS,Accepted1736;
+166 actualnativebest444512Q8vsouraccepted-15437Q8. Physicalfoundation169+1,
+completion172+1. CE resolve_late_cell rejectsALLnonemptyIDs beforeFinaltrace.
+Confirmedsource-levelcoveragebug; builderreservationstronginferenceforactual
+miss, rawID/rejectreasonnotcaptured. Preservealias/prevalid/matrix/calleralts.
+Same-packet10/20othercitywrites showcapabilityworkedelsewhere, cannotprove
+orderrelativetoBest asdeduplogdoesnotretaincrosscellnativeordinal.
+
+Secondindependentgap: UI.GetLegalDistrictTargets usesCanProduce+currentBuild
+operationadmission; ownedcompletebidsfromthatlist. Nativeplotjob3e2aa0loops
+futureunlocks/prereqETAsbeforeNetValue52a440. So ownedfuturecandidatescanhave
+NOoffer; differsfromSinope explicitofferunwritten. Don'tassignallmissingbids
+toonecausewithouttrace.
+
+Freshstoppedprefixfinalcounts(originalAI1–5):18foundations(15below3;7x+2,
+7x+1,1x+0,2x+3,1x+4 prospectiveMill).42Bestevents,18withbid,17mismatch.
+TwoDEFERRED,0FAULT. No finaljournaldrain, notcomplete250measurement. Parser
+nowobserverFaultFree separatefrommeasurementComplete (requiresDRAINEDmarker),
+17offlineobserver/integrationchecksPASS. Allgameownersgone/exit0/preferences
+restored; onlycheckpoint150 existslatest, notsave160. Stopuserinstructionholds.
+
+REA34recordbundle4,022,356bytes Desktop/Codex/.../rea/native-selector-and-reservations-final.json
+SHA02d9529c885d5f4cbbd4ed389e64d7a55ca59c1e40d77811b6ff5b579605189d.
+REAclosedaftersafeexport. No Frida/nativeprobe/newgameused. Proposednextsteps:
+boundedexactskipreasons+reservationmetadata, aligncompletewriter/nativeadmission
+withoutclearingclaims, coherentfutureownedcoverage, verifyactualoperandBEFORE
+moreoutcomegames orpenaltycalibration. No nativechangesimplemented.
+
+Updatedskilldistrict-choice/findingsAI-N124(cleangitrepopre-edit). Needscoped
+commit/pushskill+repo, thenfinishuserwithactualmechanismandlimits. No Quartz.
+
+USER STOPPED ALL GAME TESTS, then explicitly requested REA to understand actual
+native behavior. fresh250 stoppedat160 via source-update-request.json to own
+worker; closureverified nativeexit0/ownersabsent/preferencesrestored/packages
+retired. Worker99392 exit1 is deliberate SourceUpdateHandoff, notnativecrash.
+Lastsave150 SHA ed599084d04dfbbb84015c1e08bea976710dbff7d7043a4a9436aa578b343c92.
+No furtheroutcomegames or policychanges. MAIN CSC+CE source stillunchanged.
+
+Beforestop, 17 AI foundations:14below3, one4/two3/six2/seven1/one0 (prospective
+Millgeometry).41Bestevents,17withpublishedfinal,16mismatch. Notdistinctconstructions.
+2DEFERRED lifecycleevents,zeroFAULT. Initialmap/starts/units/roles EXACTparity.
+Incompletefreshrun preserves allrawlogs/checkpoints, notqualificationcomplete.
+
+REA actualcurrentSteamXP2opened providerghidra SHA092abfbb..., firstautoanalysis
+ready. GetBestDistrict0x1803e4a50 parentdossier
+ev_49575d181044b9b03810d26e24bcb69da5aec49fb7c420eac9a1547a40e08e49.
+Use inspect_analysis_view native/pseudocode. All detailedresults infunctions
+store reaBestParsed/reaOpenParsed (maynot survivecompaction excepttoolsstore).
+Do notprintfullREAmetadata: binary_sessionreturned42k hugecapabilities; parse
+JSONcontent then emitonlyrelevantnormalized_result.data/keys. No REAstaticclaims
+aboutwhichSinopeguardactuallyfailedwithoutrowstate. Currentlyonlyhypotheses.
+
+ExistingGhidraMCP separatelyopenreference324c51e9 byte-matchedtext. Thisturn
+decompiled DoTurnActivate3e2820: CalcDistrictValues onlyifparam3fullactivation,
+thenAnalyzeTerrain/AnalyzeCityPlots (latter don'trewrite districtscorematrix),
+then CheckForDistrict3e0ee0 evenwhenparam3false. Calc3dfee0 updatesmatrixFAuto+508,
+onlyaddsbuildingpremiumtoalreadypositivecells. PlotEvaluator3e2aa0 NetValue
+at3e30be writesrow+20; row+70/+74 are evaluationcitykey viaEditCity, notactual
+tileowner (frontierrowownflag+5a comparesactualowner tokey). New meaningful
+lead: CE resolve_late_cell rejectsALLnonemptyreservationIDs; GetBestDistrict
+checks Control::Find; staleIDs treatedunreserved, liveones threshold, so our
+writeguard stricterthanactualnativeeligibility. Needactualrowmetadata atmiss.
+Sinope SAMEpacket17 has10otherFinalwrites; p2c458757packet4 has20others. Thus
+notwholecity/callergate/matrixidentityfailure inthoseevents; candidate-specific
+reservation/alias/eligibilityguards remainpossible. Beforevalidgate unlikely
+afterpositive asCalc onlyadds topositive; runtimefactsstillneeded.
+
+IfcontrolledREAFridaprobe becomesneeded, no outcome game. Be careful:
+attachingtoCalculateDistrictValues entry alreadyMinHooked maychange _ReturnAddress
+and BREAKourcaller==3e2941guard. Prefer readonly post-callsite3e2941 observation
+and selectorpostcallsite, with verifiedliveRBX/RSIthisregister, no relocationof
+the CALLitself. Don't claimreadonlyobserverneutralwithoutthatcheck. No probe
+prepared/started. REAFrida available perbinary_session; pythondefaultnofrida.
+Originaloldautomaticgoalremainspaused. No nativechangesorPRs.
+
 User requests getting to bottom of poor placement and recording Quarter
 adjacency at placement in a new run. Active Problems1.6/1.8; all1+2 remain
 the architecture scope. Original automatic goal remains paused.

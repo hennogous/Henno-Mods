@@ -3192,3 +3192,32 @@ policy and corrects only observation handling, recording deferred identities
 and separating loaded/captured/rebuilt Quarters from new foundations.
 
 [Protocol, partial records, observer checks and subsequent full-run scope](../research/mods/csc-ai-placement-time-20261113.md).
+
+<a id="ai-c174"></a>
+## AI-C174 — Complete-value reservation guards exclude cells that native selection still admits
+
+REA/Ghidra on the actual patched XP2 SHA092abfbb confirms GetBestDistrict3e4a50
+compares live reservations by priority and ignores a stale claim whose controller
+no longer resolves. TryReservePlot3ea040 permits takeover of a live different
+controller only above its stored priority plus20 utility (5,120 Q8), read from
+b65580. Release3e97e0 clears only the matching controller's claim. These are
+distinct native comparisons; a nonempty ID is not a blanket ban.
+
+Our qualified complete-value writer's resolve_late_cell rejects every nonempty
+reservation ID before recording a final attempt. This is a source-level
+coverage defect relative to the native opportunity set, not a calibration
+result. In the archived replay, Sinope's Farm163 successfully reserves26,14
+on165; on166 the native Quarter cell is444,512 Q8 and its trigger/acceptance
+is1736, while CSC has published−15,437 Q8. The Quarter reserves that same tile,
+is founded169 and completed172 at+1. A preceding improvement claim strongly
+supports the guard explanation. The exact ID/rejecting guard at the166 write
+was not captured; pointer/validity/matrix/caller alternatives remain unclosed.
+
+Separately, the adapter quotes owned sites from current BUILD targets, while
+native analysis can price future unlocks. This explains a possible class of
+missing offers, not Sinope's explicit-but-unwritten bid. No change to policy,
+native code or tuning bands is made. Henno stopped the fresh run at160;
+nativeexit0/preferences restored/save150 preserved. It remains an incomplete
+observation and no further outcome game was started.
+
+[Exact code paths, native/CSC comparison, evidence bundle and correction plan](../research/mods/csc-ai-reservation-write-gap-20261113.md).

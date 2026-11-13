@@ -129,8 +129,12 @@ The next normal Small Continents Online game uses the **same frozen639+6 CSC/CE
 files**, seeds18461107/29461107 and original AI1–5. Only the read-only observation
 code changes. No policy/native binary change is bundled into this measurement.
 Shared-controller worker99392; artifacts `.../csc-ai-placement-time-20261113/fresh250`.
-Source parity, lifecycle coverage, native operand mismatches and endpoint
-comparison remain to audit. Check autonomous progress about every15minutes.
+Henno subsequently stopped the run at160 and requested REA. It exited0 through
+the owning controller, restored preferences/packages and retains a verified150
+save. This is an incomplete observation, not a250-turn result. The final native
+journal was not drained. The parser now distinguishes fault-free readers from
+a completed/drained measurement. [Native reservation mismatch, exact behavior
+and stopped-prefix scope](csc-ai-reservation-write-gap-20261113.md).
 
 WildW `develop` was checked again during this investigation and remains
 `2986a746b396eb93aad14f9afffb043a09c2c489`. No upstream PR is involved.

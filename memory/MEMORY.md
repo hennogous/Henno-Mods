@@ -1,4 +1,27 @@
-# ACTIVE: poor-placement diagnostics, 13 November
+# ACTIVE: REA investigation; all game tests stopped by user, 13 November
+
+REA static investigation COMPLETE, exported and closed. Main result report
+project/docs/research/mods/csc-ai-reservation-write-gap-20261113.md, AI-C174.
+Native GetBest considers reserved cells via threshold; CE completewriter skips
+ALLnonemptyIDs. Sinope Farm163 reserves26,14SUCCESS165, Quarter1736 reserves/
+accepts166; actualnative444512Q8vsourpublished-15437. Guardmismatch confirmed,
+specificruntimebranch/IDnotcaptured soSinope cause stronginference, notsolecause
+proven. Ownedfuture-candidate/currentBUILDtargetgap independentlyconfirmed.
+No native/policyimplementationchanges, no furthergames/PRs. Sourceparserfix
+distinguishes faultfree from incompleteundrainedrun;17offlinechecksPASS.
+SkillnewAI-N124 reservationtakeover+20utility, needscommit/pushalongrepochanges.
+Read session_ai_placement_time.md finalREA section. Userstopremainsinforce.
+
+LATEST USER: "let's just stop right now and figure out what is going on", then
+"use rea to figure out what the ai is actually doing". STOPPED fresh250 at160
+via owning shared-controller source-update handoff, nativeexit0/ownersabsent/
+preferencesrestored/packagecallbackcomplete. Worker99392 exit1 EXPECTED userstop,
+notnativefault. Latestverifiedsave150 ed599084d04dfbbb84015c1e08bea976710dbff7d7043a4a9436aa578b343c92.
+No new outcome games/tuning changes. User now explicitly wants REA investigation.
+REA open_binary actual Steam XP2 SHA092abfbb..., providerghidra autoanalysisready.
+GetBestDistrict dossier parent ev_49575d181044b9b03810d26e24bcb69da5aec49fb7c420eac9a1547a40e08e49.
+See memory/session_ai_placement_time.md for evidence and current exact open issue.
+The running-game instructions below are historical and superseded.
 
 The new250 outcome run COMPLETED exit0, all preferences/packages restored.
 See project/docs/research/mods/csc-ai-economy-250-20261113.md and

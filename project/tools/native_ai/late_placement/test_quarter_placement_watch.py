@@ -113,5 +113,12 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.assertFalse(partial['measurementComplete'])
         self.assertEqual(len(partial['faults']),1)
 
+    def test_clean_but_interrupted_run_is_not_a_complete_measurement(self):
+        partial=parse(self.output())
+        self.assertTrue(partial['observerFaultFree'])
+        self.assertFalse(partial['measurementComplete'])
+        self.assertFalse(partial['journalDrained'])
+        self.assertTrue(parse(self.output()+'\nCSC_QUARTER_WATCH_DRAINED')['measurementComplete'])
+
 
 if __name__=='__main__':unittest.main()

@@ -132,8 +132,14 @@ City Lights and other optional integrations require their own acceptance data.
 If CE pricing is unavailable, an input is unknown, or a complete replacement
 would exceed the packet budget, retain coherent established guidance. Do not
 silently publish zero, disable unrelated protection, or leave half of a site's
-competition on an incomparable valuation. Native invalid/reserved cells remain
-protected; complete bids do not make an illegal site legal.
+competition on an incomparable valuation. Native invalid cells remain protected;
+complete bids do not make an illegal site legal. The current implementation
+also skips every nonempty reservation ID. REA and the poor-placement trace
+identify this as a coverage mismatch: the native selector can still compare
+those cells. Owned future candidates can also fall outside the current BUILD
+target list. Complete ownership is the intended architecture, not a proven
+property of every native candidate in this version. [Delivery gap and next
+verification](../research/mods/csc-ai-reservation-write-gap-20261113.md).
 
 ## How we judge a change
 

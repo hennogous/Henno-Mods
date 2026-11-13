@@ -1,5 +1,15 @@
 # CSC AI roadmap
 
+**Current: no active game; native delivery investigation under1.6/1.8.** Henno
+stopped the fresh outcome run at160 and requested REA. The updated DLL's selector
+can outbid plot reservations, while our complete-value adapter skips all
+nonempty IDs. Sinope has a preceding Builder reservation and reads native1736
+instead of our−60 utility. A second source-level gap excludes some owned future
+candidates via current BUILD admission. Next acceptance is an explicit native
+write/skip reason and actual compared operand for the problem pair, followed
+by coherent coverage. No new outcome game or value-band changes until this is
+understood. [Investigation and proposed correction sequence](../research/mods/csc-ai-reservation-write-gap-20261113.md).
+
 **13 November active work, Problems 1.6/1.8:** the central-economy Online250 run
 is complete: 26 completed Quarters, 8 at +3 or better, 4 at +4 or better, one
 working Bakers Stage2 chain and no Tailors chain at the endpoint. Native
@@ -13,7 +23,7 @@ write gap. The short replay confirms Sinope is+1 when founded and completed,
 with actual native444,512 Q8 versus published−15,437 Q8; a separate+3 choice
 reads its complete write exactly. Observer completeness fails on stale event
 identities, now explicitly deferred. A fresh250 with unchanged policy and
-revised read-only observations is running. [Placement-time case and current
+revised read-only observations was stopped by Henno at160. [Placement-time case and
 measurement](../research/mods/csc-ai-placement-time-20261113.md),
 [prior full result and comparison limits](../research/mods/csc-ai-economy-250-20261113.md).
 

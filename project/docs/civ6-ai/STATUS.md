@@ -1,5 +1,17 @@
 # Current CSC AI status
 
+**Current instruction: outcome tests stopped; REA investigation, 13 November.**
+The fresh lifecycle run stopped at160 through the shared controller, exited0
+and restored preferences. Turn150 is saved. No further game or tuning change.
+REA on the actual updated DLL confirms a native reservation is a threshold,
+while our complete-value writer skips every nonempty reservation ID. Sinope's
+logs show Farm163 reserving its tile on165, then Quarter1736 winning on166
+while our accepted bid was about−60 utility. This is a concrete coverage
+mismatch and a strong explanation of that miss; the exact native rejecting
+guard was not logged. Owned future candidates also have a separate current-
+BUILD-target coverage gap. Fix/verify delivery before calibrating scores.
+[Native mechanism, evidence and limits](../research/mods/csc-ai-reservation-write-gap-20261113.md).
+
 **13 November outcome and active investigation, Problems 1.6/1.8:** the new
 normal Online250 run completed and restored the session cleanly. It has 26
 completed Quarters: 23 with Base materials, but only 8 at +3 or better and 4
@@ -12,8 +24,9 @@ completion and native winning-operand records. The short turn150–175 replay
 records Sinope at +1 at foundation/completion and a native choice444,512 Q8
 versus our published−15,437 Q8. Another +3 choice consumes our exact write.
 Its global observer completeness fails on stale event identities; that gap is
-preserved and the reader fixed. A fresh250 now records the same diagnostics
-with unchanged policy. [Placement-time evidence and current run](../research/mods/csc-ai-placement-time-20261113.md).
+preserved and the reader fixed. The subsequent fresh250 recorded the same
+diagnostics with unchanged policy until Henno stopped it at160.
+[Placement-time evidence](../research/mods/csc-ai-placement-time-20261113.md).
 No tuning weights changed. [Completed prior result and
 limits](../research/mods/csc-ai-economy-250-20261113.md). The old goal stays paused.
 

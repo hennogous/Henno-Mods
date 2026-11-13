@@ -26,7 +26,9 @@ def parse(log,*,allow_faults=False):
     summary={event:dict(count=len(group),below3=sum(r['millForecastTotal']<3 for r in group),
         atLeast3=sum(r['millForecastTotal']>=3 for r in group),
         atLeast4=sum(r['millForecastTotal']>=4 for r in group))for event,group in events.items()}
-    return dict(rows=rows,summary=summary,measurementComplete=not faults,faults=faults,
+    drained='CSC_QUARTER_WATCH_DRAINED'in log
+    return dict(rows=rows,summary=summary,measurementComplete=not faults and drained,
+        observerFaultFree=not faults,journalDrained=drained,faults=faults,
         bestCount=sum(r['kind']=='BEST'for r in rows),
         writeCount=sum(r['kind']=='WRITE'for r in rows),
         deferredCount=sum(r['kind']=='DEFERRED'for r in rows),
