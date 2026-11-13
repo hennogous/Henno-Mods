@@ -28,6 +28,8 @@ def run(a):
     checkpoint=load(source/('checkpoint-'+str(a.start)+'.json'))
     assert checkpoint['turn']==a.start and checkpoint['verified']and checkpoint['save_complete_event']
     inspect_capacity=getattr(a,'inspect_capacity',False)
+    capacity_phases=getattr(a,'capacity_phases',False)
+    assert not(capacity_phases and inspect_capacity),'Phase observation must advance ordinary turns'
     # A saved-state inspection advances no turns. Keep it explicit rather than
     # silently treating a zero-length replay as a successful AI observation.
     assert (a.through==a.start if inspect_capacity else 0<a.through-a.start<=30),'Use a short diagnostic window'
@@ -53,12 +55,13 @@ def run(a):
     out.mkdir(parents=True)
     write_json(out/'inputs.json',dict(source=str(source),save_sha256=checkpoint['sha256'],
         start=a.start,through=a.through,read_only_observer=True,external_policy=False,
-        inspect_capacity=inspect_capacity,turns_advanced=a.through-a.start,
+        inspect_capacity=inspect_capacity,capacity_phases=capacity_phases,turns_advanced=a.through-a.start,
         packages={str(p):pin for p,pin in pins.items()},candidate_override=bool(a.ce),
         changed_from_archived=differences))
     for name in('quarter_placement_replay.py','quarter_placement_watch.lua','quarter_economy_facts_probe.lua'):
         shutil.copyfile(HERE/name,out/name)
     if inspect_capacity:shutil.copyfile(HERE/'district_capacity_inspect.lua',out/'district_capacity_inspect.lua')
+    if capacity_phases:shutil.copyfile(HERE/'capacity_phase_watch.lua',out/'capacity_phase_watch.lua')
     admission=None
     if admission_enabled:
         # Diagnostic only: the same archived main CSC policy still supplies all
@@ -92,6 +95,10 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
             raw=controller.cmd(read(out/'quarter_placement_watch.lua'),'CSC_AI_BakersGameplay','install-placement-watch')
             (out/'watch-install.txt').write_text(raw,encoding='utf-8')
             assert 'CSC_QUARTER_WATCH_INSTALLED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw
+            if capacity_phases:
+                raw=controller.cmd(read(out/'capacity_phase_watch.lua'),'CSC_AI_BakersGameplay','install-capacity-phase-observer')
+                (out/'capacity-phase-install.txt').write_text(raw,encoding='utf-8')
+                assert 'CSC_CAPACITY_PHASE_INSTALLED'in raw and 'CSC_CAPACITY_PHASE_FAULT'not in raw
             if a.facts_probe:
                 facts=controller.cmd('CSC_QUARTER_FACTS_REQUIRE_READY='+str(a.require_ready).lower()+'\n'+read(out/'quarter_economy_facts_probe.lua'),'CSC_AI_BakersGameplay','read-economic-readiness-facts')
                 (out/'economic-readiness-facts.txt').write_text(facts,encoding='utf-8')
@@ -122,6 +129,10 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
         raw=controller.cmd("CSC_QUARTER_PLACEMENT_WATCH.Drain();print('CSC_QUARTER_WATCH_DRAINED')",
             'CSC_AI_BakersGameplay','drain-final-placement-journal')
         assert 'CSC_QUARTER_WATCH_DRAINED'in raw and 'CSC_QUARTER_WATCH_FAULT'not in raw
+        if capacity_phases:
+            raw=controller.cmd("CSC_CAPACITY_PHASE_WATCH.Finish()",'CSC_AI_BakersGameplay','finish-capacity-phase-observer')
+            (out/'capacity-phase-finish.txt').write_text(raw,encoding='utf-8')
+            assert 'CSC_CAPACITY_PHASE_FAULT'not in raw
         boundary=save_inactive_boundary(controller,turn=a.through,name='CSC_QUARTER_PLACEMENT',
             native_directory=home/'Saves/Single',archive=out/'endpoint.Civ6Save')
         write_json(out/'checkpoint.json',boundary)
@@ -142,9 +153,10 @@ assert(selected and Modding.CanEnableMod(selected.Handle)=='OK');Modding.EnableM
     if admission:admission.qualify()
     log=read(out/'Lua.log')
     assert 'CSC_QUARTER_WATCH_FAULT'not in log and 'CSC_AI_BAKERS_DISTRICTS_FAILED'not in log
+    if capacity_phases:assert 'CSC_CAPACITY_PHASE_FAULT'not in log
     write_json(out/'complete.json',dict(verified=True,start=a.start,through=a.through,
         external_policy=False,read_only_observer=True,admission_probe=admission_enabled,
-        inspect_capacity=inspect_capacity,turns_advanced=a.through-a.start))
+        inspect_capacity=inspect_capacity,capacity_phases=capacity_phases,turns_advanced=a.through-a.start))
 
 
 if __name__=='__main__':
@@ -152,6 +164,7 @@ if __name__=='__main__':
     for name in('source','output','my-games','user-root'):parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--facts-probe',action='store_true')
     parser.add_argument('--require-ready',action='store_true')
+    parser.add_argument('--capacity-phases',action='store_true',help='Read-only population/publication/district event ordering')
     parser.add_argument('--ce',type=Path);parser.add_argument('--csc',type=Path)
     parser.add_argument('--admission-probe',action='store_true',
         help='Observe Quarter request admission; never changes bids or decisions')
