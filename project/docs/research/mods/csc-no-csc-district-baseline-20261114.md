@@ -78,6 +78,40 @@ campaign wrapper contains no game commands. No CE rebuild or upstream PR.
 
 ## Status
 
+**Continuation, 14 November:** Continents reached250 and saved/closed with exit0.
+The final observer assertion stopped the campaign because a queued event remained
+unresolved. The archived-log audit recovers all ten censuses and377 original-AI
+foundations, all with UI adjacency. The six extra UI additions are existing City
+Centers changing owner, accounted for by Core ownership records. No native or
+Lua observer faults.357 factory-entry cached totals read successfully.
+
+Continents has156 slot-consuming native foundations without CSC versus158 with
+CSC,49 versus48 final cities, and572 versus602 population. These are the first
+map's comparison, pending the other two maps. Raw failure and the offline recovery
+audit remain together; the missing original Finish acknowledgement is preserved.
+
+Henno authorises the remaining Pangaea and Fractal controls. `--remaining`
+preserves the first-stop ledger, checks its completed250/save/closure and starts
+only these two preselected games. Future endpoint observers print unresolved
+event details and finish; analysis keeps their coverage visible. Pending-event
+completeness alone no longer discards a completed game or blocks the next map.
+
+The optional factory-return flag now masks AL, with high-register-bit regression
+cases passing, before launching the remaining games. Their source pins record
+the diagnostic revision; the original Continents return flag stays excluded.
+Construction counts continue to come from physical events in all arms.
+
+One additional archived field correction: the no-CSC observer's `foundationTurn`
+can contain an extra native event argument rather than a turn. Use the journal's
+actual `turn`, as the comparison already does. Correct the callback boundary
+after the two running games finish; keep their pinned source unchanged.
+
+Artifacts: `offline-observation-audit.json` and
+`full-game-observation-complete.json` in `continents250-01`; original
+`failure.json` and `campaign-progress-first-stop.json` remain available.
+
+### Initial preparation and recording history
+
 Preparation:12 offline observer/database/native-VM tests pass, including19-hook
 compatibility, the optional20th placement snapshot, changed-after-entry values,
 failed/repeated factories, no-CSC SQL guards and distinct foundation/completion/

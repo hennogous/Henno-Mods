@@ -302,7 +302,9 @@ function install(){
     // Existing districts/repairs can call this factory too. Neither a positive
     // return nor this capture is counted as a new district: join DistrictAdded
     // with explicit player/city/type/XY and preserve missing/ambiguous matches.
-    emit('district-placement-return',{...row,returnedSuccess:result.toInt32()!==0});
+    // The qualified factory writes its bool to AL; the other return-register
+    // bytes may retain old values. Physical events still identify construction.
+    emit('district-placement-return',{...row,returnedSuccess:(result.toInt32()&0xff)!==0});
   },PLACEMENT_POINTS.preCreateDistrict);
 }
 rpc.exports={

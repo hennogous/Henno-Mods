@@ -195,6 +195,10 @@ function fixture(mismatch=false,invalidFunds=false,capturePlacement=false){
     assert.equal(mem.get(matrix+180),999); // after-entry state was not overwritten
     hook.onEnter.call(call);hook.onLeave.call(call,p(0));
     assert.equal(rpc.drain().records[1].returnedSuccess,false);
+    hook.onEnter.call(call);hook.onLeave.call(call,p(0x123400));
+    assert.equal(rpc.drain().records[1].returnedSuccess,false);
+    hook.onEnter.call(call);hook.onLeave.call(call,p(0x123401));
+    assert.equal(rpc.drain().records[1].returnedSuccess,true);
     put(city,0xd8,6);hook.onEnter.call(call);hook.onLeave.call(call,p(1));put(city,0xd8,1);
     assert.equal(rpc.drain().records.length,0);
   }

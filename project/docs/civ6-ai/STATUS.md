@@ -2,13 +2,19 @@
 
 **14 November: three-game Problems1/2 planning campaign completed.**
 
-Henno has now authorised three **no-CSC controls** with the same seeds, leaders,
-speed and optional-mod stack, to compare ordinary district counts/adjacency/
-native values without Quarter slot competition. The first control reaches160
-with zero observer faults and171 readable factory-entry cached values. CSC is
-absent, not only untuned; native tuning counters stay0. The additional snapshot
-supplements the older choice-time quote, without forcing recomputation. No
-completed control outcome yet.
+**No-CSC controls:** Continents completed250, saved and closed. Its recovered
+analysis contains377 original-AI foundations, including156 slot-consuming native
+districts, versus158 with CSC. All377 have UI adjacency records; the six extra
+UI additions are captured City Centers, correctly recorded as ownership changes.
+All ten censuses and357 readable before-placement cached quotes are archived.
+An endpoint pending-event assertion stopped the original runner; the offline
+coverage audit recovers the game without repeating it. Future observers report
+the unresolved events for review.
+
+Pangaea and Fractal are now running serially through the shared controller to250,
+as Henno requested. Same preselected seeds, leaders, speed and CL/R2/Suk stack;
+CSC absent and native tuning disabled. Compare all three before interpreting
+the aggregate district/balance effect.
 [Fixed no-CSC protocol](../research/mods/csc-no-csc-district-baseline-20261114.md).
 
 All three CSC-enabled Small/Prince/Online250 games close with exit0 and restored

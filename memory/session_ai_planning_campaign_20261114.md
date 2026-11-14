@@ -261,3 +261,36 @@ optionalCLexcludedfromstockbutretainedJSON; noCtororGameAPIworkonimport.
 NOTYETRUN(all3controlsneeded). Fixedadjacencyhelpermissing!=zero; skipWonder/CC
 cacheutilitytable(butrawretained). No baseline outcome yet. NativeALexcerptdisk
 placement-return-assembly.json nowretained; no longerdependsfunctionstore.
+
+## Remaining no-CSC controls running, 14 November, 14:49 UTC
+
+Henno explicitly requests Pangaea and Fractal now. Shared-controller campaign
+session7160 runs `vanilla_district_campaign.py --remaining` in the same no-CSC
+root. It preserves `campaign-progress-first-stop.json`, the original failure and
+all Continents files. Pangaea is starting normally, source preflight confirms
+CSC absent / native policy counters zero. Fractal follows automatically after
+successful closure. Check about every15min; no second console or pinned edits.
+Runtime files are frozen until both games finish. Old automatic goal paused.
+
+Before launch: optional native return bool corrected to mask AL, with upper-bit
+VM cases. Observer Finish now journals pending events rather than asserting them
+empty.14 observer/SQL/native-VM tests pass. Source pins capture these revisions.
+
+Continents OFFLINE RECOVERY COMPLETE: all ten censuses,377 original-AI physical
+foundations, all377 with UI-added adjacency. Six extra UI-added City Centers
+match Core OWNERSHIP records, so none is an omitted cohort foundation. Native
+frozen/no faults/no messages;357 placement-entry cached reads. Raw endpoint
+failure remains. New offline-observation-audit.json and observation-complete
+record the recovery mode.156 stock slot foundations vs158 treated;49cities/
+572pop vs48/602. No policy changed.
+
+Found another unused diagnostic field issue: native DistrictAddedToMap extra
+argument flows into baseline foundationTurn (garbage native values). Analysis
+uses row.turn and remains correct. Fix callback argument boundary AFTER running
+Pangaea and Fractal; preserve source pins now. Queued late events need their
+stored real callback turn, not a native seventh argument. Details in protocol.
+
+New feedback_research_findings_first.md: lead with useful results/implications,
+keep qualification proportional, separate diagnostic gaps from safety checks.
+735cc011 pushed that feedback and observer reporting fix. Pending runtime/docs
+changes for remaining controls need scoped commit/push during the run.
