@@ -110,8 +110,18 @@ end
 function W.Finish()
  W.Health();scan('poll')
  assert(W.faults==0,'Baseline district observer faulted')
- assert(next(W.pending)==nil,'Unresolved foundation event at endpoint')
- print('CSC_VANILLA_DISTRICT_FINISHED',Game.GetCurrentGameTurn(),W.records,W.faults)
+ -- Events can outlive the original player/district lookup after capture,
+ -- replacement or removal. Retain every unresolved event for the coverage
+ -- audit instead of aborting a completed game and the next campaign arm.
+ -- These rows describe observation gaps, not additional built districts.
+ -- Health/observer faults above still stop an unsafe or broken measurement.
+ local pending=0
+ for _,v in pairs(W.pending)do
+  pending=pending+1
+  emit('PENDING_EVENT',{player=v[1],districtID=v[2],city=v[3],x=v[4],y=v[5],
+   district=v[6],eventTurn=v[7],source='unresolved-added-event'})
+ end
+ print('CSC_VANILLA_DISTRICT_FINISHED',Game.GetCurrentGameTurn(),W.records,W.faults,pending)
 end
 W.Health();scan('seed')
 Events.DistrictAddedToMap.Add(function(...)safe(inspect,'added',...)end)

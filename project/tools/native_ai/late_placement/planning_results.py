@@ -58,6 +58,10 @@ def analyse(root):
         elif row['kind']=='district-placement-enter':
             placement_entries[tuple(row[k]for k in ('player','city','district','plot'))].append(row)
     ai=lambda r:r.get('player')in players
+    pending_events=[r for r in planning if r['kind']=='PENDING_EVENT']
+    # Older observers did not print the pending queue. Their empty event list
+    # means coverage was unreported, so keep the aggregate unknown for them.
+    pending_reported=bool(re.search(r'CSC_VANILLA_DISTRICT_FINISHED\s+\d+\s+\d+\s+\d+\s+\d+',log))
     foundations=[r for r in planning if r['kind']=='FOUNDATION'and ai(r)]
     completions=[r for r in planning if r['kind']=='COMPLETION'and ai(r)]
     types={r['district']:r['districtType']for r in foundations};district_metadata={}
@@ -191,6 +195,8 @@ def analyse(root):
         and r.get('bidVersion')==r.get('lastWriteVersion')==r.get('version')
         and r.get('lastWriteOrdinal',10**12)<r.get('nativeOrdinal',-1)]
     summary=dict(original_ai=sorted(players),district_construction=by_type,quarter_quality_at_foundation=quality,
+        pending_foundation_events=len(pending_events)if pending_reported else None,
+        pending_original_ai_foundation_events=sum(ai(r)for r in pending_events)if pending_reported else None,
         distinct_relationship_orders={role:dict(count)for role,count in orders.items()},
         material_loss_events=len(losses),raw_resource_loss_events=sum(bool(r.get('lostBase')or r.get('lostSpec'))for r in losses),
         working_supplier_loss_events=sum(bool(r.get('lostWorking'))and previous_material(r)for r in losses),
@@ -214,6 +220,7 @@ def analyse(root):
                 'Category savings balances are not per-tile promises.'])
     output=dict(analysis_implementation_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 summary=summary,constructions=construction,material_losses=losses,
+                pending_foundation_events=pending_events,
                 usable_material_exhaustions=exhaustions,
                 managed_coverage_receipts=list(coverage.values()),
                 relationship_pairs=list(relations.values()),plan_transitions=transitions)

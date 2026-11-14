@@ -16,6 +16,14 @@ are retired. The public CSC player documentation site remains independent.
 
 ## After an investigation
 
+Lead the report and progress updates with what we learned, its practical
+implication and the next useful action. Explain uncertainty when it changes that
+interpretation or action; keep detailed evidence qualifications with the evidence.
+Assess observation gaps against the measurements they affect. Record partial
+coverage explicitly and recover useful results from completed games before
+considering a repeat. Diagnostic completeness and safe game/native operation
+need separate checks.
+
 1. Record the result in its dated evidence report: exact input identities, intervention, native consumer, observed outcome and limits.
 2. Update the focused engine reference/AI-N entry if it teaches reusable engine behaviour. Update CSC Markdown/AI-C entries for the mod application. Link the evidence rather than copying a diary everywhere.
 3. Preserve stable IDs and superseded assertions. Allocate the next unused ID from the maintained register; inspect it rather than inferring the next ID from an old report.

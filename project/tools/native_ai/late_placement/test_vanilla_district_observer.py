@@ -50,6 +50,20 @@ CE_AIDistrictScoresStatus=function()return nativeStatus end
         self.assertEqual(len(self.rows('FOUNDATION')),0)
         self.assertEqual(len(self.rows('FIRST_OBSERVED')),2) # Seed center + missed new footprint.
 
+    def test_unresolved_event_is_reported_without_discarding_finished_game(self):
+        self.lua.execute("Game.t=2;fire('DistrictAddedToMap',0,99,10,2,0,1);Game.t=250;CSC_VANILLA_DISTRICTS.Finish()")
+        self.assertEqual(len(self.rows('FOUNDATION')),0)
+        rows=self.rows('PENDING_EVENT')
+        self.assertEqual(len(rows),1)
+        for field in ('eventTurn=2','districtID=99','x=2','player=0'):
+            self.assertIn(field,rows[0])
+        logs=list(self.lua.globals().logs.values())
+        self.assertTrue(any(s.startswith('CSC_VANILLA_DISTRICT_FINISHED\t250\t')and s.endswith('\t0\t1')for s in logs))
+
+    def test_observer_fault_still_blocks_finish(self):
+        self.lua.execute('CSC_VANILLA_DISTRICTS.faults=1')
+        self.assertIs(self.lua.eval('pcall(CSC_VANILLA_DISTRICTS.Finish)')[0],False)
+
     def test_baseline_database_rejects_csc_district_or_private_yield(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parent)as directory:
             path=Path(directory)/'game.sqlite'
