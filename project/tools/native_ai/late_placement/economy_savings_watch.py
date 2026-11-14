@@ -34,17 +34,26 @@ POINTS = {
 # Not hook sites: qualify the receiver-saving prologue and frame layout that the
 # savings midpoint relies on. Reading an arbitrary readable stack word is unsafe.
 GUARDS = {'receiverSave': 0x459095, 'receiverFrame': 0x4590A5}
+# Optional diagnostic boundary, not a CE policy hook. REA/Ghidra identifies
+# BuildQueue::PreCreateDistrict's native ABI; full1257-byte function parity is
+# retained in the no-CSC campaign. Capture before any foundation writes, without
+# forcing a new forecast. A successful return still needs a physical-event join.
+PLACEMENT_POINTS = {'preCreateDistrict': 0x1029C0}
+PLACEMENT_BODY_SHA = 'c6b12fc601d6b76ca3aa9633dbe60097f3b7acd37885ed588577e39503cca402'
 
 
-def specification(binary):
+def specification(binary, *, capture_placement=False):
     binary = Path(binary).resolve(strict=True)
     image = Image(binary, HOTFIX_SHA)  # Whole-file digest precedes PE/entry checks.
     if image.timestamp != HOTFIX_TIMESTAMP or image.image_size != XP2_IMAGE_SIZE:
         raise ValueError('Unexpected patched XP2 PE layout')
+    if capture_placement and hashlib.sha256(image.at(PLACEMENT_POINTS['preCreateDistrict'],1257)).hexdigest()!=PLACEMENT_BODY_SHA:
+        raise ValueError('Placement factory body differs from qualified native ABI')
     return dict(path=str(binary), name=MODULE, sha256=HOTFIX_SHA,
                 timestamp=image.timestamp, imageSize=image.image_size,
                 points={name: dict(rva=rva, prefix=image.at(rva, 32).hex())
-                        for name, rva in {**POINTS, **GUARDS}.items()})
+                        for name, rva in {**POINTS, **GUARDS,
+                            **(PLACEMENT_POINTS if capture_placement else {})}.items()})
 
 
 class EconomySavingsWatch:
@@ -56,7 +65,7 @@ class EconomySavingsWatch:
     Never detach from a live owner, including in exception cleanup.
     """
     def __init__(self, *, directory, binary, output, start, through, write,
-                 players=(1, 2, 3, 4, 5), width, height, districts=None):
+                 players=(1, 2, 3, 4, 5), width, height, districts=None,capture_placement=False):
         if (not isinstance(start, int) or not isinstance(through, int) or
                 not 0 <= start < through <= start + 300):
             raise ValueError('Require bounded <=300-turn observation')
@@ -65,16 +74,18 @@ class EconomySavingsWatch:
                 any(type(p) is not int or not 1 <= p <= 5 for p in players) or
                 type(width) is not int or type(height) is not int or
                 not 1 <= width <= 256 or not 1 <= height <= 256 or
-                districts is not None and (type(districts) is not int or not 1 <= districts <= 4096)):
+                districts is not None and (type(districts) is not int or not 1 <= districts <= 4096)
+                or type(capture_placement)is not bool):
             raise ValueError('Invalid original-AI/map scope')
-        self.spec = specification(binary)
+        self.spec = specification(binary,capture_placement=capture_placement)
         self.frida = dependencies(directory)
         self.output, self.write = Path(output), write
         # Optional DB catalogue count=max(GameInfo.Districts.Index)+1, including
         # modded/replacement types. Without it choices are still recorded, but
         # cached totals remain explicitly missing rather than guessing a stride.
         self.config = dict(start=start, through=through, players=players,
-                           width=width, height=height, districts=districts, maxRecords=MAX_RECORDS)
+                           width=width, height=height, districts=districts, maxRecords=MAX_RECORDS,
+                           capturePlacement=capture_placement)
         self.owner = self.attached = self.script = self.frozen = None
         self.messages, self.rows, self.last_sequence = [], 0, 0
         script = self.output / 'economy_savings_watch.js'
@@ -100,7 +111,8 @@ class EconomySavingsWatch:
         self.script.load()
         status = self.script.exports_sync.init(self.spec, self.config)
         self.write(self.output / 'economy-savings-ready.json', status)
-        if not status['installed'] or status['hooks'] != len(POINTS):
+        expected=len(POINTS)+(len(PLACEMENT_POINTS)if self.config['capturePlacement']else 0)
+        if not status['installed'] or status['hooks'] != expected:
             raise RuntimeError('Economic hook qualification failed')
         self.script.exports_sync.start()
 

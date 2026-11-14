@@ -26,7 +26,7 @@ class EconomicGuards(unittest.TestCase):
                   start=0, through=250, width=74, height=46)
         for delta in [dict(start=5, through=5), dict(through=301), dict(players=[1, 1]),
                       dict(players=[6]), dict(width=0), dict(height=257),
-                      dict(districts=0), dict(districts=True), dict(districts=4097)]:
+                      dict(districts=0), dict(districts=True), dict(districts=4097),dict(capture_placement=1)]:
             with self.subTest(delta=delta), patch('economy_savings_watch.dependencies') as deps:
                 with self.assertRaises(ValueError):
                     EconomySavingsWatch(**dict(base, **delta))
@@ -89,12 +89,13 @@ class EconomicGuards(unittest.TestCase):
         report=json.loads(result.stdout)
         self.assertEqual(report['hooks'],19)
         self.assertEqual(report['debits'],1)
+        self.assertEqual(report['placementHooks'],20)
 
 
 VM_FIXTURE = r"""
 const fs=require('node:fs'), vm=require('node:vm'), assert=require('node:assert/strict');
 const source=fs.readFileSync(process.argv[1],'utf8');
-function fixture(mismatch=false,invalidFunds=false){
+function fixture(mismatch=false,invalidFunds=false,capturePlacement=false){
   const mem=new Map(), hooks=new Map(); let calls=0;
   class P {
     constructor(v){this.v=Number(v);} add(o){return new P(this.v+o);}
@@ -117,15 +118,15 @@ function fixture(mismatch=false,invalidFunds=false){
       attach(a,f){calls++;hooks.set(a.v,f);return {detach(){throw Error('Must retain live hooks');}};},flush(){}
     }};
   vm.createContext(context);vm.runInContext(source,context);
-  const points=vm.runInContext('({...ECONOMY_POINTS,...ECONOMY_GUARDS})',context);
+  const points=vm.runInContext(capturePlacement?'({...ECONOMY_POINTS,...ECONOMY_GUARDS,...PLACEMENT_POINTS})':'({...ECONOMY_POINTS,...ECONOMY_GUARDS})',context);
   const spec={path:'pinned.dll',name:'GameCore_XP2_FinalRelease.dll',
     sha256:'092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f',
     timestamp:1793649108,imageSize:12976128,
     points:Object.fromEntries(Object.entries(points).map(([k,rva])=>[k,{rva,prefix:'00'.repeat(32)}]))};
-  const cfg={start:0,through:250,players:[1,2,3,4,5],width:74,height:46,districts:40,maxRecords:20000};
+  const cfg={start:0,through:250,players:[1,2,3,4,5],width:74,height:46,districts:40,maxRecords:20000,capturePlacement};
   const rpc=context.rpc.exports;
   if(mismatch){assert.throws(()=>rpc.init(spec,cfg),/Loaded entry differs/);assert.equal(calls,0);return;}
-  assert.equal(rpc.init(spec,cfg).hooks,19);rpc.start();rpc.window(200,205);
+  assert.equal(rpc.init(spec,cfg).hooks,capturePlacement?20:19);rpc.start();rpc.window(200,205);
   const city=0x10000,xy=0x20000,frame=0x30000,stack=0x40000,
     funds=0x50000,game=0x60000,delta=0x70000,economic=0x80000,
     player=0x90000,treasury=0xa0000,weights=0xb0000;
@@ -182,6 +183,21 @@ function fixture(mismatch=false,invalidFunds=false){
   assert.equal(missing.totalQ8,null);assert.equal(missing.scoreStatus,'row_matrix_alias_differs');
   cfg.districts=null;fire('selection',{rdi:p(build),rbp:p(frame),rax:p(5)});
   assert.equal(rpc.drain().records[0].scoreStatus,'district_count_unconfigured');cfg.districts=40;
+  if(capturePlacement){
+    const queue=0x110000,definition=0x120000,hook=hooks.get(points.preCreateDistrict);
+    put(queue,0x1e8,city);put(city,0x1948,build);put(definition,0x14,5);put(row,0x20,matrix+160);
+    const call={context:{rcx:p(queue),rdx:p(definition),r8:p(xy)}};
+    hook.onEnter.call(call);put(matrix,180,999);hook.onLeave.call(call,p(1));
+    const placed=rpc.drain().records;assert.equal(placed.length,2);
+    assert.equal(placed[0].kind,'district-placement-enter');assert.equal(placed[0].totalQ8,91234);
+    assert.equal(placed[1].totalQ8,91234);assert.equal(placed[1].returnedSuccess,true);
+    assert.equal(placed[1].exactPlacementEntry,true);assert.equal(placed[1].recomputed,false);
+    assert.equal(mem.get(matrix+180),999); // after-entry state was not overwritten
+    hook.onEnter.call(call);hook.onLeave.call(call,p(0));
+    assert.equal(rpc.drain().records[1].returnedSuccess,false);
+    put(city,0xd8,6);hook.onEnter.call(call);hook.onLeave.call(call,p(1));put(city,0xd8,1);
+    assert.equal(rpc.drain().records.length,0);
+  }
   const ownership=hooks.get(points.setOwner),plotData=0xc0000;
   // Do not install any readable owner byte on the wrapper. Its +1c is NOT the
   // resolved plot-data owner; an accidental read must fault this fixture.
@@ -199,10 +215,10 @@ function fixture(mismatch=false,invalidFunds=false){
   const payment=rpc.drain().records[1];assert.equal(payment.kind,'purchase-debit-return');
   assert.equal(payment.measuredDeltaQ8,-25600);assert.equal(payment.deltaMatched,true);
   assert.equal(payment.lineage.known,false);assert.equal(frozen.faults.length,0);
-  assert.equal(hooks.size,19); // freeze never detaches from a live instruction path
+  assert.equal(hooks.size,capturePlacement?20:19); // freeze never detaches from a live instruction path
   return {hooks:hooks.size,debits:frozen.totals.commandDebits};
 }
-fixture(true);fixture(false,true);const report=fixture();console.log(JSON.stringify(report));
+fixture(true);fixture(false,true);const report=fixture();report.placementHooks=fixture(false,false,true).hooks;console.log(JSON.stringify(report));
 """
 
 

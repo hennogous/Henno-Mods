@@ -172,3 +172,92 @@ compatible..., unrelatedFarmregression passes. Campaignsources/rawstaysfrozen;
 offlineanalysis appliescorrectionsallarms. AddedcapturedCSVphase/visiblecleanup
 controllertests, no newlivegame. Finalreportrepo path
 project/docs/research/mods/csc-ai-planning-campaign-results-20261114.md.
+
+NEW AUTHORIZED TASK after completion: run3 no-CSC controls recording all district
+counts, UIadjacency andforecastvaluesatplacement. ToldHenno same3seeds/maps/Online
+PrinceSmall, same6leadersfixedthroughnormalsetup, CL/R2/Suk retainedtoisolateCSC;
+hecansteeriffullyunmoddedwanted. No gamesstarted yet atthisentry. Shadowdied;
+verifiedalltreatedclosures/logs/campaignstate/reportstillpresent. Mainfinal
+8bc627cf PUSHED;skill5a0af20 PUSHED. These close priorcampaign fully, notoldgoal.
+
+Baseline root Desktop/Codex/csc-no-csc-district-baseline-20261114 createdonlywith
+nativeproofs. Newprojectfiles vanilla_district_run.py,vanilla_district_campaign.py,
+vanilla_district_observer.lua,vanilla_district_ui.lua,test_vanilla_district_observer.py.
+Use CLI via sharedcontroller (NO CUA), exact5turn autoplaywindows,15minmanualchecks.
+CEonlystagedat Mods/CSC Vanilla Observation CE +original3optionalWorkshopmods;
+noCSCpackage/data/yield/policy. RecordDBabsenceandnativeenabled/version/entries/
+changed/managedTypes0 throughrun. CE DLL400e6755 samefrozen02; sourcepackages
+derivedfromtreatedsource.Pangaeacontrolsourceusesrawparentpangaea250-01,
+becausefreshprotocol; finaltreatedoutcomecompareusespangaea250-combined.
+Full250 controls requested; no new CE DLL or upstreamPR.
+
+NEW PASSIVE NATIVE BOUNDARY: Ghidra324c51e9 get_program_info confirmed; decompiled
+PreCreateDistrict RVA1029c0, body1257 bytes ending102ea8, wholebodyequalscurrent
+092abfbb; SHA c6b12fc601d6b76ca3aa9633dbe60097f3b7acd37885ed588577e39503cca402.
+RCX BuildQueue*, RDX DistrictDefinition*(index+14), R8 const int32XY[2]*;
+Queue+1e8→City*,City+1948→CityBuild*. Lua wrapper6c9f10passesaddresslocalintpair
+independentlyconfirmsXYABI. Beforeentrycachedtotalviaexistingboundedmatrixreader;
+NOrecalculation, no enginefunctioncall/writes. Returnboolcanrepair/existing/fail,
+sojoinphysicalfoundation;don'tcountfactorycallsasbuilds. Nativeproofsarchivedroot
+placement-entry-ghidra.json,placement-entry-code-parity.json. GhidraMCP nowback.
+
+economy_savings_watch.* optionalcapture_placement=False preserves19hooks;
+newbaselineTrue adds20thfactoryhookandfullbodyguard. VMtests bothmodes, return0/1,
+sameentryquoteevenifmatrixchangesduringfactory,wrongplayerexcluded, no mutation.
+Python/JS guards cfgbool/counts; pairedleave nowpassesreturnvalue(nonbreaking).
+district_adjacency_watch.lua optionaldiagnosticreader letsnoCSCuseStockAPI.
+Coreobservercensuses25turnscompatibleprefixes+newphysicaldistrictjournal,
+requiresnoCSC/nativetuning0. NativeentrylivecoverageNOTyetproved.
+12offlinebaseline/VM/SQLitetestsPASS. SQLitefixturesneededclosing()explicitly;
+fixedbeforegame andremovedonlyknownfailedfixturetmpmpn7g1ed. Actualprepare on
+treatedContinents passesCE/extramodhashes/sourcepaths. NewruntimefilesUNCOMMITTED.
+Next: launchserialbaselinewrapper once through250 each; inspectearlyqualification
+onlyifneededthen15minchecks, archive/compare. Needextendplanning_results tojoin
+new district-placement-return rowsbyphysicalpair/time separatelyfrompriorchoice.
+NewdriverdoesnotexposeEngine/GameDatawrites; no mainCSCchanges forcontrols.
+
+14:06 local NO-CSC campaign ACTIVE, root unifiedsession70974. Command Python312
+-B vanilla_district_campaign.py --output Desktop/Codex/csc-no-csc-district-baseline-20261114
+--treated Desktop/Codex/csc-ai-planning-campaign-20261114 --dependencies
+Desktop/Codex/csc-ce-ai-tooling-probe-20261028/dependencies. Rootstdoutcampaign-console.txt;
+childcontinents250-01-console.txt. Allsourceplansprepared BEFOREoutcomes, CE+CL/R2/Suk
+only; scriptfullydisabledCSC byexactModflagsandLua/readonlySQLiteabsence. First
+sourcepreflight/native20hooksack, controllerprogress after11. Rootserialstops
+onchildfailure, noauto retries/seeds. LastEARLYqualificationrecordcheck14:06;
+nextmanual~14:21 then15minintervals. No secondconsole/CUA. AllruntimepinsFROZEN:
+vanilla_run.py,observer.lua,ui.lua,eco_watch.py/js,district_ui_watch.lua,
+ce_bakers_fresh.py,planning_continue.py,and ALLsharedcontroller *.py/*.lua.
+Offline planning_results.py and newanalysis/tests outsidecontroller safe toedit.
+Newbaselinecode/docs NOTYETCOMMITTED;12offlinebaseline/VM/SQLtestsPASS.
+
+Known OPTIONAL CAPTURE FIELD issue caughtbeforeanalysis: PreCreateDistrict bool
+returnisAL ONLY! Assembly102e6f MOV AL,1;102e8c XOR AL,AL (storedtooloutput
+functionsstoreplacementReturnAssembly butnotyetdisk). Current JSreturnedSuccess
+usesresult.toInt32()!=0 soUNQUALIFIED(upperbitsstale). DoNOTusefield for anyoutcome
+orfilter. Entrytotal/ABI/coordsunaffected; physicalFOUNDATIONjoinsownconstruction.
+Keep all3frozen; aftercampaignfixmask &0xff +VMupperbitscase. Avoidrestarting/losing
+validphysical/valueevidencejustforunusedbool. Protocolalreadyexplainscorrection.
+NewbaselineFactoryentry counts NOTconstruction; needuniquephysicalpair/time joins.
+Newcontrol actualsource.starts parsedfromnativeCLI; expected_starts separate.
+BaselineMapSignature is[width,height]only; doNOT claimidenticalmap/starts byseed.
+Explicitleadersnormalsetupmatchtreated6ids. SQLsnapshotDebugGameplay.sqlite archived
+withbefore/copied/afterhashguard; readonlyconnectionsuseclosing()nothandlesleftopen.
+
+14:22scheduledcheck: firstnoCSC Continents160/250healthy,20hooks/0faults, sourceCE
+policycounters0.171beforeplacemententriesallscoreStatusread (laterdrainmore).
+Positive ordinarydistrictvalues; Wondergenericdistrictcolumnmostly-2559744
+(-9999utility sentinel), doNOTcalibratemeanWonder/CC cache asdistrictforecast.
+Readsampling realGameCorefactoryABI works; stillnotfreshrecomputation norproof
+nativeusedcellatplacement. Userupdatedfirst160progress. Nextmanual~14:37.
+
+NEW OFFLINEONLY safe-editswhile70974running: planning_results.py addsseparate
+nativePlacement identity/segment/clockjoin, equalclockpreferred, uniqueonly;
+repeatedattemptsambiguous, returnedSuccessIGNOREDalways. Adds nativeplacement
+distribution/status separatefromearlierchoiceQuote+age. RecordsownanalysisSHA,
+parsesloadedRequiresPopulation/definitionCostmetadata.12analysisregressionsPASS.
+vanilla_district_compare.py prepares3closedarmcomparison usingcommonchoicephase,
+separatecontrolbefore-placementcache,stockslotcounts+terminalcities/pop/alive,
+optionalCLexcludedfromstockbutretainedJSON; noCtororGameAPIworkonimport.
+NOTYETRUN(all3controlsneeded). Fixedadjacencyhelpermissing!=zero; skipWonder/CC
+cacheutilitytable(butrawretained). No baseline outcome yet. NativeALexcerptdisk
+placement-return-assembly.json nowretained; no longerdependsfunctionstore.

@@ -6,9 +6,12 @@ assert(not CSC_DISTRICT_ADJACENCY_WATCH,'Duplicate UI district observer')
 CSC_DISTRICT_ADJACENCY_WATCH={seen={}}
 local W=CSC_DISTRICT_ADJACENCY_WATCH
 local function sample(source,player,districtID,cityID,x,y,kind)
- local ui=assert(ExposedMembers.CSC_Adjacency)
+ -- Controls without CSC provide a diagnostic reader with the same result
+ -- shape. It calls the stock UI API only; it does not load CSC code or yields.
+ local reader=CSC_DISTRICT_ADJACENCY_READER
+ if not reader then reader=assert(ExposedMembers.CSC_Adjacency).GetDistrictAdjacency end
  local plot=assert(Map.GetPlot(x,y))
- local value=assert(ui.GetDistrictAdjacency(player,cityID,plot:GetIndex(),kind))
+ local value=assert(reader(player,cityID,plot:GetIndex(),kind))
  local d=Players[player]and Players[player]:GetDistricts():FindID(districtID)
  local stage=d and d:IsComplete()and'complete'or'foundation'
  local signature=table.concat({player,cityID,districtID,plot:GetIndex(),kind,stage},':')

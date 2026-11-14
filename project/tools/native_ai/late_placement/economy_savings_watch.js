@@ -12,6 +12,12 @@ const ECONOMY_POINTS={activate:0x457120,routine:0x458530,cityQuote:0x459169,
   xp1Quote:0x71c63e,xp1Debit:0x71c671,xp1DebitReturn:0x71c676,xp1AnnexReturn:0x71c69a,
   treeInstalled:0x3e10fd,selection:0x3e0f3c,purchaseInitialized:0x55dc9f,setOwner:0x616a0};
 const ECONOMY_GUARDS={receiverSave:0x459095,receiverFrame:0x4590a5};
+// Optional before-placement observation. Native SHA092abfbb, full1257-byte body
+// equals Ghidra reference324c51e9: RCX=BuildQueue*, RDX=DistrictDefinition*,
+// R8=borrowed XY int32[2]*. Queue+1e8 owns City*, definition+14 is type index.
+// This is a cached-total snapshot at factory ENTRY, not a forced recalculation.
+const PLACEMENT_POINTS={preCreateDistrict:0x1029c0};
+const Q={city:0x1e8,definitionIndex:0x14};
 // Named byte offsets. Economic arrays contain four signed-Q8 Gold values; 256
 // equals one Gold, not a district utility point. Counts/weights are integers.
 const E={player:0x98,accounted:0x120,totalWeight:0x1c8,weights:0x1e0,
@@ -136,13 +142,13 @@ function midpoint(name,callback){hooks.push(Interceptor.attach(mod.base.add(ECON
   if(!enabled&&!debits.size&&!commands.size)return;
   try{callback(this.context,this.threadId);}catch(e){fail(e);}
 }));}
-function paired(name,enter,leave){hooks.push(Interceptor.attach(mod.base.add(ECONOMY_POINTS[name]),{
+function paired(name,enter,leave,rva=ECONOMY_POINTS[name]){hooks.push(Interceptor.attach(mod.base.add(rva),{
   onEnter(args){this.observed=null;if(!enabled)return;
     try{this.observed=enter(this.context,args,this.threadId,this.returnAddress);
       if(this.observed){if(active>=64)throw Error('Economic paired callback bound');active++;}}
     catch(e){this.observed=null;fail(e);}},
-  onLeave(){const f=this.observed;if(!f)return;
-    try{leave(f);}catch(e){fail(e);}finally{active--;}}
+  onLeave(result){const f=this.observed;if(!f)return;
+    try{leave(f,result);}catch(e){fail(e);}finally{active--;}}
 }));}
 function snapshot(){return {installed,hooks:hooks.length,frozen,active:active+debits.size+commands.size,
   stopReason,faults:[...faults],totals:{...totals},buffered:records.length};}
@@ -282,6 +288,22 @@ function install(){
     return {turn:t,...xy((packed<<16)>>16,packed>>16),requestedPlayer:player,requestedCity:c.r8.toInt32(),
       plotPointer:c.rcx.toString(),ownerStatus:'not_measured_wrapper_has_no_qualified_owner_field'};
   },f=>emit('plot-set-owner-return',f));
+  if(cfg.capturePlacement)paired('preCreateDistrict',c=>{
+    const t=turn();if(!inWindow(t))return null;
+    const city=address(c.rcx,Q.city),identity=who(city);
+    if(!originalAI(identity.player))return null;
+    const district=s32(c.rdx,Q.definitionIndex),position=requestXY(c.r8);
+    const build=address(city,L.cityBuild),selection={...identity,district,...position};
+    const row={turn:t,...selection,build:build.toString(),
+      ...selectedValue(build,selection),snapshotPhase:'before_PreCreateDistrict',
+      exactPlacementEntry:true,recomputed:false};
+    emit('district-placement-enter',row);return row;
+  },(row,result)=>{
+    // Existing districts/repairs can call this factory too. Neither a positive
+    // return nor this capture is counted as a new district: join DistrictAdded
+    // with explicit player/city/type/XY and preserve missing/ambiguous matches.
+    emit('district-placement-return',{...row,returnedSuccess:result.toInt32()!==0});
+  },PLACEMENT_POINTS.preCreateDistrict);
 }
 rpc.exports={
   init(spec,config){
@@ -293,6 +315,7 @@ rpc.exports={
       !Array.isArray(config.players)||!config.players.length||new Set(config.players).size!==config.players.length||
       config.players.some(p=>!Number.isInteger(p)||p<1||p>5)||
       config.districts!=null&&(!Number.isInteger(config.districts)||config.districts<1||config.districts>4096)||
+      config.capturePlacement!=null&&typeof config.capturePlacement!=='boolean'||
       !Number.isInteger(config.width)||!Number.isInteger(config.height)||config.width<1||config.width>256||
       config.height<1||config.height>256)throw Error('Unqualified Economic scope');
     mod=Process.getModuleByName(spec.name);cfg=config;
@@ -302,7 +325,8 @@ rpc.exports={
     if(mod.base.add(pe+8).readU32()!==spec.timestamp)throw Error('Different loaded PE timestamp');
     // Host checks the whole file. Validate every midpoint/entry in memory BEFORE
     // installing any hook: a CE detour or another observer must not be ignored.
-    for(const[name,rva]of Object.entries({...ECONOMY_POINTS,...ECONOMY_GUARDS})){
+    for(const[name,rva]of Object.entries({...ECONOMY_POINTS,...ECONOMY_GUARDS,
+        ...(cfg.capturePlacement?PLACEMENT_POINTS:{})})){
       const p=spec.points[name];if(!p||p.rva!==rva||!/^[0-9a-f]{64}$/.test(p.prefix))throw Error('Wrong entry '+name);
       const bytes=new Uint8Array(mod.base.add(rva).readByteArray(32));
       const actual=Array.from(bytes,x=>x.toString(16).padStart(2,'0')).join('');

@@ -1,7 +1,17 @@
 # Current CSC AI status
 
 **14 November: three-game Problems1/2 planning campaign completed.**
-All preselected Small/Prince/Online250 games close with exit0 and restored
+
+Henno has now authorised three **no-CSC controls** with the same seeds, leaders,
+speed and optional-mod stack, to compare ordinary district counts/adjacency/
+native values without Quarter slot competition. The first control reaches160
+with zero observer faults and171 readable factory-entry cached values. CSC is
+absent, not only untuned; native tuning counters stay0. The additional snapshot
+supplements the older choice-time quote, without forcing recomputation. No
+completed control outcome yet.
+[Fixed no-CSC protocol](../research/mods/csc-no-csc-district-baseline-20261114.md).
+
+All three CSC-enabled Small/Prince/Online250 games close with exit0 and restored
 preferences. City Lights, Resourceful2 and Sukritact resources enabled; main CSC
 policy only. Pangaea uses a verified200-save continuation after the hidden
 observer spy warning blocks205; its native boundary coverage gap remains explicit.

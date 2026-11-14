@@ -5,6 +5,7 @@ utility; UI adjacency is a separate yield vector. A missing join stays missing.
 This analysis never contacts the game or changes a policy package.
 """
 import argparse
+import hashlib
 from collections import Counter,defaultdict
 import json
 from pathlib import Path
@@ -50,16 +51,21 @@ def analyse(root):
     savings_path=root/'economy-savings.ndjson'
     savings=[json.loads(line)for line in savings_path.read_text(encoding='utf-8').splitlines()]if savings_path.exists()else[]
     choices=defaultdict(list)
+    placement_entries=defaultdict(list)
     for row in savings:
         if row['kind']=='district-selection':
             choices[tuple(row[k]for k in ('player','city','district','plot'))].append(row)
+        elif row['kind']=='district-placement-enter':
+            placement_entries[tuple(row[k]for k in ('player','city','district','plot'))].append(row)
     ai=lambda r:r.get('player')in players
     foundations=[r for r in planning if r['kind']=='FOUNDATION'and ai(r)]
     completions=[r for r in planning if r['kind']=='COMPLETION'and ai(r)]
-    types={r['district']:r['districtType']for r in foundations}
+    types={r['district']:r['districtType']for r in foundations};district_metadata={}
     for line in (root/'loaded-district-catalogue.txt').read_text(encoding='utf-8').splitlines():
         m=re.search(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t([^\t]+)',line)
         if m:types[int(m[1])]=m[2]
+        m=re.search(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t[^\t]+\t(true|false)\t([^\t\r\n]+)',line)
+        if m:district_metadata[int(m[1])]=dict(requires_population=m[2]=='true',definition_cost=value(m[3]))
     ui_by_plot=defaultdict(list)
     for row in ui:
         if ai(row):ui_by_plot[(row['player'],row['city'],row['district'],row['plot'])].append(row)
@@ -75,10 +81,23 @@ def analyse(root):
         prior_choices=[c for c in choices[key]if c['turn']<=row['turn']and c.get('totalQ8')is not None
                        and c.get('segment')==row.get('segment')]
         chosen=max(prior_choices,key=lambda c:(c['turn'],c['sequence']))if prior_choices else None
+        # Optional no-CSC diagnostic: cached total read before the placement
+        # factory. Match physical identity and segment, preferring equal clocks.
+        # Repeated attempts at the same clock are ambiguous, never arbitrary
+        # successes. The factory's optional returnedSuccess flag is deliberately
+        # unused: AL-only native return qualification requires a low-byte mask.
+        attempts=[c for c in placement_entries[key]if abs(c['turn']-row['turn'])<=1
+                  and c.get('segment')==row.get('segment')]
+        nearest=min((abs(c['turn']-row['turn'])for c in attempts),default=None)
+        nearest_attempts=[c for c in attempts if abs(c['turn']-row['turn'])==nearest]
+        placed=nearest_attempts[0]if len(nearest_attempts)==1 else None
         copy=dict(row,uiAdjacency=observed[0]if observed else None,
             uiClockDelta=observed[0]['turn']-row['turn']if observed else None,
             nativeChoice=chosen,nativeChoiceAgeTurns=row['turn']-chosen['turn']if chosen else None,
-            sameTurnNativeOrderKnown=False)
+            sameTurnNativeOrderKnown=False,nativePlacement=placed,
+            nativePlacementClockDelta=placed['turn']-row['turn']if placed else None,
+            nativePlacementJoin=('unique_identity_clock'if placed else'ambiguous'if attempts else'no_entry'),
+            nativePlacementCandidateCount=len(nearest_attempts),factoryReturnFlagUsed=False)
         # This is the last known matched cache comparison at foundation, not a
         # recomputation of the native forecast or a proof of causal selection.
         copy['nativeScoreKnown']=row.get('nativeQ8')is not None
@@ -100,10 +119,15 @@ def analyse(root):
             for name,amount in (r['uiAdjacency']or{}).items():
                 if name.startswith('YIELD_'):adjacency[name].append(amount)
         by_type[kind]=dict(foundations=len(built),
+            **district_metadata.get(district,dict(requires_population=None,definition_cost=None)),
             completions=sum(r['district']==district for r in completions)+sum(bool(r.get('complete'))for r in built),
             matched_prior_native_Q8=distribution(scores),
             native_choice_total_Q8=distribution([r['nativeChoice']['totalQ8']for r in built if r['nativeChoice']]),
             native_choice_age_turns=distribution([r['nativeChoiceAgeTurns']for r in built if r['nativeChoice']]),
+            native_placement_total_Q8=distribution([r['nativePlacement']['totalQ8']for r in built
+                if r['nativePlacement']and r['nativePlacement'].get('scoreStatus')=='read']),
+            native_placement_status=dict(Counter(r['nativePlacement']['scoreStatus']if r['nativePlacement']
+                else r['nativePlacementJoin']for r in built)),
             exact_UI_event_adjacency_yields={name:distribution(v)for name,v in adjacency.items()},
             UI_event_adjacency_joined=sum(r['uiAdjacency']is not None for r in built))
     quality={}
@@ -188,7 +212,8 @@ def analyse(root):
                 'A prior cached native score can precede foundation; missing joins stay missing.',
                 'Geometric candidates do not guarantee native legality, admission or investment.',
                 'Category savings balances are not per-tile promises.'])
-    output=dict(summary=summary,constructions=construction,material_losses=losses,
+    output=dict(analysis_implementation_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                summary=summary,constructions=construction,material_losses=losses,
                 usable_material_exhaustions=exhaustions,
                 managed_coverage_receipts=list(coverage.values()),
                 relationship_pairs=list(relations.values()),plan_transitions=transitions)

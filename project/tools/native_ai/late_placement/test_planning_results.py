@@ -11,7 +11,7 @@ class PlanningResults(unittest.TestCase):
         with tempfile.TemporaryDirectory()as directory:
             root=Path(directory)
             (root/'source.json').write_text(json.dumps(dict(original_ai=[1])),encoding='utf-8')
-            (root/'loaded-district-catalogue.txt').write_text('CSC_DISTRICT_CATALOGUE\t36\tDISTRICT_CSC_BAKERS_QUARTER\n',encoding='utf-8')
+            (root/'loaded-district-catalogue.txt').write_text('CSC_DISTRICT_CATALOGUE\t36\tDISTRICT_CSC_BAKERS_QUARTER\ttrue\t150\n',encoding='utf-8')
             (root/'resource-stack-preflight.json').write_text(json.dumps(dict(groups={
                 'CLASS_CSC_BAKERS_BASE':['RESOURCE_WHEAT'],'CLASS_CSC_BAKERS_SPEC':['RESOURCE_HONEY']})),encoding='utf-8')
             (root/'Lua.log').write_text('''CSC_PLANNING_FOUNDATION\tplayer=1\tcity=2\tdistrict=36\tdistrictType=DISTRICT_CSC_BAKERS_QUARTER\tdistrictID=4\tplot=3\tturn=20\tcomplete=false
@@ -38,6 +38,8 @@ CSC_PLANNING_MANAGED_COVERAGE\tsegment=continuation\tturn=21\tversion=19\tplayer
             self.assertEqual(quarter['distinct_positive_offers'],1)
             self.assertEqual(quarter['both'],1)
             district=summary['district_construction']['DISTRICT_CSC_BAKERS_QUARTER']
+            self.assertIs(district['requires_population'],True)
+            self.assertEqual(district['definition_cost'],150)
             self.assertEqual(district['native_choice_total_Q8']['median'],96000)
             self.assertEqual(district['native_choice_age_turns']['median'],1)
             self.assertEqual(district['matched_prior_native_Q8']['n'],0)
@@ -74,6 +76,29 @@ CSC_PLANNING_MANAGED_COVERAGE\tsegment=continuation\tturn=21\tversion=19\tplayer
             self.assertEqual(campus['native_choice_total_Q8']['n'],0)
             row=json.loads((root/'planning-results.json').read_text())['constructions'][0]
             self.assertIsNone(row['nativeChoice'])
+
+    def test_placement_entry_is_separate_and_repeated_attempts_are_ambiguous(self):
+        with tempfile.TemporaryDirectory()as directory:
+            root=Path(directory)
+            (root/'source.json').write_text(json.dumps(dict(original_ai=[1])),encoding='utf-8')
+            (root/'loaded-district-catalogue.txt').write_text('',encoding='utf-8')
+            (root/'Lua.log').write_text(
+                'CSC_PLANNING_FOUNDATION\tplayer=1\tcity=2\tdistrict=3\tdistrictType=DISTRICT_CAMPUS'
+                '\tdistrictID=4\tplot=5\tturn=20\tcomplete=false\n',encoding='utf-8')
+            choice=dict(kind='district-selection',player=1,city=2,district=3,plot=5,turn=12,sequence=1,totalQ8=900)
+            placement=dict(choice,kind='district-placement-enter',turn=20,sequence=2,totalQ8=700,scoreStatus='read')
+            def run(rows):
+                (root/'economy-savings.ndjson').write_text(''.join(json.dumps(r)+'\n'for r in rows),encoding='utf-8')
+                analyse(root)
+                return json.loads((root/'planning-results.json').read_text())['constructions'][0]
+            row=run([choice,placement])
+            self.assertEqual(row['nativeChoiceAgeTurns'],8)
+            self.assertEqual(row['nativePlacement']['totalQ8'],700)
+            self.assertEqual(row['nativePlacementClockDelta'],0)
+            self.assertFalse(row['factoryReturnFlagUsed'])
+            row=run([choice,placement,dict(placement,sequence=3,totalQ8=800)])
+            self.assertIsNone(row['nativePlacement'])
+            self.assertEqual(row['nativePlacementJoin'],'ambiguous')
 
 
 if __name__=='__main__':unittest.main()

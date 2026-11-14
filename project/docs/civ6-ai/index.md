@@ -8,6 +8,7 @@ what remains open and which problem we are working on.
 - [Completion contract](acceptance.md): evidence levels, finite acceptance tests and completed scopes.
 - [Current tuning and placement coverage](topics/csc/site-planner.md): what the running CSC code does and its evidence.
 - [Latest three-map results](../research/mods/csc-ai-planning-campaign-results-20261114.md): placement quality, material retention, savings and ordinary district calibration.
+- [No-CSC controls](../research/mods/csc-no-csc-district-baseline-20261114.md): matched optional-mod stack, ordinary district counts and native choice/placement snapshots.
 - [CSC finding register](findings.md): concrete assertions, scope and original reports.
 - [Reusable engine knowledge](https://github.com/hennogous/civ6-ai/blob/main/SKILL.md): the maintained `civ6-ai` skill references.
 - [Research archive](library.md): older explorations, reports and corrections when we need to check evidence.

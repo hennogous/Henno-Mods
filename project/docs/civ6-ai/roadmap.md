@@ -2,6 +2,14 @@
 
 **14 November completed: three-game evidence campaign across Problems 1 and 2.**
 
+**Current calibration work:** Henno requests three no-CSC controls on the same
+seeds/Online250 setup and optional-mod stack. The first is running, with read-only
+native factory-entry values added alongside the earlier choice quote. Compare
+ordinary district counts, loaded slot consumption, adjacency, quote coverage
+and surviving city/population context; do not assume seed matching means an
+identical map or that every difference is direct slot displacement.
+[Control protocol and measurement limits](../research/mods/csc-no-csc-district-baseline-20261114.md).
+
 All three seeds reach250 and close cleanly:6/0/2 Quarters on Continents/Pangaea/
 Fractal. All eight have owned Base/+3+, three+4, two both classes; each ties its
 packet's best positive geometry.51/51 new-site bids land in native comparisons.
