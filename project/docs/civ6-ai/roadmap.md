@@ -12,6 +12,17 @@ now supplies type-specific adjacency, utility and city/population context for
 calibrating Problems 1/2. All games are closed; none is queued.
 [Completed comparison and recovery](../research/mods/csc-no-csc-district-baseline-results-20261114.md).
 
+**Astra review after controls:** retain the +3 floor, +4 preference, current bid
+bands and normal slot consumption. Prioritise 1.6 credible investment
+follow-through, 1.1/1.2/2.1 economic/relationship coverage, and 1.5 one real
+acquisition target. The review identifies a blanket same-city future-customer
+guard that suppresses nomination whenever both districts require population,
+without checking available slots. A targeted capacity/admission review should
+precede any general bid increase. Compare actual loaded City Lights provider
+edges before expanding the customer SQL signal. These are proposed next steps;
+no policy change or new game is authorised by this review itself.
+[Interpretation and targeted checks](../research/mods/csc-no-csc-district-baseline-results-20261114.md#astra-interpretation-and-tuning-priorities).
+
 All three seeds reach250 and close cleanly:6/0/2 Quarters on Continents/Pangaea/
 Fractal. All eight have owned Base/+3+, three+4, two both classes; each ties its
 packet's best positive geometry.51/51 new-site bids land in native comparisons.

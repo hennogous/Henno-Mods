@@ -123,6 +123,61 @@ Adjacency is sampled at the placement event and contains real yields. Native cho
 Small/Prince/Online250, matched selected seeds and leaders, with the same City Lights, Resourceful2 and Sukritact resource versions. Controls remove CSC entirely. Its resource and economic effects can change the generated world and later city growth, so read these results as the overall CSC comparison. Counts measure foundations; population measures surviving cities at 250. Pangaea with CSC includes the documented turn200-save continuation.
 
 
+## Astra interpretation and tuning priorities
+
+Requested by Henno after the completed comparison. This is a review and proposed
+next work; it introduces no policy change or additional game run.
+
+Keep the +3 Quarter quality floor, +4 preference and current placement-premium
+bands. All eight founded Quarters have owned Base and meet the quality floor;
+the still-open problem is conversion of worthwhile plans into construction.
+Eight Quarters across fifteen original AI empires is sparse, especially zero
+on Pangaea and only one Tailors. Start by explaining credible plans already
+winning native comparisons, rather than lowering quality or multiplying bids.
+
+Keep normal population-slot consumption and native admission. Continents builds
+two more ordinary slot-consuming districts with CSC plus six Quarters. Across
+Continents and Pangaea, including Quarters, the CSC group builds three more.
+The aggregate shortfall is concentrated on Fractal alongside reduced survival
+and expansion. This supports retaining the capacity approach. A later comparison
+of CSC with tuning enabled/disabled answers the separate tuning-efficacy question.
+
+Calibrate Quarter values against the alternatives competing in the same city
+and decision. The type medians give scale and context, rather than a target bid.
+Harbors illustrate the separation: lower mean Gold adjacency with CSC, higher
+median native utility. The current +96–384 utility placement premiums should be
+reviewed against an actual losing margin and a checked economic ledger.
+
+Recommended sequence:
+
+1. **1.6, with 1.4/1.7:** trace a still-credible Pangaea nomination such as
+   Lingapura alongside a successful Continents investment. Identify its
+   admission, retained request value, production comparison and eventual action.
+   Use the shortest preserved replay window if the archives miss a necessary
+   boundary. Keep London's expired +3→+2 withdrawal as a regression case.
+2. **1.1/1.2/2.1:** correct the known AI-C182 incoming exchange attachments,
+   then close relationship-guidance gaps. Current `CSC_AI_AdjacencyScan.lua`
+   suppresses future-customer nomination whenever host and Quarter share a
+   city and both require population; it never checks whether two slots exist.
+   Review this blanket condition with fresh capacity/native admission, testing
+   one free slot, two free slots, cross-city hosts and unavailable capacity.
+   The customer connector SQL derives edges from the customer-building registry.
+   Compare loaded provider tags with actual edges before adding any missing
+   City Lights provider relationships. Keep future-customer yield excluded from
+   the Quarter ledger until the customer exists.
+3. **1.5:** trace one credible unowned Quarter site from offer through frontier
+   eligibility, selection, contract, category funds and payment. Use a separate
+   existing-chain supplier case if offer generation is the missing step.
+   Existing generic payments show the payment mechanism operates; the missing
+   CSC-target transition may occur before funding. Review subsidies or fund
+   changes only after the target actually reaches that boundary.
+
+Astra inspected `CSC_AI_EconomyAdapters.lua`, `CSC_AI_AdjacencyScan.lua` and
+`CSC_AI_Connectors.sql`. The lead independently checked the same-city guard and
+customer-registry edge source. Actual missing provider edges still need a loaded
+set comparison; absence of an explicit provider-tag expansion alone does not
+identify every absent relationship. Material protection remains in place.
+
 ## Recording and recovery
 
 | Control | All original-AI foundations / UI matches | Ordinary choice quotes | Ordinary pre-placement cache | Native entry reads |
