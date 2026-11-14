@@ -6,8 +6,8 @@ City Lights, Resourceful 2 and Sukritact's Resources. Main CSC policy only;
 passive district chronology, adjacency, opportunities, material retention and
 native savings/purchase journals. Candidate removes Base-only acquisition and
 adds buyer-gated Spec development without changing bid bands. Short diagnostic
-qualification reaches50; the three full games now run serially. Full outcomes
-are pending.
+qualification reaches50; Continents completes250/exit0/restored and Pangaea is
+running. Fractal follows serially; the combined outcome is pending.
 
 First qualification stopped before autoplay on an overly strict check of the
 removed `GOLD2` compatibility alias. Actual `GOLD`/Tailors Spec/Mine mapping is
@@ -19,6 +19,23 @@ recovered offline after a post-exit host-handle error; full runs use the correct
 after-exit callback. Source parity commit `410e888f` is pushed. Older automatic
 goal stays paused.
 [Fixed protocol, scope and evidence](../research/mods/csc-ai-planning-campaign-20261114.md).
+
+Continents:5 Bakers/1 Tailors founded, all owned Base and+3+, three+4+, two both
+classes.40/40 new-site comparisons consume exact bids/writes. No last physical
+material deposit is destroyed; five working-supplier disruptions include four
+observed restorations. No dedicated Quarter or existing-Quarter material purchase
+is exercised.45 CL providers yield no adjacent-provider pair in the cohort.
+The vanilla calibration records308 foundations/22 types and201/206 preceding
+native totals excluding City Centers/Wonder footprints. These are descriptive
+choice-time quotes, not fresh foundation-time forecasts.
+
+Two audit corrections matter: exclude unrelated compatible improvements from
+CSC supplier losses; ignore the native SetOwner receiver+0x1c owner fields.
+Ghidra confirms ownership is on resolved data instead (skill AI-N129). Actual
+debits and strictly later Lua ownership remain valid. A separate loaded-SQL
+audit finds missing incoming Food/Culture bindings for some R2/CL improvement
+replacements; reverse plot yields/Service gates are separate. The campaign stays
+frozen; economic equivalence is not yet complete.
 
 **Completed 13 November: timing-corrected Online game to turn 250, exit 0 and restored.**
 Seven AI-founded Quarters (five Bakers/two Tailors), versus four Bakers in the

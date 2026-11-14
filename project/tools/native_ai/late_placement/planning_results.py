@@ -116,8 +116,20 @@ def analyse(root):
                 for r in opportunities if r.get('qualified')}),
             distinct_positive_offers=len({tuple(r[k]for k in ('player','city','district','plot'))
                 for r in opportunities if r.get('offered')}))
-    losses=[r for r in planning if r['kind']=='MATERIAL_STATE'and ai(r)
-            and(r.get('lostBase')or r.get('lostSpec')or r.get('lostWorking'))]
+    resource_preflight=root/'resource-stack-preflight.json'
+    material_groups=json.loads(resource_preflight.read_text(encoding='utf-8'))['groups']if resource_preflight.exists()else{}
+    def previous_material(row):
+        family=row.get('quarter','')
+        return any(row.get('previousResource')in material_groups.get('CLASS_CSC_'+family+'_'+role,[])
+                   for role in ('BASE','SPEC'))
+    raw_losses=[r for r in planning if r['kind']=='MATERIAL_STATE'and ai(r)
+                and(r.get('lostBase')or r.get('lostSpec')or r.get('lostWorking'))]
+    # The archived observer's compatible-improvement flag can also be true for
+    # an unrelated resource. A Potato Farm is not a Tailors supplier. Qualify
+    # the previous resource against this Quarter's loaded material classes;
+    # retain generic-improvement losses separately instead of inflating supply.
+    losses=[r for r in raw_losses if r.get('lostBase')or r.get('lostSpec')or
+            (r.get('lostWorking')and previous_material(r))]
     previous_totals={};exhaustions=[]
     for row in planning:
         if row['kind']!='MATERIAL_TOTAL'or not ai(row):continue
@@ -129,13 +141,33 @@ def analyse(root):
                         turn=row['turn'],role=role,previous=old[role],current=0,source=row['source']))
         previous_totals[key]=row
     transitions=[r for r in planning if r['kind']=='PLAN_TRANSITION'and ai(r)]
+    coverage={}
+    for match in re.finditer(r'CSC_AI_QUARTER_COVERAGE turn=(\d+) version=(\d+) player=(\d+) district=(\d+) result=(\{[^\r\n]+\})',log):
+        t,version,pid,district=map(int,match.groups()[:4])
+        if pid in players:
+            coverage[(version,pid,district)]=dict(turn=t,version=version,player=pid,district=district,
+                                               receipt=json.loads(match[5]))
+    # Managed nonpositive-cell masks implement routine deferral in this
+    # candidate. The older typed decline trace can legitimately remain zero.
+    # Repeated cells are mask operations, not distinct deferred districts.
+    managed_masks=sum(r['receipt'].get('masked',0)for r in coverage.values()if r['receipt'].get('staged'))
+    new_quarter_best=[r for r in quarter if r['kind']=='BEST'and ai(r)and r.get('existingDistrict')==0]
+    exact_quarter_best=[r for r in new_quarter_best if r.get('bidQ8',0)>0
+        and r.get('result')==r.get('bidQ8')==r.get('lastWriteQ8')
+        and r.get('bidVersion')==r.get('lastWriteVersion')==r.get('version')
+        and r.get('lastWriteOrdinal',10**12)<r.get('nativeOrdinal',-1)]
     summary=dict(original_ai=sorted(players),district_construction=by_type,quarter_quality_at_foundation=quality,
         distinct_relationship_orders={role:dict(count)for role,count in orders.items()},
         material_loss_events=len(losses),raw_resource_loss_events=sum(bool(r.get('lostBase')or r.get('lostSpec'))for r in losses),
-        working_supplier_loss_events=sum(bool(r.get('lostWorking'))for r in losses),
+        working_supplier_loss_events=sum(bool(r.get('lostWorking'))and previous_material(r)for r in losses),
+        unrelated_compatible_improvement_loss_events=len(raw_losses)-len(losses),
         usable_material_exhaustions_by_role=dict(Counter(r['role']for r in exhaustions)),
         reconsideration_transitions=sum(bool(r.get('reconsidered'))for r in transitions),
         actual_native_declines=sum(r['kind']=='NATIVE_DECLINE'and ai(r)for r in planning),
+        native_managed_cell_masks=managed_masks,
+        native_managed_mask_turns=len({r['turn']for r in coverage.values()if r['receipt'].get('masked',0)>0}),
+        new_quarter_native_best=len(new_quarter_best),
+        new_quarter_native_best_exact_bid_write=len(exact_quarter_best),
         acquisition_offers_by_class=dict(Counter(r.get('materialClass','unknown')for r in planning
             if r['kind']=='ACQUISITION_OFFER'and ai(r))),
         native_savings_events=dict(Counter(r['kind']for r in savings)),
@@ -147,6 +179,7 @@ def analyse(root):
                 'Category savings balances are not per-tile promises.'])
     output=dict(summary=summary,constructions=construction,material_losses=losses,
                 usable_material_exhaustions=exhaustions,
+                managed_coverage_receipts=list(coverage.values()),
                 relationship_pairs=list(relations.values()),plan_transitions=transitions)
     (root/'planning-results.json').write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8')
     return summary

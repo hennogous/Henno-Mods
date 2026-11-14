@@ -111,3 +111,144 @@ map-resource census, Lua/native journals, five checkpoint saves, controller
 receipts, terminal census, errors and restoration verification.
 
 Results and qualifications will be appended after the games.
+
+## Early audit: resource mapping is not complete transaction registration
+
+The first full game's first scheduled check reaches130 with healthy recording.
+An additional journal read through134 has398 exact-turn district selections,
+all398 guarded cached totals readable, and42 actual negative debit pairs with
+measured deltas matching the requested charges. This qualifies the added
+choice-score recorder; it is not a completed outcome game.
+
+The completed short game contains two different material incidents:
+
+| Turn / identity | Change | Interpretation |
+|---|---|---|
+|34, player1, Bakers1059, material1060|Flax remains; Farm removed; working Base1→0|Last working improvement lost; actor unknown. Quarter was pillaged on32, which does not identify who removed the Farm.|
+|40, player4, Bakers1383, material1308|Wheat removed under a new Wonder; Base2→1|A physical resource loss, while Flax1457 remains. City-build log selects Etemenanki that turn; the plot event itself names only the Wonder district.|
+
+Neither loses the last physical Base/Spec deposit. A `lastSpec=true` field means
+zero remaining Spec; without a previous positive count it is not a loss event.
+The raw per-turn totals and before/after fields retain that distinction.
+
+The loaded mappings include R2 Barley/Sorghum→Farm, Bamboo/Maple→R2 Sawmill,
+Cashmere→Pasture, modded Plantation materials→CL Trading Post alternatives,
+and Gold→Mine/CL Craftsmen. The generic AI readers recognise these. The short
+game directly observes working Barley/Farm and CSC Flax/Farm.
+
+An independent SQL and **read-only loaded-database** audit finds a separate
+gameplay-compatibility gap. Some incoming supplier→producer building yields
+are registered by literal improvement lists rather than all loaded mappings:
+
+| Improvement | Missing incoming +1 building yield |
+|---|---|
+|R2 Sawmill|Bamboo→Tailors Workshop Culture; Maple→Bakers Café Food|
+|CL Trading Post|Base→Bakers Mills and Tailors Workshop; Spec→Tailors Fashion House|
+|CL Craftsmen|Spec→Bakers Café and Tailors Fashion House|
+|Pasture|Cashmere Spec→Tailors Fashion House|
+
+CL Trading Post→Bakers Café is registered. Reverse producer→material
+Production/Gold and Service supply gates use generic collections/class checks;
+the missing incoming roots do **not** show those other effects are absent.
+The central ledger's expected incoming Food/Culture can therefore be optimistic
+for these combinations. Resource adjacency and generic AI eligibility remain
+distinct from delivered transactions. Do not claim complete economic parity.
+
+Evidence: loaded DB SHA256
+`617d48affa3c6c7b76c722a42fb66854270628a2a1053dc7272cb030d14d9354`, matching
+Continents preflight, with stable hash across the read-only query. Sawmill has
+only its ordinary river-Production root; Craftsmen has no improvement roots;
+Trading Post has Bakers Spec's root only. Connected CSC leaves identify the
+missing incoming Food/Culture. Relevant frozen and current compatibility/Quarter
+SQL is byte-identical. This is loaded attachment evidence, not an isolated
+realised-payout test. The full campaign keeps its frozen content; a separate
+compatibility fix should generate duplicate-safe ordinary incoming wrappers
+from loaded classes/mappings, preserving Industry/Corporation's special roots.
+
+## Completed Continents arm
+
+Turn250 completes with exit0, exact restoration, all ten censuses and five
+archived saves. Native observer freezes with zero faults/active calls and an
+empty asynchronous-message archive. Pangaea starts automatically afterward.
+
+| Measurement | Bakers | Tailors |
+|---|---:|---:|
+|Original-AI foundations|5|1|
+|At least+3 at foundation|5|1|
+|At least+4 at foundation|2|1|
+|Owned Base at foundation|5|1|
+|Both owned classes at foundation|2|0|
+|Distinct positively offered sites over the game|54|23|
+|Distinct geometry-qualified alternatives over the game|124|70|
+
+All six founded sites tie the best offered geometry for their city/type packet
+at foundation. Alternatives overlap in time, need native admission/funding and
+are not expected construction counts. Forty out of forty recorded new-site
+Quarter comparisons read the exact positive bid, preceding write, version and
+ordinal. This is delivery, separate from six physical constructions.
+
+Ten distinct mapped physical neighbours comprise seven neighbour-first pairs
+(five Bakers City Centers, Tailors Commercial Hub/Theater) and three
+Quarter-first pairs (two sales hosts and Broadway). Forty-five CL rural provider
+foundations produce no adjacent-provider pair for the treatment cohort. A
+separate player0 Tailors→rural-provider pair is observed; that proves the
+recording path, not our guidance. No guided Quarter capture occurs.
+
+There are42 packet reconsiderations across21 scopes; one later builds its
+Quarter. Managed nonpositive-cell masks operate43,533 times across226 turns.
+Typed-decline count0 does not mean no deferral: this candidate uses the managed
+column path. These are repeated operations, not43,533 distinct district choices.
+
+The material audit finds six mapped incidents: one nonlast Wheat overwrite by a
+Wonder, one Farm removal, one ownership loss and three pillages. Five exhaust
+the Quarter's working Base/Spec class; four subsequently recover. No last
+physical mapped deposit is destroyed. At250 all six Quarters retain owned Base,
+five have working Base; both owned Spec holdings work. One Banana Plantation
+remains pillaged. The raw observer also flags an unrelated Potato Farm: its
+generic compatible-improvement flag is not a Tailors-material role. Offline
+analysis now checks the **previous** resource against loaded class membership,
+retains raw observations and excludes that false supplier loss.
+
+The115 measured payments spend11,189 Gold, with all actual debit deltas matching.
+Strictly later map contexts confirm all115 owners. None is a dedicated Quarter
+purchase or a mapped-material purchase adjacent to an already-existing Quarter.
+Two incidental purchases later support a Bakers in a different city. Seven
+frontier Quarter offers are published; none is selected while unowned. All45
+Quarter choice receipts target owned tiles. Neither class produces a supplier
+acquisition offer. Natural exercise of that path remains unshown.
+
+Of520 targeted affordability checks,469 fail;276 fail category-fund gates despite
+sufficient actual Treasury. Thirty-four ordinary non-Quarter plans later pay as
+funds accumulate. This demonstrates generic waiting/funding, not earmarking for
+our Quarter plans. All1619 exact-turn district-choice totals are readable.
+For vanilla district types,201/206 foundations excluding City Centers/Wonder
+footprints match a preceding pair's total; all308 native-type foundations have
+UI-event adjacency. Overall381 cohort foundations include additional CSC/CL
+types; keep those categories separate. Choice ages are1–19 turns (median3), so
+these remain choice-time quotes, not fresh foundation-time forecasts.
+
+### Native-owner correction
+
+The optional SetOwner receiver `+0x1c` readings (`ownerBefore`, `ownerAfter`,
+`ownerMatchesRequest`) are **invalid ownership measurements**. The offset was
+qualified on a different resolved plot-data representation (AI-N113), and the
+receiver readings do not track AI player IDs. Ignore those fields in all campaign
+arms; do not infer their actual field meaning. Independent debit pairs and
+strictly later Lua ownership remain valid. Nineteen earliest same-clock Lua
+contexts precede payment despite sharing its turn number, so same-clock snapshots
+also cannot serve as after-payment proof. The running observer sources stay
+frozen; remove the unqualified optional reads after the campaign. This does not
+affect CSC policy, scores or game data.
+
+Ghidra now independently confirms the distinction: PurchasePlotContract Update
+RVA3fa260 resolves the wrapper's virtual slot+0x30 before reading data+0x1c.
+SetOwner RVA616a0 also reads through slot+0x30 and edits through slot+0x38;
+coordinates+0x28/+0x2a remain on the wrapper. Complete function bodies of53 and
+1391 bytes match reference324c51e9 and current092abfbb exactly. Raw decompiles
+and code hashes are retained in `owner-representation-ghidra.json` and
+`owner-representation-code-parity.json`. The installed skill records AI-N129;
+AI-N113's correctly scoped resolved-data predicate remains valid.
+
+Detailed independent audits are archived as `planning-independent-audit.*` and
+`economy-savings-audit.*` in the completed arm. The campaign root also retains
+`incoming-exchange-loaded-audit.json` with the qualified loaded modifier graph.

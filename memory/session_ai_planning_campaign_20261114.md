@@ -44,7 +44,66 @@ Currentfocussuite60PASS. Policy410e888fcommitted/pushed; resttools/docs pending.
 Fullserialcampaign STARTEDexecsession36485 around08:59, runnerworkspace
 planning_campaign.py --root root; expects smoke50-03 complete/frozen02.
 Firstfullcontinents250-01, thenpangaea250-01,fractal250-01. No manualconsole.
-Nextcheckabout09:14or15minafterlaunch. Runtimeuses15minlimit/5turncontroller
+09:17 scheduledcheck firstfull130 healthy; through134 nativejournal398choicesall
+scoreStatus=read,42actualnegativepaidpairsdeltaMatches,0faults. Nextcheck~09:32.
+Runtimeuses15minlimit/5turncontroller
 boundaries, saves50/100/150/200/250. Do notmanuallycheckgame more than15min.
 Parent may read completed setup/terminal receipts. Need compare/report/update
 skillengineknowledgeifnewfindings, commit/pushscoped work.
+
+Independentresourceagentclosedshortaudit: T34p1B1059Flax1060Farmremoved,deposit
+remains/workingBase1->0,actorunknown(QpillagedT32isnotactorproof). T40p4B1383
+Wheat1308removedWonderfoundationBase2->1,otherFlax1457retained; EtemenankiCSV.
+No lastphysicalBase/Spec loss. lastSpec=true alonejustzero,notloss.
+CONFIRMED LOADED-gameplayincomingtransactiongaps (currentDBhash617d48afmatches
+continentspreflight, read-only): RES2_SAWMILL lacksBamboo->TailorWorkshopCulture/
+Maple->CafeFood; CLTradingPost lacksBase->BakerMills/TailorWorkshop andSpec->
+FashionHouse; CLCraftsmen lacksSpec->Cafe/FashionHouse; PastureCashmereSpec->
+FashionHouse. CLTradingPost->CafeREGISTERED. Reverseproducer->materialProduction/
+Gold andServicegatesGENERIC, don'tclaimallbenefitsabsent. MainAIreaderusesloaded
+validmapping correctly, butcentralincomingFood/Cultureforecastsoptimisticwhere
+bindingsabsent. Keep3runsfrozen; recordgapandproposeseparatecompatfix,notmidrun.
+Relevantmain/frozenSQLsamehash. Sourcepolicy410e888f/tools+protocol da7dae5dPUSHED.
+
+10:01check: Continents250COMPLETE/closed/restored/fullmilestones/nativeMessages[].
+SecondPangaearunning45then140at10:16;10:28check190healthy624checks59debits,
+nextmanualcheck~10:44. Rootworkerexec36485stillrunningserial3. NOsecondconsole.
+Rootanalysishelpersplanning_results.py changedOFFLINEonly, mayrerunallcompleted.
+ReadContinents economy-savings-audit.md/json andplanning-independent-audit.md/json
+forpeer-auditedtables. 5B1Tfound/allBase+3+,3>=4,2bothclasses;40/40newNativeBEST
+exactbid/write/version/ordinal. 54B23Tdistinctpositiveoffers (alternativesnotbuild
+counts); eachof6foundationstiescurrentpacketbestpositivegeometry. Native1619/1619
+choicetotalsread;stock308found22types/201of206nonCCWonderquotesmatched;
+allcohort381foundincludes6CSC67CL. 10physicalmapped-neighborpairs7neighborfirst,
+3Qfirst(2sales+Broadway).45CLprovidersnoOriginalAIadjacency;oneplayer0Tprovider
+pairverifiesobserverpathoutsidecohort.42reconsider21scopesonly1laterbuilt.
+43533managedcellmasks226turns;typeddecline0EXPECTEDmainmanagedpath.
+
+Continents2.2CORRECTED6mappedlosses+1unrelatedPotatoFarm. P1B1059Flax1060Farm
+removed34/restored52;Honey984Camp pillaged69/restored182;Flaxpillaged140/restored216.
+P4B1383Wheat1308Wonderclear40Base2->1nonlast;otherFlax1457improved58.
+P3B2605Honey2606owned3->5at54,lastownedSpec/workingSpec lost;freecity62at119,
+returns3at141. P2B1715Banana1642Plantationpillaged222/still250. NOlastphysical
+depositdestroyed;5workinglosses4restorations(noautomaticguidanceattribution).
+All6ownedBase250/5workingBase,2ownedSpecbothworking. ZEROacquisitionoffers andno
+provedStage4Specjobintervention. LoadedgroupsfixanalysisfilterpreviousResource;
+observer'working'flagcantrueforunrelatedresources;patchsemanticAFTERcampaign.
+
+Continents1.5:115paidXP1plots/11189Gold/allactualdeltasmatch+STRICTLATERLuaowner
+confirm. 0dedicatedQuarterpurchases ormaterialpaymentsadjacentexistingQuarter.
+7frontierQuarteroffersnonechosenunowned;45Qselectionrowsownedflagtrue/frontierfalse
+(incl5existingrepairs,40newsites). 14genericmappedresourcebuys;Honey2606T16 and
+Cattle2531T22lateradjacentB2605T48,buyercity65536vsQcity196610—noCSCintentproof.
+520checks51pass469fail;276failwithbankenoughbutcategoriesnot. 34ordinaryrequests
+laterpayasgenericfundsgrow;weights3/4/1/1,maxPlot150—notper-tileearmarking.
+
+CRITICAL diagnosticCORRECTION: nativeSetOwnerreceiver+1c ownerBefore/After/
+MatchesRequestINVALID(read0/1notactualplayerIDs). Otherdata/debitsvalid. Allarms
+remainfrozen;ignorefields;removebadoptionalreads/testsAFTERall3. ConfirmedGhidra
+get_program_info324c51e9;3fa260(53bytes)and616a0(1391)bothusewrappervslot30to
+resolveddataowner+1c;SetOwnereditsvslot38data+1c/city+c;coordswrapper+28/+2a.
+WHOLEfunctionbodyparity092verified;rawdecomp+parityJSONincampaignroot. SkillAI-N129
+and4enginefilesupdatedcommitted/pushed06db11e. N113resolvedownerpredicateNOTwrong.
+19sameclockownercontextsactuallyprepayment;strictlaterrowsconfirmall115.
+No source/native/API/codechangesmidcampaign. FirstfullC181+bindinggapC182nowin
+projectfindings; docs/analysis/memoryuncommittedpendingregularscopedpush.

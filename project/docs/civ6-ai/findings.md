@@ -3424,3 +3424,70 @@ CanZone remains authoritative; no larger premium, forced winner or new DLL.
 Broader admission/queue, Builder, customer completion and repair latency remain
 separate gaps. Reusable timing stays AI-N128 in the skill; these are CSC outcomes.
 [Full protocol, joint tables, receipts, comparisons and evidence](../research/mods/csc-ai-timing-correction-250-20261113.md).
+
+<a id="ai-c181"></a>
+## AI-C181 — First completed planning-campaign arm separates placement quality from acquisition and customer follow-through
+
+Status: scoped accepted outcomes; three-arm campaign still running,14 November.
+Main policy410e888f, passive toolsda7dae5d, CE400e6755/native092abfbb, frozen
+accepted CSC content plus CL/R2/Suk. Normal Small/Prince/Online Continents250
+completes exit0/restored with ten censuses and five archived saves.
+
+Original AI1–5 found five Bakers/one Tailors. All six have owned Base and
+loaded-rule adjacency>=3 at foundation; three>=4, two both material classes.
+Each ties its city/type packet's best positive offered geometry at foundation.
+Forty new-site native comparisons read exact bid/write/version/ordinal. This
+does not make40 constructions or establish causal selection from a late packet.
+
+Ten distinct mapped physical neighbour pairs are seven neighbour-first and
+three Quarter-first (two sales hosts/Broadway). Forty-five CL rural providers
+produce no cohort provider adjacency; a player0 relationship verifies the
+observer outside treatment. Forty-two reconsiderations across21 scopes yield
+one later Quarter construction. Native managed masks43,533 across226 turns
+are repeated operations, not distinct city deferrals.
+
+No last physical Base/Spec is destroyed. Six mapped material incidents include
+one nonlast Wheat/Wonder overwrite and five working-supplier losses; four
+restorations are observed, not all attributed to guidance. An unrelated Potato
+Farm loss is excluded by previous-resource class membership. All six retain
+owned Base at250; one Base improvement remains pillaged.
+
+Seven distinct frontier offers produce no unowned Quarter selection. There
+are no supplier acquisition offers, dedicated Quarter payments or payments
+for materials adjacent to an existing Quarter.115 generic payments spend11,189
+Gold and all have matching actual debits/strictly later ownership.276 failed
+affordability checks have sufficient Treasury but insufficient category funds;
+34 ordinary waiting targets later pay. This proves generic funding behaviour,
+not savings intent for our targets or natural1.5 exercise.
+
+All1619 native choice totals read;201/206 ordinary native-type foundations
+excluding City Centers/Wonders match earlier quotes (ages1–19 turns). UI
+adjacency covers308 native-type foundations across22 types. Overall381
+cohort footprints also include CSC/CL types. No RHAI5 or external probe policy.
+No matched untuned arm with this changed mod stack; do not claim causal
+improvement over earlier stock-content baselines.
+
+Ignore experimental SetOwner receiver+0x1c owner fields; Ghidra and runtime
+contradict that interpretation. Skill AI-N129 preserves the corrected pointer
+scope. Debits and strictly later game-API owners remain independent evidence.
+[Full protocol, corrections, independent audits and pending arms](../research/mods/csc-ai-planning-campaign-20261114.md).
+
+<a id="ai-c182"></a>
+## AI-C182 — Loaded material eligibility does not ensure every incoming exchange is attached
+
+The frozen/current CSC SQL and loaded Continents database map R2/CL resource
+improvements generically, while incoming supplier→producer Food/Culture uses
+literal ImprovementModifiers lists. Missing ordinary attachments include R2
+Sawmill Bamboo/Maple; CL Trading Post Base→Mills/Workshop and Spec→Fashion House;
+CL Craftsmen Spec→Café/Fashion House; Pasture Cashmere→Fashion House. Trading
+Post→Bakers Café exists. Reverse producer→plot Production/Gold and Service
+supply gates use generic collections/class tests and are not shown absent.
+
+Evidence: read-only loaded DB617d48af… matching the pinned first arm; unchanged
+hash through query; complete root/child/argument/requirement snapshot retained.
+This is loaded attachment and model-coverage evidence, not an isolated realised
+payout measurement. The ledger can assume incoming benefits missing for those
+improvement combinations. Resource adjacency and generic AI eligibility are
+separate and must not be described as complete economic parity. Preserve
+Industry/Corporation special roots in any duplicate-safe generated fix.
+[Exact missing directions, snapshot and scope](../research/mods/csc-ai-planning-campaign-20261114.md#early-audit-resource-mapping-is-not-complete-transaction-registration).
