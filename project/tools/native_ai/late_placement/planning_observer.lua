@@ -193,7 +193,11 @@ local function materialFact(q,p,near)
  local visible=resource and(not A.ResourceVisible or A.ResourceVisible(q.player,resource.Index))or false
  local revealed=vis and vis:IsRevealed(near:GetX(),near:GetY())or false
  local matches=resource and compatible[name]and compatible[name][near:GetImprovementType()]or false
- local working=matches and not near:IsImprovementPillaged()and near:GetOwner()==q.player and near:GetDistrictType()==-1 and visible and revealed
+ -- Compatibility alone is not a Quarter supply role: an unrelated Potato Farm
+ -- can be valid and working without supplying Tailors. Role-gate this flag so
+ -- its later removal is not misreported as lost CSC supply. Keep compatible
+ -- separately for raw geometry/debugging; it carries no supplier claim.
+ local working=(base or spec)and matches and not near:IsImprovementPillaged()and near:GetOwner()==q.player and near:GetDistrictType()==-1 and visible and revealed
  return {resource=name,resourceIndex=near:GetResourceType(),improvement=improvement and improvement.ImprovementType or'NONE',
   improvementIndex=near:GetImprovementType(),pillaged=near:IsImprovementPillaged(),owner=near:GetOwner(),district=near:GetDistrictType(),
   base=base,spec=spec,visible=visible,revealed=revealed,compatible=matches,working=working,

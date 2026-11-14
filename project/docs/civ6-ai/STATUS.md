@@ -1,59 +1,54 @@
 # Current CSC AI status
 
-**14 November: Henno's three-game planning campaign is running (Problems 1/2).**
-Small/Prince/Online250 on preselected Continents/Pangaea/Fractal seeds, all with
-City Lights, Resourceful 2 and Sukritact's Resources. Main CSC policy only;
-passive district chronology, adjacency, opportunities, material retention and
-native savings/purchase journals. Candidate removes Base-only acquisition and
-adds buyer-gated Spec development without changing bid bands. Short diagnostic
-qualification reaches50; Continents and Pangaea complete250/exit0/restored.
-Fractal is running; the combined outcome is pending. Pangaea resumes its exact
-turn200 checkpoint after a hidden spy-warning conversation stopped the original
-session at205. Structural rows match44/44 after load. Its combined evidence is
-explicitly segmented, with a native pre-save-turn200 coverage gap.
+**14 November: three-game Problems1/2 planning campaign completed.**
+All preselected Small/Prince/Online250 games close with exit0 and restored
+preferences. City Lights, Resourceful2 and Sukritact resources enabled; main CSC
+policy only. Pangaea uses a verified200-save continuation after the hidden
+observer spy warning blocks205; its native boundary coverage gap remains explicit.
 
-First qualification stopped before autoplay on an overly strict check of the
-removed `GOLD2` compatibility alias. Actual `GOLD`/Tailors Spec/Mine mapping is
-valid. The check now records the unused alias as a warning. The controller
-closed with exit0 and restored preferences. A second passive roster issue was
-fixed before autoplay; the successful short game records104 savings checks,
-20 paid purchases and complete UI-event foundation adjacency. Its summaries were
-recovered offline after a post-exit host-handle error; full runs use the corrected
-after-exit callback. Source parity commit `410e888f` is pushed. Older automatic
-goal stays paused.
-[Fixed protocol, scope and evidence](../research/mods/csc-ai-planning-campaign-20261114.md).
+| Map | Bakers / Tailors founded | +3+ / +4+ | Both materials |
+|---|---:|---:|---:|
+| Continents |5 /1 |6 /3 |2 |
+| Pangaea |0 /0 |0 /0 |0 |
+| Fractal |2 /0 |2 /0 |0 |
 
-Continents:5 Bakers/1 Tailors founded, all owned Base and+3+, three+4+, two both
-classes.40/40 new-site comparisons consume exact bids/writes. No last physical
-material deposit is destroyed; five working-supplier disruptions include four
-observed restorations. No dedicated Quarter or existing-Quarter material purchase
-is exercised.45 CL providers yield no adjacent-provider pair in the cohort.
-The vanilla calibration records308 foundations/22 types and201/206 preceding
-native totals excluding City Centers/Wonder footprints. These are descriptive
-choice-time quotes, not fresh foundation-time forecasts.
+All eight foundations have owned Base and tie their packet's best positive
+geometry.51/51 new-site native BEST receipts consume exact bid/write/version/
+ordinal. Construction remains uneven; delivery alone does not close1.6.
+London's expired+3→+2 offer and later−1024 contract are a justified-withdrawal
+candidate, separate from still-credible offers needing follow-through diagnosis.
 
-Two audit corrections matter: exclude unrelated compatible improvements from
-CSC supplier losses; ignore the native SetOwner receiver+0x1c owner fields.
-Ghidra confirms ownership is on resolved data instead (skill AI-N129). Actual
-debits and strictly later Lua ownership remain valid. A separate loaded-SQL
-audit finds missing incoming Food/Culture bindings for some R2/CL improvement
-replacements; reverse plot yields/Service gates are separate. The campaign stays
-frozen; economic equivalence is not yet complete.
+Thirteen physical neighbour pairs have nine neighbours first and four Quarters
+first. No cohort CL-provider adjacency appears despite167 mapped provider
+foundations. No last physical Base/Spec is destroyed; six mapped incidents
+include five working-supplier disruptions and four observed restorations.
+No natural supplier acquisition or Quarter-site purchase is demonstrated, despite
+15 unowned offers and275 generic tile payments. Spec/modded-source plumbing is
+tested; natural modded-Spec and Stage4-gated job outcomes remain unexercised.
 
-Pangaea founds **zero** cohort Quarters despite36 distinct positive Bakers sites
-and six Tailors sites over the game. Four new-site native Quarter BEST receipts
-consume exact published bids/writes. Delivery therefore does not establish
-nomination, production or construction. No Quarter supplier losses or new
-Quarter/customer pairs can be tested in that arm. Native choice totals read
-1604/1604;71 actual plot payments are recorded. Interpretation/calibration is
-pending the complete three-map comparison.
+Calibration covers864 native-type footprints, UI adjacency for all864, and
+539/557 preceding native choice totals excluding City Centers/Wonder footprints.
+All5552 selected native totals read. These are choice-time quotes in the tuned
+CSC/CL stack, not fresh foundation-time forecasts or a matched untuned control.
+Fractal's player3 is eliminated by175; other original AIs survive.
 
-Shared-controller fix `c63be794` handles the specific hidden observer spy warning
-through guarded, one-shot Escape-equivalent session cancellation, separately
-from passive messages.104 offline regression tests pass. No explicit response,
-promise/refusal/deal/war is selected; possible implicit diplomatic consequences
-are logged. Passage205 after reload does not prove live cancellation: no
-corresponding receipt was seen in that continuation.
+Shared-controller fix c63be794 safely cancels the specific observer spy warning
+once, with strict identity/control/statement guards and no explicit response.
+106 offline controller tests pass, including the captured stall trace; a live
+spy-cancellation receipt is still absent.53 other policy/diagnostic/analysis
+checks pass. After all games close, diagnostic owner reads and unrelated Farm
+supplier flags are corrected; raw evidence is preserved. Ghidra pointer scope
+is recorded in skill AI-N129. No upstream PR; older automatic goal stays paused.
+
+**Next:**1.6 credible nomination/production follow-through,1.5 a controlled
+unowned-target funding case, and correction of the documented CL/R2 incoming
+Food/Culture attachment gaps before claiming economic equivalence. No new game
+is running from this campaign.
+
+[Consolidated results, problem table and vanilla calibration](../research/mods/csc-ai-planning-campaign-results-20261114.md)
+· [Protocol, interruptions, hashes and corrections](../research/mods/csc-ai-planning-campaign-20261114.md).
+
+## Earlier completed work
 
 **Completed 13 November: timing-corrected Online game to turn 250, exit 0 and restored.**
 Seven AI-founded Quarters (five Bakers/two Tailors), versus four Bakers in the

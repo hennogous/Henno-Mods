@@ -3491,3 +3491,48 @@ improvement combinations. Resource adjacency and generic AI eligibility are
 separate and must not be described as complete economic parity. Preserve
 Industry/Corporation special roots in any duplicate-safe generated fix.
 [Exact missing directions, snapshot and scope](../research/mods/csc-ai-planning-campaign-20261114.md#early-audit-resource-mapping-is-not-complete-transaction-registration).
+
+<a id="ai-c183"></a>
+## AI-C183 — Three-map campaign demonstrates qualified placement but uneven construction and no natural Quarter acquisition
+
+Completed14 November2026, Small/Prince/Online250, preselected Continents/Pangaea/
+Fractal seeds, CSC policy410e888f with CE400e6755/native092abfbb and CL/R2/Suk.
+All three outcomes close exit0/restored. Pangaea resumes its exact200 save with
+44/44 structural rows matching after the original205 observer-warning stall.
+Its normalized evidence labels segment-local identities and excludes native
+pre-save-turn200 data whose save-relative ordering is unknown.
+
+Original AI1–5 found6/0/2 Quarters, seven Bakers/one Tailors overall. All eight
+have owned Base/+3+ at foundation; three+4, two Spec/both. Each ties its current
+packet's best positive geometry.51/51 new-site BEST comparisons consume exact
+published bid/write/version/preceding ordinal. A London offer falls+3→+2 on8,
+then its old contract is submitted16 at104 and accepted25 at−1024, with no
+foundation. This is consistent with withdrawing an expired site, not proof
+that every unbuilt nomination needs a larger bid. Other follow-through remains
+unresolved. Alternatives across time/cities are not expected construction counts.
+
+Thirteen physical neighbour pairs are nine neighbour-first/four Quarter-first;
+no cohort provider adjacency appears despite167 mapped CL-provider foundations.
+No last physical deposit is destroyed. Six mapped incidents, all on Continents,
+include five working-supplier disruptions and four restorations; this is not
+universal or causally attributed repair evidence. Modded-Spec adjacency,
+Stage4-gated Spec job execution and supplier acquisition remain unexercised.
+Loaded-source parity and actual transaction attachments are separate (AI-C182).
+
+Fifteen unowned Quarter offers produce no frontier Quarter selection/payment.
+275 generic payments spend25,596 Gold; every actual debit matches.272 have the
+buyer owning the tile at the first strictly later snapshot; three Fractal plots
+have free-city62 ownership by that snapshot, without invalidating their recorded
+debits.787 targeted checks fail category funds despite sufficient Treasury.
+No dedicated savings intent for CSC targets is established.108 reconsiderations
+across57 scopes and151,892 mask operations are diagnostics, not successful builds.
+
+Native-type calibration covers864 foundations with all864 UI adjacency joins
+and539/557 prior choice totals excluding City Centers/Wonder footprints.
+All5552 selected native totals read. These are cached choice-time utility in
+the tuned stack; no matched untuned comparison. Fractal AI3 is eliminated by175.
+After all games close, invalid wrapper-owner reads are removed and unrelated
+improvements are excluded from supplier flags; raw campaign data remains intact.
+106 controller plus53 policy/observer/recovery/analysis fixtures pass. No live
+spy-cancellation receipt occurs, despite guarded controller fix c63be794.
+[Consolidated results, limits and per-type calibration](../research/mods/csc-ai-planning-campaign-results-20261114.md).

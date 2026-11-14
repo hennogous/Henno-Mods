@@ -171,6 +171,27 @@ class PlanningObserverTests(unittest.TestCase):
         self.assertEqual(spec[-1]["lostWorking"], "true")
         self.assertEqual(spec[-1]["revealed"], "false")
 
+    def test_unrelated_compatible_improvement_is_not_quarter_supply(self):
+        # Reproduce the campaign's unrelated Potato Farm false loss: its
+        # improvement is valid, but neither material class maps the resource.
+        self.lua=LuaRuntime(unpack_returned_tuples=True)
+        self.lua.execute(FIXTURE+"""
+GameInfo.Resources=info({{Index=1,ResourceType='RESOURCE_TEST_BASE'},
+ {Index=2,ResourceType='RESOURCE_TEST_SPEC'},
+ {Index=3,ResourceType='RESOURCE_TEST_UNRELATED'}},'ResourceType')
+GameInfo.Improvement_ValidResources=info({
+ {ImprovementType='IMPROVEMENT_FARM',ResourceType='RESOURCE_TEST_BASE'},
+ {ImprovementType='IMPROVEMENT_FARM',ResourceType='RESOURCE_TEST_UNRELATED'}})
+plots[5].resource=3;plots[5].improvement=1
+""")
+        self.lua.execute(SOURCE.read_text(encoding='utf-8'))
+        self.lua.execute("q=district(2,1,2,false);fire('DistrictAddedToMap',0,2,10,2,0,1);Game.t=2;plots[5].improvement=-1;poll()")
+        unrelated=[r for r in self.rows('MATERIAL_STATE')if r['materialPlot']=='5']
+        self.assertEqual(unrelated[0]['compatible'],'true')
+        self.assertEqual(unrelated[0]['working'],'false')
+        self.assertEqual(unrelated[-1]['lostWorking'],'false')
+        self.assertEqual(self.rows('FAULT'),[])
+
     def test_diagnostic_geometry_failure_cannot_change_original_returns(self):
         self.lua.execute("snapshot.Geometry=function()return nil end;entries,stats,third=CSC_AI_EconomyAdapters.QuarterBids(snapshot,CSC_AI_QuarterPlacement,{},{});a=CSC_AI_DistrictBridge.Publish(1,10,10,1,{0},entries)")
         self.assertEqual(self.lua.eval("third"), "thirdReturn")

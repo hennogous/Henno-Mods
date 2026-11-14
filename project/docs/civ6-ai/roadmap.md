@@ -1,14 +1,24 @@
 # CSC AI roadmap
 
-**14 November active: three-game evidence campaign across Problems 1 and 2.**
+**14 November completed: three-game evidence campaign across Problems 1 and 2.**
 
-Progress: Continents and Pangaea reach250; Fractal runs third. Pangaea needs a
-verified200-save continuation after a hidden observer spy warning blocks205.
-The shared-controller guarded cancellation fix is pushed (`c63be794`,104 offline
-tests); live exercise requires a cancellation receipt. Continents founds5 Bakers
-and1 Tailors; Pangaea founds none despite4/4 exact new-site bid comparisons.
-Keep delivery, nomination/queue follow-through and construction separate when
-assessing1.6. Combined results/remaining natural-exercise gaps are still pending.
+All three seeds reach250 and close cleanly:6/0/2 Quarters on Continents/Pangaea/
+Fractal. All eight have owned Base/+3+, three+4, two both classes; each ties its
+packet's best positive geometry.51/51 new-site bids land in native comparisons.
+Pangaea uses a verified200-save continuation after the observer spy-warning
+stall; its coverage gap is preserved. The controller fix is pushed (`c63be794`),
+106 offline controller tests pass, but no live spy cancellation is recorded.
+
+**Next unresolved dependency:1.6 credible nomination/admission/queue follow-through.**
+Separate justified withdrawals (London+3→+2, later−1024 contract) from viable
+offers that never construct. Under1.5,15 unowned offers produce no frontier
+Quarter choice/payment or supplier-acquisition offer: use a controlled credible
+target, not more generic budget receipts, to prove that natural path. Under
+1.1–1.2, fix documented CL/R2 incoming payout attachments and exercise modded
+Spec. Under2.1, seek an actual adjacent-provider outcome:167 mapped providers
+produce none around guided Quarters.2.2 retains no last physical deposit loss,
+but five working-supplier disruptions include one unrepaired terminal case.
+[Full results and remaining gaps](../research/mods/csc-ai-planning-campaign-results-20261114.md).
 
 Henno requests chronology for 2.1, adjacent material retention for 2.2, native
 savings/purchases for 1.5, actual defer/reconsider diagnostics for 1.7,
@@ -18,7 +28,7 @@ construction, adjacency and matched native forecast totals for calibration.
 The first-missing material acquisition path now handles both classes; Base
 improvement preparation follows its Stage2 buyer, Spec its Stage4 buyer.
 Three preselected Small/Online250 maps use one frozen policy and the explicit
-CL/R2/Suk stack. Passive observer qualification comes first. No closures or
+CL/R2/Suk stack. Passive observers qualify before recording. No closures or
 outcome improvements inferred from instrumentation alone. See the
 [campaign protocol](../research/mods/csc-ai-planning-campaign-20261114.md).
 

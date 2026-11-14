@@ -137,3 +137,38 @@ despite positive alternatives36 Bakers/6 Tailors and4/4 exact positive Native
 Quarter BEST receipts. This is a result to explain, not a tooling success claim.
 Managed masks49289 on223turns;31 reconsiderations; no material acquisition offers.
 1604/1604 native choice totals read;71 paidplot debits. Raw segments retained.
+
+12:26 local: runner42365 exits0, all3seeds complete250, active=null. Fractal
+exit0/closed/restored, all10censuses/fivecheckpoint saves, frozen native0faults,
+messages[]. Troop warning240 handled by existing controller; NOspy cancellation
+receipt in either recovery orFractal. Oldgoalstillpaused; no newgames/PR.
+Controllerc63be794and recovery/analysisc6c3be2c pushed. Final docs/diagnostic
+corrections pending scopedcommit.53 policy/observer/recovery/analysis tests and
+106controller regressions pass (159 total), after fixing test invocation paths.
+
+Final comparisonroot comparison/planning-campaign-results.json/.md. Continents
+5B1T, Pangaea0, Fractal2B0T; all8ownedBase/+3+,3+4,2Specboth; all8tie ownpacket
+bestpositivegeometry.51/51 new-siteBEST exactbid/write/version/ordinal.
+Positivealternativeidentities B54/36/37,T23/6/4, notexpectedbuildcounts.
+Native5552/5552totalreads; stockfootprints308/253/303, all864UIjoined;539/557
+priorchoicequotes excludingCC/Wonder. Physicalrelations13=9neighborfirst,
+4Qfirst (3sales+Broadway); providers0 despite45/63/59 mappedproviderfoundations.
+CLCoreX_UPAPITHA is NOT registeredgoodsprovider; do not count allCoreX byprefix.
+Fractalplayer3alive150/eliminatedby175. NoQcaptures; held6/0/2.
+
+Payments275/25596Gold/allactualdeltasmatch.272samebuyeratFIRSTstrictlatercontext;
+3Fractalpaidtilesowner62byfirstlater snapshot: p4plot1287T130/1583T132→135;
+p2plot790T170→175. Do not claim failedpayment or substitute laterreacquisition.
+15unownedQoffers (7/5/3),0frontierQchoices,0Qpayments,0acquisitionoffers.
+1582targetedchecks/132pass;787failcategoriesdespitesufficientTreasury.
+Reconsider108/57scopes; masks151892. MateriallossesonlyContinents6mapped,
+lastphysicaldestroyed0;5workinglosses4restorations. ModdedSpecNOTnaturally
+exercised, mappedneighbors5moddedBase/5vanillaBase/2vanillaSpec.
+
+AFTER all3closed corrected economy_savings_watch.js: removeplotOwner+1c and
+ownerBefore/After/MatchesRequest, markownerStatusunknown, requestedowner/city
+retained. VMfixtureunmapswrongbyte. planningobserver working=(baseorspec)and
+compatible..., unrelatedFarmregression passes. Campaignsources/rawstaysfrozen;
+offlineanalysis appliescorrectionsallarms. AddedcapturedCSVphase/visiblecleanup
+controllertests, no newlivegame. Finalreportrepo path
+project/docs/research/mods/csc-ai-planning-campaign-results-20261114.md.

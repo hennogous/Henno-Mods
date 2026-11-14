@@ -4,7 +4,7 @@
 // arguments/registers/returns or writes target data. Frida's instruction hooks
 // remain installed until controller-owned process exit. All RVAs/layouts below
 // are for XP2 SHA092abfbb, text matched to reference SHA324c51e9. Evidence:
-// AI-N109/114/116/117/119 and plot_purchase_observer.js. They are not a CE API.
+// AI-N109/114/116/117/119/129 and plot_purchase_observer.js. They are not a CE API.
 const ECONOMY_SHA='092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f';
 const ECONOMY_POINTS={activate:0x457120,routine:0x458530,cityQuote:0x459169,
   savings:0x45918f,requestBuilt:0x4591f3,commandChecked:0x45921f,commandReturned:0x459241,
@@ -20,7 +20,7 @@ const L={playerId:0xd8,treasury:0x780,gold:0xa8,cityId:0xa8,cityOwner:0xd8,
   cityBuild:0x1948,buildCity:0x90,cachedXY:0x238,playerCities:0x6d0,
   citiesHead:0xd0,nodeCity:0,nodeNext:0x10,treeParent:0x120,treeControl:0x1b0,
   treeId:0x1c8,contractId:0x110,contractControl:0x128,contractPlayer:0x140,
-  contractTarget:0x178,plotCoordinates:0x28,plotOwner:0x1c,gameSlot:0xb8aa68,gameTurn:0xc0};
+  contractTarget:0x178,plotCoordinates:0x28,gameSlot:0xb8aa68,gameTurn:0xc0};
 // Same SHA's CE target_identity.h / AIDistrictScores.cpp::read_matrix schema.
 // These are cached total district utilities, signed Q8 UTILITY, not Gold. The
 // installed DB catalogue supplies the column count; do not infer it from a
@@ -269,16 +269,19 @@ function install(){
   });
   // SetOwner is a compact ownership pathway, not a universal proof of payment.
   // Filter its requested player before any pointer reads; no stackwalk/plot scan.
-  // Owner byte +1c is independently identified by PurchasePlotContract::Update
-  // 3fa260 (AI-N113); -1 is unowned. Measure it before/after the call as well as
-  // the requested owner. Parent Lua reconciles owning CITY and later retention;
-  // SetOwner is also used by culture growth, so this alone never proves payment.
+  // AI-N129 correction: receiver is a plot WRAPPER. Owner +1c belongs to the
+  // resolved data behind virtual slots+30/+38, not this receiver. Full bodies
+  // of SetOwner616a0 and PurchasePlotContract Update3fa260 match reference and
+  // current binaries, but that does not make offsets portable between objects.
+  // Do not call a native getter or guess another offset here. Requested owner/
+  // city and qualified wrapper coordinates are the only facts collected.
+  // Actual ownership comes from strictly later Lua snapshots; SetOwner also
+  // handles culture growth, so a return alone never proves payment or ownership.
   paired('setOwner',c=>{const player=c.rdx.toInt32();if(!originalAI(player))return null;
     const t=turn();if(!inWindow(t))return null;const packed=s32(c.rcx,L.plotCoordinates);
     return {turn:t,...xy((packed<<16)>>16,packed>>16),requestedPlayer:player,requestedCity:c.r8.toInt32(),
-      plotPointer:c.rcx.toString(),ownerBefore:c.rcx.add(L.plotOwner).readS8()};
-  },f=>{const ownerAfter=ptr(f.plotPointer).add(L.plotOwner).readS8();
-    emit('plot-set-owner-return',{...f,ownerAfter,ownerMatchesRequest:ownerAfter===f.requestedPlayer});});
+      plotPointer:c.rcx.toString(),ownerStatus:'not_measured_wrapper_has_no_qualified_owner_field'};
+  },f=>emit('plot-set-owner-return',f));
 }
 rpc.exports={
   init(spec,config){

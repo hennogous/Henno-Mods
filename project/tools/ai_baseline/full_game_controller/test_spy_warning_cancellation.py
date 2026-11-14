@@ -59,6 +59,9 @@ print=function(...)local a={...};for i,v in ipairs(a)do a[i]=tostring(v)end;mark
  def test_async_close_is_requested_not_falsely_confirmed(self):
   n,m=self.guard('deferred=true');self.assertEqual(n,1)
   self.assertTrue(any('CANCEL_PENDING'in s for s in m));self.assertFalse(any('CONVERSATION_CANCELLED'in s for s in m))
+ def test_visible_view_cleanup_does_not_repeat_native_cancellation(self):
+  n,m=self.guard("ContextPtr.IsHidden=function()return false end;Close=function()print('COSMETIC_VIEW_CLOSED')end")
+  self.assertEqual(n,1);self.assertEqual(sum('COSMETIC_VIEW_CLOSED'in s for s in m),1)
 
 class SpyControllerTests(unittest.TestCase):
  def setUp(self):
@@ -77,6 +80,19 @@ class SpyControllerTests(unittest.TestCase):
   self.assertNotIn('AddResponse(',code);self.assertNotIn('AddStatement(',code)
   r=self.writes[-1][1];self.assertTrue(r['cancelled_observer_conversation']);self.assertTrue(r['possible_implicit_diplomatic_effects'])
   self.assertEqual(r['guard_resource'],'spy_warning_cancellation.lua');self.assertEqual(self.events[0][0][0],'observer-conversation-cancellation-begin')
+ def test_recorded_turn205_csv_trace_routes_to_the_guarded_handler(self):
+  # Exact ordered phases/spacing from the failed campaign. No game or native
+  # session is used: this proves routing of the captured failure, not live close.
+  self.log.write_text('''205, 4, 0, -1, WARNING_STOP_SPYING_ON_ME, NONE, 00000000, Requesting Session (B)
+205, 4, 0, 4, WARNING_STOP_SPYING_ON_ME, NONE, INITIAL, Adding to pending
+205, 4, 0, 4, WARNING_STOP_SPYING_ON_ME, NONE, INITIAL, Processing Statement
+205, 4, 0, 4, WARNING_STOP_SPYING_ON_ME, NONE, INITIAL, Processing Immediately
+''')
+  self.f.state_read.return_value=dict(turn=205,active=True,remaining=5,local_player=-1,player0_human=False)
+  self.f.dismiss_observer_warning(210)
+  self.assertEqual(self.f.cmd.call_count,1)
+  self.assertEqual(self.writes[-1][1]['guard_resource'],'spy_warning_cancellation.lua')
+  self.assertIn('local target=210',self.f.cmd.call_args.args[0])
  def test_newer_deal_or_wrong_csv_phase_blocks_older_warning(self):
   for row in('205,4,0,4,MAKE_DEAL,NONE,INITIAL,Processing Immediately\n',
    '205,4,0,4,'+STATEMENT+',POSITIVE,INITIAL,Processing Immediately\n',

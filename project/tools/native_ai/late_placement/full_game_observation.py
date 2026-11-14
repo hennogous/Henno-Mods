@@ -145,7 +145,8 @@ def observe_purchase_contexts(controller,out,batch,boundary):
     Native events retain their original turn and measured funds. These facts
     are explicitly at the inactive drain boundary (up to five turns later), so
     a resource subsequently harvested cannot be described as absent at payment.
-    Actual SetOwner before/after and debit evidence remain in the native journal.
+    Actual debit evidence remains in the native journal. SetOwner records only
+    the requested owner/city and a return, not measured ownership (AI-N129).
     """
     targets=set()
     for row in batch['records']:

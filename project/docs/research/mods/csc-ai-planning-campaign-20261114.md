@@ -1,6 +1,13 @@
 # Three-game planning observation campaign
 
-**Status: three full games started, 14 November 2026. Full outcomes pending.**
+**Completed14 November2026: all three preselected seeds reach250 and close cleanly.**
+[Read the consolidated results and calibration tables](csc-ai-planning-campaign-results-20261114.md).
+Pangaea uses a verified200-save continuation; its interruption and capture gap
+remain explicit. The original AI found6/0/2 Quarters on Continents/Pangaea/Fractal,
+all eight at+3 or better, three at+4, two with both material classes.51/51
+new-site native BEST receipts consume exact bids; natural CSC tile purchases
+and provider adjacency remain unshown. The controller spy-warning fix is pushed;
+106 controller and53 policy/diagnostic/analysis checks pass after the campaign.
 
 Henno requests three normal-play tests of Quarter planning, material retention,
 tile funding and the surrounding district economy. The older automatic goal
@@ -110,7 +117,8 @@ Each run archives source identities, optional-mod manifests, SQLite qualificatio
 map-resource census, Lua/native journals, five checkpoint saves, controller
 receipts, terminal census, errors and restoration verification.
 
-Results and qualifications will be appended after the games.
+Results and qualifications are maintained in the linked consolidated report;
+the chronological audit below preserves the earlier discoveries and corrections.
 
 ## Early audit: resource mapping is not complete transaction registration
 
@@ -283,7 +291,7 @@ Recovery attempt01 loaded200 with44/44 structural rows matching, then stopped
 before autoplay because the preflight incorrectly required turn1. Recovery02
 uses an explicit start boundary, verifies the same44 rows, reaches250, archives
 225/250 censuses and closes with exit0, restored preferences and no asynchronous
-native observer messages. Fractal follows as the third fresh seed.
+native observer messages. Fractal followed as the third fresh seed.
 
 `pangaea250-combined` is a labelled offline derivative, **not an uninterrupted
 raw session**. It cuts original Lua at the exact completed turn200 save marker,

@@ -45,13 +45,23 @@ def financial(rows, context_rows, quarter_indices):
     """
     paid=[r for r in rows if r['kind']=='purchase-debit-return']
     checks=[r for r in rows if r['kind']=='targeted-savings']
-    confirmed=0; quarter_paid=[]; adjacent_material=[]
+    confirmed=0; quarter_paid=[]; adjacent_material=[];ownership_followups=[]
     context_by_plot=defaultdict(list)
     for c in context_rows:context_by_plot[(c['player'],c['plot'])].append(c)
     for r in paid:
         later=[c for c in context_by_plot[(r['player'],r['plot'])]if c['turn']>r['turn']]
-        if later and any(c['owner']==r['player']for c in later):confirmed+=1
-        selection=(r.get('lineage')or{}).get('selection')or{}
+        if later:
+            nearest=min(c['turn']for c in later)
+            # A later reacquisition cannot repair contradictory first-later
+            # ownership evidence. Duplicate family rows must agree too.
+            owners=sorted({c['owner']for c in later if c['turn']==nearest})
+            if owners==[r['player']]:confirmed+=1
+            else:ownership_followups.append(dict(player=r['player'],plot=r['plot'],paymentTurn=r['turn'],
+                firstLater=nearest,owners=owners,reason='first_later_owner_differs'))
+        else:ownership_followups.append(dict(player=r['player'],plot=r['plot'],paymentTurn=r['turn'],
+            reason='no_strictly_later_context'))
+        lineage=r.get('lineage')or{}
+        selection=(lineage.get('selection')or{})if lineage.get('known')is True else{}
         if selection.get('district')in quarter_indices:quarter_paid.append(r)
         # This is a subsequent relationship observation, not proof that the
         # Quarter existed at payment or that CSC requested the material.
@@ -71,6 +81,7 @@ def financial(rows, context_rows, quarter_indices):
         quarter_frontier_choices=sum(r.get('frontier')is True for r in choices if r['district']in quarter_indices),
         choice_totals_read=sum(r.get('scoreStatus')=='read'for r in choices),choice_totals=len(choices),
         max_plot_fund=max((r['plotQ8']/256 for r in checks),default=None),
+        ownership_followups=ownership_followups,
         weights=sorted({tuple(r['savingWeights'])for r in checks}))
 
 
@@ -126,14 +137,24 @@ def report(root):
             for role in ('base','spec'):
                 if r.get(role):material_origins[(r['quarter'],role.upper(),r.get('origin','unknown'))].add(
                     (r['player'],r['quarterPlot'],r['materialPlot']))
+    endpoint=json.loads((root/'full-census-250.json').read_text(encoding='utf-8'))
+    held=[payload.split('\t')for kind,payload in endpoint['rows']if kind=='QUARTER']
+    ownership=[r for r in planning if r['kind']=='OWNERSHIP'and r.get('player')in players
+               and r.get('district')in quarter_indices]
+    provider_ids={r['district']for r in planning if r['kind']=='MAPPING'and r.get('role')=='goodsProvider'}
     return dict(root=str(root),summary=summary,financial=funds,physical_relationships=list(physical.values()),
         relationship_order=dict(Counter(r['foundationOrder']for r in physical.values())),
         providers_adjacent=len({(r['player'],r['quarterPlot'],r['neighbourPlot'])
             for r in result['relationship_pairs']if r.get('role')=='goodsProvider'}),
+        goods_provider_foundations=sum(r['district']in provider_ids for r in result['constructions']),
         vanilla_foundations=count_native,vanilla_types=len(vanilla),vanilla_quotes=quotes,vanilla_quote_eligible=eligible,
         vanilla=vanilla,quarter_foundations=foundations,
         material_role_observations={'/'.join(k):len(v)for k,v in material_origins.items()},
         packet_comparisons=packet_comparisons,
+        distinct_unowned_quarter_offers=len({(r['player'],r['city'],r['district'],r['plot'])for r in planning
+            if r['kind']=='OPPORTUNITY'and r.get('player')in players and r.get('offered')and r.get('owner')==-1}),
+        held_quarters_T250=held,quarter_ownership_events=ownership,
+        alive_T250=[payload.split('\t')for kind,payload in endpoint['rows']if kind=='PLAYER'],
         reconsidered_scopes=len({(r['player'],r['city'],r['district'])for r in result['plan_transitions']if r.get('reconsidered')}),
         raw_segments_required_for_services=(root/'normalized-segments.json').exists())
 

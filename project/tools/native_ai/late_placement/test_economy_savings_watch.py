@@ -183,11 +183,15 @@ function fixture(mismatch=false,invalidFunds=false){
   cfg.districts=null;fire('selection',{rdi:p(build),rbp:p(frame),rax:p(5)});
   assert.equal(rpc.drain().records[0].scoreStatus,'district_count_unconfigured');cfg.districts=40;
   const ownership=hooks.get(points.setOwner),plotData=0xc0000;
-  put(plotData,0x28,(5<<16)|31);put(plotData,0x1c,-1);
+  // Do not install any readable owner byte on the wrapper. Its +1c is NOT the
+  // resolved plot-data owner; an accidental read must fault this fixture.
+  put(plotData,0x28,(5<<16)|31);
   const ownershipCall={context:{rcx:p(plotData),rdx:p(1),r8:p(524295)}};
-  ownership.onEnter.call(ownershipCall);put(plotData,0x1c,1);ownership.onLeave.call(ownershipCall);
-  const ownerRow=rpc.drain().records[0];assert.equal(ownerRow.ownerBefore,-1);
-  assert.equal(ownerRow.ownerAfter,1);assert.equal(ownerRow.ownerMatchesRequest,true);
+  ownership.onEnter.call(ownershipCall);ownership.onLeave.call(ownershipCall);
+  const ownerRow=rpc.drain().records[0];assert.equal(ownerRow.requestedPlayer,1);
+  assert.equal(ownerRow.requestedCity,524295);assert.equal(ownerRow.plot,5*74+31);
+  assert.equal(ownerRow.ownerStatus,'not_measured_wrapper_has_no_qualified_owner_field');
+  for(const field of ['ownerBefore','ownerAfter','ownerMatchesRequest'])assert.equal(field in ownerRow,false);
   const command={rdi:p(city),rbp:p(frame),r15:p(treasury),rbx:p(-25600),rcx:p(treasury),rdx:p(delta)};
   fire('xp1Debit',command);const waiting=rpc.freeze();assert.equal(waiting.frozen,false);assert.equal(waiting.active,1);
   put(treasury,0xa8,104960);fire('xp1DebitReturn',command);

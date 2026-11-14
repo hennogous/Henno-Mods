@@ -87,7 +87,12 @@ ambiguity never permits replay. The receipt records
 read; otherwise it remains a cancellation request, with a distinct pending
 marker. No response, promise, refusal, war, deal or autoplay budget is explicitly
 submitted. Test fixtures cover real Lua51 guards and fake controller routing;
-live recovery remains pending until the continuation actually exercises it.
+live confirmation remains pending until an explicit cancellation receipt is
+produced. Pangaea's continuation and the completed Fractal game do not produce
+a spy-cancellation receipt. Fractal does naturally exercise the existing troop
+warning handler at240 and proceeds to250. The final offline regression set
+passes106 tests; the spy fixtures include the recorded205 CSV phase sequence
+and visible-view cleanup without a second native close.
 
 Offline verification (with the existing Lupa51 environment):
 

@@ -32,10 +32,15 @@ class FinancialTests(unittest.TestCase):
 
     def test_only_paid_fresh_lineage_counts_as_quarter_purchase(self):
         requested=dict(kind='targeted-request-built',player=2,plot=9,turn=9,
-                       lineage=dict(selection=dict(district=42)))
+                       lineage=dict(known=True,selection=dict(district=42)))
         self.assertEqual(financial([requested],[],{42})['quarter_site_payments'],0)
         payment=self.payment();payment['lineage']=requested['lineage']
         self.assertEqual(financial([requested,payment],[],{42})['quarter_site_payments'],1)
+
+    def test_reacquisition_does_not_replace_contradictory_first_later_owner(self):
+        first=dict(player=2,plot=9,turn=11,owner=3,base=False,spec=False,quarterPlots=[])
+        later=dict(first,turn=12,owner=2)
+        self.assertEqual(financial([self.payment()],[first,later],{42})['later_owner_confirmed'],0)
 
     def test_category_funds_are_separate_from_actual_treasury(self):
         check=dict(kind='targeted-savings',passesPlotFund=False,passesCombinedFunds=False,
