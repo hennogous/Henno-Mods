@@ -1,5 +1,5 @@
--- Complete ordinary supplier -> producer attachments after all resource and
--- compatibility mappings load. These are real Food/Culture exchanges, used by
+-- Complete ordinary supplier -> producer attachments from resource mappings
+-- loaded by479, including the supported CL/R2/Suk stack. These are real Food/Culture exchanges, used by
 -- players and AI alike; they are independent of CE and AI policy settings.
 --
 -- A resource tag says WHAT a supplier provides. Improvement_ValidResources
@@ -26,7 +26,8 @@ VALUES  (   'CLASS_CSC_BAKERS_BASE',    'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_
 -- DISTINCT coalesces resources sharing the same improvement/root. NOT EXISTS
 -- makes reapplication safe even on a fixture without a unique constraint.
 -- Only defined improvements and producer roots are attached; dormant Quarters
--- or absent optional mods contribute no rows. LoadOrder479 follows their rules.
+-- or absent optional mods contribute no rows. Later compatibility generators
+-- must attach their own roots or arrange a second reconciliation after loading.
 INSERT OR IGNORE INTO ImprovementModifiers
         (   ImprovementType,   ModifierId   )
 SELECT DISTINCT i.ImprovementType, r.ModifierId

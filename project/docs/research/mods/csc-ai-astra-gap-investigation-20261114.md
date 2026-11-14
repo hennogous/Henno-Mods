@@ -94,3 +94,50 @@ City_BuildQueue, AI_Behavior_Trees, native economy journal and Lua events.
 Upstream check before replay: WildW develop2986a746b396eb93aad14f9afffb043a09c2c489,
 mastere59b5aa910c8a0fcab9b31973ffa477443de0e09. Retain the qualified400e6755
 development API build for this investigation; no upstream merge or PR is made.
+
+## Component replay and review: findings before the fresh game
+
+The read-only replay's155/160 records explain the changed site. Both footprints
+are unworked, so their displaced-yield debit is zero. Site2917 gains an owned
+Base supplier at2916 between these captures, raising direct Production0→1 and
+prospective Water-Mill total3→4. The native owner setter requests player4 and
+city393221 at157; the physical supply snapshot agrees at160. There is no2916
+purchase/debit receipt. The footprint itself was already owned.
+
+At155, current Production1.199 gives Quarter readiness26 and Mill60, beyond the
+50-turn horizon. Site2992's economic4255Q8 plus96-unit preference explains its
+112.62-unit offer. At160, Production2.398 brings Quarter13/Mill30/Granary44 into
+the horizon. Raw economics are13269Q8 for2992 and12386 for2917: the latter's
+supplier is unworked, so no worked-tile returns are invented. Its +4 preference
+then produces the stronger total61538Q8. Astra reviewed these full ledgers and
+recommends retaining the current formula for this coverage package. Production
+feedback after Quarter completion remains a separate bounded forecast
+enhancement; it is not required to explain this production loss.
+
+For acquisition, Fractal player1/city196610/plot2609 has27 frontier receipts.
+The early receipts show native writes, eligible cache reads and city comparisons
+with zero site wins. The best443.96-unit offer loses to Lavra and Rural Community
+alternatives around600–1300. This target does not reach the purchase stage;
+changing savings would not address that loss. All eight new Quarters also start
+with owned Base, explaining the absence of Base-scarcity acquisition offers.
+
+Astra's second review retains the accepted representative1.5 closure: AI-C162's
+40-Gold footprint payment→ownership→foundation209→completion213, and AI-C163's
+45-Gold supplier payment220→offer retirement221→Farm226/physical227–230. The
+sealed audits and exact artifacts remain under
+`csc-ai-problems-1-2-20261110/nuremberg-{ownership-integrated,ownership-reload,supplier-full,supplier-follow}-01`.
+New economics and population slots change which investments win; they do not
+erase those qualified purchase boundaries. Current-source qualification adds
+modded Spec and shared-Base/Spec supplier cases: six supplier and six publisher
+fixtures pass. Rebuilding the clean CEdbfb93b self-test source passes243 district
+checks plus four hook-group checks and instruction-call delivery/restoration.
+The old prebuilt180-check executable is not the current-source result.
+
+Astra finds no blocking source issue in the coverage SQL or capacity changes.
+LoadOrder479 covers the selected CL/R2/Suk mappings, not every optional future
+compatibility generator; LGD customer mappings at2005 remain a separate scope.
+The fresh-game freezer now explicitly overlays both reviewed SQL files and adds
+the unconditional479 runtime action/file registration. Its deployment fixture
+checks that unrelated source content is excluded and the CE criterion on the
+existing connector action is preserved. Actual new payout delivery and provider
+co-location remain live observations to qualify.

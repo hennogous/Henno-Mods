@@ -83,5 +83,34 @@ ui.GetPlotPurchaseQuote=function()return 40 end
 assert(offers()[1].plot==101)
 ''')
 
+    def test_missing_specialty_uses_the_same_band_after_base_is_owned(self):
+        vm=runtime();vm.execute('''
+-- Resource identity is data, not a vanilla-name allowlist. An optional pack's
+-- mapped Spec deposit must use the same acquisition path as the Base fixture.
+GameInfo.Resources[4].ResourceType='RESOURCE_OPTIONAL_SPEC'
+GameInfo.Resources.RESOURCE_OPTIONAL_SPEC=GameInfo.Resources[4]
+for _,row in ipairs(GameInfo.Improvement_ValidResources)do row.ResourceType='RESOURCE_OPTIONAL_SPEC' end
+chain.supply.base={{working=true,ready=true}}
+chain.profile.specialty='CLASS_CSC_BAKERS_SPEC'
+CSC_Adjacency.HasTag=function(tag,resource)
+ return tag=='CLASS_CSC_BAKERS_SPEC' and resource=='RESOURCE_OPTIONAL_SPEC'
+end
+local rows=offers();assert(#rows==1)
+assert(rows[1].materialClass=='specialty' and rows[1].deltaQ8==6656)
+pasture.GetOwner=function()return 3 end
+assert(#offers()==0)
+''')
+
+    def test_shared_base_and_spec_deposit_does_not_stack_purchase_guidance(self):
+        vm=runtime();vm.execute('''
+chain.profile.specialty='CLASS_CSC_BAKERS_SPEC'
+CSC_Adjacency.HasTag=function(tag)
+ return tag=='CLASS_CSC_BAKERS_BASE' or tag=='CLASS_CSC_BAKERS_SPEC'
+end
+local rows=offers();assert(#rows==1 and rows[1].deltaQ8==6656)
+chain.supply.base={{working=false,ready=false}}
+rows=offers();assert(#rows==1 and rows[1].materialClass=='specialty')
+''')
+
 
 if __name__=='__main__':unittest.main()
