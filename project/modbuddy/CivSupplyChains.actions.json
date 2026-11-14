@@ -1418,6 +1418,16 @@
       },
       {
         "type": "UpdateDatabase",
+        "id": "CSC_MaterialTransactions",
+        "properties": {
+          "LoadOrder": "479"
+        },
+        "files": [
+          "Data/CSC_MaterialTransactions.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
         "id": "CSC_AI_Connectors",
         "properties": {
           "LoadOrder": "480"

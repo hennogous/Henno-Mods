@@ -126,7 +126,7 @@ local function bids(profile, protected, legal, chains)
     ui.GetLegalDistrictTargets = legal
     local indexed = {}
     local offers, counts = CSC_AI_QuarterSiteForecasts(player, profile, chains or {},
-        supplies, protected, ui)
+        supplies, protected, ui, capacitySnapshot)
     for _, site in ipairs(offers) do indexed[site.plot] = site end
     return indexed, counts
 end
@@ -330,6 +330,25 @@ assert(bids(tailors, {}, legal)[23].delta==12288)
 assert(bids(tailors, {}, legal)[24].delta==4096)
 tailors.district.RequiresPopulation=true
 assert(not bids(tailors, {}, legal)[24])
+capacitySnapshot={DistrictCapacity=function()return{known=true,allowed=2,used=1}end}
+assert(not bids(tailors, {}, legal)[24]) -- One slot keeps the Quarter preference.
+capacitySnapshot.DistrictCapacity=function()return{known=true,allowed=3,used=1}end
+assert(bids(tailors, {}, legal)[24].delta==4096) -- Two slots admit the pair signal.
+capacitySnapshot.DistrictCapacity=function()return{known=false,reason='stale'}end
+assert(not bids(tailors, {}, legal)[24]and bids(tailors, {}, legal)[23].delta>0)
+-- A separate city's legal Harbor does not consume the Quarter city's slot.
+local oldCities=player.GetCities
+local oldPurchase=Cities.GetPlotPurchaseCity
+local otherCity=setmetatable({GetID=function()return 16 end},{__index=city})
+player.GetCities=function()return{Members=function()local i=0;return function()
+ i=i+1;if i==1 then return 15,city elseif i==2 then return 16,otherCity end end end}end
+Cities.GetPlotPurchaseCity=function(p)return p==plots[24]and otherCity or oldPurchase(p)end
+local function crossCityLegal(_,id,hash)
+ if hash==1002 then return id==15 and{23}or{}end
+ return id==16 and{24}or{}
+end
+assert(bids(tailors,{},crossCityLegal)[24].delta==4096)
+player.GetCities=oldCities;Cities.GetPlotPurchaseCity=oldPurchase;capacitySnapshot=nil
 tailors.district.RequiresPopulation=false
 harborUnlocked=false
 assert(bids(tailors, {[24]=true}, legal)[23].delta==-32768)

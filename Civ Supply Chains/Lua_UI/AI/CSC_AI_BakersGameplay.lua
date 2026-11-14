@@ -254,7 +254,7 @@ local function refresh(turn)
         -- protection active. A fresh native site score is still required.
         for _, profile in ipairs(placement.StageTwoProfiles()) do
             local ok, industryBids, counts = pcall(CSC_AI_QuarterSiteForecasts, player, profile, chains,
-                economy and function(_,plot,p)return economy.Supply(plot,p)end or placement.ReadSuppliers, protectedPlots, playerUI)
+                economy and function(_,plot,p)return economy.Supply(plot,p)end or placement.ReadSuppliers, protectedPlots, playerUI, economy)
             if ok then
                 for _, bid in ipairs(industryBids) do playerEntries[#playerEntries + 1] = bid end
                 -- This is CSC's assessment of the current legal targets.

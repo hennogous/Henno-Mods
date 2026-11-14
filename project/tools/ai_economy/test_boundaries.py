@@ -137,6 +137,21 @@ local fallback,failed=CSC_AI_EconomyAdapters.QuarterBids(snapshot,placement,{},e
 assert(#fallback==1 and failed.invoiceDeferred==1 and failed.managed and not failed.fallback)
 ''')
 
+    def test_minimum_two_site_reaches_publication_on_owned_and_frontier_paths(self):
+        vm=self.bid_vm()
+        vm.execute('''
+local E=CSC_AI_EconomyAdapters
+local geometry=2
+snapshot.Geometry=function()return{upper=geometry}end
+CSC_AI_EconomyModel.Forecast=function(site)return{valueQ8=site.value,adjacency=geometry,streams={},omissions={}}end
+local entries,stats=E.QuarterBids(snapshot,placement,{},early)
+assert(#entries==3 and stats.final==3 and stats.qualityDeferred==0)
+for _,entry in ipairs(entries)do assert(entry.adjacency==2 and entry.finalQ8==entry.plot*1000)end
+geometry=1
+entries,stats=E.QuarterBids(snapshot,placement,{},early)
+assert(#entries==0 and stats.final==0 and stats.qualityDeferred==3)
+''')
+
     def test_full_city_retains_future_bids_and_protection_without_raising_values(self):
         vm=self.bid_vm()
         vm.execute('''
@@ -305,6 +320,7 @@ CREATE TABLE AiLists(ListType,System);
 CREATE TABLE BehaviorTreeNodes(NodeId,TreeName,NodeType);
 CREATE TABLE TreeData(DefnId,NodeId,TreeName,DefaultData);
 CREATE TABLE Districts(DistrictType PRIMARY KEY);
+CREATE TABLE TypeTags(Type,Tag);
 CREATE TABLE DistrictReplaces(CivUniqueDistrictType,ReplacesDistrictType);
 CREATE TABLE CSC_QuarterCustomerBuildings(QuarterKey,ProducerStage,DistrictType);
 CREATE TABLE Adjacency_YieldChanges(ID PRIMARY KEY,Description,YieldType,YieldChange,TilesRequired,AdjacentDistrict);
@@ -322,6 +338,19 @@ INSERT INTO CSC_QuarterCustomerBuildings VALUES
         self.assertEqual({r[0] for r in db.execute('SELECT DistrictType FROM District_Adjacencies')},
                          {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER'})
         self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],4)
+        db.executescript('''
+INSERT INTO Districts VALUES('DISTRICT_RURALCOMMUNITYA'),('DISTRICT_HOLY_SITE');
+INSERT INTO DistrictReplaces VALUES('DISTRICT_UNIQUE_RURAL','DISTRICT_RURALCOMMUNITYA');
+INSERT INTO TypeTags VALUES
+ ('DISTRICT_RURALCOMMUNITYA','CLASS_CSC_TAILORS_GOODS_PROVIDER'),
+ ('DISTRICT_HOLY_SITE','CLASS_CSC_TAILORS_GOODS_PROVIDER'),
+ ('DISTRICT_ABSENT_MOD','CLASS_CSC_TAILORS_GOODS_PROVIDER');
+''')
+        db.executescript(sql);db.executescript(sql)
+        self.assertEqual({r[0]for r in db.execute('SELECT DistrictType FROM District_Adjacencies')},
+            {'DISTRICT_HARBOR','DISTRICT_UNIQUE_HARBOR','DISTRICT_HOLY_SITE','DISTRICT_THEATER',
+             'DISTRICT_RURALCOMMUNITYA','DISTRICT_UNIQUE_RURAL'})
+        self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],6)
 
     def test_loaded_unit_contract_leaves_match_current_source(self):
         source = (AI / 'CSC_AI_EconomyFacts.lua').read_text(encoding='utf-8')

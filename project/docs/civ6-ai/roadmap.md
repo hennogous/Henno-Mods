@@ -1,5 +1,13 @@
 # CSC AI roadmap
 
+**Active goal:** 1.6 Lingapura is traced to valid admission, Builder120 beating
+Quarter112.62, and waiting expiry15 before the Builder finishes. Preserve that
+native choice; audit site components and subsequent opportunities. Coverage
+fixes for incoming materials, provider edges, same-city pair capacity and the
+remaining +2 pre-screen are implemented with offline checks. Next: component
+replay, actual1.5 acquisition targets, native qualification and one fresh250.
+[Goal investigation and current evidence](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
+
 **Current policy decision, 14 November:** Henno accepts the review's work
 priorities and calibration approach, with +2 minimum / +3 preferred Quarter
 adjacency. The Base requirement, current-customer forecast and profitability

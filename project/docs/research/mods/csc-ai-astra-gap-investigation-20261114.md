@@ -1,0 +1,96 @@
+# Closing the Astra investigation gaps
+
+Henno activated the goal to investigate and fix follow-through (1.6), economic
+and relationship coverage (1.1/1.2/2.1), and acquisition (1.5), then run one fresh
+Online250 game. Current policy is +2 minimum/+3 preferred, with Base, material
+protection and current-customer-only adjacency. No upstream PRs.
+
+## 1.6: Lingapura's first request is an explained production loss
+
+The closed Pangaea archive identifies player4/city393221, founded153. On154,
+Bakers42/plot2992 wins the district comparison at28831Q8 (112.62 utility):
+4255 economic plus24576 placement preference. The request is admitted and
+logged as3171. A Builder request3172 at120 wins the production queue155 and
+occupies it through177; the city supplies about2.4 Production each turn.
+
+The behavior tree reports Quarter waiting1..15 of15 turns. It expires before
+the Builder completes. A Settler request3552 at212 is selected177. Later City
+Lights Rural Community requests quote388/575/764. Keep the native waiting limit
+and ordinary production competition intact.
+
+Plot2917 was already owned154: direct adjacency1, prospective Mill total3, no
+positive bid. On158 it becomes direct2/total4 and receives61538Q8 (240.38).
+This means an improved offer, not a newly purchased site. The archived geometry
+does not identify the precise added contribution; a component replay will read
+the material/customer, staffing and producer facts. Both sites need a ledger
+comparison before increasing their values.
+
+Fresh Ghidra inspection and full-body parity qualify five current-XP2 consumers:
+
+| Function | RVA | Bytes | Role |
+|---|---:|---:|---|
+| CheckForDistrict |3e0ee0 |610 |A single active district preparation tree gates a new nomination. |
+| UnitRequestContract.Update |3fa5e0 |531 |Reads the request's existing site, updates value/ETA; no site retarget. |
+| QueueNextBuild |3e8190 |2450 |Returns while production is occupied; validates and updates waiting requests before comparing their stored values at an empty queue. |
+| UpdateWorkingContract |3ea990 |293 |Validates and updates the executing request. |
+| ReconsiderDistrictConstruction |3e9630 |161 |Cancels pending same-type requests outside executing state5; not called by this investigation. |
+
+Reference SHA324c51e9 and installed SHA092abfbb have identical complete bodies
+for all five. Native retained-request traces are sparse because they log changed
+values; absence of a trace is not absence of a request. The exact decompilation,
+body hashes and native identity are archived below.
+
+Astra's calibration review finds no capital-cost double charge or Q8 mismatch.
+The model charges construction time, upkeep and one genuine land invoice.
+It does subtract all income of a worked footprint, including terrain, while the
+documented native improvement debit excludes plain terrain. It also forecasts
+later building construction at unchanged current Production. The next targeted
+read captures Site/plan/priced streams and an isolated unimproved-footprint
+counterfactual, with unchanged weights, horizon and discount.
+
+## Coverage fixes implemented; live qualification next
+
+- **+2 publication:** an additional pre-screen still required geometry3 after
+  the earlier threshold edit. The cheap geometry and final-price checks now
+  share `E.MinimumAdjacency`; a full owned/frontier publication test covers2.
+- **Same-city future customer:** the scanner uses the central snapshot's fresh
+  population/inventory-checked capacity. Two free slots permit its modest pair
+  preference; one or unknown slot omits only that extra customer preference.
+  Quarter bids and future geometry remain available. Cross-city/exempt cases
+  retain their normal path. Tests cover all four cases.
+- **Incoming material exchange:** unconditional gameplay SQL at479 derives
+  ordinary ImprovementModifiers from loaded Base/Spec tags and valid resource
+  improvements. It fills missing R2/CL/Cashmere incoming Food/Culture roots,
+  deduplicates existing attachments and preserves Industry/Corporation paths.
+  It operates without CE; the model and real transaction can agree.
+- **Provider placement:** the frozen loaded CL audit lists seven provider
+  districts; none appears in either Quarter's private-yield connector edges.
+  SQL now expands the loaded provider tags through the same deduplicated edge
+  table, including replacements. Each adjacent existing Quarter supplies one
+  private placement step, also when the partner is both customer and provider.
+  No future-neighbor yield is added to the Quarter forecast.
+
+37 economic/SQL tests, six main-publisher fixtures, ten real-core scanner groups,
+and eleven continuation/component-observation tests pass. The new gameplay SQL
+is registered independently of CE before connector480. Manifest regeneration
+passes. Scoped index patches preserve unrelated existing manifest edits.
+
+## Next live work
+
+Use the original Pangaea150 save to inspect Lingapura at155/160/175/180/200,
+retaining the original frozen package as the diagnostic control. The component
+probe publishes no policy and issues no game orders. Then isolate a credible
+unowned Quarter footprint and an existing-chain supplier under1.5. Qualify the
+implemented coverage fixes and any valuation correction before the fresh250.
+The full game must use main CSC tuning only and the shared controller, with
+manual checks about15 minutes apart. No new game is running at this note's write.
+
+Artifacts: `C:/Users/Shadow/Desktop/Codex/csc-ai-astra-gaps-20261114/`.
+Native evidence: `native-followthrough-ghidra.json` and
+`native-followthrough-code-parity.json`. Prior source:
+`csc-ai-planning-campaign-20261114/pangaea250-01/`, including AI_CityBuild,
+City_BuildQueue, AI_Behavior_Trees, native economy journal and Lua events.
+
+Upstream check before replay: WildW develop2986a746b396eb93aad14f9afffb043a09c2c489,
+mastere59b5aa910c8a0fcab9b31973ffa477443de0e09. Retain the qualified400e6755
+development API build for this investigation; no upstream merge or PR is made.

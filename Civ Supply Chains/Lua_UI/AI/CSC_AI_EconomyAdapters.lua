@@ -85,8 +85,12 @@ end
 -- Managed CE types withhold nonpositive options from fresh proposals because
 -- vanilla GetBestDistrict can otherwise select the least-negative candidate.
 E.DeferredQuarterQ8=-1024*256
+-- Both the inexpensive geometry screen and the final economic alternative
+-- use this floor. A stale pre-screen must not silently discard eligible +2
+-- sites before their complete-value quote reaches the publication packet.
+E.MinimumAdjacency=2
 function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
-    if quote.adjacency+1e-6<2 or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
+    if quote.adjacency+1e-6<E.MinimumAdjacency or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
     local penalty=math.max(0,-(legacyDelta or 0))
     if coversOwnMaterial then penalty=math.max(penalty,256*256)end
     local value=quote.valueQ8-penalty
@@ -147,7 +151,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                         -- an overinclusive quote cannot legalise a placement.
                         stats.evaluated=stats.evaluated+1
                         local geometry=snapshot.Geometry(city,plot,profile)
-                        if geometry.upper+1e-6<3 then stats.qualityDeferred=stats.qualityDeferred+1
+                        if geometry.upper+1e-6<E.MinimumAdjacency then stats.qualityDeferred=stats.qualityDeferred+1
                         else
                             local invoice=0
                             if frontier then invoice=snapshot.ui.GetRawPlotPurchaseQuote(pid,city:GetID(),plot:GetIndex())end

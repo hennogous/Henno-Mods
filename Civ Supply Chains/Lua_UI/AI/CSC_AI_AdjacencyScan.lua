@@ -264,7 +264,7 @@ end
 
 -- Quarter siting values loaded sales and goods-provider links across stages.
 -- The separate Stage 2 customer bid still needs a current native target.
-function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, ui)
+function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, ui, economy)
     local bids, potential, legalCustomers, placedHosts, futureCityTypes = {}, {}, {}, {}, {}
     local nominated = {}
     local counts = {legal=0, noBase=0, coversMaterial=0, noHost=0, bothPending=0, deferCities=0, futureUnknown=0,
@@ -628,10 +628,20 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                     if best.futureHost then
                         local host = best.futureHost[1]
                         local hostDistrict = GameInfo.Districts[host.district]
-                        -- Both sites passed the current queue checks. When
-                        -- they share a city, avoid bidding away the Quarter's
-                        -- last slot if a later profile requires population.
-                        if host.city ~= cityID or not district.RequiresPopulation or not hostDistrict.RequiresPopulation then
+                        -- A same-city pair can use two population slots. Read
+                        -- the central snapshot's population/inventory-checked
+                        -- capacity instead of suppressing every such pair.
+                        -- With one or unknown free slot, keep the Quarter bid
+                        -- and future geometry but omit this extra customer
+                        -- preference; it must not spend the Quarter's last slot.
+                        -- This is preparation only: native admission still
+                        -- decides each actual district at its own turn phase.
+                        local needsPair = host.city == cityID and district.RequiresPopulation
+                            and district.RequiresPopulation ~= 0 and hostDistrict.RequiresPopulation
+                            and hostDistrict.RequiresPopulation ~= 0
+                        local capacity = needsPair and economy and economy.DistrictCapacity
+                            and economy.DistrictCapacity(city)
+                        if not needsPair or capacity and capacity.known and capacity.allowed-capacity.used>=2 then
                             nominateCustomer(host, futureCustomerSiteBidQ8)
                         end
                     end

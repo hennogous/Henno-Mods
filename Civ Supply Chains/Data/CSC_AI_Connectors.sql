@@ -42,13 +42,28 @@ JOIN Districts q ON q.DistrictType = 'DISTRICT_CSC_' || m.QuarterKey || '_QUARTE
 WHERE m.ProducerStage BETWEEN 2 AND 4
 AND m.DistrictType NOT IN ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER');
 
+-- Goods providers are the opposite transaction direction, but their districts
+-- also benefit from being beside the Quarter. The loaded CL audit found seven
+-- provider types per active Quarter with no reverse placement edge. Use loaded
+-- tags/definitions, without requiring CL or crediting an unbuilt neighbor.
+-- The edge primary key merges a district that is both provider and customer.
+INSERT OR IGNORE INTO CSC_AI_CustomerEdges
+        (   Customer,   Quarter   )
+SELECT DISTINCT t.Type, q.DistrictType
+FROM CSC_QuarterCustomerBuildings m
+JOIN Districts q ON q.DistrictType = 'DISTRICT_CSC_' || m.QuarterKey || '_QUARTER'
+JOIN TypeTags t ON t.Tag = 'CLASS_CSC_' || m.QuarterKey || '_GOODS_PROVIDER'
+JOIN Districts provider ON provider.DistrictType = t.Type
+WHERE m.ProducerStage BETWEEN 2 AND 4
+AND t.Type NOT IN ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER');
+
 INSERT OR IGNORE INTO CSC_AI_CustomerEdges
         (   Customer,   Quarter   )
 SELECT r.CivUniqueDistrictType, e.Quarter
 FROM CSC_AI_CustomerEdges e
 JOIN DistrictReplaces r ON r.ReplacesDistrictType = e.Customer;
 
--- Attach +1 private yield per adjacent mapped Quarter to the customer
+-- Attach +1 private yield per adjacent mapped Quarter to the partner
 -- district's score input. Critical material plots are handled by the
 -- separate native supplier protections that accompany the Lua policy.
 -- AI-C168 isolates this SQL link after a saved-world load: it changes the

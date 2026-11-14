@@ -182,7 +182,7 @@ print('CSC_PURCHASE_CONTEXT_END',Game.GetCurrentGameTurn(),#targets)
     require('CSC_PURCHASE_CONTEXT_END'in raw,'Incomplete purchase map context')
 
 
-def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None):
+def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None,observe_boundary=None):
     """Use the shared controller's guarded five-turn operations throughout.
 
     Observer-popup and victory handlers require a remaining budget <=5. Do
@@ -208,6 +208,10 @@ def play(controller,out,user_root,*,start,endpoint,saves=None,savings=None):
             if not re.search(r'CSC_STOREKEEPER_END\t'+str(boundary)+r'\t',log):
                 observe_inactive_storekeeper(controller,out,boundary)
         write_json(out/'full-game-last-boundary.json',dict(verified=True,turn=boundary,endpoint=endpoint))
+        if observe_boundary:
+            # Explicit diagnostic callback. It runs after the shared inactive
+            # handoff; it must not publish a second AI policy or issue orders.
+            observe_boundary(boundary)
         if saves is not None and boundary in(50,100,150,200):
             from full_game_controller.checkpoint import save_inactive_boundary
             checkpoint=save_inactive_boundary(controller,turn=boundary,name='CSC_AI_HARMONISED_'+str(boundary),

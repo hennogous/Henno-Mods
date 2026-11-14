@@ -184,6 +184,8 @@ Modding.EnableMod(chosen.Handle,true)
 
 def run(args):
     plan = prepare(args.source, args.output, args.at, args.through, args.dependencies)
+    from economy_component_probe import targets,capture
+    component_targets=targets(getattr(args,'component_target',None)or[])
     require(not native_inventory(), 'Foreign native/Tuner owner; preserve it')
     out = plan.output
     out.mkdir(parents=True)
@@ -209,6 +211,8 @@ def run(args):
                HERE/'economy_savings_watch.py', HERE/'economy_savings_watch.js',
                *sorted((HERE.parents[1]/'ai_baseline/full_game_controller').glob('*.py')),
                *sorted((HERE.parents[1]/'ai_baseline/full_game_controller').glob('*.lua'))]
+    if component_targets:
+        sources.extend([HERE/'economy_component_probe.lua',HERE/'economy_component_probe.py'])
     pins = {str(p.resolve()): sha(p) for p in sources}
     write_json(out/'implementation-pins.json', pins)
     write_json(out/'implementation-archive.json', archive_sources(pins, out/'implementation-version'))
@@ -295,7 +299,10 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
                                     output=out, start=plan.at, through=plan.through, write=write_json,
                                     players=plan.identity['original_ai'], width=width, height=height, districts=max(indices)+1)
         watch.attach(session.owner, modules)
-        play(controller, out, plan.user_root, start=plan.at, endpoint=plan.through, saves=plan.saves, savings=watch)
+        if component_targets:
+            capture(controller,out,component_targets,plan.at)
+        play(controller, out, plan.user_root, start=plan.at, endpoint=plan.through, saves=plan.saves, savings=watch,
+             observe_boundary=(lambda turn:capture(controller,out,component_targets,turn))if component_targets else None)
         from economy_preflight import inspect
         inspect(controller, out)
         final = parse(controller.cmd('print("CSC_CONTINUATION_END="..CE_AIDistrictScoresStatus())',
@@ -337,6 +344,8 @@ def main():
         parser.add_argument('--'+name, type=Path, required=True)
     parser.add_argument('--at', type=int, required=True)
     parser.add_argument('--through', type=int, required=True)
+    parser.add_argument('--component-target',nargs=4,action='append',metavar=('PLAYER','CITY','PLOT','QUARTER'),
+                        help='Read-only economic component audit; may be repeated up to eight times')
     run(parser.parse_args())
 
 
