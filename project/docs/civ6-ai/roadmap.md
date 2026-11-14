@@ -1,16 +1,21 @@
 # CSC AI roadmap
 
-**Active goal:** 1.6 Lingapura is traced to valid admission, Builder120 beating
-Quarter112.62, and waiting expiry15 before the Builder finishes. Preserve that
-native choice. The completed150–200 replay explains new Base access and the
-changed ledger; Astra retains the current formula. Coverage
-fixes for incoming materials, provider edges, same-city pair capacity and the
-remaining +2 pre-screen are implemented with offline checks. Current1.5
-regressions and243 native checks preserve accepted representative payment and
-ownership evidence. The fresh startup found/repaired late improvement load order;
-frozen02 now passes25/25 material and14/14 provider DB coverage. Continents250
-is running under the shared controller; physical coverage/outcomes remain next.
-[Goal investigation and current evidence](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
+**Completed investigation goal, 14–15 November:** all three workstreams below
+have their scoped evidence, reviewed by Astra. The fresh Online250 finishes,
+saves and closes; the separate physical-payout test also closes successfully.
+[Results and evidence](../research/mods/csc-ai-astra-gap-results-20261114.md).
+
+| Workstream | Result |
+|---|---|
+| **1.6 Follow-through** | Lingapura's admitted request, fixed site, waiting expiry and stronger production competitors are traced. Retain the economic formula/native competition. Current package constructs seven Quarters with51/51 exact new-site values. |
+| **1.1/1.2/2.1 Coverage** | Shared minimum2, capacity-aware same-city preference,14 provider links and25 material hosts. Correct800010 ordering is verified by the real loader. Actual Maple Food/Bamboo Culture increments pass. All seven foundations have Base/+3+; three have both classes; one provider co-location appears. |
+| **1.5 Acquisition** | Prior paid footprint/supplier routes retain representative closure after current source/native regression review. Natural frontier offers examined lose before purchasing; no new savings intervention is justified. |
+
+Storekeeper activity improves437→582 chain-turns on the matched starting world;
+all four current chains exceed100. Next improvements are **Tailors' operational
+customer links**, broader natural acquisition, bounded own-Production feedback
+and recovery latency. One243 pillage remains unrepaired at250. Earlier dated
+“next” notes below are historical; they do not reopen the completed goal.
 
 **Current policy decision, 14 November:** Henno accepts the review's work
 priorities and calibration approach, with +2 minimum / +3 preferred Quarter

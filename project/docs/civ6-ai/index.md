@@ -7,6 +7,7 @@ what remains open and which problem we are working on.
 - [Numbered roadmap](roadmap.md): capabilities we want, in the agreed order.
 - [Completion contract](acceptance.md): evidence levels, finite acceptance tests and completed scopes.
 - [Current tuning and placement coverage](topics/csc/site-planner.md): what the running CSC code does and its evidence.
+- [Latest integrated result](../research/mods/csc-ai-astra-gap-results-20261114.md): completed Astra investigations, seven good placements,582 Storekeeper chain-turns and verified material payouts.
 - [Latest three-map results](../research/mods/csc-ai-planning-campaign-results-20261114.md): placement quality, material retention, savings and ordinary district calibration.
 - [No-CSC controls](../research/mods/csc-no-csc-district-baseline-20261114.md): matched optional-mod stack, ordinary district counts and native choice/placement snapshots.
 - [Completed CSC / no-CSC comparison](../research/mods/csc-no-csc-district-baseline-results-20261114.md): three-map district counts, placement adjacency and native utility tables.

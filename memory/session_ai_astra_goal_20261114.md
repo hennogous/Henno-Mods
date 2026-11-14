@@ -1,5 +1,25 @@
 # ACTIVE goal: Astra investigations, fixes and fresh250
 
+FINAL15Nov: allgoalwork/validationDONE;Astraapprovesclosure.NEVERlaunchanother
+gameforthisgoal. fresh250-02 reached250/closed/restoredexit0,saveSHA3db454db0e3d5f1ffb11dffe593ffe98f5a160f911530097e8e1a0c43e2a6f8f,
+all10censuses/5checkpoints,23745nativeRows0faults/active/buffer. MainAIonly.
+payout-qualification-01 reloadsealed250/zeroAIturns/sourceSaveUnchanged,
+actualFarmWindFood+1/MapleSawmillCafeFood+1/BambooWorkshopCulture+1/unmapped0/
+removal0,closed/restoredexit0. Handles60762/33813/13411terminal0.
+Current7Q5B2Tvs6Q5B1T;allBase/+3+,3bothvs2,3+4unchanged,51/51exactbids,
+7/7bestpositivepacketgeometry.1CLproviderNativePrivateYield1vs0.
+Storekeeper582vs437rawactivechainturns;4chains176/153/146/107,all100+.
+At250Mills5/5Workshop2/2healthy;Granary4/5,Lighthouse0/2. NaturalQ/supplier
+buys0.PriorAI-C162/163qualifiedretainedwithcurrent243native+12Luafixtures.
+Criticalphysicaldepositdestruction0;Wheat1308nonlastBasecovered40;Honey2606
+owner3->5at54retainsCamp;Flax1060pillage243unrepaired250,6sampledturnsoff.
+FutureworkTailorsoperation/naturalbuyopportunities/productionfeedback/recovery
+latencyareNEXTgoals,notunfinishedacceptance. Latesthumanreport
+project/docs/research/mods/csc-ai-astra-gap-results-20261114.md +compactJSON;
+AI-C185/newstatus/roadmap/forecastdiagram updated. SkillAI-N1316aef0be pushed.
+Needonlyfinalscopeddocscommit/pushandcompletionaudit/update_goal complete.
+Preserveunrelateddirtyart/gameplay/memory. OlderRUNNING/PENDINGnotesbelowhistory.
+
 UPDATE23:10: at22:57manualcheck fresh250-02 boundary135,20hooks/0faults,45debits,
 handle60762live. Nextcheck23:12. Builtseparatepost250 payouttool(UNREGISTERED,
 notshipping/notimportedbyfullrun): material_coverage_replay.py --source <fresh250-02>

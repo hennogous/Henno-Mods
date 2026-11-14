@@ -1,0 +1,491 @@
+{
+  "schema": 1,
+  "scope": "One matched-start Continents/Small/Prince/Online250 integration comparison",
+  "seeds": {
+    "map": 18461107,
+    "game": 29461107
+  },
+  "same_initial_map": true,
+  "same_initial_starts": true,
+  "same_initial_units": true,
+  "arms": {
+    "Previous": {
+      "quarter_foundations": {
+        "BAKERS": {
+          "foundations": 5,
+          "at_least3": 5,
+          "at_least4": 2,
+          "base": 5,
+          "spec": 2,
+          "both": 2,
+          "distinct_geometry_qualified_candidates": 124,
+          "distinct_positive_offers": 54
+        },
+        "TAILORS": {
+          "foundations": 1,
+          "at_least3": 1,
+          "at_least4": 1,
+          "base": 1,
+          "spec": 0,
+          "both": 0,
+          "distinct_geometry_qualified_candidates": 70,
+          "distinct_positive_offers": 23
+        }
+      },
+      "terminal_quarters": {
+        "BAKERS": {
+          "held": 5,
+          "base": 5,
+          "improved_base": 4,
+          "spec": 2,
+          "both": 2,
+          "healthy_stage2_producer": 5,
+          "built_customer_district": 5,
+          "healthy_stage2_customer": 4,
+          "stage2_property_positive": 3
+        },
+        "TAILORS": {
+          "held": 1,
+          "base": 1,
+          "improved_base": 1,
+          "spec": 0,
+          "both": 0,
+          "healthy_stage2_producer": 1,
+          "built_customer_district": 1,
+          "healthy_stage2_customer": 0,
+          "stage2_property_positive": 0
+        }
+      },
+      "storekeeper_active_chain_turns": 437,
+      "storekeeper_chains": 4,
+      "storekeeper_chains_at_least100": 2,
+      "native_exact_bids": 40,
+      "native_new_quarter_choices": 40,
+      "provider_adjacencies": 0,
+      "relationship_order": {
+        "neighbourFirst": 7,
+        "quarterFirst": 3
+      },
+      "ordinary_slot_consuming_districts": 158,
+      "financial": {
+        "paid": 115,
+        "gold": 11189.0,
+        "debit_deltas_match": 115,
+        "later_owner_confirmed": 115,
+        "quarter_site_payments": 0,
+        "later_adjacent_material_payments": 0,
+        "targeted_checks": 520,
+        "targeted_pass": 51,
+        "category_fail_with_enough_treasury": 276,
+        "quarter_choices": 45,
+        "quarter_frontier_choices": 0,
+        "choice_totals_read": 1619,
+        "choice_totals": 1619,
+        "max_plot_fund": 150.0,
+        "ownership_followups": [],
+        "weights": [
+          [
+            3,
+            4,
+            1,
+            1
+          ]
+        ]
+      },
+      "quarter_packet_comparisons": [
+        {
+          "player": 1,
+          "city": 65536,
+          "district": 42,
+          "plot": 1059,
+          "turn": 16,
+          "segment": null,
+          "version": 16,
+          "positive_sites": 3,
+          "selected_was_offered": true,
+          "best_offered_geometry": 5,
+          "selected_ties_best": true
+        },
+        {
+          "player": 2,
+          "city": 65536,
+          "district": 42,
+          "plot": 1049,
+          "turn": 21,
+          "segment": null,
+          "version": 21,
+          "positive_sites": 1,
+          "selected_was_offered": true,
+          "best_offered_geometry": 3,
+          "selected_ties_best": true
+        },
+        {
+          "player": 4,
+          "city": 131073,
+          "district": 42,
+          "plot": 1383,
+          "turn": 24,
+          "segment": null,
+          "version": 24,
+          "positive_sites": 2,
+          "selected_was_offered": true,
+          "best_offered_geometry": 4,
+          "selected_ties_best": true
+        },
+        {
+          "player": 3,
+          "city": 196610,
+          "district": 42,
+          "plot": 2605,
+          "turn": 48,
+          "segment": null,
+          "version": 48,
+          "positive_sites": 1,
+          "selected_was_offered": true,
+          "best_offered_geometry": 3,
+          "selected_ties_best": true
+        },
+        {
+          "player": 1,
+          "city": 196610,
+          "district": 43,
+          "plot": 1355,
+          "turn": 154,
+          "segment": null,
+          "version": 154,
+          "positive_sites": 3,
+          "selected_was_offered": true,
+          "best_offered_geometry": 4,
+          "selected_ties_best": true
+        },
+        {
+          "player": 2,
+          "city": 196610,
+          "district": 42,
+          "plot": 1715,
+          "turn": 187,
+          "segment": null,
+          "version": 187,
+          "positive_sites": 2,
+          "selected_was_offered": true,
+          "best_offered_geometry": 3,
+          "selected_ties_best": true
+        }
+      ],
+      "terminal_empire": {
+        "ai_players": 5,
+        "cities": 48,
+        "population": 602,
+        "city_production": 2035.6484375,
+        "city_food_surplus": 260.0,
+        "reported_gold_yield": 4507.953125,
+        "gold_balance": 3832.01171875
+      }
+    },
+    "Current": {
+      "quarter_foundations": {
+        "BAKERS": {
+          "foundations": 5,
+          "at_least3": 5,
+          "at_least4": 3,
+          "base": 5,
+          "spec": 2,
+          "both": 2,
+          "distinct_geometry_qualified_candidates": 120,
+          "distinct_positive_offers": 95
+        },
+        "TAILORS": {
+          "foundations": 2,
+          "at_least3": 2,
+          "at_least4": 0,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "distinct_geometry_qualified_candidates": 72,
+          "distinct_positive_offers": 66
+        }
+      },
+      "terminal_quarters": {
+        "BAKERS": {
+          "held": 5,
+          "base": 5,
+          "improved_base": 4,
+          "spec": 2,
+          "both": 2,
+          "healthy_stage2_producer": 5,
+          "built_customer_district": 5,
+          "healthy_stage2_customer": 4,
+          "stage2_property_positive": 3
+        },
+        "TAILORS": {
+          "held": 2,
+          "base": 2,
+          "improved_base": 2,
+          "spec": 1,
+          "both": 1,
+          "healthy_stage2_producer": 2,
+          "built_customer_district": 2,
+          "healthy_stage2_customer": 0,
+          "stage2_property_positive": 0
+        }
+      },
+      "storekeeper_active_chain_turns": 582,
+      "storekeeper_chains": 4,
+      "storekeeper_chains_at_least100": 4,
+      "native_exact_bids": 51,
+      "native_new_quarter_choices": 51,
+      "provider_adjacencies": 1,
+      "relationship_order": {
+        "neighbourFirst": 11,
+        "quarterFirst": 5
+      },
+      "ordinary_slot_consuming_districts": 170,
+      "financial": {
+        "paid": 99,
+        "gold": 8949.0,
+        "debit_deltas_match": 99,
+        "later_owner_confirmed": 99,
+        "quarter_site_payments": 0,
+        "later_adjacent_material_payments": 0,
+        "targeted_checks": 459,
+        "targeted_pass": 42,
+        "category_fail_with_enough_treasury": 269,
+        "quarter_choices": 55,
+        "quarter_frontier_choices": 0,
+        "choice_totals_read": 1759,
+        "choice_totals": 1759,
+        "max_plot_fund": 150.0,
+        "ownership_followups": [],
+        "weights": [
+          [
+            3,
+            4,
+            1,
+            1
+          ]
+        ]
+      },
+      "quarter_packet_comparisons": [
+        {
+          "player": 1,
+          "city": 65536,
+          "district": 42,
+          "plot": 1059,
+          "turn": 16,
+          "segment": null,
+          "version": 16,
+          "positive_sites": 4,
+          "selected_was_offered": true,
+          "best_offered_geometry": 5,
+          "selected_ties_best": true
+        },
+        {
+          "player": 2,
+          "city": 65536,
+          "district": 42,
+          "plot": 1049,
+          "turn": 21,
+          "segment": null,
+          "version": 21,
+          "positive_sites": 2,
+          "selected_was_offered": true,
+          "best_offered_geometry": 3,
+          "selected_ties_best": true
+        },
+        {
+          "player": 4,
+          "city": 131073,
+          "district": 42,
+          "plot": 1383,
+          "turn": 24,
+          "segment": null,
+          "version": 24,
+          "positive_sites": 2,
+          "selected_was_offered": true,
+          "best_offered_geometry": 4,
+          "selected_ties_best": true
+        },
+        {
+          "player": 3,
+          "city": 196610,
+          "district": 42,
+          "plot": 2605,
+          "turn": 48,
+          "segment": null,
+          "version": 48,
+          "positive_sites": 2,
+          "selected_was_offered": true,
+          "best_offered_geometry": 3,
+          "selected_ties_best": true
+        },
+        {
+          "player": 2,
+          "city": 196610,
+          "district": 42,
+          "plot": 1640,
+          "turn": 130,
+          "segment": null,
+          "version": 130,
+          "positive_sites": 4,
+          "selected_was_offered": true,
+          "best_offered_geometry": 6,
+          "selected_ties_best": true
+        },
+        {
+          "player": 1,
+          "city": 65536,
+          "district": 43,
+          "plot": 1356,
+          "turn": 161,
+          "segment": null,
+          "version": 161,
+          "positive_sites": 1,
+          "selected_was_offered": true,
+          "best_offered_geometry": 3,
+          "selected_ties_best": true
+        },
+        {
+          "player": 3,
+          "city": 262144,
+          "district": 43,
+          "plot": 2082,
+          "turn": 214,
+          "segment": null,
+          "version": 214,
+          "positive_sites": 1,
+          "selected_was_offered": true,
+          "best_offered_geometry": 3,
+          "selected_ties_best": true
+        }
+      ],
+      "terminal_empire": {
+        "ai_players": 5,
+        "cities": 50,
+        "population": 605,
+        "city_production": 2698.03515625,
+        "city_food_surplus": 236.9296875,
+        "reported_gold_yield": 4734.17578125,
+        "gold_balance": 7537.28125
+      }
+    }
+  },
+  "full_run_checkpoint_sha256": "3db454db0e3d5f1ffb11dffe593ffe98f5a160f911530097e8e1a0c43e2a6f8f",
+  "full_run_closed": {
+    "verified": true,
+    "native_exit_code": 0,
+    "owners_absent": true,
+    "preferences_verified": true,
+    "package_callback_completed": true
+  },
+  "native_observation": {
+    "installed": true,
+    "hooks": 20,
+    "frozen": true,
+    "active": 0,
+    "stopReason": null,
+    "faults": [],
+    "totals": {
+      "records": 23745,
+      "targetedSavings": 459,
+      "commandDebits": 99,
+      "unknownLineage": 0,
+      "expiredBindings": 372,
+      "accountSnapshots": 7470
+    },
+    "buffered": 0
+  },
+  "payout": {
+    "verified": true,
+    "baseline": {
+      "turn": 250,
+      "windFood": 0,
+      "cafeFood": 1,
+      "workshopCulture": 0
+    },
+    "measurements": {
+      "none": {
+        "turn": 250,
+        "windFood": 0,
+        "cafeFood": 1,
+        "workshopCulture": 0
+      },
+      "farm": {
+        "turn": 250,
+        "windFood": 1,
+        "cafeFood": 1,
+        "workshopCulture": 0
+      },
+      "maple": {
+        "turn": 250,
+        "windFood": 0,
+        "cafeFood": 2,
+        "workshopCulture": 0
+      },
+      "bamboo": {
+        "turn": 250,
+        "windFood": 0,
+        "cafeFood": 1,
+        "workshopCulture": 1
+      },
+      "unmapped": {
+        "turn": 250,
+        "windFood": 0,
+        "cafeFood": 1,
+        "workshopCulture": 0
+      }
+    },
+    "deltas": {
+      "none": [
+        0,
+        0,
+        0
+      ],
+      "farm": [
+        1,
+        0,
+        0
+      ],
+      "maple": [
+        0,
+        1,
+        0
+      ],
+      "bamboo": [
+        0,
+        0,
+        1
+      ],
+      "unmapped": [
+        0,
+        0,
+        0
+      ]
+    },
+    "diagnostic_only": true,
+    "fixture_grants": true,
+    "ai_outcome": false,
+    "final_none": "Test improvements removed; Quarter/building/resource grants remain until disposable session closes"
+  },
+  "payout_complete": {
+    "verified": true,
+    "ai_turns_advanced": 0,
+    "source_save_unchanged": true
+  },
+  "payout_closed": {
+    "verified": true,
+    "native_exit_code": 0,
+    "owners_absent": true,
+    "preferences_verified": true,
+    "package_callback_completed": true
+  },
+  "input_paths": {
+    "previous": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-planning-campaign-20261114\\continents250-01",
+    "current": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-astra-gaps-20261114\\fresh250-02",
+    "payout": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-astra-gaps-20261114\\payout-qualification-01"
+  },
+  "census_building_status": {
+    "0": "absent or wrong plot",
+    "1": "pillaged",
+    "2": "healthy"
+  }
+}

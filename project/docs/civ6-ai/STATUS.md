@@ -1,22 +1,24 @@
 # Current CSC AI status
 
-**Active goal, 14 November:** close Astra's follow-through, coverage and
-acquisition investigations, then run a fresh Online250. Lingapura's first
-Quarter bid is traced to admission, a higher Builder offer and the native
-15-turn waiting expiry. The150–200 component replay is complete, saved and closed:
-new Base access explains the better site; unworked footprints have no displacement
-debit. Astra recommends retaining the economic formula. Same-city pair capacity, missing incoming material
-attachments, CL provider connectors and the remaining +2 pre-screen are fixed
-in source and pass offline checks. Current acquisition regressions and243 native
-checks pass; earlier paid footprint/supplier outcomes retain their scoped closure.
-Fresh01's turn1 audit caught eight missing late-defined improvement hosts;
-it closed/restored before autoplay. Material reconciliation now loads800010,
-after R2 Sawmill800000 and CL links9999. Fresh Continents Online250 is running
-with frozen02: real loader audit passes25 material hosts and14 provider links,
-exactly once each. Shared controller, main CSC policy only,15-minute checks and
-the same pre-placement cache observation as controls. Outcome/comparison pending.
-[Current investigation](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
-Older paused-goal and completed-campaign entries below are historical.
+**Completed, 14–15 November: Astra investigations and fresh Online250.**
+Seven Quarters versus six on the matched starting world; all have Base/+3 or
+better, three have both materials, and all51 native new-site bids match.
+Storekeeper activity increases437→582 chain-turns; all four chains exceed100.
+The first adjacent CL goods provider appears with its private yield1 recorded.
+
+The +2 pre-screen and same-city capacity preference are fixed. Gameplay SQL at
+800010 repairs late R2/CL attachments:25 material hosts and14 provider links load
+exactly once. Separate native checks verify Maple→Café Food+1 and Bamboo→Workshop
+Culture+1, an unchanged Farm control, rejection of an unmapped material and removal.
+Lingapura's retained-plan/production loss is explained; earlier paid acquisition
+proof remains qualified by current fixtures and243 CE checks. Astra approves
+closure. All test sessions are closed/restored; no test owner remains.
+
+**Next improvements:** Tailors' operational customer links, natural acquisition
+opportunities, bounded Production-feedback forecasting and recovery latency.
+One late Flax pillage remains unrepaired at250. These are subsequent work;
+the investigation goal is complete. [Results and numbered outcomes](../research/mods/csc-ai-astra-gap-results-20261114.md).
+Earlier dated status and campaign entries below preserve their original scope.
 
 **Current placement policy, Henno's 14 November decision:** +2 minimum,
 +3 preferred, for both Bakers and Tailors. Base supply and positive economic

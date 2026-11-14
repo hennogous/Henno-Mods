@@ -1,5 +1,19 @@
 # Which CSC benefits does the AI forecast?
 
+**Current CSC route, 14–15 November:** main CSC computes a complete Quarter
+site bid from its shared economy and replaces the finished native Quarter-site
+score. The native pricing helpers supply utility units. This avoids stacking
+our transaction totals on top of the original future-building aggregate.
+The native building interpreter described below still matters to ordinary
+building decisions and to understanding the engine.
+
+Incoming material coverage now includes late-defined R2/CL improvements through
+unconditional reconciliation at800010. The real loader verifies25 material
+hosts exactly once. Actual native payouts confirm Maple/Sawmill→Café Food+1,
+Bamboo/Sawmill→Workshop Culture+1 and the unchanged Farm→Wind Food+1 control.
+Fourteen reverse CL provider placement links also load and one provider
+co-location occurs in the completed250 game. [Validated results](../../../research/mods/csc-ai-astra-gap-results-20261114.md).
+
 The AI roughly values **amenities and ordinary exchanges between buildings in
 the same Quarter**. It does not reliably forecast the whole CSC supply chain.
 Some effects get credit under the wrong conditions; some have no consumer in
@@ -26,17 +40,14 @@ honeypot. Their contribution remains unmeasured. [Review and source hashes](../.
 
 ```mermaid
 flowchart TD
-  S["City, Quarter and candidate tile"] --> E["Early district valuation"]
-  E --> H["Our existing site adjustment"]
-  H --> G["Native preferences and positive-score gate"]
-  B["City/type future-building forecasts"] --> A["Later addition to eligible district-site scores"]
-  G --> A
-  I["Current live building income"] --> B
-  M["Supported hypothetical building modifiers"] --> B
-  C["Improvement, customer and City Center effects"] --> X["Separate consumers: contribution not attributed here"]
-  A --> F["Completed district-site score"]
-  F --> L["Optional calibrated correction"]
-  L --> W["District opportunity and later production competition"]
+  S["Live city, site, supply and existing customer facts"] --> M["Central CSC transaction ledger"]
+  M --> P["Native pricing and bounded siting preferences"]
+  P --> L["Complete Quarter score replacement"]
+  N["Original native site and future-building aggregate"] --> L
+  L --> W["Native district comparison"]
+  O["Other district scores, including native SQL co-location yield"] --> W
+  W --> R["Retained request for the selected footprint"]
+  R --> Q["Production competition with units and projects"]
 ```
 
 The later addition is common to eligible sites of the same Quarter type in a
@@ -45,13 +56,14 @@ They do not rerun CSC's Lua supply, customer, population and route calculations
 for each proposed site. Native building values also undergo eligibility,
 positivity and mutual-exclusion filters before reaching the district sum.
 
-Our scanner already projects designed Production/Gold adjacency, including an
-appropriate planned Mill. That is an early experimental preference, not a priced
-replacement for every later benefit. Quarter adjacency, material-improvement
-returns, producer income and customer sales are distinct flows; adding the full
-CSC economy on top would risk counting some benefits twice.
+The shared ledger prices distinct Quarter adjacency, incoming materials,
+worked-improvement returns, producer income and existing-district customer
+transactions. One prospective local Mill contributes its real terrain effect;
+future customer districts add no adjacency. These flows replace the original
+Quarter total rather than being added to it. The bounded siting preferences
+are +2 minimum/+3 preferred, with positive economics and owned Base required.
 
-The early score also deducts the native value of a functioning improvement that
+The original native early score deducts the value of a functioning improvement that
 would be removed. That helper has plot and city context and calls modifier
 analysis. The building-root ledger does not isolate what this different path
 assigns to losing a CSC supplier or switching off a Service.

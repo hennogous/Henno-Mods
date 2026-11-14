@@ -12,11 +12,13 @@ premium at +2. Owned/frontier fallback bands use +24 utility at viable +2 and
 adapter are live in main CSC, with current-capacity diagnostics. A short paired
 replay corrects the earlier blanket gate because growth happens after publication
 within the same turn: [timing evidence](../../../research/mods/csc-ai-capacity-timing-20261113.md).
-The latest
-normal 250-turn trial verifies exact native bid delivery but fewer foundations
-and no new Tailors; customer layout and Builder execution remain weak links.
-Use [current architecture](../../architecture.md), [status](../../STATUS.md) and
-[capacity trial](../../../research/mods/csc-ai-capacity-placement-20261113.md).
+The latest normal250 comparison constructs seven Quarters (five Bakers/two
+Tailors), all Base/+3+, versus six previously. Three have both material classes;
+all51 new-site winners consume exact bids. Storekeeper operation rises437→582
+chain-turns. Capacity-aware same-city preparation and CL provider signals are
+live; the first provider co-location is recorded. Actual incoming material
+payouts pass a separate native test. Use [latest results](../../../research/mods/csc-ai-astra-gap-results-20261114.md),
+[current architecture](../../architecture.md) and [status](../../STATUS.md).
 The dated sections below preserve earlier implementation/evidence, not current
 claims that late writes are diagnostic-only.
 

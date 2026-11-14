@@ -1,5 +1,12 @@
 # Closing the Astra investigation gaps
 
+**Completed:** the fresh Online250 and separate physical payout qualification
+both finish and close normally. Seven good Quarter foundations versus six;
+Storekeeper437→582 active chain-turns. [Final results and numbered outcomes](csc-ai-astra-gap-results-20261114.md)
+and [compact scorecard](csc-ai-astra-gap-results-20261114.json) are authoritative
+for the outcome. The sections below preserve the investigation sequence and
+its corrected early load-order assessment.
+
 Henno activated the goal to investigate and fix follow-through (1.6), economic
 and relationship coverage (1.1/1.2/2.1), and acquisition (1.5), then run one fresh
 Online250 game. Current policy is +2 minimum/+3 preferred, with Base, material

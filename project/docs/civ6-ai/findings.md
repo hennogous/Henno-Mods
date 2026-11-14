@@ -3567,3 +3567,45 @@ additions across controls are City Center ownership changes, excluded from new
 construction. No policy changes or extra diagnostic game replay were needed.
 
 [Full comparison, calibration tables, coverage and recovery](../research/mods/csc-no-csc-district-baseline-results-20261114.md).
+
+<a id="ai-c185"></a>
+## AI-C185 — Integrated coverage fixes improve chain operation on a matched world
+
+Accepted scoped result,14–15 November2026, reviewed independently by Astra.
+Main CSC on the selected Continents/Small/Prince/Online250 starting world builds
+seven Quarters versus six: five Bakers/two Tailors, all with owned Base/+3+
+foundation quality; three have both classes. All seven tie the best geometry
+in their positive-offer packet and51/51 new-site native winners match the bid.
+The initial map signature, starts and units match the preceding CSC run.
+
+The package fixes the stale +3 pre-screen beneath minimum2, same-city customer
+preparation capacity, ordinary material-root hosts and CL provider reverse
+adjacency. Actual loader audit catches the mistaken479 ordering before autoplay:
+R2 Sawmill definitions799990/800000 and CL links9999 arrive later. Correct800010
+reconciliation loads all25 expected hosts; all14 provider links load exactly once.
+Player2's existing Bakers1049 gains Rural Community1048 at107/complete108, with
+private yield1 recorded at its foundation.
+
+After the ordinary game closes, a separate exact-save diagnostic verifies
+Maple/Sawmill→Café Food+1, Bamboo/Sawmill→Workshop Culture+1 and the unchanged
+Farm→Wind Food+1. Unmapped Stone and final removal return to baseline. It advances
+zero AI turns and preserves the source save; fixture grants are excluded from
+the ordinary game. Both sessions close with exit0 and exact restoration.
+
+Raw Storekeeper sampling increases437→582 active chain-turns across four chains;
+all four current chains exceed100. No last physical material is destroyed by
+placement. Honey/Camp access is lost through ownership change; late Flax pillage
+at243 remains unrepaired at250. The integrated result retains these interruptions.
+
+Lingapura's150–200 replay explains its accepted112.62 request losing to a120
+Builder, fixed-site refresh, waiting expiry and subsequent alternatives. A new
+owned Base neighbor raises its other site3→4; both footprints are unworked.
+Keep normal competition and the economic formula. Reusable cadence is AI-N131.
+Prior AI-C162/163 paid acquisition outcomes retain representative closure after
+current supplier/publisher and243 native checks; no natural frontier Quarter
+winner/payment occurs in this run. Tailors' operational customers, natural
+acquisition coverage, own-Production feedback and recovery latency are next work.
+
+[Results, scope and artifacts](../research/mods/csc-ai-astra-gap-results-20261114.md),
+[compact evidence](../research/mods/csc-ai-astra-gap-results-20261114.json),
+[native investigation and corrections](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
