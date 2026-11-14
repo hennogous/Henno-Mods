@@ -1,13 +1,15 @@
-# ACTIVE: Astra gaps and fresh Online250,14 November2026
+# COMPLETED: Astra gaps and Online250,15 November2026
 
-Read session_ai_astra_goal_20261114.md FIRST. Goal ACTIVE, superseding older
-paused/completed entries below. Fresh250-02 RUNNING shared controller worker13888,
-Civ8360 (creation134391658049716989), exec60762, root Desktop/Codex/
-csc-ai-astra-gaps-20261114. Real DB audit25materialhosts+14provideredgesPASS;
-mainCSCpolicyonly, frozen02/CE400e6755. Checkabout15min; next~22:57. No second
-console or runtime source edits. Lingapura replay150–200 completed/closed,
-load-order bug fixed800010 after fresh01 failedat1/cleanclosed. HEAD e843d611,
-skill6aef0be pushed. Full250outcome+physicalpayoutverificationstillpending.NoPR.
+Read session_ai_astra_goal_20261114.md and results report FIRST. Fullgame
+fresh250-02 and isolated payout-qualification-01 completed/closed/restoredexit0;
+noownedgame/worker.7Qvs6,allBase/+3+,3bothvs2,51/51exactbids,Storekeeper582vs437
+chainturns(4chains100+). ActualMapleCafeFood+1/BambooWorkshopCulture+1 verified,
+Farmcontrol/unmapped/removalPASS;zeroAIturns/sourceunchangedinfixture.
+Root Desktop/Codex/csc-ai-astra-gaps-20261114. Astraapprovesgoalclosure.
+Native23745rows0faults/active/buffer. Lastcriticaldepositdestruction0;lateFlax
+pillage243notrepaired250. NextworkTailorscustomerlinks/acqcoverage/forecast
+productionfeedback/recoverylatency. No newgamesorPRs. Humanreport/AI-C185/status
+pushed ed774cc8; thismemoryhandoffandfinalauditfinishgoal. PreserveunrelatedWIP.
 
 # ACTIVE: REA investigation; all game tests stopped by user, 13 November
 

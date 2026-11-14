@@ -1,4 +1,4 @@
-# ACTIVE goal: Astra investigations, fixes and fresh250
+# Completed: Astra investigations, fixes and Online250
 
 FINAL15Nov: allgoalwork/validationDONE;Astraapprovesclosure.NEVERlaunchanother
 gameforthisgoal. fresh250-02 reached250/closed/restoredexit0,saveSHA3db454db0e3d5f1ffb11dffe593ffe98f5a160f911530097e8e1a0c43e2a6f8f,
@@ -17,7 +17,7 @@ FutureworkTailorsoperation/naturalbuyopportunities/productionfeedback/recovery
 latencyareNEXTgoals,notunfinishedacceptance. Latesthumanreport
 project/docs/research/mods/csc-ai-astra-gap-results-20261114.md +compactJSON;
 AI-C185/newstatus/roadmap/forecastdiagram updated. SkillAI-N1316aef0be pushed.
-Needonlyfinalscopeddocscommit/pushandcompletionaudit/update_goal complete.
+Finalresults/docs/AI-C185pushed ed774cc8; finalmemorysync/completionaudit remains.
 Preserveunrelateddirtyart/gameplay/memory. OlderRUNNING/PENDINGnotesbelowhistory.
 
 UPDATE23:10: at22:57manualcheck fresh250-02 boundary135,20hooks/0faults,45debits,
@@ -49,10 +49,10 @@ LoadOrder800010 inmainJSON/project/freezer;37SQL/econtests+deploymentPASS.
 Preservefrozen01andfailedrun. Nextfreeze02+fresh250-02 sameseeds. Do NOT launch
 untilclosure (alreadyverified). Mainrepoownscopecommitforthisfixpending.
 
-CURRENT14Nov22:28: Lingapura component replay150–200 COMPLETED exit0/saved/
+CURRENT14Nov22:28: Lingapura component replay150â€“200 COMPLETED exit0/saved/
 closed/restored/ownersabsent;6,266native rows zero faults. No footprint debit in
-either site (workers0). Site2917 gainedownedBase2916 at157→directProduction+1,
-total3→4. Mill60outside50horizon at155/prod1.199;160/prod2.398 Mill30Granary44.
+either site (workers0). Site2917 gainedownedBase2916 at157â†’directProduction+1,
+total3â†’4. Mill60outside50horizon at155/prod1.199;160/prod2.398 Mill30Granary44.
 Astra retainsformula; no forcedqueue/timeouts. AcquisitionpriorAI-C162/163
 closureacceptedaftercurrent6supplier+6publisherfixtures and rebuiltCE243checks.
 NewSpec/sharedresourcecasespass. Skill6aef0be pushedAI-N131nativecadence.
@@ -96,7 +96,7 @@ Completed this goal turn:
 
 1.6 closed evidence: Lingapura p4/c393221 founded153, pop1/prod2.4.154Quarter42
 plot2992 wins28831Q8=112.62 (4255econ+96premium), request3171 admitted. Builder
-3172value120 selected155, runs156–177; Quartertree waits1..15 of15 and expires
+3172value120 selected155, runs156â€“177; Quartertree waits1..15 of15 and expires
 169/170. Settler3552value212 selected177. Existing ownedplot2917 initially
 154direct1/upper3/unoffered;158direct2/upper4/61538Q8positive. Precise geometry
 change needs targeted live read (do not call it newly acquired land).
@@ -127,7 +127,7 @@ Frozen original Pangaea package remains control. At150 city doesn't exist yet,
 emits city_absent; by155 captures Site/quote/terrain/workers and a no-unimproved-
 footprint counterfactual (only when improvement==-1, original Site retained).
 No native game orders, no extra policy.11tests pass incl continuation lifecycle.
-Ready to launch original Pangaea150→200 with two targets after committing.
+Ready to launch original Pangaea150â†’200 with two targets after committing.
 Use Python312/PYTHONPATH known paths and shared controller only. No CUA.
 
 Before replay, git ls-remote checked WildW develop2986a746b396eb93aad14f9afffb043a09c2c489,
