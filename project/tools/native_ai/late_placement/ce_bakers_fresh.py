@@ -22,7 +22,7 @@ from storekeeper_runtime import audit
 
 
 LOGS = ('Lua.log', 'Database.log', 'Modding.log', 'AI_CityBuild.csv', 'AI_Research.csv',
-        'AI_Behavior_Trees.csv', 'City_BuildQueue.csv', 'UnitOperations.log')
+        'AI_Behavior_Trees.csv', 'City_BuildQueue.csv', 'UnitOperations.log', 'DiplomacyManager.csv')
 MAPS = ('Continents', 'Pangaea', 'Fractal')
 MAP_SIZES = {'small': (6, 9), 'standard': (8, 12)}  # Major and city-state counts.
 QUALIFICATION_SEEDS = {

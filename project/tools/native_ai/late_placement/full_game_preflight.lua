@@ -3,7 +3,9 @@
 -- A score-only fallback is useful to players but cannot qualify this full run
 -- as exercising acquisition acknowledgement, admission and material protection.
 local scope=__SCOPE__
-assert(Game.GetCurrentGameTurn()==1 and not AutoplayManager.IsActive())
+-- Fresh starts require1; a separately verified continuation supplies its exact
+-- saved boundary. This changes deployment qualification, never game state.
+assert(Game.GetCurrentGameTurn()==(scope.start or 1) and not AutoplayManager.IsActive())
 assert(CSC_AI_QuarterPlacement and CSC_AI_QuarterSiteForecasts and CSC_AI_DistrictBridge)
 assert(CSC_AI_EconomyModel and CSC_AI_EconomyFacts and CSC_AI_EconomyAdapters,
  'Central economic policy modules missing')

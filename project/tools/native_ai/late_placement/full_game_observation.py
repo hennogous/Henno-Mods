@@ -34,11 +34,11 @@ def archive_censuses(log,out):
     return snapshots
 
 
-def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mods=None,csc_path=None):
+def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mods=None,csc_path=None,start=1):
     # Short diagnostic qualification uses the same passive observers/policy as
     # the full games; it cannot claim long-run outcome evidence.
     require(endpoint in (25,50,200,250),'Integrated observations end at25/50/200/250')
-    scope=lua(dict(players=sorted(players)))
+    scope=lua(dict(players=sorted(players),start=start))
     preflight=read(HERE/'full_game_preflight.lua').replace('__SCOPE__',scope)
     raw=controller.cmd(preflight,'CSC_AI_BakersGameplay','full-game-capability-preflight')
     require('CSC_FULL_RUN_PREFLIGHT_OK' in raw,'Missing capability preflight acknowledgement')
@@ -104,15 +104,15 @@ print('CSC_DISTRICT_CATALOGUE_END')
         (out/name).write_bytes((HERE/name).read_bytes())
 
 
-def finish(out,endpoint=250):
+def finish(out,endpoint=250,*,start=1):
     log=read(out/'Lua.log')
     for failure in('CSC_AI_BAKERS_DISTRICTS_FAILED','CSC_AI_INDUSTRY_PLACEMENT_FAILED',
             'CSC_FULL_RUN_OBSERVATION_FAILED','CSC_QUARTER_WATCH_FAULT','CSC_PLANNING_FAULT',
             'CSC_PLANNING_LIMIT','CSC_DISTRICT_UI_FAULT'):
         require(failure not in log,'Integrated run logged '+failure)
     snapshots=archive_censuses(log,out)
-    require(set(snapshots)==set(range(25,endpoint+1,25)),'Missing full-game milestone')
-    write_json(out/'full-game-observation-complete.json',dict(verified=True,turns=sorted(snapshots)))
+    require(set(snapshots)==set(range(25*(start//25+1),endpoint+1,25)),'Missing full-game milestone')
+    write_json(out/'full-game-observation-complete.json',dict(verified=True,start=start,turns=sorted(snapshots)))
 
 
 def observe_inactive_storekeeper(controller,out,turn):

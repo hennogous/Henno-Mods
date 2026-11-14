@@ -1,6 +1,15 @@
 # CSC AI roadmap
 
 **14 November active: three-game evidence campaign across Problems 1 and 2.**
+
+Progress: Continents and Pangaea reach250; Fractal runs third. Pangaea needs a
+verified200-save continuation after a hidden observer spy warning blocks205.
+The shared-controller guarded cancellation fix is pushed (`c63be794`,104 offline
+tests); live exercise requires a cancellation receipt. Continents founds5 Bakers
+and1 Tailors; Pangaea founds none despite4/4 exact new-site bid comparisons.
+Keep delivery, nomination/queue follow-through and construction separate when
+assessing1.6. Combined results/remaining natural-exercise gaps are still pending.
+
 Henno requests chronology for 2.1, adjacent material retention for 2.2, native
 savings/purchases for 1.5, actual defer/reconsider diagnostics for 1.7,
 Base/Spec and vanilla/modded parity plus City Lights providers for 1.1–1.2,

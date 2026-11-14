@@ -292,3 +292,34 @@ an explicit native coverage gap for original pre-save turn200 events whose
 ordering against the save is unknown. All ten census boundaries are present.
 The raw segments, save hash and merge provenance remain available; Service
 evidence must be read from raw segments with the same cutoff.
+
+### Pangaea result and one explained withdrawal
+
+The selected segments contain no original-AI Quarter foundations through250.
+Across the game,125 Bakers/43 Tailors geometry-qualified identities include36/6
+positive-offered identities. These are changing alternative sites, not42
+expected constructions. All four new-site native Quarter BEST comparisons
+consume the exact positive bid/write/version with the preceding native ordinal.
+There are31 reconsiderations across20 city/type scopes and49,289 managed masks
+on223 turns. The1604 district-choice total reads all succeed. Actual plot
+payments number71, spending5300 Gold; all measured debits match and all owners
+are confirmed in strictly later map contexts. None has Quarter-site lineage;
+there are no supplier-acquisition offers or frontier Quarter selections.
+
+London is a useful counterexample to treating every unbuilt offer as inadequate
+bid strength. Bakers site783 is offered at prospective adjacency+3 on2–7,
+then drops to+2 and is withdrawn from8. The original native choice is on3.
+`AI_CityBuild.csv` records contract202 submitted on16 at104 utility and accepted
+on25 at−1024; no Quarter foundation follows. A nearby Wonder footprint appears
+on7 at708, but the recording lacks that site's pre-Quarter resource snapshots,
+so it does not prove which geometric contribution disappeared or that the
+Wonder destroyed a specific supplier. The quality withdrawal and negative
+later contract value are direct observations; a precise causal native guard
+is not. Do not blindly raise bids to force this expired opportunity through.
+
+Lingapura also submits a Bakers contract3171 on154 at112 utility without a
+recorded acceptance or foundation. Two later Quarter comparisons occur with
+capacity metadata marked full. These cases still require follow-through
+diagnosis; the capacity annotation alone is not proof of a native rejection.
+There are no built-Quarter customer/provider pairs or supplier-retention cases
+for Problems2.1/2.2 in this seed. Zero exercise is not successful protection.

@@ -27,6 +27,7 @@ CSC_PLANNING_MATERIAL_STATE\tplayer=1\tquarter=BAKERS\tquarterPlot=3\tmaterialPl
 CSC_PLANNING_MATERIAL_STATE\tplayer=1\tquarter=BAKERS\tquarterPlot=3\tmaterialPlot=6\tpreviousResource=RESOURCE_WHEAT\tbase=true\tspec=false\tlostWorking=true\tlostBase=false\tlostSpec=false
 CSC_AI_QUARTER_COVERAGE turn=20 version=19 player=1 district=36 result={"staged":1,"masked":12}
 CSC_AI_QUARTER_COVERAGE turn=20 version=19 player=1 district=36 result={"staged":1,"masked":12}
+CSC_PLANNING_MANAGED_COVERAGE\tsegment=continuation\tturn=21\tversion=19\tplayer=1\tdistrict=36\treceiptJson={"staged":1,"masked":3}
 ''',encoding='utf-8')
             choice=dict(kind='district-selection',player=1,city=2,district=36,plot=3,turn=19,
                         sequence=1,totalQ8=96000,scoreStatus='read')
@@ -42,8 +43,8 @@ CSC_AI_QUARTER_COVERAGE turn=20 version=19 player=1 district=36 result={"staged"
             self.assertEqual(district['matched_prior_native_Q8']['n'],0)
             self.assertEqual(district['UI_event_adjacency_joined'],1)
             self.assertEqual(summary['usable_material_exhaustions_by_role'],dict(spec=1))
-            self.assertEqual(summary['native_managed_cell_masks'],12)
-            self.assertEqual(summary['native_managed_mask_turns'],1)
+            self.assertEqual(summary['native_managed_cell_masks'],15)
+            self.assertEqual(summary['native_managed_mask_turns'],2)
             self.assertEqual(summary['actual_native_declines'],0)
             self.assertEqual(summary['material_loss_events'],1)
             self.assertEqual(summary['working_supplier_loss_events'],1)
@@ -56,6 +57,23 @@ CSC_AI_QUARTER_COVERAGE turn=20 version=19 player=1 district=36 result={"staged"
         row=parse('context: CSC_PLANNING_NATIVE_DECLINE\tresult=-262145\tincomplete=false','CSC_PLANNING_')[0]
         self.assertEqual(row['result'],-262145)
         self.assertIs(row['incomplete'],False)
+
+    def test_native_quote_cannot_cross_a_reload_boundary(self):
+        with tempfile.TemporaryDirectory()as directory:
+            root=Path(directory)
+            (root/'source.json').write_text(json.dumps(dict(original_ai=[1])),encoding='utf-8')
+            (root/'loaded-district-catalogue.txt').write_text('',encoding='utf-8')
+            (root/'Lua.log').write_text(
+                'CSC_PLANNING_FOUNDATION\tsegment=continuation\tplayer=1\tcity=2\tdistrict=3'
+                '\tdistrictType=DISTRICT_CAMPUS\tdistrictID=4\tplot=5\tturn=201\tcomplete=false\n',encoding='utf-8')
+            choice=dict(kind='district-selection',segment='original',player=1,city=2,
+                        district=3,plot=5,turn=199,sequence=100,totalQ8=96000)
+            (root/'economy-savings.ndjson').write_text(json.dumps(choice)+'\n',encoding='utf-8')
+            summary=analyse(root)
+            campus=summary['district_construction']['DISTRICT_CAMPUS']
+            self.assertEqual(campus['native_choice_total_Q8']['n'],0)
+            row=json.loads((root/'planning-results.json').read_text())['constructions'][0]
+            self.assertIsNone(row['nativeChoice'])
 
 
 if __name__=='__main__':unittest.main()

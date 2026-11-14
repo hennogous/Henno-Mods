@@ -43,6 +43,14 @@ CSC_ENDPOINT_END\t200\t2
 ''',Path(d))
             self.assertEqual(rows[200]['rows'],[['PLAYER','1\ttrue'],['CITY','1\t42\t7\t20\t3'],['END','200\t2']])
 
+    def test_continuation_requires_every_milestone_after_its_real_start(self):
+        with tempfile.TemporaryDirectory()as d:
+            root=Path(d)
+            (root/'Lua.log').write_text(''.join('CSC_FULL_RUN_CENSUS_BEGIN\t'+str(t)+'\nCSC_ENDPOINT_END\t'+str(t)+'\t0\n'
+                for t in (225,250)),encoding='utf-8')
+            finish(root,250,start=200)
+            with self.assertRaises(RuntimeError):finish(root,250)
+
     def test_missing_rows_or_footer_are_rejected(self):
         for log in('CSC_FULL_RUN_CENSUS_BEGIN\t200\nCSC_ENDPOINT_END\t200\t1',
                 'CSC_FULL_RUN_CENSUS_BEGIN\t200\nCSC_ENDPOINT_PLAYER\t1\ttrue'):
@@ -59,6 +67,19 @@ CSC_ENDPOINT_END\t200\t2
         compile((HERE/'full_game_census.lua').read_text(encoding='utf-8'))
         compile((HERE/'district_adjacency_watch.lua').read_text(encoding='utf-8'))
         compile((HERE/'full_game_preflight.lua').read_text(encoding='utf-8').replace('__SCOPE__',lua(dict(players=[1,2,3,4,5]))))
+
+    def test_saved_boundary_guard_preserves_fresh_start_and_active_rejection(self):
+        prefix=(HERE/'full_game_preflight.lua').read_text(encoding='utf-8').split('assert(CSC_AI_QuarterPlacement')[0]
+        for actual,start,active,accepted in ((1,None,False,True),(200,200,False,True),
+                (200,None,False,False),(200,200,True,False),(201,200,False,False)):
+            vm=LuaRuntime();vm.execute('Game={GetCurrentGameTurn=function()return '+str(actual)+' end};'
+                +'AutoplayManager={IsActive=function()return '+str(active).lower()+' end}')
+            scope=dict(players=[1,2,3,4,5])
+            if start is not None:scope['start']=start
+            code=prefix.replace('__SCOPE__',lua(scope))
+            if accepted:vm.execute(code)
+            else:
+                with self.assertRaises(Exception):vm.execute(code)
 
     def test_missing_native_reader_cannot_disappear_from_preflight(self):
         code=(HERE/'full_game_preflight.lua').read_text(encoding='utf-8').split('local y=')[0]

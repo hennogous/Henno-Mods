@@ -6,8 +6,11 @@ City Lights, Resourceful 2 and Sukritact's Resources. Main CSC policy only;
 passive district chronology, adjacency, opportunities, material retention and
 native savings/purchase journals. Candidate removes Base-only acquisition and
 adds buyer-gated Spec development without changing bid bands. Short diagnostic
-qualification reaches50; Continents completes250/exit0/restored and Pangaea is
-running. Fractal follows serially; the combined outcome is pending.
+qualification reaches50; Continents and Pangaea complete250/exit0/restored.
+Fractal is running; the combined outcome is pending. Pangaea resumes its exact
+turn200 checkpoint after a hidden spy-warning conversation stopped the original
+session at205. Structural rows match44/44 after load. Its combined evidence is
+explicitly segmented, with a native pre-save-turn200 coverage gap.
 
 First qualification stopped before autoplay on an overly strict check of the
 removed `GOLD2` compatibility alias. Actual `GOLD`/Tailors Spec/Mine mapping is
@@ -36,6 +39,21 @@ debits and strictly later Lua ownership remain valid. A separate loaded-SQL
 audit finds missing incoming Food/Culture bindings for some R2/CL improvement
 replacements; reverse plot yields/Service gates are separate. The campaign stays
 frozen; economic equivalence is not yet complete.
+
+Pangaea founds **zero** cohort Quarters despite36 distinct positive Bakers sites
+and six Tailors sites over the game. Four new-site native Quarter BEST receipts
+consume exact published bids/writes. Delivery therefore does not establish
+nomination, production or construction. No Quarter supplier losses or new
+Quarter/customer pairs can be tested in that arm. Native choice totals read
+1604/1604;71 actual plot payments are recorded. Interpretation/calibration is
+pending the complete three-map comparison.
+
+Shared-controller fix `c63be794` handles the specific hidden observer spy warning
+through guarded, one-shot Escape-equivalent session cancellation, separately
+from passive messages.104 offline regression tests pass. No explicit response,
+promise/refusal/deal/war is selected; possible implicit diplomatic consequences
+are logged. Passage205 after reload does not prove live cancellation: no
+corresponding receipt was seen in that continuation.
 
 **Completed 13 November: timing-corrected Online game to turn 250, exit 0 and restored.**
 Seven AI-founded Quarters (five Bakers/two Tailors), versus four Bakers in the

@@ -68,7 +68,12 @@ def analyse(root):
         key=tuple(row[k]for k in ('player','city','district','plot'))
         observed=[r for r in ui_by_plot[key]if r.get('footprintMatches')and r.get('source')=='added'
                   and r.get('districtID')==row.get('districtID')and abs(r['turn']-row['turn'])<=1]
-        prior_choices=[c for c in choices[key]if c['turn']<=row['turn']and c.get('totalQ8')is not None]
+        # Loading a save resets native cache/sequence identity. A quote from the
+        # abandoned process cannot stand in for a post-load comparison even if
+        # player/city/type/plot and the numerical turn still match. Raw runs have
+        # no segment tag; normalized continuations must match their segment.
+        prior_choices=[c for c in choices[key]if c['turn']<=row['turn']and c.get('totalQ8')is not None
+                       and c.get('segment')==row.get('segment')]
         chosen=max(prior_choices,key=lambda c:(c['turn'],c['sequence']))if prior_choices else None
         copy=dict(row,uiAdjacency=observed[0]if observed else None,
             uiClockDelta=observed[0]['turn']-row['turn']if observed else None,
@@ -145,8 +150,13 @@ def analyse(root):
     for match in re.finditer(r'CSC_AI_QUARTER_COVERAGE turn=(\d+) version=(\d+) player=(\d+) district=(\d+) result=(\{[^\r\n]+\})',log):
         t,version,pid,district=map(int,match.groups()[:4])
         if pid in players:
-            coverage[(version,pid,district)]=dict(turn=t,version=version,player=pid,district=district,
+            coverage[('raw',version,pid,district)]=dict(turn=t,version=version,player=pid,district=district,
                                                receipt=json.loads(match[5]))
+    for row in planning:
+        if row['kind']=='MANAGED_COVERAGE'and ai(row):
+            key=(row.get('segment','raw'),row['version'],row['player'],row['district'])
+            coverage[key]=dict(turn=row['turn'],version=row['version'],player=row['player'],
+                district=row['district'],segment=row.get('segment'),receipt=json.loads(row['receiptJson']))
     # Managed nonpositive-cell masks implement routine deferral in this
     # candidate. The older typed decline trace can legitimately remain zero.
     # Repeated cells are mask operations, not distinct deferred districts.
@@ -168,6 +178,7 @@ def analyse(root):
         native_managed_mask_turns=len({r['turn']for r in coverage.values()if r['receipt'].get('masked',0)>0}),
         new_quarter_native_best=len(new_quarter_best),
         new_quarter_native_best_exact_bid_write=len(exact_quarter_best),
+        new_quarter_native_best_missing_bid_metadata=sum(r.get('bidVersion')is None for r in new_quarter_best),
         acquisition_offers_by_class=dict(Counter(r.get('materialClass','unknown')for r in planning
             if r['kind']=='ACQUISITION_OFFER'and ai(r))),
         native_savings_events=dict(Counter(r['kind']for r in savings)),
