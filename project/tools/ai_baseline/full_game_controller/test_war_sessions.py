@@ -21,7 +21,7 @@ ContextPtr={IsHidden=function()return true end};Close=function()error('hidden vi
    self.assertEqual(self.lua(setup),0,setup)
  def method(self,lines,replies):
   draft=(H/'controller.py').read_text();tree=ast.parse(draft);cls=next(x for x in tree.body if isinstance(x,ast.ClassDef)and x.name=='FullGameController');node=next(x for x in cls.body if isinstance(x,ast.FunctionDef)and x.name=='dismiss_observer_warning')
-  ns=dict(re=re,json=json,RESOURCE_ROOT=H,PASSIVE_OBSERVER_STATEMENTS=frozenset({'DIPLOMATIC_KUDO'}),FIRST_MEET_OBSERVER_STATEMENTS=frozenset(),EXIT_ONLY_OBSERVER_WARS=frozenset({'DECLARE_SURPRISE_WAR','DECLARE_FORMAL_WAR'}));exec(textwrap.dedent(ast.get_source_segment(draft,node)),ns)
+  ns=dict(re=re,json=json,RESOURCE_ROOT=H,PASSIVE_OBSERVER_STATEMENTS=frozenset({'DIPLOMATIC_KUDO'}),CANCELLABLE_OBSERVER_PROMPTS=frozenset({'WARNING_STOP_SPYING_ON_ME'}),FIRST_MEET_OBSERVER_STATEMENTS=frozenset(),EXIT_ONLY_OBSERVER_WARS=frozenset({'DECLARE_SURPRISE_WAR','DECLARE_FORMAL_WAR'}));exec(textwrap.dedent(ast.get_source_segment(draft,node)),ns)
   temp=tempfile.TemporaryDirectory(dir=os.environ.get('CSC_TEST_SCRATCH'));self.addCleanup(temp.cleanup);root=Path(temp.name);(root/'Logs').mkdir();(root/'Logs/DiplomacyManager.csv').write_text(lines)
   calls=[];answers=iter(replies)
   f=types.SimpleNamespace(allow_observer_warning_dismissal=True,game_pid=17712,seq=0,root=root,state={'DiplomacyActionView':9},states=lambda:None,state_read=lambda label:dict(turn=80,active=True,remaining=5,local_player=-1,player0_human=False),diagnostics=types.SimpleNamespace(USER=root,journal=lambda *a,**k:None,write=lambda *a:None))

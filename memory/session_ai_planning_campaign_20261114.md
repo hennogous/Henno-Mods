@@ -107,3 +107,33 @@ and4enginefilesupdatedcommitted/pushed06db11e. N113resolvedownerpredicateNOTwron
 19sameclockownercontextsactuallyprepayment;strictlaterrowsconfirmall115.
 No source/native/API/codechangesmidcampaign. FirstfullC181+bindinggapC182nowin
 projectfindings; docs/analysis/memoryuncommittedpendingregularscopedpush.
+
+11:41 local continuation update: Continents and Pangaea now reach250. Pangaea
+original stops205 on hidden WARNING_STOP_SPYING_ON_ME to observer0. Recovery01
+loads200 with44/44 structural match then fails BEFOREautoplay on a hardcoded
+turn1 preflight. Recovery02 fixes the explicit start boundary, loads the same
+save with44/44 match, finishes225/250 censuses, exit0/restored/messages[].
+The root recovery runner session42365 now runs fresh fractal250-01, normal
+Small/Prince/Online250 with the same frozen02 policy and CL/R2/Suk mods.
+Manual game check last11:41; next~11:56. No secondconsole, no runtime source
+edits while games active. Existing automatic goal remains paused.
+
+Shared controller now has separate opt-in spy_warning_cancellation.lua, guarded
+by finite Core observer proof, current/latest same-participant CSV INITIAL/NONE
+Processing Immediately, loaded statement/choices and exact open participants.
+Uses CloseSession once (stock Escape cancellation), no explicit response,
+promise/refusal/deal/war; possible implicit diplomatic effects journaled. Stale
+or changed conditions fail closed; ambiguous sends/pending close never replay.
+24 focused controller fixtures pass; earlier broad set78 passes. No live
+cancellation receipt in Pangaea recovery by240, so do NOT call passage205
+causal proof of that handler. User specifically asks to harden controller now;
+review/commit this existing fix without changing Fractal's frozen files.
+
+Offline pangaea250-combined created by planning_segments.py: exact save-marker
+cutoff original Lua, original native<200 plus continuation>=200; explicit native
+preload-turn200 gap, segment-qualified versions/ordinals, no Service evidence
+fabricated. All10 selected censuses. Zero cohort Quarter foundations by250,
+despite positive alternatives36 Bakers/6 Tailors and4/4 exact positive Native
+Quarter BEST receipts. This is a result to explain, not a tooling success claim.
+Managed masks49289 on223turns;31 reconsiderations; no material acquisition offers.
+1604/1604 native choice totals read;71 paidplot debits. Raw segments retained.

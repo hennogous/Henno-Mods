@@ -31,6 +31,11 @@ def make_controller(base_class,*,diagnostics,boundary_decision,tuner_port,prepar
 EXIT_ONLY_OBSERVER_WARS=frozenset(('DECLARE_SURPRISE_WAR','DECLARE_FORMAL_WAR'))
 FIRST_MEET_OBSERVER_STATEMENTS=frozenset(('FIRST_MEET_NEAR_RECIPIENT',))
 PASSIVE_OBSERVER_STATEMENTS=frozenset(('WARNING_TOO_MANY_TROOPS_NEAR_ME','DIPLOMATIC_KUDO','DIPLOMATIC_WARNING','DIPLOMATIC_HIDDEN_AGENDA_KUDO','DIPLOMATIC_HIDDEN_AGENDA_WARNING'))
+# Choice-bearing prompts are NOT passive messages. This narrow opt-in uses the
+# shipped Escape/ExitConversationMode cancellation semantics for the artificial
+# observer only; no positive/negative/ignore response is selected. Cancellation
+# may have implicit diplomatic effects and is journaled separately as such.
+CANCELLABLE_OBSERVER_PROMPTS=frozenset(('WARNING_STOP_SPYING_ON_ME',))
 
 class ObserverEliminated(RuntimeError):
  """The original return player is dead; an inactive counter cannot stop AI-only flow."""
@@ -221,8 +226,17 @@ class FullGameController:
    if len(row)<5 or row[0]!=str(proof['turn'])or row[1]not in('1','2','3','4','5')or row[2]!='0':continue
    if row[1]in seen_from:continue
    seen_from.add(row[1]) # A newer deal/demand prevents fallback to an old warning.
-   if row[4]in PASSIVE_OBSERVER_STATEMENTS or row[4]in EXIT_ONLY_OBSERVER_WARS or row[4]in FIRST_MEET_OBSERVER_STATEMENTS:
-    candidates.append({'turn':int(row[0]),'from':int(row[1]),'to':0,'initiator_raw':row[3],'statement':row[4]})
+   cancellable=row[4]in CANCELLABLE_OBSERVER_PROMPTS
+   # Keep the newest row authoritative even when its phase is ineligible. A
+   # pending/response/deal record must never expose an older initial warning.
+   # Processing Immediately is the reviewed hidden-view stall; other log phases
+   # remain diagnostic. The CSV initiator is not a native session identifier.
+   if cancellable and(len(row)<8 or row[5]!='NONE' or row[6]!='INITIAL'
+                      or row[7].replace(' ','')!='ProcessingImmediately'):continue
+   if row[4]in PASSIVE_OBSERVER_STATEMENTS or row[4]in EXIT_ONLY_OBSERVER_WARS or row[4]in FIRST_MEET_OBSERVER_STATEMENTS or cancellable:
+    candidates.append({'turn':int(row[0]),'from':int(row[1]),'to':0,'initiator_raw':row[3],'statement':row[4],
+                       'subtype':row[5]if len(row)>5 else None,'response':row[6]if len(row)>6 else None,
+                       'processing':row[7]if len(row)>7 else None})
   if not hasattr(self,'warning_dismissals'):self.warning_dismissals=set()
   if not hasattr(self,'warning_guard_checks'):self.warning_guard_checks={}
   for warning in candidates:
@@ -232,17 +246,23 @@ class FullGameController:
    if checks>=4:continue
    self.states()
    if 'DiplomacyActionView'not in self.state:return
-   resource=('first_meet_session_dismissal.lua'if warning['statement']in FIRST_MEET_OBSERVER_STATEMENTS else'war_session_dismissal.lua'if warning['statement']in EXIT_ONLY_OBSERVER_WARS else'session_dismissal.lua')
+   cancellable=warning['statement']in CANCELLABLE_OBSERVER_PROMPTS
+   resource=('spy_warning_cancellation.lua'if cancellable else'first_meet_session_dismissal.lua'if warning['statement']in FIRST_MEET_OBSERVER_STATEMENTS else'war_session_dismissal.lua'if warning['statement']in EXIT_ONLY_OBSERVER_WARS else'session_dismissal.lua')
    code=(RESOURCE_ROOT/resource).read_text(encoding='utf-8').replace('__STATEMENT__',warning['statement'])
    for name,value in {'FROM':warning['from'],'CORE_TURN':proof['turn'],'TARGET_TURN':target,'CORE_ACTIVE':proof['active'],'CORE_LOCAL':proof['local_player'],'CORE_HUMAN':proof['player0_human']}.items():code=code.replace('__'+name+'__',str(value).lower())
-   self.diagnostics.journal('observer-warning-dismissal-begin',warning=warning,core=proof,native_pid=self.game_pid,no_response_selected=True)
+   self.diagnostics.journal('observer-conversation-cancellation-begin'if cancellable else'observer-warning-dismissal-begin',warning=warning,core=proof,native_pid=self.game_pid,no_response_selected=True,
+                            escape_equivalent=cancellable,possible_implicit_diplomatic_effects=cancellable)
    self.warning_dismissals.add(key);self.warning_guard_checks[key]=checks+1
    raw=self.cmd(code,'DiplomacyActionView','dismiss-observer-warning-from-'+str(warning['from']))
    match=re.search(r'CSC_OBSERVER_WARNING_DISMISS_SKIPPED\s+([a-z_]+)',raw)
    explicit_skip=bool(match)and 'CSC_OBSERVER_WARNING_DISMISS_BEGIN'not in raw and 'CSC_OBSERVER_WARNING_DISMISS_REQUESTED'not in raw
    if explicit_skip:self.warning_dismissals.remove(key)
    self.diagnostics.journal('observer-warning-guard-result',key=key,check=checks+1,explicit_skip=explicit_skip,may_recheck=key not in self.warning_dismissals)
-   self.diagnostics.write(self.root/'session-dismissals'/(str(self.seq)+'.json'),{'warning':warning,'core':proof,'raw':raw,'requested':'CSC_OBSERVER_WARNING_DISMISS_REQUESTED'in raw,'intervention':('standard CHOICE_EXIT declines observer first-meet invitation; no AddResponse/statement/turn change'if warning['statement']in FIRST_MEET_OBSERVER_STATEMENTS else'standard exit-only conversation dismissal; no AddResponse/statement/turn change'),'guard_resource':resource})
+   self.diagnostics.write(self.root/'session-dismissals'/(str(self.seq)+'.json'),{'warning':warning,'core':proof,'raw':raw,'requested':'CSC_OBSERVER_WARNING_DISMISS_REQUESTED'in raw,
+    'cancelled_observer_conversation':'CSC_OBSERVER_CONVERSATION_CANCELLED'in raw,
+    'possible_implicit_diplomatic_effects':cancellable,
+    'intervention':('Esc-equivalent observer conversation cancellation; no explicit response/promise/refusal/war/deal selected; possible implicit diplomatic effects'if cancellable else'standard CHOICE_EXIT declines observer first-meet invitation; no AddResponse/statement/turn change'if warning['statement']in FIRST_MEET_OBSERVER_STATEMENTS else'standard exit-only conversation dismissal; no AddResponse/statement/turn change'),
+    'guard_resource':resource})
    # A closed newest session must not hide another participant's open one.
    # One mutation maximum per pass; ambiguous transmissions never resend.
    if not(explicit_skip and match[1]in('no_session','session_closed')):return

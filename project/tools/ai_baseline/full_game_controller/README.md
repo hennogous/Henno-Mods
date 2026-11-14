@@ -55,6 +55,46 @@ while its worker is alive. Earlier status entries below are historical snapshots
 
 # Reusable CSC full-game controller
 
+## Observer spy-warning cancellation —14 November2026
+
+`allow_observer_warning_dismissal=True` additionally permits cancellation of
+`WARNING_STOP_SPYING_ON_ME` addressed to the artificial observer0. This is a
+separate `CANCELLABLE_OBSERVER_PROMPTS` set, **not a passive warning**. The
+Pangaea campaign stopped at205 with this hidden conversation still open.
+The reviewed stock `DiplomacyActionView.lua` functions `KeyHandler(Escape)` /
+`CloseFocusedState` call `ExitConversationMode` and then `CloseSession` without
+submitting a response. `spy_warning_cancellation.lua` uses that exact-session
+cancellation primitive; it never invokes a positive, negative or ignore choice.
+This can have implicit diplomatic effects and is recorded as an intervention,
+not cosmetic playback. It does not change the five studied AI players' tuning.
+
+Require fresh Core active/observer proof with the existing exact1–5 remaining
+turn budget; UI clock equal to Core or one behind, and UI local player−1.
+The newest CSV row for the same sender→observer0 must be this warning,
+`NONE/INITIAL/Processing Immediately`. A newer deal or another phase blocks
+fallback. At runtime, the loaded AI/NONE statement must map to the expected
+`WARNING_STOP_SPYING_ON_ME_FROM_AI` selection group, containing positive and
+negative and optionally the source-reviewed ignore key; changed definitions
+fail closed. Resolve and recheck the open session and exact participants.
+`GetSessionInfo` exposes participants, not the live statement; the CSV and
+loaded-definition checks are scoped evidence, not a nonexistent native
+current-statement query.
+
+Reserve the action identity before one transmission. Only an explicit pre-action
+skip may recheck, at most four times. BEGIN, an unconfirmed close, or transport
+ambiguity never permits replay. The receipt records
+`cancelled_observer_conversation` only after an immediate native closed-session
+read; otherwise it remains a cancellation request, with a distinct pending
+marker. No response, promise, refusal, war, deal or autoplay budget is explicitly
+submitted. Test fixtures cover real Lua51 guards and fake controller routing;
+live recovery remains pending until the continuation actually exercises it.
+
+Offline verification (with the existing Lupa51 environment):
+
+```powershell
+python -B -m unittest project.tools.ai_baseline.full_game_controller.test_spy_warning_cancellation project.tools.ai_baseline.full_game_controller.test_session_guards project.tools.ai_baseline.full_game_controller.test_war_sessions
+```
+
 Maintained code: `project/tools/ai_baseline/full_game_controller/`.
 Use this shared core for new CSC automated full-game drivers instead of copying
 the controller from a dated experiment or chat output. The closed three-world

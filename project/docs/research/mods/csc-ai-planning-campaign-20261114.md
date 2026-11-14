@@ -252,3 +252,43 @@ AI-N113's correctly scoped resolved-data predicate remains valid.
 Detailed independent audits are archived as `planning-independent-audit.*` and
 `economy-savings-audit.*` in the completed arm. The campaign root also retains
 `incoming-exchange-loaded-audit.json` with the qualified loaded modifier graph.
+
+## Pangaea interruption and shared-controller hardening
+
+The original Pangaea session reached205, then finite autoplay stopped advancing
+with an open, hidden `DiplomacyActionView` session from AI4 to observer0. The
+archived `DiplomacyManager.csv` identifies
+`WARNING_STOP_SPYING_ON_ME/NONE/INITIAL/Processing Immediately`. Congress was
+hidden too but was not the blocking conversation. The game closed with exit0
+and restored preferences; the turn200 checkpoint remains the recovery source.
+
+The shared controller now handles that specific choice-bearing warning through
+a separate cancellation path, rather than classifying it as a passive message.
+It verifies active finite Core autoplay, observer control, the current/latest
+same-participant CSV statement and phase, loaded statement/selection definitions,
+and the exact open session's participants. It calls `CloseSession` once, following
+the stock Escape cancellation primitive, without selecting a response, promise,
+refusal, deal or war. Cancellation can have implicit diplomatic consequences;
+receipts record that limitation. Changed state fails closed, and ambiguous sends
+or pending cancellation cannot replay. See the
+[controller documentation](../../../tools/ai_baseline/full_game_controller/README.md#observer-spy-warning-cancellation-14-november2026).
+
+The24 focused controller fixtures pass, including real Lua51 guard execution,
+newer-deal precedence, human-control exclusion, changed session/definition checks
+and no resend after an uncertain transmission. A successful continuation past205
+does **not** itself establish live exercise of the handler; require the explicit
+cancellation receipt. No such receipt was observed in the Pangaea continuation.
+
+Recovery attempt01 loaded200 with44/44 structural rows matching, then stopped
+before autoplay because the preflight incorrectly required turn1. Recovery02
+uses an explicit start boundary, verifies the same44 rows, reaches250, archives
+225/250 censuses and closes with exit0, restored preferences and no asynchronous
+native observer messages. Fractal follows as the third fresh seed.
+
+`pangaea250-combined` is a labelled offline derivative, **not an uninterrupted
+raw session**. It cuts original Lua at the exact completed turn200 save marker,
+excludes abandoned205 evidence, qualifies versions/ordinals by segment, and keeps
+an explicit native coverage gap for original pre-save turn200 events whose
+ordering against the save is unknown. All ten census boundaries are present.
+The raw segments, save hash and merge provenance remain available; Service
+evidence must be read from raw segments with the same cutoff.
