@@ -1,6 +1,8 @@
--- Shared Bakers and Tailors Stage 2 policy. Read each Quarter's mapped
--- suppliers and customer hosts, then translate missing or threatened links
--- into candidate bids, repair offers and protection for the CE publisher.
+-- Shared Bakers and Tailors supplier and Stage 2 chain policy. Read loaded
+-- material classes, buyer stages and live footprints, then translate missing
+-- or threatened links into candidate bids, repair offers and protection for
+-- the CE publisher. Specialty development waits for its Stage 4 buyer; deposit
+-- protection and acquisition also value its immediate Quarter adjacency.
 -- The bounded Bakers forecast diagnostic at the end has its own caller.
 CSC_AI_QuarterPlacement = {}
 
@@ -57,7 +59,7 @@ function P.StageTwoProfiles()
         local district = GameInfo.Districts['DISTRICT_CSC_' .. key .. '_QUARTER']
         if district then
             local profile = {key = key, district = district, base = 'CLASS_CSC_' .. key .. '_BASE',
-                specialty = 'CLASS_CSC_' .. key .. '_SPEC', service = service, producers = {}, customers = {}}
+                specialty = 'CLASS_CSC_' .. key .. '_SPEC', service = service, producers = {}, specialtyBuyers = {}, customers = {}}
             byKey[key] = profile
             profiles[#profiles + 1] = profile
         end
@@ -66,8 +68,9 @@ function P.StageTwoProfiles()
         for row in GameInfo.CSC_QuarterFlowBuildings() do
             local p = byKey[row.QuarterKey]
             local building = GameInfo.Buildings[row.BuildingType]
-            if p and row.Stage == 2 and building and building.PrereqDistrict == p.district.DistrictType then
-                p.producers[#p.producers + 1] = building
+            if p and building and building.PrereqDistrict == p.district.DistrictType then
+                if row.Stage == 2 then p.producers[#p.producers + 1] = building end
+                if row.Stage == 4 then p.specialtyBuyers[#p.specialtyBuyers + 1] = building end
             end
         end
         local variants = {}
@@ -78,6 +81,18 @@ function P.StageTwoProfiles()
                 list[#list + 1] = building
                 variants[row.ReplacesBuildingType] = list
             end
+        end
+        -- Stage 4 is a development gate, not a request to construct that buyer
+        -- or an assumed active Service. Respect loaded unique replacements.
+        for _, p in ipairs(profiles) do
+            local buyers = {}
+            for _, building in ipairs(p.specialtyBuyers) do
+                buyers[#buyers + 1] = building
+                for _, variant in ipairs(variants[building.BuildingType] or {}) do
+                    buyers[#buyers + 1] = variant
+                end
+            end
+            p.specialtyBuyers = buyers
         end
         local districtVariants = {}
         for row in GameInfo.DistrictReplaces() do
@@ -211,21 +226,24 @@ local function workingBuildingAt(buildings, kind, plot)
         and buildings:GetBuildingLocation(kind.Index) == plot
 end
 
-local function hasWorkingBase(base)
-    for _, material in ipairs(base) do
+local function hasWorkingMaterial(supply)
+    for _, material in ipairs(supply) do
         if material.working then return true end
     end
     return false
 end
 
--- One unfinished job per chain. Prefer repairing a compatible improvement.
--- Otherwise choose a currently buildable supplier, even when several viable
--- deposits exist. CE and the game still own assignment and execution.
-local function offerBaseJob(player, chain, recover, bid)
-    if bid <= 0 or chain.workingBase then return end
+-- One unfinished job per material class per chain. Prefer repairing a
+-- compatible improvement, then the lowest plot index among buildable deposits.
+-- Base and Spec share this plumbing; their buyer-stage gates are separate.
+-- Shared plots retain the strongest bid, never a sum. CE and the game still
+-- own assignment and execution; these Q8 values are proposals, not commands.
+local function offerMaterialJob(player, chain, kind, recover, bid)
+    local supply = chain.supply[kind] or {}
+    if bid <= 0 or hasWorkingMaterial(supply) then return end
     local playerID = player:GetID()
     local best, bestRepair
-    for _, material in ipairs(chain.supply.base) do
+    for _, material in ipairs(supply) do
         local plot = Map.GetPlotByIndex(material.plot)
         local current = plot:GetImprovementType()
         for _, index in ipairs(materialOptions()[plot:GetResourceType()]) do
@@ -258,7 +276,7 @@ function P.ReadChains(player)
                 local ready = complete and not quarter:IsPillaged()
                 local supply = P.ReadSuppliers(player, plot, profile)
                 chains[#chains + 1] = { profile = profile, city = city, plot = plot,
-                    complete = complete, ready = ready, supply = supply, workingBase = hasWorkingBase(supply.base),
+                    complete = complete, ready = ready, supply = supply, workingBase = hasWorkingMaterial(supply.base),
                     -- The Service source property is a policy signal. Auditing
                     -- the customer payout requires separate evidence.
                     active = ready and (city:GetProperty(profile.service.property) or 0) > 0 }
@@ -316,7 +334,7 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
     local profile, city, plot = chain.profile, chain.city, chain.plot:GetIndex()
     local pid, cityID = player:GetID(), city:GetID()
     local buildings = city:GetBuildings()
-    local producerWorks, producerExists, customerWorks, customerHost = false, false, false, false
+    local producerWorks, producerExists, customerWorks = false, false, false
     for _, producer in ipairs(profile.producers) do
         producerExists = producerExists or buildings:HasBuilding(producer.Index)
         producerWorks = producerWorks or workingBuildingAt(buildings, producer, plot)
@@ -347,7 +365,6 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
     local navalProductionAvailable = false
     local hasBase = #chain.supply.base > 0
     visitCustomerPlots(pid, chain, function(buyer, footprint, variants)
-        customerHost = true
         local buyerBuildings = buyer:GetBuildings()
         local exists = false
         for _, building in pairs(variants) do
@@ -375,10 +392,13 @@ local function connectStageTwo(player, chain, nominations, recover, repairs, lim
             local value = servicePremium and READY_PRODUCER_BID_Q8 or EXCHANGE_PRODUCER_BID_Q8
             for _, producer in ipairs(profile.producers) do bid(city, producer, value) end
         end
-        if customerWorks or (producerWorks and customerHost) then
+        -- A working Stage 2 buyer already pays for improved Base materials;
+        -- an absent customer must not suppress that ordinary supply benefit.
+        -- Reserve the larger band for a producer/customer pair that works now.
+        if customerWorks or producerWorks then
             local value = producerWorks and customerWorks and limits.builder
                 or math.min(limits.builder, EARLY_SUPPLIER_BID_Q8)
-            offerBaseJob(player, chain, recover, value)
+            offerMaterialJob(player, chain, 'base', recover, value)
         end
     elseif limits.repair and unlocked and chain.complete and chain.workingBase
         and producerExists and not producerWorks and customerWorks and not repairCities[cityID] then
@@ -412,6 +432,18 @@ local function materialRisk(player, builderBidLimit, nominationLimit, canProduce
         end
         if chain.complete and (limits.builder > 0 or limits.nomination > 0 or limits.repair) then
             connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduceBuilding, seen, repairCities)
+            -- Spec improvement exchange starts at Stage 4. Mere technology,
+            -- Stage 2 progress or a remote/pillaged buyer cannot activate it.
+            -- Reuse the modest 26-unit band: no unmeasured Stage 4 Service uplift.
+            if chain.ready and limits.builder > 0 then
+                for _, buyer in ipairs(chain.profile.specialtyBuyers or {}) do
+                    if workingBuildingAt(chain.city:GetBuildings(), buyer, chain.plot:GetIndex()) then
+                        offerMaterialJob(player, chain, 'specialty', recover,
+                            math.min(limits.builder, EARLY_SUPPLIER_BID_Q8))
+                        break
+                    end
+                end
+            end
         end
     end
     return risks, recover, nominations, repairs, chains
@@ -476,46 +508,50 @@ function P.SupplierAcquisitionOffers(player, chains, ui, builderBidLimit)
     if delta <= 0 or not ui or type(ui.GetPlotPurchaseQuote) ~= 'function' then return result end
     local pid, options = player:GetID(), materialOptions()
     for _, chain in ipairs(chains) do
-        -- Repair/develop an already viable owned deposit before buying another.
-        -- This first scarcity policy secures Base for healthy completed Quarters;
-        -- it prices future supply even before the producer is constructed.
-        if chain.ready and #chain.supply.base == 0 then
-            local best
-            for _, plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())) do
-                local resource = GameInfo.Resources[plot:GetResourceType()]
-                if plot:GetOwner() == -1 and plot:GetDistrictType() == -1 and plot:GetImprovementType() == -1
-                    and resource and options[resource.Index]
-                    and PlayersVisibility[pid]:IsRevealed(plot:GetX(), plot:GetY())
-                    and CSC_Adjacency.ResourceVisible(pid, resource.Index)
-                    and CSC_Adjacency.HasTag(chain.profile.base, resource.ResourceType) then
-                    local improvements = {}
-                    for _, index in ipairs(options[resource.Index]) do
-                        if improvementUnlocked(player, index) then improvements[#improvements + 1] = index end
-                    end
-                    -- Lua CanHaveImprovement forces the native ownership check
-                    -- and rejects ordinary unowned tiles. Do not call it here
-                    -- or invent a fourth ignore-ownership argument. These are
-                    -- mapped, unlocked proposals: native row admission validates
-                    -- actor/geometry and preserves zero/negative scores before CE
-                    -- can add the finite 26-unit Q8 early-supplier band.
-                    local ok, quote = false, nil
-                    if #improvements > 0 then
-                        ok, quote = pcall(ui.GetPlotPurchaseQuote, pid, chain.city:GetID(), plot:GetIndex())
-                    end
-                    if ok and type(quote) == 'number' and quote > 0
-                        and (not best or quote < best.purchaseGold
-                            or quote == best.purchaseGold and plot:GetIndex() < best.plot) then
-                        best = {player=pid, city=chain.city:GetID(), plot=plot:GetIndex(), improvements=improvements,
-                            deltaQ8=delta, acquisition=true, purchaseGold=quote, quarter=chain.plot:GetIndex()}
+        -- Both resource classes give immediate Quarter adjacency, even before
+        -- their buyers exist. Secure only the first missing viable deposit in
+        -- each class. Improvement development remains Stage 2/4 buyer-gated
+        -- above; this offer neither assumes nor grants a future Service.
+        for _, kind in ipairs({'base', 'specialty'}) do
+            if chain.ready and #(chain.supply[kind] or {}) == 0 then
+                local best
+                for _, plot in ipairs(Map.GetAdjacentPlots(chain.plot:GetX(), chain.plot:GetY())) do
+                    local resource = GameInfo.Resources[plot:GetResourceType()]
+                    if plot:GetOwner() == -1 and plot:GetDistrictType() == -1 and plot:GetImprovementType() == -1
+                        and resource and options[resource.Index]
+                        and PlayersVisibility[pid]:IsRevealed(plot:GetX(), plot:GetY())
+                        and CSC_Adjacency.ResourceVisible(pid, resource.Index)
+                        and CSC_Adjacency.HasTag(chain.profile[kind], resource.ResourceType) then
+                        local improvements = {}
+                        for _, index in ipairs(options[resource.Index]) do
+                            if improvementUnlocked(player, index) then improvements[#improvements + 1] = index end
+                        end
+                        -- Lua CanHaveImprovement forces the native ownership check
+                        -- and rejects ordinary unowned tiles. Do not call it here
+                        -- or invent a fourth ignore-ownership argument. These are
+                        -- mapped, unlocked proposals: native row admission validates
+                        -- actor/geometry and preserves zero/negative scores before CE
+                        -- can add the finite 26-unit Q8 early-supplier band.
+                        local ok, quote = false, nil
+                        if #improvements > 0 then
+                            ok, quote = pcall(ui.GetPlotPurchaseQuote, pid, chain.city:GetID(), plot:GetIndex())
+                        end
+                        if ok and type(quote) == 'number' and quote > 0
+                            and (not best or quote < best.purchaseGold
+                                or quote == best.purchaseGold and plot:GetIndex() < best.plot) then
+                            best = {player=pid, city=chain.city:GetID(), plot=plot:GetIndex(), improvements=improvements,
+                                deltaQ8=delta, acquisition=true, purchaseGold=quote, quarter=chain.plot:GetIndex(), materialClass=kind}
+                        end
                     end
                 end
-            end
-            if best then
-                -- One deterministic option per chain, no stacking when several
-                -- Quarters share it. Rebuild from live ownership/quotes each
-                -- publication; acquisition retires this offer on the next turn.
-                local key = best.city .. ':' .. best.plot
-                if not seen[key] then result[#result + 1], seen[key] = best, true end
+                if best then
+                    -- One deterministic option per class, no stacking when several
+                    -- Quarters or classes share a purchased plot. Rebuild from live
+                    -- ownership/quotes each publication; acquisition retires
+                    -- this offer on the next turn.
+                    local key = best.city .. ':' .. best.plot
+                    if not seen[key] then result[#result + 1], seen[key] = best, true end
+                end
             end
         end
     end
