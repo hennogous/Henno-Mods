@@ -1,3 +1,14 @@
+# ACTIVE: Astra gaps and fresh Online250,14 November2026
+
+Read session_ai_astra_goal_20261114.md FIRST. Goal ACTIVE, superseding older
+paused/completed entries below. Fresh250-02 RUNNING shared controller worker13888,
+Civ8360 (creation134391658049716989), exec60762, root Desktop/Codex/
+csc-ai-astra-gaps-20261114. Real DB audit25materialhosts+14provideredgesPASS;
+mainCSCpolicyonly, frozen02/CE400e6755. Checkabout15min; next~22:57. No second
+console or runtime source edits. Lingapura replay150–200 completed/closed,
+load-order bug fixed800010 after fresh01 failedat1/cleanclosed. HEAD e843d611,
+skill6aef0be pushed. Full250outcome+physicalpayoutverificationstillpending.NoPR.
+
 # ACTIVE: REA investigation; all game tests stopped by user, 13 November
 
 REA static investigation COMPLETE, exported and closed. Main result report

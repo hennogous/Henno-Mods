@@ -1,5 +1,16 @@
 # ACTIVE goal: Astra investigations, fixes and fresh250
 
+RUNNING22:42: fresh250-02 passed actual DB audit25/25materialhosts and14/14
+provideredgesexactlyonce, advancedthrough6 andcontinues250. Sharedcontroller
+worker13888 / Civ8360 creation134391658049716989 / execsession60762. Watch20hooks
+installedzeroFaults inclqualifiedfactoryentry. MainCSCpolicyonly; protocol
+external_policy=false/gameplay_interventions=false. MainHEAD e843d611 pushed,
+skill6aef0be pushed. Nextmanualcheck~22:57 (15min); useownhandle60762/readartifacts.
+No secondconsole/runtime-source edits whileowned. Frozen02 source/mainAI policy
+andSQL800010 alreadycaptured. Fullreport/physicalnewpayoutqualificationpending.
+Do notmarkcompleteatlaunch. GoalACTIVE, noPR, noCUA. Earlier"Nextlaunch"below
+is historical. Newstartup andfutureoutcomes mustreconcilefirstfailedattempt.
+
 UPDATE22:36: fresh250-01 FAILED at1 startup audit;14provideredgesloaded but
 8materialhosts missing (R2Sawmill created799990/800000,CLvalidlinks9999 AFTER479).
 Closed/restored/ownersabsent verified,handle73401exit1. Noautoplay. FIX action

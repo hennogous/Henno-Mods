@@ -182,3 +182,10 @@ and the package-deployment fixture pass. The frozen01/failed startup artifacts
 are preserved. Replacement frozen02/fresh250-02 retains the same selected seed,
 policy and content, with only this ordering correction. The25-host/14-provider
 loaded audit must pass before the controller advances the new game.
+
+`fresh250-02` passes that real loader audit:25 material hosts and14 provider
+edges, every count exactly1. The ordinary fresh game advances through6 and
+continues toward250. Native observation installs20 qualified hooks without
+faults, including the pre-placement cache reader. Protocol records main policy
+only, no external policy/gameplay interventions,15-minute controller windows.
+Outcome comparison and new physical transaction qualification remain pending.

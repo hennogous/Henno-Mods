@@ -7,7 +7,9 @@ changed ledger; Astra retains the current formula. Coverage
 fixes for incoming materials, provider edges, same-city pair capacity and the
 remaining +2 pre-screen are implemented with offline checks. Current1.5
 regressions and243 native checks preserve accepted representative payment and
-ownership evidence. Next: frozen01 fresh Continents250 and live coverage/outcomes.
+ownership evidence. The fresh startup found/repaired late improvement load order;
+frozen02 now passes25/25 material and14/14 provider DB coverage. Continents250
+is running under the shared controller; physical coverage/outcomes remain next.
 [Goal investigation and current evidence](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
 
 **Current policy decision, 14 November:** Henno accepts the review's work

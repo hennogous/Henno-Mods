@@ -11,8 +11,10 @@ in source and pass offline checks. Current acquisition regressions and243 native
 checks pass; earlier paid footprint/supplier outcomes retain their scoped closure.
 Fresh01's turn1 audit caught eight missing late-defined improvement hosts;
 it closed/restored before autoplay. Material reconciliation now loads800010,
-after R2 Sawmill800000 and CL links9999. Next: fresh Continents Online250 with frozen02, explicit
-loaded coverage checks and the same pre-placement cache observation as controls.
+after R2 Sawmill800000 and CL links9999. Fresh Continents Online250 is running
+with frozen02: real loader audit passes25 material hosts and14 provider links,
+exactly once each. Shared controller, main CSC policy only,15-minute checks and
+the same pre-placement cache observation as controls. Outcome/comparison pending.
 [Current investigation](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
 Older paused-goal and completed-campaign entries below are historical.
 
