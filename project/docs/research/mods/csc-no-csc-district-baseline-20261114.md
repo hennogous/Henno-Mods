@@ -78,6 +78,20 @@ campaign wrapper contains no game commands. No CE rebuild or upstream PR.
 
 ## Status
 
+**Completed:** all three controls reach turn 250 and close with exit 0 and
+restored preferences. No game or worker remains. The [complete comparison](csc-no-csc-district-baseline-results-20261114.md)
+has counts, placement adjacency and native utility by type. Ordinary slot
+foundations total 465 without CSC versus 441 with CSC, plus eight Quarters.
+All 1,124 control foundations have UI adjacency; all 1,058 factory-entry reads
+succeed. The following entries preserve the recording and recovery history.
+
+Fractal completes normally with all five checkpoints. Its four pending rows
+refer to pre-existing district plots removed just after capture events. The
+final cross-context audit accounts for all matching UI additions: foundations
+or City Center ownership changes. No additional replay was required. Sampling
+is maintained as skill AI-N130; the gameplay skill now corrects the callback
+tail against shipped GenVFX.lua (argument 7 is iEra).
+
 **Continuation, 14 November:** Continents reached250 and saved/closed with exit0.
 The final observer assertion stopped the campaign because a queued event remained
 unresolved. The archived-log audit recovers all ten censuses and377 original-AI

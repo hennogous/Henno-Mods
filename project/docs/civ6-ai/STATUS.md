@@ -1,25 +1,34 @@
 # Current CSC AI status
 
-**14 November: three-game Problems1/2 planning campaign completed.**
+**14 November: Problems 1/2 campaign and three no-CSC controls completed.**
 
-**No-CSC controls:** Continents completed250, saved and closed. Its recovered
-analysis contains377 original-AI foundations, including156 slot-consuming native
-districts, versus158 with CSC. All377 have UI adjacency records; the six extra
-UI additions are captured City Centers, correctly recorded as ownership changes.
-All ten censuses and357 readable before-placement cached quotes are archived.
-An endpoint pending-event assertion stopped the original runner; the offline
-coverage audit recovers the game without repeating it. Future observers report
-the unresolved events for review.
+**No-CSC controls:** all three reach turn 250 and close with exit 0 and restored
+preferences. No game or test worker remains. Same preselected seeds, leaders,
+Online speed and CL/R2/Suk stack; CSC absent and native tuning disabled.
 
-Pangaea also completed250 and closed:323 original-AI foundations, all with UI
-adjacency; three extra UI additions match City Center ownership changes. Its
-final save was unavailable because the observer's local turn stayed inactive;
-all ten censuses and its earlier50/100/150/200 saves are retained. Optional save
-permission failures now get recorded separately so measurement can continue.
+| Map | Ordinary slot-consuming districts with CSC / without CSC | Quarters |
+|---|---:|---:|
+| Continents |158 /156 |6 |
+| Pangaea |124 /129 |0 |
+| Fractal |159 /180 |2 |
+| Total |441 /465 |8 |
 
-Fractal is now running to250 through the shared controller. Same preselected
-seeds, leaders, speed and CL/R2/Suk stack; CSC absent and native tuning disabled.
-Compare all three before interpreting the aggregate district/balance effect.
+The CSC group builds 24 fewer ordinary slot-consuming districts, or 16 fewer
+after including its Quarters. Fractal accounts for 21 of that net difference;
+it also has one fewer surviving AI and eight fewer cities with CSC. City growth
+and survival matter alongside direct slot competition.
+
+All 1,124 control foundations have placement-event adjacency; ordinary native
+choice quotes join 586/597 foundations, and pre-placement cached values join
+595/597. All 1,058 factory-entry reads succeed. Continents and Pangaea recover
+their complete measurements offline after diagnostic endpoint stops. Pangaea's
+final save is unavailable; its earlier saves and all ten censuses remain.
+Fractal completes normally with all five checkpoints. The runner now records
+pending events and unavailable optional saves separately from game failures.
+
+[Complete comparison, adjacency, score tables and recovery](../research/mods/csc-no-csc-district-baseline-results-20261114.md)
+· [AI-C184](findings.md#ai-c184)
+· [Reusable sampling boundary AI-N130](https://github.com/hennogous/civ6-ai/blob/main/references/engine/findings.md#ai-n130).
 [Fixed no-CSC protocol](../research/mods/csc-no-csc-district-baseline-20261114.md).
 
 All three CSC-enabled Small/Prince/Online250 games close with exit0 and restored

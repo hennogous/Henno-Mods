@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [CSC versus no-CSC: three completed district controls — 14 November 2026](../research/mods/csc-no-csc-district-baseline-results-20261114.md)
+
 - [Six unbuilt Quarter nominations: native admission, capacity and limits — 13 November 2026](../research/mods/csc-ai-quarter-request-admission-20261113.md)
 
 - [Corrected quarter-placement guidance: Online250 result — 13 November 2026](../research/mods/csc-ai-quality-placement-250-20261113.md)

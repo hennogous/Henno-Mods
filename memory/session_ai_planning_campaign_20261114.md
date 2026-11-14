@@ -323,3 +323,36 @@ Speed offline: firstcontrol35.5866min autoplay,49knowninactive gaps6.0935min,
 median6.265s. Native command roundtrips overlap simulation, so use inactive gaps
 for definite controller idle. Disk25.41GB/RAM2.71GB free sampled duringcleanup.
 No disk queue. SaveUi handling and comparison prose/totals changed pendingcommit.
+
+## COMPLETED: all three no-CSC controls and comparison, 14 November
+
+Fractal direct worker54570 EXIT0 at turn250, all50/100/150/200/250 checkpoints,
+native exit0/preferences restored/package archived. No game/test worker remains.
+Continents and Pangaea offline audits already complete; campaign-progress.json
+now verified/completed3/activeNone with both original stopped ledgers preserved.
+All source pins are released for future editing. Old automatic goal stays paused.
+
+Comparison complete in Desktop/Codex/csc-no-csc-district-baseline-20261114/comparison.
+Readable repo report: project/docs/research/mods/
+csc-no-csc-district-baseline-results-20261114.md. Ordinary slot-consuming districts
+withCSC/without: Continents158/156, Pangaea124/129, Fractal159/180;441/465 total.
+Eight extra CSC Quarters. Total native+Quarter slot foundations449 vs465.
+Fractal explains21ofnet24 fewer native districts; CSC AI3 eliminated while all5
+survive in control. Finalcities138/158, pop1597/1714. Main outcome variation is
+alongside expansion/survival; avoid attributing the full raw gap to eight slots.
+
+Controlfoundations1124/1124 UIjoins (377/323/424). Prior native quotes586/597;
+factory-entry joins595/597 excludingCC/Wonder/CL. All1058 nativeentryreads good
+(357/296/405). All30 censuses archived. Four pending Fractal events are old
+district plots under capture/removal, gone by nextpoll; no omitted new foundation.
+Acrosscontrols14extraUI-added identities are existing CityCenterownership.
+No prior-footprint FOUNDATION rows in any of the six arms (capture/conversion
+doublecount check). Raw failures retained; no repeat diagnostic games needed.
+
+Maintained AI-C184, status/roadmap/index/evidence updated. No Quartz build.
+AI skill5605697 and gameplay skill e1084c0 pushed: native sampling AI-N130,
+findings-first communication, and corrected DistrictAdded tail. Shipped
+Base/Assets/UI/GenVFX.lua identifies7tharg iEra,8thciv,9thpct,10appeal,11pillaged;
+shorter bannerhandlers incorrectly name7thpercent. Further final confirmation
+1058reads update in skill pending. Main baseline code8a7b6ad9 already pushed;
+final comparison/docs commit pending. Preserve unrelated dirty SQL/art/UI work.

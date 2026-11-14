@@ -2,15 +2,15 @@
 
 **14 November completed: three-game evidence campaign across Problems 1 and 2.**
 
-**Current calibration work:** Henno requests three no-CSC controls on the same
-seeds/Online250 setup and optional-mod stack. Continents completed and its
-endpoint logging stop was recovered offline. Pangaea also completed250; its
-unavailable final save is recorded separately from the recovered observations.
-Fractal is running, with factory-entry values alongside the earlier choice quote. Compare
-ordinary district counts, loaded slot consumption, adjacency, quote coverage
-and surviving city/population context; do not assume seed matching means an
-identical map or that every difference is direct slot displacement.
-[Control protocol and measurement limits](../research/mods/csc-no-csc-district-baseline-20261114.md).
+**Calibration completed:** three no-CSC controls on the preselected Online250
+setup and CL/R2/Suk stack. Ordinary slot-consuming foundations are 441 with CSC
+versus 465 without, plus eight Quarters with CSC. Fractal contributes 21 of the
+net 24 difference and has one fewer surviving AI with CSC. All 1,124 control
+foundations have UI adjacency, 586/597 ordinary foundations have preceding
+choice quotes and 595/597 have pre-placement cached quotes. The comparison
+now supplies type-specific adjacency, utility and city/population context for
+calibrating Problems 1/2. All games are closed; none is queued.
+[Completed comparison and recovery](../research/mods/csc-no-csc-district-baseline-results-20261114.md).
 
 All three seeds reach250 and close cleanly:6/0/2 Quarters on Continents/Pangaea/
 Fractal. All eight have owned Base/+3+, three+4, two both classes; each ties its

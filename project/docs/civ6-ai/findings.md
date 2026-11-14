@@ -3536,3 +3536,34 @@ improvements are excluded from supplier flags; raw campaign data remains intact.
 106 controller plus53 policy/observer/recovery/analysis fixtures pass. No live
 spy-cancellation receipt occurs, despite guarded controller fix c63be794.
 [Consolidated results, limits and per-type calibration](../research/mods/csc-ai-planning-campaign-results-20261114.md).
+
+<a id="ai-c184"></a>
+## AI-C184 — Three no-CSC controls provide ordinary district calibration
+
+Completed 14 November 2026: preselected Continents/Pangaea/Fractal, Small/Prince/
+Online250, same original leaders and CL/R2/Suk versions as AI-C183, CSC absent
+and native tuning disabled. All games reach 250 and close with exit 0/restoration.
+
+Ordinary slot-consuming foundations are 156/129/180 without CSC versus
+158/124/159 with CSC: totals 465 versus 441, plus eight Quarters with CSC.
+Fractal accounts for 21 of the net 24 fewer ordinary districts and has one fewer
+surviving AI with CSC. Terminal city totals are 158 without /138 with CSC;
+population 1,714 /1,597. Treat expansion, survival and growth as part of the
+comparison. Removing CSC changes its world/economic effects as well as slots.
+
+All 1,124 control foundations have UI adjacency records. Ordinary native-type
+foundations excluding City Centers/Wonders have 586/597 preceding choice quotes
+and 595/597 pre-placement cached quotes; all 1,058 entry reads succeed. Per-type
+tables separate real yield adjacency from Q8/256 native utility. Campus/Theater
+mean adjacency is similar; Industrial Zone production is higher with CSC, while
+Harbor Gold and Holy Site Faith adjacency are lower in this sample.
+
+Completed observations are recovered offline after Continents' endpoint pending
+assertion and Pangaea's unavailable final save. Raw failures stay archived.
+Pangaea retains its50/100/150/200 saves and all ten censuses. Fractal completes
+normally with all five checkpoints. Its four queued events refer to pre-existing
+districts removed just after capture events. All 14 additional matching UI
+additions across controls are City Center ownership changes, excluded from new
+construction. No policy changes or extra diagnostic game replay were needed.
+
+[Full comparison, calibration tables, coverage and recovery](../research/mods/csc-no-csc-district-baseline-results-20261114.md).
