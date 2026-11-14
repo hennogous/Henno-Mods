@@ -124,8 +124,15 @@ function W.Finish()
  print('CSC_VANILLA_DISTRICT_FINISHED',Game.GetCurrentGameTurn(),W.records,W.faults,pending)
 end
 W.Health();scan('seed')
-Events.DistrictAddedToMap.Add(function(...)safe(inspect,'added',...)end)
-Events.DistrictBuildProgressChanged.Add(function(...)safe(inspect,'progress',...)end)
+-- Only the first six event arguments identify the district. Extra native
+-- payload fields are not timestamps. Capture our callback clock explicitly,
+-- retaining it in pending rows if the public lookup becomes available later.
+Events.DistrictAddedToMap.Add(function(pid,did,cid,x,y,kind)
+ safe(inspect,'added',pid,did,cid,x,y,kind,Game.GetCurrentGameTurn())
+end)
+Events.DistrictBuildProgressChanged.Add(function(pid,did,cid,x,y,kind)
+ safe(inspect,'progress',pid,did,cid,x,y,kind,Game.GetCurrentGameTurn())
+end)
 GameEvents.OnGameTurnStarted.Add(function()
  safe(function()
   local t=Game.GetCurrentGameTurn();if W.last==t then return end;W.last=t

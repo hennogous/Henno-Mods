@@ -20,7 +20,7 @@ from ce_bakers_fresh import host,package_identity,check_native_status,LOGS
 from ce_replay import DLL,HOTFIX_EXE_SHA,verify_modules
 from driver import (HERE,HOTFIX_SHA,HeldProcess,NativeSession,configure,flags,launch,load,lua,
     make_probe_controller,manifest,native_inventory,parse,read,require,restore_preferences,sha,write_json)
-from full_game_controller.checkpoint import save_inactive_boundary
+from full_game_controller.checkpoint import save_inactive_boundary,SavePermissionUnavailable
 from full_game_controller.environment import archive_sources
 from planning_continue import enable
 
@@ -72,6 +72,21 @@ def check_database(path):
         yields=[r[0]for r in db.execute("SELECT YieldType FROM Yields WHERE YieldType LIKE 'YIELD_CSC_%'")]
     require(not districts and not yields,'CSC SQL present in no-CSC database')
     return dict(verified=True,database=str(path),sha256=sha(Path(path)),csc_districts=districts,csc_yields=yields)
+
+
+def archive_checkpoint(controller,out,saves,turn):
+    # Checkpoints support later inspection; the live censuses and district
+    # journals supply this campaign's measurements. If the shipped UI declines
+    # saving before a request is sent, retain that fact and keep observing.
+    # A timeout AFTER a save request remains an error with uncertain completion.
+    try:
+        cp=save_inactive_boundary(controller,turn=turn,name='CSC_NO_CSC_CONTROL_'+str(turn),
+            native_directory=saves,archive=out/('turn-'+str(turn)+'.Civ6Save'))
+    except SavePermissionUnavailable as error:
+        write_json(out/('checkpoint-unavailable-'+str(turn)+'.json'),
+            dict(turn=turn,save_requests=0,reason=str(error),optional_artifact=True))
+        return
+    write_json(out/('checkpoint-'+str(turn)+'.json'),cp)
 
 
 def run(args):
@@ -184,9 +199,7 @@ print('CSC_CONTROL_CE='..CE_AIDistrictScoresStatus())
                 raw=c.cmd("CSC_VANILLA_DISTRICTS.Health();print('CSC_CONTROL_CE='..CE_AIDistrictScoresStatus())",'GameCore_Tuner','baseline-health-'+str(boundary))
                 check_native_status(parse(raw,'CSC_CONTROL_CE'),True)
             if boundary in(50,100,150,200,250):
-                cp=save_inactive_boundary(c,turn=boundary,name='CSC_NO_CSC_CONTROL_'+str(boundary),
-                    native_directory=p.saves,archive=out/('turn-'+str(boundary)+'.Civ6Save'))
-                write_json(out/('checkpoint-'+str(boundary)+'.json'),cp)
+                archive_checkpoint(c,out,p.saves,boundary)
             cursor=boundary
         raw=c.cmd("CSC_VANILLA_DISTRICTS.Finish()",'GameCore_Tuner','finish-passive-no-CSC-observer')
         require('CSC_VANILLA_DISTRICT_FINISHED'in raw and 'CSC_VANILLA_DISTRICT_FAULT'not in raw,'Observer incomplete')

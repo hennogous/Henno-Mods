@@ -4,6 +4,14 @@ import hashlib,json,re,shutil,time
 from .transport import MissingAcknowledgment
 
 
+class SavePermissionUnavailable(TimeoutError):
+    """Read-only permission polling expired before any SaveGame request.
+
+    Observation-only campaigns may record a missing checkpoint and continue.
+    This is distinct from a timeout after submitting the one-shot save.
+    """
+
+
 def archive_autosave_window(native_directory, archive_directory, first, last, after_ns):
     """Preserve existing autosaves after a finite play window without a new game command.
 
@@ -77,7 +85,7 @@ print('CSC_EXACT_SAVE_READY',UI.HasFeature('Saving'),c and c:IsAlive() or false,
         if last['saving_feature'] and last['config_alive'] and (last['network_game'] or last['local_turn_active']) and not last['core_busy'] and not last['world_builder']:
             return last
         time.sleep(.5)
-    raise TimeoutError('Save permission did not settle; no SaveGame request sent: '+json.dumps(last))
+    raise SavePermissionUnavailable('Save permission did not settle; no SaveGame request sent: '+json.dumps(last))
 
 
 def save_inactive_boundary(r,*,turn,name,native_directory,archive,timeout=60):

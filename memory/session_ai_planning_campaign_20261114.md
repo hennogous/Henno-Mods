@@ -294,3 +294,32 @@ New feedback_research_findings_first.md: lead with useful results/implications,
 keep qualification proportional, separate diagnostic gaps from safety checks.
 735cc011 pushed that feedback and observer reporting fix. Pending runtime/docs
 changes for remaining controls need scoped commit/push during the run.
+
+## Fractal running; Pangaea250 recovered, 15:32 UTC
+
+Campaign7160 exited1 after Pangaea reached250: final optional checkpoint UI
+permission never enabled (local turn inactive). Native exit0/restoration clean.
+All10 censuses and323original-AI foundations recovered, all323UI joins;3extra
+UI CityCenters match OWNERSHIP.129 stock slots vs124 treated.50/100/150/200
+saves exist, final250 save does not. Frozen native reader/no faults/messages.
+offline-observation-audit.json and observation-complete preserve recovery mode.
+
+Shared checkpoint.py now raises typed SavePermissionUnavailable only BEFORE
+any SaveGame request. Baseline archive_checkpoint records optional unavailability
+and continues; post-request TimeoutError still propagates. Callback wrappers now
+accept only six district identity args and pass Game.GetCurrentGameTurn explicitly
+to inspect. This fixes unused foundationTurn garbage and queued event timestamps.
+16 observer/SQL/nativeVM and6 shared checkpoint phase tests pass.
+
+Fractal direct child session54570, worker3572, same root/fractal250-01, through250.
+Source preflight pending at lastcheck15:33; host normal acknowledged. No second
+console or runtime edits. All sharedcontroller*.py/*.lua including TEST files
+are pinned! Analysis/README/docs outside pins remain safe to edit. Check~15min.
+Campaign ledger now completed=[Continents,Pangaea], activeFractal, prior_stops2;
+campaign-progress-second-stop.json preserves original stopped state. Final ledger
+must be closed manually after direct child ends. No new source/seed retries.
+
+Speed offline: firstcontrol35.5866min autoplay,49knowninactive gaps6.0935min,
+median6.265s. Native command roundtrips overlap simulation, so use inactive gaps
+for definite controller idle. Disk25.41GB/RAM2.71GB free sampled duringcleanup.
+No disk queue. SaveUi handling and comparison prose/totals changed pendingcommit.

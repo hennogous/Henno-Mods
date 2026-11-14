@@ -68,10 +68,9 @@ def compare(treated,controls,output):
     arms={name:dict(treated=read_arm(Path(treated)/a,False),control=read_arm(Path(controls)/b,True))
           for name,(a,b)in MAPS.items()}
     lines=['# CSC versus no-CSC district controls','',
-        'Same selected seeds, leaders, Small/Prince/Online250 and CL/R2/Suk versions. '
-        'CSC is absent in controls. Removing its map/resource/economic effects also '
-        'changes the world; this is not a pure district-slot experiment. Counts are '
-        'cumulative original-AI foundations, not terminal ownership or completed investments.', '',
+        'Three preselected maps, five original AI players per map, through turn250 '
+        'on Online speed. Compare newly founded ordinary districts and Quarters, '
+        'their placement adjacency, and the native values attached to those sites.', '',
         '| Map | Native-type foundations CSC / control | Slot-consuming native CSC / control | CSC slot foundations | Cities at250 CSC / control | Population at250 CSC / control | Alive AI CSC / control |',
         '|---|---:|---:|---:|---:|---:|---:|']
     for name,a in arms.items():
@@ -80,16 +79,23 @@ def compare(treated,controls,output):
             f"{t['stock_slot_foundations']} / {c['stock_slot_foundations']} | {t['csc_slot_foundations']} | "
             f"{t['terminal_cities']} / {c['terminal_cities']} | {t['terminal_population']} / {c['terminal_population']} | "
             f"{len(t['terminal_alive'])} / {len(c['terminal_alive'])} |")
-    lines+=['','Native-type counts include City Centers/Wonder footprints; they are excluded from '
-        'slot totals by loaded RequiresPopulation metadata. CL types are separate in JSON. '
-        'A completed Wonder district object does not prove its building completed. Additional '
-        'CSC growth can unlock capacity, so fewer native districts is a hypothesis to measure.', '',
+    totals={side:{key:sum(a[side][key]for a in arms.values())for key in
+        ('stock_foundations','stock_slot_foundations','csc_slot_foundations',
+         'terminal_cities','terminal_population')}for side in('treated','control')}
+    t,c=totals['treated'],totals['control']
+    lines.append(f"| Total | {t['stock_foundations']} / {c['stock_foundations']} | "
+        f"{t['stock_slot_foundations']} / {c['stock_slot_foundations']} | {t['csc_slot_foundations']} | "
+        f"{t['terminal_cities']} / {c['terminal_cities']} | {t['terminal_population']} / {c['terminal_population']} | — |")
+    lines+=['','Slot totals use the loaded RequiresPopulation rule. City Centers and '
+        'Wonder footprints are included in the broader native-type count; City Lights '
+        'districts are recorded separately in JSON. Cities and population describe the '
+        'turn250 empire, providing context for how much district capacity it developed.', '',
         '## Adjacency and native utility by type','',
-        'Real UI-event adjacency excludes the private AI yield. Choice quotes are measured '
-        'in both arms, with their age retained in JSON. Controls add a cached total captured '
-        'before the placement factory; it is not a fresh recomputation or proof the engine '
-        'consulted that cell at placement. Parentheses show quote coverage. Missing/repeated '
-        'entry matches remain unavailable. Factory returnedSuccess is ignored (AL-only ABI).', '',
+        'Adjacency is sampled at the placement event and contains real yields. Native '
+        'choice utility is the common score measurement in both groups; the controls also '
+        'record the cached total just before placement. Parentheses show matched samples. '
+        'A dash means the measurement is unavailable or the district uses another investment '
+        'path, such as a Wonder. Detailed timestamps and coverage remain in JSON.', '',
         '| Map | District | Foundations CSC / control | Mean adjacency CSC | Mean adjacency control | Median choice utility CSC (n) | Median choice utility control (n) | Control pre-placement cache (n) |',
         '|---|---|---:|---|---|---:|---:|---:|']
     for name,a in arms.items():
@@ -107,7 +113,14 @@ def compare(treated,controls,output):
             placement=median_native(y,'native_placement_total_Q8')if comparable else'—'
             lines.append(f"| {name} | {kind.removeprefix('DISTRICT_')} | {x.get('foundations',0)} / {y.get('foundations',0)} | "
                 f"{adjacency(x)} | {adjacency(y)} | {quoted_t} | {quoted_c} | {placement} |")
-    payload=dict(arms=arms,analysis_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    lines+=['','## Comparison setup','',
+        'Small/Prince/Online250, matched selected seeds and leaders, with the same '
+        'City Lights, Resourceful2 and Sukritact resource versions. Controls remove '
+        'CSC entirely. Its resource and economic effects can change the generated world '
+        'and later city growth, so read these results as the overall CSC comparison. '
+        'Counts measure foundations; population measures surviving cities at250. '
+        'Pangaea with CSC includes the documented turn200-save continuation.']
+    payload=dict(arms=arms,totals=totals,analysis_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         limits=['Seed/leader matched, not identical generated worlds.',
                 'Cumulative construction and terminal populations are different measures.',
                 'Choice-time quote is not a fresh placement-time forecast.',

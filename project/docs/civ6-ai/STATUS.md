@@ -11,10 +11,15 @@ An endpoint pending-event assertion stopped the original runner; the offline
 coverage audit recovers the game without repeating it. Future observers report
 the unresolved events for review.
 
-Pangaea and Fractal are now running serially through the shared controller to250,
-as Henno requested. Same preselected seeds, leaders, speed and CL/R2/Suk stack;
-CSC absent and native tuning disabled. Compare all three before interpreting
-the aggregate district/balance effect.
+Pangaea also completed250 and closed:323 original-AI foundations, all with UI
+adjacency; three extra UI additions match City Center ownership changes. Its
+final save was unavailable because the observer's local turn stayed inactive;
+all ten censuses and its earlier50/100/150/200 saves are retained. Optional save
+permission failures now get recorded separately so measurement can continue.
+
+Fractal is now running to250 through the shared controller. Same preselected
+seeds, leaders, speed and CL/R2/Suk stack; CSC absent and native tuning disabled.
+Compare all three before interpreting the aggregate district/balance effect.
 [Fixed no-CSC protocol](../research/mods/csc-no-csc-district-baseline-20261114.md).
 
 All three CSC-enabled Small/Prince/Online250 games close with exit0 and restored

@@ -110,6 +110,35 @@ Artifacts: `offline-observation-audit.json` and
 `full-game-observation-complete.json` in `continents250-01`; original
 `failure.json` and `campaign-progress-first-stop.json` remain available.
 
+**Pangaea completed / Fractal started, 14 November, 15:32 UTC:** Pangaea
+reached250 and closed with exit0, retaining all ten censuses and323 original-AI
+foundations with323 matching UI adjacency identities. Three extra UI additions
+are City Center ownership changes.129 slot-consuming native foundations versus
+124 with CSC. Native reader frozen cleanly, no observer faults/messages.
+
+The final checkpoint permission stayed false because the observer's local turn
+was inactive, although Core was idle and the return seat was human. No SaveGame
+request was sent. The50/100/150/200 saves and complete250 observations survive;
+an offline audit qualifies the measurements and preserves the raw failure.
+No additional gameplay was performed to enable a save.
+
+Shared checkpoint handling now exposes `SavePermissionUnavailable` for that
+specific pre-request timeout. Observation-only controls log the unavailable
+optional checkpoint and continue. Timeouts after submitting a save remain errors.
+The callback timestamp boundary was also corrected before starting Fractal;
+extra native event payloads are discarded, and pending rows retain the real
+callback turn.16 observer/database/native-VM and6 checkpoint-phase tests pass.
+Fractal runs directly under the shared controller; the ledger preserves the
+second stop and both offline recoveries.
+
+**Speed snapshot:** Continents autoplay took35.59 minutes.49 observed inactive
+gaps before the next autoplay activation total6.09 minutes (median6.27 seconds),
+covering controller handoffs, native readbacks and checkpoint work. Calculated
+from `command-begin.started_unix` and the first completed inactive-state reply
+file timestamp for each window. This identifies controller idle time separately
+from engine simulation. At Pangaea cleanup, C: had25.41GB free, RAM2.71GB free,
+with no disk queue in the sample. Optimise controller overhead after the controls.
+
 ### Initial preparation and recording history
 
 Preparation:12 offline observer/database/native-VM tests pass, including19-hook

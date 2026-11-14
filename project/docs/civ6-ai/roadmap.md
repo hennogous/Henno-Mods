@@ -4,8 +4,9 @@
 
 **Current calibration work:** Henno requests three no-CSC controls on the same
 seeds/Online250 setup and optional-mod stack. Continents completed and its
-endpoint logging stop was recovered offline. Pangaea and Fractal now run
-serially, with read-only factory-entry values alongside the earlier choice quote. Compare
+endpoint logging stop was recovered offline. Pangaea also completed250; its
+unavailable final save is recorded separately from the recovered observations.
+Fractal is running, with factory-entry values alongside the earlier choice quote. Compare
 ordinary district counts, loaded slot consumption, adjacency, quote coverage
 and surviving city/population context; do not assume seed matching means an
 identical map or that every difference is direct slot displacement.

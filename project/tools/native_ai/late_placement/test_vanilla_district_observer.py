@@ -4,9 +4,10 @@ from contextlib import closing
 import sqlite3
 import tempfile
 import unittest
+from unittest.mock import patch
 from lupa.lua51 import LuaRuntime
 from test_planning_observer import FIXTURE
-from vanilla_district_run import check_database
+from vanilla_district_run import check_database,archive_checkpoint,SavePermissionUnavailable
 
 
 class VanillaObserver(unittest.TestCase):
@@ -63,6 +64,23 @@ CE_AIDistrictScoresStatus=function()return nativeStatus end
     def test_observer_fault_still_blocks_finish(self):
         self.lua.execute('CSC_VANILLA_DISTRICTS.faults=1')
         self.assertIs(self.lua.eval('pcall(CSC_VANILLA_DISTRICTS.Finish)')[0],False)
+
+    def test_extra_event_payload_does_not_become_a_foundation_timestamp(self):
+        self.lua.execute("Game.t=2;q=district(2,1,2,false);fire('DistrictAddedToMap',0,2,10,2,0,1,987654321)")
+        self.assertIn('foundationTurn=2',self.rows('FOUNDATION')[0])
+        self.lua.execute("Game.t=3;fire('DistrictAddedToMap',0,99,10,3,0,1,987654321);Game.t=4;district(99,1,3,false);poll()")
+        self.assertIn('foundationTurn=3',self.rows('FOUNDATION')[1])
+
+    def test_only_permission_timeout_can_skip_an_optional_checkpoint(self):
+        with tempfile.TemporaryDirectory()as directory:
+            out=Path(directory)
+            with patch('vanilla_district_run.save_inactive_boundary',side_effect=SavePermissionUnavailable('No request sent')):
+                archive_checkpoint(None,out,out,250)
+            import json
+            self.assertEqual(json.loads((out/'checkpoint-unavailable-250.json').read_text())['save_requests'],0)
+            with patch('vanilla_district_run.save_inactive_boundary',side_effect=TimeoutError('Submitted save did not settle')):
+                with self.assertRaisesRegex(TimeoutError,'Submitted save'):
+                    archive_checkpoint(None,out,out,200)
 
     def test_baseline_database_rejects_csc_district_or_private_yield(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parent)as directory:

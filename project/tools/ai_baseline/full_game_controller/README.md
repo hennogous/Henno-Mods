@@ -297,6 +297,14 @@ never sends another save. File handles close promptly; the temporary callback is
 removed. The material pilot saves after25-turn planner cycles, including their
 placements. This API saves state only; it introduces no automatic load/restart.
 
+For observation-only runs, `SavePermissionUnavailable` means the UI permission
+poll expired **before any SaveGame request**. A caller may log an unavailable
+optional checkpoint and continue collecting observations. A later save/file
+timeout remains a separate error: the one-shot request may already have run.
+The no-CSC controls use this distinction after Pangaea completed250 but the
+observer's local turn stayed inactive, preventing its final save. The completed
+game's censuses and district journal were recovered offline.
+
 `continuation.read_research_export(root, turn=...)` accepts the maintained
 supplemental or preservation filename only with matching actual clock/schema;
 conflicting current exports and duplicate player-turn observations fail. Avoid
