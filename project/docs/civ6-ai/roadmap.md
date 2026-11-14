@@ -1,5 +1,11 @@
 # CSC AI roadmap
 
+**Current policy decision, 14 November:** Henno accepts the review's work
+priorities and calibration approach, with +2 minimum / +3 preferred Quarter
+adjacency. The Base requirement, current-customer forecast and profitability
+gate remain. Existing +3-and-higher valuation premiums stay on their current
+scale. The completed campaigns below retain their earlier +3/+4 policy scope.
+
 **14 November completed: three-game evidence campaign across Problems 1 and 2.**
 
 **Calibration completed:** three no-CSC controls on the preselected Online250
@@ -12,8 +18,8 @@ now supplies type-specific adjacency, utility and city/population context for
 calibrating Problems 1/2. All games are closed; none is queued.
 [Completed comparison and recovery](../research/mods/csc-no-csc-district-baseline-results-20261114.md).
 
-**Astra review after controls:** retain the +3 floor, +4 preference, current bid
-bands and normal slot consumption. Prioritise 1.6 credible investment
+**Astra review after controls, accepted with Henno's threshold revision above:**
+retain the current bid scale and normal slot consumption. Prioritise 1.6 credible investment
 follow-through, 1.1/1.2/2.1 economic/relationship coverage, and 1.5 one real
 acquisition target. The review identifies a blanket same-city future-customer
 guard that suppresses nomination whenever both districts require population,
@@ -31,8 +37,10 @@ stall; its coverage gap is preserved. The controller fix is pushed (`c63be794`),
 106 offline controller tests pass, but no live spy cancellation is recorded.
 
 **Next unresolved dependency:1.6 credible nomination/admission/queue follow-through.**
-Separate justified withdrawals (London+3→+2, later−1024 contract) from viable
-offers that never construct. Under1.5,15 unowned offers produce no frontier
+Separate justified withdrawals from viable offers that never construct.
+London's +3→+2 withdrawal belongs to the former policy; with the new +2 floor,
+that drop alone no longer disqualifies it. Use a below-+2 or loss-making plan
+for a new withdrawal regression. Under1.5,15 unowned offers produce no frontier
 Quarter choice/payment or supplier-acquisition offer: use a controlled credible
 target, not more generic budget receipts, to prove that natural path. Under
 1.1–1.2, fix documented CL/R2 incoming payout attachments and exercise modded
@@ -574,8 +582,9 @@ until the active check closes or an explicit dependency needs attention.
   Forecast future eligible buildings only in already completed customer districts.
 - **1.3 Rivers.** Value the river effects the Quarter can actually realise,
   including the local Mill geometry where applicable.
-- **1.4 Adjacency.** Combine the actual sources and favor sites around +4 or
-  higher. Calibrate against competing native investments and weaker viable sites.
+- **1.4 Adjacency.** Combine the actual sources: +2 minimum, +3 preferred,
+  with stronger sites valued on the existing incremental scale. Calibrate
+  against competing native investments and weaker viable sites.
 - **1.5 Tile purchase.** Price an affordable unowned Quarter footprint or
   a supplier needed by a viable plan. These can require different native
   decisions. First trace an exact district purchase request through its

@@ -1,5 +1,13 @@
 # Explainable Quarter site planning
 
+**14 November policy update:** Henno sets +2 as the minimum and +3 as preferred
+for Bakers and Tailors. Base and profitable economics remain required; current
+materials, completed customers and one applicable local Mill determine the
+score. Future customer space contributes no adjacency. The complete-value
+adapter keeps the existing +3-and-higher premium scale, with no adjacency
+premium at +2. Owned/frontier fallback bands use +24 utility at viable +2 and
++48 at preferred +3 or better. Dated observations below retain their old scope.
+
 **Current implementation:** the central Quarter economy and late complete-value
 adapter are live in main CSC, with current-capacity diagnostics. A short paired
 replay corrects the earlier blanket gate because growth happens after publication

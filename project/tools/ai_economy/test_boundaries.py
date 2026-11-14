@@ -235,11 +235,13 @@ assert(CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).reaso
         vm.execute('''
 local E=CSC_AI_EconomyAdapters
 local s={baseCount=1,specialtyCount=0}
-assert(E.PlacementValue({adjacency=2,valueQ8=1000000},s)==E.DeferredQuarterQ8)
+assert(E.PlacementValue({adjacency=1,valueQ8=1000000},s)==E.DeferredQuarterQ8)
+assert(E.PlacementValue({adjacency=2,valueQ8=100*256},s)==100*256)
+assert(E.PlacementValue({adjacency=2,valueQ8=-1},s)==-1)
 assert(E.PlacementValue({adjacency=4,valueQ8=-1},s)==-1)
 local a=E.PlacementValue({adjacency=3,valueQ8=100*256},s)
 local b=E.PlacementValue({adjacency=4,valueQ8=100*256},s)
-assert(a>100*256 and b>a and b<500*256)
+assert(a==(100+96)*256 and b==(100+192)*256)
 assert(E.PlacementValue({adjacency=8,valueQ8=100*256},s)<600*256)
 s.baseCount=0;assert(E.PlacementValue({adjacency=5,valueQ8=1000000},s)==E.DeferredQuarterQ8)
 s.baseCount=1;s.specialtyCount=1

@@ -91,16 +91,19 @@ end
 CSC_AI_QuarterAdjacencyValue = score
 
 
-local preferredAdjacency = 4
+-- Henno's 14 November policy: +2 is viable and +3 is preferred. Count current
+-- materials/completed customers and one prospective local Mill, with the same
+-- geometry for Bakers and Tailors. Future customer space grants no yield.
+local preferredAdjacency = 3
 -- The threshold above counts yield per turn. The bands below are policy
 -- deltas in Q8 (256 per native utility point) at the early district score.
 -- They leave Civ's later forecast contributions and final comparison in play.
 local preferredSiteBidQ8 = 48 * 256
 local viableSiteBidQ8 = 24 * 256
-local minimumAdjacency = 3
+local minimumAdjacency = 2
 -- Initial finite suppression band, not a calibrated economic conversion:
--- each missing yield below +3 removes 64 native utility points (Q8).
--- +2/-64, +1/-128, +0/-192 remain weaker than the no-Base/-256 guard.
+-- each missing yield below +2 removes 64 native utility points (Q8).
+-- +1/-64 and +0/-128 remain weaker than the no-Base/-256 guard.
 -- Refresh with each packet; never turn low adjacency alone into a hard ban.
 local lowAdjacencyPenaltyQ8 = 64 * 256
 local noBasePenaltyQ8 = 256 * 256

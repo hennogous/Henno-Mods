@@ -3,7 +3,8 @@
 -- Each native decision consumes the relevant part of that packet when it runs.
 -- Civ still owns candidate legality, selection, queueing and execution.
 -- Complete economy mode declares managed Quarter types with a negative default:
--- only profitable +3-or-better sites get positive offers. CE refreshes the
+-- only profitable +2-or-better sites with Base get positive offers, preferring
+-- +3 and better sites on the existing premium scale. CE refreshes the
 -- shared cache at its consumers and reprices retained new-Quarter requests;
 -- nonpositive proposals defer, while existing foundations/repairs stay native.
 -- Optional ownership scopes let CE acknowledge an already-fulfilled purchase

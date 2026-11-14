@@ -142,7 +142,7 @@ assert(sites[16].delta==12288)
 cattleVisible = true
 targets = {18}
 sites = bids(bakers, {}, readLegalTargets)
-assert(sites[18].adjacency==3 and sites[18].delta==6144)
+assert(sites[18].adjacency==3 and sites[18].delta==12288)
 -- Every weak legal pair is penalised, even beside a positively bid site.
 local savedSales=CSC_Adjacency.ByDistrict[bakers.district.DistrictType][2]
 local savedCount=CSC_Adjacency.Count
@@ -152,8 +152,10 @@ CSC_Adjacency.Count=function(r,p,c,pid,project)
 end
 targets={18,21}
 local weak,weakCounts=bids(bakers,{},readLegalTargets)
-assert(weak[18].adjacency==2 and weak[18].delta==-16384 and weak[18].weak
- and weak[21].delta==12288 and weakCounts.lowAdjacency==1)
+assert(not weak[18]and weak[21].delta==12288 and weakCounts.lowAdjacency==0)
+targets={18}
+local viable=bids(bakers,{},readLegalTargets)[18]
+assert(viable.adjacency==2 and viable.delta==6144 and not viable.weak)
 for _,n in ipairs({0,1})do
  CSC_Adjacency.Count=function(r,p,c,pid,project)
   if r==savedSales then return 0 end
@@ -162,7 +164,7 @@ for _,n in ipairs({0,1})do
  end
  targets={18}
  local low=bids(bakers,{},readLegalTargets)[18]
- assert(low.adjacency==n and low.delta==-(3-n)*64*256)
+ assert(low.adjacency==n and low.delta==-(2-n)*64*256)
 end
 CSC_Adjacency.Count=savedCount
 targets = {11,21}
@@ -182,7 +184,7 @@ assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 existing, placed = false, true
 assert(next((bids(bakers, {}, readLegalTargets)))==nil)
 placed, unlocked = false, false
-assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==10)
+assert(next((bids(bakers, {}, readLegalTargets)))==nil and targetsRead==11)
 
 -- Frontier coverage uses geometry even when the BUILD-operation target list
 -- is empty. A possible purchasable supplier or unseen neighbor stays neutral.
@@ -243,7 +245,7 @@ for _,id in ipairs({31,32})do
     plots[id].GetResourceType=function()return -1 end
 end
 frontier,frontierCounts=bids(bakers,{},readLegalTargets)
-assert(not frontier[31] and frontier[32].delta==6144 and frontier[32].frontier
+assert(not frontier[31] and frontier[32].delta==12288 and frontier[32].frontier
     and frontier[32].purchaseGold==70 and frontierCounts.frontierOffers==1)
 local savedTargets=targets
 unlocked=true;targets={13}
@@ -253,6 +255,7 @@ targets=savedTargets;unlocked=false
 local frontierCount=CSC_Adjacency.Count
 CSC_Adjacency.Count=function(r,p,c,pid,project)
  if r==savedSales then return 0 end
+ if r.ID=='materials' then return 1 end -- +1 stays below the new +2 floor.
  return frontierCount(r,p,c,pid,project)
 end
 local lowFrontier,lowCounts=bids(bakers,{},readLegalTargets)
@@ -263,10 +266,10 @@ quotes[31]=nil
 assert(bids(bakers,{},readLegalTargets)[31].delta==-16384)
 quotes[31]=85;CSC_Adjacency.Count=frontierCount
 quotes[31]=70
-assert(bids(bakers,{},readLegalTargets)[31].delta==6144) -- Stable lower-plot tie.
+assert(bids(bakers,{},readLegalTargets)[31].delta==12288) -- Stable lower-plot tie.
 quotes[31]=85;plots[31].river=4
 assert(bids(bakers,{},readLegalTargets)[31].delta==12288) -- Better adjacency first.
-assert(bids(bakers,{[31]=true},readLegalTargets)[32].delta==6144)
+assert(bids(bakers,{[31]=true},readLegalTargets)[32].delta==12288)
 quotes[31]=nil;quotes[32]=-1
 frontier,frontierCounts=bids(bakers,{},readLegalTargets)
 assert(not frontier[31] and not frontier[32] and frontierCounts.frontierQuoteUnknown==2)

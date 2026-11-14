@@ -75,16 +75,18 @@ function E.Snapshot(player,placement,ui)
 end
 
 -- Initial siting preferences are native Q8 utility, not additional gameplay
--- yields. +3/+4/+5/+6+ profitable sites receive +96/+192/+288/+384 utility;
+-- yields. +2 sites enter on their economic value; preferred +3/+4/+5/+6+
+-- profitable sites retain +96/+192/+288/+384 utility. Lowering the entry floor
+-- does not raise the existing site premiums or rescale native competition;
 -- both material classes add16 for later-stage flexibility. These bounded bands
 -- are estimates against observed native improvement bids around163 utility.
 -- They do not make an otherwise losing investment profitable or guarantee it
--- beats another district/unit. Below+3 and no-Base sites defer this publication.
+-- beats another district/unit. Below+2 and no-Base sites defer this publication.
 -- Managed CE types withhold nonpositive options from fresh proposals because
 -- vanilla GetBestDistrict can otherwise select the least-negative candidate.
 E.DeferredQuarterQ8=-1024*256
 function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
-    if quote.adjacency+1e-6<3 or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
+    if quote.adjacency+1e-6<2 or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
     local penalty=math.max(0,-(legacyDelta or 0))
     if coversOwnMaterial then penalty=math.max(penalty,256*256)end
     local value=quote.valueQ8-penalty

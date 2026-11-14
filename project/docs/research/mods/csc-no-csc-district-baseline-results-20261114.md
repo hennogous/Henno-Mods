@@ -128,6 +128,13 @@ Small/Prince/Online250, matched selected seeds and leaders, with the same City L
 Requested by Henno after the completed comparison. This is a review and proposed
 next work; it introduces no policy change or additional game run.
 
+**Subsequent Henno decision:** accept the priorities and local calibration, with
+**+2 minimum / +3 preferred** instead of the thresholds recommended below.
+Implementation retains Base/profitability gates and existing score premiums.
+London's drop to +2 is consequently not a sufficient withdrawal reason under
+the new policy. The completed games and Astra's original interpretation keep
+their earlier scope; the new threshold needs its own future live observation.
+
 Keep the +3 Quarter quality floor, +4 preference and current placement-premium
 bands. All eight founded Quarters have owned Base and meet the quality floor;
 the still-open problem is conversion of worthwhile plans into construction.

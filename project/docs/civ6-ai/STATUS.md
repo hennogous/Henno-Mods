@@ -1,5 +1,13 @@
 # Current CSC AI status
 
+**Current placement policy, Henno's 14 November decision:** +2 minimum,
++3 preferred, for both Bakers and Tailors. Base supply and positive economic
+value remain required. Only materials, local terrain/Mill effects and completed
+customers count toward adjacency. +2 enters without an adjacency premium;
+the existing +96/+192/+288/+384 utility bands for +3/+4/+5/+6+ stay unchanged.
+The three-map results below used the previous +3 minimum/+4 preference.
+The 1.6 follow-through, coverage and 1.5 acquisition priorities are accepted.
+
 **14 November: Problems 1/2 campaign and three no-CSC controls completed.**
 
 **No-CSC controls:** all three reach turn 250 and close with exit 0 and restored
