@@ -33,7 +33,7 @@ def register_material_transactions(package):
     for action in existing:
         actions.remove(action)
     action=ET.SubElement(actions,'UpdateDatabase',id='CSC_MaterialTransactions')
-    ET.SubElement(ET.SubElement(action,'Properties'),'LoadOrder').text='479'
+    ET.SubElement(ET.SubElement(action,'Properties'),'LoadOrder').text='800010'
     relative='Data/CSC_MaterialTransactions.sql'
     ET.SubElement(action,'File').text=relative
     if not any(f.text==relative for f in files):

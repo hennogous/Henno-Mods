@@ -9,7 +9,9 @@ debit. Astra recommends retaining the economic formula. Same-city pair capacity,
 attachments, CL provider connectors and the remaining +2 pre-screen are fixed
 in source and pass offline checks. Current acquisition regressions and243 native
 checks pass; earlier paid footprint/supplier outcomes retain their scoped closure.
-Next: fresh Continents Online250 with the reviewed frozen01 candidate, explicit
+Fresh01's turn1 audit caught eight missing late-defined improvement hosts;
+it closed/restored before autoplay. Material reconciliation now loads800010,
+after R2 Sawmill800000 and CL links9999. Next: fresh Continents Online250 with frozen02, explicit
 loaded coverage checks and the same pre-placement cache observation as controls.
 [Current investigation](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
 Older paused-goal and completed-campaign entries below are historical.

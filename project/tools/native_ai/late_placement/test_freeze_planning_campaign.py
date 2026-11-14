@@ -26,7 +26,7 @@ class FreezeCoverage(unittest.TestCase):
             self.assertEqual((out/'CSC/Data/unrelated.sql').read_text(),'accepted')
             tree=ET.parse(out/'CSC/mod.modinfo');actions=tree.find('InGameActions')
             action=next(a for a in actions if a.get('id')=='CSC_MaterialTransactions')
-            self.assertEqual(action.findtext('Properties/LoadOrder'),'479')
+            self.assertEqual(action.findtext('Properties/LoadOrder'),'800010')
             self.assertIsNone(action.find('Criteria'))
             self.assertEqual(next(a for a in actions if a.get('id')=='CSC_AI_Connectors').findtext('Criteria'),'CE')
             self.assertIn('Data/CSC_MaterialTransactions.sql',[f.text for f in tree.find('Files')])

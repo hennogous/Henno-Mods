@@ -165,3 +165,20 @@ Twelve continuation/component/deployment and19 observation/native-reader tests
 pass before launch. Candidate outcome directory: `fresh250-01` under this goal's
 artifact root. New physical payout/provider evidence and game comparison remain
 required after this launch.
+
+### Fresh startup caught a real load-order gap
+
+`fresh250-01` fails the new coverage gate at turn1, before autoplay, then exits0
+with owners absent and exact restoration. All14 provider links are present.
+Eight incoming hosts remain absent: R2 Sawmill and CL Craftsmen/Trading Post.
+Modding.log confirms our479 pass ran before R2's Sawmill creation799990/optional
+edit800000 and CL's extra valid-resource links9999. Existing resource tags at
+479 were not sufficient. The final resource DB made the offline clone pass,
+which is why the actual loader audit mattered.
+
+The unconditional material action now loads at800010. Main ModBuddy JSON,
+generated project and fresh-package registration agree;37 economic/SQL tests
+and the package-deployment fixture pass. The frozen01/failed startup artifacts
+are preserved. Replacement frozen02/fresh250-02 retains the same selected seed,
+policy and content, with only this ordering correction. The25-host/14-provider
+loaded audit must pass before the controller advances the new game.

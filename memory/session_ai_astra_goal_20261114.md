@@ -1,5 +1,12 @@
 # ACTIVE goal: Astra investigations, fixes and fresh250
 
+UPDATE22:36: fresh250-01 FAILED at1 startup audit;14provideredgesloaded but
+8materialhosts missing (R2Sawmill created799990/800000,CLvalidlinks9999 AFTER479).
+Closed/restored/ownersabsent verified,handle73401exit1. Noautoplay. FIX action
+LoadOrder800010 inmainJSON/project/freezer;37SQL/econtests+deploymentPASS.
+Preservefrozen01andfailedrun. Nextfreeze02+fresh250-02 sameseeds. Do NOT launch
+untilclosure (alreadyverified). Mainrepoownscopecommitforthisfixpending.
+
 CURRENT14Nov22:28: Lingapura component replay150–200 COMPLETED exit0/saved/
 closed/restored/ownersabsent;6,266native rows zero faults. No footprint debit in
 either site (workers0). Site2917 gainedownedBase2916 at157→directProduction+1,

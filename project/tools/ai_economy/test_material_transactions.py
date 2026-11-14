@@ -21,12 +21,14 @@ ROOTS={
 
 
 class MaterialTransactions(unittest.TestCase):
-    def test_gameplay_attachment_repair_loads_independently_before_ai_connectors(self):
+    def test_gameplay_attachment_repair_loads_independently_after_late_improvements(self):
         manifest=json.loads((ROOT/'project/modbuddy/CivSupplyChains.actions.json').read_text())
         actions={a['id']:a for a in manifest['blocks']['inGameActions']}
         action=actions['CSC_MaterialTransactions']
         self.assertFalse(action.get('criteria'))
-        self.assertLess(int(action['properties']['LoadOrder']),int(actions['CSC_AI_Connectors']['properties']['LoadOrder']))
+        # R2 defines Sawmill at799990 and optionally edits it at800000;
+        # CL's resource-validity links load at9999. Resource tags alone are early.
+        self.assertEqual(int(action['properties']['LoadOrder']),800010)
         self.assertEqual(action['files'],['Data/CSC_MaterialTransactions.sql'])
         project=ET.parse(ROOT/'Civ Supply Chains/Civ Supply Chains.civ6proj')
         self.assertTrue(any(e.attrib.get('Include')=='Data\\CSC_MaterialTransactions.sql'for e in project.iter()))

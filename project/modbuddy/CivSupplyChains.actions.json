@@ -1420,7 +1420,7 @@
         "type": "UpdateDatabase",
         "id": "CSC_MaterialTransactions",
         "properties": {
-          "LoadOrder": "479"
+          "LoadOrder": "800010"
         },
         "files": [
           "Data/CSC_MaterialTransactions.sql"
