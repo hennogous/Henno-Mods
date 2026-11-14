@@ -1,5 +1,18 @@
 # CSC AI roadmap
 
+**14 November active: three-game evidence campaign across Problems 1 and 2.**
+Henno requests chronology for 2.1, adjacent material retention for 2.2, native
+savings/purchases for 1.5, actual defer/reconsider diagnostics for 1.7,
+Base/Spec and vanilla/modded parity plus City Lights providers for 1.1–1.2,
+and opportunity-versus-built quality for 1.4. Also record all ordinary district
+construction, adjacency and matched native forecast totals for calibration.
+The first-missing material acquisition path now handles both classes; Base
+improvement preparation follows its Stage2 buyer, Spec its Stage4 buyer.
+Three preselected Small/Online250 maps use one frozen policy and the explicit
+CL/R2/Suk stack. Passive observer qualification comes first. No closures or
+outcome improvements inferred from instrumentation alone. See the
+[campaign protocol](../research/mods/csc-ai-planning-campaign-20261114.md).
+
 **Latest 13 November, Problem 1.6: the corrected timing completes a normal Online250.**
 Seven guided foundations (5B/2T) replace the gated trial's four Bakers. All retain
 Base and current rule totals of at least +3; six have completed customer adjacency,

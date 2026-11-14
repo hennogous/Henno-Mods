@@ -1,5 +1,25 @@
 # Current CSC AI status
 
+**14 November: Henno's three-game planning campaign is running (Problems 1/2).**
+Small/Prince/Online250 on preselected Continents/Pangaea/Fractal seeds, all with
+City Lights, Resourceful 2 and Sukritact's Resources. Main CSC policy only;
+passive district chronology, adjacency, opportunities, material retention and
+native savings/purchase journals. Candidate removes Base-only acquisition and
+adds buyer-gated Spec development without changing bid bands. Short diagnostic
+qualification reaches50; the three full games now run serially. Full outcomes
+are pending.
+
+First qualification stopped before autoplay on an overly strict check of the
+removed `GOLD2` compatibility alias. Actual `GOLD`/Tailors Spec/Mine mapping is
+valid. The check now records the unused alias as a warning. The controller
+closed with exit0 and restored preferences. A second passive roster issue was
+fixed before autoplay; the successful short game records104 savings checks,
+20 paid purchases and complete UI-event foundation adjacency. Its summaries were
+recovered offline after a post-exit host-handle error; full runs use the corrected
+after-exit callback. Source parity commit `410e888f` is pushed. Older automatic
+goal stays paused.
+[Fixed protocol, scope and evidence](../research/mods/csc-ai-planning-campaign-20261114.md).
+
 **Completed 13 November: timing-corrected Online game to turn 250, exit 0 and restored.**
 Seven AI-founded Quarters (five Bakers/two Tailors), versus four Bakers in the
 blanket-capacity-gate trial. All seven retain Base and have current loaded-rule

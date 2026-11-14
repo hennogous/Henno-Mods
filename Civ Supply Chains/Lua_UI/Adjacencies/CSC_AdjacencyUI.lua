@@ -162,3 +162,24 @@ ExposedMembers.CSC_Adjacency.GetEconomyPlotFacts = function(index)
     for yield in GameInfo.Yields() do facts.yields[yield.YieldType] = economyNumber(plot, 'GetYield', yield.Index); end
     return facts;
 end;
+
+-- Passive placement diagnostics use the stock UI adjacency calculation for an
+-- explicit AI owner, city and district. No bids or yields are written. The UI
+-- may trail Core at a foundation event, so return its clock and footprint for
+-- the observer to qualify rather than silently calling this an exact-time read.
+-- Keep private AI yields separate from ordinary yields in downstream reports.
+ExposedMembers.CSC_Adjacency.GetDistrictAdjacency = function(playerID, cityID, plotIndex, districtIndex)
+    local plot = Map.GetPlotByIndex(plotIndex);
+    local city = CityManager.GetCity(playerID, cityID);
+    if not plot or not city then return {available=false}; end
+    local result = {available=true, turn=Game.GetCurrentGameTurn(),
+        plotDistrict=plot:GetDistrictType(), yields={}};
+    for yield in GameInfo.Yields() do
+        local ok, value = pcall(function()
+            return plot:GetAdjacencyYield(playerID, cityID, districtIndex, yield.Index);
+        end);
+        if ok and (type(value) == 'number' or type(value) == 'integer') then result.yields[yield.YieldType] = value;
+        else result.available=false; end
+    end
+    return result;
+end;

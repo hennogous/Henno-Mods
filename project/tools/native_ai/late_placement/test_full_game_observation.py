@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from lupa.lua51 import LuaRuntime
-from full_game_observation import archive_censuses,play,finish,observe_inactive_storekeeper,HERE
+from full_game_observation import archive_censuses,play,finish,observe_inactive_storekeeper,observe_purchase_contexts,HERE
 from driver import lua
 
 
@@ -57,6 +57,7 @@ CSC_ENDPOINT_END\t200\t2
     def test_actual_readers_compile_for_game_lua(self):
         vm=LuaRuntime();compile=vm.eval('function(s)assert(loadstring(s))end')
         compile((HERE/'full_game_census.lua').read_text(encoding='utf-8'))
+        compile((HERE/'district_adjacency_watch.lua').read_text(encoding='utf-8'))
         compile((HERE/'full_game_preflight.lua').read_text(encoding='utf-8').replace('__SCOPE__',lua(dict(players=[1,2,3,4,5]))))
 
     def test_missing_native_reader_cannot_disappear_from_preflight(self):
@@ -86,6 +87,24 @@ ExposedMembers={CSC_Adjacency={}}
             else:
                 vm.execute('CE_AISupplierExclusionStatus=function()return \'{"ready":1,"capacity":256}\'end')
                 vm.execute(code)
+
+    def test_purchase_context_deduplicates_targets_and_labels_its_later_clock(self):
+        class Controller:
+            def __init__(self):self.calls=[]
+            def cmd(self,code,*args):
+                self.calls.append(code)
+                return 'CSC_PURCHASE_CONTEXT_END\t20\t1'
+        with tempfile.TemporaryDirectory()as d:
+            c=Controller();out=Path(d)
+            observe_purchase_contexts(c,out,dict(records=[]),20)
+            self.assertEqual(c.calls,[])
+            batch=dict(records=[dict(player=1,plot=44),dict(player=1,plot=44),
+                dict(candidates=[dict(player=1,cached=dict(plot=44))])])
+            observe_purchase_contexts(c,out,batch,20)
+            self.assertEqual(len(c.calls),1)
+            self.assertIn('laterBoundaryFacts',c.calls[0])
+            self.assertIn('local targets={{1,44}}',c.calls[0])
+            self.assertTrue((out/'purchase-context-20.txt').is_file())
 
     def test_finite_windows_preserve_intermediate_observation(self):
         class Controller:

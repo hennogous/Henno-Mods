@@ -56,6 +56,20 @@ CE_AIDistrictScoresTraceRead=function()return trace end
         self.assertIn('bidQ8=100',self.output())
         self.assertNotIn('bidQ8=999',self.output())
 
+    def test_vanilla_best_reaches_planning_observer_before_quarter_filter(self):
+        self.vm.execute('CSC_AI_PLANNING_WATCH={Native=function(row) vanilla=row end}')
+        self.vm.globals().trace=json.dumps(dict(records=[dict(k='best',version=4,generation=3,
+            player=1,city=327684,district=4,plot=1062,base=900,result=900,reason=0,
+            eligible=1,reservationId=17,phase=2,existingDistrict=0)]),separators=(',',':'))
+        self.vm.execute('CSC_QUARTER_PLACEMENT_WATCH.Drain()')
+        record=self.vm.globals().vanilla
+        self.assertEqual(record.district,4)
+        self.assertEqual(record.result,900)
+        self.assertEqual(record.observedTurn,150)
+        self.assertEqual(record.nativeOrdinal,1)
+        self.assertIsNone(record.existingDistrict)
+        self.assertNotIn('CSC_QUARTER_WATCH_BEST',self.output())
+
     def test_foundation_and_completion_are_each_recorded_once(self):
         self.publish()
         self.vm.execute('added(1,42,327684,26,14,37);added(1,42,327684,26,14,37);complete=true;progress(1,42,327684,26,14,37);progress(1,42,327684,26,14,37)')

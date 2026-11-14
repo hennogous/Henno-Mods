@@ -303,6 +303,15 @@ def run(args):
     ce, csc = (path.resolve(strict=True) for path in (args.ce, args.csc))
     ce_id, _ = package_identity(ce)
     csc_id, csc_manifest = package_identity(csc)
+    # Optional Workshop content is explicitly allowlisted and pinned in place.
+    # It is never copied or edited; close verifies that the same content ran.
+    extra_mods = {}
+    for path in args.extra_mod:
+        source = path.resolve(strict=True)
+        identity, _ = package_identity(source)
+        require(identity not in {ce_id, csc_id} and identity not in extra_mods,
+                'Duplicate extra mod identity')
+        extra_mods[identity] = dict(path=str(source), files=manifest(source))
     integrated_connectors = csc_manifest.find("InGameActions/UpdateDatabase[@id='CSC_AI_Connectors']") is not None
     require(ce_id != csc_id and csc_manifest.find(f"Dependencies/Mod[@id='{ce_id}']") is not None,
             'The staged CSC manifest must depend on the separate local CE package')
@@ -331,6 +340,10 @@ def run(args):
                        for source in (ce, csc)])
     if args.saves:
         protocol['archive_endpoint'] = True
+    if extra_mods:
+        protocol['extra_mods'] = {identity: dict(path=item['path'],
+            digest=hashlib.sha256(json.dumps(item['files'],sort_keys=True).encode()).hexdigest())
+            for identity,item in extra_mods.items()}
     start = 1
     prior = args.resume_from.resolve(strict=True) if args.resume_from else None
     if prior:
@@ -502,10 +515,13 @@ def run(args):
             or args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair),
             'Full integrated observation requires a normal tuned start without diagnostic interventions')
         protocol['harmonised_observation']=True
+        protocol['planning_observation']=args.planning_observation
+        protocol['passive_savings_observation']=bool(args.savings_dependencies)
         shutil.copyfile(Path(__file__),out/Path(__file__).name)
     write_json(out / 'packages.json', {str(source): dict(install=str(local[source]), files=files)
                                        for source, files in installed_pins.items()})
     write_json(out / 'protocol.json', protocol)
+    write_json(out / 'extra-mods.json', extra_mods)
     controller = make_probe_controller(out, user_root=args.user_root)
     controller.study_endpoint = args.through
     # A long qualification window stays continuous for the native Service
@@ -518,6 +534,7 @@ def run(args):
     copied = []
     checkpoint = None
     observer = None
+    savings_watch = None
     target = args.supplier or args.wind_mill or args.granary or args.dam_sites or args.water_mill_repair
     trace_name = ('dam-site-trace.json' if args.dam_sites else 'supplier-trace.json' if args.supplier else
                   'quarter-repair-trace.json' if args.quarter_repair_selector else
@@ -527,6 +544,8 @@ def run(args):
     def verify_packages():
         for source in copied:
             require(manifest(local[source]) == installed_pins[source], f'Installed development package changed: {source}')
+        for identity, item in extra_mods.items():
+            require(manifest(Path(item['path'])) == item['files'], f'Extra mod changed: {identity}')
 
     def source_gate():
         mode = ('local untuned = ' + str(args.untuned).lower() + '\n'
@@ -670,8 +689,17 @@ assert(chosen and Modding.CanEnableMod(chosen.Handle)=='OK')
 Modding.EnableMod(chosen.Handle,true)
 """, 'MainMenu')
         session.wait_context('MainMenu', 90)
+        for identity in extra_mods:
+            session.issue_once('enable-extra-'+identity, f"""
+local chosen
+for _,m in ipairs(Modding.GetInstalledMods()) do
+ if m.Id=='{identity}' then assert(not chosen); chosen=m end
+end
+assert(chosen and Modding.CanEnableMod(chosen.Handle)=='OK')
+Modding.EnableMod(chosen.Handle,true)
+""", 'MainMenu')
         require({key for key, enabled in flags(controller, 'verify-local-pair')['mods'].items() if enabled}
-                == {ce_id, csc_id}, 'Expected only the two development packages')
+                == {ce_id, csc_id, *extra_mods}, 'Expected exactly the pinned development and optional packages')
         contexts = ('GameCore_Tuner', 'PlotInfo')
         if not args.untuned:
             contexts += ('CSC_AI_BakersGameplay',)
@@ -742,7 +770,24 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
             require('CSC_BAKERS_CENSUS_WATCH_INSTALLED' in raw, 'Milestone census watch was not installed')
         if getattr(args,'harmonised_observation',False):
             from full_game_observation import install
-            install(controller,out,players,args.user_root,args.through)
+            install(controller,out,players,args.user_root,args.through,
+                    planning=args.planning_observation,extra_mods=extra_mods,csc_path=local[csc])
+        if args.savings_dependencies:
+            require(args.harmonised_observation and args.planning_observation,
+                    'Economic observation requires the passive planning/full-run observers')
+            from economy_savings_watch import EconomySavingsWatch
+            shutil.copyfile(HERE/'economy_savings_watch.js',out/'economy_savings_watch.js')
+            shutil.copyfile(HERE/'economy_savings_watch.py',out/'economy_savings_watch.py')
+            modules=load(out/'loaded-modules.json')
+            width,height=load(out/'source.json')['map_signature'][:2]
+            district_indices=[int(v)for v in re.findall(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t',
+                read(out/'loaded-district-catalogue.txt'))]
+            require(district_indices,'Missing loaded district columns for passive matrix read')
+            savings_watch=EconomySavingsWatch(directory=args.savings_dependencies,
+                binary=modules['GameCore_XP2_FinalRelease.dll']['path'],output=out,start=start,
+                through=args.through,write=write_json,players=sorted(players),width=width,height=height,
+                districts=max(district_indices)+1)
+            savings_watch.attach(session.owner,modules)
         probe_start = start
         if args.observe_supplier_at is not None:
             # Rotating autosaves can retain an AI-controlled return player.
@@ -912,7 +957,8 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
             observer.exports_sync.advance(probe_start)
         if getattr(args,'harmonised_observation',False):
             from full_game_observation import play
-            play(controller,out,args.user_root,start=start,endpoint=args.through,saves=args.saves)
+            play(controller,out,args.user_root,start=start,endpoint=args.through,saves=args.saves,
+                 savings=savings_watch)
         else:
             controller.play(args.through)
         if getattr(args,'economy_preflight',False):
@@ -969,11 +1015,19 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
         write_json(out / 'failure.json', dict(error=str(error), traceback=traceback.format_exc()))
         raise
     finally:
+        def freeze_observers():
+            if savings_watch:savings_watch.freeze()
+            if observer:observer.exports_sync.freeze()
         if session.owner is not None and session.owner.poll() is None:
             session.close(restore_preferences=lambda: restore_preferences(controller, out)
                           if (out / 'original-preferences.json').exists() else None,
                           restore_package=verify_packages,
-                          before_menu=lambda: observer.exports_sync.freeze() if observer else None)
+                          before_menu=freeze_observers,
+                          # The held process handle is still valid here. close
+                          # releases it only after this after-exit callback.
+                          after_native_exit=lambda: savings_watch.after_exit() if savings_watch else None)
+        if savings_watch and not session.closed and (session.owner is None or session.owner.poll() is not None):
+            savings_watch.after_exit()
         if session.closed or (session.owner is None and not native_inventory()):
             for source in copied:
                 local[source].rename(out / local[source].name)
@@ -986,6 +1040,7 @@ print(string.format('CSC_YIELD_INDICES={"foodYieldIndex":%d,"productionYieldInde
     if getattr(args,'harmonised_observation',False):
         from full_game_observation import finish
         finish(out,args.through)
+    if savings_watch:savings_watch.qualify()
 
 
 if __name__ == '__main__':
@@ -995,6 +1050,12 @@ if __name__ == '__main__':
     for name in ('map-seed', 'game-seed', 'through'):
         parser.add_argument('--' + name, type=int, required=True)
     parser.add_argument('--map', choices=MAPS, default='Continents')
+    parser.add_argument('--extra-mod', type=Path, action='append', default=[],
+                        help='Explicit installed optional content package; pinned and restored with preferences')
+    parser.add_argument('--planning-observation',action='store_true',
+                        help='Passive all-district/material/order/savings-context diagnostics')
+    parser.add_argument('--savings-dependencies',type=Path,
+                        help='Existing exact Frida dependencies for passive Economic accounts observer')
     parser.add_argument('--economy-preflight',action='store_true',
                         help='Read-only native economic quotes and district-slot checks at the endpoint')
     parser.add_argument('--harmonised-observation',action='store_true',
@@ -1129,6 +1190,6 @@ if __name__ == '__main__':
         parser.error('Decision diagnostics require --resume-from')
     if not (3 <= options.through <= 250 and 0 < options.map_seed < 2**31 and 0 < options.game_seed < 2**31):
         parser.error('Use positive 31-bit seeds and an endpoint between turns 3 and 250')
-    if not 30 <= options.interval_minutes <= 240:
-        parser.error('Use a continuous window limit between 30 and 240 minutes')
+    if not 15 <= options.interval_minutes <= 240:
+        parser.error('Use a continuous window limit between 15 and 240 minutes')
     run(options)

@@ -34,14 +34,24 @@ local function drain()
   for record in page:gmatch('{[^{}]+}')do
    local kind=record:match('"k":"([^"]+)"')
    if kind then ordinal=ordinal+1 end
-   if kind=='final'or kind=='best'or kind=='location'or kind=='request'or kind=='pv'then
+   if kind=='final'or kind=='best'or kind=='location'or kind=='request'or kind=='pv'or kind=='decline'then
     local row={}
     for _,name in ipairs({'version','generation','player','city','district','plot','base','result','reason','eligible'})do
      row[name]=assert(number(record,name))
     end
-    if watched[row.district]then
-     row.nativeOrdinal=offset+ordinal
-     row.reservationId=number(record,'reservationId');row.phase=number(record,'phase')
+    row.nativeOrdinal=offset+ordinal
+    row.reservationId=number(record,'reservationId');row.phase=number(record,'phase')
+    row.observedTurn=Game.GetCurrentGameTurn()
+    -- The same CE drain contains vanilla winners. Dispatch before the Quarter
+    -- filter, without another drain or native call. This is a cached district
+    -- comparison total, not a fresh score at foundation. existingDistrict is
+    -- only qualified by CE for managed Quarters, never for vanilla districts.
+    row.nativeKind=kind
+    if (kind=='best'or kind=='decline')and CSC_AI_PLANNING_WATCH then
+     local ok,error=pcall(CSC_AI_PLANNING_WATCH.Native,row)
+     if not ok then emit('FAULT',{turn=Game.GetCurrentGameTurn(),error=error})end
+    end
+    if watched[row.district]and kind~='decline'then
      -- Physical district presence is qualified on selection records only.
      -- A native PV's default field is not a fresh footprint observation.
      if kind=='best'or kind=='location'then row.existingDistrict=number(record,'existingDistrict')end
