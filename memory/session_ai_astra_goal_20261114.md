@@ -1,5 +1,23 @@
 # ACTIVE goal: Astra investigations, fixes and fresh250
 
+CURRENT14Nov22:28: Lingapura component replay150–200 COMPLETED exit0/saved/
+closed/restored/ownersabsent;6,266native rows zero faults. No footprint debit in
+either site (workers0). Site2917 gainedownedBase2916 at157→directProduction+1,
+total3→4. Mill60outside50horizon at155/prod1.199;160/prod2.398 Mill30Granary44.
+Astra retainsformula; no forcedqueue/timeouts. AcquisitionpriorAI-C162/163
+closureacceptedaftercurrent6supplier+6publisherfixtures and rebuiltCE243checks.
+NewSpec/sharedresourcecasespass. Skill6aef0be pushedAI-N131nativecadence.
+Maincommits0e10e175/1dddf91c pushedcoverage+packaging+invariantregressions.
+frozen01prepared fromcampaignfrozen02 +mainAI/UI +newmaterialSQL/connectorSQL;
+explicitruntimeaction479+Fileentry. ActualoldDB25expectedhosts/10missing,
+14provideredges/allmissing;SQLappliedofflineclonequalifiesall25+14exactlyonce.
+Newcoverage_preflight auditsrealgameDB onfreshload. Qualifiedfactory-entry
+capture enabledplanningfresh justasnoCSCcontrols.12+19observer/deploymenttestsPASS.
+NEXT launchfresh250-01 ContinentsSmallOnline18461107/29461107 CL/R2/Suk.
+Usecurrentmainpolicyonly. Then qualifyphysicalnewpayouts/providerandcompare.
+NoPR. FullgoalACTIVE. Donotstopatfreshlaunch; collect250outcomeandremaining
+coverageevidence. Historicalnotesbelowpreparereplayalreadycompleted.
+
 Henno explicitly activated the full goal. get_goal confirms ACTIVE; older paused
 memory is historical. Do not mark complete until all three priorities, review,
 targeted qualification, fresh250 comparison and documentation/delivery are done.

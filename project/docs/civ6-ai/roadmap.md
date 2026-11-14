@@ -2,10 +2,12 @@
 
 **Active goal:** 1.6 Lingapura is traced to valid admission, Builder120 beating
 Quarter112.62, and waiting expiry15 before the Builder finishes. Preserve that
-native choice; audit site components and subsequent opportunities. Coverage
+native choice. The completed150–200 replay explains new Base access and the
+changed ledger; Astra retains the current formula. Coverage
 fixes for incoming materials, provider edges, same-city pair capacity and the
-remaining +2 pre-screen are implemented with offline checks. Next: component
-replay, actual1.5 acquisition targets, native qualification and one fresh250.
+remaining +2 pre-screen are implemented with offline checks. Current1.5
+regressions and243 native checks preserve accepted representative payment and
+ownership evidence. Next: frozen01 fresh Continents250 and live coverage/outcomes.
 [Goal investigation and current evidence](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
 
 **Current policy decision, 14 November:** Henno accepts the review's work

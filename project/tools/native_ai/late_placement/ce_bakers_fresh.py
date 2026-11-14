@@ -783,10 +783,13 @@ print('CSC_OFFER_TURN=' .. Game.GetCurrentGameTurn())
             district_indices=[int(v)for v in re.findall(r'CSC_DISTRICT_CATALOGUE\t(\d+)\t',
                 read(out/'loaded-district-catalogue.txt'))]
             require(district_indices,'Missing loaded district columns for passive matrix read')
+            # Use the qualified factory-entry cache reader for planning runs,
+            # matching the no-CSC controls. It reads once per foundation attempt
+            # before placement; it never asks the engine to recompute a score.
             savings_watch=EconomySavingsWatch(directory=args.savings_dependencies,
                 binary=modules['GameCore_XP2_FinalRelease.dll']['path'],output=out,start=start,
                 through=args.through,write=write_json,players=sorted(players),width=width,height=height,
-                districts=max(district_indices)+1)
+                districts=max(district_indices)+1,capture_placement=args.planning_observation)
             savings_watch.attach(session.owner,modules)
         probe_start = start
         if args.observe_supplier_at is not None:

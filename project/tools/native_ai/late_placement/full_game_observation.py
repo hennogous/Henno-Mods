@@ -45,6 +45,13 @@ def install(controller,out,players,user_root,endpoint,*,planning=False,extra_mod
     (out/'full-game-preflight.txt').write_text(raw,encoding='utf-8')
     db=database_snapshot(user_root/'Cache/DebugGameplay.sqlite')
     write_json(out/'loaded-native-customer-database.json',db);qualify_database(db,'on')
+    if csc_path and (Path(csc_path)/'Data/CSC_MaterialTransactions.sql').is_file():
+        # New coverage packages qualify the actual loader output once, before
+        # autoplay. Historical replays retain their original DB and bypass this
+        # gate. This does not create a modifier or publish an AI offer.
+        from coverage_preflight import inspect as inspect_coverage
+        (out/'coverage_preflight.py').write_text(read(HERE/'coverage_preflight.py'),encoding='utf-8')
+        inspect_coverage(user_root/'Cache/DebugGameplay.sqlite',out)
     census=read(HERE/'full_game_census.lua')
     code='''-- Read-only trial observer. No bids, queue orders or game-property writes.
 local seats=__PLAYERS__

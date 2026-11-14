@@ -141,3 +141,27 @@ the unconditional479 runtime action/file registration. Its deployment fixture
 checks that unrelated source content is excluded and the CE criterion on the
 existing connector action is preserved. Actual new payout delivery and provider
 co-location remain live observations to qualify.
+
+The component replay completes150–200 with verified checkpoint200, normal exit0,
+owners absent and exact preference/package restoration. The passive observer
+drains6266 records with zero faults/active callbacks. Its final snapshot is
+`e76beddd58789d80dbb17a58174a7ee5f6ac055b3199573992c26b7d696eab97`.
+Reusable request/cadence evidence is published in skill AI-N131, commit6aef0be.
+
+The real old-game DB exposes ten missing ordinary material hosts out of25 and
+all14 missing provider edges. Applying only the reviewed SQL to an offline clone
+produces exactly one attachment per expected host and one edge per provider pair.
+The clone uses synthetic trigger hashes for row-generation verification; the
+fresh game must pass the same read-only audit using its own loader and hashes.
+That once-per-game preflight is now part of the passive full-game observer when
+the new gameplay SQL is present. Historical packages bypass the new gate.
+
+The selected fresh comparison is Continents/Small, Online, seeds18461107 and
+29461107, through250, with the same CL/R2/Suk stack and accepted gameplay/art
+base. `frozen01/freeze.json` records every reviewed AI/UI/SQL overlay; no unrelated
+workspace content is included. Only main CSC policy runs. The passive native
+observer now includes qualified pre-foundation cached values, matching controls.
+Twelve continuation/component/deployment and19 observation/native-reader tests
+pass before launch. Candidate outcome directory: `fresh250-01` under this goal's
+artifact root. New physical payout/provider evidence and game comparison remain
+required after this launch.

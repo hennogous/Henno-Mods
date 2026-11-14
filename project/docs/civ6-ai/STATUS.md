@@ -3,10 +3,14 @@
 **Active goal, 14 November:** close Astra's follow-through, coverage and
 acquisition investigations, then run a fresh Online250. Lingapura's first
 Quarter bid is traced to admission, a higher Builder offer and the native
-15-turn waiting expiry. The next dependency is a component replay before
-changing economic prices. Same-city pair capacity, missing incoming material
+15-turn waiting expiry. The150–200 component replay is complete, saved and closed:
+new Base access explains the better site; unworked footprints have no displacement
+debit. Astra recommends retaining the economic formula. Same-city pair capacity, missing incoming material
 attachments, CL provider connectors and the remaining +2 pre-screen are fixed
-in source and pass offline checks; live qualification remains next.
+in source and pass offline checks. Current acquisition regressions and243 native
+checks pass; earlier paid footprint/supplier outcomes retain their scoped closure.
+Next: fresh Continents Online250 with the reviewed frozen01 candidate, explicit
+loaded coverage checks and the same pre-placement cache observation as controls.
 [Current investigation](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
 Older paused-goal and completed-campaign entries below are historical.
 
