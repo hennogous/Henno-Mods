@@ -1,5 +1,16 @@
 # ACTIVE goal: Astra investigations, fixes and fresh250
 
+UPDATE23:10: at22:57manualcheck fresh250-02 boundary135,20hooks/0faults,45debits,
+handle60762live. Nextcheck23:12. Builtseparatepost250 payouttool(UNREGISTERED,
+notshipping/notimportedbyfullrun): material_coverage_replay.py --source <fresh250-02>
+--output <newdir> --user-root <LocalAppData/Firaxis Games/CivVI>. Refusesunclosed
+source, exactsamepackages/source250save, human0fixture2Q/3buildings/3suppliers,
+zeroAIturns/nosave. UI+1FoodWindFarm/+1FoodCafeMapleSawmill/+1CultureWorkshopBamboo,
+StoneSawmillnegative/finalnone. Astrareviewed, addedqueuedDistrictPopFrontguard,
+pop/gold/queueinvariants+loadedtag/mapping/producerpreflight.3validatorchecks+
+Lua5.1parse/importPASS; nativepayoutteststillPENDING. Sourceworldincompletegate
+alreadyrejects beforemutation. Needrunafterfullclosedthencompare/completeaudit.
+
 RUNNING22:42: fresh250-02 passed actual DB audit25/25materialhosts and14/14
 provideredgesexactlyonce, advancedthrough6 andcontinues250. Sharedcontroller
 worker13888 / Civ8360 creation134391658049716989 / execsession60762. Watch20hooks

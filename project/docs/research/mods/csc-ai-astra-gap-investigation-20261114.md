@@ -189,3 +189,30 @@ continues toward250. Native observation installs20 qualified hooks without
 faults, including the pre-placement cache reader. Protocol records main policy
 only, no external policy/gameplay interventions,15-minute controller windows.
 Outcome comparison and new physical transaction qualification remain pending.
+
+## Separate physical payout qualification
+
+The ordinary game must finish, save and close before this diagnostic can load
+its exact250 save. `material_coverage_replay.py` checks that closure and save/
+package identities, then uses the shared controller for a disposable session.
+It advances no AI turn and never saves its fixture grants into the source.
+
+A human city without either Quarter receives two declared Quarter footprints,
+Wind Mill/Café/Textile Workshop and three adjacent material plots. The fixture
+cycles healthy Wheat/Farm, Maple/R2 Sawmill and Bamboo/R2 Sawmill, plus an explicit
+unmapped Stone/Sawmill negative control and final removal. Actual UI building
+yields must change by exactly +1 Wind-Mill Food, +1 Café Food and +1 Workshop
+Culture respectively; unrelated recipients stay at their baseline. Physical
+supplier readback accompanies the settled yield samples. Final removal restores
+the tested improvements/increments; the grants disappear when this unsaved
+disposable world closes.
+
+Astra reviewed the API/lifecycle approach and requested the known queued-district
+guard: completed-district creation can PopFront an unrelated district order.
+The planner excludes such cities; setup rechecks and preserves queue item,
+population and Treasury. All resource classes, improvement mappings and producer
+definitions are checked before the first grant, including the negative control's
+absence from relevant classes. Three observation-validator tests and Lua5.1
+parsing pass. The live incomplete source was rejected before any session or
+output directory was created. This is prepared tooling; native payout results
+are still required after the250 game closes.
