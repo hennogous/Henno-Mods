@@ -62,9 +62,11 @@ transactions. One prospective local Mill contributes its real terrain effect;
 future customer districts add no adjacency. These flows replace the original
 Quarter total rather than being added to it. The bounded siting preferences
 are +2 minimum/+3 preferred, with positive economics and owned Base required.
-As of 15 November, +2/+3/+4 receive +48/+96/+192 native utility, with +16
-for Spec. The +2 calibration passes offline checks and awaits live qualification;
-see [the four archived winner traces](../../../research/mods/csc-ai-adjacency-two-followthrough-20261115.md).
+The latest15 November spatial revision uses +48/+144/+288 at+2/+3/+4,
+Base+Spec64 and bounded material-clump/customer-layout preferences. Future
+customer terrain is a separate planning preference, never additional forecast
+income. Offline checks pass; live qualification is next.
+[Spatial policy and protocol](../../../research/mods/csc-ai-spatial-layout-20261115.md).
 
 The original native early score deducts the value of a functioning improvement that
 would be removed. That helper has plot and city context and calls modifier

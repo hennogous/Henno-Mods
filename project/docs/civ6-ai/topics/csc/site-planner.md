@@ -1,6 +1,16 @@
 # Explainable Quarter site planning
 
-**15 November policy update:** Henno sets +2 as the minimum and +3 as preferred
+**Current15 November spatial revision:** +2 minimum/+3 preferred remains;
+preferences now48/144/288/432/576 at+2/+3/+4/+5/+6+, Base+Spec64 and bounded
+extra-material bonuses. Concrete compatible customer footprints earn0–96
+planning utility from native terrain adjacency, discounted for better city
+alternatives and Quarter-footprint opportunity cost. They earn no current
+adjacency or transaction income. Current legal/capacity checks govern actual
+customer proposals; settlements remain unchanged.47 economy/spatial and18
+integration checks pass; a fresh matched Continents250 is next.
+[Implementation and protocol](../../../research/mods/csc-ai-spatial-layout-20261115.md).
+
+**Earlier15 November policy update, superseded above:** Henno sets +2 as the minimum and +3 as preferred
 for Bakers and Tailors. Base and profitable economics remain required; current
 materials, completed customers and one applicable local Mill determine the
 score. Future customer space contributes no adjacency. The complete-value

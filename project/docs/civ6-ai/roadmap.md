@@ -1,5 +1,15 @@
 # CSC AI roadmap
 
+**Active15 November:1.1–1.4/1.8 spatial quality and2.1 customer layout.**
+Main CSC now values bounded material clumps and Base+Spec more strongly, and
+evaluates concrete customer footprints with native terrain adjacency and
+alternative-site cost. Compatible plans cannot count one tile twice. Future
+customers remain separate from current adjacency/income; immediate customer
+offers still need native targets and capacity.47 economic/spatial and18
+integration checks pass. Next: matched Continents Online250, then compare
+placement quality, actual customer links and chain outcomes with the previous run.
+[Policy, diagnostics and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
+
 **Completed investigation goal, 14–15 November:** all three workstreams below
 have their scoped evidence, reviewed by Astra. The fresh Online250 finishes,
 saves and closes; the separate physical-payout test also closes successfully.
@@ -17,7 +27,7 @@ customer links**, broader natural acquisition, bounded own-Production feedback
 and recovery latency. One243 pillage remains unrepaired at250. Earlier dated
 “next” notes below are historical; they do not reopen the completed goal.
 
-**Current policy decision, updated 15 November:** Henno accepts the review's work
+**Earlier15 November calibration, superseded by the spatial revision above:** Henno accepts the review's work
 priorities and calibration approach, with +2 minimum / +3 preferred Quarter
 adjacency. The Base requirement, current-customer forecast and profitability
 gate remain. Profitable +2 sites now receive +48 siting utility, or +64 with

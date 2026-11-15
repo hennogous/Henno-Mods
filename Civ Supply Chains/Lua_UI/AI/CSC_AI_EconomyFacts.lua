@@ -332,6 +332,98 @@ function F.New(player,placement,ui)
         b.building=definition.BuildingType;b.city=city.id;b.plot=plot;b.population=city.population
         return b
     end
+    -- Spatial potential is deliberately separate from transaction income.
+    -- Read stock hypothetical adjacency for real customer footprints through
+    -- the UI boundary (explicit AI/city/type), including loaded terrain rules.
+    -- Each city/type map is scanned at most once per publication, at most the
+    -- radius-three ring. Both Quarters share these caches. Never carry native
+    -- adjacency, ownership, research or protected-plot facts into another turn.
+    local customerMaps,customerAdjacency,customerTypes={},{},{}
+    local spatialStats={maps=0,adjacencyReads=0,unavailable=0,options=0}
+    snapshot.SpatialStats=function()return spatialStats end
+    local function customerYield(city,plot,definition)
+        local key=city:GetID()..':'..plot:GetIndex()..':'..definition.Index
+        if customerAdjacency[key]~=nil then return customerAdjacency[key]or nil end
+        local value
+        if type(ui.GetDistrictAdjacency)=='function'then
+            spatialStats.adjacencyReads=spatialStats.adjacencyReads+1
+            local ok,record=pcall(ui.GetDistrictAdjacency,pid,city:GetID(),plot:GetIndex(),definition.Index)
+            if ok and type(record)=='table'and record.available and type(record.yields)=='table'
+                and record.turn==Game.GetCurrentGameTurn()then
+                -- Ordinary adjacency points are a terrain-quality measure,
+                -- not native utility or forecast income. Private AI yields
+                -- must never feed back into another planning preference.
+                local sum=0
+                for _,kind in ipairs({'YIELD_FOOD','YIELD_PRODUCTION','YIELD_GOLD',
+                    'YIELD_SCIENCE','YIELD_CULTURE','YIELD_FAITH'})do
+                    sum=sum+math.max(0,record.yields[kind]or 0)
+                end
+                value=sum
+            end
+        end
+        if value==nil then spatialStats.unavailable=spatialStats.unavailable+1 end
+        customerAdjacency[key]=value or false;return value
+    end
+    local function customerMap(city,definition,protectedPlots)
+        local key=city:GetID()..':'..definition.Index
+        if customerMaps[key]then return customerMaps[key]end
+        spatialStats.maps=spatialStats.maps+1
+        local result={plots={},best=0};customerMaps[key]=result
+        local cityID=city:GetID()
+        if customerTypes[cityID]==nil then
+            customerTypes[cityID]=CSC_AI_FutureDistrictTypes and CSC_AI_FutureDistrictTypes(pid,city)or false
+        end
+        if not customerTypes[cityID]or not customerTypes[cityID][definition.Index]then return result end
+        local center=Map.GetPlot(city:GetX(),city:GetY())
+        for _,p in ipairs(CSC_Adjacency.PlotsInBand(center,1,3))do
+            local owner=p:GetOwner()==pid and Cities.GetPlotPurchaseCity(p)
+            if owner and owner:GetID()==cityID and p:GetDistrictType()==-1
+                and p:GetResourceType()==-1 and not protectedPlots[p:GetIndex()]
+                and PlayersVisibility[pid]:IsRevealed(p:GetX(),p:GetY())
+                and p:CanHaveDistrict(definition.Index,pid,cityID)then
+                local amount=customerYield(city,p,definition)
+                result.plots[p:GetIndex()]={plot=p,adjacency=amount}
+                if amount then result.best=math.max(result.best,amount)end
+            end
+        end
+        return result
+    end
+    function snapshot.CustomerOptions(city,plot,profile,protectedPlots)
+        local options={}
+        if not CSC_AI_SitingDistricts then return options end
+        local permitted=CSC_AI_SitingDistricts(profile)
+        for _,definition in ipairs(permitted.buildable)do
+            -- No City Center or Wonder forecasts: settlement and Wonder
+            -- placement remain separate decisions. Existing customer districts
+            -- are already represented by the transaction ledger.
+            if definition.DistrictType~='DISTRICT_CITY_CENTER'and definition.DistrictType~='DISTRICT_WONDER'then
+                for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
+                    local buyer=near:GetOwner()==pid and Cities.GetPlotPurchaseCity(near)
+                    if buyer then
+                        local map=customerMap(buyer,definition,protectedPlots)
+                        local candidate=map.plots[near:GetIndex()]
+                        if candidate and candidate.adjacency~=nil then
+                            local parent=definition.DistrictType
+                            if GameInfo.DistrictReplaces then for row in GameInfo.DistrictReplaces()do
+                                if row.CivUniqueDistrictType==parent then parent=row.ReplacesDistrictType;break end
+                            end end
+                            options[#options+1]={player=pid,city=buyer:GetID(),district=definition.Index,
+                                family=parent,plot=near:GetIndex(),adjacency=candidate.adjacency,
+                                bestAdjacency=map.best,
+                                -- A Quarter can consume the city's best native
+                                -- customer tile. Expose that opportunity cost;
+                                -- the policy adapter decides its bounded weight.
+                                displacedAdjacency=map.plots[plot:GetIndex()]
+                                    and map.plots[plot:GetIndex()].adjacency or 0}
+                        end
+                    end
+                end
+            end
+        end
+        spatialStats.options=spatialStats.options+#options
+        return options
+    end
+
     function snapshot.Site(cityObject,plot,profile)
         local key=cityObject:GetID()..':'..profile.key..':'..plot:GetIndex()
         if snapshot.sites[key]then return snapshot.sites[key]end
@@ -362,6 +454,12 @@ function F.New(player,placement,ui)
             end
         end
         local geometry=snapshot.Geometry(cityObject,plot,profile)
+        -- Before any producer building: use these facts to explain whether a
+        -- paid footprint has immediate adjacency income once construction ends.
+        -- Production is valuable utility but is not treasury income. Mill
+        -- terrain and later transactions have their own delayed streams.
+        site.startingAdjacency=geometry.base
+        site.startingGold=geometry.direct.YIELD_GOLD or 0
         for yield,amount in pairs(geometry.direct)do
             site.direct[#site.direct+1]={id=yield,yield=yield,amount=amount}
             if yield=='YIELD_PRODUCTION'or yield=='YIELD_GOLD'then site.adjacency=site.adjacency+amount end

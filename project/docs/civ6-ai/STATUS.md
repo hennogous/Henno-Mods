@@ -1,5 +1,13 @@
 # Current CSC AI status
 
+**15 November active, Problems1.1–1.4/1.8 and2.1:** terrain-aware customer layouts
+and stronger spatial preferences are integrated in main CSC. +2 stays48;
++3/+4/+5/+6+ become144/288/432/576, Base+Spec64, extra material clumps bounded,
+compatible future customer space0–96. Future customers still add no adjacency
+or economic income.47 economic/spatial and18 integration checks pass.
+Henno authorises a fresh matched Continents/Online250 next, shared controller,
+15-minute checks. [Implementation and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
+
 **Completed, 14–15 November: Astra investigations and fresh Online250.**
 Seven Quarters versus six on the matched starting world; all have Base/+3 or
 better, three have both materials, and all51 native new-site bids match.
@@ -27,7 +35,7 @@ Main CSC now gives profitable +2 sites **+48 utility**, or **+64 with Base+Spec*
 The 37 economy/SQL tests and six publisher fixtures pass; this new band awaits
 live qualification. [Trace and calibration](../research/mods/csc-ai-adjacency-two-followthrough-20261115.md).
 
-**Current placement policy, updated 15 November:** +2 minimum,
+**Earlier15 November calibration, superseded by the spatial revision above:** +2 minimum,
 +3 preferred, for both Bakers and Tailors. Base supply and positive economic
 value remain required. Only materials, local terrain/Mill effects and completed
 customers count toward adjacency. +2 receives +48 siting utility (+16 for Spec);

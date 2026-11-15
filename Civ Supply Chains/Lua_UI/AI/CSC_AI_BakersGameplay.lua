@@ -4,7 +4,9 @@
 -- Civ still owns candidate legality, selection, queueing and execution.
 -- Complete economy mode declares managed Quarter types with a negative default:
 -- only profitable +2-or-better sites with Base get positive offers, preferring
--- +3 and better sites on the existing premium scale. CE refreshes the
+-- +3 and better sites, material clusters and compatible terrain-aware customer
+-- layouts through bounded spatial preferences. Future layouts earn no current
+-- adjacency or transaction income. CE refreshes the
 -- shared cache at its consumers and reprices retained new-Quarter requests;
 -- nonpositive proposals defer, while existing foundations/repairs stay native.
 -- Optional ownership scopes let CE acknowledge an already-fulfilled purchase
@@ -411,9 +413,11 @@ local function refresh(turn)
                 -- Log only entries retained in the committed packet, not
                 -- proposals omitted by its capacity. Publication still is
                 -- distinct from CE consumption, native choice and purchase.
-                print(string.format('CSC_AI_FRONTIER_OFFER turn=%d version=%d player=%d city=%d district=%d plot=%d adjacency=%.3f quote=%.3f deltaQ8=%d finalQ8=%s',
+                print(string.format('CSC_AI_FRONTIER_OFFER turn=%d version=%d player=%d city=%d district=%d plot=%d adjacency=%.3f quote=%.3f deltaQ8=%d finalQ8=%s startingAdjacency=%.3f startingGold=%.3f grossGoldPaybackTurns=%.3f quarterReadyEstimate=%.3f',
                     turn,version+1,entry.player,entry.city,entry.district,entry.plot,
-                    entry.adjacency,entry.purchaseGold,entry.delta,tostring(entry.finalQ8)))
+                    entry.adjacency,entry.purchaseGold,entry.delta,tostring(entry.finalQ8),
+                    entry.startingAdjacency or 0,entry.startingGold or 0,
+                    entry.startingGoldPaybackTurns or -1,entry.quarterReadyEstimate or -1))
                 if type(CE_AIDistrictScoresReceipt) == 'function' then
                     tracked.frontier[#tracked.frontier + 1] = entry
                 end

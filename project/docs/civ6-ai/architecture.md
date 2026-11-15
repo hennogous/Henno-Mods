@@ -1,5 +1,13 @@
 # CSC AI architecture
 
+**Current spatial revision,15 November:** the shared facts snapshot now exposes
+concrete customer footprints and native terrain adjacency. The decision adapter
+compares compatible single/pair layouts and adds bounded planning preferences
+beside the economic ledger. Future customers remain absent from income/current
+adjacency. One cross-quarter offer pass checks current legality, capacity and
+footprint conflicts. No settlement changes or additional DLL API.
+[Policy, tests and run protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
+
 **Current policy, 14 November:** +2 minimum / +3 preferred adjacency for both
 families. Base supply, current customer footprints and positive economics remain
 required; native capacity and competition remain authoritative. The +3/+4
@@ -68,6 +76,8 @@ flowchart TD
     DB --> FACTS
     LIVE --> FACTS
     FACTS --> MODEL
+    FACTS --> SPATIAL["Concrete future customer layouts<br/>native terrain quality, alternatives,<br/>distinct footprints and bounded material clumps"]
+    SPATIAL --> SITE
     MODEL <--> PRICE
     MODEL --> SITE
     FACTS --> CAP
@@ -121,12 +131,12 @@ economic bid has solved those capabilities or priced every Service.
 | **1.1 Materials** | Actual mapped Base/Specialty, viable improvements, working supply and tile staffing. | Quarter economic bid plus existing material-aware planning. |
 | **1.2 Neighbors** | Completed mapped customer footprints and eligible future buildings; feasible future footprints remain preparation facts. | Quarter transaction ledger; no yield credited to an unbuilt customer district. City Lights mappings follow loaded rules; unsupported contracts fall back. |
 | **1.3 Rivers** | Loaded river adjacency and one eligible local Mill; Wind terrain and Water river edges are alternatives. | Direct adjacency now and producer-terrain income only after its Mill. |
-| **1.4 Adjacency** | Current materials, terrain and completed customers; alternative Mill geometry. | +2 minimum, +3 preferred. +2 enters on economic value; profitable +3/+4/+5/+6+ retain their existing preference bands. |
+| **1.4 Adjacency** | Current materials, terrain and completed customers; alternative Mill geometry. | +2 minimum, +3 preferred. Latest spatial bands48/144/288/432/576 at+2/+3/+4/+5/+6+, plus bounded material/layout preferences. |
 | **1.5 Tile purchase** | Native quoted footprint cost and credible supply; separate supplier-acquisition facts. | Frontier bid, native savings/payment, intended-city ownership acknowledgement and supplier purchase route. No subsidy or direct purchase is introduced. |
 | **1.6 Follow-through** | Unlock estimates, native legal targets and population-limited capacity. | Native district comparison → request/tree → foundation → completion. Retained new-Quarter request values are repriced through the native tracked setter; reservations, queues and existing foundations/repairs remain native. |
 | **1.7 Place or defer** | Whether a credible Base/customer path exists, with unknown distinguished from absent. | Negative managed default plus sparse positive offers. Nonpositive new investments are withheld during native placement selection; fresh facts can promote them next turn. |
 | **1.8 Poor placement** | Missing Base, covering mapped materials, absent customer path and low realised adjacency. | Complete Quarter valuation, +2/no-Base gate and bounded profitable-site preferences; actual native choice and foundation quality qualify suppression. |
-| **2.1 Customer placement** | Shared customer registry and district replacement families. | Native SQL private-yield adjacency for ordinary mapped districts; bounded future-footprint guidance stays in its existing adapter. City Center settlement and Wonder placement are separate consumers. |
+| **2.1 Customer placement** | Shared all-stage registry, replacement families, native terrain adjacency and alternative city footprints. | Native SQL private-yield adjacency beside built Quarters; concrete future layouts in the complete-value adapter, with current legal/capacity and cross-plan conflict checks before customer offers. City Center settlement and Wonder placement are separate consumers. |
 | **2.2 Material protection** | Shared retained chains, last viable/working Base or Specialty, marginal lost transactions. | Existing district deductions and qualified native exclusion, Wonder and destructive-Builder guards. Economic quotes enrich rather than replace structural protection. |
 
 This table is a code/ownership map, **not ten new completion claims**. For the

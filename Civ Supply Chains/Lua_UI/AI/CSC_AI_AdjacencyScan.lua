@@ -99,7 +99,7 @@ local preferredAdjacency = 3
 -- deltas in Q8 (256 per native utility point) at the early district score.
 -- They leave Civ's later forecast contributions and final comparison in play.
 -- These are legacy fallback deltas. With the qualified complete-value API,
--- EconomyAdapters replaces positive Quarter entries and owns the48/96/192...
+-- EconomyAdapters replaces positive Quarter entries and owns the48/144/288...
 -- preferences. Its final value must not add these positive early bands again.
 local preferredSiteBidQ8 = 48 * 256
 local viableSiteBidQ8 = 24 * 256
@@ -141,6 +141,10 @@ local function getSitingDistricts(profile)
     sitingDistricts[profile] = result
     return result
 end
+
+-- One loaded all-stage registry for early feasibility and the central spatial
+-- facts reader. Export definitions, not a second copy of customer rules.
+CSC_AI_SitingDistricts = getSitingDistricts
 
 local futureTypeCache = {}
 
@@ -628,7 +632,7 @@ function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, pro
                 counts.offered = counts.offered + 1
                 if strong then
                     counts.strong = counts.strong + 1
-                    if best.futureHost then
+                    if best.futureHost and not (economy and economy.CustomerOptions) then
                         local host = best.futureHost[1]
                         local hostDistrict = GameInfo.Districts[host.district]
                         -- A same-city pair can use two population slots. Read

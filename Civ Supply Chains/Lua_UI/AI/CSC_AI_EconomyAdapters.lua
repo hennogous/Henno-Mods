@@ -74,14 +74,14 @@ function E.Snapshot(player,placement,ui)
     return snapshot
 end
 
--- Initial siting preferences are native Q8 utility, not additional gameplay
--- yields. Profitable +2 sites receive48 utility; preferred +3/+4/+5/+6+
--- retain +96/+192/+288/+384. The15 November archived trace found +2 bids
--- reaching comparisons but no foundations: two lacked a population slot,
--- one waited through production and lost city ownership, one lost to stronger
--- production requests.48 is the first calibration step, half the +3 preference;
--- it strengthens marginal bids without trying to override those other gates.
--- Both material classes still add16 (so a +2 Base+Spec site receives64).
+-- Spatial quality is a native-utility preference beside the monetary ledger,
+-- not additional gameplay adjacency. Henno's15 November map-planning revision
+-- keeps +2 at48 and increases +3/+4/+5/+6+ to144/288/432/576. Both material
+-- classes add64; extra Base/Spec deposits add24/16 each, capped at two extras.
+-- These are initial bounded estimates: strengthen durable map quality without
+-- allowing a cluster or several speculative customers to grow without limit.
+-- Prospective customer terrain adds at most96 in total; actual transactions
+-- still require completed customer districts in the economic ledger.
 -- They do not make an otherwise losing investment profitable or guarantee it
 -- beats another district/unit. Below+2 and no-Base sites defer this publication.
 -- Managed CE types withhold nonpositive options from fresh proposals because
@@ -92,6 +92,47 @@ E.DeferredQuarterQ8=-1024*256
 -- sites before their complete-value quote reaches the publication packet.
 E.MinimumAdjacency=2
 E.MinimumSitingBonusQ8=48*256
+
+function E.SpatialPlan(options)
+    -- At most six adjacent plots per customer type. Keep only the two best
+    -- footprints of each family, then compare singles/pairs exactly. This
+    -- bounds pair work and cannot count the same tile or customer family twice.
+    -- Ordinary native adjacency informs QUALITY only. One point earns8 utility
+    -- up to four points;16 recognises feasible space. Inferior alternatives or
+    -- consuming a better customer tile reduce that preference by up to32 each.
+    local families={}
+    local function better(a,b)
+        if a.preference~=b.preference then return a.preference>b.preference end
+        if a.adjacency~=b.adjacency then return a.adjacency>b.adjacency end
+        if a.city~=b.city then return a.city<b.city end
+        if a.district~=b.district then return a.district<b.district end
+        return a.plot<b.plot
+    end
+    for _,source in ipairs(options or{})do
+        local option={};for k,v in pairs(source)do option[k]=v end
+        option.preference=math.max(0,16+8*math.min(4,option.adjacency)
+            -8*math.min(4,math.max(0,option.bestAdjacency-option.adjacency))
+            -8*math.min(4,math.max(0,option.displacedAdjacency-option.adjacency)))
+        local group=families[option.family]or{};families[option.family]=group
+        group[#group+1]=option;table.sort(group,better)
+        if #group>2 then group[3]=nil end
+    end
+    local choices={}
+    for _,group in pairs(families)do for _,option in ipairs(group)do choices[#choices+1]=option end end
+    table.sort(choices,better)
+    local best={preference=0,links={}}
+    for i,a in ipairs(choices)do
+        if a.preference>best.preference then best={preference=a.preference,links={a}}end
+        for j=i+1,#choices do local b=choices[j]
+            if a.family~=b.family and a.plot~=b.plot and a.preference>0 and b.preference>0
+                and a.preference+b.preference>best.preference then
+                best={preference=a.preference+b.preference,links={a,b}}
+            end
+        end
+    end
+    return best
+end
+
 function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
     if quote.adjacency+1e-6<E.MinimumAdjacency or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
     local penalty=math.max(0,-(legacyDelta or 0))
@@ -101,16 +142,78 @@ function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
     local premium
     if quote.adjacency<3 then
         -- Fractional adjacency can arise through yield multipliers. Interpolate
-        -- 48->96 between +2/+3 rather than introducing a jump at the boundary.
-        premium=E.MinimumSitingBonusQ8+(quote.adjacency-2)*(96*256-E.MinimumSitingBonusQ8)
+        -- 48->144 between +2/+3 rather than introducing a jump at the boundary.
+        premium=E.MinimumSitingBonusQ8+(quote.adjacency-2)*(144*256-E.MinimumSitingBonusQ8)
     else
-        premium=math.min(4,quote.adjacency-2)*96*256
+        premium=math.min(4,quote.adjacency-2)*144*256
     end
-    if (site.specialtyCount or 0)>0 then premium=premium+16*256 end
-    return math.floor(math.max(-4096*256,math.min(4096*256,value+premium))+.5),'positive'
+    local materials=math.min(2,math.max(0,(site.baseCount or 0)-1))*24
+    if (site.specialtyCount or 0)>0 then
+        materials=materials+64+math.min(2,site.specialtyCount-1)*16
+    end
+    local layout=site.spatialPlan and site.spatialPlan.preference or 0
+    local bid=math.floor(math.max(-4096*256,math.min(4096*256,value+premium+(materials+layout)*256))+.5)
+    return bid,'positive',{adjacencyQ8=math.floor(premium+.5),materialsQ8=materials*256,
+        layoutQ8=layout*256,penaltyQ8=penalty}
+end
+
+function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
+    -- Prepare only each city/type's best economic Quarter proposal. All other
+    -- positive Quarter sites still compete normally. These customer deltas
+    -- are16..48 utility, checked against current native legal targets; future
+    -- geometry alone never publishes a construction offer. Greedy cross-plan
+    -- coordination keeps conflicting types off a shared footprint and protects
+    -- the proposed Quarter footprints. Nothing reserves land or grants a slot.
+    local best,plans={},{}
+    for _,entry in ipairs(quarterEntries)do if entry.economy then
+        local key=entry.city..':'..entry.district
+        if not best[key]or entry.finalQ8>best[key].finalQ8
+            or entry.finalQ8==best[key].finalQ8 and entry.plot<best[key].plot then best[key]=entry end
+    end end
+    for _,entry in pairs(best)do plans[#plans+1]=entry end
+    table.sort(plans,function(a,b)
+        if a.finalQ8~=b.finalQ8 then return a.finalQ8>b.finalQ8 end
+        if a.city~=b.city then return a.city<b.city end
+        return a.district<b.district
+    end)
+    local occupied,nominated,remaining={},{},{}
+    for _,entry in ipairs(plans)do occupied[entry.plot]=true end
+    for _,entry in ipairs(plans)do for _,link in ipairs(entry.customerLayout or{})do
+        local key=link.city..':'..link.district
+        local city=snapshot.cities[link.city]and snapshot.cities[link.city].object
+        local definition=GameInfo.Districts[link.district]
+        if city and definition and not nominated[key]and not occupied[link.plot]and not protectedPlots[link.plot]then
+            local exempt=definition.RequiresPopulation==false or definition.RequiresPopulation==0
+            if remaining[link.city]==nil then
+                local capacity=snapshot.DistrictCapacity(city)
+                remaining[link.city]=capacity and capacity.known and capacity.allowed-capacity.used or 0
+            end
+            local reserve=link.city==entry.city and
+                (GameInfo.Districts[entry.district].RequiresPopulation~=false
+                and GameInfo.Districts[entry.district].RequiresPopulation~=0)and 1 or 0
+            if exempt or remaining[link.city]>reserve then
+                local legal=false
+                for _,index in ipairs(snapshot.ui.GetLegalDistrictTargets(snapshot.id,link.city,definition.Hash)or{})do
+                    if index==link.plot then legal=true;break end
+                end
+                if legal then
+                    nominated[key]={player=snapshot.id,city=link.city,district=link.district,plot=link.plot,
+                        delta=link.preference*256,customer=true,spatial=true}
+                    occupied[link.plot]=true
+                    if not exempt then remaining[link.city]=remaining[link.city]-1 end
+                end
+            end
+        end
+    end end
+    local offers={}
+    for _,offer in pairs(nominated)do offers[#offers+1]=offer end
+    table.sort(offers,function(a,b)if a.city~=b.city then return a.city<b.city end;return a.district<b.district end)
+    return offers
 end
 
 function E.QuarterBids(snapshot,placement,protectedPlots,early)
+    local clock=os and os.clock
+    local started=clock and clock()
     local result,prior,managed={},{},{}
     local profiles=placement.StageTwoProfiles()
     for _,profile in ipairs(profiles)do managed[profile.district.Index]=true end
@@ -175,6 +278,8 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                                 local quote
                                 if site then
                                     site.purchaseGold=invoice
+                                    site.spatialPlan=E.SpatialPlan(snapshot.CustomerOptions
+                                        and snapshot.CustomerOptions(city,plot,profile,protectedPlots)or{})
                                     quote,reason=M.Forecast(site,snapshot.Price,function(alternative)
                                         return E.PlacementValue(alternative,site,old and old.delta,covers)
                                     end)
@@ -184,7 +289,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                                     if stats.unknown<=3 then print(string.format('CSC_AI_ECONOMY_QUOTE_UNAVAILABLE turn=%d player=%d city=%d plot=%d reason=%s',
                                         Game.GetCurrentGameTurn(),pid,city:GetID(),plot:GetIndex(),tostring(reason)))end
                                 else
-                                    local bid,why=E.PlacementValue(quote,site,old and old.delta,covers)
+                                    local bid,why,parts=E.PlacementValue(quote,site,old and old.delta,covers)
                                     stats.streams=stats.streams+#quote.streams;stats.omissions=stats.omissions+#quote.omissions
                                     if why=='quality'then stats.qualityDeferred=stats.qualityDeferred+1
                                     elseif why=='economics'then stats.economicDeferred=stats.economicDeferred+1
@@ -197,6 +302,15 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                                             result[#result+1]={player=pid,city=city:GetID(),district=profile.district.Index,
                                                 plot=plot:GetIndex(),delta=0,finalQ8=bid,economy=true,adjacency=quote.adjacency,
                                                 economicQ8=quote.valueQ8,preferenceQ8=bid-quote.valueQ8,
+                                                adjacencyPreferenceQ8=parts.adjacencyQ8,materialPreferenceQ8=parts.materialsQ8,
+                                                layoutPreferenceQ8=parts.layoutQ8,protectionPenaltyQ8=parts.penaltyQ8,
+                                                customerLayout=site.spatialPlan.links,
+                                                startingAdjacency=site.startingAdjacency,startingGold=site.startingGold,
+                                                quarterReadyEstimate=site.quarterReady,
+                                                -- Gross adjacency-Gold payback AFTER Quarter
+                                                -- completion; not net profit or native saving ETA.
+                                                startingGoldPaybackTurns=frontier and (site.startingGold or 0)>0
+                                                    and invoice/site.startingGold or nil,
                                                 baseCount=site.baseCount,specialtyCount=site.specialtyCount,
                                                 capacityUsed=capacity and capacity.used,
                                                 capacityAllowed=capacity and capacity.allowed,
@@ -221,6 +335,37 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
     -- keeps packets small for future Quarters. Other district/material bids
     -- stay intact; no old additive Quarter score is mixed with whole values.
     for _,entry in ipairs(early)do if not managed[entry.district]then result[#result+1]=entry end end
+    if snapshot.CustomerOptions then
+        for _,offer in ipairs(E.CustomerOffers(snapshot,result,protectedPlots))do result[#result+1]=offer end
+    end
+    -- Retain bounded candidate-surface evidence in ordinary main-mod logs:
+    -- two leading sites per city/type, with economic and spatial components.
+    -- Older winner-only captures cannot reconstruct the losing site margins.
+    -- These are published proposals, never a receipt of native acceptance.
+    local groups={}
+    for _,entry in ipairs(result)do if entry.economy then
+        local key=entry.city..':'..entry.district
+        local group=groups[key]or{};groups[key]=group
+        group[#group+1]=entry
+        table.sort(group,function(a,b)if a.finalQ8~=b.finalQ8 then return a.finalQ8>b.finalQ8 end;return a.plot<b.plot end)
+        if #group>2 then group[3]=nil end
+    end end
+    local keys={};for key in pairs(groups)do keys[#keys+1]=key end;table.sort(keys)
+    for _,key in ipairs(keys)do for rank,entry in ipairs(groups[key])do
+        local first,second=entry.customerLayout[1],entry.customerLayout[2]
+        print(string.format('CSC_AI_SPATIAL_BID turn=%d player=%d city=%d district=%d plot=%d rank=%d adjacency=%.3f economicQ8=%d adjacencyPreferenceQ8=%d materialPreferenceQ8=%d layoutPreferenceQ8=%d protectionPenaltyQ8=%d finalQ8=%d customerPlot1=%d customerType1=%d customerPlot2=%d customerType2=%d',
+            Game.GetCurrentGameTurn(),pid,entry.city,entry.district,entry.plot,rank,entry.adjacency,
+            entry.economicQ8,entry.adjacencyPreferenceQ8,entry.materialPreferenceQ8,
+            entry.layoutPreferenceQ8,entry.protectionPenaltyQ8,entry.finalQ8,
+            first and first.plot or -1,first and first.district or -1,
+            second and second.plot or -1,second and second.district or -1))
+    end end
+    if snapshot.SpatialStats then
+        local spatial=snapshot.SpatialStats()
+        print(string.format('CSC_AI_SPATIAL_WORK turn=%d player=%d maps=%d adjacencyReads=%d unavailable=%d options=%d economyMs=%.3f',
+            Game.GetCurrentGameTurn(),pid,spatial.maps,spatial.adjacencyReads,spatial.unavailable,spatial.options,
+            started and (clock()-started)*1000 or -1))
+    end
     return result,stats
 end
 

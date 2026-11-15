@@ -163,8 +163,10 @@ ExposedMembers.CSC_Adjacency.GetEconomyPlotFacts = function(index)
     return facts;
 end;
 
--- Passive placement diagnostics use the stock UI adjacency calculation for an
--- explicit AI owner, city and district. No bids or yields are written. The UI
+-- Placement diagnostics and the central AI spatial planner use this stock UI
+-- adjacency read for an explicit AI owner, city and district. It writes no
+-- bids or yields; the planner separately converts ordinary yields to a bounded
+-- terrain preference for concrete future customer footprints. The UI
 -- may trail Core at a foundation event, so return its clock and footprint for
 -- the observer to qualify rather than silently calling this an exact-time read.
 -- Keep private AI yields separate from ordinary yields in downstream reports.
