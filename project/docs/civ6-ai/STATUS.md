@@ -1,5 +1,10 @@
 # Current CSC AI status
 
+**Running: fresh Continents world, map20851115/game31051115.** Same qualified
+main-CSC policy, Small/Prince/Online through250, CL/R2/Suk and stock AI.
+Shared controller owns the run; startup preflight is pending. Check about15min.
+[Predeclared setup and measurements](../research/mods/csc-ai-new-continents-20261115.md).
+
 **Problems 1.5/1.6: guidance continuity fixed and live-qualified.** Main CSC now
 uses one complete valuation path before and after tile acquisition. Bounded,
 persistent native-confirmed intent preserves an initially unworked footprint
@@ -11,7 +16,7 @@ first catches a signed native-ID bug; the corrected pass keeps Pella's acquired
 Tailors site positive through43. Packet35 reaches its native retained request at
 82.73 instead of−1024. The native15-turn wait still expires43 while other items
 are built. Both runs have four Bakers/no Tailors; all five native best bids match
-exactly.68 economic/lifecycle +18 integration checks pass. No game is running.
+exactly.68 economic/lifecycle +18 integration checks pass. Those two short games are closed.
 
 Next1.6 question: production competition and native request lifetime now that
 our purchase/construction guidance remains consistent. No bid increase is

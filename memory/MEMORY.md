@@ -1,3 +1,18 @@
+# ACTIVE: new-seed Continents250,15 November
+
+Read session_ai_new_continents_20261115.md FIRST. User requested fresh geography;
+unchanged qualified9f450233 planner, mainCSC-only policy, CL/R2/Suk, stockAI.
+Map20851115/game31051115, Small/Prince/Online, ordinary start through250.
+Shared-controller worker2172, detachedhost20984; one-shot task
+CSC-AI-New-Continents-20261115 owns lifetime and removes itself after closure.
+Artifacts Desktop/Codex/csc-ai-new-continents-20261115/continents250-01.
+Uses immutable csc-ai-coherence-20261115/frozen02;11 overlays match source.
+CE400e6755/XP2092abfbb; WildW develop unchanged2986a746. Disk30.4GB free.
+Do not edit pinned sources or use a second console. Check about15min; startup
+preflight pending. Prior short continuity games closed/restoredexit0. No PR/goal.
+Preserve unrelated WIP. Report quarter quality, material/customer links, native
+plans/purchases/retainedvalues/expiry, supplier losses and Service outcomes.
+
 # COMPLETED: coherent Quarter investment,15 November
 
 Read session_ai_coherence_20261115.md FIRST. MainCSC39bee15e continuity plus
