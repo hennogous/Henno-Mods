@@ -11,7 +11,7 @@ package reused from csc-ai-coherence-20261115/frozen02. CE400e6755, XP2092abfbb.
 WildW develop checked unchanged2986a746 before launch; disk30.4GB free.
 One-shot task CSC-AI-New-Continents-20261115, host20984, worker2172; wrapper and
 status/heartbeat/console at root. Shared controller exclusively owns Civ/console.
-No second console, no pinned-source edits. Check about15min. Startup pending.
+No second console, no pinned-source edits. Check about15min. Startup verified: module/economic/resource preflightPASS, beyond11, noLuaerrors. Native/CE hashes exact.
 
 Protocol and package hashes recorded before hosting. Predeclared report:
 project/docs/research/mods/csc-ai-new-continents-20261115.md. No new PR/goal.

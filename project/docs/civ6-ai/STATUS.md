@@ -2,7 +2,8 @@
 
 **Running: fresh Continents world, map20851115/game31051115.** Same qualified
 main-CSC policy, Small/Prince/Online through250, CL/R2/Suk and stock AI.
-Shared controller owns the run; startup preflight is pending. Check about15min.
+Startup native/module/resource preflights pass; beyond11 with no Lua errors.
+Shared controller owns the run. Check about15min.
 [Predeclared setup and measurements](../research/mods/csc-ai-new-continents-20261115.md).
 
 **Problems 1.5/1.6: guidance continuity fixed and live-qualified.** Main CSC now

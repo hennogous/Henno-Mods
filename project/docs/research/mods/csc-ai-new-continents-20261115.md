@@ -36,3 +36,9 @@ Artifacts: `C:/Users/Shadow/Desktop/Codex/csc-ai-new-continents-20261115/`;
 game output: `continents250-01`. Startup preflight, original seats, loaded mods,
 code hashes, commands, native receipts, checkpoints and final closure are recorded
 there. Results will be added after the run.
+
+
+Startup passed the deployed-module, native capability, resource-stack and
+main-CSC policy preflights. The game advanced beyond turn11 with no Lua errors;
+original AI seats1–5 are recorded. Plan journal reads are active. Native and CE
+loaded-file hashes match the declared identities. The controller continues250.
