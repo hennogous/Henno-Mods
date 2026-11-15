@@ -7,7 +7,12 @@ ordinary-exchange forecast, while native district totals include a broader,
 heuristically weighted menu of future building benefits. Correct native yield
 units alone do not make those whole bids comparable.
 
-**Next action:** fix optional investment valuation and align site-cost accounting,
+**Correction, implementation review15 November:** the current model already
+enumerates bounded optional stage plans and removes unprofitable missing
+customers. The initial audit overstated mandatory later investment as a defect.
+The measured scores and remaining site-cost/coverage differences stand.
+
+**Next action:** preserve and verify optional investment valuation and align site-cost accounting,
 then price credible Service benefits and calibrate the resulting whole bid against
 native competitors. Keep the spatial quality preference. A single multiplier
 derived from pooled medians would hide these differences.
@@ -84,7 +89,7 @@ needs native yield weights; it is not interchangeable with +2 Science or Faith.
 |Online time preference|50turn horizon, discount4.0|GlobalAI speed-adjusts base100 horizon and base2.0 discount to50/4.0|Aligned for these Online games|
 |Construction cost|Delays income, with maintenance and a once-only purchase payment|Costs influence ready time; site costs have separate terms|No universal missing capital-cost debit or double charge found|
 |Construction schedule|Current Production, serial Quarter/producer/customer jobs; stage customers precede the next stage|Item-specific production estimates and prerequisite delays|Our schedule can greatly postpone later income; item modifiers/future Production deserve review|
-|Optional later investment|Schedules defined later stages/customers and their upkeep when timed inside the horizon|Only qualifying **positive** building values enter district aggregation|Concrete asymmetry: an unattractive optional building can depress our Quarter bid|
+|Optional later investment|Already compares bounded stage subsets and greedily removes unprofitable missing customers|Only qualifying **positive** building values enter district aggregation|Implemented before this audit; preserve it and rank plans by the final bidding objective|
 |Ordinary exchange|Producer/material/customer returns, population payouts, upkeep, local/regional amenities, reciprocal customer adjacency|Supported intrinsic yields, pseudo-yields, modifiers and other building branches|Our ordinary ledger is substantial but covers a narrower benefit set|
 |Services, specialists, trade|Explicitly omitted from the Quarter placement ledger|Native buildings can receive specialist/GPP/trade-related or other supported value|Real missing coverage; Service-aware building nominations do not restore it to the whole placement bid|
 |Material work|Producer input credited; outward tile returns require an observed worker; unavailable supplier jobs have unknown ETA|Improvement loss branch has no citizen-work gate|Conservative staffing is a policy assumption, not native valuation parity|
@@ -128,10 +133,10 @@ for these sites require a targeted component comparison.
 
 ## Recommended calibration work, in order
 
-1. **Value the option to develop a Quarter.** Compare bounded, feasible stage
-   subsets and customer investments. Keep profitable Stage2 while allowing an
-   uneconomic later building to be deferred. Preserve prerequisite costs and
-   shared queues; do not simply drop all upkeep.
+1. **Preserve the option to develop a Quarter.** The model already compares
+   bounded stage subsets/customer investments. Verify that introducing forecast
+   weights ranks their final bids consistently, while retaining prerequisites,
+   shared queues and upkeep. This is a robustness check, not a missing feature.
 2. **Align land-cost treatment.** Separate native-compatible ordinary improvement
    displacement from CSC's critical-material externalities. Quantify the removed
    worked-terrain debit in candidate diagnostics. The native route already

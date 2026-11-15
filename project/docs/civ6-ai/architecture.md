@@ -1,5 +1,15 @@
 # CSC AI architecture
 
+**Native valuation/calibration,15 November:** the economic ledger now receives
+native site-cost residuals and actual horizon/discount; stock item-specific
+construction estimates feed readiness. An adapter maps missing-building income
+to native-style investment weights without changing physical transaction amounts.
+Smooth control-district references, timing-aware spatial preferences and quality
+caps govern the final bid. New Quarter proposals honour the shared supplier
+protection map. Eight exact native wins/eight foundations occur in Online50;
+the mature200 zero-turn inspection checks weak/strong price separation.
+[Mechanisms, diagram, code scope and results](../research/mods/csc-ai-native-valuation-20261115.md).
+
 **15 November temporal coherence:** complete valuation now consumes only named
 supply-protection losses from the early planner. A separate plain-record
 continuity module remembers native-confirmed choices, persists bounded primitive
@@ -70,8 +80,8 @@ flowchart TD
     LIVE["Live game facts<br/>ownership, districts, buildings, research,<br/>production, workers and purchase quotes"]
     FACTS["One player / publication snapshot<br/>EconomyFacts + shared supply reader<br/>current facts; bounded preparation estimates"]
     MODEL["Central Quarter economy<br/>EconomyModel<br/>eligible investment plans and transaction ledger"]
-    PRICE["CE read-only pricing<br/>native yield weights and discounting<br/>Q8 utility; unavailable is not zero"]
-    SITE["Quarter bid adapter<br/>whole economic value + placement policy<br/>one value for each eligible district–tile pair"]
+    PRICE["CE read-only pricing<br/>native context, site costs and yield discounting<br/>Q8 utility; unavailable is not zero"]
+    SITE["Quarter bid adapter<br/>economic value + future-income investment weight<br/>timing-aware spatial preference + quality cap"]
     CAP["Current capacity facts<br/>UI used/allowed + live inventory<br/>readiness annotation; native admission remains final"]
     PROTECT["Material-protection adapter<br/>economic loss + structural safeguards<br/>last Base / Specialty and working supply"]
     PLAN["Planning adapters<br/>legal targets, frontier quotes,<br/>ownership completion and place/defer scopes"]

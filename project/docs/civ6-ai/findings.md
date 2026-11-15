@@ -3726,8 +3726,9 @@ the complementary same-city/round comparison.
 
 Native normalization/Q8 and Online50turn horizon/4.0 discount match our CE
 pricing. Full reference/current .text and inspected discount constants match.
-Source review identifies concrete asymmetries: optional later investments and
-their upkeep are scheduled, Services/specialists/trade are omitted, constant
+Correction on implementation review15 November: the model already selects
+bounded optional stage/customer plans; the initial audit overstated mandatory
+optional-building losses. Remaining asymmetries: Services/specialists/trade are omitted, constant
 current Production serialises later-chain readiness, and worked terrain income
 is debited where native DistrictNetValue has an intact-improvement branch with
 no worker gate. Native aggregation adds qualifying positive building values;
@@ -3745,3 +3746,42 @@ gap. No tuning value change, live test or new native hook.
 
 [Audit and prioritised implementation](../research/mods/csc-ai-district-value-audit-20261115.md),
 [reproducible strata, component ledgers and hashes](../research/mods/csc-ai-district-value-audit-20261115.json).
+
+## AI-C191 — Native site accounting and calibrated quality bands deliver competitive Quarter bids
+
+Implemented15 November2026 in main CSC, CE feature branch
+`codex/native-quarter-valuation`, supported XP2092abfbb/CE1be0545b. The economic
+ledger retains actual quantities, costs and optional plans. Generic native quotes
+supply actual horizon/discount and NetValue-minus-intrinsic-Value site costs;
+the stock item-specific turns-left method supplies construction estimates.
+Future producer income receives separate native-style investment weighting.
+Quality/reference bands, readiness scaling and caps distinguish strong and weak
+placements; shared protected material plots are excluded before valuation.
+Stage2 growth/observed eligible naval-production proxies are gated by the chain.
+
+Fresh Online25 qualifies native context50/1024Q8, six detailed real-map ledgers,
+cost/component reconciliation and nil-on-invalid-input. Calibrated Online50
+shares map/roster/units/starts with the prior coherent-policy50: eight foundations
+versus four,6B/2T, all Base,7 at+3+,3 at+4+,1 both materials. All8 new-Quarter
+native wins exactly match bid/version/write; no recorded material-resource loss
+or planning/native fault. The added+2 Tailors1123 builds at94.7utility, below
+medium-district benchmarks. Both sessions close/restored exit0.
+
+The existing new-seed200 save loads with98 structural rows equal and advances
+zero turns. Positive later-building stream weights contribute217–321utility
+in the captured examples. Weak+2 Bakers sites retain raw economic values2391/
+2541 but bid1050; strong+4 scopes bid3020–3264, versus late ordinary+2 control
+medians1920–2616. One+5 reaches4096. Quote samples are read-only map potential;
+normal admission, protection and exclusive-buyer gates still govern live offers.
+Mature native selection is not replayed. Diagnostics take1.06/1.11/1.56seconds
+at25/50/200 including transport.79 Lua economy checks,38 observer/integration/continuation
+checks,243 native checks and Runtime failure/restoration checks pass.
+
+Corrections: bounded optional investments existed before AI-C190; the audit's
+mandatory-investment claim is corrected. The unsupported3turn full-observer
+setup and first mature census-input failure both close/restored exit0; neither
+is a native crash. The new runner rejects unsupported endpoints before launch.
+No upstream PR. GPP, trade, future specialists, later Services and broader natural
+late-game outcome calibration remain explicit work.
+[Implementation, architecture and results](../research/mods/csc-ai-native-valuation-20261115.md),
+[compact comparison and native excerpts](../research/mods/csc-ai-native-valuation-20261115.json).

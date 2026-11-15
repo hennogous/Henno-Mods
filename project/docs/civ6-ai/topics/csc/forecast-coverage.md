@@ -1,5 +1,13 @@
 # Which CSC benefits does the AI forecast?
 
+**Native-equivalent pricing/calibration,15 November:** main CSC now reuses
+native site costs, actual horizon/discount and item-specific ready estimates.
+It retains economic quantities while pricing future producer income with a
+separate investment weight. Stage2 growth/eligible naval production have
+gated utility proxies; GPP, trade, specialists and Stage3/4 Service premiums
+remain unpriced. Quality caps address large generic amenity value on weak sites.
+[Implemented policy and live/mature checks](../../../research/mods/csc-ai-native-valuation-20261115.md).
+
 **Whole-bid audit,15 November:** the current replacement prices ordinary exchanges,
 but explicitly omits Services, future specialists and trade benefits. It also
 schedules optional later investment/upkeep and uses conservative serial timing.

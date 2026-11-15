@@ -1,10 +1,26 @@
 # CSC AI roadmap
 
+**1.4/1.6/1.8 implemented calibration,15 November:** native context, item timing
+and site-cost residuals feed the model; economic income and future-investment
+weighting are separate. Smooth native-control references, quality caps and
+timing-aware spatial preference make+4 competitive while bounding+2. Shared
+2.2 protection now excludes supplier plots from new Quarter proposals.
+Online50:8 foundations versus4 in the matched prior version, all Base,7 at+3+,
+3 at+4+;8/8 exact native bids. Mature200 zero-turn inspection shows1050 weak
+versus3020–3264 strong bids;98 structural rows match. Tests and exit/restoration
+pass. No upstream PR. Fresh calibrated Continents Online250 is running with
+15-minute controller checks and full post-game analysis.
+[Predeclared run](../research/mods/csc-ai-calibrated-continents-20261115.md).
+Next broaden natural outcome calibration
+and address customer/Spec/repair follow-through. GPP, trade, specialist staffing
+and later-Service valuation remain explicit coverage work.
+[Policy, mechanisms, numerical comparison and delivery](../research/mods/csc-ai-native-valuation-20261115.md).
+
 **1.4/1.6 calibration audit outcome,15 November:** Online horizon/discount and
 native yield units align. Quarter replacement omits real value and differs in
-optional-investment, timing and land-cost treatment; native positive building
+timing and land-cost treatment; native positive building
 aggregation also has its own early prerequisite-depth heuristic. Next work:
-(1) allow profitable development subsets, (2) align ordinary site-cost accounting
+(1) preserve the already implemented profitable development subsets, (2) align ordinary site-cost accounting
 while retaining CSC material protection, (3) add credible Service value,
 (4) review readiness and calibrate the whole bid at matched native comparisons.
 Preserve the spatial preference and completed-customer rule. Native +2 district

@@ -1,0 +1,1164 @@
+{
+  "scope": "Stock AI, Online, Small Continents, CL/R2/Suk, main CSC policy only",
+  "matched_start": {
+    "original_ai": true,
+    "map_signature": true,
+    "starts": true,
+    "units": true
+  },
+  "previous": {
+    "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-coherence-20261115\\fresh50-02",
+    "closure": {
+      "verified": true,
+      "native_exit_code": 0,
+      "owners_absent": true,
+      "preferences_verified": true,
+      "package_callback_completed": true
+    },
+    "quality": {
+      "BAKERS": {
+        "foundations": 4,
+        "at_least3": 4,
+        "at_least4": 3,
+        "base": 4,
+        "spec": 1,
+        "both": 1,
+        "distinct_geometry_qualified_candidates": 23,
+        "distinct_positive_offers": 24
+      },
+      "TAILORS": {
+        "foundations": 0,
+        "at_least3": 0,
+        "at_least4": 0,
+        "base": 0,
+        "spec": 0,
+        "both": 0,
+        "distinct_geometry_qualified_candidates": 11,
+        "distinct_positive_offers": 20
+      }
+    },
+    "foundations": [
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 1,
+        "bidAdjacency": 5,
+        "bidQ8": 156864,
+        "bidVersion": 16,
+        "city": 65536,
+        "complete": false,
+        "district": 42,
+        "districtID": 131073,
+        "eligibleGold": 1,
+        "eligibleProduction": 2,
+        "event": "foundation",
+        "hills": false,
+        "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 4,
+        "millForecastTotal": 5,
+        "player": 1,
+        "plot": 1059,
+        "river": true,
+        "spec": 1,
+        "specWorking": 0,
+        "turn": 16
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 1,
+        "bidAdjacency": 3,
+        "bidQ8": 48581,
+        "bidVersion": 20,
+        "city": 65536,
+        "complete": false,
+        "district": 42,
+        "districtID": 131073,
+        "eligibleGold": 1,
+        "eligibleProduction": 1,
+        "event": "foundation",
+        "hills": false,
+        "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 2,
+        "millForecastTotal": 3,
+        "player": 2,
+        "plot": 1049,
+        "river": true,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 20
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 0,
+        "bidAdjacency": 4,
+        "bidQ8": 90008,
+        "bidVersion": 24,
+        "city": 131073,
+        "complete": false,
+        "district": 42,
+        "districtID": 262147,
+        "eligibleGold": 1,
+        "eligibleProduction": 2,
+        "event": "foundation",
+        "hills": false,
+        "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 3,
+        "millForecastTotal": 4,
+        "player": 4,
+        "plot": 1531,
+        "river": true,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 24
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 0,
+        "bidAdjacency": 4,
+        "bidQ8": 88049,
+        "bidVersion": 33,
+        "city": 196610,
+        "complete": false,
+        "district": 42,
+        "districtID": 393221,
+        "eligibleGold": 1,
+        "eligibleProduction": 2,
+        "event": "foundation",
+        "hills": true,
+        "mill": "BUILDING_CSC_BAKERS_WIND_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 3,
+        "millForecastTotal": 4,
+        "player": 5,
+        "plot": 1654,
+        "river": false,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 33
+      }
+    ],
+    "foundations_with_matching_native_winner": 4,
+    "native_best": 5,
+    "exact_native_best": 5,
+    "resource_losses": 0,
+    "planning_faults": [],
+    "source_log_sha256": "fd0585d04b26e2071687f0eefd70c68cd249d4609b601022151b47af792d22c3"
+  },
+  "qualified": {
+    "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-native-valuation-20261115\\fresh50-01",
+    "closure": {
+      "verified": true,
+      "native_exit_code": 0,
+      "owners_absent": true,
+      "preferences_verified": true,
+      "package_callback_completed": true
+    },
+    "quality": {
+      "BAKERS": {
+        "foundations": 6,
+        "at_least3": 6,
+        "at_least4": 3,
+        "base": 6,
+        "spec": 1,
+        "both": 1,
+        "distinct_geometry_qualified_candidates": 103,
+        "distinct_positive_offers": 30
+      },
+      "TAILORS": {
+        "foundations": 2,
+        "at_least3": 1,
+        "at_least4": 0,
+        "base": 2,
+        "spec": 0,
+        "both": 0,
+        "distinct_geometry_qualified_candidates": 34,
+        "distinct_positive_offers": 18
+      }
+    },
+    "foundations": [
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 1,
+        "bidAdjacency": 5,
+        "bidQ8": 353472,
+        "bidVersion": 16,
+        "city": 65536,
+        "complete": false,
+        "district": 42,
+        "districtID": 131073,
+        "eligibleGold": 1,
+        "eligibleProduction": 2,
+        "event": "foundation",
+        "hills": false,
+        "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 4,
+        "millForecastTotal": 5,
+        "player": 1,
+        "plot": 1059,
+        "river": true,
+        "spec": 1,
+        "specWorking": 0,
+        "turn": 16
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 1,
+        "bidAdjacency": 3,
+        "bidQ8": 89121,
+        "bidVersion": 19,
+        "city": 65536,
+        "complete": false,
+        "district": 42,
+        "districtID": 131073,
+        "eligibleGold": 1,
+        "eligibleProduction": 1,
+        "event": "foundation",
+        "hills": false,
+        "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 2,
+        "millForecastTotal": 3,
+        "player": 2,
+        "plot": 1049,
+        "river": true,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 19
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 0,
+        "bidAdjacency": 4,
+        "bidQ8": 169880,
+        "bidVersion": 24,
+        "city": 131073,
+        "complete": false,
+        "district": 42,
+        "districtID": 262147,
+        "eligibleGold": 1,
+        "eligibleProduction": 2,
+        "event": "foundation",
+        "hills": false,
+        "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 3,
+        "millForecastTotal": 4,
+        "player": 4,
+        "plot": 1531,
+        "river": true,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 24
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 1,
+        "bidAdjacency": 3,
+        "bidQ8": 93176,
+        "bidVersion": 25,
+        "city": 65536,
+        "complete": false,
+        "district": 43,
+        "districtID": 262147,
+        "eligibleGold": 0,
+        "eligibleProduction": 3,
+        "event": "foundation",
+        "hills": false,
+        "millForecastGold": 0,
+        "millForecastProduction": 3,
+        "millForecastTotal": 3,
+        "player": 1,
+        "plot": 985,
+        "river": true,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 25
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 1,
+        "bidAdjacency": 3,
+        "bidQ8": 94323,
+        "bidVersion": 30,
+        "city": 65536,
+        "complete": false,
+        "district": 42,
+        "districtID": 262146,
+        "eligibleGold": 1,
+        "eligibleProduction": 1,
+        "event": "foundation",
+        "hills": true,
+        "mill": "BUILDING_CSC_BAKERS_WIND_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 2,
+        "millForecastTotal": 3,
+        "player": 5,
+        "plot": 2022,
+        "river": false,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 30
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 0,
+        "bidAdjacency": 2,
+        "bidQ8": 24250,
+        "bidVersion": 33,
+        "city": 65536,
+        "complete": false,
+        "district": 43,
+        "districtID": 327684,
+        "eligibleGold": 0,
+        "eligibleProduction": 2,
+        "event": "foundation",
+        "hills": false,
+        "millForecastGold": 0,
+        "millForecastProduction": 2,
+        "millForecastTotal": 2,
+        "player": 2,
+        "plot": 1123,
+        "river": true,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 33
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 0,
+        "bidAdjacency": 4,
+        "bidQ8": 192228,
+        "bidVersion": 36,
+        "city": 196610,
+        "complete": false,
+        "district": 42,
+        "districtID": 458757,
+        "eligibleGold": 1,
+        "eligibleProduction": 2,
+        "event": "foundation",
+        "hills": true,
+        "mill": "BUILDING_CSC_BAKERS_WIND_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 3,
+        "millForecastTotal": 4,
+        "player": 5,
+        "plot": 1654,
+        "river": false,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 36
+      },
+      {
+        "kind": "SITE",
+        "base": 1,
+        "baseWorking": 0,
+        "bidAdjacency": 3,
+        "bidQ8": 93862,
+        "bidVersion": 42,
+        "city": 196610,
+        "complete": false,
+        "district": 42,
+        "districtID": 458758,
+        "eligibleGold": 1,
+        "eligibleProduction": 1,
+        "event": "foundation",
+        "hills": false,
+        "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+        "millForecastGold": 1,
+        "millForecastProduction": 2,
+        "millForecastTotal": 3,
+        "player": 2,
+        "plot": 1715,
+        "river": true,
+        "spec": 0,
+        "specWorking": 0,
+        "turn": 42
+      }
+    ],
+    "foundations_with_matching_native_winner": 8,
+    "native_best": 8,
+    "exact_native_best": 8,
+    "resource_losses": 0,
+    "planning_faults": [],
+    "source_log_sha256": "6a7cd9dcae10a8a1e75b7c3b264457591baed54d6c75f89bd24cbf0b5bbebea3"
+  },
+  "pre_calibration_25": {
+    "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-native-valuation-20261115\\fresh25-01",
+    "context": {
+      "ordinaryHorizon": 50,
+      "wonderHorizon": 100,
+      "discountQ8": 1024,
+      "maxHorizon": 300
+    },
+    "summary": {
+      "count": 6,
+      "examined": 80,
+      "quoted": 22,
+      "turn": 25
+    },
+    "diagnostic_command_seconds": 1.0619999999980791,
+    "records": [
+      {
+        "player": 1,
+        "city": 65536,
+        "plot": 1061,
+        "quarter": "BAKERS",
+        "adjacency": 2,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 2,
+        "customer_rows": 0,
+        "economic_Q8": 5796,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": -3600,
+        "bid_Q8": 34468,
+        "quality_cap_Q8": null,
+        "readiness_scale": null,
+        "weighted_streams": []
+      },
+      {
+        "player": 3,
+        "city": 65536,
+        "plot": 2457,
+        "quarter": "BAKERS",
+        "adjacency": 2,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 5,
+        "customer_rows": 0,
+        "economic_Q8": 4790,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": -3270,
+        "bid_Q8": 33462,
+        "quality_cap_Q8": null,
+        "readiness_scale": null,
+        "weighted_streams": []
+      },
+      {
+        "player": 3,
+        "city": 65536,
+        "plot": 2532,
+        "quarter": "BAKERS",
+        "adjacency": 3,
+        "base": 1,
+        "spec": 2,
+        "quarter_ready": 5,
+        "customer_rows": 0,
+        "economic_Q8": 11074,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": -2269,
+        "bid_Q8": 68418,
+        "quality_cap_Q8": null,
+        "readiness_scale": null,
+        "weighted_streams": []
+      },
+      {
+        "player": 1,
+        "city": 65536,
+        "plot": 1134,
+        "quarter": "BAKERS",
+        "adjacency": 3,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 2,
+        "customer_rows": 1,
+        "economic_Q8": 13808,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": -3499,
+        "bid_Q8": 67056,
+        "quality_cap_Q8": null,
+        "readiness_scale": null,
+        "weighted_streams": []
+      },
+      {
+        "player": 1,
+        "city": 65536,
+        "plot": 985,
+        "quarter": "BAKERS",
+        "adjacency": 4,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 2,
+        "customer_rows": 0,
+        "economic_Q8": 12619,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": 0,
+        "bid_Q8": 102731,
+        "quality_cap_Q8": null,
+        "readiness_scale": null,
+        "weighted_streams": []
+      },
+      {
+        "player": 4,
+        "city": 131073,
+        "plot": 1383,
+        "quarter": "BAKERS",
+        "adjacency": 4,
+        "base": 1,
+        "spec": 0,
+        "quarter_ready": 10,
+        "customer_rows": 1,
+        "economic_Q8": 12873,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": 0,
+        "bid_Q8": 86601,
+        "quality_cap_Q8": null,
+        "readiness_scale": null,
+        "weighted_streams": []
+      }
+    ]
+  },
+  "calibrated_50": {
+    "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-native-valuation-20261115\\fresh50-01",
+    "context": {
+      "ordinaryHorizon": 50,
+      "wonderHorizon": 100,
+      "discountQ8": 1024,
+      "maxHorizon": 300
+    },
+    "summary": {
+      "count": 7,
+      "examined": 142,
+      "quoted": 48,
+      "turn": 50
+    },
+    "diagnostic_command_seconds": 1.1090000000040163,
+    "records": [
+      {
+        "player": 3,
+        "city": 65536,
+        "plot": 2457,
+        "quarter": "BAKERS",
+        "adjacency": 2,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 4,
+        "customer_rows": 0,
+        "economic_Q8": 8029,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": 0,
+        "bid_Q8": 42231,
+        "quality_cap_Q8": 89088,
+        "readiness_scale": 1.25,
+        "weighted_streams": []
+      },
+      {
+        "player": 3,
+        "city": 131073,
+        "plot": 2457,
+        "quarter": "BAKERS",
+        "adjacency": 2,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 5,
+        "customer_rows": 0,
+        "economic_Q8": 7638,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": 0,
+        "bid_Q8": 41840,
+        "quality_cap_Q8": 89088,
+        "readiness_scale": 1.25,
+        "weighted_streams": []
+      },
+      {
+        "player": 1,
+        "city": 65536,
+        "plot": 1134,
+        "quarter": "BAKERS",
+        "adjacency": 3,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 2,
+        "customer_rows": 1,
+        "economic_Q8": 21807,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": -2539,
+        "bid_Q8": 127279,
+        "quality_cap_Q8": 204902,
+        "readiness_scale": 1.25,
+        "weighted_streams": []
+      },
+      {
+        "player": 3,
+        "city": 65536,
+        "plot": 2532,
+        "quarter": "BAKERS",
+        "adjacency": 3,
+        "base": 1,
+        "spec": 2,
+        "quarter_ready": 4,
+        "customer_rows": 0,
+        "economic_Q8": 11847,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": -1750,
+        "bid_Q8": 121415,
+        "quality_cap_Q8": 204902,
+        "readiness_scale": 1.25,
+        "weighted_streams": []
+      },
+      {
+        "player": 1,
+        "city": 65536,
+        "plot": 911,
+        "quarter": "BAKERS",
+        "adjacency": 4,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 2,
+        "customer_rows": 1,
+        "economic_Q8": 32600,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": 0,
+        "bid_Q8": 271704,
+        "quality_cap_Q8": 311808,
+        "readiness_scale": 1.25,
+        "weighted_streams": []
+      },
+      {
+        "player": 1,
+        "city": 196610,
+        "plot": 911,
+        "quarter": "BAKERS",
+        "adjacency": 4,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 5,
+        "customer_rows": 1,
+        "economic_Q8": 25129,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": 0,
+        "bid_Q8": 264233,
+        "quality_cap_Q8": 311808,
+        "readiness_scale": 1.25,
+        "weighted_streams": []
+      },
+      {
+        "player": 4,
+        "city": 131073,
+        "plot": 1382,
+        "quarter": "BAKERS",
+        "adjacency": 4,
+        "base": 2,
+        "spec": 0,
+        "quarter_ready": 5,
+        "customer_rows": 1,
+        "economic_Q8": 26382,
+        "forecast_adjustment_Q8": 0,
+        "site_adjustment_Q8": -1833,
+        "bid_Q8": 255246,
+        "quality_cap_Q8": 311808,
+        "readiness_scale": 1.25,
+        "weighted_streams": []
+      }
+    ]
+  },
+  "mature_200": {
+    "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-native-valuation-20261115\\mature200-02",
+    "context": {
+      "ordinaryHorizon": 50,
+      "wonderHorizon": 100,
+      "discountQ8": 1024,
+      "maxHorizon": 300
+    },
+    "summary": {
+      "count": 8,
+      "examined": 544,
+      "quoted": 56,
+      "turn": 200
+    },
+    "diagnostic_command_seconds": 1.5619999999980791,
+    "records": [
+      {
+        "player": 3,
+        "city": 131073,
+        "plot": 1540,
+        "quarter": "BAKERS",
+        "adjacency": 2,
+        "base": 1,
+        "spec": 0,
+        "quarter_ready": 1,
+        "customer_rows": 0,
+        "economic_Q8": 612035,
+        "forecast_adjustment_Q8": 70225,
+        "site_adjustment_Q8": -51489,
+        "bid_Q8": 268800,
+        "quality_cap_Q8": 268800,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 7577,
+            "bid_Q8": 22684
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 4328,
+            "bid_Q8": 12958
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 6870,
+            "bid_Q8": 20619
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 6622,
+            "bid_Q8": 19829
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 3778,
+            "bid_Q8": 11316
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 6013,
+            "bid_Q8": 18007
+          }
+        ]
+      },
+      {
+        "player": 3,
+        "city": 131073,
+        "plot": 1762,
+        "quarter": "BAKERS",
+        "adjacency": 2,
+        "base": 1,
+        "spec": 1,
+        "quarter_ready": 1,
+        "customer_rows": 0,
+        "economic_Q8": 650485,
+        "forecast_adjustment_Q8": 82219,
+        "site_adjustment_Q8": 0,
+        "bid_Q8": 268800,
+        "quality_cap_Q8": 268800,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "material-input:specialty:1837",
+            "depth": 1,
+            "raw_Q8": 6013,
+            "bid_Q8": 18007
+          },
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 7577,
+            "bid_Q8": 22684
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 4328,
+            "bid_Q8": 12958
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 6870,
+            "bid_Q8": 20619
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 6622,
+            "bid_Q8": 19829
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 3778,
+            "bid_Q8": 11316
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 6013,
+            "bid_Q8": 18007
+          }
+        ]
+      },
+      {
+        "player": 4,
+        "city": 131073,
+        "plot": 2641,
+        "quarter": "BAKERS",
+        "adjacency": 3,
+        "base": 1,
+        "spec": 0,
+        "quarter_ready": 1,
+        "customer_rows": 0,
+        "economic_Q8": 295630,
+        "forecast_adjustment_Q8": 67756,
+        "site_adjustment_Q8": -125628,
+        "bid_Q8": 618240,
+        "quality_cap_Q8": 618240,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 6459,
+            "bid_Q8": 19356
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 4784,
+            "bid_Q8": 14306
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 6870,
+            "bid_Q8": 20619
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 5647,
+            "bid_Q8": 16921
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 4170,
+            "bid_Q8": 12490
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 6013,
+            "bid_Q8": 18007
+          }
+        ]
+      },
+      {
+        "player": 4,
+        "city": 65536,
+        "plot": 2641,
+        "quarter": "BAKERS",
+        "adjacency": 3,
+        "base": 1,
+        "spec": 0,
+        "quarter_ready": 1,
+        "customer_rows": 0,
+        "economic_Q8": 297552,
+        "forecast_adjustment_Q8": 68650,
+        "site_adjustment_Q8": -162236,
+        "bid_Q8": 618240,
+        "quality_cap_Q8": 618240,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 6459,
+            "bid_Q8": 19356
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 4784,
+            "bid_Q8": 14306
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 6870,
+            "bid_Q8": 20619
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 5806,
+            "bid_Q8": 17397
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 4291,
+            "bid_Q8": 12853
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 6182,
+            "bid_Q8": 18511
+          }
+        ]
+      },
+      {
+        "player": 1,
+        "city": 458758,
+        "plot": 2968,
+        "quarter": "BAKERS",
+        "adjacency": 5,
+        "base": 1,
+        "spec": 0,
+        "quarter_ready": 1,
+        "customer_rows": 2,
+        "economic_Q8": 64860,
+        "forecast_adjustment_Q8": 58114,
+        "site_adjustment_Q8": -25221,
+        "bid_Q8": 1048576,
+        "quality_cap_Q8": 1263360,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 5806,
+            "bid_Q8": 17397
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 3891,
+            "bid_Q8": 11631
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 6182,
+            "bid_Q8": 18511
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 4846,
+            "bid_Q8": 14521
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 3239,
+            "bid_Q8": 9720
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 5162,
+            "bid_Q8": 15460
+          }
+        ]
+      },
+      {
+        "player": 1,
+        "city": 327684,
+        "plot": 2820,
+        "quarter": "BAKERS",
+        "adjacency": 4,
+        "base": 1,
+        "spec": 0,
+        "quarter_ready": 1,
+        "customer_rows": 1,
+        "economic_Q8": 91138,
+        "forecast_adjustment_Q8": 72390,
+        "site_adjustment_Q8": -31355,
+        "bid_Q8": 835528,
+        "quality_cap_Q8": 940800,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 6808,
+            "bid_Q8": 20380
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 4537,
+            "bid_Q8": 13633
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 7243,
+            "bid_Q8": 21689
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 6459,
+            "bid_Q8": 19356
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 4328,
+            "bid_Q8": 12958
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 6870,
+            "bid_Q8": 20619
+          }
+        ]
+      },
+      {
+        "player": 1,
+        "city": 458758,
+        "plot": 2820,
+        "quarter": "BAKERS",
+        "adjacency": 4,
+        "base": 1,
+        "spec": 0,
+        "quarter_ready": 1,
+        "customer_rows": 1,
+        "economic_Q8": 75973,
+        "forecast_adjustment_Q8": 55639,
+        "site_adjustment_Q8": -31355,
+        "bid_Q8": 803612,
+        "quality_cap_Q8": 940800,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 5647,
+            "bid_Q8": 16921
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 3778,
+            "bid_Q8": 11316
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 6013,
+            "bid_Q8": 18007
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 4556,
+            "bid_Q8": 13634
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 3051,
+            "bid_Q8": 9123
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 4838,
+            "bid_Q8": 14521
+          }
+        ]
+      },
+      {
+        "player": 2,
+        "city": 196610,
+        "plot": 2538,
+        "quarter": "TAILORS",
+        "adjacency": 4,
+        "base": 2,
+        "spec": 1,
+        "quarter_ready": 1,
+        "customer_rows": 0,
+        "economic_Q8": 11939,
+        "forecast_adjustment_Q8": 66740,
+        "site_adjustment_Q8": -91330,
+        "bid_Q8": 773207,
+        "quality_cap_Q8": 940800,
+        "readiness_scale": 1.25,
+        "weighted_streams": [
+          {
+            "id": "material-input:specialty:2539",
+            "depth": 1,
+            "raw_Q8": 4709,
+            "bid_Q8": 14115
+          },
+          {
+            "id": "local-production:3",
+            "depth": 1,
+            "raw_Q8": 5806,
+            "bid_Q8": 17397
+          },
+          {
+            "id": "local-gold:3",
+            "depth": 1,
+            "raw_Q8": 4291,
+            "bid_Q8": 12853
+          },
+          {
+            "id": "local-return:3",
+            "depth": 1,
+            "raw_Q8": 5993,
+            "bid_Q8": 17984
+          },
+          {
+            "id": "local-production:4",
+            "depth": 1,
+            "raw_Q8": 4556,
+            "bid_Q8": 13634
+          },
+          {
+            "id": "local-gold:4",
+            "depth": 1,
+            "raw_Q8": 3361,
+            "bid_Q8": 10067
+          },
+          {
+            "id": "local-return:4",
+            "depth": 1,
+            "raw_Q8": 4709,
+            "bid_Q8": 14115
+          }
+        ]
+      }
+    ]
+  },
+  "mature_structure": {
+    "verified": true,
+    "expected_rows": 98,
+    "actual_rows": 98,
+    "missing": [],
+    "unexpected": [],
+    "ignored_kinds": [
+      "ADJACENCY",
+      "END",
+      "TREASURY"
+    ],
+    "retained_partial_columns": {
+      "CITY": 3,
+      "QUARTER": 7
+    }
+  },
+  "mature_closure": {
+    "verified": true,
+    "native_exit_code": 0,
+    "owners_absent": true,
+    "preferences_verified": true,
+    "package_callback_completed": true
+  },
+  "ce_sha256": "1be0545b94b35adaf582df2d70e827ecdb8014ccf91b59c5cc9f9b72fdc06bfc",
+  "xp2_sha256": "092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f"
+}

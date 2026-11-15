@@ -1,10 +1,27 @@
 # Current CSC AI status
 
+**1.4/1.6/1.8 native valuation and calibration implemented and qualified.**
+Native site costs, actual horizon/discount and stock construction estimates now
+feed the shared CSC ledger. Future-income investment weights remain separate
+from real yields. Quality/reference bands keep weak+2 bids below medium native
+districts and make strong+4 bids competitive; protected suppliers are excluded.
+Same-start Online50 builds8 Quarters versus4 previously:6B/2T, all Base,
+7 at+3+,3 at+4+,1 both materials.8/8 native wins match published values;
+zero recorded resource losses/faults. Both sessions close/restored exit0.
+Zero-turn mature200 inspection matches98 structural rows: weak+2 bids1050,
+strong+4 bids3020–3264 against late medium native1920–2616.79 Lua economic
+checks,38 integration/continuation checks,243 native checks and Runtime checks pass.
+No upstream PR. A fresh calibrated Continents Online250 run is active; see the
+[predeclared run protocol](../research/mods/csc-ai-calibrated-continents-20261115.md).
+Next: broader ordinary-game outcome/late-cap calibration,
+customer/material follow-through, plus remaining GPP/trade/specialist/later-Service
+coverage. [Implementation and evidence](../research/mods/csc-ai-native-valuation-20261115.md).
+
 **1.4/1.6 whole-bid audit completed,15 November.** The three-map controls
 confirm ordinary +2 Campus choice medians554/1,054/1,920 across early/mid/late
 Online periods, versus published prospective +2 Quarter medians138/247/323.
-Native Q8 weighting and Online50turn/4.0 discount match. Concrete differences:
-our forecast schedules optional later investments with upkeep, omits Service/
+Native Q8 weighting and Online50turn/4.0 discount match. Correction: bounded
+optional-investment selection already exists; preserve it. The forecast omits Service/
 specialist/trade value, delays chains at fixed current Production and charges
 worked terrain differently. Native aggregation includes positive building
 forecasts and a prerequisite-depth heuristic on an early benefit subtotal.

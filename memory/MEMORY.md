@@ -1,4 +1,29 @@
-# CURRENT: whole Quarter bid audit completed,15 November
+# CURRENT: calibrated Continents250 running,15 November
+
+Read session_ai_calibrated_continents_20261115.md FIRST. MainCSC de174092,
+CE2d200ef/SHA1be0545b. Desktop/Codex/csc-ai-calibrated-continents-20261115,
+frozen01, continents250-01. Seeds21851115/32051115, SmallContinentsOnline250,
+stockAI Prince, CL/R2/Suk. DetachedscheduledtaskCSC-AI-Calibrated-Continents-20261115
+host15944/worker10844 (verify statusfile). MainCSC solepolicy/passiveobservers.
+Standing15min checks; persistthrough250+analysis, noPR. Do noteditpinnedcontroller
+files midrun. Current status supersedes closedqualification notes below.
+
+# PRECEDING: native Quarter valuation calibrated and live-qualified,15 November
+
+Read session_ai_native_valuation_20261115.md FIRST. MainCSC now uses native
+context/sitecosts/GetTurnsLeft; raw economy preserved, separate futureincome
+weight and quality/reference caps. Sourceprotectedmaterials excluded. Closed
+Online50:8Qvs4 prior sameworld,6B2T,allBase,7+3+,3+4+,1both;8/8exact native
+wins allmatchfoundations,0resource loss/faults,exit0/restored. Mature200reload
+advancesZEROturns;98/98structurematch. Weak+2cap1050 despite2391/2541raw;
+strong+4bids3020–3264 vsnative1920–2616.79Lua+38integration/continuation+243native+Runtime
+checksPASS. CEbranchcodex/native-quarter-valuation committed2d200ef, skillN134
+e387d5b pushed. NewCE1be0545b needed; noPR. Report/JSON csc-ai-native-valuation-
+20261115. No game/Tuner/worker. AuditC190CORRECTED: optionalplans alreadyworked.
+Nextbroaderlateoutcomes,customer/Spec/repair,remainingGPP/trade/laterServices.
+Preserve unrelatedWIP. Standing15minmonitoring+postgameanalysis remains.
+
+# PRECEDING: whole Quarter bid audit completed,15 November
 
 Read session_ai_bid_calibration_audit_20261115.md FIRST. Offline auditAI-C190:
 nativeQ8 and Online50h/4discountcorrect; +2Campus medians554/1054/1920vs
