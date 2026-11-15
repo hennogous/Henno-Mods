@@ -1,0 +1,2482 @@
+{
+  "scope": "Stock AI; Online; CL/R2/Suk controls; original AI players 1-5",
+  "cohorts": "Native built foundations versus repeated published Quarter offers; no global ratio fit",
+  "baseline": {
+    "foundations_by_arm": {
+      "continents250-01": 377,
+      "pangaea250-01": 323,
+      "fractal250-01": 424
+    },
+    "strata": [
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 0,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 219.71484375,
+          "minimum": 219.71484375,
+          "maximum": 219.71484375
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 230.65625,
+          "minimum": 230.65625,
+          "maximum": 230.65625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 0,
+        "period": "151-250",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 2359.560546875,
+          "minimum": 1811.76171875,
+          "maximum": 3487.41015625
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 2835.341796875,
+          "minimum": 2016.39453125,
+          "maximum": 3900.625
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 4.5,
+          "minimum": 2,
+          "maximum": 11
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 1,
+        "period": "001-075",
+        "foundations": 4,
+        "choice": {
+          "n": 4,
+          "median": 468.6015625,
+          "minimum": 338.1484375,
+          "maximum": 691.80859375
+        },
+        "before_placement": {
+          "n": 4,
+          "median": 568.494140625,
+          "minimum": 392.69921875,
+          "maximum": 677.0234375
+        },
+        "choice_age_turns": {
+          "n": 4,
+          "median": 5.5,
+          "minimum": 1,
+          "maximum": 15
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 1,
+        "period": "076-150",
+        "foundations": 7,
+        "choice": {
+          "n": 7,
+          "median": 884.640625,
+          "minimum": 393.62890625,
+          "maximum": 1208.24609375
+        },
+        "before_placement": {
+          "n": 7,
+          "median": 993.43359375,
+          "minimum": 407.5,
+          "maximum": 1989.96875
+        },
+        "choice_age_turns": {
+          "n": 7,
+          "median": 3,
+          "minimum": 1,
+          "maximum": 7
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 1,
+        "period": "151-250",
+        "foundations": 15,
+        "choice": {
+          "n": 15,
+          "median": 2515.32421875,
+          "minimum": 935.65625,
+          "maximum": 3716.390625
+        },
+        "before_placement": {
+          "n": 15,
+          "median": 2392.08984375,
+          "minimum": 1174.57421875,
+          "maximum": 3668.82421875
+        },
+        "choice_age_turns": {
+          "n": 15,
+          "median": 3,
+          "minimum": 1,
+          "maximum": 11
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 2,
+        "period": "001-075",
+        "foundations": 10,
+        "choice": {
+          "n": 10,
+          "median": 554.296875,
+          "minimum": 244.78125,
+          "maximum": 1100.0078125
+        },
+        "before_placement": {
+          "n": 10,
+          "median": 537.51953125,
+          "minimum": 244.5078125,
+          "maximum": 1100.0078125
+        },
+        "choice_age_turns": {
+          "n": 10,
+          "median": 2.0,
+          "minimum": 1,
+          "maximum": 9
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 2,
+        "period": "076-150",
+        "foundations": 12,
+        "choice": {
+          "n": 12,
+          "median": 1053.822265625,
+          "minimum": 707.76171875,
+          "maximum": 2259.46875
+        },
+        "before_placement": {
+          "n": 12,
+          "median": 1271.603515625,
+          "minimum": 793.890625,
+          "maximum": 2296.7109375
+        },
+        "choice_age_turns": {
+          "n": 12,
+          "median": 3.0,
+          "minimum": 1,
+          "maximum": 13
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 2,
+        "period": "151-250",
+        "foundations": 16,
+        "choice": {
+          "n": 16,
+          "median": 1920.498046875,
+          "minimum": 1028.625,
+          "maximum": 2787.14453125
+        },
+        "before_placement": {
+          "n": 16,
+          "median": 2540.8984375,
+          "minimum": 971.0,
+          "maximum": 3718.41796875
+        },
+        "choice_age_turns": {
+          "n": 16,
+          "median": 4.0,
+          "minimum": 1,
+          "maximum": 12
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 3,
+        "period": "001-075",
+        "foundations": 5,
+        "choice": {
+          "n": 5,
+          "median": 607.26953125,
+          "minimum": 245.0625,
+          "maximum": 768.76953125
+        },
+        "before_placement": {
+          "n": 5,
+          "median": 646.4296875,
+          "minimum": 268.421875,
+          "maximum": 1170.61328125
+        },
+        "choice_age_turns": {
+          "n": 5,
+          "median": 5,
+          "minimum": 1,
+          "maximum": 10
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 3,
+        "period": "076-150",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 1294.265625,
+          "minimum": 755.8515625,
+          "maximum": 1573.1875
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 1394.546875,
+          "minimum": 962.06640625,
+          "maximum": 1758.71484375
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 3.5,
+          "minimum": 2,
+          "maximum": 6
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 3,
+        "period": "151-250",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 1898.08984375,
+          "minimum": 1403.58203125,
+          "maximum": 2268.14453125
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 2061.865234375,
+          "minimum": 1422.7265625,
+          "maximum": 2583.08203125
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 4.5,
+          "minimum": 2,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 4,
+        "period": "076-150",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 1789.62890625,
+          "minimum": 1789.62890625,
+          "maximum": 1789.62890625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 1860.0625,
+          "minimum": 1860.0625,
+          "maximum": 1860.0625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 4,
+        "period": "151-250",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 2678.69140625,
+          "minimum": 2350.9609375,
+          "maximum": 3090.4140625
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 2651.796875,
+          "minimum": 2508.15625,
+          "maximum": 2721.2109375
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 3,
+          "minimum": 1,
+          "maximum": 5
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 5,
+        "period": "001-075",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 458.91015625,
+          "minimum": 316.48828125,
+          "maximum": 601.33203125
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 540.11328125,
+          "minimum": 425.90234375,
+          "maximum": 654.32421875
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 6.5,
+          "minimum": 4,
+          "maximum": 9
+        }
+      },
+      {
+        "district": "DISTRICT_CAMPUS",
+        "adjacency": 6,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 4424.2421875,
+          "minimum": 4424.2421875,
+          "maximum": 4424.2421875
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 4526.31640625,
+          "minimum": 4526.31640625,
+          "maximum": 4526.31640625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 0,
+        "period": "151-250",
+        "foundations": 5,
+        "choice": {
+          "n": 5,
+          "median": 2937.23046875,
+          "minimum": 1971.953125,
+          "maximum": 3262.1015625
+        },
+        "before_placement": {
+          "n": 5,
+          "median": 2789.5703125,
+          "minimum": 1418.03515625,
+          "maximum": 3794.80078125
+        },
+        "choice_age_turns": {
+          "n": 5,
+          "median": 4,
+          "minimum": 1,
+          "maximum": 6
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 1,
+        "period": "076-150",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 879.5390625,
+          "minimum": 879.5390625,
+          "maximum": 879.5390625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 1197.12109375,
+          "minimum": 1197.12109375,
+          "maximum": 1197.12109375
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 1,
+        "period": "151-250",
+        "foundations": 4,
+        "choice": {
+          "n": 4,
+          "median": 2978.5625,
+          "minimum": 2076.00390625,
+          "maximum": 4365.01953125
+        },
+        "before_placement": {
+          "n": 4,
+          "median": 2490.060546875,
+          "minimum": 1666.03125,
+          "maximum": 2930.1796875
+        },
+        "choice_age_turns": {
+          "n": 4,
+          "median": 4.5,
+          "minimum": 1,
+          "maximum": 9
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 2,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 631.90625,
+          "minimum": 631.90625,
+          "maximum": 631.90625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 730.90625,
+          "minimum": 730.90625,
+          "maximum": 730.90625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 2,
+        "period": "076-150",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 1544.34375,
+          "minimum": 1016.5390625,
+          "maximum": 2265.984375
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 1814.341796875,
+          "minimum": 1256.06640625,
+          "maximum": 2173.984375
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 1.0,
+          "minimum": 1,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 2,
+        "period": "151-250",
+        "foundations": 8,
+        "choice": {
+          "n": 8,
+          "median": 1931.412109375,
+          "minimum": 1412.2265625,
+          "maximum": 3199.09375
+        },
+        "before_placement": {
+          "n": 8,
+          "median": 2280.66796875,
+          "minimum": 1635.96484375,
+          "maximum": 4581.95703125
+        },
+        "choice_age_turns": {
+          "n": 8,
+          "median": 2.0,
+          "minimum": 1,
+          "maximum": 5
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 3,
+        "period": "076-150",
+        "foundations": 4,
+        "choice": {
+          "n": 4,
+          "median": 1450.162109375,
+          "minimum": 1232.41796875,
+          "maximum": 1803.265625
+        },
+        "before_placement": {
+          "n": 4,
+          "median": 1517.7421875,
+          "minimum": 1372.78125,
+          "maximum": 1702.1640625
+        },
+        "choice_age_turns": {
+          "n": 4,
+          "median": 5.0,
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 3,
+        "period": "151-250",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 3404.85546875,
+          "minimum": 2784.3984375,
+          "maximum": 4568.78515625
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 3910.60546875,
+          "minimum": 3162.890625,
+          "maximum": 7544.3046875
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 2.5,
+          "minimum": 1,
+          "maximum": 6
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 4,
+        "period": "076-150",
+        "foundations": 4,
+        "choice": {
+          "n": 4,
+          "median": 1310.0859375,
+          "minimum": 1049.890625,
+          "maximum": 1585.70703125
+        },
+        "before_placement": {
+          "n": 4,
+          "median": 1661.515625,
+          "minimum": 1192.72265625,
+          "maximum": 2139.71875
+        },
+        "choice_age_turns": {
+          "n": 4,
+          "median": 3.0,
+          "minimum": 1,
+          "maximum": 3
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 4,
+        "period": "151-250",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 1882.125,
+          "minimum": 1447.09375,
+          "maximum": 2317.15625
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 2257.748046875,
+          "minimum": 2013.203125,
+          "maximum": 2502.29296875
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 2.0,
+          "minimum": 1,
+          "maximum": 3
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 5,
+        "period": "076-150",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2220.515625,
+          "minimum": 2220.515625,
+          "maximum": 2220.515625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 3180.46484375,
+          "minimum": 3180.46484375,
+          "maximum": 3180.46484375
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 5,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2555.76953125,
+          "minimum": 2555.76953125,
+          "maximum": 2555.76953125
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 2314.15625,
+          "minimum": 2314.15625,
+          "maximum": 2314.15625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 6,
+        "period": "076-150",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2123.6015625,
+          "minimum": 2123.6015625,
+          "maximum": 2123.6015625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 2886.55859375,
+          "minimum": 2886.55859375,
+          "maximum": 2886.55859375
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 6,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2653.2734375,
+          "minimum": 2653.2734375,
+          "maximum": 2653.2734375
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 2233.19921875,
+          "minimum": 2233.19921875,
+          "maximum": 2233.19921875
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 5,
+          "minimum": 5,
+          "maximum": 5
+        }
+      },
+      {
+        "district": "DISTRICT_COMMERCIAL_HUB",
+        "adjacency": 9,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2893.34375,
+          "minimum": 2893.34375,
+          "maximum": 2893.34375
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 6594.0625,
+          "minimum": 6594.0625,
+          "maximum": 6594.0625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 0,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 329.3671875,
+          "minimum": 329.3671875,
+          "maximum": 329.3671875
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 810.34375,
+          "minimum": 810.34375,
+          "maximum": 810.34375
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 9,
+          "minimum": 9,
+          "maximum": 9
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 0,
+        "period": "076-150",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 910.78515625,
+          "minimum": 910.78515625,
+          "maximum": 910.78515625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 1017.3125,
+          "minimum": 1017.3125,
+          "maximum": 1017.3125
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 1,
+        "period": "076-150",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 1208.8828125,
+          "minimum": 1125.2890625,
+          "maximum": 1292.4765625
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 1300.6015625,
+          "minimum": 1281.7890625,
+          "maximum": 1319.4140625
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 7.5,
+          "minimum": 4,
+          "maximum": 11
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 1,
+        "period": "151-250",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 2181.71875,
+          "minimum": 1729.73046875,
+          "maximum": 3448.52734375
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 2533.66015625,
+          "minimum": 2279.3828125,
+          "maximum": 3552.609375
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 3
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 2,
+        "period": "076-150",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 1836.359375,
+          "minimum": 1648.5859375,
+          "maximum": 2024.1328125
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 1517.990234375,
+          "minimum": 1020.8203125,
+          "maximum": 2015.16015625
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 1.5,
+          "minimum": 1,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 2,
+        "period": "151-250",
+        "foundations": 4,
+        "choice": {
+          "n": 4,
+          "median": 2616.16796875,
+          "minimum": 1441.5078125,
+          "maximum": 3061.03125
+        },
+        "before_placement": {
+          "n": 4,
+          "median": 2642.951171875,
+          "minimum": 1489.3046875,
+          "maximum": 3444.87109375
+        },
+        "choice_age_turns": {
+          "n": 4,
+          "median": 3.0,
+          "minimum": 1,
+          "maximum": 11
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 3,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 332.2265625,
+          "minimum": 332.2265625,
+          "maximum": 332.2265625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 556.8984375,
+          "minimum": 556.8984375,
+          "maximum": 556.8984375
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 4,
+          "minimum": 4,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 3,
+        "period": "151-250",
+        "foundations": 5,
+        "choice": {
+          "n": 5,
+          "median": 2819.87890625,
+          "minimum": 1759.9765625,
+          "maximum": 3890.12109375
+        },
+        "before_placement": {
+          "n": 5,
+          "median": 2482.5234375,
+          "minimum": 1584.140625,
+          "maximum": 2993.80859375
+        },
+        "choice_age_turns": {
+          "n": 5,
+          "median": 2,
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 4,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 182.359375,
+          "minimum": 182.359375,
+          "maximum": 182.359375
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 544.30078125,
+          "minimum": 544.30078125,
+          "maximum": 544.30078125
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 8,
+          "minimum": 8,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 4,
+        "period": "076-150",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 977.51171875,
+          "minimum": 839.72265625,
+          "maximum": 1409.296875
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 1338.69140625,
+          "minimum": 967.5703125,
+          "maximum": 1403.796875
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 5,
+          "minimum": 1,
+          "maximum": 7
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 4,
+        "period": "151-250",
+        "foundations": 8,
+        "choice": {
+          "n": 8,
+          "median": 1932.21875,
+          "minimum": 1308.56640625,
+          "maximum": 4204.40234375
+        },
+        "before_placement": {
+          "n": 8,
+          "median": 2251.5625,
+          "minimum": 1442.84375,
+          "maximum": 4319.359375
+        },
+        "choice_age_turns": {
+          "n": 8,
+          "median": 2.5,
+          "minimum": 1,
+          "maximum": 6
+        }
+      },
+      {
+        "district": "DISTRICT_HARBOR",
+        "adjacency": 5,
+        "period": "151-250",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 2777.31640625,
+          "minimum": 1564.859375,
+          "maximum": 3618.23046875
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 2227.60546875,
+          "minimum": 1898.16015625,
+          "maximum": 3749.3203125
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 3,
+          "minimum": 1,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 0,
+        "period": "001-075",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 136.38671875,
+          "minimum": 120.609375,
+          "maximum": 152.1640625
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 228.568359375,
+          "minimum": 157.41796875,
+          "maximum": 299.71875
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 11.0,
+          "minimum": 6,
+          "maximum": 16
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 0,
+        "period": "076-150",
+        "foundations": 2,
+        "choice": {
+          "n": 1,
+          "median": 159.609375,
+          "minimum": 159.609375,
+          "maximum": 159.609375
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 530.111328125,
+          "minimum": 513.74609375,
+          "maximum": 546.4765625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 60,
+          "minimum": 60,
+          "maximum": 60
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 0,
+        "period": "151-250",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 1714.6875,
+          "minimum": 841.49609375,
+          "maximum": 2356.3984375
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 1666.203125,
+          "minimum": 820.5390625,
+          "maximum": 2263.59765625
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 3,
+          "minimum": 1,
+          "maximum": 9
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 1,
+        "period": "001-075",
+        "foundations": 3,
+        "choice": {
+          "n": 2,
+          "median": 178.0859375,
+          "minimum": 100.08984375,
+          "maximum": 256.08203125
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 269.02734375,
+          "minimum": 163.5,
+          "maximum": 653.9296875
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 9.5,
+          "minimum": 7,
+          "maximum": 12
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 1,
+        "period": "151-250",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 1215.423828125,
+          "minimum": 1214.515625,
+          "maximum": 1216.33203125
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 1122.357421875,
+          "minimum": 1095.0,
+          "maximum": 1149.71484375
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 2.0,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 2,
+        "period": "001-075",
+        "foundations": 2,
+        "choice": {
+          "n": 1,
+          "median": 874.31640625,
+          "minimum": 874.31640625,
+          "maximum": 874.31640625
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 676.12109375,
+          "minimum": 593.984375,
+          "maximum": 758.2578125
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 3,
+          "minimum": 3,
+          "maximum": 3
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 3,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 640.9296875,
+          "minimum": 640.9296875,
+          "maximum": 640.9296875
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 588.39453125,
+          "minimum": 588.39453125,
+          "maximum": 588.39453125
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 3,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2562.4140625,
+          "minimum": 2562.4140625,
+          "maximum": 2562.4140625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 2447.97265625,
+          "minimum": 2447.97265625,
+          "maximum": 2447.97265625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 4,
+        "period": "076-150",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 1003.193359375,
+          "minimum": 889.01953125,
+          "maximum": 1117.3671875
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 1009.130859375,
+          "minimum": 808.21875,
+          "maximum": 1210.04296875
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 3.5,
+          "minimum": 3,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 5,
+        "period": "001-075",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 341.5546875,
+          "minimum": 318.140625,
+          "maximum": 364.96875
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 365.6640625,
+          "minimum": 347.24609375,
+          "maximum": 384.08203125
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 3.5,
+          "minimum": 3,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 5,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2319.44140625,
+          "minimum": 2319.44140625,
+          "maximum": 2319.44140625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 2050.06640625,
+          "minimum": 2050.06640625,
+          "maximum": 2050.06640625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 4,
+          "minimum": 4,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_HOLY_SITE",
+        "adjacency": 7,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 469.69921875,
+          "minimum": 469.69921875,
+          "maximum": 469.69921875
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 482.49609375,
+          "minimum": 482.49609375,
+          "maximum": 482.49609375
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 0,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 1315.87890625,
+          "minimum": 1315.87890625,
+          "maximum": 1315.87890625
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 1295.48046875,
+          "minimum": 1295.48046875,
+          "maximum": 1295.48046875
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 4,
+          "minimum": 4,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 1,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 809.35546875,
+          "minimum": 809.35546875,
+          "maximum": 809.35546875
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 669.90625,
+          "minimum": 669.90625,
+          "maximum": 669.90625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 8,
+          "minimum": 8,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 1,
+        "period": "076-150",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 1338.033203125,
+          "minimum": 1194.625,
+          "maximum": 2082.89453125
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 1393.318359375,
+          "minimum": 1249.125,
+          "maximum": 2156.40625
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 4.5,
+          "minimum": 3,
+          "maximum": 10
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 1,
+        "period": "151-250",
+        "foundations": 5,
+        "choice": {
+          "n": 5,
+          "median": 2013.96875,
+          "minimum": 1516.9921875,
+          "maximum": 3073.42578125
+        },
+        "before_placement": {
+          "n": 5,
+          "median": 2211.26953125,
+          "minimum": 1815.40234375,
+          "maximum": 3969.1015625
+        },
+        "choice_age_turns": {
+          "n": 5,
+          "median": 4,
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 2,
+        "period": "076-150",
+        "foundations": 4,
+        "choice": {
+          "n": 4,
+          "median": 1030.2578125,
+          "minimum": 775.8203125,
+          "maximum": 1309.46875
+        },
+        "before_placement": {
+          "n": 4,
+          "median": 1238.9921875,
+          "minimum": 702.21484375,
+          "maximum": 1749.46484375
+        },
+        "choice_age_turns": {
+          "n": 4,
+          "median": 6.5,
+          "minimum": 1,
+          "maximum": 15
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 2,
+        "period": "151-250",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 2217.501953125,
+          "minimum": 1065.11328125,
+          "maximum": 3349.5546875
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 2548.138671875,
+          "minimum": 1138.39453125,
+          "maximum": 3729.3203125
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 1.5,
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 3,
+        "period": "001-075",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 1164.6875,
+          "minimum": 1164.6875,
+          "maximum": 1164.6875
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 1244.87890625,
+          "minimum": 1244.87890625,
+          "maximum": 1244.87890625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 2,
+          "minimum": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 4,
+        "period": "076-150",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 1358.888671875,
+          "minimum": 1251.65625,
+          "maximum": 1466.12109375
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 1470.099609375,
+          "minimum": 1340.65625,
+          "maximum": 1599.54296875
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 2.5,
+          "minimum": 1,
+          "maximum": 4
+        }
+      },
+      {
+        "district": "DISTRICT_INDUSTRIAL_ZONE",
+        "adjacency": 4,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2161.19921875,
+          "minimum": 2161.19921875,
+          "maximum": 2161.19921875
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 2284.1015625,
+          "minimum": 2284.1015625,
+          "maximum": 2284.1015625
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 1
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 0,
+        "period": "001-075",
+        "foundations": 3,
+        "choice": {
+          "n": 2,
+          "median": 477.84765625,
+          "minimum": 299.05859375,
+          "maximum": 656.63671875
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 368.3671875,
+          "minimum": 333.2890625,
+          "maximum": 583.04296875
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 2.5,
+          "minimum": 2,
+          "maximum": 3
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 0,
+        "period": "076-150",
+        "foundations": 5,
+        "choice": {
+          "n": 5,
+          "median": 715.0625,
+          "minimum": 598.79296875,
+          "maximum": 1227.73046875
+        },
+        "before_placement": {
+          "n": 5,
+          "median": 764.140625,
+          "minimum": 676.00390625,
+          "maximum": 1958.9375
+        },
+        "choice_age_turns": {
+          "n": 5,
+          "median": 1,
+          "minimum": 1,
+          "maximum": 10
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 0,
+        "period": "151-250",
+        "foundations": 16,
+        "choice": {
+          "n": 16,
+          "median": 2151.66796875,
+          "minimum": 1726.73828125,
+          "maximum": 3320.51953125
+        },
+        "before_placement": {
+          "n": 16,
+          "median": 2349.634765625,
+          "minimum": 1859.96875,
+          "maximum": 3563.05078125
+        },
+        "choice_age_turns": {
+          "n": 16,
+          "median": 2.5,
+          "minimum": 1,
+          "maximum": 10
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 1,
+        "period": "076-150",
+        "foundations": 2,
+        "choice": {
+          "n": 2,
+          "median": 1402.73046875,
+          "minimum": 1378.98828125,
+          "maximum": 1426.47265625
+        },
+        "before_placement": {
+          "n": 2,
+          "median": 1578.77734375,
+          "minimum": 1578.30078125,
+          "maximum": 1579.25390625
+        },
+        "choice_age_turns": {
+          "n": 2,
+          "median": 1.5,
+          "minimum": 1,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 1,
+        "period": "151-250",
+        "foundations": 7,
+        "choice": {
+          "n": 5,
+          "median": 2227.08984375,
+          "minimum": 1888.88671875,
+          "maximum": 3197.4921875
+        },
+        "before_placement": {
+          "n": 7,
+          "median": 2966.48828125,
+          "minimum": 1744.6953125,
+          "maximum": 3548.453125
+        },
+        "choice_age_turns": {
+          "n": 5,
+          "median": 4,
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 2,
+        "period": "001-075",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 624.107421875,
+          "minimum": 579.05859375,
+          "maximum": 825.92578125
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 685.140625,
+          "minimum": 628.85546875,
+          "maximum": 1021.2421875
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 3.0,
+          "minimum": 1,
+          "maximum": 11
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 2,
+        "period": "076-150",
+        "foundations": 9,
+        "choice": {
+          "n": 9,
+          "median": 1197.40625,
+          "minimum": 914.671875,
+          "maximum": 2129.33984375
+        },
+        "before_placement": {
+          "n": 9,
+          "median": 1409.3046875,
+          "minimum": 997.8984375,
+          "maximum": 2371.7890625
+        },
+        "choice_age_turns": {
+          "n": 9,
+          "median": 3,
+          "minimum": 1,
+          "maximum": 5
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 2,
+        "period": "151-250",
+        "foundations": 13,
+        "choice": {
+          "n": 13,
+          "median": 2112.296875,
+          "minimum": 786.59765625,
+          "maximum": 4589.12109375
+        },
+        "before_placement": {
+          "n": 13,
+          "median": 2520.23046875,
+          "minimum": 791.91796875,
+          "maximum": 4447.1484375
+        },
+        "choice_age_turns": {
+          "n": 13,
+          "median": 3,
+          "minimum": 1,
+          "maximum": 9
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 3,
+        "period": "076-150",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 697.9765625,
+          "minimum": 676.17578125,
+          "maximum": 701.6953125
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 760.47265625,
+          "minimum": 744.9765625,
+          "maximum": 1028.51953125
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 5,
+          "minimum": 1,
+          "maximum": 6
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 3,
+        "period": "151-250",
+        "foundations": 6,
+        "choice": {
+          "n": 6,
+          "median": 1944.595703125,
+          "minimum": 456.57421875,
+          "maximum": 3024.59375
+        },
+        "before_placement": {
+          "n": 6,
+          "median": 2142.7578125,
+          "minimum": 1722.80859375,
+          "maximum": 2843.7109375
+        },
+        "choice_age_turns": {
+          "n": 6,
+          "median": 5.0,
+          "minimum": 2,
+          "maximum": 63
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 4,
+        "period": "076-150",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 1275.015625,
+          "minimum": 1108.03125,
+          "maximum": 1543.91015625
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 1432.27734375,
+          "minimum": 974.25390625,
+          "maximum": 1471.05078125
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 2,
+          "minimum": 1,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 4,
+        "period": "151-250",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 3716.5234375,
+          "minimum": 2308.0625,
+          "maximum": 4313.515625
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 4662.3203125,
+          "minimum": 2569.015625,
+          "maximum": 4997.76953125
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 2,
+          "minimum": 1,
+          "maximum": 2
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 5,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 1230.0703125,
+          "minimum": 1230.0703125,
+          "maximum": 1230.0703125
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 1287.94921875,
+          "minimum": 1287.94921875,
+          "maximum": 1287.94921875
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 3,
+          "minimum": 3,
+          "maximum": 3
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 6,
+        "period": "151-250",
+        "foundations": 3,
+        "choice": {
+          "n": 3,
+          "median": 2565.42578125,
+          "minimum": 2435.41015625,
+          "maximum": 2720.375
+        },
+        "before_placement": {
+          "n": 3,
+          "median": 2624.203125,
+          "minimum": 2014.8125,
+          "maximum": 3234.57421875
+        },
+        "choice_age_turns": {
+          "n": 3,
+          "median": 2,
+          "minimum": 1,
+          "maximum": 6
+        }
+      },
+      {
+        "district": "DISTRICT_THEATER",
+        "adjacency": 7,
+        "period": "151-250",
+        "foundations": 1,
+        "choice": {
+          "n": 1,
+          "median": 2151.28125,
+          "minimum": 2151.28125,
+          "maximum": 2151.28125
+        },
+        "before_placement": {
+          "n": 1,
+          "median": 2406.04296875,
+          "minimum": 2406.04296875,
+          "maximum": 2406.04296875
+        },
+        "choice_age_turns": {
+          "n": 1,
+          "median": 4,
+          "minimum": 4,
+          "maximum": 4
+        }
+      }
+    ]
+  },
+  "quarters": {
+    "published_bid_strata": [
+      {
+        "band": "2to3",
+        "period": "001-075",
+        "scores": {
+          "n": 469,
+          "median": 137.94140625,
+          "minimum": 49.125,
+          "maximum": 421.2421875
+        }
+      },
+      {
+        "band": "2to3",
+        "period": "076-150",
+        "scores": {
+          "n": 1763,
+          "median": 246.6484375,
+          "minimum": 55.69921875,
+          "maximum": 1426.34375
+        }
+      },
+      {
+        "band": "2to3",
+        "period": "151-250",
+        "scores": {
+          "n": 2178,
+          "median": 323.08984375,
+          "minimum": 48.46875,
+          "maximum": 4096.0
+        }
+      },
+      {
+        "band": "3plus",
+        "period": "001-075",
+        "scores": {
+          "n": 284,
+          "median": 253.904296875,
+          "minimum": 146.50390625,
+          "maximum": 400.40234375
+        }
+      },
+      {
+        "band": "3plus",
+        "period": "076-150",
+        "scores": {
+          "n": 1209,
+          "median": 433.24609375,
+          "minimum": 174.51953125,
+          "maximum": 1748.375
+        }
+      },
+      {
+        "band": "3plus",
+        "period": "151-250",
+        "scores": {
+          "n": 1688,
+          "median": 636.130859375,
+          "minimum": 174.8359375,
+          "maximum": 4096.0
+        }
+      }
+    ],
+    "foundations": [
+      {
+        "player": 2,
+        "city": 65536,
+        "plot": 2827,
+        "turn": 12,
+        "district": 42,
+        "base": 1,
+        "spec": 1,
+        "initial_eligible_production": 2.0,
+        "initial_eligible_gold": 1.0,
+        "prospective_mill_rating": 3.0,
+        "published_bid_utility": 282.59765625
+      },
+      {
+        "player": 3,
+        "city": 131073,
+        "plot": 1613,
+        "turn": 38,
+        "district": 42,
+        "base": 1,
+        "spec": 0,
+        "initial_eligible_production": 1.0,
+        "initial_eligible_gold": 1.0,
+        "prospective_mill_rating": 3.0,
+        "published_bid_utility": 170.29296875
+      },
+      {
+        "player": 1,
+        "city": 65536,
+        "plot": 2376,
+        "turn": 39,
+        "district": 43,
+        "base": 1,
+        "spec": 0,
+        "initial_eligible_production": 2.0,
+        "initial_eligible_gold": 1.0,
+        "prospective_mill_rating": 3.0,
+        "published_bid_utility": 293.56640625
+      },
+      {
+        "player": 5,
+        "city": 65536,
+        "plot": 1131,
+        "turn": 134,
+        "district": 43,
+        "base": 1,
+        "spec": 0,
+        "initial_eligible_production": 3.0,
+        "initial_eligible_gold": 1.0,
+        "prospective_mill_rating": 4.0,
+        "published_bid_utility": 1403.86328125
+      },
+      {
+        "player": 5,
+        "city": 524295,
+        "plot": 1130,
+        "turn": 179,
+        "district": 42,
+        "base": 1,
+        "spec": 0,
+        "initial_eligible_production": 2.0,
+        "initial_eligible_gold": 1.0,
+        "prospective_mill_rating": 3.0,
+        "published_bid_utility": 241.51171875
+      }
+    ]
+  },
+  "historical_components": [
+    {
+      "turn": 155,
+      "production": 1.19921875,
+      "starting_adjacency": 2,
+      "prospective_mill_rating": 3,
+      "quarter_ready": 26,
+      "economic_utility": 16.62109375,
+      "producer_ready": 60,
+      "streams": [
+        {
+          "id": "site:YIELD_GOLD",
+          "yield_type": "YIELD_GOLD",
+          "ready": 26,
+          "amount": 1,
+          "utility": 4.78515625
+        },
+        {
+          "id": "site:YIELD_PRODUCTION",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 26,
+          "amount": 1,
+          "utility": 8.83203125
+        },
+        {
+          "id": "site:return:2918:YIELD_FOOD",
+          "yield_type": "YIELD_FOOD",
+          "ready": 26,
+          "amount": 1,
+          "utility": 7.765625
+        },
+        {
+          "id": "quarter-upkeep",
+          "yield_type": "YIELD_GOLD",
+          "ready": 26,
+          "amount": -1,
+          "utility": -4.76171875
+        }
+      ]
+    },
+    {
+      "turn": 160,
+      "production": 2.3984375,
+      "starting_adjacency": 2,
+      "prospective_mill_rating": 3,
+      "quarter_ready": 13,
+      "economic_utility": 51.83203125,
+      "producer_ready": 30,
+      "streams": [
+        {
+          "id": "site:YIELD_GOLD",
+          "yield_type": "YIELD_GOLD",
+          "ready": 13,
+          "amount": 1,
+          "utility": 9.88671875
+        },
+        {
+          "id": "site:YIELD_PRODUCTION",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 13,
+          "amount": 1,
+          "utility": 18.2421875
+        },
+        {
+          "id": "site:return:2918:YIELD_FOOD",
+          "yield_type": "YIELD_FOOD",
+          "ready": 13,
+          "amount": 1,
+          "utility": 16.078125
+        },
+        {
+          "id": "quarter-upkeep",
+          "yield_type": "YIELD_GOLD",
+          "ready": 13,
+          "amount": -1,
+          "utility": -9.83984375
+        },
+        {
+          "id": "upkeep:393221:BUILDING_CSC_BAKERS_WATER_MILL",
+          "yield_type": "YIELD_GOLD",
+          "ready": 30,
+          "amount": -2,
+          "utility": -6.8046875
+        },
+        {
+          "id": "producer-terrain",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 30,
+          "amount": 1,
+          "utility": 6.2890625
+        },
+        {
+          "id": "material-input:base:2993",
+          "yield_type": "YIELD_FOOD",
+          "ready": 30,
+          "amount": 1,
+          "utility": 5.546875
+        },
+        {
+          "id": "material-production:base:2993",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 30,
+          "amount": 1,
+          "utility": 6.2890625
+        },
+        {
+          "id": "material-gold:base:2993",
+          "yield_type": "YIELD_GOLD",
+          "ready": 30,
+          "amount": 1,
+          "utility": 3.41796875
+        },
+        {
+          "id": "sale-production:2918:2:BUILDING_GRANARY",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 44,
+          "amount": 1,
+          "utility": 1.125
+        },
+        {
+          "id": "sale-gold:2918:2:BUILDING_GRANARY",
+          "yield_type": "YIELD_GOLD",
+          "ready": 44,
+          "amount": 1,
+          "utility": 0.609375
+        },
+        {
+          "id": "sale-return:2918:2:BUILDING_GRANARY",
+          "yield_type": "YIELD_FOOD",
+          "ready": 44,
+          "amount": 1,
+          "utility": 0.9921875
+        }
+      ]
+    },
+    {
+      "turn": 180,
+      "production": 3.8984375,
+      "starting_adjacency": 2,
+      "prospective_mill_rating": 3,
+      "quarter_ready": 8,
+      "economic_utility": 89.80859375,
+      "producer_ready": 19,
+      "streams": [
+        {
+          "id": "site:YIELD_GOLD",
+          "yield_type": "YIELD_GOLD",
+          "ready": 8,
+          "amount": 1,
+          "utility": 13.68359375
+        },
+        {
+          "id": "site:YIELD_PRODUCTION",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 8,
+          "amount": 1,
+          "utility": 20.51953125
+        },
+        {
+          "id": "site:return:2918:YIELD_FOOD",
+          "yield_type": "YIELD_FOOD",
+          "ready": 8,
+          "amount": 1,
+          "utility": 21.796875
+        },
+        {
+          "id": "quarter-upkeep",
+          "yield_type": "YIELD_GOLD",
+          "ready": 8,
+          "amount": -1,
+          "utility": -13.703125
+        },
+        {
+          "id": "upkeep:393221:BUILDING_CSC_BAKERS_WATER_MILL",
+          "yield_type": "YIELD_GOLD",
+          "ready": 19,
+          "amount": -2,
+          "utility": -16.0
+        },
+        {
+          "id": "upkeep:393221:BUILDING_CSC_BAKERS_BAKERY",
+          "yield_type": "YIELD_GOLD",
+          "ready": 49,
+          "amount": -2,
+          "utility": -0.4453125
+        },
+        {
+          "id": "producer-terrain",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 19,
+          "amount": 1,
+          "utility": 11.9765625
+        },
+        {
+          "id": "material-input:base:2993",
+          "yield_type": "YIELD_FOOD",
+          "ready": 19,
+          "amount": 1,
+          "utility": 12.75390625
+        },
+        {
+          "id": "material-production:base:2993",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 19,
+          "amount": 1,
+          "utility": 11.9765625
+        },
+        {
+          "id": "material-gold:base:2993",
+          "yield_type": "YIELD_GOLD",
+          "ready": 19,
+          "amount": 1,
+          "utility": 8.0234375
+        },
+        {
+          "id": "local-production:3",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 49,
+          "amount": 1,
+          "utility": 0.33203125
+        },
+        {
+          "id": "local-gold:3",
+          "yield_type": "YIELD_GOLD",
+          "ready": 49,
+          "amount": 1,
+          "utility": 0.22265625
+        },
+        {
+          "id": "local-return:3",
+          "yield_type": "YIELD_FOOD",
+          "ready": 49,
+          "amount": 1,
+          "utility": 0.3515625
+        },
+        {
+          "id": "amenity:3:393221",
+          "yield_type": "AMENITY",
+          "ready": 49,
+          "amount": 1,
+          "utility": 0.2265625
+        },
+        {
+          "id": "sale-production:2918:2:BUILDING_GRANARY",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 28,
+          "amount": 1,
+          "utility": 6.62890625
+        },
+        {
+          "id": "sale-gold:2918:2:BUILDING_GRANARY",
+          "yield_type": "YIELD_GOLD",
+          "ready": 28,
+          "amount": 1,
+          "utility": 4.41796875
+        },
+        {
+          "id": "sale-return:2918:2:BUILDING_GRANARY",
+          "yield_type": "YIELD_FOOD",
+          "ready": 28,
+          "amount": 1,
+          "utility": 7.046875
+        }
+      ]
+    },
+    {
+      "turn": 200,
+      "production": 8.3984375,
+      "starting_adjacency": 2,
+      "prospective_mill_rating": 3,
+      "quarter_ready": 4,
+      "economic_utility": 399.35546875,
+      "producer_ready": 9,
+      "streams": [
+        {
+          "id": "site:YIELD_GOLD",
+          "yield_type": "YIELD_GOLD",
+          "ready": 4,
+          "amount": 1,
+          "utility": 86.9296875
+        },
+        {
+          "id": "site:YIELD_PRODUCTION",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 4,
+          "amount": 1,
+          "utility": 25.23046875
+        },
+        {
+          "id": "site:return:2918:YIELD_FOOD",
+          "yield_type": "YIELD_FOOD",
+          "ready": 4,
+          "amount": 1,
+          "utility": 26.8359375
+        },
+        {
+          "id": "quarter-upkeep",
+          "yield_type": "YIELD_GOLD",
+          "ready": 4,
+          "amount": -1,
+          "utility": -86.9296875
+        },
+        {
+          "id": "upkeep:393221:BUILDING_CSC_BAKERS_WATER_MILL",
+          "yield_type": "YIELD_GOLD",
+          "ready": 9,
+          "amount": -2,
+          "utility": -136.84375
+        },
+        {
+          "id": "upkeep:393221:BUILDING_CSC_BAKERS_CAFE",
+          "yield_type": "YIELD_GOLD",
+          "ready": 24,
+          "amount": -3,
+          "utility": -91.09375
+        },
+        {
+          "id": "producer-terrain",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 9,
+          "amount": 1,
+          "utility": 19.8828125
+        },
+        {
+          "id": "material-input:base:2993",
+          "yield_type": "YIELD_FOOD",
+          "ready": 9,
+          "amount": 1,
+          "utility": 21.13671875
+        },
+        {
+          "id": "material-production:base:2993",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 9,
+          "amount": 1,
+          "utility": 19.8828125
+        },
+        {
+          "id": "material-gold:base:2993",
+          "yield_type": "YIELD_GOLD",
+          "ready": 9,
+          "amount": 1,
+          "utility": 68.421875
+        },
+        {
+          "id": "local-production:4",
+          "yield_type": "YIELD_PRODUCTION",
+          "ready": 24,
+          "amount": 1,
+          "utility": 8.8359375
+        },
+        {
+          "id": "local-gold:4",
+          "yield_type": "YIELD_GOLD",
+          "ready": 24,
+          "amount": 1,
+          "utility": 30.36328125
+        },
+        {
+          "id": "local-return:4",
+          "yield_type": "YIELD_FOOD",
+          "ready": 24,
+          "amount": 1,
+          "utility": 9.36328125
+        },
+        {
+          "id": "amenity:4:131073",
+          "yield_type": "AMENITY",
+          "ready": 24,
+          "amount": 1,
+          "utility": 292.9140625
+        },
+        {
+          "id": "amenity:4:196610",
+          "yield_type": "AMENITY",
+          "ready": 24,
+          "amount": 1,
+          "utility": 6.0703125
+        },
+        {
+          "id": "amenity:4:327684",
+          "yield_type": "AMENITY",
+          "ready": 24,
+          "amount": 1,
+          "utility": 92.28515625
+        },
+        {
+          "id": "amenity:4:393221",
+          "yield_type": "AMENITY",
+          "ready": 24,
+          "amount": 1,
+          "utility": 6.0703125
+        }
+      ]
+    }
+  ],
+  "native_binary": {
+    "reference_sha256": "324c51e9ea3531758842e16c69e6cddbefbb226c5b675c3d6e60111646c2e98c",
+    "current_sha256": "092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f",
+    "text_identical": true,
+    "text_sha256": "d5bc8feddb8c030dbf2afc3fa9d9110eadbdb349cdb8aa56d5928625290c3d79",
+    "identical_constant_bytes_by_rva": {
+      "9d62d8": "00000040",
+      "9d62e8": "00002041",
+      "9c8978": "0ad7233c",
+      "9d18b0": "0000003f",
+      "a0b7b8": "8aab2a3e",
+      "9c1b78": "00008043"
+    }
+  },
+  "native_configuration": {
+    "base_discount": 2.0,
+    "game_speed_cost_multipliers": {
+      "GAMESPEED_MARATHON": 300,
+      "GAMESPEED_EPIC": 150,
+      "GAMESPEED_STANDARD": 100,
+      "GAMESPEED_QUICK": 67,
+      "GAMESPEED_ONLINE": 50
+    },
+    "ordinary_horizon_base": 100,
+    "online_ordinary_horizon": 50,
+    "online_discount": 4,
+    "ordinary_horizon_consumer_rva": "3e2aa0",
+    "initializer_rva": "49c7c0",
+    "speed_linear_rva": "36f620",
+    "speed_inverse_rva": "36f7b0",
+    "player_discount_reader_rva": "4b38f0"
+  },
+  "inputs": [
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-no-csc-district-baseline-20261114\\continents250-01\\planning-results.json",
+      "sha256": "a906933f0d0c1a8847342b5b9a8fdfd0c7fc498f8821e372bc23f09d9d979661"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-no-csc-district-baseline-20261114\\pangaea250-01\\planning-results.json",
+      "sha256": "70d3db0dbb69f7982829066b25d1d34cb9d1722c798db7ece6d46b5f26986f61"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-no-csc-district-baseline-20261114\\fractal250-01\\planning-results.json",
+      "sha256": "97e0b57431575311057f8fe988f46fe226b053303ba0ab25301ff3c94e4d1ea3"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-new-continents-20261115\\continents250-01\\Lua.log",
+      "sha256": "4d070c2f3fd4a25c3ccea47c700371fe479107afbe87c8341207509d7cf1f47a"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-astra-gaps-20261114\\lingapura-components150-200-01\\economic-components-155.json",
+      "sha256": "61b9e9f2954551a22f8c72f10d887666954a86973281a8d094a0217c9dd9e8c7"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-astra-gaps-20261114\\lingapura-components150-200-01\\economic-components-160.json",
+      "sha256": "a8419d8c2fc012737bef31540d4e330e8b8288aee8acdba0165cfb4730500b67"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-astra-gaps-20261114\\lingapura-components150-200-01\\economic-components-180.json",
+      "sha256": "6d744164c3c929793e940094981d3ce32078062ea3e97085a00806f57a67b5d2"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-astra-gaps-20261114\\lingapura-components150-200-01\\economic-components-200.json",
+      "sha256": "9b3034d2f3bcac38974dbeae25abc2f303feba459bc042de265cac56a72ab319"
+    },
+    {
+      "path": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-no-csc-district-baseline-20261114\\continents250-01\\DebugGameplay.sqlite",
+      "sha256": "7fd663979bf86dbe5e2a633342eb3d7d0df44a2b3af27266e80b90e81167ccc5"
+    }
+  ]
+}

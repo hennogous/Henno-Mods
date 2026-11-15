@@ -3714,3 +3714,34 @@ Observer now reads the live minimum, records it and retains3 for old adapters.
 24 observer/analysis checks pass; no main-CSC tuning value changes or game launch.
 [Analysis and method](../research/mods/csc-ai-quarter-bid-funnel-20261115.md),
 [compact counts and examples](../research/mods/csc-ai-quarter-bid-funnel-20261115.json).
+
+## AI-C190 — Correct native yield units coexist with a conservative whole-Quarter bid
+
+Offline audit15 November2026, unchanged CSC9f450233 and current XP2092abfbb.
+The three no-CSC Online250 controls contain1,124 foundations. Exact actual+2
+Campus sites have native choice medians554/1,054/1,920 across turns1–75/76–150/
+151–250. Latest CSC prospective+2 offers have medians138/247/323. Native built
+samples and repeated published offers are different cohorts; AI-C189 supplies
+the complementary same-city/round comparison.
+
+Native normalization/Q8 and Online50turn horizon/4.0 discount match our CE
+pricing. Full reference/current .text and inspected discount constants match.
+Source review identifies concrete asymmetries: optional later investments and
+their upkeep are scheduled, Services/specialists/trade are omitted, constant
+current Production serialises later-chain readiness, and worked terrain income
+is debited where native DistrictNetValue has an intact-improvement branch with
+no worker gate. Native aggregation adds qualifying positive building values;
+BuildingValue also applies1+2d to an early subtotal at prerequisite depth d.
+Our replacement does not copy that heuristic. These establish the need for
+component/assumption corrections before a blanket bid multiplier.
+
+Historical Lingapura2992 economic quotes rise16.6→51.8→89.8→399.4 at turns155/
+160/180/200 as readiness and other live conditions change. The first Mill ETA60
+misses the50turn window. All component sums reconcile exactly. Foundation
+measurements distinguish actual adjacency from prospective Mill rating:
+Sheffield's current2 forecasts3; the other four original-AI foundations have
+equal current/prospective totals. Fixed50/4 beyond Online is a separate delivery
+gap. No tuning value change, live test or new native hook.
+
+[Audit and prioritised implementation](../research/mods/csc-ai-district-value-audit-20261115.md),
+[reproducible strata, component ledgers and hashes](../research/mods/csc-ai-district-value-audit-20261115.json).

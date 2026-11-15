@@ -1,5 +1,13 @@
 # Which CSC benefits does the AI forecast?
 
+**Whole-bid audit,15 November:** the current replacement prices ordinary exchanges,
+but explicitly omits Services, future specialists and trade benefits. It also
+schedules optional later investment/upkeep and uses conservative serial timing.
+These differences matter when comparing it with native positive future-building
+aggregation. Native Q8 weights and Online50/4 are aligned; the latter is still
+hard-coded for other speeds. See the [calibration audit](../../../research/mods/csc-ai-district-value-audit-20261115.md)
+for scope, starting-versus-prospective adjacency and the implementation priorities.
+
 **Current CSC route, 14–15 November:** main CSC computes a complete Quarter
 site bid from its shared economy and replaces the finished native Quarter-site
 score. The native pricing helpers supply utility units. This avoids stacking

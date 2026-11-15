@@ -1,6 +1,19 @@
 # CSC AI roadmap
 
-**Current1.4/1.6 calibration audit:** lowering the floor to+2 admits99 positively
+**1.4/1.6 calibration audit outcome,15 November:** Online horizon/discount and
+native yield units align. Quarter replacement omits real value and differs in
+optional-investment, timing and land-cost treatment; native positive building
+aggregation also has its own early prerequisite-depth heuristic. Next work:
+(1) allow profitable development subsets, (2) align ordinary site-cost accounting
+while retaining CSC material protection, (3) add credible Service value,
+(4) review readiness and calibrate the whole bid at matched native comparisons.
+Preserve the spatial preference and completed-customer rule. Native +2 district
+scores provide time/type calibration targets; avoid a pooled universal multiplier.
+Separately make50/4 speed-aware before claiming ordinary-speed portability.
+No policy changes/new game in this audit.
+[Findings, data and proposed validation](../research/mods/csc-ai-district-value-audit-20261115.md).
+
+**Preceding1.4/1.6 calibration question:** lowering the floor to+2 admits99 positively
 bid identities but produces only three+2 native wins, all capacity-full. In918
 same-city/round observations with owned+2 offers and ready Quarter capacity,
 other chosen districts have higher utility (median2539 versus397). The earlier

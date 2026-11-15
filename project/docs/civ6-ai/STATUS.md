@@ -1,6 +1,20 @@
 # Current CSC AI status
 
-**Current1.4/1.6 question: competitive strength of Quarter bids.** The+2 policy
+**1.4/1.6 whole-bid audit completed,15 November.** The three-map controls
+confirm ordinary +2 Campus choice medians554/1,054/1,920 across early/mid/late
+Online periods, versus published prospective +2 Quarter medians138/247/323.
+Native Q8 weighting and Online50turn/4.0 discount match. Concrete differences:
+our forecast schedules optional later investments with upkeep, omits Service/
+specialist/trade value, delays chains at fixed current Production and charges
+worked terrain differently. Native aggregation includes positive building
+forecasts and a prerequisite-depth heuristic on an early benefit subtotal.
+Next: profitable stage options and site-cost alignment, credible Service value,
+then whole-bid calibration. Fixed50/4 on other speeds is a separate portability
+gap. No policy change or game launch. Reproducer checks1,124 foundations,
+7,591 offers, component sums and full native .text parity.
+[Audit, numerical comparison and implementation order](../research/mods/csc-ai-district-value-audit-20261115.md).
+
+**Preceding1.4/1.6 result: competitive strength of Quarter bids.** The+2 policy
 is active:99 distinct+2 options receive positive bids, but only three+2 native
 best comparisons occur, all at full-capacity Niani.918 same-city/round reads
 with owned+2 offers and free Quarter slots show higher chosen district values

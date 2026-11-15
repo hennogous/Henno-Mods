@@ -1,4 +1,16 @@
-# CURRENT: Quarter bid calibration question,15 November
+# CURRENT: whole Quarter bid audit completed,15 November
+
+Read session_ai_bid_calibration_audit_20261115.md FIRST. Offline auditAI-C190:
+nativeQ8 and Online50h/4discountcorrect; +2Campus medians554/1054/1920vs
+publishedQuarter138/247/323. Concrete gaps optionalfutureinvestmentlosses,
+omittedServices/specialists/trade, serialcurrentProductiontiming, workedterrain
+debitvsnativeimprovementcost; nativeearlysubtotal1+2depthheuristic separate.
+Nextfixprofitablephaseoptions/sitecostalignment,credibleServices,readinessthen
+wholebidcalibration. No multiplier/tuningchange/newgame. Reproducer1124native/
+7591offers/5Qandcomponent/binparityPASS. SkillAI-N133 records speedhorizon.
+No worker/game/PR/goal. Preserve unrelatedWIP.
+
+# PRECEDING: Quarter bid calibration question,15 November
 
 Read session_ai_bid_funnel_20261115.md FIRST. Closednewseedrecords:99positive
 +2identities but3nativewins allfullcapacityNiani.918samecityround owned+2with
