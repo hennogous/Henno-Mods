@@ -56,7 +56,10 @@ for _,p in ipairs(PlayerManager.GetAliveMajors())do if not p:IsHuman()then
   if capacity.known then capacityKnown=capacityKnown+1 end
   print('CSC_ECONOMY_CAPACITY='..table.concat({p:GetID(),city:GetID(),tostring(capacity.population),tostring(capacity.used),tostring(capacity.allowed),capacity.reason},','))
   print('CSC_ECONOMY_FACTS='..table.concat({p:GetID(),city:GetID(),tostring(production),tostring(cost),tostring(research)},','))
-  assert(production and production>0 and cost and cost>0 and research<math.huge,'Incomplete economic readiness facts')
+  -- Zero Production is a valid observed city state (for example resistance).
+  -- Qualify bridge availability here; the live planner separately defers an
+  -- investment whose construction time cannot be estimated at that output.
+  assert(production and production>=0 and cost and cost>0 and research<math.huge,'Incomplete economic readiness facts')
  end
 end end
 assert(capacityKnown>0,'No live district capacity facts agreed with Gameplay')
