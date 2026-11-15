@@ -19,8 +19,11 @@ restored exit0; detached task removed itself, no owner. Root path remains
 Desktop/Codex/csc-ai-spatial-layout-20261115/continents250-recovery50-01.
 Do not merge abandoned original50–65 branch. Full comparison analysis pending.
 
-Next: freeze corrected main source over accepted frozen02 and run ordinary
+Committed/pushed39bee15e; frozen01 overlays the corrected main source on accepted
+frozen02. Now running ordinary
 Continents50 with same18461107/29461107 seeds and CL/R2/Suk, shared controller.
 Artifact root Desktop/Codex/csc-ai-coherence-20261115. No new DLL/PR/goal.
+Task CSC-AI-Coherence-20261115, host18732/worker15340; lifetime/console receipts
+live at the artifact root. No second console or pinned-source edits.
 Live acceptance is confirmed native intent plus coherent post-acquisition
 positive bid/readback when still worthwhile, not guaranteed queue victory.

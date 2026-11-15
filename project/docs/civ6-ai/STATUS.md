@@ -6,7 +6,7 @@ footprint baseline for a bounded window; current economics and real losses still
 reprice. Explicit withdrawal reasons and one-turn owned missing-input grace are
 integrated in main CSC.67 economic/lifecycle and18 integration checks pass.
 The preceding frozen run has completed250 and closed/restored exit0. Next is
-a fresh matched Online50 qualification of this candidate.
+a fresh matched Online50 qualification, now running through the shared controller.
 [Coherent investment design and checks](../research/mods/csc-ai-coherent-investment-20261115.md).
 
 **Preceding recovered spatial Continents250 (now completed).** The original branch
@@ -23,8 +23,8 @@ Terrain reads and bounded spatial preferences work. No policy changes on recover
 **Pella follow-through traced:** construction306 is accepted after payment27,
 but our owned-site offer disappears28 and retained value becomes−1024 under
 version31. The tree expires43. Great Bath consumes the proposed customer tile;
-owned/frontier legacy deductions are asymmetric. Next1.5/1.6: consistent purchase
-valuation and per-site withdrawal reasons. Running policy stays frozen.
+owned/frontier legacy deductions are asymmetric. This prompted the implemented1.5/1.6 continuity fix above; its fresh live
+qualification uses a separate frozen package.
 
 **Completed, 14–15 November: Astra investigations and fresh Online250.**
 Seven Quarters versus six on the matched starting world; all have Base/+3 or

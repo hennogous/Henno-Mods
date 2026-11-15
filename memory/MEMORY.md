@@ -1,14 +1,18 @@
-# ACTIVE: recovered spatial Continents250, 15 November
+# ACTIVE: coherent Quarter investment qualification,15 November
 
-Read session_ai_spatial_layout_20261115.md FIRST. Original source02 stopped65;
-exit unknown, logs preserved. Menu cleanup restores/exits0. Unchanged50 reload
-passes40/40 structural rows, now beyond55 toward250. Shared-controller worker
-21696/native17484, detached host19164. Windows task CSC-AI-Spatial-Recovery-20261115
-owns lifetime and unregisters after completion. No tool-session handle. No second
-console/game or pinned-source edits. Check about15min (next12:38 local).
-Same frozen02/a7183c57 policy, CE400e6755; recovery68dbc609. AI-C186 native
-Tailors-target save/wait/pay30Gold; no foundation65. Skill a6471f2 pushed.
-No newgoal/PR; preserve unrelated edits. Full250 pending.
+Read session_ai_coherence_20261115.md FIRST. Candidate39bee15e committed/pushed;
+67 economic/spatial/lifecycle +18 publisher/package checks PASS. Native-confirmed
+per-city/type/plot intent persists across acquisition/reload, bounded baseline
+avoids temporary staffing withdrawing a selected project; current economics and
+material protection still reprice. Full journal confirmation precedes diagnostic
+caps. No new CE/PR. Preserve unrelated SQL/art/UI changes.
+Fresh ordinary Continents/Small/Online50 now starts via shared controller;
+root Desktop/Codex/csc-ai-coherence-20261115/fresh50-01, frozen01. One-shot task
+CSC-AI-Coherence-20261115 owns host18732/worker15340 and logs lifetime. No second
+console or pinned-source edits while worker lives. Agent checks about15min.
+Prior spatial recovery50->250 completed/saved/closed/restoredexit0. Its source02
+branch after50 is abandoned and must not be double-counted. Full old results
+remain separate from continuity candidate. No active goal/PR.
 
 # COMPLETED: Astra gaps and Online250,15 November2026
 

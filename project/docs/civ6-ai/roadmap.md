@@ -5,26 +5,27 @@ deductions from complete Quarter valuation, preserve selected unworked footprint
 baselines with bounded native-confirmed memory, and report every selected-site
 withdrawal reason. Current economics/protection remain decisive; no force-build
 bonus.67 economic/lifecycle and18 integration checks pass. The previous250 is
-closed; next is a fresh Online50 live qualification of this candidate.
+closed; a fresh Online50 live qualification of this candidate is running.
 [Design, acceptance and native cancellation boundary](../research/mods/csc-ai-coherent-investment-20261115.md).
 
 **15 November1.5/1.6 follow-through case:** Pella pays30 Gold, then CSC stops
 quoting the now-owned site and CE reprices its accepted construction request to
 managed−1024. It expires43. Trace and harmonise ownership-dependent legacy
 deductions, footprint displacement and changed customer layouts; record explicit
-site withdrawal reasons. The current full run remains unchanged.
+site withdrawal reasons. Implemented in the separate candidate above; the
+preceding full comparison completed with its policy unchanged.
 [Exact Pella timeline](../research/mods/csc-ai-spatial-layout-20261115.md#why-pella-bought-the-tailors-site-but-did-not-build).
 
-**Active15 November:1.1–1.4/1.8 spatial quality and2.1 customer layout.**
+**Preceding15 November:1.1–1.4/1.8 spatial quality and2.1 customer layout.**
 Main CSC now values bounded material clumps and Base+Spec more strongly, and
 evaluates concrete customer footprints with native terrain adjacency and
 alternative-site cost. Compatible plans cannot count one tile twice. Future
 customers remain separate from current adjacency/income; immediate customer
 offers still need native targets and capacity.48 economic/spatial and18
 integration checks pass. After interruption65, the unchanged50 save passes40/40
-structural rows and continuation advances beyond55. Native1.5 records a real
+structural rows and continuation completes250, closes and restores. Native1.5 records a real
 Tailors-target savings wait and30-Gold payment (AI-C186); Quarter construction
-on that tile remains open. Next: finish250, then compare
+on that tile remains open in the old policy. Next: compare
 placement quality, actual customer links and chain outcomes with the previous run.
 [Policy, diagnostics and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
 
