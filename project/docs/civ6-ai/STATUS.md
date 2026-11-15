@@ -1,14 +1,15 @@
 # Current CSC AI status
 
-**15 November active, Problems1.1–1.4/1.8 and2.1:** terrain-aware customer layouts
-and stronger spatial preferences are integrated in main CSC. +2 stays48;
-+3/+4/+5/+6+ become144/288/432/576, Base+Spec64, extra material clumps bounded,
-compatible future customer space0–96. Future customers still add no adjacency
-or economic income.48 economic/spatial and18 integration checks pass.
-First startup closes cleanly after exposing Core45/UI44 phase lag; bounded
-phase handling is corrected and live-qualified:1,640/1,640 terrain reads through25,
-all counted UI lag1. The matched Continents/Online250 restart is running beyond30
-under the shared controller,15-minute checks. [Implementation and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
+**15 November active: recovered spatial Continents250.** The original branch
+stops at65 without a known exit. Logs/checkpoint are preserved; menu-only cleanup
+restores preferences and exits0. Unchanged50 loads with40/40 structural rows equal;
+the detached shared-controller continuation has passed55 toward250.
+
+Before interruption:4 Bakers foundations, all Base/+3+,3 at+4+ (previous4/2);
+5/5 exact new-Quarter native comparisons. No Tailors foundation yet. One natural
+Tailors-target saving→30-Gold payment on27 is traced (AI-C186), without subsidy.
+Terrain reads and bounded spatial preferences work. No policy changes on recovery.
+[Evidence, recovery and policy](../research/mods/csc-ai-spatial-layout-20261115.md).
 
 **Completed, 14–15 November: Astra investigations and fresh Online250.**
 Seven Quarters versus six on the matched starting world; all have Base/+3 or

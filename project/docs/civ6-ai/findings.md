@@ -3609,3 +3609,16 @@ acquisition coverage, own-Production feedback and recovery latency are next work
 [Results, scope and artifacts](../research/mods/csc-ai-astra-gap-results-20261114.md),
 [compact evidence](../research/mods/csc-ai-astra-gap-results-20261114.json),
 [native investigation and corrections](../research/mods/csc-ai-astra-gap-investigation-20261114.md).
+
+
+## AI-C186 — Native funds accumulate before a real Quarter-target purchase
+
+Observed15 November2026, XP2 SHA092abfbb, CE400e6755, main CSC frozen02/a7183c57,
+ordinary Continents/Online source. Alexander's Tailors request24 at1123 retains
+contract259.30-Gold checks fail25/26 despite enough Treasury, with plot funds
+4.83/6.71 below7.50 and combined plot/slush funds below30. On27 funds8.59+26.74
+pass; native request/command, matching30-Gold debit and annex return occur under
+that target's lineage. No subsidy or savings-weight adjustment. No Tailors
+foundation through the interrupted65 branch. This qualifies one natural
+wait→payment route; shared category funds are not per-tile earmarking.
+[Exact trace, account values and interruption scope](../research/mods/csc-ai-spatial-layout-20261115.md#native-saving-and-payment-for-a-quarter-footprint).

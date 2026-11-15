@@ -1,11 +1,14 @@
-# ACTIVE: terrain-aware spatial Continents250, 15 November
+# ACTIVE: recovered spatial Continents250, 15 November
 
-Read session_ai_spatial_layout_20261115.md FIRST. Shared controller worker9532
-owns native14316, tool session9435; current corrected run beyond30 toward250.
-No second console/game or edits to pinned imported sources. Check about15min.
-Source a7183c57/frozen02, CE400e6755. Native terrain reads1640/1640 pass through25.
-First startup stopped45/target50 and closed/restored exit0. Skill4cc06b4 pushed.
-No new goal/PR. Preserve unrelated dirty source/art/UI. Full results pending.
+Read session_ai_spatial_layout_20261115.md FIRST. Original source02 stopped65;
+exit unknown, logs preserved. Menu cleanup restores/exits0. Unchanged50 reload
+passes40/40 structural rows, now beyond55 toward250. Shared-controller worker
+21696/native17484, detached host19164. Windows task CSC-AI-Spatial-Recovery-20261115
+owns lifetime and unregisters after completion. No tool-session handle. No second
+console/game or pinned-source edits. Check about15min (next12:38 local).
+Same frozen02/a7183c57 policy, CE400e6755; recovery68dbc609. AI-C186 native
+Tailors-target save/wait/pay30Gold; no foundation65. Skill a6471f2 pushed.
+No newgoal/PR; preserve unrelated edits. Full250 pending.
 
 # COMPLETED: Astra gaps and Online250,15 November2026
 

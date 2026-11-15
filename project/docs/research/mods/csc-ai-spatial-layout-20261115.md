@@ -156,3 +156,61 @@ The corrected run will extend that calibration alongside construction outcomes.
 
 Skill AI-N132 now includes the live phase-aware read qualification, and generic
 placement-calibration guidance is committed in4cc06b4 (pushed).
+
+
+## Native saving and payment for a Quarter footprint
+
+The interrupted branch supplies one natural Quarter-target purchase: Alexander
+(player2/city65536) selects Tailors43 at plot1123(13,15) on24. Contract259 retains
+that target. A30-Gold quote is checked on25–27:
+
+| Turn | Treasury | Plot category | Slush | Minimum plot funds | Result |
+|---|---:|---:|---:|---:|---|
+|25|56.36|4.83|15.04|7.50|Both affordability checks fail|
+|26|73.56|6.71|20.89|7.50|Both fail|
+|27|80.76|8.59|26.74|7.50|Both pass; purchase executes|
+
+The native requested-route factor64Q8 is25% of the30-Gold quote; combined funds
+must cover the full price. The accepted command debits exactly7680Q8=30 Gold,
+then returns through annexation, with lineage to the Tailors selection. No subsidy
+or savings-weight change is used. This is a target waiting while shared category
+funds accumulate, not a dedicated per-tile account or an isolated allocator trace.
+Main CSC's frontier offer is present; its starting adjacency is2, starting Gold0.
+This is a Production-oriented site, not a demonstrated Gold-payback case.
+No Tailors foundation is recorded through65. Purchase and district follow-through
+are distinct outcomes. See AI-C186 and the skill's updated district-choice reference.
+
+## Interruption at65 and verified continuation
+
+The host records stop after verified inactive65, during discovery before the70
+operation. On the next check neither controller9532 nor native14316 exists;
+there is no original cleanup receipt or known original exit code. Windows boot
+remains07:19 and no matching crash/restart event was found. Cause remains unknown.
+Original Lua/native logs and the25/50 censuses are preserved before relaunch.
+
+Before interruption, four Bakers foundations all have owned Base/+3+; three
+are+4+, one has Base+Spec. At the same turn the preceding run has four Bakers,
+two+4+. All five captured new Quarter best comparisons read exact published bids.
+There are no Tailors foundations. Two material-working losses preserve deposits:
+a pillaged Farm1060 and removed Farm1457, both on Flax. This early branch is
+retained separately; its post50 observations will not be merged into the replay.
+
+A new menu-only shared-controller session restores exact subscription preferences
+and normally exits0 before archiving the two unchanged test copies. The original
+exit remains explicitly unknown in `interruption-reconciled.json`; no clean-close
+receipt is fabricated for that original game.11 recovery/lifecycle checks pass;
+the combined recovery/observer set passes22. The unchanged50 save SHA
+87b31d9f38b5f1ef17a5afb5449b155469a67691c554b518616f3e78245873b3 is verified.
+
+The maintained continuation driver restores the original packages and compares
+all40 structural source rows: exact match, no missing/unexpected rows. It has
+advanced beyond55 toward250. This remains the same selected world with a reload,
+not another seed. Native placement-cache capture is retained in the continuation.
+Artifacts: `continents250-recovery50-01/` beside the interrupted source.
+
+The one-shot current-user task `CSC-AI-Spatial-Recovery-20261115` now owns the
+host process lifetime independently of the tool session. It has no restart loop,
+uses only the shared controller and unregisters itself after the child exits.
+`detached-worker-status.json` and `recovery-worker-console.txt` retain host state.
+Policy/frozen02 is unchanged. The22-check recovery change is68dbc609; reusable
+native saving/payment evidence is pushed in civ6-ai a6471f2. Full250 remains active.

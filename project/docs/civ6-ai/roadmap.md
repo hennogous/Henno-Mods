@@ -6,8 +6,10 @@ evaluates concrete customer footprints with native terrain adjacency and
 alternative-site cost. Compatible plans cannot count one tile twice. Future
 customers remain separate from current adjacency/income; immediate customer
 offers still need native targets and capacity.48 economic/spatial and18
-integration checks pass. The matched Continents Online250 is running; phase-aware
-terrain reads pass1,640/1,640 through25. Next: finish250, then compare
+integration checks pass. After interruption65, the unchanged50 save passes40/40
+structural rows and continuation advances beyond55. Native1.5 records a real
+Tailors-target savings wait and30-Gold payment (AI-C186); Quarter construction
+on that tile remains open. Next: finish250, then compare
 placement quality, actual customer links and chain outcomes with the previous run.
 [Policy, diagnostics and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
 

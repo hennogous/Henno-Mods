@@ -46,3 +46,22 @@ continents250-02. Source01 stopped45/target50 via supported source-update reques
 closed/restored exit0. Skill AI-N132 + calibration guidance pushed4cc06b4.
 Results still pending. Compare against csc-ai-astra-gaps-20261114/fresh250-02
 (previous7 Quarters:5B2T, allBase/+3+,3both,582StorekeeperchainTurns).
+
+
+15Nov12:23 UPDATE: original game/controller disappeared at65, no failure/close
+receipt; OS boot7:19, no matching crash/reboot event found. Cause unknown. Logs
+archived to source02;25/50 censuses reconstructed. Early branch4Bakers allBase/+3,
+3+4 (previous4Bakers,2+4),1both;0Tailors;5/5exactnativeBESTs. Alexander Tailors1123
+selected24, common plot/slush funds fail25/26 then pass27 and pay30Gold; no
+foundation65. AI-C186/report/skill a6471f2 preserve trace. No subsidy.
+Menu-only interruption cleanup exits0/restores exact prefs, archives old test
+copies. Original exit unknown, recorded separately. Recovery code68dbc609 tested
+22; no main policy change. Verified50 checkpoint SHA87b31d9f... loads with40/40
+structural rows equal. ACTIVE recovery50-01 now passed55, native17484,
+worker21696, detachedhost19164. One-shot Windows task CSC-AI-Spatial-Recovery-20261115
+owns lifetime, no retries and unregisters after child returns. Status file
+Desktop/Codex/csc-ai-spatial-layout-20261115/detached-worker-status.json.
+No tool session controls this worker. Shared controller owns console; no second
+access or imported-source edits. Next manualcheck about12:38 local. Full250
+pending. Compare segments explicitly: original post50 branch is abandoned,
+not merged into recovery. No fresh seed/PR/newgoal. Preserve unrelated edits.
