@@ -1,5 +1,7 @@
 # Research evidence archive
 
+- [Calibrated Quarter bids: completed fresh Continents250 —15 November2026](../research/mods/csc-ai-calibrated-continents-20261115.md)
+
 - [Native site accounting and Quarter bid calibration —15 November2026](../research/mods/csc-ai-native-valuation-20261115.md)
 
 - [Quarter whole-bid audit against native district adjacency and forecasts —15 November2026](../research/mods/csc-ai-district-value-audit-20261115.md)

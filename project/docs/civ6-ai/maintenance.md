@@ -43,3 +43,15 @@ part of routine research or deployment.
 Large saves, native dumps and test packages remain in their evidence stores.
 Record paths and hashes; a Desktop path is a locator, not a portable backup.
 No game binaries or private transcripts belong in the public repositories.
+
+## Keep evidence useful and bounded
+
+Henno's15 November retention preference is to keep vanilla/untuned baselines,
+tests relevant to the current push, reusable tooling and source repositories.
+Write useful findings and compact results into the repo, then purge superseded
+raw experiments instead of accumulating a comprehensive evidence archive.
+Record which experiment folders were retired so historical artifact links are
+understandable. Current packages, active runs and required replay inputs stay
+protected. Some closed package assets share disk storage through hard links;
+copy an archived package out before editing it.
+[15 November retirement list and protected comparison sets](retired-artifacts-20261115.json).

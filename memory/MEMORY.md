@@ -1,12 +1,21 @@
-# CURRENT: calibrated Continents250 running,15 November
+# CURRENT: calibrated Continents250 completed; old tests pruned,15 November
 
-Read session_ai_calibrated_continents_20261115.md FIRST. MainCSC de174092,
-CE2d200ef/SHA1be0545b. Desktop/Codex/csc-ai-calibrated-continents-20261115,
-frozen01, continents250-01. Seeds21851115/32051115, SmallContinentsOnline250,
-stockAI Prince, CL/R2/Suk. DetachedscheduledtaskCSC-AI-Calibrated-Continents-20261115
-host15944/worker10844 (verify statusfile). MainCSC solepolicy/passiveobservers.
-Standing15min checks; persistthrough250+analysis, noPR. Do noteditpinnedcontroller
-files midrun. Current status supersedes closedqualification notes below.
+Read session_ai_calibrated_continents_20261115.md FIRST. Replacement02 reaches250,
+23Q13B10T allBase/+3+,10+4,5both;63/63exactnativewins. 8Storekeeperproperties250,
+2Sacristans, nativeaudit793chain-turns2–249/4chains100+. NoTailorsHarbor/Dock.
+22complete/21workingBase/19completedcustomers/20workingStage2producers.
+2Tailorssitespurchased25/28→built37/67.10supplierpillages,1ownershiploss,
+1Cattleremoval(alternativeBase survives). NextcustomerHarborlayouts,Spec-rich
+sites,repairlatency; keepcurrentbidcalibration. AI-C192/reportcsc-ai-calibrated-
+continents-20261115.md/json. Desktoprootcsc-ai-calibrated-continents-20261115,
+continents250-02;analysis02.json. All10censuses/exit0/prefsrestore PASS. Extra
+endpointdiagnosticrequiresProduction>0,failsvalid0; fixed>=0+13tests. No rerun.
+Natural250autosavehash9ce30d40…preservedalongsideverified200. No game/task/PR.
+Initialseedpartial100checkpointfailure,resumeobserverdeath108preservedseparate.
+Cleanup24.4GiBassetdedup+32obsoleteexperimentfolderspurged18.254GiBnet,~64GiBfree.
+Baselines/currentNov10–15tests/tooling/source retained. Newretentionpreference:
+writeusefullearningsinrepo,keeprelevanttests/baselines,purgesupersededrawruns.
+See session_disk_cleanup_20261115.md/feedback_ai_evidence_retention.md.
 
 # PRECEDING: native Quarter valuation calibrated and live-qualified,15 November
 

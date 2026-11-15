@@ -3785,3 +3785,32 @@ No upstream PR. GPP, trade, future specialists, later Services and broader natur
 late-game outcome calibration remain explicit work.
 [Implementation, architecture and results](../research/mods/csc-ai-native-valuation-20261115.md),
 [compact comparison and native excerpts](../research/mods/csc-ai-native-valuation-20261115.json).
+
+## AI-C192 — Calibrated bids produce23 good foundations and purchased-site follow-through in fresh Online250
+
+15 November2026, mainCSC de174092/CE2d200ef, XP2092abfbb. SmallContinents,
+map21951115/game32151115, stockAI with CL/R2/Suk. All23 foundations (13B/10T)
+have Base and a prospective local-Mill rating of+3+, ten+4+, five both classes.
+63/63 native Quarter comparisons match published values/version/write, and all
+23 foundations have recorded native choices. Native purchases at25/28 are
+followed by Tailors foundations at37/67, exercising1.5/1.6 beyond nomination.
+
+At250:22 completed Quarters,21 working Base suppliers,19 completed mapped
+customers,20 working Stage2 producers, eight Storekeeper properties and two
+Sacristans. Native attachment/growth audit2–249 confirms793 chain-turns across
+seven sources; four exceed100 turns, and several resume after lapses. No Tailors
+has an adjacent Harbor, leaving Dockmaster/customer layout open. Twelve material
+loss events are ten pillages, one ownership loss and one removed Cattle with
+another Base remaining. No loss row reports a district replacing the material.
+
+Ten milestone censuses verify, native exit0/preferences restore pass, and the
+passive hooks finish with zero faults/buffered records. The extra endpoint fact
+diagnostic rejects a legitimate zero-output city, preventing the final wrapper
+and explicit save. Raw outcome data and natural250 autosave are preserved; the
+diagnostic guard is fixed offline with13 preflight/observation checks passing.
+The initial different seed ends first on a missing100 checkpoint, then after
+reload on observer elimination108; both partial sessions close/restore and stay
+separate. No new game is needed to recover the completed result.
+
+[Outcome, comparison and next priorities](../research/mods/csc-ai-calibrated-continents-20261115.md),
+[compact measurements and identities](../research/mods/csc-ai-calibrated-continents-20261115.json).

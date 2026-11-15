@@ -1,5 +1,15 @@
 # CSC AI roadmap
 
+**Latest natural250 result —1.4/1.6/1.8,15 November:**23 foundations, all Base/+3+,
+10 at+4+, five both materials;63/63 native comparisons match. **1.5** has two
+fresh-world purchases followed by Tailors foundations (12/39-turn delays).
+At250: eight Storekeepers and two Sacristans; native audit records793 chain-turns.
+Prioritise **2.1** Harbor/customer layouts, **1.1/1.2** both-material opportunities
+and repair latency alongside existing **2.2** protection. No further bid increase
+is justified by this result. Completed play/censuses survive a separate endpoint
+diagnostic error corrected offline. No active game or upstream PR.
+[Results and interrupted attempts](../research/mods/csc-ai-calibrated-continents-20261115.md).
+
 **1.4/1.6/1.8 implemented calibration,15 November:** native context, item timing
 and site-cost residuals feed the model; economic income and future-investment
 weighting are separate. Smooth native-control references, quality caps and
@@ -8,8 +18,8 @@ timing-aware spatial preference make+4 competitive while bounding+2. Shared
 Online50:8 foundations versus4 in the matched prior version, all Base,7 at+3+,
 3 at+4+;8/8 exact native bids. Mature200 zero-turn inspection shows1050 weak
 versus3020–3264 strong bids;98 structural rows match. Tests and exit/restoration
-pass. No upstream PR. Fresh calibrated Continents Online250 is running with
-15-minute controller checks and full post-game analysis.
+pass. No upstream PR. Fresh calibrated Continents Online250 has completed with
+15-minute controller checks and post-game analysis.
 [Predeclared run](../research/mods/csc-ai-calibrated-continents-20261115.md).
 Next broaden natural outcome calibration
 and address customer/Spec/repair follow-through. GPP, trade, specialist staffing

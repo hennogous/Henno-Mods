@@ -1,5 +1,17 @@
 # Current CSC AI status
 
+**Completed calibrated Continents250,15 November —1.4/1.6/1.8:**23 foundations
+(13B/10T), all Base/+3+,10 at+4+, five both materials.63/63 native best bids match;
+two Tailors footprints are bought then founded. At250:22 completed,21 working
+Base suppliers,19 completed mapped customers,20 working Stage2 producers,
+eight Storekeepers and two Sacristans. Native audit records793 Storekeeper
+chain-turns through249, four chains over100. No Tailors Harbor/Dockmaster.
+Ten supplier pillages and long repair lapses motivate follow-up; both-material
+placement remains5/23. All ten censuses verify, exit0/prefs restored. Extra
+endpoint diagnostic rejects valid zero Production; corrected/tested offline,
+natural250 autosave preserved. No active game or upstream PR.
+[Results and next priorities](../research/mods/csc-ai-calibrated-continents-20261115.md).
+
 **1.4/1.6/1.8 native valuation and calibration implemented and qualified.**
 Native site costs, actual horizon/discount and stock construction estimates now
 feed the shared CSC ledger. Future-income investment weights remain separate
@@ -11,7 +23,7 @@ zero recorded resource losses/faults. Both sessions close/restored exit0.
 Zero-turn mature200 inspection matches98 structural rows: weak+2 bids1050,
 strong+4 bids3020–3264 against late medium native1920–2616.79 Lua economic
 checks,38 integration/continuation checks,243 native checks and Runtime checks pass.
-No upstream PR. A fresh calibrated Continents Online250 run is active; see the
+No upstream PR. The fresh calibrated Continents Online250 run is now complete; see the
 [predeclared run protocol](../research/mods/csc-ai-calibrated-continents-20261115.md).
 Next: broader ordinary-game outcome/late-cap calibration,
 customer/material follow-through, plus remaining GPP/trade/specialist/later-Service
