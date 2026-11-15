@@ -97,31 +97,102 @@ end
 
 function E.Snapshot(player,placement,ui)
     local available,reason=E.Available();if not available then return nil,reason end
-    local snapshot=F.New(player,placement,ui)
+    -- Actual initialized engine parameters, including speed scaling. Older CE
+    -- retains the previous explicit Online calibration; new APIs are adopted
+    -- together so site costs and ready-time pricing share one context.
+    local context
+    if type(CE_AIEvaluationContext)=='function'and type(CE_AIDistrictSiteAdjustment)=='function'then
+        local ok,raw=pcall(CE_AIEvaluationContext)
+        if not ok or type(raw)~='string'then return nil,'Native evaluation context unavailable'end
+        local function field(name)return tonumber(raw:match('"'..name..'":(%d+)'))end
+        context={horizon=field('ordinaryHorizon'),discountQ8=field('discountQ8'),nativeSite=true}
+        if not context.horizon or not context.discountQ8 then return nil,'Incomplete native evaluation context'end
+    end
+    local snapshot=F.New(player,placement,ui,context)
+    snapshot.evaluationContext=context or{horizon=50,discountQ8=4*256,nativeSite=false}
+    local discount=snapshot.evaluationContext.discountQ8
     local quotes={};local count=0
-    snapshot.Price=function(stream,horizon)
-        local amount=stream.amount
+    local function rawPrice(stream,horizon,amount)
+        local yield=stream.yield
+        horizon=math.min(horizon,stream.finish or horizon)
+        if stream.ready>=horizon then return 0 end
+        if yield=='GROWTH'or yield=='NAVAL_PRODUCTION_PERCENT'then
+            local city=snapshot.cities[stream.city]
+            local base
+            if city then
+                if yield=='GROWTH'then base=city.foodSurplus else base=city.navalProduction end
+            end
+            if base==nil then return nil end
+            -- A transparent utility proxy, not a gameplay Food/Production
+            -- grant: +10% growth is valued as current surplus*10%, and naval
+            -- Production requires observed eligible ship work. No whole-city
+            -- +20% industrial output is invented for Dockmaster.
+            amount=math.max(0,base)*amount/100
+            yield=yield=='GROWTH'and'YIELD_FOOD'or'YIELD_PRODUCTION'
+        end
         local units=amount>=0 and math.floor(amount*256+.5)or-math.floor(-amount*256+.5)
-        local key=table.concat({stream.city,stream.yield,units,stream.ready,horizon,tostring(stream.fixed==true)},':')
+        local key=table.concat({stream.city,yield,units,stream.ready,horizon,tostring(stream.fixed==true)},':')
         if quotes[key]~=nil then return quotes[key]end
         local value
-        if stream.yield=='AMENITY'then
-            value=CE_AIAmenityStreamValue(snapshot.id,stream.city,amount,stream.ready,horizon,4*256)
+        if yield=='AMENITY'then
+            value=CE_AIAmenityStreamValue(snapshot.id,stream.city,amount,stream.ready,horizon,discount)
         else
-            local definition=GameInfo.Yields[stream.yield]
+            local definition=GameInfo.Yields[yield]
             if not definition then return nil end
             if stream.fixed then
-                value=CE_AIYieldFixedValue(snapshot.id,stream.city,definition.Index,units,stream.ready,4*256)
+                value=CE_AIYieldFixedValue(snapshot.id,stream.city,definition.Index,units,stream.ready,discount)
             else
-                value=CE_AIYieldStreamValue(snapshot.id,stream.city,definition.Index,units,stream.ready,horizon,4*256)
+                value=CE_AIYieldStreamValue(snapshot.id,stream.city,definition.Index,units,stream.ready,horizon,discount)
             end
         end
         -- Unknown is not cached as zero and cannot produce a final replacement.
-        -- Price/discount policy is explicit: a50-turn window and4.0 discount,
-        -- matching the qualified native fixture. These are initial calibration
-        -- assumptions, not a claim to reproduce every city's native horizon.
+        -- Memoize only successful native Q8 quotes inside this publication.
+        -- Costs/amenities use their own native routes; no yield is multiplied
+        -- twice by its DefaultValue or the player's strategic preference.
         if type(value)=='number'or type(value)=='integer'then quotes[key]=value;count=count+1 end
         return value
+    end
+    snapshot.Price=function(stream,horizon)
+        local raw=rawPrice(stream,horizon,stream.amount)
+        if raw==nil then return nil end
+        local depth=stream.forecastDepth or 0
+        if not context or depth<=0 or stream.amount<=0 or stream.yield=='AMENITY'or stream.fixed then return raw,raw end
+        -- GameCore BuildingValue weights an early building-income subtotal by
+        -- 1+2d, then deducts upkeep and discounts it. CSC maps its missing
+        -- producer's ordinary exchange income to that effective-income slot.
+        -- This mapping is our bidding policy: native's modifier interpreter
+        -- does not apply this multiplier to every CSC modifier automatically.
+        -- Actual ledger amounts/valueQ8 remain unchanged. Missing customers,
+        -- unknown unlocks and out-of-window benefits still earn nothing.
+        local bid=rawPrice(stream,horizon,stream.amount*(1+2*depth))
+        if bid==nil then return nil end
+        return raw,bid
+    end
+    if context and type(snapshot.Site)=='function'then
+        local readSite=snapshot.Site
+        snapshot.Site=function(...)
+            local site,message=readSite(...)
+            if site and not site.comparisonReferenceQ8 then
+                -- Scale a location preference for actual construction delay.
+                -- The empirical reference includes ordinary construction; use
+                -- one fifth of its horizon as that reference delay. A site
+                -- ready near the horizon cannot earn a full spatial premium.
+                -- Two unit-stream quotes share the existing per-city cache.
+                local referenceReady=math.floor(site.horizon/5)
+                local unit={city=site.city,yield='YIELD_PRODUCTION',amount=1,ready=referenceReady}
+                local normal=rawPrice(unit,site.horizon,1)
+                unit.ready=site.quarterReady
+                local current=rawPrice(unit,site.horizon,1)
+                if normal and normal>0 and current then
+                    -- Publish the two cached facts atomically. A failed unit
+                    -- quote must not leave a reference with a fabricated1.0
+                    -- readiness on the next read of this cached site.
+                    site.sitingReadiness=math.min(1.25,math.max(0,current/normal))
+                    site.comparisonReferenceQ8=E.NativeInvestmentReference(Game.GetCurrentGameTurn(),site.horizon)
+                else return nil,'Siting readiness quote unavailable'end
+            end
+            return site,message
+        end
     end
     snapshot.QuoteCount=function()return count end
     snapshot.planState=planState(snapshot.id)
@@ -149,11 +220,10 @@ function E.Snapshot(player,placement,ui)
 end
 
 -- Spatial quality is a native-utility preference beside the monetary ledger,
--- not additional gameplay adjacency. Henno's15 November map-planning revision
--- keeps +2 at48 and increases +3/+4/+5/+6+ to144/288/432/576. Both material
--- classes add64; extra Base/Spec deposits add24/16 each, capped at two extras.
--- These are initial bounded estimates: strengthen durable map quality without
--- allowing a cluster or several speculative customers to grow without limit.
+-- not additional gameplay adjacency. Qualified native context uses the smooth
+-- control-district reference and quality caps below. Older CE retains its
+-- previous48/144/288/432/576 utility bands explicitly. Both material classes
+-- add64; extra Base/Spec deposits add24/16 each, capped at two extras.
 -- Prospective customer terrain adds at most96 in total; actual transactions
 -- still require completed customer districts in the economic ledger.
 -- They do not make an otherwise losing investment profitable or guarantee it
@@ -207,6 +277,25 @@ function E.SpatialPlan(options)
     return best
 end
 
+function E.NativeInvestmentReference(turn,horizon)
+    -- Native-control medians, not a new gameplay yield or universal native
+    -- formula. The three-map exact+2 Campus/Hub/Theater samples anchor ordinary
+    -- investment near600/1200/2100 Q8-utility points in Online early/mid/late
+    -- periods. Smooth interpolation avoids abrupt bid jumps during a retained
+    -- request. Scale the clock by the actual native horizon for other speeds.
+    local online=turn*50/horizon
+    local value
+    if online<=38 then value=600
+    elseif online<=113 then value=600+(online-38)*600/75
+    elseif online<200 then value=1200+(online-113)*900/87
+    else value=2100 end
+    -- Income utility also grows with the native time horizon. Keep the Online
+    -- reference in proportion when the engine supplies Standard/longer speed.
+    -- Live calibration remains Online; CE's overall score ceiling still bounds
+    -- the resulting bids on every speed.
+    return math.floor(value*256*horizon/50+.5)
+end
+
 function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     if quote.adjacency+1e-6<E.MinimumAdjacency or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
     -- Only named supply loss enters the complete ledger. Old no-host/readiness
@@ -215,10 +304,22 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     -- does not acquire a hidden128-utility penalty when land becomes owned.
     local penalty=math.max(0,protectionQ8 or 0)
     if coversOwnMaterial then penalty=math.max(penalty,256*256)end
-    local value=quote.valueQ8-penalty
-    if value<=0 then return value,'economics'end
+    local economic=quote.valueQ8-penalty
+    if economic<=0 then return economic,'economics'end
+    local value=(quote.bidValueQ8 or quote.valueQ8)-penalty
     local premium
-    if quote.adjacency<3 then
+    local reference=site.comparisonReferenceQ8
+    if reference then
+        -- Spatial policy, kept separate from actual economic income. At the
+        -- early600 reference, +2/+3/+4 preferences are48/240/600. Strong +4
+        -- quarters with positive economics can beat typical +2 native bids;
+        -- +2 sites retain a useful offer but cannot inflate into top-tier bids
+        -- merely from a later generic amenity forecast. Actual native units,
+        -- timing, material losses and production competition stay in force.
+        local adjacency=math.min(6,quote.adjacency)
+        local fraction=adjacency<3 and(.08+.32*(adjacency-2))or(.4+.6*(adjacency-3))
+        premium=reference*fraction*(site.sitingReadiness or 1)
+    elseif quote.adjacency<3 then
         -- Fractional adjacency can arise through yield multipliers. Interpolate
         -- 48->144 between +2/+3 rather than introducing a jump at the boundary.
         premium=E.MinimumSitingBonusQ8+(quote.adjacency-2)*(144*256-E.MinimumSitingBonusQ8)
@@ -230,9 +331,18 @@ function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
         materials=materials+64+math.min(2,site.specialtyCount-1)*16
     end
     local layout=site.spatialPlan and site.spatialPlan.preference or 0
-    local bid=math.floor(math.max(-4096*256,math.min(4096*256,value+premium+(materials+layout)*256))+.5)
+    local proposed=value+premium+(materials+layout)*256
+    local qualityCap
+    if reference then
+        local extra=math.max(0,math.min(4,quote.adjacency-2))
+        qualityCap=reference*(.5+.65*math.min(1,extra)+.6*math.max(0,extra-1))
+        proposed=math.min(proposed,qualityCap)
+    end
+    local bid=math.floor(math.max(-4096*256,math.min(4096*256,proposed))+.5)
     return bid,'positive',{adjacencyQ8=math.floor(premium+.5),materialsQ8=materials*256,
-        layoutQ8=layout*256,penaltyQ8=penalty}
+        layoutQ8=layout*256,penaltyQ8=penalty,forecastQ8=(quote.bidValueQ8 or quote.valueQ8)-quote.valueQ8,
+        qualityCapQ8=qualityCap and math.floor(qualityCap+.5),
+        capAdjustmentQ8=bid-value-math.floor(premium+.5)-(materials+layout)*256}
 end
 
 local function siteKey(city,district,plot)return city..':'..district..':'..plot end
@@ -335,7 +445,11 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
     if facts then
         site=C and C.PrepareSite(plan,facts)or{}
         if not C then for k,v in pairs(facts)do site[k]=v end;site.footprintCostMode='current'end
-        site.purchaseGold=invoice
+        -- The native site residual already includes the native land invoice
+        -- on a frontier footprint. Keep the UI invoice for affordability and
+        -- ownership diagnostics, but do not charge a second Gold payment.
+        site.purchaseGold=site.nativeSiteIncludesPurchase and 0 or invoice
+        if site.nativeSiteAdjustmentQ8~=nil then site.footprintCostMode='native_site'end
         site.spatialPlan=E.SpatialPlan(snapshot.CustomerOptions
             and snapshot.CustomerOptions(city,plot,profile,protected)or{})
         local ok,value,message=pcall(M.Forecast,site,snapshot.Price,function(alternative)
@@ -345,6 +459,8 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         if quote then
             bid,details.reason,parts=E.PlacementValue(quote,site,protectionQ8,covers)
             details.economicQ8=quote.valueQ8;details.afterProtectionQ8=quote.valueQ8-(parts and parts.penaltyQ8 or math.max(protectionQ8 or 0,covers and 256*256 or 0))
+            details.forecastAdjustmentQ8=quote.forecastAdjustmentQ8 or 0
+            details.nativeSiteAdjustmentQ8=site.nativeSiteAdjustmentQ8
             details.adjacency=quote.adjacency;details.base=site.baseCount
             details.footprintWorkers=site.footprintWorkers
             details.footprintMode=site.footprintCostMode;details.displacementQ8=0;details.purchaseQ8=0
@@ -463,7 +579,7 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         else ignoredLegacy[id]=math.max(ignoredLegacy[id]or 0,-(entry.delta or 0))end
     end
     local stats={evaluated=0,final=0,unknown=0,buyerBlocked=0,streams=0,omissions=0,
-        qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,carried=0,managed=true,
+        qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,materialDeferred=0,carried=0,managed=true,
         capacityReady=0,capacityFull=0,capacityUnknown=0}
     local player,pid=snapshot.player,snapshot.id
     snapshot.planState=planState(pid)
@@ -513,12 +629,31 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                         stats.evaluated=stats.evaluated+1
                         local id=siteKey(city:GetID(),profile.district.Index,plot:GetIndex())
                         local geometry=snapshot.Geometry(city,plot,profile)
+                        local supply=geometry.upper>=E.MinimumAdjacency and snapshot.Supply and snapshot.Supply(plot,profile)
                         if geometry.upper+1e-6<E.MinimumAdjacency then
                             stats.qualityDeferred=stats.qualityDeferred+1
                             evaluations[id]={reason='below_adjacency',adjacency=geometry.upper,owner=owner}
                             if activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())then
                                 C.Withdraw(snapshot.planState,city:GetID(),profile.district.Index,plot:GetIndex(),'below_adjacency')
                             end
+                        elseif supply and #supply.base==0 then
+                            -- This same Base gate is enforced after valuation.
+                            -- Apply it cheaply first to avoid evaluating native
+                            -- site costs for a geometry made only of Spec.
+                            stats.qualityDeferred=stats.qualityDeferred+1
+                            evaluations[id]={reason='no_base',adjacency=geometry.upper,owner=owner}
+                            local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
+                            if C and plan then C.Withdraw(snapshot.planState,plan.city,plan.district,plan.plot,'no_base')end
+                        elseif protectedPlots[plot:GetIndex()]then
+                            -- An empirical spatial preference must never buy
+                            -- its way through the existing protected-material
+                            -- map. Customer planning already honours it; new
+                            -- Quarter planning uses that same cross-quarter
+                            -- guard before any expensive valuation or invoice.
+                            stats.materialDeferred=stats.materialDeferred+1
+                            evaluations[id]={reason='protected_material',adjacency=geometry.upper,owner=owner}
+                            local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
+                            if C and plan then C.Withdraw(snapshot.planState,plan.city,plan.district,plan.plot,'protected_material')end
                         else
                             local invoice=0
                             if frontier then invoice=snapshot.ui.GetRawPlotPurchaseQuote(pid,city:GetID(),plot:GetIndex())end
@@ -558,6 +693,13 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
                                                 carried=evaluation.carried,publishedTurn=Game.GetCurrentGameTurn(),
                                                 adjacency=quote and quote.adjacency or geometry.upper,
                                                 economicQ8=quote and quote.valueQ8,preferenceQ8=quote and bid-quote.valueQ8,
+                                                forecastAdjustmentQ8=quote and quote.forecastAdjustmentQ8,
+                                                nativeSiteAdjustmentQ8=quote and quote.siteAdjustmentQ8,
+                                                evaluationHorizon=site and site.horizon,
+                                                evaluationDiscountQ8=snapshot.evaluationContext and snapshot.evaluationContext.discountQ8,
+                                                comparisonReferenceQ8=site and site.comparisonReferenceQ8,
+                                                qualityCapQ8=parts and parts.qualityCapQ8,
+                                                qualityCapAdjustmentQ8=parts and parts.capAdjustmentQ8,
                                                 adjacencyPreferenceQ8=parts and parts.adjacencyQ8,materialPreferenceQ8=parts and parts.materialsQ8,
                                                 layoutPreferenceQ8=parts and parts.layoutQ8,protectionPenaltyQ8=parts and parts.penaltyQ8,
                                                 customerLayout=site and site.spatialPlan.links or{},
@@ -614,9 +756,12 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     local keys={};for key in pairs(groups)do keys[#keys+1]=key end;table.sort(keys)
     for _,key in ipairs(keys)do for rank,entry in ipairs(groups[key])do
         local first,second=entry.customerLayout[1],entry.customerLayout[2]
-        print(string.format('CSC_AI_SPATIAL_BID turn=%d player=%d city=%d district=%d plot=%d rank=%d adjacency=%.3f economicQ8=%d adjacencyPreferenceQ8=%d materialPreferenceQ8=%d layoutPreferenceQ8=%d protectionPenaltyQ8=%d finalQ8=%d customerPlot1=%d customerType1=%d customerPlot2=%d customerType2=%d',
+        print(string.format('CSC_AI_SPATIAL_BID turn=%d player=%d city=%d district=%d plot=%d rank=%d adjacency=%.3f economicQ8=%d forecastAdjustmentQ8=%d nativeSiteAdjustmentQ8=%d horizon=%d discountQ8=%d referenceQ8=%d qualityCapQ8=%d capAdjustmentQ8=%d adjacencyPreferenceQ8=%d materialPreferenceQ8=%d layoutPreferenceQ8=%d protectionPenaltyQ8=%d finalQ8=%d customerPlot1=%d customerType1=%d customerPlot2=%d customerType2=%d',
             Game.GetCurrentGameTurn(),pid,entry.city,entry.district,entry.plot,rank,entry.adjacency,
-            entry.economicQ8,entry.adjacencyPreferenceQ8,entry.materialPreferenceQ8,
+            entry.economicQ8,entry.forecastAdjustmentQ8 or 0,entry.nativeSiteAdjustmentQ8 or 0,
+            entry.evaluationHorizon or 50,entry.evaluationDiscountQ8 or 1024,
+            entry.comparisonReferenceQ8 or 0,entry.qualityCapQ8 or 0,entry.qualityCapAdjustmentQ8 or 0,
+            entry.adjacencyPreferenceQ8,entry.materialPreferenceQ8,
             entry.layoutPreferenceQ8,entry.protectionPenaltyQ8,entry.finalQ8,
             first and first.plot or -1,first and first.district or -1,
             second and second.plot or -1,second and second.district or -1))
@@ -627,8 +772,10 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
         -- than claiming a measured zero-cost pass; host turn timings remain
         -- in the shared controller journal.
         local elapsed=started and clock()-started
-        print(string.format('CSC_AI_SPATIAL_WORK turn=%d player=%d maps=%d adjacencyReads=%d unavailable=%d laggedReads=%d options=%d economyMs=%.3f',
+        local costs=snapshot.nativeSiteStats or{}
+        print(string.format('CSC_AI_SPATIAL_WORK turn=%d player=%d maps=%d adjacencyReads=%d unavailable=%d laggedReads=%d options=%d nativeSiteQuotes=%d emptySiteQuotes=%d unavailableSiteQuotes=%d economyMs=%.3f',
             Game.GetCurrentGameTurn(),pid,spatial.maps,spatial.adjacencyReads,spatial.unavailable,spatial.laggedReads,spatial.options,
+            costs.native or 0,costs.empty or 0,costs.unavailable or 0,
             elapsed and elapsed>0 and elapsed*1000 or -1))
     end
     return result,stats

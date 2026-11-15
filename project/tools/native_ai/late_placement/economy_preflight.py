@@ -64,3 +64,11 @@ print('CSC_ECONOMY_FACTS_OK')
 ''','CSC_AI_BakersGameplay','read-only-economy-facts-preflight')
     (output/'economy-facts-preflight.txt').write_text(facts,encoding='utf-8')
     require('CSC_ECONOMY_FACTS_OK' in facts,'Economic fact binding incomplete')
+    # Optional new quote APIs are qualified through the same owned controller.
+    # Legacy packages keep their original preflight. This is read-only data
+    # capture; the main CSC module remains the only production/placement policy.
+    capability=controller.cmd("print('CSC_NATIVE_VALUATION_API='..tostring(type(CE_AIEvaluationContext)=='function'))",
+        'GameCore_Tuner','native-valuation-api-presence')
+    if 'CSC_NATIVE_VALUATION_API=true' in capability:
+        from native_valuation_preflight import inspect as inspect_native
+        inspect_native(controller,output)

@@ -1,0 +1,57 @@
+{
+  "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-native-valuation-20261115\\fresh25-01\\native-valuation-preflight.json",
+  "source_sha256": "30abd28aba8201220f85dd70aaa0151328c6eb0e1c6fb82f99498afdf396b842",
+  "turn": 25,
+  "ce_sha256": "1be0545b94b35adaf582df2d70e827ecdb8014ccf91b59c5cc9f9b72fdc06bfc",
+  "scope": "Read-only real-map quotes, no live winner claim; raw economics pre-calibration",
+  "records": [
+    {
+      "player": 1,
+      "city": 65536,
+      "plot": 1061,
+      "quarter": "BAKERS",
+      "adjacency": 2,
+      "base": 1,
+      "spec": 1,
+      "valueQ8": 5796,
+      "bidValueQ8": 5796,
+      "quarterReady": 2
+    },
+    {
+      "player": 3,
+      "city": 65536,
+      "plot": 2457,
+      "quarter": "BAKERS",
+      "adjacency": 2,
+      "base": 1,
+      "spec": 1,
+      "valueQ8": 4790,
+      "bidValueQ8": 4790,
+      "quarterReady": 5
+    },
+    {
+      "player": 1,
+      "city": 65536,
+      "plot": 985,
+      "quarter": "BAKERS",
+      "adjacency": 4,
+      "base": 1,
+      "spec": 1,
+      "valueQ8": 12619,
+      "bidValueQ8": 12619,
+      "quarterReady": 2
+    },
+    {
+      "player": 4,
+      "city": 131073,
+      "plot": 1383,
+      "quarter": "BAKERS",
+      "adjacency": 4,
+      "base": 1,
+      "spec": 0,
+      "valueQ8": 12873,
+      "bidValueQ8": 12873,
+      "quarterReady": 10
+    }
+  ]
+}

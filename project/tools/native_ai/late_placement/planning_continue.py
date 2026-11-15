@@ -121,7 +121,7 @@ class ContinuationPlan:
     saves: Path
 
 
-def prepare(source, output, at, through, dependencies):
+def prepare(source, output, at, through, dependencies, *, read_only=False):
     """Read and qualify all provenance before any install, launch or console.
 
     The failed run may have failure.json or an abrupt exit: supported closure
@@ -131,8 +131,13 @@ def prepare(source, output, at, through, dependencies):
     source, output = Path(source).resolve(strict=True), Path(output).resolve()
     dependencies = Path(dependencies).resolve(strict=True)
     require(not output.exists() and source.is_dir(), 'New continuation output required')
-    require(type(at) is int and type(through) is int and at % 25 == 0 and
-            0 < at < through <= 250 and through in (50, 200, 250), 'Unsupported continuation window')
+    # Read-only diagnostics may reuse the exact checkpoint without advancing
+    # its clock. The ordinary continuation route keeps its original strict
+    # forward window. Neither mode relaxes source/save/package qualification.
+    typed=type(at)is int and type(through)is int
+    window=typed and(0<at==through<=250 if read_only else 0<at<through<=250)
+    require(typed and at % 25 == 0 and
+            window and through in (50, 200, 250), 'Unsupported continuation window')
     require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')

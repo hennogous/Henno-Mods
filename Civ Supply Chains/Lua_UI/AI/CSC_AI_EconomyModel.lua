@@ -21,7 +21,8 @@ function M.PopulationPayout(target, population)
 end
 
 local function ledger(site, second)
-    local result={streams={},investments={},omissions={},byBuilding={},alternative=second and second.type,
+    local result={streams={},investments={},omissions={},byBuilding={},futureDepths={},alternative=second and second.type,
+        siteAdjustmentQ8=site.nativeSiteAdjustmentQ8 or 0,
         adjacency=(site.adjacency or 0)+(second and second.terrain or 0)}
     local seen,clocks,populationFlows,customerTimes={},{},{},{}
     local function emit(id,yield,amount,ready,city,building)
@@ -50,6 +51,7 @@ local function ledger(site, second)
             clocks[recipient]=ready
         else omit(definition.type,'Unknown unlock, construction or prerequisite timing');return INF end
         result.byBuilding[stamp]=ready
+        if not definition.working then result.futureDepths[definition.type]=definition.forecastDepth or 0 end
         if ready>0 then result.investments[#result.investments+1]={type=definition.type,
             ready=ready,cost=definition.cost or 0,city=recipient} end
         -- Production cost is represented by serial construction delay, matching
@@ -72,11 +74,11 @@ local function ledger(site, second)
         result.streams[#result.streams].fixed=true
     end
     local stages={}
-    local function populationFlow(id,yield,target,ready,city,population,property)
+    local function populationFlow(id,yield,target,ready,city,population,property,building)
         if not present(ready)or ready>=site.horizon or target<=0 then return end
         local key=city..':'..yield..':'..tostring(property or id)
         local list=populationFlows[key]or{};populationFlows[key]=list
-        list[#list+1]={id=id,yield=yield,target=target,ready=ready,city=city,population=population}
+        list[#list+1]={id=id,yield=yield,target=target,ready=ready,city=city,population=population,building=building}
     end
     -- A city's single production queue is shared by producers, their missing
     -- prerequisite buildings and customers. Finish a stage's customer links
@@ -142,9 +144,10 @@ local function ledger(site, second)
                 -- Gameplay rounds the sum once per recipient/property, not
                 -- once per edge. Emit changes in that aggregate at each ready
                 -- time, so adding a second venue cannot round twice.
-                populationFlow('sale-production','YIELD_PRODUCTION',quantity,start,site.city,site.population,customer.sellerProperty)
-                populationFlow('sale-gold','YIELD_GOLD',quantity,start,site.city,site.population,customer.sellerProperty)
-                populationFlow('sale-return',outward,quantity,start,customer.city,customer.population or 0,customer.customerProperty)
+                local owner=site.third and site.third.type
+                populationFlow('sale-production','YIELD_PRODUCTION',quantity,start,site.city,site.population,customer.sellerProperty,owner)
+                populationFlow('sale-gold','YIELD_GOLD',quantity,start,site.city,site.population,customer.sellerProperty,owner)
+                populationFlow('sale-return',outward,quantity,start,customer.city,customer.population or 0,customer.customerProperty,owner)
                 sellerAmount,buyerAmount=0,0
             elseif stage==4 then
                 quantity=math.floor((customer.population or 0)/5)
@@ -152,16 +155,48 @@ local function ledger(site, second)
             else
                 local rates=customer.rates or {production=1,gold=1,outward=1}
                 sellerAmount,buyerAmount=quantity,quantity
-                emit('sale-production:'..customer.plot..':'..stage..':'..tostring(customer.building),'YIELD_PRODUCTION',rates.production*quantity,start,site.city)
-                emit('sale-gold:'..customer.plot..':'..stage..':'..tostring(customer.building),'YIELD_GOLD',rates.gold*quantity,start,site.city)
-                emit('sale-return:'..customer.plot..':'..stage..':'..tostring(customer.building),outward,rates.outward*quantity,start,customer.city)
+                local producer=stage==2 and second or stage==3 and site.third or site.fourth
+                local owner=producer and producer.type
+                emit('sale-production:'..customer.plot..':'..stage..':'..tostring(customer.building),'YIELD_PRODUCTION',rates.production*quantity,start,site.city,owner)
+                emit('sale-gold:'..customer.plot..':'..stage..':'..tostring(customer.building),'YIELD_GOLD',rates.gold*quantity,start,site.city,owner)
+                emit('sale-return:'..customer.plot..':'..stage..':'..tostring(customer.building),outward,rates.outward*quantity,start,customer.city,owner)
                 sellerAmount,buyerAmount=0,0
             end
             local key=customer.plot..':'..stage..':'..tostring(customer.building)
-            emit('sale-production:'..key,'YIELD_PRODUCTION',sellerAmount,start,site.city)
-            emit('sale-gold:'..key,'YIELD_GOLD',sellerAmount,start,site.city)
-            emit('sale-return:'..key,outward,buyerAmount,start,customer.city)
+            local producer=stage==2 and second or stage==3 and site.third or site.fourth
+            local owner=producer and producer.type
+            emit('sale-production:'..key,'YIELD_PRODUCTION',sellerAmount,start,site.city,owner)
+            emit('sale-gold:'..key,'YIELD_GOLD',sellerAmount,start,site.city,owner)
+            emit('sale-return:'..key,outward,buyerAmount,start,customer.city,owner)
             if customer.investment then result.investments[#result.investments+1]=customer.investment end
+        end
+    end
+    -- Services are gated benefits, not extra unconditional Quarter yields.
+    -- A complete existing customer footprint, scheduled buyer/producer, one
+    -- credible Base supplier and civic ETA must all fit. Keep percentage units
+    -- here; the decision adapter prices growth/naval capacity in yield utility.
+    -- One recipient benefit is counted once even with duplicate mapping rows.
+    if site.service then
+        local supplierReady=INF
+        for _,supplier in ipairs(site.suppliers or{})do if supplier.kind=='base'then
+            supplierReady=math.min(supplierReady,supplier.ready or INF)
+        end end
+        local recipients={}
+        for _,customer in ipairs(site.customers or{})do
+            if customer.stage==2 and customer.complete and customer.serviceInputKnown~=false
+                and not customer.serviceActive and not recipients[customer.city]then
+                local ready=maximum(ready2,customerTimes[customer]or INF,supplierReady,site.service.unlock or INF)
+                if present(ready)and ready<site.horizon then
+                    emit('service:'..site.service.kind..':'..customer.city,site.service.kind,
+                        site.service.amount,ready,customer.city)
+                    if site.service.kind=='NAVAL_PRODUCTION_PERCENT'then
+                        -- An observed ship queue is evidence for a short use,
+                        -- not fifty turns of uninterrupted naval construction.
+                        result.streams[#result.streams].finish=math.min(site.horizon,ready+10)
+                    end
+                    recipients[customer.city]=true
+                end
+            end
         end
     end
     for key,flows in pairs(populationFlows)do
@@ -172,27 +207,40 @@ local function ledger(site, second)
             target=target+flow.target
             if i==#flows or flows[i+1].ready~=flow.ready then
                 local payout=M.PopulationPayout(target,flow.population)
-                emit('population:'..key..':'..flow.ready,flow.yield,payout-paid,flow.ready,flow.city)
+                emit('population:'..key..':'..flow.ready,flow.yield,payout-paid,flow.ready,flow.city,flow.building)
                 paid=payout
             end
         end
     end
-    -- Specialist slots and missing trade/Service valuation are not free income.
+    -- Specialist slots, trade and later Services are not free assumed income.
     -- Facts/adapter diagnostics expose these omissions; retain the separate
     -- Service-aware nomination policy until those economic channels are priced.
     for _,reason in ipairs(site.omissions or {})do omit('coverage',reason)end
+    -- Attribution is metadata for a decision adapter, never extra production.
+    -- Existing investments, amenities, costs and immediate site yields receive
+    -- no future-building depth premium. The adapter may map positive ordinary
+    -- income of missing buildings to native-style effective building income.
+    for _,stream in ipairs(result.streams)do
+        if stream.amount>0 and stream.yield:find('YIELD_',1,true)==1 and stream.building
+            and result.futureDepths[stream.building]~=nil then
+            stream.forecastDepth=result.futureDepths[stream.building]
+        end
+    end
     return result
 end
 
 function M.Price(result,price,horizon)
-    local total=0
+    local total,bid=result.siteAdjustmentQ8 or 0,result.siteAdjustmentQ8 or 0
     for _,stream in ipairs(result.streams)do
-        local value=price(stream, horizon)
+        local value,weighted=price(stream, horizon)
         if not numeric(value) or value~=math.floor(value)then
             return nil,'Native price unavailable for '..stream.id
         end
-        stream.valueQ8=value;total=total+value
+        if weighted==nil then weighted=value end
+        if not numeric(weighted)or weighted~=math.floor(weighted)then return nil,'Native bid price unavailable for '..stream.id end
+        stream.valueQ8=value;stream.bidValueQ8=weighted;total=total+value;bid=bid+weighted
     end
+    result.bidValueQ8=bid;result.forecastAdjustmentQ8=bid-total
     return total
 end
 
@@ -206,7 +254,9 @@ function M.Forecast(site,price,placementObjective)
         local result=ledger(plan,second or nil)
         local value,error=M.Price(result,price,site.horizon)
         if not value then return nil,error end
-        result.valueQ8=value;return result
+        result.valueQ8=value
+        result.selectionQ8=placementObjective and placementObjective(result)or value
+        return result
     end
     -- Optional later producers cannot make a good Stage2 investment worse.
     -- Four bounded stage plans include 2, 2+3, 2+4 and 2+3+4; already working
@@ -227,7 +277,7 @@ function M.Forecast(site,price,placementObjective)
                 for j,v in ipairs(plan.customers)do if j~=i then reduced.customers[#reduced.customers+1]=v end end
                 local alternative,message=evaluate(reduced,second)
                 if not alternative then return nil,message end
-                if alternative.valueQ8>=result.valueQ8 then plan,result=reduced,alternative end
+                if alternative.selectionQ8>=result.selectionQ8 then plan,result=reduced,alternative end
             end
         end
         -- Placement must compare the final bid of each feasible producer plan.

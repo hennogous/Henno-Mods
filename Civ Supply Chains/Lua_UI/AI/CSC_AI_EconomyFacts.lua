@@ -15,6 +15,15 @@ local function number(object,name,...)
     if ok and finite(value)then return value end
 end
 local function flag(v)return v==true or v==1 end
+local function growthSurplus(city)
+    if type(city.GetGrowth)~='function'then return nil end
+    local growth=city:GetGrowth()
+    if not growth or type(growth.GetFoodSurplus)~='function'then return nil end
+    local ok,value=pcall(growth.GetFoodSurplus,growth)
+    -- Starvation is a known zero positive-growth opportunity, not missing
+    -- data. Keep signed surplus separate from nonnegative costs/IDs above.
+    if ok and numeric(value)and value==value and value>-INF and value<INF then return math.max(0,value)end
+end
 
 -- Plot identity differs from costs/yields: native feature/resource/improvement
 -- getters use -1 for absence. The nonnegative number() helper above would turn
@@ -96,9 +105,10 @@ local function definitions()
     catalogue=c;return c
 end
 
-function F.New(player,placement,ui)
+function F.New(player,placement,ui,context)
     local c=definitions();local pid=player:GetID()
-    local snapshot={player=player,id=pid,cities={},districts={},supplies={},research={},sites={},quotes={}}
+    local snapshot={player=player,id=pid,cities={},districts={},supplies={},research={},sites={},quotes={},
+        nativeSiteStats={native=0,empty=0,unavailable=0}}
     local numericFacts,plotFacts={},{}
     local function cityNumber(city,kind,index)
         local key=city:GetID()..':'..kind..':'..index
@@ -110,7 +120,12 @@ function F.New(player,placement,ui)
         end
         if value==nil then
             if kind=='yield'then value=number(city,'GetYield',index)
-            else value=number(city:GetBuildQueue(),kind=='building'and'GetBuildingCost'or'GetDistrictCost',index)end
+            elseif kind=='building'or kind=='district'then
+                value=number(city:GetBuildQueue(),kind=='building'and'GetBuildingCost'or'GetDistrictCost',index)
+            elseif kind=='buildingTurns'or kind=='districtTurns'then
+                local definition=kind=='buildingTurns'and GameInfo.Buildings[index]or GameInfo.Districts[index]
+                value=definition and number(city:GetBuildQueue(),'GetTurnsLeft',definition.BuildingType or definition.DistrictType)
+            end
         end
         numericFacts[key]=value or false;return value
     end
@@ -188,9 +203,30 @@ function F.New(player,placement,ui)
         if definition and allowed(definition)then replacements[base]=definition end
     end
     local function resolve(kind)return replacements[kind]or GameInfo.Buildings[kind]end
+    local depths={}
+    local function forecastDepth(definition,visiting)
+        local kind=definition.BuildingType
+        if depths[kind]~=nil then return depths[kind]end
+        visiting=visiting or{}
+        if visiting[kind]then return 0 end
+        visiting[kind]=true
+        local first
+        for _,required in ipairs(c.prerequisites[kind]or{})do
+            local candidate=resolve(required)
+            -- Native's first-prerequisite depth is an investment heuristic.
+            -- Availability markers are not economic investments: counting a
+            -- River flag would favour Water over Wind for a fictional reason.
+            if candidate and not flag(candidate.MustPurchase)and not flag(candidate.InternalOnly)
+                and(not first or candidate.Index<first.Index)then first=candidate end
+        end
+        local depth=first and math.min(4,1+forecastDepth(first,visiting))or 0
+        visiting[kind]=nil;depths[kind]=depth;return depth
+    end
     for _,city in player:GetCities():Members()do
         local row={object=city,id=city:GetID(),population=city:GetPopulation(),queue=city:GetBuildQueue(),
-            buildings=city:GetBuildings(),production=cityNumber(city,'yield',GameInfo.Yields.YIELD_PRODUCTION.Index)}
+            buildings=city:GetBuildings(),production=cityNumber(city,'yield',GameInfo.Yields.YIELD_PRODUCTION.Index),
+            foodSurplus=growthSurplus(city),
+            navalProduction=cityNumber(city,'navalProduction',0)}
         snapshot.cities[row.id]=row
         local ds=city:GetDistricts()
         row.populationDistricts=0
@@ -308,8 +344,9 @@ function F.New(player,placement,ui)
         local cost=cityNumber(city.object,'building',definition.Index)
         local unlocked=math.max(research('tech',definition.PrereqTech),research('civic',definition.PrereqCivic))
         local b={type=definition.BuildingType,working=works,unlock=works and 0 or unlocked,cost=cost,
-            turns=cost and city.production and city.production>0 and math.max(1,math.ceil(cost/city.production))or INF,
-            maintenance=definition.Maintenance or 0}
+            turns=cityNumber(city.object,'buildingTurns',definition.Index)
+                or(cost and city.production and city.production>0 and math.max(1,math.ceil(cost/city.production))or INF),
+            maintenance=definition.Maintenance or 0,forecastDepth=forecastDepth(definition)}
         if works then return b end
         visiting=visiting or{}
         if visiting[definition.BuildingType]then b.excluded=true;return b end
@@ -480,13 +517,23 @@ function F.New(player,placement,ui)
         local placed=snapshot.districts[plot:GetIndex()]
         local exists=placed and placed.type==profile.district.Index and placed.working
         local cost=cityNumber(cityObject,'district',profile.district.Index)
+        local duration=cityNumber(cityObject,'districtTurns',profile.district.Index)
         local qUnlock=math.max(research('tech',profile.district.PrereqTech),research('civic',profile.district.PrereqCivic))
-        local qReady=exists and 0 or cost and city.production and city.production>0
-            and qUnlock+math.max(1,math.ceil(cost/city.production))or INF
-        local site={city=city.id,population=city.population,horizon=50,quarterReady=qReady,adjacency=0,
+        local qReady=exists and 0 or duration and qUnlock+math.max(1,duration)
+            or cost and city.production and city.production>0 and qUnlock+math.max(1,math.ceil(cost/city.production))or INF
+        local site={city=city.id,population=city.population,horizon=context and context.horizon or 50,quarterReady=qReady,adjacency=0,
             maintenance=profile.district.Maintenance or 0,existing=exists,materialYield=family.yield,
             direct={},suppliers={},customers={},seconds={},omissions={
-                'Future specialist staffing, trade-route changes and Service premiums are not priced in this ordinary-transaction bid'}}
+                'Future specialist staffing, trade routes, GPP and Stage3/4 Service premiums are not priced'}}
+        if context and context.nativeSite and profile.service and profile.service.civic then
+            local amount=profile.key=='BAKERS'and c.amounts.MOD_CSC_BAKERS_STAGE_2_EFFECT_GROWTH_WATER
+                or c.amounts.MOD_CSC_TAILORS_DOCKMASTER_EFFECT_ANCIENT_NAVAL_MELEE
+            local last=GameInfo.Eras and GameInfo.Eras.ERA_RENAISSANCE
+            if amount and(profile.key=='BAKERS'or last and player:GetEra()<=last.Index)then
+                site.service={kind=profile.key=='BAKERS'and'GROWTH'or'NAVAL_PRODUCTION_PERCENT',amount=amount,
+                    unlock=research('civic',profile.service.civic),property=profile.service.property}
+            end
+        end
         -- Covering a worked tile removes its observed ordinary income. This
         -- is separate from protecting deposits that sustain another Quarter.
         -- Do not invent staffing for an unworked footprint or a harvest payout.
@@ -494,7 +541,37 @@ function F.New(player,placement,ui)
         if footprint.workers==nil then return nil,'Footprint staffing unavailable'end
         site.footprintWorkers=footprint.workers
         site.footprintSignature=snapshot.FootprintSignature(plot)
-        if not exists and footprint.workers>0 then
+        if context and context.nativeSite and placed then
+            -- Existing/pillaged Quarter footprints require no acquisition or
+            -- improvement removal. Their repair/building values remain live
+            -- consumers of the model, separate from new-site native quotes.
+            site.nativeSiteAdjustmentQ8=0
+        elseif context and context.nativeSite and not exists and qReady<site.horizon then
+            -- Reuse native NetValue minus intrinsic district Value. This
+            -- retains native land/harvest/improvement accounting without
+            -- importing its Quarter yields or future-building aggregate.
+            -- Cache lasts only this publication; a missing quote is unknown.
+            local clearOwned=plot:GetOwner()==pid and site.footprintSignature:match('^%-?%d+,%-1,%-1,%-1$')
+            local ok,raw
+            if clearOwned then
+                -- Proven NetValue branch identity: owned plot, no feature,
+                -- resource, improvement or district => no site adjustment.
+                -- Avoid two redundant native district evaluations per empty
+                -- candidate. Frontier invoices and every nonempty site quote
+                -- still run through the native evaluator.
+                ok,raw=true,'{"adjustmentQ8":0,"includesPurchase":0}'
+                snapshot.nativeSiteStats.empty=snapshot.nativeSiteStats.empty+1
+            else
+                snapshot.nativeSiteStats.native=snapshot.nativeSiteStats.native+1
+                ok,raw=pcall(CE_AIDistrictSiteAdjustment,pid,city.id,profile.district.Index,
+                    plot:GetX(),plot:GetY(),qReady,site.horizon,context.discountQ8)
+            end
+            local function field(name)return type(raw)=='string'and tonumber(raw:match('"'..name..'":(-?%d+)'))or nil end
+            local value=ok and field('adjustmentQ8')
+            if value==nil then snapshot.nativeSiteStats.unavailable=snapshot.nativeSiteStats.unavailable+1;return nil,'Native site accounting unavailable'end
+            site.nativeSiteAdjustmentQ8=value;site.nativeSiteIncludesPurchase=field('includesPurchase')==1
+            site.nativeSiteNetQ8=field('netQ8');site.nativeIntrinsicQ8=field('intrinsicQ8')
+        elseif not exists and footprint.workers>0 and not(context and context.nativeSite)then
             for yield in GameInfo.Yields()do
                 if yield.YieldType~='YIELD_CSC_AI_PLACEMENT'then
                     local amount=footprint.yields[yield.YieldType]or number(plot,'GetYield',yield.Index)
@@ -598,6 +675,10 @@ function F.New(player,placement,ui)
                         local customer=futureCustomer(buyer,definition,near:GetIndex())
                         if not flag(definition.IsWonder)or customer.working then
                             customer.stage=mapping.ProducerStage;customer.complete=true
+                            customer.serviceActive=profile.service and type(buyer.object.GetProperty)=='function'
+                                and(buyer.object:GetProperty(profile.service.property)or 0)>0 or false
+                            customer.serviceInputKnown=profile.key=='BAKERS'and buyer.foodSurplus~=nil
+                                or profile.key=='TAILORS'and buyer.navalProduction~=nil
                             customer.yield=customer.stage==2 and(profile.key=='BAKERS'and'YIELD_FOOD'or'YIELD_PRODUCTION')or customer.stage==4 and'YIELD_CULTURE'or family.yield
                             local seller=(stages[3]or{})[1]
                             local transaction=seller and c.population[seller.BuildingType..':'..mapping.BuildingType]

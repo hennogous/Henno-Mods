@@ -1114,6 +1114,8 @@ if __name__ == '__main__':
                         help='Verify the CE hook with the old or integrated CSC publisher on the exact Melbourne save')
     parser.add_argument('--ce-sha256', required=True)
     options = parser.parse_args()
+    if options.harmonised_observation and options.through not in (25,50,200,250):
+        parser.error('Integrated observations end at25/50/200/250; reject unsupported endpoints before launching Civ')
     options.census_turns = sorted(set(options.census_turns))
     if options.qualification:
         try:
