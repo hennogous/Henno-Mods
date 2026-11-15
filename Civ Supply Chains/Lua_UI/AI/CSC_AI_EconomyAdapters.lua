@@ -73,8 +73,9 @@ function E.Committed(entries)
             Game:SetProperty(propertyPrefix..pid,encoded);state.savedEncoded=encoded
         end
         for _,event in ipairs(state.events)do
-            print(string.format('CSC_AI_PLAN_EVENT turn=%d player=%d city=%d district=%d plot=%d kind=%s reason=%s valueQ8=%d forecastTurn=%d',
-                turn,pid,event.city,event.district,event.plot,event.kind,event.reason,event.valueQ8 or 0,event.forecastTurn or -1))
+            print(string.format('CSC_AI_PLAN_EVENT turn=%d player=%d city=%d district=%d plot=%d kind=%s reason=%s valueQ8=%d forecastTurn=%d baselineWorkers=%s signature=%s',
+                turn,pid,event.city,event.district,event.plot,event.kind,event.reason,event.valueQ8 or 0,event.forecastTurn or -1,
+                tostring(event.baselineWorkers),tostring(event.signature)))
         end
         if state.eventsDropped>0 then print('CSC_AI_PLAN_EVENTS_OMITTED',turn,pid,state.eventsDropped)end
         state.events={};state.eventsDropped=0

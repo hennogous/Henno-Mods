@@ -16,6 +16,22 @@ local function number(object,name,...)
 end
 local function flag(v)return v==true or v==1 end
 
+-- Plot identity differs from costs/yields: native feature/resource/improvement
+-- getters use -1 for absence. The nonnegative number() helper above would turn
+-- an ordinary empty plot into unknown and disable its selected-site baseline.
+-- Keep signed IDs explicit here; a missing/failed getter remains unknown.
+function F.FootprintSignature(plot)
+    local values={}
+    for _,method in ipairs({'GetTerrainType','GetFeatureType','GetResourceType','GetImprovementType'})do
+        if not plot or type(plot[method])~='function'then return '_'end
+        local ok,value=pcall(plot[method],plot)
+        if not ok or not numeric(value)or value~=value or value< -1
+            or value>=INF or value~=math.floor(value)then return '_'end
+        values[#values+1]=value
+    end
+    return table.concat(values,',')
+end
+
 local families={BAKERS={yield='YIELD_FOOD'},TAILORS={yield='YIELD_CULTURE'}}
 -- This first ledger supports the current unit-transfer contracts. Check the
 -- loaded leaf amounts instead of silently retaining a stale +1 after another
@@ -116,15 +132,7 @@ function F.New(player,placement,ui)
         return plotFacts[index]
     end
     snapshot.PlotFacts=readPlot
-    snapshot.FootprintSignature=function(plot)
-        local values={}
-        for _,method in ipairs({'GetTerrainType','GetFeatureType','GetResourceType','GetImprovementType'})do
-            local value=number(plot,method)
-            if not numeric(value)then return '_'end
-            values[#values+1]=value
-        end
-        return table.concat(values,',')
-    end
+    snapshot.FootprintSignature=F.FootprintSignature
     local tech,culture=player:GetTechs(),player:GetCulture()
     local function research(kind,key)
         if not key or key==''then return 0 end

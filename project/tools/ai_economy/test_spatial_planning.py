@@ -8,6 +8,30 @@ AI = Path(__file__).resolve().parents[3] / 'Civ Supply Chains/Lua_UI/AI'
 
 
 class SpatialPlanning(unittest.TestCase):
+    def test_footprint_signature_preserves_native_absence_ids(self):
+        vm = LuaRuntime()
+        vm.execute((AI / 'CSC_AI_EconomyFacts.lua').read_text(encoding='utf-8'))
+        vm.execute('''
+local values={GetTerrainType=4,GetFeatureType=-1,GetResourceType=-1,GetImprovementType=-1}
+local plot={}
+for name in pairs(values)do
+ local method=name
+ plot[method]=function()return values[method]end
+end
+local signature=CSC_AI_EconomyFacts.FootprintSignature
+assert(signature(plot)=='4,-1,-1,-1')
+values.GetResourceType=12
+assert(signature(plot)=='4,-1,12,-1')
+for _,invalid in ipairs({-2,1.5,math.huge,0/0,'unknown'})do
+ values.GetFeatureType=invalid
+ assert(signature(plot)=='_')
+end
+plot.GetFeatureType=nil
+assert(signature(plot)=='_')
+plot.GetFeatureType=function()error('native unavailable')end
+assert(signature(plot)=='_')
+''')
+
     def adapters(self):
         vm = LuaRuntime()
         vm.execute('CSC_AI_EconomyModel={};CSC_AI_EconomyFacts={}')

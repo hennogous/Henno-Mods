@@ -83,7 +83,7 @@ a purchase-consumption gate if subsequent evidence calls for it.
 
 ## Qualification
 
-67 economic/SQL/spatial/lifecycle checks and18 publisher/package/observer checks
+68 economic/SQL/spatial/lifecycle checks and18 publisher/package/observer checks
 pass. Multi-turn tests use the real model and bid path for purchase→owned,
 lost future-customer credit, temporary staffing, save/reload, expiry, one-turn
 missing prices, real material/feature/ownership loss, foundation completion,
@@ -103,3 +103,20 @@ confirmation, persisted ownership transition and the actual post-purchase
 retained score. A positive quote need not beat better production alternatives.
 Shared controller owns the game; artifact root is
 `C:/Users/Shadow/Desktop/Codex/csc-ai-coherence-20261115/`.
+
+## First live pass: acquisition fixed, signed-ID boundary caught
+
+Candidate39bee15e, frozen01/fresh50-01 completes50, saves and closes/restores
+exit0. The same Pella target1123 is selected24, pays30 Gold27 and becomes owned28.
+Its complete bid remains positive28–31 (23527 then21195 Q8); the old owned-only
+128 deduction is now explicitly ignored. On32 the log attributes withdrawal to
+27813 Q8 worked-tile displacement, with one citizen on the footprint.
+
+The new diagnostic identifies a boundary error: FootprintSignature used the
+nonnegative cost reader, which rejected native -1 absence IDs. Its unknown
+signature prevented baseline continuity from activating. Correct the identity
+reader to retain signed integer IDs >=-1; missing/failed/invalid getters still
+produce unknown. A direct real-Facts regression covers empty plots, resources,
+invalid IDs and native getter failures. Plan events now expose their selected
+worker baseline and signature. Repeat the same ordinary50 with frozen02 before
+claiming live staffing continuity. No native score band or bonus is increased.

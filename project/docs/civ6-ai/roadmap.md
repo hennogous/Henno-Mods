@@ -4,7 +4,7 @@
 deductions from complete Quarter valuation, preserve selected unworked footprint
 baselines with bounded native-confirmed memory, and report every selected-site
 withdrawal reason. Current economics/protection remain decisive; no force-build
-bonus.67 economic/lifecycle and18 integration checks pass. The previous250 is
+bonus.68 economic/lifecycle and18 integration checks pass. The previous250 is
 closed; a fresh Online50 live qualification of this candidate is running.
 [Design, acceptance and native cancellation boundary](../research/mods/csc-ai-coherent-investment-20261115.md).
 

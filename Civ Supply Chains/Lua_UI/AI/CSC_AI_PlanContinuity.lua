@@ -10,7 +10,8 @@ local function integer(v)return (type(v)=='number'or type(v)=='integer')and v==m
 local function event(state,kind,plan,reason)
     if #state.events<64 then
         state.events[#state.events+1]={kind=kind,city=plan.city,district=plan.district,
-            plot=plan.plot,reason=reason or kind,valueQ8=plan.lastQ8,forecastTurn=plan.lastFresh}
+            plot=plan.plot,reason=reason or kind,valueQ8=plan.lastQ8,forecastTurn=plan.lastFresh,
+            baselineWorkers=plan.baselineWorkers,signature=plan.signature}
     else state.eventsDropped=state.eventsDropped+1 end
 end
 

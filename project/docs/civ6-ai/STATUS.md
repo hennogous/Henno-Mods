@@ -4,7 +4,7 @@
 Quarter sites. Native-confirmed plan memory preserves an initially unworked
 footprint baseline for a bounded window; current economics and real losses still
 reprice. Explicit withdrawal reasons and one-turn owned missing-input grace are
-integrated in main CSC.67 economic/lifecycle and18 integration checks pass.
+integrated in main CSC.68 economic/lifecycle and18 integration checks pass.
 The preceding frozen run has completed250 and closed/restored exit0. Next is
 a fresh matched Online50 qualification, now running through the shared controller.
 [Coherent investment design and checks](../research/mods/csc-ai-coherent-investment-20261115.md).

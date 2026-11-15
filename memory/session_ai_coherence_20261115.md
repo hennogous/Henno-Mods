@@ -8,7 +8,7 @@ No unconditional bid floor/bonus. Real safety/economic losses withdraw; one-turn
 owned missing-price/staffing grace only with fresh safety proofs. Native pending
 purchase cancellation remains unsupported; do not claim contract cancellation.
 
-67 economy/lifecycle +18 integration tests PASS; ModBuddy source action check PASS.
+68 economy/lifecycle +18 integration tests PASS; ModBuddy source action check PASS.
 Newmodule registered in actionJSON+project; these files also have unrelated user
 changes and MUST be staged as HEAD+our small module addition only. Freeze helper
 registers reviewed AI imports in runtime manifest. Lua journal parsing benchmark
@@ -27,3 +27,9 @@ Task CSC-AI-Coherence-20261115, host18732/worker15340; lifetime/console receipts
 live at the artifact root. No second console or pinned-source edits.
 Live acceptance is confirmed native intent plus coherent post-acquisition
 positive bid/readback when still worthwhile, not guaranteed queue victory.
+
+Firstfresh50-01 closed/restoredexit0, worker/task ended. Pella samepurchase27;
+positivebid28–31, then workedcost27813Q8 causeswithdraw32. Realboundarybug:
+FootprintSignature called nonnegative number(), rejects -1 absence IDs. Fixed
+signed-integer ID reader, directactualFacts regression passes (68 total).
+Plan events expose baselineWorkers/signature. Next frozen02/fresh50-02 same50.
