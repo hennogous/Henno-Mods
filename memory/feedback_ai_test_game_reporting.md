@@ -5,6 +5,13 @@ high-level check-in every **15 minutes** is sufficient. Do not poll the human
 for routine per-turn approval or narrate each turn. Report meaningful failures,
 requests for needed input and the completed result promptly.
 
+Henno reaffirmed on 15 November 2026 that these are standing instructions for
+**every test game unless he explicitly says otherwise**: check the running game
+about every 15 minutes and analyse its recorded results when it finishes. Stay
+on the task through monitoring and analysis; starting an autonomous controller
+does not finish the assignment. A detached controller provides process lifetime,
+not a substitute for agent check-ins or interpretation of the completed run.
+
 The shared controller must remain responsible for bounded play and presentation
 recovery. Drivers must leave durable evidence of start/configuration, original
 player identities, code/content/dependency pins, every scan/decision/published
