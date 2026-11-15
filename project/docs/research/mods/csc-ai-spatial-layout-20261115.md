@@ -214,3 +214,37 @@ uses only the shared controller and unregisters itself after the child exits.
 `detached-worker-status.json` and `recovery-worker-console.txt` retain host state.
 Policy/frozen02 is unchanged. The22-check recovery change is68dbc609; reusable
 native saving/payment evidence is pushed in civ6-ai a6471f2. Full250 remains active.
+
+## Why Pella bought the Tailors site but did not build
+
+The decisive recorded issue is **withdrawn CSC support after acquisition**:
+
+| Turn | Recorded event |
+|---|---|
+|24|Tailors1123 is nominated at105 utility. Its proposed customer footprint1124 is also founded as Great Bath that turn.|
+|25–27|Layout credit falls32→0, but the frontier Quarter bid remains positive at73.91 utility. Native purchase funds accumulate.|
+|27|30 Gold is paid. Purchase259 succeeds; construction306 is submitted and accepted at105. Native admission therefore succeeds.|
+|28|Owned1123 still has adjacency2, but no positive complete-value offer is published.|
+|31/observed32|The retained-request hook replaces its105 value with the managed fallback−1024, matching the absent site offer.|
+|42–43|Request306 reaches15/15 waiting, then the district tree fails/expires.|
+|44|Pella starts a new Holy Site preparation tree at708 utility.|
+
+Great Bath occupies production25–31; a Settler follows32–35, then Temple of
+Artemis36–41. The negative retained Quarter value is present when those queues
+open. Increasing a positive siting bonus or extending the wait would not repair
+an absent positive offer.
+
+Source review identifies a concrete ownership asymmetry: the older scanner
+adds a128-utility no-customer-path deduction to owned legal sites, while its
+frontier path can simply omit the corresponding negative entry. The complete
+adapter consumes negative legacy deltas. Acquisition also changes observed
+footprint staffing, whose income displacement is priced by the ledger. The
+archived record lacks the omitted site's per-component ledger/deferral reason,
+so it does not isolate exactly how much each component contributes here.
+
+Next1.5/1.6 work: apply one pre/post-purchase feasibility/cost contract, expose
+per-site withdrawal reasons, and coordinate retained purchase intent when its
+supporting layout changes. Great Bath consuming the proposed customer space is
+a real map change; it should be handled consistently before purchase and after
+ownership. Keep the running frozen candidate unchanged while gathering the
+remaining full-game evidence. [Hashed city/tree/queue and score trace](csc-ai-pella-purchased-site-20261115.json).

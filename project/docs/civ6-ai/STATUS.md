@@ -11,6 +11,12 @@ Tailors-target saving→30-Gold payment on27 is traced (AI-C186), without subsid
 Terrain reads and bounded spatial preferences work. No policy changes on recovery.
 [Evidence, recovery and policy](../research/mods/csc-ai-spatial-layout-20261115.md).
 
+**Pella follow-through traced:** construction306 is accepted after payment27,
+but our owned-site offer disappears28 and retained value becomes−1024 under
+version31. The tree expires43. Great Bath consumes the proposed customer tile;
+owned/frontier legacy deductions are asymmetric. Next1.5/1.6: consistent purchase
+valuation and per-site withdrawal reasons. Running policy stays frozen.
+
 **Completed, 14–15 November: Astra investigations and fresh Online250.**
 Seven Quarters versus six on the matched starting world; all have Base/+3 or
 better, three have both materials, and all51 native new-site bids match.

@@ -1,5 +1,12 @@
 # CSC AI roadmap
 
+**15 November1.5/1.6 follow-through case:** Pella pays30 Gold, then CSC stops
+quoting the now-owned site and CE reprices its accepted construction request to
+managed−1024. It expires43. Trace and harmonise ownership-dependent legacy
+deductions, footprint displacement and changed customer layouts; record explicit
+site withdrawal reasons. The current full run remains unchanged.
+[Exact Pella timeline](../research/mods/csc-ai-spatial-layout-20261115.md#why-pella-bought-the-tailors-site-but-did-not-build).
+
 **Active15 November:1.1–1.4/1.8 spatial quality and2.1 customer layout.**
 Main CSC now values bounded material clumps and Base+Spec more strongly, and
 evaluates concrete customer footprints with native terrain adjacency and

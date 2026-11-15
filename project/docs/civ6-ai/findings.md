@@ -3622,3 +3622,13 @@ that target's lineage. No subsidy or savings-weight adjustment. No Tailors
 foundation through the interrupted65 branch. This qualifies one natural
 wait→payment route; shared category funds are not per-tile earmarking.
 [Exact trace, account values and interruption scope](../research/mods/csc-ai-spatial-layout-20261115.md#native-saving-and-payment-for-a-quarter-footprint).
+
+**Follow-through correction:** purchase259 succeeds27 and construction306 is
+accepted at105. After acquisition, adjacency stays2 but the positive site offer
+disappears28. Version31 reprices the retained request to managed−1024; the15-turn
+wait expires43. Great Bath also consumes its proposed customer footprint1124
+on24. An owned-only legacy no-host deduction is a source asymmetry; the exact
+omitted economic ledger is not retained, so staffing displacement versus that
+deduction remains unattributed. Native purchase capability is working; consistent
+pre/post-acquisition valuation and withdrawal diagnostics remain open under1.5/1.6.
+[Timeline and evidence](../research/mods/csc-ai-spatial-layout-20261115.md#why-pella-bought-the-tailors-site-but-did-not-build).

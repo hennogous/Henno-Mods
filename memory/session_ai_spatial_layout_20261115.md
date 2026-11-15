@@ -65,3 +65,15 @@ No tool session controls this worker. Shared controller owns console; no second
 access or imported-source edits. Next manualcheck about12:38 local. Full250
 pending. Compare segments explicitly: original post50 branch is abandoned,
 not merged into recovery. No fresh seed/PR/newgoal. Preserve unrelated edits.
+
+Pella follow-through trace: buy259 succeeds27; construction306 accepted105 at27.
+Positive site1123 offer absent28 despitegeometry2; CE REQUEST version31 observed32
+changes105 to−1024 managedfallback;15/15wait42→expiry43; HolySite708nominated44.
+GreatBath footprint1124 founded24 consumes proposedcustomer;layoutcredit32→0
+at25 butfrontierbidstillpositive73.91 through27. Owned scanner addslegacy
+noHost128 wherefrontierdoesnot; completeadapterconsumesnegativelegacydelta.
+Footprintstaffing displacementalsochangesonpurchase; missing omitted ledger
+means exactcomponentcause stillunattributed. Do NOTreducecaseonlytoqueuecompetition
+orboostpositivepremiumtofixanabsentoffer. Needscommonownership-invariantplanning
+contractandwithdrawalreasons. Running frozen02unchanged. Structuredtrace in
+project/docs/research/mods/csc-ai-pella-purchased-site-20261115.json.
