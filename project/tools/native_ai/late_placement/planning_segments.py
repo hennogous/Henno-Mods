@@ -1,7 +1,7 @@
 """Normalize two CLOSED observation segments; never contact or resume a game.
 
 The exact save-complete marker cuts Lua evidence, not a turn-number guess.
-Native turn200 pre-save ordering is unavailable: exclude it explicitly, retain
+Native reload-turn pre-save ordering is unavailable: exclude it explicitly, retain
 it separately, and label the coverage gap. Versions/ordinals remain segment-local.
 Normalized Lua.log is derived evidence, NOT a copy of either raw game log.
 """
@@ -17,7 +17,7 @@ ROW = re.compile(r'(CSC_PLANNING_|CSC_QUARTER_WATCH_|CSC_DISTRICT_UI_)([A-Z_]+)\
 COVERAGE = re.compile(r'CSC_AI_QUARTER_COVERAGE turn=(\d+) version=(\d+) player=(\d+) district=(\d+) result=(\{[^\r\n]+\})')
 LIMITS = [
     'Normalized derivative of two sessions, not raw or uninterrupted evidence.',
-    'Native coverage excludes original turn200 pre-save events: ordering relative to save is unknown.',
+    'Native coverage excludes original reload-turn pre-save events: ordering relative to save is unknown.',
     'Reload resets native caches, policy versions, ordinals and observer sequence identity; segment keys are mandatory.',
     'First post-reload native bids can lack offer metadata; missing joins are unknown, not delivery failures.',
     'History fills physical dates only; no cross-reload foundation, decision causality or reconsideration is invented.',
@@ -115,14 +115,18 @@ def merge(original, continuation, output, at=200):
     """Create a new derived archive only after BOTH inputs close and restore."""
     original, continuation = Path(original).resolve(strict=True), Path(continuation).resolve(strict=True)
     output = Path(output).resolve()
-    require(at == 200, 'This audited merger supports the save200 continuation only')
+    # Recovery can roll back to any verified regular checkpoint. Every input
+    # below is selected from that exact save, not the failed segment's furthest
+    # clock; abandoned events must never inflate the resumed game's results.
+    require(type(at) is int and at in (50, 100, 150, 200), 'Regular verified checkpoint required')
     require(not output.exists() and output not in (original, continuation), 'New normalized output required')
     for root in (original, continuation):
         require(load(root / 'session-closed.json').get('verified') is True
                 and load(root / 'preferences-restored.json').get('verified') is True, 'Inputs must be closed/restored')
-    checkpoint = load(original / 'checkpoint-200.json')
+    checkpoint_name = f'checkpoint-{at}.json'
+    checkpoint = load(original / checkpoint_name)
     require(checkpoint.get('verified') is True and checkpoint['turn'] == at, 'Invalid checkpoint')
-    save = original / 'turn-200.Civ6Save'
+    save = original / f'turn-{at}.Civ6Save'
     require(sha(save) == checkpoint['sha256'], 'Checkpoint bytes changed')
     resume = load(continuation / 'continuation.json')
     require(Path(resume['source']).resolve() == original and resume['at'] == at
@@ -188,7 +192,7 @@ def merge(original, continuation, output, at=200):
                 selected = boundary <= at if segment == 'original' else boundary > at
                 if selected:
                     copy(root, path.name, f'purchase-context-{segment}-{boundary}.txt')
-    copy(original, 'checkpoint-200.json'); copy(original, save.name)
+    copy(original, checkpoint_name); copy(original, save.name)
     copy(continuation, 'checkpoint.json', 'continuation-endpoint-checkpoint.json')
     normalized = []
     for _, prefix, kind, fields in original_rows + continuation_rows:

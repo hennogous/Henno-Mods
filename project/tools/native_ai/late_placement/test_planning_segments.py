@@ -69,6 +69,32 @@ CSC_DISTRICT_UI_ADJACENCY\tturn=201\tplot=100\tavailable=true
 
 
 class SegmentTests(unittest.TestCase):
+    def test_earlier_recovery_keeps_only_its_own_save_prefix(self):
+        with tempfile.TemporaryDirectory(dir=PATH.parent) as tmp:
+            original, continuation, output = fixture(Path(tmp))
+            save = original / 'turn-50.Civ6Save'
+            save.write_bytes(b'earlier-exact-save')
+            checkpoint = dict(verified=True, turn=50, unique_name='SAVE_50_exact', sha256=m.sha(save))
+            write(original, 'checkpoint-50.json', checkpoint)
+            write(continuation, 'continuation.json', dict(source=str(original), at=50, source_checkpoint=checkpoint))
+            for turn in range(75, 251, 25):
+                write(continuation, f'full-census-{turn}.json', {'turn': turn, 'selected': 'resumed'})
+            raw = (original / 'Lua.log').read_text()
+            raw = raw.replace('CSC_AI_QUARTER_COVERAGE turn=200', 'CSC_EXACT_CHECKPOINT_COMPLETE\tSAVE_50_exact\ttrue\nCSC_AI_QUARTER_COVERAGE turn=200', 1)
+            write(original, 'Lua.log', raw)
+            for folder, rows in ((original, [dict(turn=49), dict(turn=50), dict(turn=75)]),
+                                 (continuation, [dict(turn=50), dict(turn=75)])):
+                write(folder, 'economy-savings.ndjson', ''.join(json.dumps(row)+'\n' for row in rows))
+            result = m.merge(original, continuation, output, at=50)
+            self.assertNotIn('plot=999', (output / 'Lua.log').read_text())
+            self.assertNotIn('nativeOrdinal=17', (output / 'Lua.log').read_text())
+            self.assertEqual(m.load(output / 'full-census-75.json')['selected'], 'resumed')
+            self.assertEqual(m.load(output / 'checkpoint-50.json')['sha256'], m.sha(save))
+            self.assertEqual(result['native_coverage_gap']['turn'], 50)
+            native = [json.loads(line) for line in (output / 'economy-savings.ndjson').read_text().splitlines()]
+            self.assertEqual([(r['turn'], r['segment']) for r in native],
+                             [(49, 'original'), (50, 'continuation'), (75, 'continuation')])
+
     def test_exact_marker_cut_native_gap_segments_and_physical_history(self):
         with tempfile.TemporaryDirectory(dir=PATH.parent) as tmp:
             original, continuation, output = fixture(Path(tmp))
