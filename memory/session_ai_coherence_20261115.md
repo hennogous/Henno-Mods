@@ -33,3 +33,12 @@ positivebid28–31, then workedcost27813Q8 causeswithdraw32. Realboundarybug:
 FootprintSignature called nonnegative number(), rejects -1 absence IDs. Fixed
 signed-integer ID reader, directactualFacts regression passes (68 total).
 Plan events expose baselineWorkers/signature. Next frozen02/fresh50-02 same50.
+
+COMPLETED corrected fresh50-02/frozen02/9f450233: saves, closes/restoresexit0;
+task unregisters itself; no live owner. Pella pays27, acquired28, baseline0
+signature3,32,-1,-1; positive28–43 despite worker1. Nativepacket35 observed36
+21178Q8/82.73 vs firstpass -262144/-1024. Native treeaccepted82.7 at41/42,
+wait14/15,15/15 thenfails43; memoryexpires44. SamefourBakers/noTailors50;
+all5/5bestbids exact, noLua/nativefaults. Coherence fixed, no constructiongain
+claimed. Next1.6 queuecompetition/timers. AI-C187 plus compactJSON/report updated.
+Skill civ6-ai63115a3 and gameplay9cfc9ff pushed. No newDLL/PR/goal.

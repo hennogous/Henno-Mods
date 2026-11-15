@@ -1,13 +1,22 @@
 # Current CSC AI status
 
-**Current1.5/1.6 fix:** one complete-value policy now covers frontier and owned
-Quarter sites. Native-confirmed plan memory preserves an initially unworked
-footprint baseline for a bounded window; current economics and real losses still
-reprice. Explicit withdrawal reasons and one-turn owned missing-input grace are
-integrated in main CSC.68 economic/lifecycle and18 integration checks pass.
-The preceding frozen run has completed250 and closed/restored exit0. Next is
-a fresh matched Online50 qualification, now running through the shared controller.
-[Coherent investment design and checks](../research/mods/csc-ai-coherent-investment-20261115.md).
+**Problems 1.5/1.6: guidance continuity fixed and live-qualified.** Main CSC now
+uses one complete valuation path before and after tile acquisition. Bounded,
+persistent native-confirmed intent preserves an initially unworked footprint
+against temporary citizen assignment. Current economics and material protection
+remain active; withdrawals and expiry have explicit reasons.
+
+Two same-seed ordinary Online50 runs finish, save and close/restored exit0. The
+first catches a signed native-ID bug; the corrected pass keeps Pella's acquired
+Tailors site positive through43. Packet35 reaches its native retained request at
+82.73 instead of−1024. The native15-turn wait still expires43 while other items
+are built. Both runs have four Bakers/no Tailors; all five native best bids match
+exactly.68 economic/lifecycle +18 integration checks pass. No game is running.
+
+Next1.6 question: production competition and native request lifetime now that
+our purchase/construction guidance remains consistent. No bid increase is
+justified by this continuity test alone.
+[Design, matched results and evidence](../research/mods/csc-ai-coherent-investment-20261115.md).
 
 **Preceding recovered spatial Continents250 (now completed).** The original branch
 stops at65 without a known exit. Logs/checkpoint are preserved; menu-only cleanup

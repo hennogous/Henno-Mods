@@ -120,3 +120,41 @@ produce unknown. A direct real-Facts regression covers empty plots, resources,
 invalid IDs and native getter failures. Plan events now expose their selected
 worker baseline and signature. Repeat the same ordinary50 with frozen02 before
 claiming live staffing continuity. No native score band or bonus is increased.
+
+## Corrected live pass: continuity lands in the native request
+
+Candidate9f450233, frozen02/fresh50-02 completes50, saves and closes/restores
+exit0. All68 economic/lifecycle and18 integration checks pass. Native hooks
+finish with zero faults/active calls; the Lua log has no runtime errors.
+
+Pella selects the same Tailors1123 on24 and pays30 Gold27. Its stored native-
+confirmed baseline is unworked, with valid signature `3,32,-1,-1`. Ownership
+is observed28. Current economic quotes stay positive28–43, including32 onward
+with one citizen on the footprint: the bounded acquisition baseline activates,
+while the full displaced income is exposed separately in diagnostics.
+
+| Boundary | First pass | Corrected pass |
+|---|---|---|
+| Native purchase |30 Gold on27 |30 Gold on27 |
+| First owned quote28 |23527 Q8 |23527 Q8 |
+| Worked footprint32 |Support withdrawn |Baseline retained; positive current quote |
+| Native retained request, packet35 observed36 |−262144 Q8 (−1024) |21178 Q8 (82.73) |
+| Native waiting decorator41/42 |14/15 then15/15 |14/15 then15/15, explicitly accepted at82.7 |
+| Native tree43 |Fails/expires |Fails/expires |
+| CSC baseline memory44 |Already withdrawn |Expires at its documented lifetime |
+
+The artificial withdrawal is fixed. Production remains competitive: Pella
+chooses Walls at41 and a Builder at42; their later recorded contract values
+are830.7 and140 respectively, versus the Quarter's82.7. No Tailors foundation
+occurs by50. Both short passes construct four Bakers: all have Base/+3+, three
+have+4+, one has both classes. All five new-Quarter native best comparisons in
+each pass exactly match published values. This fix improves continuity, with
+unchanged short-run construction totals; it does not justify increasing bids.
+
+The positive native request does not restart the15-turn waiting decorator.
+Any subsequent work on follow-through must account for that timer and the
+actual queue alternatives. Outstanding native purchase cancellation remains
+a separate capability boundary. No new DLL or PR was introduced.
+
+[Compact comparison and raw-row excerpts](csc-ai-coherent-investment-20261115.json).
+Artifacts remain at the root above; no game/controller is left running.

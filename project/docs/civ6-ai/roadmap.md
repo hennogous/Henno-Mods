@@ -1,12 +1,17 @@
 # CSC AI roadmap
 
-**Current1.5/1.6 coherent-investment revision:** remove ownership-specific legacy
-deductions from complete Quarter valuation, preserve selected unworked footprint
-baselines with bounded native-confirmed memory, and report every selected-site
-withdrawal reason. Current economics/protection remain decisive; no force-build
-bonus.68 economic/lifecycle and18 integration checks pass. The previous250 is
-closed; a fresh Online50 live qualification of this candidate is running.
-[Design, acceptance and native cancellation boundary](../research/mods/csc-ai-coherent-investment-20261115.md).
+**Problems 1.5/1.6 coherent-investment revision: implemented and live-qualified.**
+One valuation path removes owned-only legacy deductions. Bounded native-confirmed
+site memory preserves an initially unworked baseline across acquisition and
+temporary staffing; current economics/protection and explicit withdrawal reasons
+remain.68 economic/lifecycle +18 integration checks pass.
+
+The corrected ordinary Online50 keeps the purchased Pella site positive through43;
+its retained native request reads82.73 rather than−1024. Construction still loses
+its waiting window; the same four Bakers/no Tailors are founded by50. The next1.6
+question is queue competition and request lifetime. Both short runs are closed,
+saved and restored; no new game or PR is running.
+[Design, comparison and native boundary](../research/mods/csc-ai-coherent-investment-20261115.md).
 
 **15 November1.5/1.6 follow-through case:** Pella pays30 Gold, then CSC stops
 quoting the now-owned site and CE reprices its accepted construction request to

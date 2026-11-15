@@ -3632,3 +3632,28 @@ omitted economic ledger is not retained, so staffing displacement versus that
 deduction remains unattributed. Native purchase capability is working; consistent
 pre/post-acquisition valuation and withdrawal diagnostics remain open under1.5/1.6.
 [Timeline and evidence](../research/mods/csc-ai-spatial-layout-20261115.md#why-pella-bought-the-tailors-site-but-did-not-build).
+
+
+## AI-C187 — Purchased-site guidance now survives ownership and temporary staffing
+
+Observed15 November2026, XP2 SHA092abfbb, CE400e6755, main CSC9f450233,
+ordinary Continents/Small/Prince/Online50 with CL/R2/Suk, same18461107/29461107
+seeds as the Pella case. Complete valuation ignores the legacy owned-only128
+heuristic and admits named supply protection. Native-confirmed persistent intent
+keeps a bounded selected-unworked footprint baseline; proposals alone do not.
+
+First live candidate39bee15e keeps positive offers28–31, then withdraws32. New
+component diagnostics expose worked-tile displacement; native -1 absence IDs
+were incorrectly rejected by a nonnegative identity reader. Corrected9f450233
+keeps valid signed IDs and maintains positive offers28–43 despite staffing.
+Packet35 is consumed by the retained native request as21178Q8 (82.73), replacing
+the first candidate's managed−262144Q8 (−1024). Both pay30 Gold27.
+
+The native waiting decorator still reaches14/15 on41 and15/15 on42, with explicit
+82.7 acceptance, then fails43. CSC memory expires44. Four Bakers/no Tailors in
+each50; all five native best bids match, zero Lua/native faults, both sessions
+closed/restoredexit0. This closes the demonstrated valuation discontinuity;
+request lifetime and production choices remain a separate1.6 follow-through task.
+68 economic/lifecycle +18 integration checks pass. No new native API/DLL or PR.
+[Design, exact contrast and artifacts](../research/mods/csc-ai-coherent-investment-20261115.md),
+[compact evidence](../research/mods/csc-ai-coherent-investment-20261115.json).

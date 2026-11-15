@@ -1,18 +1,16 @@
-# ACTIVE: coherent Quarter investment qualification,15 November
+# COMPLETED: coherent Quarter investment,15 November
 
-Read session_ai_coherence_20261115.md FIRST. Candidate39bee15e committed/pushed;
-67 economic/spatial/lifecycle +18 publisher/package checks PASS. Native-confirmed
-per-city/type/plot intent persists across acquisition/reload, bounded baseline
-avoids temporary staffing withdrawing a selected project; current economics and
-material protection still reprice. Full journal confirmation precedes diagnostic
-caps. No new CE/PR. Preserve unrelated SQL/art/UI changes.
-Fresh ordinary Continents/Small/Online50 now starts via shared controller;
-root Desktop/Codex/csc-ai-coherence-20261115/fresh50-01, frozen01. One-shot task
-CSC-AI-Coherence-20261115 owns host18732/worker15340 and logs lifetime. No second
-console or pinned-source edits while worker lives. Agent checks about15min.
-Prior spatial recovery50->250 completed/saved/closed/restoredexit0. Its source02
-branch after50 is abandoned and must not be double-counted. Full old results
-remain separate from continuity candidate. No active goal/PR.
+Read session_ai_coherence_20261115.md FIRST. MainCSC39bee15e continuity plus
+9f450233 signed-ID fix committed/pushed.68 economy/lifecycle+18 integrationPASS.
+Both ordinary same-seed Online50 runs saved/closed/restoredexit0; no owner/task
+or game running. Desktop/Codex/csc-ai-coherence-20261115/fresh50-01 and02.
+Corrected02: Pella pays30Gold27, acquired28; positivebid28–43 despite worker1.
+Nativepacket35 reads21178Q8/82.73 vs old-262144/-1024. Stillaccepted82.7 on41/42;
+wait14/15 then15/15, expires43; CSCmemoryexpires44. Same4B/0T by50,5/5exactbest,
+zeroLua/nativefaults. AI-C187/report+JSON; coherence fixed, next1.6competition/
+requestlifetime, no arbitrarybonusincrease. Skill AI63115a3/gameplay9cfc9ff pushed.
+Prior unchanged spatial recovery50->250 also completed/saved/closed/restoredexit0.
+Nevermerge abandoned original50–65 branch. No newgoal/PR. Preserve unrelatedWIP.
 
 # COMPLETED: Astra gaps and Online250,15 November2026
 
