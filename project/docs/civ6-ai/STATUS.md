@@ -20,10 +20,17 @@ One late Flax pillage remains unrepaired at250. These are subsequent work;
 the investigation goal is complete. [Results and numbered outcomes](../research/mods/csc-ai-astra-gap-results-20261114.md).
 Earlier dated status and campaign entries below preserve their original scope.
 
-**Current placement policy, Henno's 14 November decision:** +2 minimum,
+**15 November follow-up:** all four unbuilt +2 winners are traced: two nominations
+in Alexandria Troas lack district capacity; Aachen keeps producing a Builder
+before losing city control; Adrianople's request expires behind Artillery/Market.
+Main CSC now gives profitable +2 sites **+48 utility**, or **+64 with Base+Spec**.
+The 37 economy/SQL tests and six publisher fixtures pass; this new band awaits
+live qualification. [Trace and calibration](../research/mods/csc-ai-adjacency-two-followthrough-20261115.md).
+
+**Current placement policy, updated 15 November:** +2 minimum,
 +3 preferred, for both Bakers and Tailors. Base supply and positive economic
 value remain required. Only materials, local terrain/Mill effects and completed
-customers count toward adjacency. +2 enters without an adjacency premium;
+customers count toward adjacency. +2 receives +48 siting utility (+16 for Spec);
 the existing +96/+192/+288/+384 utility bands for +3/+4/+5/+6+ stay unchanged.
 The three-map results below used the previous +3 minimum/+4 preference.
 The 1.6 follow-through, coverage and 1.5 acquisition priorities are accepted.

@@ -146,7 +146,10 @@ snapshot.Geometry=function()return{upper=geometry}end
 CSC_AI_EconomyModel.Forecast=function(site)return{valueQ8=site.value,adjacency=geometry,streams={},omissions={}}end
 local entries,stats=E.QuarterBids(snapshot,placement,{},early)
 assert(#entries==3 and stats.final==3 and stats.qualityDeferred==0)
-for _,entry in ipairs(entries)do assert(entry.adjacency==2 and entry.finalQ8==entry.plot*1000)end
+for _,entry in ipairs(entries)do
+ assert(entry.adjacency==2 and entry.finalQ8==entry.plot*1000+48*256)
+ assert(entry.preferenceQ8==48*256)
+end
 geometry=1
 entries,stats=E.QuarterBids(snapshot,placement,{},early)
 assert(#entries==0 and stats.final==0 and stats.qualityDeferred==3)
@@ -251,7 +254,8 @@ assert(CSC_AI_EconomyFacts.New(player,placement,ui).DistrictCapacity(city).reaso
 local E=CSC_AI_EconomyAdapters
 local s={baseCount=1,specialtyCount=0}
 assert(E.PlacementValue({adjacency=1,valueQ8=1000000},s)==E.DeferredQuarterQ8)
-assert(E.PlacementValue({adjacency=2,valueQ8=100*256},s)==100*256)
+assert(E.PlacementValue({adjacency=2,valueQ8=100*256},s)==(100+48)*256)
+assert(E.PlacementValue({adjacency=2.5,valueQ8=100*256},s)==(100+72)*256)
 assert(E.PlacementValue({adjacency=2,valueQ8=-1},s)==-1)
 assert(E.PlacementValue({adjacency=4,valueQ8=-1},s)==-1)
 local a=E.PlacementValue({adjacency=3,valueQ8=100*256},s)
@@ -260,6 +264,7 @@ assert(a==(100+96)*256 and b==(100+192)*256)
 assert(E.PlacementValue({adjacency=8,valueQ8=100*256},s)<600*256)
 s.baseCount=0;assert(E.PlacementValue({adjacency=5,valueQ8=1000000},s)==E.DeferredQuarterQ8)
 s.baseCount=1;s.specialtyCount=1
+assert(E.PlacementValue({adjacency=2,valueQ8=100*256},s)==(100+64)*256)
 assert(E.PlacementValue({adjacency=4,valueQ8=100*256},s)>b)
 assert(E.PlacementValue({adjacency=4,valueQ8=100*256},s,-200*256)<=0)
 ''')

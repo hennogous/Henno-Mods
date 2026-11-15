@@ -75,11 +75,13 @@ function E.Snapshot(player,placement,ui)
 end
 
 -- Initial siting preferences are native Q8 utility, not additional gameplay
--- yields. +2 sites enter on their economic value; preferred +3/+4/+5/+6+
--- profitable sites retain +96/+192/+288/+384 utility. Lowering the entry floor
--- does not raise the existing site premiums or rescale native competition;
--- both material classes add16 for later-stage flexibility. These bounded bands
--- are estimates against observed native improvement bids around163 utility.
+-- yields. Profitable +2 sites receive48 utility; preferred +3/+4/+5/+6+
+-- retain +96/+192/+288/+384. The15 November archived trace found +2 bids
+-- reaching comparisons but no foundations: two lacked a population slot,
+-- one waited through production and lost city ownership, one lost to stronger
+-- production requests.48 is the first calibration step, half the +3 preference;
+-- it strengthens marginal bids without trying to override those other gates.
+-- Both material classes still add16 (so a +2 Base+Spec site receives64).
 -- They do not make an otherwise losing investment profitable or guarantee it
 -- beats another district/unit. Below+2 and no-Base sites defer this publication.
 -- Managed CE types withhold nonpositive options from fresh proposals because
@@ -89,13 +91,21 @@ E.DeferredQuarterQ8=-1024*256
 -- use this floor. A stale pre-screen must not silently discard eligible +2
 -- sites before their complete-value quote reaches the publication packet.
 E.MinimumAdjacency=2
+E.MinimumSitingBonusQ8=48*256
 function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
     if quote.adjacency+1e-6<E.MinimumAdjacency or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
     local penalty=math.max(0,-(legacyDelta or 0))
     if coversOwnMaterial then penalty=math.max(penalty,256*256)end
     local value=quote.valueQ8-penalty
     if value<=0 then return value,'economics'end
-    local premium=math.min(4,math.max(0,quote.adjacency-2))*96*256
+    local premium
+    if quote.adjacency<3 then
+        -- Fractional adjacency can arise through yield multipliers. Interpolate
+        -- 48->96 between +2/+3 rather than introducing a jump at the boundary.
+        premium=E.MinimumSitingBonusQ8+(quote.adjacency-2)*(96*256-E.MinimumSitingBonusQ8)
+    else
+        premium=math.min(4,quote.adjacency-2)*96*256
+    end
     if (site.specialtyCount or 0)>0 then premium=premium+16*256 end
     return math.floor(math.max(-4096*256,math.min(4096*256,value+premium))+.5),'positive'
 end

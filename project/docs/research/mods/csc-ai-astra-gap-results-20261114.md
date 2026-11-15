@@ -42,10 +42,12 @@ current log contains122 distinct sites offered while their geometric upper
 adjacency is exactly2. Four new-site native winners have bid adjacency2;
 none of those four exact district/site pairs later gets a foundation. Two
 carry a full-capacity snapshot at publication, which precedes actual admission.
-Their individual admission/production outcomes need a retained-request trace.
-The threshold broadens participation; +2 receives no adjacency premium, while
-+3/+4 retain96/192 native utility. The four unbuilt +2 winners are the focused
-next cases for explaining conversion rather than guessing a global bid increase.
+The subsequent retained-request trace identifies the two full-capacity
+Alexandria nominations, Aachen's occupied queue/control loss and Adrianople's
+expiry behind Artillery/Market. This completed run gives +2 no adjacency premium,
+while +3/+4 retain96/192 native utility. Main CSC subsequently adds48 at +2
+(64 with Base+Spec), passing offline checks and awaiting live qualification.
+[Four-case trace and calibration](csc-ai-adjacency-two-followthrough-20261115.md).
 
 At250, all five Bakers have healthy Mills; four have an improved Base and a
 healthy adjacent Granary. Both Tailors have healthy Workshops and improved Base,

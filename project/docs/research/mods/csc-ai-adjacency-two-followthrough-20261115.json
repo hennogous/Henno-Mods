@@ -1,0 +1,73 @@
+{
+  "source": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-astra-gaps-20261114\\fresh250-02",
+  "source_band_at2": 0,
+  "code_candidate_band_at2": 48,
+  "code_candidate_band_with_spec_at2": 64,
+  "archived_cases": [
+    {
+      "player": 5,
+      "city": 262147,
+      "city_name": "AACHEN",
+      "observed_turn": 108,
+      "plot": 2238,
+      "district": 43,
+      "recorded_site_bid_utility": 119.7890625,
+      "publication_capacity": "ready",
+      "same_state_site_bid_with48": 167.7890625,
+      "same_state_site_bid_with64": 183.7890625,
+      "state": "production_wait_then_city_control_loss",
+      "artifact": "5-262147-108.json"
+    },
+    {
+      "player": 2,
+      "city": 262147,
+      "city_name": "ALEXANDRIA_TROAS",
+      "observed_turn": 140,
+      "plot": 1342,
+      "district": 42,
+      "recorded_site_bid_utility": 1338.87109375,
+      "publication_capacity": "full",
+      "same_state_site_bid_with48": 1386.87109375,
+      "same_state_site_bid_with64": 1402.87109375,
+      "state": "no_slot_no_submitted_request",
+      "artifact": "2-262147-140.json"
+    },
+    {
+      "player": 2,
+      "city": 262147,
+      "city_name": "ALEXANDRIA_TROAS",
+      "observed_turn": 142,
+      "plot": 1267,
+      "district": 42,
+      "recorded_site_bid_utility": 1227.234375,
+      "publication_capacity": "full",
+      "same_state_site_bid_with48": 1275.234375,
+      "same_state_site_bid_with64": 1291.234375,
+      "state": "no_slot_no_submitted_request",
+      "artifact": "2-262147-142.json"
+    },
+    {
+      "player": 1,
+      "city": 196610,
+      "city_name": "ADRIANOPLE",
+      "observed_turn": 197,
+      "plot": 1574,
+      "district": 43,
+      "recorded_site_bid_utility": 2537.87109375,
+      "publication_capacity": "ready",
+      "same_state_site_bid_with48": 2585.87109375,
+      "same_state_site_bid_with64": 2601.87109375,
+      "state": "accepted_repriced_lost_production_then_wait_expired",
+      "artifact": "1-196610-197.json"
+    }
+  ],
+  "source_sha256": {
+    "Lua.log": "1a82145532ebba0123f4d1514e6d48d62408daa9d11f9e9f581c748433a92c6e",
+    "AI_CityBuild.csv": "d2530df50a570bf2c2ad38b46344a75d7322ad5868e4f6d15cdf41a24f12d293",
+    "AI_Behavior_Trees.csv": "9bbcef0628620ed669b295b678ff035f742cba1c080610d5708f9df77ba7489d",
+    "City_BuildQueue.csv": "e54ac92125b7d718b9b09db3441926e483d98b1d566c5da361d126aae42f7c24"
+  },
+  "candidate_live_test": false,
+  "native_calls": false,
+  "game_data_writes": false
+}

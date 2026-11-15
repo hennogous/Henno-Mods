@@ -98,6 +98,9 @@ local preferredAdjacency = 3
 -- The threshold above counts yield per turn. The bands below are policy
 -- deltas in Q8 (256 per native utility point) at the early district score.
 -- They leave Civ's later forecast contributions and final comparison in play.
+-- These are legacy fallback deltas. With the qualified complete-value API,
+-- EconomyAdapters replaces positive Quarter entries and owns the48/96/192...
+-- preferences. Its final value must not add these positive early bands again.
 local preferredSiteBidQ8 = 48 * 256
 local viableSiteBidQ8 = 24 * 256
 local minimumAdjacency = 2

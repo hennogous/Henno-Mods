@@ -17,11 +17,16 @@ customer links**, broader natural acquisition, bounded own-Production feedback
 and recovery latency. One243 pillage remains unrepaired at250. Earlier dated
 “next” notes below are historical; they do not reopen the completed goal.
 
-**Current policy decision, 14 November:** Henno accepts the review's work
+**Current policy decision, updated 15 November:** Henno accepts the review's work
 priorities and calibration approach, with +2 minimum / +3 preferred Quarter
 adjacency. The Base requirement, current-customer forecast and profitability
-gate remain. Existing +3-and-higher valuation premiums stay on their current
-scale. The completed campaigns below retain their earlier +3/+4 policy scope.
+gate remain. Profitable +2 sites now receive +48 siting utility, or +64 with
+Base+Spec; +3/+4/+5/+6+ retain +96/+192/+288/+384 before the +16 Spec preference.
+The four archived +2 winners are traced through capacity, production and expiry.
+The new band passes offline checks and awaits live qualification.
+[Trace and calibration](../research/mods/csc-ai-adjacency-two-followthrough-20261115.md).
+The completed latest250 used zero siting premium at +2; older campaigns below
+retain their earlier +3/+4 policy scope.
 
 **14 November completed: three-game evidence campaign across Problems 1 and 2.**
 
