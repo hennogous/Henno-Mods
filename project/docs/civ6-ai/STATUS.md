@@ -6,9 +6,9 @@ and stronger spatial preferences are integrated in main CSC. +2 stays48;
 compatible future customer space0–96. Future customers still add no adjacency
 or economic income.48 economic/spatial and18 integration checks pass.
 First startup closes cleanly after exposing Core45/UI44 phase lag; bounded
-phase handling is corrected and tested. The matched Continents/Online250 restart
-is next, shared controller,
-15-minute checks. [Implementation and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
+phase handling is corrected and live-qualified:1,640/1,640 terrain reads through25,
+all counted UI lag1. The matched Continents/Online250 restart is running beyond30
+under the shared controller,15-minute checks. [Implementation and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
 
 **Completed, 14–15 November: Astra investigations and fresh Online250.**
 Seven Quarters versus six on the matched starting world; all have Base/+3 or

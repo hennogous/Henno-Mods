@@ -1,3 +1,12 @@
+# ACTIVE: terrain-aware spatial Continents250, 15 November
+
+Read session_ai_spatial_layout_20261115.md FIRST. Shared controller worker9532
+owns native14316, tool session9435; current corrected run beyond30 toward250.
+No second console/game or edits to pinned imported sources. Check about15min.
+Source a7183c57/frozen02, CE400e6755. Native terrain reads1640/1640 pass through25.
+First startup stopped45/target50 and closed/restored exit0. Skill4cc06b4 pushed.
+No new goal/PR. Preserve unrelated dirty source/art/UI. Full results pending.
+
 # COMPLETED: Astra gaps and Online250,15 November2026
 
 Read session_ai_astra_goal_20261114.md and results report FIRST. Fullgame

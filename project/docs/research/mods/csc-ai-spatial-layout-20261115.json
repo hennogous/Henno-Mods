@@ -1,0 +1,41 @@
+{
+  "phase": "startup, not endpoint",
+  "source_sha256": "6916d995ea7f37077e006790fcdc109920ea4a2c6714d3104a5a304a15a44246",
+  "initial_parity": {
+    "map_signature": true,
+    "starts": true,
+    "units": true,
+    "original_ai": true
+  },
+  "latest_logged_turn": 25,
+  "player_publications": 125,
+  "native_adjacency_reads": 1640,
+  "unavailable_reads": 0,
+  "lagged_reads": 1640,
+  "spatial_bid_examples": [
+    "CSC_AI_BakersGameplay: CSC_AI_SPATIAL_BID turn=25 player=3 city=65536 district=42 plot=2311 rank=2 adjacency=2.000 economicQ8=10998 adjacencyPreferenceQ8=12288 materialPreferenceQ8=0 layoutPreferenceQ8=12288 protectionPenaltyQ8=0 finalQ8=35574 customerPlot1=2386 customerType1=32 customerPlot2=-1 customerType2=-1",
+    "CSC_AI_BakersGameplay: CSC_AI_SPATIAL_BID turn=25 player=3 city=65536 district=43 plot=2387 rank=1 adjacency=2.000 economicQ8=3455 adjacencyPreferenceQ8=12288 materialPreferenceQ8=0 layoutPreferenceQ8=12288 protectionPenaltyQ8=0 finalQ8=28031 customerPlot1=2386 customerType1=32 customerPlot2=-1 customerType2=-1",
+    "CSC_AI_BakersGameplay: CSC_AI_SPATIAL_BID turn=25 player=5 city=65536 district=42 plot=1950 rank=1 adjacency=3.000 economicQ8=10624 adjacencyPreferenceQ8=36864 materialPreferenceQ8=0 layoutPreferenceQ8=12288 protectionPenaltyQ8=0 finalQ8=59776 customerPlot1=2024 customerType1=32 customerPlot2=-1 customerType2=-1"
+  ],
+  "economy_failures": 0,
+  "input_failures": 0,
+  "scope": "Working input bridge and published preference; native choice, foundation and endpoint outcomes are separate.",
+  "implementation_commit": "a7183c57",
+  "skill_commit": "4cc06b4",
+  "full_run_completed": false,
+  "corrected_run": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-spatial-layout-20261115\\continents250-02",
+  "stopped_startup": {
+    "run": "C:\\Users\\Shadow\\Desktop\\Codex\\csc-ai-spatial-layout-20261115\\continents250-01",
+    "native_turn": 45,
+    "active_target": 50,
+    "supported_close_exit_code": 0
+  },
+  "early_stopped_trial_candidate_margins": {
+    "paired_publications": 188,
+    "distinct_site_matchups": 26,
+    "median_absolute_economic_gap_utility": 14.9921875,
+    "max_absolute_economic_gap_utility": 69.2734375,
+    "higher_final_bid_has_lower_economic_value": 12,
+    "scope": "top two published sites only, repeated snapshots through stopped startup; not a full candidate surface"
+  }
+}

@@ -32,3 +32,17 @@ The shared source-update handoff closes/restores exit0; no owners remain.
 Accept and count0..1-turn UI lag; reject older/future clocks.48+18 checks pass.
 Havok clock0 is unavailable, not measured zero cost. Freeze02/restart pending.
 User additionally requests new reusable engine learnings in civ6-ai skill.
+
+
+ACTIVE corrected game: continents250-02, frozen02/a7183c57; worker9532,
+held native14316, tool session9435. Current controller verified30. Next manual
+check about15minutes after startup qualification (around10:58 local15Nov).
+Initialworld matches previous map/starts/units/AI. Through25,1,640 native terrain
+reads succeed with counted one-turn UI lag,0 unavailable/economic failures.
+Do not send another console command or edit pinned imported sources while this
+worker runs. Controller naturally handles five-turn operations, checkpoints and
+end250, save/close/restore. Logs/saves in Desktop/Codex/csc-ai-spatial-layout-20261115/
+continents250-02. Source01 stopped45/target50 via supported source-update request,
+closed/restored exit0. Skill AI-N132 + calibration guidance pushed4cc06b4.
+Results still pending. Compare against csc-ai-astra-gaps-20261114/fresh250-02
+(previous7 Quarters:5B2T, allBase/+3+,3both,582StorekeeperchainTurns).

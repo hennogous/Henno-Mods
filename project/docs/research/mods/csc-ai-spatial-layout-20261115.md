@@ -133,3 +133,26 @@ to integer Q8 at publication. The corrected full restart uses `frozen02`.
 
 Reusable engine learning is recorded as AI-N132 in the civ6-ai skill,
 commit bb470f5 (pushed). CSC policy and calibration stay in this report.
+
+
+### Corrected restart: input path qualified, full run active
+
+`continents250-02` uses frozen02/implementation a7183c57, unchanged CE400e6755,
+identical starting map/units/leaders and the same optional-content digests.
+Through25,125 player publications perform1,640 native adjacency reads: all
+succeed, all record UI one turn behind Core. No input/economy failure occurs.
+Layout preferences enter outgoing Quarter bids, including48 utility for a
+Tailors candidate. The controller is verified through30 and continues to250.
+This is input/publication evidence; the full outcome comparison remains pending.
+[Compact qualification and pins](csc-ai-spatial-layout-20261115.json).
+
+The stopped startup's new top-two logs already supply188 paired publications
+covering26 distinct site matchups. Absolute economic gaps have median14.99 and
+maximum69.27 utility;12 publications rank a lower-economic site first after
+spatial preferences. This demonstrates why preference size should be compared
+with site differences. These repeated early-game pairs cover the published top
+two under the new policy, not the entire site surface or mature-city distribution.
+The corrected run will extend that calibration alongside construction outcomes.
+
+Skill AI-N132 now includes the live phase-aware read qualification, and generic
+placement-calibration guidance is committed in4cc06b4 (pushed).
