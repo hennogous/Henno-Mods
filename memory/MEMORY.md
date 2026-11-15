@@ -1,3 +1,13 @@
+# CURRENT: Quarter bid calibration question,15 November
+
+Read session_ai_bid_funnel_20261115.md FIRST. Closednewseedrecords:99positive
++2identities but3nativewins allfullcapacityNiani.918samecityround owned+2with
+freeQuartercapacity: otherchosenvaluesallhigher; medians2539vs397. Main+2
+policyactive48bonus, afterBase/profitabilitygate. Needwholebidcalibrationaudit,
+notjustcapacity/timeoutfixes; no multiplierimplemented. AI-C189/report+JSON.
+Passiveobserverqualifiedstale3fixedtoreadliveminimum;24checksPASS. Rawlogs
+preserved; old+3summarylabelannotated. No livegame/worker/PR/goal. PreserveWIP.
+
 # COMPLETED: new-seed Continents250,15 November
 
 Read session_ai_new_continents_20261115.md FIRST. Same9f450233 qualified policy,

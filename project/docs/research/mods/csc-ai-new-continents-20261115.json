@@ -1729,5 +1729,6 @@
       }
     }
   ],
-  "source_log_sha256": "4d070c2f3fd4a25c3ccea47c700371fe479107afbe87c8341207509d7cf1f47a"
+  "source_log_sha256": "4d070c2f3fd4a25c3ccea47c700371fe479107afbe87c8341207509d7cf1f47a",
+  "diagnostic_qualification_correction": "Raw distinct_geometry_qualified_candidates uses observer legacy minimum3. Live policy minimum is2; corrected bands and score comparison are in csc-ai-quarter-bid-funnel-20261115.json. Outcomes and raw logs remain unchanged."
 }

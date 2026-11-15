@@ -3687,3 +3687,30 @@ zero Lua/native faults and no remaining owner/task. Stock AI only, no external
 policy or manual chain fixture.
 [Full result and interpretation](../research/mods/csc-ai-new-continents-20261115.md),
 [compact evidence and native excerpts](../research/mods/csc-ai-new-continents-20261115.json).
+
+
+## AI-C189 — The+2 floor admits offers, but most remain below competing district values
+
+Analysis15 November2026 of AI-C188's closed ordinary250, unchanged CSC9f450233,
+XP2092abfbb/CE400e6755. Recompute bands from raw numeric geometry.99 distinct
+city/type/plot identities receive positive+2 bids across4410 published observations;
+52 receive+3+ bids across3181.33 identities occur in both bands over time.
+The+2 median total bid is253.4; the siting preference alone is48 and applies only
+after a positive economic value with Base supply. Native new-site comparisons
+include three+2 wins, all Niani Bakers1130 with full4/4 slots; it later builds
+from Nioro at+3. Thirteen+3+ native comparisons accompany five foundations.
+
+Join same Core turn/player/city native district selections with published owned
++2 offers and ready/exempt Quarter slots, excluding completed footprints,
+Quarters, City Centers, Wonders and invalid/unread native totals. All918 selected
+other-district values exceed the best matching+2 quote; medians2539.1/396.7.
+This compares prices in the same round, not replayed admission of every offer.
+It motivates complete-bid calibration; it does not establish a correct multiplier.
+Only three outgoing observations reach the4096 ceiling across both bands.
+
+The observer's legacy `qualified>=3` label is a diagnostic error, not a live+3
+gate. Current policy2 and outgoing bids are correct; raw logs remain unchanged.
+Observer now reads the live minimum, records it and retains3 for old adapters.
+24 observer/analysis checks pass; no main-CSC tuning value changes or game launch.
+[Analysis and method](../research/mods/csc-ai-quarter-bid-funnel-20261115.md),
+[compact counts and examples](../research/mods/csc-ai-quarter-bid-funnel-20261115.json).

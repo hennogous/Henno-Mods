@@ -123,6 +123,29 @@ class PlanningObserverTests(unittest.TestCase):
         self.assertEqual(transitions[-1]["reconsidered"], "true")
         self.assertEqual(transitions[-1]["turn"], "3")
 
+    def test_geometry_label_tracks_the_live_minimum_without_changing_a_bid(self):
+        self.lua.execute("CSC_AI_EconomyAdapters.MinimumAdjacency=2;geometryUpper=2;offerEnabled=true;publish()")
+        row = self.rows("OPPORTUNITY")[0]
+        self.assertEqual(row["qualified"], "true")
+        self.assertEqual(row["minimumAdjacency"], "2")
+        self.assertEqual(row["bidQ8"], "12345")
+        self.assertEqual(self.rows("OPPORTUNITY_SUMMARY")[0]["qualified"], "1")
+        self.assertEqual(self.lua.eval("geometryCalls"), 1)
+        self.assertEqual(self.lua.eval("siteCalls"), 0)
+
+    def test_missing_live_minimum_preserves_the_legacy_label(self):
+        self.lua.execute("geometryUpper=2;publish()")
+        row = self.rows("OPPORTUNITY")[0]
+        self.assertEqual(row["qualified"], "false")
+        self.assertEqual(row["minimumAdjacency"], "3")
+
+    def test_a_changed_live_minimum_changes_only_the_observed_label(self):
+        self.lua.execute("CSC_AI_EconomyAdapters.MinimumAdjacency=3;geometryUpper=2;offerEnabled=true;publish()")
+        row = self.rows("OPPORTUNITY")[0]
+        self.assertEqual(row["qualified"], "false")
+        self.assertEqual(row["offered"], "true")
+        self.assertEqual(row["bidQ8"], "12345")
+
     def test_foundation_completion_stale_event_and_provider_order(self):
         self.lua.execute("fire('DistrictAddedToMap',0,99,10,2,0,1);Game.t=2;q=district(2,1,2,false);fire('DistrictAddedToMap',0,2,10,2,0,1);fire('DistrictAddedToMap',0,2,10,2,0,1);Game.t=3;q.complete=true;fire('DistrictBuildProgressChanged',0,2,10,2,0,1);Game.t=4;d=district(3,3,3,false);fire('DistrictAddedToMap',0,3,10,3,0,3);poll()")
         self.assertEqual(len(self.rows("EVENT_DEFERRED")), 1)

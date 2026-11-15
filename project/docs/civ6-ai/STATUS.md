@@ -1,5 +1,14 @@
 # Current CSC AI status
 
+**Current1.4/1.6 question: competitive strength of Quarter bids.** The+2 policy
+is active:99 distinct+2 options receive positive bids, but only three+2 native
+best comparisons occur, all at full-capacity Niani.918 same-city/round reads
+with owned+2 offers and free Quarter slots show higher chosen district values
+(medians2539 versus397). Review whole-value calibration as well as admission
+and waiting lifetimes. No live score changes or new game. A passive stale+3
+qualification label is corrected;24 observer/analysis tests pass.
+[Bid funnel and calibration question](../research/mods/csc-ai-quarter-bid-funnel-20261115.md).
+
 **Completed: new-seed Continents250, map20851115/game31051115.** Five Quarters:
 three Bakers and two Tailors, all with Base and+3 or better at foundation; one
 has both material classes. All five have working Base improvements, producer
@@ -17,7 +26,7 @@ is destroyed. Quarter purchases are unexercised on this seed.
 All ten censuses, the final save, native exit0 and preference restoration pass.
 No game, worker or test task remains. Standing instructions require15-minute
 monitoring and completed analysis for every test, unless Henno says otherwise.
-Next1.6: admission and reconsideration after credible plans time out. Spec
+Next1.4/1.6: complete-bid calibration plus admission/reconsideration. Spec
 improvement and faster repair remain downstream development work.
 [Completed results and five-site table](../research/mods/csc-ai-new-continents-20261115.md).
 

@@ -164,3 +164,20 @@ skill and project feedback.
 Full derived planning/economic records are in `analysis.json` at the artifact
 root. Source logs, selected checkpoints and final closure receipts remain under
 `continents250-01`.
+
+
+## Follow-up: why the+2 floor produces few additional Quarters
+
+The subsequent [bid-funnel analysis](csc-ai-quarter-bid-funnel-20261115.md)
+changes the priority above: many+2 bids never reach a native Quarter win.
+99 distinct+2 identities receive positive bids, but only three+2 native best
+comparisons occur, all for full-capacity Niani. In918 same-city/round observations
+with owned+2 offers and ready Quarter capacity, the other native selection has
+higher utility every time (medians2539 versus397). Whole-Quarter calibration now
+needs review alongside admission and request lifetime. This does not establish
+that every lower bid should win, or justify a universal multiplier.
+
+A passive-label correction also surfaced: raw `qualified` flags use the old+3
+observer constant. Numeric geometry and actual outgoing+2 bids are intact. The
+follow-up recomputes bands at2; the old distinct-qualified summary fields retain
+their+3 meaning. The maintained observer now labels the active policy minimum.

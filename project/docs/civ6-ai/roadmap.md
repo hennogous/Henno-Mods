@@ -1,5 +1,14 @@
 # CSC AI roadmap
 
+**Current1.4/1.6 calibration audit:** lowering the floor to+2 admits99 positively
+bid identities but produces only three+2 native wins, all capacity-full. In918
+same-city/round observations with owned+2 offers and ready Quarter capacity,
+other chosen districts have higher utility (median2539 versus397). The earlier
+queue/capacity explanation covers selected failures but misses this larger
+pre-selection gap. Compare complete Quarter/native forecasts before adjusting
+bonuses or an overall scale. No blanket multiplier or new game is implemented.
+[Counts, method and corrected diagnostic labels](../research/mods/csc-ai-quarter-bid-funnel-20261115.md).
+
 **New-seed validation completed,15 November:** all five foundations have Base/+3+,
 all five reach working suppliers/producers/customers at250; three Storekeepers
 record370 chain-turns and one Sacristan is active. No Tailors Harbor is adjacent.

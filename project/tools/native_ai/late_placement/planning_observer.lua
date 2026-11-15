@@ -292,13 +292,17 @@ end
 local quarterBids=E.QuarterBids
 E.QuarterBids=function(snapshot,placement,protected,early,...)
  local captured,scopes={},{};local geometry=snapshot.Geometry
+ -- This threshold labels diagnostics only; the adapter still owns admission.
+ -- Follow its published policy so +2 bids are not labelled unqualified by an
+ -- obsolete +3 observer constant. Preserve3 for older adapters lacking the field.
+ local minimum=tonumber(E.MinimumAdjacency)or 3
  -- Keep scopes with zero eligible geometric calls: otherwise a completely
  -- unavailable city/type would vanish rather than show a deferred packet.
  safe(function()for _,p in ipairs(placement.StageTwoProfiles())do
   for _,city in snapshot.player:GetCities():Members()do
    if not city:GetDistricts():HasDistrict(p.district.Index)then
     scopes[snapshot.id..':'..city:GetID()..':'..p.district.Index]={player=snapshot.id,city=city:GetID(),district=p.district.Index,
-     seen=0,qualified=0,offered=0,best=-1,turn=turn()}
+     seen=0,qualified=0,offered=0,best=-1,minimumAdjacency=minimum,turn=turn()}
    end
   end
  end end)
@@ -307,7 +311,8 @@ E.QuarterBids=function(snapshot,placement,protected,early,...)
   safe(function()
    local g=result[1];local id=identity(snapshot.id,city:GetID(),profile.district.Index,plot:GetIndex())
    captured[id]={player=snapshot.id,city=city:GetID(),district=profile.district.Index,plot=plot:GetIndex(),
-    direct=g.base,upper=g.upper,qualified=g.upper+1e-6>=3,owner=plot:GetOwner(),frontier=plot:GetOwner()==-1,
+    direct=g.base,upper=g.upper,qualified=g.upper+1e-6>=minimum,minimumAdjacency=minimum,
+    owner=plot:GetOwner(),frontier=plot:GetOwner()==-1,
     protected=protected and protected[plot:GetIndex()]~=nil,turn=turn()}
   end)
   return unpack(result,1,result.n)
