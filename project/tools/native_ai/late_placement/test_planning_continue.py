@@ -148,7 +148,7 @@ class LifecycleTests(unittest.TestCase):
                  patch.object(pc,'save_inactive_boundary',return_value={'verified':True}), patch.object(pc,'capture_census'), \
                  patch.object(pc,'summarize_run') as summary, patch('full_game_observation.install',side_effect=install), \
                  patch('full_game_observation.play') as play, patch('full_game_observation.finish') as finish, \
-                 patch('economy_preflight.inspect'), patch('economy_savings_watch.EconomySavingsWatch',return_value=watch):
+                 patch('economy_preflight.inspect'), patch('economy_savings_watch.EconomySavingsWatch',return_value=watch) as watch_factory:
                 # Extras normally hold pinned files. This fixture supplies their
                 # minimal fields only after constructing its exact five IDs.
                 for item in plan.extras.values():item.update(path=str(root),files={})
@@ -163,6 +163,7 @@ class LifecycleTests(unittest.TestCase):
             self.assertTrue((out/'source-structure-comparison.json').is_file())
             self.assertFalse(pc.load(out/'protocol.json')['fresh_game'])
             watch.qualify.assert_called_once()
+            self.assertTrue(watch_factory.call_args.kwargs['capture_placement'])
 
 
 if __name__=='__main__':

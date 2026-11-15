@@ -75,6 +75,34 @@ def digest(files):
     return hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()
 
 
+def source_lifecycle_verified(source):
+    """Accept a supported close or separately verified interruption cleanup.
+
+    An abruptly lost process has no known exit code. Never fabricate its
+    session-closed receipt to satisfy continuation. A new menu-only session
+    can restore the exact preferences and archive unchanged installed packages;
+    its own clean-close receipt and original-source identity qualify recovery.
+    World eligibility still comes from the saved checkpoint/structural gate.
+    """
+    source = Path(source).resolve()
+    closed = source/'session-closed.json'
+    try:
+        if load(closed).get('verified'):
+            return True
+    except FileNotFoundError:
+        pass
+    path = source/'interruption-reconciled.json'
+    if not path.is_file():
+        return False
+    record = load(path)
+    cleanup = source/'interruption-cleanup/session-closed.json'
+    return (record.get('verified') is True and record.get('original_exit_unknown') is True
+            and record.get('owners_absent') is True and record.get('preferences_verified') is True
+            and record.get('source') == str(source)
+            and record.get('source_sha256') == sha(source/'source.json')
+            and cleanup.is_file() and load(cleanup).get('verified') is True)
+
+
 @dataclass
 class ContinuationPlan:
     source: Path
@@ -96,8 +124,8 @@ class ContinuationPlan:
 def prepare(source, output, at, through, dependencies):
     """Read and qualify all provenance before any install, launch or console.
 
-    The failed run may have failure.json: supported closure/restoration, rather
-    than completion, is required. Its original normal setup and unchanged
+    The failed run may have failure.json or an abrupt exit: supported closure
+    or separate verified interruption cleanup is required. Original normal setup and unchanged
     package/checkpoint identities remain mandatory.
     """
     source, output = Path(source).resolve(strict=True), Path(output).resolve()
@@ -105,7 +133,7 @@ def prepare(source, output, at, through, dependencies):
     require(not output.exists() and source.is_dir(), 'New continuation output required')
     require(type(at) is int and type(through) is int and at % 25 == 0 and
             0 < at < through <= 250 and through in (50, 200, 250), 'Unsupported continuation window')
-    require(load(source/'session-closed.json')['verified'] and
+    require(source_lifecycle_verified(source) and
             load(source/'preferences-restored.json')['verified'], 'Source did not close/restore cleanly')
     protocol, identity = load(source/'protocol.json'), load(source/'source.json')
     require(all(protocol.get(k) is True for k in ('fresh_game', 'ordinary_setup',
@@ -297,7 +325,8 @@ print('CSC_CONTINUATION_NATIVE='..CE_AIDistrictScoresStatus())
         width, height = plan.identity['map_signature'][:2]
         watch = EconomySavingsWatch(directory=plan.dependencies, binary=modules['GameCore_XP2_FinalRelease.dll']['path'],
                                     output=out, start=plan.at, through=plan.through, write=write_json,
-                                    players=plan.identity['original_ai'], width=width, height=height, districts=max(indices)+1)
+                                    players=plan.identity['original_ai'], width=width, height=height, districts=max(indices)+1,
+                                    capture_placement=True)
         watch.attach(session.owner, modules)
         if component_targets:
             capture(controller,out,component_targets,plan.at)
