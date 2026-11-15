@@ -1,10 +1,25 @@
 # Current CSC AI status
 
-**Running: fresh Continents world, map20851115/game31051115.** Same qualified
-main-CSC policy, Small/Prince/Online through250, CL/R2/Suk and stock AI.
-Startup native/module/resource preflights pass; beyond11 with no Lua errors.
-Shared controller owns the run. Check about15min.
-[Predeclared setup and measurements](../research/mods/csc-ai-new-continents-20261115.md).
+**Completed: new-seed Continents250, map20851115/game31051115.** Five Quarters:
+three Bakers and two Tailors, all with Base and+3 or better at foundation; one
+has both material classes. All five have working Base improvements, producer
+buildings and completed mapped customer neighbors at250. Three Storekeepers
+produce370 recorded active chain-turns. Meroë has an active Sacristan at250,
+absent225. Neither Tailors has adjacent Harbor access; they serve other stages.
+
+All16 native best comparisons match the published score. No active-memory
+support withdrawal occurs. Full-capacity nominations and positive waiting
+contracts explain several delays. Winnipeg and Iken still lose their15-turn
+windows while other production continues; simply raising all bids is unwarranted.
+Two pillaged suppliers are restored, with38/23-turn delays; no mapped resource
+is destroyed. Quarter purchases are unexercised on this seed.
+
+All ten censuses, the final save, native exit0 and preference restoration pass.
+No game, worker or test task remains. Standing instructions require15-minute
+monitoring and completed analysis for every test, unless Henno says otherwise.
+Next1.6: admission and reconsideration after credible plans time out. Spec
+improvement and faster repair remain downstream development work.
+[Completed results and five-site table](../research/mods/csc-ai-new-continents-20261115.md).
 
 **Problems 1.5/1.6: guidance continuity fixed and live-qualified.** Main CSC now
 uses one complete valuation path before and after tile acquisition. Bounded,

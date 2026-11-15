@@ -1,5 +1,16 @@
 # CSC AI roadmap
 
+**New-seed validation completed,15 November:** all five foundations have Base/+3+,
+all five reach working suppliers/producers/customers at250; three Storekeepers
+record370 chain-turns and one Sacristan is active. No Tailors Harbor is adjacent.
+All16 native best scores match; no active-memory support withdrawal.
+
+**Next1.6:** resolve admission/reconsideration around full slots and positive
+construction requests that outlast their native15-turn wait. Winnipeg/Iken
+provide concrete queue cases; Niani and Kerma provide capacity cases. Keep
+current score bands. Spec development and recovery speed are downstream gaps.
+[Completed new-world result](../research/mods/csc-ai-new-continents-20261115.md).
+
 **Problems 1.5/1.6 coherent-investment revision: implemented and live-qualified.**
 One valuation path removes owned-only legacy deductions. Bounded native-confirmed
 site memory preserves an initially unworked baseline across acquisition and

@@ -1,17 +1,20 @@
-# ACTIVE: new-seed Continents250,15 November
+# COMPLETED: new-seed Continents250,15 November
 
-Read session_ai_new_continents_20261115.md FIRST. User requested fresh geography;
-unchanged qualified9f450233 planner, mainCSC-only policy, CL/R2/Suk, stockAI.
-Map20851115/game31051115, Small/Prince/Online, ordinary start through250.
-Shared-controller worker2172, detachedhost20984; one-shot task
-CSC-AI-New-Continents-20261115 owns lifetime and removes itself after closure.
-Artifacts Desktop/Codex/csc-ai-new-continents-20261115/continents250-01.
-Uses immutable csc-ai-coherence-20261115/frozen02;11 overlays match source.
-CE400e6755/XP2092abfbb; WildW develop unchanged2986a746. Disk30.4GB free.
-Do not edit pinned sources or use a second console. Check about15min; startup
-preflightPASS, beyond11 with noLuaerrors. Prior short continuity games closed/restoredexit0. No PR/goal.
-Preserve unrelated WIP. Report quarter quality, material/customer links, native
-plans/purchases/retainedvalues/expiry, supplier losses and Service outcomes.
+Read session_ai_new_continents_20261115.md FIRST. Same9f450233 qualified policy,
+map20851115/game31051115 Small/Prince/Online,CL/R2/Suk. Completes250,saves,
+closes/restores exit0; no owner/game/task. Full analysis complete, AI-C188,
+report+compactJSON csc-ai-new-continents-20261115. Artifacts Desktop/Codex/
+csc-ai-new-continents-20261115/continents250-01; all10censuses verified.
+3B2T allBase/+3+,1both/1+4; all5endworkingBase+producer+mappedcustomer.
+Storekeepers142/171/57=370active chainturns; MeroeSacristanactive250/absent225.
+No adjacentTailorsHarbor, otherstagecustomersvaluable.16/16exactnativebest,
+10memoryepisodes5foundation/5expiry;63baselinequotesnoneworked,1reprice,
+nosupportwithdraw. NoQuarterpurchase;114paid9280Gold allmatched.0Lua/nativefaults.
+Maize132->170 andFlax138->161 pillagesrepaired; noresource destruction.
+Next1.6admission/queue/reconsideration: fullslots+positive15turnwaitsexpire;
+Winnipeg/Iken native cases documented. No blanketbidincrease. Specdevelopment/
+recoverylatency downstream. No newgame/goal/PR. Preserve unrelatedWIP.
+Standingalltest15minchecks+finalanalysis saved CSCskillba386aa/repof49713c7.
 
 # COMPLETED: coherent Quarter investment,15 November
 

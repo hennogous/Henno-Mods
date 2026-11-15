@@ -1,0 +1,1733 @@
+{
+  "map_seed": 20851115,
+  "game_seed": 31051115,
+  "source_commit": "9f450233",
+  "binary_scope": {
+    "xp2": "092abfbb2176f8df04b5212f819dc269dd83aea866ff05aaf489904a1ff7c41f",
+    "ce": "400e675522916ce54a17a6765132da89ee23c90304a89e721c6289c31327394f"
+  },
+  "closure": {
+    "verified": true,
+    "native_exit_code": 0,
+    "owners_absent": true,
+    "preferences_verified": true,
+    "package_callback_completed": true
+  },
+  "all_ten_censuses_verified": true,
+  "foundations": [
+    {
+      "kind": "SITE",
+      "base": 1,
+      "baseWorking": 1,
+      "bidAdjacency": 3,
+      "bidQ8": 72345,
+      "bidVersion": 12,
+      "city": 65536,
+      "complete": false,
+      "district": 42,
+      "districtID": 196610,
+      "eligibleGold": 1,
+      "eligibleProduction": 2,
+      "event": "foundation",
+      "hills": false,
+      "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+      "millForecastGold": 1,
+      "millForecastProduction": 2,
+      "millForecastTotal": 3,
+      "player": 2,
+      "plot": 2827,
+      "river": true,
+      "spec": 1,
+      "specWorking": 0,
+      "turn": 12
+    },
+    {
+      "kind": "SITE",
+      "base": 1,
+      "baseWorking": 0,
+      "bidAdjacency": 3,
+      "bidQ8": 43595,
+      "bidVersion": 38,
+      "city": 131073,
+      "complete": false,
+      "district": 42,
+      "districtID": 327684,
+      "eligibleGold": 1,
+      "eligibleProduction": 1,
+      "event": "foundation",
+      "hills": false,
+      "mill": "BUILDING_CSC_BAKERS_WATER_MILL",
+      "millForecastGold": 1,
+      "millForecastProduction": 2,
+      "millForecastTotal": 3,
+      "player": 3,
+      "plot": 1613,
+      "river": true,
+      "spec": 0,
+      "specWorking": 0,
+      "turn": 38
+    },
+    {
+      "kind": "SITE",
+      "base": 1,
+      "baseWorking": 0,
+      "bidAdjacency": 3,
+      "bidQ8": 75153,
+      "bidVersion": 39,
+      "city": 65536,
+      "complete": false,
+      "district": 43,
+      "districtID": 327683,
+      "eligibleGold": 1,
+      "eligibleProduction": 2,
+      "event": "foundation",
+      "hills": false,
+      "millForecastGold": 1,
+      "millForecastProduction": 2,
+      "millForecastTotal": 3,
+      "player": 1,
+      "plot": 2376,
+      "river": true,
+      "spec": 0,
+      "specWorking": 0,
+      "turn": 39
+    },
+    {
+      "kind": "SITE",
+      "base": 1,
+      "baseWorking": 1,
+      "bidAdjacency": 4,
+      "bidQ8": 359389,
+      "bidVersion": 134,
+      "city": 65536,
+      "complete": false,
+      "district": 43,
+      "districtID": 2097179,
+      "eligibleGold": 1,
+      "eligibleProduction": 3,
+      "event": "foundation",
+      "hills": false,
+      "millForecastGold": 1,
+      "millForecastProduction": 3,
+      "millForecastTotal": 4,
+      "player": 5,
+      "plot": 1131,
+      "river": false,
+      "spec": 0,
+      "specWorking": 0,
+      "turn": 134
+    },
+    {
+      "kind": "SITE",
+      "base": 1,
+      "baseWorking": 1,
+      "bidAdjacency": 3,
+      "bidQ8": 61827,
+      "bidVersion": 179,
+      "city": 524295,
+      "complete": false,
+      "district": 42,
+      "districtID": 3014696,
+      "eligibleGold": 1,
+      "eligibleProduction": 2,
+      "event": "foundation",
+      "hills": false,
+      "mill": "BUILDING_CSC_BAKERS_WIND_MILL",
+      "millForecastGold": 1,
+      "millForecastProduction": 2,
+      "millForecastTotal": 3,
+      "player": 5,
+      "plot": 1130,
+      "river": false,
+      "spec": 0,
+      "specWorking": 0,
+      "turn": 179
+    }
+  ],
+  "quality": {
+    "BAKERS": {
+      "foundations": 3,
+      "at_least3": 3,
+      "at_least4": 0,
+      "base": 3,
+      "spec": 1,
+      "both": 1,
+      "distinct_geometry_qualified_candidates": 117,
+      "distinct_positive_offers": 65
+    },
+    "TAILORS": {
+      "foundations": 2,
+      "at_least3": 2,
+      "at_least4": 1,
+      "base": 2,
+      "spec": 0,
+      "both": 0,
+      "distinct_geometry_qualified_candidates": 59,
+      "distinct_positive_offers": 53
+    }
+  },
+  "endpoint": {
+    "turn": 250,
+    "quarters": {
+      "BAKERS": {
+        "placed": 3,
+        "complete": 3,
+        "river": 2,
+        "base": 3,
+        "spec": 1,
+        "both": 1,
+        "base_improved": 3,
+        "spec_improved": 0,
+        "both_improved": 0,
+        "sales": 3,
+        "sales_outside_center": 2,
+        "raw_customer_geometry_any": 3,
+        "customer_any_footprint": 3,
+        "customer_any_completed": 3,
+        "customer_completion_unknown": 0,
+        "customer_host_state_recorded": 3,
+        "base_customer_any": 3,
+        "base_customer_any_footprint": 3,
+        "both_customer_any": 1,
+        "both_customer_any_footprint": 1,
+        "base_improved_customer_any": 3,
+        "base_improved_customer_any_footprint": 3,
+        "producer2": 3,
+        "producer2_working": 3,
+        "customer2": 3,
+        "customer2_without_building": 0,
+        "customer2_with_building": 3,
+        "customer2_working": 3,
+        "mapped_customer2": 3,
+        "mapped_customer2_completed": 3,
+        "mapped_customer2_with_working_building": 3,
+        "mapped_customer2_without_working_building": 0,
+        "mapped_customer2_completed_without_working_building": 0,
+        "base_customer2": 3,
+        "base_customer2_footprint": 3,
+        "base_improved_customer2_working": 3,
+        "service2_property": 3,
+        "stage2_physical": 3,
+        "producer3": 3,
+        "producer3_working": 3,
+        "customer3": 1,
+        "customer3_without_building": 0,
+        "customer3_with_building": 1,
+        "customer3_working": 1,
+        "mapped_customer3": 1,
+        "mapped_customer3_completed": 1,
+        "mapped_customer3_with_working_building": 1,
+        "mapped_customer3_without_working_building": 0,
+        "mapped_customer3_completed_without_working_building": 0,
+        "service3_property": 1,
+        "producer4": 2,
+        "producer4_working": 2,
+        "customer4": 1,
+        "customer4_without_building": 0,
+        "customer4_with_building": 1,
+        "customer4_working": 1,
+        "mapped_customer4": 1,
+        "mapped_customer4_completed": 1,
+        "mapped_customer4_with_working_building": 1,
+        "mapped_customer4_without_working_building": 0,
+        "mapped_customer4_completed_without_working_building": 0,
+        "service4_property": 0,
+        "unique_customer2": 3,
+        "unique_customer2_with_building": 3,
+        "unique_customer2_working": 3,
+        "unique_customer4": 1,
+        "unique_customer4_with_building": 1,
+        "unique_customer4_working": 1,
+        "unique_customer3": 1,
+        "unique_customer3_with_building": 1,
+        "unique_customer3_working": 1,
+        "service2_buildings": 3,
+        "service3_buildings": 1,
+        "service4_buildings": 0
+      },
+      "TAILORS": {
+        "placed": 2,
+        "complete": 2,
+        "river": 1,
+        "base": 2,
+        "spec": 0,
+        "both": 0,
+        "base_improved": 2,
+        "spec_improved": 0,
+        "both_improved": 0,
+        "sales": 2,
+        "sales_outside_center": 2,
+        "raw_customer_geometry_any": 2,
+        "customer_any_footprint": 2,
+        "customer_any_completed": 2,
+        "customer_completion_unknown": 0,
+        "customer_host_state_recorded": 2,
+        "base_customer_any": 2,
+        "base_customer_any_footprint": 2,
+        "both_customer_any": 0,
+        "both_customer_any_footprint": 0,
+        "base_improved_customer_any": 2,
+        "base_improved_customer_any_footprint": 2,
+        "producer2": 2,
+        "producer2_working": 2,
+        "customer2": 0,
+        "customer2_without_building": 0,
+        "customer2_with_building": 0,
+        "customer2_working": 0,
+        "mapped_customer2": 0,
+        "mapped_customer2_completed": 0,
+        "mapped_customer2_with_working_building": 0,
+        "mapped_customer2_without_working_building": 0,
+        "mapped_customer2_completed_without_working_building": 0,
+        "base_customer2": 0,
+        "base_customer2_footprint": 0,
+        "base_improved_customer2_working": 0,
+        "service2_property": 0,
+        "stage2_physical": 0,
+        "producer3": 2,
+        "producer3_working": 2,
+        "customer3": 1,
+        "customer3_without_building": 0,
+        "customer3_with_building": 1,
+        "customer3_working": 1,
+        "mapped_customer3": 1,
+        "mapped_customer3_completed": 1,
+        "mapped_customer3_with_working_building": 1,
+        "mapped_customer3_without_working_building": 0,
+        "mapped_customer3_completed_without_working_building": 0,
+        "service3_property": 1,
+        "producer4": 1,
+        "producer4_working": 1,
+        "customer4": 2,
+        "customer4_without_building": 1,
+        "customer4_with_building": 1,
+        "customer4_working": 1,
+        "mapped_customer4": 1,
+        "mapped_customer4_completed": 1,
+        "mapped_customer4_with_working_building": 1,
+        "mapped_customer4_without_working_building": 0,
+        "mapped_customer4_completed_without_working_building": 0,
+        "service4_property": 0,
+        "unique_customer3": 1,
+        "unique_customer3_with_building": 1,
+        "unique_customer3_working": 1,
+        "unique_customer4": 3,
+        "unique_customer4_with_building": 1,
+        "unique_customer4_working": 1,
+        "service2_buildings": 0,
+        "service3_buildings": 1,
+        "service4_buildings": 0
+      }
+    },
+    "economy": {
+      "reserve": 2451.76953125,
+      "production": 2532.953125,
+      "gross_gold": 5527.26171875,
+      "maintenance": 3019.0,
+      "population": 657.0,
+      "net_gold": 2508.26171875,
+      "food": 348.421875,
+      "cities": 49,
+      "players": 5
+    },
+    "players": {
+      "1": {
+        "reserve": 982.546875,
+        "gross_gold": 2194.6171875,
+        "maintenance": 1126.0,
+        "net_gold": 1068.6171875,
+        "cities": 13,
+        "population": 199.0,
+        "production": 996.9453125,
+        "food": 67.0
+      },
+      "2": {
+        "reserve": 1007.046875,
+        "gross_gold": 890.390625,
+        "maintenance": 553.0,
+        "net_gold": 337.390625,
+        "cities": 11,
+        "population": 174.0,
+        "production": 483.14453125,
+        "food": 204.0
+      },
+      "3": {
+        "reserve": 359.56640625,
+        "gross_gold": 430.3125,
+        "maintenance": 406.0,
+        "net_gold": 24.3125,
+        "cities": 7,
+        "population": 80.0,
+        "production": 447.5078125,
+        "food": 25.0
+      },
+      "4": {
+        "reserve": 0.0,
+        "gross_gold": 213.01171875,
+        "maintenance": 279.0,
+        "net_gold": -65.98828125,
+        "cities": 6,
+        "population": 73.0,
+        "production": 123.609375,
+        "food": 25.0
+      },
+      "5": {
+        "reserve": 102.609375,
+        "gross_gold": 1798.9296875,
+        "maintenance": 655.0,
+        "net_gold": 1143.9296875,
+        "cities": 12,
+        "population": 131.0,
+        "production": 481.74609375,
+        "food": 27.421875
+      }
+    }
+  },
+  "endpoint_quarters": [
+    {
+      "profile": "TAILORS",
+      "player": 1,
+      "city": 65536,
+      "plot": 2376,
+      "complete": true,
+      "ready": true,
+      "effects": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "river": true,
+      "materials": [
+        [
+          "2375",
+          "BASE",
+          "RESOURCE_COTTON",
+          "true"
+        ]
+      ],
+      "producers": [
+        [
+          "3",
+          "BUILDING_CSC_TAILORS_TAILOR",
+          "2"
+        ],
+        [
+          "2",
+          "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "2"
+        ]
+      ],
+      "sales": [
+        [
+          "2377",
+          "DISTRICT_HOLY_SITE"
+        ],
+        [
+          "2302",
+          "DISTRICT_COREEXPANSIONA"
+        ]
+      ],
+      "customers": [
+        [
+          "2450",
+          "4",
+          "DISTRICT_WONDER",
+          "true",
+          "0"
+        ],
+        [
+          "2377",
+          "3",
+          "DISTRICT_HOLY_SITE",
+          "true",
+          "2"
+        ],
+        [
+          "2449",
+          "4",
+          "DISTRICT_WONDER",
+          "true",
+          "0"
+        ]
+      ],
+      "customer_hosts": [
+        [
+          "2450",
+          "DISTRICT_WONDER",
+          "true",
+          "false"
+        ],
+        [
+          "2377",
+          "DISTRICT_HOLY_SITE",
+          "true",
+          "false"
+        ],
+        [
+          "2302",
+          "DISTRICT_COREEXPANSIONA",
+          "true",
+          "false"
+        ],
+        [
+          "2449",
+          "DISTRICT_WONDER",
+          "true",
+          "false"
+        ]
+      ]
+    },
+    {
+      "profile": "BAKERS",
+      "player": 2,
+      "city": 65536,
+      "plot": 2827,
+      "complete": true,
+      "ready": true,
+      "effects": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "river": true,
+      "materials": [
+        [
+          "2901",
+          "SPEC",
+          "RESOURCE_BERRIES",
+          "false"
+        ],
+        [
+          "2753",
+          "BASE",
+          "RESOURCE_MAIZE",
+          "true"
+        ]
+      ],
+      "producers": [
+        [
+          "4",
+          "BUILDING_CSC_BAKERS_CAFE",
+          "2"
+        ],
+        [
+          "2",
+          "BUILDING_CSC_BAKERS_WATER_MILL",
+          "2"
+        ],
+        [
+          "3",
+          "BUILDING_CSC_BAKERS_BAKERY",
+          "2"
+        ]
+      ],
+      "sales": [
+        [
+          "2828",
+          "DISTRICT_CITY_CENTER"
+        ],
+        [
+          "2826",
+          "DISTRICT_ENTERTAINMENT_COMPLEX"
+        ]
+      ],
+      "customers": [
+        [
+          "2828",
+          "2",
+          "DISTRICT_CITY_CENTER",
+          "true",
+          "2"
+        ],
+        [
+          "2826",
+          "4",
+          "DISTRICT_ENTERTAINMENT_COMPLEX",
+          "true",
+          "2"
+        ]
+      ],
+      "customer_hosts": [
+        [
+          "2828",
+          "DISTRICT_CITY_CENTER",
+          "true",
+          "false"
+        ],
+        [
+          "2826",
+          "DISTRICT_ENTERTAINMENT_COMPLEX",
+          "true",
+          "false"
+        ]
+      ]
+    },
+    {
+      "profile": "BAKERS",
+      "player": 3,
+      "city": 131073,
+      "plot": 1613,
+      "complete": true,
+      "ready": true,
+      "effects": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "river": true,
+      "materials": [
+        [
+          "1539",
+          "BASE",
+          "RESOURCE_CATTLE",
+          "true"
+        ]
+      ],
+      "producers": [
+        [
+          "2",
+          "BUILDING_CSC_BAKERS_WIND_MILL",
+          "2"
+        ],
+        [
+          "3",
+          "BUILDING_CSC_BAKERS_BAKERY",
+          "2"
+        ]
+      ],
+      "sales": [
+        [
+          "1612",
+          "DISTRICT_CITY_CENTER"
+        ]
+      ],
+      "customers": [
+        [
+          "1612",
+          "2",
+          "DISTRICT_CITY_CENTER",
+          "true",
+          "2"
+        ]
+      ],
+      "customer_hosts": [
+        [
+          "1612",
+          "DISTRICT_CITY_CENTER",
+          "true",
+          "false"
+        ]
+      ]
+    },
+    {
+      "profile": "TAILORS",
+      "player": 5,
+      "city": 65536,
+      "plot": 1131,
+      "complete": true,
+      "ready": true,
+      "effects": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "river": false,
+      "materials": [
+        [
+          "1205",
+          "BASE",
+          "RESOURCE_CSC_FLAX",
+          "true"
+        ]
+      ],
+      "producers": [
+        [
+          "3",
+          "BUILDING_CSC_TAILORS_TAILOR",
+          "2"
+        ],
+        [
+          "4",
+          "BUILDING_CSC_TAILORS_FASHION_HOUSE",
+          "2"
+        ],
+        [
+          "2",
+          "BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP",
+          "2"
+        ]
+      ],
+      "sales": [
+        [
+          "1132",
+          "DISTRICT_THEATER"
+        ]
+      ],
+      "customers": [
+        [
+          "1132",
+          "4",
+          "DISTRICT_THEATER",
+          "true",
+          "2"
+        ]
+      ],
+      "customer_hosts": [
+        [
+          "1132",
+          "DISTRICT_THEATER",
+          "true",
+          "false"
+        ]
+      ]
+    },
+    {
+      "profile": "BAKERS",
+      "player": 5,
+      "city": 524295,
+      "plot": 1130,
+      "complete": true,
+      "ready": true,
+      "effects": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "river": false,
+      "materials": [
+        [
+          "1205",
+          "BASE",
+          "RESOURCE_CSC_FLAX",
+          "true"
+        ]
+      ],
+      "producers": [
+        [
+          "2",
+          "BUILDING_CSC_BAKERS_WIND_MILL",
+          "2"
+        ],
+        [
+          "4",
+          "BUILDING_CSC_BAKERS_CAFE",
+          "2"
+        ],
+        [
+          "3",
+          "BUILDING_CSC_BAKERS_BAKERY",
+          "2"
+        ]
+      ],
+      "sales": [
+        [
+          "1056",
+          "DISTRICT_SUGUBA"
+        ],
+        [
+          "1129",
+          "DISTRICT_CITY_CENTER"
+        ]
+      ],
+      "customers": [
+        [
+          "1056",
+          "3",
+          "DISTRICT_SUGUBA",
+          "true",
+          "2"
+        ],
+        [
+          "1129",
+          "2",
+          "DISTRICT_CITY_CENTER",
+          "true",
+          "2"
+        ]
+      ],
+      "customer_hosts": [
+        [
+          "1056",
+          "DISTRICT_SUGUBA",
+          "true",
+          "false"
+        ],
+        [
+          "1129",
+          "DISTRICT_CITY_CENTER",
+          "true",
+          "false"
+        ]
+      ]
+    }
+  ],
+  "services": {
+    "unsampled_turns": [],
+    "active_turns": [
+      {
+        "player": 2,
+        "city": 65536,
+        "quarter": 196610,
+        "turns": 142,
+        "active_ranges": [
+          [
+            69,
+            131
+          ],
+          [
+            171,
+            249
+          ]
+        ],
+        "inactive_after_first": [
+          [
+            132,
+            170
+          ]
+        ]
+      },
+      {
+        "player": 3,
+        "city": 131073,
+        "quarter": 327684,
+        "turns": 171,
+        "active_ranges": [
+          [
+            79,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      },
+      {
+        "player": 5,
+        "city": 524295,
+        "quarter": 3014696,
+        "turns": 57,
+        "active_ranges": [
+          [
+            193,
+            249
+          ]
+        ],
+        "inactive_after_first": []
+      }
+    ],
+    "ambiguous_attribution": [],
+    "sampled_turn_count": 248,
+    "total_active_chain_turns": 370
+  },
+  "continuity": {
+    "event_counts": {
+      "selected": 10,
+      "memory_released": 5,
+      "memory_expired": 5,
+      "reprice": 1
+    },
+    "events": [
+      {
+        "turn": "3",
+        "player": "2",
+        "city": "65536",
+        "district": "42",
+        "plot": "2827",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "57337",
+        "forecastTurn": "2",
+        "baselineWorkers": "0",
+        "signature": "0,31,-1,-1"
+      },
+      {
+        "turn": "12",
+        "player": "2",
+        "city": "131073",
+        "district": "42",
+        "plot": "3049",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "54894",
+        "forecastTurn": "11",
+        "baselineWorkers": "0",
+        "signature": "9,-1,-1,-1"
+      },
+      {
+        "turn": "13",
+        "player": "2",
+        "city": "65536",
+        "district": "42",
+        "plot": "2827",
+        "kind": "memory_released",
+        "reason": "founded",
+        "valueQ8": "72345",
+        "forecastTurn": "12",
+        "baselineWorkers": "0",
+        "signature": "0,31,-1,-1"
+      },
+      {
+        "turn": "28",
+        "player": "2",
+        "city": "131073",
+        "district": "42",
+        "plot": "3049",
+        "kind": "memory_expired",
+        "reason": "lifetime",
+        "valueQ8": "62216",
+        "forecastTurn": "27",
+        "baselineWorkers": "0",
+        "signature": "9,-1,-1,-1"
+      },
+      {
+        "turn": "38",
+        "player": "1",
+        "city": "65536",
+        "district": "43",
+        "plot": "2376",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "74199",
+        "forecastTurn": "37",
+        "baselineWorkers": "0",
+        "signature": "3,3,-1,-1"
+      },
+      {
+        "turn": "38",
+        "player": "3",
+        "city": "131073",
+        "district": "42",
+        "plot": "1613",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "45790",
+        "forecastTurn": "37",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "39",
+        "player": "3",
+        "city": "131073",
+        "district": "42",
+        "plot": "1613",
+        "kind": "memory_released",
+        "reason": "founded",
+        "valueQ8": "43595",
+        "forecastTurn": "38",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "40",
+        "player": "1",
+        "city": "65536",
+        "district": "43",
+        "plot": "2376",
+        "kind": "memory_released",
+        "reason": "founded",
+        "valueQ8": "75153",
+        "forecastTurn": "39",
+        "baselineWorkers": "0",
+        "signature": "3,3,-1,-1"
+      },
+      {
+        "turn": "100",
+        "player": "5",
+        "city": "65536",
+        "district": "43",
+        "plot": "1131",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "169348",
+        "forecastTurn": "99",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "116",
+        "player": "5",
+        "city": "65536",
+        "district": "43",
+        "plot": "1131",
+        "kind": "memory_expired",
+        "reason": "lifetime",
+        "valueQ8": "151746",
+        "forecastTurn": "115",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "127",
+        "player": "1",
+        "city": "196610",
+        "district": "42",
+        "plot": "2742",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "194411",
+        "forecastTurn": "126",
+        "baselineWorkers": "1",
+        "signature": "1,3,-1,-1"
+      },
+      {
+        "turn": "130",
+        "player": "5",
+        "city": "65536",
+        "district": "43",
+        "plot": "1131",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "300809",
+        "forecastTurn": "129",
+        "baselineWorkers": "1",
+        "signature": "0,-1,-1,1"
+      },
+      {
+        "turn": "135",
+        "player": "5",
+        "city": "65536",
+        "district": "43",
+        "plot": "1131",
+        "kind": "memory_released",
+        "reason": "founded",
+        "valueQ8": "359389",
+        "forecastTurn": "134",
+        "baselineWorkers": "1",
+        "signature": "0,-1,-1,1"
+      },
+      {
+        "turn": "143",
+        "player": "1",
+        "city": "196610",
+        "district": "42",
+        "plot": "2742",
+        "kind": "memory_expired",
+        "reason": "lifetime",
+        "valueQ8": "250915",
+        "forecastTurn": "142",
+        "baselineWorkers": "1",
+        "signature": "1,3,-1,-1"
+      },
+      {
+        "turn": "153",
+        "player": "5",
+        "city": "65536",
+        "district": "42",
+        "plot": "1130",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "346025",
+        "forecastTurn": "152",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "169",
+        "player": "5",
+        "city": "65536",
+        "district": "42",
+        "plot": "1130",
+        "kind": "memory_expired",
+        "reason": "lifetime",
+        "valueQ8": "146945",
+        "forecastTurn": "168",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "178",
+        "player": "5",
+        "city": "524295",
+        "district": "42",
+        "plot": "1130",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "51755",
+        "forecastTurn": "177",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "180",
+        "player": "5",
+        "city": "524295",
+        "district": "42",
+        "plot": "1130",
+        "kind": "memory_released",
+        "reason": "founded",
+        "valueQ8": "61827",
+        "forecastTurn": "179",
+        "baselineWorkers": "0",
+        "signature": "0,-1,-1,-1"
+      },
+      {
+        "turn": "199",
+        "player": "1",
+        "city": "720906",
+        "district": "43",
+        "plot": "3115",
+        "kind": "selected",
+        "reason": "native_best",
+        "valueQ8": "49526",
+        "forecastTurn": "198",
+        "baselineWorkers": "0",
+        "signature": "12,-1,-1,-1"
+      },
+      {
+        "turn": "199",
+        "player": "1",
+        "city": "720906",
+        "district": "43",
+        "plot": "3115",
+        "kind": "reprice",
+        "reason": "physical_change",
+        "valueQ8": "49526",
+        "forecastTurn": "-2",
+        "baselineWorkers": "-1",
+        "signature": "12,-1,-1,72"
+      },
+      {
+        "turn": "215",
+        "player": "1",
+        "city": "720906",
+        "district": "43",
+        "plot": "3115",
+        "kind": "memory_expired",
+        "reason": "lifetime",
+        "valueQ8": "53913",
+        "forecastTurn": "214",
+        "baselineWorkers": "-1",
+        "signature": "12,-1,-1,72"
+      }
+    ],
+    "native_withdrawals": [],
+    "owned_baseline_quotes": 63,
+    "acquisition_baseline_quotes": 0
+  },
+  "baseline_quotes_with_staffing": 0,
+  "native_best": {
+    "total": 16,
+    "exact": 16
+  },
+  "finances": {
+    "paid": 114,
+    "gold": 9280.0,
+    "debit_deltas_match": 114,
+    "later_owner_confirmed": 114,
+    "quarter_site_payments": 0,
+    "later_adjacent_material_payments": 0,
+    "targeted_checks": 325,
+    "targeted_pass": 61,
+    "category_fail_with_enough_treasury": 156,
+    "quarter_choices": 18,
+    "quarter_frontier_choices": 0,
+    "choice_totals_read": 2259,
+    "choice_totals": 2259,
+    "max_plot_fund": 150.0,
+    "ownership_followups": [],
+    "weights": [
+      [
+        3,
+        4,
+        1,
+        1
+      ]
+    ]
+  },
+  "material_disruptions": [
+    {
+      "quarter": "BAKERS",
+      "quarterPlot": 2827,
+      "resource": "RESOURCE_MAIZE",
+      "plot": 2753,
+      "pillagedTurn": 132,
+      "restoredTurn": 170
+    },
+    {
+      "quarter": "TAILORS",
+      "quarterPlot": 1131,
+      "resource": "RESOURCE_CSC_FLAX",
+      "plot": 1205,
+      "pillagedTurn": 138,
+      "restoredTurn": 161
+    }
+  ],
+  "resource_loss_events": 0,
+  "native_cases": [
+    "27, 2, City LOC_CITY_NAME_WINNIPEG, Build City District, RUNNING, Contract Manager Decorator, Contract 184: waiting 14 of 15 turns, ",
+    "27, 2, City LOC_CITY_NAME_WINNIPEG, Build City District, READY, Build Unit, DISTRICT_CSC_BAKERS_QUARTER: Accepted at 240.0",
+    "27, 2, City LOC_CITY_NAME_WINNIPEG, Build City District, READY, Contract Manager Decorator, Contract 184: waiting 0 of -1 turns, ",
+    "28, 2, City LOC_CITY_NAME_WINNIPEG, Build City District, RUNNING, Contract Manager Decorator, Contract 184: waiting 15 of 15 turns, ",
+    "28, 2, City LOC_CITY_NAME_WINNIPEG, Build City District, READY, Build Unit, DISTRICT_CSC_BAKERS_QUARTER: Accepted at 240.0",
+    "28, 2, City LOC_CITY_NAME_WINNIPEG, Build City District, READY, Contract Manager Decorator, Contract 184: waiting 0 of -1 turns, ",
+    "214, 1, City LOC_CITY_NAME_IKEN, Build City District, RUNNING, Contract Manager Decorator, Contract 4693: waiting 14 of 15 turns, ",
+    "214, 1, City LOC_CITY_NAME_IKEN, Build City District, READY, Build Unit, DISTRICT_CSC_TAILORS_QUARTER: Accepted at 210.6",
+    "214, 1, City LOC_CITY_NAME_IKEN, Build City District, READY, Contract Manager Decorator, Contract 4693: waiting 0 of -1 turns, ",
+    "215, 1, City LOC_CITY_NAME_IKEN, Build City District, RUNNING, Contract Manager Decorator, Contract 4693: waiting 15 of 15 turns, ",
+    "215, 1, City LOC_CITY_NAME_IKEN, Build City District, READY, Build Unit, DISTRICT_CSC_TAILORS_QUARTER: Accepted at 210.6",
+    "215, 1, City LOC_CITY_NAME_IKEN, Build City District, READY, Contract Manager Decorator, Contract 4693: waiting 0 of -1 turns, "
+  ],
+  "goods_provider_relationships": [
+    {
+      "kind": "RELATION",
+      "buildingStatus": 0,
+      "city": 65536,
+      "completionOrder": "quarterFirst",
+      "foundationOrder": "quarterFirst",
+      "neighbourCity": 65536,
+      "neighbourComplete": true,
+      "neighbourDistrict": 46,
+      "neighbourFirstSeen": 61,
+      "neighbourFoundationTurn": 61,
+      "neighbourPillaged": false,
+      "neighbourPlot": 2752,
+      "player": 2,
+      "present": true,
+      "quarter": "BAKERS",
+      "quarterComplete": true,
+      "quarterFirstSeen": 12,
+      "quarterFoundationTurn": 12,
+      "quarterPillaged": false,
+      "quarterPlot": 2827,
+      "role": "goodsProvider",
+      "sequence": 24665,
+      "stage": 0,
+      "turn": 62
+    },
+    {
+      "kind": "RELATION",
+      "buildingStatus": 0,
+      "city": 65536,
+      "completionOrder": "neighbourFirst",
+      "foundationOrder": "neighbourFirst",
+      "neighbourCity": 65536,
+      "neighbourComplete": true,
+      "neighbourDistrict": 34,
+      "neighbourFirstSeen": 59,
+      "neighbourFoundationTurn": 59,
+      "neighbourPillaged": false,
+      "neighbourPlot": 1206,
+      "player": 5,
+      "present": true,
+      "quarter": "TAILORS",
+      "quarterComplete": true,
+      "quarterFirstSeen": 134,
+      "quarterFoundationTurn": 134,
+      "quarterPillaged": false,
+      "quarterPlot": 1131,
+      "role": "goodsProvider",
+      "sequence": 102479,
+      "stage": 0,
+      "turn": 135
+    },
+    {
+      "kind": "RELATION",
+      "buildingStatus": 0,
+      "city": 65536,
+      "completionOrder": "neighbourFirst",
+      "foundationOrder": "neighbourFirst",
+      "neighbourCity": 65536,
+      "neighbourComplete": true,
+      "neighbourDistrict": 33,
+      "neighbourFirstSeen": 113,
+      "neighbourFoundationTurn": 113,
+      "neighbourPillaged": false,
+      "neighbourPlot": 1057,
+      "player": 5,
+      "present": true,
+      "quarter": "TAILORS",
+      "quarterComplete": true,
+      "quarterFirstSeen": 134,
+      "quarterFoundationTurn": 134,
+      "quarterPillaged": false,
+      "quarterPlot": 1131,
+      "role": "goodsProvider",
+      "sequence": 102483,
+      "stage": 0,
+      "turn": 135
+    },
+    {
+      "kind": "RELATION",
+      "buildingStatus": 0,
+      "city": 524295,
+      "completionOrder": "neighbourFirst",
+      "foundationOrder": "neighbourFirst",
+      "neighbourCity": 65536,
+      "neighbourComplete": true,
+      "neighbourDistrict": 33,
+      "neighbourFirstSeen": 113,
+      "neighbourFoundationTurn": 113,
+      "neighbourPillaged": false,
+      "neighbourPlot": 1057,
+      "player": 5,
+      "present": true,
+      "quarter": "BAKERS",
+      "quarterComplete": true,
+      "quarterFirstSeen": 179,
+      "quarterFoundationTurn": 179,
+      "quarterPillaged": false,
+      "quarterPlot": 1130,
+      "role": "goodsProvider",
+      "sequence": 174538,
+      "stage": 0,
+      "turn": 189
+    }
+  ],
+  "native_health": {
+    "hooks": 20,
+    "active": 0,
+    "faults": [],
+    "totals": {
+      "records": 23981,
+      "targetedSavings": 325,
+      "commandDebits": 114,
+      "unknownLineage": 0,
+      "expiredBindings": 331,
+      "accountSnapshots": 7470
+    },
+    "buffered": 0
+  },
+  "runtime_errors": 0,
+  "trend": [
+    {
+      "turn": 25,
+      "quarters": {
+        "BAKERS": {
+          "placed": 1,
+          "complete": 1,
+          "base": 1,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 1,
+          "producer2_working": 0,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 0,
+          "complete": 0,
+          "base": 0,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 0,
+          "spec_improved": 0,
+          "customer_any_completed": 0,
+          "producer2_working": 0,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 271.84765625,
+        "production": 68.59375,
+        "gross_gold": 45.1875,
+        "maintenance": 1.0,
+        "population": 25.0,
+        "net_gold": 44.1875,
+        "food": 17.0,
+        "cities": 7,
+        "players": 5
+      }
+    },
+    {
+      "turn": 50,
+      "quarters": {
+        "BAKERS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 0,
+          "mapped_customer2_with_working_building": 1,
+          "service2_property": 0,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 1,
+          "complete": 1,
+          "base": 1,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 1,
+          "producer2_working": 0,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 392.046875,
+        "production": 110.18359375,
+        "gross_gold": 92.68359375,
+        "maintenance": 8.0,
+        "population": 45.0,
+        "net_gold": 84.68359375,
+        "food": 41.0,
+        "cities": 11,
+        "players": 5
+      }
+    },
+    {
+      "turn": 75,
+      "quarters": {
+        "BAKERS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 1,
+          "mapped_customer2_with_working_building": 2,
+          "service2_property": 1,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 1,
+          "complete": 1,
+          "base": 1,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 1,
+          "producer2_working": 0,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 466.41015625,
+        "production": 205.21484375,
+        "gross_gold": 167.27734375,
+        "maintenance": 78.0,
+        "population": 93.0,
+        "net_gold": 89.27734375,
+        "food": 71.0,
+        "cities": 18,
+        "players": 5
+      }
+    },
+    {
+      "turn": 100,
+      "quarters": {
+        "BAKERS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 2,
+          "service2_property": 2,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 1,
+          "complete": 1,
+          "base": 1,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 1,
+          "producer2_working": 1,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 795.3359375,
+        "production": 337.5703125,
+        "gross_gold": 390.16015625,
+        "maintenance": 201.0,
+        "population": 154.0,
+        "net_gold": 189.16015625,
+        "food": 131.0,
+        "cities": 25,
+        "players": 5
+      }
+    },
+    {
+      "turn": 125,
+      "quarters": {
+        "BAKERS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 2,
+          "service2_property": 2,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 1,
+          "complete": 1,
+          "base": 1,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 1,
+          "producer2_working": 1,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 890.25,
+        "production": 433.3671875,
+        "gross_gold": 853.44921875,
+        "maintenance": 424.0,
+        "population": 231.0,
+        "net_gold": 429.44921875,
+        "food": 210.0,
+        "cities": 30,
+        "players": 5
+      }
+    },
+    {
+      "turn": 150,
+      "quarters": {
+        "BAKERS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 2,
+          "service2_property": 1,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 1,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 1,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 2056.078125,
+        "production": 667.94921875,
+        "gross_gold": 1476.328125,
+        "maintenance": 700.0,
+        "population": 318.0,
+        "net_gold": 776.328125,
+        "food": 227.0,
+        "cities": 35,
+        "players": 5
+      }
+    },
+    {
+      "turn": 175,
+      "quarters": {
+        "BAKERS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 2,
+          "service2_property": 2,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 3437.234375,
+        "production": 1090.734375,
+        "gross_gold": 2318.73046875,
+        "maintenance": 1129.0,
+        "population": 403.0,
+        "net_gold": 1189.73046875,
+        "food": 408.0,
+        "cities": 38,
+        "players": 5
+      }
+    },
+    {
+      "turn": 200,
+      "quarters": {
+        "BAKERS": {
+          "placed": 3,
+          "complete": 3,
+          "base": 3,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 3,
+          "spec_improved": 0,
+          "customer_any_completed": 3,
+          "producer2_working": 3,
+          "mapped_customer2_with_working_building": 3,
+          "service2_property": 3,
+          "service3_property": 0
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 2855.91796875,
+        "production": 1764.90625,
+        "gross_gold": 3548.55078125,
+        "maintenance": 1623.0,
+        "population": 499.0,
+        "net_gold": 1925.55078125,
+        "food": 539.0,
+        "cities": 41,
+        "players": 5
+      }
+    },
+    {
+      "turn": 225,
+      "quarters": {
+        "BAKERS": {
+          "placed": 3,
+          "complete": 3,
+          "base": 3,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 3,
+          "spec_improved": 0,
+          "customer_any_completed": 3,
+          "producer2_working": 3,
+          "mapped_customer2_with_working_building": 3,
+          "service2_property": 3,
+          "service3_property": 1
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 0
+        }
+      },
+      "economy": {
+        "reserve": 6676.9921875,
+        "production": 2320.0,
+        "gross_gold": 4476.390625,
+        "maintenance": 2327.0,
+        "population": 603.0,
+        "net_gold": 2149.390625,
+        "food": 368.015625,
+        "cities": 47,
+        "players": 5
+      }
+    },
+    {
+      "turn": 250,
+      "quarters": {
+        "BAKERS": {
+          "placed": 3,
+          "complete": 3,
+          "base": 3,
+          "spec": 1,
+          "both": 1,
+          "base_improved": 3,
+          "spec_improved": 0,
+          "customer_any_completed": 3,
+          "producer2_working": 3,
+          "mapped_customer2_with_working_building": 3,
+          "service2_property": 3,
+          "service3_property": 1
+        },
+        "TAILORS": {
+          "placed": 2,
+          "complete": 2,
+          "base": 2,
+          "spec": 0,
+          "both": 0,
+          "base_improved": 2,
+          "spec_improved": 0,
+          "customer_any_completed": 2,
+          "producer2_working": 2,
+          "mapped_customer2_with_working_building": 0,
+          "service2_property": 0,
+          "service3_property": 1
+        }
+      },
+      "economy": {
+        "reserve": 2451.76953125,
+        "production": 2532.953125,
+        "gross_gold": 5527.26171875,
+        "maintenance": 3019.0,
+        "population": 657.0,
+        "net_gold": 2508.26171875,
+        "food": 348.421875,
+        "cities": 49,
+        "players": 5
+      }
+    }
+  ],
+  "source_log_sha256": "4d070c2f3fd4a25c3ccea47c700371fe479107afbe87c8341207509d7cf1f47a"
+}

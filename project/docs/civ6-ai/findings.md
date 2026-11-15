@@ -3657,3 +3657,33 @@ request lifetime and production choices remain a separate1.6 follow-through task
 68 economic/lifecycle +18 integration checks pass. No new native API/DLL or PR.
 [Design, exact contrast and artifacts](../research/mods/csc-ai-coherent-investment-20261115.md),
 [compact evidence](../research/mods/csc-ai-coherent-investment-20261115.json).
+
+
+## AI-C188 — Coherent planner builds five useful Quarters on new Continents geography
+
+Observed15 November2026, XP2 SHA092abfbb, CE400e6755, main CSC9f450233,
+ordinary Small/Prince/Online250, map20851115/game31051115, CL/R2/Suk. Original
+AI seats1–5 only; unchanged qualified policy. Three Bakers and two Tailors are
+founded, all Base/+3+; one has both classes and another reaches+4. All five retain
+working Base improvements, producers and completed mapped customers at250.
+Three Storekeepers record142/171/57 active turns,370 total; Meroë's Sacristan
+is active250 and absent225. Neither Tailors has adjacent Harbor access.
+
+All16 new-Quarter native best receipts match exact scores/versions/writes.
+Ten confirmed-best memory episodes yield five foundation releases and five
+policy expiries, with one physical-change reprice and no active-memory support
+withdrawal.63 owned baseline quotes have no newly worked footprint; there is
+no Quarter-site purchase. The earlier Pella transition remains its direct case.
+Winnipeg184 and Iken4693 retain positive accepted construction values through
+15-turn waits before expiry; other scopes return No contract at full capacity.
+Niani's same Tailors site later builds with a free slot; the neighboring Bakers
+footprint later builds from Nioro.
+
+Two Base suppliers are pillaged and restored: Maize132→170, Flax138→161.
+No mapped material resource is physically destroyed. Four distinct CL provider
+relationships touch three Quarters. All114 tile-payment debits match with later
+ownership confirmation. All ten censuses, save, exit0 and restoration pass;
+zero Lua/native faults and no remaining owner/task. Stock AI only, no external
+policy or manual chain fixture.
+[Full result and interpretation](../research/mods/csc-ai-new-continents-20261115.md),
+[compact evidence and native excerpts](../research/mods/csc-ai-new-continents-20261115.json).
