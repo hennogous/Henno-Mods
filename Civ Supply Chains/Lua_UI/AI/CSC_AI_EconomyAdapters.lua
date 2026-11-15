@@ -198,7 +198,7 @@ function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
                 end
                 if legal then
                     nominated[key]={player=snapshot.id,city=link.city,district=link.district,plot=link.plot,
-                        delta=link.preference*256,customer=true,spatial=true}
+                        delta=math.floor(link.preference*256+.5),customer=true,spatial=true}
                     occupied[link.plot]=true
                     if not exempt then remaining[link.city]=remaining[link.city]-1 end
                 end
@@ -362,9 +362,13 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
     end end
     if snapshot.SpatialStats then
         local spatial=snapshot.SpatialStats()
-        print(string.format('CSC_AI_SPATIAL_WORK turn=%d player=%d maps=%d adjacencyReads=%d unavailable=%d options=%d economyMs=%.3f',
-            Game.GetCurrentGameTurn(),pid,spatial.maps,spatial.adjacencyReads,spatial.unavailable,spatial.options,
-            started and (clock()-started)*1000 or -1))
+        -- Havok's os.clock can be a constant zero. Mark it unavailable rather
+        -- than claiming a measured zero-cost pass; host turn timings remain
+        -- in the shared controller journal.
+        local elapsed=started and clock()-started
+        print(string.format('CSC_AI_SPATIAL_WORK turn=%d player=%d maps=%d adjacencyReads=%d unavailable=%d laggedReads=%d options=%d economyMs=%.3f',
+            Game.GetCurrentGameTurn(),pid,spatial.maps,spatial.adjacencyReads,spatial.unavailable,spatial.laggedReads,spatial.options,
+            elapsed and elapsed>0 and elapsed*1000 or -1))
     end
     return result,stats
 end

@@ -130,10 +130,10 @@ CSC_AI_SitingDistricts=function()return{buildable={
  {Index=20,DistrictType='DISTRICT_COMMERCIAL_HUB'},
  {Index=21,DistrictType='DISTRICT_HOLY_SITE'}}}end
 local values={[1]=4,[2]=2,[3]=3,[4]=4,[5]=10}
-reads=0;stale=false
+reads=0;lag=0
 ui={GetDistrictAdjacency=function(_,_,plot,district)
  reads=reads+1
- return{available=true,turn=stale and 99 or 100,yields={
+ return{available=true,turn=100-lag,yields={
  YIELD_GOLD=district==20 and values[plot]or 0,
  YIELD_FAITH=district==21 and values[plot]or 0,YIELD_CSC_AI_PLACEMENT=999}}
 end}
@@ -190,10 +190,19 @@ snapshot.CustomerOptions(city,plots[1],profile,{[3]=true})
 assert(reads==previous and snapshot.SpatialStats().maps==2)
 ''')
 
+    def test_known_core_ui_phase_lag_is_accepted_and_counted(self):
+        vm = self.facts()
+        vm.execute('''
+lag=1
+local snapshot=CSC_AI_EconomyFacts.New(player,placement,ui)
+assert(#snapshot.CustomerOptions(city,plots[1],profile,{})>0)
+assert(snapshot.SpatialStats().laggedReads==snapshot.SpatialStats().adjacencyReads)
+''')
+
     def test_stale_or_missing_native_adjacency_creates_no_customer_bonus(self):
         vm = self.facts()
         vm.execute('''
-stale=true
+lag=2
 local snapshot=CSC_AI_EconomyFacts.New(player,placement,ui)
 assert(#snapshot.CustomerOptions(city,plots[1],profile,{})==0)
 assert(snapshot.SpatialStats().unavailable>0)

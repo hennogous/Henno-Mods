@@ -5,7 +5,7 @@ Main CSC now values bounded material clumps and Base+Spec more strongly, and
 evaluates concrete customer footprints with native terrain adjacency and
 alternative-site cost. Compatible plans cannot count one tile twice. Future
 customers remain separate from current adjacency/income; immediate customer
-offers still need native targets and capacity.47 economic/spatial and18
+offers still need native targets and capacity.48 economic/spatial and18
 integration checks pass. Next: matched Continents Online250, then compare
 placement quality, actual customer links and chain outcomes with the previous run.
 [Policy, diagnostics and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).

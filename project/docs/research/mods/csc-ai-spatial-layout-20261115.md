@@ -40,8 +40,10 @@ and current population capacity do not erase future geometric potential.
 
 Native `GetDistrictAdjacency` supplies ordinary hypothetical adjacency for the
 explicit AI/city/district. This follows loaded Commercial Hub, Holy Site, Harbor,
-replacement and optional-mod rules. Private AI yields are excluded. Unknown or
-stale reads earn no terrain preference. This is current-map hypothetical
+replacement and optional-mod rules. Private AI yields are excluded. Unavailable reads and snapshots more than
+one turn behind Core earn no terrain preference. One-turn UI
+phase lag is counted explicitly; Core still supplies current footprint checks.
+This is current-map hypothetical
 adjacency, not a simulation of every feature removed by a future Quarter or
 future customer. No bonus is assigned for an unbuilt Wonder or City Center.
 
@@ -77,7 +79,7 @@ maps, native reads, unavailable inputs, options and economic-pass CPU time when
 the Lua clock is available. These record proposals; native receipts and actual
 foundations retain their existing separate observers.
 
-Offline qualification:47 economic/SQL/spatial checks plus18 publisher/package/
+Offline qualification:48 economic/SQL/spatial checks plus18 publisher/package/
 observer checks pass. Coverage includes native terrain and alternate-site cost,
 private-yield exclusion, shared-footprint/family conflicts, protection, current
 capacity/legal targets, stale reads, bounded material bonuses, economic-loss gates
@@ -109,3 +111,25 @@ Artifacts: `C:/Users/Shadow/Desktop/Codex/csc-ai-spatial-layout-20261115/`.
 Launch/result state is maintained in STATUS and session memory. Compare Quarter
 counts, placement-time adjacency, Base/Spec, customer relationships, chains,
 ordinary districts and timing with the preceding seven-Quarter/582-chain-turn run.
+
+### Startup correction before the full comparison
+
+`continents250-01` verifies identical initial map, starts and units, and the
+25-material/14-provider loaded audit. Spatial work reports every terrain read
+unavailable: exact Core/UI turn equality was too strict. The controller's
+turn45 phase record shows Core45 while UI44. A supported source-update request
+preserves that finite operation and closes the native process with exit0,
+verified package/preference restoration and no remaining owners. This startup
+is retained as a stopped trial, not a completed250 comparison.
+
+The correction accepts UI clocks equal to Core or one behind and records
+`laggedReads`; older/future snapshots still defer. Native construction eligibility
+and Core ownership/resource/geometry checks remain authoritative. A regression
+executes both the accepted one-turn phase case and the rejected older case.
+Initial main-mod `os.clock` readings are constant0; corrected timing diagnostics
+report unavailable(-1) rather than measured zero. Controller wall timings and
+native read counts remain available. Fractional customer preferences are rounded
+to integer Q8 at publication. The corrected full restart uses `frozen02`.
+
+Reusable engine learning is recorded as AI-N132 in the civ6-ai skill,
+commit bb470f5 (pushed). CSC policy and calibration stay in this report.

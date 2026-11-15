@@ -4,8 +4,10 @@
 and stronger spatial preferences are integrated in main CSC. +2 stays48;
 +3/+4/+5/+6+ become144/288/432/576, Base+Spec64, extra material clumps bounded,
 compatible future customer space0–96. Future customers still add no adjacency
-or economic income.47 economic/spatial and18 integration checks pass.
-Henno authorises a fresh matched Continents/Online250 next, shared controller,
+or economic income.48 economic/spatial and18 integration checks pass.
+First startup closes cleanly after exposing Core45/UI44 phase lag; bounded
+phase handling is corrected and tested. The matched Continents/Online250 restart
+is next, shared controller,
 15-minute checks. [Implementation and test protocol](../research/mods/csc-ai-spatial-layout-20261115.md).
 
 **Completed, 14–15 November: Astra investigations and fresh Online250.**

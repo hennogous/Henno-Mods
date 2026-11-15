@@ -6,7 +6,7 @@ extra-material bonuses. Concrete compatible customer footprints earn0–96
 planning utility from native terrain adjacency, discounted for better city
 alternatives and Quarter-footprint opportunity cost. They earn no current
 adjacency or transaction income. Current legal/capacity checks govern actual
-customer proposals; settlements remain unchanged.47 economy/spatial and18
+customer proposals; settlements remain unchanged.48 economy/spatial and18
 integration checks pass; a fresh matched Continents250 is next.
 [Implementation and protocol](../../../research/mods/csc-ai-spatial-layout-20261115.md).
 

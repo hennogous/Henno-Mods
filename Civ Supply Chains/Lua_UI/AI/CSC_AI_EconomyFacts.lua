@@ -339,7 +339,7 @@ function F.New(player,placement,ui)
     -- radius-three ring. Both Quarters share these caches. Never carry native
     -- adjacency, ownership, research or protected-plot facts into another turn.
     local customerMaps,customerAdjacency,customerTypes={},{},{}
-    local spatialStats={maps=0,adjacencyReads=0,unavailable=0,options=0}
+    local spatialStats={maps=0,adjacencyReads=0,unavailable=0,laggedReads=0,options=0}
     snapshot.SpatialStats=function()return spatialStats end
     local function customerYield(city,plot,definition)
         local key=city:GetID()..':'..plot:GetIndex()..':'..definition.Index
@@ -348,8 +348,17 @@ function F.New(player,placement,ui)
         if type(ui.GetDistrictAdjacency)=='function'then
             spatialStats.adjacencyReads=spatialStats.adjacencyReads+1
             local ok,record=pcall(ui.GetDistrictAdjacency,pid,city:GetID(),plot:GetIndex(),definition.Index)
+            local lag=ok and type(record)=='table'and type(record.turn)=='number'
+                and Game.GetCurrentGameTurn()-record.turn
+            -- Core turn publication precedes UI's turn transition. The first
+            -- spatial startup records Core45/UI44; requiring exact clock equality
+            -- discarded every terrain read. Accept that bounded one-turn phase
+            -- lag, while checking ownership, resources and geometry in Core.
+            -- Terrain may reflect the preceding UI snapshot; current native
+            -- eligibility still governs construction. Older/future clocks defer.
             if ok and type(record)=='table'and record.available and type(record.yields)=='table'
-                and record.turn==Game.GetCurrentGameTurn()then
+                and lag and lag>=0 and lag<=1 then
+                if lag>0 then spatialStats.laggedReads=spatialStats.laggedReads+1 end
                 -- Ordinary adjacency points are a terrain-quality measure,
                 -- not native utility or forecast income. Private AI yields
                 -- must never feed back into another planning preference.
@@ -359,6 +368,12 @@ function F.New(player,placement,ui)
                     sum=sum+math.max(0,record.yields[kind]or 0)
                 end
                 value=sum
+            end
+            if value==nil and spatialStats.unavailable==0 then
+                print(string.format('CSC_AI_SPATIAL_INPUT turn=%d player=%d city=%d plot=%d district=%d ok=%s recordType=%s available=%s uiTurn=%s lag=%s',
+                    Game.GetCurrentGameTurn(),pid,city:GetID(),plot:GetIndex(),definition.Index,
+                    tostring(ok),type(record),tostring(type(record)=='table'and record.available),
+                    tostring(type(record)=='table'and record.turn),tostring(lag)))
             end
         end
         if value==nil then spatialStats.unavailable=spatialStats.unavailable+1 end
