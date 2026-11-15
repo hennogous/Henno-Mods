@@ -1,5 +1,12 @@
 # CSC AI architecture
 
+**15 November temporal coherence:** complete valuation now consumes only named
+supply-protection losses from the early planner. A separate plain-record
+continuity module remembers native-confirmed choices, persists bounded primitive
+state, and supplies the selected footprint-cost baseline plus one-turn owned
+data grace. It never holds the whole bid above current economics or constructs
+anything. [Design and tests](../research/mods/csc-ai-coherent-investment-20261115.md).
+
 **Current spatial revision,15 November:** the shared facts snapshot now exposes
 concrete customer footprints and native terrain adjacency. The decision adapter
 compares compatible single/pair layouts and adds bounded planning preferences
@@ -80,6 +87,8 @@ flowchart TD
     SPATIAL --> SITE
     MODEL <--> PRICE
     MODEL --> SITE
+    CE -. "bounded confirmed-choice journal" .-> INTENT["Persisted native intent<br/>selected footprint baseline,<br/>bounded lifetime and missing-input grace"]
+    INTENT --> SITE
     FACTS --> CAP
     CAP --> SITE
     MODEL --> PROTECT

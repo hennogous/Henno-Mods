@@ -266,7 +266,7 @@ s.baseCount=0;assert(E.PlacementValue({adjacency=5,valueQ8=1000000},s)==E.Deferr
 s.baseCount=1;s.specialtyCount=1
 assert(E.PlacementValue({adjacency=2,valueQ8=100*256},s)==(100+112)*256)
 assert(E.PlacementValue({adjacency=4,valueQ8=100*256},s)>b)
-assert(E.PlacementValue({adjacency=4,valueQ8=100*256},s,-200*256)<=0)
+assert(E.PlacementValue({adjacency=4,valueQ8=100*256},s,200*256)<=0)
 ''')
 
     def test_placement_ranks_feasible_mills_after_quality_gate_and_premium(self):

@@ -489,6 +489,9 @@ function P.MaterialDeductions(player, includeBuilders, builderBidLimit, nominati
                 if district.Index > 0 and plot:CanHaveDistrict(district.Index, playerID, cityID) then
                     entries[#entries + 1] = {
                         player = playerID, city = cityID, district = district.Index, plot = index, delta = -cost,
+                        -- Complete Quarter valuation consumes only this named
+                        -- supply loss, never another planner's site heuristic.
+                        protectionQ8 = cost,
                     }
                 end
             end

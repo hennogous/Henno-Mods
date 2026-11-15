@@ -16,6 +16,14 @@ local function required(name,getter)
  assert(type(getter)=='function','Missing '..name..' consumer')
  return getter
 end
+if type(CSC_AI_EconomyAdapters.ObserveNativeChoices)=='function'then
+ assert(CSC_AI_PlanContinuity,'Quarter continuity module missing from the main package')
+ required('continuity decoder',CSC_AI_PlanContinuity.New)
+ required('continuity encoder',CSC_AI_PlanContinuity.Encode)
+ required('native choice journal',CE_AIDistrictScoresTraceRead)
+ required('plan property read',Game.GetProperty)
+ required('plan property write',Game.SetProperty)
+end
 -- These UI wrappers are required dependencies of the economic facts, even
 -- though the policy itself runs in Gameplay. A DLL/API-only check can pass
 -- while obsolete packaged UI bindings silently make every build time unknown.

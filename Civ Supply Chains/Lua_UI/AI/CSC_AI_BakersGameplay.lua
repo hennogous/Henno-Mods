@@ -16,6 +16,7 @@
 -- CE restores score bytes after selection and never cancels retained plans.
 include('CSC_AdjacencyCore')
 include('CSC_AI_EconomyModel')
+include('CSC_AI_PlanContinuity')
 include('CSC_AI_EconomyFacts')
 include('CSC_AI_EconomyAdapters')
 include('CSC_AI_AdjacencyScan')
@@ -44,12 +45,18 @@ local function readReceipt(getter, ...)
     return '{"readbackError":true}'
 end
 
-local function reportReceipts(turn, version)
+local function reportReceipts(turn, version, status)
     -- Read the last packet before the next commit resets its counters. The log
     -- turn is when Lua reads the receipt. The version identifies the offer
     -- window, and forecast, comparison and score-write counts are distinct.
     local previous = previousOffers
     if not previous or previous.version ~= version then return end
+    -- Policy sees the whole bounded native journal, independently of the
+    -- top-N diagnostic receipts below. A published score is not intent.
+    if CSC_AI_EconomyAdapters and CSC_AI_EconomyAdapters.ObserveNativeChoices then
+        local ok,reason=pcall(CSC_AI_EconomyAdapters.ObserveNativeChoices,status,previous.economy or{})
+        if not ok then print('CSC_AI_PLAN_INPUT_UNAVAILABLE',turn,tostring(reason))end
+    end
     for _,scope in ipairs(previous.managed or{})do
         local result=readReceipt(CE_AIDistrictScoresManagedReceipt,version,scope.player,scope.district)
         print(string.format('CSC_AI_QUARTER_COVERAGE turn=%d version=%d player=%d district=%d result=%s',
@@ -146,7 +153,7 @@ local function refresh(turn)
     assert(tonumber(status:match('"ready":(%d+)')) == 1, 'CE district scoring is unavailable')
     assert(tonumber(status:match('"faults":(%d+)')) == 0, 'CE district scoring has faulted')
     local version = assert(tonumber(status:match('"version":(%d+)')))
-    reportReceipts(turn, version)
+    reportReceipts(turn, version, status)
     -- The next commit resets CE's per-publication counters.
     local matched = tonumber(status:match('"matched":(%d+)')) or 0
     local changed = tonumber(status:match('"changed":(%d+)')) or 0
@@ -278,16 +285,17 @@ local function refresh(turn)
             end
         end
         if economy then
-            local ok,replacement,counts=pcall(CSC_AI_EconomyAdapters.QuarterBids,economy,placement,protectedPlots,playerEntries)
+            local ok,replacement,counts=pcall(CSC_AI_EconomyAdapters.QuarterBids,economy,placement,protectedPlots,playerEntries,
+                previousOffers and previousOffers.economy or{})
             if ok then
                 playerEntries=replacement
                 if counts.managed then for _,profile in ipairs(placement.StageTwoProfiles())do
                     managedTypes[#managedTypes+1]={player=id,district=profile.district.Index,
                         fallbackQ8=CSC_AI_EconomyAdapters.DeferredQuarterQ8}
                 end end
-                print(string.format('CSC_AI_ECONOMY_PLAN turn=%d player=%d evaluated=%d final=%d unknown=%d streams=%d omissions=%d quotes=%d minQ8=%d maxQ8=%d buyerBlocked=%d',
+                print(string.format('CSC_AI_ECONOMY_PLAN turn=%d player=%d evaluated=%d final=%d unknown=%d streams=%d omissions=%d quotes=%d minQ8=%d maxQ8=%d buyerBlocked=%d carried=%d',
                     turn,id,counts.evaluated,counts.final,counts.unknown,counts.streams,counts.omissions,
-                    economy.QuoteCount(),counts.min or 0,counts.max or 0,counts.buyerBlocked or 0))
+                    economy.QuoteCount(),counts.min or 0,counts.max or 0,counts.buyerBlocked or 0,counts.carried or 0))
                 -- Capacity counters are city/Quarter scopes, not tile counts;
                 -- ready means a population slot, not full native admission.
                 -- Full/unknown are observations, not reasons to suppress a
@@ -347,6 +355,12 @@ local function refresh(turn)
         exclusions, ownershipLimit>0 and #ownershipScopes<=ownershipLimit and ownershipScopes or nil, ownershipLimit,
         declines,declineLimit,managedTypes)
     assert(accepted, message)
+    if CSC_AI_EconomyAdapters and CSC_AI_EconomyAdapters.Committed then
+        -- Only retained entries in this accepted packet renew known values.
+        -- A failed publish or a one-turn carried quote cannot renew a plan.
+        local ok,reason=pcall(CSC_AI_EconomyAdapters.Committed,entries)
+        if not ok then print('CSC_AI_PLAN_MEMORY_UNAVAILABLE',turn,tostring(reason))end
+    end
     print(string.format('CSC_AI_DECLINES turn=%d version=%d scopes=%d omitted=%d previous=%s',
         turn,version+1,#declines,omittedDeclines,declineStatus or 'unavailable; finite guidance retained'))
     -- These are committed improvement proposals, not buying or assignment

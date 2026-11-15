@@ -8,6 +8,78 @@ CSC_AI_EconomyAdapters={}
 local E=CSC_AI_EconomyAdapters
 local M=CSC_AI_EconomyModel
 local F=CSC_AI_EconomyFacts
+local C=CSC_AI_PlanContinuity
+local planStates={}
+local propertyPrefix='CSC_AI_QuarterIntentV1_'
+local function planState(pid)
+    if not C then return nil end
+    local turn=Game.GetCurrentGameTurn()
+    if not planStates[pid]or planStates[pid].turn~=turn then
+        local encoded
+        if type(Game.GetProperty)=='function'then
+            local ok,value=pcall(Game.GetProperty,Game,propertyPrefix..pid)
+            if not ok then return nil end
+            encoded=value
+        end
+        planStates[pid]=C.New(pid,turn,encoded)
+        planStates[pid].savedEncoded=encoded
+    end
+    return planStates[pid]
+end
+
+function E.ObserveNativeChoices(status,entries)
+    if not C or type(CE_AIDistrictScoresTraceRead)~='function'then return end
+    local function number(record,name)return tonumber(record:match('"'..name..'":(-?%d+)'))end
+    local count,generation=number(status,'trace_count'),number(status,'generation')
+    local version=number(status,'version')
+    if not count or not generation or count<0 or count>16384 then return end
+    local offered={}
+    for _,entry in ipairs(entries)do if entry.economy and not entry.carried then
+        offered[table.concat({entry.player,entry.city,entry.district,entry.plot},':')]=entry
+    end end
+    local choices={}
+    -- One complete read per publication, max256 pages at the CE16384-record
+    -- contract. Do not derive policy from the diagnostic top16/top32 receipts.
+    -- Collect first: a stale page cannot partially confirm intent.
+    for offset=0,count-1,64 do
+        local page=CE_AIDistrictScoresTraceRead(offset,64,generation)
+        if type(page)~='string'or page:find('"stale":true',1,true)then return end
+        for record in page:gmatch('{[^{}]+}')do
+            if record:match('"k":"([^"]+)"')=='best'
+                and number(record,'version')==version and number(record,'existingDistrict')==0 then
+                local pid,city,district,plot=number(record,'player'),number(record,'city'),number(record,'district'),number(record,'plot')
+                if pid and city and district and plot then
+                    local entry=offered[table.concat({pid,city,district,plot},':')]
+                    if entry and entry.finalQ8>0 and number(record,'result')==entry.finalQ8 then choices[#choices+1]=entry end
+                end
+            end
+        end
+    end
+    for _,entry in ipairs(choices)do
+        local state=planState(entry.player)
+        if state then C.Selected(state,entry)end
+    end
+    print(string.format('CSC_AI_PLAN_JOURNAL turn=%d records=%d pages=%d confirmed=%d saturated=%s',
+        Game.GetCurrentGameTurn(),count,math.ceil(count/64),#choices,tostring(count==16384)))
+end
+
+function E.Committed(entries)
+    if not C then return end
+    local turn=Game.GetCurrentGameTurn()
+    for pid,state in pairs(planStates)do if state.turn==turn then
+        C.Committed(state,entries)
+        local encoded=C.Encode(state)
+        if type(Game.SetProperty)=='function'and encoded~=state.savedEncoded then
+            Game:SetProperty(propertyPrefix..pid,encoded);state.savedEncoded=encoded
+        end
+        for _,event in ipairs(state.events)do
+            print(string.format('CSC_AI_PLAN_EVENT turn=%d player=%d city=%d district=%d plot=%d kind=%s reason=%s valueQ8=%d forecastTurn=%d',
+                turn,pid,event.city,event.district,event.plot,event.kind,event.reason,event.valueQ8 or 0,event.forecastTurn or -1))
+        end
+        if state.eventsDropped>0 then print('CSC_AI_PLAN_EVENTS_OMITTED',turn,pid,state.eventsDropped)end
+        state.events={};state.eventsDropped=0
+    end end
+end
 
 function E.Available()
     if type(CE_AIEconomyStatus)~='function'or type(CE_AIDistrictScoresFinalEntry)~='function'
@@ -51,6 +123,7 @@ function E.Snapshot(player,placement,ui)
         return value
     end
     snapshot.QuoteCount=function()return count end
+    snapshot.planState=planState(snapshot.id)
     -- Cache native UI admission/quotes within this publication. All adapters
     -- observe the same legal targets without repeating context crossings.
     snapshot.ui=setmetatable({}, {__index=ui})
@@ -133,9 +206,13 @@ function E.SpatialPlan(options)
     return best
 end
 
-function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
+function E.PlacementValue(quote,site,protectionQ8,coversOwnMaterial)
     if quote.adjacency+1e-6<E.MinimumAdjacency or (site.baseCount or 0)<1 then return E.DeferredQuarterQ8,'quality'end
-    local penalty=math.max(0,-(legacyDelta or 0))
+    -- Only named supply loss enters the complete ledger. Old no-host/readiness
+    -- heuristics were ownership-dependent and duplicated its own valuation.
+    -- Missing customer space loses its current layout preference/income; it
+    -- does not acquire a hidden128-utility penalty when land becomes owned.
+    local penalty=math.max(0,protectionQ8 or 0)
     if coversOwnMaterial then penalty=math.max(penalty,256*256)end
     local value=quote.valueQ8-penalty
     if value<=0 then return value,'economics'end
@@ -155,6 +232,167 @@ function E.PlacementValue(quote,site,legacyDelta,coversOwnMaterial)
     local bid=math.floor(math.max(-4096*256,math.min(4096*256,value+premium+(materials+layout)*256))+.5)
     return bid,'positive',{adjacencyQ8=math.floor(premium+.5),materialsQ8=materials*256,
         layoutQ8=layout*256,penaltyQ8=penalty}
+end
+
+local function siteKey(city,district,plot)return city..':'..district..':'..plot end
+
+local function activePlan(snapshot,city,district,plot)
+    local state=snapshot.planState
+    local plan=state and state.plans[siteKey(city,district,plot)]
+    return plan and plan.plot==plot and plan or nil
+end
+
+local function reconcilePlans(snapshot)
+    local state=snapshot.planState
+    if not C or not state then return end
+    snapshot.intentKeys={}
+    local plans={};for _,plan in pairs(state.plans)do
+        plans[#plans+1]=plan;snapshot.intentKeys[siteKey(plan.city,plan.district,plan.plot)]=true
+    end
+    for _,plan in ipairs(plans)do
+        local city=snapshot.cities[plan.city]and snapshot.cities[plan.city].object
+        local plot=Map.GetPlotByIndex(plan.plot)
+        if not plot then C.Withdraw(state,plan.city,plan.district,plan.plot,'plot_missing')
+        else
+            local assigned=plot:GetOwner()==snapshot.id and Cities.GetPlotPurchaseCity(plot)
+            C.Reconcile(state,plan,{cityExists=city~=nil,owner=plot:GetOwner(),
+                assigned=assigned and assigned:GetID(),district=plot:GetDistrictType(),
+                quarterExists=city and city:GetDistricts():HasDistrict(plan.district),
+                signature=snapshot.FootprintSignature and snapshot.FootprintSignature(plot)or'_'})
+        end
+    end
+    snapshot.intentFootprints={}
+    for _,plan in pairs(state.plans)do snapshot.intentFootprints[plan.plot]=true end
+end
+
+function E.ReportWithdrawals(snapshot,entries,evaluations,scopes,previous)
+    local published,candidates={},{}
+    for _,entry in ipairs(entries)do if entry.economy then
+        published[siteKey(entry.city,entry.district,entry.plot)]=true
+    end end
+    for _,entry in ipairs(previous)do if entry.player==snapshot.id and entry.economy then
+        local id=siteKey(entry.city,entry.district,entry.plot)
+        if not published[id]then candidates[id]=entry end
+    end end
+    if snapshot.planState then for _,plan in pairs(snapshot.planState.plans)do
+        local id=siteKey(plan.city,plan.district,plan.plot)
+        if not published[id]then
+            candidates[id]=candidates[id]or{city=plan.city,district=plan.district,plot=plan.plot,finalQ8=plan.lastQ8}
+        end
+    end end
+    local ordered={}
+    for id,entry in pairs(candidates)do
+        ordered[#ordered+1]={id=id,entry=entry,native=snapshot.intentKeys and snapshot.intentKeys[id]==true}
+    end
+    table.sort(ordered,function(a,b)
+        if a.native~=b.native then return a.native==true end
+        return a.id<b.id
+    end)
+    local ordinary,omitted=0,0
+    for _,item in ipairs(ordered)do
+        local e=item.entry
+        local details=evaluations[item.id]
+        if not details then
+            local city=snapshot.cities[e.city]and snapshot.cities[e.city].object
+            local plot=Map.GetPlotByIndex(e.plot)
+            local assigned=plot and plot:GetOwner()==snapshot.id and Cities.GetPlotPurchaseCity(plot)
+            local reason='scope_not_evaluated'
+            if not city then reason='city_missing'
+            elseif scopes[e.city..':'..e.district]=='quarter_exists'then reason='quarter_exists'
+            elseif not plot then reason='plot_missing'
+            elseif plot:GetDistrictType()>=0 then reason='footprint_occupied'
+            elseif plot:GetOwner()~=snapshot.id then reason='ownership_changed'
+            elseif not assigned then reason='city_assignment_unknown'
+            elseif assigned:GetID()~=e.city then reason='city_assignment_changed'end
+            details={reason=reason,owner=plot and plot:GetOwner()}
+        end
+        if activePlan(snapshot,e.city,e.district,e.plot)then
+            C.Withdraw(snapshot.planState,e.city,e.district,e.plot,details.reason)
+        end
+        if details.reason=='quarter_exists'or details.reason=='founded'then
+            if item.native then print('CSC_AI_QUARTER_PLAN_FINISHED',Game.GetCurrentGameTurn(),snapshot.id,e.city,e.district,e.plot,details.reason)end
+        elseif item.native or ordinary<16 then
+            if not item.native then ordinary=ordinary+1 end
+            print(string.format('CSC_AI_QUARTER_WITHDRAWAL_PROPOSED turn=%d player=%d city=%d district=%d plot=%d nativeIntent=%s reason=%s previousQ8=%d managedQ8=%d owner=%s adjacency=%s economicQ8=%s protectionQ8=%s ignoredLegacyQ8=%s displacementQ8=%s purchaseQ8=%s footprintWorkers=%s footprintMode=%s detail=%s',
+                Game.GetCurrentGameTurn(),snapshot.id,e.city,e.district,e.plot,tostring(item.native),details.reason,
+                e.finalQ8 or 0,E.DeferredQuarterQ8,tostring(details.owner),tostring(details.adjacency),
+                tostring(details.economicQ8),tostring(details.protectionQ8),tostring(details.legacyIgnoredQ8),
+                tostring(details.displacementQ8),tostring(details.purchaseQ8),tostring(details.footprintWorkers),
+                tostring(details.footprintMode),tostring(details.detail):gsub('[%s%c]','_'):sub(1,160)))
+        else omitted=omitted+1 end
+    end
+    if omitted>0 then print('CSC_AI_QUARTER_WITHDRAWALS_OMITTED',Game.GetCurrentGameTurn(),snapshot.id,omitted)end
+end
+
+function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,protectionQ8,ignoredLegacy,covers,protected)
+    local plan=activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())
+    local state=snapshot.planState
+    local facts,reason=snapshot.Site(city,plot,profile)
+    local details={reason='unknown',legacyIgnoredQ8=ignoredLegacy or 0,protectionQ8=protectionQ8 or 0,
+        owner=plot:GetOwner(),adjacency=geometry.upper,invoice=invoice}
+    local site,quote,parts,bid
+    if facts then
+        site=C and C.PrepareSite(plan,facts)or{}
+        if not C then for k,v in pairs(facts)do site[k]=v end;site.footprintCostMode='current'end
+        site.purchaseGold=invoice
+        site.spatialPlan=E.SpatialPlan(snapshot.CustomerOptions
+            and snapshot.CustomerOptions(city,plot,profile,protected)or{})
+        local ok,value,message=pcall(M.Forecast,site,snapshot.Price,function(alternative)
+            return E.PlacementValue(alternative,site,protectionQ8,covers)
+        end)
+        if ok then quote,reason=value,message else reason=tostring(value)end
+        if quote then
+            bid,details.reason,parts=E.PlacementValue(quote,site,protectionQ8,covers)
+            details.economicQ8=quote.valueQ8;details.afterProtectionQ8=quote.valueQ8-(parts and parts.penaltyQ8 or math.max(protectionQ8 or 0,covers and 256*256 or 0))
+            details.adjacency=quote.adjacency;details.base=site.baseCount
+            details.footprintWorkers=site.footprintWorkers
+            details.footprintMode=site.footprintCostMode;details.displacementQ8=0;details.purchaseQ8=0
+            for _,flow in ipairs(quote.streams)do
+                if flow.id:find('site:displaced:',1,true)then details.displacementQ8=details.displacementQ8+(flow.valueQ8 or 0)end
+                if flow.id=='footprint-purchase'then details.purchaseQ8=flow.valueQ8 end
+            end
+            details.currentDisplacementQ8=details.displacementQ8
+            if site.footprintCostMode~='current'then
+                -- Diagnostic only: expose the cost excluded by the chosen
+                -- baseline. Price at most six ordinary yields; never re-run
+                -- the full alternative search or add this back into the bid.
+                details.currentDisplacementQ8=0
+                for _,flow in ipairs(facts.direct or{})do if flow.id:find('displaced:',1,true)then
+                    local ok,cost=pcall(snapshot.Price,{city=flow.city or facts.city,
+                        yield=flow.yield,amount=flow.amount,ready=facts.quarterReady},facts.horizon)
+                    if not ok or type(cost)~='number'and type(cost)~='integer'then details.currentDisplacementQ8=nil;break end
+                    details.currentDisplacementQ8=details.currentDisplacementQ8+cost
+                end end
+            end
+            if details.reason=='positive'then
+                if plan then
+                    print(string.format('CSC_AI_PLAN_QUOTE_PROPOSED turn=%d player=%d city=%d district=%d plot=%d economicQ8=%d protectionQ8=%d ignoredLegacyQ8=%d displacementQ8=%d currentDisplacementQ8=%s purchaseQ8=%s footprintWorkers=%s footprintMode=%s finalQ8=%d',
+                        Game.GetCurrentGameTurn(),snapshot.id,city:GetID(),profile.district.Index,plot:GetIndex(),
+                        quote.valueQ8,protectionQ8 or 0,ignoredLegacy or 0,details.displacementQ8,
+                        tostring(details.currentDisplacementQ8),tostring(details.purchaseQ8),tostring(site.footprintWorkers),site.footprintCostMode,bid))
+                end
+                return {bid=bid,quote=quote,site=site,parts=parts,details=details}
+            end
+        else
+            details.reason=ok and tostring(reason):find('Native price unavailable',1,true)and'pricing_unavailable'
+                or not ok and'forecast_error'or'readiness_unavailable'
+        end
+    else details.reason=reason=='Footprint staffing unavailable'and'footprint_staffing_unavailable'or'facts_unavailable'end
+    details.detail=reason
+    if not quote and C and plan then
+        local supply=snapshot.Supply and snapshot.Supply(plot,profile)
+        local signature=snapshot.FootprintSignature and snapshot.FootprintSignature(plot)
+        -- Grace protects an OWNED confirmed construction plan, never an
+        -- unpriced/increasing purchase invoice. Revalidate cheap Core safety
+        -- even when staffing/native economic pricing is temporarily absent.
+        local safe=not frontier and supply and #supply.base>0 and geometry.upper>=E.MinimumAdjacency
+            and not covers and (protectionQ8 or 0)==0 and not protected[plot:GetIndex()]
+            and signature==plan.signature
+        local carried=C.Grace(state,plan,details.reason,safe)
+        if carried then details.reason='grace';return{bid=carried,carried=true,details=details,plan=plan}end
+    end
+    if C and plan then C.Withdraw(state,plan.city,plan.district,plan.plot,details.reason)end
+    return {details=details,quote=quote,site=site}
 end
 
 function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
@@ -178,6 +416,7 @@ function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
     end)
     local occupied,nominated,remaining={},{},{}
     for _,entry in ipairs(plans)do occupied[entry.plot]=true end
+    if snapshot.planState then for _,plan in pairs(snapshot.planState.plans)do occupied[plan.plot]=true end end
     for _,entry in ipairs(plans)do for _,link in ipairs(entry.customerLayout or{})do
         local key=link.city..':'..link.district
         local city=snapshot.cities[link.city]and snapshot.cities[link.city].object
@@ -211,21 +450,29 @@ function E.CustomerOffers(snapshot,quarterEntries,protectedPlots)
     return offers
 end
 
-function E.QuarterBids(snapshot,placement,protectedPlots,early)
+function E.QuarterBids(snapshot,placement,protectedPlots,early,previous)
     local clock=os and os.clock
     local started=clock and clock()
-    local result,prior,managed={},{},{}
+    local result,protection,ignoredLegacy,managed,evaluations,scopes={},{},{},{},{},{}
     local profiles=placement.StageTwoProfiles()
     for _,profile in ipairs(profiles)do managed[profile.district.Index]=true end
-    for _,entry in ipairs(early)do prior[entry.city..':'..entry.district..':'..entry.plot]=entry end
+    for _,entry in ipairs(early)do
+        local id=siteKey(entry.city,entry.district,entry.plot)
+        if (entry.protectionQ8 or 0)>0 then protection[id]=math.max(protection[id]or 0,entry.protectionQ8)
+        else ignoredLegacy[id]=math.max(ignoredLegacy[id]or 0,-(entry.delta or 0))end
+    end
     local stats={evaluated=0,final=0,unknown=0,buyerBlocked=0,streams=0,omissions=0,
-        qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,managed=true,
+        qualityDeferred=0,economicDeferred=0,invoiceDeferred=0,carried=0,managed=true,
         capacityReady=0,capacityFull=0,capacityUnknown=0}
     local player,pid=snapshot.player,snapshot.id
+    snapshot.planState=planState(pid)
     local visibility=PlayersVisibility[pid]
+    reconcilePlans(snapshot)
     for _,profile in ipairs(profiles)do
         for _,city in player:GetCities():Members()do
-            if not city:GetDistricts():HasDistrict(profile.district.Index)then
+            local scope=city:GetID()..':'..profile.district.Index
+            scopes[scope]=city:GetDistricts():HasDistrict(profile.district.Index)and'quarter_exists'or'active'
+            if scopes[scope]=='active'then
                 -- Capacity describes CURRENT admission, not the lifetime of
                 -- a future district bid. Growth can happen after this global
                 -- publication and before that player's native district choice
@@ -263,34 +510,36 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                         -- CE preserves native invalid scores and eligibility;
                         -- an overinclusive quote cannot legalise a placement.
                         stats.evaluated=stats.evaluated+1
+                        local id=siteKey(city:GetID(),profile.district.Index,plot:GetIndex())
                         local geometry=snapshot.Geometry(city,plot,profile)
-                        if geometry.upper+1e-6<E.MinimumAdjacency then stats.qualityDeferred=stats.qualityDeferred+1
+                        if geometry.upper+1e-6<E.MinimumAdjacency then
+                            stats.qualityDeferred=stats.qualityDeferred+1
+                            evaluations[id]={reason='below_adjacency',adjacency=geometry.upper,owner=owner}
+                            if activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())then
+                                C.Withdraw(snapshot.planState,city:GetID(),profile.district.Index,plot:GetIndex(),'below_adjacency')
+                            end
                         else
                             local invoice=0
                             if frontier then invoice=snapshot.ui.GetRawPlotPurchaseQuote(pid,city:GetID(),plot:GetIndex())end
-                            if invoice==nil or invoice<0 then stats.invoiceDeferred=stats.invoiceDeferred+1
+                            if invoice==nil or invoice<0 then
+                                stats.invoiceDeferred=stats.invoiceDeferred+1
+                                evaluations[id]={reason='invoice_unavailable',owner=owner,adjacency=geometry.upper}
                             else
-                                local old=prior[city:GetID()..':'..profile.district.Index..':'..plot:GetIndex()]
                                 local resource=GameInfo.Resources[plot:GetResourceType()]
                                 local covers=resource and(CSC_Adjacency.HasTag(profile.base,resource.ResourceType)
                                     or CSC_Adjacency.HasTag(profile.specialty,resource.ResourceType))
-                                local site,reason=snapshot.Site(city,plot,profile)
-                                local quote
-                                if site then
-                                    site.purchaseGold=invoice
-                                    site.spatialPlan=E.SpatialPlan(snapshot.CustomerOptions
-                                        and snapshot.CustomerOptions(city,plot,profile,protectedPlots)or{})
-                                    quote,reason=M.Forecast(site,snapshot.Price,function(alternative)
-                                        return E.PlacementValue(alternative,site,old and old.delta,covers)
-                                    end)
-                                end
-                                if not quote then
+                                local evaluation=E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,
+                                    protection[id],ignoredLegacy[id],covers,protectedPlots)
+                                evaluations[id]=evaluation.details
+                                local quote,site,parts=evaluation.quote,evaluation.site,evaluation.parts
+                                if evaluation.carried then stats.carried=stats.carried+1 end
+                                if not quote and not evaluation.carried then
                                     stats.unknown=stats.unknown+1
                                     if stats.unknown<=3 then print(string.format('CSC_AI_ECONOMY_QUOTE_UNAVAILABLE turn=%d player=%d city=%d plot=%d reason=%s',
-                                        Game.GetCurrentGameTurn(),pid,city:GetID(),plot:GetIndex(),tostring(reason)))end
+                                        Game.GetCurrentGameTurn(),pid,city:GetID(),plot:GetIndex(),tostring(evaluation.details.detail)))end
                                 else
-                                    local bid,why,parts=E.PlacementValue(quote,site,old and old.delta,covers)
-                                    stats.streams=stats.streams+#quote.streams;stats.omissions=stats.omissions+#quote.omissions
+                                    local bid,why=evaluation.bid,evaluation.details.reason
+                                    if quote then stats.streams=stats.streams+#quote.streams;stats.omissions=stats.omissions+#quote.omissions end
                                     if why=='quality'then stats.qualityDeferred=stats.qualityDeferred+1
                                     elseif why=='economics'then stats.economicDeferred=stats.economicDeferred+1
                                     else
@@ -298,20 +547,30 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
                                         -- this city will be the native buyer.
                                         if frontier and snapshot.ui.GetPlotPurchaseQuote(pid,city:GetID(),plot:GetIndex())==nil then
                                             stats.buyerBlocked=stats.buyerBlocked+1
+                                            evaluation.details.reason='buyer_ambiguous'
+                                            if activePlan(snapshot,city:GetID(),profile.district.Index,plot:GetIndex())then
+                                                C.Withdraw(snapshot.planState,city:GetID(),profile.district.Index,plot:GetIndex(),'buyer_ambiguous')
+                                            end
                                         else
                                             result[#result+1]={player=pid,city=city:GetID(),district=profile.district.Index,
-                                                plot=plot:GetIndex(),delta=0,finalQ8=bid,economy=true,adjacency=quote.adjacency,
-                                                economicQ8=quote.valueQ8,preferenceQ8=bid-quote.valueQ8,
-                                                adjacencyPreferenceQ8=parts.adjacencyQ8,materialPreferenceQ8=parts.materialsQ8,
-                                                layoutPreferenceQ8=parts.layoutQ8,protectionPenaltyQ8=parts.penaltyQ8,
-                                                customerLayout=site.spatialPlan.links,
-                                                startingAdjacency=site.startingAdjacency,startingGold=site.startingGold,
-                                                quarterReadyEstimate=site.quarterReady,
+                                                plot=plot:GetIndex(),delta=0,finalQ8=bid,economy=true,
+                                                carried=evaluation.carried,publishedTurn=Game.GetCurrentGameTurn(),
+                                                adjacency=quote and quote.adjacency or geometry.upper,
+                                                economicQ8=quote and quote.valueQ8,preferenceQ8=quote and bid-quote.valueQ8,
+                                                adjacencyPreferenceQ8=parts and parts.adjacencyQ8,materialPreferenceQ8=parts and parts.materialsQ8,
+                                                layoutPreferenceQ8=parts and parts.layoutQ8,protectionPenaltyQ8=parts and parts.penaltyQ8,
+                                                customerLayout=site and site.spatialPlan.links or{},
+                                                startingAdjacency=site and site.startingAdjacency,startingGold=site and site.startingGold,
+                                                quarterReadyEstimate=site and site.quarterReady,
+                                                footprintWorkers=site and site.footprintWorkers,
+                                                footprintSignature=site and site.footprintSignature,
+                                                footprintCostMode=site and site.footprintCostMode,
+                                                currentDisplacementQ8=evaluation.details.currentDisplacementQ8,
                                                 -- Gross adjacency-Gold payback AFTER Quarter
                                                 -- completion; not net profit or native saving ETA.
-                                                startingGoldPaybackTurns=frontier and (site.startingGold or 0)>0
+                                                startingGoldPaybackTurns=frontier and site and (site.startingGold or 0)>0
                                                     and invoice/site.startingGold or nil,
-                                                baseCount=site.baseCount,specialtyCount=site.specialtyCount,
+                                                baseCount=site and site.baseCount,specialtyCount=site and site.specialtyCount,
                                                 capacityUsed=capacity and capacity.used,
                                                 capacityAllowed=capacity and capacity.allowed,
                                                 capacityPopulation=capacity and capacity.population,
@@ -338,12 +597,13 @@ function E.QuarterBids(snapshot,placement,protectedPlots,early)
     if snapshot.CustomerOptions then
         for _,offer in ipairs(E.CustomerOffers(snapshot,result,protectedPlots))do result[#result+1]=offer end
     end
+    E.ReportWithdrawals(snapshot,result,evaluations,scopes,previous or{})
     -- Retain bounded candidate-surface evidence in ordinary main-mod logs:
     -- two leading sites per city/type, with economic and spatial components.
     -- Older winner-only captures cannot reconstruct the losing site margins.
     -- These are published proposals, never a receipt of native acceptance.
     local groups={}
-    for _,entry in ipairs(result)do if entry.economy then
+    for _,entry in ipairs(result)do if entry.economy and not entry.carried then
         local key=entry.city..':'..entry.district
         local group=groups[key]or{};groups[key]=group
         group[#group+1]=entry

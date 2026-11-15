@@ -116,6 +116,15 @@ function F.New(player,placement,ui)
         return plotFacts[index]
     end
     snapshot.PlotFacts=readPlot
+    snapshot.FootprintSignature=function(plot)
+        local values={}
+        for _,method in ipairs({'GetTerrainType','GetFeatureType','GetResourceType','GetImprovementType'})do
+            local value=number(plot,method)
+            if not numeric(value)then return '_'end
+            values[#values+1]=value
+        end
+        return table.concat(values,',')
+    end
     local tech,culture=player:GetTechs(),player:GetCulture()
     local function research(kind,key)
         if not key or key==''then return 0 end
@@ -383,7 +392,7 @@ function F.New(player,placement,ui)
         local key=city:GetID()..':'..definition.Index
         if customerMaps[key]then return customerMaps[key]end
         spatialStats.maps=spatialStats.maps+1
-        local result={plots={},best=0};customerMaps[key]=result
+        local result={plots={},best=0,free={}};customerMaps[key]=result
         local cityID=city:GetID()
         if customerTypes[cityID]==nil then
             customerTypes[cityID]=CSC_AI_FutureDistrictTypes and CSC_AI_FutureDistrictTypes(pid,city)or false
@@ -399,8 +408,15 @@ function F.New(player,placement,ui)
                 local amount=customerYield(city,p,definition)
                 result.plots[p:GetIndex()]={plot=p,adjacency=amount}
                 if amount then result.best=math.max(result.best,amount)end
+                if amount and not (snapshot.intentFootprints and snapshot.intentFootprints[p:GetIndex()])then
+                    result.free[#result.free+1]={index=p:GetIndex(),adjacency=amount}
+                end
             end
         end
+        table.sort(result.free,function(a,b)
+            if a.adjacency~=b.adjacency then return a.adjacency>b.adjacency end
+            return a.index<b.index
+        end)
         return result
     end
     function snapshot.CustomerOptions(city,plot,profile,protectedPlots)
@@ -417,14 +433,22 @@ function F.New(player,placement,ui)
                     if buyer then
                         local map=customerMap(buyer,definition,protectedPlots)
                         local candidate=map.plots[near:GetIndex()]
-                        if candidate and candidate.adjacency~=nil then
+                        if candidate and candidate.adjacency~=nil
+                            and not (snapshot.intentFootprints and snapshot.intentFootprints[near:GetIndex()])then
+                            -- A different native best site does not cancel an
+                            -- older retained request. Do not promise its tile
+                            -- as a customer footprint. Compare elsewhere cost
+                            -- without counting this Quarter's own tile twice;
+                            -- its separate displacement term remains below.
+                            local best=map.free[1]
+                            if best and best.index==plot:GetIndex()then best=map.free[2]end
                             local parent=definition.DistrictType
                             if GameInfo.DistrictReplaces then for row in GameInfo.DistrictReplaces()do
                                 if row.CivUniqueDistrictType==parent then parent=row.ReplacesDistrictType;break end
                             end end
                             options[#options+1]={player=pid,city=buyer:GetID(),district=definition.Index,
                                 family=parent,plot=near:GetIndex(),adjacency=candidate.adjacency,
-                                bestAdjacency=map.best,
+                                bestAdjacency=best and best.adjacency or 0,
                                 -- A Quarter can consume the city's best native
                                 -- customer tile. Expose that opportunity cost;
                                 -- the policy adapter decides its bounded weight.
@@ -460,6 +484,8 @@ function F.New(player,placement,ui)
         -- Do not invent staffing for an unworked footprint or a harvest payout.
         local footprint=readPlot(plot)
         if footprint.workers==nil then return nil,'Footprint staffing unavailable'end
+        site.footprintWorkers=footprint.workers
+        site.footprintSignature=snapshot.FootprintSignature(plot)
         if not exists and footprint.workers>0 then
             for yield in GameInfo.Yields()do
                 if yield.YieldType~='YIELD_CSC_AI_PLACEMENT'then

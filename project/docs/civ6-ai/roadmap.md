@@ -1,5 +1,13 @@
 # CSC AI roadmap
 
+**Current1.5/1.6 coherent-investment revision:** remove ownership-specific legacy
+deductions from complete Quarter valuation, preserve selected unworked footprint
+baselines with bounded native-confirmed memory, and report every selected-site
+withdrawal reason. Current economics/protection remain decisive; no force-build
+bonus.67 economic/lifecycle and18 integration checks pass. The previous250 is
+closed; next is a fresh Online50 live qualification of this candidate.
+[Design, acceptance and native cancellation boundary](../research/mods/csc-ai-coherent-investment-20261115.md).
+
 **15 November1.5/1.6 follow-through case:** Pella pays30 Gold, then CSC stops
 quoting the now-owned site and CE reprices its accepted construction request to
 managed−1024. It expires43. Trace and harmonise ownership-dependent legacy

@@ -42,6 +42,27 @@ def register_material_transactions(package):
     return path
 
 
+def register_ai_modules(package):
+    """Import reviewed AI modules added since the accepted content package.
+
+    Keep its gameplay/actions intact. This only registers the Lua files already
+    overlaid by freeze(), so new shared policy modules ship inside main CSC.
+    """
+    path, = package.glob('*.modinfo')
+    tree=ET.parse(path);root=tree.getroot()
+    actions=root.find('InGameActions');files=root.find('Files')
+    action=next((a for a in actions if a.get('id')=='CSC_AI_PlacementModules'),None)
+    if action is None:
+        action=ET.SubElement(actions,'ImportFiles',id='CSC_AI_PlacementModules')
+        ET.SubElement(ET.SubElement(action,'Properties'),'LoadOrder').text='490'
+    for module in sorted((package/'Lua_UI/AI').glob('*.lua')):
+        relative=module.relative_to(package).as_posix()
+        if not any(f.text==relative for f in action.findall('File')):
+            ET.SubElement(action,'File').text=relative
+        if not any(f.text==relative for f in files):ET.SubElement(files,'File').text=relative
+    tree.write(path,encoding='utf-8',xml_declaration=True)
+
+
 def freeze(base, source, output):
     base, source, output = (Path(p).resolve() for p in (base, source, output))
     if output.exists() or not all((base / name).is_dir() for name in ('CE', 'CSC')):
@@ -60,6 +81,7 @@ def freeze(base, source, output):
         shutil.copyfile(path, output / 'CSC' / relative)
         hashes[relative.as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
     runtime_manifest=register_material_transactions(output/'CSC')
+    register_ai_modules(output/'CSC')
     (output / 'freeze.json').write_text(json.dumps(dict(
         base=str(base), source=str(source), overlays=hashes,
         runtime_manifest_sha256=hashlib.sha256(runtime_manifest.read_bytes()).hexdigest(),

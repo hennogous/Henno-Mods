@@ -1,9 +1,18 @@
 # Current CSC AI status
 
-**15 November active: recovered spatial Continents250.** The original branch
+**Current1.5/1.6 fix:** one complete-value policy now covers frontier and owned
+Quarter sites. Native-confirmed plan memory preserves an initially unworked
+footprint baseline for a bounded window; current economics and real losses still
+reprice. Explicit withdrawal reasons and one-turn owned missing-input grace are
+integrated in main CSC.67 economic/lifecycle and18 integration checks pass.
+The preceding frozen run has completed250 and closed/restored exit0. Next is
+a fresh matched Online50 qualification of this candidate.
+[Coherent investment design and checks](../research/mods/csc-ai-coherent-investment-20261115.md).
+
+**Preceding recovered spatial Continents250 (now completed).** The original branch
 stops at65 without a known exit. Logs/checkpoint are preserved; menu-only cleanup
 restores preferences and exits0. Unchanged50 loads with40/40 structural rows equal;
-the detached shared-controller continuation has passed55 toward250.
+the detached shared-controller continuation completes250 and closes/restores exit0.
 
 Before interruption:4 Bakers foundations, all Base/+3+,3 at+4+ (previous4/2);
 5/5 exact new-Quarter native comparisons. No Tailors foundation yet. One natural

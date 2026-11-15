@@ -107,6 +107,8 @@ local rows={
  {economy=true,city=1,district=11,plot=3,finalQ8=200,customerLayout={{city=1,district=21,plot=5,preference=48}}}}
 local offers=E.CustomerOffers(snapshot,rows,{})
 assert(#offers==1 and offers[1].district==21)
+snapshot.planState={plans={retained={plot=5}}}
+assert(#E.CustomerOffers(snapshot,rows,{})==0)
 ''')
 
     def facts(self):
@@ -208,6 +210,16 @@ assert(#snapshot.CustomerOptions(city,plots[1],profile,{})==0)
 assert(snapshot.SpatialStats().unavailable>0)
 ui.GetDistrictAdjacency=nil
 assert(#CSC_AI_EconomyFacts.New(player,placement,ui).CustomerOptions(city,plots[1],profile,{})==0)
+''')
+
+    def test_customer_potential_does_not_reuse_a_retained_native_quarter_footprint(self):
+        vm=self.facts()
+        vm.execute('''
+local snapshot=CSC_AI_EconomyFacts.New(player,placement,ui)
+snapshot.intentFootprints={[2]=true}
+local options=snapshot.CustomerOptions(city,plots[1],profile,{})
+assert(#options>0)
+for _,option in ipairs(options)do assert(option.plot~=2)end
 ''')
 
 

@@ -271,6 +271,9 @@ end
 
 -- Quarter siting values loaded sales and goods-provider links across stages.
 -- The separate Stage 2 customer bid still needs a current native target.
+-- In complete-economy mode, its model owns BOTH frontier and owned valuation.
+-- These older weak-site heuristics are fallback only; the complete adapter
+-- accepts named supply-protection costs, not these ownership-specific deltas.
 function CSC_AI_QuarterSiteForecasts(player, profile, chains, readSuppliers, protectedPlots, ui, economy)
     local bids, potential, legalCustomers, placedHosts, futureCityTypes = {}, {}, {}, {}, {}
     local nominated = {}
