@@ -1,5 +1,10 @@
 # CURRENT: calibrated Continents250 completed; old tests pruned,15 November
 
+16 November follow-up: read session_ai_innkeeper_followthrough_20261116.md.
+Two Innkeepers/one Bakery; ten Bakeries but only one Bakers beside Hubs.
+Extra customer-layout bids cease after Quarter foundation:2.1 needs persistent
+customer planning for existing Quarters, including riverside Hubs. AI-C193.
+
 Read session_ai_calibrated_continents_20261115.md FIRST. Replacement02 reaches250,
 23Q13B10T allBase/+3+,10+4,5both;63/63exactnativewins. 8Storekeeperproperties250,
 2Sacristans, nativeaudit793chain-turns2–249/4chains100+. NoTailorsHarbor/Dock.

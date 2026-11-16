@@ -1,5 +1,14 @@
 # CSC AI roadmap
 
+**16 November,2.1 customer follow-through priority:** keep terrain-aware customer
+plans alive after Quarter foundation. Current additional layout offers consume
+prospective Quarter entries, which disappear once that Quarter exists. In the
+latest250, ten working Bakeries yield only one Bakers footprint with Hubs; its
+two Markets operate two Innkeepers.22 Hubs are built overall. Address
+Commercial Hub/Harbor co-location around existing Quarters before increasing
+producer bids. SQL all-stage adjacency remains active; Stage3 Service value and
+targeted Stage3 building guidance remain separate coverage work.
+
 **Latest natural250 result —1.4/1.6/1.8,15 November:**23 foundations, all Base/+3+,
 10 at+4+, five both materials;63/63 native comparisons match. **1.5** has two
 fresh-world purchases followed by Tailors foundations (12/39-turn delays).

@@ -1,5 +1,14 @@
 # Current CSC AI status
 
+**16 November,2.1 Innkeeper follow-up:** two Innkeepers share one supplying
+Bakery. Ten functioning Bakeries exist, but only one Bakers Quarter has adjacent
+Commercial Hubs (two, both with Markets), despite22 Hubs built overall. Extra
+customer-layout offers are sourced from prospective Quarter bids and cease for
+existing Quarters; SQL adjacency remains active. Extend ongoing customer plans
+around existing Quarters, including riverside Hubs as well as Harbors. Innkeeper
+Service premiums remain unpriced. No tuning change or game launch.
+[Counts and source coverage](../research/mods/csc-ai-calibrated-continents-20261115.md#innkeeper-follow-up-16-november).
+
 **Completed calibrated Continents250,15 November —1.4/1.6/1.8:**23 foundations
 (13B/10T), all Base/+3+,10 at+4+, five both materials.63/63 native best bids match;
 two Tailors footprints are bought then founded. At250:22 completed,21 working

@@ -167,3 +167,31 @@ are retained; the different world prevents attributing these levels to tuning.
 Current raw records remain in the run directory. Separate disk-cleanup receipts
 record asset consolidation and retirement of32 superseded experiment folders;
 baselines and current qualification/full-run inputs are retained.
+
+## Innkeeper follow-up —16 November
+
+The endpoint contains **two Innkeeper buildings**, both supplied by the same
+Bakery at plot1970 (player5). Its two adjacent completed Commercial Hubs,2044
+and1895, both have functioning Markets. The source Quarter's Stage3 property
+counts one active producer; it does not count the two recipient Innkeepers.
+
+Ten Bakers have functioning Bakeries. Only one of the13 Bakers footprints has
+an adjacent Commercial Hub; the other nine working Bakeries have no such host.
+The AIs construct22 Commercial Hubs overall. The immediate bottleneck is therefore
+district co-location, with no unbuilt Market among the existing adjacent hosts.
+
+Frozen main-mod source exposes a concrete2.1 coverage gap. `QuarterBids` skips
+city/type scopes once their Quarter exists; `CustomerOffers` obtains its layout
+links from those prospective Quarter entries. Its additional16–48utility
+customer-site offers consequently cease for that Quarter once founded. The
+all-stage SQL private-yield adjacency incentive continues, but ongoing completion
+of layouts around existing Quarters lacks this extra adapter. The targeted
+producer/customer-building policy currently selects Stage2 producers and buyers;
+the central ledger includes Stage3 transactions but omits Stage3 Service premiums,
+including Innkeeper Housing/GPP/specialist value.
+
+Next2.1 work should maintain viable, terrain-aware customer plans around existing
+Quarters, including riverside Commercial Hubs as well as Tailors Harbors, with
+shared material protection and ordinary native competition. More Bakery bids
+alone would leave the principal spatial gap unchanged. This investigation uses
+existing records and frozen source; no new game or tuning change is made.

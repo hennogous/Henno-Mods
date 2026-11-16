@@ -3814,3 +3814,21 @@ separate. No new game is needed to recover the completed result.
 
 [Outcome, comparison and next priorities](../research/mods/csc-ai-calibrated-continents-20261115.md),
 [compact measurements and identities](../research/mods/csc-ai-calibrated-continents-20261115.json).
+
+## AI-C193 — Innkeeper scarcity exposes post-foundation customer-layout coverage
+
+16 November2026, existing records of map21951115/game32151115 and frozen CSC
+de174092. There are two unpillaged Innkeeper buildings at250, supplied by one
+Bakery at1970 through Markets on Hubs2044/1895. Ten Bakeries function, but only
+one of13 Bakers has adjacent Commercial Hubs, while22 Hubs are founded overall.
+Adjacent Markets already exist, so co-location is the immediate observed gate.
+
+Frozen `QuarterBids` excludes `quarter_exists` scopes; `CustomerOffers` draws
+additional16–48utility layout offers from prospective Quarter entries. Existing
+Quarters therefore lose that extra customer adapter. All-stage SQL private-yield
+edges remain registered; this does not establish they are inert. Targeted building
+guidance selects Stage2, while the central ledger models later transactions and
+explicitly omits Stage3/4 Service premiums. Next2.1 is persistent customer planning
+around existing Quarters with native terrain, capacity and material protection.
+No live experiment or tuning change.
+[Endpoint identities, counts and coverage](../research/mods/csc-ai-calibrated-continents-20261115.md#innkeeper-follow-up-16-november).
