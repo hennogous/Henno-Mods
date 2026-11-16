@@ -27,6 +27,7 @@ MOD=HERE.parents[3]/'Civ Supply Chains'
 sys.path.insert(0,str(HERE.parents[3]/'project/tools/transactions'))
 from population_catalogue_fixture import graph as transaction_graph, fixed_aliases
 GAMEPLAY='Lua_UI/CustomerPopulationReturns/CSC_CustomerPopulationReturns.lua'
+ECONOMY_UI='Lua_UI/Adjacencies/CSC_AdjacencyUI.lua'
 SQL_PATH='Data/CSC_DIAG_POPULATION_CATALOGUE.sql'
 
 
@@ -81,7 +82,8 @@ def run(args):
     paths=[MOD/'Data/CSC_BuildingTransactionSchema.sql']
     for q in('BAKERS','TAILORS'):
         paths.extend([MOD/f'Data/CSC_Q_{q}_TRANSACTIONS.sql',MOD/f'Data/CSC_Q_{q}_TRANSACTIONS_GOLD.sql'])
-    paths.extend([MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql',MOD/'Data/CSC_BuildingTransactionProcessor.sql'])
+    paths.extend([MOD/'Data/CSC_MaterialTransactionProcessor.sql',MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql',
+                  MOD/'Data/CSC_BuildingTransactionProcessor.sql',MOD/'Data/CSC_MaterialTransactions.sql'])
     # Compare the complete loaded native rows for fixed aliases, including all
     # actual engine columns/defaults, rather than only the fixture's schema.
     # The source cache is read-only and was produced by the already qualified
@@ -113,11 +115,48 @@ def run(args):
     if args.reference_graph:inputs.append(args.reference_graph)
     pins={str(p.resolve()):sha(p)for p in inputs}
     code=survey(reference)
+    smoke=None
+    if args.model_smoke:
+        pins[str((MOD/ECONOMY_UI).resolve())]=sha(MOD/ECONOMY_UI)
+        encoder=read(HERE/'economy_component_probe.lua').split('for _,target in ipairs(CSC_COMPONENT_TARGETS)do',1)[0]
+        smoke=encoder[encoder.index('local function encode'):]
+        smoke+='\nlocal activeFacts,activeModel=CSC_AI_EconomyFacts,CSC_AI_EconomyModel\nlocal CSC_AI_EconomyFacts,CSC_AI_EconomyModel\n'
+        for name in('CSC_AI_EconomyFacts.lua','CSC_AI_EconomyModel.lua'):
+            path=MOD/'Lua_UI/AI'/name;pins[str(path.resolve())]=sha(path)
+            smoke+='\ndo\n'+read(path)+'\nend\n'
+        smoke+='''
+local rows={};local placement=assert(CSC_AI_QuarterPlacement)
+for _,pid in ipairs('''+lua(plan.identity['original_ai'])+''')do
+ local snapshot=CSC_AI_EconomyFacts.New(assert(Players[pid]),placement,assert(ExposedMembers.CSC_Adjacency),{horizon=50})
+ for _,chain in ipairs(snapshot.chains)do
+  local site=assert(chain.economy,'Existing chain economy unavailable')
+  assert(site.service==nil,'Services entered ordinary placement smoke')
+  local result=CSC_AI_EconomyModel.Forecast(site,function()return 0 end)
+  local suppliers,legs,worked,workingCities,inputStreams,returnStreams=0,0,0,0,0,0
+  for _,s in ipairs(site.suppliers)do
+   assert(s.transactions,'Missing canonical material map');suppliers=suppliers+1
+   if s.worked then worked=worked+1 end
+   if s.city then workingCities=workingCities+1 end
+   for _,tx in pairs(s.transactions)do legs=legs+#tx.legs end
+  end
+  for _,stream in ipairs(result.streams)do if stream.id:find('material:',1,true)==1 then
+   if stream.recipientBuilding then inputStreams=inputStreams+1 else returnStreams=returnStreams+1 end
+  end end
+  rows[#rows+1]={player=pid,city=chain.city:GetID(),quarter=chain.profile.key,
+   suppliers=suppliers,eligibleLegs=legs,workedSuppliers=worked,knownWorkingCities=workingCities,
+   inputStreams=inputStreams,returnStreams=returnStreams,streams=#result.streams,omissions=#result.omissions}
+ end
+end
+assert(#rows>0,'No actual chain sites sampled')
+print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGameTurn(),chains=rows}))
+'''
+        (out/'model-smoke.lua').write_text(smoke,encoding='utf-8')
     (out/'diagnostic.sql').write_text(sql,encoding='utf-8')
     (out/'diagnostic.lua').write_text(code,encoding='utf-8')
     write_json(out/'protocol.json',dict(diagnostic=True,zero_turn=True,at=args.at,production_population_sql=True,
         production_fixed_sql=True,native_graph_scope='all_csc',reference_graph=str(args.reference_graph),
-        legacy_refresh_isolated=True,no_orders=True,source_pins=pins,lgd=False))
+        legacy_refresh_isolated=True,no_orders=True,source_pins=pins,lgd=False,
+        model_smoke_isolated=bool(smoke),ui_economy_facts_overlay=bool(smoke),model_smoke_price='zero diagnostic; no bids'))
     c=make_probe_controller(out,user_root=plan.user_root)
     s=NativeSession(out,c,inventory=native_inventory,hold=HeldProcess,write=write_json)
     copied=[]
@@ -146,6 +185,7 @@ def run(args):
                 metadata.write_bytes(ET.tostring(root,encoding='utf-8',xml_declaration=True))
                 (item['install']/SQL_PATH).write_text(sql,encoding='utf-8')
                 shutil.copyfile(MOD/GAMEPLAY,item['install']/GAMEPLAY)
+                if smoke:shutil.copyfile(MOD/ECONOMY_UI,item['install']/ECONOMY_UI)
             item['staged']=manifest(item['install'])
         write_json(out/'staged-manifests.json',{i['role']:i['staged']for i in copied})
         s.start(lambda:launch(SimpleNamespace(binary=plan.binary),out));s.wait_context('MainMenu')
@@ -171,6 +211,12 @@ def run(args):
         (out/'gameplay-equivalence.txt').write_text(result,encoding='utf-8')
         match=re.search(r'CSC_POPULATION_RESULT=([^\r\n]+)',result);require(match,'Missing gameplay result')
         proof=json.loads(match[1]);require(proof['verified']and proof['turn']==args.at,'Gameplay equivalence failed')
+        if smoke:
+            raw=c.cmd(smoke,'CSC_AI_BakersGameplay','material-model-smoke')
+            (out/'model-smoke.txt').write_text(raw,encoding='utf-8')
+            match=re.search(r'CSC_MATERIAL_MODEL_SMOKE=([^\r\n]+)',raw);require(match,'Missing material model smoke result')
+            result=json.loads(match[1]);require(result['verified']and result['turn']==args.at,'Model smoke failed')
+            write_json(out/'model-smoke.json',result)
         write_json(out/'complete.json',proof)
     finally:
         if s.owner is not None and s.owner.poll()is None:
@@ -187,4 +233,5 @@ if __name__=='__main__':
     for k in('source','output','dependencies','reference'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--at',type=int,default=250)
     p.add_argument('--reference-graph',type=Path)
+    p.add_argument('--model-smoke',action='store_true',help='Isolated current Facts/Model pass over actual saved-world chains; no bids')
     run(p.parse_args())

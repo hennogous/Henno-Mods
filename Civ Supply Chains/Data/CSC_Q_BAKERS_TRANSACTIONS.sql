@@ -321,3 +321,104 @@ VALUES
         NULL,
         NULL
     );
+
+-- Canonical directional material exchanges.
+-- Native aliases retain existing gates; declared legs own payout amounts.
+INSERT INTO CSC_MaterialTransactions
+        (   TransactionId,                  QuarterKey,   ProducerBuildingType,               MaterialClass   )
+VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'BAKERS',     'BUILDING_CSC_BAKERS_WATER_MILL',   'CLASS_CSC_BAKERS_BASE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'BAKERS',     'BUILDING_CSC_BAKERS_WIND_MILL',    'CLASS_CSC_BAKERS_BASE'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'BAKERS',     'BUILDING_CSC_BAKERS_CAFE',         'CLASS_CSC_BAKERS_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionYields
+    (
+        TransactionId,
+        LegKey,
+        Recipient,
+        YieldType,
+        Amount,
+        ImprovementScope,
+        ImprovementType
+    )
+VALUES
+    (
+        'CSC_BAKERS_WATER_MILL_BASE',
+        'INPUT_ORDINARY',
+        'PRODUCER',
+        'YIELD_FOOD',
+        1,
+        'REGISTERED_INPUT',
+        NULL
+    ),
+    (
+        'CSC_BAKERS_WATER_MILL_BASE',
+        'RETURN_PRODUCTION_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_PRODUCTION',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    ),
+    (
+        'CSC_BAKERS_WIND_MILL_BASE',
+        'INPUT_ORDINARY',
+        'PRODUCER',
+        'YIELD_FOOD',
+        1,
+        'REGISTERED_INPUT',
+        NULL
+    ),
+    (
+        'CSC_BAKERS_WIND_MILL_BASE',
+        'RETURN_PRODUCTION_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_PRODUCTION',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    ),
+    (
+        'CSC_BAKERS_CAFE_SPEC',
+        'INPUT_ORDINARY',
+        'PRODUCER',
+        'YIELD_FOOD',
+        1,
+        'REGISTERED_INPUT',
+        NULL
+    ),
+    (
+        'CSC_BAKERS_CAFE_SPEC',
+        'RETURN_PRODUCTION_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_PRODUCTION',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    );
+
+INSERT INTO CSC_MaterialTransactionBindings
+        (   TransactionId,                  LegKey,                         RootModifierId,                                           ChildModifierId,                                       OwnerRequirementSetId,               SubjectRequirementSetId   )
+VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'INPUT_ORDINARY',               'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER',   'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL',   'REQSET_CSC_BAKERS_PLOT_HAS_BASE',   'REQSET_CSC_ADJ_BAKERS_QUARTER'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_PRODUCTION_ORDINARY',   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD',     'MOD_CSC_ALL_PROD_TO_PLOT',                            NULL,                                'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'INPUT_ORDINARY',               'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND',    'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL',    'REQSET_CSC_BAKERS_PLOT_HAS_BASE',   'REQSET_CSC_ADJ_BAKERS_QUARTER'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_PRODUCTION_ORDINARY',   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE_PROD',     'MOD_CSC_ALL_PROD_TO_PLOT',                            NULL,                                'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'INPUT_ORDINARY',               'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER',         'MOD_CSC_BAKERS_FOOD_TO_CAFE',                         'REQSET_CSC_BAKERS_PLOT_HAS_SPEC',   'REQSET_CSC_ADJ_BAKERS_QUARTER'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_PRODUCTION_ORDINARY',   'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC_PROD',           'MOD_CSC_ALL_PROD_TO_PLOT',                            NULL,                                'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionGateBindings
+        (   TransactionId,                  LegKey,                         RequirementSetId,                        RequirementId,                             GateRole   )
+VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'INPUT_ORDINARY',               'REQSET_CSC_BAKERS_PLOT_HAS_BASE',       'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'INPUT_ORDINARY',               'REQSET_CSC_ADJ_BAKERS_QUARTER',         'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER',      'QUARTER_TYPE'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'INPUT_ORDINARY',               'REQSET_CSC_ADJ_BAKERS_QUARTER',         'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'INPUT_ORDINARY',               'REQSET_CSC_BAKERS_PLOT_HAS_BASE',       'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'INPUT_ORDINARY',               'REQSET_CSC_ADJ_BAKERS_QUARTER',         'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER',      'QUARTER_TYPE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'INPUT_ORDINARY',               'REQSET_CSC_ADJ_BAKERS_QUARTER',         'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'INPUT_ORDINARY',               'REQSET_CSC_BAKERS_PLOT_HAS_SPEC',       'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'INPUT_ORDINARY',               'REQSET_CSC_ADJ_BAKERS_QUARTER',         'REQ_CSC_DISTRICT_IS_BAKERS_QUARTER',      'QUARTER_TYPE'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'INPUT_ORDINARY',               'REQSET_CSC_ADJ_BAKERS_QUARTER',         'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   );

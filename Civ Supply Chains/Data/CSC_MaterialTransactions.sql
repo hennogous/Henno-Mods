@@ -10,18 +10,12 @@
 --
 -- Industry/Corporation have separate transaction roots. Preserve those special
 -- paths rather than attaching an additional ordinary payment on the same plot.
-CREATE TEMP TABLE CSC_MaterialTransactionRoots (
-    MaterialClass TEXT NOT NULL,
-    ModifierId TEXT NOT NULL
-);
-
-INSERT INTO CSC_MaterialTransactionRoots
-        (   MaterialClass,              ModifierId   )
-VALUES  (   'CLASS_CSC_BAKERS_BASE',    'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WATER'   ),
-        (   'CLASS_CSC_BAKERS_BASE',    'MOD_CSC_BAKERS_BASE_IMPROVEMENT_ATTACH_QUARTER_WIND'   ),
-        (   'CLASS_CSC_BAKERS_SPEC',    'MOD_CSC_BAKERS_SPEC_IMPROVEMENT_ATTACH_QUARTER'   ),
-        (   'CLASS_CSC_TAILORS_BASE',   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER'   ),
-        (   'CLASS_CSC_TAILORS_SPEC',   'MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER'   );
+CREATE TEMP VIEW CSC_MaterialTransactionRoots AS
+SELECT DISTINCT t.MaterialClass, b.RootModifierId AS ModifierId
+FROM CSC_MaterialTransactions t
+JOIN CSC_MaterialTransactionYields y USING (TransactionId)
+JOIN CSC_MaterialTransactionBindings b USING (TransactionId, LegKey)
+WHERE y.Recipient = 'PRODUCER' AND y.ImprovementScope = 'REGISTERED_INPUT';
 
 -- DISTINCT coalesces resources sharing the same improvement/root. NOT EXISTS
 -- makes reapplication safe even on a fixture without a unique constraint.
@@ -45,4 +39,22 @@ AND NOT EXISTS (
     AND existing.ModifierId = r.ModifierId
 );
 
-DROP TABLE CSC_MaterialTransactionRoots;
+DROP VIEW CSC_MaterialTransactionRoots;
+
+-- Session-static read-model for actual incoming hosts, not another authored
+-- list. Include legacy registrations and exact M&C roots. The facts adapter
+-- consults this per observed improvement; valid-pair jobs remain separate.
+CREATE TABLE IF NOT EXISTS CSC_MaterialTransactionInputHosts (
+    TransactionId TEXT NOT NULL,
+    LegKey TEXT NOT NULL,
+    ImprovementType TEXT NOT NULL,
+    PRIMARY KEY (TransactionId, LegKey, ImprovementType),
+    FOREIGN KEY (TransactionId, LegKey) REFERENCES CSC_MaterialTransactionYields (TransactionId, LegKey)
+);
+DELETE FROM CSC_MaterialTransactionInputHosts;
+INSERT INTO CSC_MaterialTransactionInputHosts
+SELECT DISTINCT b.TransactionId, b.LegKey, i.ImprovementType
+FROM CSC_MaterialTransactionBindings b
+JOIN CSC_MaterialTransactionYields y USING (TransactionId, LegKey)
+JOIN ImprovementModifiers i ON i.ModifierId = b.RootModifierId
+WHERE y.Recipient = 'PRODUCER';

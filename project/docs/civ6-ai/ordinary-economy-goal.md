@@ -1,18 +1,22 @@
 # Ordinary-economy implementation goal
 
 Active16 November2026. Scope: Bakers/Tailors, roadmap1.4/2.1/2.2. Services stay
-deferred. Human in-game QA and the later long-game evaluation follow this goal;
-agent implementation, regression, native reception and performance checks precede
-handoff. Keep the full scope below until every item is verified.
+deferred. Agent implementation, regression, native reception and performance
+checks precede the human QA handoff. Henno subsequently authorized three250-turn
+efficacy games after implementation/checks, then Problems3–6 research. Manual QA
+remains for Henno; it does not block those games under the revised objective.
+Keep the full scope below until every item is verified.
 
 | Requirement | Completion evidence | Current state |
 | --- | --- | --- |
 | G1 Fixed external/local exchanges | Gameplay-owned headers/legs and native gate templates; UI/AI readers; baseline graph parity, replacements/alternatives/amount tests | Verified: corrected replay matches all10,954 native rows,137 fixed rows and67-city population refresh; closed/restored |
-| G2 Directional materials | Data-owned inputs/returns, registered hosts, Base/Spec, M&C2/3 totals, ownership/worked/pillage behavior, protection consumes actual legs | Audited; implementation and native lifecycle probes open |
+| G2 Directional materials | Data-owned inputs/returns, registered hosts, Base/Spec, M&C2/3 totals, ownership/worked/pillage behavior, protection consumes actual legs | Verified: Gold/M&C graph parity, end-to-end protection/owner tests,30 live lifecycle observations and final current-reader22-chain smoke pass; native10,954-row graph unchanged |
 | G3 Joint customer economy | All adjacent suppliers evaluated together; adjacency/provider changes, shared queues/rounding; observed routes/staffing; no duplicate costs | Open |
 | G4 Native residual | Component attribution measures CSC overlap; late delta retains native ordinary district value; received/compared in bounded matched replay | Open |
 | G5 Bounded work | Definition caches, targeted updates and measured mature-empire overhead | Fixed argument cache restricted; full measurement open |
 | G6 Review and handoff | Astra review, maintained findings/roadmap/skill, scoped pushes, exact gameplay change list and manual QA cases | Ongoing |
+| G7 Three250-turn efficacy games | After G1–G6, run integrated-only stock AI games on Online speed through shared controller;15-minute checks; regular placement, chain, Service and economy comparisons | Added by Henno; follows implementation and agent checks |
+| G8 Subsequent Problems3–6 research | After G7, investigate material development, producer/customer buildings and Service-unlock decisions; record native eligibility, timing, score units and available adapters | Added by Henno; follows the efficacy games |
 
 ## Fixed slice
 
@@ -21,7 +25,8 @@ and Workshop to Lighthouse/Tailor/Fashion House. Preserve native ownership per
 leg, functioning-customer checks on outward wrappers, narrower reverse wrappers,
 city scope for local yields, and one selected Mill. Recipient building and enabling
 investment are separate model metadata. Shared leaf identities reject conflicting
-terms. The material-unit guard on the shared Café Food leaf remains until G2.
+terms. The material migration now checks the shared Café Food leaf against both
+catalogues; conflicting amounts or recipients fail generation.
 
 The first native qualification caught a generator defect: REPLACE of shared
 Requirements/RequirementSets cascaded deletion into native dependents. The source

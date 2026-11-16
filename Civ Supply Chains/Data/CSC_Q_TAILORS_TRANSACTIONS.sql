@@ -261,3 +261,78 @@ VALUES
         NULL,
         NULL
     );
+
+-- Canonical directional material exchanges.
+-- Native aliases retain existing gates; declared legs own payout amounts.
+INSERT INTO CSC_MaterialTransactions
+        (   TransactionId,                         QuarterKey,   ProducerBuildingType,                      MaterialClass   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'TAILORS',    'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP',   'CLASS_CSC_TAILORS_BASE'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'TAILORS',    'BUILDING_CSC_TAILORS_FASHION_HOUSE',      'CLASS_CSC_TAILORS_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionYields
+    (
+        TransactionId,
+        LegKey,
+        Recipient,
+        YieldType,
+        Amount,
+        ImprovementScope,
+        ImprovementType
+    )
+VALUES
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',
+        'INPUT_ORDINARY',
+        'PRODUCER',
+        'YIELD_CULTURE',
+        1,
+        'REGISTERED_INPUT',
+        NULL
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',
+        'RETURN_PRODUCTION_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_PRODUCTION',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    ),
+    (
+        'CSC_TAILORS_FASHION_HOUSE_SPEC',
+        'INPUT_ORDINARY',
+        'PRODUCER',
+        'YIELD_CULTURE',
+        1,
+        'REGISTERED_INPUT',
+        NULL
+    ),
+    (
+        'CSC_TAILORS_FASHION_HOUSE_SPEC',
+        'RETURN_PRODUCTION_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_PRODUCTION',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    );
+
+INSERT INTO CSC_MaterialTransactionBindings
+        (   TransactionId,                         LegKey,                         RootModifierId,                                             ChildModifierId,                                     OwnerRequirementSetId,                SubjectRequirementSetId   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'INPUT_ORDINARY',               'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',          'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP',   'REQSET_CSC_TAILORS_PLOT_HAS_BASE',   'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_PRODUCTION_ORDINARY',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD',        'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                  NULL,                                 'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'INPUT_ORDINARY',               'MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER',          'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',     'REQSET_CSC_TAILORS_PLOT_HAS_SPEC',   'REQSET_CSC_ADJ_TAILORS_QUARTER'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_PRODUCTION_ORDINARY',   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_PROD',   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                  NULL,                                 'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionGateBindings
+        (   TransactionId,                         LegKey,                         RequirementSetId,                         RequirementId,                              GateRole   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'INPUT_ORDINARY',               'REQSET_CSC_TAILORS_PLOT_HAS_BASE',       'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'INPUT_ORDINARY',               'REQSET_CSC_ADJ_TAILORS_QUARTER',         'REQ_CSC_TAILORS_DISTRICT_IS_QUARTER',      'QUARTER_TYPE'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'INPUT_ORDINARY',               'REQSET_CSC_ADJ_TAILORS_QUARTER',         'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'INPUT_ORDINARY',               'REQSET_CSC_TAILORS_PLOT_HAS_SPEC',       'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'INPUT_ORDINARY',               'REQSET_CSC_ADJ_TAILORS_QUARTER',         'REQ_CSC_TAILORS_DISTRICT_IS_QUARTER',      'QUARTER_TYPE'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'INPUT_ORDINARY',               'REQSET_CSC_ADJ_TAILORS_QUARTER',         'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_PRODUCTION_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   );

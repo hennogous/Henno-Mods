@@ -822,11 +822,7 @@ VALUES  (   'MOD_CSC_TAILORS_STAGE_MANAGER_TOURISM_BOLSHOI',           'MODIFIER
 -- properties for trade, art or Wonder placement; those properties are not yields.
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,                                                  Name,                     Value   )
-VALUES  (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',             'BuildingType',           'BUILDING_CSC_TAILORS_FASHION_HOUSE'   ),
-        (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',             'YieldType',              'YIELD_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',             'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_SPEC_IMPROVEMENT_ATTACH_QUARTER',           'ModifierId',             'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE'   ),
-        (   'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY',           'Key',                    'CSC_TAILORS_FASHION_HOUSE_SUPPLIED'   ),
+VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY',           'Key',                    'CSC_TAILORS_FASHION_HOUSE_SUPPLIED'   ),
         (   'MOD_CSC_TAILORS_FASHION_HOUSE_SUPPLIED_PROPERTY',           'Amount',                 1   ),
         (   'MOD_CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE_PROPERTY',   'Key',                    'CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE'   ),
         (   'MOD_CSC_TAILORS_FASHION_HOUSE_SERVICE_ELIGIBLE_PROPERTY',   'Amount',                 1   ),
@@ -868,36 +864,28 @@ FROM CSC_RouteStackBits
 WHERE Bit > 1;
 
 INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,                                            Name,                     Value   )
-VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'ModifierId',             'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP',     'BuildingType',           'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
-        (   'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP',     'YieldType',              'YIELD_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP',     'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_PROD',   'ModifierId',             'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE'   ),
-        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                    'YieldType',              'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE',                    'Amount',                 1   ),
-
-        (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR',       'ModifierId',             'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT'   ),
-        (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT',               'BuildingType',           'BUILDING_CSC_TAILORS_STAGE_2_SERVICE'   ),
-        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR',        'ModifierId',             'MOD_CSC_TAILORS_DOCKMASTER_GPP'   ),
-        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                      'GreatPersonClassType',   'GREAT_PERSON_CLASS_ADMIRAL'   ),
-        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                      'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',            'Key',                    'CSC_TAILORS_TAILOR_SUPPLIED'   ),
-        (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',            'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_ATTACH_HOLY_SITE',    'ModifierId',             'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT'   ),
-        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT',               'BuildingType',           'BUILDING_CSC_TAILORS_STAGE_3_SERVICE'   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE',    'ModifierId',             'MOD_CSC_TAILORS_SACRISTAN_FAITH'   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                     'YieldType',              'YIELD_FAITH'   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                     'Amount',                 10   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE',      'ModifierId',             'MOD_CSC_TAILORS_SACRISTAN_GPP'   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_GPP',                       'GreatPersonClassType',   'GREAT_PERSON_CLASS_PROPHET'   ),
-        (   'MOD_CSC_TAILORS_SACRISTAN_GPP',                       'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',               'YieldType',              'YIELD_CULTURE'   ),
-        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',               'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY',               'Amount',                 1   ),
-        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'BuildingType',           'BUILDING_CSC_TAILORS_TAILOR'   ),
-        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'YieldType',              'YIELD_PRODUCTION'   ),
-        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'Amount',                 1   );
+        (   ModifierId,                                           Name,                     Value   )
+VALUES  (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_ATTACH_HARBOR',      'ModifierId',             'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT'   ),
+        (   'MOD_CSC_TAILORS_STAGE_2_SERVICE_GRANT',              'BuildingType',           'BUILDING_CSC_TAILORS_STAGE_2_SERVICE'   ),
+        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP_ATTACH_HARBOR',       'ModifierId',             'MOD_CSC_TAILORS_DOCKMASTER_GPP'   ),
+        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                     'GreatPersonClassType',   'GREAT_PERSON_CLASS_ADMIRAL'   ),
+        (   'MOD_CSC_TAILORS_DOCKMASTER_GPP',                     'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',           'Key',                    'CSC_TAILORS_TAILOR_SUPPLIED'   ),
+        (   'MOD_CSC_TAILORS_TAILOR_SUPPLIED_PROPERTY',           'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_ATTACH_HOLY_SITE',   'ModifierId',             'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT'   ),
+        (   'MOD_CSC_TAILORS_STAGE_3_SERVICE_GRANT',              'BuildingType',           'BUILDING_CSC_TAILORS_STAGE_3_SERVICE'   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH_ATTACH_HOLY_SITE',   'ModifierId',             'MOD_CSC_TAILORS_SACRISTAN_FAITH'   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                    'YieldType',              'YIELD_FAITH'   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_FAITH',                    'Amount',                 10   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_GPP_ATTACH_HOLY_SITE',     'ModifierId',             'MOD_CSC_TAILORS_SACRISTAN_GPP'   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_GPP',                      'GreatPersonClassType',   'GREAT_PERSON_CLASS_PROPHET'   ),
+        (   'MOD_CSC_TAILORS_SACRISTAN_GPP',                      'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',              'YieldType',              'YIELD_CULTURE'   ),
+        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_CULTURE',              'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_IMPORT_TAILOR_AMENITY',              'Amount',                 1   ),
+        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',           'BuildingType',           'BUILDING_CSC_TAILORS_TAILOR'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',           'YieldType',              'YIELD_PRODUCTION'   ),
+        (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',           'Amount',                 1   );
 
 -- Payout arguments generated by CSC_BuildingTransactionProcessor.sql.
 
@@ -1284,8 +1272,7 @@ WHERE Bit > 1;
 -- several Wonders in one city apart.
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,                                        Name,                  Value   )
-VALUES  (   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',             'Tag',                 'CLASS_CSC_TAILORS_SPEC'   ),
-        (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'CollectionType',      'COLLECTION_PLAYER_IMPROVEMENTS'   ),
+VALUES  (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'CollectionType',      'COLLECTION_PLAYER_IMPROVEMENTS'   ),
         (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'Count',               1   ),
         (   'REQ_CSC_TAILORS_ADJ_PLOT_HAS_IMPROVED_SPEC',         'RequirementSetId',    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC'   ),
         (   'REQ_CSC_TAILORS_PLAYER_HAS_OPERA_BALLET',            'CivicType',           'CIVIC_OPERA_BALLET'   ),
@@ -1378,9 +1365,7 @@ WHERE Bit > 1;
 
 INSERT OR IGNORE INTO RequirementArguments
         (   RequirementId,                                        Name,                  Value   )
-VALUES  (   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',             'Tag',                 'CLASS_CSC_TAILORS_BASE'   ),
-        (   'REQ_CSC_TAILORS_DISTRICT_IS_QUARTER',                'DistrictType',        'DISTRICT_CSC_TAILORS_QUARTER'   ),
-        (   'REQ_CSC_TAILORS_DISTRICT_IS_HARBOR',                 'DistrictType',        'DISTRICT_HARBOR'   ),
+VALUES  (   'REQ_CSC_TAILORS_DISTRICT_IS_HARBOR',                 'DistrictType',        'DISTRICT_HARBOR'   ),
         (   'REQ_CSC_TAILORS_CITY_HAS_LIGHTHOUSE',                'BuildingType',        'BUILDING_LIGHTHOUSE'   ),
         (   'REQ_CSC_TAILORS_CITY_HAS_LIGHTHOUSE',                'MustBeFunctioning',   1   ),
         (   'REQ_CSC_TAILORS_PLAYER_HAS_NAVAL_TRADITION',         'CivicType',           'CIVIC_NAVAL_TRADITION'   ),
@@ -1588,9 +1573,6 @@ VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_FASHION_HOU
 INSERT INTO Modifiers
         (   ModifierId,                                                 ModifierType,                                         SubjectRequirementSetId   )
 VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_PROD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC'   );
-INSERT INTO ModifierArguments
-        (   ModifierId,                                                 Name,           Value   )
-VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_PROD',   'ModifierId',   'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Per-route imports: each supplied destination contributes its full return.

@@ -1,15 +1,37 @@
 # CSC AI architecture
 
-**16 November economic-definition migration:** ordinary Stage3/4 building
-transactions now have gameplay-owned headers, payout legs and checked native
-consumer bindings. A late processor generates legacy metadata and payout
-arguments; gameplay and AI share the declared quantities, yields and gates.
+**16 November economic-definition migration:** ordinary fixed, local, Stage3/4
+and directional material transactions have gameplay-owned headers, payout legs
+and checked native consumer bindings. Processors generate metadata, payout and
+gate arguments; gameplay and AI share declared quantities, yields and gates.
 The source-to-native path and diagram are in the
 [migration report](../research/mods/csc-population-transaction-catalogue-20261116.md).
 Population gameplay matches the QAed source in288 offline worlds and67 live
-cities. Fixed/local/material/trade/staffing coverage and a joint customer-site
-residual remain explicit work; this is not yet the complete ordinary economy.
+cities. Fixed/native material graphs match the QAed baseline. A bounded live pass
+processes22 actual chain sites. Material lifecycle/protection alignment, observed
+trade/staffing and the joint customer-site residual remain active work.
 [Contract](../integrations/csc-economic-contract.md).
+
+```mermaid
+flowchart LR
+    DECL["Gameplay transactions<br/>fixed / population / directional materials"]
+    TAG["Gameplay resource and partner tags"]
+    GEN["SQL projections<br/>native effects / gates / input hosts"]
+    LIVE["Live facts<br/>owners, buildings, plots, workers"]
+    MODEL["Central economic ledger<br/>actual legs, recipients, timing, rounding"]
+    Q["Quarter bid adapter"]
+    P["Material protection adapter"]
+    C["Joint customer residual<br/>implementation in progress"]
+    N["Native comparisons<br/>selection and execution"]
+    DECL --> GEN
+    TAG --> GEN
+    GEN --> LIVE
+    DECL --> MODEL
+    LIVE --> MODEL
+    MODEL --> Q --> N
+    MODEL --> P --> N
+    MODEL -.-> C -.-> N
+```
 
 **16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed
 owned Harbor. The shared facts carry the Harbor plot to initial/final/grace

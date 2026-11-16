@@ -40,14 +40,6 @@ VALUES  (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IND_BASE_GOLD',    'MODIFIER_CS
 
 -- Amounts are incremental Gold, not the final advertised total. Keep these
 -- aligned with the non-Gold M&C increments and the ordinary material return.
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,                                             Name,           Value   )
-VALUES  (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IND_BASE_GOLD',    'ModifierId',   'MOD_CSC_TAILORS_GOLD_TO_ADJ_IND'   ),
-        (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_IND',                      'YieldType',    'YIELD_GOLD'   ),
-        (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_IND',                      'Amount',       1   ),
-        (   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_CORP_BASE_GOLD',   'ModifierId',   'MOD_CSC_TAILORS_GOLD_TO_ADJ_CORP'   ),
-        (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_CORP',                     'YieldType',    'YIELD_GOLD'   ),
-        (   'MOD_CSC_TAILORS_GOLD_TO_ADJ_CORP',                     'Amount',       2   );
 
 -- Additional +1 on top of the ordinary +1 return.
 INSERT INTO BuildingModifiers
@@ -56,9 +48,6 @@ VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_FASHION_HOU
 INSERT INTO Modifiers
         (   ModifierId,                                                 ModifierType,                                         SubjectRequirementSetId   )
 VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_GOLD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC'   );
-INSERT INTO ModifierArguments
-        (   ModifierId,                                                 Name,           Value   )
-VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_GOLD',   'ModifierId',   'MOD_CSC_TAILORS_GOLD_TO_ADJ_IND'   );
 
 -- Additional +2 on top of the ordinary +1 return.
 INSERT INTO BuildingModifiers
@@ -67,6 +56,75 @@ VALUES  (   'BUILDING_CSC_TAILORS_FASHION_HOUSE',   'MOD_CSC_TAILORS_FASHION_HOU
 INSERT INTO Modifiers
         (   ModifierId,                                                  ModifierType,                                         SubjectRequirementSetId   )
 VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_GOLD',   'MODIFIER_CSC_PLAYER_IMPROVEMENTS_ATTACH_MODIFIER',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC'   );
-INSERT INTO ModifierArguments
-        (   ModifierId,                                                  Name,           Value   )
-VALUES  (   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_GOLD',   'ModifierId',   'MOD_CSC_TAILORS_GOLD_TO_ADJ_CORP'   );
+
+-- Canonical directional material exchanges.
+-- Native aliases retain existing gates; declared legs own payout amounts.
+INSERT INTO CSC_MaterialTransactionYields
+    (
+        TransactionId,
+        LegKey,
+        Recipient,
+        YieldType,
+        Amount,
+        ImprovementScope,
+        ImprovementType
+    )
+VALUES
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',
+        'RETURN_GOLD_CORPORATION',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        2,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_CORPORATION'
+    ),
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',
+        'RETURN_GOLD_INDUSTRY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_INDUSTRY'
+    ),
+    (
+        'CSC_TAILORS_FASHION_HOUSE_SPEC',
+        'RETURN_GOLD_CORPORATION',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        2,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_CORPORATION'
+    ),
+    (
+        'CSC_TAILORS_FASHION_HOUSE_SPEC',
+        'RETURN_GOLD_INDUSTRY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_INDUSTRY'
+    );
+
+INSERT INTO CSC_MaterialTransactionBindings
+        (   TransactionId,                         LegKey,                      RootModifierId,                                              ChildModifierId,                      OwnerRequirementSetId,   SubjectRequirementSetId   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_CORPORATION',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_CORP_BASE_GOLD',        'MOD_CSC_TAILORS_GOLD_TO_ADJ_CORP',   NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_BASE'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_INDUSTRY',      'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IND_BASE_GOLD',         'MOD_CSC_TAILORS_GOLD_TO_ADJ_IND',    NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_BASE'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_CORPORATION',   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_CORP_SPEC_GOLD',   'MOD_CSC_TAILORS_GOLD_TO_ADJ_CORP',   NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_INDUSTRY',      'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IND_SPEC_GOLD',    'MOD_CSC_TAILORS_GOLD_TO_ADJ_IND',    NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionGateBindings
+        (   TransactionId,                         LegKey,                      RequirementSetId,                              RequirementId,                              GateRole   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_CORPORATION',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_CORPORATION',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_TAILORS_PLOT_HAS_CORPORATION',     'IMPROVEMENT_TYPE'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_CORPORATION',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_TAILORS_PLOT_HAS_INDUSTRY',        'IMPROVEMENT_TYPE'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_CORPORATION',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_CORPORATION',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_CORPORATION',     'IMPROVEMENT_TYPE'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_CORPORATION',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC',    'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC',    'REQ_CSC_TAILORS_PLOT_HAS_INDUSTRY',        'IMPROVEMENT_TYPE'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_IND_SPEC',    'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   );

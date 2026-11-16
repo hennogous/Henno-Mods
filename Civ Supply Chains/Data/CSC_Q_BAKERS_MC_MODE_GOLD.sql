@@ -70,27 +70,11 @@ VALUES
 
 -- Amounts are incremental Gold, not the final advertised total. Keep these
 -- aligned with the non-Gold M&C increments and the ordinary material return.
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,                                         Name,           Value   )
-VALUES
-
 -- 	+2 Gold to adjacent base materials Industries
-        (   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE',    'ModifierId',   'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',                   'YieldType',    'YIELD_GOLD'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',                   'Amount',       1   ),
-
 -- 	+3 Gold to adjacent base materials Corporations
-        (   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE',   'ModifierId',   'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP',                  'YieldType',    'YIELD_GOLD'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP',                  'Amount',       2   ),
-
 -- 	CAFE --------------------------------------------------------------------------
-
 -- 	+2 Gold to adjacent specialty materials Industries
-        (   'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC',          'ModifierId',   'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND'   ),
-
 -- 	+3 Gold to adjacent specialty materials Corporations
-        (   'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_CORP_SPEC',         'ModifierId',   'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP'   );
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --	RequirementSets
@@ -153,7 +137,100 @@ VALUES  (   'REQ_CSC_PLOT_HAS_INDUSTRY',      'REQUIREMENT_PLOT_IMPROVEMENT_TYPE
 --	RequirementArguments
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-INSERT OR IGNORE INTO RequirementArguments
-        (   RequirementId,                    Name,                Value   )
-VALUES  (   'REQ_CSC_PLOT_HAS_INDUSTRY',      'ImprovementType',   'IMPROVEMENT_INDUSTRY'   ),
-        (   'REQ_CSC_PLOT_HAS_CORPORATION',   'ImprovementType',   'IMPROVEMENT_CORPORATION'   );
+-- Canonical directional material exchanges.
+-- Native aliases retain existing gates; declared legs own payout amounts.
+INSERT INTO CSC_MaterialTransactionYields
+    (
+        TransactionId,
+        LegKey,
+        Recipient,
+        YieldType,
+        Amount,
+        ImprovementScope,
+        ImprovementType
+    )
+VALUES
+    (
+        'CSC_BAKERS_WATER_MILL_BASE',
+        'RETURN_GOLD_CORPORATION',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        2,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_CORPORATION'
+    ),
+    (
+        'CSC_BAKERS_WATER_MILL_BASE',
+        'RETURN_GOLD_INDUSTRY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_INDUSTRY'
+    ),
+    (
+        'CSC_BAKERS_WIND_MILL_BASE',
+        'RETURN_GOLD_CORPORATION',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        2,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_CORPORATION'
+    ),
+    (
+        'CSC_BAKERS_WIND_MILL_BASE',
+        'RETURN_GOLD_INDUSTRY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_INDUSTRY'
+    ),
+    (
+        'CSC_BAKERS_CAFE_SPEC',
+        'RETURN_GOLD_CORPORATION',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        2,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_CORPORATION'
+    ),
+    (
+        'CSC_BAKERS_CAFE_SPEC',
+        'RETURN_GOLD_INDUSTRY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'EXACT_IMPROVEMENT',
+        'IMPROVEMENT_INDUSTRY'
+    );
+
+INSERT INTO CSC_MaterialTransactionBindings
+        (   TransactionId,                  LegKey,                      RootModifierId,                                     ChildModifierId,                     OwnerRequirementSetId,   SubjectRequirementSetId   )
+VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_CORPORATION',   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE',   'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP',   NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_INDUSTRY',      'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE',    'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',    NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_CORPORATION',   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_CORP_BASE',   'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP',   NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_INDUSTRY',      'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IND_BASE',    'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',    NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_CORPORATION',   'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_CORP_SPEC',         'MOD_CSC_BAKERS_GOLD_TO_ADJ_CORP',   NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_SPEC'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_INDUSTRY',      'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IND_SPEC',          'MOD_CSC_BAKERS_GOLD_TO_ADJ_IND',    NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionGateBindings
+        (   TransactionId,                  LegKey,                      RequirementSetId,                             RequirementId,                             GateRole   )
+VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_PLOT_HAS_CORPORATION',            'IMPROVEMENT_TYPE'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_PLOT_HAS_INDUSTRY',               'IMPROVEMENT_TYPE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_BASE',   'REQ_CSC_PLOT_HAS_CORPORATION',            'IMPROVEMENT_TYPE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_BASE',    'REQ_CSC_PLOT_HAS_INDUSTRY',               'IMPROVEMENT_TYPE'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_CORPORATION',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_CORP_SPEC',   'REQ_CSC_PLOT_HAS_CORPORATION',            'IMPROVEMENT_TYPE'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_SPEC',    'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_SPEC',    'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_INDUSTRY',      'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_IND_SPEC',    'REQ_CSC_PLOT_HAS_INDUSTRY',               'IMPROVEMENT_TYPE'   );

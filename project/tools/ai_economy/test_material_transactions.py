@@ -41,7 +41,15 @@ CREATE TABLE Improvements(ImprovementType PRIMARY KEY);
 CREATE TABLE Improvement_ValidResources(ImprovementType,ResourceType);
 CREATE TABLE TypeTags(Type,Tag);
 CREATE TABLE ImprovementModifiers(ImprovementType,ModifierId);
+CREATE TABLE CSC_MaterialTransactions(TransactionId PRIMARY KEY,MaterialClass);
+CREATE TABLE CSC_MaterialTransactionYields(TransactionId,LegKey,Recipient,ImprovementScope);
+CREATE TABLE CSC_MaterialTransactionBindings(TransactionId,LegKey,RootModifierId);
 ''')
+        classes={'BW':'BAKERS_BASE','BI':'BAKERS_BASE','BS':'BAKERS_SPEC','TB':'TAILORS_BASE','TS':'TAILORS_SPEC'}
+        for key,root in ROOTS.items():
+            self.db.execute('INSERT INTO CSC_MaterialTransactions VALUES(?,?)',(key,'CLASS_CSC_'+classes[key]))
+            self.db.execute("INSERT INTO CSC_MaterialTransactionYields VALUES(?,'INPUT','PRODUCER','REGISTERED_INPUT')",(key,))
+            self.db.execute("INSERT INTO CSC_MaterialTransactionBindings VALUES(?,'INPUT',?)",(key,root))
         self.db.executemany('INSERT INTO Modifiers VALUES(?)',[(x,)for x in ROOTS.values()])
         self.db.executemany('INSERT INTO Improvements VALUES(?)',[(x,)for x in
             ('FARM','PASTURE','R2_SAWMILL','CL_TRADING_POST','CL_CRAFTSMEN','IMPROVEMENT_INDUSTRY','IMPROVEMENT_CORPORATION')])

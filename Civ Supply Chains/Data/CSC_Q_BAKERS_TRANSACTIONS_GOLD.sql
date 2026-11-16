@@ -97,3 +97,59 @@ VALUES
         NULL,
         NULL
     );
+
+-- Canonical directional material exchanges.
+-- Native aliases retain existing gates; declared legs own payout amounts.
+INSERT INTO CSC_MaterialTransactionYields
+    (
+        TransactionId,
+        LegKey,
+        Recipient,
+        YieldType,
+        Amount,
+        ImprovementScope,
+        ImprovementType
+    )
+VALUES
+    (
+        'CSC_BAKERS_WATER_MILL_BASE',
+        'RETURN_GOLD_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    ),
+    (
+        'CSC_BAKERS_WIND_MILL_BASE',
+        'RETURN_GOLD_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    ),
+    (
+        'CSC_BAKERS_CAFE_SPEC',
+        'RETURN_GOLD_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    );
+
+INSERT INTO CSC_MaterialTransactionBindings
+        (   TransactionId,                  LegKey,                   RootModifierId,                                    ChildModifierId,              OwnerRequirementSetId,   SubjectRequirementSetId   )
+VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_ORDINARY',   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE',   'MOD_CSC_ALL_GOLD_TO_PLOT',   NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_ORDINARY',   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE',   'MOD_CSC_ALL_GOLD_TO_PLOT',   NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_ORDINARY',   'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC',         'MOD_CSC_ALL_GOLD_TO_PLOT',   NULL,                    'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionGateBindings
+        (   TransactionId,                  LegKey,                   RequirementSetId,                        RequirementId,                             GateRole   )
+VALUES  (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WATER_MILL_BASE',   'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_WIND_MILL_BASE',    'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_BAKERS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   ),
+        (   'CSC_BAKERS_CAFE_SPEC',         'RETURN_GOLD_ORDINARY',   'REQSET_CSC_BAKERS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_PLOT_ADJ_TO_OWNER',               'ADJACENCY'   );

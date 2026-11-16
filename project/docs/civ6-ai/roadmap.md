@@ -5,11 +5,18 @@ Population Stage3/4 terms and partners are now gameplay-owned; native payouts,
 metadata and AI share them. The migration matches288 old-code worlds and a
 67-city native250 property replay. Astra reviewed the slice. See
 [gameplay changes and QA](../research/mods/csc-population-transaction-catalogue-20261116.md).
-Next, migrate fixed/local exchanges and validate material directions; account for
+Fixed/local exchanges now match all10,954 loaded CSC native effect rows;
+the directional material migration matches its Gold/M&C native fixtures and a
+bounded22-chain live model pass. Thirty live damage/repair observations now
+qualify the native graph and actual city payout; cached UI yields can lag.
+Next, finish the current-reader smoke; account for
 observed trade/staffing, aggregate all supplier chains for a proposed customer,
 and identify existing native CSC forecast contributions. Only then enable a
 customer residual adapter. Prospective Services stay deferred14.3. Scope stays
 Problems1 and2; no new building/Builder/research execution work in this pass.
+Henno extended the goal: after implementation/checks and the QA handoff, run
+three Online250 stock-AI games with15-minute check-ins, then research Problems3–6.
+Manual gameplay QA remains Henno's next step and does not block those games.
 [Coverage and regression contract](../integrations/csc-economic-contract.md).
 The native Hub replay corrects the old Napata adjacency reconstruction and
 records losing cells/site costs: [evidence](../research/mods/csc-ai-customer-transactions-native-20261116.md).

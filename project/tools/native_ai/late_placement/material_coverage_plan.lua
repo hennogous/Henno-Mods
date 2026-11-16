@@ -1,5 +1,10 @@
 -- Read-only search for the separate payout fixture. No cities or plots change.
--- Use a human city without either Quarter and five distinct vacant land plots.
+-- Use a human city without either Quarter and five distinct vacant land plots
+-- already assigned to it. Existing improvements may be cleared explicitly in
+-- this disposable fixture; districts/natural Wonders are never removed.
+-- WorldBuilder ownership grants bypass the ordinary
+-- PlotYields registration path; those plots can accept an attach modifier while
+-- its SINGLE_PLOT_YIELDS child has no recipient. Never use them for payout QA.
 assert(Players[0]:IsHuman() and not AutoplayManager.IsActive())
 local turn=assert(CSC_MATERIAL_COVERAGE_TURN)
 assert(Game.GetCurrentGameTurn()==turn)
@@ -20,8 +25,8 @@ for _,city in Players[0]:GetCities():Members()do
    local owner=plot:GetOwner();local assigned=owner==0 and Cities.GetPlotPurchaseCity(plot)
    local feature=GameInfo.Features[plot:GetFeatureType()]
    local wonder=feature and(feature.NaturalWonder==true or feature.NaturalWonder==1)
-   if not plot:IsWater() and not wonder and plot:GetDistrictType()==-1 and plot:GetImprovementType()==-1
-    and(owner==-1 or assigned and assigned:GetID()==city:GetID())then pool[#pool+1]=plot end
+   if not plot:IsWater() and not wonder and plot:GetDistrictType()==-1
+    and(owner==0 and assigned and assigned:GetID()==city:GetID())then pool[#pool+1]=plot end
   end
   table.sort(pool,function(a,b)return a:GetIndex()<b:GetIndex()end)
   for _,bakers in ipairs(pool)do for _,tailors in ipairs(pool)do if bakers~=tailors then
@@ -32,7 +37,7 @@ for _,city in Players[0]:GetCities():Members()do
     end
     if #suppliers>=2 then
      print('CSC_MATERIAL_COVERAGE_PLAN='..string.format(
-      '{"diagnosticOnly":true,"player":0,"turn":%d,"city":%d,"quarters":{"BAKERS":%d,"TAILORS":%d},"materials":{"farm":%d,"maple":%d,"bamboo":%d}}',
+      '{"diagnosticOnly":true,"allowImprovementClearing":true,"player":0,"turn":%d,"city":%d,"quarters":{"BAKERS":%d,"TAILORS":%d},"materials":{"farm":%d,"maple":%d,"bamboo":%d}}',
       turn,city:GetID(),bakers:GetIndex(),tailors:GetIndex(),suppliers[1]:GetIndex(),suppliers[2]:GetIndex(),bamboo:GetIndex()))
      return
     end
@@ -40,4 +45,4 @@ for _,city in Players[0]:GetCities():Members()do
   end end end
  end
 end
-error('No human city has the five empty fixture footprints; inspect before preparing another world')
+error('No human city has five already-owned empty fixture footprints; inspect before preparing another world')

@@ -17,6 +17,7 @@ from driver import (HERE,HOTFIX_SHA,HeldProcess,NativeSession,configure,flags,
 from ce_replay import DLL,HOTFIX_EXE_SHA,verify_modules
 from planning_continue import enable
 from material_coverage_fixture import run as fixture
+from material_lifecycle_fixture import run as lifecycle_fixture
 
 
 def prepare(source,output):
@@ -55,7 +56,7 @@ def run(args):
     require(not native_inventory(),'Shared console/native session already owned')
     out.mkdir(parents=True)
     for name in ('material_coverage_replay.py','material_coverage_fixture.py',
-                 'material_coverage_fixture.lua','material_coverage_plan.lua'):
+                 'material_coverage_fixture.lua','material_coverage_plan.lua','material_lifecycle_fixture.py'):
         shutil.copyfile(HERE/name,out/name)
     write_json(out/'protocol.json',dict(diagnostic_only=True,fixture_grants=True,
         ai_turns_advanced=0,source=str(source),source_checkpoint=checkpoint,
@@ -100,6 +101,8 @@ print('CSC_MATERIAL_SOURCE_OK')
         (out/'plan.txt').write_text(raw,encoding='utf-8')
         config=parse(raw,'CSC_MATERIAL_COVERAGE_PLAN')
         result=fixture(controller,out/'payouts',config)
+        if args.lifecycle:
+            result['lifecycle']=lifecycle_fixture(controller,out/'lifecycle',config)
         write_json(out/'result.json',result)
     except Exception as error:
         write_json(out/'failure.json',dict(error=str(error),traceback=traceback.format_exc()))
@@ -118,4 +121,5 @@ print('CSC_MATERIAL_SOURCE_OK')
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for name in('source','output','user-root'):parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--lifecycle',action='store_true',help='Observe supplier/producer/district pillage and repair without advancing turns')
     run(parser.parse_args())

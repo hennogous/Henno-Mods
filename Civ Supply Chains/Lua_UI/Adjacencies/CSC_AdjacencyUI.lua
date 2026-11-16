@@ -183,6 +183,14 @@ ExposedMembers.CSC_Adjacency.GetEconomyPlotFacts = function(index)
     local plot = Map.GetPlotByIndex(index);
     if not plot then return nil; end
     local facts = {workers=economyNumber(plot, 'GetWorkerCount'), yields={}};
+    -- A tile's receiving city can differ from its purchase city after citizen
+    -- reassignment. Supply returns belong to the observed working city. Include
+    -- the UI clock so Gameplay can reject a stale assignment independently of
+    -- its own plot/worker facts; never infer future staffing from ownership.
+    facts.turn = Game.GetCurrentGameTurn();
+    facts.plotOwner = plot:GetOwner();
+    local working = Cities.GetPlotWorkingCity(index);
+    if working then facts.workingCity = working:GetID(); facts.workingPlayer = working:GetOwner(); end
     for yield in GameInfo.Yields() do facts.yields[yield.YieldType] = economyNumber(plot, 'GetYield', yield.Index); end
     return facts;
 end;

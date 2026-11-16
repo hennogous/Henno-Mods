@@ -15,8 +15,8 @@ PROCESSOR=MOD/'Data/CSC_FixedBuildingTransactionProcessor.sql'
 def transactions(db):
     result={}
     for r in db.execute("SELECT * FROM CSC_BuildingTransactions WHERE QuantityKind='FIXED'").fetchall():
-        legs=[dict(key=l['LegKey'],recipient=l['Recipient'],yield_=l['YieldType'],amount=l['AmountPerUnit'])
-            for l in db.execute('SELECT * FROM CSC_BuildingTransactionYields WHERE TransactionId=?',(r['TransactionId'],))]
+        legs=[dict(key=l['LegKey'],recipient=l['Recipient'],yield_=l['YieldType'],amount=l['AmountPerUnit'],ownerSide=l['OwnerSide'])
+            for l in db.execute('SELECT y.*,b.OwnerSide FROM CSC_BuildingTransactionYields y JOIN CSC_BuildingTransactionFixedBindings b USING(TransactionId,LegKey) WHERE y.TransactionId=?',(r['TransactionId'],))]
         for leg in legs:leg['yield']=leg.pop('yield_')
         result[r['SourceBuildingType']+':'+r['PartnerBuildingType']]=dict(id=r['TransactionId'],kind='FIXED',amount=r['QuantityAmount'],legs=legs)
     return result
@@ -82,6 +82,24 @@ assert(n==3)
         db=compile_catalogue();vm=self.model(db)
         vm.execute('''site.customers[1].transactions={};assert(M.Forecast(site,price).valueQ8==0)''')
         db.close()
+
+    def test_intact_external_owner_and_local_endpoints_keep_their_directions(self):
+        db=compile_catalogue();vm=self.model(db)
+        vm.execute('''
+site.quarterReady=10
+for _,s in ipairs(site.seconds)do s.working=false;s.intactOwner=true;s.hostReady=10;s.maintenance=999 end
+local r=M.Forecast(site,price)
+for _,s in ipairs(r.streams)do
+ if s.yield=='YIELD_FOOD'then assert(s.ready==0)else assert(s.ready==10)end
+end
+assert(#r.streams==3 and #r.investments==0)
+local bakery='BUILDING_CSC_BAKERS_BAKERY'
+site.customers={};site.third={type=bakery,working=false,intactOwner=true,hostReady=10,localTransactions={}}
+for _,second in ipairs(site.seconds)do site.third.localTransactions[second.type]=TX[second.type..':'..bakery]end
+r=M.Forecast(site,price)
+assert(#r.streams==3 and #r.investments==0)
+for _,s in ipairs(r.streams)do assert(s.ready==0)end
+''');db.close()
 
 
 if __name__=='__main__':unittest.main()

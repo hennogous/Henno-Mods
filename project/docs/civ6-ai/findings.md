@@ -4046,3 +4046,36 @@ requires component attribution before publishing a residual. The partial
 customer-building model is diagnostic only. Replay closes/restores exit0;
 failed helper-compatibility attempts stop before advancing100 and also restore.
 [Scores, native scope and artifacts](../research/mods/csc-ai-customer-transactions-native-20261116.md).
+
+## AI-C202 — Fixed building transactions own their native and model terms
+
+16 November2026, roadmap1.4/2.1. Nine external/local relationships generate the
+existing native payouts and finite gates. Gold companions append legs; shared
+native identities require consistent terms. The model reads actual amounts and
+separates payout recipient from enabling investment. Native correctedfixed250-02
+matches all10,954 CSC effect rows and137 fixed rows, with67-city population
+refresh parity. No intended gameplay changes. Initial shared-parent REPLACE
+cascade was fixed with stable writes and enforced-FK regressions.
+[Migration, checks and QA cases](../research/mods/csc-fixed-transaction-catalogue-20261116.md).
+
+## AI-C203 — Directional material terms and damage/recovery are qualified
+
+16 November2026, roadmap1.4/2.2. Five gameplay-owned relationships/45 Gold+M&C legs
+generate native arguments and actual input-host metadata. Inputs use registered
+hosts; plot returns use their separate native selector. M&C inputs2/3 and return
+increments1/2 remain distinct. Working-city identity and an observed worker gate
+modelled plot income. Native material250-01 matches all10,954 effect rows and
+processes22 real chains in isolated current Facts/Model. Offline tests cover late
+CL/R2 hosts, unregistered return-only hosts, Gold off and Industry.
+
+The first lifecycle fixtures reveal an initialization defect in our diagnostic
+ownership grant. WorldBuilder does not create the normal native PlotYields
+recipient, so a correct parent attachment can have a child with no payout target.
+The corrected fixture uses already-owned city land. Thirty observations qualify
+supplier/producer/district damage and recovery against native subjects and live
+city yield. A cached UI building yield can lag both removal and restoration;
+the input root itself responds correctly. Intact building-owned plot returns can
+survive district-only damage. Protection now consumes these actual suppliers.
+Final material250-02 verifies the current reader on22 chains/32 suppliers with
+27 input and52 worked-return streams; the full native graph remains unchanged.
+[Evidence and correction](../research/mods/csc-material-transaction-catalogue-20261116.md).

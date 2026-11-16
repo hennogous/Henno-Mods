@@ -12,6 +12,9 @@ local INF = math.huge
 local function maximum(...) return math.max(...) end
 local function numeric(value)return type(value)=='number'or type(value)=='integer'end
 local function present(value) return numeric(value) and value>=0 and value<INF end
+local function ownerReady(definition,fallback)
+    return definition and(definition.working or definition.intactOwner)and 0 or fallback
+end
 
 -- Gameplay pays population returns using a Q8 per-receiving-citizen rate.
 -- Round the combined target once, independently for each receiving city.
@@ -31,6 +34,7 @@ local function ledger(site, second)
         seen[id]=true
         result.streams[#result.streams+1]={id=id,yield=yield,amount=amount,ready=ready,
             city=city or site.city,building=building,investmentBuilding=building,recipientBuilding=recipientBuilding}
+        return result.streams[#result.streams]
     end
     local function omit(id,reason)
         result.omissions[#result.omissions+1]={id=id,reason=reason}
@@ -42,6 +46,11 @@ local function ledger(site, second)
         if result.byBuilding[stamp]~=nil then return result.byBuilding[stamp]end
         local ready
         if definition.working then ready=0
+        elseif definition.intactOwner and present(definition.hostReady)then
+            -- Restoring the Quarter does not rebuild an intact producer or
+            -- repay its upkeep. Existing stages also do not need their original
+            -- construction prerequisites rebuilt before they can resume.
+            ready=definition.hostReady
         elseif definition.excluded then return INF
         elseif present(definition.unlock) and present(definition.turns) and present(prerequisite) then
             for _,required in ipairs(definition.prerequisites or {})do
@@ -51,14 +60,14 @@ local function ledger(site, second)
             clocks[recipient]=ready
         else omit(definition.type,'Unknown unlock, construction or prerequisite timing');return INF end
         result.byBuilding[stamp]=ready
-        if not definition.working then result.futureDepths[definition.type]=definition.forecastDepth or 0 end
-        if ready>0 then result.investments[#result.investments+1]={type=definition.type,
+        if not definition.working and not definition.intactOwner then result.futureDepths[definition.type]=definition.forecastDepth or 0 end
+        if ready>0 and not definition.intactOwner then result.investments[#result.investments+1]={type=definition.type,
             ready=ready,cost=definition.cost or 0,city=recipient} end
         -- Production cost is represented by serial construction delay, matching
         -- the native income-stream convention. Do not also subtract the whole
         -- cost as an invented universal utility conversion. Upkeep is a real
         -- recurring cost and starts with the building, not at Quarter placement.
-        if not definition.working then emit('upkeep:'..stamp,'YIELD_GOLD',
+        if not definition.working and not definition.intactOwner then emit('upkeep:'..stamp,'YIELD_GOLD',
             -(definition.maintenance or 0),ready,recipient,definition.type) end
         return ready
     end
@@ -96,7 +105,8 @@ local function ledger(site, second)
         local prerequisite=stage==2 and quarter or stages[2]
         stages[stage]=invest(definition,prerequisite)
         for _,customer in ipairs(site.customers or {})do if customer.stage==stage and customer.complete==true then
-            if customer.type then customerTimes[customer]=present(stages[stage])and invest(customer,0,customer.city)or INF
+            if customer.type then customerTimes[customer]=customer.working and 0
+                or present(stages[stage])and invest(customer,0,customer.city)or INF
             elseif customer.city==site.city and not customer.working and present(customer.unlock)and present(customer.turns)then
                 customerTimes[customer]=maximum(clocks[customer.city]or 0,customer.unlock,stages[stage])+customer.turns
                 clocks[customer.city]=customerTimes[customer]
@@ -108,6 +118,30 @@ local function ledger(site, second)
     for _,supplier in ipairs(site.suppliers or {})do
         local stage=supplier.kind=='base' and 2 or 4
         local start=maximum(stages[stage],supplier.ready or INF)
+        local producer=stage==2 and second or site.fourth
+        if supplier.transactions then
+            -- Canonical directional legs already contain native host selection.
+            -- An incoming attachment and an outgoing plot modifier can qualify
+            -- independently. Industry/Corporation increments are summed, never
+            -- inferred from the improvement's name or a universal multiplier.
+            local transaction=producer and supplier.transactions[producer.type]
+            if transaction then for _,leg in ipairs(transaction.legs)do
+                -- A building-owned plot return can survive host-district damage
+                -- while material input into that district stops. Facts may give
+                -- an observed intact owner's readiness independently; a missing
+                -- or pillaged producer still uses the scheduled stage/repair.
+                local ready=maximum(leg.producerReady or stages[stage],leg.ready or INF)
+                local identity='material:'..transaction.id..':'..supplier.plot..':'..leg.key
+                if leg.recipient=='PRODUCER'then
+                    emit(identity,leg.yield,leg.amount,ready,site.city,producer.type,producer.type)
+                elseif supplier.worked and supplier.city then
+                    local stream=emit(identity,leg.yield,leg.amount,ready,supplier.city,producer.type)
+                    if stream then stream.existingIncome=leg.producerReady==0 end
+                else omit(identity,'No observed working citizen/city; plot yield is not free city income')end
+            end end
+        else
+        -- Legacy plain-record compatibility. Shipping facts always supply the
+        -- canonical map, including an empty map when no native leg qualifies.
         local mult=supplier.multiplier or 1
         local supplyKey=supplier.kind..':'..supplier.plot
         local rates=supplier.rates or {input=1,production=1,gold=1}
@@ -119,6 +153,7 @@ local function ledger(site, second)
             emit('material-production:'..supplyKey,'YIELD_PRODUCTION',mult*rates.production,start,supplier.city)
             emit('material-gold:'..supplyKey,'YIELD_GOLD',mult*rates.gold,start,supplier.city)
         else omit('material-output:'..supplyKey,'No observed worker; no free future staffing')end
+        end
     end
     for _,stage in ipairs({3,4})do
         local definition
@@ -134,8 +169,12 @@ local function ledger(site, second)
                     -- Recipient is the actual upstream/downstream building.
                     -- Investment attribution remains the enabling later stage,
                     -- preserving the existing future-building utility convention.
+                    -- SAME_CITY leaves are attached directly to buildings and
+                    -- have no district-functioning filter. Intact existing
+                    -- endpoints can exchange while their Quarter is damaged.
+                    local flowReady=maximum(ownerReady(second,ready2),ownerReady(definition,stages[stage]))
                     emit('local:'..transaction.id..':'..leg.key,leg.yield,transaction.amount*leg.amount,
-                        start,site.city,definition.type,recipient)
+                        flowReady,site.city,definition.type,recipient)
                 end end
             else
                 -- Historical plain-record fixture/old-package compatibility.
@@ -183,7 +222,16 @@ local function ledger(site, second)
                         populationFlow(identity,leg.yield,quantity,start,city,population,leg.property,owner,leg.amount)
                     else
                         local recipient=leg.recipient=='SOURCE'and producer.type or customer.type
-                        emit(identity,leg.yield,quantity*leg.amount,start,city,owner,recipient)
+                        local flowReady=start
+                        if transaction.kind=='FIXED'then
+                            -- An intact modifier owner does not require its own
+                            -- district restored. The opposite district remains
+                            -- subject to the wrapper's functioning-type check.
+                            -- Keep the two directions independent under damage.
+                            flowReady=maximum(leg.ownerSide=='SOURCE'and ownerReady(producer,stages[stage])or stages[stage],
+                                leg.ownerSide=='PARTNER'and ownerReady(customer,customerReady)or customerReady)
+                        end
+                        emit(identity,leg.yield,quantity*leg.amount,flowReady,city,owner,recipient)
                     end
                 end
                 sellerAmount,buyerAmount=0,0
@@ -272,7 +320,7 @@ local function ledger(site, second)
     -- no future-building depth premium. The adapter may map positive ordinary
     -- income of missing buildings to native-style effective building income.
     for _,stream in ipairs(result.streams)do
-        if stream.amount>0 and stream.yield:find('YIELD_',1,true)==1 and stream.building
+        if not stream.existingIncome and stream.amount>0 and stream.yield:find('YIELD_',1,true)==1 and stream.building
             and result.futureDepths[stream.building]~=nil then
             stream.forecastDepth=result.futureDepths[stream.building]
         end
@@ -299,8 +347,18 @@ function M.Forecast(site,price,placementObjective)
     assert(present(site.horizon) and site.horizon>0,'Finite forecast horizon required')
     if not present(site.quarterReady)then return nil,'Quarter readiness unavailable'end
     local best
-    local choices={false}
-    for _,second in ipairs(site.seconds or {})do choices[#choices+1]=second end
+    local choices={};local physicalSecond=false
+    for _,second in ipairs(site.seconds or{})do
+        physicalSecond=physicalSecond or second.working==true or second.intactOwner==true
+    end
+    -- Already built, functioning producers are physical facts. A zero native
+    -- yield weight must not let an absent-producer alternative erase their
+    -- transactions (important for marginal/joint before/after comparisons).
+    -- A city without a working producer can still defer every new investment.
+    if not physicalSecond then choices[1]=false end
+    for _,second in ipairs(site.seconds or {})do
+        if not physicalSecond or second.working or second.intactOwner then choices[#choices+1]=second end
+    end
     local function evaluate(plan,second)
         local result=ledger(plan,second or nil)
         local value,error=M.Price(result,price,site.horizon)
@@ -316,13 +374,13 @@ function M.Forecast(site,price,placementObjective)
     -- solve every ordering/subset of an empire's future production perfectly.
     for _,second in ipairs(choices)do for mask=0,3 do
         local plan={};for k,v in pairs(site)do plan[k]=v end
-        if mask%2==0 and site.third and not site.third.working then plan.third=nil end
-        if mask<2 and site.fourth and not site.fourth.working then plan.fourth=nil end
+        if mask%2==0 and site.third and not site.third.working and not site.third.intactOwner then plan.third=nil end
+        if mask<2 and site.fourth and not site.fourth.working and not site.fourth.intactOwner then plan.fourth=nil end
         plan.customers={};for _,customer in ipairs(site.customers or {})do plan.customers[#plan.customers+1]=customer end
         local result,error=evaluate(plan,second)
         if not result then return nil,error end
         for i=#plan.customers,1,-1 do
-            if not plan.customers[i].working then
+            if not plan.customers[i].working and not plan.customers[i].intactOwner then
                 local reduced={};for k,v in pairs(plan)do reduced[k]=v end
                 reduced.customers={}
                 for j,v in ipairs(plan.customers)do if j~=i then reduced.customers[#reduced.customers+1]=v end end

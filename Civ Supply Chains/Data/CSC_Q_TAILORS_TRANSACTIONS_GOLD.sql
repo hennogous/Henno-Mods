@@ -64,3 +64,47 @@ VALUES
         NULL,
         NULL
     );
+
+-- Canonical directional material exchanges.
+-- Native aliases retain existing gates; declared legs own payout amounts.
+INSERT INTO CSC_MaterialTransactionYields
+    (
+        TransactionId,
+        LegKey,
+        Recipient,
+        YieldType,
+        Amount,
+        ImprovementScope,
+        ImprovementType
+    )
+VALUES
+    (
+        'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',
+        'RETURN_GOLD_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    ),
+    (
+        'CSC_TAILORS_FASHION_HOUSE_SPEC',
+        'RETURN_GOLD_ORDINARY',
+        'IMPROVEMENT',
+        'YIELD_GOLD',
+        1,
+        'ANY_PLAYER_IMPROVEMENT',
+        NULL
+    );
+
+INSERT INTO CSC_MaterialTransactionBindings
+        (   TransactionId,                         LegKey,                   RootModifierId,                                             ChildModifierId,                      OwnerRequirementSetId,   SubjectRequirementSetId   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_ORDINARY',   'MOD_CSC_TAILORS_WORKSHOP_ATTACH_ADJ_IMP_BASE_GOLD',        'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',   NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_ORDINARY',   'MOD_CSC_TAILORS_FASHION_HOUSE_ATTACH_ADJ_IMP_SPEC_GOLD',   'MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE',   NULL,                    'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC'   );
+
+INSERT INTO CSC_MaterialTransactionGateBindings
+        (   TransactionId,                         LegKey,                   RequirementSetId,                         RequirementId,                              GateRole   )
+VALUES  (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_TEXTILE_WORKSHOP_BASE',   'RETURN_GOLD_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_BASE',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_BASE',   'MATERIAL_TAG'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_TAILORS_PLOT_ADJ_TO_OWNER',        'ADJACENCY'   ),
+        (   'CSC_TAILORS_FASHION_HOUSE_SPEC',      'RETURN_GOLD_ORDINARY',   'REQSET_CSC_TAILORS_ADJ_PLOT_HAS_SPEC',   'REQ_CSC_TAILORS_PLOT_HAS_MATERIAL_SPEC',   'MATERIAL_TAG'   );

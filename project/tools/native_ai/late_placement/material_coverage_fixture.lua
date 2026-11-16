@@ -22,15 +22,17 @@ end
 local function cityAndPlot(cityID,index)
  local city=assert(Players[0]:GetCities():FindID(cityID),'Human fixture city missing')
  local plot=assert(Map.GetPlotByIndex(index))
- assert(plot:GetOwner()==-1 or plot:GetOwner()==0,'Fixture may not take foreign land')
+ assert(plot:GetOwner()==0,'Payout fixture requires normally acquired land, not a WorldBuilder ownership grant')
  assert(not plot:IsWater(),'Land fixture required')
  assert(Map.GetPlotDistance(city:GetX(),city:GetY(),plot:GetX(),plot:GetY())<=3,'Fixture outside city range')
  return city,plot
 end
 local function own(city,plot)
- WorldBuilder.CityManager():SetPlotOwner(plot:GetX(),plot:GetY(),0,city:GetID())
+ -- Read only: the planner chose existing city land. WorldBuilder's ownership
+ -- command directly changes city attributes and skips normal PlotYields object
+ -- creation (native4c5f0 vs607190). Native single-plot effects need that object.
  local assigned=assert(Cities.GetPlotPurchaseCity(plot))
- assert(plot:GetOwner()==0 and assigned:GetID()==city:GetID(),'Fixture ownership failed')
+ assert(plot:GetOwner()==0 and assigned:GetID()==city:GetID(),'Fixture must preserve existing city ownership')
 end
 function F.Setup(config)
  assert(not F.config,'Fixture preparation is once only')
@@ -58,19 +60,20 @@ function F.Setup(config)
  for _,entry in ipairs(producers)do assert(GameInfo.Buildings[entry[2]])end
  for _,family in ipairs({'BAKERS','TAILORS'})do assert(GameInfo.Districts['DISTRICT_CSC_'..family..'_QUARTER'])end
  local seen={}
- -- Check every declared footprint before changing any. Existing districts,
- -- improvements and natural Wonders are excluded rather than erased.
+ -- Check every declared footprint before changing any. Existing districts and
+ -- natural Wonders are excluded. Clearing an improvement needs the diagnostic
+ -- plan's explicit flag and is logged; ownership/yield recipients stay intact.
  for _,index in pairs(config.quarters)do
   assert(not seen[index]);seen[index]=true
   local _,plot=cityAndPlot(config.city,index)
-  assert(plot:GetDistrictType()==-1 and plot:GetImprovementType()==-1)
+  assert(plot:GetDistrictType()==-1 and(plot:GetImprovementType()==-1 or config.allowImprovementClearing==true))
   local feature=GameInfo.Features[plot:GetFeatureType()]
   assert(not feature or not(feature.NaturalWonder==true or feature.NaturalWonder==1))
  end
  for name,case in pairs(cases)do
   local index=assert(config.materials[name]);assert(not seen[index]);seen[index]=true
   local _,plot=cityAndPlot(config.city,index)
-  assert(plot:GetDistrictType()==-1 and plot:GetImprovementType()==-1)
+  assert(plot:GetDistrictType()==-1 and(plot:GetImprovementType()==-1 or config.allowImprovementClearing==true))
   local feature=GameInfo.Features[plot:GetFeatureType()]
   assert(not feature or not(feature.NaturalWonder==true or feature.NaturalWonder==1))
   local q=assert(Map.GetPlotByIndex(config.quarters[case.quarter]))
@@ -87,6 +90,11 @@ function F.Setup(config)
  F.config=config
  F.before={population=city:GetPopulation(),gold=Players[0]:GetTreasury():GetGoldBalance(),item=item}
  economyGuard('before')
+ for index in pairs(seen)do
+  local plot=Map.GetPlotByIndex(index)
+  print('CSC_MATERIAL_FIXTURE_ORIGINAL_IMPROVEMENT',index,plot:GetImprovementType())
+  if plot:GetImprovementType()~=-1 then ImprovementBuilder.SetImprovementType(plot,-1,0)end
+ end
  for _,family in ipairs({'BAKERS','TAILORS'})do
   local index=config.quarters[family];local plot=Map.GetPlotByIndex(index)
   own(city,plot);ResourceBuilder.SetResourceType(plot,-1)

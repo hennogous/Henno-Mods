@@ -399,27 +399,16 @@ INSERT INTO TypeTags VALUES
                   and e['quarter']=='DISTRICT_CSC_TEST_QUARTER')
         self.assertEqual(set(edge['sources']),{'sales-tag','goods-provider'})
 
-    def test_loaded_unit_contract_leaves_match_current_source(self):
-        source = (AI / 'CSC_AI_EconomyFacts.lua').read_text(encoding='utf-8')
-        contract = source.split('local unitContracts={',1)[1].split('\nlocal function definitions',1)[0]
-        roots = set(re.findall(r"'(MOD_CSC_[A-Z_]+)'",contract))
-        files = ['CSC_Q_ALL.sql','CSC_Q_BAKERS.sql','CSC_Q_BAKERS_GOLD.sql',
-                 'CSC_Q_TAILORS.sql','CSC_Q_TAILORS_GOLD.sql']
-        amounts = {}
-        for name in files:
-            sql = (ROOT / 'Civ Supply Chains/Data' / name).read_text(encoding='utf-8')
-            amounts.update({m[0]:float(m[1]) for m in re.findall(
-                r"\(\s*'(MOD_CSC_[A-Z_]+)'\s*,\s*'Amount'\s*,\s*'?([0-9.]+)'?\s*\)",sql)})
-        # Fixed leaves are generated from canonical terms now. Keep this check
-        # for the remaining material unit assumptions, including their shared
-        # Cafe leaf; read generated native arguments as well as literal source.
+    def test_material_terms_match_generated_native_without_unit_assumptions(self):
         import sys
         sys.path.insert(0,str(ROOT/'project/tools/transactions'))
         from population_catalogue_fixture import compile_catalogue
-        db=compile_catalogue()
-        amounts.update({row[0]:float(row[1])for row in db.execute("SELECT ModifierId,Value FROM ModifierArguments WHERE Name='Amount'")})
-        self.assertGreater(len(roots),0)
-        self.assertEqual({root:amounts.get(root) for root in roots},{root:1 for root in roots})
+        with compile_catalogue(mc=True)as db:
+            rows=db.execute('''SELECT b.ChildModifierId,y.Amount,a.Value
+                FROM CSC_MaterialTransactionBindings b JOIN CSC_MaterialTransactionYields y USING(TransactionId,LegKey)
+                JOIN ModifierArguments a ON a.ModifierId=b.ChildModifierId AND a.Name='Amount' ''').fetchall()
+            self.assertEqual(len(rows),45)
+            self.assertTrue(all(float(r[1])==float(r[2])for r in rows))
 
 
 if __name__ == '__main__':

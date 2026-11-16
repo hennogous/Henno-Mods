@@ -425,11 +425,24 @@ local function materialRisk(player, builderBidLimit, nominationLimit, canProduce
             -- The central ledger supplies marginal ordinary economic loss;
             -- structural last-deposit/active-Service floors remain deliberate
             -- protection policy, not substitute forecasts of yield income.
+            local economicPlots={}
             for _,kind in ipairs({'base','specialty'})do for _,material in ipairs(chain.supply[kind])do
-                local value=CSC_AI_EconomyAdapters.SupplyValue(economy,chain,material.plot)
-                if value then risks[material.plot]=math.max(risks[material.plot]or 0,
-                    math.min(256*256,math.max(0,value)))end
+                economicPlots[material.plot]=true
             end end
+            -- Actual native material legs can exist on a nonstandard current
+            -- improvement even when no legal future Builder mapping selects it.
+            -- Protect those economic relationships too. The central fact reader
+            -- owns eligibility; the structural lists retain last-deposit policy.
+            -- Quote a shared Base/Spec plot once: its ledger counterfactual already
+            -- removes every affected leg and adjacency on that physical tile.
+            for _,material in ipairs(chain.economy and chain.economy.suppliers or{})do
+                economicPlots[material.plot]=true
+            end
+            for plot in pairs(economicPlots)do
+                local value=CSC_AI_EconomyAdapters.SupplyValue(economy,chain,plot)
+                if value then risks[plot]=math.max(risks[plot]or 0,
+                    math.min(256*256,math.max(0,value)))end
+            end
         end
         if chain.complete and (limits.builder > 0 or limits.nomination > 0 or limits.repair) then
             connectStageTwo(player, chain, nominations, recover, repairs, limits, canProduceBuilding, seen, repairCities)

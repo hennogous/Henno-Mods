@@ -1,5 +1,16 @@
 # Current CSC AI status
 
+**1.4 / 2.2,16 November — directional material model qualified.**
+Five relationships/45 Gold+M&C legs now drive native arguments, actual input
+hosts and AI income/protection. Gold/M&C graph parity and end-to-end ownership,
+worked-plot, replacements and damaged-host tests pass. Thirty native lifecycle
+observations qualify damage/repair; cached UI building yields can lag live payout.
+The final22-chain current-reader smoke matches all10,954 native rows and67-city
+population refresh. SQL preference stays1; Services stay deferred. Next G3:
+one joint customer forecast with shared investments/rounding and observed routes
+and staffing, then native overlap/residual and mature-empire performance.
+[Material implementation and evidence](../research/mods/csc-material-transaction-catalogue-20261116.md).
+
 **1.4 / 2.1,16 November — fixed building exchange migration verified.**
 Nine external/local relationships now own their payout legs and native gate
 templates in gameplay SQL. The model reads actual amounts and distinguishes the

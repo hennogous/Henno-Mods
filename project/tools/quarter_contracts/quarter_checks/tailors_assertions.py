@@ -131,6 +131,7 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
         "Civ Supply Chains/Data/CSC_Q_TAILORS_TRANSACTIONS_GOLD.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql",
+        "Civ Supply Chains/Data/CSC_MaterialTransactionProcessor.sql",
         "Civ Supply Chains/Data/CSC_FixedBuildingTransactionProcessor.sql",
         "Civ Supply Chains/Data/CSC_BuildingTransactionProcessor.sql",
         "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql",

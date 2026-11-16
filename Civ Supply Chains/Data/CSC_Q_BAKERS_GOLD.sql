@@ -150,35 +150,31 @@ FROM CSC_Stage4StackBits;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,                                        Name,             Value   )
+        (   ModifierId,                            Name,             Value   )
 VALUES
 
 -- 	BAKERS QUARTER ----------------------------------------------------------------------
 
 -- 	+1 Gold to adjacent base materials improvements
-        (   'MOD_CSC_BAKERS_FLOUR_MILL_ATTACH_ADJ_IMP_BASE',   'ModifierId',     'MOD_CSC_ALL_GOLD_TO_PLOT'   ),
-        (   'MOD_CSC_ALL_GOLD_TO_PLOT',                        'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_ALL_GOLD_TO_PLOT',                        'Amount',         1   ),
 
 -- 	+1 Gold return from an adjacent Granary
 
 --	+1 Gold to adjacent specialty materials improvements
-        (   'MOD_CSC_BAKERS_CAFE_ATTACH_ADJ_IMP_SPEC',         'ModifierId',     'MOD_CSC_ALL_GOLD_TO_PLOT'   ),
 
 --  +1 Gold for every 5 Citizens in the city for each adjacent Zoo or Ferris Wheel
-        (   'MOD_CSC_BAKERS_GOLD_TO_CAFE',                     'BuildingType',   'BUILDING_CSC_BAKERS_CAFE'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_CAFE',                     'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_BAKERS_GOLD_TO_CAFE',                     'Amount',         1   ),
+        (   'MOD_CSC_BAKERS_GOLD_TO_CAFE',         'BuildingType',   'BUILDING_CSC_BAKERS_CAFE'   ),
+        (   'MOD_CSC_BAKERS_GOLD_TO_CAFE',         'YieldType',      'YIELD_GOLD'   ),
+        (   'MOD_CSC_BAKERS_GOLD_TO_CAFE',         'Amount',         1   ),
 
 -- 	+1 Gold to the Flour Mill in the Quarter
 
 --  +1 Gold return from eligible import routes to supplied Bakers buildings
-        (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',               'BuildingType',   'BUILDING_CSC_BAKERS_BAKERY'   ),
-        (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',               'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',               'Amount',         1   ),
-        (   'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',                 'BuildingType',   'BUILDING_CSC_BAKERS_CAFE'   ),
-        (   'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',                 'YieldType',      'YIELD_GOLD'   ),
-        (   'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',                 'Amount',         1   );
+        (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',   'BuildingType',   'BUILDING_CSC_BAKERS_BAKERY'   ),
+        (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',   'YieldType',      'YIELD_GOLD'   ),
+        (   'MOD_CSC_BAKERS_EXPORT_BAKERY_GOLD',   'Amount',         1   ),
+        (   'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',     'BuildingType',   'BUILDING_CSC_BAKERS_CAFE'   ),
+        (   'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',     'YieldType',      'YIELD_GOLD'   ),
+        (   'MOD_CSC_BAKERS_EXPORT_CAFE_GOLD',     'Amount',         1   );
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )

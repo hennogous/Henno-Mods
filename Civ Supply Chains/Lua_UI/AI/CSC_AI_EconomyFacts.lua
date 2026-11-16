@@ -94,22 +94,18 @@ function F.FootprintSignature(plot)
 end
 
 local families={BAKERS={yield='YIELD_FOOD'},TAILORS={yield='YIELD_CULTURE'}}
--- This first ledger supports the current unit-transfer contracts. Check the
--- loaded leaf amounts instead of silently retaining a stale +1 after another
--- mod changes them. A different economy is unavailable, not worth zero. The
--- population branch below reads its actual fractional rate independently.
-local unitContracts={
-    BAKERS={'MOD_CSC_ALL_PROD_TO_PLOT','MOD_CSC_ALL_GOLD_TO_PLOT',
-        'MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WATER_MILL','MOD_CSC_BAKERS_BASE_IMPROV_FOOD_TO_ADJ_WIND_MILL',
-        'MOD_CSC_BAKERS_FOOD_TO_CAFE'},
-    TAILORS={'MOD_CSC_TAILORS_BASE_IMPROV_CULTURE_TO_WORKSHOP','MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',
-        'MOD_CSC_TAILORS_PROD_TO_ADJ_BASE','MOD_CSC_TAILORS_GOLD_TO_ADJ_BASE'}}
 local function definitions()
     if catalogue then return catalogue end
     local c={stages={},customers={},population={},transactions={},replacements={},tech={},civic={},amounts={},arguments={},prerequisites={},exclusives={}}
+    c.materials={}
     local fixedBindingRows,fixedLeaves={},{}
     if GameInfo.CSC_BuildingTransactionFixedBindings then for row in GameInfo.CSC_BuildingTransactionFixedBindings()do
         fixedBindingRows[#fixedBindingRows+1]=row;fixedLeaves[row.ChildModifierId]=true
+    end end
+    local materialBindings={}
+    if GameInfo.CSC_MaterialTransactionBindings then for row in GameInfo.CSC_MaterialTransactionBindings()do
+        materialBindings[row.TransactionId..':'..row.LegKey]=row
+        fixedLeaves[row.ChildModifierId]=true
     end end
     for row in GameInfo.ModifierArguments()do
         -- Keep full arguments only for the small set of canonical fixed leaves.
@@ -158,6 +154,33 @@ local function definitions()
                 partnerDistrictMustFunction=flag(row.PartnerDistrictMustFunction),legs=outputs[row.TransactionId]or{}}
         end
     end
+    if GameInfo.CSC_MaterialTransactions and GameInfo.CSC_MaterialTransactionYields then
+        c.materialCanonical=true
+        local outputs,hosts={},{}
+        if GameInfo.CSC_MaterialTransactionInputHosts then for row in GameInfo.CSC_MaterialTransactionInputHosts()do
+            local key=row.TransactionId..':'..row.LegKey
+            hosts[key]=hosts[key]or{};hosts[key][row.ImprovementType]=true
+        end end
+        for row in GameInfo.CSC_MaterialTransactionYields()do
+            local key=row.TransactionId..':'..row.LegKey
+            local binding=materialBindings[key]
+            outputs[row.TransactionId]=outputs[row.TransactionId]or{}
+            table.insert(outputs[row.TransactionId],{key=row.LegKey,recipient=row.Recipient,
+                yield=row.YieldType,amount=row.Amount,scope=row.ImprovementScope,improvement=row.ImprovementType,
+                hosts=hosts[key]or{},nativeLeaf=binding and binding.ChildModifierId})
+        end
+        for row in GameInfo.CSC_MaterialTransactions()do
+            c.materials[row.TransactionId]={id=row.TransactionId,quarter=row.QuarterKey,
+                producer=row.ProducerBuildingType,tag=row.MaterialClass,legs=outputs[row.TransactionId]or{}}
+        end
+    end
+    c.improvementJobs={}
+    if GameInfo.Improvement_ValidResources then for row in GameInfo.Improvement_ValidResources()do
+        local list=c.improvementJobs[row.ResourceType]or{};c.improvementJobs[row.ResourceType]=list
+        local definition=GameInfo.Improvements[row.ImprovementType]
+        if definition then list[#list+1]=definition end
+    end end
+    for _,list in pairs(c.improvementJobs)do table.sort(list,function(a,b)return a.Index<b.Index end)end
     local customerSeen={}
     local function customer(key,district,building,stage)
         local stamp=table.concat({key,district,building,stage},':')
@@ -204,13 +227,15 @@ local function definitions()
         table.insert(c.civic[row.Civic],row.PrereqCivic)
     end
     c.unsupported={}
-    for family,roots in pairs(unitContracts)do for _,root in ipairs(roots)do
-        if c.amounts[root]~=1 then c.unsupported[family]='Unsupported loaded transaction amount: '..root end
-    end end
+    if c.canonical and not c.materialCanonical then
+        -- A partially loaded current package must not fall back to historical
+        -- unit-rate assumptions. Old plain-record fixtures/packages without any
+        -- canonical economy remain a separate compatibility path.
+        for family in pairs(families)do c.unsupported[family]='Material catalogue unavailable'end
+    end
     -- Fixed terms can differ from one. Validate the loaded native leaf against
     -- the canonical amount/type/yield, rather than keeping the old +1 assumption.
-    -- This catches later compatibility edits after generation. Material unit
-    -- checks above remain temporary until their directional catalogue migrates.
+    -- This catches later compatibility edits after generation.
     for _,transaction in pairs(c.transactions)do if transaction.kind=='FIXED'then
         for _,leg in ipairs(transaction.legs)do
             local args=leg.nativeLeaf and c.arguments[leg.nativeLeaf]
@@ -221,6 +246,13 @@ local function definitions()
             end
         end
     end end
+    for _,transaction in pairs(c.materials)do for _,leg in ipairs(transaction.legs)do
+        local args=leg.nativeLeaf and c.arguments[leg.nativeLeaf]
+        if not args or c.amounts[leg.nativeLeaf]~=leg.amount or args.YieldType~=leg.yield
+            or leg.recipient=='PRODUCER'and args.BuildingType~=transaction.producer then
+            c.unsupported[transaction.quarter]='Loaded material transaction differs: '..transaction.id..':'..leg.key
+        end
+    end end
     catalogue=c;return c
 end
 
@@ -228,6 +260,23 @@ function F.CustomerDefinitions(key)
     -- Definition-only, read-only by contract; projections and actual footprints
     -- consume the same merged gameplay registry. Live state is never cached here.
     return definitions().customers[key]or{}
+end
+
+function F.SelectMaterialLegs(transaction,improvement,ready)
+    -- Definition-only selection shared by the live reader and regressions.
+    -- Registered native hosts decide inputs; the declared return selector
+    -- decides outputs. A valid resource/improvement pair is not substituted for
+    -- either test. Return a fresh record so per-publication readiness never
+    -- mutates the session-static catalogue.
+    local selected={id=transaction.id,legs={}}
+    for _,leg in ipairs(transaction.legs)do
+        local applies=improvement and(leg.recipient=='PRODUCER'and leg.hosts[improvement]
+            or leg.recipient=='IMPROVEMENT'and(leg.scope=='ANY_PLAYER_IMPROVEMENT'
+                or leg.improvement==improvement))
+        if applies then selected.legs[#selected.legs+1]={key=leg.key,
+            recipient=leg.recipient,yield=leg.yield,amount=leg.amount,ready=ready}end
+    end
+    return selected
 end
 
 function F.New(player,placement,ui,context)
@@ -262,7 +311,20 @@ function F.New(player,placement,ui,context)
             -- A partial UI record must not erase an available Gameplay fact.
             local facts={workers=number(plot,'GetWorkerCount'),yields={}}
             if ok and type(value)=='table'then
-                if finite(value.workers)then facts.workers=value.workers end
+                local gameplayWorkers=facts.workers
+                local lag=finite(value.turn)and Game.GetCurrentGameTurn()-value.turn
+                local currentObservation=lag and lag>=0 and lag<=1
+                    and value.plotOwner==pid and plot:GetOwner()==pid
+                if gameplayWorkers==nil and currentObservation and finite(value.workers)then facts.workers=value.workers end
+                -- Publication can precede UI's turn transition. Accept its
+                -- observed assignment through that one-turn phase only, with
+                -- matching owner/worker facts. Older/future or conflicting
+                -- observations do not earn assumed tile-return income.
+                if currentObservation and value.workingPlayer==pid
+                    and (gameplayWorkers==nil or value.workers==gameplayWorkers)
+                    and finite(value.workingCity)then
+                    facts.workingCity=value.workingCity;facts.workingObservationLag=lag
+                end
                 for yield,amount in pairs(value.yields or{})do
                     if numeric(amount)and amount==amount and math.abs(amount)<INF then facts.yields[yield]=amount end
                 end
@@ -479,11 +541,13 @@ function F.New(player,placement,ui,context)
     end
     local function building(city,definition,plot,visiting)
         local host=snapshot.districts[plot]
-        local works=host and host.working and city.buildings:HasBuilding(definition.Index)and not city.buildings:IsPillaged(definition.Index)
-            and city.buildings:GetBuildingLocation(definition.Index)==plot
+        local present=city.buildings:HasBuilding(definition.Index)and city.buildings:GetBuildingLocation(definition.Index)==plot
+        local intact=present and not city.buildings:IsPillaged(definition.Index)
+        local works=host and host.working and intact
         local cost=cityNumber(city.object,'building',definition.Index)
         local unlocked=math.max(research('tech',definition.PrereqTech),research('civic',definition.PrereqCivic))
-        local b={type=definition.BuildingType,working=works,unlock=works and 0 or unlocked,cost=cost,
+        local b={type=definition.BuildingType,working=works,intactOwner=intact and host and host.complete or false,
+            unlock=works and 0 or unlocked,cost=cost,
             turns=cityNumber(city.object,'buildingTurns',definition.Index)
                 or(cost and city.production and city.production>0 and math.max(1,math.ceil(cost/city.production))or INF),
             maintenance=definition.Maintenance or 0,forecastDepth=forecastDepth(definition)}
@@ -561,7 +625,7 @@ function F.New(player,placement,ui,context)
                 local functioning=buyer.buildings:HasBuilding(definition.Index)
                     and not buyer.buildings:IsPillaged(definition.Index)
                     and buyer.buildings:GetBuildingLocation(definition.Index)==plot
-                if functioning and not ordinary.partnerDistrictMustFunction then
+                if functioning and ordinary.kind~='FIXED'and not ordinary.partnerDistrictMustFunction then
                     customer.working=true;customer.unlock=0;customer.ready=0
                 else
                     -- A missing building cannot be forecast ahead of an unknown
@@ -834,11 +898,12 @@ function F.New(player,placement,ui,context)
         if c.unsupported[profile.key]then return nil,c.unsupported[profile.key]end
         local city=assert(snapshot.cities[cityObject:GetID()])
         local placed=snapshot.districts[plot:GetIndex()]
-        local exists=placed and placed.type==profile.district.Index and placed.working
+        local exists=placed and placed.type==profile.district.Index and placed.complete
+        local functioning=exists and placed.working
         local cost=cityNumber(cityObject,'district',profile.district.Index)
         local duration=cityNumber(cityObject,'districtTurns',profile.district.Index)
         local qUnlock=math.max(research('tech',profile.district.PrereqTech),research('civic',profile.district.PrereqCivic))
-        local qReady=exists and 0 or duration and qUnlock+math.max(1,duration)
+        local qReady=functioning and 0 or duration and qUnlock+math.max(1,duration)
             or cost and city.production and city.production>0 and qUnlock+math.max(1,math.ceil(cost/city.production))or INF
         local site={city=city.id,population=city.population,horizon=context and context.horizon or 50,quarterReady=qReady,adjacency=0,
             maintenance=profile.district.Maintenance or 0,existing=exists,materialYield=family.yield,
@@ -915,6 +980,10 @@ function F.New(player,placement,ui,context)
             for _,definition in ipairs(stages[stage]or{})do
                 if allowed(definition)and not flag(definition.MustPurchase)then
                     local b=building(city,definition,plot:GetIndex())
+                    -- An intact existing building needs its host restored, not
+                    -- another copy constructed or another upkeep charge. Its
+                    -- owner-side material returns can already be active at0.
+                    b.hostReady=qReady
                     if stage==2 then
                         local water=definition.BuildingType=='BUILDING_CSC_BAKERS_WATER_MILL'
                         if not water or plot:IsRiver()then
@@ -960,6 +1029,76 @@ function F.New(player,placement,ui,context)
         end
         local supply=snapshot.Supply(plot,profile)
         site.baseCount=#supply.base;site.specialtyCount=#supply.specialty
+        if c.materialCanonical then
+            local potential={}
+            for _,kind in ipairs({'base','specialty'})do for _,material in ipairs(supply[kind])do
+                potential[kind..':'..material.plot]=material
+            end end
+            -- Inspect actual adjacent resources separately from Builder legality.
+            -- Native registered inputs and improvement returns do not both test
+            -- Improvement_ValidResources at runtime. A legacy/nonstandard host
+            -- must not lose its real outgoing/incoming leg in this read-model.
+            for _,p in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
+                local resource=GameInfo.Resources[p:GetResourceType()]
+                if resource and p:GetOwner()==pid and p:GetDistrictType()==-1
+                    and PlayersVisibility[pid]:IsRevealed(p:GetX(),p:GetY())
+                    and CSC_Adjacency.ResourceVisible(pid,p:GetResourceType())then
+                    for _,kind in ipairs({'base','specialty'})do
+                        local tag=kind=='base'and profile.base or profile.specialty
+                        if CSC_Adjacency.HasTag(tag,resource.ResourceType)then
+                            local structural=potential[kind..':'..p:GetIndex()]
+                            local current=GameInfo.Improvements[p:GetImprovementType()]
+                            local improvement=current and current.ImprovementType
+                            local ready=current and not p:IsImprovementPillaged()and 0 or INF
+                            if current and p:IsImprovementPillaged()and structural and structural.ready then ready=5 end
+                            if not current and structural and structural.ready then
+                                -- A future legal job earns only its declared,
+                                -- registered legs. No guessed +1 input and no
+                                -- automatic Industry/Corporation upgrade.
+                                for _,candidate in ipairs(c.improvementJobs[resource.ResourceType]or{})do
+                                    if candidate.ImprovementType~='IMPROVEMENT_INDUSTRY'
+                                        and candidate.ImprovementType~='IMPROVEMENT_CORPORATION'
+                                        and research('tech',candidate.PrereqTech)==0
+                                        and research('civic',candidate.PrereqCivic)==0
+                                        and ImprovementBuilder.CanHaveImprovement(p,candidate.Index,pid)then
+                                        improvement=candidate.ImprovementType;ready=5;break
+                                    end
+                                end
+                            end
+                            local facts=readPlot(p);local workingCity=facts.workingCity
+                            if workingCity==nil and Cities.GetPlotWorkingCity then
+                                local ok,worker=pcall(Cities.GetPlotWorkingCity,p:GetIndex())
+                                if ok and worker and worker:GetOwner()==pid then workingCity=worker:GetID()end
+                            end
+                            local record={kind=kind,plot=p:GetIndex(),city=workingCity,
+                                worked=(facts.workers or 0)>0,ready=ready,transactions={}}
+                            for _,transaction in pairs(c.materials)do
+                                if transaction.quarter==profile.key and transaction.tag==tag then
+                                    local selected=F.SelectMaterialLegs(transaction,improvement,ready)
+                                    local definition=GameInfo.Buildings[transaction.producer]
+                                    local intactOwner=definition and placed and placed.complete
+                                        and city.buildings:HasBuilding(definition.Index)
+                                        and not city.buildings:IsPillaged(definition.Index)
+                                        and city.buildings:GetBuildingLocation(definition.Index)==plot:GetIndex()
+                                    if intactOwner then for _,leg in ipairs(selected.legs)do
+                                        -- Building-owned return modifiers remain
+                                        -- live through district-only damage in
+                                        -- the owned-land native fixture. Input
+                                        -- receiving-building yields need the
+                                        -- functioning host and keep stage timing.
+                                        if leg.recipient=='IMPROVEMENT'then leg.producerReady=0 end
+                                    end end
+                                    record.transactions[transaction.producer]=selected
+                                end
+                            end
+                            site.suppliers[#site.suppliers+1]=record
+                        end
+                    end
+                end
+            end
+        else
+        -- Legacy package/plain-record compatibility only. Current main CSC uses
+        -- the directional catalogue above, including explicit empty leg maps.
         for _,kind in ipairs({'base','specialty'})do for _,material in ipairs(supply[kind])do
             local p=Map.GetPlotByIndex(material.plot);local owner=Cities.GetPlotPurchaseCity(p)
             local improvement=GameInfo.Improvements[p:GetImprovementType()]
@@ -971,6 +1110,7 @@ function F.New(player,placement,ui,context)
                 ready=material.working and 0 or material.ready and 5 or INF,
                 worked=(readPlot(p).workers or 0)>0,multiplier=multiplier}
         end end
+        end
         for _,near in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
             local host=snapshot.districts[near:GetIndex()]
             if near:GetOwner()==pid and host and host.complete then

@@ -84,3 +84,59 @@ CREATE TABLE IF NOT EXISTS CSC_BuildingTransactionBindings
     PRIMARY KEY (TransactionId, LegKey),
     FOREIGN KEY (TransactionId, LegKey) REFERENCES CSC_BuildingTransactionYields (TransactionId, LegKey)
     );
+
+-- Material exchanges are directional native relationships. An input selects
+-- registered improvement hosts; a return selects the player's adjacent tagged
+-- improvements, including hosts without an input root. Valid-resource mappings
+-- register additional hosts and legal Builder possibilities, not a runtime gate
+-- on every return. Industry/Corporation inputs are full amounts; their returns
+-- add incremental legs to the ordinary return. Do not use a universal multiplier.
+CREATE TABLE IF NOT EXISTS CSC_MaterialTransactions (
+    TransactionId TEXT PRIMARY KEY NOT NULL,
+    QuarterKey TEXT NOT NULL,
+    ProducerBuildingType TEXT NOT NULL,
+    MaterialClass TEXT NOT NULL,
+    UNIQUE (ProducerBuildingType, MaterialClass)
+);
+
+CREATE TABLE IF NOT EXISTS CSC_MaterialTransactionYields (
+    TransactionId TEXT NOT NULL REFERENCES CSC_MaterialTransactions (TransactionId),
+    LegKey TEXT NOT NULL,
+    Recipient TEXT NOT NULL CHECK (Recipient IN ('PRODUCER', 'IMPROVEMENT')),
+    YieldType TEXT NOT NULL,
+    Amount REAL NOT NULL CHECK (Amount > 0 AND Amount = CAST(Amount AS INTEGER)),
+    ImprovementScope TEXT NOT NULL CHECK (ImprovementScope IN ('REGISTERED_INPUT', 'ANY_PLAYER_IMPROVEMENT', 'EXACT_IMPROVEMENT')),
+    ImprovementType TEXT,
+    PRIMARY KEY (TransactionId, LegKey),
+    CHECK ((ImprovementScope = 'EXACT_IMPROVEMENT') = (ImprovementType IS NOT NULL)),
+    CHECK (ImprovementScope <> 'REGISTERED_INPUT' OR Recipient = 'PRODUCER'),
+    CHECK (ImprovementScope <> 'ANY_PLAYER_IMPROVEMENT' OR Recipient = 'IMPROVEMENT')
+);
+
+-- Native IDs retain compatibility with existing attachments and save state.
+-- Core/compatibility SQL still registers native owners early; this projection
+-- owns their links, payout arguments and gate arguments before game creation.
+-- Stable parent rows are updated in place: REPLACE can cascade-delete Services.
+CREATE TABLE IF NOT EXISTS CSC_MaterialTransactionBindings (
+    TransactionId TEXT NOT NULL,
+    LegKey TEXT NOT NULL,
+    RootModifierId TEXT NOT NULL,
+    ChildModifierId TEXT NOT NULL,
+    OwnerRequirementSetId TEXT,
+    SubjectRequirementSetId TEXT NOT NULL,
+    PRIMARY KEY (TransactionId, LegKey),
+    FOREIGN KEY (TransactionId, LegKey) REFERENCES CSC_MaterialTransactionYields (TransactionId, LegKey)
+);
+
+-- Role determines argument values from the transaction/leg, rather than copying
+-- material or Quarter names into a second economic definition. Adjacency itself
+-- takes no argument. Shared requirement IDs must resolve to identical templates.
+CREATE TABLE IF NOT EXISTS CSC_MaterialTransactionGateBindings (
+    TransactionId TEXT NOT NULL,
+    LegKey TEXT NOT NULL,
+    RequirementSetId TEXT NOT NULL,
+    RequirementId TEXT NOT NULL,
+    GateRole TEXT NOT NULL CHECK (GateRole IN ('MATERIAL_TAG', 'QUARTER_TYPE', 'ADJACENCY', 'IMPROVEMENT_TYPE')),
+    PRIMARY KEY (TransactionId, LegKey, RequirementSetId, RequirementId),
+    FOREIGN KEY (TransactionId, LegKey) REFERENCES CSC_MaterialTransactionBindings (TransactionId, LegKey)
+);
