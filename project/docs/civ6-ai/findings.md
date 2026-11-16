@@ -3970,6 +3970,10 @@ result in AI-C197 predates this policy. [Mechanism and checks](../research/mods/
 
 ## AI-C199 — Built-Quarter Hub opportunities lack the extra future-layout preference
 
+**16 November follow-up:** AI-C201 records the losing cells and live adjacency.
+Aberdeen is a legal Gold2 tie; Napata's alternative is Gold1 in the replay,
+correcting the retrospective Gold2 reconstruction below.
+
 16 November2026, **2.1**, original customer-first Continents250 stock AI1–5,
 CL/R2/Suk, policy19e29a42, CE2d200ef/XP2 SHA092abfbb. Recorded data only; Henno
 keeps Civ/FireTuner open. No connection to that session, replay or policy change.
@@ -4000,3 +4004,45 @@ these customer districts are affected.52 archived native neighbor paths validate
 the offline geometry. Next2.1 is existing-Quarter customer support and footprint
 coordination, with local native-cell comparison before another premium.
 [Cases, reconstruction scope and data](../research/mods/csc-ai-commercial-hub-audit-20261116.md).
+
+## AI-C200 — Population building transactions share a gameplay-owned catalogue
+
+16 November2026, roadmap1.4/2.1. Headers/legs for Bakery–Market, Tailor–Market/
+Temple and Café/Fashion House population venues (including LGD and three Wonders)
+now generate compatibility metadata and native payout arguments. The generic
+Stage4 scanner and central AI population ledger read those definitions. Existing
+source/customer gates, property/modifier IDs, Q8 aggregate rounding and per-venue
+Stage4 floors are preserved against the captured QAed source, which already had
+the earlier0.101/Q8 precision change.
+
+288 offline worlds and four selected graph comparisons match. A zero-turn native
+250 replay matches42,210 city/center property/bit values across67 cities, including
+active Stage3/4 transactions;269 structural rows match, exit0/restored. Astra
+independently reproduces the four SQLite graph hashes/counts and reviews the
+slice. Missing/mismatched native bindings and unsupported shapes are rejected.
+The AI fixes Stage3/Wonder venue omissions and reads actual population legs/gates;
+Quarter/other-district placement economics exclude prospective Services.
+
+Scope: authoritative population transactions, not the complete ordinary economy.
+Fixed/local exchanges, material attachments, observed trade/staffing, joint
+multi-Quarter customer valuation and native overlap remain open. No new live
+customer residual or SQL strength increase. [Change list, evidence and manual
+QA](../research/mods/csc-population-transaction-catalogue-20261116.md).
+
+## AI-C201 — Native customer SQL lands, while site costs and shared building totals still matter
+
+16 November2026, roadmap2.1, original stock-AI/CL/R2/Suk Continents checkpoint100,
+unchanged policy19e29a42 and CE2d200ef/XP2 SHA092abfbb. Passive100→125 replay captures
+20 targeted matrices. Aberdeen110 Hub936 wins1607.188 utility versus1559.359 at788;
+both sites are owned/legal/Gold2, with private adjacency1 at788. Its intrinsic
+advantage is outweighed by native site costs. Napata122 Hub2121 beats1751 by5.063
+utility; live1751 adjacency isGold1, correcting AI-C199's inferredGold2 tie.
+
+Native CalculateDistrictValues3dfee0 reinspection and first-row Market/Bank/
+Stock cache captures confirm a shared city/district building subtotal, rather
+than an independent supply-chain forecast per site. Generic native building
+valuation has dynamic-yield and compiled-modifier channels; CSC overlap still
+requires component attribution before publishing a residual. The partial
+customer-building model is diagnostic only. Replay closes/restores exit0;
+failed helper-compatibility attempts stop before advancing100 and also restore.
+[Scores, native scope and artifacts](../research/mods/csc-ai-customer-transactions-native-20261116.md).

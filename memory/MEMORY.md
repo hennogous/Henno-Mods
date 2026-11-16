@@ -1,3 +1,10 @@
+# CURRENT: population transaction alignment qualified,16 November
+
+Read session_ai_transaction_catalogue_20261116.md and the population migration /
+manual QA report.67-city zero-turn250 property equivalence and288 offline worlds
+pass; native customer replay100â†’125 complete/restored. Fixed/local/material/trade/
+staffing and joint customer residual remain open; SQL1 unchanged. No active game.
+
 # CURRENT: Commercial Hub retrospective complete; user session preserved,16 November
 
 Read csc-ai-commercial-hub-audit-20261116.md/json and session_ai_customer_first_20261116.md.

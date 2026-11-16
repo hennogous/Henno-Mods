@@ -1,5 +1,19 @@
 # CSC AI roadmap
 
+**Active1.4 / 2.1: one gameplay/AI ordinary-economy contract.**
+Population Stage3/4 terms and partners are now gameplay-owned; native payouts,
+metadata and AI share them. The migration matches288 old-code worlds and a
+67-city native250 property replay. Astra reviewed the slice. See
+[gameplay changes and QA](../research/mods/csc-population-transaction-catalogue-20261116.md).
+Next, migrate fixed/local exchanges and validate material directions; account for
+observed trade/staffing, aggregate all supplier chains for a proposed customer,
+and identify existing native CSC forecast contributions. Only then enable a
+customer residual adapter. Prospective Services stay deferred14.3. Scope stays
+Problems1 and2; no new building/Builder/research execution work in this pass.
+[Coverage and regression contract](../integrations/csc-economic-contract.md).
+The native Hub replay corrects the old Napata adjacency reconstruction and
+records losing cells/site costs: [evidence](../research/mods/csc-ai-customer-transactions-native-20261116.md).
+
 **2.1 Commercial Hub audit,16 November — recorded data only.**
 Of19 Hubs, three already touch Quarters and six have no completed Quarter within
 reach at native selection. Two further cities have credible matching-Gold

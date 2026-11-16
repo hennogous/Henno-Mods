@@ -101,13 +101,11 @@ VALUES
         (   'BAKERS',     'CLASS_CSC_BAKERS_BASE',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   ),
         (   'BAKERS',     'CLASS_CSC_BAKERS_SPEC',   '',             'YIELD_PRODUCTION',   1,             'FROM_RINGS_TYPETAG_RESOURCE'   );
 
--- Stage 2/4 venues for the shared planning UI. Market is already declared by
--- CSC_Stage3CustomerTransactions and is not duplicated here.
+-- Stage2 planning metadata remains until fixed exchanges migrate. Population
+-- venues are generated from this Quarter's TRANSACTIONS companion.
 INSERT OR IGNORE INTO CSC_QuarterCustomerBuildings
-        (   QuarterKey,   DistrictType,                             BuildingType,              ProducerStage   )
-VALUES  (   'BAKERS',     'DISTRICT_CITY_CENTER',                   'BUILDING_GRANARY',        2   ),
-        (   'BAKERS',     'DISTRICT_ENTERTAINMENT_COMPLEX',         'BUILDING_ZOO',            4   ),
-        (   'BAKERS',     'DISTRICT_WATER_ENTERTAINMENT_COMPLEX',   'BUILDING_FERRIS_WHEEL',   4   );
+        (   QuarterKey,   DistrictType,             BuildingType,         ProducerStage   )
+VALUES  (   'BAKERS',     'DISTRICT_CITY_CENTER',   'BUILDING_GRANARY',   2   );
 
 -- Exact building stages for animated, existing supply-chain connections.
 INSERT OR IGNORE INTO CSC_QuarterFlowBuildings
@@ -133,30 +131,7 @@ VALUES  (   'BAKERS',     'DISTRICT_COMMERCIAL_HUB',   'POLICY_TOWN_CHARTERS'   
 -- the customer's Food property. CSC_CustomerPopulationReturns.lua accumulates
 -- all qualifying seller/site pairs, including same-city and cross-city sales.
 -- The 0.101 is a per-customer-citizen target, not an integer yield per Market.
-INSERT OR IGNORE INTO CSC_Stage3CustomerTransactions
-    (
-        TransactionId,
-        SellerDistrictType,
-        SellerBuildingType,
-        CustomerDistrictType,
-        CustomerBuildingType,
-        SellerPopulationProperty,
-        SellerReturnAmountProperty,
-        CustomerYieldAmountProperty,
-        EngineAmountPerPopulation
-    )
-VALUES
-    (
-        'CSC_BAKERS_BAKERY_MARKET',
-        'DISTRICT_CSC_BAKERS_QUARTER',
-        'BUILDING_CSC_BAKERS_BAKERY',
-        'DISTRICT_COMMERCIAL_HUB',
-        'BUILDING_MARKET',
-        'CSC_BAKERS_STAGE_3_MARKET_CUSTOMER_POP',
-        'CSC_BAKERS_STAGE_3_MARKET_RETURN_AMOUNT_Q8',
-        'CSC_BAKERS_STAGE_3_MARKET_FOOD_AMOUNT_Q8',
-        0.101
-    );
+-- Population transaction terms moved to the Quarter TRANSACTIONS companion.
 
 
 
@@ -279,16 +254,13 @@ UPDATE Districts SET Description = '{LOC_DISTRICT_WATER_STREET_CARNIVAL_EXPANSIO
 --	DistrictModifiers
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Stage 4 branch registry
--- Each branch identifies the building that receives Culture from Cafe sales.
--- The same branch keys appear in Lua's customer scan and property names below;
--- keep both sides in step when adding a new customer family.
+-- Retained native consumer identities for already-QAed Cafe property bits.
+-- Actual partners/terms are owned by CSC_Q_BAKERS_TRANSACTIONS.sql; the late
+-- processor validates these consumers and generates their payout arguments.
 DROP TABLE IF EXISTS CSC_BakersStage4CultureBuildings;
 
--- This temp table is the source of truth for Stage 4 culture-return branches.
--- Each branch pairs a customer/capstone building with the generated bit-stack
--- modifiers below, so LGD Conservatory support can use the same pipeline without
--- duplicating Zoo/Ferris rows by hand.
+-- This identity table preserves existing attachments and requirement names.
+-- It supplies no separate quantity, yield or gameplay venue scan.
 CREATE TEMPORARY TABLE CSC_BakersStage4CultureBuildings
 		(	Branch TEXT NOT NULL,
 			BuildingType TEXT NOT NULL,
@@ -1161,66 +1133,7 @@ FROM CSC_RouteStackBits;
 -- The Amount values below divide by AMOUNT_SCALE from
 -- CSC_CustomerPopulationReturns.lua. For example, a stored bit of 1 becomes
 -- 0.00390625 yield per population when this modifier is active.
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'YieldType',				'YIELD_PRODUCTION'
-FROM CSC_Stage3RateBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_MARKET_RETURN_PROD_AMOUNT_BIT_' || Bit,					'Amount',					Bit / 256.0
-FROM CSC_Stage3RateBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,							'YieldType',				'YIELD_FOOD'
-FROM CSC_Stage3RateBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_MARKET_FOOD_AMOUNT_BIT_' || Bit,							'Amount',					Bit / 256.0
-FROM CSC_Stage3RateBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,				'BuildingType',				'BUILDING_CSC_BAKERS_CAFE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,				'YieldType',				'YIELD_PRODUCTION'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_STAGE_4_CAFE_RETURN_PRODUCTION_BIT_' || Bit,				'Amount',					Bit
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit,
-		'BuildingType',
-		BuildingType
-FROM CSC_BakersStage4CultureBuildings
-CROSS JOIN CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit,
-		'YieldType',
-		'YIELD_CULTURE'
-FROM CSC_BakersStage4CultureBuildings
-CROSS JOIN CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT	'MOD_CSC_BAKERS_STAGE_4_' || Branch || '_CULTURE_RETURN_' || BuildingType || '_BIT_' || Bit,
-		'Amount',
-		Bit
-FROM CSC_BakersStage4CultureBuildings
-CROSS JOIN CSC_Stage4StackBits;
-
-
+-- Payout arguments generated by CSC_BuildingTransactionProcessor.sql.
 
 --===========================================================================================================================================================================--
 /*	REQUIREMENTS */

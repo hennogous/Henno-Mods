@@ -459,7 +459,8 @@
           "LoadOrder": "95"
         },
         "files": [
-          "Data/CSC_Q_ALL.sql"
+          "Data/CSC_Q_ALL.sql",
+          "Data/CSC_BuildingTransactionSchema.sql"
         ]
       },
       {
@@ -469,7 +470,8 @@
           "LoadOrder": "100"
         },
         "files": [
-          "Data/CSC_Q_BAKERS.sql"
+          "Data/CSC_Q_BAKERS.sql",
+          "Data/CSC_Q_BAKERS_TRANSACTIONS.sql"
         ]
       },
       {
@@ -479,7 +481,8 @@
           "LoadOrder": "101"
         },
         "files": [
-          "Data/CSC_Q_BAKERS_GOLD.sql"
+          "Data/CSC_Q_BAKERS_GOLD.sql",
+          "Data/CSC_Q_BAKERS_TRANSACTIONS_GOLD.sql"
         ]
       },
       {
@@ -489,7 +492,8 @@
           "LoadOrder": "100"
         },
         "files": [
-          "Data/CSC_Q_TAILORS.sql"
+          "Data/CSC_Q_TAILORS.sql",
+          "Data/CSC_Q_TAILORS_TRANSACTIONS.sql"
         ]
       },
       {
@@ -499,7 +503,8 @@
           "LoadOrder": "101"
         },
         "files": [
-          "Data/CSC_Q_TAILORS_GOLD.sql"
+          "Data/CSC_Q_TAILORS_GOLD.sql",
+          "Data/CSC_Q_TAILORS_TRANSACTIONS_GOLD.sql"
         ]
       },
       {
@@ -1431,7 +1436,7 @@
         "type": "UpdateDatabase",
         "id": "CSC_AI_Connectors",
         "properties": {
-          "LoadOrder": "480"
+          "LoadOrder": "3001"
         },
         "criteria": [
           "CSC_CE_SupplierExclusion"
@@ -1568,6 +1573,16 @@
         },
         "files": [
           "ModSupport/ModSupport_TAR_MAP.sql"
+        ]
+      },
+      {
+        "type": "UpdateDatabase",
+        "id": "CSC_BuildingTransactionProcessor",
+        "properties": {
+          "LoadOrder": "2500"
+        },
+        "files": [
+          "Data/CSC_BuildingTransactionProcessor.sql"
         ]
       }
     ]

@@ -65,6 +65,13 @@ local function ledger(site, second)
     local quarter=site.quarterReady
     if not present(quarter) then omit('quarter','Unknown Quarter readiness');return result end
     clocks[site.city]=quarter
+    -- A prospective customer district occupies its city's queue before its
+    -- buildings. This plain-record reservation is shared by both sides of a
+    -- marginal comparison; it does not reserve native production or delay an
+    -- already working building. Separate cities can still invest in parallel.
+    for city,ready in pairs(site.queueReady or{})do
+        if present(ready)then clocks[city]=maximum(clocks[city]or 0,ready)end
+    end
     for _,flow in ipairs(site.direct or {})do
         emit('site:'..flow.id,flow.yield,flow.amount,quarter,flow.city)
     end
@@ -74,11 +81,11 @@ local function ledger(site, second)
         result.streams[#result.streams].fixed=true
     end
     local stages={}
-    local function populationFlow(id,yield,target,ready,city,population,property,building)
+    local function populationFlow(id,yield,target,ready,city,population,property,building,multiplier)
         if not present(ready)or ready>=site.horizon or target<=0 then return end
         local key=city..':'..yield..':'..tostring(property or id)
         local list=populationFlows[key]or{};populationFlows[key]=list
-        list[#list+1]={id=id,yield=yield,target=target,ready=ready,city=city,population=population,building=building}
+        list[#list+1]={id=id,yield=yield,target=target,ready=ready,city=city,population=population,building=building,multiplier=multiplier or 1}
     end
     -- A city's single production queue is shared by producers, their missing
     -- prerequisite buildings and customers. Finish a stage's customer links
@@ -139,7 +146,27 @@ local function ledger(site, second)
             local quantity=1
             local outward=customer.yield or site.materialYield
             local sellerAmount,buyerAmount
-            if stage==3 then
+            if customer.transaction then
+                -- Ordinary population exchanges share the actual gameplay
+                -- header/legs. Round quantity by its property first; multiplying
+                -- a target before Q8 rounding would change the native payout.
+                local transaction=customer.transaction
+                local quantity=transaction.amount*(customer.population or 0)
+                if transaction.kind=='PARTNER_POPULATION_STEPS'then
+                    quantity=transaction.amount*math.floor((customer.population or 0)/transaction.step)
+                end
+                local producer=stage==2 and second or stage==3 and site.third or site.fourth
+                local owner=producer and producer.type
+                for _,leg in ipairs(transaction.legs)do
+                    local city=leg.recipient=='SOURCE'and site.city or customer.city
+                    local population=leg.recipient=='SOURCE'and site.population or customer.population
+                    local identity='transaction:'..transaction.id..':'..customer.plot..':'..leg.key
+                    if transaction.kind=='PARTNER_POPULATION'then
+                        populationFlow(identity,leg.yield,quantity,start,city,population,leg.property,owner,leg.amount)
+                    else emit(identity,leg.yield,quantity*leg.amount,start,city,owner)end
+                end
+                sellerAmount,buyerAmount=0,0
+            elseif stage==3 then
                 quantity=(customer.population or 0)*(customer.rate or 0)
                 -- Gameplay rounds the sum once per recipient/property, not
                 -- once per edge. Emit changes in that aggregate at each ready
@@ -207,7 +234,7 @@ local function ledger(site, second)
             target=target+flow.target
             if i==#flows or flows[i+1].ready~=flow.ready then
                 local payout=M.PopulationPayout(target,flow.population)
-                emit('population:'..key..':'..flow.ready,flow.yield,payout-paid,flow.ready,flow.city,flow.building)
+                emit('population:'..key..':'..flow.ready,flow.yield,(payout-paid)*flow.multiplier,flow.ready,flow.city,flow.building)
                 paid=payout
             end
         end
@@ -310,4 +337,55 @@ function M.Marginal(site,building,price)
     end
     local without,message=M.Forecast(restricted,price);if not without then return nil,message end
     return full.valueQ8-without.valueQ8,full
+end
+
+function M.CustomerBuildingForecast(site,projected,customerCity,districtReady,price)
+    -- Building-transaction-only diagnostic, not a complete customer district
+    -- value or a new customer policy. District adjacency/provider externalities
+    -- and joint multi-Quarter aggregation need the decision-level ledger too.
+    -- Price the same existing Quarter plan with/without this district's new
+    -- customer venues. Both quotes exclude Services. Native district valuation
+    -- keeps ordinary yields/upkeep/site costs; omit customer-building upkeep
+    -- here to avoid charging it twice. Producer investment and actual ready
+    -- times remain in the shared model. No fictitious native score is written.
+    if not present(districtReady)then return nil,'Customer district readiness unavailable'end
+    local function base()
+        local copy={};for k,v in pairs(site)do copy[k]=v end
+        copy.service=nil;copy.customers={};copy.queueReady={}
+        for k,v in pairs(site.queueReady or{})do copy.queueReady[k]=v end
+        copy.queueReady[customerCity]=maximum(copy.queueReady[customerCity]or 0,districtReady)
+        for _,v in ipairs(site.customers or{})do copy.customers[#copy.customers+1]=v end
+        return copy
+    end
+    local before=base();local after=base();local seen={}
+    local function identity(v)return v.plot..':'..(v.transaction and v.transaction.id or v.stage..':'..tostring(v.building))end
+    for _,v in ipairs(after.customers)do seen[identity(v)]=true end
+    for _,source in ipairs(projected or{})do
+        local key=identity(source)
+        if source.projected==true and source.city==customerCity and not seen[key]then
+            local function customerInvestment(value)
+                local copy={};for k,v in pairs(value)do copy[k]=v end
+                copy.maintenance=0;copy.prerequisites={}
+                for _,required in ipairs(value.prerequisites or{})do
+                    copy.prerequisites[#copy.prerequisites+1]=customerInvestment(required)
+                end
+                return copy
+            end
+            -- Shrine/Arena etc. are also already priced by the ordinary native
+            -- customer forecast. Keep their construction/unlock timing, but do
+            -- not charge their recurring upkeep a second time in this residual.
+            local row=customerInvestment(source)
+            -- Complete only inside this explicit hypothetical ledger. The live
+            -- fact and input record remain incomplete and cannot be observed as
+            -- constructed, accepted, or delivering a Service.
+            row.complete=true;row.working=false;row.maintenance=0
+            row.unlock=maximum(row.unlock or INF,districtReady)
+            after.customers[#after.customers+1]=row;seen[key]=true
+        end
+    end
+    local without,message=M.Forecast(before,price);if not without then return nil,message end
+    local with,error=M.Forecast(after,price);if not with then return nil,error end
+    return {valueQ8=with.valueQ8-without.valueQ8,
+        bidValueQ8=with.bidValueQ8-without.bidValueQ8,with=with,without=without,
+        servicesExcluded=true,customerOrdinaryUpkeepExcluded=true,buildingTransactionsOnly=true,districtReady=districtReady}
 end

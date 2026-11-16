@@ -32,7 +32,7 @@ const L={playerId:0xd8,treasury:0x780,gold:0xa8,cityId:0xa8,cityOwner:0xd8,
 // installed DB catalogue supplies the column count; do not infer it from a
 // possibly stale/partial matrix or assume a vanilla district enumeration.
 const M={rows:0x4c8,rowCount:0x4d8,data:0x518,capacity:0x520,length:0x528,
-  rowSize:0x78,x:8,y:12,rowScores:0x20,reservation:0x48,completedDistrict:0x51,
+  rowSize:0x78,x:8,y:12,rowScores:0x20,rowBuildingValues:0x28,reservation:0x48,completedDistrict:0x51,
   eligible:0x55,frontier:0x57,owned:0x5a,rowOwner:0x70,rowCity:0x74};
 let mod,cfg,installed=false,enabled=false,closing=false,frozen=false,stopReason=null;
 let sequence=0,active=0,interval=null;
@@ -139,7 +139,20 @@ function selectedMatrix(build,selection){
     const row=rows.add(i*M.rowSize),scores=matrix.add(i*cfg.districts*4);
     if(!address(row,M.rowScores).equals(scores))throw Error('Diagnostic matrix alias differs');
     const x=s32(row,M.x),y=s32(row,M.y),reservation=address(row,M.reservation);
-    result.push({row:i,x,y,plot:y*cfg.width+x,
+    // Optional only: SHA092abfbb/reference324c51e9 CalculateDistrictValues
+    // 3dfee0 reads [firstRow+0x28][buildingIndex] before adding its shared
+    // building subtotal to all positive district cells. This is a native cache
+    // read, not a new valuation call or an assumption that other rows exist.
+    const buildingScoresQ8={};let buildingCacheStatus='not_requested';
+    if((cfg.matrixBuildings||[]).length){
+      const values=address(row,M.rowBuildingValues);
+      buildingCacheStatus=values.isNull()?'null':'unreadable';
+      if(!values.isNull()&&readableSpan(values,(Math.max(...cfg.matrixBuildings)+1)*4)){
+        for(const b of cfg.matrixBuildings)buildingScoresQ8[b]=s32(values,b*4);
+        buildingCacheStatus='read';
+      }
+    }
+    result.push({row:i,x,y,plot:y*cfg.width+x,buildingCacheStatus,buildingScoresQ8,
       rowOwner:row.add(M.rowOwner).readS16(),rowCity:s32(row,M.rowCity),
       eligible:row.add(M.eligible).readU8()!==0,owned:row.add(M.owned).readU8()!==0,
       frontier:row.add(M.frontier).readU8()!==0,completedDistrictFlag:row.add(M.completedDistrict).readU8()!==0,
@@ -358,6 +371,11 @@ rpc.exports={
        config.matrixTargets.some(t=>!Array.isArray(t)||t.length!==2||!config.players.includes(t[0])||
          !Number.isInteger(t[1])||t[1]<=0||t[1]>=0x80000000)||config.matrixTargets.length>0&&config.districts==null))
       throw Error('Unqualified diagnostic matrix scope');
+    if(config.matrixBuildings!=null&&(!Array.isArray(config.matrixBuildings)||config.matrixBuildings.length>16||
+       new Set(config.matrixBuildings).size!==config.matrixBuildings.length||
+       config.matrixBuildings.some(b=>!Number.isInteger(b)||b<0||b>=8192)||
+       config.matrixBuildings.length>0&&!(config.matrixTargets||[]).length))
+      throw Error('Unqualified diagnostic building cache scope');
     mod=Process.getModuleByName(spec.name);cfg=config;
     if(mod.path.replace(/\\/g,'/').toLowerCase()!==spec.path.replace(/\\/g,'/').toLowerCase()||mod.size!==spec.imageSize)
       throw Error('Different loaded Economic module');

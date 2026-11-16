@@ -71,6 +71,18 @@ def _clean_tailors_rows(connection: sqlite3.Connection) -> None:
     for (table,) in tables:
         columns = connection.execute(f'PRAGMA table_info("{table}")').fetchall()
         text_columns = [row[1] for row in columns if str(row[2]).upper() in {"TEXT", ""}]
+        # Definition rows are identified by their type, not translated text.
+        # Market/Temple descriptions mention Tailors but remain vanilla objects
+        # needed by the rebuilt transaction catalogue. Removing those objects
+        # hid real integration errors before binding validation was introduced.
+        definition_keys = {
+            "Buildings": "BuildingType", "Districts": "DistrictType", "Types": "Type",
+            "Resources": "ResourceType", "Improvements": "ImprovementType",
+            "Units": "UnitType", "Technologies": "TechnologyType", "Civics": "CivicType",
+            "Policies": "PolicyType",
+        }
+        if table in definition_keys:
+            text_columns = [definition_keys[table]]
         if not text_columns:
             continue
         predicate = " OR ".join(f'"{column}" LIKE ?' for column in text_columns)
@@ -112,10 +124,14 @@ def _load_phase_database(root: Path) -> tuple[sqlite3.Connection | None, list[st
         "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencySchema.sql",
         "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencySources.sql",
         "Civ Supply Chains/Data/CSC_Q_ALL.sql",
+        "Civ Supply Chains/Data/CSC_BuildingTransactionSchema.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS_TRANSACTIONS.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_GOLD.sql",
+        "Civ Supply Chains/Data/CSC_Q_TAILORS_TRANSACTIONS_GOLD.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE.sql",
         "Civ Supply Chains/Data/CSC_Q_TAILORS_MC_MODE_GOLD.sql",
+        "Civ Supply Chains/Data/CSC_BuildingTransactionProcessor.sql",
         "Civ Supply Chains/Lua_UI/Adjacencies/CSC_AdjacencyProcessor.sql",
         "Civ Supply Chains/Lua_UI/Notifications_Suk_MCUIS/CSC_UI_DB_Dynamic.sql",
         "Civ Supply Chains/ModSupport/ModSupport_SUIA.sql",

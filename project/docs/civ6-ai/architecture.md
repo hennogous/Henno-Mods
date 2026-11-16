@@ -1,5 +1,16 @@
 # CSC AI architecture
 
+**16 November economic-definition migration:** ordinary Stage3/4 building
+transactions now have gameplay-owned headers, payout legs and checked native
+consumer bindings. A late processor generates legacy metadata and payout
+arguments; gameplay and AI share the declared quantities, yields and gates.
+The source-to-native path and diagram are in the
+[migration report](../research/mods/csc-population-transaction-catalogue-20261116.md).
+Population gameplay matches the QAed source in288 offline worlds and67 live
+cities. Fixed/local/material/trade/staffing coverage and a joint customer-site
+residual remain explicit work; this is not yet the complete ordinary economy.
+[Contract](../integrations/csc-economic-contract.md).
+
 **16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed
 owned Harbor. The shared facts carry the Harbor plot to initial/final/grace
 admission; real income stays unchanged and the minimum preference/weak cap apply.

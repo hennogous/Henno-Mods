@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import unittest
+import sys
 from pathlib import Path
 from unittest import mock
 
@@ -108,6 +109,20 @@ class CafeStage4BehaviorTests(unittest.TestCase):
     def setUp(self) -> None:
         self.lua = LuaRuntime(unpack_returned_tuples=True)
         self.lua.execute(FIXTURE.read_text(encoding="utf-8"))
+        sys.path.insert(0, str(VALIDATOR.ROOT / "project/tools/transactions"))
+        from population_catalogue_fixture import compile_catalogue
+        db = compile_catalogue()
+        headers = [dict(r) for r in db.execute("SELECT * FROM CSC_BuildingTransactions WHERE QuarterKey='BAKERS' AND QuantityKind='PARTNER_POPULATION_STEPS'")]
+        identities = {r["TransactionId"] for r in headers}
+        legs = [dict(r) for r in db.execute("SELECT * FROM CSC_BuildingTransactionYields") if r["TransactionId"] in identities]
+        for table, rows in (("CSC_BuildingTransactions", headers), ("CSC_BuildingTransactionYields", legs)):
+            self.lua.globals().GameInfo[table] = self.lua.globals().fixtureInfo(self.lua.table_from(rows, recursive=True))
+        for row in db.execute("SELECT * FROM Buildings"):
+            definition = self.lua.globals().GameInfo.Buildings[row["BuildingType"]]
+            if definition is not None:
+                definition.PrereqDistrict = row["PrereqDistrict"]
+                definition.IsWonder = row["IsWonder"]
+        db.close()
         self.lua.execute(LUA.read_text(encoding="utf-8-sig"))
         self.lua.execute("""
             seller = addCity(1, 15);

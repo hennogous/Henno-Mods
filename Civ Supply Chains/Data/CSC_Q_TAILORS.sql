@@ -105,11 +105,11 @@ VALUES  (   'TAILORS',    'DISTRICT_HARBOR',           'POLICY_NAVAL_INFRASTRUCT
         (   'TAILORS',    'DISTRICT_THEATER',          'POLICY_AESTHETICS'   ),
         (   'TAILORS',    'DISTRICT_THEATER',          'POLICY_SPORTS_MEDIA'   );
 
--- Stage 2/4 venues supplement the Stage 3 Market/Temple transaction mappings.
+-- Stage2 planning metadata remains until fixed exchanges migrate. Population
+-- venues are generated from this Quarter's TRANSACTIONS companion.
 INSERT OR IGNORE INTO CSC_QuarterCustomerBuildings
-        (   QuarterKey,   DistrictType,         BuildingType,              ProducerStage   )
-VALUES  (   'TAILORS',    'DISTRICT_HARBOR',    'BUILDING_LIGHTHOUSE',     2   ),
-        (   'TAILORS',    'DISTRICT_THEATER',   'BUILDING_AMPHITHEATER',   4   );
+        (   QuarterKey,   DistrictType,        BuildingType,            ProducerStage   )
+VALUES  (   'TAILORS',    'DISTRICT_HARBOR',   'BUILDING_LIGHTHOUSE',   2   );
 
 INSERT OR IGNORE INTO CSC_QuarterFlowBuildings
         (   QuarterKey,   Stage,   BuildingType   )
@@ -117,13 +117,9 @@ VALUES  (   'TAILORS',    2,       'BUILDING_CSC_TAILORS_TEXTILE_WORKSHOP'   ),
         (   'TAILORS',    3,       'BUILDING_CSC_TAILORS_TAILOR'   ),
         (   'TAILORS',    4,       'BUILDING_CSC_TAILORS_FASHION_HOUSE'   );
 
--- Wonder customers hosted by the Fashion House's Stage 4 Services. Both map
--- planning views highlight their completed Wonder plots as points of sale.
-INSERT OR IGNORE INTO CSC_QuarterWonderSales
-        (   QuarterKey,   BuildingType,                    ProducerStage,   CustomerYieldType   )
-VALUES  (   'TAILORS',    'BUILDING_BOLSHOI_THEATRE',      4,               'YIELD_CULTURE'   ),
-        (   'TAILORS',    'BUILDING_BROADWAY',             4,               'YIELD_CULTURE'   ),
-        (   'TAILORS',    'BUILDING_SYDNEY_OPERA_HOUSE',   4,               'YIELD_CULTURE'   );
+-- Fashion House Wonder venues are ordinary sales as well as Service hosts.
+-- Planning views receive the generated ordinary venue projection.
+-- Ordinary Wonder venues are projected from the transaction catalogue.
 
 -- Each Stage 3 customer family is a separate sale, even when its Market and
 -- Temple belong to the same city. Customer-owned property modifiers pay Culture.
@@ -132,41 +128,7 @@ VALUES  (   'TAILORS',    'BUILDING_BOLSHOI_THEATRE',      4,               'YIE
 -- Lua computes their population-based targets and the Tailor city's combined
 -- returns; customer-owned Culture consumers are defined at the end of this file.
 -- Keep property names identical between this registry and the generated bit tests.
-INSERT OR IGNORE INTO CSC_Stage3CustomerTransactions
-    (
-        TransactionId,
-        SellerDistrictType,
-        SellerBuildingType,
-        CustomerDistrictType,
-        CustomerBuildingType,
-        SellerPopulationProperty,
-        SellerReturnAmountProperty,
-        CustomerYieldAmountProperty,
-        EngineAmountPerPopulation
-    )
-VALUES
-    (
-        'CSC_TAILORS_TAILOR_MARKET',
-        'DISTRICT_CSC_TAILORS_QUARTER',
-        'BUILDING_CSC_TAILORS_TAILOR',
-        'DISTRICT_COMMERCIAL_HUB',
-        'BUILDING_MARKET',
-        'CSC_TAILORS_STAGE_3_CUSTOMER_POP',
-        'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_Q8',
-        'CSC_TAILORS_STAGE_3_MARKET_CULTURE_AMOUNT_Q8',
-        0.101
-    ),
-    (
-        'CSC_TAILORS_TAILOR_TEMPLE',
-        'DISTRICT_CSC_TAILORS_QUARTER',
-        'BUILDING_CSC_TAILORS_TAILOR',
-        'DISTRICT_HOLY_SITE',
-        'BUILDING_TEMPLE',
-        'CSC_TAILORS_STAGE_3_CUSTOMER_POP',
-        'CSC_TAILORS_STAGE_3_CUSTOMER_RETURN_AMOUNT_Q8',
-        'CSC_TAILORS_STAGE_3_TEMPLE_CULTURE_AMOUNT_Q8',
-        0.101
-    );
+-- Population transaction terms moved to the Quarter TRANSACTIONS companion.
 
 
 --===========================================================================================================================================================================--
@@ -905,80 +867,7 @@ VALUES  (   'MOD_CSC_TAILORS_SPEC_CULTURE_TO_FASHION_HOUSE',             'Buildi
         (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP',                         'Amount',                 1   ),
         (   'MOD_CSC_TAILORS_STAGE_MANAGER_GPP_ATTACH_CUSTOMER',         'ModifierId',             'MOD_CSC_TAILORS_STAGE_MANAGER_GPP'   );
 
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit, 'BuildingType', 'BUILDING_CSC_TAILORS_FASHION_HOUSE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit, 'YieldType', 'YIELD_PRODUCTION'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_FASHION_HOUSE_RETURN_PRODUCTION_BIT_' || Bit, 'Amount', Bit
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_AMPHITHEATER'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_AMPHITHEATER_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_BOLSHOI_THEATRE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_BOLSHOI_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_BROADWAY'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_BROADWAY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'BuildingType', 'BUILDING_SYDNEY_OPERA_HOUSE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE'
-FROM CSC_Stage4StackBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_STAGE_4_SYDNEY_CULTURE_RETURN_CULTURE_BIT_' || Bit, 'Amount', Bit
-FROM CSC_Stage4StackBits;
+-- Payout arguments generated by CSC_BuildingTransactionProcessor.sql.
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,                                          Name,             Value   )
@@ -1058,15 +947,7 @@ VALUES  (   'MOD_CSC_TAILORS_BASE_IMPROVEMENT_ATTACH_QUARTER',     'ModifierId',
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'YieldType',              'YIELD_PRODUCTION'   ),
         (   'MOD_CSC_TAILORS_EXPORT_TAILOR_PRODUCTION',            'Amount',                 1   );
 
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_' || Bit, 'YieldType', 'YIELD_PRODUCTION'
-FROM CSC_Stage3RateBits;
-
-INSERT OR IGNORE INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_CUSTOMER_RETURN_PROD_AMOUNT_BIT_' || Bit, 'Amount', Bit / 256.0
-FROM CSC_Stage3RateBits;
+-- Payout arguments generated by CSC_BuildingTransactionProcessor.sql.
 
 INSERT OR IGNORE INTO ModifierArguments
         (   ModifierId,   Name,   Value   )
@@ -1706,12 +1587,8 @@ SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' ||
 INSERT INTO Modifiers
         (   ModifierId,   ModifierType,   SubjectRequirementSetId   )
 SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
-INSERT INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE' FROM CSC_Stage3RateBits;
-INSERT INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'Amount', Bit / 256.0 FROM CSC_Stage3RateBits;
+-- Payout arguments generated by CSC_BuildingTransactionProcessor.sql.
+
 INSERT INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
 SELECT 'REQSET_CSC_TAILORS_MARKET_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL' FROM CSC_Stage3RateBits;
@@ -1737,12 +1614,8 @@ SELECT 'DISTRICT_CITY_CENTER', 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' ||
 INSERT INTO Modifiers
         (   ModifierId,   ModifierType,   SubjectRequirementSetId   )
 SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'MODIFIER_SINGLE_CITY_ADJUST_CITY_YIELD_PER_POPULATION', 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit FROM CSC_Stage3RateBits;
-INSERT INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'YieldType', 'YIELD_CULTURE' FROM CSC_Stage3RateBits;
-INSERT INTO ModifierArguments
-        (   ModifierId,   Name,   Value   )
-SELECT 'MOD_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'Amount', Bit / 256.0 FROM CSC_Stage3RateBits;
+-- Payout arguments generated by CSC_BuildingTransactionProcessor.sql.
+
 INSERT INTO RequirementSets
         (   RequirementSetId,   RequirementSetType   )
 SELECT 'REQSET_CSC_TAILORS_TEMPLE_CUSTOMER_CULTURE_BIT_' || Bit, 'REQUIREMENTSET_TEST_ALL' FROM CSC_Stage3RateBits;

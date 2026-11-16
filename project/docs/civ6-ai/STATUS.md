@@ -1,5 +1,26 @@
 # Current CSC AI status
 
+**1.4 / 2.1,16 November — population building economy aligned and regression checked.**
+Astra's audit exposed independent Stage3/4 partner lists, hardcoded model terms
+and customer-host gate differences. Gameplay-owned transaction headers/payout
+legs now generate population metadata/native arguments; the AI reads those terms.
+288 offline worlds match the QAed source; four selected native graphs match
+exactly. A zero-turn250 replay matches42,210 property/bit readings across67 cities,
+with active Stage3 and Stage4 exchanges;269 structural rows match, exit0/restored.
+[Exact gameplay changes and manual QA](../research/mods/csc-population-transaction-catalogue-20261116.md).
+Fixed/local exchanges, materials, observed trade/staffing and joint customer-site
+valuation remain open in the [economic contract](../integrations/csc-economic-contract.md).
+No new live customer residual adapter is enabled; SQL private adjacency remains1.
+
+**2.1 native Hub replay complete.**20 targeted selector matrices100→125 show
+Aberdeen's legal Gold2 alternative loses47.828 utility despite receiving the
+SQL bonus; other site costs outweigh intrinsic value. Napata's alternative trails
+5.063, but live adjacency isGold1, correcting the older inferredGold2 tie.
+Future building value is a city/type subtotal shared across sites. Next: complete
+the remaining ordinary-economy contract and measure native CSC overlap before
+publishing a joint customer transaction residual. No active game or upstream PR.
+[Native evidence](../research/mods/csc-ai-customer-transactions-native-20261116.md).
+
 **2.1 Commercial Hub audit,16 November — recorded data only.**
 Of19 Hubs, three already touch Quarters and six have no completed Quarter within
 reach at native selection. Two further cities have credible matching-Gold

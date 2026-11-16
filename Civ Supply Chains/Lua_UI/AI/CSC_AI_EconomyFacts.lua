@@ -113,7 +113,7 @@ local unitContracts={
         'MOD_CSC_TAILORS_FASHION_HOUSE_GOLD_TO_WORKSHOP'}}
 local function definitions()
     if catalogue then return catalogue end
-    local c={stages={},customers={},population={},replacements={},tech={},civic={},amounts={},prerequisites={},exclusives={}}
+    local c={stages={},customers={},population={},transactions={},replacements={},tech={},civic={},amounts={},prerequisites={},exclusives={}}
     for row in GameInfo.ModifierArguments()do
         if row.Name=='Amount'then c.amounts[row.ModifierId]=tonumber(row.Value)end
     end
@@ -130,13 +130,54 @@ local function definitions()
         p[row.Stage]=p[row.Stage]or{}
         p[row.Stage][#p[row.Stage]+1]=assert(GameInfo.Buildings[row.BuildingType])
     end
+    if GameInfo.CSC_BuildingTransactions and GameInfo.CSC_BuildingTransactionYields then
+        local outputs={}
+        for row in GameInfo.CSC_BuildingTransactionYields()do
+            outputs[row.TransactionId]=outputs[row.TransactionId]or{}
+            outputs[row.TransactionId][#outputs[row.TransactionId]+1]={key=row.LegKey,
+                recipient=row.Recipient,yield=row.YieldType,amount=row.AmountPerUnit,property=row.AmountProperty}
+        end
+        for row in GameInfo.CSC_BuildingTransactions()do
+            -- Plain records cross into the pure ledger. Yield, quantity, payout
+            -- property and functioning gates all come from the gameplay contract.
+            c.transactions[row.SourceBuildingType..':'..row.PartnerBuildingType]={id=row.TransactionId,
+                source=row.SourceBuildingType,partner=row.PartnerBuildingType,
+                kind=row.QuantityKind,amount=row.QuantityAmount,step=row.PopulationStep,
+                partnerDistrictMustFunction=flag(row.PartnerDistrictMustFunction),legs=outputs[row.TransactionId]or{}}
+        end
+    end
+    local customerSeen={}
+    local function customer(key,district,building,stage)
+        local stamp=table.concat({key,district,building,stage},':')
+        if customerSeen[stamp]then return end
+        customerSeen[stamp]=true
+        local p=c.customers[key]or{};c.customers[key]=p
+        p[#p+1]={QuarterKey=key,DistrictType=district,BuildingType=building,ProducerStage=stage}
+    end
     for row in GameInfo.CSC_QuarterCustomerBuildings()do
-        local p=c.customers[row.QuarterKey]or{};c.customers[row.QuarterKey]=p
-        p[#p+1]=row
+        customer(row.QuarterKey,row.DistrictType,row.BuildingType,row.ProducerStage)
     end
     if GameInfo.CSC_Stage3CustomerTransactions then
         for row in GameInfo.CSC_Stage3CustomerTransactions()do
             c.population[row.SellerBuildingType..':'..row.CustomerBuildingType]=row
+            -- Stage3 was moved out of the Stage2/4 venue registry. Reading its
+            -- amounts alone left Market/Temple absent from the actual customer
+            -- list. Union both gameplay sources here, once, so every consumer
+            -- sees the same venues and legacy overlapping rows cannot duplicate
+            -- a sale. No AI-authored Quarter/customer interaction list is added.
+            local key=row.SellerDistrictType and row.SellerDistrictType:match('^DISTRICT_CSC_(.+)_QUARTER$')
+            if key then customer(key,row.CustomerDistrictType,row.CustomerBuildingType,3)end
+        end
+    end
+    if GameInfo.CSC_QuarterWonderSales then
+        -- These are ordinary Fashion House/customer exchanges, distinct from
+        -- the Wonder's separately gated Service. Existing completed Wonders
+        -- must enter the same ledger even while Service valuation is deferred.
+        for row in GameInfo.CSC_QuarterWonderSales()do
+            local definition=GameInfo.Buildings[row.BuildingType]
+            if definition and definition.PrereqDistrict then
+                customer(row.QuarterKey,definition.PrereqDistrict,row.BuildingType,row.ProducerStage)
+            end
         end
     end
     for row in GameInfo.BuildingReplaces()do
@@ -155,6 +196,12 @@ local function definitions()
         if c.amounts[root]~=1 then c.unsupported[family]='Unsupported loaded transaction amount: '..root end
     end end
     catalogue=c;return c
+end
+
+function F.CustomerDefinitions(key)
+    -- Definition-only, read-only by contract; projections and actual footprints
+    -- consume the same merged gameplay registry. Live state is never cached here.
+    return definitions().customers[key]or{}
 end
 
 function F.New(player,placement,ui,context)
@@ -452,6 +499,71 @@ function F.New(player,placement,ui,context)
         b.ready=b.working and 0 or b.unlock+b.turns
         b.building=definition.BuildingType;b.city=city.id;b.plot=plot;b.population=city.population
         return b
+    end
+    local function customerRecord(profile,buyer,definition,plot,stage)
+        local customer=futureCustomer(buyer,definition,plot)
+        customer.stage=stage
+        customer.serviceActive=profile.service and type(buyer.object.GetProperty)=='function'
+            and(buyer.object:GetProperty(profile.service.property)or 0)>0 or false
+        customer.serviceInputKnown=profile.key=='BAKERS'and buyer.foodSurplus~=nil
+            or profile.key=='TAILORS'and buyer.navalProduction~=nil
+        customer.yield=stage==2 and(profile.key=='BAKERS'and'YIELD_FOOD'or'YIELD_PRODUCTION')
+            or stage==4 and'YIELD_CULTURE'or families[profile.key].yield
+        local seller=((c.stages[profile.key]or{})[3]or{})[1]
+        local transaction=seller and c.population[seller.BuildingType..':'..definition.BuildingType]
+        -- Unique customers inherit the base transaction's rate/property contract.
+        if not transaction and seller then
+            transaction=c.population[seller.BuildingType..':'..(c.replacements[definition.BuildingType]or definition.BuildingType)]
+        end
+        customer.rate=transaction and transaction.EngineAmountPerPopulation
+        customer.sellerProperty=transaction and transaction.SellerReturnAmountProperty
+        customer.customerProperty=transaction and transaction.CustomerYieldAmountProperty
+        local source=((c.stages[profile.key]or{})[stage]or{})[1]
+        local ordinary=source and c.transactions[source.BuildingType..':'..(c.replacements[definition.BuildingType]or definition.BuildingType)]
+        if ordinary then
+            customer.transaction=ordinary
+            for _,leg in ipairs(ordinary.legs)do if leg.recipient=='PARTNER'then customer.yield=leg.yield end end
+            -- Preserve current gameplay: Stage3/Cafe accept a functioning
+            -- customer building even if its host district is pillaged. Fashion
+            -- district venues require both; no silent rule harmonization here.
+            local host=snapshot.districts[plot]
+            if host and not host.working then
+                local functioning=buyer.buildings:HasBuilding(definition.Index)
+                    and not buyer.buildings:IsPillaged(definition.Index)
+                    and buyer.buildings:GetBuildingLocation(definition.Index)==plot
+                if functioning and not ordinary.partnerDistrictMustFunction then
+                    customer.working=true;customer.unlock=0;customer.ready=0
+                else
+                    -- A missing building cannot be forecast ahead of an unknown
+                    -- district repair. Later repair adapters can supply an ETA.
+                    customer.excluded=true
+                end
+            end
+        end
+        if stage~=3 or customer.rate then return customer end
+    end
+    function snapshot.ProjectedCustomers(profile,cityID,districtIndex,plotIndex)
+        -- Plain prospective records, NOT completed live districts. A diagnostic
+        -- or future decision adapter must separately qualify the target, price
+        -- district construction, and pass its ready time to the central model.
+        -- The factory reuses actual building costs, prerequisites, replacements
+        -- and population rates; it issues no order, bid or property write.
+        local buyer=snapshot.cities[cityID];local result,seen={},{}
+        if not buyer or not families[profile.key]then return result end
+        for _,mapping in ipairs(c.customers[profile.key]or{})do
+            local expected=GameInfo.Districts[mapping.DistrictType]
+            local definition=resolve(mapping.BuildingType)
+            if expected and F.DistrictFamily(expected.Index)==F.DistrictFamily(districtIndex)
+                and definition and allowed(definition)and not flag(definition.IsWonder)then
+                local stamp=definition.BuildingType..':'..mapping.ProducerStage
+                local row=not seen[stamp]and customerRecord(profile,buyer,definition,plotIndex,mapping.ProducerStage)
+                if row then
+                    row.complete=false;row.projected=true;row.working=false
+                    result[#result+1]=row;seen[stamp]=true
+                end
+            end
+        end
+        return result
     end
     -- Spatial potential is deliberately separate from transaction income.
     -- Read stock hypothetical adjacency for real customer footprints through
@@ -848,22 +960,12 @@ function F.New(player,placement,ui,context)
                     if not matches and expected and GameInfo.DistrictReplaces then for r in GameInfo.DistrictReplaces()do
                         matches=matches or r.CivUniqueDistrictType==actual.DistrictType and r.ReplacesDistrictType==expected.DistrictType
                     end end
-                    local stamp=near:GetIndex()..':'..mapping.ProducerStage
+                    local stamp=near:GetIndex()..':'..mapping.ProducerStage..':'..mapping.BuildingType
                     if matches and definition and allowed(definition)and not seen[stamp]then
-                        local customer=futureCustomer(buyer,definition,near:GetIndex())
-                        if not flag(definition.IsWonder)or customer.working then
-                            customer.stage=mapping.ProducerStage;customer.complete=true
-                            customer.serviceActive=profile.service and type(buyer.object.GetProperty)=='function'
-                                and(buyer.object:GetProperty(profile.service.property)or 0)>0 or false
-                            customer.serviceInputKnown=profile.key=='BAKERS'and buyer.foodSurplus~=nil
-                                or profile.key=='TAILORS'and buyer.navalProduction~=nil
-                            customer.yield=customer.stage==2 and(profile.key=='BAKERS'and'YIELD_FOOD'or'YIELD_PRODUCTION')or customer.stage==4 and'YIELD_CULTURE'or family.yield
-                            local seller=(stages[3]or{})[1]
-                            local transaction=seller and c.population[seller.BuildingType..':'..mapping.BuildingType]
-                            customer.rate=transaction and transaction.EngineAmountPerPopulation
-                            customer.sellerProperty=transaction and transaction.SellerReturnAmountProperty
-                            customer.customerProperty=transaction and transaction.CustomerYieldAmountProperty
-                            if customer.stage~=3 or customer.rate then site.customers[#site.customers+1]=customer;seen[stamp]=true end
+                        local customer=customerRecord(profile,buyer,definition,near:GetIndex(),mapping.ProducerStage)
+                        if customer and(not flag(definition.IsWonder)or customer.working)then
+                            customer.complete=true
+                            site.customers[#site.customers+1]=customer;seen[stamp]=true
                         end
                     end
                 end

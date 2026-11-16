@@ -1,5 +1,6 @@
--- Minimal game API fixture; the tests execute CSC's unchanged gameplay script.
-local function info(rows)
+-- Minimal game API fixture. Tests inject the actual compiled SQL catalogue;
+-- this helper exposes it with the same iterable shape as native GameInfo.
+function fixtureInfo(rows)
     local object = {};
     for _, row in ipairs(rows) do
         if row.Index ~= nil then object[row.Index] = row; end
@@ -12,6 +13,7 @@ local function info(rows)
         return function() i=i+1; return rows[i]; end;
     end});
 end
+local info = fixtureInfo;
 GameInfo = {
     Districts=info({
         {Index=0, DistrictType='DISTRICT_CSC_BAKERS_QUARTER'},

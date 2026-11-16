@@ -470,7 +470,13 @@ function E.QuotePlacement(snapshot,city,plot,profile,geometry,frontier,invoice,p
         if site.nativeSiteAdjustmentQ8~=nil then site.footprintCostMode='native_site'end
         site.spatialPlan=E.SpatialPlan(snapshot.CustomerOptions
             and snapshot.CustomerOptions(city,plot,profile,protected)or{})
-        local ok,value,message=pcall(M.Forecast,site,snapshot.Price,function(alternative)
+        -- District siting currently prices ordinary CSC transactions only.
+        -- Service opportunity/demand valuation is deferred for BOTH Quarters
+        -- and customer districts. Copy the cached site so actual building/
+        -- repair marginals retain their existing narrow Stage2 Service input.
+        local transactionSite={};for k,v in pairs(site)do transactionSite[k]=v end
+        transactionSite.service=nil
+        local ok,value,message=pcall(M.Forecast,transactionSite,snapshot.Price,function(alternative)
             return E.PlacementValue(alternative,site,protectionQ8,covers)
         end)
         if ok then quote,reason=value,message else reason=tostring(value)end
@@ -921,6 +927,12 @@ end
 function E.SupplyValue(snapshot,chain,plot)
     local site=chain.economy or snapshot.Site(chain.city,chain.plot,chain.profile)
     if not site then return nil end
+    -- This delta enters other-district placement protection (Problem2.2), so
+    -- keep prospective Services deferred here too. Structural critical-supplier
+    -- protection still observes the real chain. Actual building/repair consumers
+    -- retain the cached Service-aware site; never mutate that shared record.
+    local ordinary={};for k,v in pairs(site)do ordinary[k]=v end
+    ordinary.service=nil;site=ordinary
     -- Pricing is optional enrichment of the already qualified structural
     -- protection. A native quote fault must not abort the whole publication.
     local ok,full=pcall(M.Forecast,site,snapshot.Price);if not ok or not full then return nil end

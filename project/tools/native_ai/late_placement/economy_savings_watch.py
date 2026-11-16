@@ -66,7 +66,7 @@ class EconomySavingsWatch:
     """
     def __init__(self, *, directory, binary, output, start, through, write,
                  players=(1, 2, 3, 4, 5), width, height, districts=None,capture_placement=False,
-                 matrix_targets=()):
+                 matrix_targets=(), matrix_buildings=()):
         if (not isinstance(start, int) or not isinstance(through, int) or
                 not 0 <= start < through <= start + 300):
             raise ValueError('Require bounded <=300-turn observation')
@@ -86,6 +86,15 @@ class EconomySavingsWatch:
                 any(not isinstance(t,(list,tuple))or len(t)!=2 or type(t[0])is not int or t[0]not in players or
                     type(t[1])is not int or not 0<t[1]<2**31 for t in matrix_targets)):
             raise ValueError('Invalid diagnostic matrix targets')
+        # Optional read-only row+0x28 building-value cache observations at the
+        # existing selector hook. CalculateDistrictValues3dfee0 reads the first
+        # (City Center) row for its shared building subtotal. Other rows may
+        # have no allocated cache; preserve absence rather than inventing zero.
+        if (not isinstance(matrix_buildings,(list,tuple)) or len(matrix_buildings)>16 or
+                len(set(matrix_buildings))!=len(matrix_buildings) or
+                any(type(b)is not int or not 0<=b<8192 for b in matrix_buildings) or
+                matrix_buildings and not matrix_targets):
+            raise ValueError('Invalid diagnostic building cache scope')
         self.spec = specification(binary,capture_placement=capture_placement)
         self.frida = dependencies(directory)
         self.output, self.write = Path(output), write
@@ -94,7 +103,8 @@ class EconomySavingsWatch:
         # cached totals remain explicitly missing rather than guessing a stride.
         self.config = dict(start=start, through=through, players=players,
                            width=width, height=height, districts=districts, maxRecords=MAX_RECORDS,
-                           capturePlacement=capture_placement,matrixTargets=list(matrix_targets))
+                           capturePlacement=capture_placement,matrixTargets=list(matrix_targets),
+                           matrixBuildings=list(matrix_buildings))
         self.owner = self.attached = self.script = self.frozen = None
         self.messages, self.rows, self.last_sequence = [], 0, 0
         script = self.output / 'economy_savings_watch.js'

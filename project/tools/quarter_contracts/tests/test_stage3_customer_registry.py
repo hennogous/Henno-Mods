@@ -10,6 +10,7 @@ try:
 except ImportError:
     LuaRuntime = None
 import sqlite3
+import sys
 import unittest
 from pathlib import Path
 
@@ -27,16 +28,10 @@ def _statement(source: str, start: str) -> str:
 
 class Stage3CustomerRegistryTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.connection = sqlite3.connect(":memory:")
-        shared = (DATA / "CSC_Q_ALL.sql").read_text(encoding="utf-8-sig")
-        self.connection.executescript(
-            _statement(shared, "CREATE TABLE IF NOT EXISTS CSC_Stage3CustomerTransactions")
-        )
-        for filename in ("CSC_Q_BAKERS.sql", "CSC_Q_TAILORS.sql"):
-            source = (DATA / filename).read_text(encoding="utf-8-sig")
-            self.connection.executescript(
-                _statement(source, "INSERT OR IGNORE INTO CSC_Stage3CustomerTransactions")
-            )
+        sys.path.insert(0, str(ROOT / "project/tools/transactions"))
+        from population_catalogue_fixture import compile_catalogue
+        self.connection = compile_catalogue(lgd=False)
+        self.connection.row_factory = None
 
     def tearDown(self) -> None:
         self.connection.close()
@@ -89,7 +84,8 @@ class Stage3CustomerRegistryTests(unittest.TestCase):
                 sql = (DATA / f"CSC_Q_{quarter}{suffix}.sql").read_text(encoding="utf-8-sig")
                 self.assertNotIn("Bit / 10000.0", sql)
                 self.assertNotIn("FROM CSC_ScaledAmountBits", sql)
-                self.assertIn("Bit / 256.0", sql)
+        processor = (DATA / "CSC_BuildingTransactionProcessor.sql").read_text(encoding="utf-8")
+        self.assertIn("/ 256.0", processor)
 
     def test_each_customer_family_has_one_complete_row(self) -> None:
         rows = self.connection.execute(
