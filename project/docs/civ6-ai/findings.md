@@ -1,5 +1,19 @@
 # CSC findings and evidence
 
+## AI-C207 — Joint route value follows shared readiness and a common amenity baseline
+
+17 November2026, G3. One route pass follows selected shared investments. Actual
+native material-count requirements and central improvement ETAs drive source
+activation; no worker/input-host gate is borrowed. Amenities pool per owner/city
+against acknowledged native counts. Coverage expiry creates no removal or wrap
+gain; uncertain route adjustments become neutral beyond coverage. Immediate
+district supplier displacement is supported; future-dated destruction is rejected.
+64 transaction/113 economy tests and two compact-proof regressions pass. Mature
+joint-routes250-02 evaluates22 chains/five players/43 routes in226 bounded trials,
+matching10,954 native rows/42,210 property readings; closed/restored0. Native
+residual, affected-customer world and complete priced performance remain open.
+[Implementation, corrected assumptions and native evidence](../research/mods/csc-joint-route-economy-20261117.md).
+
 ## AI-C206 — Shared route facts preserve native payouts and qualify actual windows
 
 17 November2026, G3. Four gameplay-authored channel/binding relationships project

@@ -60,21 +60,55 @@ print('CSC_ROUTE_PARITY='..encode({verified=true,cities=count,turn=Game.GetCurre
 '''
 
 
-def durations_code(observed):
-    return encoder()+modules()+'''
+def durations_code(observed,players=None):
+    code=encoder()+modules()+'''
 local observed='''+lua(observed)+'''
 assert(Game.GetCurrentGameTurn()-observed.turn>=0 and Game.GetCurrentGameTurn()-observed.turn<=1)
 local qualified=CSC_TradeRouteFacts.QualifyWindows(observed,GameInfo,Game,GameConfiguration,Players,UnitOperationTypes)
 for _,route in ipairs(qualified.routes)do print('CSC_ROUTE_DURATION='..encode(route))end
 print('CSC_ROUTE_DURATION_RESULT='..encode({turn=Game.GetCurrentGameTurn(),stats=qualified.durationStats,policy=qualified.durationPolicy}))
 '''
+    if players is None:return code
+    # Current modules read actual captured UI routes through a local bridge,
+    # refresh Gameplay endpoints and schedule a joint plan. No global policy or
+    # callback is replaced; zero utility prices cannot publish a native bid.
+    code+='''
+local actualExposed=ExposedMembers
+local ExposedMembers={CSC_Adjacency=actualExposed.CSC_Adjacency,
+ CSC_TradeRoutes={GetFacts=function()return observed end}}
+local CSC_AI_EconomyFacts,CSC_AI_EconomyModel
+'''
+    for name in ('CSC_AI_EconomyFacts.lua','CSC_AI_EconomyModel.lua'):
+        code+='\ndo\n'+read(MOD/'Lua_UI/AI'/name)+'\nend\n'
+    code+='''
+local count,playersSeen=0,0
+for _,pid in ipairs('''+lua(players)+''')do
+ local snapshot=CSC_AI_EconomyFacts.New(assert(Players[pid]),assert(CSC_AI_QuarterPlacement),
+  assert(actualExposed.CSC_Adjacency),{horizon=50})
+ local sites={}
+ for _,chain in ipairs(snapshot.chains)do sites[#sites+1]=assert(chain.economy)end
+ local trade=assert(snapshot.TradeWorld(sites))
+ local result,problem=CSC_AI_EconomyModel.JointForecast({player=pid,horizon=50,sites=sites,trade=trade},function()return 0 end)
+ assert(result,problem)
+ local amenities,negative=0,0
+ for _,s in ipairs(result.streams)do if s.yield=='AMENITY'then
+  amenities=amenities+1;if s.amount<0 then negative=negative+1 end
+ end end
+ print('CSC_ROUTE_JOINT_PLAYER='..encode({player=pid,chains=#sites,routes=#trade.observed.routes,
+  routeSegments=result.routeSegments,amenitySegments=amenities,negativeAmenitySegments=negative,
+  evaluations=result.evaluations,streams=#result.streams,verified=true}))
+ count=count+#sites;playersSeen=playersSeen+1
+end
+print('CSC_ROUTE_JOINT_RESULT='..encode({players=playersSeen,chains=count,verified=true,price='zero diagnostic; no bids'}))
+'''
+    return code
 
 
 def records(raw,marker):
     return [json.loads(v)for v in re.findall(re.escape(marker)+r'=([^\r\n]+)',raw)]
 
 
-def run(controller,output,legacy):
+def run(controller,output,legacy,players=None):
     output=Path(output);output.mkdir()
     code=ui_code(legacy);(output/'ui.lua').write_text(code,encoding='utf-8')
     raw=controller.cmd(code,'PlotInfo','route-scanner-parity')
@@ -85,13 +119,17 @@ def run(controller,output,legacy):
     observed['routes']=records(raw,'CSC_ROUTE_LINK')
     require(len(observed['cities'])==parity['cities'],'Route endpoint capture incomplete')
     write_json(output/'observed.json',observed)
-    code=durations_code(observed);(output/'durations.lua').write_text(code,encoding='utf-8')
-    raw=controller.cmd(code,'GameCore_Tuner','route-native-duration')
+    code=durations_code(observed,players);(output/'durations.lua').write_text(code,encoding='utf-8')
+    raw=controller.cmd(code,'CSC_AI_BakersGameplay'if players is not None else'GameCore_Tuner','route-native-duration')
     (output/'durations.txt').write_text(raw,encoding='utf-8')
     durations,=records(raw,'CSC_ROUTE_DURATION_RESULT');durations['routes']=records(raw,'CSC_ROUTE_DURATION')
     require(len(durations['routes'])==len(observed['routes']),'Native duration capture incomplete')
     write_json(output/'durations.json',durations)
     result=dict(verified=True,diagnostic_only=True,submitted_operations=0,ai_turns_advanced=0,
                 scanner=parity,route_count=len(observed['routes']),duration=durations['stats'],policy=durations['policy'])
+    if players is not None:
+        joint,=records(raw,'CSC_ROUTE_JOINT_RESULT');joint['player_rows']=records(raw,'CSC_ROUTE_JOINT_PLAYER')
+        require(joint['verified']and joint['players']==len(players),'Joint route smoke incomplete')
+        write_json(output/'joint.json',joint);result['joint']=joint
     write_json(output/'result.json',result)
     return result

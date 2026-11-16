@@ -275,6 +275,13 @@ local function ledger(site, second, shared)
             end
             for _,beneficiary in ipairs(definition.amenityCities or {})do
                 emit('amenity:'..stage..':'..beneficiary,'AMENITY',definition.amenityAmount or 0,stages[stage],beneficiary,definition.type)
+                if context.joint and definition.working and (definition.amenityAmount or 0)~=0
+                    and present(stages[stage])and stages[stage]<site.horizon then
+                    -- These amenities already affect the native city baseline.
+                    -- The joint quote pools all streams before pricing; retain
+                    -- their current contribution so it is not granted again.
+                    result.streams[#result.streams].amenityBaseline=definition.amenityAmount
+                end
             end
         end
     end
@@ -399,6 +406,117 @@ local function ledger(site, second, shared)
     return finishLedger(context)
 end
 
+-- Pool simultaneous amenity changes once per owner/city/interval. Native
+-- AmenityValue is nonlinear at happiness thresholds; separate channel quotes
+-- would count a threshold repeatedly. Every candidate uses the same actual
+-- paid baseline, including ordinary amenities already present in its ledger.
+-- The output amount is an offset from native CURRENT surplus, not a free
+-- additional amenity. No building receives the pooled value/depth premium.
+function M.PoolAmenities(result,baseline,horizon,coverage)
+    local pools,retained={},{}
+    local function pool(player,city)
+        if not present(player)or player%1~=0 or not present(city)or city%1~=0 then
+            return nil,'Explicit amenity recipient required'
+        end
+        local key=string.format('%.0f:%.0f',player,city)
+        if not pools[key]then pools[key]={player=player,city=city,baseline=0,streams={},times={[0]=true,[horizon]=true}}end
+        return pools[key],key
+    end
+    for key,amount in pairs(baseline or{})do
+        local player,city=key:match('^(%d+):(%d+)$')
+        local p,error=pool(tonumber(player),tonumber(city));if not p then return nil,error end
+        if not numeric(amount)or amount~=amount or math.abs(amount)==INF then return nil,'Invalid paid amenity baseline'end
+        p.baseline=amount
+        p.routeBaseline=amount
+        p.routeCoverage=coverage and coverage[key]or horizon
+        if not present(p.routeCoverage)then return nil,'Invalid amenity route coverage'end
+        if p.routeCoverage<horizon then p.times[p.routeCoverage]=true end
+    end
+    for _,stream in ipairs(result.streams)do
+        if stream.yield~='AMENITY'then retained[#retained+1]=stream
+        else
+            local p,error=pool(stream.player,stream.city);if not p then return nil,error end
+            local finish=math.min(horizon,stream.finish or horizon)
+            if not present(stream.ready)or not present(finish)or not numeric(stream.amount)
+                or stream.amount~=stream.amount or math.abs(stream.amount)==INF then return nil,'Invalid amenity interval'end
+            p.baseline=p.baseline+(stream.amenityBaseline or 0)
+            if stream.ready<finish then
+                p.streams[#p.streams+1]=stream;p.times[stream.ready]=true;p.times[finish]=true
+            end
+        end
+    end
+    local keys={};for key in pairs(pools)do keys[#keys+1]=key end;table.sort(keys)
+    for _,key in ipairs(keys)do
+        local p=pools[key];local times={}
+        for t in pairs(p.times)do times[#times+1]=t end;table.sort(times)
+        if #times>128 then return nil,'Amenity event budget exceeded'end
+        local previous
+        for i=1,#times-1 do
+            local ready,finish=times[i],times[i+1];local total,contributors=0,{}
+            for _,s in ipairs(p.streams)do if s.ready<=ready and(s.finish or horizon)>ready then
+                total=total+s.amount;contributors[#contributors+1]=s.id
+            end end
+            -- Beyond observed route coverage, keep its contribution neutral
+            -- relative to CURRENT native happiness. This is an explicit quote
+            -- assumption, not forecast income or proof of renewal. It allows
+            -- ordinary future amenities to be quoted against today's baseline
+            -- without inventing a trade loss or extra threshold crossing.
+            if ready>=(p.routeCoverage or horizon)then total=total+(p.routeBaseline or 0)end
+            local offset=total-p.baseline
+            if offset~=0 then
+                if previous and previous.finish==ready and previous.amount==offset then
+                    previous.finish=finish
+                    for _,id in ipairs(contributors)do previous.contributors[id]=true end
+                else
+                    previous={id='amenity-pool:'..key..'@'..ready,yield='AMENITY',player=p.player,city=p.city,
+                        amount=offset,amenityBaseline=p.baseline,ready=ready,finish=finish,
+                        counterfactualAmenity=true,contributors={}}
+                    for _,id in ipairs(contributors)do previous.contributors[id]=true end
+                    retained[#retained+1]=previous
+                end
+            end
+        end
+    end
+    result.streams=retained
+    return result
+end
+
+-- One network evaluation AFTER the shared ledger has scheduled every chosen
+-- investment. Facts supplies observed endpoints, actual paid counts and plain
+-- counterfactual events. A conditional event may name an investmentKey: an
+-- omitted/unavailable producer cannot activate it, and its completion time is
+-- shared with every other chain. This entry issues no routes, orders or bids.
+function M.RouteLedger(result,trade,player,horizon)
+    local R=CSC_TradeRouteCore
+    if not R then return nil,'Shared route kernel unavailable'end
+    if not present(player)or player%1~=0 then return nil,'Route evaluating player required'end
+    local observation=trade.observed
+    if not observation or not trade.definitions then return nil,'Complete route facts required'end
+    local changes={}
+    for _,change in ipairs(trade.changes or{})do changes[#changes+1]=change end
+    for _,change in ipairs(trade.plannedChanges or{})do
+        local ready=change.ready or 0
+        if not present(ready)then return nil,'Route event readiness unavailable'end
+        if change.investmentKey then
+            local completion=result.byBuilding[change.investmentKey]
+            ready=present(completion)and math.max(ready,completion)or INF
+        end
+        if present(ready)and ready<horizon then
+            changes[#changes+1]={ready=ready,city=change.city,field=change.field,key=change.key,value=change.value}
+        end
+    end
+    local routes,error=R.Forecast({cities=observation.cities,routes=observation.routes,changes=changes},
+        trade.definitions,player,horizon)
+    if not routes then return nil,error end
+    for _,stream in ipairs(routes)do result.streams[#result.streams+1]=stream end
+    local baseline,problem=R.PaidAmenities(observation.cities,trade.definitions,player)
+    if not baseline then return nil,problem end
+    local groups,coverage=R.Coverage(observation,trade.definitions,player,horizon)
+    if not groups then return nil,coverage end
+    result.routeSegments=#routes
+    return M.PoolAmenities(result,baseline,horizon,coverage)
+end
+
 function M.Price(result,price,horizon)
     local total,bid=result.siteAdjustmentQ8 or 0,result.siteAdjustmentQ8 or 0
     for _,stream in ipairs(result.streams)do
@@ -494,7 +612,7 @@ function M.JointForecast(world,price)
         if site.horizon~=horizon or not present(site.quarterReady)then return nil,'Inconsistent joint horizon/readiness'end
         keys[site.key]=true;sites[#sites+1]=site
     end
-    if #sites==0 then return nil,'No affected Quarter chains'end
+    if #sites==0 and not world.trade then return nil,'No affected Quarter chains'end
     if #sites>(world.maxChains or 64)then return nil,'Affected chain budget exceeded'end
     table.sort(sites,function(a,b)return a.key<b.key end)
     -- Repeated references describe one physical investment. Refuse conflicting
@@ -574,7 +692,7 @@ function M.JointForecast(world,price)
     local function evaluate(selected,disabled)
         evaluations=evaluations+1
         if evaluations>limit then return nil,'Joint evaluation budget exceeded'end
-        local context=newLedger(sites[1],nil)
+        local context=newLedger(sites[1]or{},nil)
         context.joint=true;context.result.siteAdjustmentQ8=0;context.result.chainStages={}
         context.populationBaselines=world.populationBaselines or{}
         context.disabledBuildings=disabled
@@ -588,6 +706,10 @@ function M.JointForecast(world,price)
             if context.error then return nil,context.error end
         end
         local result,problem=finishLedger(context)
+        if not result then return nil,problem end
+        if world.trade then
+            result,problem=M.RouteLedger(result,world.trade,world.player,horizon)
+        else result,problem=M.PoolAmenities(result,{},horizon)end
         if not result then return nil,problem end
         local value,error=M.Price(result,price,horizon)
         if not value then return nil,error end
@@ -632,6 +754,15 @@ end
 -- valuation and its overlap are reconciled by the later decision adapter.
 function M.JointCustomerForecast(beforeWorld,afterWorld,price)
     if beforeWorld.horizon~=afterWorld.horizon then return nil,'Marginal horizons differ'end
+    if beforeWorld.trade or afterWorld.trade then
+        -- Both alternatives are counterfactuals of ONE immutable observation.
+        -- Project changes through events, never by editing the acknowledged
+        -- counters/endpoints in the after-world and erasing its native baseline.
+        if not beforeWorld.trade or not afterWorld.trade
+            or beforeWorld.trade.observed~=afterWorld.trade.observed
+            or beforeWorld.trade.definitions~=afterWorld.trade.definitions
+            or beforeWorld.player~=afterWorld.player then return nil,'Marginal trade observations differ'end
+    end
     local before,message=M.JointForecast(beforeWorld,price);if not before then return nil,message end
     local after,error=M.JointForecast(afterWorld,price);if not after then return nil,error end
     return {before=before,after=after,valueQ8=after.valueQ8-before.valueQ8,

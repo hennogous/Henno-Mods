@@ -69,9 +69,23 @@ local expected=capture()
 CSC_RefreshCustomerPopulationReturns()
 local actual=capture()
 local same=encode(expected)==encode(actual)
-print('CSC_POPULATION_EXPECTED='..encode(expected))
-print('CSC_POPULATION_ACTUAL='..encode(actual))
-print('CSC_POPULATION_RESULT='..encode({verified=same,turn=Game.GetCurrentGameTurn(),cities=#actual}))
+-- Compare EVERY property/bit in memory, but do not flood the console with two
+-- mostly-zero multi-megabyte arrays. That can exhaust transport's ACK window
+-- after a successful comparison. Keep useful nonzero base amounts and emit
+-- full affected-city differences only when the exact comparison fails.
+local readings=0
+for i,record in ipairs(actual)do
+ local amounts={}
+ for property,pair in pairs(record.properties)do
+  readings=readings+2
+  if not property:find('_BIT_',1,true)and(pair[1]~=0 or pair[2]~=0)then amounts[property]=pair end
+ end
+ print('CSC_POPULATION_CITY='..encode({player=record.player,city=record.city,amounts=amounts}))
+ if not same and encode(record)~=encode(expected[i])then
+  print('CSC_POPULATION_DIFFERENCE='..encode({expected=expected[i],actual=record}))
+ end
+end
+print('CSC_POPULATION_RESULT='..encode({verified=same,turn=Game.GetCurrentGameTurn(),cities=#actual,readings=readings}))
 assert(same,'Population migration changes gameplay properties')
 '''
 
@@ -116,6 +130,7 @@ def run(args):
     inputs=[*paths,MOD/GAMEPLAY,args.reference/GAMEPLAY,Path(__file__),Path(transaction_graph.__code__.co_filename)]
     route_legacy=None
     if getattr(args,'route_smoke',False):
+        require(not getattr(args,'joint_route_smoke',False)or args.model_smoke,'Joint route smoke requires --model-smoke UI overlay')
         from route_catalogue_probe import inputs as route_inputs
         package=next(i for i in plan.packages if i['role']=='csc')
         route_legacy=package['source']/'Lua_UI/TradeRoutes/CSC_TradeRouteInteractions.lua'
@@ -225,7 +240,7 @@ print('CSC_MATERIAL_MODEL_SMOKE='..encode({verified=true,turn=Game.GetCurrentGam
         proof=json.loads(match[1]);require(proof['verified']and proof['turn']==args.at,'Gameplay equivalence failed')
         if route_legacy:
             from route_catalogue_probe import run as route_probe
-            route_probe(c,out/'routes',route_legacy)
+            route_probe(c,out/'routes',route_legacy,plan.identity['original_ai']if args.joint_route_smoke else None)
         if smoke:
             started=time.perf_counter()
             raw=c.cmd(smoke,'CSC_AI_BakersGameplay','material-model-smoke')
@@ -254,5 +269,6 @@ if __name__=='__main__':
     p.add_argument('--at',type=int,default=250)
     p.add_argument('--reference-graph',type=Path)
     p.add_argument('--model-smoke',action='store_true',help='Isolated current Facts/Model pass over actual saved-world chains; no bids')
+    p.add_argument('--joint-route-smoke',action='store_true',help='With --route-smoke --model-smoke, qualify current joint route ledger using zero diagnostic prices')
     p.add_argument('--route-smoke',action='store_true',help='Compare isolated original/current UI packets and read native trader operation clocks; no submitted operations')
     run(p.parse_args())

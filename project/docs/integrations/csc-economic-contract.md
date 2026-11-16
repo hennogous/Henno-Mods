@@ -30,14 +30,14 @@ income. Services remain outside the new Quarter/customer placement forecasts.
 
 | Channel | Current gap / required correction |
 | --- | --- |
-| Stage 2 and local fixed building exchanges | Nine relationships now declare terms and native gate bindings. Generated native effects and model legs agree; corrected live replay matches all10,954 CSC native rows. Material migration must resolve the shared Café Food leaf's remaining unit guard. |
-| Stage 3 | Gameplay registry is authoritative, but some AI/UI readers missed it. Preserve aggregate Q8 rounding and shared-property behavior while bringing it into the common catalogue. |
-| Stage 4 | Gameplay hardcodes venue lists separately from UI metadata. Include all Café venues, LGD Conservatory and Fashion House Wonder venues. |
+| Stage 2 and local fixed building exchanges | Resolved: nine relationships declare terms/native gate bindings. Generated effects/model legs agree; corrected replay matches all10,954 CSC native rows. The material migration also checks the shared Café Food leaf against both catalogues. |
+| Stage 3 | Resolved: common gameplay-owned catalogue now drives native arguments, UI metadata and AI readers, retaining aggregate Q8 rounding. |
+| Stage 4 | Resolved: shared venue definitions include Café, LGD Conservatory and Fashion House Wonder venues;288 old-code worlds and67-city property replay qualify population migration. |
 | Functioning gates | Stage 3/Café require a functioning partner building; Fashion House district partners additionally require an unpillaged district. Preserve or deliberately change/test this distinction. |
 | Customer forecasts | Evaluate the new customer against all affected suppliers together, including district adjacency externalities and shared rounding/queues. Remove ordinary prerequisite upkeep already priced natively. |
 | Native overlap | Identify CSC contributions already present in the native building forecast before adding a residual. Never subtract the entire ordinary Market/Bank/Stock Exchange forecast. |
-| Materials | Existing amount checks do not validate complete modifier attachments/gates. Extend the same contract/regressions to resource/improvement transactions. |
-| Trade and specialists | Cover observed activity and opportunity costs explicitly; defer invented future activity. |
+| Materials | Resolved: directional catalogue covers actual hosts/legs, ownership/workers and M&C increments. Full graph parity, end-to-end fact/protection tests and30 native damage/recovery observations pass. |
+| Trade and specialists | Observed ordinary staffing is qualified on28 workers/30 streams. Shared route scanner/previews match67-city packets and43 native clocks. Joint route integration is under qualification; no future routes or assumed workers are granted. |
 
 Stage 4 Culture is the correct current customer yield for both implemented
 Quarters and their venues. The issue is duplicated definitions, not a demonstrated

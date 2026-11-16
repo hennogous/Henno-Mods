@@ -15,6 +15,8 @@
 -- fresh native comparison. Each turn's live potential replaces the scopes;
 -- CE restores score bytes after selection and never cancels retained plans.
 include('CSC_AdjacencyCore')
+include('CSC_TradeRouteCore')
+include('CSC_TradeRouteFacts')
 include('CSC_AI_EconomyModel')
 include('CSC_AI_PlanContinuity')
 include('CSC_AI_EconomyFacts')

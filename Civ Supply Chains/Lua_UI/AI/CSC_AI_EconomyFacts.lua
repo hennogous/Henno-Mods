@@ -11,6 +11,7 @@ local INF=math.huge
 local catalogue
 local customerQuarterMap
 local districtParents
+local routeCatalogue
 
 function F.DistrictFamily(index)
     -- Definition-only lookup, shared by existing-footprint and customer-first
@@ -296,6 +297,46 @@ function F.New(player,placement,ui,context)
     local snapshot={player=player,id=pid,cities={},districts={},supplies={},research={},sites={},quotes={},
         nativeSiteStats={native=0,empty=0,unavailable=0}}
     local numericFacts,plotFacts={},{}
+    local tradeFacts,tradeProblem,tradeRead
+    function snapshot.TradeRoutes()
+        -- One lazy observation per player/publication. UI owns route discovery;
+        -- Gameplay refreshes endpoint properties/buildings and qualifies trader
+        -- operations. Only static channel definitions persist across snapshots.
+        -- No fresh/current observation means no complete trade counterfactual.
+        if tradeRead then return tradeFacts,tradeProblem end
+        tradeRead=true
+        local R,A=CSC_TradeRouteCore,CSC_TradeRouteFacts
+        local bridge=ExposedMembers and ExposedMembers.CSC_TradeRoutes
+        if not R or not A or not bridge or type(bridge.GetFacts)~='function'then
+            tradeProblem='Observed route bridge unavailable';return nil,tradeProblem
+        end
+        if not routeCatalogue then routeCatalogue,tradeProblem=R.ReadDefinitions(GameInfo)end
+        if not routeCatalogue then return nil,tradeProblem end
+        local ok,observed=pcall(bridge.GetFacts)
+        local now=Game.GetCurrentGameTurn()
+        if not ok or type(observed)~='table'or observed.version~=1
+            or not finite(observed.turn)or observed.turn%1~=0 or observed.turn>now or now-observed.turn>1
+            or type(observed.cities)~='table'or type(observed.routes)~='table'then
+            tradeProblem='Current route observation unavailable';return nil,tradeProblem
+        end
+        local current={version=observed.version,turn=observed.turn,cities={},routes=observed.routes}
+        local reader=A.New(GameInfo,routeCatalogue)
+        for key,previous in pairs(observed.cities)do
+            local owner=Players[previous.player]
+            local city=owner and owner:GetCities():FindID(previous.city)
+            if city and city:GetOwner()==previous.player and city:GetID()==previous.city then
+                local facts=reader.City(city)
+                if key~=facts.key then tradeProblem='Route endpoint identity changed';return nil,tradeProblem end
+                current.cities[key]=facts
+            end
+        end
+        local qualified=A.QualifyWindows(current,GameInfo,Game,GameConfiguration,Players,UnitOperationTypes)
+        if qualified.durationStats.invalidObservation>0 then
+            tradeProblem='Observed route operation changed';return nil,tradeProblem
+        end
+        tradeFacts={observed=qualified,definitions=routeCatalogue,changes={},plannedChanges={}}
+        return tradeFacts
+    end
     local function cityNumber(city,kind,index)
         local key=city:GetID()..':'..kind..':'..index
         if numericFacts[key]~=nil then return numericFacts[key]or nil end
@@ -472,6 +513,92 @@ function F.New(player,placement,ui,context)
         local key=profile.key..':'..plot:GetIndex()
         if not snapshot.supplies[key]then snapshot.supplies[key]=placement.ReadSuppliers(player,plot,profile)end
         return snapshot.supplies[key]
+    end
+    function snapshot.TradeWorld(sites,footprint)
+        -- Build plain route events from the SAME sites that the joint ledger
+        -- will schedule. No amount/partner list lives here: native route supply
+        -- predicates own the tags/counts, and the ledger owns investment times.
+        -- A proposed customer may permanently displace one supplier footprint.
+        -- District placement removes its improvement at foundation NOW, even
+        -- though district/building completion occurs later. Future-dated
+        -- destruction needs a separate before/after supply timeline; do not
+        -- remove that supplier early by treating it as an immediate footprint.
+        if footprint and (footprint.ready or 0)~=0 then return nil,'Only immediate district footprints are supported'end
+        local base,problem=snapshot.TradeRoutes();if not base then return nil,problem end
+        local R=CSC_TradeRouteCore
+        local trade={observed=base.observed,definitions=base.definitions,changes={},plannedChanges={}}
+        local seen={}
+        for _,site in ipairs(sites)do
+            local cityKey=R.CityKey(site.player,site.city)
+            local endpoint=base.observed.cities[cityKey]
+            local plot=Map.GetPlotByIndex(site.plot)
+            if not endpoint or not plot then return nil,'Quarter route endpoint unavailable'end
+            local profile
+            for _,candidate in ipairs(placement.StageTwoProfiles())do
+                if candidate.key==site.quarterKey then profile=candidate;break end
+            end
+            if not profile then return nil,'Quarter route profile unavailable'end
+            if seen[cityKey..':'..profile.key]then return nil,'Duplicate Quarter route site'end
+            seen[cityKey..':'..profile.key]=true
+            if site.routeFoundationReady~=nil then
+                if not finite(site.routeFoundationReady)then return nil,'Quarter foundation timing unavailable'end
+                trade.changes[#trade.changes+1]={ready=site.routeFoundationReady,city=cityKey,
+                    field='quarters',key=profile.district.DistrictType,value=true}
+            elseif site.existing and not endpoint.quarters[profile.district.DistrictType]and finite(site.quarterReady)then
+                -- A repaired Quarter resumes its origin import-blocking flag.
+                -- Existing unpillaged foundations already have that flag and
+                -- must not wait for construction completion a second time.
+                trade.changes[#trade.changes+1]={ready=site.quarterReady,city=cityKey,
+                    field='quarters',key=profile.district.DistrictType,value=true}
+            end
+            local potential={}
+            -- Reuse the central site's improvement ETAs, rather than introduce
+            -- another Builder forecast or copied technology/repair allowance.
+            -- Actual improved plots below remain independent of input-host and
+            -- worker gates, as required by the route source's native selector.
+            for _,supplier in ipairs(site.suppliers or{})do
+                if finite(supplier.ready)then potential[supplier.plot]=math.min(potential[supplier.plot]or INF,supplier.ready)end
+            end
+            local suppliers={}
+            for _,neighbor in ipairs(Map.GetAdjacentPlots(plot:GetX(),plot:GetY()))do
+                if neighbor:GetOwner()==pid and(not footprint or neighbor:GetIndex()~=footprint.removedPlot)then
+                    local resource=GameInfo.Resources[neighbor:GetResourceType()]
+                    if resource then
+                        local improvement=GameInfo.Improvements[neighbor:GetImprovementType()]
+                        local ready=improvement and not neighbor:IsImprovementPillaged()and 0 or potential[neighbor:GetIndex()]or INF
+                        local tags={}
+                        for _,channel in ipairs(base.definitions.channels)do if channel.quarter==profile.key then
+                            for _,requirement in ipairs(channel.requirements)do
+                                tags[requirement.tag]=CSC_Adjacency.HasTag(requirement.tag,resource.ResourceType)
+                            end
+                        end end
+                        suppliers[#suppliers+1]={plot=neighbor:GetIndex(),ready=ready,tags=tags}
+                    end
+                end
+            end
+            for _,channel in ipairs(base.definitions.channels)do if channel.quarter==profile.key then
+                local ready=R.SupplyReady(channel,suppliers)
+                local presentProducer=endpoint.buildings[channel.producer]==true
+                local investment=not presentProducer and cityKey..':'..channel.producer or nil
+                -- Destruction is an explicit footprint event. Coverage expiry
+                -- never enters this path. Other/future suppliers can restore
+                -- the property later if their actual native counts suffice.
+                if footprint and (endpoint.properties[channel.supplyProperty]or 0)>0
+                    and ready>(footprint.ready or 0)then
+                    trade.changes[#trade.changes+1]={ready=footprint.ready or 0,city=cityKey,
+                        field='properties',key=channel.supplyProperty,value=0}
+                end
+                if finite(ready)then
+                    trade.plannedChanges[#trade.plannedChanges+1]={ready=ready,city=cityKey,field='properties',
+                        key=channel.supplyProperty,value=1,investmentKey=investment}
+                end
+                if not presentProducer then
+                    trade.plannedChanges[#trade.plannedChanges+1]={city=cityKey,field='buildings',
+                        key=channel.producer,value=true,investmentKey=investment}
+                end
+            end end
+        end
+        return trade
     end
     function snapshot.DirectAmounts(city,plot,profile,removed)
         local sums,percents={},{}
@@ -919,6 +1046,10 @@ function F.New(player,placement,ui,context)
             or cost and city.production and city.production>0 and qUnlock+math.max(1,math.ceil(cost/city.production))or INF
         local site={key=pid..':'..key,player=pid,city=city.id,plot=plot:GetIndex(),population=city.population,
             horizon=context and context.horizon or 50,quarterReady=qReady,adjacency=0,
+            -- Founding can happen when the district unlocks, before its queue
+            -- finishes construction. Legal admission is the decision adapter's
+            -- responsibility; this timing never grants a district or unlock.
+            routeFoundationReady=not placed and qUnlock or nil,
             maintenance=profile.district.Maintenance or 0,existing=exists,materialYield=family.yield,
             direct={},suppliers={},customers={},seconds={},omissions={
                 'Future worker assignments, trade routes, GPP and Stage3/4 Service premiums are not priced'}}

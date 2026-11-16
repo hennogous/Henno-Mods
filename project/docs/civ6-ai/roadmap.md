@@ -6,6 +6,12 @@ Connect it once per joint plan, with amenity totals priced relative to the
 current city baseline, before completing customer-world and native residual work.
 [Route evidence and preview changes](../research/mods/csc-observed-routes-20261117.md).
 
+The joint pass is now implemented and mature-world qualified:22 chains/five
+players/43 routes,226 evaluations; closed/restored with native graph/property
+parity. Live affected-customer closure, adjacency counterfactuals and native
+overlap/residual delivery remain the next dependencies.
+[Joint route proof](../research/mods/csc-joint-route-economy-20261117.md).
+
 **Active1.4 / 2.1: one gameplay/AI ordinary-economy contract.**
 Population Stage3/4 terms and partners are now gameplay-owned; native payouts,
 metadata and AI share them. The migration matches288 old-code worlds and a

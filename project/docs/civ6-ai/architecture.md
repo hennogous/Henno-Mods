@@ -12,8 +12,10 @@ processes22 actual chain sites;30 lifecycle observations qualify material
 damage/recovery and shared protection. The pure joint ledger now shares customer
 investments/queues and pools population targets before rounding. Ordinary staffing
 reads native citizen-yield definitions and actual assignments; the mature smoke
-observes28 workers and30 ordinary streams. Existing routes, the affected-world factory and the native residual
-remain active work.
+observes28 workers and30 ordinary streams.17 November adds shared native route
+definitions and one route-network pass after shared scheduling, with city-level
+amenity pooling. The affected-customer world and native residual remain active
+work. [Route implementation](../research/mods/csc-joint-route-economy-20261117.md).
 [Contract](../integrations/csc-economic-contract.md).
 
 ```mermaid
@@ -26,6 +28,8 @@ flowchart LR
     Q["Quarter bid adapter"]
     P["Material protection adapter"]
     C["Joint customer residual<br/>implementation in progress"]
+    R["Observed routes<br/>actual endpoints and paid counters"]
+    T["Joint scheduling then route network<br/>pooled amenity counterfactuals"]
     N["Native comparisons<br/>selection and execution"]
     DECL --> GEN
     TAG --> GEN
@@ -34,7 +38,10 @@ flowchart LR
     LIVE --> MODEL
     MODEL --> Q --> N
     MODEL --> P --> N
-    MODEL -.-> C -.-> N
+    GEN --> R
+    R --> T
+    MODEL --> T
+    T -.-> C -.-> N
 ```
 
 **16 November Dockmaster adjustment:** Tailors +1 may bid beside a completed

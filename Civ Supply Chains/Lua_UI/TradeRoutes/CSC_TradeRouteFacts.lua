@@ -36,7 +36,7 @@ function A.QualifyWindows(observed,info,game,configuration,players,operations)
             era=era.EraType,adjustment=expansion and tonumber(expansion.TradeRouteMinimumEndTurnChange)or 0}
     end)
     local result={version=observed.version,turn=observed.turn,durationTurn=now,cities=observed.cities,routes={},
-        durationStats={qualified=0,unknown=0,eligibleToFinish=0}}
+        durationStats={qualified=0,unknown=0,eligibleToFinish=0,invalidObservation=0}}
     result.durationPolicy=parametersOK and parameters or nil
     local function hashEqual(a,b)
         return(type(a)=='number'or type(a)=='integer')and(type(b)=='number'or type(b)=='integer')
@@ -44,15 +44,15 @@ function A.QualifyWindows(observed,info,game,configuration,players,operations)
     end
     for _,route in ipairs(observed.routes)do
         local record={origin=route.origin,destination=route.destination,native=route.native,observedThrough=1}
-        local ok,earliest,start=pcall(function()
-            if not observationCurrent then return nil,'Route observation turn unavailable or stale'end
+        local ok,earliest,start,invalid=pcall(function()
+            if not observationCurrent then return nil,'Route observation turn unavailable or stale',true end
             local player=players[route.native.TraderUnitPlayer]
             local unit=player and player:GetUnits():FindID(route.native.TraderUnitID)
             if not unit or not unit.GetOperationType or not unit.GetOperationParameter then return nil,'Trader operation unavailable'end
-            if not hashEqual(unit:GetOperationType(),operations.MAKE_TRADE_ROUTE)then return nil,'Trader operation changed'end
+            if not hashEqual(unit:GetOperationType(),operations.MAKE_TRADE_ROUTE)then return nil,'Trader operation changed',true end
             local started=unit:GetOperationParameter(operations.PARAM_TURN)
             if(type(started)~='number'and type(started)~='integer')or started<0 or started%1~=0 or started>observedTurn then
-                return nil,'Native operation start unavailable'
+                return nil,'Native operation start unavailable',true
             end
             if not parametersOK or not parameters then return nil,'Native duration context unavailable'end
             local ending,problem=R.MinimumEnd(started,parameters.base,parameters.multiplier,parameters.adjustment)
@@ -67,6 +67,10 @@ function A.QualifyWindows(observed,info,game,configuration,players,operations)
         else
             record.durationUnavailable=tostring(ok and start or earliest)
             result.durationStats.unknown=result.durationStats.unknown+1
+            if ok and invalid then
+                record.observationInvalid=true
+                result.durationStats.invalidObservation=result.durationStats.invalidObservation+1
+            end
         end
         result.routes[#result.routes+1]=record
     end

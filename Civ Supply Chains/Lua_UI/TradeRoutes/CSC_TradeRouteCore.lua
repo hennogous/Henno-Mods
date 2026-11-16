@@ -151,13 +151,89 @@ function R.Economy(counts,cities,definitions,player)
                 if not amounts then return nil,error end
                 for yield,amount in pairs(amounts)do if amount~=0 then
                     streams[#streams+1]={id='route:'..key..':'..channel.id..':'..recipient..':'..yield,
-                        player=state.player,city=state.city,yield=yield,amount=amount}
+                        player=state.player,city=state.city,channel=channel.id,recipient=recipient,yield=yield,amount=amount}
                 end end
             end
         end
     end end
     table.sort(streams,function(a,b)return a.id<b.id end)
     return streams
+end
+
+-- Coverage ending is not evidence that a trader has stopped contributing.
+-- Once ANY possible contributor is uncertain, stop quoting that entire counter
+-- group; removing just that route could invent modulo32 recovery. Explicit
+-- removedAt events are a different input, reserved for known scenario removals.
+function R.Coverage(world,definitions,player,horizon)
+    local groups,amenities={},{}
+    for _,route in ipairs(world.routes)do
+        local through=route.observedThrough or 1
+        local removed=route.removedAt
+        if not finite(through)or through<0 or removed~=nil and(not finite(removed)or removed<0)then
+            return nil,'Invalid route observation/removal window'
+        end
+        if removed==nil or removed>through then
+            for _,channel in ipairs(definitions.channels)do
+                for _,recipient in ipairs({'ORIGIN','DESTINATION'})do
+                    local key=recipient=='ORIGIN'and route.origin or route.destination
+                    local city=world.cities[key]
+                    if city and city.player==player then
+                        local group=key..':'..channel.id..':'..recipient
+                        groups[group]=math.min(groups[group]or horizon,through)
+                        for _,payout in ipairs(channel.payouts)do
+                            if payout.recipient==recipient and payout.yield=='AMENITY'then
+                                amenities[key]=math.min(amenities[key]or horizon,through)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return groups,amenities
+end
+
+-- Native city happiness already includes the RECEIVED counter properties,
+-- which can lag a newly observed route change until the network operation is
+-- acknowledged. Use those paid counters as the quote baseline, not a fresh
+-- eligibility recomputation. Otherwise a pending refresh is charged twice.
+function R.PaidAmenities(cities,definitions,player)
+    local baseline={}
+    for key,city in pairs(cities)do if city.player==player then
+        local total=0
+        for _,channel in ipairs(definitions.channels)do
+            for _,recipient in ipairs({'ORIGIN','DESTINATION'})do
+                local property=recipient=='ORIGIN'and channel.importProperty or channel.exportProperty
+                local count=(city.counts or{})[property]
+                local amounts,error=R.EvaluateBits(channel,count,recipient,city)
+                if not amounts then return nil,error end
+                total=total+(amounts.AMENITY or 0)
+            end
+        end
+        baseline[key]=total
+    end end
+    return baseline
+end
+
+-- The native source property requires counts of adjacent owned improvements,
+-- independently for each material class. It does not require a worked citizen,
+-- a registered material-input host or one of our preferred Builder job types.
+-- Facts supplies distinct physical plots/tags and explicit improvement ETAs.
+-- Select the kth ready plot for the actual SQL count, then AND all predicates.
+function R.SupplyReady(channel,suppliers)
+    local ready=0
+    for _,requirement in ipairs(channel.requirements)do
+        local times,seen={},{}
+        for _,supplier in ipairs(suppliers)do
+            if supplier.tags[requirement.tag]and not seen[supplier.plot]and finite(supplier.ready)and supplier.ready>=0 then
+                times[#times+1]=supplier.ready;seen[supplier.plot]=true
+            end
+        end
+        table.sort(times)
+        if #times<requirement.count then return math.huge end
+        ready=math.max(ready,times[requirement.count])
+    end
+    return ready
 end
 
 -- Native38f720: speed-adjust the base duration and current global-era change
@@ -184,6 +260,8 @@ function R.Forecast(world,definitions,player,horizon)
     if not finite(horizon)or horizon<=0 then return nil,'Finite route horizon required'end
     if type(world.cities)~='table'or type(world.routes)~='table'then return nil,'Route observations unavailable'end
     if #world.routes>(world.maxRoutes or 4096)then return nil,'Route forecast budget exceeded'end
+    local coverage,error=R.Coverage(world,definitions,player,horizon)
+    if not coverage then return nil,error end
     local cities,events,times={}, {},{[0]=true,[horizon]=true}
     for key,source in pairs(world.cities)do
         local city={player=source.player,city=source.city}
@@ -208,6 +286,7 @@ function R.Forecast(world,definitions,player,horizon)
         local through=route.observedThrough or 1
         if not finite(through)or through<0 then return nil,'Invalid route observation window'end
         if through<horizon then times[through]=true end
+        if route.removedAt and route.removedAt<horizon then times[route.removedAt]=true end
     end
     local ordered={};for t in pairs(times)do ordered[#ordered+1]=t end;table.sort(ordered)
     if #ordered>(world.maxEvents or 128)then return nil,'Route event budget exceeded'end
@@ -216,16 +295,21 @@ function R.Forecast(world,definitions,player,horizon)
         local ready,finish=ordered[i],ordered[i+1]
         for _,change in pairs(events[ready]or{})do cities[change.city][change.field][change.key]=change.value end
         local active={}
-        for _,route in ipairs(world.routes)do if(route.observedThrough or 1)>ready then active[#active+1]=route end end
+        for _,route in ipairs(world.routes)do
+            if not route.removedAt or route.removedAt>ready then active[#active+1]=route end
+        end
         local counts,error=R.Accumulate(active,cities,definitions);if not counts then return nil,error end
         local streams,message=R.Economy(counts,cities,definitions,player);if not streams then return nil,message end
         for _,stream in ipairs(streams)do
+            local group=R.CityKey(stream.player,stream.city)..':'..stream.channel..':'..stream.recipient
+            if ready<(coverage[group]or horizon)then
             local previous=last[stream.id]
             if previous and previous.finish==ready and previous.amount==stream.amount then previous.finish=finish
             else
                 local baseId=stream.id;stream.id=baseId..'@'..ready
                 stream.ready=ready;stream.finish=finish
                 result[#result+1]=stream;last[baseId]=stream
+            end
             end
         end
     end

@@ -137,11 +137,15 @@ world.changes={};world.routes[1].observedThrough=nil
 for _,s in ipairs(R.Forecast(world,D,1,10))do assert(s.finish==1)end
 ''')
 
-    def test_wrapped_counter_recovery_uses_all_remaining_routes_together(self):
+    def test_wrapped_counter_recovery_requires_known_removal_not_a_coverage_cutoff(self):
         self.vm().execute('''
 local routes={}
 for i=1,32 do routes[i]={origin='1:1',destination='2:2',observedThrough=i==32 and 4 or 10}end
-local flows=assert(R.Forecast({cities={['1:1']=city(1,1),['2:2']=city(2,2)},routes=routes},D,1,10))
+local w={cities={['1:1']=city(1,1),['2:2']=city(2,2)},routes=routes}
+local flows=assert(R.Forecast(w,D,1,10))
+assert(#flows==0) -- One uncertain contributor cannot be assumed to have ended.
+routes[32].removedAt=4 -- Explicit controlled removal is a different scenario input.
+flows=assert(R.Forecast(w,D,1,10))
 for _,s in ipairs(flows)do assert(s.ready==4 and s.finish==10)end
 assert(amount(flows,1,'YIELD_FOOD')==62)
 ''')

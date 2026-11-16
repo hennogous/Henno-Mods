@@ -1,5 +1,16 @@
 # Current CSC AI status
 
+**G3,17 November — joint route events and amenity pooling implemented.**
+The shared scheduler now feeds one observed-network evaluation. Material
+thresholds come from native definitions; future jobs reuse central ETAs. Native
+paid counts anchor combined city amenity quotes. Coverage expiry creates no
+invented trade loss or modulo32 gain.64 transaction/113 economy tests pass;
+mature replay passes22 chains/five players/43 routes with226 bounded evaluations,
+original10,954 native rows and42,210 population readings, closed/restored0.
+Next: affected-customer closure/adjacency,
+native overlap/residual and full performance. No new live customer residual.
+[Implementation and assumptions](../research/mods/csc-joint-route-economy-20261117.md).
+
 **G3,17 November — shared observed-route kernel qualified.**
 Gameplay scanner and route previews now read actual native payout/gate definitions.
 A zero-turn replay matches67-city legacy packets,43 actual route timers and the
