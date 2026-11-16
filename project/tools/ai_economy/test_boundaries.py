@@ -329,6 +329,7 @@ CREATE TABLE TypeTags(Type,Tag);
 CREATE TABLE DistrictReplaces(CivUniqueDistrictType,ReplacesDistrictType);
 CREATE TABLE CSC_QuarterCustomerBuildings(QuarterKey,ProducerStage,DistrictType);
 CREATE TABLE CSC_Stage3CustomerTransactions(SellerDistrictType,CustomerDistrictType);
+CREATE TABLE CSC_QuarterWonderSales(QuarterKey,BuildingType,ProducerStage);
 CREATE TABLE Adjacency_YieldChanges(ID PRIMARY KEY,Description,YieldType,YieldChange,TilesRequired,AdjacentDistrict);
 CREATE TABLE District_Adjacencies(DistrictType,YieldChangeId,PRIMARY KEY(DistrictType,YieldChangeId));
 INSERT INTO Districts VALUES('DISTRICT_CSC_TAILORS_QUARTER'),('DISTRICT_CSC_BAKERS_QUARTER'),
@@ -344,6 +345,7 @@ INSERT INTO CSC_Stage3CustomerTransactions VALUES
  ('DISTRICT_CSC_TAILORS_QUARTER','DISTRICT_HOLY_SITE'),
  ('DISTRICT_CSC_TAILORS_QUARTER','DISTRICT_COMMERCIAL_HUB'),
  ('DISTRICT_CSC_BAKERS_QUARTER','DISTRICT_COMMERCIAL_HUB');
+INSERT INTO CSC_QuarterWonderSales VALUES('TAILORS','BUILDING_TEST_WONDER',4);
 ''')
         sql = (ROOT / 'Civ Supply Chains/Data/CSC_AI_Connectors.sql').read_text(encoding='utf-8')
         db.executescript(sql)
@@ -369,6 +371,7 @@ INSERT INTO TypeTags VALUES
         self.assertEqual(db.execute('SELECT COUNT(*) FROM Adjacency_YieldChanges').fetchone()[0],10)
         from customer_connector_audit import audit
         self.assertTrue(audit(db)['complete'])
+        self.assertTrue(any(r.get('building')=='BUILDING_TEST_WONDER'for r in audit(db)['excluded']))
         # A new gameplay-defined Quarter/customer requires no AI mapping edit.
         db.executescript('''
 INSERT INTO Districts VALUES('DISTRICT_CSC_TEST_QUARTER'),('DISTRICT_TEST_CUSTOMER');
@@ -377,6 +380,24 @@ INSERT INTO CSC_Stage3CustomerTransactions VALUES('DISTRICT_CSC_TEST_QUARTER','D
         self.assertEqual(len(audit(db)['missing']),1)
         db.executescript(sql)
         self.assertTrue(audit(db)['complete'])
+        # Tag-only gameplay partners, including a Quarter with no transaction
+        # rows, must propagate without adding an AI-specific relationship.
+        db.executescript('''
+INSERT INTO Districts VALUES('DISTRICT_CSC_TAG_ONLY_QUARTER'),('DISTRICT_URBAN_CUSTOMER');
+INSERT INTO TypeTags VALUES
+ ('DISTRICT_URBAN_CUSTOMER','CLASS_CSC_TEST_SALES'),
+ ('DISTRICT_URBAN_CUSTOMER','CLASS_CSC_TEST_GOODS_PROVIDER'),
+ ('DISTRICT_URBAN_CUSTOMER','CLASS_CSC_TAG_ONLY_SALES'),
+ ('DISTRICT_ABSENT_MOD','CLASS_CSC_TAG_ONLY_SALES');
+''')
+        self.assertEqual(len(audit(db)['missing']),2)
+        db.executescript(sql);db.executescript(sql)
+        result=audit(db)
+        self.assertTrue(result['complete'],result)
+        self.assertEqual(result['duplicates'],[])
+        edge=next(e for e in result['edges'] if e['customer']=='DISTRICT_URBAN_CUSTOMER'
+                  and e['quarter']=='DISTRICT_CSC_TEST_QUARTER')
+        self.assertEqual(set(edge['sources']),{'sales-tag','goods-provider'})
 
     def test_loaded_unit_contract_leaves_match_current_source(self):
         source = (AI / 'CSC_AI_EconomyFacts.lua').read_text(encoding='utf-8')

@@ -1,8 +1,8 @@
 """Audit derived AI district edges against loaded gameplay routing metadata.
 
 Read-only diagnostic: the ordinary and population-scaled transaction registries
-own relationships. This computes an expected set, expands loaded replacements
-once, and compares the native SQL generator's output. It maintains no separate
+and gameplay sales/provider tags own relationships. This computes an expected
+set, expands loaded replacements once, and compares the native SQL generator's output. It maintains no separate
 Quarter/customer list. City Center and exact-Wonder hosts are explicitly routed
 outside ordinary district-placement incentives.
 """
@@ -16,7 +16,9 @@ import sqlite3
 
 def audit(db):
     districts = {r[0] for r in db.execute('SELECT DistrictType FROM Districts')}
-    expected, excluded, quarters = defaultdict(set), [], {}
+    expected, excluded = defaultdict(set), []
+    quarters = {q: q[len('DISTRICT_CSC_'):-len('_QUARTER')] for q in districts
+                if q.startswith('DISTRICT_CSC_') and q.endswith('_QUARTER')}
 
     def add(customer, quarter, source):
         if customer in ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER'):
@@ -32,12 +34,21 @@ def audit(db):
         add(customer, quarter, 'population:3')
         if quarter.startswith('DISTRICT_CSC_') and quarter.endswith('_QUARTER'):
             quarters[quarter] = quarter[len('DISTRICT_CSC_'):-len('_QUARTER')]
+    # Exact Wonder buyers use a building-placement consumer. Record their
+    # gameplay definitions explicitly; a generic DISTRICT_WONDER adjacency
+    # would incentivise every Wonder, including unrelated ones.
+    if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='CSC_QuarterWonderSales'").fetchone():
+        for key, building, stage in db.execute('SELECT QuarterKey,BuildingType,ProducerStage FROM CSC_QuarterWonderSales'):
+            if stage in (2,3,4):
+                excluded.append(dict(customer='DISTRICT_WONDER',quarter='DISTRICT_CSC_'+key+'_QUARTER',
+                                     source='exact-wonder:'+str(stage),building=building))
     tags = defaultdict(set)
     for district, tag in db.execute('SELECT Type,Tag FROM TypeTags'):
         tags[tag].add(district)
     for quarter, key in quarters.items():
-        for customer in tags['CLASS_CSC_'+key+'_GOODS_PROVIDER']:
-            add(customer, quarter, 'goods-provider')
+        for suffix, source in (('SALES','sales-tag'),('GOODS_PROVIDER','goods-provider')):
+            for customer in tags['CLASS_CSC_'+key+'_'+suffix]:
+                add(customer, quarter, source)
     base = list(expected.items())
     for unique, parent in db.execute('SELECT CivUniqueDistrictType,ReplacesDistrictType FROM DistrictReplaces'):
         for (customer, quarter), sources in base:

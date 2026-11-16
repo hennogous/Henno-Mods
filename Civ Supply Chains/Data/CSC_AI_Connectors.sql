@@ -58,19 +58,24 @@ JOIN Districts q ON q.DistrictType = m.SellerDistrictType
 JOIN Districts customer ON customer.DistrictType = m.CustomerDistrictType
 WHERE m.CustomerDistrictType NOT IN ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER');
 
--- Goods providers are the opposite transaction direction, but their districts
--- also benefit from being beside the Quarter. The loaded CL audit found seven
--- provider types per active Quarter with no reverse placement edge. Use loaded
--- tags/definitions, without requiring CL or crediting an unbuilt neighbor.
--- The edge primary key merges a district that is both provider and customer.
+-- Gameplay sales tags also describe spatial customers without a specific
+-- building transaction (for example City Lights urban districts). Derive the
+-- Quarter key from its standard gameplay district name, so a new Quarter or
+-- tag-only partner requires no parallel AI list. substr strips the13-character
+-- DISTRICT_CSC_ prefix and8-character _QUARTER suffix. Only loaded districts enter;
+-- missing optional-mod types therefore create no dangling native rules.
+-- Providers use the reverse flow direction but share this co-location signal.
+-- Their overlap with sales and transaction rows merges at the edge primary key.
 INSERT OR IGNORE INTO CSC_AI_CustomerEdges
         (   Customer,   Quarter   )
-SELECT DISTINCT t.Type, q.DistrictType
-FROM CSC_QuarterCustomerBuildings m
-JOIN Districts q ON q.DistrictType = 'DISTRICT_CSC_' || m.QuarterKey || '_QUARTER'
-JOIN TypeTags t ON t.Tag = 'CLASS_CSC_' || m.QuarterKey || '_GOODS_PROVIDER'
-JOIN Districts provider ON provider.DistrictType = t.Type
-WHERE m.ProducerStage BETWEEN 2 AND 4
+SELECT t.Type, q.DistrictType
+FROM Districts q
+JOIN TypeTags t ON t.Tag IN (
+    'CLASS_CSC_' || substr(q.DistrictType, 14, length(q.DistrictType) - 21) || '_SALES',
+    'CLASS_CSC_' || substr(q.DistrictType, 14, length(q.DistrictType) - 21) || '_GOODS_PROVIDER'
+)
+JOIN Districts partner ON partner.DistrictType = t.Type
+WHERE q.DistrictType GLOB 'DISTRICT_CSC_*_QUARTER'
 AND t.Type NOT IN ('DISTRICT_CITY_CENTER', 'DISTRICT_WONDER');
 
 INSERT OR IGNORE INTO CSC_AI_CustomerEdges
@@ -87,7 +92,9 @@ JOIN DistrictReplaces r ON r.ReplacesDistrictType = e.Customer;
 -- the same footprints. It is therefore not a fixed, purely additive bid;
 -- native forecasts and alternative-land valuation still process the input.
 -- SQL rows alone prove loading, not consumption or a changed choice. The
--- matched case verifies consumption but retains the Theater winner.
+-- earlier Harbor case retains its Theater winner. The matched Commercial Hub
+-- replay (16 November) switches to the adjacent site with the default +1;
+-- increasing to +4/+8 raises its value but does not improve that site choice.
 INSERT OR IGNORE INTO Adjacency_YieldChanges
         (   ID,   Description,   YieldType,   YieldChange,   TilesRequired,   AdjacentDistrict   )
 SELECT
